@@ -13,6 +13,7 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 {
 	private FunctionId functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
+	private FunctionImplementation function;
 	
 	/**
 	 * Constructs function specification with a given
@@ -23,11 +24,12 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	 * @param returnType a function return type
 	 * @param params a function parameter descriptors
 	 */
-	public BaseFunctionSpec(FunctionId id, List<ParamSpec> params)
+	public BaseFunctionSpec(FunctionId id, FunctionImplementation function, List<ParamSpec> params)
 	{
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(params);
 		this.functionId = id;
+		this.function = function;
 		this.parameters.addAll(params);
 	}
 
@@ -47,8 +49,8 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	}
 	
 	@Override
-	public FunctionInvocation createInvocation(Expression ...expressions) {
-		return createInvocation(Arrays.asList(expressions));
+	public FunctionImplementation getImplementation() {
+		return function;
 	}
 
 	@Override

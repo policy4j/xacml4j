@@ -21,7 +21,7 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
-	private FunctionInvocation impl;
+	private FunctionImplementation impl;
 	
 	@Before
 	public void init(){

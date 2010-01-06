@@ -17,7 +17,7 @@ import com.artagon.xacml.util.Preconditions;
 public final class Apply implements ValueExpression
 {	
 	private FunctionSpec spec;
-	private FunctionInvocation invocation;
+	private List<Expression> arguments;
 	
 	/**
 	 * Constructs XACML apply expression with given function and list
@@ -31,7 +31,8 @@ public final class Apply implements ValueExpression
 		Preconditions.checkNotNull(arguments);
 		Preconditions.checkArgument(spec.validateParameters(arguments), 
 				"Given list of parameters can't be used for a given function spec=\"%s\"", spec);
-		this.invocation = spec.createInvocation(arguments);
+		this.spec = spec;
+		this.arguments = arguments;
 	}
 	
 	/**
@@ -56,7 +57,7 @@ public final class Apply implements ValueExpression
 	
 	@Override
 	public ValueType getEvaluatesTo(){
-		return invocation.getReturnType();
+		return spec.getReturnType(arguments);
 	}
 	
 	/**
@@ -70,7 +71,8 @@ public final class Apply implements ValueExpression
 	public Value evaluate(EvaluationContext context) 
 		throws PolicyEvaluationException
 	{
-		return invocation.invoke(context);
+		FunctionImplementation function = spec.getImplementation();
+		return function.invoke(context, arguments);
 	}
 	
 	
@@ -78,7 +80,7 @@ public final class Apply implements ValueExpression
 	public void accept(PolicyVisitor v)
 	{
 		v.visitEnter(this);
-		for(Expression expression : invocation.getArguments()){
+		for(Expression expression : arguments){
 			expression.accept(v);
 		}
 		v.visitLeave(this);

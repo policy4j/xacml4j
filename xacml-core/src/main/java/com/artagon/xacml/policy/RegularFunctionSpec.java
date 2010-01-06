@@ -10,26 +10,14 @@ public class RegularFunctionSpec extends BaseFunctionSpec
 	private ValueType returnType;
 	
 	public RegularFunctionSpec(FunctionId id, 
-			ValueType returnType, List<ParamSpec> paramSpec) {
-		super(id, paramSpec);
+			ValueType returnType, FunctionImplementation function, List<ParamSpec> paramSpec) {
+		super(id, function, paramSpec);
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}
 
 	@Override
-	public FunctionInvocation createInvocation(List<Expression> parameters) {
-		return new BaseFunctionInvocation(this, parameters) {
-			
-			@Override
-			public ValueType getReturnType() {
-				return returnType;
-			}
-			
-			@Override
-			protected Value doInvoke(EvaluationContext context,
-					List<Expression> arguments) throws PolicyEvaluationException {
-				return null;
-			}
-		};
+	public ValueType getReturnType(List<Expression> arguments) {
+		return returnType;
 	}
 }

@@ -26,6 +26,8 @@ public interface FunctionSpec
 	 */
 	List<ParamSpec> getParamSpecs();
 		
+	ValueType getReturnType(List<Expression> arguments);
+	
 	/**
 	 * Gets number of function formal 
 	 * parameters
@@ -35,8 +37,7 @@ public interface FunctionSpec
 	 */
 	int getNumberOfParams();
 		
-	FunctionInvocation createInvocation(Expression ...parameters);
-	FunctionInvocation createInvocation(List<Expression> parameters);
+	FunctionImplementation getImplementation();
 	
 	/**
 	 * Validates list of parameters.
