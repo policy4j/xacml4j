@@ -76,7 +76,7 @@ abstract class BaseDecisionResponseExpression implements PolicyElement
 	 * and return collection of {@link AttributeAssignment} instances
 	 * @param context an evaluation context
 	 * @return collection of {@link AttributeAssignment} instances
-	 * @throws PolicyEvaluationException if an evaluation error occursxxxxxxxxxxxxxxxxxx
+	 * @throws PolicyEvaluationException if an evaluation error occurs
 	 */
 	protected Collection<AttributeAssignment> evaluateAttributeAssingments(EvaluationContext context) throws PolicyEvaluationException
 	{

@@ -6,7 +6,7 @@ import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.AttributeDataType;
-import com.artagon.xacml.policy.BaseFunctionInvocation;
+import com.artagon.xacml.policy.BaseFunctionImplementation;
 import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
@@ -39,7 +39,7 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final BooleanType returnType = getDataType(DataTypes.BOOLEAN);
 		builder.withParam(type).withParam(type).withReturnType(returnType);
-		return builder.build(new BaseFunctionInvocation() {
+		return builder.build(new BaseFunctionImplementation() {
 			@Override
 			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {

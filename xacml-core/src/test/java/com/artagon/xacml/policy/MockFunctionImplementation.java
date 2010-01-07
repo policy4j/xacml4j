@@ -2,7 +2,7 @@ package com.artagon.xacml.policy;
 
 import java.util.List;
 
-public class MockFunctionImplementation extends BaseFunctionInvocation
+public class MockFunctionImplementation extends BaseFunctionImplementation
 {
 	private Value expectedResult;
 	private boolean failWithIndeterminate = false;

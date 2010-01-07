@@ -28,7 +28,7 @@ public class FunctionReferenceExpression implements Expression
 	
 
 	@Override
-	public Expression evaluate(EvaluationContext context)
+	public FunctionReferenceExpression evaluate(EvaluationContext context)
 			throws PolicyEvaluationException {
 		return this;
 	}

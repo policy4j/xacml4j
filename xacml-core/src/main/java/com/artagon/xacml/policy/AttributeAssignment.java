@@ -11,6 +11,15 @@ public class AttributeAssignment
 	private String attributeId;
 	private String issuer;
 	
+	/**
+	 * Creates attribute assignment with a 
+	 * given attribute identifier
+	 * 
+	 * @param attributeId an attribute id
+	 * @param category an attribute category
+	 * @param issuer an attribute issuer
+	 * @param value an attribute value
+	 */
 	public AttributeAssignment(String attributeId, 
 			AzCategoryId category, String issuer, Attribute value){
 		Preconditions.checkNotNull(attributeId);

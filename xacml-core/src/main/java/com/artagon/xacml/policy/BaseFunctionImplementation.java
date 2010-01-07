@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class BaseFunctionInvocation implements FunctionImplementation
+public abstract class BaseFunctionImplementation implements FunctionImplementation
 {
 	
 	/**

@@ -7,7 +7,7 @@ import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeDataType;
-import com.artagon.xacml.policy.BaseFunctionInvocation;
+import com.artagon.xacml.policy.BaseFunctionImplementation;
 import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
@@ -48,7 +48,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType returnType = getDataType(DataTypes.STRING);
 		builder.withParam(type).withReturnType(returnType);
-		return builder.build(new BaseFunctionInvocation() {
+		return builder.build(new BaseFunctionImplementation() {
 			@Override
 			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {
@@ -63,7 +63,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType paramType = getDataType(DataTypes.STRING);
 		builder.withParam(paramType).withReturnType(returnType);
-		return builder.build(new BaseFunctionInvocation() {
+		return builder.build(new BaseFunctionImplementation() {
 			@Override
 			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {

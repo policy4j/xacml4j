@@ -128,7 +128,7 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	}
 	
 	@Override
-	public Value evaluate(EvaluationContext context)
+	public BagOfAttributes<T> evaluate(EvaluationContext context)
 			throws PolicyEvaluationException {
 		return this;
 	}

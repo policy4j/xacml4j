@@ -60,7 +60,7 @@ public abstract class BaseAttributeValue<T>
 	}
 	
 	@Override
-	public final Value evaluate(EvaluationContext context) throws PolicyEvaluationException {
+	public final Attribute evaluate(EvaluationContext context) throws PolicyEvaluationException {
 		return this;
 	}
 	
