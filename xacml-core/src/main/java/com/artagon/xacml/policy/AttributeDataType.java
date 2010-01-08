@@ -2,7 +2,6 @@ package com.artagon.xacml.policy;
 
 import com.artagon.xacml.DataTypeId;
 
-
 public interface AttributeDataType extends ValueType
 {
 	/**

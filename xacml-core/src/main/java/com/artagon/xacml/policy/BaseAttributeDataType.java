@@ -42,7 +42,6 @@ public abstract class BaseAttributeDataType<AttributeValue extends Attribute> im
 		return typeId;
 	}
 
-	
 	@Override
 	public final int hashCode(){
 		return Objects.hashCode(typeId, valueClazz);

@@ -88,8 +88,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 		}
 		return createFromAttributes(attr);
 	}
-	
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){

@@ -47,4 +47,23 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 		assertFalse(spec.validate(good.listIterator()));		
 		assertFalse(spec.validate(bad.listIterator()));
 	}
+	
+	@Test
+	public void testWithAnyAttributeDataTypeSpec() throws Exception
+	{
+		ParamSpec spec = new ParamAnyAttributeTypeSpec();
+		assertTrue(spec.isValidParamType(t1));
+		assertTrue(spec.isValidParamType(t2));
+		assertFalse(spec.isValidParamType(b1));
+	}
+	
+	@Test
+	public void testWithAnyBagOfAttributesTypeSpec() throws Exception
+	{
+		ParamSpec spec = new ParamAnyBagTypeSpec();
+		assertFalse(spec.isValidParamType(t1));
+		assertFalse(spec.isValidParamType(t2));
+		assertTrue(spec.isValidParamType(t1.bagOf()));
+		assertTrue(spec.isValidParamType(t2.bagOf()));
+	}
 }
