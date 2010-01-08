@@ -16,6 +16,6 @@ public class ParamAnyBagTypeSpec implements ParamSpec
 	
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return false;
+		return type instanceof BagOfAttributesType<?>;
 	}
 }

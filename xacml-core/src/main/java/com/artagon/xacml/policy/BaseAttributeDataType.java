@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-
 import com.artagon.xacml.DataTypeId;
 import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
