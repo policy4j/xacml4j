@@ -26,6 +26,13 @@ public interface FunctionSpec
 	 */
 	List<ParamSpec> getParamSpecs();
 		
+	/**
+	 * Resolves function return type based
+	 * on a given function arguments
+	 * 
+	 * @param arguments a function invocation arguments
+	 * @return {@link ValueType} a function return type
+	 */
 	ValueType getReturnType(List<Expression> arguments);
 	
 	/**
@@ -37,6 +44,12 @@ public interface FunctionSpec
 	 */
 	int getNumberOfParams();
 		
+	/**
+	 * Gets function implementation
+	 * 
+	 * @return {@link FunctionImplementation} function
+	 * implementation
+	 */
 	FunctionImplementation getImplementation();
 	
 	/**

@@ -1,12 +1,17 @@
 package com.artagon.xacml.policy;
 
-import java.util.List;
 import java.util.ListIterator;
+
+import com.artagon.xacml.util.Preconditions;
 
 public class ParamFuncReferenceSpec implements ParamSpec
 {
-	private ParamSpec returnType;
-	private List<ParamSpec> parameters;
+	private FunctionFamilySpec family;
+	
+	public ParamFuncReferenceSpec(FunctionFamilySpec family){
+		Preconditions.checkNotNull(family);
+		this.family = family;
+	}
 	
 	@Override
 	public boolean isValidParamType(ValueType type) {
@@ -15,7 +20,11 @@ public class ParamFuncReferenceSpec implements ParamSpec
 	
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
-		// TODO Auto-generated method stub
+		Expression exp = it.next();
+		if(exp instanceof FunctionReferenceExpression){
+			FunctionReferenceExpression fexp = (FunctionReferenceExpression)exp;
+			return family.isMemeberOf(fexp.getSpec());
+		}
 		return false;
 	}
 }
