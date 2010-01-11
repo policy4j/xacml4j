@@ -18,7 +18,7 @@ public final class Condition implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Condition.class);
 	
-	private ValueExpression predicate;
+	private Expression predicate;
 
 	/**
 	 * Constructs condition with an predicate
@@ -27,7 +27,7 @@ public final class Condition implements PolicyElement
 	 * @param predicate an expression which always evaluates
 	 * to {@link BooleanValue}
 	 */
-	public Condition(ValueExpression predicate){
+	public Condition(Expression predicate){
 		Preconditions.checkArgument(predicate.getEvaluatesTo() instanceof BooleanType);
 		this.predicate = predicate;
 	}
