@@ -67,11 +67,7 @@ public final class ParamValueTypeSequenceSpec implements ParamSpec
 		boolean valid = true;
 		while(it.hasNext()){
 			Expression exp = it.next();
-			if(!(exp instanceof ValueExpression)){
-				valid = false;
-				break;
-			}
-			ValueType expType = ((ValueExpression)exp).getEvaluatesTo();
+			ValueType expType = exp.getEvaluatesTo();
 			if(!expType.equals(paramType)){
 				log.debug("Expected type=\"{}\" but was type=\"{}\"",
 						paramType, expType);

@@ -7,11 +7,7 @@ public class ParamAnyAttributeTypeSpec implements ParamSpec
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		Expression exp = it.next();
-		if(!(exp instanceof ValueExpression)){
-			return false;
-		}
-		ValueExpression sexp = (ValueExpression)exp;
-		return isValidParamType(sexp.getEvaluatesTo());
+		return isValidParamType(exp.getEvaluatesTo());
 	}
 
 	@Override

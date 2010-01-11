@@ -30,12 +30,9 @@ public final class ParamValueTypeSpec implements ParamSpec
 			return false;
 		}
 		Expression exp = it.next();
-		if(!(exp instanceof ValueExpression)){
-			return false;
-		}
 		log.debug("Validating expression=\"{}\" " +
 				"against paramSpec=\"{}\"", exp, this);
-		ValueType expType = ((ValueExpression)exp).getEvaluatesTo();
+		ValueType expType = exp.getEvaluatesTo();
 		boolean valid = type.equals(expType);
 		if(log.isDebugEnabled()){
 			log.debug("Validating parameter at index=\"{}\" " +

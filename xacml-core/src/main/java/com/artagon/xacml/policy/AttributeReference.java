@@ -4,7 +4,7 @@ import org.oasis.xacml.azapi.constants.AzCategoryId;
 
 import com.artagon.xacml.util.Preconditions;
 
-abstract class AttributeReference implements ValueExpression
+abstract class AttributeReference implements Expression
 {
 	private AzCategoryId category;
 	protected BagOfAttributesType<?> evaluatesTo;

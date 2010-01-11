@@ -6,9 +6,9 @@ import com.artagon.xacml.util.Preconditions;
 
 public class ParamFuncReferenceSpec implements ParamSpec
 {
-	private FunctionFamilySpec family;
+	private FunctionFamily family;
 	
-	public ParamFuncReferenceSpec(FunctionFamilySpec family){
+	public ParamFuncReferenceSpec(FunctionFamily family){
 		Preconditions.checkNotNull(family);
 		this.family = family;
 	}

@@ -14,10 +14,11 @@ import com.artagon.xacml.util.Preconditions;
  * @author Giedrius Trumpickas
  *
  */
-public final class Apply implements ValueExpression
+public final class Apply implements Expression
 {	
 	private FunctionSpec spec;
 	private List<Expression> arguments;
+	private FunctionImplementation function;
 	
 	/**
 	 * Constructs XACML apply expression with given function and list
@@ -33,6 +34,7 @@ public final class Apply implements ValueExpression
 				"Given list of parameters can't be used for a given function spec=\"%s\"", spec);
 		this.spec = spec;
 		this.arguments = arguments;
+		this.function = spec.getImplementation();
 	}
 	
 	/**
@@ -57,7 +59,7 @@ public final class Apply implements ValueExpression
 	
 	@Override
 	public ValueType getEvaluatesTo(){
-		return spec.getReturnType(arguments);
+		return function.resolveReturnType(arguments);
 	}
 	
 	/**
@@ -71,7 +73,6 @@ public final class Apply implements ValueExpression
 	public Value evaluate(EvaluationContext context) 
 		throws PolicyEvaluationException
 	{
-		FunctionImplementation function = spec.getImplementation();
 		return function.invoke(context, arguments);
 	}
 	

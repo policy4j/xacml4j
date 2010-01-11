@@ -24,7 +24,8 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	 * @param returnType a function return type
 	 * @param params a function parameter descriptors
 	 */
-	public BaseFunctionSpec(FunctionId id, FunctionImplementation function, List<ParamSpec> params)
+	public BaseFunctionSpec(FunctionId id,
+			FunctionImplementation function, List<ParamSpec> params)
 	{
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(params);
@@ -49,7 +50,7 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	}
 	
 	@Override
-	public FunctionImplementation getImplementation() {
+	public final FunctionImplementation getImplementation() {
 		return function;
 	}
 

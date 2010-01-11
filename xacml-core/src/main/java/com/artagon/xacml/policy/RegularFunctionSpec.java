@@ -5,19 +5,25 @@ import java.util.List;
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
-public class RegularFunctionSpec extends BaseFunctionSpec
+public final class RegularFunctionSpec extends BaseFunctionSpec
 {
 	private ValueType returnType;
 	
-	public RegularFunctionSpec(FunctionId id, 
-			ValueType returnType, FunctionImplementation function, List<ParamSpec> paramSpec) {
-		super(id, function, paramSpec);
+	public RegularFunctionSpec(FunctionId id, FunctionImplementation function,
+			ValueType returnType,
+			List<ParamSpec> params) {
+		super(id, function, params);
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}
 
 	@Override
-	public ValueType getReturnType(List<Expression> arguments) {
+	public boolean isHigherOrderFunction() {
+		return false;
+	}
+	
+	public ValueType getReturnType(){
 		return returnType;
 	}
+	
 }

@@ -7,10 +7,10 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class VariableDefinition implements ValueExpression
+public class VariableDefinition implements Expression
 {
 	private String variableId;
-	private ValueExpression expression;
+	private Expression expression;
 	
 	/**
 	 * Constructs variable definition 
@@ -20,7 +20,7 @@ public class VariableDefinition implements ValueExpression
 	 * @param expression a variable expression
 	 */
 	public VariableDefinition(String variableId, 
-			ValueExpression expression){
+			Expression expression){
 		Preconditions.checkNotNull(variableId);
 		Preconditions.checkNotNull(expression);
 		this.variableId = variableId;

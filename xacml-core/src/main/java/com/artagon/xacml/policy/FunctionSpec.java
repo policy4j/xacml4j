@@ -20,21 +20,21 @@ public interface FunctionSpec
 	FunctionId getId();
 	
 	/**
+	 * Tests if a given function represents
+	 * a higher order function
+	 * 
+	 * @return <code>true</code> if a given
+	 * spec is for a higher order function
+	 */
+	boolean isHigherOrderFunction();
+	
+	/**
 	 * Gets function parameter specifications.
 	 * 
 	 * @return list of {@link ParamSpec} instances
 	 */
 	List<ParamSpec> getParamSpecs();
 		
-	/**
-	 * Resolves function return type based
-	 * on a given function arguments
-	 * 
-	 * @param arguments a function invocation arguments
-	 * @return {@link ValueType} a function return type
-	 */
-	ValueType getReturnType(List<Expression> arguments);
-	
 	/**
 	 * Gets number of function formal 
 	 * parameters

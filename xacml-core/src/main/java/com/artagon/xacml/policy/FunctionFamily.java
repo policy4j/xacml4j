@@ -6,7 +6,7 @@ package com.artagon.xacml.policy;
  * 
  * @author Giedrius Trumpickas
  */
-public interface FunctionFamilySpec 
+public interface FunctionFamily 
 {
 	/**
 	 * Tests if a given function is a

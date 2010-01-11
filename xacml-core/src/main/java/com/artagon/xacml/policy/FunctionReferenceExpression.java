@@ -2,16 +2,23 @@ package com.artagon.xacml.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
+/**
+ * A function reference expression, used
+ * to pass function reference to higher order
+ * functions as an argument
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class FunctionReferenceExpression implements Expression
 {
-	private FunctionSpec spec;
+	private RegularFunctionSpec spec;
 	
 	/**
 	 * Constructs function reference expression
 	 * 
 	 * @param spec a function specification
 	 */
-	public FunctionReferenceExpression(FunctionSpec spec){
+	public FunctionReferenceExpression(RegularFunctionSpec spec){
 		Preconditions.checkNotNull(spec);
 		this.spec = spec;
 	}
@@ -22,10 +29,14 @@ public class FunctionReferenceExpression implements Expression
 	 * @return {@link FunctionSpec} for a 
 	 * referenced function
 	 */
-	public FunctionSpec getSpec(){
+	public RegularFunctionSpec getSpec(){
 		return spec;
 	}
 	
+	@Override
+	public ValueType getEvaluatesTo(){
+		return spec.getReturnType();
+	}
 
 	@Override
 	public FunctionReferenceExpression evaluate(EvaluationContext context)

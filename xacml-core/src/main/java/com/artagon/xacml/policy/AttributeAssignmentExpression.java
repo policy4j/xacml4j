@@ -9,11 +9,11 @@ public class AttributeAssignmentExpression implements PolicyElement
 	private AzCategoryId category;
 	private String attributeId;
 	private String issuer;
-	private ValueExpression expression;
+	private Expression expression;
 	
 	public AttributeAssignmentExpression(
 			String attributeId, 
-			ValueExpression expression, 
+			Expression expression, 
 			AzCategoryId category, 
 			String issuer)
 	{

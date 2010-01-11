@@ -2,6 +2,15 @@ package com.artagon.xacml.policy;
 
 public interface Expression extends PolicyElement
 {
+	
+	/**
+	 * Gets type to which this expression
+	 * evaluates to
+	 * 
+	 * @return {@link ValueType}
+	 */
+	ValueType getEvaluatesTo();
+	
 	/**
 	 * Evaluates this expression
 	 * 
