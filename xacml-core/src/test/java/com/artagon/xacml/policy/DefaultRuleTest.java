@@ -40,7 +40,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
 		b.withParam(type1).withParam(type1).withReturnType(type3);
 		
-		FunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
+		BaseFunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
 		
 		List<Expression> paramsTrue = new LinkedList<Expression>();
 		paramsTrue.add(type1.create(10L));
@@ -48,7 +48,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Apply applyTrue = new Apply(functionTrue, paramsTrue);
 		this.conditionTrue = new Condition(applyTrue);
 		
-		FunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
+		BaseFunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
 		List<Expression> paramsFalse = new LinkedList<Expression>();
 		paramsFalse.add(type1.create(10L));
 		paramsFalse.add(type1.create(10L));
@@ -57,7 +57,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		
 		MockFunctionImplementation impl = new MockFunctionImplementation(type3.create(Boolean.FALSE));
 		impl.setFailWithIndeterminate(true);
-		FunctionSpec functionIndeterminate = b.build(impl);
+		BaseFunctionSpec functionIndeterminate = b.build(impl);
 		
 		List<Expression> paramsIndeterminate = new LinkedList<Expression>();
 		paramsIndeterminate.add(type1.create(10L));

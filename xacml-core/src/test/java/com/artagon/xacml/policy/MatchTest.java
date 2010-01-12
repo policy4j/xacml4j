@@ -16,7 +16,7 @@ import com.artagon.xacml.policy.type.IntegerType;
 public class MatchTest extends XacmlPolicyTestCase
 {
 	
-	private FunctionSpec function;
+	private BaseFunctionSpec function;
 	private IntegerType paramType;
 	private BooleanType booleanType;
 	

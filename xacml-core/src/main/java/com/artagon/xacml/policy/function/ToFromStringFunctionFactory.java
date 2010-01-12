@@ -12,7 +12,7 @@ import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.FunctionSpec;
+import com.artagon.xacml.policy.BaseFunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.type.StringType;
@@ -43,7 +43,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		add(buildFromString(Functions.IPADDRESS_FROM_STRING, getDataType(DataTypes.IPADDRESS)));
 	}
 	
-	private FunctionSpec buildToString(FunctionId functionId, final AttributeDataType type)
+	private BaseFunctionSpec buildToString(FunctionId functionId, final AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType returnType = getDataType(DataTypes.STRING);
@@ -58,7 +58,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		});
 	}
 	
-	private FunctionSpec buildFromString(FunctionId functionId, final AttributeDataType returnType)
+	private BaseFunctionSpec buildFromString(FunctionId functionId, final AttributeDataType returnType)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType paramType = getDataType(DataTypes.STRING);

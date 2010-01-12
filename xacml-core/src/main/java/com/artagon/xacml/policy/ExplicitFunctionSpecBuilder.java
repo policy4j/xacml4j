@@ -55,10 +55,10 @@ public class ExplicitFunctionSpecBuilder
 		return this;
 	}
 	
-	public <R extends Value> FunctionSpec build(FunctionImplementation implementation)
+	public BaseFunctionSpec build(FunctionImplementation implementation)
 	{
 		Preconditions.checkState(returnType != null, "Function return type must be specified");
-		return new BaseFunctionSpec(functionId, implementation, paramSpec);
+		return new BaseFunctionSpec(functionId, implementation, returnType, paramSpec);
 	}
 
 }

@@ -11,7 +11,7 @@ import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.FunctionSpec;
+import com.artagon.xacml.policy.BaseFunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.type.BooleanType;
@@ -34,7 +34,7 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 		add(build(Functions.X500NAME_EQUAL, typeRegistry.getDataType(DataTypes.X500NAME)));
 	}
 	
-	private FunctionSpec build(FunctionId functionId, AttributeDataType type)
+	private BaseFunctionSpec build(FunctionId functionId, AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final BooleanType returnType = getDataType(DataTypes.BOOLEAN);

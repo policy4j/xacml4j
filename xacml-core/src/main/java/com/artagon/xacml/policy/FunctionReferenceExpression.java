@@ -11,31 +11,35 @@ import com.artagon.xacml.util.Preconditions;
  */
 public class FunctionReferenceExpression implements Expression
 {
-	private RegularFunctionSpec spec;
+	private FunctionSpec spec;
+	private ValueType returnType;
 	
 	/**
 	 * Constructs function reference expression
 	 * 
 	 * @param spec a function specification
+	 * @param returnType a function return type
 	 */
-	public FunctionReferenceExpression(RegularFunctionSpec spec){
+	FunctionReferenceExpression(FunctionSpec spec, ValueType returnType){
 		Preconditions.checkNotNull(spec);
+		Preconditions.checkNotNull(returnType);
 		this.spec = spec;
+		this.returnType = returnType;
 	}
 	
 	/**
 	 * Gets referenced function specification
 	 * 
-	 * @return {@link FunctionSpec} for a 
+	 * @return {@link BaseFunctionSpec} for a 
 	 * referenced function
 	 */
-	public RegularFunctionSpec getSpec(){
+	public FunctionSpec getSpec(){
 		return spec;
 	}
 	
 	@Override
 	public ValueType getEvaluatesTo(){
-		return spec.getReturnType();
+		return returnType;
 	}
 
 	@Override

@@ -62,10 +62,8 @@ public class Match implements Matchable, PolicyElement
 		{
 			BagOfAttributes<?> attributes = (BagOfAttributes<?>)attributeRef.evaluate(context);
 			log.debug("Evaluated attribute reference=\"{}\" to bag=\"{}\"", attributeRef, attributes);
-			FunctionImplementation function = spec.getImplementation();
-			for(Attribute attr : attributes.values())
-			{
-				BooleanValue match = (BooleanValue)function.invoke(context, attr, attributeRef);
+			for(Attribute attr : attributes.values()){
+				BooleanValue match = (BooleanValue)spec.invoke(context, attr, attributeRef);
 				if(match.getValue()){
 					log.debug("Attribute value=\"{}\" " +
 							"matches attribute value=\"{}\"", value, attr);

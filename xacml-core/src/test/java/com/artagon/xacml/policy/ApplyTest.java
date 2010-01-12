@@ -18,7 +18,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 {
 	private List<Expression> params2Args;
 	private List<Expression> params1Args;
-	private FunctionSpec function;
+	private BaseFunctionSpec function;
 	private IntegerType paramType;
 	private BooleanType booleanType;
 	

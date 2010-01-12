@@ -18,34 +18,31 @@ public final class Apply implements Expression
 {	
 	private FunctionSpec spec;
 	private List<Expression> arguments;
-	private FunctionImplementation function;
+	private ValueType returnType;
 	
-	/**
-	 * Constructs XACML apply expression with given function and list
-	 * and list
-	 * 
-	 * @param function
-	 * @param arguments
-	 */
-	public Apply(FunctionSpec spec, List<Expression> arguments){
-		Preconditions.checkNotNull(spec);
-		Preconditions.checkNotNull(arguments);
-		Preconditions.checkArgument(spec.validateParameters(arguments), 
-				"Given list of parameters can't be used for a given function spec=\"%s\"", spec);
-		this.spec = spec;
-		this.arguments = arguments;
-		this.function = spec.getImplementation();
-	}
 	
 	/**
 	 * Constructs XACML apply expression with given function and list
 	 * of arguments to given function.
 	 * 
-	 * @param function
-	 * @param arguments
+	 * @param spec a function to be invoked
+	 * @param returnType a function return type
+	 * @param arguments a function invocation arguments
 	 */
-	public Apply(FunctionSpec spec, Expression ... arguments){
-		this(spec, Arrays.asList(arguments));
+	Apply(FunctionSpec spec, ValueType returnType, List<Expression> arguments){
+		Preconditions.checkNotNull(spec);
+		Preconditions.checkNotNull(arguments);
+		Preconditions.checkNotNull(returnType);
+		this.spec = spec;
+		this.arguments = arguments;
+		this.returnType = returnType;
+	}
+	
+	/**
+	 * @see {@link #Apply(FunctionSpec, ValueType, List)}
+	 */
+	Apply(FunctionSpec spec, ValueType returnType, Expression ... arguments){
+		this(spec, returnType, Arrays.asList(arguments));
 	}
 	
 	/**
@@ -59,7 +56,7 @@ public final class Apply implements Expression
 	
 	@Override
 	public ValueType getEvaluatesTo(){
-		return function.resolveReturnType(arguments);
+		return returnType;
 	}
 	
 	/**
@@ -73,7 +70,7 @@ public final class Apply implements Expression
 	public Value evaluate(EvaluationContext context) 
 		throws PolicyEvaluationException
 	{
-		return function.invoke(context, arguments);
+		return spec.invoke(context, arguments);
 	}
 	
 	

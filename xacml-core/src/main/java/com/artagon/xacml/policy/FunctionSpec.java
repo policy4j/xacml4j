@@ -4,13 +4,7 @@ import java.util.List;
 
 import com.artagon.xacml.FunctionId;
 
-
-/**
- * A XACML function specification
- *
- * @param <ReturnType>
- */
-public interface FunctionSpec
+public interface FunctionSpec 
 {
 	/**
 	 * Gets function identifier.
@@ -18,23 +12,14 @@ public interface FunctionSpec
 	 * @return XACML function identifier
 	 */
 	FunctionId getId();
-	
-	/**
-	 * Tests if a given function represents
-	 * a higher order function
-	 * 
-	 * @return <code>true</code> if a given
-	 * spec is for a higher order function
-	 */
-	boolean isHigherOrderFunction();
-	
+
 	/**
 	 * Gets function parameter specifications.
 	 * 
 	 * @return list of {@link ParamSpec} instances
 	 */
 	List<ParamSpec> getParamSpecs();
-		
+
 	/**
 	 * Gets number of function formal 
 	 * parameters
@@ -43,32 +28,46 @@ public interface FunctionSpec
 	 * parameters
 	 */
 	int getNumberOfParams();
-		
-	/**
-	 * Gets function implementation
-	 * 
-	 * @return {@link FunctionImplementation} function
-	 * implementation
-	 */
-	FunctionImplementation getImplementation();
 	
 	/**
-	 * Validates list of parameters.
+	 * Creates invocation expression for this
+	 * function with a given arguments
 	 * 
-	 * @param params a list of parameters
-	 * @return <code>true</code> if given list
-	 * can be used as an arguments to function described
-	 * by this specification.
+	 * @param arguments a function arguments
+	 * @return {@link Apply} to be used
+	 * in XACML policy expressions
 	 */
-	boolean validateParameters(List<Expression> arguments);
+	Apply createApply(List<Expression> arguments);
 	
 	/**
-	 * Validates list of parameters.
-	 * 
-	 * @param params a list of parameters
-	 * @return <code>true</code> if given list
-	 * can be used as an arguments to function described
-	 * by this specification.
+	 * @see {@link #createApply(List)}
 	 */
-	boolean validateParameters(Expression ... expressions);
+	Apply createApply(Expression ... arguments);
+	
+	/**
+	 * Invokes this function with a given arguments
+	 * 
+	 * @return {@link Value} instance representing
+	 * function invocation result
+	 */
+	Value invoke(EvaluationContext context, List<Expression> arguments);
+	
+	/**
+	 * Invokes this function with a given arguments
+	 * 
+	 * @return {@link Value} instance representing
+	 * function invocation result
+	 */
+	Value invoke(EvaluationContext context, Expression ...expressions);
+	
+	/**
+	 * Creates this function reference 
+	 * expression to be used in XACML
+	 * policy expressions to pass
+	 * functions as arguments to XACML higher
+	 * order functions
+	 * 
+	 * @return {@link FunctionReferenceExpression}
+	 */
+	FunctionReferenceExpression createReference();
 }

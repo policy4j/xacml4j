@@ -5,15 +5,6 @@ import java.util.List;
 public interface FunctionImplementation
 {
 	/**
-	 * Resolves function return type based
-	 * on a given function arguments
-	 * 
-	 * @param arguments a function invocation arguments
-	 * @return {@link ValueType} a function return type
-	 */
-	ValueType resolveReturnType(List<Expression> arguments);
-	
-	/**
 	 * Invokes function instance
 	 * 
 	 * @param context an evaluation context

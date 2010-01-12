@@ -1,7 +1,6 @@
 package com.artagon.xacml.policy;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -9,11 +8,16 @@ import java.util.ListIterator;
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
+
+/**
+ * A XACML function specification
+ *
+ * @param <ReturnType>
+ */
 public abstract class BaseFunctionSpec implements FunctionSpec
 {
 	private FunctionId functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
-	private FunctionImplementation function;
 	
 	/**
 	 * Constructs function specification with a given
@@ -24,42 +28,52 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	 * @param returnType a function return type
 	 * @param params a function parameter descriptors
 	 */
-	public BaseFunctionSpec(FunctionId id,
-			FunctionImplementation function, List<ParamSpec> params)
+	public BaseFunctionSpec(FunctionId id, List<ParamSpec> params)
 	{
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(params);
 		this.functionId = id;
-		this.function = function;
 		this.parameters.addAll(params);
-	}
-
-	@Override
-	public final FunctionId getId() {
-		return functionId;
 	}
 	
 	@Override
-	public final List<ParamSpec> getParamSpecs() {
-		return  Collections.unmodifiableList(parameters);
+	public  final FunctionId getId(){
+		return functionId;
 	}
-
+	
+	
+	@Override
+	public  final List<ParamSpec> getParamSpecs(){
+		return parameters;
+	}
+	
 	@Override
 	public final int getNumberOfParams(){
 		return parameters.size();
 	}
-	
+		
 	@Override
-	public final FunctionImplementation getImplementation() {
-		return function;
+	public final Apply createApply(Expression... arguments) {
+		Preconditions.checkArgument(validateParameters(arguments));
+		return new Apply(this, getReturnType(arguments), arguments);
 	}
 
 	@Override
+	public final Apply createApply(List<Expression> arguments) {
+		Preconditions.checkArgument(validateParameters(arguments));
+		return new Apply(this, getReturnType(arguments), arguments);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.artagon.xacml.policy.FunctionSpec#validateParameters(com.artagon.xacml.policy.Expression)
+	 */
 	public final boolean validateParameters(Expression... expressions) {
 		return validateParameters(Arrays.asList(expressions));
 	}
 	
-	@Override
+	/* (non-Javadoc)
+	 * @see com.artagon.xacml.policy.FunctionSpec#validateParameters(java.util.List)
+	 */
 	public final boolean validateParameters(List<Expression> params)
 	{
 		boolean result = true;
@@ -81,4 +95,7 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	protected boolean validate(ParamSpec spec, Expression p, List<Expression> params){
 		return true;
 	}
+	
+	protected abstract ValueType getReturnType(List<Expression> arguments);
+	protected abstract ValueType getReturnType(Expression ... arguments);
 }
