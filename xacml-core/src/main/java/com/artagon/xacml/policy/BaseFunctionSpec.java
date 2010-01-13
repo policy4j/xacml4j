@@ -14,22 +14,12 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ReturnType>
  */
-public abstract class BaseFunctionSpec implements FunctionSpec
+abstract class BaseFunctionSpec implements FunctionSpec
 {
 	private FunctionId functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	
-	/**
-	 * Constructs function specification with a given
-	 * function identifier, return type and parameter
-	 * descriptors.
-	 * 
-	 * @param id a function identifier
-	 * @param returnType a function return type
-	 * @param params a function parameter descriptors
-	 */
-	public BaseFunctionSpec(FunctionId id, List<ParamSpec> params)
-	{
+	public BaseFunctionSpec(FunctionId id, List<ParamSpec> params){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(params);
 		this.functionId = id;
@@ -61,21 +51,36 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	@Override
 	public final Apply createApply(List<Expression> arguments) {
 		Preconditions.checkArgument(validateParameters(arguments));
-		return new Apply(this, getReturnType(arguments), arguments);
+		return new Apply(this, resolveReturnType(arguments), arguments);
+	}
+	
+	@Override
+	public final FunctionReferenceExpression createReference() {
+		ValueType returnType = getReturnType();
+		if(returnType == null){
+			throw new UnsupportedOperationException(
+					String.format(
+							"Can't create reference to=\"%s\" " +
+							"function with a dynamic return type", functionId));
+		}
+		return new FunctionReferenceExpression(this, returnType);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.policy.FunctionSpec#validateParameters(com.artagon.xacml.policy.Expression)
-	 */
-	public final boolean validateParameters(Expression... expressions) {
+	protected final boolean validateParameters(Expression... expressions) {
 		return validateParameters(Arrays.asList(expressions));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.policy.FunctionSpec#validateParameters(java.util.List)
-	 */
-	public final boolean validateParameters(List<Expression> params)
-	{
+	protected final ValueType getReturnType(Expression ... arguments){
+		return resolveReturnType(Arrays.asList(arguments));
+	}
+	
+	@Override
+	public final Value invoke(EvaluationContext context, Expression... expressions) 
+		throws PolicyEvaluationException{
+		return invoke(context, Arrays.asList(expressions));
+	}
+	
+	protected final boolean validateParameters(List<Expression> params){
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = params.listIterator();
@@ -96,6 +101,21 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		return true;
 	}
 	
-	protected abstract ValueType getReturnType(List<Expression> arguments);
-	protected abstract ValueType getReturnType(Expression ... arguments);
+	/**
+	 * Tries to get function return type statically. 
+	 * If return type is not statically defined method
+	 * returns <code>null</code> otherwise {@link ValueType}
+	 * 
+	 * @return {@link ValueType} or <code>null</code>
+	 */
+	protected abstract ValueType getReturnType();
+	
+	/**
+	 * Resolves function return type based on function
+	 * invocation arguments
+	 * 
+	 * @param arguments a function invocation arguments
+	 * @return {@link ValueType} resolved function return type
+	 */
+	protected abstract ValueType resolveReturnType(List<Expression> arguments);
 }

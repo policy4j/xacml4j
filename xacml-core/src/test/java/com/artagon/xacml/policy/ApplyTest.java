@@ -18,7 +18,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 {
 	private List<Expression> params2Args;
 	private List<Expression> params1Args;
-	private BaseFunctionSpec function;
+	private FunctionSpec function;
 	private IntegerType paramType;
 	private BooleanType booleanType;
 	
@@ -31,14 +31,14 @@ public class ApplyTest extends XacmlPolicyTestCase
 		this.params2Args.add(paramType.create(11L));
 		this.params1Args = new LinkedList<Expression>();
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
-		b.withParam(paramType).withParam(paramType).withReturnType(booleanType);
+		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.FALSE)));
 	}
 	
 	@Test
 	public void testApplyWithValidFunctionAndValidParameters() throws PolicyEvaluationException
 	{
-		Apply apply = new Apply(function, params2Args);
+		Apply apply = function.createApply(params2Args);
 		Value v = apply.evaluate(context);
 		assertNotNull(v);
 		assertEquals(booleanType.create(Boolean.FALSE), v);
@@ -47,7 +47,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 	@Test(expected=PolicyEvaluationIndeterminateException.class)
 	public void testApplyWithValidFunctionAndInValidParameters() throws PolicyEvaluationException
 	{
-		Apply apply = new Apply(function, params1Args);
+		Apply apply = function.createApply(params1Args);
 		apply.evaluate(context);
 	}
 }

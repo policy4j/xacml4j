@@ -2,7 +2,7 @@ package com.artagon.xacml.policy;
 
 import java.util.List;
 
-public class MockFunctionImplementation extends BaseFunctionImplementation
+public class MockFunctionImplementation implements RegularFunction
 {
 	private Value expectedResult;
 	private boolean failWithIndeterminate = false;
@@ -16,7 +16,12 @@ public class MockFunctionImplementation extends BaseFunctionImplementation
 	}
 
 	@Override
-	protected Value doInvoke(EvaluationContext context, List<Expression> parameters) 
+	public ValueType getReturnType() {
+		return expectedResult.getEvaluatesTo();
+	}
+
+	@Override
+	public Value invoke(EvaluationContext context, List<Expression> parameters) 
 		throws PolicyEvaluationException 
 	{
 		if(failWithIndeterminate){

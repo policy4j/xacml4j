@@ -45,22 +45,6 @@ public interface FunctionSpec
 	Apply createApply(Expression ... arguments);
 	
 	/**
-	 * Invokes this function with a given arguments
-	 * 
-	 * @return {@link Value} instance representing
-	 * function invocation result
-	 */
-	Value invoke(EvaluationContext context, List<Expression> arguments);
-	
-	/**
-	 * Invokes this function with a given arguments
-	 * 
-	 * @return {@link Value} instance representing
-	 * function invocation result
-	 */
-	Value invoke(EvaluationContext context, Expression ...expressions);
-	
-	/**
 	 * Creates this function reference 
 	 * expression to be used in XACML
 	 * policy expressions to pass
@@ -70,4 +54,22 @@ public interface FunctionSpec
 	 * @return {@link FunctionReferenceExpression}
 	 */
 	FunctionReferenceExpression createReference();
+	
+	/**
+	 * Invokes this function with a given arguments
+	 * 
+	 * @return {@link Value} instance representing
+	 * function invocation result
+	 */
+	Value invoke(EvaluationContext context, List<Expression> arguments) 
+		throws PolicyEvaluationException;
+	
+	/**
+	 * Invokes this function with a given arguments
+	 * 
+	 * @return {@link Value} instance representing
+	 * function invocation result
+	 */
+	Value invoke(EvaluationContext context, Expression ...expressions) 
+		throws PolicyEvaluationException;
 }

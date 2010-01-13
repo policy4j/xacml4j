@@ -10,7 +10,6 @@ public class ExplicitFunctionSpecBuilder
 	implements FunctionSpecBuilder
 {
 	private FunctionId functionId;
-	private ValueType returnType;
 	private List<ParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	
@@ -18,12 +17,6 @@ public class ExplicitFunctionSpecBuilder
 		Preconditions.checkNotNull(functionId, "Function identifier can't be null");
 		this.functionId = functionId;
 		this.paramSpec = new LinkedList<ParamSpec>();
-	}
-
-	public ExplicitFunctionSpecBuilder withReturnType(ValueType returnType){
-		Preconditions.checkNotNull(returnType);
-		this.returnType = returnType;
-		return this;
 	}
 	
 	public ExplicitFunctionSpecBuilder withParam(ValueType type){
@@ -44,7 +37,6 @@ public class ExplicitFunctionSpecBuilder
 		return this;
 	}
 	
-		
 	public ExplicitFunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min > 0 && max > 0);
@@ -55,10 +47,14 @@ public class ExplicitFunctionSpecBuilder
 		return this;
 	}
 	
-	public BaseFunctionSpec build(FunctionImplementation implementation)
+	public FunctionSpec build(RegularFunction function)
 	{
-		Preconditions.checkState(returnType != null, "Function return type must be specified");
-		return new BaseFunctionSpec(functionId, implementation, returnType, paramSpec);
+		return new RegularFunctionSpec(functionId, function, paramSpec);
+	}
+	
+	public FunctionSpec build(DynamicFunction function)
+	{
+		return new DynamicFunctionSpec(functionId, function, paramSpec);
 	}
 
 }
