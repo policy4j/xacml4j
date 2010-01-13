@@ -9,7 +9,6 @@ final class DynamicFunctionSpec extends BaseFunctionSpec
 {
 	private DynamicFunction function;
 
-	
 	public DynamicFunctionSpec(FunctionId id, DynamicFunction function,
 			List<ParamSpec> params) {
 		super(id, params);
