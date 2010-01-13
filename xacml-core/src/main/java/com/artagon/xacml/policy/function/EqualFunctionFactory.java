@@ -6,14 +6,15 @@ import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.AttributeDataType;
-import com.artagon.xacml.policy.BaseFunctionImplementation;
 import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.BaseFunctionSpec;
+import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
+import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.policy.type.BooleanType;
 
 public class EqualFunctionFactory extends BaseFunctionFacatory
@@ -34,16 +35,22 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 		add(build(Functions.X500NAME_EQUAL, typeRegistry.getDataType(DataTypes.X500NAME)));
 	}
 	
-	private BaseFunctionSpec build(FunctionId functionId, AttributeDataType type)
+	private FunctionSpec build(FunctionId functionId, AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final BooleanType returnType = getDataType(DataTypes.BOOLEAN);
-		builder.withParam(type).withParam(type).withReturnType(returnType);
-		return builder.build(new BaseFunctionImplementation() {
+		builder.withParam(type).withParam(type);
+		return builder.build(new RegularFunction() {
+			
 			@Override
-			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
+			public Value invoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {
 				return returnType.create(exp.get(0).equals(exp.get(1)));
+			}
+			
+			@Override
+			public ValueType getReturnType() {
+				return returnType;
 			}
 		});
 	}

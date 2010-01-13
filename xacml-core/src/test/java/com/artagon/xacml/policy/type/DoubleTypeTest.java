@@ -8,9 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
-import com.artagon.xacml.policy.type.DoubleTypeImpl;
 
 public class DoubleTypeTest 
 {

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.policy.type.PortRange;
-
 public class PortRangeTest 
 {
 	@Test

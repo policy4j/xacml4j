@@ -13,7 +13,7 @@ public interface FunctionFactory
 	 * identifier or <code>null</code> if function
 	 * can not be found for a given identifier
 	 */
-	BaseFunctionSpec getFunction(FunctionId functionId);
+	FunctionSpec getFunction(FunctionId functionId);
 	
 	/**
 	 * Tests if given function is supported by

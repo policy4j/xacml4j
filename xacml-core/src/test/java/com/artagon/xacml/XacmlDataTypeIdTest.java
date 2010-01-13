@@ -1,11 +1,8 @@
 package com.artagon.xacml;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-
-import com.artagon.xacml.DataTypeId;
-import com.artagon.xacml.DataTypes;
-
-import static org.junit.Assert.*;
 
 public class XacmlDataTypeIdTest 
 {

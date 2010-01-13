@@ -38,31 +38,31 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		this.type3 = dataTypes.getDataType(DataTypes.BOOLEAN);
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
-		b.withParam(type1).withParam(type1).withReturnType(type3);
+		b.withParam(type1).withParam(type1);
 		
-		BaseFunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
+		FunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
 		
 		List<Expression> paramsTrue = new LinkedList<Expression>();
 		paramsTrue.add(type1.create(10L));
 		paramsTrue.add(type1.create(10L));
-		Apply applyTrue = new Apply(functionTrue, paramsTrue);
+		Apply applyTrue = functionTrue.createApply(paramsTrue);
 		this.conditionTrue = new Condition(applyTrue);
 		
-		BaseFunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
+		FunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
 		List<Expression> paramsFalse = new LinkedList<Expression>();
 		paramsFalse.add(type1.create(10L));
 		paramsFalse.add(type1.create(10L));
-		Apply applyFalse = new Apply(functionFalse, paramsFalse);
+		Apply applyFalse = functionFalse.createApply(paramsFalse);
 		this.conditionFalse = new Condition(applyFalse);
 		
 		MockFunctionImplementation impl = new MockFunctionImplementation(type3.create(Boolean.FALSE));
 		impl.setFailWithIndeterminate(true);
-		BaseFunctionSpec functionIndeterminate = b.build(impl);
+		FunctionSpec functionIndeterminate = b.build(impl);
 		
 		List<Expression> paramsIndeterminate = new LinkedList<Expression>();
 		paramsIndeterminate.add(type1.create(10L));
 		paramsIndeterminate.add(type1.create(10L));
-		Apply applyInderminate = new Apply(functionIndeterminate, paramsIndeterminate);
+		Apply applyInderminate = functionIndeterminate.createApply(paramsIndeterminate);
 		this.conditionIndeterminate = new Condition(applyInderminate);
 		
 		assertEquals(ConditionResult.INDETERMINATE, conditionIndeterminate.evaluate(context));

@@ -1,10 +1,9 @@
 package com.artagon.xacml.policy.function;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Before;
+import org.junit.Test;
 
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.FunctionFactory;

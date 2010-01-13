@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.StringTypeImpl;
 
 public class StringTypeTest 
 {

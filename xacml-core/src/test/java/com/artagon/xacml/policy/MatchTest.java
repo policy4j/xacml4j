@@ -16,7 +16,7 @@ import com.artagon.xacml.policy.type.IntegerType;
 public class MatchTest extends XacmlPolicyTestCase
 {
 	
-	private BaseFunctionSpec function;
+	private FunctionSpec function;
 	private IntegerType paramType;
 	private BooleanType booleanType;
 	
@@ -26,7 +26,7 @@ public class MatchTest extends XacmlPolicyTestCase
 		this.booleanType = dataTypes.getDataType(DataTypes.BOOLEAN);
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
-		b.withParam(paramType).withParam(paramType).withReturnType(booleanType);
+		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.TRUE)));
 	}
 	

@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.type.IntegerType;
-import com.artagon.xacml.policy.type.IntegerTypeImpl;
 import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 
 public class IntegerTypeTest 

@@ -9,8 +9,7 @@ import org.junit.Test;
 import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.FunctionFactory;
-import com.artagon.xacml.policy.FunctionImplementation;
-import com.artagon.xacml.policy.BaseFunctionSpec;
+import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.type.BooleanType;
 
@@ -33,9 +32,8 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	public void testBooleanEquals() throws PolicyEvaluationException
 	{
 		BooleanType type = dataTypes.getDataType(DataTypes.BOOLEAN);
-		BaseFunctionSpec spec = factory.getFunction(Functions.BOOLEAN_EQUAL);
-		FunctionImplementation func = spec.getImplementation();
-		assertEquals(type.create(Boolean.TRUE), func.invoke(context, type.create(Boolean.FALSE), type.create(Boolean.FALSE)));
-		assertEquals(type.create(Boolean.FALSE), func.invoke(context, type.create(Boolean.TRUE), type.create(Boolean.FALSE)));
+		FunctionSpec spec = factory.getFunction(Functions.BOOLEAN_EQUAL);
+		assertEquals(type.create(Boolean.TRUE), spec.invoke(context, type.create(Boolean.FALSE), type.create(Boolean.FALSE)));
+		assertEquals(type.create(Boolean.FALSE), spec.invoke(context, type.create(Boolean.TRUE), type.create(Boolean.FALSE)));
 	}
 }

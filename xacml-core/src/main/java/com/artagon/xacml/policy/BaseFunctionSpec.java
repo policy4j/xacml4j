@@ -66,7 +66,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		return new FunctionReferenceExpression(this, returnType);
 	}
 
-	protected final boolean validateParameters(Expression... expressions) {
+	public final boolean validateParameters(Expression... expressions) {
 		return validateParameters(Arrays.asList(expressions));
 	}
 	
@@ -80,7 +80,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		return invoke(context, Arrays.asList(expressions));
 	}
 	
-	protected final boolean validateParameters(List<Expression> params){
+	public final boolean validateParameters(List<Expression> params){
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = params.listIterator();

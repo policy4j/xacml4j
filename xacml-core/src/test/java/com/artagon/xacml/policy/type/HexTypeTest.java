@@ -1,11 +1,11 @@
 package com.artagon.xacml.policy.type;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.type.HexBinaryType.HexBinaryValue;
-
-import static org.junit.Assert.*;
 
 
 public class HexTypeTest 

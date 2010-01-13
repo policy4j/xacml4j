@@ -8,19 +8,19 @@ import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.FunctionFactory;
-import com.artagon.xacml.policy.BaseFunctionSpec;
+import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.util.Preconditions;
 
 public class BaseFunctionFacatory implements FunctionFactory
 {
-	private Map<FunctionId, BaseFunctionSpec> functions;
+	private Map<FunctionId, FunctionSpec> functions;
 	
 	private DataTypeFactory typeRegistry;
 	
 	public BaseFunctionFacatory(DataTypeFactory types)
 	{
 		Preconditions.checkNotNull(types);
-		this.functions = new ConcurrentHashMap<FunctionId, BaseFunctionSpec>();
+		this.functions = new ConcurrentHashMap<FunctionId, FunctionSpec>();
 		this.typeRegistry = types;
 	}
 	
@@ -28,12 +28,12 @@ public class BaseFunctionFacatory implements FunctionFactory
 		return typeRegistry.getDataType(typeId);
 	}
 	
-	protected final void add(BaseFunctionSpec spec){
+	protected final void add(FunctionSpec spec){
 		this.functions.put(spec.getId(), spec);
 	}
 
 	@Override
-	public final BaseFunctionSpec getFunction(FunctionId functionId) {
+	public final FunctionSpec getFunction(FunctionId functionId) {
 		return functions.get(functionId);
 	}
 

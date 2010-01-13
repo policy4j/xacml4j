@@ -21,7 +21,7 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
-	private FunctionImplementation impl;
+	private RegularFunction impl;
 	
 	@Before
 	public void init(){
@@ -31,10 +31,10 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD); 
 		
-		this.specSameTypeArgs = b.withReturnType(type1).withParam(type1).withParam(type1).build(impl);
+		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(impl);
 		
 		b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD); 
-		this.specDiffTypeArgs = b.withReturnType(type1).withParam(type1).withParam(type2).build(impl);
+		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(impl);
 	}
 	
 	@Test
@@ -91,20 +91,13 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	public void testParameterAfterVaragParam()
 	{
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD);
-		b.withReturnType(type1).withParam(type1, 1, 10).withParam(type1);
+		b.withParam(type1, 1, 10).withParam(type1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD);
-		b.withReturnType(type1).withParam(type1, 3, 3).withParam(type1);
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testBuildFunctionWithoutReturnType()
-	{
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD);
-		b.withParam(type1, 1, 10).withParam(type1).build(impl);
+		b.withParam(type1, 3, 3).withParam(type1);
 	}
 }

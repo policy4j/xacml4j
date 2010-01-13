@@ -55,6 +55,8 @@ public interface FunctionSpec
 	 */
 	FunctionReferenceExpression createReference();
 	
+	boolean validateParameters(List<Expression> params);
+	boolean validateParameters(Expression ... params);
 	/**
 	 * Invokes this function with a given arguments
 	 * 

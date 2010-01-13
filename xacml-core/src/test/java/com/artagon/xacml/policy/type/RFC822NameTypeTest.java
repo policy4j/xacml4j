@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.type.RFC822NameType;
-import com.artagon.xacml.policy.type.RFC822NameTypeImpl;
 
 public class RFC822NameTypeTest 
 {

@@ -7,14 +7,15 @@ import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeDataType;
-import com.artagon.xacml.policy.BaseFunctionImplementation;
 import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.BaseFunctionSpec;
+import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
+import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.policy.type.StringType;
 
 public class ToFromStringFunctionFactory extends BaseFunctionFacatory
@@ -43,14 +44,18 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		add(buildFromString(Functions.IPADDRESS_FROM_STRING, getDataType(DataTypes.IPADDRESS)));
 	}
 	
-	private BaseFunctionSpec buildToString(FunctionId functionId, final AttributeDataType type)
+	private FunctionSpec buildToString(FunctionId functionId, final AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType returnType = getDataType(DataTypes.STRING);
-		builder.withParam(type).withReturnType(returnType);
-		return builder.build(new BaseFunctionImplementation() {
+		builder.withParam(type);
+		return builder.build(new RegularFunction() {
 			@Override
-			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
+			public ValueType getReturnType() {
+				return returnType;
+			}
+		
+			public Value invoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {
 				Attribute v = (Attribute)exp.get(0);
 				return returnType.create(v.toXacmlString());
@@ -58,19 +63,25 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		});
 	}
 	
-	private BaseFunctionSpec buildFromString(FunctionId functionId, final AttributeDataType returnType)
+	private FunctionSpec buildFromString(FunctionId functionId, final AttributeDataType returnType)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
 		final StringType paramType = getDataType(DataTypes.STRING);
-		builder.withParam(paramType).withReturnType(returnType);
-		return builder.build(new BaseFunctionImplementation() {
+		builder.withParam(paramType);
+		return builder.build(new RegularFunction() {
+			
 			@Override
-			protected Value doInvoke(EvaluationContext context, List<Expression> exp)
+			public Value invoke(EvaluationContext context, List<Expression> parameters)
 					throws PolicyEvaluationException {
-				Attribute v = (Attribute)exp.get(0);
+				Attribute v = (Attribute)parameters.get(0);
 				return returnType.create(v.toXacmlString());
 			}
-		});
+			
+			@Override
+			public ValueType getReturnType() {
+				return returnType;
+			}
+		}); 
 	}
 	
 }
