@@ -31,7 +31,7 @@ public class DateTimeTypeTest
 		assertEquals(10, value.getValue().getSecond());
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
 		DateTimeValue value = t1.fromXacmlString("2002-09-24Z");
 	}
