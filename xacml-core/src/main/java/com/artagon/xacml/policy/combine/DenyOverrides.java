@@ -13,7 +13,7 @@ class DenyOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<
 {
 	private final static Logger log = LoggerFactory.getLogger(DenyOverrides.class);
 	
-	public DenyOverrides(String id){
+	protected DenyOverrides(String id){
 		super(id);
 	}
 	

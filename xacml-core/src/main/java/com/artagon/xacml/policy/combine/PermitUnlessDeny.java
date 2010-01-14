@@ -8,7 +8,7 @@ import com.artagon.xacml.policy.EvaluationContext;
 
 class PermitUnlessDeny <DecisionType extends Decision>  extends BaseDecisionCombiningAlgorithm<DecisionType>
 {
-	public PermitUnlessDeny(String id){
+	protected PermitUnlessDeny(String id){
 		super(id);
 	}
 	

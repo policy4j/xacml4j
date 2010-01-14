@@ -14,8 +14,10 @@ public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<Comp
 {
 	private final static Logger log = LoggerFactory.getLogger(PolicyOnlyOneApplicable.class);
 	
+	public final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
+	
 	public PolicyOnlyOneApplicable() {
-		super("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable");
+		super(ID);
 	}
 
 	@Override

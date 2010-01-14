@@ -13,7 +13,7 @@ class FirstApplicable<D extends Decision> extends BaseDecisionCombiningAlgorithm
 {
 	private final static Logger log = LoggerFactory.getLogger(FirstApplicable.class);
 	
-	public FirstApplicable(String algorithmId) {
+	protected FirstApplicable(String algorithmId) {
 		super(algorithmId);
 	}
 

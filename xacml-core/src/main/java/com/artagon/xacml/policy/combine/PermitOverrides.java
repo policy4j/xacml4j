@@ -9,7 +9,7 @@ import com.artagon.xacml.policy.EvaluationContext;
 
 class PermitOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<D>
 {
-	public PermitOverrides(String id){
+	protected PermitOverrides(String id){
 		super(id);
 	}
 	

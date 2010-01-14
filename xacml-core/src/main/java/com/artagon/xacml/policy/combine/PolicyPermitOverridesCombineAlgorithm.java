@@ -4,7 +4,9 @@ import com.artagon.xacml.policy.Rule;
 
 public class PolicyPermitOverridesCombineAlgorithm extends PermitOverrides<Rule>
 {
-	public PolicyPermitOverridesCombineAlgorithm(String id) {
-		super("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides");
+	public final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides";
+	
+	public PolicyPermitOverridesCombineAlgorithm() {
+		super(ID);
 	}
 }
