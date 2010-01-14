@@ -7,13 +7,17 @@ import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.util.Preconditions;
 
-public class Match implements Matchable, PolicyElement
+/**
+ *  
+ * @author Giedrius Trumpickas
+ */
+public final class Match implements Matchable, PolicyElement
 {	
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 	
 	private Attribute value;
 	private AttributeReference attributeRef;
-	private FunctionSpec spec;
+	private FunctionSpec predicate;
 	
 	/**
 	 * Constructs match with a given literal value 
@@ -32,9 +36,9 @@ public class Match implements Matchable, PolicyElement
 		Preconditions.checkArgument(spec.getParamSpecs().get(0).
 				isValidParamType(value.getEvaluatesTo()));
 		Preconditions.checkArgument(spec.getParamSpecs().get(1).
-				isValidParamType((attributeReference.getBagDataType())));
+				isValidParamType((attributeReference.getDataType())));
 		this.value = value;
-		this.spec = spec;
+		this.predicate = spec;
 		this.attributeRef = attributeReference;	
 	}
 	
@@ -44,7 +48,7 @@ public class Match implements Matchable, PolicyElement
 	 * @return match function XACML identifier
 	 */
 	public FunctionId getMatchId(){
-		return spec.getId();
+		return predicate.getId();
 	}
 	
 	/**
@@ -56,14 +60,16 @@ public class Match implements Matchable, PolicyElement
 		return value;
 	}
 	
+	@Override
 	public MatchResult match(EvaluationContext context)
 	{
 		try
 		{
 			BagOfAttributes<?> attributes = (BagOfAttributes<?>)attributeRef.evaluate(context);
-			log.debug("Evaluated attribute reference=\"{}\" to bag=\"{}\"", attributeRef, attributes);
+			log.debug("Evaluated attribute reference=\"{}\" to " +
+					"bag=\"{}\"", attributeRef, attributes);
 			for(Attribute attr : attributes.values()){
-				BooleanValue match = (BooleanValue)spec.invoke(context, attr, attributeRef);
+				BooleanValue match = (BooleanValue)predicate.invoke(context, attr, attributeRef);
 				if(match.getValue()){
 					log.debug("Attribute value=\"{}\" " +
 							"matches attribute value=\"{}\"", value, attr);
@@ -72,6 +78,8 @@ public class Match implements Matchable, PolicyElement
 			}
 			return MatchResult.NOMATCH;
 		}catch(PolicyEvaluationException e){
+			log.debug("Failed to evaluate match predicate=\"{}\", " +
+					"attribute value=\"{}\"", predicate.getId(), value);
 			return MatchResult.INDETERMINATE;
 		}
 	}

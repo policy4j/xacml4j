@@ -8,7 +8,17 @@ import org.oasis.xacml.azapi.constants.AzCategoryId;
 
 
 public interface EvaluationContext 
-{
+{	
+	/**
+	 * Tests if function parameters
+	 * need to be validate at runtime
+	 * every time function is invoked
+	 * 
+	 * @return <code>true</code> if parameters
+	 * need to be validated at runtime
+	 */
+	boolean isValidateFuncParamAtRuntime();
+	
 	/**
 	 * Gets parent evaluation context
 	 * 

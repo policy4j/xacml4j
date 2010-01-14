@@ -4,6 +4,12 @@ import org.oasis.xacml.azapi.constants.AzCategoryId;
 
 import com.artagon.xacml.util.Preconditions;
 
+/**
+ * A base class for XACML attribute references
+ * in the XACML policies
+ * 
+ * @author Giedrius Trumpickas
+ */
 abstract class AttributeReference implements Expression
 {
 	private AzCategoryId category;
@@ -25,6 +31,7 @@ abstract class AttributeReference implements Expression
 		this.evaluatesTo = dataType.bagOf();
 	}
 	
+	@Override
 	public final ValueType getEvaluatesTo(){
 		return evaluatesTo;
 	}
@@ -35,7 +42,7 @@ abstract class AttributeReference implements Expression
 	 * 
 	 * @return {@link AttributeDataType}
 	 */
-	public final AttributeDataType getBagDataType(){
+	public final AttributeDataType getDataType(){
 		return evaluatesTo.getDataType();
 	}
 	

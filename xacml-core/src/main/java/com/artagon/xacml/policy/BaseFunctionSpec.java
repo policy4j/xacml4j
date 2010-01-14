@@ -44,7 +44,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		
 	@Override
 	public final Apply createApply(Expression... arguments) {
-		Preconditions.checkArgument(validateParameters(arguments));
+		validateParameters(arguments);
 		return new Apply(this, getReturnType(arguments), arguments);
 	}
 

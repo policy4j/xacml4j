@@ -17,6 +17,8 @@ class BaseEvaluationContext implements EvaluationContext
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
 	
+	private boolean validateAtRuntime = false;
+	
 	protected BaseEvaluationContext(){
 		this(true);
 	}
@@ -32,6 +34,12 @@ class BaseEvaluationContext implements EvaluationContext
 		this.attributeService = attributeService;
 	}
 	
+	
+	@Override
+	public boolean isValidateFuncParamAtRuntime() {
+		return validateAtRuntime;
+	}
+
 	@Override
 	public void addAdvices(Collection<Advice> advices) {
 		Preconditions.checkNotNull(advices);

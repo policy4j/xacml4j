@@ -20,7 +20,7 @@ final class DynamicFunctionSpec extends BaseFunctionSpec
 	protected ValueType getReturnType() {
 		throw new UnsupportedOperationException(
 				String.format(
-						"Dynamic function=\"%s\" return type is not known statically", getId()));
+						"Dynamic function=\"%s\" return type is not known staticaly", getId()));
 	}
 	
 	@Override

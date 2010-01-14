@@ -28,6 +28,11 @@ public class DelegatingEvaluationContext implements EvaluationContext
 		return delegate;
 	}
 	
+	@Override
+	public boolean isValidateFuncParamAtRuntime() {
+		return delegate.isValidateFuncParamAtRuntime();
+	}
+
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
