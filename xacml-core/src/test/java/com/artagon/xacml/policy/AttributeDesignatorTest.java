@@ -2,6 +2,7 @@ package com.artagon.xacml.policy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -41,13 +42,15 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	public void testMustBePresentTrueAttributeDoesExist() throws PolicyEvaluationException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
-		attributes.add(type.create(10l));
+		Attribute attr = type.create(10l);
+		attributes.add(attr);
 		attributeService.addAttribute(AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY,
 				issuer, attributeId, type, attributes);
 		AttributeDesignator desig = new AttributeDesignator(AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY, issuer, attributeId, 
 				type, true);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);
+		assertTrue(((BagOfAttributes<?>)v).contains(attr));
 	}
 	
 	@Test

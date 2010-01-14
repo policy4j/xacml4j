@@ -40,6 +40,13 @@ abstract class BaseDesicion implements Decision
 		this.obligationExpressions = new LinkedList<ObligationExpression>(obligationExpressions);
 	}
 	
+	/**
+	 * Constructs base decision with a given
+	 * identifier and target
+	 * 
+	 * @param id a decision identifier
+	 * @param target a decision target
+	 */
 	protected BaseDesicion(String id, 
 			Target target){
 		this(id, target, 
@@ -73,6 +80,11 @@ abstract class BaseDesicion implements Decision
 		return (target == null)?MatchResult.MATCH:target.match(context);
 	}
 	
+	/**
+	 * Combines {@link #isApplicable(EvaluationContext)} and 
+	 * {@link #evaluate(EvaluationContext)} calls to one single
+	 * method invocation
+	 */
 	@Override
 	public final DecisionResult evaluateIfApplicable(EvaluationContext context)
 	{
@@ -85,6 +97,11 @@ abstract class BaseDesicion implements Decision
 				DecisionResult.INDETERMINATE:DecisionResult.NOT_APPLICABLE;
 	}
 	
+	/**
+	 * Evaluates this decision, if decision is applicable to
+	 * the current request then appropriate decision
+	 * advice and obligations are evaluated
+	 */
 	@Override
 	public final DecisionResult evaluate(EvaluationContext context) 
 	{
@@ -111,7 +128,8 @@ abstract class BaseDesicion implements Decision
 	}
 	
 	/**
-	 * Evaluates advice expressions
+	 * Evaluates advice expressions matching given decision
+	 * {@link DecisionResult} result
 	 * 
 	 * @param context an evaluation context
 	 * @param result a decision evaluation result
@@ -134,7 +152,8 @@ abstract class BaseDesicion implements Decision
 	}
 	
 	/**
-	 * Evaluates obligation matching given {@link DecisionResult}
+	 * Evaluates obligation matching given decision 
+	 * {@link DecisionResult} result
 	 * 
 	 * @param context an evaluation context
 	 * @param result an decision result
@@ -166,5 +185,11 @@ abstract class BaseDesicion implements Decision
 	 */
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 	
+	/**
+	 * Performs actual decision evaluation
+	 * 
+	 * @param context an evaluation context
+	 * @return {@link DecisionResult}
+	 */
 	protected abstract DecisionResult doEvaluate(EvaluationContext context);
 }

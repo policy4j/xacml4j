@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class DefaultPolicy extends BaseCompositeDecision implements Policy
+public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicy.class);
 	
@@ -53,7 +53,8 @@ public class DefaultPolicy extends BaseCompositeDecision implements Policy
 		}
 	}
 	
-	public DefaultPolicy(String policyId, Collection<Rule> rules, DecisionCombiner<Rule> combine)
+	public DefaultPolicy(String policyId, 
+			Collection<Rule> rules, DecisionCombiner<Rule> combine)
 	{
 		this(policyId, null, 
 				Collections.<VariableDefinition>emptyList(),
