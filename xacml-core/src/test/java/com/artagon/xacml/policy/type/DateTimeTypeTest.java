@@ -29,7 +29,17 @@ public class DateTimeTypeTest
 		assertEquals(9, value.getValue().getHour());
 		assertEquals(30, value.getValue().getMinute());
 		assertEquals(10, value.getValue().getSecond());
+		assertEquals("2002-05-30T09:30:10-06:00", value.toXacmlString());
 	}
+	
+	@Test
+	public void testEquals(){
+		DateTimeValue value1 = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+		DateTimeValue value2 = t2.fromXacmlString("2002-05-30T09:30:10-06:00");
+		assertEquals(value1, value2);
+	}
+	
+	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){

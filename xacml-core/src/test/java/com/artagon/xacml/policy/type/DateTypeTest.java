@@ -26,11 +26,19 @@ public class DateTypeTest
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(9, value.getValue().getMonth());
 		assertEquals(24, value.getValue().getDay());
+		assertEquals("2002-09-24Z", value.toXacmlString());
+	}
+	
+	@Test
+	public void testEquals(){
+		DateValue value1 = t1.fromXacmlString("2002-09-24Z");
+		DateValue value2 = t2.fromXacmlString("2002-09-24Z");
+		assertEquals(value1, value2);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
-		DateValue value = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+		t1.fromXacmlString("2002-05-30T09:30:10-06:00");
 	}
 }
 
