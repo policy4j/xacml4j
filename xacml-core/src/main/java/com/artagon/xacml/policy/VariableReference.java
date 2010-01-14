@@ -2,7 +2,6 @@ package com.artagon.xacml.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-
 public class VariableReference implements Expression
 {
 	private VariableDefinition varDef;
@@ -41,15 +40,12 @@ public class VariableReference implements Expression
 	public Value evaluate(EvaluationContext context) 
 		throws PolicyEvaluationException
 	{
-		VariableDefinition variableDef = context.getVariableDefinition(getVariableId());
-		if(variableDef == null){
-			throw new PolicyEvaluationIndeterminateException("Failed to resolve variable=\"{}\"", getVariableId());
-		}
 		return varDef.evaluate(context);
 	}
 	
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
+		varDef.accept(v);
 		v.visitLeave(this);
 	}	
 }

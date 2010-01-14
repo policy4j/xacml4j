@@ -1,5 +1,8 @@
 package com.artagon.xacml.policy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -9,6 +12,8 @@ import com.artagon.xacml.util.Preconditions;
  */
 public class VariableDefinition implements Expression
 {
+	private final static Logger log = LoggerFactory.getLogger(VariableDefinition.class);
+	
 	private String variableId;
 	private Expression expression;
 	
@@ -41,10 +46,18 @@ public class VariableDefinition implements Expression
 		return expression.getEvaluatesTo();
 	}
 
+	/**
+	 * Evaluates  variable definition and caches
+	 * evaluation result in the current 
+	 * {@link EvaluationContext} evaluation context
+	 */
+	@Override
 	public Value evaluate(EvaluationContext context) throws PolicyEvaluationException
 	{
 		Value result = context.getVariableEvaluationResult(variableId);
 		if(result != null){
+			log.debug("Found cached variable=\"{}\" evaluation result=\"{}\"", 
+					variableId, result);
 			return result;
 		}
 		result = (Value)expression.evaluate(context);
@@ -58,6 +71,7 @@ public class VariableDefinition implements Expression
 	 */
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
+		expression.accept(v);
 		v.visitLeave(this);
 	}
 }

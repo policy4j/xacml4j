@@ -19,6 +19,7 @@ public class DefaultDataTypeFactory extends BaseDataTypeFactory
 		add(new X500NameTypeImpl());
 		add(new DateTimeTypeImpl());
 		add(new DateTypeImpl());
+		add(new TimeTypeImpl());
 	}
 	
 }
