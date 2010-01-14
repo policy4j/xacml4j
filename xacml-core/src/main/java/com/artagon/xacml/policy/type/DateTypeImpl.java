@@ -5,6 +5,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+
 import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.DateType.DateValue;
@@ -14,9 +15,14 @@ final class DateTypeImpl extends BaseAttributeDataType<DateValue> implements Dat
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	
-	public DateTypeImpl() throws DatatypeConfigurationException{
+	public DateTypeImpl()
+	{
 		super(DataTypes.DATE, XMLGregorianCalendar.class);
-		this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		try{
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		}catch(DatatypeConfigurationException e){
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override

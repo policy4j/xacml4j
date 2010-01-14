@@ -14,9 +14,14 @@ final class DateTimeTypeImpl extends BaseAttributeDataType<DateTimeValue> implem
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	
-	public DateTimeTypeImpl() throws DatatypeConfigurationException{
+	public DateTimeTypeImpl()
+	{
 		super(DataTypes.DATETIME, XMLGregorianCalendar.class);
-		this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		try{
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		}catch(DatatypeConfigurationException e){
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override

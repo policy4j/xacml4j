@@ -8,7 +8,6 @@ public class DefaultDataTypeFactory extends BaseDataTypeFactory
 		super();
 		add(new AnyURITypeImpl());
 		add(new BooleanTypeImpl());
-		//add(new DateTimeTypeImpl());
 		add(new DNSNameTypeImpl());
 		add(new DoubleTypeImpl());
 		add(new HexBinaryTypeImpl());
@@ -18,6 +17,8 @@ public class DefaultDataTypeFactory extends BaseDataTypeFactory
 		add(new RFC822NameTypeImpl());
 		add(new StringTypeImpl());
 		add(new X500NameTypeImpl());
+		add(new DateTimeTypeImpl());
+		add(new DateTypeImpl());
 	}
 	
 }
