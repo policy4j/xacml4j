@@ -6,7 +6,8 @@ import com.artagon.xacml.util.Base64;
 import com.artagon.xacml.util.Base64DecoderException;
 import com.artagon.xacml.util.Preconditions;
 
-class Base64BinaryTypeImpl extends BaseAttributeDataType<Base64BinaryType.Base64BinaryValue> implements Base64BinaryType
+class Base64BinaryTypeImpl extends BaseAttributeDataType<Base64BinaryType.Base64BinaryValue> 
+	implements Base64BinaryType
 {
 	public Base64BinaryTypeImpl(){
 		super(DataTypes.BASE64BINARY, byte[].class);

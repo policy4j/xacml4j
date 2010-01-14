@@ -7,43 +7,44 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
-import com.artagon.xacml.policy.type.DateTimeType.DateTimeValue;
+import com.artagon.xacml.policy.type.DateType.DateValue;
 import com.artagon.xacml.util.Preconditions;
 
-final class DateTimeTypeImpl extends BaseAttributeDataType<DateTimeValue> implements DateTimeType
+final class DateTypeImpl extends BaseAttributeDataType<DateValue> implements DateType
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	
-	public DateTimeTypeImpl() throws DatatypeConfigurationException{
-		super(DataTypes.DATETIME, XMLGregorianCalendar.class);
+	public DateTypeImpl() throws DatatypeConfigurationException{
+		super(DataTypes.DATE, XMLGregorianCalendar.class);
 		this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 	}
 
 	@Override
-	public DateTimeValue fromXacmlString(String v) {
+	public DateValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);
 		XMLGregorianCalendar dateTime = xmlDataTypesFactory.newXMLGregorianCalendar(v);
-		return new DateTimeValue(this, validateXmlDateTime(dateTime));
+		return new DateValue(this, validateXmlDate(dateTime));
 	}
 	
 	@Override
-	public DateTimeValue create(Object any){
+	public DateValue create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +
-				"can't ne converted to XACML \"dateTime\" type", 
+				"can't ne converted to XACML \"date\" type", 
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new DateTimeValue(this, validateXmlDateTime((XMLGregorianCalendar)any));
+		return new DateValue(this, validateXmlDate((XMLGregorianCalendar)any));
 	}
 	
-	private XMLGregorianCalendar validateXmlDateTime(XMLGregorianCalendar dateTime){
-		if(!dateTime.getXMLSchemaType().equals(DatatypeConstants.DATETIME)){
+	private XMLGregorianCalendar validateXmlDate(XMLGregorianCalendar dateTime){
+		if(!dateTime.getXMLSchemaType().equals(DatatypeConstants.DATE)){
 			throw new IllegalArgumentException(String.format("Given value=\"%s\" does " +
 					"not represent type=\"%s\"", dateTime.toXMLFormat(), DatatypeConstants.DATETIME));
 		}
 		return dateTime;
 	}
 }
+
