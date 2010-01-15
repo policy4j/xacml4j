@@ -29,6 +29,11 @@ final class DateTypeImpl extends BaseAttributeDataType<DateValue> implements Dat
 	public DateValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);
 		XMLGregorianCalendar dateTime = xmlDataTypesFactory.newXMLGregorianCalendar(v);
+		// XACML default time zone is UTC
+		if(dateTime.getTimezone() == 
+			DatatypeConstants.FIELD_UNDEFINED){
+			dateTime.setTimezone(0);
+		}
 		return new DateValue(this, validateXmlDate(dateTime));
 	}
 	
