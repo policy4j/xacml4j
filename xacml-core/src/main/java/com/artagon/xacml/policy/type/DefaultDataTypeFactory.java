@@ -20,6 +20,7 @@ public class DefaultDataTypeFactory extends BaseDataTypeFactory
 		add(new DateTimeTypeImpl());
 		add(new DateTypeImpl());
 		add(new TimeTypeImpl());
+		add(new DayTimeDurationTypeImpl());
 	}
 	
 }
