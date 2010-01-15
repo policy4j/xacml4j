@@ -20,9 +20,9 @@ public class DayTimeDurationTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		DayTimeDurationValue v1 = t1.fromXacmlString("P3DT10H30M");
-		DayTimeDurationValue v2 = t2.fromXacmlString("P3DT10H30M");
+		DayTimeDurationValue v1 = t1.fromXacmlString("P3DT10H30M10S");
+		DayTimeDurationValue v2 = t2.fromXacmlString("P3DT10H30M10S");
 		assertEquals(v1, v2);
-		assertEquals("P3DT10H30M", v1.toXacmlString());
+		assertEquals("P3DT10H30M10S", v1.toXacmlString());
 	}
 }

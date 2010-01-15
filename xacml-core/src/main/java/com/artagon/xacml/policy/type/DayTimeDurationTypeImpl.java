@@ -45,7 +45,6 @@ final class DayTimeDurationTypeImpl extends BaseAttributeDataType<DayTimeDuratio
 		}
 		return new DayTimeDurationValue(this, (Duration)any);
 	}
-
 }
 
 
