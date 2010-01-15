@@ -32,6 +32,9 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 		add(build(Functions.BASE64BINARY_EQUAL, typeRegistry.getDataType(DataTypes.BASE64BINARY)));
 		add(build(Functions.DATE_EQUAL, typeRegistry.getDataType(DataTypes.DATE)));
 		add(build(Functions.DATETIME_EQUAL, typeRegistry.getDataType(DataTypes.DATETIME)));
+		add(build(Functions.TIME_EQUAL, typeRegistry.getDataType(DataTypes.TIME)));
+		add(build(Functions.DAYTIMEDURATION_EQUAL, typeRegistry.getDataType(DataTypes.DAYTIMEDURATION)));
+		add(build(Functions.YEARMONTHDURATION_EQUAL, typeRegistry.getDataType(DataTypes.YEARMONTHDURATION)));
 		add(build(Functions.X500NAME_EQUAL, typeRegistry.getDataType(DataTypes.X500NAME)));
 	}
 	

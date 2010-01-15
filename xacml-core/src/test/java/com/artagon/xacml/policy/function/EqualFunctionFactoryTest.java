@@ -38,7 +38,9 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 		assertNotNull(factory.getFunction(Functions.RFC833NAME_EQUAL));
 		assertNotNull(factory.getFunction(Functions.DATE_EQUAL));
 		assertNotNull(factory.getFunction(Functions.DATETIME_EQUAL));
-		assertNotNull(factory.getFunction(Functions.DATETIMEDURATION_EQUAL));
+		assertNotNull(factory.getFunction(Functions.DAYTIMEDURATION_EQUAL));
+		assertNotNull(factory.getFunction(Functions.YEARMONTHDURATION_EQUAL));
+		assertNotNull(factory.getFunction(Functions.TIME_EQUAL));
 	}
 	
 	@Test

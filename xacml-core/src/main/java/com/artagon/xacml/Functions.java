@@ -12,7 +12,7 @@ public enum Functions implements FunctionId
 	DATE_EQUAL("urn:oasis:names:tc:xacml:1.0:function:date-equal"),
 	TIME_EQUAL("urn:oasis:names:tc:xacml:1.0:function:time-equal"),
 	DATETIME_EQUAL("urn:oasis:names:tc:xacml:1.0:function:dateTime-equal"),
-	DATETIMEDURATION_EQUAL("urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal"),
+	DAYTIMEDURATION_EQUAL("urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal"),
 	YEARMONTHDURATION_EQUAL("urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal"),	 
 	RFC833NAME_EQUAL("urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal"),
 	HEXBINARY_EQUAL("urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal"),
