@@ -46,7 +46,13 @@ final class DateTimeTypeImpl extends BaseAttributeDataType<DateTimeValue> implem
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new DateTimeValue(this, validateXmlDateTime((XMLGregorianCalendar)any));
+		XMLGregorianCalendar dateTime = validateXmlDateTime((XMLGregorianCalendar)any);
+		// XACML default time zone is UTC
+		if(dateTime.getTimezone() == 
+			DatatypeConstants.FIELD_UNDEFINED){
+			dateTime.setTimezone(0);
+		}
+		return new DateTimeValue(this, dateTime);
 	}
 	
 	private XMLGregorianCalendar validateXmlDateTime(XMLGregorianCalendar dateTime){
