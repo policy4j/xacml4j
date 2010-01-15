@@ -30,6 +30,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		add(buildToString(Functions.STRING_FROM_DOUBLE, getDataType(DataTypes.DOUBLE)));
 		add(buildToString(Functions.STRING_FROM_DATE, getDataType(DataTypes.DATE)));
 		add(buildToString(Functions.STRING_FROM_DATETIME, getDataType(DataTypes.DATETIME)));
+		add(buildToString(Functions.STRING_FROM_TIME, getDataType(DataTypes.TIME)));
 		add(buildToString(Functions.STRING_FROM_DAYTIMEDURATION, getDataType(DataTypes.DAYTIMEDURATION)));
 		add(buildToString(Functions.STRING_FROM_DNSNAME, getDataType(DataTypes.DNSNAME)));
 		add(buildToString(Functions.STRING_FROM_IPADDRESS, getDataType(DataTypes.IPADDRESS)));
@@ -40,6 +41,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		add(buildFromString(Functions.DOUBLE_FROM_STRING, getDataType(DataTypes.DOUBLE)));
 		add(buildFromString(Functions.DATE_FROM_STRING, getDataType(DataTypes.DATE)));
 		add(buildFromString(Functions.DATETIME_FROM_STRING, getDataType(DataTypes.DATETIME)));
+		add(buildFromString(Functions.TIME_FROM_STRING, getDataType(DataTypes.TIME)));
 		add(buildFromString(Functions.DNSNAME_FROM_STRING, getDataType(DataTypes.DNSNAME)));
 		add(buildFromString(Functions.IPADDRESS_FROM_STRING, getDataType(DataTypes.IPADDRESS)));
 	}
