@@ -17,7 +17,7 @@ final class YearMonthDurationTypeImpl extends
 	
 	public YearMonthDurationTypeImpl()
 	{
-		super(DataTypes.DAYTIMEDURATION, Duration.class);
+		super(DataTypes.YEARMONTHDURATION, Duration.class);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){
