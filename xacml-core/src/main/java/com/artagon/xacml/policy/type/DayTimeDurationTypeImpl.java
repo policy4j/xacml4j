@@ -4,8 +4,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 
 import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
@@ -30,7 +28,7 @@ final class DayTimeDurationTypeImpl extends BaseAttributeDataType<DayTimeDuratio
 	public DayTimeDurationValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);
 		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
-		return new DayTimeDurationValue(this, dayTimeDuration);
+		return new DayTimeDurationValue(this, validate(dayTimeDuration));
 	}
 	
 	@Override
@@ -43,7 +41,15 @@ final class DayTimeDurationTypeImpl extends BaseAttributeDataType<DayTimeDuratio
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new DayTimeDurationValue(this, (Duration)any);
+		return new DayTimeDurationValue(this, validate((Duration)any));
+	}
+	
+	private Duration validate(Duration duration){
+		if(!(duration.isSet(DatatypeConstants.YEARS) 
+				&& duration.isSet(DatatypeConstants.MONTHS))){
+			return duration;
+		}
+		throw new IllegalArgumentException();
 	}
 }
 

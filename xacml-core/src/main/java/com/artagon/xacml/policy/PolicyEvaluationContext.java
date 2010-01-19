@@ -22,8 +22,6 @@ public class PolicyEvaluationContext extends BaseEvaluationContext
 		this.policy = policy;
 		this.variableCache = new HashMap<String, Value>(variableCache);
 	}
-
-
 	
 	@Override
 	public VariableDefinition getVariableDefinition(String variableId){

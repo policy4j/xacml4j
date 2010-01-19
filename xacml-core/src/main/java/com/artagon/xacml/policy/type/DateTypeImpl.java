@@ -5,7 +5,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
 import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.DateType.DateValue;

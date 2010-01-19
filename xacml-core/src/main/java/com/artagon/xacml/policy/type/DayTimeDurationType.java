@@ -18,8 +18,8 @@ public interface DayTimeDurationType extends AttributeDataType
 		public DayTimeDurationValue(DayTimeDurationType type, 
 				Duration value) {
 			super(type, value);
-			Preconditions.checkArgument(
-					value.getXMLSchemaType() == DatatypeConstants.DURATION_DAYTIME);
+			Preconditions.checkArgument(!value.isSet(DatatypeConstants.YEARS) && 
+					!value.isSet(DatatypeConstants.MONTHS));
 		}
 	}
 }
