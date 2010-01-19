@@ -2,6 +2,9 @@ package com.artagon.xacml.policy.type;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,11 +12,15 @@ import com.artagon.xacml.policy.type.DayTimeDurationType.DayTimeDurationValue;
 
 public class DayTimeDurationTypeTest 
 {
+	private DatatypeFactory f;
 	private DayTimeDurationType t1;
+	private DayTimeDurationType t2;
 	
 	@Before
 	public void init() throws Exception{
 		this.t1 = new DayTimeDurationTypeImpl();
+		this.t2 = new DayTimeDurationTypeImpl();
+		this.f = DatatypeFactory.newInstance();
 	}
 	
 	@Test
@@ -29,5 +36,21 @@ public class DayTimeDurationTypeTest
 		assertEquals(10, v1.getValue().getHours());
 		assertEquals(30, v1.getValue().getMinutes());
 		assertEquals(10, v1.getValue().getSeconds());
+	}
+	
+	@Test
+	public void testToXacmlString()
+	{
+		Duration d = f.newDurationDayTime(true, 1, 2, 30, 10);
+		DayTimeDurationValue v = t1.create(d);
+		assertEquals("P1DT2H30M10S", v.toXacmlString());
+	}
+	
+	@Test
+	public void testEquals()
+	{
+		DayTimeDurationValue v1 = t1.create("P1DT2H30M10S");
+		DayTimeDurationValue v2 = t1.create("P1DT2H30M10S");
+		assertEquals(v1, v2);
 	}
 }
