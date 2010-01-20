@@ -217,7 +217,7 @@ public enum Functions implements FunctionId
 				return typeId;
 			}
 		}
-		return new CustomFunctionId(v);
+		return null;
 	}
 	
 	public String toString(){

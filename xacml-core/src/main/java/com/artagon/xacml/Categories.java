@@ -26,7 +26,7 @@ public enum Categories implements CategoryId
 				return category;
 			}
 		}
-		return new CustomCategoryId(v);
+		return null;
 	}
 	
 	@Override public String toString() {
