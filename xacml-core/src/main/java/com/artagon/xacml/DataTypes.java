@@ -63,7 +63,6 @@ public enum DataTypes implements DataTypeId
 	/** XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration</b> */
 	YEARMONTHDURATION("urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration");
 	
-	
 	private final String dataTypeId;
 	
 	DataTypes(String azDataTypeId){
@@ -74,13 +73,12 @@ public enum DataTypes implements DataTypeId
 		return dataTypeId;
 	}
 	
-	public static DataTypeId parse(final String v)
-	{
+	public static DataTypeId parse(final String v){
 		for(DataTypes typeId : values()){
 			if(typeId.dataTypeId.equals(v)){
 				return typeId;
 			}
 		}
-		return new XacmlCustomXacmlTypeId(v);
+		return null;
 	}
 }

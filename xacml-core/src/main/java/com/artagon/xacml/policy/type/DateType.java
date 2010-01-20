@@ -8,8 +8,6 @@ import com.artagon.xacml.policy.BaseAttributeValue;
 
 public interface DateType  extends AttributeDataType
 {
-	String TYPE_ID = "http://www.w3.org/2001/XMLSchema#date";
-	
 	DateValue create(Object value);
 	DateValue fromXacmlString(String v);
 	

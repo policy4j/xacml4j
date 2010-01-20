@@ -17,19 +17,4 @@ public interface AnyURIType extends AttributeDataType
 			super(type, value);
 		}
 	}
-	
-	public enum AnyURITypeId implements DataTypeId
-	{
-		ANYURI("http://www.w3.org/2001/XMLSchema#anyURI");
-		
-		private String typeId;
-		
-		private AnyURITypeId(String typeId){
-			this.typeId = typeId;
-		}
-		
-		public String toString(){
-			return typeId;
-		}
-	}
 }

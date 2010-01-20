@@ -13,21 +13,6 @@ public interface DateTimeType extends AttributeDataType
 {	
 	DateTimeValue create(Object value);
 	DateTimeValue fromXacmlString(String v);
-
-	public enum DateTimeTypeId implements DataTypeId
-	{
-		DATETIME("http://www.w3.org/2001/XMLSchema#dateTime");
-		
-		private String typeId;
-		
-		private DateTimeTypeId(String typeId){
-			this.typeId = typeId;
-		}
-		
-		public String toString(){
-			return typeId;
-		}
-	}
 	
 	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar>
 	{

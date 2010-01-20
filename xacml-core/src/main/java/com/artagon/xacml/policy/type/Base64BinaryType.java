@@ -20,19 +20,4 @@ public interface Base64BinaryType extends AttributeDataType
 			return getValue().toBase64();
 		}
 	}
-	
-	public enum Base64BinaryTypeId implements DataTypeId
-	{
-		BASE54BINARY("http://www.w3.org/2001/XMLSchema#base64Binary");
-		
-		private String typeId;
-		
-		private Base64BinaryTypeId(String typeId){
-			this.typeId = typeId;
-		}
-		
-		public String toString(){
-			return typeId;
-		}
-	}
 }

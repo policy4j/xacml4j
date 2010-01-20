@@ -15,6 +15,7 @@ import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
+import com.artagon.xacml.policy.type.AnyURIType;
 import com.artagon.xacml.policy.type.BooleanType;
 
 public class EqualFunctionFactory extends BaseFunctionFacatory
@@ -22,7 +23,7 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 	public EqualFunctionFactory(DataTypeFactory typeRegistry)
 	{
 		super(typeRegistry);
-		add(build(Functions.ANYURI_EQUAL, typeRegistry.getDataType(DataTypes.ANYURI)));
+		add(build(Functions.ANYURI_EQUAL, typeRegistry.getDataType());
 		add(build(Functions.BOOLEAN_EQUAL, typeRegistry.getDataType(DataTypes.BOOLEAN)));
 		add(build(Functions.INTEGER_EQUAL, typeRegistry.getDataType(DataTypes.INTEGER)));
 		add(build(Functions.DOUBLE_EQUAL, typeRegistry.getDataType(DataTypes.DOUBLE)));
