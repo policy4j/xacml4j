@@ -78,8 +78,8 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 			@Override
 			public Value invoke(EvaluationContext context, List<Expression> parameters)
 					throws PolicyEvaluationException {
-				Attribute v = (Attribute)parameters.get(0);
-				return returnType.create(v.toXacmlString());
+				StringType.StringValue v = (StringType.StringValue)parameters.get(0);
+				return returnType.create(v.getValue());
 			}
 			
 			@Override

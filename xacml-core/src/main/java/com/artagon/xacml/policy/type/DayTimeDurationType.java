@@ -10,6 +10,8 @@ import com.artagon.xacml.util.Preconditions;
 
 public interface DayTimeDurationType extends AttributeDataType
 {
+	String TYPE_ID = "urn:oasis:names:tc:xacml:2.0:data-type:dayTimeDuration";
+	
 	DayTimeDurationValue create(Object value);
 	DayTimeDurationValue fromXacmlString(String v);
 	

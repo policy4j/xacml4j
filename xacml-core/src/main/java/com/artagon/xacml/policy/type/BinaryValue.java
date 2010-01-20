@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 import com.artagon.xacml.util.Base64;
 
+/**
+ * A base class for XACML binary values
+ * @author trumpyla
+ *
+ */
 public class BinaryValue
 {
 	private byte[] value;
