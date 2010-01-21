@@ -3,7 +3,6 @@ package com.artagon.xacml.policy.type;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
-import com.artagon.xacml.policy.type.HexBinaryType.HexBinaryValue;
 
 public interface IntegerType extends AttributeDataType
 {

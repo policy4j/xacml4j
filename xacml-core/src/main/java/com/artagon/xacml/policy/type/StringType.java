@@ -3,7 +3,6 @@ package com.artagon.xacml.policy.type;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
-import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
 
 
 public interface StringType extends AttributeDataType

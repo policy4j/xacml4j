@@ -5,7 +5,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
-import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
 
 public interface TimeType extends AttributeDataType
 {	

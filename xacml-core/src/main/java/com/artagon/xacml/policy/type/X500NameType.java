@@ -5,7 +5,6 @@ import javax.security.auth.x500.X500Principal;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
-import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
