@@ -2,12 +2,10 @@ package com.artagon.xacml.policy.function;
 
 import java.util.List;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeDataType;
-import com.artagon.xacml.policy.DataTypeFactory;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
@@ -16,54 +14,53 @@ import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.StringType;
 
 public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 {
 
-	public ToFromStringFunctionFactory(DataTypeFactory typeRegistry) 
+	public ToFromStringFunctionFactory() 
 	{
-		super(typeRegistry);
-		add(buildToString(Functions.STRING_FROM_ANYURI, getDataType(DataTypes.ANYURI)));
-		add(buildToString(Functions.STRING_FROM_BOOLEAN, getDataType(DataTypes.BOOLEAN)));
-		add(buildToString(Functions.STRING_FROM_INTEGER, getDataType(DataTypes.INTEGER)));
-		add(buildToString(Functions.STRING_FROM_DOUBLE, getDataType(DataTypes.DOUBLE)));
-		add(buildToString(Functions.STRING_FROM_DATE, getDataType(DataTypes.DATE)));
-		add(buildToString(Functions.STRING_FROM_DATETIME, getDataType(DataTypes.DATETIME)));
-		add(buildToString(Functions.STRING_FROM_TIME, getDataType(DataTypes.TIME)));
-		add(buildToString(Functions.STRING_FROM_DAYTIMEDURATION, getDataType(DataTypes.DAYTIMEDURATION)));
-		add(buildToString(Functions.STRING_FROM_YEARMONTHDURATION, getDataType(DataTypes.YEARMONTHDURATION)));
-		add(buildToString(Functions.STRING_FROM_DNSNAME, getDataType(DataTypes.DNSNAME)));
-		add(buildToString(Functions.STRING_FROM_IPADDRESS, getDataType(DataTypes.IPADDRESS)));
+		add(buildToString(Functions.STRING_FROM_ANYURI, DataTypes.ANYURI.getType()));
+		add(buildToString(Functions.STRING_FROM_BOOLEAN, DataTypes.BOOLEAN.getType()));
+		add(buildToString(Functions.STRING_FROM_INTEGER, DataTypes.INTEGER.getType()));
+		add(buildToString(Functions.STRING_FROM_DOUBLE, DataTypes.DOUBLE.getType()));
+		add(buildToString(Functions.STRING_FROM_DATE, DataTypes.DATE.getType()));
+		add(buildToString(Functions.STRING_FROM_DATETIME, DataTypes.DATETIME.getType()));
+		add(buildToString(Functions.STRING_FROM_TIME, DataTypes.TIME.getType()));
+		add(buildToString(Functions.STRING_FROM_DAYTIMEDURATION, DataTypes.DAYTIMEDURATION.getType()));
+		add(buildToString(Functions.STRING_FROM_YEARMONTHDURATION, DataTypes.YEARMONTHDURATION.getType()));
+		add(buildToString(Functions.STRING_FROM_DNSNAME, DataTypes.DNSNAME.getType()));
+		add(buildToString(Functions.STRING_FROM_IPADDRESS, DataTypes.IPADDRESS.getType()));
 		
-		add(buildFromString(Functions.ANYURI_FROM_STRING, getDataType(DataTypes.ANYURI)));
-		add(buildFromString(Functions.BOOLEAN_FROM_STRING, getDataType(DataTypes.BOOLEAN)));
-		add(buildFromString(Functions.INTEGER_FROM_STRING, getDataType(DataTypes.INTEGER)));
-		add(buildFromString(Functions.DOUBLE_FROM_STRING, getDataType(DataTypes.DOUBLE)));
-		add(buildFromString(Functions.DATE_FROM_STRING, getDataType(DataTypes.DATE)));
-		add(buildFromString(Functions.DATETIME_FROM_STRING, getDataType(DataTypes.DATETIME)));
-		add(buildFromString(Functions.DAYTIMEDURATION_FROM_STRING, getDataType(DataTypes.DAYTIMEDURATION)));
-		add(buildFromString(Functions.YEARMONTHDURATION_FROM_STRING, getDataType(DataTypes.YEARMONTHDURATION)));
-		add(buildFromString(Functions.TIME_FROM_STRING, getDataType(DataTypes.TIME)));
-		add(buildFromString(Functions.DNSNAME_FROM_STRING, getDataType(DataTypes.DNSNAME)));
-		add(buildFromString(Functions.IPADDRESS_FROM_STRING, getDataType(DataTypes.IPADDRESS)));
+		add(buildFromString(Functions.ANYURI_FROM_STRING, DataTypes.ANYURI.getType()));
+		add(buildFromString(Functions.BOOLEAN_FROM_STRING, DataTypes.BOOLEAN.getType()));
+		add(buildFromString(Functions.INTEGER_FROM_STRING, DataTypes.INTEGER.getType()));
+		add(buildFromString(Functions.DOUBLE_FROM_STRING, DataTypes.DOUBLE.getType()));
+		add(buildFromString(Functions.DATE_FROM_STRING, DataTypes.DATE.getType()));
+		add(buildFromString(Functions.DATETIME_FROM_STRING, DataTypes.DATETIME.getType()));
+		add(buildFromString(Functions.DAYTIMEDURATION_FROM_STRING, DataTypes.DAYTIMEDURATION.getType()));
+		add(buildFromString(Functions.YEARMONTHDURATION_FROM_STRING, DataTypes.YEARMONTHDURATION.getType()));
+		add(buildFromString(Functions.TIME_FROM_STRING, DataTypes.TIME.getType()));
+		add(buildFromString(Functions.DNSNAME_FROM_STRING, DataTypes.DNSNAME.getType()));
+		add(buildFromString(Functions.IPADDRESS_FROM_STRING, DataTypes.IPADDRESS.getType()));
 	}
 	
 	private FunctionSpec buildToString(FunctionId functionId, final AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
-		final StringType returnType = getDataType(DataTypes.STRING);
 		builder.withParam(type);
 		return builder.build(new RegularFunction() {
 			@Override
 			public ValueType getReturnType() {
-				return returnType;
+				return DataTypes.STRING.getType();
 			}
 		
 			public Value invoke(EvaluationContext context, List<Expression> exp)
 					throws PolicyEvaluationException {
 				Attribute v = (Attribute)exp.get(0);
-				return returnType.create(v.toXacmlString());
+				return DataTypes.STRING.create(v.toXacmlString());
 			}
 		});
 	}
@@ -71,8 +68,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 	private FunctionSpec buildFromString(FunctionId functionId, final AttributeDataType returnType)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
-		final StringType paramType = getDataType(DataTypes.STRING);
-		builder.withParam(paramType);
+		builder.withParam(DataTypes.STRING.getType());
 		return builder.build(new RegularFunction() {
 			
 			@Override

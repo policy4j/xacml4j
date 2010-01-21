@@ -2,7 +2,6 @@ package com.artagon.xacml.policy.type;
 
 import java.util.regex.Pattern;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
@@ -15,8 +14,8 @@ final class RFC822NameTypeImpl extends BaseAttributeDataType<RFC822NameType.RFC8
     
 	private Pattern rfc2822;
 	
-	public RFC822NameTypeImpl(){
-    	super(DataTypes.RFC822NAME, RFC822Name.class);    	
+	public RFC822NameTypeImpl(String typeId){
+    	super(typeId, RFC822Name.class);    	
     	this.rfc2822 = Pattern.compile(RFC2822_REGEXP);
     }
     

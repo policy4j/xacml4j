@@ -5,7 +5,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.util.Preconditions;
@@ -14,9 +13,9 @@ final class DayTimeDurationTypeImpl extends BaseAttributeDataType<DayTimeDuratio
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	
-	public DayTimeDurationTypeImpl()
+	public DayTimeDurationTypeImpl(String typeId)
 	{
-		super(DataTypes.DAYTIMEDURATION, Duration.class);
+		super(typeId, Duration.class);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){

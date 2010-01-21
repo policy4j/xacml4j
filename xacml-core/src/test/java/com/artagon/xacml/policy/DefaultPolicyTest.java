@@ -8,9 +8,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.DataTypes;
-import com.artagon.xacml.policy.combine.RuleFirstApplicableCombiningAlgorithm;
+import com.artagon.xacml.policy.combine.RuleDenyOverridesCombiningAlgorithm;
 import com.artagon.xacml.policy.type.BooleanType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class DefaultPolicyTest extends XacmlPolicyTestCase 
 {
@@ -19,11 +19,13 @@ public class DefaultPolicyTest extends XacmlPolicyTestCase
 	private Collection<Rule> rules;
 	
 	@Before
-	public void init_policy(){
-		BooleanType type = dataTypes.getDataType(DataTypes.BOOLEAN);
+	public void init_policy()
+	{
+		BooleanType type = DataTypes.BOOLEAN.getType();
 		this.rules = new LinkedList<Rule>();
-		rules.add(new DefaultRule("test1", null, new Condition(type.create(Boolean.TRUE)), Effect.PERMIT));
-		this.policy = new DefaultPolicy("policy1", rules, new RuleFirstApplicableCombiningAlgorithm());
+		rules.add(new DefaultRule("PermitRule", null, new Condition(type.create(Boolean.TRUE)), Effect.PERMIT));
+		rules.add(new DefaultRule("DenyRule", null, new Condition(type.create(Boolean.TRUE)), Effect.DENY));
+		this.policy = new DefaultPolicy("policy1", rules, new RuleDenyOverridesCombiningAlgorithm());
 	}
 	
 	@Test
@@ -31,6 +33,6 @@ public class DefaultPolicyTest extends XacmlPolicyTestCase
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		DecisionResult r = policy.evaluate(policyContext);
-		assertEquals(DecisionResult.PERMIT, r);
+		assertEquals(DecisionResult.DENY, r);
 	}
 }

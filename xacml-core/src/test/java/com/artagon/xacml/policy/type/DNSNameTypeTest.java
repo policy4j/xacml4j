@@ -10,12 +10,10 @@ import org.junit.Test;
 public class DNSNameTypeTest 
 {
 	private DNSNameType t1;
-	private DNSNameType t2;
 	
 	@Before
 	public void init(){
-		this.t1 = new DNSNameTypeImpl();
-		this.t2 = new DNSNameTypeImpl();
+		this.t1 = DataTypes.DNSNAME.getType();
 	}
 	
 	@Test
@@ -53,11 +51,5 @@ public class DNSNameTypeTest
 		assertEquals("test.org:10-20", v1.toXacmlString());
 		DNSNameType.DNSNameValue v2 = t1.fromXacmlString("test.org");
 		assertEquals("test.org", v2.toXacmlString());
-	}
-	
-	@Test
-	public void testTypeEquals()
-	{
-		assertEquals(t1, t2);
 	}
 }

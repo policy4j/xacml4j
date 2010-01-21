@@ -36,13 +36,4 @@ public interface IPAddressType extends AttributeDataType
 			super(type, value);
 		}
 	}
-	
-	public class Factory
-	{
-		private  final static IPAddressType TYPE = new IPAddressTypeImpl();
-		
-		public static  IPAddressType getInstance(){
-			return TYPE;
-		}
-	}
 }

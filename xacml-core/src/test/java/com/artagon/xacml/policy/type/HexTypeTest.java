@@ -14,14 +14,10 @@ public class HexTypeTest
 	
 	@Before
 	public void init(){
-		this.t = new HexBinaryTypeImpl();
+		this.t = DataTypes.HEXBINARY.getType();
 	}
 	
-	@Test
-	public void testTypeEqualuality()
-	{
-		assertEquals(new HexBinaryTypeImpl(), t);
-	}
+
 	
 	@Test
 	public void testCreateValueFromBinaryArray()

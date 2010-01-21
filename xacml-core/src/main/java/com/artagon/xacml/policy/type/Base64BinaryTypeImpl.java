@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Base64;
 import com.artagon.xacml.util.Base64DecoderException;
@@ -9,8 +8,8 @@ import com.artagon.xacml.util.Preconditions;
 class Base64BinaryTypeImpl extends BaseAttributeDataType<Base64BinaryType.Base64BinaryValue> 
 	implements Base64BinaryType
 {
-	public Base64BinaryTypeImpl(){
-		super(DataTypes.BASE64BINARY, byte[].class);
+	public Base64BinaryTypeImpl(String typeId){
+		super(typeId, byte[].class);
 	}
 	
 	@Override

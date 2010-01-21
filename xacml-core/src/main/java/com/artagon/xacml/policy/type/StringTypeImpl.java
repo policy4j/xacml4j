@@ -1,14 +1,13 @@
 package com.artagon.xacml.policy.type;
 
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
 final class StringTypeImpl extends BaseAttributeDataType<StringType.StringValue> implements StringType
 {
-	public StringTypeImpl(){
-		super(DataTypes.STRING, String.class);
+	public StringTypeImpl(String typeId){
+		super(typeId, String.class);
 	}
 
 	@Override

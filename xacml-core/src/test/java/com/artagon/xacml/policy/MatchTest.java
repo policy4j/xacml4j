@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.type.BooleanType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType;
 
 public class MatchTest extends XacmlPolicyTestCase
@@ -22,8 +22,8 @@ public class MatchTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.paramType = dataTypes.getDataType(DataTypes.INTEGER);
-		this.booleanType = dataTypes.getDataType(DataTypes.BOOLEAN);
+		this.paramType = DataTypes.INTEGER.getType();
+		this.booleanType = DataTypes.BOOLEAN.getType();
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
 		b.withParam(paramType).withParam(paramType);
@@ -33,7 +33,7 @@ public class MatchTest extends XacmlPolicyTestCase
 	@Test
 	public void testMatchEvaluation() throws PolicyEvaluationException
 	{
-		IntegerType t = dataTypes.getDataType(DataTypes.INTEGER);
+		IntegerType t = DataTypes.INTEGER.getType();
 		AttributeDesignator designator = new AttributeDesignator(AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT,
 				"testId", "testIssuer", t, true);
 		attributeService.addAttribute(AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<Attribute>singleton(t.create(10L)));

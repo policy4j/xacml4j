@@ -12,9 +12,9 @@ import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.type.BooleanType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
 
@@ -33,9 +33,9 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Before
 	public void init()
 	{
-		this.type1 = dataTypes.getDataType(DataTypes.INTEGER);
-		this.type2 = dataTypes.getDataType(DataTypes.STRING);
-		this.type3 = dataTypes.getDataType(DataTypes.BOOLEAN);
+		this.type1 = DataTypes.INTEGER.getType();
+		this.type2 = DataTypes.STRING.getType();
+		this.type3 = DataTypes.BOOLEAN.getType();
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
 		b.withParam(type1).withParam(type1);

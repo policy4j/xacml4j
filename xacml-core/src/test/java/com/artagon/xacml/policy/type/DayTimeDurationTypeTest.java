@@ -14,12 +14,10 @@ public class DayTimeDurationTypeTest
 {
 	private DatatypeFactory f;
 	private DayTimeDurationType t1;
-	private DayTimeDurationType t2;
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = new DayTimeDurationTypeImpl();
-		this.t2 = new DayTimeDurationTypeImpl();
+		this.t1 = DataTypes.DAYTIMEDURATION.getType();
 		this.f = DatatypeFactory.newInstance();
 	}
 	

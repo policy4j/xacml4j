@@ -9,8 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
 
@@ -25,8 +25,8 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.type1 = dataTypes.getDataType(DataTypes.INTEGER);
-		this.type2 = dataTypes.getDataType(DataTypes.STRING);
+		this.type1 = DataTypes.INTEGER.getType();
+		this.type2 = DataTypes.STRING.getType();
 		this.impl =  new MockFunctionImplementation(type1.create(new Integer(10)));
 		
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_ADD); 

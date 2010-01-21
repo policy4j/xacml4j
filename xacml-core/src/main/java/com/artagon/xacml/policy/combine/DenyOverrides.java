@@ -28,8 +28,9 @@ class DenyOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<
 		for(D d : decisions)
 		{
 			DecisionResult decision = evaluateIfApplicable(context, d);
-			log.debug("Evaluating decicion=\"{}\", evaluation result=\"{}\"", d, decision);
+			log.debug("Evaluating decicion=\"{}\", evaluation result=\"{}\"", d.getId(), decision);
 			if(decision == DecisionResult.DENY){
+				log.debug("Not evauating decisions further, result is=\"{}\"", decision);
 				return DecisionResult.DENY;
 			}
 			if(decision == DecisionResult.PERMIT){

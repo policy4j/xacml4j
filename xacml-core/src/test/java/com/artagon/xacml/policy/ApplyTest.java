@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.type.BooleanType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType;
 
 public class ApplyTest extends XacmlPolicyTestCase 
@@ -24,8 +24,8 @@ public class ApplyTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.paramType = dataTypes.getDataType(DataTypes.INTEGER);
-		this.booleanType = dataTypes.getDataType(DataTypes.BOOLEAN);
+		this.paramType = DataTypes.INTEGER.getType();
+		this.booleanType = DataTypes.BOOLEAN.getType();
 		this.params2Args = new LinkedList<Expression>();
 		this.params2Args.add(paramType.create(10L));
 		this.params2Args.add(paramType.create(11L));

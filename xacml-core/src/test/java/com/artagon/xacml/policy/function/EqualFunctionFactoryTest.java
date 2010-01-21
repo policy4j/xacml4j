@@ -8,13 +8,13 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.type.AnyURIType;
 import com.artagon.xacml.policy.type.BooleanType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.StringType;
 
 public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
@@ -23,7 +23,7 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	
 	@Before
 	public void init(){
-		this.factory = new EqualFunctionFactory(types);
+		this.factory = new EqualFunctionFactory();
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	@Test
 	public void testBooleanEquals() throws PolicyEvaluationException
 	{
-		BooleanType type = dataTypes.getDataType(DataTypes.BOOLEAN);
+		BooleanType type = DataTypes.BOOLEAN.getType();
 		FunctionSpec spec = factory.getFunction(Functions.BOOLEAN_EQUAL);
 		assertEquals(type.create(Boolean.TRUE), spec.invoke(context, type.create(Boolean.FALSE), type.create(Boolean.FALSE)));
 		assertEquals(type.create(Boolean.FALSE), spec.invoke(context, type.create(Boolean.TRUE), type.create(Boolean.FALSE)));
@@ -55,8 +55,8 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	@Test
 	public void testAnyURIEquals() throws Exception
 	{
-		AnyURIType type = dataTypes.getDataType(DataTypes.ANYURI);
-		BooleanType typeBool = dataTypes.getDataType(DataTypes.BOOLEAN);
+		AnyURIType type = DataTypes.ANYURI.getType();
+		BooleanType typeBool = DataTypes.BOOLEAN.getType();
 		FunctionSpec spec = factory.getFunction(Functions.ANYURI_EQUAL);
 		assertEquals(typeBool.create(Boolean.TRUE), spec.invoke(context, type.create(new URI("test")), type.create(new URI("test"))));
 		assertEquals(typeBool.create(Boolean.FALSE), spec.invoke(context, type.create(new URI("test1")), type.create(new URI("test2"))));
@@ -65,8 +65,8 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	@Test
 	public void testStringEquals() throws Exception
 	{
-		StringType type = dataTypes.getDataType(DataTypes.STRING);
-		BooleanType typeBool = dataTypes.getDataType(DataTypes.BOOLEAN);
+		StringType type = DataTypes.STRING.getType();
+		BooleanType typeBool = DataTypes.BOOLEAN.getType();
 		FunctionSpec spec = factory.getFunction(Functions.STRING_EQUAL);
 		assertEquals(typeBool.create(Boolean.TRUE), spec.invoke(context, type.create("test"), type.create("test")));
 		assertEquals(typeBool.create(Boolean.FALSE), spec.invoke(context, type.create("test1"), type.create("test2")));

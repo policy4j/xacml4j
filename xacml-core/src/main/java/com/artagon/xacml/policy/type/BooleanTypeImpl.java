@@ -1,13 +1,12 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
 final class BooleanTypeImpl extends BaseAttributeDataType<BooleanType.BooleanValue> implements BooleanType
 {
-	public BooleanTypeImpl(){
-		super(DataTypes.BOOLEAN, Boolean.class);
+	public BooleanTypeImpl(String typeId){
+		super(typeId, Boolean.class);
 	}
 	
 	@Override

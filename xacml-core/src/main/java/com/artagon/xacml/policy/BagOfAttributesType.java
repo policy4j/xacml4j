@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.DataTypeId;
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -38,7 +37,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 		return type;
 	}
 	
-	public DataTypeId getDataTypeId(){
+	public String getDataTypeId(){
 		return type.getDataTypeId();
 	}
 	

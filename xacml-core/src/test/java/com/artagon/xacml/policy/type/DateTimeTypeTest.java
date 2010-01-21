@@ -10,12 +10,10 @@ import com.artagon.xacml.policy.type.DateTimeType.DateTimeValue;
 public class DateTimeTypeTest 
 {
 	private DateTimeType t1;
-	private DateTimeType t2;
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = new DateTimeTypeImpl();
-		this.t2 = new DateTimeTypeImpl();
+		this.t1 = DataTypes.DATETIME.getType();
 	}
 	
 	@Test
@@ -43,16 +41,7 @@ public class DateTimeTypeTest
 		assertEquals(0, value.getValue().getTimezone());
 		assertEquals("2002-05-30T09:30:10Z", value.toXacmlString());
 		
-	}
-	
-	@Test
-	public void testEquals(){
-		DateTimeValue value1 = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
-		DateTimeValue value2 = t2.fromXacmlString("2002-05-30T09:30:10-06:00");
-		assertEquals(value1, value2);
-	}
-	
-	
+	}	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){

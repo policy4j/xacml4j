@@ -10,12 +10,10 @@ import com.artagon.xacml.policy.type.DateType.DateValue;
 public class DateTypeTest 
 {
 	private DateType t1;
-	private DateType t2;
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = new DateTypeImpl();
-		this.t2 = new DateTypeImpl();
+		this.t1 = DataTypes.DATE.getType();
 	}
 	
 	@Test
@@ -26,13 +24,7 @@ public class DateTypeTest
 		assertEquals(24, value.getValue().getDay());
 		assertEquals("2002-09-24Z", value.toXacmlString());
 	}
-	
-	@Test
-	public void testEquals(){
-		DateValue value1 = t1.fromXacmlString("2002-09-24Z");
-		DateValue value2 = t2.fromXacmlString("2002-09-24Z");
-		assertEquals(value1, value2);
-	}
+
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){

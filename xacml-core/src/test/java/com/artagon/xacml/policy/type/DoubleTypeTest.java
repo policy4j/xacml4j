@@ -13,12 +13,10 @@ import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
 public class DoubleTypeTest 
 {
 	private DoubleType t1;
-	private DoubleType t2;
 	
 	@Before
 	public void init(){
-		this.t1 = new DoubleTypeImpl();
-		this.t2 = new DoubleTypeImpl();
+		this.t1 = DataTypes.DOUBLE.getType();
 	}
 	
 	@Test
@@ -44,14 +42,7 @@ public class DoubleTypeTest
 		Object o = 10;
 		t1.create(o);
 	}
-	
-	@Test
-	public void testTypeEquals()
-	{
-		assertEquals(t1, t2);
-		System.out.println(t1.toString());
-		System.out.println(t2.toString());
-	}
+
 	
 	@Test
 	public void testEquals()

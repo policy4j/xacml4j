@@ -15,7 +15,7 @@ public class RFC822NameTypeTest
 	
 	@Before
 	public void init(){
-		this.t = new RFC822NameTypeImpl();
+		this.t = DataTypes.RFC822NAME.getType();
 	}
 	
 	@Test

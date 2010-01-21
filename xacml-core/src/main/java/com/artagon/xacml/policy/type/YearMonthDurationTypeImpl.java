@@ -5,7 +5,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.YearMonthDurationType.YearMonthDurationValue;
 import com.artagon.xacml.util.Preconditions;
@@ -15,9 +14,9 @@ final class YearMonthDurationTypeImpl extends
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	
-	public YearMonthDurationTypeImpl()
+	public YearMonthDurationTypeImpl(String typeId)
 	{
-		super(DataTypes.YEARMONTHDURATION, Duration.class);
+		super(typeId, Duration.class);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){

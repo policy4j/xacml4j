@@ -2,15 +2,14 @@ package com.artagon.xacml.policy.type;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.artagon.xacml.DataTypes;
 import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
 final class X500NameTypeImpl extends BaseAttributeDataType<X500NameType.X500NameValue> implements X500NameType
 {
 	
-	public X500NameTypeImpl(){
-		super(DataTypes.X500NAME, X500Principal.class);
+	public X500NameTypeImpl(String typeId){
+		super(typeId, X500Principal.class);
 	}
 
 		@Override

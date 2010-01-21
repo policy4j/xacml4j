@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.DataTypeId;
 
 public interface AttributeDataType extends ValueType
 {
@@ -16,7 +15,7 @@ public interface AttributeDataType extends ValueType
 	 * 
 	 * @return data type identifier
 	 */
-	DataTypeId getDataTypeId();
+	String getDataTypeId();
 	
 	/**
 	 * Tests if a given {@link Object} instance

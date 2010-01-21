@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.DataTypes;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.StringType;
 
@@ -21,8 +21,8 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.t1 = dataTypes.getDataType(DataTypes.DOUBLE);
-		this.t2 = dataTypes.getDataType(DataTypes.STRING);
+		this.t1 = DataTypes.BOOLEAN.getType();
+		this.t2 = DataTypes.STRING.getType();
 		this.b1 = t1.bagOf();
 	}
 	

@@ -13,12 +13,10 @@ public class BooleanTypeTest
 {
 	
 	private BooleanType t1;
-	private BooleanType t2;
 	
 	@Before
 	public void init(){
-		this.t1 = new BooleanTypeImpl();
-		this.t2 = new BooleanTypeImpl();
+		this.t1 = DataTypes.BOOLEAN.getType();
 	}
 		
 	@Test
@@ -62,26 +60,13 @@ public class BooleanTypeTest
 	}
 	
 	@Test
-	public void testTypeEquals()
-	{
-		assertEquals(t1, t2);
-	}
-	
-	@Test
 	public void testEquals()
 	{
 		BooleanValue v1 = t1.create(Boolean.TRUE);
 		BooleanValue v2 = t1.create(Boolean.FALSE);
-		BooleanValue v3 = t2.create(Boolean.TRUE);
-		BooleanValue v4 = t2.create(Boolean.FALSE);
+		BooleanValue v3 = t1.create(Boolean.TRUE);
+		BooleanValue v4 = t1.create(Boolean.FALSE);
 		assertEquals(v1, v3);
 		assertEquals(v2, v4);
-	}
-	
-	@Test
-	public void testTypeInstanceEquals()
-	{
-		assertEquals(t1.create(Boolean.TRUE), t2.create(Boolean.TRUE));
-		assertEquals(t1.create(Boolean.FALSE), t2.create(Boolean.FALSE));
 	}
 }

@@ -15,15 +15,7 @@ public class IntegerTypeTest
 	
 	@Before
 	public void init(){
-		this.t = new IntegerTypeImpl();
-	}
-	
-	@Test
-	public void testTypeEquals()
-	{
-		IntegerType t0 = new IntegerTypeImpl();
-		IntegerType t1 = new IntegerTypeImpl();
-		assertEquals(t0, t1);
+		this.t = DataTypes.INTEGER.getType();
 	}
 	
 	@Test
