@@ -16,7 +16,7 @@ public class BooleanTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = DataTypes.BOOLEAN.getType();
+		this.t1 = XacmlDataType.BOOLEAN.getType();
 	}
 		
 	@Test

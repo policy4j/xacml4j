@@ -3,7 +3,6 @@ package com.artagon.xacml.policy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.util.Preconditions;
 
@@ -47,7 +46,7 @@ public final class Match implements Matchable, PolicyElement
 	 * 
 	 * @return match function XACML identifier
 	 */
-	public FunctionId getMatchId(){
+	public String getMatchId(){
 		return predicate.getId();
 	}
 	

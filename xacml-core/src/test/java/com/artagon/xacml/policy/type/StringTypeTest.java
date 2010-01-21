@@ -14,7 +14,7 @@ public class StringTypeTest
 	
 	@Before
 	public void init(){
-		this.t = DataTypes.STRING.getType();
+		this.t = XacmlDataType.STRING.getType();
 	}
 	
 	@Test

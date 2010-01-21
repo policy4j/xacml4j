@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.FunctionId;
 
 public interface FunctionFactory 
 {
@@ -13,7 +12,7 @@ public interface FunctionFactory
 	 * identifier or <code>null</code> if function
 	 * can not be found for a given identifier
 	 */
-	FunctionSpec getFunction(FunctionId functionId);
+	FunctionSpec getFunction(String functionId);
 	
 	/**
 	 * Tests if given function is supported by
@@ -23,7 +22,7 @@ public interface FunctionFactory
 	 * @return <code>true</code> if function
 	 * is supported by this factory
 	 */
-	boolean isSupported(FunctionId functionId);
+	boolean isSupported(String functionId);
 	
 	/**
 	 * Gets all supported function by this factory
@@ -31,5 +30,5 @@ public interface FunctionFactory
 	 * @return {@link Iterable} over all supported
 	 * function by this factory
 	 */
-	Iterable<FunctionId> getSupportedFunctions();
+	Iterable<String> getSupportedFunctions();
 }

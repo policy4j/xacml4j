@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.Functions;
+import com.artagon.xacml.policy.function.XacmlFunction;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 
 public class MatchTest extends XacmlPolicyTestCase
@@ -22,10 +22,10 @@ public class MatchTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.paramType = DataTypes.INTEGER.getType();
-		this.booleanType = DataTypes.BOOLEAN.getType();
+		this.paramType = XacmlDataType.INTEGER.getType();
+		this.booleanType = XacmlDataType.BOOLEAN.getType();
 		
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL);
 		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.TRUE)));
 	}
@@ -33,7 +33,7 @@ public class MatchTest extends XacmlPolicyTestCase
 	@Test
 	public void testMatchEvaluation() throws PolicyEvaluationException
 	{
-		IntegerType t = DataTypes.INTEGER.getType();
+		IntegerType t = XacmlDataType.INTEGER.getType();
 		AttributeDesignator designator = new AttributeDesignator(AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT,
 				"testId", "testIssuer", t, true);
 		attributeService.addAttribute(AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<Attribute>singleton(t.create(10L)));

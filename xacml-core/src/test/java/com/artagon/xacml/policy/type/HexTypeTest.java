@@ -14,7 +14,7 @@ public class HexTypeTest
 	
 	@Before
 	public void init(){
-		this.t = DataTypes.HEXBINARY.getType();
+		this.t = XacmlDataType.HEXBINARY.getType();
 	}
 	
 

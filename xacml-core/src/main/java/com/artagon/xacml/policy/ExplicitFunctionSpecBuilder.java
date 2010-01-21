@@ -3,17 +3,16 @@ package com.artagon.xacml.policy;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
 public class ExplicitFunctionSpecBuilder 
 	implements FunctionSpecBuilder
 {
-	private FunctionId functionId;
+	private String functionId;
 	private List<ParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	
-	public ExplicitFunctionSpecBuilder(FunctionId functionId){
+	public ExplicitFunctionSpecBuilder(String functionId){
 		Preconditions.checkNotNull(functionId, "Function identifier can't be null");
 		this.functionId = functionId;
 		this.paramSpec = new LinkedList<ParamSpec>();

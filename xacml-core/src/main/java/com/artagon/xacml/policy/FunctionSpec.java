@@ -2,8 +2,6 @@ package com.artagon.xacml.policy;
 
 import java.util.List;
 
-import com.artagon.xacml.FunctionId;
-
 public interface FunctionSpec 
 {
 	/**
@@ -11,7 +9,7 @@ public interface FunctionSpec
 	 * 
 	 * @return XACML function identifier
 	 */
-	FunctionId getId();
+	String getId();
 
 	/**
 	 * Gets function parameter specifications.

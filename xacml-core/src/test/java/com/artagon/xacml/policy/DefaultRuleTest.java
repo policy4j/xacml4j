@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.Functions;
+import com.artagon.xacml.policy.function.XacmlFunction;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
 
@@ -32,11 +32,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Before
 	public void init()
 	{
-		this.type1 = DataTypes.INTEGER.getType();
-		this.type2 = DataTypes.STRING.getType();
-		this.type3 = DataTypes.BOOLEAN.getType();
+		this.type1 = XacmlDataType.INTEGER.getType();
+		this.type2 = XacmlDataType.STRING.getType();
+		this.type3 = XacmlDataType.BOOLEAN.getType();
 		
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL);
 		b.withParam(type1).withParam(type1);
 		
 		FunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));

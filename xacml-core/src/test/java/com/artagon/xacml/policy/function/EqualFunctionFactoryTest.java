@@ -8,13 +8,12 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.type.AnyURIType;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.StringType;
 
 public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
@@ -23,31 +22,32 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	
 	@Before
 	public void init(){
-		this.factory = new EqualFunctionFactory();
+		this.factory = new XacmlEqualFunctionFactory();
 	}
 	
 	@Test
 	public void testAllFunctions(){
-		assertNotNull(factory.getFunction(Functions.ANYURI_EQUAL));
-		assertNotNull(factory.getFunction(Functions.BOOLEAN_EQUAL));
-		assertNotNull(factory.getFunction(Functions.STRING_EQUAL));
-		assertNotNull(factory.getFunction(Functions.INTEGER_EQUAL));
-		assertNotNull(factory.getFunction(Functions.DOUBLE_EQUAL));
-		assertNotNull(factory.getFunction(Functions.BASE64BINARY_EQUAL));
-		assertNotNull(factory.getFunction(Functions.HEXBINARY_EQUAL));
-		assertNotNull(factory.getFunction(Functions.RFC833NAME_EQUAL));
-		assertNotNull(factory.getFunction(Functions.DATE_EQUAL));
-		assertNotNull(factory.getFunction(Functions.DATETIME_EQUAL));
-		assertNotNull(factory.getFunction(Functions.DAYTIMEDURATION_EQUAL));
-		assertNotNull(factory.getFunction(Functions.YEARMONTHDURATION_EQUAL));
-		assertNotNull(factory.getFunction(Functions.TIME_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.ANYURI_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.BOOLEAN_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.STRING_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.INTEGER_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.DOUBLE_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.BASE64BINARY_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.HEXBINARY_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.RFC833NAME_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.DATE_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.DATETIME_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.DAYTIMEDURATION_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.YEARMONTHDURATION_EQUAL));
+		assertNotNull(factory.getFunction(XacmlFunction.TIME_EQUAL));
 	}
 	
 	@Test
 	public void testBooleanEquals() throws PolicyEvaluationException
 	{
-		BooleanType type = DataTypes.BOOLEAN.getType();
-		FunctionSpec spec = factory.getFunction(Functions.BOOLEAN_EQUAL);
+		BooleanType type = XacmlDataType.BOOLEAN.getType();
+		FunctionSpec spec = factory.getFunction(XacmlFunction.BOOLEAN_EQUAL);
+		assertNotNull(spec);
 		assertEquals(type.create(Boolean.TRUE), spec.invoke(context, type.create(Boolean.FALSE), type.create(Boolean.FALSE)));
 		assertEquals(type.create(Boolean.FALSE), spec.invoke(context, type.create(Boolean.TRUE), type.create(Boolean.FALSE)));
 	}
@@ -55,9 +55,9 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	@Test
 	public void testAnyURIEquals() throws Exception
 	{
-		AnyURIType type = DataTypes.ANYURI.getType();
-		BooleanType typeBool = DataTypes.BOOLEAN.getType();
-		FunctionSpec spec = factory.getFunction(Functions.ANYURI_EQUAL);
+		AnyURIType type = XacmlDataType.ANYURI.getType();
+		BooleanType typeBool = XacmlDataType.BOOLEAN.getType();
+		FunctionSpec spec = factory.getFunction(XacmlFunction.ANYURI_EQUAL);
 		assertEquals(typeBool.create(Boolean.TRUE), spec.invoke(context, type.create(new URI("test")), type.create(new URI("test"))));
 		assertEquals(typeBool.create(Boolean.FALSE), spec.invoke(context, type.create(new URI("test1")), type.create(new URI("test2"))));
 	}
@@ -65,9 +65,9 @@ public class EqualFunctionFactoryTest extends DefaultFunctionFactoryTestCase
 	@Test
 	public void testStringEquals() throws Exception
 	{
-		StringType type = DataTypes.STRING.getType();
-		BooleanType typeBool = DataTypes.BOOLEAN.getType();
-		FunctionSpec spec = factory.getFunction(Functions.STRING_EQUAL);
+		StringType type = XacmlDataType.STRING.getType();
+		BooleanType typeBool = XacmlDataType.BOOLEAN.getType();
+		FunctionSpec spec = factory.getFunction(XacmlFunction.STRING_EQUAL);
 		assertEquals(typeBool.create(Boolean.TRUE), spec.invoke(context, type.create("test"), type.create("test")));
 		assertEquals(typeBool.create(Boolean.FALSE), spec.invoke(context, type.create("test1"), type.create("test2")));
 	}

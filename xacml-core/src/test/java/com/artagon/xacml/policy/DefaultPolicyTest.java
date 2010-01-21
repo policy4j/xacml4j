@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.policy.combine.RuleDenyOverridesCombiningAlgorithm;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class DefaultPolicyTest extends XacmlPolicyTestCase 
 {
@@ -21,7 +21,7 @@ public class DefaultPolicyTest extends XacmlPolicyTestCase
 	@Before
 	public void init_policy()
 	{
-		BooleanType type = DataTypes.BOOLEAN.getType();
+		BooleanType type = XacmlDataType.BOOLEAN.getType();
 		this.rules = new LinkedList<Rule>();
 		rules.add(new DefaultRule("PermitRule", null, new Condition(type.create(Boolean.TRUE)), Effect.PERMIT));
 		rules.add(new DefaultRule("DenyRule", null, new Condition(type.create(Boolean.TRUE)), Effect.DENY));

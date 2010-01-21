@@ -2,14 +2,13 @@ package com.artagon.xacml.policy;
 
 import java.util.List;
 
-import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
 final class DynamicFunctionSpec extends BaseFunctionSpec
 {
 	private DynamicFunction function;
 
-	public DynamicFunctionSpec(FunctionId id, DynamicFunction function,
+	public DynamicFunctionSpec(String id, DynamicFunction function,
 			List<ParamSpec> params) {
 		super(id, params);
 		Preconditions.checkNotNull(function);

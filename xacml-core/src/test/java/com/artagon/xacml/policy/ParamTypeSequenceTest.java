@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
@@ -27,9 +27,9 @@ public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 	@Before
 	public void setUp() throws Exception
 	{
-		this.t1 = DataTypes.STRING.getType();
-		this.t2 = DataTypes.DOUBLE.getType();
-		this.t3 = DataTypes.BOOLEAN.getType();
+		this.t1 = XacmlDataType.STRING.getType();
+		this.t2 = XacmlDataType.DOUBLE.getType();
+		this.t3 = XacmlDataType.BOOLEAN.getType();
 		this.b1 = t2.bagOf();
 		this.specAttrZeroOrMore = new ParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
 		this.specAttrOneOrMore = new ParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);

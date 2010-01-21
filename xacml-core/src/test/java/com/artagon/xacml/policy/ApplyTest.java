@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.Functions;
+import com.artagon.xacml.policy.function.XacmlFunction;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 
 public class ApplyTest extends XacmlPolicyTestCase 
@@ -19,11 +19,11 @@ public class ApplyTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.paramType = DataTypes.INTEGER.getType();
-		this.booleanType = DataTypes.BOOLEAN.getType();
+		this.paramType = XacmlDataType.INTEGER.getType();
+		this.booleanType = XacmlDataType.BOOLEAN.getType();
 
 
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL);
 		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.FALSE)));
 	}

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
 
@@ -16,18 +15,18 @@ import com.artagon.xacml.util.Preconditions;
  */
 abstract class BaseFunctionSpec implements FunctionSpec
 {
-	private FunctionId functionId;
+	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	
-	public BaseFunctionSpec(FunctionId id, List<ParamSpec> params){
-		Preconditions.checkNotNull(id);
+	public BaseFunctionSpec(String functionId, List<ParamSpec> params){
+		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
-		this.functionId = id;
+		this.functionId = functionId;
 		this.parameters.addAll(params);
 	}
 	
 	@Override
-	public  final FunctionId getId(){
+	public  final String getId(){
 		return functionId;
 	}
 	

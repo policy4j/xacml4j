@@ -15,7 +15,7 @@ public class IntegerTypeTest
 	
 	@Before
 	public void init(){
-		this.t = DataTypes.INTEGER.getType();
+		this.t = XacmlDataType.INTEGER.getType();
 	}
 	
 	@Test

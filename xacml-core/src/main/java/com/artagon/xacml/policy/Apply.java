@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -41,7 +40,7 @@ public final class Apply implements Expression
 	 * 
 	 * @return XACML function identifier
 	 */
-	public FunctionId getFunctionId(){
+	public String getFunctionId(){
 		return spec.getId();
 	}
 	

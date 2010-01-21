@@ -3,18 +3,17 @@ package com.artagon.xacml.policy.function;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.FunctionId;
-import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
+import com.artagon.xacml.policy.FunctionFactory;
 
 public class BaseFunctionFacatory implements FunctionFactory
 {
-	private Map<FunctionId, FunctionSpec> functions;
+	private Map<String, FunctionSpec> functions;
 
 	
 	public BaseFunctionFacatory()
 	{
-		this.functions = new ConcurrentHashMap<FunctionId, FunctionSpec>();
+		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
 	}
 	
 	
@@ -24,17 +23,17 @@ public class BaseFunctionFacatory implements FunctionFactory
 	}
 
 	@Override
-	public final FunctionSpec getFunction(FunctionId functionId) {
+	public final FunctionSpec getFunction(String functionId) {
 		return functions.get(functionId);
 	}
 
 	@Override
-	public Iterable<FunctionId> getSupportedFunctions() {
+	public Iterable<String> getSupportedFunctions() {
 		return functions.keySet();
 	}
 
 	@Override
-	public boolean isSupported(FunctionId functionId) {
+	public boolean isSupported(String functionId) {
 		return functions.containsKey(functionId);
 	}
 

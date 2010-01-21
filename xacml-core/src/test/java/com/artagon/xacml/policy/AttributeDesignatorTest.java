@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 
 public class AttributeDesignatorTest extends XacmlPolicyTestCase
@@ -27,7 +27,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		this.issuer = "urn:test:issuer";
 		this.attributeId = "urn:test:attrId";
 		this.badAttributeId = "urn:test:attrId:bad";
-		this.type = DataTypes.INTEGER.getType();
+		this.type = XacmlDataType.INTEGER.getType();
 	}
 	
 	@Test(expected=PolicyEvaluationIndeterminateException.class)
