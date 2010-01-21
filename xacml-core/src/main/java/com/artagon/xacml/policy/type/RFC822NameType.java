@@ -1,7 +1,9 @@
 package com.artagon.xacml.policy.type;
 
 import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
+import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 
 /** XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
  * <br>The “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” primitive type 
@@ -27,6 +29,7 @@ public interface RFC822NameType extends AttributeDataType
 {	
 	RFC822NameValue create(Object value);
 	RFC822NameValue fromXacmlString(String v);
+	BagOfAttributesType<RFC822NameValue> bagOf();
 	
 	final class RFC822NameValue extends BaseAttributeValue<RFC822Name>
 	{

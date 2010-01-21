@@ -3,7 +3,9 @@ package com.artagon.xacml.policy.type;
 import javax.security.auth.x500.X500Principal;
 
 import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
+import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
@@ -25,6 +27,8 @@ public interface X500NameType extends AttributeDataType
 {
 	X500NameValue create(Object v);
 	X500NameValue fromXacmlString(String v);
+	
+	BagOfAttributesType<X500NameValue> bagOf();
 	
 	final class X500NameValue extends BaseAttributeValue<X500Principal>
 	{

@@ -3,7 +3,9 @@ package com.artagon.xacml.policy.type;
 import java.net.InetAddress;
 
 import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
+import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 
@@ -29,6 +31,7 @@ public interface IPAddressType extends AttributeDataType
 	IPAddressValue create(InetAddress address, InetAddress mask);
 	IPAddressValue create(InetAddress address, InetAddress mask, PortRange portRange);
 	IPAddressValue fromXacmlString(String v);
+	BagOfAttributesType<IPAddressValue> bagOf();
 	
 	public final class IPAddressValue extends BaseAttributeValue<IPAddress>
 	{
