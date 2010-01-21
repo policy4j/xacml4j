@@ -12,9 +12,7 @@ import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
-import com.artagon.xacml.policy.type.AnyURIType;
 import com.artagon.xacml.policy.type.DataTypes;
-import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 
 public class EqualFunctionFactory extends BaseFunctionFacatory
 {
@@ -83,11 +81,5 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 				return DataTypes.BOOLEAN.getType();
 			}
 		});
-	}
-	
-	@XacmlFunction(id="aaaaa")
-	public static BooleanValue eq(AnyURIType.AnyURIValue a, AnyURIType.AnyURIValue b )
-	{	
-		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
 }

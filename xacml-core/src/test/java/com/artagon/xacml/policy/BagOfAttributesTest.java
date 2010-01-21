@@ -29,12 +29,12 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	@Test
 	public void testContains() throws Exception
 	{
-		BagOfAttributesType<?> bagType = stringType.bagOf();
+		BagOfAttributesType<StringType.StringValue> bagType = stringType.bagOf();
 		Collection<Attribute> content = new LinkedList<Attribute>();
 		content.add(stringType.create("1"));
 		content.add(stringType.create("2"));
 		content.add(stringType.create("3"));	
-		BagOfAttributes<?> bag = bagType.createFromAttributes(content);
+		BagOfAttributes<StringType.StringValue> bag = bagType.createFromAttributes(content);
 		assertTrue(bag.contains(stringType.create("1")));
 		assertTrue(bag.contains(stringType.create("2")));
 		assertTrue(bag.contains(stringType.create("3")));
@@ -44,8 +44,8 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	@Test
 	public void testEqualsEmptyBags()
 	{
-		BagOfAttributesType<?> bagType1 = stringType.bagOf();
-		BagOfAttributesType<?> bagType2 = stringType.bagOf();
+		BagOfAttributesType<StringType.StringValue> bagType1 = stringType.bagOf();
+		BagOfAttributesType<StringType.StringValue> bagType2 = stringType.bagOf();
 		assertEquals(bagType1, bagType2);
 	}
 	
