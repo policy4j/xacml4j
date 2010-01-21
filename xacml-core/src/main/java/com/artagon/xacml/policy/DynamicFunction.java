@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import java.util.List;
 
 /**
  * An XACML function with variable return type
@@ -10,5 +9,5 @@ import java.util.List;
  */
 public interface DynamicFunction extends Function
 {
-	ValueType resolveReturnType(List<Expression> arguments);
+	ValueType resolveReturnType(Expression ...parameters);
 }

@@ -3,9 +3,6 @@ package com.artagon.xacml.policy;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,51 +37,22 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	@Test
 	public void testValidateSingleTypeParametersWithSameTypeArgs()
 	{ 
-		List<Expression> params = new LinkedList<Expression>();
-		assertFalse(specSameTypeArgs.validateParameters(params));
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		assertFalse(specSameTypeArgs.validateParameters(params));
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		params.add(type1.create(12L));
-		assertTrue(specSameTypeArgs.validateParameters(params));
-		
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		params.add(type1.create(12L));
-		params.add(type1.create(13L));
-		assertFalse(specSameTypeArgs.validateParameters(params));
+		assertFalse(specSameTypeArgs.validateParameters());
+		assertFalse(specSameTypeArgs.validateParameters(type1.create(10L)));
+		assertTrue(specSameTypeArgs.validateParameters(type1.create(10L), type1.create(12L)));
+		assertFalse(specSameTypeArgs.validateParameters(type1.create(10L), type1.create(12L), type1.create(13L)));
 	}
 	
 	@Test
 	public void testValidateSingeTypeParametersWithDiffTypesArgs()
 	{
-		List<Expression> params = new LinkedList<Expression>();
-		assertFalse(specDiffTypeArgs.validateParameters(params));
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		assertFalse(specDiffTypeArgs.validateParameters(params));
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		params.add(type1.create(12L));
-		assertFalse(specDiffTypeArgs.validateParameters(params));
-		
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		params.add(type1.create(12L));
-		params.add(type1.create(13L));
-		assertFalse(specDiffTypeArgs.validateParameters(params));
-		
-		params = new LinkedList<Expression>();
-		params.add(type1.create(10L));
-		params.add(type2.create("b"));
-		assertTrue(specDiffTypeArgs.validateParameters(params));
-		
-		params = new LinkedList<Expression>();
-		params.add(type2.create("a"));
-		params.add(type1.create(12L));
-		assertFalse(specDiffTypeArgs.validateParameters(params));
+		assertFalse(specDiffTypeArgs.validateParameters());
+		assertFalse(specDiffTypeArgs.validateParameters(type1.create(10L)));
+		assertFalse(specDiffTypeArgs.validateParameters(type1.create(10L), type1.create(12L)));
+		assertFalse(specDiffTypeArgs.validateParameters(type1.create(10L), type1.create(12L), type1.create(13L)));
+		assertTrue(specDiffTypeArgs.validateParameters(type1.create(10L), type2.create("b")));
+
+		assertFalse(specDiffTypeArgs.validateParameters(type2.create("a"), type1.create(10L)));
 	}
 	
 	@Test(expected=IllegalStateException.class)

@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import java.util.List;
 
 public class MockFunctionImplementation implements RegularFunction
 {
@@ -21,7 +20,7 @@ public class MockFunctionImplementation implements RegularFunction
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, List<Expression> parameters) 
+	public Value invoke(EvaluationContext context, Expression ...args) 
 		throws PolicyEvaluationException 
 	{
 		if(failWithIndeterminate){

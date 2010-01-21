@@ -37,11 +37,6 @@ public interface FunctionSpec
 	 * @return {@link Apply} to be used
 	 * in XACML policy expressions
 	 */
-	Apply createApply(List<Expression> arguments);
-	
-	/**
-	 * @see {@link #createApply(List)}
-	 */
 	Apply createApply(Expression ... arguments);
 	
 	/**
@@ -55,16 +50,7 @@ public interface FunctionSpec
 	 */
 	FunctionReferenceExpression createReference();
 	
-	boolean validateParameters(List<Expression> params);
 	boolean validateParameters(Expression ... params);
-	/**
-	 * Invokes this function with a given arguments
-	 * 
-	 * @return {@link Value} instance representing
-	 * function invocation result
-	 */
-	Value invoke(EvaluationContext context, List<Expression> arguments) 
-		throws PolicyEvaluationException;
 	
 	/**
 	 * Invokes this function with a given arguments

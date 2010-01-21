@@ -1,7 +1,5 @@
 package com.artagon.xacml.policy.function;
 
-import java.util.List;
-
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.Functions;
 import com.artagon.xacml.policy.Attribute;
@@ -57,9 +55,9 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 				return DataTypes.STRING.getType();
 			}
 		
-			public Value invoke(EvaluationContext context, List<Expression> exp)
+			public Value invoke(EvaluationContext context, Expression ...args)
 					throws PolicyEvaluationException {
-				Attribute v = (Attribute)exp.get(0);
+				Attribute v = (Attribute)args[0];
 				return DataTypes.STRING.create(v.toXacmlString());
 			}
 		});
@@ -72,9 +70,9 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		return builder.build(new RegularFunction() {
 			
 			@Override
-			public Value invoke(EvaluationContext context, List<Expression> parameters)
+			public Value invoke(EvaluationContext context, Expression ...args)
 					throws PolicyEvaluationException {
-				StringType.StringValue v = (StringType.StringValue)parameters.get(0);
+				StringType.StringValue v = (StringType.StringValue)args[0];
 				return returnType.create(v.getValue());
 			}
 			

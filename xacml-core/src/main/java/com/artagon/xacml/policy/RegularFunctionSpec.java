@@ -22,12 +22,12 @@ final class RegularFunctionSpec extends BaseFunctionSpec
 	}
 	
 	@Override
-	protected final ValueType resolveReturnType(List<Expression> arguments){
+	protected final ValueType resolveReturnType(Expression ...arguments){
 		return function.getReturnType();
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, List<Expression> arguments)
+	public Value invoke(EvaluationContext context, Expression ...arguments)
 			throws PolicyEvaluationException {
 		return function.invoke(context, arguments);
 	}

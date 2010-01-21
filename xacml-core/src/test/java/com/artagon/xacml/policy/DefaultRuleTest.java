@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,27 +41,18 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		
 		FunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
 		
-		List<Expression> paramsTrue = new LinkedList<Expression>();
-		paramsTrue.add(type1.create(10L));
-		paramsTrue.add(type1.create(10L));
-		Apply applyTrue = functionTrue.createApply(paramsTrue);
+		Apply applyTrue = functionTrue.createApply(type1.create(10L), type1.create(10L));
 		this.conditionTrue = new Condition(applyTrue);
 		
 		FunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
-		List<Expression> paramsFalse = new LinkedList<Expression>();
-		paramsFalse.add(type1.create(10L));
-		paramsFalse.add(type1.create(10L));
-		Apply applyFalse = functionFalse.createApply(paramsFalse);
+		Apply applyFalse = functionFalse.createApply(type1.create(10L), type1.create(10L));
 		this.conditionFalse = new Condition(applyFalse);
 		
 		MockFunctionImplementation impl = new MockFunctionImplementation(type3.create(Boolean.FALSE));
 		impl.setFailWithIndeterminate(true);
 		FunctionSpec functionIndeterminate = b.build(impl);
 		
-		List<Expression> paramsIndeterminate = new LinkedList<Expression>();
-		paramsIndeterminate.add(type1.create(10L));
-		paramsIndeterminate.add(type1.create(10L));
-		Apply applyInderminate = functionIndeterminate.createApply(paramsIndeterminate);
+		Apply applyInderminate = functionIndeterminate.createApply(type1.create(10L), type1.create(10L));
 		this.conditionIndeterminate = new Condition(applyInderminate);
 		
 		assertEquals(ConditionResult.INDETERMINATE, conditionIndeterminate.evaluate(context));

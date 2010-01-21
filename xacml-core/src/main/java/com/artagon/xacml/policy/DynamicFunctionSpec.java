@@ -24,14 +24,14 @@ final class DynamicFunctionSpec extends BaseFunctionSpec
 	}
 	
 	@Override
-	protected ValueType resolveReturnType(List<Expression> arguments) {
+	protected ValueType resolveReturnType(Expression ...arguments) {
 		return function.resolveReturnType(arguments);
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, List<Expression> parameters)
+	public Value invoke(EvaluationContext context, Expression ...arguments)
 			throws PolicyEvaluationException {
-		return function.invoke(context, parameters);
+		return function.invoke(context, arguments);
 	}
 	
 	

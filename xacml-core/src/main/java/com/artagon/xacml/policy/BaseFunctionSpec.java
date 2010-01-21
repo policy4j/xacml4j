@@ -48,11 +48,6 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		return new Apply(this, getReturnType(arguments), arguments);
 	}
 
-	@Override
-	public final Apply createApply(List<Expression> arguments) {
-		Preconditions.checkArgument(validateParameters(arguments));
-		return new Apply(this, resolveReturnType(arguments), arguments);
-	}
 	
 	@Override
 	public final FunctionReferenceExpression createReference() {
@@ -66,24 +61,15 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		return new FunctionReferenceExpression(this, returnType);
 	}
 
-	public final boolean validateParameters(Expression... expressions) {
-		return validateParameters(Arrays.asList(expressions));
-	}
 	
 	protected final ValueType getReturnType(Expression ... arguments){
-		return resolveReturnType(Arrays.asList(arguments));
+		return resolveReturnType(arguments);
 	}
 	
-	@Override
-	public final Value invoke(EvaluationContext context, Expression... expressions) 
-		throws PolicyEvaluationException{
-		return invoke(context, Arrays.asList(expressions));
-	}
-	
-	public final boolean validateParameters(List<Expression> params){
+	public final boolean validateParameters(Expression ... params){
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
-		ListIterator<Expression> expIt = params.listIterator();
+		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
 		while(it.hasNext()){
 			ParamSpec p = it.next();
 			if(!p.validate(expIt)){
@@ -97,7 +83,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 		return result;
 	}
 	
-	protected boolean validate(ParamSpec spec, Expression p, List<Expression> params){
+	protected boolean validate(ParamSpec spec, Expression p, Expression ... params){
 		return true;
 	}
 	
@@ -117,5 +103,5 @@ abstract class BaseFunctionSpec implements FunctionSpec
 	 * @param arguments a function invocation arguments
 	 * @return {@link ValueType} resolved function return type
 	 */
-	protected abstract ValueType resolveReturnType(List<Expression> arguments);
+	protected abstract ValueType resolveReturnType(Expression ... arguments);
 }

@@ -1,7 +1,5 @@
 package com.artagon.xacml.policy.function;
 
-import java.util.List;
-
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.EvaluationContext;
@@ -13,6 +11,7 @@ import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 
 public class EqualFunctionFactory extends BaseFunctionFacatory
 {
@@ -66,14 +65,15 @@ public class EqualFunctionFactory extends BaseFunctionFacatory
 	private FunctionSpec build(FunctionId functionId, AttributeDataType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId);
-
+		final BooleanValue FALSE = DataTypes.BOOLEAN.create(Boolean.FALSE);
+		final BooleanValue TRUE = DataTypes.BOOLEAN.create(Boolean.TRUE);
 		builder.withParam(type).withParam(type);
 		return builder.build(new RegularFunction()
 		{
 			@Override
-			public Value invoke(EvaluationContext context, List<Expression> exp)
+			public Value invoke(EvaluationContext context, Expression ...args)
 					throws PolicyEvaluationException {
-				return DataTypes.BOOLEAN.create(exp.get(0).equals(exp.get(1)));
+				return args[0].equals(args[1])?TRUE:FALSE;
 			}
 			
 			@Override

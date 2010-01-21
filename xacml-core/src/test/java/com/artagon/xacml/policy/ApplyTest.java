@@ -3,9 +3,6 @@ package com.artagon.xacml.policy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,8 +13,6 @@ import com.artagon.xacml.policy.type.IntegerType;
 
 public class ApplyTest extends XacmlPolicyTestCase 
 {
-	private List<Expression> params2Args;
-	private List<Expression> params1Args;
 	private FunctionSpec function;
 	private IntegerType paramType;
 	private BooleanType booleanType;
@@ -26,10 +21,8 @@ public class ApplyTest extends XacmlPolicyTestCase
 	public void init(){
 		this.paramType = DataTypes.INTEGER.getType();
 		this.booleanType = DataTypes.BOOLEAN.getType();
-		this.params2Args = new LinkedList<Expression>();
-		this.params2Args.add(paramType.create(10L));
-		this.params2Args.add(paramType.create(11L));
-		this.params1Args = new LinkedList<Expression>();
+
+
 		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(Functions.INTEGER_EQUAL);
 		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.FALSE)));
@@ -38,7 +31,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 	@Test
 	public void testApplyWithValidFunctionAndValidParameters() throws PolicyEvaluationException
 	{
-		Apply apply = function.createApply(params2Args);
+		Apply apply = function.createApply(paramType.create(10L), paramType.create(11L));
 		Value v = apply.evaluate(context);
 		assertNotNull(v);
 		assertEquals(booleanType.create(Boolean.FALSE), v);
@@ -47,7 +40,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 	@Test(expected=PolicyEvaluationIndeterminateException.class)
 	public void testApplyWithValidFunctionAndInValidParameters() throws PolicyEvaluationException
 	{
-		Apply apply = function.createApply(params1Args);
+		Apply apply = function.createApply(paramType.create(10L));
 		apply.evaluate(context);
 	}
 }

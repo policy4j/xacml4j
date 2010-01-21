@@ -1,8 +1,5 @@
 package com.artagon.xacml.policy;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.artagon.xacml.FunctionId;
 import com.artagon.xacml.util.Preconditions;
 
@@ -17,7 +14,7 @@ import com.artagon.xacml.util.Preconditions;
 public final class Apply implements Expression
 {	
 	private FunctionSpec spec;
-	private List<Expression> arguments;
+	private Expression[] arguments;
 	private ValueType returnType;
 	
 	
@@ -29,21 +26,15 @@ public final class Apply implements Expression
 	 * @param returnType a function return type
 	 * @param arguments a function invocation arguments
 	 */
-	Apply(FunctionSpec spec, ValueType returnType, List<Expression> arguments){
+	Apply(FunctionSpec spec, ValueType returnType, Expression ...expressions){
 		Preconditions.checkNotNull(spec);
 		Preconditions.checkNotNull(arguments);
 		Preconditions.checkNotNull(returnType);
 		this.spec = spec;
-		this.arguments = arguments;
+		this.arguments = expressions;
 		this.returnType = returnType;
 	}
-	
-	/**
-	 * @see {@link #Apply(FunctionSpec, ValueType, List)}
-	 */
-	Apply(FunctionSpec spec, ValueType returnType, Expression ... arguments){
-		this(spec, returnType, Arrays.asList(arguments));
-	}
+
 	
 	/**
 	 * Gets function identifier

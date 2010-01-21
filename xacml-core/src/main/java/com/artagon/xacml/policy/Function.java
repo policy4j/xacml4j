@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy;
 
-import java.util.List;
 
 public interface Function 
 {
@@ -16,6 +15,6 @@ public interface Function
 	 * while invoking function or evaluating function
 	 * parameters
 	 */
-	Value invoke(EvaluationContext context, List<Expression> parameters) 
+	Value invoke(EvaluationContext context, Expression ...parameters) 
 		throws PolicyEvaluationException;
 }
