@@ -26,12 +26,12 @@ public final class Apply implements Expression
 	 * @param returnType a function return type
 	 * @param arguments a function invocation arguments
 	 */
-	Apply(FunctionSpec spec, ValueType returnType, Expression ...expressions){
+	Apply(FunctionSpec spec, ValueType returnType, Expression ...arguments){
 		Preconditions.checkNotNull(spec);
-		Preconditions.checkNotNull(arguments);
 		Preconditions.checkNotNull(returnType);
+		Preconditions.checkArgument(spec.validateParameters(arguments));
 		this.spec = spec;
-		this.arguments = expressions;
+		this.arguments = arguments;
 		this.returnType = returnType;
 	}
 

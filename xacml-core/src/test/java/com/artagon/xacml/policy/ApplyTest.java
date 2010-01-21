@@ -37,7 +37,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 		assertEquals(booleanType.create(Boolean.FALSE), v);
 	}
 	
-	@Test(expected=PolicyEvaluationIndeterminateException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testApplyWithValidFunctionAndInValidParameters() throws PolicyEvaluationException
 	{
 		Apply apply = function.createApply(paramType.create(10L));
