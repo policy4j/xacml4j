@@ -1,7 +1,14 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.function;
 
 import java.util.List;
 
+import com.artagon.xacml.policy.BaseFunctionSpec;
+import com.artagon.xacml.policy.EvaluationContext;
+import com.artagon.xacml.policy.Expression;
+import com.artagon.xacml.policy.ParamSpec;
+import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.Value;
+import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Preconditions;
 
 final class RegularFunctionSpec extends BaseFunctionSpec

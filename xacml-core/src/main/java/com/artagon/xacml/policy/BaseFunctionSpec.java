@@ -13,12 +13,12 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ReturnType>
  */
-abstract class BaseFunctionSpec implements FunctionSpec
+public abstract class BaseFunctionSpec implements FunctionSpec
 {
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	
-	public BaseFunctionSpec(String functionId, List<ParamSpec> params){
+	protected BaseFunctionSpec(String functionId, List<ParamSpec> params){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
 		this.functionId = functionId;
@@ -26,7 +26,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 	}
 	
 	@Override
-	public  final String getId(){
+	public  final String getXacmlId(){
 		return functionId;
 	}
 	
@@ -44,7 +44,7 @@ abstract class BaseFunctionSpec implements FunctionSpec
 	@Override
 	public final Apply createApply(Expression... arguments) {
 		validateParameters(arguments);
-		return new Apply(this, getReturnType(arguments), arguments);
+		return new Apply(this, resolveReturnType(arguments), arguments);
 	}
 
 	
@@ -58,11 +58,6 @@ abstract class BaseFunctionSpec implements FunctionSpec
 							"function with a dynamic return type", functionId));
 		}
 		return new FunctionReferenceExpression(this, returnType);
-	}
-
-	
-	protected final ValueType getReturnType(Expression ... arguments){
-		return resolveReturnType(arguments);
 	}
 	
 	public final boolean validateParameters(Expression ... params){

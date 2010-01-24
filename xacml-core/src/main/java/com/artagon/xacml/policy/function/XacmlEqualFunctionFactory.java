@@ -2,11 +2,9 @@ package com.artagon.xacml.policy.function;
 
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.EvaluationContext;
-import com.artagon.xacml.policy.ExplicitFunctionSpecBuilder;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
-import com.artagon.xacml.policy.RegularFunction;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.policy.type.XacmlDataType;
@@ -35,7 +33,7 @@ public class XacmlEqualFunctionFactory extends BaseFunctionFacatory
 	
 	private FunctionSpec build(XacmlFunction functionId, AttributeDataType type)
 	{
-		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getFunctionId());
+		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		final BooleanValue FALSE = XacmlDataType.BOOLEAN.create(Boolean.FALSE);
 		final BooleanValue TRUE = XacmlDataType.BOOLEAN.create(Boolean.TRUE);
 		builder.withParam(type).withParam(type);

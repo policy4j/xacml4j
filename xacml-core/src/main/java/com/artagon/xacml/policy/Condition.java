@@ -28,7 +28,10 @@ public final class Condition implements PolicyElement
 	 * to {@link BooleanValue}
 	 */
 	public Condition(Expression predicate){
-		Preconditions.checkArgument(predicate.equals(XacmlDataType.BOOLEAN.getType()));
+		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(XacmlDataType.BOOLEAN.getType()), 
+				String.format(
+						"Condition expects boolean predicate, but got expression which evaluates=\"%s\"",
+						predicate.getEvaluatesTo()));
 		this.predicate = predicate;
 	}
 	

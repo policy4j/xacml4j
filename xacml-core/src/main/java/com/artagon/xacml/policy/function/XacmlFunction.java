@@ -210,7 +210,7 @@ public enum XacmlFunction
 		this.functionId = functionId;
 	}
 	
-	public String getFunctionId(){
+	public String getXacmlId(){
 		return functionId;
 	}
 }

@@ -1,5 +1,7 @@
 package com.artagon.xacml.policy;
 
+import com.artagon.xacml.policy.function.RegularFunction;
+
 
 public class MockFunctionImplementation implements RegularFunction
 {

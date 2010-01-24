@@ -36,12 +36,12 @@ public final class Apply implements Expression
 
 	
 	/**
-	 * Gets function identifier
+	 * Gets XACML function identifier
 	 * 
 	 * @return XACML function identifier
 	 */
 	public String getFunctionId(){
-		return spec.getId();
+		return spec.getXacmlId();
 	}
 	
 	@Override

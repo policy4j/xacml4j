@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.policy.FunctionSpec;
-import com.artagon.xacml.policy.FunctionFactory;
 
 public class BaseFunctionFacatory implements FunctionFactory
 {
@@ -19,7 +18,7 @@ public class BaseFunctionFacatory implements FunctionFactory
 	
 	
 	protected final void add(FunctionSpec spec){
-		this.functions.put(spec.getId(), spec);
+		this.functions.put(spec.getXacmlId(), spec);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public final class Match implements Matchable, PolicyElement
 	 * @return match function XACML identifier
 	 */
 	public String getMatchId(){
-		return predicate.getId();
+		return predicate.getXacmlId();
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public final class Match implements Matchable, PolicyElement
 			return MatchResult.NOMATCH;
 		}catch(PolicyEvaluationException e){
 			log.debug("Failed to evaluate match predicate=\"{}\", " +
-					"attribute value=\"{}\"", predicate.getId(), value);
+					"attribute value=\"{}\"", predicate.getXacmlId(), value);
 			return MatchResult.INDETERMINATE;
 		}
 	}

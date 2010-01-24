@@ -9,7 +9,7 @@ public interface FunctionSpec
 	 * 
 	 * @return XACML function identifier
 	 */
-	String getId();
+	String getXacmlId();
 
 	/**
 	 * Gets function parameter specifications.

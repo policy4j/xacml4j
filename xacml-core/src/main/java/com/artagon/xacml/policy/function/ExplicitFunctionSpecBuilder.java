@@ -1,8 +1,11 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.function;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.policy.FunctionSpec;
+import com.artagon.xacml.policy.ParamSpec;
+import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Preconditions;
 
 public class ExplicitFunctionSpecBuilder 

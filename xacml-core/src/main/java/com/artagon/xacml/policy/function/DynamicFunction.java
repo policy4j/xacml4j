@@ -1,4 +1,8 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.function;
+
+import com.artagon.xacml.policy.Expression;
+import com.artagon.xacml.policy.Function;
+import com.artagon.xacml.policy.ValueType;
 
 
 /**

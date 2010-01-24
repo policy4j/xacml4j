@@ -1,6 +1,11 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.function;
 
 import java.util.ListIterator;
+
+import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.Expression;
+import com.artagon.xacml.policy.ParamSpec;
+import com.artagon.xacml.policy.ValueType;
 
 public class ParamAnyAttributeTypeSpec implements ParamSpec
 {

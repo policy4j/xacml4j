@@ -1,12 +1,29 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.policy.BaseAttributeDataType;
 
-final class BooleanTypeImpl extends BaseAttributeDataType<BooleanType.BooleanValue> implements BooleanType
+/**
+ * An implementation of XACML {@link BooleanType}
+ * 
+ * @author Giedrius Trumpickas
+ */
+final class BooleanTypeImpl extends 
+	BaseAttributeDataType<BooleanType.BooleanValue> implements BooleanType
 {
-	public BooleanTypeImpl(String typeId){
+	private BooleanValue FALSE;
+	private BooleanValue TRUE;
+	
+	/**
+	 * Constructs XACML type with a given
+	 * type identifier
+	 * 
+	 * @param typeId a XACML type identifer
+	 */
+	BooleanTypeImpl(String typeId){
 		super(typeId, Boolean.class);
+		this.FALSE = new BooleanValue(this, Boolean.FALSE);
+		this.TRUE = new BooleanValue(this, Boolean.TRUE);
 	}
 	
 	@Override
@@ -18,12 +35,12 @@ final class BooleanTypeImpl extends BaseAttributeDataType<BooleanType.BooleanVal
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new BooleanValue(this, (Boolean)any);
+		return ((Boolean)any)?TRUE:FALSE;
 	}
 
 	@Override
 	public BooleanValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);
-		return create(Boolean.parseBoolean(v));
+		return Boolean.parseBoolean(v)?TRUE:FALSE;
 	}
 }

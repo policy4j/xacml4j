@@ -6,10 +6,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.function.XacmlFunction;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.function.ExplicitFunctionSpecBuilder;
+import com.artagon.xacml.policy.function.RegularFunction;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 {
@@ -26,11 +27,11 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 		this.type2 = XacmlDataType.STRING.getType();
 		this.impl =  new MockFunctionImplementation(type1.create(new Integer(10)));
 		
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_ADD); 
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder("testFunc1"); 
 		
 		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(impl);
 		
-		b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_ADD); 
+		b = new ExplicitFunctionSpecBuilder("testFunc2"); 
 		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(impl);
 	}
 	
@@ -58,14 +59,14 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_ADD);
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder("testFunc");
 		b.withParam(type1, 1, 10).withParam(type1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_ADD);
+		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder("testFunc");
 		b.withParam(type1, 3, 3).withParam(type1);
 	}
 }
