@@ -48,6 +48,7 @@ public interface FunctionSpec
 	 */
 	FunctionReferenceExpression createReference();
 	
+	
 	boolean validateParameters(Expression ... params);
 	
 	/**

@@ -59,6 +59,11 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		}
 		return new FunctionReferenceExpression(this, returnType);
 	}
+
+	
+	protected final ValueType getReturnType(Expression ... arguments){
+		return resolveReturnType(arguments);
+	}
 	
 	public final boolean validateParameters(Expression ... params){
 		boolean result = true;
@@ -83,7 +88,7 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	
 	/**
 	 * Tries to get function return type statically. 
-	 * If return type is not statically defined method
+	 * If return type can't be determined statically
 	 * returns <code>null</code> otherwise {@link ValueType}
 	 * 
 	 * @return {@link ValueType} or <code>null</code>

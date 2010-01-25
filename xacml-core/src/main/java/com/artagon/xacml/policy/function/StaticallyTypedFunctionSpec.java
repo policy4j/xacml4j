@@ -15,7 +15,7 @@ final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 {
 	private StaticallyTypedFunction function;
 	
-	public StaticallyTypedFunctionSpec(String id, 
+	StaticallyTypedFunctionSpec(String id, 
 			StaticallyTypedFunction function, List<ParamSpec> params) {
 		super(id, params);
 		Preconditions.checkNotNull(function);
@@ -27,6 +27,11 @@ final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 		return function.getReturnType();
 	}
 	
+	/**
+	 * Always returns the same value as {@link #getReturnType()}
+	 * 
+	 * @return {@link ValueType} instance
+	 */
 	@Override
 	protected final ValueType resolveReturnType(Expression ...arguments){
 		return function.getReturnType();

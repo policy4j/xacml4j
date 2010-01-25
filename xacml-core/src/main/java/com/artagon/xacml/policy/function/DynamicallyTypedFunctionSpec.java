@@ -15,18 +15,19 @@ final class DynamicallyTypedFunctionSpec extends BaseFunctionSpec
 {
 	private DynamicallyTypedFunction function;
 
-	public DynamicallyTypedFunctionSpec(String id, DynamicallyTypedFunction function,
+	DynamicallyTypedFunctionSpec(String id, DynamicallyTypedFunction function,
 			List<ParamSpec> params) {
 		super(id, params);
 		Preconditions.checkNotNull(function);
 		this.function = function;
 	}
 	
+	/**
+	 * Always returns <code>null</code>
+	 */
 	@Override
-	protected ValueType getReturnType() {
-		throw new UnsupportedOperationException(
-				String.format(
-						"Dynamic function=\"%s\" return type is not known staticaly", getXacmlId()));
+	protected final ValueType getReturnType() {
+		return null;
 	}
 	
 	@Override
