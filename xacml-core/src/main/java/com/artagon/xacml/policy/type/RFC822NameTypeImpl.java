@@ -2,10 +2,9 @@ package com.artagon.xacml.policy.type;
 
 import java.util.regex.Pattern;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class RFC822NameTypeImpl extends BaseAttributeDataType<RFC822NameType.RFC822NameValue> implements RFC822NameType
+final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822NameValue> implements RFC822NameType
 {
 	private final String RFC2822_REGEXP = 
 		"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +

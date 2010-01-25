@@ -1,9 +1,8 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class DNSNameTypeImpl extends BaseAttributeDataType<DNSNameType.DNSNameValue> implements DNSNameType
+final class DNSNameTypeImpl extends BaseAttributeType<DNSNameType.DNSNameValue> implements DNSNameType
 {
 	public DNSNameTypeImpl(String typeId) {
 		super(typeId, DNSName.class);

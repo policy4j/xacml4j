@@ -6,11 +6,10 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.TimeType.TimeValue;
 import com.artagon.xacml.util.Preconditions;
 
-final class TimeTypeImpl extends BaseAttributeDataType<TimeValue> implements TimeType
+final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeType
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	

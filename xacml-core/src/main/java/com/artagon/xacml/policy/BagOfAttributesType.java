@@ -23,7 +23,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * 
 	 * @param type an attribute type
 	 */
-	BagOfAttributesType(AttributeType type){
+	public BagOfAttributesType(AttributeType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
 	}

@@ -5,12 +5,11 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.policy.type.YearMonthDurationType.YearMonthDurationValue;
 import com.artagon.xacml.util.Preconditions;
 
 final class YearMonthDurationTypeImpl extends 
-	BaseAttributeDataType<YearMonthDurationValue> implements YearMonthDurationType
+	BaseAttributeType<YearMonthDurationValue> implements YearMonthDurationType
 {
 	private DatatypeFactory xmlDataTypesFactory;
 	

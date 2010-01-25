@@ -1,10 +1,9 @@
 package com.artagon.xacml.policy.type;
 
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class DoubleTypeImpl extends BaseAttributeDataType<DoubleType.DoubleValue> implements DoubleType
+final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> implements DoubleType
 {
 	public DoubleTypeImpl(String typeId){
 		super(typeId, Double.class);

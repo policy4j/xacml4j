@@ -5,7 +5,6 @@ import javax.xml.datatype.Duration;
 
 import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.BagOfAttributesType;
-import com.artagon.xacml.policy.BaseAttributeValue;
 import com.artagon.xacml.util.Preconditions;
 
 

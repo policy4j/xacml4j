@@ -1,5 +1,8 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.type;
 
+import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
 
@@ -8,7 +11,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class BaseAttributeDataType<AttributeValue extends Attribute> implements AttributeType
+public abstract class BaseAttributeType<AttributeValue extends Attribute> implements AttributeType
 {
 	private String typeId;
 	private Class<?> valueClazz;
@@ -19,7 +22,7 @@ public abstract class BaseAttributeDataType<AttributeValue extends Attribute> im
 	 * 
 	 * @param typeId an attribute type identifier
 	 */
-	protected BaseAttributeDataType(String typeId, Class<?> valueType){
+	protected BaseAttributeType(String typeId, Class<?> valueType){
 		Preconditions.checkNotNull(typeId);
 		Preconditions.checkNotNull(valueType);
 		this.typeId = typeId;		

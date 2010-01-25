@@ -1,7 +1,6 @@
 package com.artagon.xacml.policy.type;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.policy.BaseAttributeDataType;
 
 /**
  * An implementation of XACML {@link BooleanType}
@@ -9,7 +8,7 @@ import com.artagon.xacml.policy.BaseAttributeDataType;
  * @author Giedrius Trumpickas
  */
 final class BooleanTypeImpl extends 
-	BaseAttributeDataType<BooleanType.BooleanValue> implements BooleanType
+	BaseAttributeType<BooleanType.BooleanValue> implements BooleanType
 {
 	private BooleanValue FALSE;
 	private BooleanValue TRUE;

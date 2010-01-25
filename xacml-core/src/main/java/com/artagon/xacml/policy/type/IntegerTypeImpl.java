@@ -1,10 +1,9 @@
 package com.artagon.xacml.policy.type;
 
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class IntegerTypeImpl extends BaseAttributeDataType<IntegerType.IntegerValue> implements IntegerType
+final class IntegerTypeImpl extends BaseAttributeType<IntegerType.IntegerValue> implements IntegerType
 {
 	public IntegerTypeImpl(String typeId) {
 		super(typeId, Long.class);

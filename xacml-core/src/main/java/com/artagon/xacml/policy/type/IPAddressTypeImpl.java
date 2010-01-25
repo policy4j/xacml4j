@@ -2,10 +2,9 @@ package com.artagon.xacml.policy.type;
 
 import java.net.InetAddress;
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class IPAddressTypeImpl extends BaseAttributeDataType<IPAddressType.IPAddressValue> implements IPAddressType
+final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressValue> implements IPAddressType
 {
 	public IPAddressTypeImpl(String typeId){
 		super(typeId, IPAddress.class);

@@ -1,10 +1,9 @@
 package com.artagon.xacml.policy.type;
 
 
-import com.artagon.xacml.policy.BaseAttributeDataType;
 import com.artagon.xacml.util.Preconditions;
 
-final class HexBinaryTypeImpl extends BaseAttributeDataType<HexBinaryType.HexBinaryValue> implements HexBinaryType
+final class HexBinaryTypeImpl extends BaseAttributeType<HexBinaryType.HexBinaryValue> implements HexBinaryType
 {
 	
 	public HexBinaryTypeImpl(String typeId){

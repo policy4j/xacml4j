@@ -1,15 +1,21 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml.policy.type;
 
+import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.EvaluationContext;
+import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.PolicyVisitor;
+import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
 
-public abstract class BaseAttributeValue<T>
+abstract class BaseAttributeValue<T>
 	implements Attribute
 {
 	private T value;
 	private AttributeType type;
 	
-	public BaseAttributeValue(AttributeType type, T value) {
+	protected BaseAttributeValue(AttributeType type, T value) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkNotNull(value);
 		this.type = type;

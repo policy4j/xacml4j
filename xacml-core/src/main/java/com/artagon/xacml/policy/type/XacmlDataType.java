@@ -12,6 +12,7 @@ public enum XacmlDataType
 {
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
 	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),
+	
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#boolean</b> */
 	BOOLEAN(new BooleanTypeImpl("http://www.w3.org/2001/XMLSchema#boolean")),
 	
@@ -71,10 +72,23 @@ public enum XacmlDataType
 		this.type = type;
 	}
 	
+	/**
+	 * Gets type XACML identifier
+	 * 
+	 * @return XACML identifier for a type
+	 */
 	public String getTypeId(){
 		return type.getDataTypeId();
 	}
 	
+	/**
+	 * Creates type instance value from
+	 * a given {@link Object}
+	 * 
+	 * @param <V> an attribute value type
+	 * @param o an attribute value
+	 * @return an XACML data type value instance
+	 */
 	@SuppressWarnings("unchecked")
 	public <V extends Attribute> V create(Object o){
 		return ((V)type.create(o));
