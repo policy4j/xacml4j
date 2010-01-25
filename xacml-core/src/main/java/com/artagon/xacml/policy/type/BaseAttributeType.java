@@ -11,7 +11,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class BaseAttributeType<AttributeValue extends Attribute> implements AttributeType
+abstract class BaseAttributeType<AttributeValue extends Attribute> implements AttributeType
 {
 	private String typeId;
 	private Class<?> valueClazz;
