@@ -1,7 +1,5 @@
-package com.artagon.xacml.policy.function;
+package com.artagon.xacml.policy;
 
-import com.artagon.xacml.policy.BaseFunctionSpec;
-import com.artagon.xacml.policy.FunctionSpec;
 
 
 public interface FunctionFactory 

@@ -3,7 +3,6 @@ package com.artagon.xacml.policy.function;
 import java.util.ListIterator;
 
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.FunctionFamily;
 import com.artagon.xacml.policy.FunctionReferenceExpression;
 import com.artagon.xacml.policy.ParamSpec;
 import com.artagon.xacml.policy.ValueType;

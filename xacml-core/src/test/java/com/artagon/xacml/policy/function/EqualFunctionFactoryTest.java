@@ -8,6 +8,7 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.PolicyEvaluationException;
 import com.artagon.xacml.policy.type.AnyURIType;
