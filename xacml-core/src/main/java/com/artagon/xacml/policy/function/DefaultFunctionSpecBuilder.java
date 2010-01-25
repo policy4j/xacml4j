@@ -49,7 +49,7 @@ public class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
-	public FunctionSpec build(StaticallyTypedFunction<?> function)
+	public FunctionSpec build(StaticallyTypedFunction function)
 	{
 		return new StaticallyTypedFunctionSpec(functionId, function, paramSpec);
 	}

@@ -10,11 +10,11 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class StaticallyTypedFunction <R extends ValueType> implements Function 
+public abstract class StaticallyTypedFunction  implements Function 
 {
-	private R returnType;
+	private ValueType returnType;
 	
-	protected StaticallyTypedFunction(R returnType){
+	protected StaticallyTypedFunction(ValueType returnType){
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}
@@ -24,7 +24,7 @@ public abstract class StaticallyTypedFunction <R extends ValueType> implements F
 	 * 
 	 * @return function return type
 	 */
-	public final R getReturnType(){
+	public final ValueType getReturnType(){
 		return returnType;
 	}
 }
