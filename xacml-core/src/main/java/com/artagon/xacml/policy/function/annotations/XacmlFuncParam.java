@@ -9,7 +9,7 @@ import com.artagon.xacml.policy.type.XacmlDataType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlFuncArg 
+public @interface XacmlFuncParam 
 {
 	XacmlDataType type();
 	boolean isBag() default false;

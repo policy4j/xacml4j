@@ -9,7 +9,7 @@ import com.artagon.xacml.policy.type.XacmlDataType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlFuncVarArg 
+public @interface XacmlFuncVarArgParam 
 {
 	XacmlDataType type();
 	int min() default 2;
