@@ -15,5 +15,9 @@ public interface StringType extends AttributeType
 		public StringValue(StringType type, String value) {
 			super(type, value);
 		}
+		
+		public boolean equalsIgnoreCase(StringValue v){
+			return getValue().equalsIgnoreCase(v.getValue());
+		}
 	}
 }

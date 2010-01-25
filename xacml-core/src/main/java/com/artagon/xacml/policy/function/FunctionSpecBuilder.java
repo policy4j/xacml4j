@@ -4,6 +4,6 @@ import com.artagon.xacml.policy.FunctionSpec;
 
 public interface FunctionSpecBuilder 
 {
-	FunctionSpec build(StaticallyTypedFunction implementation);
+	FunctionSpec build(StaticallyTypedFunction<?> implementation);
 	FunctionSpec build(DynamicallyTypedFunction implementation);
 }

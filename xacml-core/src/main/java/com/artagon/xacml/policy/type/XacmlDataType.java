@@ -109,4 +109,9 @@ public enum XacmlDataType
 		AttributeType type = BY_TYPE_ID.get(typeId);
 		return (T)type;
 	} 
+	
+	@Override
+	public String toString(){
+		return type.toString();
+	}
 }

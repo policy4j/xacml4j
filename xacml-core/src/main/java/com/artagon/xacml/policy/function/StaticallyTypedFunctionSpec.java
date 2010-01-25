@@ -13,10 +13,10 @@ import com.artagon.xacml.util.Preconditions;
 
 final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 {
-	private StaticallyTypedFunction function;
+	private StaticallyTypedFunction<?> function;
 	
 	StaticallyTypedFunctionSpec(String id, 
-			StaticallyTypedFunction function, List<ParamSpec> params) {
+			StaticallyTypedFunction<?> function, List<ParamSpec> params) {
 		super(id, params);
 		Preconditions.checkNotNull(function);
 		this.function = function;
