@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.policy.function.ExplicitFunctionSpecBuilder;
-import com.artagon.xacml.policy.function.RegularFunction;
+import com.artagon.xacml.policy.function.StaticallyTypedFunction;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
 import com.artagon.xacml.policy.type.XacmlDataType;
@@ -19,7 +19,7 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
-	private RegularFunction impl;
+	private StaticallyTypedFunction impl;
 	
 	@Before
 	public void init(){

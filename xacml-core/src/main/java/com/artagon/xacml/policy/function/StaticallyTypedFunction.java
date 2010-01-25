@@ -9,7 +9,7 @@ import com.artagon.xacml.policy.ValueType;
  * 
  * @author Giedrius Trumpickas
  */
-public interface RegularFunction extends Function 
+public interface StaticallyTypedFunction extends Function 
 {
 	ValueType getReturnType();
 }

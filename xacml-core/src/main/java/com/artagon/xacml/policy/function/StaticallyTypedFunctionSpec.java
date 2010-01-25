@@ -11,27 +11,25 @@ import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Preconditions;
 
-final class DynamicFunctionSpec extends BaseFunctionSpec
+final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 {
-	private DynamicFunction function;
-
-	public DynamicFunctionSpec(String id, DynamicFunction function,
-			List<ParamSpec> params) {
+	private StaticallyTypedFunction function;
+	
+	public StaticallyTypedFunctionSpec(String id, 
+			StaticallyTypedFunction function, List<ParamSpec> params) {
 		super(id, params);
 		Preconditions.checkNotNull(function);
 		this.function = function;
 	}
-	
+
 	@Override
-	protected ValueType getReturnType() {
-		throw new UnsupportedOperationException(
-				String.format(
-						"Dynamic function=\"%s\" return type is not known staticaly", getXacmlId()));
+	protected final ValueType getReturnType() {
+		return function.getReturnType();
 	}
 	
 	@Override
-	protected ValueType resolveReturnType(Expression ...arguments) {
-		return function.resolveReturnType(arguments);
+	protected final ValueType resolveReturnType(Expression ...arguments){
+		return function.getReturnType();
 	}
 
 	@Override
@@ -39,6 +37,4 @@ final class DynamicFunctionSpec extends BaseFunctionSpec
 			throws PolicyEvaluationException {
 		return function.invoke(context, arguments);
 	}
-	
-	
 }

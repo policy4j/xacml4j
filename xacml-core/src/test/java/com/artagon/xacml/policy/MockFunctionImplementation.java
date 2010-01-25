@@ -1,9 +1,9 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.policy.function.RegularFunction;
+import com.artagon.xacml.policy.function.StaticallyTypedFunction;
 
 
-public class MockFunctionImplementation implements RegularFunction
+public class MockFunctionImplementation implements StaticallyTypedFunction
 {
 	private Value expectedResult;
 	private boolean failWithIndeterminate = false;

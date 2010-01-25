@@ -30,12 +30,12 @@ public class ExplicitFunctionSpecBuilder
 	}
 	
 	public ExplicitFunctionSpecBuilder withAnyBag(){
-		this.paramSpec.add(new ParamAnyBagTypeSpec());
+		this.paramSpec.add(new ParamAnyBagSpec());
 		return this;
 	}
 	
 	public ExplicitFunctionSpecBuilder withAnyAttribute(){
-		this.paramSpec.add(new ParamAnyAttributeTypeSpec());
+		this.paramSpec.add(new ParamAnyAttributeSpec());
 		return this;
 	}
 	
@@ -49,14 +49,14 @@ public class ExplicitFunctionSpecBuilder
 		return this;
 	}
 	
-	public FunctionSpec build(RegularFunction function)
+	public FunctionSpec build(StaticallyTypedFunction function)
 	{
-		return new RegularFunctionSpec(functionId, function, paramSpec);
+		return new StaticallyTypedFunctionSpec(functionId, function, paramSpec);
 	}
 	
-	public FunctionSpec build(DynamicFunction function)
+	public FunctionSpec build(DynamicallyTypedFunction function)
 	{
-		return new DynamicFunctionSpec(functionId, function, paramSpec);
+		return new DynamicallyTypedFunctionSpec(functionId, function, paramSpec);
 	}
 
 }

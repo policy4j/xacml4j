@@ -6,7 +6,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.artagon.xacml.policy.AttributeDataType;
 import com.artagon.xacml.policy.BaseAttributeValue;
 
-public interface DateType  extends AttributeDataType
+public interface DateType extends AttributeDataType
 {
 	DateValue create(Object value);
 	DateValue fromXacmlString(String v);

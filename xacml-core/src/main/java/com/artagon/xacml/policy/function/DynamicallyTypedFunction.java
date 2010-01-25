@@ -11,7 +11,15 @@ import com.artagon.xacml.policy.ValueType;
  * 
  * @author Giedrius Trumpickas
  */
-public interface DynamicFunction extends Function
+public interface DynamicallyTypedFunction extends Function
 {
+	/**
+	 * Resolves function return type based on given
+	 * function invocation arguments
+	 * 
+	 * @param arguments a function invocation
+	 * arguments
+	 * @return {@link ValueType} function return type
+	 */
 	ValueType resolveReturnType(Expression ...parameters);
 }

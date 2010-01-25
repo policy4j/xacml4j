@@ -37,7 +37,7 @@ public class XacmlEqualFunctionFactory extends BaseFunctionFacatory
 		final BooleanValue FALSE = XacmlDataType.BOOLEAN.create(Boolean.FALSE);
 		final BooleanValue TRUE = XacmlDataType.BOOLEAN.create(Boolean.TRUE);
 		builder.withParam(type).withParam(type);
-		return builder.build(new RegularFunction()
+		return builder.build(new StaticallyTypedFunction()
 		{
 			@Override
 			public Value invoke(EvaluationContext context, Expression ...args)

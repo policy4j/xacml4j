@@ -7,7 +7,7 @@ import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.ParamSpec;
 import com.artagon.xacml.policy.ValueType;
 
-public class ParamAnyAttributeTypeSpec implements ParamSpec
+public class ParamAnyAttributeSpec implements ParamSpec
 {
 	@Override
 	public boolean validate(ListIterator<Expression> it) {

@@ -45,7 +45,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		builder.withParam(type);
-		return builder.build(new RegularFunction() {
+		return builder.build(new StaticallyTypedFunction() {
 			@Override
 			public ValueType getReturnType() {
 				return XacmlDataType.STRING.getType();
@@ -63,7 +63,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		builder.withParam(XacmlDataType.STRING.getType());
-		return builder.build(new RegularFunction() {
+		return builder.build(new StaticallyTypedFunction() {
 			
 			@Override
 			public Value invoke(EvaluationContext context, Expression ...args)
