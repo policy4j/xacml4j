@@ -3,13 +3,13 @@ package com.artagon.xacml.policy.type;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
 import com.artagon.xacml.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.policy.type.YearMonthDurationType.YearMonthDurationValue;
 
-public interface DateTimeType extends AttributeDataType
+public interface DateTimeType extends AttributeType
 {	
 	DateTimeValue create(Object value);
 	DateTimeValue fromXacmlString(String v);

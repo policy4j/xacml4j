@@ -1,6 +1,6 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
 
@@ -28,7 +28,7 @@ import com.artagon.xacml.policy.BaseAttributeValue;
  * all ports numbered "x" and above. 
  * <br>[This syntax is taken from the Java SocketPermission.]
  */
-public interface DNSNameType extends AttributeDataType
+public interface DNSNameType extends AttributeType
 {
 	DNSNameValue create(Object o);
 	DNSNameValue fromXacmlString(String v);

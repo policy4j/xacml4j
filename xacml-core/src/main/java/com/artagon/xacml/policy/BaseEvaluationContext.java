@@ -75,7 +75,7 @@ class BaseEvaluationContext implements EvaluationContext
 	public BagOfAttributes<?> resolveAttributeDesignator(
 			AzCategoryId category,
 			String attributeId,
-			AttributeDataType dataType, String issuer) {
+			AttributeType dataType, String issuer) {
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(dataType);
 		Preconditions.checkNotNull(category);
@@ -97,7 +97,7 @@ class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category, 
 			XPath location,
-			AttributeDataType dataType) {
+			AttributeType dataType) {
 		Preconditions.checkNotNull(location);
 		Preconditions.checkNotNull(dataType);
 		return attributeService.resolve(category, location, dataType);

@@ -116,7 +116,7 @@ public interface EvaluationContext
 	 * can not be resolved an empty bag is returned to the caller
 	 */
 	BagOfAttributes<?> resolveAttributeDesignator(AzCategoryId category,
-			String attributeId, AttributeDataType dataType, 
+			String attributeId, AttributeType dataType, 
 			String issuer);
 	
 	/**
@@ -129,5 +129,5 @@ public interface EvaluationContext
 	 * can not be resolved an empty bag is returned to the caller
 	 */
 	BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category, 
-			XPath location, AttributeDataType dataType);
+			XPath location, AttributeType dataType);
 }

@@ -67,7 +67,7 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	 * 
 	 * @return
 	 */
-	public AttributeDataType getAttributeType(){
+	public AttributeType getAttributeType(){
 		return type.getDataType();
 	}
 	

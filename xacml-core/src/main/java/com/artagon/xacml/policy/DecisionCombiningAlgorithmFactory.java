@@ -1,8 +1,5 @@
-package com.artagon.xacml.policy.combine;
+package com.artagon.xacml.policy;
 
-import com.artagon.xacml.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.policy.Policy;
-import com.artagon.xacml.policy.Rule;
 
 public interface DecisionCombiningAlgorithmFactory 
 {

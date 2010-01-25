@@ -8,7 +8,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class BaseAttributeDataType<AttributeValue extends Attribute> implements AttributeDataType
+public abstract class BaseAttributeDataType<AttributeValue extends Attribute> implements AttributeType
 {
 	private String typeId;
 	private Class<?> valueClazz;
@@ -51,10 +51,10 @@ public abstract class BaseAttributeDataType<AttributeValue extends Attribute> im
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof AttributeDataType)){
+		if(!(o instanceof AttributeType)){
 			return false;
 		}
-		AttributeDataType t = (AttributeDataType)o;
+		AttributeType t = (AttributeType)o;
 		return typeId.equals(t.getDataTypeId()) && 
 			valueClazz.equals(t.getValueClass());
 	}

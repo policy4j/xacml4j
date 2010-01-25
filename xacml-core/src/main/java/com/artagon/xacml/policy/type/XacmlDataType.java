@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 
 
 public enum XacmlDataType 
@@ -57,7 +57,7 @@ public enum XacmlDataType
 	/** XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration</b> */
 	YEARMONTHDURATION(new YearMonthDurationTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration"));
 	
-	private static final Map<String, AttributeDataType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeDataType>();
+	private static final Map<String, AttributeType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeType>();
 
 	static {
 		for(XacmlDataType t : EnumSet.allOf(XacmlDataType.class)){
@@ -65,9 +65,9 @@ public enum XacmlDataType
 		}
 	}
 
-	private AttributeDataType type;
+	private AttributeType type;
 	
-	private XacmlDataType(AttributeDataType type){
+	private XacmlDataType(AttributeType type){
 		this.type = type;
 	}
 	
@@ -86,13 +86,13 @@ public enum XacmlDataType
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeDataType> T getType(){
+	public <T extends AttributeType> T getType(){
 		return (T)type;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends AttributeDataType> T getByTypeId(String typeId){
-		AttributeDataType type = BY_TYPE_ID.get(typeId);
+	public static <T extends AttributeType> T getByTypeId(String typeId){
+		AttributeType type = BY_TYPE_ID.get(typeId);
 		return (T)type;
 	} 
 }

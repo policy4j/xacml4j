@@ -4,19 +4,28 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.policy.FunctionSpec;
+import com.artagon.xacml.util.Preconditions;
 
 public class BaseFunctionFacatory implements FunctionFactory
 {
 	private Map<String, FunctionSpec> functions;
-
 	
-	public BaseFunctionFacatory()
-	{
+	protected BaseFunctionFacatory(){
 		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
 	}
 	
+	/**
+	 * Adds given {@link FunctionSpec} to this factory
+	 * 
+	 * @param spec a function specification
+	 * @exception 
+	 */
 	protected final void add(FunctionSpec spec){
-		this.functions.put(spec.getXacmlId(), spec);
+		FunctionSpec other = functions.get(spec.getXacmlId());
+		Preconditions.checkArgument(other == null, 
+				String.format("This factory already contains function=\"%s\" with a given identifier=\"%s\"", 
+						spec, spec.getXacmlId()));
+		functions.put(spec.getXacmlId(), spec);
 	}
 
 	@Override

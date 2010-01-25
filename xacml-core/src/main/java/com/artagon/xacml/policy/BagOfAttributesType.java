@@ -15,7 +15,7 @@ import com.artagon.xacml.util.Preconditions;
  */
 public final class BagOfAttributesType<VT extends Attribute> implements ValueType
 {
-	private AttributeDataType type;
+	private AttributeType type;
 	
 	/**
 	 * Constructs bag of attributes types with a given
@@ -23,7 +23,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * 
 	 * @param type an attribute type
 	 */
-	BagOfAttributesType(AttributeDataType type){
+	BagOfAttributesType(AttributeType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
 	}
@@ -33,7 +33,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * 
 	 * @return bag attribute type
 	 */
-	public AttributeDataType getDataType(){
+	public AttributeType getDataType(){
 		return type;
 	}
 	

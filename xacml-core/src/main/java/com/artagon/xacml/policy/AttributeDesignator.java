@@ -33,7 +33,7 @@ public final class AttributeDesignator extends AttributeReference
 			AzCategoryId category,
 			String attributeId, 
 			String issuer,
-			AttributeDataType dataType, 
+			AttributeType dataType, 
 			boolean mustBePresent){
 		super(category, dataType);
 		Preconditions.checkNotNull(attributeId);
@@ -78,7 +78,7 @@ public final class AttributeDesignator extends AttributeReference
 	/**
 	 * Evaluates this attribute designator by resolving
 	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String, 
-	 * String, AttributeDataType, String)
+	 * String, AttributeType, String)
 	 * 
 	 * @return {@link BagOfAttributes} instance 
 	 * @exception PolicyEvaluationIndeterminateException if attribute can't be resolved

@@ -1,6 +1,6 @@
 package com.artagon.xacml.policy.function;
 
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.FunctionSpec;
@@ -31,7 +31,7 @@ public class XacmlEqualFunctionFactory extends BaseFunctionFacatory
 		add(build(XacmlFunction.X500NAME_EQUAL, XacmlDataType.X500NAME.getType()));
 	}
 	
-	private FunctionSpec build(XacmlFunction functionId, AttributeDataType type)
+	private FunctionSpec build(XacmlFunction functionId, AttributeType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		final BooleanValue FALSE = XacmlDataType.BOOLEAN.create(Boolean.FALSE);

@@ -9,9 +9,9 @@ public interface AttributeResolutionService
 {
 
 	BagOfAttributes<?> resolve(AzCategoryId category,
-			String attributeId, AttributeDataType dataType, 
+			String attributeId, AttributeType dataType, 
 			String issuer);
 	
 	BagOfAttributes<?> resolve(AzCategoryId category, 
-			XPath location, AttributeDataType dataType);
+			XPath location, AttributeType dataType);
 }

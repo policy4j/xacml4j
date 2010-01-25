@@ -2,7 +2,7 @@ package com.artagon.xacml.policy.type;
 
 import java.net.InetAddress;
 
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.policy.BaseAttributeValue;
 
@@ -23,7 +23,7 @@ import com.artagon.xacml.policy.BaseAttributeValue;
  * Addresses in URL's". (Note that an IPv6 address or mask, in this syntax, 
  * is enclosed in literal "[" "]" brackets.) 
  */
-public interface IPAddressType extends AttributeDataType
+public interface IPAddressType extends AttributeType
 {
 	IPAddressValue create(Object v);
 	IPAddressValue create(InetAddress address, PortRange portRange);

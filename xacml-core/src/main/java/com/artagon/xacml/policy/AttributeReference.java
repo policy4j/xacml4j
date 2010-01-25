@@ -24,7 +24,7 @@ abstract class AttributeReference implements Expression
 	 * data type
 	 */
 	protected AttributeReference(AzCategoryId category, 
-			AttributeDataType dataType){
+			AttributeType dataType){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
 		this.category = category;
@@ -40,9 +40,9 @@ abstract class AttributeReference implements Expression
 	 * Gets bag returned by this reference
 	 * attribute XACML primitive data type
 	 * 
-	 * @return {@link AttributeDataType}
+	 * @return {@link AttributeType}
 	 */
-	public final AttributeDataType getDataType(){
+	public final AttributeType getDataType(){
 		return evaluatesTo.getDataType();
 	}
 	

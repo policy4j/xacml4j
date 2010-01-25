@@ -102,7 +102,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public BagOfAttributes<?> resolveAttributeDesignator(AzCategoryId category,
-			String attributeId, AttributeDataType dataType,
+			String attributeId, AttributeType dataType,
 			String issuer) {
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
 				issuer);
@@ -113,7 +113,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category,
-			XPath location, AttributeDataType dataType) {
+			XPath location, AttributeType dataType) {
 		return delegate.resolveAttributeSelector(category, location, dataType);
 	}
 

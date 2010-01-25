@@ -1,7 +1,7 @@
 package com.artagon.xacml.policy.function;
 
 import com.artagon.xacml.policy.Attribute;
-import com.artagon.xacml.policy.AttributeDataType;
+import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.FunctionSpec;
@@ -41,7 +41,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		add(buildFromString(XacmlFunction.IPADDRESS_FROM_STRING, XacmlDataType.IPADDRESS.getType()));
 	}
 	
-	private FunctionSpec buildToString(XacmlFunction functionId, final AttributeDataType type)
+	private FunctionSpec buildToString(XacmlFunction functionId, final AttributeType type)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		builder.withParam(type);
@@ -59,7 +59,7 @@ public class ToFromStringFunctionFactory extends BaseFunctionFacatory
 		});
 	}
 	
-	private FunctionSpec buildFromString(XacmlFunction functionId, final AttributeDataType returnType)
+	private FunctionSpec buildFromString(XacmlFunction functionId, final AttributeType returnType)
 	{
 		ExplicitFunctionSpecBuilder builder = new ExplicitFunctionSpecBuilder(functionId.getXacmlId());
 		builder.withParam(XacmlDataType.STRING.getType());

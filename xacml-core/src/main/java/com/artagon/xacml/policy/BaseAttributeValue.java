@@ -7,9 +7,9 @@ public abstract class BaseAttributeValue<T>
 	implements Attribute
 {
 	private T value;
-	private AttributeDataType type;
+	private AttributeType type;
 	
-	public BaseAttributeValue(AttributeDataType type, T value) {
+	public BaseAttributeValue(AttributeType type, T value) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkNotNull(value);
 		this.type = type;
@@ -26,7 +26,7 @@ public abstract class BaseAttributeValue<T>
 	}
 	
 	@Override
-	public final AttributeDataType getType(){
+	public final AttributeType getType(){
 		return type;
 	}
 	

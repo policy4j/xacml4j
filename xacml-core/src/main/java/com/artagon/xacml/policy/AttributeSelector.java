@@ -14,7 +14,7 @@ public final class AttributeSelector extends AttributeReference
 	public AttributeSelector(
 			AzCategoryId category, 
 			XPath xpath, 
-			AttributeDataType dataType, 
+			AttributeType dataType, 
 					boolean mustBePresent){
 		super(category, dataType);
 		Preconditions.checkNotNull(xpath);
