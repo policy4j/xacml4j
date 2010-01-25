@@ -18,7 +18,7 @@ public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 	
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
-	private DecisionCombiner<Rule> combine;
+	private DecisionCombiningAlgorithm<Rule> combine;
 	
 	/**
 	 * Creates policy with a given identifier, target, variables.
@@ -37,7 +37,7 @@ public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 			String policyId, 
 			Target target, 
 			Collection<VariableDefinition> variables, 
-			DecisionCombiner<Rule> combine,
+			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
@@ -54,7 +54,7 @@ public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 	}
 	
 	public DefaultPolicy(String policyId, 
-			Collection<Rule> rules, DecisionCombiner<Rule> combine)
+			Collection<Rule> rules, DecisionCombiningAlgorithm<Rule> combine)
 	{
 		this(policyId, null, 
 				Collections.<VariableDefinition>emptyList(),

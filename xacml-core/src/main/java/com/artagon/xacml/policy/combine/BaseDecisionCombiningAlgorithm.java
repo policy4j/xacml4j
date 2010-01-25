@@ -1,14 +1,14 @@
 package com.artagon.xacml.policy.combine;
 
 import com.artagon.xacml.policy.Decision;
-import com.artagon.xacml.policy.DecisionCombiner;
+import com.artagon.xacml.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.policy.DecisionResult;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.PolicyVisitor;
 import com.artagon.xacml.util.Preconditions;
 
 public abstract class BaseDecisionCombiningAlgorithm <D extends Decision>  
-	implements DecisionCombiner <D>
+	implements DecisionCombiningAlgorithm <D>
 {
 	private String algorithmId;
 	

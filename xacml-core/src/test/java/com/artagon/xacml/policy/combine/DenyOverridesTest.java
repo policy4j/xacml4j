@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.DecisionCombiner;
+import com.artagon.xacml.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.policy.DecisionResult;
 import com.artagon.xacml.policy.MockDecision;
 import com.artagon.xacml.policy.XacmlPolicyTestCase;
@@ -16,7 +16,7 @@ import com.artagon.xacml.policy.XacmlPolicyTestCase;
 public class DenyOverridesTest extends XacmlPolicyTestCase
 {
 	private List<MockDecision> decisions;
-	private DecisionCombiner<MockDecision> algorithm;
+	private DecisionCombiningAlgorithm<MockDecision> algorithm;
 	
 	@Before
 	public void init(){

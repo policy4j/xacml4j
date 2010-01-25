@@ -15,8 +15,6 @@ public class BaseFunctionFacatory implements FunctionFactory
 		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
 	}
 	
-	
-	
 	protected final void add(FunctionSpec spec){
 		this.functions.put(spec.getXacmlId(), spec);
 	}

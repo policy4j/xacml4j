@@ -14,7 +14,7 @@ public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicySet.class);
 	
-	private DecisionCombiner<CompositeDecision> combine;
+	private DecisionCombiningAlgorithm<CompositeDecision> combine;
 	private List<CompositeDecision> decisions;
 	
 	/**
@@ -30,7 +30,7 @@ public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
 	 * @param obligationExpressions a collection of obligation expressions
 	 */
 	public DefaultPolicySet(String id, Target target, 
-			DecisionCombiner<CompositeDecision> combine, 
+			DecisionCombiningAlgorithm<CompositeDecision> combine, 
 			Collection<? extends CompositeDecision> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 

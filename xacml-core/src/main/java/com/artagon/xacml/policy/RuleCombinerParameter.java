@@ -2,7 +2,7 @@ package com.artagon.xacml.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-public final class RuleCombinerParameter extends DecisionCombinerParameter
+public final class RuleCombinerParameter extends DecisionCombiningAlgorithmParameter
 {
 	private String ruleId;
 	
