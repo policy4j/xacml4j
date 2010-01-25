@@ -17,7 +17,7 @@ final class BooleanTypeImpl extends
 	 * Constructs XACML type with a given
 	 * type identifier
 	 * 
-	 * @param typeId a XACML type identifer
+	 * @param typeId a XACML type identifier
 	 */
 	BooleanTypeImpl(String typeId){
 		super(typeId, Boolean.class);

@@ -1,10 +1,12 @@
 package com.artagon.xacml.policy.function;
 
+import com.artagon.xacml.policy.BagOfAttributes;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncSpec;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncArg;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArg;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.IntegerType;
+import com.artagon.xacml.policy.type.StringType;
 import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 
@@ -38,4 +40,12 @@ public class XacmlEqualPredicates
 		}
 		return XacmlDataType.INTEGER.create(sum);
 	}
+	
+	public static IntegerType.IntegerValue count(
+			@XacmlFuncArg(type=XacmlDataType.STRING, isBag=true)BagOfAttributes<StringType.StringValue> bag)
+	{
+		return XacmlDataType.INTEGER.create(0);
+	}
+	
+
 }
