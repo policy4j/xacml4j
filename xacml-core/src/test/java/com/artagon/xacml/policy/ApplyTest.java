@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.function.ExplicitFunctionSpecBuilder;
+import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.function.XacmlFunction;
 
 import com.artagon.xacml.policy.type.BooleanType;
@@ -25,7 +25,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 		this.booleanType = XacmlDataType.BOOLEAN.getType();
 
 
-		ExplicitFunctionSpecBuilder b = new ExplicitFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL.getXacmlId());
+		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL.getXacmlId());
 		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.FALSE)));
 	}

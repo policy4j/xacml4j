@@ -2,6 +2,7 @@ package com.artagon.xacml.policy.function;
 
 import com.artagon.xacml.policy.Function;
 import com.artagon.xacml.policy.ValueType;
+import com.artagon.xacml.util.Preconditions;
 
 /**
  * An XACML function with statically defined
@@ -9,7 +10,16 @@ import com.artagon.xacml.policy.ValueType;
  * 
  * @author Giedrius Trumpickas
  */
-public interface StaticallyTypedFunction extends Function 
+public abstract class StaticallyTypedFunction implements Function 
 {
-	ValueType getReturnType();
+	private ValueType returnType;
+	
+	protected StaticallyTypedFunction(ValueType returnType){
+		Preconditions.checkNotNull(returnType);
+		this.returnType = returnType;
+	}
+	
+	public final ValueType getReturnType(){
+		return returnType;
+	}
 }

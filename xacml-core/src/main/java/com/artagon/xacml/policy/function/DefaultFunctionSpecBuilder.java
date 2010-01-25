@@ -8,20 +8,20 @@ import com.artagon.xacml.policy.ParamSpec;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Preconditions;
 
-public class ExplicitFunctionSpecBuilder 
+public class DefaultFunctionSpecBuilder 
 	implements FunctionSpecBuilder
 {
 	private String functionId;
 	private List<ParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	
-	public ExplicitFunctionSpecBuilder(String functionId){
+	public DefaultFunctionSpecBuilder(String functionId){
 		Preconditions.checkNotNull(functionId, "Function identifier can't be null");
 		this.functionId = functionId;
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
 	
-	public ExplicitFunctionSpecBuilder withParam(ValueType type){
+	public DefaultFunctionSpecBuilder withParam(ValueType type){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg, 
 				String.format("Can't add parameter after variadic parameter"));
@@ -29,17 +29,17 @@ public class ExplicitFunctionSpecBuilder
 		return this;
 	}
 	
-	public ExplicitFunctionSpecBuilder withAnyBag(){
+	public DefaultFunctionSpecBuilder withAnyBag(){
 		this.paramSpec.add(new ParamAnyBagSpec());
 		return this;
 	}
 	
-	public ExplicitFunctionSpecBuilder withAnyAttribute(){
+	public DefaultFunctionSpecBuilder withAnyAttribute(){
 		this.paramSpec.add(new ParamAnyAttributeSpec());
 		return this;
 	}
 	
-	public ExplicitFunctionSpecBuilder withParam(ValueType type, int min, int max){
+	public DefaultFunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min > 0 && max > 0);
 		Preconditions.checkArgument(max > min);

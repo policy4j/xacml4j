@@ -3,22 +3,18 @@ package com.artagon.xacml.policy;
 import com.artagon.xacml.policy.function.StaticallyTypedFunction;
 
 
-public class MockFunctionImplementation implements StaticallyTypedFunction
+public class MockFunctionImplementation extends StaticallyTypedFunction
 {
 	private Value expectedResult;
 	private boolean failWithIndeterminate = false;
 	
 	public MockFunctionImplementation(Value expectedResult){
+		super(expectedResult.getEvaluatesTo());
 		this.expectedResult = expectedResult;
 	}
 	
 	public void setFailWithIndeterminate(boolean fail){
 		this.failWithIndeterminate = fail;
-	}
-
-	@Override
-	public ValueType getReturnType() {
-		return expectedResult.getEvaluatesTo();
 	}
 
 	@Override
