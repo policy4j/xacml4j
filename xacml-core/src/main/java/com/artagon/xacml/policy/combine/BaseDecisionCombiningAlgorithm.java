@@ -7,7 +7,7 @@ import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.PolicyVisitor;
 import com.artagon.xacml.util.Preconditions;
 
-public abstract class BaseDecisionCombiningAlgorithm <D extends Decision>  
+abstract class BaseDecisionCombiningAlgorithm <D extends Decision>  
 	implements DecisionCombiningAlgorithm <D>
 {
 	private String algorithmId;
