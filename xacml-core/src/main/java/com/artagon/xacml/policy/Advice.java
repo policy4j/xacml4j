@@ -15,4 +15,13 @@ public final class Advice extends BaseDecisionResponse
 	public Advice(String adviceId, Collection<AttributeAssignment> attributes) {
 		super(adviceId, attributes);
 	}
+
+	@Override
+	public void accept(PolicyVisitor v) {
+		v.visitEnter(this);
+		for(AttributeAssignment attr : getAttributes()){
+			attr.accept(v);
+		}
+		v.visitLeave(this);
+	}
 }

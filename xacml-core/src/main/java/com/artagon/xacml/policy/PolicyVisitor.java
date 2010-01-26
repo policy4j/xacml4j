@@ -3,8 +3,18 @@ package com.artagon.xacml.policy;
 
 public interface PolicyVisitor
 {
+	
+	void visitEnter(Advice attr);
+	void visitLeave(Advice attr);
+	
+	void visitEnter(AssociatedAdvice attr);
+	void visitLeave(AssociatedAdvice attr);
+	
 	void visitEnter(Attribute attr);
 	void visitLeave(Attribute attr);
+	
+	void visitEnter(AttributeAssignment attr);
+	void visitLeave(AttributeAssignment attr);
 	
 	void visitEnter(AttributeDesignator designator);
 	void visitLeave(AttributeDesignator designator);

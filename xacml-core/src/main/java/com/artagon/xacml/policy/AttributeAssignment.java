@@ -3,7 +3,7 @@ package com.artagon.xacml.policy;
 import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
-public class AttributeAssignment
+public class AttributeAssignment implements PolicyElement
 {
 	private Attribute attribute;
 	private CategoryId category;
@@ -65,5 +65,13 @@ public class AttributeAssignment
 	 */
 	public String getIssuer(){
 		return issuer;
+	}
+
+
+	@Override
+	public void accept(PolicyVisitor v) {
+		v.visitEnter(this);
+		attribute.accept(v);
+		v.visitLeave(this);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
 
-class BaseDecisionResponse
+abstract class BaseDecisionResponse implements PolicyElement
 {
 	private String id;
 	private Collection<AttributeAssignment> attributes;
