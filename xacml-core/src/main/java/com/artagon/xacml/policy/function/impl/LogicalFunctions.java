@@ -1,12 +1,16 @@
-package com.artagon.xacml.policy.function;
+package com.artagon.xacml.policy.function.impl;
 
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.PolicyEvaluationIndeterminateException;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
+import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArgParam;
+
 import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 
 public class LogicalFunctions 
@@ -18,7 +22,6 @@ public class LogicalFunctions
 			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression ...values) 
 		throws PolicyEvaluationException
 	{
-		// lazy evaluate
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
 			r = r & ((BooleanValue)e.evaluate(context)).getValue(); 
@@ -36,7 +39,6 @@ public class LogicalFunctions
 			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression...values) 
 		throws PolicyEvaluationException
 	{
-		// lazy evaluate
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
 			Boolean v = ((BooleanValue)e.evaluate(context)).getValue();
@@ -44,6 +46,24 @@ public class LogicalFunctions
 			if(r){
 				break;
 			}
+		}
+		return XacmlDataType.BOOLEAN.create(r);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or")
+	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	public static BooleanValue nof(
+			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue n,
+			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)BooleanValue...values) 
+		throws PolicyEvaluationException
+	{
+		Boolean r = Boolean.TRUE;
+		if(values.length < n.getValue()){
+			throw new PolicyEvaluationIndeterminateException("Number of arguments=\"%s\" is " +
+					"less than minimum required number=\"%s\"", values.length, n.getValue());
+		}
+		for(int i = 0; i < n.getValue(); i++ ){
+			r &= values[i].getValue();
 		}
 		return XacmlDataType.BOOLEAN.create(r);
 	}

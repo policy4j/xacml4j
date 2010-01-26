@@ -1,4 +1,4 @@
-package com.artagon.xacml.policy.function;
+package com.artagon.xacml.policy.function.impl;
 
 
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;

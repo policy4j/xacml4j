@@ -63,7 +63,8 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 			}
 		}
 		AttributeType type = returnType.type().getType();
-		return b.build(new StaticallyTypedFunction(returnType.isBag()?type.bagOf():type) {
+		return b.build(new StaticallyTypedFunction(returnType.isBag()?type.bagOf():type) 
+		{
 			@Override
 			public Value invoke(EvaluationContext context,
 					Expression... parameters)

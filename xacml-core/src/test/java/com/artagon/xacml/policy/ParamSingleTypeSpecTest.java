@@ -9,12 +9,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.function.ParamAnyAttributeSpec;
-import com.artagon.xacml.policy.function.ParamAnyBagSpec;
-import com.artagon.xacml.policy.function.ParamValueTypeSpec;
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.StringType;
 import com.artagon.xacml.policy.type.XacmlDataType;
+
+import com.artagon.xacml.policy.function.ParamValueTypeSpec;
 
 public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 {
@@ -50,23 +49,5 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 		assertFalse(spec.validate(good.listIterator()));		
 		assertFalse(spec.validate(bad.listIterator()));
 	}
-	
-	@Test
-	public void testWithAnyAttributeDataTypeSpec() throws Exception
-	{
-		ParamSpec spec = new ParamAnyAttributeSpec();
-		assertTrue(spec.isValidParamType(t1));
-		assertTrue(spec.isValidParamType(t2));
-		assertFalse(spec.isValidParamType(b1));
-	}
-	
-	@Test
-	public void testWithAnyBagOfAttributesTypeSpec() throws Exception
-	{
-		ParamSpec spec = new ParamAnyBagSpec();
-		assertFalse(spec.isValidParamType(t1));
-		assertFalse(spec.isValidParamType(t2));
-		assertTrue(spec.isValidParamType(t1.bagOf()));
-		assertTrue(spec.isValidParamType(t2.bagOf()));
-	}
+
 }

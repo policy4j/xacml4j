@@ -29,16 +29,6 @@ public class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
-	public DefaultFunctionSpecBuilder withAnyBag(){
-		this.paramSpec.add(new ParamAnyBagSpec());
-		return this;
-	}
-	
-	public DefaultFunctionSpecBuilder withAnyAttribute(){
-		this.paramSpec.add(new ParamAnyAttributeSpec());
-		return this;
-	}
-	
 	public DefaultFunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min > 0 && max > 0);

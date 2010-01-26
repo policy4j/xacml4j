@@ -1,10 +1,11 @@
-package com.artagon.xacml.policy.function;
+package com.artagon.xacml.policy.function.impl;
 
 
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArgParam;
+
 import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
@@ -132,7 +133,7 @@ public class ArithmeticFunctions
 	@XacmlFuncReturnType(type=XacmlDataType.DOUBLE)
 	public static DoubleValue divide(
 			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue a,
-			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue b)
+			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return XacmlDataType.DOUBLE.create(a.getValue()/b.getValue());
@@ -146,11 +147,4 @@ public class ArithmeticFunctions
 	{
 		return XacmlDataType.INTEGER.create(a.getValue() - b.getValue());
 	}
-	
-	/* 
-	
-	urn:oasis:names:tc:xacml:1.0:function:round
-	urn:oasis:names:tc:xacml:1.0:function:floor
-	
-	*/
 }
