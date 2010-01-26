@@ -31,7 +31,7 @@ public class DefaultFunctionSpecBuilder
 	
 	public DefaultFunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
-		Preconditions.checkArgument(min > 0 && max > 0);
+		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
 		Preconditions.checkArgument(max - min > 1, "Max and min should be different at least by 1");
 		hadVarArg = true;
