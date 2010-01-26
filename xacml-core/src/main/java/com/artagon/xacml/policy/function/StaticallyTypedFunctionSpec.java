@@ -1,6 +1,5 @@
 package com.artagon.xacml.policy.function;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.List;
 
 import com.artagon.xacml.policy.BaseFunctionSpec;

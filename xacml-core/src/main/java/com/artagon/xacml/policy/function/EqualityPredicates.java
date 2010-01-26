@@ -4,7 +4,6 @@ package com.artagon.xacml.policy.function;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
-
 import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.policy.type.Base64BinaryType.Base64BinaryValue;

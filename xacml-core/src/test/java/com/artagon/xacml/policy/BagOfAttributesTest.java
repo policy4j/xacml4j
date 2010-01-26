@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class BagOfAttributesTest extends XacmlPolicyTestCase
 {

@@ -13,9 +13,9 @@ import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class DefaultRuleTest extends XacmlPolicyTestCase
 {

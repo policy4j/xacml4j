@@ -12,9 +12,9 @@ import org.junit.Test;
 import com.artagon.xacml.policy.function.ParamAnyAttributeSpec;
 import com.artagon.xacml.policy.function.ParamAnyBagSpec;
 import com.artagon.xacml.policy.function.ParamValueTypeSpec;
-import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.StringType;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 {

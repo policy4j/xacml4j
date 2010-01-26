@@ -12,8 +12,8 @@ import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
-import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
+import com.artagon.xacml.policy.type.XacmlDataType;
 
 public class AttributeDesignatorTest extends XacmlPolicyTestCase
 {

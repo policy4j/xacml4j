@@ -21,8 +21,7 @@ public class LogicalFunctions
 		// lazy evaluate
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
-			Boolean v = ((BooleanValue)e.evaluate(context)).getValue();
-			r = r & v; 
+			r = r & ((BooleanValue)e.evaluate(context)).getValue(); 
 			if(!r){
 				break;
 			}
@@ -34,7 +33,7 @@ public class LogicalFunctions
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static BooleanValue or(
 			EvaluationContext context,
-			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression ...values) 
+			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression...values) 
 		throws PolicyEvaluationException
 	{
 		// lazy evaluate

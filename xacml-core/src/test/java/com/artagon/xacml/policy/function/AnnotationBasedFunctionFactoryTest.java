@@ -1,7 +1,8 @@
 package com.artagon.xacml.policy.function;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
