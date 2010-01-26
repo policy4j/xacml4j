@@ -1,18 +1,9 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.Advice;
-import com.artagon.xacml.AssociatedAdvice;
-import com.artagon.xacml.Obligation;
 
 
 public interface PolicyVisitor
 {
-	
-	void visitEnter(Advice attr);
-	void visitLeave(Advice attr);
-	
-	void visitEnter(AssociatedAdvice attr);
-	void visitLeave(AssociatedAdvice attr);
 	
 	void visitEnter(AttributeValue attr);
 	void visitLeave(AttributeValue attr);
@@ -68,10 +59,6 @@ public interface PolicyVisitor
 	
 	void visitEnter(PolicySet policySet);
 	void visitLeave(PolicySet policySet);
-	
-	
-	void visitEnter(Obligation obligation);
-	void visitLeave(Obligation obligation);
 	
 	void visitEnter(ObligationExpression obligation);
 	void visitLeave(ObligationExpression obligation);
