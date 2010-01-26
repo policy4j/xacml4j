@@ -8,14 +8,13 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
-import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class DefaultRuleTest extends XacmlPolicyTestCase
 {
@@ -32,9 +31,9 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Before
 	public void init()
 	{
-		this.type1 = XacmlDataType.INTEGER.getType();
-		this.type2 = XacmlDataType.STRING.getType();
-		this.type3 = XacmlDataType.BOOLEAN.getType();
+		this.type1 = DataTypes.INTEGER.getType();
+		this.type2 = DataTypes.STRING.getType();
+		this.type3 = DataTypes.BOOLEAN.getType();
 		
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
 		b.withParam(type1).withParam(type1);
@@ -64,11 +63,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		
 		AttributeAssignmentExpression attrExpPermit = new AttributeAssignmentExpression(
 				"testAttrId", type2.create("PermitValue"), 
-				AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT, 
+				CategoryId.SUBJECT_RECIPIENT, 
 				null);
 		AttributeAssignmentExpression attrExpDeny = new AttributeAssignmentExpression(
 				"testAttrId", type2.create("DenyValue"),
-				AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY, 
+				CategoryId.SUBJECT_INTERMEDIARY, 
 				null);
 		
 		adviceExpressions.add(new AdviceExpression("testAdvicePermit", Effect.PERMIT, Collections.singletonList(attrExpPermit)));

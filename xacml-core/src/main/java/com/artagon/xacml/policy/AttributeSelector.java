@@ -2,8 +2,7 @@ package com.artagon.xacml.policy;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 public final class AttributeSelector extends AttributeReference
@@ -12,7 +11,7 @@ public final class AttributeSelector extends AttributeReference
 	private boolean mustBePresent;
 	
 	public AttributeSelector(
-			AzCategoryId category, 
+			CategoryId category, 
 			XPath xpath, 
 			AttributeType dataType, 
 					boolean mustBePresent){

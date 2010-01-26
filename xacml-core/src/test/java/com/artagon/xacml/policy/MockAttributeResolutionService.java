@@ -6,21 +6,21 @@ import java.util.Map;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
+import com.artagon.xacml.CategoryId;
 
 
 
 public class MockAttributeResolutionService implements AttributeResolutionService
 {
-	private Map<AzCategoryId, Map<String, AttributeHolder>> attributes;
+	private Map<CategoryId, Map<String, AttributeHolder>> attributes;
 	
 	public MockAttributeResolutionService(){
-		this.attributes = new HashMap<AzCategoryId, Map<String,AttributeHolder>>();
+		this.attributes = new HashMap<CategoryId, Map<String,AttributeHolder>>();
 	}
 	
 	@Override
 	public BagOfAttributes<?> resolve(
-			AzCategoryId category,
+			CategoryId category,
 			String attributeId,
 			AttributeType dataType, String issuer) 
 	{
@@ -41,13 +41,13 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	}
 	
 	@Override
-	public BagOfAttributes<?> resolve(AzCategoryId category, XPath location,
+	public BagOfAttributes<?> resolve(CategoryId category, XPath location,
 			AttributeType dataType) {
 		return dataType.bagOf().createEmpty();
 	}
 	
 	public void addAttribute(
-			AzCategoryId category, 
+			CategoryId category, 
 			String attributeId, 
 			String issuer,
 			AttributeType type, 
@@ -66,11 +66,11 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	{
 		String issuer;
 		BagOfAttributes<?> bag;
-		AzCategoryId category;
+		CategoryId category;
 		
 		public AttributeHolder(
 				String issuer, 
-				AzCategoryId category,
+				CategoryId category,
 				AttributeType type, Collection<Attribute> attributes) 
 		{
 			this.issuer = issuer;

@@ -9,7 +9,7 @@ import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.BagOfAttributes;
 
 
-public enum XacmlDataType 
+public enum DataTypes 
 {
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
 	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),
@@ -62,14 +62,14 @@ public enum XacmlDataType
 	private static final Map<String, AttributeType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeType>();
 
 	static {
-		for(XacmlDataType t : EnumSet.allOf(XacmlDataType.class)){
+		for(DataTypes t : EnumSet.allOf(DataTypes.class)){
 			BY_TYPE_ID.put(t.getTypeId(), t.getType());
 		}
 	}
 
 	private AttributeType type;
 	
-	private XacmlDataType(AttributeType type){
+	private DataTypes(AttributeType type){
 		this.type = type;
 	}
 	

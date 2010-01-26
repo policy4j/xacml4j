@@ -1,7 +1,6 @@
 package com.artagon.xacml.policy;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -30,7 +29,7 @@ public final class AttributeDesignator extends AttributeReference
 	private boolean mustBePresent;
 	
 	public AttributeDesignator(
-			AzCategoryId category,
+			CategoryId  category,
 			String attributeId, 
 			String issuer,
 			AttributeType dataType, 

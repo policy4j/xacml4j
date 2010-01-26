@@ -10,7 +10,7 @@ import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.function.StaticallyTypedFunction;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 {
@@ -23,8 +23,8 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.type1 = XacmlDataType.INTEGER.getType();
-		this.type2 = XacmlDataType.STRING.getType();
+		this.type1 = DataTypes.INTEGER.getType();
+		this.type2 = DataTypes.STRING.getType();
 		this.impl =  new MockFunctionImplementation(type1.create(new Integer(10)));
 		
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 

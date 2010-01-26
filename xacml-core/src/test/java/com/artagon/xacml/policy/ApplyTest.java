@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.IntegerType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class ApplyTest extends XacmlPolicyTestCase 
 {
@@ -19,8 +19,8 @@ public class ApplyTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.paramType = XacmlDataType.INTEGER.getType();
-		this.booleanType = XacmlDataType.BOOLEAN.getType();
+		this.paramType = DataTypes.INTEGER.getType();
+		this.booleanType = DataTypes.BOOLEAN.getType();
 
 
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");

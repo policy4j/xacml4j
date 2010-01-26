@@ -13,7 +13,7 @@ public class AnyURITypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataType.ANYURI.getType();
+		this.t1 = DataTypes.ANYURI.getType();
 	}
 	
 	@Test

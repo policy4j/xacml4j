@@ -1,16 +1,15 @@
-package com.artagon.xacml.policy.function;
+package com.artagon.xacml.policy.function.impl;
 
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class ToFromStringFunctions
 {
 	/*
-	 * urn:oasis:names:tc:xacml:3.0:function:boolean-from-string
 
 urn:oasis:names:tc:xacml:3.0:function:integer-from-string 
 urn:oasis:names:tc:xacml:3.0:function:string-from-integer 
@@ -37,19 +36,20 @@ urn:oasis:names:tc:xacml:3.0:function:string-from-ipAddress
 urn:oasis:names:tc:xacml:3.0:function:dnsName-from-string 
 urn:oasis:names:tc:xacml:3.0:function:string-from-dnsName
 	 */
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
-	@XacmlFuncReturnType(type=XacmlDataType.STRING)
-	public static StringType.StringValue toString(
-			@XacmlFuncParam(type=XacmlDataType.BOOLEAN)BooleanType.BooleanValue v)
+	@XacmlFuncReturnType(type=DataTypes.STRING)
+	public static StringType.StringValue stringFromBoolean(
+			@XacmlFuncParam(type=DataTypes.BOOLEAN)BooleanType.BooleanValue v)
 	{
-		return XacmlDataType.STRING.create(v.toXacmlString());
+		return DataTypes.STRING.create(v.toXacmlString());
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
-	public static BooleanType.BooleanValue fromString(
-			@XacmlFuncParam(type=XacmlDataType.STRING)StringType.StringValue v)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanType.BooleanValue booleanFromString(
+			@XacmlFuncParam(type=DataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataType.STRING.create(v.toXacmlString());
+		return DataTypes.STRING.create(v.toXacmlString());
 	}
 }

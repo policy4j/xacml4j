@@ -15,7 +15,7 @@ public class RFC822NameTypeTest
 	
 	@Before
 	public void init(){
-		this.t = XacmlDataType.RFC822NAME.getType();
+		this.t = DataTypes.RFC822NAME.getType();
 	}
 	
 	@Test

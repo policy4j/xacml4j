@@ -1,12 +1,11 @@
 package com.artagon.xacml.policy;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {
-	private AzCategoryId category;
+	private CategoryId category;
 	private String attributeId;
 	private String issuer;
 	private Expression expression;
@@ -14,7 +13,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	public AttributeAssignmentExpression(
 			String attributeId, 
 			Expression expression, 
-			AzCategoryId category, 
+			CategoryId category, 
 			String issuer)
 	{
 		Preconditions.checkNotNull(attributeId);
@@ -38,9 +37,9 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 * An optional category of the attribute. 
 	 * If category is not specified, the attribute has no category
 	 * 
-	 * @return {@link AzCategoryId} or <code>null</code>
+	 * @return category identifier or <code>null</code>
 	 */
-	public AzCategoryId getCategory(){
+	public CategoryId getCategory(){
 		return category;
 	}
 	

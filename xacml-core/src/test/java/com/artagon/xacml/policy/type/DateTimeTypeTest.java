@@ -13,7 +13,7 @@ public class DateTimeTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = XacmlDataType.DATETIME.getType();
+		this.t1 = DataTypes.DATETIME.getType();
 	}
 	
 	@Test

@@ -1,6 +1,6 @@
 package com.artagon.xacml.policy;
 
-import com.artagon.xacml.Statuses;
+import com.artagon.xacml.StatusId;
 
 public class PolicySyntaxException extends PolicyException
 {
@@ -10,7 +10,7 @@ public class PolicySyntaxException extends PolicyException
 
 	public PolicySyntaxException(String policyId, String template,
 			Object... arguments) {
-		super(Statuses.SYNTAX_ERROR, template, arguments);
+		super(StatusId.SYNTAX_ERROR, template, arguments);
 	}
 
 	/**

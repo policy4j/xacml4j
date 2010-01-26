@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.artagon.xacml.policy.FunctionFactory;
 import com.artagon.xacml.policy.FunctionSpec;
 import com.artagon.xacml.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
 {
@@ -17,13 +17,13 @@ public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
 	{
 		FunctionFactory f = new AnnotationBasedFunctionFactory(TestFunctions.class);
 		FunctionSpec spec1 = f.getFunction("test1");
-		assertEquals(XacmlDataType.BOOLEAN.create(Boolean.FALSE),  
-				spec1.invoke(context, XacmlDataType.INTEGER.create(1), XacmlDataType.INTEGER.create(2)));
+		assertEquals(DataTypes.BOOLEAN.create(Boolean.FALSE),  
+				spec1.invoke(context, DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2)));
 		
 		FunctionSpec spec2 = f.getFunction("test2");
-		assertEquals(XacmlDataType.INTEGER.create(2),  
-				spec2.invoke(context, XacmlDataType.INTEGER.bag(
-						XacmlDataType.INTEGER.create(1), XacmlDataType.INTEGER.create(2))));
+		assertEquals(DataTypes.INTEGER.create(2),  
+				spec2.invoke(context, DataTypes.INTEGER.bag(
+						DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2))));
 		
 	}
 }

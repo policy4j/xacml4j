@@ -9,11 +9,10 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectIntermediary;
-import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.policy.type.IntegerType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class AttributeDesignatorTest extends XacmlPolicyTestCase
 {
@@ -27,14 +26,14 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		this.issuer = "urn:test:issuer";
 		this.attributeId = "urn:test:attrId";
 		this.badAttributeId = "urn:test:attrId:bad";
-		this.type = XacmlDataType.INTEGER.getType();
+		this.type = DataTypes.INTEGER.getType();
 	}
 	
 	@Test(expected=PolicyEvaluationIndeterminateException.class)
 	public void testMustBePresentTrueAttributeDoesNotExist() throws PolicyEvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AzCategoryIdSubjectRecipient.AZ_CATEGORY_ID_SUBJECT_RECIPIENT, attributeId, issuer, type, true);
+				CategoryId.SUBJECT_RECIPIENT, attributeId, issuer, type, true);
 		desig.evaluate(context);
 	}
 	
@@ -44,9 +43,9 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		Attribute attr = type.create(10l);
 		attributes.add(attr);
-		attributeService.addAttribute(AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY,
+		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT,
 				issuer, attributeId, type, attributes);
-		AttributeDesignator desig = new AttributeDesignator(AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY, issuer, attributeId, 
+		AttributeDesignator desig = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT, issuer, attributeId, 
 				type, true);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);
@@ -56,7 +55,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws PolicyEvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AzCategoryIdSubjectIntermediary.AZ_CATEGORY_ID_SUBJECT_INTERMEDIARY,
+		AttributeDesignator desig = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
 				badAttributeId, issuer,  type, false);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);

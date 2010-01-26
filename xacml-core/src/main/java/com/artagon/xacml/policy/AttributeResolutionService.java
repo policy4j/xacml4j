@@ -2,16 +2,16 @@ package com.artagon.xacml.policy;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
+import com.artagon.xacml.CategoryId;
 
 
 public interface AttributeResolutionService 
 {
 
-	BagOfAttributes<?> resolve(AzCategoryId category,
+	BagOfAttributes<?> resolve(CategoryId category,
 			String attributeId, AttributeType dataType, 
 			String issuer);
 	
-	BagOfAttributes<?> resolve(AzCategoryId category, 
+	BagOfAttributes<?> resolve(CategoryId category, 
 			XPath location, AttributeType dataType);
 }

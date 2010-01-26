@@ -4,8 +4,7 @@ import java.util.Collection;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -101,7 +100,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeDesignator(AzCategoryId category,
+	public BagOfAttributes<?> resolveAttributeDesignator(CategoryId category,
 			String attributeId, AttributeType dataType,
 			String issuer) {
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
@@ -112,7 +111,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category,
+	public BagOfAttributes<?> resolveAttributeSelector(CategoryId category,
 			XPath location, AttributeType dataType) {
 		return delegate.resolveAttributeSelector(category, location, dataType);
 	}

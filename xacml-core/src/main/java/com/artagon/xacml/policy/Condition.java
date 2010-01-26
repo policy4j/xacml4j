@@ -3,7 +3,7 @@ package com.artagon.xacml.policy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.util.Preconditions;
 
@@ -28,7 +28,7 @@ public final class Condition implements PolicyElement
 	 * to {@link BooleanValue}
 	 */
 	public Condition(Expression predicate){
-		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(XacmlDataType.BOOLEAN.getType()), 
+		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(DataTypes.BOOLEAN.getType()), 
 				String.format(
 						"Condition expects boolean predicate, but got expression which evaluates=\"%s\"",
 						predicate.getEvaluatesTo()));

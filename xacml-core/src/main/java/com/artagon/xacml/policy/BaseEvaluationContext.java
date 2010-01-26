@@ -6,8 +6,7 @@ import java.util.LinkedList;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 class BaseEvaluationContext implements EvaluationContext
@@ -73,7 +72,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public BagOfAttributes<?> resolveAttributeDesignator(
-			AzCategoryId category,
+			CategoryId category,
 			String attributeId,
 			AttributeType dataType, String issuer) {
 		Preconditions.checkNotNull(attributeId);
@@ -95,7 +94,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category, 
+	public BagOfAttributes<?> resolveAttributeSelector(CategoryId category, 
 			XPath location,
 			AttributeType dataType) {
 		Preconditions.checkNotNull(location);

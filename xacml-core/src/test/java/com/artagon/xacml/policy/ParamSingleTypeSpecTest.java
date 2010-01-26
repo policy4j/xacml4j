@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 import com.artagon.xacml.policy.function.ParamValueTypeSpec;
 
@@ -23,8 +23,8 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataType.BOOLEAN.getType();
-		this.t2 = XacmlDataType.STRING.getType();
+		this.t1 = DataTypes.BOOLEAN.getType();
+		this.t2 = DataTypes.STRING.getType();
 		this.b1 = t1.bagOf();
 	}
 	

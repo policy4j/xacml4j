@@ -9,17 +9,17 @@ import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArgParam;
 
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 
 public class LogicalFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue and(
 			EvaluationContext context,
-			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression ...values) 
+			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression ...values) 
 		throws PolicyEvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -29,14 +29,14 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return XacmlDataType.BOOLEAN.create(r);
+		return DataTypes.BOOLEAN.create(r);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue or(
 			EvaluationContext context,
-			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)Expression...values) 
+			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression...values) 
 		throws PolicyEvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -47,14 +47,14 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return XacmlDataType.BOOLEAN.create(r);
+		return DataTypes.BOOLEAN.create(r);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or")
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue nof(
-			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue n,
-			@XacmlFuncVarArgParam(type=XacmlDataType.BOOLEAN, min=0)BooleanValue...values) 
+			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerValue n,
+			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)BooleanValue...values) 
 		throws PolicyEvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -65,6 +65,6 @@ public class LogicalFunctions
 		for(int i = 0; i < n.getValue(); i++ ){
 			r &= values[i].getValue();
 		}
-		return XacmlDataType.BOOLEAN.create(r);
+		return DataTypes.BOOLEAN.create(r);
 	}
 }

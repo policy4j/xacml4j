@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.DataTypes;
 
 public class BagOfAttributesTest extends XacmlPolicyTestCase
 {
@@ -22,8 +22,8 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.stringType = XacmlDataType.STRING.getType();
-		this.integerType = XacmlDataType.INTEGER.getType();
+		this.stringType = DataTypes.STRING.getType();
+		this.integerType = DataTypes.INTEGER.getType();
 	}
 	
 	@Test

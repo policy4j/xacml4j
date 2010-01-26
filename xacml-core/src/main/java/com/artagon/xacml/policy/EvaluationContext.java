@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.xml.xpath.XPath;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
+import com.artagon.xacml.CategoryId;
 
 
 public interface EvaluationContext 
@@ -115,7 +115,7 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributes<?> resolveAttributeDesignator(AzCategoryId category,
+	BagOfAttributes<?> resolveAttributeDesignator(CategoryId category,
 			String attributeId, AttributeType dataType, 
 			String issuer);
 	
@@ -128,6 +128,6 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributes<?> resolveAttributeSelector(AzCategoryId category, 
+	BagOfAttributes<?> resolveAttributeSelector(CategoryId category, 
 			XPath location, AttributeType dataType);
 }

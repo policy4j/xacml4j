@@ -1,7 +1,6 @@
 package com.artagon.xacml.policy;
 
-import org.oasis.xacml.azapi.constants.AzCategoryId;
-
+import com.artagon.xacml.CategoryId;
 import com.artagon.xacml.util.Preconditions;
 
 /**
@@ -12,7 +11,7 @@ import com.artagon.xacml.util.Preconditions;
  */
 abstract class AttributeReference implements Expression
 {
-	private AzCategoryId category;
+	private CategoryId category;
 	protected BagOfAttributesType<?> evaluatesTo;
 	
 	/**
@@ -23,7 +22,7 @@ abstract class AttributeReference implements Expression
 	 * @param dataType attribute reference bag XACML
 	 * data type
 	 */
-	protected AttributeReference(AzCategoryId category, 
+	protected AttributeReference(CategoryId category, 
 			AttributeType dataType){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
@@ -51,7 +50,7 @@ abstract class AttributeReference implements Expression
 	 * 
 	 * @return attribute category
 	 */
-	public final AzCategoryId getCategory(){
+	public final CategoryId getCategory(){
 		return category;
 	}
 }

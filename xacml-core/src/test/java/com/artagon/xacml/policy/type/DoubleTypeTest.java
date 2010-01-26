@@ -16,7 +16,7 @@ public class DoubleTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataType.DOUBLE.getType();
+		this.t1 = DataTypes.DOUBLE.getType();
 	}
 	
 	@Test

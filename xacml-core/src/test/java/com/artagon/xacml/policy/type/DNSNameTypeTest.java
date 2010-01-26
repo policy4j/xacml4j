@@ -13,7 +13,7 @@ public class DNSNameTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataType.DNSNAME.getType();
+		this.t1 = DataTypes.DNSNAME.getType();
 	}
 	
 	@Test
