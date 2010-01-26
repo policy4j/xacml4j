@@ -12,8 +12,8 @@ import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.FunctionSpec;
-import com.artagon.xacml.policy.PolicyEvaluationException;
-import com.artagon.xacml.policy.PolicyEvaluationIndeterminateException;
+import com.artagon.xacml.policy.EvaluationException;
+import com.artagon.xacml.policy.EvaluationIndeterminateException;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
@@ -68,11 +68,11 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 			@Override
 			public Value invoke(EvaluationContext context,
 					Expression... parameters)
-					throws PolicyEvaluationException {
+					throws EvaluationException {
 				try{
 					return (Value)m.invoke(null, parameters);
 				}catch(Exception e){
-					throw new PolicyEvaluationIndeterminateException(e, "failed to invoke function");
+					throw new EvaluationIndeterminateException(e, "failed to invoke function");
 				}
 			}
 			

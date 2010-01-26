@@ -29,7 +29,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testApplyWithValidFunctionAndValidParameters() throws PolicyEvaluationException
+	public void testApplyWithValidFunctionAndValidParameters() throws EvaluationException
 	{
 		Apply apply = function.createApply(paramType.create(10L), paramType.create(11L));
 		Value v = apply.evaluate(context);
@@ -38,7 +38,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testApplyWithValidFunctionAndInValidParameters() throws PolicyEvaluationException
+	public void testApplyWithValidFunctionAndInValidParameters() throws EvaluationException
 	{
 		Apply apply = function.createApply(paramType.create(10L));
 		apply.evaluate(context);

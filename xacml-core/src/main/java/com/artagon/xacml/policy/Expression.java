@@ -16,8 +16,8 @@ public interface Expression  extends PolicyElement
 	 * @param context an evaluation context
 	 * @return {@link Expression} an expression 
 	 * representing evaluation result
-	 * @throws PolicyEvaluationException if an evaluation error
+	 * @throws EvaluationException if an evaluation error
 	 * occurs
 	 */
-	Expression evaluate(EvaluationContext context) throws PolicyEvaluationException;
+	Expression evaluate(EvaluationContext context) throws EvaluationException;
 }

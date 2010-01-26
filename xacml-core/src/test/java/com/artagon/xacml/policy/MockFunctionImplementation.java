@@ -19,10 +19,10 @@ public class MockFunctionImplementation extends StaticallyTypedFunction
 
 	@Override
 	public Value invoke(EvaluationContext context, Expression ...args) 
-		throws PolicyEvaluationException 
+		throws EvaluationException 
 	{
 		if(failWithIndeterminate){
-			throw new PolicyEvaluationIndeterminateException("Failed to invoke mock function");
+			throw new EvaluationIndeterminateException("Failed to invoke mock function");
 		}
 		return expectedResult;
 	}

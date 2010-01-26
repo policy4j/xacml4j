@@ -52,7 +52,7 @@ public class VariableDefinition implements Expression
 	 * {@link EvaluationContext} evaluation context
 	 */
 	@Override
-	public Value evaluate(EvaluationContext context) throws PolicyEvaluationException
+	public Value evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Value result = context.getVariableEvaluationResult(variableId);
 		if(result != null){

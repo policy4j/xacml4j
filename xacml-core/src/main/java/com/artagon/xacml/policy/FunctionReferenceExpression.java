@@ -44,7 +44,7 @@ public class FunctionReferenceExpression implements Expression
 
 	@Override
 	public FunctionReferenceExpression evaluate(EvaluationContext context)
-			throws PolicyEvaluationException {
+			throws EvaluationException {
 		return this;
 	}
 

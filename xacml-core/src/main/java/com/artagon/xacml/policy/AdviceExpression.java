@@ -22,10 +22,10 @@ public final class AdviceExpression extends BaseDecisionResponseExpression
 	 * 
 	 * @param context an evaluation context
 	 * @return {@link Advice} instance
-	 * @throws PolicyEvaluationException if an evaluation error
+	 * @throws EvaluationException if an evaluation error
 	 * occurs
 	 */
-	public Advice evaluate(EvaluationContext context) throws PolicyEvaluationException
+	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
 		return new Advice(getId(), attributes);

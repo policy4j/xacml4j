@@ -76,7 +76,7 @@ public final class Match implements Matchable, PolicyElement
 				}
 			}
 			return MatchResult.NOMATCH;
-		}catch(PolicyEvaluationException e){
+		}catch(EvaluationException e){
 			log.debug("Failed to evaluate match predicate=\"{}\", " +
 					"attribute value=\"{}\"", predicate.getXacmlId(), value);
 			return MatchResult.INDETERMINATE;

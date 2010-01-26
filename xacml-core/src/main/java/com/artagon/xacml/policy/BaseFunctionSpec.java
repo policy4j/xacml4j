@@ -92,11 +92,11 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 	 * @param params a function invocation 
 	 * parameters
 	 * @return an array of evaluated parameters
-	 * @throws PolicyEvaluationException if an evaluation
+	 * @throws EvaluationException if an evaluation
 	 * error occur
 	 */
 	protected Expression[] evaluate(EvaluationContext context, Expression ...params) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Expression[] eval = new Expression[params.length];
 		for(int i =0; i < params.length; i++){

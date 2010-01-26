@@ -112,7 +112,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testEvaluateBag() throws PolicyEvaluationException
+	public void testEvaluateBag() throws EvaluationException
 	{
 		BagOfAttributesType<?> bagType = integerType.bagOf();
 		Collection<Attribute> content2 = new LinkedList<Attribute>();

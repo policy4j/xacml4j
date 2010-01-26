@@ -14,7 +14,7 @@ import com.artagon.xacml.util.Preconditions;
  * the attribute values that are matched by the named attribute. In the 
  * event that no matching attribute is present in the context, the 
  * {@link AttributeDesignator#isMustBePresent()} governs whether it
- * evaluates to an empty bag or {@link PolicyEvaluationIndeterminateException} exception. 
+ * evaluates to an empty bag or {@link EvaluationIndeterminateException} exception. 
  * 
  * See XACML 3.0 core section 7.3.5.
  *  
@@ -65,7 +65,7 @@ public final class AttributeDesignator extends AttributeReference
 	
 	/**
 	 * Governs whether this designator evaluates 
-	 * to an empty bag or {@link PolicyEvaluationIndeterminateException} 
+	 * to an empty bag or {@link EvaluationIndeterminateException} 
 	 * exception is thrown
 	 * 
 	 * @return
@@ -80,16 +80,16 @@ public final class AttributeDesignator extends AttributeReference
 	 * String, AttributeType, String)
 	 * 
 	 * @return {@link BagOfAttributes} instance 
-	 * @exception PolicyEvaluationIndeterminateException if attribute can't be resolved
+	 * @exception EvaluationIndeterminateException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
 	public BagOfAttributes<?> evaluate(EvaluationContext context)
-			throws PolicyEvaluationException 
+			throws EvaluationException 
 	{
 		BagOfAttributes<?> bag = context.resolveAttributeDesignator(
 				getCategory(), attributeId, evaluatesTo.getDataType(), issuer);
 		if(bag.isEmpty() && isMustBePresent()){
-			throw new PolicyEvaluationIndeterminateException(
+			throw new EvaluationIndeterminateException(
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}

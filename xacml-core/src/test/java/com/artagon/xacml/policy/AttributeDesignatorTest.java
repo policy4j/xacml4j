@@ -29,8 +29,8 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		this.type = DataTypes.INTEGER.getType();
 	}
 	
-	@Test(expected=PolicyEvaluationIndeterminateException.class)
-	public void testMustBePresentTrueAttributeDoesNotExist() throws PolicyEvaluationException
+	@Test(expected=EvaluationIndeterminateException.class)
+	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
 				CategoryId.SUBJECT_RECIPIENT, attributeId, issuer, type, true);
@@ -38,7 +38,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testMustBePresentTrueAttributeDoesExist() throws PolicyEvaluationException
+	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		Attribute attr = type.create(10l);
@@ -53,7 +53,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws PolicyEvaluationException
+	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
 				badAttributeId, issuer,  type, false);

@@ -38,7 +38,7 @@ public class VariableReference implements Expression
 	 * result
 	 */
 	public Value evaluate(EvaluationContext context) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		return varDef.evaluate(context);
 	}

@@ -68,5 +68,5 @@ public interface FunctionSpec
 	 * function invocation result
 	 */
 	Value invoke(EvaluationContext context, Expression ...expressions) 
-		throws PolicyEvaluationException;
+		throws EvaluationException;
 }

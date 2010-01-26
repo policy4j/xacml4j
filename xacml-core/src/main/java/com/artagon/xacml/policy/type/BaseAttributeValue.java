@@ -3,7 +3,7 @@ package com.artagon.xacml.policy.type;
 import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.EvaluationContext;
-import com.artagon.xacml.policy.PolicyEvaluationException;
+import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.PolicyVisitor;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Objects;
@@ -66,7 +66,7 @@ abstract class BaseAttributeValue<T>
 	}
 	
 	@Override
-	public final Attribute evaluate(EvaluationContext context) throws PolicyEvaluationException {
+	public final Attribute evaluate(EvaluationContext context) throws EvaluationException {
 		return this;
 	}
 	

@@ -31,7 +31,7 @@ public class MatchTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testMatchEvaluation() throws PolicyEvaluationException
+	public void testMatchEvaluation() throws EvaluationException
 	{
 		IntegerType t = DataTypes.INTEGER.getType();
 		AttributeDesignator designator = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,

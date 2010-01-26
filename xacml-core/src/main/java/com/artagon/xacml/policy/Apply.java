@@ -58,7 +58,7 @@ public final class Apply implements Expression
 	 * instance
 	 */
 	public Value evaluate(EvaluationContext context) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		return spec.invoke(context, arguments);
 	}

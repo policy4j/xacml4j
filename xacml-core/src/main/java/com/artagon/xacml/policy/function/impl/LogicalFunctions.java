@@ -2,8 +2,8 @@ package com.artagon.xacml.policy.function.impl;
 
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.Expression;
-import com.artagon.xacml.policy.PolicyEvaluationException;
-import com.artagon.xacml.policy.PolicyEvaluationIndeterminateException;
+import com.artagon.xacml.policy.EvaluationException;
+import com.artagon.xacml.policy.EvaluationIndeterminateException;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
@@ -20,7 +20,7 @@ public class LogicalFunctions
 	public static BooleanValue and(
 			EvaluationContext context,
 			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression ...values) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
@@ -37,7 +37,7 @@ public class LogicalFunctions
 	public static BooleanValue or(
 			EvaluationContext context,
 			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression...values) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
@@ -55,11 +55,11 @@ public class LogicalFunctions
 	public static BooleanValue nof(
 			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerValue n,
 			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)BooleanValue...values) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
 		if(values.length < n.getValue()){
-			throw new PolicyEvaluationIndeterminateException("Number of arguments=\"%s\" is " +
+			throw new EvaluationIndeterminateException("Number of arguments=\"%s\" is " +
 					"less than minimum required number=\"%s\"", values.length, n.getValue());
 		}
 		for(int i = 0; i < n.getValue(); i++ ){

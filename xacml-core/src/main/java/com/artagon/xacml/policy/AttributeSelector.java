@@ -38,11 +38,11 @@ public final class AttributeSelector extends AttributeReference
 
 	@Override
 	public BagOfAttributes<?> evaluate(EvaluationContext context)
-			throws PolicyEvaluationException {
+			throws EvaluationException {
 		BagOfAttributes<?> value = context.resolveAttributeSelector(getCategory(), 
 				getContextPath(), evaluatesTo.getDataType());
 		if(value.isEmpty() && isMustBePresent()){
-			throw new PolicyEvaluationIndeterminateException(
+			throw new EvaluationIndeterminateException(
 					"Failed to select attribute catgoryId=\"%s\", context path=\"%s\"", 
 					getCategory(), xpath.toString());
 		}

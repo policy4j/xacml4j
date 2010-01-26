@@ -9,7 +9,7 @@ public final class ObligationExpression extends BaseDecisionResponseExpression
 		super(id, effect, attributeExpressions);
 	}
 	
-	public Obligation evaluate(EvaluationContext context) throws PolicyEvaluationException
+	public Obligation evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
 		return new Obligation(getId(), attributes);

@@ -55,7 +55,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	}
 	
 	public Attribute evaluate(EvaluationContext context) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Attribute attribute = (Attribute)expression.evaluate(context);
 		return attribute;

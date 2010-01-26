@@ -51,7 +51,7 @@ public final class Condition implements PolicyElement
 				log.debug("Condition predicate evaluation result=\"{}\"", result);
 			}
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
-		}catch(PolicyEvaluationException e){
+		}catch(EvaluationException e){
 			log.debug("Received evaluation exception=\"{}\", result is=\"{}\"", 
 					e.getMessage(), ConditionResult.INDETERMINATE);
 			return ConditionResult.INDETERMINATE;

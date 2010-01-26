@@ -120,7 +120,7 @@ abstract class BaseDesicion implements Decision
 			log.debug("Evaluating obligations for decision with id=\"{}\"", getId());
 			context.addObligations(evaluateObligations(context, result));
 			return result;
-		}catch(PolicyEvaluationException e){
+		}catch(EvaluationException e){
 			log.debug("Failed to evaluate decision id=\"{}\" " +
 					"obligation or advice expressions", getId());
 			return DecisionResult.INDETERMINATE;
@@ -134,10 +134,10 @@ abstract class BaseDesicion implements Decision
 	 * @param context an evaluation context
 	 * @param result a decision evaluation result
 	 * @return collection of {@link Advice} instances
-	 * @throws PolicyEvaluationException if an evaluation error occurs
+	 * @throws EvaluationException if an evaluation error occurs
 	 */
 	private Collection<Advice> evaluateAdvices(EvaluationContext context, DecisionResult result) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Collection<Advice> advices = new LinkedList<Advice>();
 		for(AdviceExpression adviceExp : adviceExpressions){
@@ -158,10 +158,10 @@ abstract class BaseDesicion implements Decision
 	 * @param context an evaluation context
 	 * @param result an decision result
 	 * @return collection of {@link Obligation} instances
-	 * @throws PolicyEvaluationException if an evaluation error occurs
+	 * @throws EvaluationException if an evaluation error occurs
 	 */
 	private Collection<Obligation> evaluateObligations(EvaluationContext context, DecisionResult result) 
-		throws PolicyEvaluationException
+		throws EvaluationException
 	{
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		for(ObligationExpression obligationExp : obligationExpressions){

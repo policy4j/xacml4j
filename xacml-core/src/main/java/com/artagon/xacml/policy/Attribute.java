@@ -16,5 +16,5 @@ public interface Attribute extends Value
 	 * 
 	 * @see {@link Expression#evaluate(EvaluationContext)}
 	 */
-	Attribute evaluate(EvaluationContext context) throws PolicyEvaluationException;
+	Attribute evaluate(EvaluationContext context) throws EvaluationException;
 }
