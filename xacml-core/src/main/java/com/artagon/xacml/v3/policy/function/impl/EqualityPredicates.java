@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.function.impl;
 
 
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
@@ -31,8 +31,8 @@ public class EqualityPredicates
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerValue a, 
-			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerValue b)
+			@XacmlParam(type=DataTypes.INTEGER)IntegerValue a, 
+			@XacmlParam(type=DataTypes.INTEGER)IntegerValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -40,8 +40,8 @@ public class EqualityPredicates
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=DataTypes.ANYURI)AnyURIValue a, 
-			@XacmlFuncParam(type=DataTypes.ANYURI)AnyURIValue b)
+			@XacmlParam(type=DataTypes.ANYURI)AnyURIValue a, 
+			@XacmlParam(type=DataTypes.ANYURI)AnyURIValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -49,8 +49,8 @@ public class EqualityPredicates
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-equal")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=DataTypes.DOUBLE)DoubleValue a, 
-			@XacmlFuncParam(type=DataTypes.DOUBLE)DoubleValue b)
+			@XacmlParam(type=DataTypes.DOUBLE)DoubleValue a, 
+			@XacmlParam(type=DataTypes.DOUBLE)DoubleValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -58,8 +58,8 @@ public class EqualityPredicates
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=DataTypes.BOOLEAN)BooleanValue a, 
-			@XacmlFuncParam(type=DataTypes.BOOLEAN)BooleanValue b)
+			@XacmlParam(type=DataTypes.BOOLEAN)BooleanValue a, 
+			@XacmlParam(type=DataTypes.BOOLEAN)BooleanValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -68,8 +68,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue eq(
-			@XacmlFuncParam(type=DataTypes.X500NAME)X500NameValue a, 
-			@XacmlFuncParam(type=DataTypes.X500NAME)X500NameValue b)
+			@XacmlParam(type=DataTypes.X500NAME)X500NameValue a, 
+			@XacmlParam(type=DataTypes.X500NAME)X500NameValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -78,8 +78,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.STRING)StringValue a, 
-			@XacmlFuncParam(type=DataTypes.STRING)StringValue b)
+			@XacmlParam(type=DataTypes.STRING)StringValue a, 
+			@XacmlParam(type=DataTypes.STRING)StringValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -88,8 +88,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equalsIgnoreCase(
-			@XacmlFuncParam(type=DataTypes.STRING)StringValue a, 
-			@XacmlFuncParam(type=DataTypes.STRING)StringValue b)
+			@XacmlParam(type=DataTypes.STRING)StringValue a, 
+			@XacmlParam(type=DataTypes.STRING)StringValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equalsIgnoreCase(b));
 	}
@@ -98,8 +98,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.DATE)DateValue a, 
-			@XacmlFuncParam(type=DataTypes.DATE)DateValue b)
+			@XacmlParam(type=DataTypes.DATE)DateValue a, 
+			@XacmlParam(type=DataTypes.DATE)DateValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -108,8 +108,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.DATETIME)DateTimeValue a, 
-			@XacmlFuncParam(type=DataTypes.DATETIME)DateTimeValue b)
+			@XacmlParam(type=DataTypes.DATETIME)DateTimeValue a, 
+			@XacmlParam(type=DataTypes.DATETIME)DateTimeValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -118,8 +118,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.DATETIME)TimeValue a, 
-			@XacmlFuncParam(type=DataTypes.DATETIME)TimeValue b)
+			@XacmlParam(type=DataTypes.DATETIME)TimeValue a, 
+			@XacmlParam(type=DataTypes.DATETIME)TimeValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -128,8 +128,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.DAYTIMEDURATION)DayTimeDurationValue a, 
-			@XacmlFuncParam(type=DataTypes.DAYTIMEDURATION)DayTimeDurationValue b)
+			@XacmlParam(type=DataTypes.DAYTIMEDURATION)DayTimeDurationValue a, 
+			@XacmlParam(type=DataTypes.DAYTIMEDURATION)DayTimeDurationValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -138,8 +138,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.YEARMONTHDURATION)YearMonthDurationValue a, 
-			@XacmlFuncParam(type=DataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION)YearMonthDurationValue a, 
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -148,8 +148,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.RFC822NAME)RFC822NameValue a, 
-			@XacmlFuncParam(type=DataTypes.RFC822NAME)RFC822NameValue b)
+			@XacmlParam(type=DataTypes.RFC822NAME)RFC822NameValue a, 
+			@XacmlParam(type=DataTypes.RFC822NAME)RFC822NameValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -158,8 +158,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.HEXBINARY)HexBinaryValue a, 
-			@XacmlFuncParam(type=DataTypes.HEXBINARY)HexBinaryValue b)
+			@XacmlParam(type=DataTypes.HEXBINARY)HexBinaryValue a, 
+			@XacmlParam(type=DataTypes.HEXBINARY)HexBinaryValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -168,8 +168,8 @@ public class EqualityPredicates
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=DataTypes.BASE64BINARY)Base64BinaryValue a, 
-			@XacmlFuncParam(type=DataTypes.BASE64BINARY)Base64BinaryValue b)
+			@XacmlParam(type=DataTypes.BASE64BINARY)Base64BinaryValue a, 
+			@XacmlParam(type=DataTypes.BASE64BINARY)Base64BinaryValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}

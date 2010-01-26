@@ -16,9 +16,9 @@ import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncVarArgParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
 
 
 public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
@@ -51,14 +51,14 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		Annotation[][] params = m.getParameterAnnotations();
 		int paramCount = 0;
 		for(Annotation[] p : params){
-			if(p[0] instanceof XacmlFuncParam){
-				XacmlFuncParam param = (XacmlFuncParam)p[0];
+			if(p[0] instanceof XacmlParam){
+				XacmlParam param = (XacmlParam)p[0];
 				AttributeValueType type = param.type().getType(); 
 				b.withParam(param.isBag()?type.bagOf():type);
 				paramCount++;
 			}
-			if(p[0] instanceof XacmlFuncVarArgParam){
-				XacmlFuncVarArgParam param = (XacmlFuncVarArgParam)p[0];
+			if(p[0] instanceof XacmlParamVarArg){
+				XacmlParamVarArg param = (XacmlParamVarArg)p[0];
 				AttributeValueType type = param.type().getType();
 				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
 				paramCount++;

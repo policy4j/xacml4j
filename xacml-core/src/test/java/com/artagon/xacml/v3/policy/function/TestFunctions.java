@@ -1,9 +1,16 @@
 package com.artagon.xacml.v3.policy.function;
 
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
@@ -13,8 +20,8 @@ public class TestFunctions
 	@XacmlFunc(id="test1")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue test1(
-			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerType.IntegerValue b)
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue a, 
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue b)
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}
@@ -22,8 +29,39 @@ public class TestFunctions
 	@XacmlFunc(id="test2")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
 	public static IntegerType.IntegerValue test2(
-			@XacmlFuncParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
 		return DataTypes.INTEGER.create(bag.size());
+	}
+	
+	@XacmlFunc(id="test3", evaluateArguments=false)
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerType.IntegerValue and(
+			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParamVarArg(type=DataTypes.INTEGER, min=0)Expression ...values) 
+		throws EvaluationException
+	{
+		Long v = 0L;
+		for(Expression e : values){
+			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
+			
+		}
+		return DataTypes.INTEGER.create(v);
+	}
+	
+	@XacmlFunc(id="test3")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
+	public static BagOfAttributeValues<IntegerType.IntegerValue> test4(
+			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParamFuncReference FunctionSpec function,
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
+		throws EvaluationException
+	{
+		Long v = 0L;
+		for(Expression e : values){
+			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
+			
+		}
+		return DataTypes.INTEGER.create(v);
 	}
 }

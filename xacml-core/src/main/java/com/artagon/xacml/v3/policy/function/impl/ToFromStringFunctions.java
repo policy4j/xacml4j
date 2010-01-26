@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -40,7 +40,7 @@ urn:oasis:names:tc:xacml:3.0:function:string-from-dnsName
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
 	@XacmlFuncReturnType(type=DataTypes.STRING)
 	public static StringType.StringValue stringFromBoolean(
-			@XacmlFuncParam(type=DataTypes.BOOLEAN)BooleanType.BooleanValue v)
+			@XacmlParam(type=DataTypes.BOOLEAN)BooleanType.BooleanValue v)
 	{
 		return DataTypes.STRING.create(v.toXacmlString());
 	}
@@ -48,7 +48,7 @@ urn:oasis:names:tc:xacml:3.0:function:string-from-dnsName
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanType.BooleanValue booleanFromString(
-			@XacmlFuncParam(type=DataTypes.STRING)StringType.StringValue v)
+			@XacmlParam(type=DataTypes.STRING)StringType.StringValue v)
 	{
 		return DataTypes.STRING.create(v.toXacmlString());
 	}
