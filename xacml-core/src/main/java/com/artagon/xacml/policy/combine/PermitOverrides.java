@@ -3,8 +3,8 @@ package com.artagon.xacml.policy.combine;
 
 import java.util.List;
 
+import com.artagon.xacml.DecisionResult;
 import com.artagon.xacml.policy.Decision;
-import com.artagon.xacml.policy.DecisionResult;
 import com.artagon.xacml.policy.EvaluationContext;
 
 class PermitOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<D>

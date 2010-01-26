@@ -1,5 +1,7 @@
 package com.artagon.xacml.policy;
 
+import com.artagon.xacml.DecisionResult;
+
 public class MockDecision extends BaseDesicion
 {
 	private DecisionResult decision;

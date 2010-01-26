@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.DecisionResult;
 import com.artagon.xacml.policy.combine.RuleDenyOverridesCombiningAlgorithm;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.DataTypes;

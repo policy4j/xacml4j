@@ -1,5 +1,7 @@
 package com.artagon.xacml.policy;
 
+import com.artagon.xacml.DecisionResult;
+
 public enum Effect 
 {
 	PERMIT(DecisionResult.PERMIT),

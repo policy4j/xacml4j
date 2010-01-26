@@ -1,4 +1,4 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml;
 
 public enum DecisionResult 
 {

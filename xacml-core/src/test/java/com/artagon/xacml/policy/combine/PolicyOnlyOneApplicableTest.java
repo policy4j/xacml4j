@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.DecisionResult;
 import com.artagon.xacml.policy.CompositeDecision;
-import com.artagon.xacml.policy.DecisionResult;
 import com.artagon.xacml.policy.MatchResult;
 import com.artagon.xacml.policy.MockCompositeDecision;
 import com.artagon.xacml.policy.XacmlPolicyTestCase;

@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.DecisionResult;
 import com.artagon.xacml.util.Preconditions;
 
 abstract class BaseDecisionResponseExpression implements PolicyElement
