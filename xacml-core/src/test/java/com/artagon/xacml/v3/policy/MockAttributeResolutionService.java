@@ -7,10 +7,6 @@ import java.util.Map;
 import javax.xml.xpath.XPath;
 
 import com.artagon.xacml.v3.CategoryId;
-import com.artagon.xacml.v3.policy.AttributeResolutionService;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 
 

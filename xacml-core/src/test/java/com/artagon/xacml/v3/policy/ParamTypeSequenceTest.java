@@ -9,8 +9,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
-import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.function.ParamValueTypeSequenceSpec;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;

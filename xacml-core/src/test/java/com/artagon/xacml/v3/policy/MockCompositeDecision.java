@@ -4,13 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.BaseCompositeDecision;
-import com.artagon.xacml.v3.policy.Decision;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 public class MockCompositeDecision extends BaseCompositeDecision 
 {

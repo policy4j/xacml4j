@@ -13,7 +13,6 @@ import com.artagon.xacml.v3.policy.CompositeDecision;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.MockCompositeDecision;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.combine.PolicyOnlyOneApplicable;
 
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 {

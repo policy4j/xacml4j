@@ -11,18 +11,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.CategoryId;
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.Apply;
-import com.artagon.xacml.v3.policy.AttributeAssignmentExpression;
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.ConditionResult;
-import com.artagon.xacml.v3.policy.DefaultRule;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;

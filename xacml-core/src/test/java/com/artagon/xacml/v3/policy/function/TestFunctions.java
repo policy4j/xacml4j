@@ -9,11 +9,11 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
@@ -63,7 +63,8 @@ public class TestFunctions
 	{
 		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
 		for(AttributeValue attr : bag.values()){
-			attributes.add((AttributeValue)function.invoke(context, attr)); 
+			AttributeValue v = function.invoke(context, attr);
+			attributes.add(v); 
 			
 		}
 		return DataTypes.INTEGER.bag(attributes);

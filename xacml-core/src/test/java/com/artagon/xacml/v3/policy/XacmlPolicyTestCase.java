@@ -2,8 +2,6 @@ package com.artagon.xacml.v3.policy;
 
 import org.junit.Before;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-
 public class XacmlPolicyTestCase
 {	
 	protected EvaluationContext context;

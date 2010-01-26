@@ -1,10 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.BaseDesicion;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 public class MockDecision extends BaseDesicion
 {

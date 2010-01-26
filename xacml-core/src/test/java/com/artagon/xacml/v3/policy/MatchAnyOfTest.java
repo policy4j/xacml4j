@@ -8,10 +8,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.MatchAnyOf;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.Matchable;
-
 public class MatchAnyOfTest extends XacmlPolicyTestCase
 {
 	private Collection<Matchable> matches;

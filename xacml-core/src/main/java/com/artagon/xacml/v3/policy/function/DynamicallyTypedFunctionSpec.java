@@ -34,7 +34,7 @@ final class DynamicallyTypedFunctionSpec extends BaseFunctionSpec
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, Expression ...arguments)
+	public <T extends Value> T invoke(EvaluationContext context, Expression ...arguments)
 			throws EvaluationException {
 		return function.invoke(context, isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
 	}	

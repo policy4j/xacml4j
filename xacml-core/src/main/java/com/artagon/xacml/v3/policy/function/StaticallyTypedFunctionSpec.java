@@ -39,7 +39,7 @@ final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, Expression ...arguments)
+	public <T extends Value> T invoke(EvaluationContext context, Expression ...arguments)
 			throws EvaluationException {
 		if(context.isValidateFuncParamAtRuntime() &&
 				!validateParameters(arguments)){

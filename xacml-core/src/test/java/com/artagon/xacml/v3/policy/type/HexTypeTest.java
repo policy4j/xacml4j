@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.artagon.xacml.v3.policy.type.HexBinaryType;
 import com.artagon.xacml.v3.policy.type.HexBinaryType.HexBinaryValue;
 
 

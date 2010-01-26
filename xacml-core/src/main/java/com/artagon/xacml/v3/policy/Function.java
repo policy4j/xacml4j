@@ -15,6 +15,6 @@ public interface Function
 	 * while invoking function or evaluating function
 	 * parameters
 	 */
-	Value invoke(EvaluationContext context, Expression ...parameters) 
+	<T extends Value> T invoke(EvaluationContext context, Expression ...parameters) 
 		throws EvaluationException;
 }

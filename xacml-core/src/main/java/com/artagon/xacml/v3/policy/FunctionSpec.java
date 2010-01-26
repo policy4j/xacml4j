@@ -67,6 +67,6 @@ public interface FunctionSpec
 	 * @return {@link Value} instance representing
 	 * function invocation result
 	 */
-	Value invoke(EvaluationContext context, Expression ...expressions) 
+	<T extends Value> T invoke(EvaluationContext context, Expression ...expressions) 
 		throws EvaluationException;
 }

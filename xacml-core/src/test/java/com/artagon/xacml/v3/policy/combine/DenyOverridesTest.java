@@ -12,7 +12,6 @@ import com.artagon.xacml.v3.DecisionResult;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.MockDecision;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.combine.DenyOverrides;
 
 public class DenyOverridesTest extends XacmlPolicyTestCase
 {

@@ -9,13 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.DefaultPolicy;
-import com.artagon.xacml.v3.policy.DefaultRule;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.combine.RuleDenyOverridesCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
