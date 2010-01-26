@@ -40,8 +40,8 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
-		Collection<Attribute> attributes = new LinkedList<Attribute>();
-		Attribute attr = type.create(10l);
+		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
+		AttributeValue attr = type.create(10l);
 		attributes.add(attr);
 		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT,
 				issuer, attributeId, type, attributes);

@@ -4,7 +4,9 @@ import java.util.Collection;
 
 import javax.xml.xpath.XPath;
 
+import com.artagon.xacml.Advice;
 import com.artagon.xacml.CategoryId;
+import com.artagon.xacml.Obligation;
 import com.artagon.xacml.util.Preconditions;
 
 /**

@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.Advice;
+import com.artagon.xacml.Obligation;
 import com.artagon.xacml.util.Preconditions;
 
 abstract class BaseDesicion implements Decision

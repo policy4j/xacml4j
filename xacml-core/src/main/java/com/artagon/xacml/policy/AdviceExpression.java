@@ -2,6 +2,8 @@ package com.artagon.xacml.policy;
 
 import java.util.Collection;
 
+import com.artagon.xacml.Advice;
+
 public final class AdviceExpression extends BaseDecisionResponseExpression
 {
 	/**

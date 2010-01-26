@@ -1,6 +1,8 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml;
 
 import java.util.Collection;
+
+import com.artagon.xacml.policy.AttributeAssignment;
 
 /**
  * In many applications, policies specify actions that MUST be performed, 
@@ -21,14 +23,5 @@ public final class Obligation extends BaseDecisionResponse
 {
 	public Obligation(String id, Collection<AttributeAssignment> attributes) {
 		super(id, attributes);
-	}
-	
-	@Override
-	public void accept(PolicyVisitor v) {
-		v.visitEnter(this);
-		for(AttributeAssignment attr : getAttributes()){
-			attr.accept(v);
-		}
-		v.visitLeave(this);
 	}	
 }

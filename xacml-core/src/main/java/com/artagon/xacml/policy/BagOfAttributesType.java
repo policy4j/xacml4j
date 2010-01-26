@@ -13,7 +13,7 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributesType<VT extends Attribute> implements ValueType
+public final class BagOfAttributesType<VT extends AttributeValue> implements ValueType
 {
 	private AttributeType type;
 	
@@ -48,7 +48,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * @return {@link BagOfAttributes} containing given attributes
 	 */
 	public BagOfAttributes<VT> createFromAttributes(
-			Collection<Attribute> attr){
+			Collection<AttributeValue> attr){
 		return new BagOfAttributes<VT>(this, attr);
 	}
 	
@@ -59,7 +59,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * no {@link BaseAttribute} instances
 	 */
 	public  BagOfAttributes<VT> createEmpty(){
-		return new BagOfAttributes<VT>(this, Collections.<Attribute>emptyList());
+		return new BagOfAttributes<VT>(this, Collections.<AttributeValue>emptyList());
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 * @param attr an array of attributes
 	 * @return {@link BagOfAttributes} containing given attributes
 	 */
-	public BagOfAttributes<VT> createFromAttributes(Attribute ...attr){
+	public BagOfAttributes<VT> createFromAttributes(AttributeValue ...attr){
 		return new BagOfAttributes<VT>(this, attr);
 	}
 	
@@ -81,7 +81,7 @@ public final class BagOfAttributesType<VT extends Attribute> implements ValueTyp
 	 */
 	public BagOfAttributes<VT> createFromAttributeValues(Collection<?> values)
 	{
-		Collection<Attribute> attr = new LinkedList<Attribute>();
+		Collection<AttributeValue> attr = new LinkedList<AttributeValue>();
 		for(Object v : values){
 			attr.add(type.create(v));
 		}

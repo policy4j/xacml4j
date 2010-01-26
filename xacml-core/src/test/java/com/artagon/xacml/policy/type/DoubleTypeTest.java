@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeValue;
 import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
 
 public class DoubleTypeTest 
@@ -22,8 +22,8 @@ public class DoubleTypeTest
 	@Test
 	public void testToXacmlString()
 	{
-		Attribute v0 = t1.create(1.0d);
-		Attribute v1 = t1.create(-2.0d);
+		AttributeValue v0 = t1.create(1.0d);
+		AttributeValue v1 = t1.create(-2.0d);
 		assertEquals("1.0", v0.toXacmlString());
 		assertEquals("-2.0", v1.toXacmlString());
 	}
@@ -47,13 +47,13 @@ public class DoubleTypeTest
 	@Test
 	public void testEquals()
 	{
-		Attribute v0 = t1.create(1.0d);
-		Attribute v1 = t1.create(2.0d);
-		Attribute v2 = t1.create(1.0d);
+		AttributeValue v0 = t1.create(1.0d);
+		AttributeValue v1 = t1.create(2.0d);
+		AttributeValue v2 = t1.create(1.0d);
 		assertFalse(v0.equals(v1));
 		assertTrue(v0.equals(v2));
-		Attribute v0Nan = t1.create(Double.NaN);
-		Attribute v1Nan = t1.create(Double.NaN);
+		AttributeValue v0Nan = t1.create(Double.NaN);
+		AttributeValue v1Nan = t1.create(Double.NaN);
 		assertFalse(v0.equals(v0Nan));
 		assertTrue(v0Nan.equals(v0Nan));
 		assertFalse(v1Nan.equals(v0));

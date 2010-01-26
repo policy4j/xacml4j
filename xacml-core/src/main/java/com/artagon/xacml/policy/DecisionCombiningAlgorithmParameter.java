@@ -5,9 +5,9 @@ import com.artagon.xacml.util.Preconditions;
 public class DecisionCombiningAlgorithmParameter 
 {
 	private String name;
-	private Attribute value;
+	private AttributeValue value;
 	
-	public DecisionCombiningAlgorithmParameter(String name, Attribute value)
+	public DecisionCombiningAlgorithmParameter(String name, AttributeValue value)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);
@@ -19,7 +19,7 @@ public class DecisionCombiningAlgorithmParameter
 		return name;
 	}
 	
-	public final Attribute getValue(){
+	public final AttributeValue getValue(){
 		return value;
 	}
 }

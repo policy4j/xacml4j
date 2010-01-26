@@ -1,6 +1,8 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml;
 
 import java.util.Collection;
+
+import com.artagon.xacml.policy.AttributeAssignment;
 
 /**
  * In some applications it is helpful to specify supplemental 
@@ -16,12 +18,4 @@ public final class Advice extends BaseDecisionResponse
 		super(adviceId, attributes);
 	}
 
-	@Override
-	public void accept(PolicyVisitor v) {
-		v.visitEnter(this);
-		for(AttributeAssignment attr : getAttributes()){
-			attr.accept(v);
-		}
-		v.visitLeave(this);
-	}
 }

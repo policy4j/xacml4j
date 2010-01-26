@@ -36,7 +36,7 @@ public class MatchTest extends XacmlPolicyTestCase
 		IntegerType t = DataTypes.INTEGER.getType();
 		AttributeDesignator designator = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer", t, true);
-		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<Attribute>singleton(t.create(10L)));
+		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<AttributeValue>singleton(t.create(10L)));
 		Match m = new Match(function, t.create(10L), designator);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}

@@ -30,7 +30,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testContains() throws Exception
 	{
 		BagOfAttributesType<StringType.StringValue> bagType = stringType.bagOf();
-		Collection<Attribute> content = new LinkedList<Attribute>();
+		Collection<AttributeValue> content = new LinkedList<AttributeValue>();
 		content.add(stringType.create("1"));
 		content.add(stringType.create("2"));
 		content.add(stringType.create("3"));	
@@ -54,16 +54,16 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	{
 		
 		BagOfAttributesType<?> bagType = integerType.bagOf();
-		Collection<Attribute> content = new LinkedList<Attribute>();
+		Collection<AttributeValue> content = new LinkedList<AttributeValue>();
 		content.add(integerType.create(1l));
 		content.add(integerType.create(2l));
 		content.add(integerType.create(1l));	
 		BagOfAttributes<?> bag = bagType.createFromAttributes(content);
-		Collection<Attribute> test = new LinkedList<Attribute>();
+		Collection<AttributeValue> test = new LinkedList<AttributeValue>();
 		test.add(integerType.create(1l));
 		test.add(integerType.create(2l));
 		assertTrue(bag.containsAll(bagType.createFromAttributes(test)));		
-		test = new LinkedList<Attribute>();
+		test = new LinkedList<AttributeValue>();
 		test.add(integerType.create(1l));
 		test.add(integerType.create(3l));
 		assertFalse(bag.containsAll(bagType.createFromAttributes(test)));
@@ -73,7 +73,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testEquals()
 	{
 		BagOfAttributesType<?> bagType = integerType.bagOf();
-		Collection<Attribute> content1 = new LinkedList<Attribute>();
+		Collection<AttributeValue> content1 = new LinkedList<AttributeValue>();
 		content1.add(integerType.create(1l));
 		content1.add(integerType.create(2l));
 		content1.add(integerType.create(3l));
@@ -86,12 +86,12 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testJoin() throws Exception
 	{
 		BagOfAttributesType<?> bagType = integerType.bagOf();
-		Collection<Attribute> content1 = new LinkedList<Attribute>();
+		Collection<AttributeValue> content1 = new LinkedList<AttributeValue>();
 		content1.add(integerType.create(1l));
 		content1.add(integerType.create(2l));
 		content1.add(integerType.create(3l));
 		BagOfAttributes<?> bag1 = bagType.createFromAttributes(content1);
-		Collection<Attribute> content2 = new LinkedList<Attribute>();
+		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
 		content2.add(integerType.create(3l));
 		content2.add(integerType.create(4l));
 		content2.add(integerType.create(5l));
@@ -105,7 +105,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testCreateWithDifferentAttributeTypes()
 	{
 		BagOfAttributesType<?> bagType = integerType.bagOf();
-		Collection<Attribute> attr = new LinkedList<Attribute>();
+		Collection<AttributeValue> attr = new LinkedList<AttributeValue>();
 		attr.add(integerType.create(1l));
 		attr.add(stringType.create("aaa"));
 		bagType.createFromAttributes(attr);
@@ -115,7 +115,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testEvaluateBag() throws EvaluationException
 	{
 		BagOfAttributesType<?> bagType = integerType.bagOf();
-		Collection<Attribute> content2 = new LinkedList<Attribute>();
+		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
 		content2.add(integerType.create(3l));
 		content2.add(integerType.create(4l));
 		content2.add(integerType.create(5l));

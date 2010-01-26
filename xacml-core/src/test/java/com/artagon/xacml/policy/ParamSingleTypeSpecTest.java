@@ -41,8 +41,8 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 	public void testValidateWithBagType() throws Exception
 	{		
 		ParamSpec spec = new ParamValueTypeSpec(t1);
-		Attribute v = t1.create(new Double(0.1));
-		BagOfAttributes<?> bag = b1.createFromAttributes(Collections.<Attribute>singletonList(v));
+		AttributeValue v = t1.create(new Double(0.1));
+		BagOfAttributes<?> bag = b1.createFromAttributes(Collections.<AttributeValue>singletonList(v));
 		List<Expression> good = Collections.<Expression>singletonList(bag);
 		List<Expression> bad = Collections.<Expression>singletonList(t2.create("AAAA"));
 		assertFalse(spec.validate(good.listIterator()));		

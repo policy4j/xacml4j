@@ -23,7 +23,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public final class BagOfAttributes<T extends Attribute> implements Value
+public final class BagOfAttributes<T extends AttributeValue> implements Value
 {
 	private BagOfAttributesType<T> type;
 	private List<T> values = new LinkedList<T>();
@@ -36,8 +36,8 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	 */
 	@SuppressWarnings("unchecked")
 	BagOfAttributes(BagOfAttributesType<T> type, 
-			Collection<Attribute> attributes){		
-		for(Attribute attr: attributes){	
+			Collection<AttributeValue> attributes){		
+		for(AttributeValue attr: attributes){	
 			Preconditions.checkArgument(
 					attr.getType().equals(type.getDataType()),
 					String.format("Only attributes of type=\"%s\" " +
@@ -54,7 +54,7 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	 * @param type a bag attribute type
 	 */
 	BagOfAttributes(BagOfAttributesType<T> type, 
-			Attribute ...attributes){
+			AttributeValue ...attributes){
 		this(type, Arrays.asList(attributes));				
 	}
 	
@@ -80,7 +80,7 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	 * Gets first attribute value
 	 * in this bag
 	 * 
-	 * @return first {@link Attribute}
+	 * @return first {@link AttributeValue}
 	 * instance in this bag
 	 * @exception NoSuchElementException if bag is empty
 	 */
@@ -89,7 +89,7 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	}
 	
 	/**
-	 * Gets number of {@link Attribute}
+	 * Gets number of {@link AttributeValue}
 	 * instances in this bag
 	 * 
 	 * @return number of attributes
@@ -114,14 +114,14 @@ public final class BagOfAttributes<T extends Attribute> implements Value
 	 * @param attr an attribute
 	 * @return <code>true</code> if bag contains given attribute
 	 */
-	public boolean contains(Attribute attr){
+	public boolean contains(AttributeValue attr){
 		return values.contains(attr);
 	}
 	
 	public BagOfAttributes<T> join(BagOfAttributes<?> bag)
 	{
 		Preconditions.checkArgument(getType().equals(bag.getType()));
-		Collection<Attribute> join = new ArrayList<Attribute>(values.size() + bag.size());
+		Collection<AttributeValue> join = new ArrayList<AttributeValue>(values.size() + bag.size());
 		join.addAll(values);
 		join.addAll(bag.values);
 		return type.createFromAttributes(join);

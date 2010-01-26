@@ -1,6 +1,6 @@
 package com.artagon.xacml.policy;
 
-public interface Attribute extends Value
+public interface AttributeValue extends Value
 {
 	/**
 	 * Converts this XACML attribute value
@@ -16,5 +16,5 @@ public interface Attribute extends Value
 	 * 
 	 * @see {@link Expression#evaluate(EvaluationContext)}
 	 */
-	Attribute evaluate(EvaluationContext context) throws EvaluationException;
+	AttributeValue evaluate(EvaluationContext context) throws EvaluationException;
 }

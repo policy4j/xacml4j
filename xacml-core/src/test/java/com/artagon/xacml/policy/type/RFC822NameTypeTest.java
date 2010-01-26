@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeValue;
 
 public class RFC822NameTypeTest 
 {
@@ -21,10 +21,10 @@ public class RFC822NameTypeTest
 	@Test
 	public void testEquals()
 	{
-		Attribute n0 = t.create("test0@test.org");
-		Attribute n1 = t.create("test1@test.org");
-		Attribute n2 = t.create("test0@TEST.org");
-		Attribute n3 = t.create("TEST0@test.org");
+		AttributeValue n0 = t.create("test0@test.org");
+		AttributeValue n1 = t.create("test1@test.org");
+		AttributeValue n2 = t.create("test0@TEST.org");
+		AttributeValue n3 = t.create("TEST0@test.org");
 		assertFalse(n0.equals(n1));
 		assertTrue(n0.equals(n2));
 		assertFalse(n0.equals(n3));

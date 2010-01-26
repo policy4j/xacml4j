@@ -14,7 +14,7 @@ public final class Match implements Matchable, PolicyElement
 {	
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 	
-	private Attribute value;
+	private AttributeValue value;
 	private AttributeReference attributeRef;
 	private FunctionSpec predicate;
 	
@@ -26,7 +26,7 @@ public final class Match implements Matchable, PolicyElement
 	 * @param function a match function
 	 */
 	protected Match(FunctionSpec spec, 
-			Attribute value, AttributeReference attributeReference)
+			AttributeValue value, AttributeReference attributeReference)
 	{
 		Preconditions.checkNotNull(spec);
 		Preconditions.checkNotNull(value);
@@ -55,7 +55,7 @@ public final class Match implements Matchable, PolicyElement
 	 * 
 	 * @return {@link Attribute<?>} instance
 	 */
-	public Attribute getAttributeValue(){
+	public AttributeValue getAttributeValue(){
 		return value;
 	}
 	
@@ -67,7 +67,7 @@ public final class Match implements Matchable, PolicyElement
 			BagOfAttributes<?> attributes = (BagOfAttributes<?>)attributeRef.evaluate(context);
 			log.debug("Evaluated attribute reference=\"{}\" to " +
 					"bag=\"{}\"", attributeRef, attributes);
-			for(Attribute attr : attributes.values()){
+			for(AttributeValue attr : attributes.values()){
 				BooleanValue match = (BooleanValue)predicate.invoke(context, attr, attributeRef);
 				if(match.getValue()){
 					log.debug("Attribute value=\"{}\" " +

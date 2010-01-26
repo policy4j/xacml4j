@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeValue;
 
 public class StringTypeTest 
 {
@@ -20,10 +20,10 @@ public class StringTypeTest
 	@Test
 	public void testEquals()
 	{
-		Attribute v0 = t.create("v0");
-		Attribute v1 = t.create("v1");
+		AttributeValue v0 = t.create("v0");
+		AttributeValue v1 = t.create("v1");
 		assertFalse(v0.equals(v1));
-		Attribute v2 = t.create("v0");
+		AttributeValue v2 = t.create("v0");
 		assertFalse(v1.equals(v2));
 		assertTrue(v0.equals(v2));
 	}

@@ -7,7 +7,7 @@ public final class RuleCombinerParameter extends DecisionCombiningAlgorithmParam
 	private String ruleId;
 	
 	public RuleCombinerParameter(String ruleId, 
-			String name, Attribute value){
+			String name, AttributeValue value){
 		super(name, value);
 		Preconditions.checkNotNull(ruleId);
 		this.ruleId = ruleId;

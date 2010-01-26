@@ -19,12 +19,12 @@ public interface AttributeType extends ValueType
 	
 	/**
 	 * Tests if a given {@link Object} instance
-	 * can be converted to the instance of {@link Attribute}
+	 * can be converted to the instance of {@link AttributeValue}
 	 * of this data type
 	 * 
 	 * @param any an {@link Object} instance
 	 * @return <code>true</code> if given instance
-	 * can be converted to {@link Attribute} instance
+	 * can be converted to {@link AttributeValue} instance
 	 * of this data type
 	 */
 	boolean isConvertableFrom(Object any);
@@ -38,7 +38,7 @@ public interface AttributeType extends ValueType
 	 * @exception IllegalArgumentException if given value does not
 	 * represent value of this type
 	 */
-	Attribute fromXacmlString(String v);
+	AttributeValue fromXacmlString(String v);
 	
 	/**
 	 * Creates an attribute from a given object.
@@ -46,9 +46,9 @@ public interface AttributeType extends ValueType
 	 * or can be instance of {@link String}
 	 * 
 	 * @param object an object
-	 * @return {@link Attribute}
+	 * @return {@link AttributeValue}
 	 */
-	Attribute create(Object object);
+	AttributeValue create(Object object);
 	
 	/**
 	 * Creates type representing collection of 

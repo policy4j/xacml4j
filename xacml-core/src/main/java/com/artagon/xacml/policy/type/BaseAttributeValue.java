@@ -1,7 +1,7 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.AttributeValue;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.PolicyVisitor;
@@ -10,7 +10,7 @@ import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
 
 abstract class BaseAttributeValue<T>
-	implements Attribute
+	implements AttributeValue
 {
 	private T value;
 	private AttributeType type;
@@ -66,7 +66,7 @@ abstract class BaseAttributeValue<T>
 	}
 	
 	@Override
-	public final Attribute evaluate(EvaluationContext context) throws EvaluationException {
+	public final AttributeValue evaluate(EvaluationContext context) throws EvaluationException {
 		return this;
 	}
 	

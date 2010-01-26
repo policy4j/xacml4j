@@ -51,7 +51,7 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 			String attributeId, 
 			String issuer,
 			AttributeType type, 
-			Collection<Attribute> attributeValues){
+			Collection<AttributeValue> attributeValues){
 		AttributeHolder holder = new AttributeHolder(issuer, category, type, attributeValues);
 		Map<String, AttributeHolder> byCategory = attributes.get(category);
 		if(byCategory == null){
@@ -71,7 +71,7 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 		public AttributeHolder(
 				String issuer, 
 				CategoryId category,
-				AttributeType type, Collection<Attribute> attributes) 
+				AttributeType type, Collection<AttributeValue> attributes) 
 		{
 			this.issuer = issuer;
 			this.category = category;

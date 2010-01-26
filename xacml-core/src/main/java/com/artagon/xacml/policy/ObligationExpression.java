@@ -2,6 +2,8 @@ package com.artagon.xacml.policy;
 
 import java.util.Collection;
 
+import com.artagon.xacml.Obligation;
+
 public final class ObligationExpression extends BaseDecisionResponseExpression
 {
 	public ObligationExpression(String id, Effect effect,

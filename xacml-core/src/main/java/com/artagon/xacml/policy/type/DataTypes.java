@@ -4,8 +4,8 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.AttributeValue;
 import com.artagon.xacml.policy.BagOfAttributes;
 
 
@@ -91,18 +91,18 @@ public enum DataTypes
 	 * @return an XACML data type value instance
 	 */
 	@SuppressWarnings("unchecked")
-	public <V extends Attribute> V create(Object o){
+	public <V extends AttributeValue> V create(Object o){
 		return ((V)type.create(o));
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends Attribute> BagOfAttributes<T> bag(Attribute ...attributes)
+	public <T extends AttributeValue> BagOfAttributes<T> bag(AttributeValue ...attributes)
 	{
 		return (BagOfAttributes<T>)type.bagOf().createFromAttributes(attributes);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <V extends Attribute> V fromXacmlString(String v){
+	public <V extends AttributeValue> V fromXacmlString(String v){
 		return ((V)type.fromXacmlString(v));
 	}
 	

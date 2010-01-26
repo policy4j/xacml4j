@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.policy.Attribute;
+import com.artagon.xacml.policy.AttributeValue;
 
 public class AnyURITypeTest 
 {
@@ -18,8 +18,8 @@ public class AnyURITypeTest
 	
 	@Test
 	public void testEquals(){
-		Attribute v0 = t1.create("http://www.test.org");
-		Attribute v1 = t1.create("http://www.test.org");
+		AttributeValue v0 = t1.create("http://www.test.org");
+		AttributeValue v1 = t1.create("http://www.test.org");
 		assertEquals(v0, v1);
 	}
 }

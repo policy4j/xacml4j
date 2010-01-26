@@ -1,7 +1,7 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.Attribute;
 import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.AttributeValue;
 import com.artagon.xacml.policy.BagOfAttributesType;
 import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
@@ -11,11 +11,11 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeType<AttributeValue extends Attribute> implements AttributeType
+abstract class BaseAttributeType<V extends AttributeValue> implements AttributeType
 {
 	private String typeId;
 	private Class<?> valueClazz;
-	private BagOfAttributesType<AttributeValue> bagType;
+	private BagOfAttributesType<V> bagType;
 	
 	/**
 	 * Constructs attribute type with given type identifier.
@@ -27,7 +27,7 @@ abstract class BaseAttributeType<AttributeValue extends Attribute> implements At
 		Preconditions.checkNotNull(valueType);
 		this.typeId = typeId;		
 		this.valueClazz = valueType;
-		this.bagType = new BagOfAttributesType<AttributeValue>(this);
+		this.bagType = new BagOfAttributesType<V>(this);
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ abstract class BaseAttributeType<AttributeValue extends Attribute> implements At
 	}
 	
 	@Override
-	public final BagOfAttributesType<AttributeValue> bagOf(){
+	public final BagOfAttributesType<V> bagOf(){
 		return bagType;
 	}
 	

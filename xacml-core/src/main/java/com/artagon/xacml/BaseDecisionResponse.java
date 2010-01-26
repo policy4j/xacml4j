@@ -1,11 +1,12 @@
-package com.artagon.xacml.policy;
+package com.artagon.xacml;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.policy.AttributeAssignment;
 import com.artagon.xacml.util.Preconditions;
 
-abstract class BaseDecisionResponse implements PolicyElement
+abstract class BaseDecisionResponse
 {
 	private String id;
 	private Collection<AttributeAssignment> attributes;

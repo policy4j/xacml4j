@@ -1,5 +1,9 @@
 package com.artagon.xacml.policy;
 
+import com.artagon.xacml.Advice;
+import com.artagon.xacml.AssociatedAdvice;
+import com.artagon.xacml.Obligation;
+
 
 public interface PolicyVisitor
 {
@@ -10,8 +14,8 @@ public interface PolicyVisitor
 	void visitEnter(AssociatedAdvice attr);
 	void visitLeave(AssociatedAdvice attr);
 	
-	void visitEnter(Attribute attr);
-	void visitLeave(Attribute attr);
+	void visitEnter(AttributeValue attr);
+	void visitLeave(AttributeValue attr);
 	
 	void visitEnter(AttributeAssignment attr);
 	void visitLeave(AttributeAssignment attr);
