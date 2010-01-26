@@ -9,13 +9,11 @@ import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.policy.type.Base64BinaryType.Base64BinaryValue;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
-import com.artagon.xacml.policy.type.DNSNameType.DNSNameValue;
 import com.artagon.xacml.policy.type.DateTimeType.DateTimeValue;
 import com.artagon.xacml.policy.type.DateType.DateValue;
 import com.artagon.xacml.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
 import com.artagon.xacml.policy.type.HexBinaryType.HexBinaryValue;
-import com.artagon.xacml.policy.type.IPAddressType.IPAddressValue;
 import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.policy.type.StringType.StringValue;
@@ -173,26 +171,6 @@ public class EqualityPredicates
 			BooleanValue equals(
 			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryValue a, 
 			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryValue b)
-	{
-		return XacmlDataType.BOOLEAN.create(a.equals(b));
-	}
-	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-equal")
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
-	public static 
-			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.DNSNAME)DNSNameValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DNSNAME)DNSNameValue b)
-	{
-		return XacmlDataType.BOOLEAN.create(a.equals(b));
-	}
-	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-equal")
-	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
-	public static 
-			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.IPADDRESS)IPAddressValue a, 
-			@XacmlFuncParam(type=XacmlDataType.IPADDRESS)IPAddressValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}

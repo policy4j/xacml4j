@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface XacmlFunc 
 {
 	String id();
+	boolean evaluateArguments() default true;
 }

@@ -11,7 +11,7 @@ import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
 import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.util.Preconditions;
 
-public class NumericFunctions 
+public class ArithmeticFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-add")
 	@XacmlFuncReturnType(type=XacmlDataType.INTEGER)

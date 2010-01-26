@@ -2,7 +2,7 @@ package com.artagon.xacml.policy;
 
 import java.util.Collection;
 
-abstract class BaseCompositeDecision   extends BaseDesicion 
+abstract class BaseCompositeDecision extends BaseDesicion 
 	implements CompositeDecision
 {
 	
