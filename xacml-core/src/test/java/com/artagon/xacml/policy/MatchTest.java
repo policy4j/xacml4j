@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.oasis.xacml.azapi.constants.AzCategoryIdSubjectRecipient;
 
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.policy.function.XacmlFunction;
 import com.artagon.xacml.policy.type.BooleanType;
 import com.artagon.xacml.policy.type.XacmlDataType;
 import com.artagon.xacml.policy.type.IntegerType;
@@ -26,7 +25,7 @@ public class MatchTest extends XacmlPolicyTestCase
 		this.paramType = XacmlDataType.INTEGER.getType();
 		this.booleanType = XacmlDataType.BOOLEAN.getType();
 		
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(XacmlFunction.INTEGER_EQUAL.getXacmlId());
+		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
 		b.withParam(paramType).withParam(paramType);
 		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.TRUE)));
 	}

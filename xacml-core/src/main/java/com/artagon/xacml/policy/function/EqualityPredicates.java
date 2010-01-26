@@ -1,172 +1,198 @@
 package com.artagon.xacml.policy.function;
 
 
-import com.artagon.xacml.policy.type.AnyURIType;
-import com.artagon.xacml.policy.type.Base64BinaryType;
-import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.DateTimeType;
-import com.artagon.xacml.policy.type.DateType;
-import com.artagon.xacml.policy.type.DayTimeDurationType;
-import com.artagon.xacml.policy.type.DoubleType;
-import com.artagon.xacml.policy.type.HexBinaryType;
-import com.artagon.xacml.policy.type.IntegerType;
-import com.artagon.xacml.policy.type.RFC822NameType;
-import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.TimeType;
-import com.artagon.xacml.policy.type.X500NameType;
-import com.artagon.xacml.policy.type.XacmlDataType;
-import com.artagon.xacml.policy.type.YearMonthDurationType;
-import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
-
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 
+import com.artagon.xacml.policy.type.XacmlDataType;
+import com.artagon.xacml.policy.type.AnyURIType.AnyURIValue;
+import com.artagon.xacml.policy.type.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
+import com.artagon.xacml.policy.type.DNSNameType.DNSNameValue;
+import com.artagon.xacml.policy.type.DateTimeType.DateTimeValue;
+import com.artagon.xacml.policy.type.DateType.DateValue;
+import com.artagon.xacml.policy.type.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.policy.type.DoubleType.DoubleValue;
+import com.artagon.xacml.policy.type.HexBinaryType.HexBinaryValue;
+import com.artagon.xacml.policy.type.IPAddressType.IPAddressValue;
+import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
+import com.artagon.xacml.policy.type.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.policy.type.StringType.StringValue;
+import com.artagon.xacml.policy.type.TimeType.TimeValue;
+import com.artagon.xacml.policy.type.X500NameType.X500NameValue;
+import com.artagon.xacml.policy.type.YearMonthDurationType.YearMonthDurationValue;
+
+/**
+ * An implementation of XACML equality predicates
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class EqualityPredicates 
 {
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerType.IntegerValue b)
+			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue a, 
+			@XacmlFuncParam(type=XacmlDataType.INTEGER)IntegerValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=XacmlDataType.ANYURI)AnyURIType.AnyURIValue a, 
-			@XacmlFuncParam(type=XacmlDataType.ANYURI)AnyURIType.AnyURIValue b)
+			@XacmlFuncParam(type=XacmlDataType.ANYURI)AnyURIValue a, 
+			@XacmlFuncParam(type=XacmlDataType.ANYURI)AnyURIValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:double-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=XacmlDataType.DOUBLE)DoubleType.DoubleValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DOUBLE)DoubleType.DoubleValue b)
+			@XacmlFuncParam(type=XacmlDataType.DOUBLE)DoubleValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DOUBLE)DoubleValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static BooleanValue eq(
-			@XacmlFuncParam(type=XacmlDataType.BOOLEAN)BooleanType.BooleanValue a, 
-			@XacmlFuncParam(type=XacmlDataType.BOOLEAN)BooleanType.BooleanValue b)
+			@XacmlFuncParam(type=XacmlDataType.BOOLEAN)BooleanValue a, 
+			@XacmlFuncParam(type=XacmlDataType.BOOLEAN)BooleanValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:x500Name-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue eq(
-			@XacmlFuncParam(type=XacmlDataType.X500NAME)X500NameType.X500NameValue a, 
-			@XacmlFuncParam(type=XacmlDataType.X500NAME)X500NameType.X500NameValue b)
+			@XacmlFuncParam(type=XacmlDataType.X500NAME)X500NameValue a, 
+			@XacmlFuncParam(type=XacmlDataType.X500NAME)X500NameValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:string-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.STRING)StringType.StringValue a, 
-			@XacmlFuncParam(type=XacmlDataType.STRING)StringType.StringValue b)
+			@XacmlFuncParam(type=XacmlDataType.STRING)StringValue a, 
+			@XacmlFuncParam(type=XacmlDataType.STRING)StringValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equalsIgnoreCase(
-			@XacmlFuncParam(type=XacmlDataType.STRING)StringType.StringValue a, 
-			@XacmlFuncParam(type=XacmlDataType.STRING)StringType.StringValue b)
+			@XacmlFuncParam(type=XacmlDataType.STRING)StringValue a, 
+			@XacmlFuncParam(type=XacmlDataType.STRING)StringValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equalsIgnoreCase(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:date-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.DATE)DateType.DateValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DATE)DateType.DateValue b)
+			@XacmlFuncParam(type=XacmlDataType.DATE)DateValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DATE)DateValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.DATETIME)DateTimeType.DateTimeValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DATETIME)DateTimeType.DateTimeValue b)
+			@XacmlFuncParam(type=XacmlDataType.DATETIME)DateTimeValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DATETIME)DateTimeValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:time-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:time-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.DATETIME)TimeType.TimeValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DATETIME)TimeType.TimeValue b)
+			@XacmlFuncParam(type=XacmlDataType.DATETIME)TimeValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DATETIME)TimeValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.DAYTIMEDURATION)DayTimeDurationType.DayTimeDurationValue a, 
-			@XacmlFuncParam(type=XacmlDataType.DAYTIMEDURATION)DayTimeDurationType.DayTimeDurationValue b)
+			@XacmlFuncParam(type=XacmlDataType.DAYTIMEDURATION)DayTimeDurationValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DAYTIMEDURATION)DayTimeDurationValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.YEARMONTHDURATION)YearMonthDurationType.YearMonthDurationValue a, 
-			@XacmlFuncParam(type=XacmlDataType.YEARMONTHDURATION)YearMonthDurationType.YearMonthDurationValue b)
+			@XacmlFuncParam(type=XacmlDataType.YEARMONTHDURATION)YearMonthDurationValue a, 
+			@XacmlFuncParam(type=XacmlDataType.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.RFC822NAME)RFC822NameType.RFC822NameValue a, 
-			@XacmlFuncParam(type=XacmlDataType.RFC822NAME)RFC822NameType.RFC822NameValue b)
+			@XacmlFuncParam(type=XacmlDataType.RFC822NAME)RFC822NameValue a, 
+			@XacmlFuncParam(type=XacmlDataType.RFC822NAME)RFC822NameValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.HEXBINARY)HexBinaryType.HexBinaryValue a, 
-			@XacmlFuncParam(type=XacmlDataType.HEXBINARY)HexBinaryType.HexBinaryValue b)
+			@XacmlFuncParam(type=XacmlDataType.HEXBINARY)HexBinaryValue a, 
+			@XacmlFuncParam(type=XacmlDataType.HEXBINARY)HexBinaryValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(functionId="urn:oasis:names:tc:xacml:1.0:function:base64Binary-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-equal")
 	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryType.Base64BinaryValue a, 
-			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryType.Base64BinaryValue b)
+			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryValue a, 
+			@XacmlFuncParam(type=XacmlDataType.BASE64BINARY)Base64BinaryValue b)
+	{
+		return XacmlDataType.BOOLEAN.create(a.equals(b));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-equal")
+	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	public static 
+			BooleanValue equals(
+			@XacmlFuncParam(type=XacmlDataType.DNSNAME)DNSNameValue a, 
+			@XacmlFuncParam(type=XacmlDataType.DNSNAME)DNSNameValue b)
+	{
+		return XacmlDataType.BOOLEAN.create(a.equals(b));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-equal")
+	@XacmlFuncReturnType(type=XacmlDataType.BOOLEAN)
+	public static 
+			BooleanValue equals(
+			@XacmlFuncParam(type=XacmlDataType.IPADDRESS)IPAddressValue a, 
+			@XacmlFuncParam(type=XacmlDataType.IPADDRESS)IPAddressValue b)
 	{
 		return XacmlDataType.BOOLEAN.create(a.equals(b));
 	}
