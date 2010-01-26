@@ -16,8 +16,28 @@ public final class Status
 		this.detail = detail;
 	}
 	
+	public Status(StatusId code){	
+		this(code, null, null);
+	}
+	
 	public StatusId getCode(){
 		return code;
+	}
+	
+	public boolean isOk(){
+		return code == StatusId.OK;
+	}
+	
+	public boolean isFailure(){
+		return code != StatusId.OK;
+	}
+	
+	public boolean isProcessingError(){
+		return code == StatusId.STATUS_PROCESSING_ERROR;
+	}
+	
+	public boolean isSyntaxError(){
+		return code == StatusId.SYNTAX_ERROR;
 	}
 	
 	public String getMessage(){

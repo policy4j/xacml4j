@@ -2,6 +2,9 @@ package com.artagon.xacml;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+
+import com.artagon.xacml.util.Preconditions;
 
 public class Result 
 {
@@ -10,6 +13,19 @@ public class Result
 	private Collection<Obligation> obligations;
 	private Collection<Advice> associatedAdvice;
 	
+	
+	public Result(Status status){
+		Preconditions.checkArgument(status.isFailure());
+		this.status = status;
+	}
+	
+	public Result(DecisionResult decision, 
+			Collection<Advice> associatedAdvice, Collection<Obligation> obligations){
+		Preconditions.checkArgument(!decision.isIndeterminate());
+		this.status = new Status(StatusId.OK);
+		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
+		this.obligations = new LinkedList<Obligation>(obligations);
+	}
 	
 	public Status getStatus(){
 		return status;
