@@ -49,16 +49,19 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		log.debug("Found functionId=\"{}\" method name=\"{}\"", funcId.id(), m.getName());
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(funcId.id());
 		Annotation[][] params = m.getParameterAnnotations();
+		int paramCount = 0;
 		for(Annotation[] p : params){
 			if(p[0] instanceof XacmlFuncParam){
 				XacmlFuncParam param = (XacmlFuncParam)p[0];
 				AttributeValueType type = param.type().getType(); 
 				b.withParam(param.isBag()?type.bagOf():type);
+				paramCount++;
 			}
 			if(p[0] instanceof XacmlFuncVarArgParam){
 				XacmlFuncVarArgParam param = (XacmlFuncVarArgParam)p[0];
 				AttributeValueType type = param.type().getType();
 				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
+				paramCount++;
 			}
 		}
 		AttributeValueType type = returnType.type().getType();
@@ -68,7 +71,8 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 			public Value invoke(EvaluationContext context,
 					Expression... parameters)
 					throws EvaluationException {
-				try{
+				try
+				{
 					return (Value)m.invoke(null, parameters);
 				}catch(Exception e){
 					throw new EvaluationException(e, "failed to invoke function");

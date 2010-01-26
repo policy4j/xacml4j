@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.function.impl;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlContext;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
@@ -16,7 +17,7 @@ public class LogicalFunctions
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue and(
-			EvaluationContext context,
+			@XacmlContext EvaluationContext context,
 			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression ...values) 
 		throws EvaluationException
 	{
@@ -33,7 +34,7 @@ public class LogicalFunctions
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue or(
-			EvaluationContext context,
+			@XacmlContext EvaluationContext context,
 			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression...values) 
 		throws EvaluationException
 	{
@@ -51,8 +52,9 @@ public class LogicalFunctions
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue nof(
+			@XacmlContext EvaluationContext context,
 			@XacmlFuncParam(type=DataTypes.INTEGER)IntegerValue n,
-			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)BooleanValue...values) 
+			@XacmlFuncVarArgParam(type=DataTypes.BOOLEAN, min=0)Expression...values) 
 		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -61,7 +63,7 @@ public class LogicalFunctions
 					"less than minimum required number=\"%s\"", values.length, n.getValue());
 		}
 		for(int i = 0; i < n.getValue(); i++ ){
-			r &= values[i].getValue();
+			r &= ((BooleanValue)values[i].evaluate(context)).getValue();
 		}
 		return DataTypes.BOOLEAN.create(r);
 	}
