@@ -17,12 +17,15 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 {
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
+	private boolean lazyParamEval = false;
 	
-	protected BaseFunctionSpec(String functionId, List<ParamSpec> params){
+	protected BaseFunctionSpec(String functionId, List<ParamSpec> params, 
+			boolean lazyParamEval){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
 		this.functionId = functionId;
 		this.parameters.addAll(params);
+		this.lazyParamEval = lazyParamEval;
 	}
 	
 	@Override
@@ -36,6 +39,11 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		return parameters;
 	}
 	
+	@Override
+	public final boolean isRequiresLazyParamEval() {
+		return lazyParamEval;
+	}
+
 	@Override
 	public final int getNumberOfParams(){
 		return parameters.size();
@@ -60,11 +68,6 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		return new FunctionReferenceExpression(this, returnType);
 	}
 
-	
-	protected final ValueType getReturnType(Expression ... arguments){
-		return resolveReturnType(arguments);
-	}
-	
 	public final boolean validateParameters(Expression ... params){
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
@@ -80,6 +83,26 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * Evaluates given parameters
+	 * 
+	 * @param context an evaluation context
+	 * @param params a function invocation 
+	 * parameters
+	 * @return an array of evaluated parameters
+	 * @throws PolicyEvaluationException if an evaluation
+	 * error occur
+	 */
+	protected Expression[] evaluate(EvaluationContext context, Expression ...params) 
+		throws PolicyEvaluationException
+	{
+		Expression[] eval = new Expression[params.length];
+		for(int i =0; i < params.length; i++){
+			eval[i] = params[i].evaluate(context);
+		}
+		return eval;
 	}
 	
 	protected boolean validate(ParamSpec spec, Expression p, Expression ... params){

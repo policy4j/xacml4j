@@ -17,8 +17,9 @@ final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 	private StaticallyTypedFunction function;
 	
 	StaticallyTypedFunctionSpec(String id, 
-			StaticallyTypedFunction function, List<ParamSpec> params) {
-		super(id, params);
+			StaticallyTypedFunction function, 
+			List<ParamSpec> params) {
+		super(id, params, false);
 		Preconditions.checkNotNull(function);
 		this.function = function;
 	}
@@ -46,6 +47,6 @@ final class StaticallyTypedFunctionSpec extends BaseFunctionSpec
 			throw new PolicyEvaluationIndeterminateException(
 					"Failed to invoke function=\"%s\"", getXacmlId());
 		}
-		return function.invoke(context, arguments);
+		return function.invoke(context, isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
 	}
 }

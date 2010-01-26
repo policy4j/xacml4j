@@ -15,16 +15,14 @@ final class DynamicallyTypedFunctionSpec extends BaseFunctionSpec
 {
 	private DynamicallyTypedFunction function;
 
-	DynamicallyTypedFunctionSpec(String id, DynamicallyTypedFunction function,
+	DynamicallyTypedFunctionSpec(String id, 
+			DynamicallyTypedFunction function,
 			List<ParamSpec> params) {
-		super(id, params);
+		super(id, params, false);
 		Preconditions.checkNotNull(function);
 		this.function = function;
 	}
 	
-	/**
-	 * Always returns <code>null</code>
-	 */
 	@Override
 	protected final ValueType getReturnType() {
 		return null;
@@ -38,8 +36,6 @@ final class DynamicallyTypedFunctionSpec extends BaseFunctionSpec
 	@Override
 	public Value invoke(EvaluationContext context, Expression ...arguments)
 			throws PolicyEvaluationException {
-		return function.invoke(context, arguments);
-	}
-	
-	
+		return function.invoke(context, isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
+	}	
 }

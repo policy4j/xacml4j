@@ -28,6 +28,16 @@ public interface FunctionSpec
 	int getNumberOfParams();
 	
 	/**
+	 * Tests if this function requires lazy
+	 * parameters evaluation
+	 * 
+	 * @return <code>true</code> if this
+	 * function requires lazy parameters
+	 * evaluation
+	 */
+	boolean isRequiresLazyParamEval();
+	
+	/**
 	 * Creates invocation expression for this
 	 * function with a given arguments
 	 * 
