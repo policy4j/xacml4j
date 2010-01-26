@@ -117,8 +117,8 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributes<?> resolveAttributeDesignator(CategoryId category,
-			String attributeId, AttributeType dataType, 
+	BagOfAttributeValues<?> resolveAttributeDesignator(CategoryId category,
+			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
 	/**
@@ -130,6 +130,6 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributes<?> resolveAttributeSelector(CategoryId category, 
-			XPath location, AttributeType dataType);
+	BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category, 
+			XPath location, AttributeValueType dataType);
 }

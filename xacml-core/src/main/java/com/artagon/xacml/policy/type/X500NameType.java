@@ -2,8 +2,8 @@ package com.artagon.xacml.policy.type;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
@@ -21,12 +21,12 @@ import com.artagon.xacml.policy.BagOfAttributesType;
  * <br>The distinguished name must be specified using the grammar defined 
  * in RFC 1779 or RFC 2253 (either format is acceptable). 
  */
-public interface X500NameType extends AttributeType
+public interface X500NameType extends AttributeValueType
 {
 	X500NameValue create(Object v);
 	X500NameValue fromXacmlString(String v);
 	
-	BagOfAttributesType<X500NameValue> bagOf();
+	BagOfAttributeValuesType<X500NameValue> bagOf();
 	
 	final class X500NameValue extends BaseAttributeValue<X500Principal>
 	{

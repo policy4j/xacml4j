@@ -19,10 +19,10 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	}
 	
 	@Override
-	public BagOfAttributes<?> resolve(
+	public BagOfAttributeValues<?> resolve(
 			CategoryId category,
 			String attributeId,
-			AttributeType dataType, String issuer) 
+			AttributeValueType dataType, String issuer) 
 	{
 		Map<String, AttributeHolder> byCategory = attributes.get(category);
 		if(byCategory == null){
@@ -41,8 +41,8 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	}
 	
 	@Override
-	public BagOfAttributes<?> resolve(CategoryId category, XPath location,
-			AttributeType dataType) {
+	public BagOfAttributeValues<?> resolve(CategoryId category, XPath location,
+			AttributeValueType dataType) {
 		return dataType.bagOf().createEmpty();
 	}
 	
@@ -50,7 +50,7 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 			CategoryId category, 
 			String attributeId, 
 			String issuer,
-			AttributeType type, 
+			AttributeValueType type, 
 			Collection<AttributeValue> attributeValues){
 		AttributeHolder holder = new AttributeHolder(issuer, category, type, attributeValues);
 		Map<String, AttributeHolder> byCategory = attributes.get(category);
@@ -65,13 +65,13 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	class AttributeHolder
 	{
 		String issuer;
-		BagOfAttributes<?> bag;
+		BagOfAttributeValues<?> bag;
 		CategoryId category;
 		
 		public AttributeHolder(
 				String issuer, 
 				CategoryId category,
-				AttributeType type, Collection<AttributeValue> attributes) 
+				AttributeValueType type, Collection<AttributeValue> attributes) 
 		{
 			this.issuer = issuer;
 			this.category = category;

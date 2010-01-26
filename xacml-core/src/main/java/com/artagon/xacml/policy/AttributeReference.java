@@ -12,7 +12,7 @@ import com.artagon.xacml.util.Preconditions;
 abstract class AttributeReference implements Expression
 {
 	private CategoryId category;
-	protected BagOfAttributesType<?> evaluatesTo;
+	protected BagOfAttributeValuesType<?> evaluatesTo;
 	
 	/**
 	 * Constructs attribute reference with a given
@@ -23,7 +23,7 @@ abstract class AttributeReference implements Expression
 	 * data type
 	 */
 	protected AttributeReference(CategoryId category, 
-			AttributeType dataType){
+			AttributeValueType dataType){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
 		this.category = category;
@@ -39,9 +39,9 @@ abstract class AttributeReference implements Expression
 	 * Gets bag returned by this reference
 	 * attribute XACML primitive data type
 	 * 
-	 * @return {@link AttributeType}
+	 * @return {@link AttributeValueType}
 	 */
-	public final AttributeType getDataType(){
+	public final AttributeValueType getDataType(){
 		return evaluatesTo.getDataType();
 	}
 	

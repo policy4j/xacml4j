@@ -13,7 +13,7 @@ public final class AttributeSelector extends AttributeReference
 	public AttributeSelector(
 			CategoryId category, 
 			XPath xpath, 
-			AttributeType dataType, 
+			AttributeValueType dataType, 
 					boolean mustBePresent){
 		super(category, dataType);
 		Preconditions.checkNotNull(xpath);
@@ -37,9 +37,9 @@ public final class AttributeSelector extends AttributeReference
 	}
 
 	@Override
-	public BagOfAttributes<?> evaluate(EvaluationContext context)
+	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
 			throws EvaluationException {
-		BagOfAttributes<?> value = context.resolveAttributeSelector(getCategory(), 
+		BagOfAttributeValues<?> value = context.resolveAttributeSelector(getCategory(), 
 				getContextPath(), evaluatesTo.getDataType());
 		if(value.isEmpty() && isMustBePresent()){
 			throw new EvaluationException(

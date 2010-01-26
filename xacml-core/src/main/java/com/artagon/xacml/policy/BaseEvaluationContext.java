@@ -73,10 +73,10 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeDesignator(
+	public BagOfAttributeValues<?> resolveAttributeDesignator(
 			CategoryId category,
 			String attributeId,
-			AttributeType dataType, String issuer) {
+			AttributeValueType dataType, String issuer) {
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(dataType);
 		Preconditions.checkNotNull(category);
@@ -96,9 +96,9 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeSelector(CategoryId category, 
+	public BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category, 
 			XPath location,
-			AttributeType dataType) {
+			AttributeValueType dataType) {
 		Preconditions.checkNotNull(location);
 		Preconditions.checkNotNull(dataType);
 		return attributeService.resolve(category, location, dataType);

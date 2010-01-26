@@ -1,14 +1,14 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface BooleanType extends AttributeType
+public interface BooleanType extends AttributeValueType
 {	
 	BooleanValue create(Object value);
 	BooleanValue fromXacmlString(String v);
 	
-	BagOfAttributesType<BooleanValue> bagOf();
+	BagOfAttributeValuesType<BooleanValue> bagOf();
 	
 	public final class BooleanValue extends BaseAttributeValue<Boolean>
 	{

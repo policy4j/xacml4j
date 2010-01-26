@@ -1,13 +1,13 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface IntegerType extends AttributeType
+public interface IntegerType extends AttributeValueType
 {
 	IntegerValue create(Object value);
 	IntegerValue fromXacmlString(String v);
-	BagOfAttributesType<IntegerValue> bagOf();
+	BagOfAttributeValuesType<IntegerValue> bagOf();
 	
 	final class IntegerValue extends BaseAttributeValue<Long>
 	{

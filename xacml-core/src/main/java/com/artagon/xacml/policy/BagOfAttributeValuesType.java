@@ -13,9 +13,9 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributesType<VT extends AttributeValue> implements ValueType
+public final class BagOfAttributeValuesType<VT extends AttributeValue> implements ValueType
 {
-	private AttributeType type;
+	private AttributeValueType type;
 	
 	/**
 	 * Constructs bag of attributes types with a given
@@ -23,7 +23,7 @@ public final class BagOfAttributesType<VT extends AttributeValue> implements Val
 	 * 
 	 * @param type an attribute type
 	 */
-	public BagOfAttributesType(AttributeType type){
+	public BagOfAttributeValuesType(AttributeValueType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
 	}
@@ -33,7 +33,7 @@ public final class BagOfAttributesType<VT extends AttributeValue> implements Val
 	 * 
 	 * @return bag attribute type
 	 */
-	public AttributeType getDataType(){
+	public AttributeValueType getDataType(){
 		return type;
 	}
 	
@@ -45,41 +45,41 @@ public final class BagOfAttributesType<VT extends AttributeValue> implements Val
 	 * Creates bag from given collection of attributes.
 	 * 
 	 * @param attr a collection of attributes
-	 * @return {@link BagOfAttributes} containing given attributes
+	 * @return {@link BagOfAttributeValues} containing given attributes
 	 */
-	public BagOfAttributes<VT> createFromAttributes(
+	public BagOfAttributeValues<VT> createFromAttributes(
 			Collection<AttributeValue> attr){
-		return new BagOfAttributes<VT>(this, attr);
+		return new BagOfAttributeValues<VT>(this, attr);
 	}
 	
 	/**
 	 * Creates an empty bag.
 	 * 
-	 * @return instance of {@link BagOfAttributes} with
+	 * @return instance of {@link BagOfAttributeValues} with
 	 * no {@link BaseAttribute} instances
 	 */
-	public  BagOfAttributes<VT> createEmpty(){
-		return new BagOfAttributes<VT>(this, Collections.<AttributeValue>emptyList());
+	public  BagOfAttributeValues<VT> createEmpty(){
+		return new BagOfAttributeValues<VT>(this, Collections.<AttributeValue>emptyList());
 	}
 	
 	/**
 	 * Creates bag from given array of attributes.
 	 * 
 	 * @param attr an array of attributes
-	 * @return {@link BagOfAttributes} containing given attributes
+	 * @return {@link BagOfAttributeValues} containing given attributes
 	 */
-	public BagOfAttributes<VT> createFromAttributes(AttributeValue ...attr){
-		return new BagOfAttributes<VT>(this, attr);
+	public BagOfAttributeValues<VT> createFromAttributes(AttributeValue ...attr){
+		return new BagOfAttributeValues<VT>(this, attr);
 	}
 	
 	/**
-	 * Creates {@link BagOfAttributes} from a given collection
+	 * Creates {@link BagOfAttributeValues} from a given collection
 	 * of attribute values
 	 * 
 	 * @param values a collection of attribute values
-	 * @return {@link BagOfAttributes}
+	 * @return {@link BagOfAttributeValues}
 	 */
-	public BagOfAttributes<VT> createFromAttributeValues(Collection<?> values)
+	public BagOfAttributeValues<VT> createFromAttributeValues(Collection<?> values)
 	{
 		Collection<AttributeValue> attr = new LinkedList<AttributeValue>();
 		for(Object v : values){
@@ -93,10 +93,10 @@ public final class BagOfAttributesType<VT extends AttributeValue> implements Val
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof BagOfAttributesType<?>)){
+		if(!(o instanceof BagOfAttributeValuesType<?>)){
 			return false;
 		}
-		BagOfAttributesType<?> type = (BagOfAttributesType<?>)o;
+		BagOfAttributeValuesType<?> type = (BagOfAttributeValuesType<?>)o;
 		return type.getDataType().equals(getDataType());
 	}
 	

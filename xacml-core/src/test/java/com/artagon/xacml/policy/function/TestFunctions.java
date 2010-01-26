@@ -1,6 +1,6 @@
 package com.artagon.xacml.policy.function;
 
-import com.artagon.xacml.policy.BagOfAttributes;
+import com.artagon.xacml.policy.BagOfAttributeValues;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
@@ -22,7 +22,7 @@ public class TestFunctions
 	@XacmlFunc(id="test2")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
 	public static IntegerType.IntegerValue test2(
-			@XacmlFuncParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributes<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
 		return DataTypes.INTEGER.create(bag.size());
 	}

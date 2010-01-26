@@ -2,14 +2,14 @@ package com.artagon.xacml.policy.type;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface TimeType extends AttributeType
+public interface TimeType extends AttributeValueType
 {	
 	TimeValue create(Object value);
 	TimeValue fromXacmlString(String v);
-	BagOfAttributesType<TimeValue> bagOf();
+	BagOfAttributeValuesType<TimeValue> bagOf();
 	
 	final class TimeValue extends BaseAttributeValue<XMLGregorianCalendar>
 	{

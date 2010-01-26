@@ -1,13 +1,13 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface HexBinaryType  extends AttributeType
+public interface HexBinaryType  extends AttributeValueType
 {
 	HexBinaryValue create(Object any);
 	HexBinaryValue fromXacmlString(String v);
-	BagOfAttributesType<HexBinaryValue> bagOf();
+	BagOfAttributeValuesType<HexBinaryValue> bagOf();
 	
 	final class HexBinaryValue extends BaseAttributeValue<BinaryValue>
 	{

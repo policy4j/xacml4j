@@ -23,9 +23,9 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public final class BagOfAttributes<T extends AttributeValue> implements Value
+public final class BagOfAttributeValues<T extends AttributeValue> implements Value
 {
-	private BagOfAttributesType<T> type;
+	private BagOfAttributeValuesType<T> type;
 	private List<T> values = new LinkedList<T>();
 	
 	/**
@@ -35,7 +35,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 	 * @param attributes a collection of attributes
 	 */
 	@SuppressWarnings("unchecked")
-	BagOfAttributes(BagOfAttributesType<T> type, 
+	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
 			Collection<AttributeValue> attributes){		
 		for(AttributeValue attr: attributes){	
 			Preconditions.checkArgument(
@@ -53,7 +53,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 	 * 
 	 * @param type a bag attribute type
 	 */
-	BagOfAttributes(BagOfAttributesType<T> type, 
+	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
 			AttributeValue ...attributes){
 		this(type, Arrays.asList(attributes));				
 	}
@@ -67,7 +67,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 	 * 
 	 * @return
 	 */
-	public AttributeType getAttributeType(){
+	public AttributeValueType getAttributeType(){
 		return type.getDataType();
 	}
 	
@@ -118,7 +118,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 		return values.contains(attr);
 	}
 	
-	public BagOfAttributes<T> join(BagOfAttributes<?> bag)
+	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag)
 	{
 		Preconditions.checkArgument(getType().equals(bag.getType()));
 		Collection<AttributeValue> join = new ArrayList<AttributeValue>(values.size() + bag.size());
@@ -128,7 +128,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 	}
 	
 	@Override
-	public BagOfAttributes<T> evaluate(EvaluationContext context)
+	public BagOfAttributeValues<T> evaluate(EvaluationContext context)
 			throws EvaluationException {
 		return this;
 	}
@@ -145,7 +145,7 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 	 * @return <code>true</code> if given bag 
 	 * is subset if this bag
 	 */
-	public boolean containsAll(BagOfAttributes<?> bag){		
+	public boolean containsAll(BagOfAttributeValues<?> bag){		
 		return values.containsAll(bag.values);
 	}
 
@@ -154,10 +154,10 @@ public final class BagOfAttributes<T extends AttributeValue> implements Value
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof BagOfAttributes<?>)){
+		if(!(o instanceof BagOfAttributeValues<?>)){
 			return false;
 		}
-		BagOfAttributes<?> bag = (BagOfAttributes<?>)o;
+		BagOfAttributeValues<?> bag = (BagOfAttributeValues<?>)o;
 		return getType().equals(bag.getType()) 
 		&& values.containsAll(bag.values) 
 		&& bag.values.containsAll(values);

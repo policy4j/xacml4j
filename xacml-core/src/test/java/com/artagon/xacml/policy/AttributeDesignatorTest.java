@@ -49,7 +49,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 				type, true);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);
-		assertTrue(((BagOfAttributes<?>)v).contains(attr));
+		assertTrue(((BagOfAttributeValues<?>)v).contains(attr));
 	}
 	
 	@Test

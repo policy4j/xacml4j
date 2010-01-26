@@ -1,7 +1,7 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:dnsName</b>. 
@@ -27,12 +27,12 @@ import com.artagon.xacml.policy.BagOfAttributesType;
  * all ports numbered "x" and above. 
  * <br>[This syntax is taken from the Java SocketPermission.]
  */
-public interface DNSNameType extends AttributeType
+public interface DNSNameType extends AttributeValueType
 {
 	DNSNameValue create(Object o);
 	DNSNameValue fromXacmlString(String v);
 	
-	BagOfAttributesType<DNSNameValue> bagOf();
+	BagOfAttributeValuesType<DNSNameValue> bagOf();
 	
 	final class DNSNameValue extends BaseAttributeValue<DNSName>
 	{

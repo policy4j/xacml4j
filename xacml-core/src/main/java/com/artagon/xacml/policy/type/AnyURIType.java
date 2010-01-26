@@ -2,14 +2,14 @@ package com.artagon.xacml.policy.type;
 
 import java.net.URI;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface AnyURIType extends AttributeType
+public interface AnyURIType extends AttributeValueType
 {	
 	AnyURIValue create(Object value);
 	AnyURIValue fromXacmlString(String v);
-	BagOfAttributesType<AnyURIValue> bagOf();
+	BagOfAttributeValuesType<AnyURIValue> bagOf();
 	
 	final class AnyURIValue extends BaseAttributeValue<URI> 
 	{

@@ -32,7 +32,7 @@ public final class AttributeDesignator extends AttributeReference
 			CategoryId  category,
 			String attributeId, 
 			String issuer,
-			AttributeType dataType, 
+			AttributeValueType dataType, 
 			boolean mustBePresent){
 		super(category, dataType);
 		Preconditions.checkNotNull(attributeId);
@@ -77,16 +77,16 @@ public final class AttributeDesignator extends AttributeReference
 	/**
 	 * Evaluates this attribute designator by resolving
 	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String, 
-	 * String, AttributeType, String)
+	 * String, AttributeValueType, String)
 	 * 
-	 * @return {@link BagOfAttributes} instance 
+	 * @return {@link BagOfAttributeValues} instance 
 	 * @exception EvaluationIndeterminateException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
-	public BagOfAttributes<?> evaluate(EvaluationContext context)
+	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributes<?> bag = context.resolveAttributeDesignator(
+		BagOfAttributeValues<?> bag = context.resolveAttributeDesignator(
 				getCategory(), attributeId, evaluatesTo.getDataType(), issuer);
 		if(bag.isEmpty() && isMustBePresent()){
 			throw new EvaluationException(

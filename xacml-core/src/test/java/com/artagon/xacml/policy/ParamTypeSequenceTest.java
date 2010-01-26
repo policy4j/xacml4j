@@ -20,7 +20,7 @@ public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 	private StringType t1;
 	private DoubleType t2;
 	private IntegerType t3;
-	private BagOfAttributesType<?> b1;
+	private BagOfAttributeValuesType<?> b1;
 	private ParamValueTypeSequenceSpec specAttrZeroOrMore;
 	private ParamValueTypeSequenceSpec specAttrOneOrMore;
 	private ParamValueTypeSequenceSpec specAttrFromOneToFour;

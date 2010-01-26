@@ -102,8 +102,8 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeDesignator(CategoryId category,
-			String attributeId, AttributeType dataType,
+	public BagOfAttributeValues<?> resolveAttributeDesignator(CategoryId category,
+			String attributeId, AttributeValueType dataType,
 			String issuer) {
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
 				issuer);
@@ -113,8 +113,8 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributes<?> resolveAttributeSelector(CategoryId category,
-			XPath location, AttributeType dataType) {
+	public BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category,
+			XPath location, AttributeValueType dataType) {
 		return delegate.resolveAttributeSelector(category, location, dataType);
 	}
 

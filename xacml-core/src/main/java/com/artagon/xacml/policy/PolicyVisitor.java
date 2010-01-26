@@ -20,8 +20,8 @@ public interface PolicyVisitor
 	void visitEnter(FunctionReferenceExpression function);
 	void visitLeave(FunctionReferenceExpression function);
 	
-	void visitEnter(BagOfAttributes<?> bag);
-	void visitLeave(BagOfAttributes<?> bag);
+	void visitEnter(BagOfAttributeValues<?> bag);
+	void visitLeave(BagOfAttributeValues<?> bag);
 	
 	void visitEnter(VariableReference var);
 	void visitLeave(VariableReference var);

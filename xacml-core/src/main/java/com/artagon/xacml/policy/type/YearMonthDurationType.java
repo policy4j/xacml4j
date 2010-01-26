@@ -3,17 +3,17 @@ package com.artagon.xacml.policy.type;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.util.Preconditions;
 
 
-public interface YearMonthDurationType extends AttributeType
+public interface YearMonthDurationType extends AttributeValueType
 {
 	YearMonthDurationValue create(Object value);
 	YearMonthDurationValue fromXacmlString(String v);
 	
-	BagOfAttributesType<YearMonthDurationValue> bagOf();
+	BagOfAttributeValuesType<YearMonthDurationValue> bagOf();
 	
 	final class YearMonthDurationValue extends BaseAttributeValue<Duration>
 	{

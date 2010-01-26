@@ -2,8 +2,8 @@ package com.artagon.xacml.policy.type;
 
 import java.net.InetAddress;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 
@@ -22,14 +22,14 @@ import com.artagon.xacml.policy.BagOfAttributesType;
  * Addresses in URL's". (Note that an IPv6 address or mask, in this syntax, 
  * is enclosed in literal "[" "]" brackets.) 
  */
-public interface IPAddressType extends AttributeType
+public interface IPAddressType extends AttributeValueType
 {
 	IPAddressValue create(Object v);
 	IPAddressValue create(InetAddress address, PortRange portRange);
 	IPAddressValue create(InetAddress address, InetAddress mask);
 	IPAddressValue create(InetAddress address, InetAddress mask, PortRange portRange);
 	IPAddressValue fromXacmlString(String v);
-	BagOfAttributesType<IPAddressValue> bagOf();
+	BagOfAttributeValuesType<IPAddressValue> bagOf();
 	
 	public final class IPAddressValue extends BaseAttributeValue<IPAddress>
 	{

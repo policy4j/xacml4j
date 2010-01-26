@@ -8,7 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.AttributeValueType;
 import com.artagon.xacml.policy.EvaluationContext;
 import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.Expression;
@@ -52,16 +52,16 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		for(Annotation[] p : params){
 			if(p[0] instanceof XacmlFuncParam){
 				XacmlFuncParam param = (XacmlFuncParam)p[0];
-				AttributeType type = param.type().getType(); 
+				AttributeValueType type = param.type().getType(); 
 				b.withParam(param.isBag()?type.bagOf():type);
 			}
 			if(p[0] instanceof XacmlFuncVarArgParam){
 				XacmlFuncVarArgParam param = (XacmlFuncVarArgParam)p[0];
-				AttributeType type = param.type().getType();
+				AttributeValueType type = param.type().getType();
 				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
 			}
 		}
-		AttributeType type = returnType.type().getType();
+		AttributeValueType type = returnType.type().getType();
 		return b.build(new StaticallyTypedFunction(returnType.isBag()?type.bagOf():type) 
 		{
 			@Override

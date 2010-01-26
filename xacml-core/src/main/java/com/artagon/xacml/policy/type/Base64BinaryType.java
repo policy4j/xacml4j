@@ -1,13 +1,13 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface Base64BinaryType extends AttributeType
+public interface Base64BinaryType extends AttributeValueType
 {	
 	Base64BinaryValue create(Object any);
 	Base64BinaryValue fromXacmlString(String v);
-	BagOfAttributesType<Base64BinaryValue> bagOf();
+	BagOfAttributeValuesType<Base64BinaryValue> bagOf();
 	
 	final class Base64BinaryValue extends BaseAttributeValue<BinaryValue>
 	{

@@ -1,14 +1,14 @@
 package com.artagon.xacml.policy.type;
 
-import com.artagon.xacml.policy.AttributeType;
-import com.artagon.xacml.policy.BagOfAttributesType;
+import com.artagon.xacml.policy.AttributeValueType;
+import com.artagon.xacml.policy.BagOfAttributeValuesType;
 
-public interface DoubleType extends AttributeType
+public interface DoubleType extends AttributeValueType
 {
 	DoubleValue create(Object v);
 	DoubleValue fromXacmlString(String v);
 	
-	BagOfAttributesType<DoubleValue> bagOf();
+	BagOfAttributeValuesType<DoubleValue> bagOf();
 	
 	final class DoubleValue extends BaseAttributeValue<Double>
 	{

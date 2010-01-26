@@ -18,7 +18,7 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 {
 	private DoubleType t1;
 	private StringType t2;
-	private BagOfAttributesType<?> b1;
+	private BagOfAttributeValuesType<?> b1;
 	
 	@Before
 	public void init(){
@@ -42,7 +42,7 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 	{		
 		ParamSpec spec = new ParamValueTypeSpec(t1);
 		AttributeValue v = t1.create(new Double(0.1));
-		BagOfAttributes<?> bag = b1.createFromAttributes(Collections.<AttributeValue>singletonList(v));
+		BagOfAttributeValues<?> bag = b1.createFromAttributes(Collections.<AttributeValue>singletonList(v));
 		List<Expression> good = Collections.<Expression>singletonList(bag);
 		List<Expression> bad = Collections.<Expression>singletonList(t2.create("AAAA"));
 		assertFalse(spec.validate(good.listIterator()));		

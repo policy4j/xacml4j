@@ -4,9 +4,9 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.policy.AttributeType;
+import com.artagon.xacml.policy.AttributeValueType;
 import com.artagon.xacml.policy.AttributeValue;
-import com.artagon.xacml.policy.BagOfAttributes;
+import com.artagon.xacml.policy.BagOfAttributeValues;
 
 
 public enum DataTypes 
@@ -59,7 +59,7 @@ public enum DataTypes
 	/** XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration</b> */
 	YEARMONTHDURATION(new YearMonthDurationTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration"));
 	
-	private static final Map<String, AttributeType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeType>();
+	private static final Map<String, AttributeValueType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeValueType>();
 
 	static {
 		for(DataTypes t : EnumSet.allOf(DataTypes.class)){
@@ -67,9 +67,9 @@ public enum DataTypes
 		}
 	}
 
-	private AttributeType type;
+	private AttributeValueType type;
 	
-	private DataTypes(AttributeType type){
+	private DataTypes(AttributeValueType type){
 		this.type = type;
 	}
 	
@@ -96,9 +96,9 @@ public enum DataTypes
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributes<T> bag(AttributeValue ...attributes)
+	public <T extends AttributeValue> BagOfAttributeValues<T> bag(AttributeValue ...attributes)
 	{
-		return (BagOfAttributes<T>)type.bagOf().createFromAttributes(attributes);
+		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -107,13 +107,13 @@ public enum DataTypes
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeType> T getType(){
+	public <T extends AttributeValueType> T getType(){
 		return (T)type;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends AttributeType> T getByTypeId(String typeId){
-		AttributeType type = BY_TYPE_ID.get(typeId);
+	public static <T extends AttributeValueType> T getByTypeId(String typeId){
+		AttributeValueType type = BY_TYPE_ID.get(typeId);
 		return (T)type;
 	} 
 	

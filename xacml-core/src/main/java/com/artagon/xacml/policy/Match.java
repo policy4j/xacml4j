@@ -64,7 +64,7 @@ public final class Match implements Matchable, PolicyElement
 	{
 		try
 		{
-			BagOfAttributes<?> attributes = (BagOfAttributes<?>)attributeRef.evaluate(context);
+			BagOfAttributeValues<?> attributes = (BagOfAttributeValues<?>)attributeRef.evaluate(context);
 			log.debug("Evaluated attribute reference=\"{}\" to " +
 					"bag=\"{}\"", attributeRef, attributes);
 			for(AttributeValue attr : attributes.values()){
