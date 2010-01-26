@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.type;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -97,6 +98,12 @@ public enum DataTypes
 	
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValue> BagOfAttributeValues<T> bag(AttributeValue ...attributes)
+	{
+		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> BagOfAttributeValues<T> bag(Collection<AttributeValue> attributes)
 	{
 		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
 	}

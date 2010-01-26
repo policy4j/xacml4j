@@ -1,5 +1,9 @@
 package com.artagon.xacml.v3.policy.function;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -57,11 +61,11 @@ public class TestFunctions
 			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
 		throws EvaluationException
 	{
-		Long v = 0L;
-		for(Expression e : values){
-			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
+		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
+		for(AttributeValue attr : bag.values()){
+			attributes.add((AttributeValue)function.invoke(context, attr)); 
 			
 		}
-		return DataTypes.INTEGER.create(v);
+		return DataTypes.INTEGER.bag(attributes);
 	}
 }
