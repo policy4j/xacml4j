@@ -89,7 +89,7 @@ public final class AttributeDesignator extends AttributeReference
 		BagOfAttributes<?> bag = context.resolveAttributeDesignator(
 				getCategory(), attributeId, evaluatesTo.getDataType(), issuer);
 		if(bag.isEmpty() && isMustBePresent()){
-			throw new EvaluationIndeterminateException(
+			throw new EvaluationException(
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}

@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.artagon.xacml.policy.BaseFunctionSpec;
 import com.artagon.xacml.policy.EvaluationContext;
+import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.ParamSpec;
-import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.ValueType;
 import com.artagon.xacml.util.Preconditions;

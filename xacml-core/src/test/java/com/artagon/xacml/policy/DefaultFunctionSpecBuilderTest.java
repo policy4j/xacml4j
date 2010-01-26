@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.function.StaticallyTypedFunction;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.DataTypes;
 
 public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 {

@@ -42,7 +42,7 @@ public final class AttributeSelector extends AttributeReference
 		BagOfAttributes<?> value = context.resolveAttributeSelector(getCategory(), 
 				getContextPath(), evaluatesTo.getDataType());
 		if(value.isEmpty() && isMustBePresent()){
-			throw new EvaluationIndeterminateException(
+			throw new EvaluationException(
 					"Failed to select attribute catgoryId=\"%s\", context path=\"%s\"", 
 					getCategory(), xpath.toString());
 		}

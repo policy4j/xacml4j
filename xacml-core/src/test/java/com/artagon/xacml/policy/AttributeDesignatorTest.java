@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.CategoryId;
-import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.IntegerType;
 
 public class AttributeDesignatorTest extends XacmlPolicyTestCase
 {
@@ -29,7 +29,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		this.type = DataTypes.INTEGER.getType();
 	}
 	
-	@Test(expected=EvaluationIndeterminateException.class)
+	@Test(expected=EvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(

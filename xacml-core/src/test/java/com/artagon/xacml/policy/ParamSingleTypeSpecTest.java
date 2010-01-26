@@ -9,11 +9,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.policy.function.ParamValueTypeSpec;
+import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.DoubleType;
 import com.artagon.xacml.policy.type.StringType;
-import com.artagon.xacml.policy.type.DataTypes;
-
-import com.artagon.xacml.policy.function.ParamValueTypeSpec;
 
 public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 {

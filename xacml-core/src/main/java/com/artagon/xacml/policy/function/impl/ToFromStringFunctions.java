@@ -4,8 +4,8 @@ import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.StringType;
 import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.StringType;
 
 public class ToFromStringFunctions
 {

@@ -1,17 +1,15 @@
 package com.artagon.xacml.policy.function.impl;
 
 import com.artagon.xacml.policy.EvaluationContext;
-import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.EvaluationException;
-import com.artagon.xacml.policy.EvaluationIndeterminateException;
+import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArgParam;
-
 import com.artagon.xacml.policy.type.DataTypes;
-import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
+import com.artagon.xacml.policy.type.IntegerType.IntegerValue;
 
 public class LogicalFunctions 
 {
@@ -59,7 +57,7 @@ public class LogicalFunctions
 	{
 		Boolean r = Boolean.TRUE;
 		if(values.length < n.getValue()){
-			throw new EvaluationIndeterminateException("Number of arguments=\"%s\" is " +
+			throw new EvaluationException("Number of arguments=\"%s\" is " +
 					"less than minimum required number=\"%s\"", values.length, n.getValue());
 		}
 		for(int i = 0; i < n.getValue(); i++ ){

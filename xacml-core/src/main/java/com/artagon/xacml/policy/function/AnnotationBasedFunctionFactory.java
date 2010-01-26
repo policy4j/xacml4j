@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.policy.AttributeType;
 import com.artagon.xacml.policy.EvaluationContext;
+import com.artagon.xacml.policy.EvaluationException;
 import com.artagon.xacml.policy.Expression;
 import com.artagon.xacml.policy.FunctionSpec;
-import com.artagon.xacml.policy.EvaluationException;
-import com.artagon.xacml.policy.EvaluationIndeterminateException;
 import com.artagon.xacml.policy.Value;
 import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
@@ -72,7 +71,7 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 				try{
 					return (Value)m.invoke(null, parameters);
 				}catch(Exception e){
-					throw new EvaluationIndeterminateException(e, "failed to invoke function");
+					throw new EvaluationException(e, "failed to invoke function");
 				}
 			}
 			

@@ -5,7 +5,6 @@ import com.artagon.xacml.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncParam;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.policy.function.annotations.XacmlFuncVarArgParam;
-
 import com.artagon.xacml.policy.type.DataTypes;
 import com.artagon.xacml.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.policy.type.DoubleType.DoubleValue;

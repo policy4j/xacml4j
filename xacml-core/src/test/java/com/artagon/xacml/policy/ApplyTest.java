@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import com.artagon.xacml.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.policy.type.BooleanType;
-import com.artagon.xacml.policy.type.IntegerType;
 import com.artagon.xacml.policy.type.DataTypes;
+import com.artagon.xacml.policy.type.IntegerType;
 
 public class ApplyTest extends XacmlPolicyTestCase 
 {

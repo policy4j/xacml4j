@@ -22,7 +22,7 @@ public class MockFunctionImplementation extends StaticallyTypedFunction
 		throws EvaluationException 
 	{
 		if(failWithIndeterminate){
-			throw new EvaluationIndeterminateException("Failed to invoke mock function");
+			throw new EvaluationException("Failed to invoke mock function");
 		}
 		return expectedResult;
 	}
