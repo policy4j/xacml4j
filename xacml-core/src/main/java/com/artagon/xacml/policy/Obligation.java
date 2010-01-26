@@ -21,5 +21,14 @@ public final class Obligation extends BaseDecisionResponse
 {
 	public Obligation(String id, Collection<AttributeAssignment> attributes) {
 		super(id, attributes);
+	}
+	
+	@Override
+	public void accept(PolicyVisitor v) {
+		v.visitEnter(this);
+		for(AttributeAssignment attr : getAttributes()){
+			attr.accept(v);
+		}
+		v.visitLeave(this);
 	}	
 }

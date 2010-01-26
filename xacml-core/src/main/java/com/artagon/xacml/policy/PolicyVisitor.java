@@ -66,6 +66,9 @@ public interface PolicyVisitor
 	void visitLeave(PolicySet policySet);
 	
 	
+	void visitEnter(Obligation obligation);
+	void visitLeave(Obligation obligation);
+	
 	void visitEnter(ObligationExpression obligation);
 	void visitLeave(ObligationExpression obligation);
 	
