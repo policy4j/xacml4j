@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 
 import org.w3c.dom.Node;
 
@@ -11,15 +10,15 @@ public class Attributes
 	private String xmlId;
 	private CategoryId categoryId;
 	private Node content;
-	private Collection<Attribute> attributes;
+	private Map<String, Attribute> attributes;
 	
 	
 	public CategoryId getCategoryId(){
 		return categoryId;
 	}
 	
-	public Collection<Attribute> getAttributes(){
-		return Collections.unmodifiableCollection(attributes);
+	public Attribute getAttribute(String attributeId){
+		return attributes.get(attributeId);
 	}
 	
 	public String getXmlId(){

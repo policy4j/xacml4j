@@ -1,24 +1,19 @@
 package com.artagon.xacml.v3;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Request 
 {
-	private boolean returnPolicyIdList;
+	private boolean returnPolicyIdList = false;
 	
-	private Map<CategoryId, Attributes> attributes;
+	private Collection<Attributes> attributes;
 	
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
 	}
 	
-	/**
-	 * Gets attributes via given {@link CategoryId}
-	 * 
-	 * @param categoryId a cate
-	 * @return
-	 */
-	public Attributes getAttributes(CategoryId categoryId){
-		return attributes.get(categoryId);
+	public Collection<Attributes> getAttributes(){
+		return Collections.unmodifiableCollection(attributes);
 	}
 }
