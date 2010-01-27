@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
 /**
  * XACML defines implicit collections of its data-types. 
@@ -23,7 +23,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public final class BagOfAttributeValues<T extends AttributeValue> implements Value
+public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlObject implements Value
 {
 	private BagOfAttributeValuesType<T> type;
 	private List<T> values = new LinkedList<T>();
@@ -149,30 +149,6 @@ public final class BagOfAttributeValues<T extends AttributeValue> implements Val
 		return values.containsAll(bag.values);
 	}
 
-	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(!(o instanceof BagOfAttributeValues<?>)){
-			return false;
-		}
-		BagOfAttributeValues<?> bag = (BagOfAttributeValues<?>)o;
-		return getType().equals(bag.getType()) 
-		&& values.containsAll(bag.values) 
-		&& bag.values.containsAll(values);
-	}
-	
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(values, type);
-	}
-	
-	@Override
-	public String toString(){
-		return String.format("%s[dataTypeId=\"%s\" size=\"%d\"]", 
-				getClass().getName(), getType(), size());
-	}
 	
 	@Override
 	public void accept(PolicyVisitor v) {

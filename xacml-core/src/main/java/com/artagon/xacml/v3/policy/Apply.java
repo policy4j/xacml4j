@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
 /**
  * The class denotes application of a function to its arguments, 
@@ -10,7 +11,7 @@ import com.artagon.xacml.util.Preconditions;
  * @author Giedrius Trumpickas
  *
  */
-public final class Apply implements Expression
+public final class Apply extends XacmlObject implements Expression
 {	
 	private FunctionSpec spec;
 	private Expression[] arguments;

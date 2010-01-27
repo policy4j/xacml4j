@@ -5,7 +5,7 @@ import java.util.Map;
 import org.w3c.dom.Node;
 
 
-public class Attributes 
+public class Attributes extends XacmlObject
 {
 	private String xmlId;
 	private CategoryId categoryId;

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
 
 /**
@@ -13,7 +14,7 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ReturnType>
  */
-public abstract class BaseFunctionSpec implements FunctionSpec
+public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSpec
 {
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();

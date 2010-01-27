@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.type;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeType<V extends AttributeValue> implements AttributeValueType
+abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject implements AttributeValueType
 {
 	private String typeId;
 	private Class<?> valueClazz;
@@ -43,32 +43,9 @@ abstract class BaseAttributeType<V extends AttributeValue> implements AttributeV
 	public final String getDataTypeId(){
 		return typeId;
 	}
-
-	@Override
-	public final int hashCode(){
-		return Objects.hashCode(typeId, valueClazz);
-	}
-		
-	@Override
-	public final boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(!(o instanceof AttributeValueType)){
-			return false;
-		}
-		AttributeValueType t = (AttributeValueType)o;
-		return typeId.equals(t.getDataTypeId()) && 
-			valueClazz.equals(t.getValueClass());
-	}
 	
 	@Override
 	public final BagOfAttributeValuesType<V> bagOf(){
 		return bagType;
-	}
-	
-	@Override
-	public String toString(){
-		return getDataTypeId().toString();
 	}
 }

@@ -4,11 +4,11 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
 
-public class IPAddress 
+public class IPAddress extends XacmlObject
 {
 	private InetAddress address;
 	private InetAddress mask;
@@ -87,25 +87,7 @@ public class IPAddress
 	public PortRange getRange(){
 		return range;
 	}
-	
-	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(!(o instanceof IPAddress)){
-			return false;
-		}
-		IPAddress a = (IPAddress)o;
-		return getAddress().equals(a.getAddress()) &&
-		getRange().equals(a.getRange()) && Objects.equal(mask, a.getMask());
-	}
-	
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(getAddress(), getMask(), getRange());
-	}
-	
+		
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()

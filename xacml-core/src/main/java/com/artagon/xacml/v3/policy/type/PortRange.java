@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.policy.type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
-public final class PortRange 
+public final class PortRange extends XacmlObject
 {
 	private final static Logger log = LoggerFactory.getLogger(PortRange.class);
 	
@@ -212,10 +212,6 @@ public final class PortRange
 		upperBound == other.upperBound;
 	}
 	
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(lowerBound, upperBound);
-	}
 
 	public String toString() 
 	{

@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
-public final class MatchAnyOf implements Matchable, PolicyElement
+public final class MatchAnyOf extends XacmlObject implements Matchable, PolicyElement
 {
 	private Collection<? extends Matchable> matches;
 	

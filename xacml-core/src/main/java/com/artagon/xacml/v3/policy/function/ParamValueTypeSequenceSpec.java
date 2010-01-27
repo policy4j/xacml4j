@@ -5,12 +5,13 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.ParamSpec;
 import com.artagon.xacml.v3.policy.ValueType;
 
 
-public final class ParamValueTypeSequenceSpec implements ParamSpec
+public final class ParamValueTypeSequenceSpec extends XacmlObject implements ParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(ParamValueTypeSequenceSpec.class);
 	

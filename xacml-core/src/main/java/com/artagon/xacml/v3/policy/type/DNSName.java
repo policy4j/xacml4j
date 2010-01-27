@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.policy.type;
 
 import java.io.Serializable;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
-public final class DNSName implements Serializable
+public final class DNSName extends XacmlObject implements Serializable
 {
 	private static final long serialVersionUID = 5614192765257814372L;
 	private String name;
@@ -38,11 +38,7 @@ public final class DNSName implements Serializable
 		return name.equals(n.name) && portRange.equals(n.portRange);
 	}
 	
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(name, portRange);
-	}
-	
+		
 	@Override
 	public String toString(){
 		StringBuilder b = new StringBuilder(name);

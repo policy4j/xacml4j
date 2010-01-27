@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
 /**
  * Represents a XACML bag of attributes type.
@@ -13,7 +14,8 @@ import com.artagon.xacml.util.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributeValuesType<VT extends AttributeValue> implements ValueType
+public final class BagOfAttributeValuesType<VT extends AttributeValue> extends XacmlObject 
+	implements ValueType
 {
 	private AttributeValueType type;
 	
@@ -86,29 +88,5 @@ public final class BagOfAttributeValuesType<VT extends AttributeValue> implement
 			attr.add(type.create(v));
 		}
 		return createFromAttributes(attr);
-	}
-
-	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(!(o instanceof BagOfAttributeValuesType<?>)){
-			return false;
-		}
-		BagOfAttributeValuesType<?> type = (BagOfAttributeValuesType<?>)o;
-		return type.getDataType().equals(getDataType());
-	}
-	
-	@Override
-	public int hashCode(){
-		return type.hashCode();
-	}
-	
-	@Override
-	public final String toString(){
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getName()).append("[").append(getDataType().toString()).append("]");
-		return b.toString();
 	}
 }

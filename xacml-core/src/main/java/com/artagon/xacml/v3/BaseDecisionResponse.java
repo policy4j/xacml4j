@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
 
-abstract class BaseDecisionResponse
+abstract class BaseDecisionResponse extends XacmlObject
 {
 	private String id;
 	private Collection<AttributeAssignment> attributes;

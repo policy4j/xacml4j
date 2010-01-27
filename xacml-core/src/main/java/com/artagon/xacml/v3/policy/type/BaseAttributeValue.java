@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.type;
 
-import com.artagon.xacml.util.Objects;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.ValueType;
 
-abstract class BaseAttributeValue<T>
+abstract class BaseAttributeValue<T> extends XacmlObject
 	implements AttributeValue
 {
 	private T value;
@@ -37,32 +37,8 @@ abstract class BaseAttributeValue<T>
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(!(o instanceof BaseAttributeValue<?>)){
-			return false;
-		}
-		BaseAttributeValue<?> a = (BaseAttributeValue<?>)o;
-		return value.equals(a.getValue()) 
-		&& type.equals(a.getType());
-	}
-	
-	@Override
-	public String toString(){
-		return String.format("%s[type=\"%s\", value=\"%s\"]", 
-				getClass().getName(), getType(), getValue());
-	}
-	
-	@Override
 	public String toXacmlString() {
 		return value.toString();
-	}
-
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(value, getType());
 	}
 	
 	@Override

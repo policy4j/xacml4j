@@ -11,8 +11,9 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.DecisionResult;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.XacmlObject;
 
-abstract class BaseDesicion implements Decision
+abstract class BaseDesicion extends XacmlObject implements Decision
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseDesicion.class);
 	

@@ -9,8 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.XacmlObject;
 
-abstract class BaseDecisionResponseExpression implements PolicyElement
+abstract class BaseDecisionResponseExpression extends XacmlObject implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseDecisionResponseExpression.class);
 	

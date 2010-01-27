@@ -87,6 +87,9 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 							log.debug("VarArg array length=\"{}\"", varArg.length);
 							System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length); 
 							p[p.length - 1] = varArg;
+							for(Object o : p){
+								log.debug(o.toString());
+							}
 						}
 						return (T)m.invoke(null, p);
 					}catch(Exception e){
