@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy.function;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.junit.Ignore;
+
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -19,6 +21,7 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
+@Ignore
 public class TestFunctions 
 {
 	@XacmlFunc(id="test1")
