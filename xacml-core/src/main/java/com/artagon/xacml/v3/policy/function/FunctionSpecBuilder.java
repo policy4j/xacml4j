@@ -5,6 +5,6 @@ import com.artagon.xacml.v3.policy.ValueType;
 
 public interface FunctionSpecBuilder 
 {
-	FunctionSpec build(ValueType returnType, FunctionInvocationCallback invocation);
-	FunctionSpec build(FunctionReturnTypeResolutionCallback returnType, FunctionInvocationCallback invocation);
+	FunctionSpec build(ValueType returnType, FunctionInvocation invocation);
+	FunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation);
 }

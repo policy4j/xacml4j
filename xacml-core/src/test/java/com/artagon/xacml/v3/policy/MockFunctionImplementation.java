@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.function.FunctionInvocationCallback;
+import com.artagon.xacml.v3.policy.function.FunctionInvocation;
 
-public class MockFunctionImplementation <T extends Value> implements FunctionInvocationCallback
+public class MockFunctionImplementation <T extends Value> implements FunctionInvocation
 {
 	private T expectedResult;
 	private boolean failWithIndeterminate = false;

@@ -42,12 +42,16 @@ public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testTest5Function() throws Exception
+	public void testVarArgFunctionInvocation() throws Exception
 	{
-		FunctionSpec spec = f.getFunction("test5");
+		FunctionSpec spec5 = f.getFunction("test5VarArg");
+		FunctionSpec spec6 = f.getFunction("test6VarArg");
 		
-		spec.invoke(context, DataTypes.INTEGER.create(10));
-		spec.invoke(context, DataTypes.INTEGER.create(10), DataTypes.BOOLEAN.create(false));
+		//spec5.invoke(context, DataTypes.INTEGER.create(10));
+		spec5.invoke(context, DataTypes.INTEGER.create(10), DataTypes.BOOLEAN.create(false));
+		
+		//spec6.invoke(context, DataTypes.INTEGER.create(10), DataTypes.INTEGER.create(10));
+		spec6.invoke(context, DataTypes.INTEGER.create(10), DataTypes.INTEGER.create(10), DataTypes.BOOLEAN.create(false));
 		
 	}
 }

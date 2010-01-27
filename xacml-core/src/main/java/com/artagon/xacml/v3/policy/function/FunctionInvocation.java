@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 
-public interface FunctionInvocationCallback
+public interface FunctionInvocation
 {
 	<T extends Value> T invoke(FunctionSpec spoec, 
 			EvaluationContext context, Expression ...arguments) 

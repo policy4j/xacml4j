@@ -4,7 +4,7 @@ import com.artagon.xacml.v3.policy.ValueType;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 
-public interface FunctionReturnTypeResolutionCallback 
+public interface FunctionReturnTypeResolver 
 {
 	ValueType resolve(FunctionSpec spec, Expression ...arguments);
 }

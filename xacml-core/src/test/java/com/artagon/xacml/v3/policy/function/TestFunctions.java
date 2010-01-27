@@ -70,10 +70,23 @@ public class TestFunctions
 		return DataTypes.INTEGER.bag(attributes);
 	}
 	
-	@XacmlFunc(id="test5")
+	
+	
+	@XacmlFunc(id="test5VarArg")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
-	public static BooleanValue test4(
+	public static BooleanValue test5(
 			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue value,
+			@XacmlParamVarArg(type=DataTypes.BOOLEAN, min=0)BooleanValue ...values) 
+		throws EvaluationException
+	{	
+		return DataTypes.BOOLEAN.create(false);
+	}
+	
+	@XacmlFunc(id="test6VarArg")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
+	public static BooleanValue test6(
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue a,
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue b,
 			@XacmlParamVarArg(type=DataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	

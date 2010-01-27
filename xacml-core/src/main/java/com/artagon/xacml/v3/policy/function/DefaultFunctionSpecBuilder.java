@@ -51,8 +51,8 @@ public class DefaultFunctionSpecBuilder
 	}
 
 	@Override
-	public FunctionSpec build(final FunctionReturnTypeResolutionCallback returnType,
-			final FunctionInvocationCallback invocation) {
+	public FunctionSpec build(final FunctionReturnTypeResolver returnType,
+			final FunctionInvocation invocation) {
 		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
 			@Override
 			public ValueType resolveReturnType(Expression... arguments) {
@@ -68,7 +68,7 @@ public class DefaultFunctionSpecBuilder
 
 	@Override
 	public FunctionSpec build(final ValueType returnType,
-			final FunctionInvocationCallback invocation) {
+			final FunctionInvocation invocation) {
 		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
 			@Override
 			public ValueType resolveReturnType(Expression... arguments) {
