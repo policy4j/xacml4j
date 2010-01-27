@@ -11,7 +11,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject implements AttributeValueType
+abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject 
+	implements AttributeValueType
 {
 	private String typeId;
 	private Class<?> valueClazz;

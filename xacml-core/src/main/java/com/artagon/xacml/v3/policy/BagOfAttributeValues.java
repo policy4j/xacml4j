@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 
@@ -149,6 +152,20 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 		return values.containsAll(bag.values);
 	}
 
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof BagOfAttributeValues<?>)){
+			return false;
+		}
+		BagOfAttributeValues<?> bag = (BagOfAttributeValues<?>)o;
+		return getType().equals(bag.getType()) 
+		&& values.containsAll(bag.values) 
+		&& bag.values.containsAll(values);
+	}
+	
 	
 	@Override
 	public void accept(PolicyVisitor v) {
