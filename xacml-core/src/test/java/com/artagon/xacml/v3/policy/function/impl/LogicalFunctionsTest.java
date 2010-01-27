@@ -43,5 +43,12 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 				LogicalFunctions.nof(context, n, DataTypes.BOOLEAN.create(true)));
 		assertEquals(DataTypes.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, DataTypes.BOOLEAN.create(false)));
+		n = DataTypes.INTEGER.create(2);
+		assertEquals(DataTypes.BOOLEAN.create(true), 
+				LogicalFunctions.nof(context, n, 
+						DataTypes.BOOLEAN.create(true), DataTypes.BOOLEAN.create(true)));
+		assertEquals(DataTypes.BOOLEAN.create(false), 
+				LogicalFunctions.nof(context, n, 
+						DataTypes.BOOLEAN.create(true), DataTypes.BOOLEAN.create(false)));
 	}
 }
