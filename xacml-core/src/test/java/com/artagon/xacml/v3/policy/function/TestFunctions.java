@@ -73,7 +73,7 @@ public class TestFunctions
 	@XacmlFunc(id="test5")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
 	public static BooleanValue test4(
-			@XacmlParam(type=DataTypes.INTEGER)
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue value,
 			@XacmlParamVarArg(type=DataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	

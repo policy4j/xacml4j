@@ -67,19 +67,28 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new FunctionInvocationCallback() {
-					@SuppressWarnings("unchecked")
-					@Override
-					public <T extends Value> T invoke(FunctionSpec spec,
-							EvaluationContext context, Expression... arguments)
-							throws EvaluationException {
+				new FunctionInvocationCallback() 
+		{
+				@SuppressWarnings("unchecked")
+				@Override
+				public <T extends Value> T invoke(FunctionSpec spec,
+						EvaluationContext context, Expression... arguments)
+						throws EvaluationException {
 
-						try{
-							return (T)m.invoke(null, arguments);
-						}catch(Exception e){
-							throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getXacmlId());
+					try
+					{
+						Object[] p = arguments;
+						if(m.isVarArgs()){
+							p = new Object[spec.getNumberOfParams()];
+							Object[] varArg = new Object[arguments.length - (spec.getNumberOfParams() - 1)];
+							System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length);
+							p[p.length - 1] = varArg;
 						}
+						return (T)m.invoke(null, p);
+					}catch(Exception e){
+						throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getXacmlId());
 					}
-				});
+				}
+		});
 	}
 }
