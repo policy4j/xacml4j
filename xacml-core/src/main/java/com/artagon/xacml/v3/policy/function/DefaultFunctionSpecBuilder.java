@@ -58,10 +58,11 @@ public class DefaultFunctionSpecBuilder
 			public ValueType resolveReturnType(Expression... arguments) {
 				return returnType.resolve(this, arguments);
 			}
+			@SuppressWarnings("unchecked")
 			@Override
 			protected <T extends Value> T doInvoke(EvaluationContext context,
 					Expression... arguments) throws EvaluationException {
-				return invocation.invoke(this, context, arguments);
+				return (T)invocation.invoke(this, context, arguments);
 			}
 		};
 	}
@@ -74,10 +75,11 @@ public class DefaultFunctionSpecBuilder
 			public ValueType resolveReturnType(Expression... arguments) {
 				return returnType;
 			}
+			@SuppressWarnings("unchecked")
 			@Override
 			protected <T extends Value> T doInvoke(EvaluationContext context,
 					Expression... params) throws EvaluationException {
-				return invocation.invoke(this, context, params);
+				return (T)invocation.invoke(this, context, params);
 			}
 		};
 	}

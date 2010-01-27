@@ -63,10 +63,11 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 		return new Apply(this, resolveReturnType(arguments), arguments);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws EvaluationException {
-		return doInvoke(context, 
+		return (T)doInvoke(context, 
 				isRequiresLazyParamEval()?params:evaluate(context, params));
 	}
 	
