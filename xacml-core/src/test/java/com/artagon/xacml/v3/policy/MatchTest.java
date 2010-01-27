@@ -9,25 +9,21 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.CategoryId;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
+import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
 public class MatchTest extends XacmlPolicyTestCase
 {
 	
 	private FunctionSpec function;
-	private IntegerType paramType;
-	private BooleanType booleanType;
 	
 	@Before
-	public void init(){
-		this.paramType = DataTypes.INTEGER.getType();
-		this.booleanType = DataTypes.BOOLEAN.getType();
-		
+	public void init(){	
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
-		b.withParam(paramType).withParam(paramType);
-		this.function = b.build(new MockFunctionImplementation(booleanType.create(Boolean.TRUE)));
+		b.withParam(DataTypes.INTEGER.getType()).withParam(DataTypes.INTEGER.getType());
+		BooleanValue expectedReturn = DataTypes.BOOLEAN.create(Boolean.TRUE);
+		this.function = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(expectedReturn));
 	}
 	
 	@Test

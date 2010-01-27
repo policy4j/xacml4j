@@ -4,7 +4,7 @@ import com.artagon.xacml.util.Preconditions;
 
 /**
  * The class denotes application of a function to its arguments, 
- * thus encoding a {@link FunctionReferenceExpression} call. The {@link Apply} can be 
+ * thus encoding a {@link FunctionReference} call. The {@link Apply} can be 
  * applied to a given list of {@link Expression} instances.
  * 
  * @author Giedrius Trumpickas

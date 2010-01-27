@@ -54,25 +54,36 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		validateParameters(arguments);
 		return new Apply(this, resolveReturnType(arguments), arguments);
 	}
-
 	
 	@Override
-	public final FunctionReferenceExpression createReference() {
-		ValueType returnType = getReturnType();
-		if(returnType == null){
-			throw new UnsupportedOperationException(
-					String.format(
-							"Can't create reference to=\"%s\" " +
-							"function with a dynamic return type", functionId));
-		}
-		return new FunctionReferenceExpression(this, returnType);
+	public <T extends Value> T invoke(EvaluationContext context,
+			Expression... params) throws EvaluationException {
+		return doInvoke(context, 
+				isRequiresLazyParamEval()?params:evaluate(context, params));
 	}
+	
+	/**
+	 * Actual function implementation
+	 * 
+	 * @param <T>
+	 * @param context an evaluation context
+	 * @param params a function invocation 
+	 * parameters
+	 * @return <T> a function invocation result
+	 * @throws EvaluationException if function
+	 * invocation fails
+	 */
+	protected abstract <T extends Value> T doInvoke(
+			EvaluationContext context, Expression ...params) throws EvaluationException;
 
-	public final boolean validateParameters(Expression ... params){
+	@Override
+	public final boolean validateParameters(Expression ... params)
+	{
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
-		while(it.hasNext()){
+		while(it.hasNext())
+		{
 			ParamSpec p = it.next();
 			if(!p.validate(expIt)){
 				return false;
@@ -82,20 +93,20 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 				return false;
 			}
 		}
-		return result;
+		return result?validateAdditional(params):result;
 	}
 	
 	/**
-	 * Evaluates given parameters
+	 * Evaluates given array of function parameters
 	 * 
 	 * @param context an evaluation context
 	 * @param params a function invocation 
 	 * parameters
 	 * @return an array of evaluated parameters
 	 * @throws EvaluationException if an evaluation
-	 * error occur
+	 * error occurs
 	 */
-	protected Expression[] evaluate(EvaluationContext context, Expression ...params) 
+	protected final Expression[] evaluate(EvaluationContext context, Expression ...params) 
 		throws EvaluationException
 	{
 		Expression[] eval = new Expression[params.length];
@@ -105,25 +116,18 @@ public abstract class BaseFunctionSpec implements FunctionSpec
 		return eval;
 	}
 	
-	protected boolean validate(ParamSpec spec, Expression p, Expression ... params){
+	/**
+	 * Additional function parameter validation function
+	 * 
+	 * @param paramIndex a parameter index
+	 * in a function signature
+	 * @param spec a parameter specificationa
+	 * @param p an actual parameter
+	 * @param params an array of all parameters
+	 * @return <code>true</code> if a given parameter is valid
+	 * according specification
+	 */
+	protected boolean validateAdditional(Expression ... params){
 		return true;
 	}
-	
-	/**
-	 * Tries to get function return type statically. 
-	 * If return type can't be determined statically
-	 * returns <code>null</code> otherwise {@link ValueType}
-	 * 
-	 * @return {@link ValueType} or <code>null</code>
-	 */
-	protected abstract ValueType getReturnType();
-	
-	/**
-	 * Resolves function return type based on function
-	 * invocation arguments
-	 * 
-	 * @param arguments a function invocation arguments
-	 * @return {@link ValueType} resolved function return type
-	 */
-	protected abstract ValueType resolveReturnType(Expression ... arguments);
 }

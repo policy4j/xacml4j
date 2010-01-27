@@ -4,7 +4,7 @@ import java.util.ListIterator;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionReferenceExpression;
+import com.artagon.xacml.v3.policy.FunctionReference;
 import com.artagon.xacml.v3.policy.ParamSpec;
 import com.artagon.xacml.v3.policy.ValueType;
 
@@ -25,8 +25,8 @@ public class ParamFuncReferenceSpec implements ParamSpec
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		Expression exp = it.next();
-		if(exp instanceof FunctionReferenceExpression){
-			FunctionReferenceExpression fexp = (FunctionReferenceExpression)exp;
+		if(exp instanceof FunctionReference){
+			FunctionReference fexp = (FunctionReference)exp;
 			return family.isMemeberOf(fexp.getSpec());
 		}
 		return false;

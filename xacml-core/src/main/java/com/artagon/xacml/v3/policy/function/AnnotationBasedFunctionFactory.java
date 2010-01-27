@@ -44,13 +44,14 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 	
 	private FunctionSpec build(final Method m)
 	{
-		XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
+		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
 		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
 		log.debug("Found functionId=\"{}\" method name=\"{}\"", funcId.id(), m.getName());
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(funcId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		int paramCount = 0;
-		for(Annotation[] p : params){
+		for(Annotation[] p : params)
+		{
 			if(p[0] instanceof XacmlParam){
 				XacmlParam param = (XacmlParam)p[0];
 				AttributeValueType type = param.type().getType(); 
@@ -65,20 +66,20 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 			}
 		}
 		AttributeValueType type = returnType.type().getType();
-		return b.build(new StaticallyTypedFunction(returnType.isBag()?type.bagOf():type) 
-		{
-			@Override
-			public Value invoke(EvaluationContext context,
-					Expression... parameters)
-					throws EvaluationException {
-				try
-				{
-					return (Value)m.invoke(null, parameters);
-				}catch(Exception e){
-					throw new EvaluationException(e, "failed to invoke function");
-				}
-			}
-			
-		});
+		return b.build(returnType.isBag()?type.bagOf():type, 
+				new FunctionInvocationCallback() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public <T extends Value> T invoke(FunctionSpec spec,
+							EvaluationContext context, Expression... arguments)
+							throws EvaluationException {
+
+						try{
+							return (T)m.invoke(null, arguments);
+						}catch(Exception e){
+							throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getXacmlId());
+						}
+					}
+				});
 	}
 }

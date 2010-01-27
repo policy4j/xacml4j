@@ -4,8 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.BaseFunctionSpec;
+import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.ParamSpec;
+import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
 
 public class DefaultFunctionSpecBuilder 
@@ -14,9 +19,10 @@ public class DefaultFunctionSpecBuilder
 	private String functionId;
 	private List<ParamSpec> paramSpec;
 	private boolean hadVarArg = false;
+	private boolean lazyArgumentEvaluation;
 	
 	public DefaultFunctionSpecBuilder(String functionId){
-		Preconditions.checkNotNull(functionId, "Function identifier can't be null");
+		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
@@ -29,6 +35,11 @@ public class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
+	public DefaultFunctionSpecBuilder withLazyArgumentsEvaluation(){
+		this.lazyArgumentEvaluation = true;
+		return this;
+	}
+	
 	public DefaultFunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
@@ -38,15 +49,38 @@ public class DefaultFunctionSpecBuilder
 		this.paramSpec.add(new ParamValueTypeSequenceSpec(min, max, type));
 		return this;
 	}
-	
-	public FunctionSpec build(StaticallyTypedFunction function)
-	{
-		return new StaticallyTypedFunctionSpec(functionId, function, paramSpec);
-	}
-	
-	public FunctionSpec build(DynamicallyTypedFunction function)
-	{
-		return new DynamicallyTypedFunctionSpec(functionId, function, paramSpec);
+
+	@Override
+	public FunctionSpec build(final FunctionReturnTypeResolutionCallback returnType,
+			final FunctionInvocationCallback invocation) {
+		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
+			@Override
+			public ValueType resolveReturnType(Expression... arguments) {
+				return returnType.resolve(this, arguments);
+			}
+			@Override
+			protected <T extends Value> T doInvoke(EvaluationContext context,
+					Expression... arguments) throws EvaluationException {
+				return invocation.invoke(this, context, arguments);
+			}
+		};
 	}
 
+	@Override
+	public FunctionSpec build(final ValueType returnType,
+			final FunctionInvocationCallback invocation) {
+		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
+			@Override
+			public ValueType resolveReturnType(Expression... arguments) {
+				return returnType;
+			}
+			@Override
+			protected <T extends Value> T doInvoke(EvaluationContext context,
+					Expression... params) throws EvaluationException {
+				return invocation.invoke(this, context, params);
+			}
+		};
+	}
+	
+	
 }

@@ -9,22 +9,20 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class FunctionReferenceExpression implements Expression
+public class FunctionReference implements Expression
 {
 	private FunctionSpec spec;
 	private ValueType returnType;
-	
 	/**
 	 * Constructs function reference expression
 	 * 
 	 * @param spec a function specification
 	 * @param returnType a function return type
 	 */
-	FunctionReferenceExpression(FunctionSpec spec, ValueType returnType){
+	FunctionReference(FunctionSpec spec){
 		Preconditions.checkNotNull(spec);
-		Preconditions.checkNotNull(returnType);
 		this.spec = spec;
-		this.returnType = returnType;
+		this.returnType = spec.resolveReturnType();
 	}
 	
 	/**
@@ -43,11 +41,11 @@ public class FunctionReferenceExpression implements Expression
 	}
 
 	@Override
-	public FunctionReferenceExpression evaluate(EvaluationContext context)
+	public FunctionReference evaluate(EvaluationContext context)
 			throws EvaluationException {
 		return this;
 	}
-
+	
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);

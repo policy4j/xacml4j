@@ -1,15 +1,13 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.function.StaticallyTypedFunction;
+import com.artagon.xacml.v3.policy.function.FunctionInvocationCallback;
 
-
-public class MockFunctionImplementation extends StaticallyTypedFunction
+public class MockFunctionImplementation <T extends Value> implements FunctionInvocationCallback
 {
-	private Value expectedResult;
+	private T expectedResult;
 	private boolean failWithIndeterminate = false;
 	
-	public MockFunctionImplementation(Value expectedResult){
-		super(expectedResult.getEvaluatesTo());
+	public MockFunctionImplementation(T expectedResult){
 		this.expectedResult = expectedResult;
 	}
 	
@@ -18,7 +16,7 @@ public class MockFunctionImplementation extends StaticallyTypedFunction
 	}
 
 	@Override
-	public Value invoke(EvaluationContext context, Expression ...args) 
+	public T invoke(FunctionSpec spec, EvaluationContext context, Expression ...args) 
 		throws EvaluationException 
 	{
 		if(failWithIndeterminate){

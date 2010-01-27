@@ -17,8 +17,8 @@ public interface PolicyVisitor
 	void visitEnter(AttributeSelector selector);
 	void visitLeave(AttributeSelector selector);
 	
-	void visitEnter(FunctionReferenceExpression function);
-	void visitLeave(FunctionReferenceExpression function);
+	void visitEnter(FunctionReference function);
+	void visitLeave(FunctionReference function);
 	
 	void visitEnter(BagOfAttributeValues<?> bag);
 	void visitLeave(BagOfAttributeValues<?> bag);

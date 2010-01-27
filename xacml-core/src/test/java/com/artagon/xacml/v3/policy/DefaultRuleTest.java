@@ -12,10 +12,10 @@ import org.junit.Test;
 import com.artagon.xacml.v3.CategoryId;
 import com.artagon.xacml.v3.DecisionResult;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.StringType;
+import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
 public class DefaultRuleTest extends XacmlPolicyTestCase
 {
@@ -28,29 +28,30 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	
 	private IntegerType type1;
 	private StringType type2;
-	private BooleanType type3;
+	
 	@Before
 	public void init()
 	{
 		this.type1 = DataTypes.INTEGER.getType();
 		this.type2 = DataTypes.STRING.getType();
-		this.type3 = DataTypes.BOOLEAN.getType();
 		
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
 		b.withParam(type1).withParam(type1);
 		
-		FunctionSpec functionTrue = b.build(new MockFunctionImplementation(type3.create(Boolean.TRUE)));
+		BooleanValue falseResult = DataTypes.BOOLEAN.create(Boolean.FALSE);
+		BooleanValue trueResult = DataTypes.BOOLEAN.create(Boolean.TRUE);
+		FunctionSpec functionTrue = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(trueResult));
 		
 		Apply applyTrue = functionTrue.createApply(type1.create(10L), type1.create(10L));
 		this.conditionTrue = new Condition(applyTrue);
 		
-		FunctionSpec functionFalse = b.build(new MockFunctionImplementation(type3.create(Boolean.FALSE)));
+		FunctionSpec functionFalse = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(falseResult));
 		Apply applyFalse = functionFalse.createApply(type1.create(10L), type1.create(10L));
 		this.conditionFalse = new Condition(applyFalse);
 		
-		MockFunctionImplementation impl = new MockFunctionImplementation(type3.create(Boolean.FALSE));
+		MockFunctionImplementation<BooleanValue> impl = new MockFunctionImplementation<BooleanValue>(falseResult);
 		impl.setFailWithIndeterminate(true);
-		FunctionSpec functionIndeterminate = b.build(impl);
+		FunctionSpec functionIndeterminate = b.build(DataTypes.BOOLEAN.getType(), impl);
 		
 		Apply applyInderminate = functionIndeterminate.createApply(type1.create(10L), type1.create(10L));
 		this.conditionIndeterminate = new Condition(applyInderminate);

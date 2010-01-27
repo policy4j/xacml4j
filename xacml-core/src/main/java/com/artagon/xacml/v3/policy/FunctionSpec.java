@@ -46,20 +46,17 @@ public interface FunctionSpec
 	 * in XACML policy expressions
 	 */
 	Apply createApply(Expression ... arguments);
+		
+	boolean validateParameters(Expression ... params);
 	
 	/**
-	 * Creates this function reference 
-	 * expression to be used in XACML
-	 * policy expressions to pass
-	 * functions as arguments to XACML higher
-	 * order functions
+	 * Resolves function return type based on function
+	 * invocation arguments
 	 * 
-	 * @return {@link FunctionReferenceExpression}
+	 * @param arguments a function invocation arguments
+	 * @return {@link ValueType} resolved function return type
 	 */
-	FunctionReferenceExpression createReference();
-	
-	
-	boolean validateParameters(Expression ... params);
+	ValueType resolveReturnType(Expression ... arguments);
 	
 	/**
 	 * Invokes this function with a given arguments

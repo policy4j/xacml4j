@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.function.StaticallyTypedFunction;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.StringType;
@@ -19,20 +18,21 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 	
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
-	private StaticallyTypedFunction impl;
+	private MockFunctionImplementation<IntegerType.IntegerValue> impl;
 	
 	@Before
 	public void init(){
 		this.type1 = DataTypes.INTEGER.getType();
 		this.type2 = DataTypes.STRING.getType();
-		this.impl =  new MockFunctionImplementation(type1.create(new Integer(10)));
+		IntegerType.IntegerValue expectedResult = DataTypes.INTEGER.create(new Integer(10));
+		this.impl =  new MockFunctionImplementation<IntegerType.IntegerValue>(expectedResult);
 		
 		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 
 		
-		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(impl);
+		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(DataTypes.INTEGER.getType(), impl);
 		
 		b = new DefaultFunctionSpecBuilder("testFunc2"); 
-		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(impl);
+		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(DataTypes.INTEGER.getType(), impl);
 	}
 	
 	@Test
