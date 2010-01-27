@@ -43,6 +43,7 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		return specs;
 	}
 	
+	// TODO: Monster method :)
 	private FunctionSpec build(final Method m)
 	{
 		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);

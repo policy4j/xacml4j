@@ -22,7 +22,7 @@ public class ParamSingleTypeSpecTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.t1 = DataTypes.BOOLEAN.getType();
+		this.t1 = DataTypes.DOUBLE.getType();
 		this.t2 = DataTypes.STRING.getType();
 		this.b1 = t1.bagOf();
 	}

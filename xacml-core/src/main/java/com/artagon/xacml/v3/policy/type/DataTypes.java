@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.type;
 
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
@@ -60,7 +60,7 @@ public enum DataTypes
 	/** XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration</b> */
 	YEARMONTHDURATION(new YearMonthDurationTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:yearMonthDuration"));
 	
-	private static final Map<String, AttributeValueType> BY_TYPE_ID = new ConcurrentHashMap<String, AttributeValueType>();
+	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 
 	static {
 		for(DataTypes t : EnumSet.allOf(DataTypes.class)){

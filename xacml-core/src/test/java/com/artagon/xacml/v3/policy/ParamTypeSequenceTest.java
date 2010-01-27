@@ -30,7 +30,7 @@ public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 	{
 		this.t1 = DataTypes.STRING.getType();
 		this.t2 = DataTypes.DOUBLE.getType();
-		this.t3 = DataTypes.BOOLEAN.getType();
+		this.t3 = DataTypes.INTEGER.getType();
 		this.b1 = t2.bagOf();
 		this.specAttrZeroOrMore = new ParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
 		this.specAttrOneOrMore = new ParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
