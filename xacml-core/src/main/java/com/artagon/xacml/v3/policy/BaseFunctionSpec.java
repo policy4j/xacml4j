@@ -20,7 +20,8 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	private boolean lazyParamEval = false;
 	
-	protected BaseFunctionSpec(String functionId, List<ParamSpec> params, 
+	protected BaseFunctionSpec(String functionId, 
+			List<ParamSpec> params, 
 			boolean lazyParamEval){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
