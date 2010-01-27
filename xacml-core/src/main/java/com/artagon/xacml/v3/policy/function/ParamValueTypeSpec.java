@@ -26,6 +26,9 @@ public final class ParamValueTypeSpec extends XacmlObject implements ParamSpec
 		return type;
 	}
 	
+	public boolean isVariadic() {
+		return false;
+	}
 	
 	public boolean validate(ListIterator<Expression> it) {
 		if(!it.hasNext()){

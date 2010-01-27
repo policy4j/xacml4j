@@ -23,6 +23,10 @@ public class ParamFuncReferenceSpec extends XacmlObject implements ParamSpec
 		return false;
 	}
 	
+	public boolean isVariadic() {
+		return false;
+	}
+	
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		Expression exp = it.next();

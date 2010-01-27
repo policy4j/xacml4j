@@ -39,6 +39,10 @@ public final class ParamValueTypeSequenceSpec extends XacmlObject implements Par
 		this(min, null, paramType);
 	}
 	
+	public boolean isVariadic() {
+		return max > min;
+	}
+
 	/**
 	 * Gets parameter XACML type.
 	 * 

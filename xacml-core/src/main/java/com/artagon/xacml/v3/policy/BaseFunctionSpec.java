@@ -30,7 +30,7 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	}
 	
 	@Override
-	public  final String getXacmlId(){
+	public  final String getId(){
 		return functionId;
 	}
 	
@@ -45,6 +45,12 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 		return lazyParamEval;
 	}
 
+	
+	@Override
+	public boolean isVariadic(){
+		return parameters.get(parameters.size() - 1).isVariadic();
+	}
+	
 	@Override
 	public final int getNumberOfParams(){
 		return parameters.size();

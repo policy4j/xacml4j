@@ -42,7 +42,7 @@ public final class Apply extends XacmlObject implements Expression
 	 * @return XACML function identifier
 	 */
 	public String getFunctionId(){
-		return spec.getXacmlId();
+		return spec.getId();
 	}
 	
 	@Override

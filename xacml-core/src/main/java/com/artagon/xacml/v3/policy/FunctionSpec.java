@@ -5,11 +5,11 @@ import java.util.List;
 public interface FunctionSpec 
 {
 	/**
-	 * Gets function identifier.
+	 * Gets function XACML identifier.
 	 * 
 	 * @return XACML function identifier
 	 */
-	String getXacmlId();
+	String getId();
 
 	/**
 	 * Gets function parameter specifications.
@@ -27,6 +27,14 @@ public interface FunctionSpec
 	 */
 	int getNumberOfParams();
 	
+	/**
+	 * Tells if this function has variable length 
+	 * parameter
+	 * 
+	 * @return <code>true</code> if it does
+	 * <code>false</code> otherwise
+	 */
+	boolean isVariadic();
 	/**
 	 * Tests if this function requires lazy
 	 * parameters evaluation
@@ -47,6 +55,14 @@ public interface FunctionSpec
 	 */
 	Apply createApply(Expression ... arguments);
 		
+	/**
+	 * Validates given array of expressions
+	 * as potential function invocation arguments
+	 * 
+	 * @param params an array of expressions
+	 * @return <code>true</code> if a given array
+	 * can be used as function invocation arguments
+	 */
 	boolean validateParameters(Expression ... params);
 	
 	/**

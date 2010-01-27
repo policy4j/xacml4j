@@ -26,4 +26,6 @@ public interface ParamSpec
 	 * @return <code>true</code>
 	 */
 	boolean isValidParamType(ValueType type);
+	
+	boolean isVariadic();
 }
