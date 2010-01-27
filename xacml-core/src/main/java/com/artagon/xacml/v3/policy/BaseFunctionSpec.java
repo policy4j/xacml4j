@@ -129,7 +129,7 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	 * 
 	 * @param paramIndex a parameter index
 	 * in a function signature
-	 * @param spec a parameter specificationa
+	 * @param spec a parameter specification
 	 * @param p an actual parameter
 	 * @param params an array of all parameters
 	 * @return <code>true</code> if a given parameter is valid
