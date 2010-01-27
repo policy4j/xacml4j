@@ -296,7 +296,7 @@ public final class Preconditions {
       return true;
     }
    
-    if (iterable instanceof Collection) {
+    if (iterable instanceof Collection<?>) {
       Collection<?> collection = (Collection<?>) iterable;
       try {
         return collection.contains(null);
