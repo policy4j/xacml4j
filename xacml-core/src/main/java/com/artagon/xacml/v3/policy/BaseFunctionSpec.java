@@ -49,7 +49,7 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	
 	@Override
 	public boolean isVariadic(){
-		return parameters.get(parameters.size() - 1).isVariadic();
+		return parameters.isEmpty()?false:parameters.get(parameters.size() - 1).isVariadic();
 	}
 	
 	@Override

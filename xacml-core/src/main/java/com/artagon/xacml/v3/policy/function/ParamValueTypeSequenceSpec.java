@@ -40,7 +40,7 @@ public final class ParamValueTypeSequenceSpec extends XacmlObject implements Par
 	}
 	
 	public boolean isVariadic() {
-		return max > min;
+		return true;
 	}
 
 	/**

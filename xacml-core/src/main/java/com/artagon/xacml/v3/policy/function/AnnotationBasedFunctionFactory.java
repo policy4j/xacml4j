@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
@@ -108,46 +106,8 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
 			}
 		}
-		final boolean evalContextRequired = evalContextParamFound;
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new FunctionInvocation() 
-		{
-				@SuppressWarnings("unchecked")
-				@Override
-				public <T extends Value> T invoke(FunctionSpec spec,
-						EvaluationContext context, Expression... arguments)
-						throws EvaluationException {
-
-					try
-					{
-						Object[] p = arguments;
-						int paramStartIndex = 0;
-						if(evalContextRequired){
-							log.debug("Passing evaluation context as first parameter");
-							p[0] = context;
-							paramStartIndex++;
-						}
-						if(m.isVarArgs()){
-							log.debug("Function=\"{}\" number of expected params=\"{}\"", spec.getId(), spec.getNumberOfParams());
-							log.debug("Function=\"{}\" number of given params=\"{}\" in invocation", spec.getId(), arguments.length);
-							p = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
-							System.arraycopy(arguments, 0, p, paramStartIndex, spec.getNumberOfParams() - 1); 
-							Object[] varArg = null;
-							if(spec.getNumberOfParams() < arguments.length - 1){
-								varArg = new Object[arguments.length - (spec.getNumberOfParams() - 1)];
-								log.debug("VarArg array length=\"{}\"", varArg.length);
-								System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length);
-							} 
-							p[p.length - 1] = varArg;
-						}
-						return (T)m.invoke(null, p);
-					}catch(Exception e){
-						log.error("Failed to invoke function=\"{}\"", spec.getId());
-						log.error(e.getMessage(), e);
-						throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getId());
-					}
-				}
-		});
+				new ReflectionBasedFunctionInvocation(null, m, evalContextParamFound));
 	}
 }
