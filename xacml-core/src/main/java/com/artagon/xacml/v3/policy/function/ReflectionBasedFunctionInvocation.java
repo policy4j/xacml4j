@@ -35,6 +35,9 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 			EvaluationContext context, Expression... arguments)
 			throws EvaluationException 
 	{
+		if(log.isDebugEnabled()){
+			log.debug("FunctionSpec=\"{}\"", spec);
+		}
 		Preconditions.checkState(!(spec.isVariadic() ^ function.isVarArgs()),
 				"Function=\"%s\" spec says variadic=\"%b\" but method=\"%s\" is declared as vararg=\"%b\"", 
 				spec.getId(), spec.isVariadic(), function.getName(), function.isVarArgs());

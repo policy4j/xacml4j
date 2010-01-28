@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
 
 
@@ -41,7 +42,6 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		return specs;
 	}
 	
-	// TODO: Monster method :)
 	private FunctionSpec build(final Method m)
 	{
 		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
@@ -69,6 +69,7 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 									"be a first parameter in the method=\"%s\" signature", m.getName()));
 				}
 				evalContextParamFound = true;
+				continue;
 			}
 			if(params[i][0] instanceof XacmlParam){
 				XacmlParam param = (XacmlParam)params[i][0];
@@ -90,9 +91,10 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 							type, m.getName(), types[i]));
 				}
 				b.withParam(param.isBag()?type.bagOf():type);
+				continue;
 			}
-			if(params[0][0] instanceof XacmlParamVarArg){
-				if(m.isVarArgs()){
+			if(params[i][0] instanceof XacmlParamVarArg){
+				if(!m.isVarArgs()){
 					throw new IllegalArgumentException(String.format("Found vararg parameter " +
 							"declaration but actual method=\"%s\" is not vararg", m.getName()));
 				}
@@ -104,7 +106,19 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 				XacmlParamVarArg param = (XacmlParamVarArg)params[i][0];
 				AttributeValueType type = param.type().getType();
 				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
+				continue;
 			}
+			if(params[i][0] instanceof XacmlParamFuncReference){
+				continue;
+			}
+			if(params[i][0] == null){
+				throw new IllegalArgumentException(String.format(
+						"Found method=\"%s\" parameter at " +
+						"index=\"%s\" with no annotation", m.getName(), i));
+			}
+			throw new IllegalArgumentException(String.format(
+						"Found method=\"%s\" parameter at " +
+						"index=\"%s\" with unknown annotation=\"%s\"", m.getName(), i, params[i][0]));
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
