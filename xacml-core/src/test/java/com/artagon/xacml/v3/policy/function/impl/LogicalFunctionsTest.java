@@ -51,4 +51,13 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 				LogicalFunctions.nof(context, n, 
 						DataTypes.BOOLEAN.create(true), DataTypes.BOOLEAN.create(false)));
 	}
+	
+	@Test(expected=EvaluationException.class)
+	public void testNOfFunctionInderterminate() throws EvaluationException
+	{
+		IntegerType.IntegerValue n = DataTypes.INTEGER.create(4);
+		 
+		assertEquals(DataTypes.BOOLEAN.create(false), 
+				LogicalFunctions.nof(context, n, DataTypes.BOOLEAN.create(false)));
+	}
 }
