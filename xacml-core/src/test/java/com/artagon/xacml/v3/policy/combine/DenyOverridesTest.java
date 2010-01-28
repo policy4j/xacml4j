@@ -8,98 +8,98 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.MockDecision;
+import com.artagon.xacml.v3.policy.MockDecisionRule;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class DenyOverridesTest extends XacmlPolicyTestCase
 {
-	private List<MockDecision> decisions;
-	private DecisionCombiningAlgorithm<MockDecision> algorithm;
+	private List<MockDecisionRule> decisions;
+	private DecisionCombiningAlgorithm<MockDecisionRule> algorithm;
 	
 	@Before
 	public void init(){
-		this.decisions = new LinkedList<MockDecision>();
-		this.algorithm = new DenyOverrides<MockDecision>("aaaa");
+		this.decisions = new LinkedList<MockDecisionRule>();
+		this.algorithm = new DenyOverrides<MockDecisionRule>("aaaa");
 	}
 	
 	@Test
 	public void testCombineWithNoDecisions()
 	{
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithAllNotApplicable()
 	{
-		decisions.add(new MockDecision(DecisionResult.NOT_APPLICABLE));
-		decisions.add(new MockDecision(DecisionResult.NOT_APPLICABLE));
-		decisions.add(new MockDecision(DecisionResult.NOT_APPLICABLE));
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.NOT_APPLICABLE));
+		decisions.add(new MockDecisionRule(Decision.NOT_APPLICABLE));
+		decisions.add(new MockDecisionRule(Decision.NOT_APPLICABLE));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithPermit()
 	{
-		decisions.add(new MockDecision(DecisionResult.PERMIT));
-		assertEquals(DecisionResult.PERMIT, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT));
+		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithDeny()
 	{
-		decisions.add(new MockDecision(DecisionResult.DENY));
-		assertEquals(DecisionResult.DENY, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.DENY));
+		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithInderterminateP()
 	{
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_P));
-		assertEquals(DecisionResult.INDETERMINATE_P, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_P));
+		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithInderterminateD()
 	{
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_D));
-		assertEquals(DecisionResult.INDETERMINATE_D, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_D));
+		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineWithInderterminateDP()
 	{
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_DP));
-		assertEquals(DecisionResult.INDETERMINATE_DP, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_DP));
+		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineOneDeny()
 	{
-		decisions.add(new MockDecision(DecisionResult.DENY));
-		assertEquals(DecisionResult.DENY, algorithm.combine(decisions, context));
-		decisions.add(new MockDecision(DecisionResult.PERMIT));	
-		assertEquals(DecisionResult.DENY, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.DENY));
+		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT));	
+		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testCombineAnyIndeterminateDAndAtLeastOneIndeterminateP()
 	{
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_D));
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_D));
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_P));
-		assertEquals(DecisionResult.INDETERMINATE_DP, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_D));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_D));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_P));
+		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(decisions, context));
 		
 	}
 	
 	@Test
 	public void testCombineAnyIndeterminateDAndAtLeastOnePermit()
 	{
-		decisions.add(new MockDecision(DecisionResult.PERMIT));
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_D));
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE_P));
-		assertEquals(DecisionResult.INDETERMINATE_DP, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_D));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE_P));
+		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(decisions, context));
 	}
 	
 }

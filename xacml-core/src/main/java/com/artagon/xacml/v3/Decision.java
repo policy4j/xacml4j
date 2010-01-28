@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public enum DecisionResult 
+public enum Decision 
 {
 	PERMIT(false),
 	DENY(false),
@@ -12,7 +12,7 @@ public enum DecisionResult
 	
 	private boolean indeterminate;
 	
-	private DecisionResult(boolean indeterminate){
+	private Decision(boolean indeterminate){
 		this.indeterminate = indeterminate;
 	}
 	

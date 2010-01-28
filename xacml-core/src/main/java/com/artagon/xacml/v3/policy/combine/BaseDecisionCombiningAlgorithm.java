@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.combine;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
@@ -40,7 +40,7 @@ abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends X
 	 * @param decision an decision
 	 * @return
 	 */
-	protected DecisionResult evaluateIfApplicable(EvaluationContext context, D decision)
+	protected Decision evaluateIfApplicable(EvaluationContext context, D decision)
 	{
 		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluateIfApplicable(decisionContext);

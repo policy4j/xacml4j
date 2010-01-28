@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XacmlObject;
 
@@ -90,7 +90,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * method invocation
 	 */
 	@Override
-	public final DecisionResult evaluateIfApplicable(EvaluationContext context)
+	public final Decision evaluateIfApplicable(EvaluationContext context)
 	{
 		Preconditions.checkArgument(isEvaluationContextValid(context));
 		MatchResult r = isApplicable(context);
@@ -98,7 +98,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 			return evaluate(context);
 		}
 		return (r == MatchResult.INDETERMINATE)?
-				DecisionResult.INDETERMINATE:DecisionResult.NOT_APPLICABLE;
+				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
 	}
 	
 	/**
@@ -107,12 +107,12 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * advice and obligations are evaluated
 	 */
 	@Override
-	public final DecisionResult evaluate(EvaluationContext context) 
+	public final Decision evaluate(EvaluationContext context) 
 	{
 		Preconditions.checkArgument(isEvaluationContextValid(context));
-		DecisionResult result = doEvaluate(context);
+		Decision result = doEvaluate(context);
 		if(result.isIndeterminate() || 
-				result == DecisionResult.NOT_APPLICABLE){
+				result == Decision.NOT_APPLICABLE){
 			log.debug("Not evaluating advices and " +
 					"obligations for decision result=\"{}\"", result);
 			return result;
@@ -127,20 +127,20 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		}catch(EvaluationException e){
 			log.debug("Failed to evaluate decision id=\"{}\" " +
 					"obligation or advice expressions", getId());
-			return DecisionResult.INDETERMINATE;
+			return Decision.INDETERMINATE;
 		}
 	}
 	
 	/**
 	 * Evaluates advice expressions matching given decision
-	 * {@link DecisionResult} result
+	 * {@link Decision} result
 	 * 
 	 * @param context an evaluation context
 	 * @param result a decision evaluation result
 	 * @return collection of {@link Advice} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private Collection<Advice> evaluateAdvices(EvaluationContext context, DecisionResult result) 
+	private Collection<Advice> evaluateAdvices(EvaluationContext context, Decision result) 
 		throws EvaluationException
 	{
 		Collection<Advice> advices = new LinkedList<Advice>();
@@ -157,14 +157,14 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	
 	/**
 	 * Evaluates obligation matching given decision 
-	 * {@link DecisionResult} result
+	 * {@link Decision} result
 	 * 
 	 * @param context an evaluation context
 	 * @param result an decision result
 	 * @return collection of {@link Obligation} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private Collection<Obligation> evaluateObligations(EvaluationContext context, DecisionResult result) 
+	private Collection<Obligation> evaluateObligations(EvaluationContext context, Decision result) 
 		throws EvaluationException
 	{
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
@@ -193,7 +193,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * Performs actual decision evaluation
 	 * 
 	 * @param context an evaluation context
-	 * @return {@link DecisionResult}
+	 * @return {@link Decision}
 	 */
-	protected abstract DecisionResult doEvaluate(EvaluationContext context);
+	protected abstract Decision doEvaluate(EvaluationContext context);
 }

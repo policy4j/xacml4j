@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.MockCompositeDecision;
+import com.artagon.xacml.v3.policy.MockCompositeDecisionRule;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
@@ -28,61 +28,61 @@ public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 	@Test
 	public void testWithOnlyOneDecisionPermitAndNoMatch()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testWithOnlyOneDecisionDenyAndNoMatch()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.DENY, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testWithOnlyOneDecisionIndeterminateAndNoMatch()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.INDETERMINATE, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.INDETERMINATE, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testWithOnlyOneDecisionPermitAndMatchIndeterminate()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.INDETERMINATE));
-		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testWithOnlyOneDecisionDenyAndMatchIndeterminate()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.INDETERMINATE));
-		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testWithOnlyOneDecisionIndeterminateAndMatchIndeterminate()
 	{
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.INDETERMINATE));
-		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testMoreThanOneIsApplicable()
 	{
 		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.MATCH));
-		d.add(new MockCompositeDecision(DecisionResult.DENY, MatchResult.MATCH));
-		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.MATCH));
+		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.MATCH));
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
 	}
 	
 	@Test
 	public void testOnlyOneIsApplicable()
 	{
 		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
-		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.MATCH));
-		d.add(new MockCompositeDecision(DecisionResult.DENY, MatchResult.INDETERMINATE));
-		d.add(new MockCompositeDecision(DecisionResult.INDETERMINATE, MatchResult.INDETERMINATE));
-		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
+		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.MATCH));
+		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.INDETERMINATE));
+		d.add(new MockCompositeDecisionRule(Decision.INDETERMINATE, MatchResult.INDETERMINATE));
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
 	}
 }

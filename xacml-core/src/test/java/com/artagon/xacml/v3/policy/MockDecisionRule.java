@@ -1,17 +1,17 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
-public class MockDecision extends BaseDesicionRule
+public class MockDecisionRule extends BaseDesicionRule
 {
-	private DecisionResult decision;
+	private Decision decision;
 	
-	public MockDecision(DecisionResult decision){
+	public MockDecisionRule(Decision decision){
 		this(decision, MatchResult.MATCH);
 	}
 	
 
-	public MockDecision(DecisionResult decision, MatchResult match){
+	public MockDecisionRule(Decision decision, MatchResult match){
 		super("MockDecisionId", new MockTarget(match));
 		this.decision = decision;
 	}
@@ -21,7 +21,7 @@ public class MockDecision extends BaseDesicionRule
 		return parentContext;
 	}
 
-	protected DecisionResult doEvaluate(EvaluationContext context) {
+	protected Decision doEvaluate(EvaluationContext context) {
 		return decision;
 	}
 	

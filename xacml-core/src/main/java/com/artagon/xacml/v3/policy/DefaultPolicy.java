@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
 public final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
@@ -94,7 +94,7 @@ public final class DefaultPolicy extends BaseCompositeDecisionRule implements Po
 	}
 	
 	@Override
-	protected DecisionResult doEvaluate(EvaluationContext context)
+	protected Decision doEvaluate(EvaluationContext context)
 	{
 		log.debug("Evaluating policy=\"{}\", combine=\"{}\"", 
 				getId(), combine.getId());

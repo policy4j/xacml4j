@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
@@ -12,16 +12,16 @@ public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombin
 		super(algorithmId);
 	}
 	
-	public DecisionResult combine(List<D> decisions,
+	public Decision combine(List<D> decisions,
 			EvaluationContext context)
 	{
 		for(D d : decisions){
-			DecisionResult decision = evaluateIfApplicable(context, d);
-			if(decision == DecisionResult.PERMIT){
+			Decision decision = evaluateIfApplicable(context, d);
+			if(decision == Decision.PERMIT){
 				return decision;
 			}
 		}
-		return DecisionResult.DENY;
+		return Decision.DENY;
 	}
 	
 }

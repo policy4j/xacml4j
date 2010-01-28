@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
@@ -18,7 +18,7 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 	}
 	
 	@Override
-	public DecisionResult combine(List<D> decisions,
+	public Decision combine(List<D> decisions,
 			EvaluationContext context) 
 	{
 		boolean atLeastOneIndeterminateD = false;
@@ -27,49 +27,49 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 		boolean atLeastOnePermit = false;
 		for(D d : decisions)
 		{
-			DecisionResult decision = evaluateIfApplicable(context, d);
+			Decision decision = evaluateIfApplicable(context, d);
 			log.debug("Evaluating decicion=\"{}\", evaluation result=\"{}\"", d.getId(), decision);
-			if(decision == DecisionResult.DENY){
+			if(decision == Decision.DENY){
 				log.debug("Not evauating decisions further, result is=\"{}\"", decision);
-				return DecisionResult.DENY;
+				return Decision.DENY;
 			}
-			if(decision == DecisionResult.PERMIT){
+			if(decision == Decision.PERMIT){
 				atLeastOnePermit = true;
 				continue;
 			}
-			if(decision == DecisionResult.NOT_APPLICABLE){
+			if(decision == Decision.NOT_APPLICABLE){
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_D){
+			if(decision == Decision.INDETERMINATE_D){
 				atLeastOneIndeterminateD = true;
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_P){
+			if(decision == Decision.INDETERMINATE_P){
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_DP){
+			if(decision == Decision.INDETERMINATE_DP){
 				atLeastOneIndeterminateDP = true;
 				continue;
 			}
 			
 		}
 		if(atLeastOneIndeterminateDP){
-			return DecisionResult.INDETERMINATE_DP;
+			return Decision.INDETERMINATE_DP;
 		}
 		if(atLeastOneIndeterminateD && 
 				(atLeastOneIndeterminateP || atLeastOnePermit)){
-			return DecisionResult.INDETERMINATE_DP;
+			return Decision.INDETERMINATE_DP;
 		}
 		if(atLeastOnePermit){
-			return DecisionResult.PERMIT;
+			return Decision.PERMIT;
 		}
 		if(atLeastOneIndeterminateP){
-			return DecisionResult.INDETERMINATE_P;
+			return Decision.INDETERMINATE_P;
 		}
 		if(atLeastOneIndeterminateD){
-			return DecisionResult.INDETERMINATE_D;
+			return Decision.INDETERMINATE_D;
 		}
-		return DecisionResult.NOT_APPLICABLE;
+		return Decision.NOT_APPLICABLE;
 	}
 }

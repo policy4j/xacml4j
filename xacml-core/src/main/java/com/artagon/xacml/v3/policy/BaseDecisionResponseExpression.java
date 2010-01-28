@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.XacmlObject;
 
 abstract class BaseDecisionResponseExpression extends XacmlObject implements PolicyElement
@@ -59,14 +59,14 @@ abstract class BaseDecisionResponseExpression extends XacmlObject implements Pol
 	
 	/**
 	 * Tests if this decision info expression
-	 * is applicable for a given {@link DecisionResult}
+	 * is applicable for a given {@link Decision}
 	 * 
 	 * @param result a decision result
 	 * @return <code>true</code> if an expression is applicable
 	 */
-	public boolean isApplicable(DecisionResult result){
-		return (result == DecisionResult.PERMIT && effect == Effect.PERMIT) ||
-		(result == DecisionResult.DENY && effect == Effect.DENY);
+	public boolean isApplicable(Decision result){
+		return (result == Decision.PERMIT && effect == Effect.PERMIT) ||
+		(result == Decision.DENY && effect == Effect.DENY);
 	}
 	
 	public Collection<AttributeAssignmentExpression> getAttributeAssignmentExpressions(){

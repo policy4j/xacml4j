@@ -1,19 +1,19 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
 public enum Effect 
 {
-	PERMIT(DecisionResult.PERMIT),
-	DENY(DecisionResult.DENY);
+	PERMIT(Decision.PERMIT),
+	DENY(Decision.DENY);
 	
-	private DecisionResult result;
+	private Decision result;
 	
-	private Effect(DecisionResult r){
+	private Effect(Decision r){
 		this.result = r;
 	}
 	
-	public DecisionResult getResult(){
+	public Decision getResult(){
 		return result;
 	}
 }

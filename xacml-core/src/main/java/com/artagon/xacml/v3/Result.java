@@ -9,7 +9,7 @@ import com.artagon.xacml.util.Preconditions;
 public class Result 
 {
 	private Status status;
-	private DecisionResult decision;
+	private Decision decision;
 	private Collection<Obligation> obligations;
 	private Collection<Advice> associatedAdvice;
 	
@@ -19,7 +19,7 @@ public class Result
 		this.status = status;
 	}
 	
-	public Result(DecisionResult decision, 
+	public Result(Decision decision, 
 			Collection<Advice> associatedAdvice, Collection<Obligation> obligations){
 		Preconditions.checkArgument(!decision.isIndeterminate());
 		this.status = new Status(StatusId.OK);
@@ -31,7 +31,7 @@ public class Result
 		return status;
 	}
 	
-	public DecisionResult getDecision(){
+	public Decision getDecision(){
 		return decision;
 	}
 	

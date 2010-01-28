@@ -8,63 +8,63 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.MockDecision;
+import com.artagon.xacml.v3.policy.MockDecisionRule;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class FirstApplicableTest extends XacmlPolicyTestCase
 {
 	
-	private List<MockDecision> decisions;
-	private DecisionCombiningAlgorithm<MockDecision> algorithm;
+	private List<MockDecisionRule> decisions;
+	private DecisionCombiningAlgorithm<MockDecisionRule> algorithm;
 	
 	@Before
 	public void init(){
-		this.decisions = new LinkedList<MockDecision>();
-		this.algorithm = new FirstApplicable<MockDecision>("test");
+		this.decisions = new LinkedList<MockDecisionRule>();
+		this.algorithm = new FirstApplicable<MockDecisionRule>("test");
 	}
 	
 	@Test
 	public void testNoApplicableDecisions()
 	{
-		decisions.add(new MockDecision(DecisionResult.PERMIT, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecision(DecisionResult.DENY, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.DENY, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testPermitApplicable()
 	{
-		decisions.add(new MockDecision(DecisionResult.PERMIT, MatchResult.MATCH));
-		assertEquals(DecisionResult.PERMIT, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.MATCH));
+		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testFirstPermitNotApplicableSecondPermitIsApplicable()
 	{
-		decisions.add(new MockDecision(DecisionResult.PERMIT, MatchResult.NOMATCH));
-		assertEquals(DecisionResult.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecision(DecisionResult.PERMIT, MatchResult.MATCH));
-		assertEquals(DecisionResult.PERMIT, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.MATCH));
+		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testDenyApplicable()
 	{
-		decisions.add(new MockDecision(DecisionResult.DENY, MatchResult.MATCH));
-		assertEquals(DecisionResult.DENY, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.DENY, MatchResult.MATCH));
+		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
 	}
 	
 	@Test
 	public void testIndeterminateApplicable()
 	{
-		decisions.add(new MockDecision(DecisionResult.INDETERMINATE, MatchResult.MATCH));
-		assertEquals(DecisionResult.INDETERMINATE, algorithm.combine(decisions, context));
+		decisions.add(new MockDecisionRule(Decision.INDETERMINATE, MatchResult.MATCH));
+		assertEquals(Decision.INDETERMINATE, algorithm.combine(decisions, context));
 	}
 	
 	

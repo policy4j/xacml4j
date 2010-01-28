@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
 public interface DecisionRule extends PolicyElement
 {
@@ -53,9 +53,9 @@ public interface DecisionRule extends PolicyElement
 	 * an actual decision evaluation to one invocation.
 	 * 
 	 * @param context an evaluation context for this decision
-	 * @return {@link DecisionResult}
+	 * @return {@link Decision}
 	 */
-	DecisionResult evaluateIfApplicable(EvaluationContext context);
+	Decision evaluateIfApplicable(EvaluationContext context);
 	
 	/**
 	 * Tests if decision is applicable to a given
@@ -78,7 +78,7 @@ public interface DecisionRule extends PolicyElement
 	 * {@link MatchResult#MATCH}
 	 * 
 	 * @param context an evaluation context
-	 * @return {@link DecisionResult}
+	 * @return {@link Decision}
 	 */
-	DecisionResult evaluate(EvaluationContext context);
+	Decision evaluate(EvaluationContext context);
 }

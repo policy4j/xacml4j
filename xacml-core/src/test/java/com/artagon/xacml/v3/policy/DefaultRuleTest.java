@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.CategoryId;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
@@ -85,7 +85,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, null, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.PERMIT, r.evaluate(ruleContext));
+		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -96,7 +96,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		DefaultRule r = new DefaultRule("test", null, null, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.DENY, r.evaluate(ruleContext));
+		assertEquals(Decision.DENY, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -107,7 +107,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionTrue, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.PERMIT, r.evaluate(ruleContext));
+		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -118,7 +118,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionTrue, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.DENY, r.evaluate(ruleContext));
+		assertEquals(Decision.DENY, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -129,7 +129,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionFalse, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -140,7 +140,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionFalse, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -151,7 +151,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionIndeterminate, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -162,7 +162,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", null, conditionIndeterminate, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_D, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -173,7 +173,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionTrue, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.PERMIT, r.evaluate(ruleContext));
+		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -184,7 +184,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionTrue, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.DENY, r.evaluate(ruleContext));
+		assertEquals(Decision.DENY, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -195,7 +195,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionTrue, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.PERMIT, r.evaluate(ruleContext));
+		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -207,7 +207,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionTrue, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.DENY, r.evaluate(ruleContext));
+		assertEquals(Decision.DENY, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -218,7 +218,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionIndeterminate, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -229,7 +229,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.NOMATCH), conditionIndeterminate, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.NOMATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_D, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -240,7 +240,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.MATCH), conditionTrue, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.PERMIT, r.evaluate(ruleContext));
+		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -251,7 +251,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.MATCH), conditionFalse, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -262,7 +262,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.MATCH), conditionIndeterminate, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -273,7 +273,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.MATCH), conditionTrue, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.DENY, r.evaluate(ruleContext));
+		assertEquals(Decision.DENY, r.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 	}
@@ -284,7 +284,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionIndeterminate, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -295,7 +295,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionIndeterminate, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_D, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -306,7 +306,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionFalse, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -317,7 +317,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionFalse, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -328,7 +328,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionIndeterminate, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -339,7 +339,7 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), conditionIndeterminate, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
 		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(DecisionResult.INDETERMINATE_D, r.evaluate(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}

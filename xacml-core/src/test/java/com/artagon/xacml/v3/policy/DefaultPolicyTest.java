@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.combine.RuleDenyOverridesCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.type.BooleanType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -33,7 +33,7 @@ public class DefaultPolicyTest extends XacmlPolicyTestCase
 	public void testPolicyEvaluation()
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		DecisionResult r = policy.evaluate(policyContext);
-		assertEquals(DecisionResult.DENY, r);
+		Decision r = policy.evaluate(policyContext);
+		assertEquals(Decision.DENY, r);
 	}
 }

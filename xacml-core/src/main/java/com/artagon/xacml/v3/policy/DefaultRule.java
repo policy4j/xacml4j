@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
 public final class DefaultRule extends BaseDesicionRule implements Rule
 {
@@ -91,15 +91,15 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	 * (non-Javadoc)
 	 * @see com.artagon.xacml.policy.BaseDesicion#doEvaluate(com.artagon.xacml.policy.EvaluationContext)
 	 */
-	protected DecisionResult doEvaluate(EvaluationContext context)
+	protected Decision doEvaluate(EvaluationContext context)
 	{
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
 		log.debug("RuleId=\"{}\" condition evaluation result=\"{}\"", getId(), result);
 		if(result == ConditionResult.INDETERMINATE){
 			return getExtendedIndeterminate();
 		}
-		DecisionResult d = (result == ConditionResult.TRUE)?
-				getEffect().getResult():DecisionResult.NOT_APPLICABLE;
+		Decision d = (result == ConditionResult.TRUE)?
+				getEffect().getResult():Decision.NOT_APPLICABLE;
 		log.debug("RuleId=\"{}\" decision result=\"{}\"", getId(), d);
 		return d;
 	}
@@ -107,12 +107,12 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	/**
 	 * Gets rule extended "Indeterminate" status
 	 * 
-	 * @return {@link DecisionResult} instance representing
+	 * @return {@link Decision} instance representing
 	 * extended "Indeterminate" status
 	 */
-	private DecisionResult getExtendedIndeterminate(){
+	private Decision getExtendedIndeterminate(){
 		return effect == Effect.DENY?
-				DecisionResult.INDETERMINATE_D:DecisionResult.INDETERMINATE_P;
+				Decision.INDETERMINATE_D:Decision.INDETERMINATE_P;
 	}
 
 	@Override

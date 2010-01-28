@@ -30,7 +30,8 @@ public final class Condition implements PolicyElement
 	public Condition(Expression predicate){
 		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(DataTypes.BOOLEAN.getType()), 
 				String.format(
-						"Condition expects boolean predicate, but got expression which evaluates=\"%s\"",
+						"Condition expects boolean predicate, " +
+						"but got expression which evaluates=\"%s\"",
 						predicate.getEvaluatesTo()));
 		this.predicate = predicate;
 	}

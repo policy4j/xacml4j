@@ -3,13 +3,13 @@ package com.artagon.xacml.v3.policy;
 import java.util.Collections;
 import java.util.List;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 
-public class MockCompositeDecision extends BaseCompositeDecisionRule 
+public class MockCompositeDecisionRule extends BaseCompositeDecisionRule 
 {
-	private DecisionResult d;
+	private Decision d;
 	
-	public MockCompositeDecision(DecisionResult d, MatchResult m) {
+	public MockCompositeDecisionRule(Decision d, MatchResult m) {
 		super("MockCompisiteDecision", new MockTarget(m), 
 				Collections.<AdviceExpression>emptyList(),
 				Collections.<ObligationExpression>emptyList());
@@ -22,7 +22,7 @@ public class MockCompositeDecision extends BaseCompositeDecisionRule
 	}
 
 	@Override
-	protected DecisionResult doEvaluate(EvaluationContext context) {
+	protected Decision doEvaluate(EvaluationContext context) {
 		return d;
 	}
 	

@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
-import com.artagon.xacml.v3.DecisionResult;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
@@ -14,7 +14,7 @@ class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgo
 	}
 	
 	@Override
-	public DecisionResult combine(List<D> decisions,
+	public Decision combine(List<D> decisions,
 			EvaluationContext context) 
 	{
 		boolean atLeastOneIndeterminateD = false;
@@ -23,47 +23,47 @@ class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgo
 		boolean atLeastOneDeny = false;
 		for(D d : decisions)
 		{
-			DecisionResult decision = evaluateIfApplicable(context, d);
-			if(decision == DecisionResult.DENY){
+			Decision decision = evaluateIfApplicable(context, d);
+			if(decision == Decision.DENY){
 				atLeastOneDeny = true;
 				continue;
 			}
-			if(decision == DecisionResult.PERMIT){
-				return DecisionResult.PERMIT;
+			if(decision == Decision.PERMIT){
+				return Decision.PERMIT;
 			}
-			if(decision == DecisionResult.NOT_APPLICABLE){
+			if(decision == Decision.NOT_APPLICABLE){
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_D){
+			if(decision == Decision.INDETERMINATE_D){
 				atLeastOneIndeterminateD = true;
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_P){
+			if(decision == Decision.INDETERMINATE_P){
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == DecisionResult.INDETERMINATE_DP){
+			if(decision == Decision.INDETERMINATE_DP){
 				atLeastOneIndeterminateDP = true;
 				continue;
 			}
 			
 		}
 		if(atLeastOneIndeterminateDP){
-			return DecisionResult.INDETERMINATE_DP;
+			return Decision.INDETERMINATE_DP;
 		}
 		if(atLeastOneIndeterminateD && 
 				(atLeastOneIndeterminateP || atLeastOneDeny)){
-			return DecisionResult.INDETERMINATE_DP;
+			return Decision.INDETERMINATE_DP;
 		}
 		if(atLeastOneDeny){
-			return DecisionResult.DENY;
+			return Decision.DENY;
 		}
 		if(atLeastOneIndeterminateP){
-			return DecisionResult.INDETERMINATE_P;
+			return Decision.INDETERMINATE_P;
 		}
 		if(atLeastOneIndeterminateD){
-			return DecisionResult.INDETERMINATE_D;
+			return Decision.INDETERMINATE_D;
 		}
-		return DecisionResult.NOT_APPLICABLE;
+		return Decision.NOT_APPLICABLE;
 	}
 }
