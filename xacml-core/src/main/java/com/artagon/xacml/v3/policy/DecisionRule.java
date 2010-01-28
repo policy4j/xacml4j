@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.DecisionResult;
 
-public interface Decision extends PolicyElement
+public interface DecisionRule extends PolicyElement
 {
 	/**
 	 * Gets decision identifier

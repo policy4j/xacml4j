@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-public interface Policy extends CompositeDecision
+public interface Policy extends CompositeDecisionRule
 {
 	/**
 	 * Gets policy variable definitions

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.artagon.xacml.v3.DecisionResult;
 
-public class MockCompositeDecision extends BaseCompositeDecision 
+public class MockCompositeDecision extends BaseCompositeDecisionRule 
 {
 	private DecisionResult d;
 	
@@ -17,7 +17,7 @@ public class MockCompositeDecision extends BaseCompositeDecision
 	}
 
 	@Override
-	public List<? extends Decision> getDecisions() {
+	public List<? extends DecisionRule> getDecisions() {
 		return Collections.emptyList();
 	}
 

@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.Decision;
+import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
-class DenyOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<D>
+class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	private final static Logger log = LoggerFactory.getLogger(DenyOverrides.class);
 	

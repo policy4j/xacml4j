@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.artagon.xacml.v3.DecisionResult;
 
-public interface DecisionCombiningAlgorithm <D extends Decision> extends PolicyElement
+public interface DecisionCombiningAlgorithm <D extends DecisionRule> extends PolicyElement
 {
 	/**
 	 * Gets algorithm identifier

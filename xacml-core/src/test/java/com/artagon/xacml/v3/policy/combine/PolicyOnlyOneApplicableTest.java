@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.CompositeDecision;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.MockCompositeDecision;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
@@ -17,12 +17,12 @@ import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 {
 	private PolicyOnlyOneApplicable c;
-	private List<CompositeDecision> d;
+	private List<CompositeDecisionRule> d;
 	
 	@Before
 	public void init(){
 		this.c = new PolicyOnlyOneApplicable();
-		this.d = new LinkedList<CompositeDecision>();
+		this.d = new LinkedList<CompositeDecisionRule>();
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 	@Test
 	public void testMoreThanOneIsApplicable()
 	{
-		List<CompositeDecision> d = new LinkedList<CompositeDecision>();
+		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
 		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.MATCH));
 		d.add(new MockCompositeDecision(DecisionResult.DENY, MatchResult.MATCH));
 		assertEquals(DecisionResult.INDETERMINATE, c.combine(d, context));
@@ -79,7 +79,7 @@ public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 	@Test
 	public void testOnlyOneIsApplicable()
 	{
-		List<CompositeDecision> d = new LinkedList<CompositeDecision>();
+		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
 		d.add(new MockCompositeDecision(DecisionResult.PERMIT, MatchResult.MATCH));
 		d.add(new MockCompositeDecision(DecisionResult.DENY, MatchResult.INDETERMINATE));
 		d.add(new MockCompositeDecision(DecisionResult.INDETERMINATE, MatchResult.INDETERMINATE));

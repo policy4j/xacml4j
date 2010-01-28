@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author Giedrius Trumpickas
  */
-public interface CompositeDecision  extends Decision
+public interface CompositeDecisionRule  extends DecisionRule
 {
-	List<? extends Decision> getDecisions();
+	List<? extends DecisionRule> getDecisions();
 }

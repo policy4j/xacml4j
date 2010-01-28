@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.policy.combine;
 import java.util.List;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.Decision;
+import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
-class PermitUnlessDeny <DecisionType extends Decision>  extends BaseDecisionCombiningAlgorithm<DecisionType>
+class PermitUnlessDeny <DecisionType extends DecisionRule>  extends BaseDecisionCombiningAlgorithm<DecisionType>
 {
 	protected PermitUnlessDeny(String id){
 		super(id);

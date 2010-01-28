@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.DecisionResult;
 
-public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
+public class DefaultPolicySet extends BaseCompositeDecisionRule implements PolicySet
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicySet.class);
 	
-	private DecisionCombiningAlgorithm<CompositeDecision> combine;
-	private List<CompositeDecision> decisions;
+	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
+	private List<CompositeDecisionRule> decisions;
 	
 	/**
 	 * Constructs a policy set with a given identifier
@@ -31,15 +31,15 @@ public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
 	 * @param obligationExpressions a collection of obligation expressions
 	 */
 	public DefaultPolicySet(String id, Target target, 
-			DecisionCombiningAlgorithm<CompositeDecision> combine, 
-			Collection<? extends CompositeDecision> policies, 
+			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
+			Collection<? extends CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		super(id, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
 		this.combine = combine;
-		this.decisions = new LinkedList<CompositeDecision>(policies);
+		this.decisions = new LinkedList<CompositeDecisionRule>(policies);
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
 	}
 	
 	@Override
-	public List<? extends Decision> getDecisions() {
+	public List<? extends DecisionRule> getDecisions() {
 		return Collections.unmodifiableList(decisions);
 	}
 
@@ -84,7 +84,7 @@ public class DefaultPolicySet extends BaseCompositeDecision implements PolicySet
 			getTarget().accept(v);
 		}
 		combine.accept(v);
-		for(Decision decision : decisions){
+		for(DecisionRule decision : decisions){
 			decision.accept(v);
 		}
 		for(ObligationExpression obligation : getObligationExpressions()){

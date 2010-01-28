@@ -4,10 +4,10 @@ package com.artagon.xacml.v3.policy.combine;
 import java.util.List;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.Decision;
+import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
-class PermitOverrides <D extends Decision> extends BaseDecisionCombiningAlgorithm<D>
+class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	protected PermitOverrides(String id){
 		super(id);

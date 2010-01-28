@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 
-public enum DataTypes 
+public enum DataTypes
 {
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
 	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),

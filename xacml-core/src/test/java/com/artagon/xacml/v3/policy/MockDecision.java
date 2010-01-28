@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.DecisionResult;
 
-public class MockDecision extends BaseDesicion
+public class MockDecision extends BaseDesicionRule
 {
 	private DecisionResult decision;
 	

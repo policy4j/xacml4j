@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.CompositeDecision;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchResult;
 
-public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<CompositeDecision> 
+public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
 {
 	private final static Logger log = LoggerFactory.getLogger(PolicyOnlyOneApplicable.class);
 	
@@ -21,13 +21,13 @@ public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<Comp
 	}
 
 	@Override
-	public DecisionResult combine(List<CompositeDecision> decisions,
+	public DecisionResult combine(List<CompositeDecisionRule> decisions,
 			EvaluationContext context) 
 	{
 		boolean atLeastOne = false;
-		CompositeDecision found = null;
+		CompositeDecisionRule found = null;
 		EvaluationContext policyContext = null;
-		for(CompositeDecision d : decisions)
+		for(CompositeDecisionRule d : decisions)
 		{
 			policyContext = d.createContext(context);
 			MatchResult r = d.isApplicable(policyContext);

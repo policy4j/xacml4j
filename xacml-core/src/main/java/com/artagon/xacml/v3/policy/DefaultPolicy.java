@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.DecisionResult;
 
-public final class DefaultPolicy extends BaseCompositeDecision implements Policy
+public final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicy.class);
 	
@@ -76,7 +76,7 @@ public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 	}
 	
 	@Override
-	public List<? extends Decision> getDecisions() {
+	public List<? extends DecisionRule> getDecisions() {
 		return Collections.unmodifiableList(rules);
 	}
 	
@@ -111,7 +111,7 @@ public final class DefaultPolicy extends BaseCompositeDecision implements Policy
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
 		}
-		for(Decision rule : rules){
+		for(DecisionRule rule : rules){
 			rule.accept(v);
 		}
 		for(ObligationExpression obligation : getObligationExpressions()){

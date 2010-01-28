@@ -13,9 +13,9 @@ import com.artagon.xacml.v3.DecisionResult;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XacmlObject;
 
-abstract class BaseDesicion extends XacmlObject implements Decision
+abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseDesicion.class);
+	private final static Logger log = LoggerFactory.getLogger(BaseDesicionRule.class);
 	
 	private String id;
 	private Target target;
@@ -32,7 +32,7 @@ abstract class BaseDesicion extends XacmlObject implements Decision
 	 * @param obligationExpressions a decision 
 	 * obligation expressions
 	 */
-	protected BaseDesicion(String id, 
+	protected BaseDesicionRule(String id, 
 			Target target, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		Preconditions.checkNotNull(id);
@@ -51,7 +51,7 @@ abstract class BaseDesicion extends XacmlObject implements Decision
 	 * @param id a decision identifier
 	 * @param target a decision target
 	 */
-	protected BaseDesicion(String id, 
+	protected BaseDesicionRule(String id, 
 			Target target){
 		this(id, target, 
 				Collections.<AdviceExpression>emptyList(),

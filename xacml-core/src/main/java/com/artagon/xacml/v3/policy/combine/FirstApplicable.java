@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.DecisionResult;
-import com.artagon.xacml.v3.policy.Decision;
+import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
-class FirstApplicable<D extends Decision> extends BaseDecisionCombiningAlgorithm<D>
+class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	private final static Logger log = LoggerFactory.getLogger(FirstApplicable.class);
 	
