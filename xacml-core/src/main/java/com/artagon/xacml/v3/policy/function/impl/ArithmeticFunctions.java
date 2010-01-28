@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
@@ -55,7 +54,7 @@ public class ArithmeticFunctions
 			value *= v.getValue();
 		}
 		return DataTypes.INTEGER.create(value);
-	}
+	}	
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
@@ -140,7 +139,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
-	public static DoubleValue divide(
+	public static DoubleValue divideDouble(
 			@XacmlParam(type=DataTypes.DOUBLE)DoubleValue a,
 			@XacmlParam(type=DataTypes.DOUBLE)DoubleValue b)
 	{
@@ -150,7 +149,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
-	public static DoubleValue divide(
+	public static DoubleValue divideInteger(
 			@XacmlParam(type=DataTypes.INTEGER)IntegerValue a,
 			@XacmlParam(type=DataTypes.INTEGER)IntegerValue b) 
 	{

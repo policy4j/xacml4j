@@ -10,6 +10,14 @@ final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> imp
 	}
 	
 	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
+		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
+		Float.class.isInstance(any) || Integer.class.isInstance(any);
+	}
+	
+	
+	@Override
 	public DoubleValue create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
@@ -17,6 +25,21 @@ final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> imp
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
+		}
+		if(Byte.class.isInstance(any)){
+			return new DoubleValue(this, ((Byte)any).doubleValue());
+		}
+		if(Short.class.isInstance(any)){
+			return new DoubleValue(this, ((Short)any).doubleValue());
+		}
+		if(Integer.class.isInstance(any)){
+			return new DoubleValue(this, ((Integer)any).doubleValue());
+		}
+		if(Float.class.isInstance(any)){
+			return new DoubleValue(this, ((Float)any).doubleValue());
+		}
+		if(Long.class.isInstance(any)){
+			return new DoubleValue(this, ((Long)any).doubleValue());
 		}
 		return new DoubleValue(this, (Double)any);
 	}

@@ -1,7 +1,8 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
