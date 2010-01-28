@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
-
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
@@ -11,12 +11,32 @@ import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 
+
+/**
+ * All of the following functions SHALL take two arguments of the specified data-type, 
+ * integer, or double, and SHALL return an element of integer or double data-type, 
+ * respectively. However, the “add” functions MAY take more than two arguments. 
+ * Each function evaluation operating on doubles SHALL proceed as specified by their 
+ * logical counterparts in IEEE 754 [IEEE754]. For all of these functions, 
+ * if any argument is "Indeterminate", then the function SHALL evaluate to 
+ * "Indeterminate". In the case of the divide functions, if the divisor is zero,
+ *  then the function SHALL evaluate to “Indeterminate”.
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class ArithmeticFunctions 
 {
+	/**
+	 * Adds two or more integer data-type values
+	 * 
+	 * @param values a two or more integer data-type value
+	 * @return an integer data-type value representing
+	 * arithmetic sum of a given values
+	 */
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-add")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
-	public static IntegerValue add(
-			@XacmlParamVarArg(type=DataTypes.INTEGER, min=2)IntegerValue ...values)
+	public static IntegerValue addInteger(
+			@XacmlParamVarArg(type=DataTypes.INTEGER, min=2)IntegerValue ...values) 
 	{
 		Long sum = 0L;
 		for(IntegerValue v : values){
@@ -27,7 +47,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
-	public static IntegerValue multiply(
+	public static IntegerValue multiplyInteger(
 			@XacmlParamVarArg(type=DataTypes.INTEGER, min=2)IntegerValue ...values)
 	{
 		Long value = 1L;
@@ -39,7 +59,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
-	public static DoubleValue add(
+	public static DoubleValue addDouble(
 			@XacmlParamVarArg(type=DataTypes.DOUBLE, min=2)DoubleValue ...values)
 	{
 		Double sum = 0.0;
@@ -51,7 +71,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
-	public static BooleanValue multiply(
+	public static BooleanValue multiplyDouble(
 			@XacmlParamVarArg(type=DataTypes.DOUBLE, min=2)DoubleValue ...values)
 	{
 		Double value = 1.0;
