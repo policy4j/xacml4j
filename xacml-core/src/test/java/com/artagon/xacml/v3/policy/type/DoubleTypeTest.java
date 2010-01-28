@@ -20,6 +20,17 @@ public class DoubleTypeTest
 	}
 	
 	@Test
+	public void testCreateDouble()
+	{
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Short.valueOf("1")));
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Byte.valueOf("1")));
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Integer.valueOf("1")));
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Long.valueOf("1")));
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Float.valueOf("1")));
+		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Double.valueOf("1")));
+	}
+	
+	@Test
 	public void testToXacmlString()
 	{
 		AttributeValue v0 = t1.create(1.0d);
@@ -39,7 +50,7 @@ public class DoubleTypeTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromAnyObjectWrongContentType()
 	{
-		Object o = 10;
+		Object o = new byte[10];
 		t1.create(o);
 	}
 

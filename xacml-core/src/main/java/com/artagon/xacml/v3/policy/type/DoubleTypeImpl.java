@@ -13,7 +13,7 @@ final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> imp
 	public boolean isConvertableFrom(Object any) {
 		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
-		Float.class.isInstance(any) || Integer.class.isInstance(any);
+		Float.class.isInstance(any) || Long.class.isInstance(any);
 	}
 	
 	
