@@ -43,27 +43,24 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 				spec.getId(), spec.isVariadic(), function.getName(), function.isVarArgs());
 		try
 		{
-			Object[] p = arguments;
-			int paramStartIndex = 0;
+			Object[] params = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
+			int startIndex = 0;
 			if(evalContextRequired){
-				log.debug("Passing evaluation context as first parameter");
-				p[0] = context;
-				paramStartIndex++;
+				params[0] = context;
+				startIndex++;
 			}
-			if(spec.isVariadic()){
-				log.debug("Function=\"{}\" number of expected params=\"{}\"", spec.getId(), spec.getNumberOfParams());
-				log.debug("Function=\"{}\" number of given params=\"{}\" in invocation", spec.getId(), arguments.length);
-				p = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
-				System.arraycopy(arguments, 0, p, paramStartIndex, spec.getNumberOfParams() - 1); 
+			System.arraycopy(arguments, 0, params, startIndex, 
+					spec.isVariadic()?spec.getNumberOfParams() - 1:spec.getNumberOfParams());
+			if(spec.isVariadic()){ 
 				Object[] varArg = null;
-				if(spec.getNumberOfParams() < arguments.length - 1){
+				if(spec.getNumberOfParams() <= arguments.length - 1){
 					varArg = new Object[arguments.length - (spec.getNumberOfParams() - 1)];
 					log.debug("VarArg array length=\"{}\"", varArg.length);
 					System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length);
 				} 
-				p[p.length - 1] = varArg;
+				params[params.length - 1] = varArg;
 			}
-			return (T)function.invoke(factoryInstance, p);
+			return (T)function.invoke(factoryInstance, params);
 		}catch(Exception e){
 			log.error("Failed to invoke function=\"{}\"", spec.getId());
 			log.error(e.getMessage(), e);

@@ -34,7 +34,7 @@ public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testLazyParamEvaluation() throws Exception
+	public void testLazyParamEvaluationPassingEvaluationContext() throws Exception
 	{
 		FunctionSpec spec = f.getFunction("test3");
 		spec.invoke(context, DataTypes.INTEGER.create(10));

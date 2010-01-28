@@ -45,7 +45,7 @@ public class TestFunctions
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
 	public static IntegerType.IntegerValue and(
 			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamVarArg(type=DataTypes.INTEGER, min=0)Expression ...values) 
+			@XacmlParamVarArg(type=DataTypes.INTEGER, min=1)Expression ...values) 
 		throws EvaluationException
 	{
 		Long v = 0L;
