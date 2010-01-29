@@ -21,13 +21,13 @@ public class IPAddressTypeTest
 	public void testToXacmlStringIPV4()
 	{
 		AttributeValue a0 = t.create(IPAddressUtils.parseAddress("127.0.0.1"));
-		assertEquals("127.0.0.1", a0.toString());
+		assertEquals("127.0.0.1", a0.toXacmlString());
 		AttributeValue a1 = t.create(IPAddressUtils.parseAddress("127.0.0.1"), 
 				IPAddressUtils.parseAddress("255.255.255.0"));
-		assertEquals("127.0.0.1/255.255.255.0", a1.toString());
+		assertEquals("127.0.0.1/255.255.255.0", a1.toXacmlString());
 		AttributeValue a2 = t.create(IPAddressUtils.parseAddress("127.0.0.1"), 
 				IPAddressUtils.parseAddress("255.255.255.0"), PortRange.getRange(1024, 2048));
-		assertEquals("127.0.0.1/255.255.255.0:1024-2048", a2.toString());
+		assertEquals("127.0.0.1/255.255.255.0:1024-2048", a2.toXacmlString());
 	}
 	
 	@Test

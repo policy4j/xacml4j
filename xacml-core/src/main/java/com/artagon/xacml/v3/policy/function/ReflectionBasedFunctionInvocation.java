@@ -44,6 +44,7 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 		try
 		{
 			Object[] params = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
+			log.debug("Param array size=\"{}\", argument array length=\"{}\"", params.length, arguments.length);
 			int startIndex = 0;
 			if(evalContextRequired){
 				params[0] = context;
@@ -53,7 +54,7 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 					spec.isVariadic()?spec.getNumberOfParams() - 1:spec.getNumberOfParams());
 			if(spec.isVariadic()){ 
 				Object[] varArg = null;
-				if(spec.getNumberOfParams() <= arguments.length - 1){
+				if(spec.getNumberOfParams() <= arguments.length){
 					varArg = new Object[arguments.length - (spec.getNumberOfParams() - 1)];
 					log.debug("VarArg array length=\"{}\"", varArg.length);
 					System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length);

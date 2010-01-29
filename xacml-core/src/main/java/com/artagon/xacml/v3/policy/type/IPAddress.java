@@ -49,6 +49,15 @@ public class IPAddress extends XacmlObject
 	}
 	
 	/**
+	 * Constructs IP address with a given address
+	 * 
+	 * @param address an TCP/IP address
+	 */
+	public IPAddress(InetAddress address){
+		this(address, null, PortRange.getAnyPort());
+	}
+	
+	/**
 	 * Constructs IP address with a given address 
 	 * and specified port range
 	 * 
@@ -86,6 +95,10 @@ public class IPAddress extends XacmlObject
 	 */
 	public PortRange getRange(){
 		return range;
+	}
+	
+	public static IPAddress valueOf(String v){
+		return null;
 	}
 		
 	/*
