@@ -30,7 +30,6 @@ public class DefaultApplyTest extends XacmlPolicyTestCase
 		verify(function);
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(DataTypes.BOOLEAN.create(Boolean.FALSE));
-		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
 		Value v = apply.evaluate(context);
 		assertNotNull(v);
