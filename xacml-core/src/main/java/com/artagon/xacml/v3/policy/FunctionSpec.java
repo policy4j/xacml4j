@@ -46,16 +46,6 @@ public interface FunctionSpec
 	boolean isRequiresLazyParamEval();
 	
 	/**
-	 * Creates invocation expression for this
-	 * function with a given arguments
-	 * 
-	 * @param arguments a function arguments
-	 * @return {@link Apply} to be used
-	 * in XACML policy expressions
-	 */
-	Apply createApply(Expression ... arguments);
-		
-	/**
 	 * Validates given array of expressions
 	 * as potential function invocation arguments
 	 * 

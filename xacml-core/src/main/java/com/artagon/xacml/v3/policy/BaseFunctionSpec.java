@@ -62,12 +62,6 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 		return parameters.size();
 	}
 		
-	@Override
-	public final Apply createApply(Expression... arguments) {
-		validateParameters(arguments);
-		return new Apply(this, resolveReturnType(arguments), arguments);
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Value> T invoke(EvaluationContext context,

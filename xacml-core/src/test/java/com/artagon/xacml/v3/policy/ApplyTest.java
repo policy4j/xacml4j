@@ -2,13 +2,12 @@ package com.artagon.xacml.v3.policy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
 public class ApplyTest extends XacmlPolicyTestCase 
 {
@@ -16,25 +15,34 @@ public class ApplyTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		BooleanValue expectedReturn = DataTypes.BOOLEAN.create(Boolean.FALSE);
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
-		b.withParam(DataTypes.INTEGER.getType()).withParam(DataTypes.INTEGER.getType());
-		this.function = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(expectedReturn));
+		this.function = createStrictMock(FunctionSpec.class);
 	}
 	
 	@Test
 	public void testApplyWithValidFunctionAndValidParameters() throws EvaluationException
 	{
-		Apply apply = function.createApply(DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L));
+		Expression[] params = {DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L)};
+		expect(function.validateParameters(params)).andReturn(true);
+		replay(function);
+		DefaultApply apply = new DefaultApply(function, params);
+		verify(function);
+		reset(function);
+		expect(function.invoke(context, params)).andReturn(DataTypes.BOOLEAN.create(Boolean.FALSE));
+		expect(function.validateParameters(params)).andReturn(true);
+		replay(function);
 		Value v = apply.evaluate(context);
 		assertNotNull(v);
 		assertEquals(DataTypes.BOOLEAN.create(Boolean.FALSE), v);
+		verify(function);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testApplyWithValidFunctionAndInValidParameters() throws EvaluationException
 	{
-		Apply apply = function.createApply(DataTypes.INTEGER.create(10L));
+		function.invoke(context, DataTypes.INTEGER.create(10L));
+		expect(DataTypes.BOOLEAN.create(false));
+		replay(function);
+		DefaultApply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
 	}
 }
