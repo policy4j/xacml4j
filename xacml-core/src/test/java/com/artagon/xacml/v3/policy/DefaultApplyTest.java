@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class ApplyTest extends XacmlPolicyTestCase 
+public class DefaultApplyTest extends XacmlPolicyTestCase 
 {
 	private FunctionSpec function;
 	
@@ -24,7 +24,7 @@ public class ApplyTest extends XacmlPolicyTestCase
 		Expression[] params = {DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L)};
 		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
-		DefaultApply apply = new DefaultApply(function, params);
+		Apply apply = new DefaultApply(function, params);
 		verify(function);
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(DataTypes.BOOLEAN.create(Boolean.FALSE));
