@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 
-public class ReflectionBasedFunctionInvocation implements FunctionInvocation
+class ReflectionBasedFunctionInvocation implements FunctionInvocation
 {
 	private final static Logger log = LoggerFactory.getLogger(ReflectionBasedFunctionInvocation.class);
 	
