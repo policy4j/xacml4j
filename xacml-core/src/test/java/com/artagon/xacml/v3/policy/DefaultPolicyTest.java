@@ -24,8 +24,8 @@ public class DefaultPolicyTest extends XacmlPolicyTestCase
 	{
 		BooleanType type = DataTypes.BOOLEAN.getType();
 		this.rules = new LinkedList<Rule>();
-		rules.add(new DefaultRule("PermitRule", null, new Condition(type.create(Boolean.TRUE)), Effect.PERMIT));
-		rules.add(new DefaultRule("DenyRule", null, new Condition(type.create(Boolean.TRUE)), Effect.DENY));
+		rules.add(new DefaultRule("PermitRule", null, new DefaultCondition(type.create(Boolean.TRUE)), Effect.PERMIT));
+		rules.add(new DefaultRule("DenyRule", null, new DefaultCondition(type.create(Boolean.TRUE)), Effect.DENY));
 		this.policy = new DefaultPolicy("policy1", rules, new RuleDenyOverridesCombiningAlgorithm());
 	}
 	

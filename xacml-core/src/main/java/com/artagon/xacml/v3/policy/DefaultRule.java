@@ -14,7 +14,7 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	private final static Logger log = LoggerFactory.getLogger(DefaultRule.class);
 	
 	private Effect effect;
-	private Condition condition;
+	private DefaultCondition condition;
 	
 	/**
 	 * Constructs rule with a given identifier, 
@@ -26,7 +26,7 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	 */
 	public DefaultRule(String ruleId, 
 			Target target,
-			Condition condition, 
+			DefaultCondition condition, 
 			Effect effect, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(ruleId, target, adviceExpressions, obligationExpressions);
@@ -46,7 +46,7 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	 */
 	public DefaultRule(String ruleId, 
 			Target target,
-			Condition condition, 
+			DefaultCondition condition, 
 			Effect effect){
 		this(ruleId, target, condition, effect, 
 				Collections.<AdviceExpression>emptyList(), 

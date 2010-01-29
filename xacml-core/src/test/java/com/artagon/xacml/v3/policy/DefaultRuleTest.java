@@ -19,9 +19,9 @@ import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
 public class DefaultRuleTest extends XacmlPolicyTestCase
 {
-	private Condition conditionFalse;
-	private Condition conditionTrue;
-	private Condition conditionIndeterminate;
+	private DefaultCondition conditionFalse;
+	private DefaultCondition conditionTrue;
+	private DefaultCondition conditionIndeterminate;
 	
 	private Collection<ObligationExpression> obligationExpressions;
 	private Collection<AdviceExpression> adviceExpressions;
@@ -43,18 +43,18 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		FunctionSpec functionTrue = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(trueResult));
 		
 		Apply applyTrue = functionTrue.createApply(type1.create(10L), type1.create(10L));
-		this.conditionTrue = new Condition(applyTrue);
+		this.conditionTrue = new DefaultCondition(applyTrue);
 		
 		FunctionSpec functionFalse = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(falseResult));
 		Apply applyFalse = functionFalse.createApply(type1.create(10L), type1.create(10L));
-		this.conditionFalse = new Condition(applyFalse);
+		this.conditionFalse = new DefaultCondition(applyFalse);
 		
 		MockFunctionImplementation<BooleanValue> impl = new MockFunctionImplementation<BooleanValue>(falseResult);
 		impl.setFailWithIndeterminate(true);
 		FunctionSpec functionIndeterminate = b.build(DataTypes.BOOLEAN.getType(), impl);
 		
 		Apply applyInderminate = functionIndeterminate.createApply(type1.create(10L), type1.create(10L));
-		this.conditionIndeterminate = new Condition(applyInderminate);
+		this.conditionIndeterminate = new DefaultCondition(applyInderminate);
 		
 		assertEquals(ConditionResult.INDETERMINATE, conditionIndeterminate.evaluate(context));
 		assertEquals(ConditionResult.FALSE, conditionFalse.evaluate(context));
