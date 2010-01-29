@@ -8,11 +8,16 @@ import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
-abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject
+public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject
 	implements DecisionCombiningAlgorithm <D>
 {
 	private String algorithmId;
 	
+	/**
+	 * Creates decision combining algorithm with a
+	 * given algorithm identifier
+	 * @param algorithmId an algorithm identifier
+	 */
 	protected BaseDecisionCombiningAlgorithm(String algorithmId){
 		Preconditions.checkNotNull(algorithmId);
 		this.algorithmId = algorithmId;
@@ -40,7 +45,7 @@ abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends X
 	 * @param decision an decision
 	 * @return
 	 */
-	protected Decision evaluateIfApplicable(EvaluationContext context, D decision)
+	protected final Decision evaluateIfApplicable(EvaluationContext context, D decision)
 	{
 		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluateIfApplicable(decisionContext);

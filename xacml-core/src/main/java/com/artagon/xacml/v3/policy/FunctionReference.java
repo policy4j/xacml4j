@@ -9,20 +9,22 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class FunctionReference implements Expression
+public final class FunctionReference implements Expression
 {
 	private FunctionSpec spec;
 	private ValueType returnType;
+	
 	/**
 	 * Constructs function reference expression
 	 * 
 	 * @param spec a function specification
 	 * @param returnType a function return type
 	 */
-	FunctionReference(FunctionSpec spec){
+	public FunctionReference(FunctionSpec spec){
 		Preconditions.checkNotNull(spec);
 		this.spec = spec;
 		this.returnType = spec.resolveReturnType();
+		Preconditions.checkState(returnType != null);
 	}
 	
 	/**

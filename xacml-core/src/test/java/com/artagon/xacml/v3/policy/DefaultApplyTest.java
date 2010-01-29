@@ -42,7 +42,7 @@ public class DefaultApplyTest extends XacmlPolicyTestCase
 		function.invoke(context, DataTypes.INTEGER.create(10L));
 		expect(DataTypes.BOOLEAN.create(false));
 		replay(function);
-		DefaultApply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
 	}
 }

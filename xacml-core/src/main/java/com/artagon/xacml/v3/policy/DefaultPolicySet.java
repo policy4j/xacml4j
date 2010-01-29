@@ -16,7 +16,7 @@ public class DefaultPolicySet extends BaseCompositeDecisionRule implements Polic
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicySet.class);
 	
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
-	private List<CompositeDecisionRule> decisions;
+	private List<CompositeDecisionRule> decisionRules;
 	
 	/**
 	 * Constructs a policy set with a given identifier
@@ -39,7 +39,7 @@ public class DefaultPolicySet extends BaseCompositeDecisionRule implements Polic
 		super(id, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
 		this.combine = combine;
-		this.decisions = new LinkedList<CompositeDecisionRule>(policies);
+		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 	}
 	
 	/**
@@ -63,17 +63,18 @@ public class DefaultPolicySet extends BaseCompositeDecisionRule implements Polic
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicySet() == this;
 	}
+	
 	@Override
 	protected Decision doEvaluate(EvaluationContext context) 
 	{
 		log.debug("Evaluating PolicySet Id=\"{}\", Combine Algorithm Id=\"{}\"", 
 				getId(), combine.getId());
-		return combine.combine(decisions, context);
+		return combine.combine(decisionRules, context);
 	}
 	
 	@Override
 	public List<? extends DecisionRule> getDecisions() {
-		return Collections.unmodifiableList(decisions);
+		return Collections.unmodifiableList(decisionRules);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class DefaultPolicySet extends BaseCompositeDecisionRule implements Polic
 			getTarget().accept(v);
 		}
 		combine.accept(v);
-		for(DecisionRule decision : decisions){
+		for(DecisionRule decision : decisionRules){
 			decision.accept(v);
 		}
 		for(ObligationExpression obligation : getObligationExpressions()){
