@@ -68,20 +68,11 @@ public class DefaultFunctionSpecBuilder
 	}
 
 	@Override
-	public FunctionSpec build(final ValueType returnType,
-			final FunctionInvocation invocation) {
-		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
-			@Override
-			public ValueType resolveReturnType(Expression... arguments) {
-				return returnType;
-			}
-			@SuppressWarnings("unchecked")
-			@Override
-			protected <T extends Value> T doInvoke(EvaluationContext context,
-					Expression... params) throws EvaluationException {
-				return (T)invocation.invoke(this, context, params);
-			}
-		};
+	public FunctionSpec build(ValueType returnType,
+			FunctionInvocation invocation) {
+		return build(
+				new FixedReturnTypeFunctionReturnTypeResolver(returnType), 
+				invocation);
 	}
 	
 	
