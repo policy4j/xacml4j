@@ -27,6 +27,7 @@ class BaseEvaluationContext implements EvaluationContext
 	protected BaseEvaluationContext(boolean validate){
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
+		this.validateAtRuntime = validate;
 	}
 	
 	protected BaseEvaluationContext(AttributeResolutionService attributeService){
