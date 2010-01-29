@@ -67,11 +67,11 @@ public final class Match implements Matchable, PolicyElement
 			BagOfAttributeValues<?> attributes = (BagOfAttributeValues<?>)attributeRef.evaluate(context);
 			log.debug("Evaluated attribute reference=\"{}\" to " +
 					"bag=\"{}\"", attributeRef, attributes);
-			for(AttributeValue attr : attributes.values()){
-				BooleanValue match = (BooleanValue)predicate.invoke(context, attr, attributeRef);
+			for(AttributeValue v : attributes.values()){
+				BooleanValue match = predicate.invoke(context, value, v);
 				if(match.getValue()){
 					log.debug("Attribute value=\"{}\" " +
-							"matches attribute value=\"{}\"", value, attr);
+							"matches attribute value=\"{}\"", value, v);
 					return MatchResult.MATCH;
 				}
 			}
