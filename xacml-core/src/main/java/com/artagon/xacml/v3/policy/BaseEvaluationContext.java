@@ -31,7 +31,7 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	protected BaseEvaluationContext(AttributeResolutionService attributeService){
-		this();
+		this(true);
 		Preconditions.checkNotNull(attributeService);
 		this.attributeService = attributeService;
 	}

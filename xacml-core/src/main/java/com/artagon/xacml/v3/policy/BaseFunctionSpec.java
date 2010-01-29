@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 
@@ -16,6 +19,8 @@ import com.artagon.xacml.v3.XacmlObject;
  */
 public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSpec
 {
+	private final static Logger log = LoggerFactory.getLogger(BaseFunctionSpec.class);
+	
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	private boolean lazyParamEval = false;
@@ -67,6 +72,12 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	@Override
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws EvaluationException {
+		if(context.isValidateFuncParamAtRuntime()){
+			if(!validateParameters(params)){
+				throw new EvaluationException(
+						"Function=\"%s\" can't be invoked with a given parameters", getId());
+			}
+		}
 		return (T)doInvoke(context, 
 				isRequiresLazyParamEval()?params:evaluate(context, params));
 	}
@@ -88,6 +99,7 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	@Override
 	public final boolean validateParameters(Expression ... params)
 	{
+		log.debug("Validating function=\"{}\" parameters", getId());
 		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();

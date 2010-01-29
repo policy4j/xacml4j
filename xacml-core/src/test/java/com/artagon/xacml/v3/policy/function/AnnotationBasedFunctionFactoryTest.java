@@ -38,6 +38,7 @@ public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
 	{
 		FunctionSpec spec3 = f.getFunction("test3");
 		FunctionSpec spec4 = f.getFunction("test4");
+		spec3.invoke(context, DataTypes.INTEGER.create(10), DataTypes.INTEGER.create(10));
 		spec3.invoke(context, DataTypes.INTEGER.create(10));
 		spec4.invoke(context, DataTypes.INTEGER.create(10));
 		
