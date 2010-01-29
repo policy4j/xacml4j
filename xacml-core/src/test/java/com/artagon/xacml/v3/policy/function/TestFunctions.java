@@ -88,8 +88,6 @@ public class TestFunctions
 		return DataTypes.INTEGER.bag(attributes);
 	}
 	
-	
-	
 	@XacmlFunc(id="test5VarArg")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
 	public static BooleanValue test5(
