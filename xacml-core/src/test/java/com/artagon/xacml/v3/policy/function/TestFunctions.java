@@ -45,6 +45,21 @@ public class TestFunctions
 	@XacmlFuncReturnType(type=DataTypes.INTEGER)
 	public static IntegerType.IntegerValue and(
 			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParamVarArg(type=DataTypes.INTEGER, min=1)IntegerType.IntegerValue ...values) 
+		throws EvaluationException
+	{
+		Long v = 0L;
+		for(Expression e : values){
+			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
+			
+		}
+		return DataTypes.INTEGER.create(v);
+	}
+	
+	@XacmlFunc(id="test4", evaluateArguments=false)
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerType.IntegerValue and(
+			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParamVarArg(type=DataTypes.INTEGER, min=1)Expression ...values) 
 		throws EvaluationException
 	{
@@ -56,7 +71,7 @@ public class TestFunctions
 		return DataTypes.INTEGER.create(v);
 	}
 	
-	@XacmlFunc(id="test4")
+	@XacmlFunc(id="test5")
 	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
 	public static BagOfAttributeValues<IntegerType.IntegerValue> test4(
 			@XacmlParamEvaluationContext EvaluationContext context,

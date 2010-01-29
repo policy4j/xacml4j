@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.function;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
@@ -53,13 +54,13 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 			System.arraycopy(arguments, 0, params, startIndex, 
 					spec.isVariadic()?spec.getNumberOfParams() - 1:spec.getNumberOfParams());
 			if(spec.isVariadic()){ 
-				Object[] varArg = null;
+				Object varArgArray = null;
 				if(spec.getNumberOfParams() <= arguments.length){
-					varArg = new Object[arguments.length - (spec.getNumberOfParams() - 1)];
-					log.debug("VarArg array length=\"{}\"", varArg.length);
-					System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArg, 0, varArg.length);
-				} 
-				params[params.length - 1] = varArg;
+					int size = arguments.length - (spec.getNumberOfParams() - 1);
+					varArgArray = Array.newInstance(arguments[spec.getNumberOfParams() - 1].getClass(), size);
+					System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArgArray, 0, size);
+				}
+				params[params.length - 1] = varArgArray;
 			}
 			return (T)function.invoke(factoryInstance, params);
 		}catch(Exception e){
