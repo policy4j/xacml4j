@@ -45,7 +45,6 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 		try
 		{
 			Object[] params = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
-			log.debug("Param array size=\"{}\", argument array length=\"{}\"", params.length, arguments.length);
 			int startIndex = 0;
 			if(evalContextRequired){
 				params[0] = context;
@@ -65,7 +64,6 @@ public class ReflectionBasedFunctionInvocation implements FunctionInvocation
 			return (T)function.invoke(factoryInstance, params);
 		}catch(Exception e){
 			log.error("Failed to invoke function=\"{}\"", spec.getId());
-			log.error(e.getMessage(), e);
 			throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getId());
 		}
 	}
