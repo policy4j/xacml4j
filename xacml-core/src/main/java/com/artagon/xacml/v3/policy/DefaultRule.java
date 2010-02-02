@@ -56,7 +56,7 @@ public final class DefaultRule extends BaseDesicionRule implements Rule
 	/**
 	 * Gets rule effect
 	 * 
-	 * @return {@link Effec
+	 * @return {@link Effect}
 	 */
 	public Effect getEffect(){
 		return effect;

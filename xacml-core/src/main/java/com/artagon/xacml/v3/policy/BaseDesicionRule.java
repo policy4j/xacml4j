@@ -94,9 +94,12 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	{
 		Preconditions.checkArgument(isEvaluationContextValid(context));
 		MatchResult r = isApplicable(context);
+		Preconditions.checkState(r != null);
 		if(r == MatchResult.MATCH){
+			log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
 			return evaluate(context);
 		}
+		log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
 		return (r == MatchResult.INDETERMINATE)?
 				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
 	}
