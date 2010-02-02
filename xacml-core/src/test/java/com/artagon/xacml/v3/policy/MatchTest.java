@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.CategoryId;
-import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;

@@ -1,10 +1,14 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.ValueType;
+
 
 public interface FunctionSpecBuilder 
 {
+	
+	FunctionSpecBuilder withParam(ValueType type);	
+	FunctionSpecBuilder withLazyArgumentsEvaluation();
+	FunctionSpecBuilder withParam(ValueType type, int min, int max);
+	
 	/**
 	 * Builds {@link FunctionSpec} with a given
 	 * {@link ValueType} as a function return type

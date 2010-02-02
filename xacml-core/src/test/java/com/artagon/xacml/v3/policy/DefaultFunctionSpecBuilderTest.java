@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.function.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.StringType;
@@ -27,7 +26,7 @@ public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
 		IntegerType.IntegerValue expectedResult = DataTypes.INTEGER.create(new Integer(10));
 		this.impl =  new MockFunctionImplementation<IntegerType.IntegerValue>(expectedResult);
 		
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 
+		FunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 
 		
 		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(DataTypes.INTEGER.getType(), impl);
 		

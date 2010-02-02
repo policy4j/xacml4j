@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.policy.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;

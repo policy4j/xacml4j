@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.function.FunctionInvocation;
-import com.artagon.xacml.v3.policy.function.FunctionReturnTypeResolver;
 
 
 /**

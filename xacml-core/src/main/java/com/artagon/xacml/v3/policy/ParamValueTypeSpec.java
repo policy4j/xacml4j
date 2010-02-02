@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.policy;
 
 import java.util.ListIterator;
 
@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.ParamSpec;
-import com.artagon.xacml.v3.policy.ValueType;
 
 public final class ParamValueTypeSpec extends XacmlObject implements ParamSpec
 {

@@ -1,13 +1,9 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.policy;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.DefaultFunctionSpec;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.ParamSpec;
-import com.artagon.xacml.v3.policy.ValueType;
 
 public class DefaultFunctionSpecBuilder 
 	implements FunctionSpecBuilder
@@ -23,7 +19,8 @@ public class DefaultFunctionSpecBuilder
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
 	
-	public DefaultFunctionSpecBuilder withParam(ValueType type){
+	@Override
+	public FunctionSpecBuilder withParam(ValueType type){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg, 
 				String.format("Can't add parameter after variadic parameter"));
@@ -31,12 +28,14 @@ public class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
-	public DefaultFunctionSpecBuilder withLazyArgumentsEvaluation(){
+	@Override
+	public FunctionSpecBuilder withLazyArgumentsEvaluation(){
 		this.lazyArgumentEvaluation = true;
 		return this;
 	}
 	
-	public DefaultFunctionSpecBuilder withParam(ValueType type, int min, int max){
+	@Override
+	public FunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
