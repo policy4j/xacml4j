@@ -9,7 +9,7 @@ public interface FunctionFactory
 	 * identifier.
 	 * 
 	 * @param functionId a function identifier
-	 * @return {@link BaseFunctionSpec} instance for a given
+	 * @return {@link DefaultFunctionSpec} instance for a given
 	 * identifier or <code>null</code> if function
 	 * can not be found for a given identifier
 	 */

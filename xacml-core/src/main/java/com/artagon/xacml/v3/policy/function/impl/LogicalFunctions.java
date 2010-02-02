@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.function.impl;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
@@ -111,7 +112,7 @@ public class LogicalFunctions
 	{
 		Boolean r = Boolean.TRUE;
 		if(values.length < n.getValue()){
-			throw new EvaluationException("Number of arguments=\"%s\" is " +
+			throw new FunctionInvocationException("Number of arguments=\"%s\" is " +
 					"less than minimum required number=\"%s\"", values.length, n.getValue());
 		}
 		for(int i = 0; i < n.getValue(); i++ ){

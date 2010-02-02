@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 
@@ -18,7 +18,7 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 	private final static Logger log = LoggerFactory.getLogger(ReflectionBasedFunctionInvocation.class);
 	
 	private Object factoryInstance;
-	private Method function;
+	private Method functionMethod;
 	private boolean evalContextRequired;
 	
 	public ReflectionBasedFunctionInvocation(Object factoryInstance, 
@@ -26,7 +26,7 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 	{
 		Preconditions.checkNotNull(m);
 		this.factoryInstance = factoryInstance;
-		this.function = m;
+		this.functionMethod = m;
 		this.evalContextRequired = evalContextRequired;
 	}
 	
@@ -34,14 +34,14 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 	@Override
 	public <T extends Value> T invoke(FunctionSpec spec,
 			EvaluationContext context, Expression... arguments)
-			throws EvaluationException 
+			throws FunctionInvocationException 
 	{
 		if(log.isDebugEnabled()){
 			log.debug("FunctionSpec=\"{}\"", spec);
 		}
-		Preconditions.checkState(!(spec.isVariadic() ^ function.isVarArgs()),
+		Preconditions.checkState(!(spec.isVariadic() ^ functionMethod.isVarArgs()),
 				"Function=\"%s\" spec says variadic=\"%b\" but method=\"%s\" is declared as vararg=\"%b\"", 
-				spec.getId(), spec.isVariadic(), function.getName(), function.isVarArgs());
+				spec.getId(), spec.isVariadic(), functionMethod.getName(), functionMethod.isVarArgs());
 		try
 		{
 			Object[] params = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
@@ -61,10 +61,10 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 				}
 				params[params.length - 1] = varArgArray;
 			}
-			return (T)function.invoke(factoryInstance, params);
-		}catch(Exception e){
-			log.error("Failed to invoke function=\"{}\"", spec.getId());
-			throw new EvaluationException(e, "Failed to invoke function=\"%s\"", spec.getId());
+			return (T)functionMethod.invoke(factoryInstance, params);
+		}
+		catch(Exception e){
+			throw new FunctionInvocationException(e, "Failed to invoke function=\"%s\"", spec.getId());
 		}
 	}
 }

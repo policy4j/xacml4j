@@ -30,7 +30,7 @@ public final class FunctionReference implements Expression
 	/**
 	 * Gets referenced function specification
 	 * 
-	 * @return {@link BaseFunctionSpec} for a 
+	 * @return {@link DefaultFunctionSpec} for a 
 	 * referenced function
 	 */
 	public FunctionSpec getSpec(){

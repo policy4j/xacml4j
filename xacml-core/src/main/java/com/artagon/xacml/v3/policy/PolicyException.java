@@ -1,19 +1,21 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.StatusId;
 
 public class PolicyException extends Exception
 {
 	private static final long serialVersionUID = 1529877667754269216L;
 	
+	protected PolicyException(Throwable cause){
+		super(cause);
+	}
+	
 	/**
-	 * Constructs exception with a given status and message.
+	 * Constructs exception with a given message.
 	 * 
-	 * @param status an evaluation status
 	 * @param template a template {@see String#format(String, Object...)}
 	 * @param arguments an arguments for template
 	 */
-	protected PolicyException(StatusId statusId,
+	protected PolicyException(
 			String template, Object ... arguments){
 		super(String.format(template, arguments));
 	}
@@ -21,13 +23,11 @@ public class PolicyException extends Exception
 	/**
 	 * Constructs exception with a given status and message.
 	 * 
-	 * @param status an evaluation status
 	 * @param cause a root cause of this exception
 	 * @param template a template {@see String#format(String, Object...)}
 	 * @param arguments an arguments for template
 	 */
-	protected PolicyException(StatusId status,
-			Throwable cause, String message, Object ... arguments){
+	protected PolicyException(Throwable cause, String message, Object ... arguments){
 		super(String.format(message, arguments), cause);
 	}
 

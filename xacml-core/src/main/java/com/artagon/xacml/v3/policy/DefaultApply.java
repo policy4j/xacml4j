@@ -50,7 +50,11 @@ public final class DefaultApply extends XacmlObject implements Apply
 	public Value evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{
-		return spec.invoke(context, arguments);
+		try{
+			return spec.invoke(context, arguments);
+		}catch(EvaluationException e){
+			throw e;
+		}
 	}
 	
 	

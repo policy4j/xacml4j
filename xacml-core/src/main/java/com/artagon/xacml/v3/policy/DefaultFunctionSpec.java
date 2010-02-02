@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.policy.function.FunctionInvocation;
+import com.artagon.xacml.v3.policy.function.FunctionReturnTypeResolver;
 
 
 /**
@@ -17,37 +19,47 @@ import com.artagon.xacml.v3.XacmlObject;
  *
  * @param <ReturnType>
  */
-public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSpec
+public final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseFunctionSpec.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionSpec.class);
 	
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	private boolean lazyParamEval = false;
 	
-	protected BaseFunctionSpec(String functionId, 
+	private FunctionInvocation invocation;
+	private FunctionReturnTypeResolver resolver;
+	
+	public DefaultFunctionSpec(
+			String functionId, 
 			List<ParamSpec> params, 
+			FunctionReturnTypeResolver resolver,
+			FunctionInvocation invocation,
 			boolean lazyParamEval){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
+		Preconditions.checkNotNull(invocation);
+		Preconditions.checkNotNull(resolver);
 		this.functionId = functionId;
 		this.parameters.addAll(params);
+		this.resolver = resolver;
+		this.invocation = invocation;
 		this.lazyParamEval = lazyParamEval;
 	}
 	
 	@Override
-	public  final String getId(){
+	public  String getId(){
 		return functionId;
 	}
 	
 	
 	@Override
-	public  final List<ParamSpec> getParamSpecs(){
+	public  List<ParamSpec> getParamSpecs(){
 		return parameters;
 	}
 	
 	@Override
-	public final boolean isRequiresLazyParamEval() {
+	public boolean isRequiresLazyParamEval() {
 		return lazyParamEval;
 	}
 
@@ -58,40 +70,35 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	}
 	
 	@Override
-	public final int getNumberOfParams(){
+	public  int getNumberOfParams(){
 		return parameters.size();
 	}
-		
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends Value> T invoke(EvaluationContext context,
-			Expression... params) throws EvaluationException {
-		if(context.isValidateFuncParamAtRuntime()){
-			if(!validateParameters(params)){
-				throw new EvaluationException(
-						"Function=\"%s\" can't be invoked with a given parameters", getId());
-			}
-		}
-		return (T)doInvoke(context, 
-				isRequiresLazyParamEval()?params:evaluate(context, params));
-	}
 	
-	/**
-	 * Actual function implementation
-	 * 
-	 * @param <T>
-	 * @param context an evaluation context
-	 * @param params a function invocation 
-	 * parameters
-	 * @return <T> a function invocation result
-	 * @throws EvaluationException if function
-	 * invocation fails
-	 */
-	protected abstract <T extends Value> T doInvoke(
-			EvaluationContext context, Expression ...params) throws EvaluationException;
+	@Override
+	public ValueType resolveReturnType(Expression... arguments) {
+		return resolver.resolve(this, arguments);
+	}
 
 	@Override
-	public final boolean validateParameters(Expression ... params)
+	public <T extends Value> T invoke(EvaluationContext context,
+			Expression... params) throws FunctionInvocationException {
+		if(context.isValidateFuncParamAtRuntime()){
+			if(!validateParameters(params)){
+				throw new FunctionInvocationException(
+						"Failed to validate function=\"%s\" parameters", getId());
+			}
+		}
+		try{
+			return invocation.invoke(this, context, 
+					isRequiresLazyParamEval()?params:evaluate(context, params));
+		}catch(EvaluationException e){
+			throw new FunctionInvocationException(e, 
+					"Failed to invoke function=\"%s\"", getId());
+		}
+	}
+
+	@Override
+	public boolean validateParameters(Expression ... params)
 	{
 		log.debug("Validating function=\"{}\" parameters", getId());
 		boolean result = true;
@@ -121,7 +128,7 @@ public abstract class BaseFunctionSpec extends XacmlObject implements FunctionSp
 	 * @throws EvaluationException if an evaluation
 	 * error occurs
 	 */
-	protected final Expression[] evaluate(EvaluationContext context, Expression ...params) 
+	private  Expression[] evaluate(EvaluationContext context, Expression ...params) 
 		throws EvaluationException
 	{
 		Expression[] eval = new Expression[params.length];

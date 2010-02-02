@@ -1,9 +1,12 @@
 package com.artagon.xacml.v3.policy;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
-import static org.easymock.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +25,6 @@ public class DefaultApplyTest extends XacmlPolicyTestCase
 	@Test
 	public void testApplyWithValidFunctionAndValidParameters() throws EvaluationException
 	{
-		assertTrue(context.isValidateFuncParamAtRuntime());
 		Expression[] params = {DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L)};
 		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
@@ -40,10 +42,33 @@ public class DefaultApplyTest extends XacmlPolicyTestCase
 	@Test(expected=IllegalArgumentException.class)
 	public void testApplyWithValidFunctionAndInValidParameters() throws EvaluationException
 	{
-		assertTrue(context.isValidateFuncParamAtRuntime());
 		expect(function.validateParameters(DataTypes.INTEGER.create(10L))).andReturn(false);
 		replay(function);
 		new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		verify(function);
+	}
+	
+	@Test(expected=EvaluationException.class)
+	public void testApplyFunctionThrowsRuntimeException() throws EvaluationException
+	{
+		expect(function.validateParameters(DataTypes.INTEGER.create(10L))).andReturn(true);
+		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
+		.andThrow(new IllegalArgumentException());
+		replay(function);
+		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		apply.evaluate(context);
+		verify(function);
+	}
+	
+	@Test(expected=FunctionInvocationException.class)
+	public void testApplyFunctionThrowsFunctionInvocationException() throws EvaluationException
+	{
+		expect(function.validateParameters(DataTypes.INTEGER.create(10L))).andReturn(true);
+		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
+		.andThrow(new FunctionInvocationException("Failed to invoke"));
+		replay(function);
+		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		apply.evaluate(context);
 		verify(function);
 	}
 }

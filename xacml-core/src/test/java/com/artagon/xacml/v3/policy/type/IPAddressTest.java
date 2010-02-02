@@ -1,7 +1,8 @@
 package com.artagon.xacml.v3.policy.type;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
 

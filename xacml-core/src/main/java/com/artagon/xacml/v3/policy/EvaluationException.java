@@ -1,18 +1,20 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.StatusId;
 
 @SuppressWarnings("serial")
 public class EvaluationException extends PolicyException
 {
 
-	public EvaluationException(String template,
+	protected EvaluationException(String template, Object... arguments) {
+		super(template, arguments);
+	}
+
+	protected EvaluationException(Throwable cause, String message,
 			Object... arguments) {
-		super(StatusId.STATUS_PROCESSING_ERROR, template, arguments);
+		super(cause, message, arguments);
 	}
-	
-	public EvaluationException(Throwable cause,
-			String message, Object... arguments) {
-		super(StatusId.STATUS_PROCESSING_ERROR, cause, message, arguments);
-	}
+
+	protected EvaluationException(Throwable cause) {
+		super(cause);
+	}	
 }

@@ -15,12 +15,13 @@ public class MockFunctionImplementation <T extends Value> implements FunctionInv
 		this.failWithIndeterminate = fail;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T invoke(FunctionSpec spec, EvaluationContext context, Expression ...args) 
-		throws EvaluationException 
+		throws FunctionInvocationException 
 	{
 		if(failWithIndeterminate){
-			throw new EvaluationException("Failed to invoke mock function");
+			throw new FunctionInvocationException("Failed to invoke mock function");
 		}
 		return expectedResult;
 	}

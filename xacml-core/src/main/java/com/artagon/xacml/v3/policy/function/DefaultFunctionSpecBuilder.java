@@ -4,13 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.BaseFunctionSpec;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.DefaultFunctionSpec;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.ParamSpec;
-import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
 
 public class DefaultFunctionSpecBuilder 
@@ -51,20 +47,8 @@ public class DefaultFunctionSpecBuilder
 	}
 
 	@Override
-	public FunctionSpec build(final FunctionReturnTypeResolver returnType,
-			final FunctionInvocation invocation) {
-		return new BaseFunctionSpec(functionId, paramSpec, lazyArgumentEvaluation) {
-			@Override
-			public ValueType resolveReturnType(Expression... arguments) {
-				return returnType.resolve(this, arguments);
-			}
-			@SuppressWarnings("unchecked")
-			@Override
-			protected <T extends Value> T doInvoke(EvaluationContext context,
-					Expression... arguments) throws EvaluationException {
-				return (T)invocation.invoke(this, context, arguments);
-			}
-		};
+	public FunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
+		return new DefaultFunctionSpec(functionId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
 	@Override
