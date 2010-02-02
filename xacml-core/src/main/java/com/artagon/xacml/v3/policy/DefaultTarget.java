@@ -8,7 +8,7 @@ public class DefaultTarget implements Target
 {
 	private Collection<Matchable> matches;
 	
-	DefaultTarget(Collection<Matchable> matches){
+	public DefaultTarget(Collection<Matchable> matches){
 		this.matches = new LinkedList<Matchable>(matches);
 	}
 	
