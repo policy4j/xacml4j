@@ -30,6 +30,18 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 	private FunctionInvocation invocation;
 	private FunctionReturnTypeResolver resolver;
 	
+	/**
+	 * Constructs function spec with given function
+	 * identifier and parameters
+	 * 
+	 * @param functionId a function identifier
+	 * @param params a function parameters spec
+	 * @param resolver a function return type resolver
+	 * @param invocation a function implementation
+	 * @param lazyParamEval a flag indicating
+	 * if function parameters needs to be evaluated
+	 * before passing them to the function
+	 */
 	public DefaultFunctionSpec(
 			String functionId, 
 			List<ParamSpec> params, 
@@ -91,7 +103,11 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 		try{
 			return invocation.invoke(this, context, 
 					isRequiresLazyParamEval()?params:evaluate(context, params));
-		}catch(EvaluationException e){
+		}
+		catch(FunctionInvocationException e){
+			throw e;
+		}
+		catch(Exception e){
 			throw new FunctionInvocationException(e, 
 					"Failed to invoke function=\"%s\"", getId());
 		}
