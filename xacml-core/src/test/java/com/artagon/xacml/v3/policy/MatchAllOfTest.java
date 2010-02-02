@@ -22,13 +22,13 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 	public void testAllMatch()
 	{
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAllOf(matches);
+		m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAllOf(matches);
+		m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 	
@@ -38,7 +38,7 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 	}
 	
@@ -48,7 +48,7 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 	}
 	
@@ -58,10 +58,10 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAllOf(matches);
+		m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 	}
 	
@@ -72,7 +72,7 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 	}
 	
@@ -83,7 +83,7 @@ public class MatchAllOfTest extends XacmlPolicyTestCase
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new MatchAllOf(matches);
+		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 	}
 }

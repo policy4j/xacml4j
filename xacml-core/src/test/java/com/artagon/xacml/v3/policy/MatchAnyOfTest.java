@@ -21,13 +21,13 @@ public class MatchAnyOfTest extends XacmlPolicyTestCase
 	public void testAllMatch()
 	{
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAnyOf(matches);
+		m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAnyOf(matches);
+		m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 	
@@ -36,7 +36,7 @@ public class MatchAnyOfTest extends XacmlPolicyTestCase
 	{
 		matches.add(new MockMatchable(MatchResult.MATCH));
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 	
@@ -45,7 +45,7 @@ public class MatchAnyOfTest extends XacmlPolicyTestCase
 	{
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 	
@@ -53,10 +53,10 @@ public class MatchAnyOfTest extends XacmlPolicyTestCase
 	public void testFirstNoMatchAllMatch()
 	{
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAnyOf(matches);
+		m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 	
@@ -65,9 +65,9 @@ public class MatchAnyOfTest extends XacmlPolicyTestCase
 	{
 		matches.add(new MockMatchable(MatchResult.NOMATCH));
 		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = new DefaultMatchAnyOf(matches);
 		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new MatchAnyOf(matches);
+		m = new DefaultMatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 }
