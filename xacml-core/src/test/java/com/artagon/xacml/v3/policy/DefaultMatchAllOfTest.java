@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MatchAllOfTest extends XacmlPolicyTestCase
+public class DefaultMatchAllOfTest extends XacmlPolicyTestCase
 {
 	private Collection<Matchable> matches;
 	
