@@ -9,9 +9,9 @@ import com.artagon.xacml.v3.XacmlObject;
 public final class DefaultMatchAnyOf extends XacmlObject 
 	implements PolicyElement, MatchAnyOf
 {
-	private Collection<? extends Matchable> matches;
+	private Collection<Matchable> matches;
 	
-	public DefaultMatchAnyOf(Collection<? extends Matchable> matches){
+	public DefaultMatchAnyOf(Collection<MatchAllOf> matches){
 		Preconditions.checkNotNull(matches);
 		Preconditions.checkArgument(matches.size() >= 1);
 		this.matches = new LinkedList<Matchable>(matches);

@@ -1,6 +1,8 @@
 
 package com.artagon.xacml.v3.policy;
 
+import static org.easymock.EasyMock.*;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
@@ -11,80 +13,98 @@ import org.junit.Test;
 
 public class DefaultMatchAllOfTest extends XacmlPolicyTestCase
 {
-	private Collection<Matchable> matches;
+	private Collection<Match> matches;
 	
 	@Before
 	public void init(){
-		this.matches = new LinkedList<Matchable>();
+		this.matches = new LinkedList<Match>();
+	}
+	
+	
+	@Test
+	public void testNoMatchStopsEvaluation()
+	{
+		Match m1 = createStrictMock(Match.class);
+		Match m2 = createStrictMock(Match.class);
+		matches.add(m1);
+		matches.add(m2);
+		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
+		replay(m1, m2);
+		Matchable m = new DefaultMatchAllOf(matches);
+		assertEquals(MatchResult.NOMATCH, m.match(context));
+		verify(m1, m2);
 	}
 	
 	@Test
 	public void testAllMatch()
 	{
-		matches.add(new MockMatchable(MatchResult.MATCH));
+		Match m1 = createStrictMock(Match.class);
+		Match m2 = createStrictMock(Match.class);
+		Match m3 = createStrictMock(Match.class);
+		matches.add(m1);
+		matches.add(m2);
+		matches.add(m3);
+		expect(m1.match(context)).andReturn(MatchResult.MATCH);
+		expect(m2.match(context)).andReturn(MatchResult.MATCH);
+		expect(m3.match(context)).andReturn(MatchResult.MATCH);
+		replay(m1, m2, m3);
 		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new DefaultMatchAllOf(matches);
-		assertEquals(MatchResult.MATCH, m.match(context));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new DefaultMatchAllOf(matches);
-		assertEquals(MatchResult.MATCH, m.match(context));
+		verify(m1, m2, m3);
 	}
 	
 	@Test
-	public void testFirstMatchRestNoMatch()
+	public void testAtLeastOneNoMatch1()
 	{
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.NOMATCH));
+		Match m1 = createStrictMock(Match.class);
+		Match m2 = createStrictMock(Match.class);
+		Match m3 = createStrictMock(Match.class);
+		matches.add(m1);
+		matches.add(m2);
+		matches.add(m3);
+		expect(m1.match(context)).andReturn(MatchResult.MATCH);
+		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
+		replay(m1, m2, m3);
 		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
+		verify(m1, m2, m3);
 	}
 	
 	@Test
-	public void testFirstNoMatchRestMatch()
+	public void testAtLeastOneNoMatchAndIndeterminate()
 	{
-		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.MATCH));
+		Match m1 = createStrictMock(Match.class);
+		Match m2 = createStrictMock(Match.class);
+		Match m3 = createStrictMock(Match.class);
+		matches.add(m1);
+		matches.add(m2);
+		matches.add(m3);;
+		expect(m1.match(context)).andReturn(MatchResult.MATCH);
+		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
+		expect(m3.match(context)).andReturn(MatchResult.NOMATCH);
+		replay(m1, m2, m3);
 		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
+		verify(m1, m2, m3);
 	}
 	
 	@Test
 	public void testAllMatchAndAtLeastOneIndeterminate()
 	{
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
+		Match m1 = createStrictMock(Match.class);
+		Match m2 = createStrictMock(Match.class);
+		Match m3 = createStrictMock(Match.class);
+		matches.add(m1);
+		matches.add(m2);
+		matches.add(m3);
+		expect(m1.match(context)).andReturn(MatchResult.MATCH);
+		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
+		expect(m3.match(context)).andReturn(MatchResult.MATCH);
+		replay(m1, m2, m3);
 		Matchable m = new DefaultMatchAllOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		m = new DefaultMatchAllOf(matches);
-		assertEquals(MatchResult.INDETERMINATE, m.match(context));
+		verify(m1, m2, m3);
 	}
-	
-	@Test
-	public void testAtLeastOneNoMatch()
-	{
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.NOMATCH));
-		Matchable m = new DefaultMatchAllOf(matches);
-		assertEquals(MatchResult.NOMATCH, m.match(context));
-	}
-	
-	@Test
-	public void testAllNoMatchAndAtLeastOnIndeterminate()
-	{
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		matches.add(new MockMatchable(MatchResult.INDETERMINATE));
-		matches.add(new MockMatchable(MatchResult.MATCH));
-		Matchable m = new DefaultMatchAllOf(matches);
-		assertEquals(MatchResult.INDETERMINATE, m.match(context));
-	}
+
 }
 

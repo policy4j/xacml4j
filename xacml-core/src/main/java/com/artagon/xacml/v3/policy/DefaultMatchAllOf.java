@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 
-public final class DefaultMatchAllOf extends XacmlObject implements PolicyElement, MatchAllOf
+public final class DefaultMatchAllOf extends XacmlObject 
+	implements PolicyElement, MatchAllOf
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatchAllOf.class);
 	
 	private Collection<Matchable> matches;
 	
-	public DefaultMatchAllOf(Collection<Matchable> match){
+	public DefaultMatchAllOf(Collection<Match> match){
 		Preconditions.checkNotNull(match);
 		Preconditions.checkArgument(match.size() >= 1);
 		this.matches = new LinkedList<Matchable>(match);

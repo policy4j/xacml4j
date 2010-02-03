@@ -32,7 +32,7 @@ public class MatchTest extends XacmlPolicyTestCase
 		AttributeDesignator designator = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer", t, true);
 		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<AttributeValue>singleton(t.create(10L)));
-		Match m = new Match(function, t.create(10L), designator);
+		DefaultMatch m = new DefaultMatch(function, t.create(10L), designator);
 		assertEquals(MatchResult.MATCH, m.match(context));
 	}
 }
