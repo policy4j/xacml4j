@@ -11,10 +11,10 @@ public class DefaultTarget implements Target
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultTarget.class);
 	
-	private Collection<MatchAnyOf> matches;
+	private Collection<Matchable> matches;
 	
 	public DefaultTarget(Collection<MatchAnyOf> matches){
-		this.matches = new LinkedList<MatchAnyOf>(matches);
+		this.matches = new LinkedList<Matchable>(matches);
 	}
 	
 	public DefaultTarget(){
