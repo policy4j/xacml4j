@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
 
+import static org.easymock.EasyMock.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,17 +14,14 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
-public class MatchTest extends XacmlPolicyTestCase
+public class DefaultMatchTest extends XacmlPolicyTestCase
 {
-	
 	private FunctionSpec function;
+	private Match m;
 	
 	@Before
 	public void init(){	
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("test1");
-		b.withParam(DataTypes.INTEGER.getType()).withParam(DataTypes.INTEGER.getType());
-		BooleanValue expectedReturn = DataTypes.BOOLEAN.create(Boolean.TRUE);
-		this.function = b.build(DataTypes.BOOLEAN.getType(), new MockFunctionImplementation<BooleanValue>(expectedReturn));
+		FunctionSpec spec = createStrictMock(FunctionSpec.class);
 	}
 	
 	@Test

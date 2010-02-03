@@ -11,8 +11,8 @@ class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeRes
 		this.returnType = returnType;
 	}
 	@Override
-	public ValueType resolve(FunctionSpec spec, Expression... arguments) {
+	public ValueType resolve(FunctionSpec spec, 
+			Expression... arguments) {
 		return returnType;
 	}
-	
 }
