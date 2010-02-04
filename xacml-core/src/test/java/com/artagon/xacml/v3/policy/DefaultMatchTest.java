@@ -38,4 +38,18 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(spec, ref);
 	}
+	
+	@Test
+	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
+	{
+		expect(spec.getNumberOfParams()).andReturn(2);
+		expect(spec.getParamSpecAt(0)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
+		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
+		expect(ref.evaluate(context)).andThrow(new EvaluationException("Failed"));
+		replay(spec, ref);
+		Match m = new DefaultMatch(spec, DataTypes.INTEGER.create(1), ref);
+		assertEquals(MatchResult.INDETERMINATE, m.match(context));
+		verify(spec, ref);
+	}
 }

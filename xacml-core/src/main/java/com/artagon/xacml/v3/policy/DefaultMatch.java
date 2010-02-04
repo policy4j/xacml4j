@@ -73,8 +73,6 @@ public final class DefaultMatch implements PolicyElement, Match
 			}
 			return MatchResult.NOMATCH;
 		}catch(EvaluationException e){
-			log.debug("Failed to evaluate match predicate=\"{}\", " +
-					"attribute value=\"{}\"", predicate.getId(), value);
 			return MatchResult.INDETERMINATE;
 		}
 	}
