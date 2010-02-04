@@ -15,12 +15,17 @@ final class YearMonthDurationTypeImpl extends
 	
 	public YearMonthDurationTypeImpl(String typeId)
 	{
-		super(typeId, Duration.class);
+		super(typeId);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){
 			throw new IllegalStateException(e);
 		}
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return any instanceof Duration || any instanceof String;
 	}
 
 	@Override

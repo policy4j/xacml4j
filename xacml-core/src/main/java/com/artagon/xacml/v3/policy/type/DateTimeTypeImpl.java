@@ -14,12 +14,17 @@ final class DateTimeTypeImpl extends BaseAttributeType<DateTimeValue> implements
 	
 	public DateTimeTypeImpl(String typeId)
 	{
-		super(typeId, XMLGregorianCalendar.class);
+		super(typeId);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){
 			throw new IllegalStateException(e);
 		}
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override

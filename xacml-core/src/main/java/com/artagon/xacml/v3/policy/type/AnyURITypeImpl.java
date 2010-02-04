@@ -7,7 +7,7 @@ import com.artagon.xacml.util.Preconditions;
 final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> implements AnyURIType
 {
 	public AnyURITypeImpl(String typeId) {
-		super(typeId, URI.class);
+		super(typeId);
 	}
 
 	@Override
@@ -16,6 +16,11 @@ final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> imp
 		return new AnyURIValue(this, URI.create(v));
 	}
 	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return URI.class.isInstance(any) || String.class.isInstance(any);
+	}
+
 	@Override
 	public AnyURIValue create(Object any){
 		Preconditions.checkNotNull(any);

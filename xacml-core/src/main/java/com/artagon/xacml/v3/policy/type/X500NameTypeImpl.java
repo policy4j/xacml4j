@@ -8,10 +8,16 @@ final class X500NameTypeImpl extends BaseAttributeType<X500NameType.X500NameValu
 {
 	
 	public X500NameTypeImpl(String typeId){
-		super(typeId, X500Principal.class);
+		super(typeId);
 	}
 
-		@Override
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return X500Principal.class.isInstance(any) || String.class.isInstance(any);
+	}
+	
+	@Override
 	public X500NameValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);
 		return new X500NameValue(this, new X500Principal(v));

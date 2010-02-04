@@ -20,9 +20,15 @@ final class BooleanTypeImpl extends
 	 * @param typeId a XACML type identifier
 	 */
 	BooleanTypeImpl(String typeId){
-		super(typeId, Boolean.class);
+		super(typeId);
 		this.FALSE = new BooleanValue(this, Boolean.FALSE);
 		this.TRUE = new BooleanValue(this, Boolean.TRUE);
+	}
+	
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Boolean.class.isInstance(any) || String.class.isInstance(any);
 	}
 	
 	@Override

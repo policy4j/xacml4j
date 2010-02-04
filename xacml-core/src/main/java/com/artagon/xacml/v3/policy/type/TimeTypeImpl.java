@@ -15,7 +15,7 @@ final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeTyp
 	
 	public TimeTypeImpl(String typeId)
 	{
-		super(typeId, XMLGregorianCalendar.class);
+		super(typeId);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){
@@ -23,6 +23,11 @@ final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeTyp
 		}
 	}
 
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any);
+	}
+	
 	@Override
 	public TimeValue fromXacmlString(String v) {
 		Preconditions.checkNotNull(v);

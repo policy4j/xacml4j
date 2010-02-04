@@ -4,13 +4,6 @@ package com.artagon.xacml.v3.policy;
 public interface AttributeValueType extends ValueType
 {
 	/**
-	 * Gets attribute value java class
-	 * 
-	 * @return {@link Class}
-	 */
-	Class<?> getValueClass();
-	
-	/**
 	 * Gets data type identifier
 	 * 
 	 * @return data type identifier

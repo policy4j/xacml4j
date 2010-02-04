@@ -14,12 +14,17 @@ final class DayTimeDurationTypeImpl extends BaseAttributeType<DayTimeDurationVal
 	
 	public DayTimeDurationTypeImpl(String typeId)
 	{
-		super(typeId, Duration.class);
+		super(typeId);
 		try{
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		}catch(DatatypeConfigurationException e){
 			throw new IllegalStateException(e);
 		}
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Duration.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override

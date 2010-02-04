@@ -6,13 +6,14 @@ import com.artagon.xacml.util.Preconditions;
 final class IntegerTypeImpl extends BaseAttributeType<IntegerType.IntegerValue> implements IntegerType
 {
 	public IntegerTypeImpl(String typeId) {
-		super(typeId, Long.class);
+		super(typeId);
 	}
 	
 	@Override
 	public boolean isConvertableFrom(Object any) {
-		return super.isConvertableFrom(any) || Integer.class.isInstance(any) ||
-		Short.class.isInstance(any) || Byte.class.isInstance(any);
+		return Long.class.isInstance(any) || Integer.class.isInstance(any) ||
+		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
+		String.class.isInstance(any);
 	}
 
 

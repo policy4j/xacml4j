@@ -5,9 +5,14 @@ import com.artagon.xacml.util.Preconditions;
 final class DNSNameTypeImpl extends BaseAttributeType<DNSNameType.DNSNameValue> implements DNSNameType
 {
 	public DNSNameTypeImpl(String typeId) {
-		super(typeId, DNSName.class);
+		super(typeId);
 	}
-
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return DNSName.class.isInstance(any) || String.class.isInstance(any);
+	}
+	
 	@Override
 	public DNSNameValue create(Object o) {
 		Preconditions.checkNotNull(o);
@@ -17,10 +22,7 @@ final class DNSNameTypeImpl extends BaseAttributeType<DNSNameType.DNSNameValue> 
 		if(String.class.isInstance(o)){
 			return fromXacmlString((String)o);
 		}
-		if(getValueClass().isInstance(o)){
-			return new DNSNameValue(this, (DNSName)o);
-		}
-		throw new IllegalArgumentException(o.getClass().getName());
+		return new DNSNameValue(this, (DNSName)o);
 	}
 
 	@Override

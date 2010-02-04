@@ -8,7 +8,7 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	implements IPAddressType
 {
 	public IPAddressTypeImpl(String typeId){
-		super(typeId, IPAddress.class);
+		super(typeId);
 	}
 	
 	@Override
@@ -20,7 +20,8 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	
 	@Override
 	public boolean isConvertableFrom(Object any) {
-		return super.isConvertableFrom(any) || InetAddress.class.isInstance(any);
+		return IPAddress.class.isInstance(any) || String.class.isInstance(any) 
+		|| InetAddress.class.isInstance(any);
 	}
 
 	@Override
@@ -31,6 +32,9 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 				any, any.getClass()));
 		if(any instanceof InetAddress){
 			return new IPAddressValue(this, new IPAddress((InetAddress)any));
+		}
+		if(any instanceof String){
+			return fromXacmlString((String)any);
 		}
 		return new IPAddressValue(this, (IPAddress)any);
 	}

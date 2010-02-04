@@ -14,10 +14,15 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 	private Pattern rfc2822;
 	
 	public RFC822NameTypeImpl(String typeId){
-    	super(typeId, RFC822Name.class);    	
+    	super(typeId);    	
     	this.rfc2822 = Pattern.compile(RFC2822_REGEXP);
     }
-    
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return String.class.isInstance(any) || RFC822Name.class.isInstance(any);
+	}
+	
 	@Override
 	public RFC822NameValue fromXacmlString(String v)
 	{
@@ -37,7 +42,7 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"rfc822Name\" type", 
 				any, any.getClass()));
-		if(String.class.isInstance(any)){
+		if(any instanceof String){
 			return fromXacmlString((String)any);
 		}
 		return new RFC822NameValue(this, (RFC822Name)any);

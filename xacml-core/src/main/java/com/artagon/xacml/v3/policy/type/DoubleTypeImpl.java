@@ -6,14 +6,15 @@ import com.artagon.xacml.util.Preconditions;
 final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> implements DoubleType
 {
 	public DoubleTypeImpl(String typeId){
-		super(typeId, Double.class);
+		super(typeId);
 	}
 	
 	@Override
 	public boolean isConvertableFrom(Object any) {
 		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
-		Float.class.isInstance(any) || Long.class.isInstance(any);
+		Float.class.isInstance(any) || Long.class.isInstance(any) 
+		|| String.class.isInstance(any);
 	}
 	
 	

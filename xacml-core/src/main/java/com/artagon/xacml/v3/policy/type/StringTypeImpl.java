@@ -6,7 +6,12 @@ import com.artagon.xacml.util.Preconditions;
 final class StringTypeImpl extends BaseAttributeType<StringType.StringValue> implements StringType
 {
 	public StringTypeImpl(String typeId){
-		super(typeId, String.class);
+		super(typeId);
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return StringValue.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override

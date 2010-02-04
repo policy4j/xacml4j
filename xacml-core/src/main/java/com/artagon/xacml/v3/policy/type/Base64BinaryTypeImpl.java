@@ -8,7 +8,12 @@ class Base64BinaryTypeImpl extends BaseAttributeType<Base64BinaryType.Base64Bina
 	implements Base64BinaryType
 {
 	public Base64BinaryTypeImpl(String typeId){
-		super(typeId, byte[].class);
+		super(typeId);
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return byte[].class.isInstance(any) || String.class.isInstance(any);
 	}
 	
 	@Override

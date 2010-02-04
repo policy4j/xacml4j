@@ -7,7 +7,12 @@ final class HexBinaryTypeImpl extends BaseAttributeType<HexBinaryType.HexBinaryV
 {
 	
 	public HexBinaryTypeImpl(String typeId){
-		super(typeId, byte[].class);
+		super(typeId);
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return byte[].class.isInstance(any) || String.class.isInstance(any);
 	}
 	
 	@Override
