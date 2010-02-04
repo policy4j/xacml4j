@@ -6,21 +6,21 @@ import java.util.Map;
 
 import javax.xml.xpath.XPath;
 
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 
 
 
 public class MockAttributeResolutionService implements AttributeResolutionService
 {
-	private Map<CategoryId, Map<String, AttributeHolder>> attributes;
+	private Map<AttributeCategoryId, Map<String, AttributeHolder>> attributes;
 	
 	public MockAttributeResolutionService(){
-		this.attributes = new HashMap<CategoryId, Map<String,AttributeHolder>>();
+		this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeHolder>>();
 	}
 	
 	@Override
 	public BagOfAttributeValues<?> resolve(
-			CategoryId category,
+			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType, String issuer) 
 	{
@@ -41,13 +41,13 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	}
 	
 	@Override
-	public BagOfAttributeValues<?> resolve(CategoryId category, XPath location,
+	public BagOfAttributeValues<?> resolve(AttributeCategoryId category, XPath location,
 			AttributeValueType dataType) {
 		return dataType.bagOf().createEmpty();
 	}
 	
 	public void addAttribute(
-			CategoryId category, 
+			AttributeCategoryId category, 
 			String attributeId, 
 			String issuer,
 			AttributeValueType type, 
@@ -66,11 +66,11 @@ public class MockAttributeResolutionService implements AttributeResolutionServic
 	{
 		String issuer;
 		BagOfAttributeValues<?> bag;
-		CategoryId category;
+		AttributeCategoryId category;
 		
 		public AttributeHolder(
 				String issuer, 
-				CategoryId category,
+				AttributeCategoryId category,
 				AttributeValueType type, Collection<AttributeValue> attributes) 
 		{
 			this.issuer = issuer;

@@ -28,9 +28,9 @@ public final class DefaultMatch implements PolicyElement, Match
 		Preconditions.checkNotNull(value);
 		Preconditions.checkNotNull(attributeReference);
 		Preconditions.checkArgument(spec.getNumberOfParams() == 2);
-		Preconditions.checkArgument(spec.getParamSpecs().get(0).
+		Preconditions.checkArgument(spec.getParamSpecAt(0).
 				isValidParamType(value.getEvaluatesTo()));
-		Preconditions.checkArgument(spec.getParamSpecs().get(1).
+		Preconditions.checkArgument(spec.getParamSpecAt(1).
 				isValidParamType((attributeReference.getDataType())));
 		this.value = value;
 		this.predicate = spec;

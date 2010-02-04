@@ -8,12 +8,12 @@ import org.w3c.dom.Node;
 public class Attributes extends XacmlObject
 {
 	private String xmlId;
-	private CategoryId categoryId;
+	private AttributeCategoryId categoryId;
 	private Node content;
 	private Map<String, Attribute> attributes;
 	
 	
-	public CategoryId getCategoryId(){
+	public AttributeCategoryId getCategoryId(){
 		return categoryId;
 	}
 	

@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum CategoryId
+public enum AttributeCategoryId
 { 
 	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
 	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
@@ -17,22 +17,21 @@ public enum CategoryId
 	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject"),
 	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine");
 	
-	
 	private String id;
 	
-	private static final Map<String, CategoryId> BY_ID = new ConcurrentHashMap<String, CategoryId>();
+	private static final Map<String, AttributeCategoryId> BY_ID = new ConcurrentHashMap<String, AttributeCategoryId>();
 
 	static {
-		for(CategoryId t : EnumSet.allOf(CategoryId.class)){
+		for(AttributeCategoryId t : EnumSet.allOf(AttributeCategoryId.class)){
 			BY_ID.put(t.id, t);
 		}
 	}
 	
-	private CategoryId(String id){
+	private AttributeCategoryId(String id){
 		this.id = id;
 	}
 	
-	public static CategoryId parse(String v){
+	public static AttributeCategoryId parse(String v){
 		return BY_ID.get(v);
 	}
 	

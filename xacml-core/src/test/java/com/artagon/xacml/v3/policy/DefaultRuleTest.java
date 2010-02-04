@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
@@ -41,11 +41,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		
 		AttributeAssignmentExpression attrExpPermit = new AttributeAssignmentExpression(
 				"testAttrId", DataTypes.STRING.create("PermitValue"), 
-				CategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				null);
 		AttributeAssignmentExpression attrExpDeny = new AttributeAssignmentExpression(
 				"testAttrId", DataTypes.STRING.create("DenyValue"),
-				CategoryId.SUBJECT_INTERMEDIARY, 
+				AttributeCategoryId.SUBJECT_INTERMEDIARY, 
 				null);
 		
 		adviceExpressions.add(new AdviceExpression("testAdvicePermit", Effect.PERMIT, Collections.singletonList(attrExpPermit)));

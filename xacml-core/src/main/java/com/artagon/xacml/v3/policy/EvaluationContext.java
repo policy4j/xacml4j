@@ -5,7 +5,7 @@ import java.util.Collection;
 import javax.xml.xpath.XPath;
 
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 
 
@@ -117,7 +117,7 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributeValues<?> resolveAttributeDesignator(CategoryId category,
+	BagOfAttributeValues<?> resolveAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
@@ -130,6 +130,6 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category, 
+	BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
 }

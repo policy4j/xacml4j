@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
@@ -32,8 +32,8 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	@Test(expected=EvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(
-				CategoryId.SUBJECT_RECIPIENT, attributeId, issuer, type, true);
+		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(
+				AttributeCategoryId.SUBJECT_RECIPIENT, attributeId, issuer, type, true);
 		desig.evaluate(context);
 	}
 	
@@ -43,9 +43,9 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
 		AttributeValue attr = type.create(10l);
 		attributes.add(attr);
-		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT,
+		attributeService.addAttribute(AttributeCategoryId.SUBJECT_RECIPIENT,
 				issuer, attributeId, type, attributes);
-		AttributeDesignator desig = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT, issuer, attributeId, 
+		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, issuer, attributeId, 
 				type, true);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);
@@ -55,7 +55,7 @@ public class AttributeDesignatorTest extends XacmlPolicyTestCase
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
+		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				badAttributeId, issuer,  type, false);
 		Value v = desig.evaluate(context);
 		assertNotNull(v);

@@ -6,7 +6,7 @@ import javax.xml.xpath.XPath;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 
 /**
@@ -102,7 +102,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeDesignator(CategoryId category,
+	public BagOfAttributeValues<?> resolveAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType,
 			String issuer) {
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
@@ -113,7 +113,7 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category,
+	public BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category,
 			XPath location, AttributeValueType dataType) {
 		return delegate.resolveAttributeSelector(category, location, dataType);
 	}

@@ -64,8 +64,8 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 	
 	
 	@Override
-	public  List<ParamSpec> getParamSpecs(){
-		return parameters;
+	public final ParamSpec getParamSpecAt(int index){
+		return parameters.get(index);
 	}
 	
 	@Override

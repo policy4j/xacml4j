@@ -1,12 +1,12 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 
 public class AttributeAssignment implements PolicyElement
 {
 	private AttributeValue attribute;
-	private CategoryId category;
+	private AttributeCategoryId category;
 	private String attributeId;
 	private String issuer;
 	
@@ -20,7 +20,7 @@ public class AttributeAssignment implements PolicyElement
 	 * @param value an attribute value
 	 */
 	public AttributeAssignment(String attributeId, 
-			CategoryId category, String issuer, AttributeValue value){
+			AttributeCategoryId category, String issuer, AttributeValue value){
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(value);
@@ -54,7 +54,7 @@ public class AttributeAssignment implements PolicyElement
 	 * 
 	 * @return attribute category
 	 */
-	public CategoryId getCategory(){
+	public AttributeCategoryId getCategory(){
 		return category;
 	}
 	

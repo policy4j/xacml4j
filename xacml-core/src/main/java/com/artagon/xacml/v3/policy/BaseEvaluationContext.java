@@ -8,7 +8,7 @@ import javax.xml.xpath.XPath;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.CategoryId;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 
 class BaseEvaluationContext implements EvaluationContext
@@ -75,7 +75,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public BagOfAttributeValues<?> resolveAttributeDesignator(
-			CategoryId category,
+			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType, String issuer) {
 		Preconditions.checkNotNull(attributeId);
@@ -97,7 +97,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeSelector(CategoryId category, 
+	public BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location,
 			AttributeValueType dataType) {
 		Preconditions.checkNotNull(location);

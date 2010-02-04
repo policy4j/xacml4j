@@ -1,37 +1,41 @@
 package com.artagon.xacml.v3.policy;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Collections;
-
-import static org.easymock.EasyMock.*;
+import static junit.framework.Assert.assertEquals;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.CategoryId;
 import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.artagon.xacml.v3.policy.type.IntegerType;
-import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
 public class DefaultMatchTest extends XacmlPolicyTestCase
 {
-	private FunctionSpec function;
-	private Match m;
+	private FunctionSpec spec;
+	private AttributeDesignator ref;
 	
 	@Before
-	public void init(){	
-		FunctionSpec spec = createStrictMock(FunctionSpec.class);
+	public void init()
+	{	
+		this.spec = createStrictMock(FunctionSpec.class);
+		this.ref = createStrictMock(AttributeDesignator.class);
 	}
 	
 	@Test
 	public void testMatchEvaluation() throws EvaluationException
 	{
-		IntegerType t = DataTypes.INTEGER.getType();
-		AttributeDesignator designator = new AttributeDesignator(CategoryId.SUBJECT_RECIPIENT,
-				"testId", "testIssuer", t, true);
-		attributeService.addAttribute(CategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", t, Collections.<AttributeValue>singleton(t.create(10L)));
-		DefaultMatch m = new DefaultMatch(function, t.create(10L), designator);
+		expect(spec.getNumberOfParams()).andReturn(2);
+		expect(spec.getParamSpecAt(0)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
+		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
+		expect(ref.evaluate(context)).andReturn(DataTypes.INTEGER.bag(DataTypes.INTEGER.create(2), DataTypes.INTEGER.create(1)));
+		expect(spec.invoke(context, DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2))).andReturn(DataTypes.BOOLEAN.create(false));
+		expect(spec.invoke(context, DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(1))).andReturn(DataTypes.BOOLEAN.create(true));
+		replay(spec, ref);
+		Match m = new DefaultMatch(spec, DataTypes.INTEGER.create(1), ref);
 		assertEquals(MatchResult.MATCH, m.match(context));
+		verify(spec, ref);
 	}
 }

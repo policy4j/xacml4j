@@ -12,11 +12,14 @@ public interface FunctionSpec
 	String getId();
 
 	/**
-	 * Gets function parameter specifications.
+	 * Gets parameter specification
+	 * at given
 	 * 
-	 * @return list of {@link ParamSpec} instances
+	 * @param index a parameter index
+	 * @return {@link ParamSpec} at given 
+	 * index
 	 */
-	List<ParamSpec> getParamSpecs();
+	ParamSpec getParamSpecAt(int index);
 
 	/**
 	 * Gets number of function formal 
