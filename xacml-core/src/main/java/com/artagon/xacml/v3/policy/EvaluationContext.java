@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.xml.xpath.XPath;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
@@ -20,6 +22,16 @@ public interface EvaluationContext
 	 * need to be validated at runtime
 	 */
 	boolean isValidateFuncParamAtRuntime();
+	
+	/**
+	 * Gets  context root node from
+	 * request by given attribute category
+	 * identifier
+	 * 
+	 * @param categoryId an attribute category
+	 * @return {@link Node} or <code>null</code>
+	 */
+	Node getContent(AttributeCategoryId categoryId);
 	
 	/**
 	 * Gets parent evaluation context

@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.xml.xpath.XPath;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -29,14 +31,18 @@ public class DelegatingEvaluationContext implements EvaluationContext
 		return delegate;
 	}
 	
+	
+	
+	@Override
+	public Node getContent(AttributeCategoryId categoryId) {
+		return delegate.getContent(categoryId);
+	}
+
 	@Override
 	public boolean isValidateFuncParamAtRuntime() {
 		return delegate.isValidateFuncParamAtRuntime();
 	}
 
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
 	@Override
 	public void addAdvices(Collection<Advice> advices) {
 		delegate.addAdvices(advices);

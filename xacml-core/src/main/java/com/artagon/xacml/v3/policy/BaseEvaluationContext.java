@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 import javax.xml.xpath.XPath;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -37,6 +39,11 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	
+	@Override
+	public Node getContent(AttributeCategoryId categoryId) {
+		throw new UnsupportedOperationException("Operation is not implemented");
+	}
+
 	@Override
 	public boolean isValidateFuncParamAtRuntime() {
 		return validateAtRuntime;
