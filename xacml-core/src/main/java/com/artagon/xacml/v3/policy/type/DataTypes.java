@@ -59,7 +59,7 @@ public enum DataTypes
 	X500NAME(new X500NameTypeImpl("urn:oasis:names:tc:xacml:1.0:data-type:x500Name")),
 
 	/** XACML DataType:  <b>urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression</b> */
-	//XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"),
+	XPATHEXPRESSION(new XPathExpressionTypeImpl("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression")),
 
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b> */
 	YEARMONTHDURATION(new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration")),

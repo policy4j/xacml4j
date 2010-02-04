@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3.policy.type;
 
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
@@ -16,20 +19,23 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 	public boolean isConvertableFrom(Object any) {
 		return any instanceof String;
 	}
-
+	
+	public XPathExpressionValue create(String xpath, AttributeCategoryId category) 
+		throws XPathExpressionException
+	{
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xp =  factory.newXPath();
+		XPathExpression xexp =  xp.compile(xpath);
+		return new XPathExpressionValue(this, xexp, category);
+	}
+	
 	/**
 	 * @throws UnsupportedOperationException
 	 */
 	public XPathExpressionValue create(Object v) {
 		throw new UnsupportedOperationException("Type does not support this operation");
 	}
-
-	@Override
-	public XPathExpressionValue create(XPath xpath,
-			AttributeCategoryId category) {
-		return new XPathExpressionValue(this, xpath, category);
-	}
-
+	
 	/**
 	 * @throws UnsupportedOperationException
 	 */
