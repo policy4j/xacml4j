@@ -5,7 +5,7 @@ import javax.xml.xpath.XPath;
 import com.artagon.xacml.v3.AttributeCategoryId;
 
 
-public interface AttributeResolutionService 
+public interface PolicyInformationPoint 
 {
 
 	BagOfAttributeValues<?> resolve(AttributeCategoryId category,

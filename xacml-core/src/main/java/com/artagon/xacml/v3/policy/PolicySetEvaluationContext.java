@@ -7,7 +7,7 @@ class PolicySetEvaluationContext extends BaseEvaluationContext
 	private PolicySet policySet;
 	
 	public PolicySetEvaluationContext(PolicySet policySet, 
-			AttributeResolutionService attributeService){
+			PolicyInformationPoint attributeService){
 		super(attributeService);
 		Preconditions.checkNotNull(policySet);
 		this.policySet = policySet;

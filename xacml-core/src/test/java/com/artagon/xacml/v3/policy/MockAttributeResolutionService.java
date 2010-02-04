@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 
 
 
-public class MockAttributeResolutionService implements AttributeResolutionService
+public class MockAttributeResolutionService implements PolicyInformationPoint
 {
 	private Map<AttributeCategoryId, Map<String, AttributeHolder>> attributes;
 	

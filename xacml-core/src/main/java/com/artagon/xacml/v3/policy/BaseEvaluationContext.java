@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.Obligation;
 
 class BaseEvaluationContext implements EvaluationContext
 {
-	private AttributeResolutionService attributeService;
+	private PolicyInformationPoint attributeService;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -30,7 +30,7 @@ class BaseEvaluationContext implements EvaluationContext
 		this.validateAtRuntime = validate;
 	}
 	
-	protected BaseEvaluationContext(AttributeResolutionService attributeService){
+	protected BaseEvaluationContext(PolicyInformationPoint attributeService){
 		this(true);
 		Preconditions.checkNotNull(attributeService);
 		this.attributeService = attributeService;
@@ -66,7 +66,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeResolutionService}. If attribute
+	 * via {@link PolicyInformationPoint}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 
@@ -89,7 +89,7 @@ class BaseEvaluationContext implements EvaluationContext
 
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeResolutionService}. If attribute
+	 * via {@link PolicyInformationPoint}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 
