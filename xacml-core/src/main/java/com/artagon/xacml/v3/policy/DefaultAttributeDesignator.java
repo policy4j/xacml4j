@@ -22,11 +22,11 @@ import com.artagon.xacml.v3.AttributeCategoryId;
  * 
  * @param <T>
  */
-public final class DefaultAttributeDesignator extends BaseAttributeReference implements AttributeDesignator
+public final class DefaultAttributeDesignator extends BaseAttributeReference 
+	implements AttributeDesignator
 {
 	private String attributeId;
 	private String issuer;
-	private boolean mustBePresent;
 	
 	public DefaultAttributeDesignator(
 			AttributeCategoryId  category,
@@ -34,34 +34,22 @@ public final class DefaultAttributeDesignator extends BaseAttributeReference imp
 			String issuer,
 			AttributeValueType dataType, 
 			boolean mustBePresent){
-		super(category, dataType);
+		super(category, dataType, mustBePresent);
 		Preconditions.checkNotNull(attributeId);
 		this.issuer = issuer;
 		this.attributeId = attributeId;
-		this.mustBePresent = mustBePresent;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AttributeDesignator#getAttributeId()
-	 */
+	@Override
 	public String getAttributeId(){
 		return attributeId;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AttributeDesignator#getIssuer()
-	 */
+	@Override
 	public String getIssuer(){
 		return issuer;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AttributeDesignator#isMustBePresent()
-	 */
-	public boolean isMustBePresent(){
-		return mustBePresent;
-	}
-	
+		
 	/**
 	 * Evaluates this attribute designator by resolving
 	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String, 

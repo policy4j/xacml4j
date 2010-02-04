@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
  */
 abstract class BaseAttributeReference implements AttributeReference
 {
+	private boolean mustBePresent;
 	private AttributeCategoryId category;
 	protected BagOfAttributeValuesType<?> evaluatesTo;
 	
@@ -23,11 +24,12 @@ abstract class BaseAttributeReference implements AttributeReference
 	 * data type
 	 */
 	protected BaseAttributeReference(AttributeCategoryId category, 
-			AttributeValueType dataType){
+			AttributeValueType dataType, boolean mustBePresent){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
 		this.category = category;
 		this.evaluatesTo = dataType.bagOf();
+		this.mustBePresent = mustBePresent;
 	}
 	
 	@Override
@@ -44,4 +46,10 @@ abstract class BaseAttributeReference implements AttributeReference
 	public final AttributeCategoryId getCategory(){
 		return category;
 	}
+	
+	@Override
+	public final boolean isMustBePresent(){
+		return mustBePresent;
+	}
+
 }

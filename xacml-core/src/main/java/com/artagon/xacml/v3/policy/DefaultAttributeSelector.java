@@ -5,33 +5,23 @@ import javax.xml.xpath.XPath;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public final class DefaultAttributeSelector extends BaseAttributeReference implements AttributeSelector
+public final class DefaultAttributeSelector extends 
+	BaseAttributeReference implements AttributeSelector
 {
 	private XPath xpath;
-	private boolean mustBePresent;
 	
 	public DefaultAttributeSelector(
 			AttributeCategoryId category, 
 			XPath xpath, 
 			AttributeValueType dataType, 
 					boolean mustBePresent){
-		super(category, dataType);
+		super(category, dataType, mustBePresent);
 		Preconditions.checkNotNull(xpath);
 		Preconditions.checkNotNull(dataType);
 		this.xpath = xpath;
-		this.mustBePresent = mustBePresent;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AttributeSelector#isMustBePresent()
-	 */
-	public boolean isMustBePresent(){
-		return mustBePresent;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AttributeSelector#getContextPath()
-	 */
+	@Override
 	public XPath getContextPath(){
 		return xpath;
 	}

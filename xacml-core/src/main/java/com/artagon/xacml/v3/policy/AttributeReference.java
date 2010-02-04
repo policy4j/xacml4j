@@ -5,6 +5,16 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 interface AttributeReference extends Expression 
 {
 	/**
+	 * Governs whether this reference evaluates 
+	 * to an empty bag or {@link EvaluationException}
+	 * is thrown during this reference evaluation
+	 * 
+	 * @return <code>true</code> if attribute
+	 * must be present
+	 */
+	boolean isMustBePresent();
+	
+	/**
 	 * Gets bag returned by this reference
 	 * attribute XACML primitive data type
 	 * 

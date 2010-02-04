@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy;
 
-import java.util.List;
 
 public interface FunctionSpec 
 {
