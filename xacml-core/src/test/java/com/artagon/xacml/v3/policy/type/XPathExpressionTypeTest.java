@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.type;
 
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.Test;

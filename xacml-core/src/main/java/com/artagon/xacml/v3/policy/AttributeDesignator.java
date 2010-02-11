@@ -19,13 +19,4 @@ public interface AttributeDesignator extends AttributeReference
 	 * is not specified
 	 */
 	String getIssuer();
-
-	/**
-	 * Governs whether this designator evaluates 
-	 * to an empty bag or {@link EvaluationIndeterminateException} 
-	 * exception is thrown
-	 * 
-	 * @return
-	 */
-	boolean isMustBePresent();
 }

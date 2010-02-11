@@ -4,6 +4,5 @@ import javax.xml.xpath.XPath;
 
 public interface AttributeSelector extends AttributeReference
 {
-	boolean isMustBePresent();
 	XPath getContextPath();
 }

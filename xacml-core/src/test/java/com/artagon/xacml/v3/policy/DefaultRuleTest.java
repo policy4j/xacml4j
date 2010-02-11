@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
@@ -329,12 +328,9 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	public void testRuleEvaluateIfApplicableWithTargetIndeterminateConditionTrueEffectDeny()
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		reset(target,  condition);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		replay(target, condition);
-		
 		assertEquals(Decision.INDETERMINATE, ruleDeny.evaluateIfApplicable(ruleContext));
-		
 		assertEquals(0, ruleContext.getAdvices().size());
 		assertEquals(0, ruleContext.getObligations().size());
 		verify(condition, target);
@@ -343,10 +339,12 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithTargetIndeterminateConditionFalseEffectPermit()
 	{
-		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
-		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
+		replay(target, condition);
+		assertEquals(MatchResult.INDETERMINATE, rulePermit.isApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -354,10 +352,12 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithTargetIndeterminateConditionFalseEffectDeny()
 	{
-		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), condition, Effect.DENY, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
-		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
+		replay(target, condition);
+		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -365,10 +365,12 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithTargetIndeterminateConditionIndeterminateEffectPermit()
 	{
-		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
-		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
+		replay(target, condition);
+		assertEquals(MatchResult.INDETERMINATE, rulePermit.isApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
@@ -376,10 +378,12 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithTargetIndeterminateConditionIndeterminateEffectDeny()
 	{
-		Rule r = new DefaultRule("test", new MockTarget(MatchResult.INDETERMINATE), condition, Effect.DENY, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
-		assertEquals(MatchResult.INDETERMINATE, r.isApplicable(ruleContext));
-		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
+		replay(target, condition);
+		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
