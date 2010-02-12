@@ -14,16 +14,10 @@ import com.artagon.xacml.v3.policy.XPathEvaluationException;
 
 public interface XPathExpressionType extends AttributeValueType
 {
-	/**
-	 * Implementation throws {@link UnsupportedOperationException}
-	 */
-	XPathExpressionValue create(Object v);
-	XPathExpressionValue create(String xpath, AttributeCategoryId category) throws XPathExpressionException;
 	
-	/**
-	 * Implementation throws {@link UnsupportedOperationException}
-	 */
-	XPathExpressionValue fromXacmlString(String v);
+	XPathExpressionValue create(Object v, Object ...params);
+	XPathExpressionValue create(String xpath, AttributeCategoryId category);
+	XPathExpressionValue fromXacmlString(String v, Object ...params);
 	
 	public class XPathExpressionValue extends BaseAttributeValue<XPathExpression>
 	{

@@ -7,8 +7,8 @@ import com.artagon.xacml.v3.policy.AttributeValueType;
 
 public interface DateType extends AttributeValueType
 {
-	DateValue create(Object value);
-	DateValue fromXacmlString(String v);
+	DateValue create(Object value, Object ...params);
+	DateValue fromXacmlString(String v, Object ...params);
 	
 	final class DateValue extends BaseAttributeValue<XMLGregorianCalendar>
 	{

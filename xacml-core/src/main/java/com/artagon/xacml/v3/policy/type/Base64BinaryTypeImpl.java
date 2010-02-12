@@ -17,7 +17,7 @@ class Base64BinaryTypeImpl extends BaseAttributeType<Base64BinaryType.Base64Bina
 	}
 	
 	@Override
-	public Base64BinaryValue create(Object any){
+	public Base64BinaryValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
@@ -32,7 +32,7 @@ class Base64BinaryTypeImpl extends BaseAttributeType<Base64BinaryType.Base64Bina
 	}
 
 	@Override
-	public Base64BinaryValue fromXacmlString(String v) {
+	public Base64BinaryValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		try{
 			return create(Base64.decode(v));

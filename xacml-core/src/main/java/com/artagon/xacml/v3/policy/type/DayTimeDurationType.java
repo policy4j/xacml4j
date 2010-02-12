@@ -10,8 +10,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface DayTimeDurationType extends AttributeValueType
 {
-	DayTimeDurationValue create(Object value);
-	DayTimeDurationValue fromXacmlString(String v);
+	DayTimeDurationValue create(Object value, Object ...params);
+	DayTimeDurationValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<DayTimeDurationValue> bagOf();
 	
 	final class DayTimeDurationValue extends BaseAttributeValue<Duration>

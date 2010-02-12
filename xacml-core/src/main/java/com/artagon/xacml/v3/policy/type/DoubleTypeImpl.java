@@ -19,7 +19,7 @@ final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> imp
 	
 	
 	@Override
-	public DoubleValue create(Object any){
+	public DoubleValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"double\" type", 
@@ -46,7 +46,7 @@ final class DoubleTypeImpl extends BaseAttributeType<DoubleType.DoubleValue> imp
 	}
 	
 	@Override
-	public DoubleValue fromXacmlString(String v) {
+	public DoubleValue fromXacmlString(String v, Object ...params) {
 
         if (v.endsWith("INF")) {
             int infIndex = v.lastIndexOf("INF");

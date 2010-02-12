@@ -7,8 +7,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface TimeType extends AttributeValueType
 {	
-	TimeValue create(Object value);
-	TimeValue fromXacmlString(String v);
+	TimeValue create(Object value, Object ...params);
+	TimeValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<TimeValue> bagOf();
 	
 	final class TimeValue extends BaseAttributeValue<XMLGregorianCalendar>

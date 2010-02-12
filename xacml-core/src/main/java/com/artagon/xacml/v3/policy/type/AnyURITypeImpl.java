@@ -11,7 +11,7 @@ final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> imp
 	}
 
 	@Override
-	public AnyURIValue fromXacmlString(String v) {
+	public AnyURIValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		return new AnyURIValue(this, URI.create(v));
 	}
@@ -22,7 +22,7 @@ final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> imp
 	}
 
 	@Override
-	public AnyURIValue create(Object any){
+	public AnyURIValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"AnyURI\" type", 

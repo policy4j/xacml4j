@@ -28,14 +28,14 @@ final class DayTimeDurationTypeImpl extends BaseAttributeType<DayTimeDurationVal
 	}
 
 	@Override
-	public DayTimeDurationValue fromXacmlString(String v) {
+	public DayTimeDurationValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
 		return new DayTimeDurationValue(this, validate(dayTimeDuration));
 	}
 	
 	@Override
-	public DayTimeDurationValue create(Object any){
+	public DayTimeDurationValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +

@@ -6,8 +6,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface StringType extends AttributeValueType
 {
-	StringValue create(Object v);
-	StringValue fromXacmlString(String v);
+	StringValue create(Object v, Object ...params);
+	StringValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<StringValue> bagOf();
 	
 	final class StringValue extends BaseAttributeValue<String>

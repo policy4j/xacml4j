@@ -29,14 +29,14 @@ final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeTyp
 	}
 	
 	@Override
-	public TimeValue fromXacmlString(String v) {
+	public TimeValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		XMLGregorianCalendar dateTime = xmlDataTypesFactory.newXMLGregorianCalendar(v);
 		return new TimeValue(this, validateXmlTime(dateTime));
 	}
 	
 	@Override
-	public TimeValue create(Object any){
+	public TimeValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +

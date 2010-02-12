@@ -29,8 +29,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  */
 public interface DNSNameType extends AttributeValueType
 {
-	DNSNameValue create(Object o);
-	DNSNameValue fromXacmlString(String v);
+	DNSNameValue create(Object o, Object ...params);
+	DNSNameValue fromXacmlString(String v, Object ...params);
 	
 	BagOfAttributeValuesType<DNSNameValue> bagOf();
 	

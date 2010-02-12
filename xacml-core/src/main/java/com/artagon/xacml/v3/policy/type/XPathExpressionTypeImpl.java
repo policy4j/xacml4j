@@ -21,25 +21,29 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 	}
 	
 	public XPathExpressionValue create(String xpath, AttributeCategoryId category) 
-		throws XPathExpressionException
 	{
 		XPathFactory factory = XPathFactory.newInstance();
 		XPath xp =  factory.newXPath();
-		XPathExpression xexp =  xp.compile(xpath);
-		return new XPathExpressionValue(this, xexp, category);
+		try
+		{
+			XPathExpression xexp =  xp.compile(xpath);
+			return new XPathExpressionValue(this, xexp, category);
+		}catch(XPathExpressionException e){
+			return null;
+		}
 	}
 	
 	/**
 	 * @throws UnsupportedOperationException
 	 */
-	public XPathExpressionValue create(Object v) {
-		throw new UnsupportedOperationException("Type does not support this operation");
+	public XPathExpressionValue create(Object v, Object ... params) {
+		return null;
 	}
 	
 	/**
 	 * @throws UnsupportedOperationException
 	 */
-	public XPathExpressionValue fromXacmlString(String v) {
-		throw new UnsupportedOperationException("Type does not support this operation");
+	public XPathExpressionValue fromXacmlString(String v, Object ...params) {
+		return null;
 	}
 }

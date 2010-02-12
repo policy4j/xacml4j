@@ -16,7 +16,7 @@ final class HexBinaryTypeImpl extends BaseAttributeType<HexBinaryType.HexBinaryV
 	}
 	
 	@Override
-	public HexBinaryValue create(Object any){
+	public HexBinaryValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
@@ -31,7 +31,7 @@ final class HexBinaryTypeImpl extends BaseAttributeType<HexBinaryType.HexBinaryV
 	}
 
 	@Override
-	public HexBinaryValue fromXacmlString(String v) {
+	public HexBinaryValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		return create(hexToBin(v));
 	}

@@ -32,7 +32,7 @@ final class BooleanTypeImpl extends
 	}
 	
 	@Override
-	public BooleanValue create(Object any){
+	public BooleanValue create(Object any, Object ...parameters){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"boolean\" type", 
@@ -44,7 +44,7 @@ final class BooleanTypeImpl extends
 	}
 
 	@Override
-	public BooleanValue fromXacmlString(String v) {
+	public BooleanValue fromXacmlString(String v, Object ...parameters) {
 		Preconditions.checkNotNull(v);
 		return Boolean.parseBoolean(v)?TRUE:FALSE;
 	}

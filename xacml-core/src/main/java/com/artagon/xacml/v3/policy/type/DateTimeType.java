@@ -10,8 +10,8 @@ import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationV
 
 public interface DateTimeType extends AttributeValueType
 {	
-	DateTimeValue create(Object value);
-	DateTimeValue fromXacmlString(String v);
+	DateTimeValue create(Object value, Object ...params);
+	DateTimeValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<DateTimeValue> bagOf();
 	
 	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar>

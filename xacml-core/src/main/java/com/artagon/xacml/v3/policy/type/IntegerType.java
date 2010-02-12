@@ -5,8 +5,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface IntegerType extends AttributeValueType
 {
-	IntegerValue create(Object value);
-	IntegerValue fromXacmlString(String v);
+	IntegerValue create(Object value, Object ...params);
+	IntegerValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<IntegerValue> bagOf();
 	
 	final class IntegerValue extends BaseAttributeValue<Long>

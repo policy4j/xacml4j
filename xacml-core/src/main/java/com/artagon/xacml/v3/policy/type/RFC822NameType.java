@@ -25,8 +25,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  * */
 public interface RFC822NameType extends AttributeValueType
 {	
-	RFC822NameValue create(Object value);
-	RFC822NameValue fromXacmlString(String v);
+	RFC822NameValue create(Object value, Object ...params);
+	RFC822NameValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<RFC822NameValue> bagOf();
 	
 	final class RFC822NameValue extends BaseAttributeValue<RFC822Name>

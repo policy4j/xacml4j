@@ -24,11 +24,11 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  */
 public interface IPAddressType extends AttributeValueType
 {
-	IPAddressValue create(Object v);
+	IPAddressValue create(Object v, Object ...params);
 	IPAddressValue create(InetAddress address, PortRange portRange);
 	IPAddressValue create(InetAddress address, InetAddress mask);
 	IPAddressValue create(InetAddress address, InetAddress mask, PortRange portRange);
-	IPAddressValue fromXacmlString(String v);
+	IPAddressValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<IPAddressValue> bagOf();
 	
 	public final class IPAddressValue extends BaseAttributeValue<IPAddress>

@@ -14,7 +14,7 @@ final class DNSNameTypeImpl extends BaseAttributeType<DNSNameType.DNSNameValue> 
 	}
 	
 	@Override
-	public DNSNameValue create(Object o) {
+	public DNSNameValue create(Object o, Object ...params) {
 		Preconditions.checkNotNull(o);
 		Preconditions.checkArgument(isConvertableFrom(o), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"DNSName\" type", 
@@ -26,7 +26,7 @@ final class DNSNameTypeImpl extends BaseAttributeType<DNSNameType.DNSNameValue> 
 	}
 
 	@Override
-	public DNSNameValue fromXacmlString(String v) {
+	public DNSNameValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		int pos = v.indexOf(':');
 		if(pos == -1){

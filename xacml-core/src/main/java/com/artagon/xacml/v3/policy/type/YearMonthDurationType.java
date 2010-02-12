@@ -10,8 +10,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface YearMonthDurationType extends AttributeValueType
 {
-	YearMonthDurationValue create(Object value);
-	YearMonthDurationValue fromXacmlString(String v);
+	YearMonthDurationValue create(Object value, Object ...params);
+	YearMonthDurationValue fromXacmlString(String v, Object ...params);
 	
 	BagOfAttributeValuesType<YearMonthDurationValue> bagOf();
 	

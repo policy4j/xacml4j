@@ -5,8 +5,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface HexBinaryType  extends AttributeValueType
 {
-	HexBinaryValue create(Object any);
-	HexBinaryValue fromXacmlString(String v);
+	HexBinaryValue create(Object any, Object ...params);
+	HexBinaryValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<HexBinaryValue> bagOf();
 	
 	final class HexBinaryValue extends BaseAttributeValue<BinaryValue>

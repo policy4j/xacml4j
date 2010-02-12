@@ -29,14 +29,14 @@ final class YearMonthDurationTypeImpl extends
 	}
 
 	@Override
-	public YearMonthDurationValue fromXacmlString(String v) {
+	public YearMonthDurationValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
 		return new YearMonthDurationValue(this, validate(dayTimeDuration));
 	}
 	
 	@Override
-	public YearMonthDurationValue create(Object any){
+	public YearMonthDurationValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +

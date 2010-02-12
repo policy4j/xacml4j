@@ -15,12 +15,12 @@ final class StringTypeImpl extends BaseAttributeType<StringType.StringValue> imp
 	}
 
 	@Override
-	public StringValue fromXacmlString(String v) {
+	public StringValue fromXacmlString(String v, Object ...params) {
 		return create(v);
 	}
 	
 	@Override
-	public StringValue create(Object any){
+	public StringValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"string\" type", 

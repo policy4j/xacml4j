@@ -5,8 +5,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface DoubleType extends AttributeValueType
 {
-	DoubleValue create(Object v);
-	DoubleValue fromXacmlString(String v);
+	DoubleValue create(Object v, Object ...params);
+	DoubleValue fromXacmlString(String v, Object ...params);
 	
 	BagOfAttributeValuesType<DoubleValue> bagOf();
 	

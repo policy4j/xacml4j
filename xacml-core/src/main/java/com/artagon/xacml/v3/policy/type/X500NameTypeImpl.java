@@ -18,13 +18,13 @@ final class X500NameTypeImpl extends BaseAttributeType<X500NameType.X500NameValu
 	}
 	
 	@Override
-	public X500NameValue fromXacmlString(String v) {
+	public X500NameValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		return new X500NameValue(this, new X500Principal(v));
 	}
 	
 	@Override
-	public X500NameValue create(Object any){
+	public X500NameValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"x500Name\" type", 

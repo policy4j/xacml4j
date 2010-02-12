@@ -31,7 +31,7 @@ public interface AttributeValueType extends ValueType
 	 * @exception IllegalArgumentException if given value does not
 	 * represent value of this type
 	 */
-	AttributeValue fromXacmlString(String v);
+	AttributeValue fromXacmlString(String v, Object ...parameters);
 	
 	/**
 	 * Creates an attribute from a given object.
@@ -41,7 +41,7 @@ public interface AttributeValueType extends ValueType
 	 * @param object an object
 	 * @return {@link AttributeValue}
 	 */
-	AttributeValue create(Object object);
+	AttributeValue create(Object object, Object ...parameters);
 	
 	/**
 	 * Creates type representing collection of 

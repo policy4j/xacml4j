@@ -23,8 +23,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  */
 public interface X500NameType extends AttributeValueType
 {
-	X500NameValue create(Object v);
-	X500NameValue fromXacmlString(String v);
+	X500NameValue create(Object v, Object ...params);
+	X500NameValue fromXacmlString(String v, Object ...params);
 	
 	BagOfAttributeValuesType<X500NameValue> bagOf();
 	

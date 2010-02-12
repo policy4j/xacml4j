@@ -5,8 +5,8 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 
 public interface BooleanType extends AttributeValueType
 {	
-	BooleanValue create(Object value);
-	BooleanValue fromXacmlString(String v);
+	BooleanValue create(Object value, Object ...params);
+	BooleanValue fromXacmlString(String v, Object ...params);
 	
 	BagOfAttributeValuesType<BooleanValue> bagOf();
 	

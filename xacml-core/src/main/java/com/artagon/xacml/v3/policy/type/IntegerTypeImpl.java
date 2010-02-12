@@ -18,7 +18,7 @@ final class IntegerTypeImpl extends BaseAttributeType<IntegerType.IntegerValue> 
 
 
 	@Override
-	public IntegerValue create(Object any){
+	public IntegerValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"integer\" type", 
@@ -39,7 +39,7 @@ final class IntegerTypeImpl extends BaseAttributeType<IntegerType.IntegerValue> 
 	}
 
 	@Override
-	public IntegerValue fromXacmlString(String v) {
+	public IntegerValue fromXacmlString(String v, Object ...params) {
         Preconditions.checkNotNull(v);
 		if ((v.length() >= 1) && 
         		(v.charAt(0) == '+')){

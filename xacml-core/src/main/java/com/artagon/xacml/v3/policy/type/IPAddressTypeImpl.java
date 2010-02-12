@@ -25,7 +25,7 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	}
 
 	@Override
-	public IPAddressValue create(Object any) {
+	public IPAddressValue create(Object any, Object ...params) {
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"ipAddress\" type", 
@@ -54,7 +54,7 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 
 
 	@Override
-	public IPAddressValue fromXacmlString(String v) {
+	public IPAddressValue fromXacmlString(String v, Object ...params) {
 		IPAddress addr = IPAddress.valueOf(v);
 		return new IPAddressValue(this, addr);
 	}

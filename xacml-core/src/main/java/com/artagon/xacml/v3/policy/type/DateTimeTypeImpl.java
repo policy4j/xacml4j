@@ -28,7 +28,7 @@ final class DateTimeTypeImpl extends BaseAttributeType<DateTimeValue> implements
 	}
 
 	@Override
-	public DateTimeValue fromXacmlString(String v) {
+	public DateTimeValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		XMLGregorianCalendar dateTime = xmlDataTypesFactory.newXMLGregorianCalendar(v);
 		// XACML default time zone is UTC
@@ -40,7 +40,7 @@ final class DateTimeTypeImpl extends BaseAttributeType<DateTimeValue> implements
 	}
 	
 	@Override
-	public DateTimeValue create(Object any){
+	public DateTimeValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +

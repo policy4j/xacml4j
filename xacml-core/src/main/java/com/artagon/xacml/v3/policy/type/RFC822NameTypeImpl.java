@@ -24,7 +24,7 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 	}
 	
 	@Override
-	public RFC822NameValue fromXacmlString(String v)
+	public RFC822NameValue fromXacmlString(String v, Object ...params)
 	{
 		Preconditions.checkArgument(rfc2822.matcher(v).find());
         String [] parts = v.split("@");
@@ -36,7 +36,7 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 	}
 	
 	@Override
-	public RFC822NameValue create(Object any)
+	public RFC822NameValue create(Object any, Object ...params)
 	{
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
