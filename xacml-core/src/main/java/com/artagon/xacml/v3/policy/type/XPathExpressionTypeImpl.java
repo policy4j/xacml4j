@@ -29,7 +29,7 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 			XPathExpression xexp =  xp.compile(xpath);
 			return new XPathExpressionValue(this, xexp, category);
 		}catch(XPathExpressionException e){
-			return null;
+			throw new IllegalArgumentException(e);
 		}
 	}
 	

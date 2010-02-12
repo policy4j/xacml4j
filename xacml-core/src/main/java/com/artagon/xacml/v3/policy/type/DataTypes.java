@@ -100,8 +100,8 @@ public enum DataTypes
 	 * @return an XACML data type value instance
 	 */
 	@SuppressWarnings("unchecked")
-	public <V extends AttributeValue> V create(Object o){
-		return ((V)type.create(o));
+	public <V extends AttributeValue> V create(Object o, Object ...params){
+		return ((V)type.create(o,params));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -117,8 +117,8 @@ public enum DataTypes
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <V extends AttributeValue> V fromXacmlString(String v){
-		return ((V)type.fromXacmlString(v));
+	public <V extends AttributeValue> V fromXacmlString(String v, Object ...params){
+		return ((V)type.fromXacmlString(v, params));
 	}
 	
 	@SuppressWarnings("unchecked")

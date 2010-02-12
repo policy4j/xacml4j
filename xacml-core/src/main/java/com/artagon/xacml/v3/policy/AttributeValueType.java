@@ -27,11 +27,13 @@ public interface AttributeValueType extends ValueType
 	 * value to an actual {@link BaseAttribute} of this type
 	 * 
 	 * @param v an XACML string value representation of this type
+	 * @param params an additional parameters used to create
+	 * value of this type from given string
 	 * @return {@link BaseAttribute} instance of this type
 	 * @exception IllegalArgumentException if given value does not
 	 * represent value of this type
 	 */
-	AttributeValue fromXacmlString(String v, Object ...parameters);
+	AttributeValue fromXacmlString(String v, Object ...params);
 	
 	/**
 	 * Creates an attribute from a given object.
@@ -39,9 +41,10 @@ public interface AttributeValueType extends ValueType
 	 * or can be instance of {@link String}
 	 * 
 	 * @param object an object
+	 * @param params  an additional parameters
 	 * @return {@link AttributeValue}
 	 */
-	AttributeValue create(Object object, Object ...parameters);
+	AttributeValue create(Object object, Object ...params);
 	
 	/**
 	 * Creates type representing collection of 
