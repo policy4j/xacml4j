@@ -1,11 +1,15 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.policy.FunctionFactory;
+import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
+import com.artagon.xacml.v3.policy.function.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
@@ -60,5 +64,19 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 		 
 		assertEquals(DataTypes.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, DataTypes.BOOLEAN.create(false)));
+	}
+	
+	
+	@Test
+	public void testParseFunctionViaAnnotiationFactory() throws EvaluationException
+	{
+		FunctionFactory f = new AnnotationBasedFunctionFactory(LogicalFunctions.class);
+		FunctionSpec andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
+		FunctionSpec orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
+		FunctionSpec notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
+		
+		assertEquals(DataTypes.BOOLEAN.create(Boolean.TRUE),  andFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE), DataTypes.BOOLEAN.create(Boolean.TRUE)));
+		assertEquals(DataTypes.BOOLEAN.create(Boolean.TRUE),  orFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE), DataTypes.BOOLEAN.create(Boolean.FALSE)));
+		assertEquals(DataTypes.BOOLEAN.create(Boolean.FALSE),  notFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE)));
 	}
 }
