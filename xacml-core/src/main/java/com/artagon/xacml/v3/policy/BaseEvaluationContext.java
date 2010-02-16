@@ -129,7 +129,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public PolicySet getCurrentPolicySet() {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Base implementation does not support");
 	}
 
 	/**
@@ -139,7 +139,8 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public VariableDefinition getVariableDefinition(String variableId) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Base implementation does not " +
+				"support VariableDefinition resolution");
 	}
 
 	/**
@@ -149,7 +150,8 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public Value getVariableEvaluationResult(String variableId) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Base implementation does not " +
+		"support variable evaluation result caching");
 	}
 
 	/**
@@ -159,6 +161,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public void setVariableEvaluationResult(String variableId, Value value) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Base implementation does not " +
+		"support variable evaluation result caching");
 	}	
 }
