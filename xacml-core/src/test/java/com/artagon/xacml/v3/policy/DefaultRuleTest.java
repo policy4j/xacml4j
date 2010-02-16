@@ -388,4 +388,27 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		assertEquals(0, context.getObligations().size());
 	}
 	
+	@Test
+	public void testEvaluateIfApplicableTargetIsNoMatch()
+	{
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
+		replay(target, condition);
+		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(0, context.getAdvices().size());
+		assertEquals(0, context.getObligations().size());
+	}
+	
+	@Test
+	public void testEvaluateIfApplicableTargetIsMatchConditionTrue()
+	{
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		replay(target, condition);
+		assertEquals(Decision.PERMIT, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(1, context.getAdvices().size());
+		assertEquals(1, context.getObligations().size());
+	}
+	
 }

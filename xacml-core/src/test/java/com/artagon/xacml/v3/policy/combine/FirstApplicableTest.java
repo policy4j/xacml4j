@@ -1,5 +1,9 @@
 package com.artagon.xacml.v3.policy.combine;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
@@ -10,62 +14,126 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.MockDecisionRule;
+import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class FirstApplicableTest extends XacmlPolicyTestCase
 {
 	
-	private List<MockDecisionRule> decisions;
-	private DecisionCombiningAlgorithm<MockDecisionRule> algorithm;
+	private List<DecisionRule> decisions;
+	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	
 	@Before
 	public void init(){
-		this.decisions = new LinkedList<MockDecisionRule>();
-		this.algorithm = new FirstApplicable<MockDecisionRule>("test");
+		this.decisions = new LinkedList<DecisionRule>();
+		this.algorithm = new FirstApplicable<DecisionRule>("test");
 	}
+	
+	@Test
+	public void testNoDecisions()
+	{
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+	}
+
 	
 	@Test
 	public void testNoApplicableDecisions()
 	{
-		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r2.createContext(context)).andReturn(context);
+		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		replay(r1, r2);
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecisionRule(Decision.DENY, MatchResult.NOMATCH));
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecisionRule(Decision.INDETERMINATE, MatchResult.NOMATCH));
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		verify(r1, r2);
 	}
 	
 	@Test
-	public void testPermitApplicable()
+	public void testPermit()
 	{
-		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.MATCH));
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		replay(r1, r2);
 		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
+		verify(r1, r2);
 	}
 	
 	@Test
-	public void testFirstPermitNotApplicableSecondPermitIsApplicable()
+	public void testDeny()
 	{
-		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
-		decisions.add(new MockDecisionRule(Decision.PERMIT, MatchResult.MATCH));
-		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
-	}
-	
-	@Test
-	public void testDenyApplicable()
-	{
-		decisions.add(new MockDecisionRule(Decision.DENY, MatchResult.MATCH));
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.DENY);
+		replay(r1, r2);
 		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
+		verify(r1, r2);
+	}
+	
+		
+	@Test
+	public void testIndeterminate()
+	{
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
+		replay(r1, r2);
+		assertEquals(Decision.INDETERMINATE, algorithm.combine(decisions, context));
+		verify(r1, r2);
 	}
 	
 	@Test
-	public void testIndeterminateApplicable()
+	public void testIndeterminateD()
 	{
-		decisions.add(new MockDecisionRule(Decision.INDETERMINATE, MatchResult.MATCH));
-		assertEquals(Decision.INDETERMINATE, algorithm.combine(decisions, context));
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_D);
+		replay(r1, r2);
+		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(decisions, context));
+		verify(r1, r2);
 	}
 	
+	@Test
+	public void testIndeterminateP()
+	{
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_P);
+		replay(r1, r2);
+		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(decisions, context));
+		verify(r1, r2);
+	}
 	
+	@Test
+	public void testIndeterminateDP()
+	{
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		decisions.add(r2);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_DP);
+		replay(r1, r2);
+		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(decisions, context));
+		verify(r1, r2);
+	}
 }

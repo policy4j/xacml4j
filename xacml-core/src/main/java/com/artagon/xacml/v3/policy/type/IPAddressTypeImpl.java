@@ -12,8 +12,27 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	}
 	
 	@Override
+	public IPAddressValue create(InetAddress address, PortRange portRange) {
+		IPAddress v = new IPAddress(address, portRange);
+		return new IPAddressValue(this, v);
+	}
+
+
+	@Override
+	public IPAddressValue create(InetAddress address, InetAddress mask) {
+		Preconditions.checkNotNull(address, "IP address can't be null");
+		Preconditions.checkNotNull(mask, "IP address mask can't be null");
+		IPAddress v = new IPAddress(address, PortRange.getAnyPort());
+		return new IPAddressValue(this, v);
+	}
+
+	
+	@Override
 	public IPAddressValue create(InetAddress address, InetAddress mask,
 			PortRange portRange) {
+		Preconditions.checkNotNull(address, "IP address can't be null");
+		Preconditions.checkNotNull(mask, "IP address mask can't be null");
+		Preconditions.checkNotNull(portRange, "Port range can't be null");
 		IPAddress v = new IPAddress(address, mask, portRange);
 		return new IPAddressValue(this, v);
 	}
@@ -28,7 +47,8 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	public IPAddressValue create(Object any, Object ...params) {
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"ipAddress\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne " +
+				"converted to XACML \"ipAddress\" type", 
 				any, any.getClass()));
 		if(any instanceof InetAddress){
 			return new IPAddressValue(this, new IPAddress((InetAddress)any));
@@ -38,20 +58,6 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 		}
 		return new IPAddressValue(this, (IPAddress)any);
 	}
-
-	@Override
-	public IPAddressValue create(InetAddress address, PortRange portRange) {
-		IPAddress v = new IPAddress(address, portRange);
-		return new IPAddressValue(this, v);
-	}
-
-
-	@Override
-	public IPAddressValue create(InetAddress address, InetAddress mask) {
-		IPAddress v = new IPAddress(address, PortRange.getAnyPort());
-		return new IPAddressValue(this, v);
-	}
-
 
 	@Override
 	public IPAddressValue fromXacmlString(String v, Object ...params) {

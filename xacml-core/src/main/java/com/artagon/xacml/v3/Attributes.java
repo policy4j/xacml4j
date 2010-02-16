@@ -7,7 +7,7 @@ import org.w3c.dom.Node;
 
 public class Attributes extends XacmlObject
 {
-	private String xmlId;
+	private String id;
 	private AttributeCategoryId categoryId;
 	private Node content;
 	private Map<String, Attribute> attributes;
@@ -21,8 +21,8 @@ public class Attributes extends XacmlObject
 		return attributes.get(attributeId);
 	}
 	
-	public String getXmlId(){
-		return xmlId;
+	public String getId(){
+		return id;
 	}
 	
 	public Node getContent(){

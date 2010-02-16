@@ -2,17 +2,31 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 
+/**
+ * The deny overrides combining algorithm is intended for those cases where a deny 
+ * decision should have priority over a permit decision.<p>
+ * This algorithm has the following behavior:<p>
+ * <ol>
+ * <li>If any decision is "Deny", the result is "Deny"</li>
+ * <li>Otherwise, if any decision is "Indeterminate{DP}", the result is "Indeterminate{DP}"</li>
+ * <li>Otherwise, if any decision is "Indeterminate{D}" and another decision is 
+ * ÒIndeterminate{P} or Permit, the result is "Indeterminate{DP}"</li>
+ * <li>Otherwise, if any decision is "Indeterminate{D}", the result is "Indeterminate{D}"</li>
+ * <li>Otherwise, if any decision is "Permit", the result is "Permit"</li>
+ * <li>Otherwise, if any decision is "Indeterminate{P}", the result is "Indeterminate{P}"<li>
+ * <li>Otherwise, the result is "NotApplicable"<li>
+ * <ol>
+ * 
+ * @author Giedrius Trumpickas
+ *
+ * @param <D> a {@link DecisionRule} implementation type
+ */
 class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
-	private final static Logger log = LoggerFactory.getLogger(DenyOverrides.class);
-	
 	protected DenyOverrides(String id){
 		super(id);
 	}
@@ -28,9 +42,7 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 		for(D d : decisions)
 		{
 			Decision decision = evaluateIfApplicable(context, d);
-			log.debug("Evaluating decicion=\"{}\", evaluation result=\"{}\"", d.getId(), decision);
 			if(decision == Decision.DENY){
-				log.debug("Not evauating decisions further, result is=\"{}\"", decision);
 				return Decision.DENY;
 			}
 			if(decision == Decision.PERMIT){
