@@ -6,6 +6,6 @@ public class MockPolicyEvaluationContext extends BaseEvaluationContext
 {
 	public MockPolicyEvaluationContext(
 			PolicyInformationPoint attributeService) {
-		super(attributeService);
+		super(true, attributeService);
 	}	
 }

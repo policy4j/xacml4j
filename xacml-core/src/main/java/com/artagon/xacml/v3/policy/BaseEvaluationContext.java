@@ -22,19 +22,16 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
-	protected BaseEvaluationContext(){
-		this(true);
-	}
-	
-	protected BaseEvaluationContext(boolean validate){
-		this.advices = new LinkedList<Advice>();
-		this.obligations = new LinkedList<Obligation>();
-		this.validateAtRuntime = validate;
-	}
 	
 	protected BaseEvaluationContext(PolicyInformationPoint attributeService){
-		this(true);
+		this(false, attributeService);
+	}
+	
+	protected BaseEvaluationContext(boolean validateFuncParams, PolicyInformationPoint attributeService){
 		Preconditions.checkNotNull(attributeService);
+		this.advices = new LinkedList<Advice>();
+		this.obligations = new LinkedList<Obligation>();
+		this.validateAtRuntime = validateFuncParams;
 		this.attributeService = attributeService;
 	}
 	
@@ -85,13 +82,7 @@ class BaseEvaluationContext implements EvaluationContext
 			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType, String issuer) {
-		Preconditions.checkNotNull(attributeId);
-		Preconditions.checkNotNull(dataType);
-		Preconditions.checkNotNull(category);
-		if(attributeService != null){
 			return attributeService.resolve(category, attributeId, dataType, issuer);
-		}
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -107,8 +98,6 @@ class BaseEvaluationContext implements EvaluationContext
 	public BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location,
 			AttributeValueType dataType) {
-		Preconditions.checkNotNull(location);
-		Preconditions.checkNotNull(dataType);
 		return attributeService.resolve(category, location, dataType);
 	}
 
