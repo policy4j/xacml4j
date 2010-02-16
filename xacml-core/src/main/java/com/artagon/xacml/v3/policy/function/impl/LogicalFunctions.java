@@ -50,6 +50,15 @@ public class LogicalFunctions
 		}
 		return DataTypes.BOOLEAN.create(r);
 	}
+
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:not")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue not(
+			@XacmlParam(type=DataTypes.BOOLEAN)BooleanValue v)
+	{
+		return DataTypes.BOOLEAN.create(!v.getValue());
+	}
 	
 	/**
 	 * This function SHALL return "False" if it has no arguments and SHALL return "True" 

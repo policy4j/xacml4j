@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy.function.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
