@@ -20,6 +20,7 @@ class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{
 		super(context);
 		Preconditions.checkNotNull(policy);
+		Preconditions.checkNotNull(context.getCurrentPolicySet());
 		this.policy = policy;
 		this.variableCache = new HashMap<String, Value>();
 	}
