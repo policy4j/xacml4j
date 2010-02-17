@@ -6,11 +6,13 @@ import java.util.Map;
 
 import javax.xml.xpath.XPath;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.v3.AttributeCategoryId;
 
 
 
-public class MockAttributeResolutionService implements PolicyInformationPoint
+public class MockAttributeResolutionService implements AttributeResolver
 {
 	private Map<AttributeCategoryId, Map<String, AttributeHolder>> attributes;
 	
@@ -62,6 +64,16 @@ public class MockAttributeResolutionService implements PolicyInformationPoint
 		
 	}
 	
+	
+	
+	@Override
+	public Node getContent(AttributeCategoryId categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	class AttributeHolder
 	{
 		String issuer;

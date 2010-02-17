@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.Obligation;
 
 class BaseEvaluationContext implements EvaluationContext
 {
-	private PolicyInformationPoint attributeService;
+	private AttributeResolver attributeService;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -23,11 +23,12 @@ class BaseEvaluationContext implements EvaluationContext
 	private boolean validateAtRuntime = false;
 	
 	
-	protected BaseEvaluationContext(PolicyInformationPoint attributeService){
+	protected BaseEvaluationContext(AttributeResolver attributeService){
 		this(false, attributeService);
 	}
 	
-	protected BaseEvaluationContext(boolean validateFuncParams, PolicyInformationPoint attributeService){
+	protected BaseEvaluationContext(boolean validateFuncParams, 
+			AttributeResolver attributeService){
 		Preconditions.checkNotNull(attributeService);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
@@ -38,7 +39,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public Node getContent(AttributeCategoryId categoryId) {
-		throw new UnsupportedOperationException("Operation is not implemented");
+		return attributeService.getContent(categoryId);
 	}
 
 	@Override
@@ -70,7 +71,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link PolicyInformationPoint}. If attribute
+	 * via {@link AttributeResolver}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 
@@ -87,7 +88,7 @@ class BaseEvaluationContext implements EvaluationContext
 
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link PolicyInformationPoint}. If attribute
+	 * via {@link AttributeResolver}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 
@@ -103,23 +104,21 @@ class BaseEvaluationContext implements EvaluationContext
 
 	
 	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
+	 * Implementation always
+	 * return <code>null</code>
 	 */
 	@Override
 	public EvaluationContext getParentContext() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
+	 * Implementation always
+	 * returns <code>null</code>
 	 */
 	@Override
 	public Policy getCurrentPolicy() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	/**

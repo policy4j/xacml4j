@@ -15,7 +15,7 @@ public class PolicyEvaluationContext extends BaseEvaluationContext
 	 * @param policy
 	 * @param service
 	 */
-	PolicyEvaluationContext(Policy policy, PolicyInformationPoint service)
+	PolicyEvaluationContext(Policy policy, AttributeResolver service)
 	{
 		super(service);
 		Preconditions.checkNotNull(policy);

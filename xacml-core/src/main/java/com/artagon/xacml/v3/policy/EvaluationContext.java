@@ -97,6 +97,9 @@ public interface EvaluationContext
 	 * @return {@link VariableDefinition} or
 	 * <code>null</code> if variable definition
 	 * does not exists for given identifier
+	 * @throws UnsupportedOperationException if this context
+	 * does not support variable definition resolution e.g 
+	 * context created for policy set evaluation
 	 */
 	VariableDefinition getVariableDefinition(String variableId);
 	
@@ -106,6 +109,9 @@ public interface EvaluationContext
 	 * 
 	 * @param variableId a variable identifier
 	 * @return {@link Value} instance or {@code null}
+	 * @throws UnsupportedOperationException if this context
+	 * does not support variable evaluation e.g context created
+	 * for policy set evaluation
 	 */
 	 Value getVariableEvaluationResult(String variableId);
 	
@@ -115,6 +121,9 @@ public interface EvaluationContext
 	 * 
 	 * @param variableId a variable identifier
 	 * @param value a variable value
+	 * @throws UnsupportedOperationException if this context
+	 * does not support variable evaluation e.g context created
+	 * for policy set evaluation
 	 */
 	void setVariableEvaluationResult(String variableId, Value value);
 	

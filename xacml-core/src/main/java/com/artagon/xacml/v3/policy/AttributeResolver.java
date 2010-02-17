@@ -2,10 +2,12 @@ package com.artagon.xacml.v3.policy;
 
 import javax.xml.xpath.XPath;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.v3.AttributeCategoryId;
 
 
-public interface PolicyInformationPoint 
+public interface AttributeResolver 
 {
 
 	/**
@@ -24,4 +26,6 @@ public interface PolicyInformationPoint
 	
 	BagOfAttributeValues<?> resolve(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
+	
+	Node getContent(AttributeCategoryId categoryId);
 }

@@ -3,9 +3,9 @@ package com.artagon.xacml.v3.policy;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private PolicyInformationPoint service;
+	private AttributeResolver service;
 	
-	public DefaultEvaluationContextFactory(PolicyInformationPoint service){
+	public DefaultEvaluationContextFactory(AttributeResolver service){
 		this.service = service;	
 	}
 
