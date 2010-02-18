@@ -95,21 +95,14 @@ public interface EvaluationContext
 	 * 
 	 * @param variableId a variable identifier
 	 * @return {@link Value} instance or {@code null}
-	 * @throws UnsupportedOperationException if this context
-	 * does not support variable evaluation e.g context created
-	 * for policy set evaluation
 	 */
 	 Value getVariableEvaluationResult(String variableId);
 	
 	/**
-	 * Sets variable evaluation result to the 
-	 * current policy evaluation context.
+	 * Caches current policy variable evaluation result.
 	 * 
 	 * @param variableId a variable identifier
 	 * @param value a variable value
-	 * @throws UnsupportedOperationException if this context
-	 * does not support variable evaluation e.g context created
-	 * for policy set evaluation
 	 */
 	void setVariableEvaluationResult(String variableId, Value value);
 	

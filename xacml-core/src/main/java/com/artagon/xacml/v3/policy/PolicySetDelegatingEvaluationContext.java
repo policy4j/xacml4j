@@ -12,16 +12,16 @@ class PolicySetDelegatingEvaluationContext extends DelegatingEvaluationContext
 	 * policy set or root context to evaluate given 
 	 * policy set
 	 * 
-	 * @param context a parent context
+	 * @param parentContext a parent context
 	 * @param policySet a policy set to be evaluated
 	 */
 	public PolicySetDelegatingEvaluationContext(
-			EvaluationContext context, 
+			EvaluationContext parentContext, 
 			PolicySet policySet){
-		super(context);
-		Preconditions.checkArgument(context.getCurrentPolicySet() != null);
-		Preconditions.checkArgument(context.getCurrentPolicySet() != policySet);
-		Preconditions.checkArgument(context.getCurrentPolicy() == null);
+		super(parentContext);
+		Preconditions.checkArgument(parentContext.getCurrentPolicySet() != null);
+		Preconditions.checkArgument(parentContext.getCurrentPolicySet() != policySet);
+		Preconditions.checkArgument(parentContext.getCurrentPolicy() == null);
 		Preconditions.checkNotNull(policySet);
 		this.policySet = policySet;
 	}
