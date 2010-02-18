@@ -2,7 +2,9 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.xml.xpath.XPath;
 
@@ -22,6 +24,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
+	private Map<String, Map<String, Value>> variableEvaluationCache;
 	
 	protected BaseEvaluationContext(AttributeResolver attributeService){
 		this(false, attributeService);
@@ -34,6 +37,7 @@ class BaseEvaluationContext implements EvaluationContext
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.attributeService = attributeService;
+		this.variableEvaluationCache = new HashMap<String, Map<String,Value>>();
 	}
 	
 	
@@ -129,26 +133,31 @@ class BaseEvaluationContext implements EvaluationContext
 	public PolicySet getCurrentPolicySet() {
 		return null;
 	}
-
-	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
-	 */
+	
 	@Override
-	public Value getVariableEvaluationResult(String variableId) {
-		throw new UnsupportedOperationException("Base implementation does not " +
-		"support variable evaluation result caching");
+	public final Value getVariableEvaluationResult(String variableId) 
+	{
+		Preconditions.checkState(getCurrentPolicy() != null);
+		Policy p = getCurrentPolicy();
+		Map<String, Value> policyCache = variableEvaluationCache.get(p.getId());
+		if(policyCache != null){
+			return policyCache.get(variableId);
+		}
+		return null;
 	}
-
-	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
-	 */
+	
 	@Override
-	public void setVariableEvaluationResult(String variableId, Value value) {
-		throw new UnsupportedOperationException("Base implementation does not " +
-		"support variable evaluation result caching");
+	public final void setVariableEvaluationResult(String variableId, Value value) 
+	{
+		Preconditions.checkState(getCurrentPolicy() != null);
+		Policy p = getCurrentPolicy();
+		Map<String, Value> policyCache = variableEvaluationCache.get(p.getId());
+		if(policyCache != null){
+			policyCache.put(variableId, value);
+			return;
+		}
+		policyCache = new HashMap<String, Value>();
+		policyCache.put(variableId, value);
+		variableEvaluationCache.put(p.getId(), policyCache);
 	}	
 }

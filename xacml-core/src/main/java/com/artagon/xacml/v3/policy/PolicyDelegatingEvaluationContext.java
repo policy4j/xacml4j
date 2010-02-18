@@ -2,9 +2,8 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
+final class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 {	
-	private VariableEvaluationCache cache;
 	private Policy policy;
 	
 	/**
@@ -24,9 +23,5 @@ class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	@Override
 	public Policy getCurrentPolicy() {
 		return policy;
-	}
-	
-	public VariableEvaluationCache getVariableEvaluationCache(){
-		return cache;
 	}
 }
