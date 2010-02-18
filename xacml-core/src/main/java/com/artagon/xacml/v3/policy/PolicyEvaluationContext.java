@@ -23,12 +23,12 @@ public class PolicyEvaluationContext extends BaseEvaluationContext
 		this.variableCache = new HashMap<String, Value>(variableCache);
 	}
 	
-	@Override
-	public VariableDefinition getVariableDefinition(String variableId){
-		Preconditions.checkNotNull(variableId);
-		return policy.getVariableDefinition(variableId);
-	}
 	
+	@Override
+	public Policy getCurrentPolicy() {
+		return policy;
+	}
+
 	@Override
 	public Value getVariableEvaluationResult(String variableId) {
 		return variableCache.get(variableId);

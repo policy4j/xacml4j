@@ -2,6 +2,8 @@ package com.artagon.xacml.v3.policy.function.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
+
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -14,8 +16,23 @@ import com.artagon.xacml.v3.policy.type.IntegerType;
 
 public class LogicalFunctionsTest extends XacmlPolicyTestCase
 {
+	private FunctionFactory f;
+	
+	FunctionSpec andFunc;
+	FunctionSpec orFunc;
+	FunctionSpec notFunc;
+	
+	@Before
+	public void init(){
+		this.f = new AnnotationBasedFunctionFactory(LogicalFunctions.class);
+		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
+		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
+		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
+	}
+	
+	
 	@Test
-	public void basicAndFunctionTest() throws EvaluationException
+	public void testAndFunction() throws EvaluationException
 	{
 		assertEquals(DataTypes.BOOLEAN.create(false), 
 				LogicalFunctions.and(context, DataTypes.BOOLEAN.create(false), DataTypes.BOOLEAN.create(false)));
@@ -63,19 +80,5 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 		 
 		assertEquals(DataTypes.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, DataTypes.BOOLEAN.create(false)));
-	}
-	
-	
-	@Test
-	public void testParseFunctionViaAnnotiationFactory() throws EvaluationException
-	{
-		FunctionFactory f = new AnnotationBasedFunctionFactory(LogicalFunctions.class);
-		FunctionSpec andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
-		FunctionSpec orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
-		FunctionSpec notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
-		
-		assertEquals(DataTypes.BOOLEAN.create(Boolean.TRUE),  andFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE), DataTypes.BOOLEAN.create(Boolean.TRUE)));
-		assertEquals(DataTypes.BOOLEAN.create(Boolean.TRUE),  orFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE), DataTypes.BOOLEAN.create(Boolean.FALSE)));
-		assertEquals(DataTypes.BOOLEAN.create(Boolean.FALSE),  notFunc.invoke(context, DataTypes.BOOLEAN.create(Boolean.TRUE)));
 	}
 }

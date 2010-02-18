@@ -92,14 +92,6 @@ public class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public VariableDefinition getVariableDefinition(String variableId) {
-		return delegate.getVariableDefinition(variableId);
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
 	public Value getVariableEvaluationResult(String variableId) {
 		return delegate.getVariableEvaluationResult(variableId);
 	}

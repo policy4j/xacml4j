@@ -90,20 +90,6 @@ public interface EvaluationContext
 	void addAdvices(Collection<Advice> advices);
 	
 	/**
-	 * Gets variable definition by given
-	 * variable identifier from this context
-	 * 
-	 * @param variableId an variable identifier
-	 * @return {@link VariableDefinition} or
-	 * <code>null</code> if variable definition
-	 * does not exists for given identifier
-	 * @throws UnsupportedOperationException if this context
-	 * does not support variable definition resolution e.g 
-	 * context created for policy set evaluation
-	 */
-	VariableDefinition getVariableDefinition(String variableId);
-	
-	/**
 	 * Gets variable evaluation result for given
 	 * variable identifier.
 	 * 

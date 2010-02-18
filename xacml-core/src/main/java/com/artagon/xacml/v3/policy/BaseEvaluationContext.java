@@ -122,24 +122,12 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
+	 * Implementation always
+	 * returns <code>null</code>
 	 */
 	@Override
 	public PolicySet getCurrentPolicySet() {
-		throw new UnsupportedOperationException("Base implementation does not support");
-	}
-
-	/**
-	 * Throws {@link UnsupportedOperationException}
-	 * 
-	 * @exception UnsupportedOperationException
-	 */
-	@Override
-	public VariableDefinition getVariableDefinition(String variableId) {
-		throw new UnsupportedOperationException("Base implementation does not " +
-				"support VariableDefinition resolution");
+		return null;
 	}
 
 	/**

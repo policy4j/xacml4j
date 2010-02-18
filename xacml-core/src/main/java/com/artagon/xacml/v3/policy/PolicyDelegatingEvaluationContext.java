@@ -1,13 +1,10 @@
 package com.artagon.xacml.v3.policy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.artagon.xacml.util.Preconditions;
 
 class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 {	
-	private Map<String, Value> variableCache;
+	private VariableEvaluationCache cache;
 	private Policy policy;
 	
 	/**
@@ -22,30 +19,14 @@ class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 		Preconditions.checkNotNull(policy);
 		Preconditions.checkNotNull(context.getCurrentPolicySet());
 		this.policy = policy;
-		this.variableCache = new HashMap<String, Value>();
 	}
 
 	@Override
 	public Policy getCurrentPolicy() {
 		return policy;
 	}
-
-	@Override
-	public VariableDefinition getVariableDefinition(String variableId) {
-		Preconditions.checkNotNull(variableId);
-		return policy.getVariableDefinition(variableId);
-	}
-
-	@Override
-	public Value getVariableEvaluationResult(String variableId) {
-		Preconditions.checkNotNull(variableId);
-		return variableCache.get(variableId);
-	}
-
-	@Override
-	public void setVariableEvaluationResult(String variableId, Value value) {
-		Preconditions.checkNotNull(variableId);
-		Preconditions.checkNotNull(value);
-		this.variableCache.put(variableId, value);
+	
+	public VariableEvaluationCache getVariableEvaluationCache(){
+		return cache;
 	}
 }
