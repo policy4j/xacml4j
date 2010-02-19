@@ -25,6 +25,8 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	
 	private Rule rulePermit;
 	private Rule ruleDeny;
+	private Rule ruleDenyNoTarget;
+	private Rule rulePermitNoTarget;
 	
 	private Condition condition;
 	private Target target;
@@ -54,6 +56,9 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		
 		this.rulePermit = new DefaultRule("testPermitRule", target, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		this.ruleDeny = new DefaultRule("testDenyRule", target, condition, Effect.DENY, adviceExpressions, obligationExpressions);
+		
+		this.rulePermitNoTarget = new DefaultRule("testPermitRuleNoTarget", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
+		this.ruleDenyNoTarget = new DefaultRule("testDenyRuleNoTarget", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
 	}
 	
 	@Test
@@ -81,13 +86,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionTrueEffectPermit()
 	{
-		
-		Rule r = new DefaultRule("test", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 		replay(condition);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
+		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.PERMIT, rulePermitNoTarget.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 		verify(condition);
@@ -96,12 +99,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionTrueEffectDeny()
 	{
-		Rule r = new DefaultRule("test", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 		replay(condition);
-		assertEquals(Decision.DENY, r.evaluate(ruleContext));
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
+		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.DENY, ruleDenyNoTarget.evaluate(ruleContext));
 		assertEquals(1, context.getAdvices().size());
 		assertEquals(1, context.getObligations().size());
 		verify(condition);
@@ -110,12 +112,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionFalseEffectPermit()
 	{
-		Rule r = new DefaultRule("test", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
 		replay(condition);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, rulePermitNoTarget.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 		verify(condition);
@@ -124,12 +125,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionFalseEffectDeny()
 	{
-		Rule r = new DefaultRule("test", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
 		replay(condition);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
+		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, ruleDenyNoTarget.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 		verify(condition);
@@ -138,12 +138,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionIndeterminateEffectPermit()
 	{
-		Rule r = new DefaultRule("test", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		replay(condition);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.INDETERMINATE_P, r.evaluate(ruleContext));
+		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, rulePermitNoTarget.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 		verify(condition);
@@ -152,12 +151,11 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithNoTargetConditionIndeterminateEffectDeny()
 	{
-		Rule r = new DefaultRule("test", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
+		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		replay(condition);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.INDETERMINATE_D, r.evaluate(ruleContext));
+		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, ruleDenyNoTarget.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 		verify(condition);
@@ -259,10 +257,12 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	@Test
 	public void testRuleWithTargetMatchConditionFalseEffectPermit()
 	{
-		Rule r = new DefaultRule("test", new MockTarget(MatchResult.MATCH), condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		EvaluationContext ruleContext = r.createContext(context);
-		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.NOT_APPLICABLE, r.evaluate(ruleContext));
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
+		replay(target, condition);
+		assertEquals(MatchResult.MATCH, rulePermit.isApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
 		assertEquals(0, context.getAdvices().size());
 		assertEquals(0, context.getObligations().size());
 	}
