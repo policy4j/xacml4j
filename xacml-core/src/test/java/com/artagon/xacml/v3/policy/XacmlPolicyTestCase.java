@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy;
 
-import org.junit.Before;
-
 import static org.easymock.EasyMock.createStrictMock;
+
+import org.junit.Before;
 
 public class XacmlPolicyTestCase
 {	

@@ -15,12 +15,14 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 {
 	private FunctionSpec spec;
 	private AttributeDesignator ref;
+	private EvaluationContext context;
 	
 	@Before
 	public void init()
 	{	
 		this.spec = createStrictMock(FunctionSpec.class);
 		this.ref = createStrictMock(AttributeDesignator.class);
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test

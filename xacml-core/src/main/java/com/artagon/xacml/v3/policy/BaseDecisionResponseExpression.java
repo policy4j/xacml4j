@@ -44,7 +44,7 @@ abstract class BaseDecisionResponseExpression extends XacmlObject implements Pol
 	 * 
 	 * @return an identifier
 	 */
-	protected String getId(){
+	public String getId(){
 		return id;
 	}
 	

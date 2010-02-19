@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -13,15 +14,22 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.Obligation;
 
-public class DefaultRuleTest extends XacmlPolicyTestCase
+public class DefaultRuleTest
 {
 	
 	private Collection<ObligationExpression> obligationExpressions;
 	private Collection<AdviceExpression> adviceExpressions;
+	
+	private ObligationExpression denyObligationExp;
+	
+	private ObligationExpression permitObligationExp;
+	
+	private AdviceExpression denyAdviceExp;
+	private  AdviceExpression permitAdviceExp;
 	
 	private Rule rulePermit;
 	private Rule ruleDeny;
@@ -31,28 +39,27 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	private Condition condition;
 	private Target target;
 	
+	private EvaluationContext context;
+	
 	@Before
 	public void init()
 	{
+		this.context = createStrictMock(EvaluationContext.class);
 		this.condition = createStrictMock(Condition.class);
 		this.target = createStrictMock(Target.class);
 			
 		this.obligationExpressions = new LinkedList<ObligationExpression>();
 		this.adviceExpressions = new LinkedList<AdviceExpression>();
 		
-		AttributeAssignmentExpression attrExpPermit = new AttributeAssignmentExpression(
-				"testAttrId", DataTypes.STRING.create("PermitValue"), 
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
-				null);
-		AttributeAssignmentExpression attrExpDeny = new AttributeAssignmentExpression(
-				"testAttrId", DataTypes.STRING.create("DenyValue"),
-				AttributeCategoryId.SUBJECT_INTERMEDIARY, 
-				null);
+		this.denyObligationExp = createMock(ObligationExpression.class);
+		this.permitObligationExp = createMock(ObligationExpression.class);
+		obligationExpressions.add(denyObligationExp);
+		obligationExpressions.add(permitObligationExp);
 		
-		adviceExpressions.add(new AdviceExpression("testAdvicePermit", Effect.PERMIT, Collections.singletonList(attrExpPermit)));
-		adviceExpressions.add(new AdviceExpression("testAdviceDeny", Effect.DENY, Collections.singletonList(attrExpDeny)));
-		obligationExpressions.add(new ObligationExpression("testObligationPermit", Effect.PERMIT, Collections.singletonList(attrExpPermit)));
-		obligationExpressions.add(new ObligationExpression("testObligationDeny", Effect.DENY, Collections.singletonList(attrExpDeny)));
+		this.denyAdviceExp = createMock(AdviceExpression.class);
+		this.permitAdviceExp = createMock(AdviceExpression.class);
+		adviceExpressions.add(denyAdviceExp);
+		adviceExpressions.add(permitAdviceExp);
 		
 		this.rulePermit = new DefaultRule("testPermitRule", target, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		this.ruleDeny = new DefaultRule("testDenyRule", target, condition, Effect.DENY, adviceExpressions, obligationExpressions);
@@ -62,64 +69,115 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testRuleWithNoTargetNoConditionEffectPermit()
+	public void testRuleApplicabilityWithNoTarget() throws EvaluationException
 	{
 		Rule r = new DefaultRule("test", null, null, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
+		
+		replay(context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
-		assertEquals(Decision.PERMIT, r.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		
+		verify(context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithNoTargetNoConditionEffectDeny()
+	public void testRuleWithNoTargetNoConditionEffectDeny() throws EvaluationException
 	{
 		Rule r = new DefaultRule("test", null, null, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = r.createContext(context);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(denyAdviceExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyAdviceExp.getId()).andReturn("denyAdviceExp").times(0, 1);
+		expect(denyAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		
+		expect(denyObligationExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyObligationExp.getId()).andReturn("denyObligationExp").times(0, 1);
+		expect(denyObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(context, denyAdviceExp, denyObligationExp);
+		
 		assertEquals(MatchResult.MATCH, r.isApplicable(ruleContext));
 		assertEquals(Decision.DENY, r.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		
+		verify(context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithNoTargetConditionTrueEffectPermit()
+	public void testRuleWithNoTargetConditionTrueEffectPermit() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
+		
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(condition);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(permitAdviceExp.isApplicable(Decision.PERMIT)).andReturn(true);
+		expect(permitAdviceExp.getId()).andReturn("permitAdviceExp").times(0, 1);
+		expect(permitAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		expect(permitObligationExp.isApplicable(Decision.PERMIT)).andReturn(true);
+		expect(permitObligationExp.getId()).andReturn("permitObligationExp").times(0, 1);
+		expect(permitObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.PERMIT, rulePermitNoTarget.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
-		verify(condition);
+
+		verify(condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithNoTargetConditionTrueEffectDeny()
+	public void testRuleWithNoTargetConditionTrueEffectDeny() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(condition);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(denyAdviceExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyAdviceExp.getId()).andReturn("denyAdviceExp").times(0, 1);
+		expect(denyAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		
+		expect(denyObligationExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyObligationExp.getId()).andReturn("denyObligationExp").times(0, 1);
+		expect(denyObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(condition, context, denyAdviceExp, denyObligationExp);
+	
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.DENY, ruleDenyNoTarget.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
-		verify(condition);
+		
+		verify(condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithNoTargetConditionFalseEffectPermit()
+	public void testRuleWithNoTargetConditionFalseEffectPermit() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		replay(condition);
+		
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);	
+		replay(condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.NOT_APPLICABLE, rulePermitNoTarget.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
-		verify(condition);
+		
+		verify(condition, context, permitAdviceExp, permitObligationExp);
+		
 	}
 	
 	@Test
@@ -127,12 +185,10 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	{
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		replay(condition);
+		replay(condition, context, denyAdviceExp, denyObligationExp);
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.NOT_APPLICABLE, ruleDenyNoTarget.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
-		verify(condition);
+		verify(condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -140,12 +196,10 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	{
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		replay(condition);
+		replay(condition, context, permitAdviceExp, permitObligationExp);
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.INDETERMINATE_P, rulePermitNoTarget.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
-		verify(condition);
+		verify(condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
@@ -153,39 +207,67 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	{
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		replay(condition);
+		replay(condition, context, denyAdviceExp, denyObligationExp);
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
 		assertEquals(Decision.INDETERMINATE_D, ruleDenyNoTarget.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
-		verify(condition);
+		verify(condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithTargetNoMatchConditionTrueEffectPermit()
+	public void testRuleWithTargetNoMatchConditionTrueEffectPermit() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(target, condition);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(permitAdviceExp.isApplicable(Decision.PERMIT)).andReturn(true);
+		expect(permitAdviceExp.getId()).andReturn("permitAdviceExp").times(0, 1);
+		expect(permitAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		expect(permitObligationExp.isApplicable(Decision.PERMIT)).andReturn(true);
+		expect(permitObligationExp.getId()).andReturn("permitObligationExp").times(0, 1);
+		expect(permitObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(target, condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.NOMATCH, rulePermit.isApplicable(ruleContext));
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
-		verify(target, condition);
+		
+		verify(target, condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithTargetNoMatchConditionTrueEffectDeny()
+	public void testRuleWithTargetNoMatchConditionTrueEffectDeny() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(target, condition);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(denyAdviceExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyAdviceExp.getId()).andReturn("denyAdviceExp").times(0, 1);
+		expect(denyAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		
+		expect(denyObligationExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyObligationExp.getId()).andReturn("denyObligationExp").times(0, 1);
+		expect(denyObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(target, condition, context, denyAdviceExp, denyObligationExp);
+	
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isApplicable(ruleContext));
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		
+		verify(target, condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -193,12 +275,14 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(target, condition);
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
+			
+		replay(target, condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.NOMATCH, rulePermit.isApplicable(ruleContext));
-		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
+
+		verify(target, condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
@@ -207,37 +291,47 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		replay(target, condition);
+		
+		replay(target, condition, context, denyAdviceExp, denyObligationExp);
+		
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isApplicable(ruleContext));
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
+		
+		verify(target, condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
 	public void testRuleWithTargetNoMatchConditionIndeterminateEffectPermit()
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
+		
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		replay(target, condition);
+		
+		replay(target, condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.NOMATCH, rulePermit.isApplicable(ruleContext));
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
+		
+		verify(target, condition, context, permitAdviceExp, permitObligationExp);
+
 	}
 	
 	@Test
 	public void testRuleWithTargetNoMatchConditionIndeterminateEffectDeny()
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
+		
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		replay(target, condition);
+		
+		replay(target, condition, context, denyAdviceExp, denyObligationExp);
+		
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isApplicable(ruleContext));
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
+		
+		verify(target, condition, context, denyAdviceExp, denyObligationExp);
+		
 	}
 	
 	@Test
@@ -247,24 +341,26 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 		replay(target, condition);
+		
 		assertEquals(MatchResult.MATCH, rulePermit.isApplicable(ruleContext));
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		
 		verify(target, condition);
 	}
 	
 	@Test
-	public void testRuleWithTargetMatchConditionFalseEffectPermit()
+	public void testRuleWithTargetMatchConditionFalseEffectPermit() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		replay(target, condition);
+		
+		replay(target, condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.MATCH, rulePermit.isApplicable(ruleContext));
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
+		
+		verify(target, condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
@@ -273,26 +369,42 @@ public class DefaultRuleTest extends XacmlPolicyTestCase
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		replay(target, condition);
+		
+		replay(target, condition, context, permitAdviceExp, permitObligationExp);
+		
 		assertEquals(MatchResult.MATCH, rulePermit.isApplicable(ruleContext));
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
-		verify(target, condition);
+		
+		verify(target, condition, context, permitAdviceExp, permitObligationExp);
 	}
 	
 	@Test
-	public void testRuleWithTargetMatchConditionTrueEffectDeny()
+	public void testRuleWithTargetMatchConditionTrueEffectDeny() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		replay(target, condition);
+		
+		Advice advice = createMock(Advice.class);
+		Obligation obligation = createMock(Obligation.class);
+		
+		expect(denyAdviceExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyAdviceExp.getId()).andReturn("denyAdviceExp").times(0, 1);
+		expect(denyAdviceExp.evaluate(ruleContext)).andReturn(advice);
+		
+		expect(denyObligationExp.isApplicable(Decision.DENY)).andReturn(true);
+		expect(denyObligationExp.getId()).andReturn("denyObligationExp").times(0, 1);
+		expect(denyObligationExp.evaluate(ruleContext)).andReturn(obligation);
+		
+		context.addAdvices(Collections.singletonList(advice));
+		context.addObligations(Collections.singletonList(obligation));
+		
+		replay(target, condition, context, denyAdviceExp, denyObligationExp);
+		
 		assertEquals(MatchResult.MATCH, ruleDeny.isApplicable(ruleContext));
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
-		verify(target, condition);
+		
+		verify(target, condition, context, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test

@@ -11,17 +11,19 @@ import org.junit.Test;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 
-public class DefaultFunctionSpecTest extends XacmlPolicyTestCase
+public class DefaultFunctionSpecTest
 {
 	private FunctionInvocation invocation;
 	private FunctionReturnTypeResolver resolver;
 	private FunctionSpecBuilder b;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.invocation = createStrictMock(FunctionInvocation.class);
 		this.resolver = createStrictMock(FunctionReturnTypeResolver.class);
 		this.b = new DefaultFunctionSpecBuilder("testId");
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test

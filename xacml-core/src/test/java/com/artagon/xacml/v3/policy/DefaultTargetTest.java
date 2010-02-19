@@ -12,13 +12,15 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DefaultTargetTest extends XacmlPolicyTestCase
+public class DefaultTargetTest
 {
 	private Collection<MatchAnyOf> matches;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.matches = new LinkedList<MatchAnyOf>();
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test

@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.function.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;

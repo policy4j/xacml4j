@@ -13,13 +13,15 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class DefaultApplyTest extends XacmlPolicyTestCase 
+public class DefaultApplyTest 
 {
 	private FunctionSpec function;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.function = createStrictMock(FunctionSpec.class);
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test
