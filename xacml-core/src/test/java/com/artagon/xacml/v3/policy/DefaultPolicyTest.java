@@ -120,4 +120,16 @@ public class DefaultPolicyTest
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));
 		verify(combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp);
 	}
+	
+	@Test
+	public void testPolicyEvaluationCombiningAlgorithResultIsIndeterminate() throws EvaluationException
+	{
+		EvaluationContext policyContext = policy.createContext(context);
+		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.INDETERMINATE);
+		replay(combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp);
+		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
+		verify(combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp);
+	}
+	
+	
 }
