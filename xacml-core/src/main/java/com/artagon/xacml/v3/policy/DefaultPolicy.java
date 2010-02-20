@@ -85,7 +85,12 @@ public final class DefaultPolicy extends BaseCompositeDecisionRule implements Po
 	 */
 	@Override
 	public EvaluationContext createContext(EvaluationContext context) {
-		return new PolicyDelegatingEvaluationContext(context, this);
+		Preconditions.checkArgument(context.getCurrentPolicy() == this 
+				|| context.getCurrentPolicy() == null);
+		if(context.getCurrentPolicy() == this){
+			return context;
+		}
+		return new PolicyDelegatingEvaluationContext(context,this);
 	}
 
 	@Override
@@ -96,8 +101,6 @@ public final class DefaultPolicy extends BaseCompositeDecisionRule implements Po
 	@Override
 	protected Decision doEvaluate(EvaluationContext context)
 	{
-		log.debug("Evaluating policy=\"{}\", combine=\"{}\"", 
-				getId(), combine.getId());
 		return combine.combine(rules, context);
 	}
 
