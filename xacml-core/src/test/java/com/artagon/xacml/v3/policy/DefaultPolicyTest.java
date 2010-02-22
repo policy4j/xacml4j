@@ -74,7 +74,37 @@ public class DefaultPolicyTest
 	}
 	
 	@Test
-	public void testPolicyEvaluationCombiningAlgorithResultIsDeny() throws EvaluationException
+	public void testPolicyIsApplicableTargetMatch()
+	{
+		EvaluationContext policyContext = policy.createContext(context);
+		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
+		replay(target);
+		assertEquals(MatchResult.MATCH, policy.isApplicable(policyContext));
+		verify(target);
+	}
+	
+	@Test
+	public void testPolicyIsApplicableTargetNoMatch()
+	{
+		EvaluationContext policyContext = policy.createContext(context);
+		expect(target.match(policyContext)).andReturn(MatchResult.NOMATCH);
+		replay(target);
+		assertEquals(MatchResult.NOMATCH, policy.isApplicable(policyContext));
+		verify(target);
+	}
+	
+	@Test
+	public void testPolicyIsApplicableTargetIndeterminate()
+	{
+		EvaluationContext policyContext = policy.createContext(context);
+		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
+		replay(target);
+		assertEquals(MatchResult.INDETERMINATE, policy.isApplicable(policyContext));
+		verify(target);
+	}
+	
+	@Test
+	public void testPolicyEvaluationCombiningAlgorithmResultIsDeny() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.DENY);
