@@ -7,15 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 
 public final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicy.class);
 	
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
@@ -55,14 +51,17 @@ public final class DefaultPolicy extends BaseCompositeDecisionRule implements Po
 	}
 	
 	public DefaultPolicy(String policyId, 
-			Collection<Rule> rules, DecisionCombiningAlgorithm<Rule> combine)
+			Collection<Rule> rules, 
+			DecisionCombiningAlgorithm<Rule> combine,
+			Collection<AdviceExpression> advice,
+			Collection<ObligationExpression> obligations)
 	{
 		this(policyId, null, 
 				Collections.<VariableDefinition>emptyList(),
 				combine,
 				rules,
-				Collections.<AdviceExpression>emptyList(),
-				Collections.<ObligationExpression>emptyList());
+				advice,
+				obligations);
 	}
 	
 	@Override
