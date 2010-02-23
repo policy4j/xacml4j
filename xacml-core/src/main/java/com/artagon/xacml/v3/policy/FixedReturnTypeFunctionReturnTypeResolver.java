@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver
+final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {
 	private ValueType returnType;
 	

@@ -10,9 +10,9 @@ public class Result
 {
 	private Status status;
 	private Decision decision;
-	private Collection<DefaultObligation> obligations;
-	private Collection<DefaultAdvice> associatedAdvice;
-	
+	private Collection<Obligation> obligations;
+	private Collection<Advice> associatedAdvice;
+	private Collection<Attributes> attributes;
 	
 	public Result(Status status){
 		Preconditions.checkArgument(status.isFailure());
@@ -20,11 +20,14 @@ public class Result
 	}
 	
 	public Result(Decision decision, 
-			Collection<DefaultAdvice> associatedAdvice, Collection<DefaultObligation> obligations){
+			Collection<Advice> associatedAdvice, 
+			Collection<Obligation> obligations,
+			Collection<Attributes> attributes){
 		Preconditions.checkArgument(!decision.isIndeterminate());
 		this.status = new Status(StatusId.OK);
-		this.associatedAdvice = new LinkedList<DefaultAdvice>(associatedAdvice);
-		this.obligations = new LinkedList<DefaultObligation>(obligations);
+		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
+		this.obligations = new LinkedList<Obligation>(obligations);
+		this.attributes = new LinkedList<Attributes>(attributes);
 	}
 	
 	public Status getStatus(){
@@ -35,11 +38,15 @@ public class Result
 		return decision;
 	}
 	
-	public Collection<DefaultObligation> getObligations(){
+	public Collection<Attributes> getAttributes(){
+		return attributes;
+	}
+	
+	public Collection<Obligation> getObligations(){
 		return Collections.unmodifiableCollection(obligations);
 	}
 	
-	public Collection<DefaultAdvice> getAssociatedAdvice(){
+	public Collection<Advice> getAssociatedAdvice(){
 		return Collections.unmodifiableCollection(associatedAdvice);
 	}
 }

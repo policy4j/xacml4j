@@ -1,8 +1,8 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.policy.AttributeAssignment;
+import com.artagon.xacml.v3.Advice;
 
 /**
  * In some applications it is helpful to specify supplemental 
@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.policy.AttributeAssignment;
  * 
  * @author Giedrius Trumpickas
  */
-public final class DefaultAdvice extends BaseDecisionRuleResponse implements Advice
+final class DefaultAdvice extends BaseDecisionRuleResponse implements Advice
 {
 	public DefaultAdvice(String adviceId, Collection<AttributeAssignment> attributes) {
 		super(adviceId, attributes);

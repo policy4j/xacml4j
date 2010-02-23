@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.DefaultAdvice;
 
 public interface AdviceExpression extends DecisionRuleResponseExpression
 {

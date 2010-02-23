@@ -2,7 +2,6 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.DefaultObligation;
 
 public final class DefaultObligationExpression extends BaseDecisionResponseExpression implements ObligationExpression
 {
