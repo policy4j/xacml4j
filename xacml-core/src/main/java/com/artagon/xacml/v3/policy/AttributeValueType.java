@@ -41,7 +41,8 @@ public interface AttributeValueType extends ValueType
 	 * or can be instance of {@link String}
 	 * 
 	 * @param object an object
-	 * @param params  an additional parameters
+	 * @param params  an additional parameters used to
+	 * create a value of this type
 	 * @return {@link AttributeValue}
 	 */
 	AttributeValue create(Object object, Object ...params);
