@@ -5,7 +5,7 @@ import javax.xml.xpath.XPath;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public final class DefaultAttributeSelector extends 
+final class DefaultAttributeSelector extends 
 	BaseAttributeReference implements AttributeSelector
 {
 	private XPath xpath;

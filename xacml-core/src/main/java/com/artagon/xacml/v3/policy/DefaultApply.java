@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.XacmlObject;
  * @author Giedrius Trumpickas
  *
  */
-public final class DefaultApply extends XacmlObject implements Apply
+final class DefaultApply extends XacmlObject implements Apply
 {	
 	private FunctionSpec spec;
 	private Expression[] arguments;

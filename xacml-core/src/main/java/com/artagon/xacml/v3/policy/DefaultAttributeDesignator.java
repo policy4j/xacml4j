@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
  * 
  * @param <T>
  */
-public final class DefaultAttributeDesignator extends BaseAttributeReference 
+final class DefaultAttributeDesignator extends BaseAttributeReference 
 	implements AttributeDesignator
 {
 	private String attributeId;

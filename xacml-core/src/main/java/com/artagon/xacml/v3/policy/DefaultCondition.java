@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
  * 
  * @author Giedrius Trumpickas
  */
-public final class DefaultCondition extends XacmlObject implements Condition
+final class DefaultCondition extends XacmlObject implements Condition
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultCondition.class);
 	

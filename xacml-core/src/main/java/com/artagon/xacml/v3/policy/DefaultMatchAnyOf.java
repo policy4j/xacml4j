@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 
-public final class DefaultMatchAnyOf extends XacmlObject 
+final class DefaultMatchAnyOf extends XacmlObject 
 	implements PolicyElement, MatchAnyOf
 {
 	private Collection<Matchable> matches;

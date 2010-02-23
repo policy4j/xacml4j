@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultTarget implements Target
+final class DefaultTarget implements Target
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultTarget.class);
 	

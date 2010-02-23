@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 
-public final class DefaultRule extends BaseDesicionRule implements Rule
+final class DefaultRule extends BaseDesicionRule implements Rule
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultRule.class);
 	

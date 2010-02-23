@@ -17,7 +17,7 @@ import com.artagon.xacml.v3.Obligation;
  * 
  * @author Giedrius Trumpickas
  */
-public class DelegatingEvaluationContext implements EvaluationContext
+class DelegatingEvaluationContext implements EvaluationContext
 {
 	private EvaluationContext delegate;
 	

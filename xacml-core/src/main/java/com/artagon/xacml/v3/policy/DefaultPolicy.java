@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 
-public final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
+final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
 	
 	private List<Rule> rules;

@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-class PolicySetEvaluationContext extends BaseEvaluationContext
+final class PolicySetEvaluationContext extends BaseEvaluationContext
 {
 	private PolicySet policySet;
 	

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 
-public final class DefaultMatch implements PolicyElement, Match
+final class DefaultMatch implements PolicyElement, Match
 {	
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatch.class);
 	

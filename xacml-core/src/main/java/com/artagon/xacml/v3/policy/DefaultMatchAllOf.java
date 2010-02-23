@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 
-public final class DefaultMatchAllOf extends XacmlObject 
+final class DefaultMatchAllOf extends XacmlObject 
 	implements PolicyElement, MatchAllOf
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatchAllOf.class);

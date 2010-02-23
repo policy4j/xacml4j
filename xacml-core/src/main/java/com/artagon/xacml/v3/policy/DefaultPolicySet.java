@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 
-public class DefaultPolicySet extends BaseCompositeDecisionRule implements PolicySet
+final class DefaultPolicySet extends BaseCompositeDecisionRule implements PolicySet
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicySet.class);
 	
