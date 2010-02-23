@@ -93,7 +93,8 @@ abstract class BaseDecisionResponseExpression extends XacmlObject implements Pol
 			attr.add(new AttributeAssignment(
 					attrExp.getAttributeId(), 
 					attrExp.getCategory(), 
-					attrExp.getIssuer(), attrExp.evaluate(context)));
+					attrExp.getIssuer(), 
+					attrExp.evaluate(context)));
 		}
 		return attr;
 	}
