@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface PolicySet extends CompositeDecisionRule, Versionable
@@ -13,6 +14,9 @@ public interface PolicySet extends CompositeDecisionRule, Versionable
 	 * matches any request
 	 */
 	Target getTarget();
+	
+	
+	List<? extends CompositeDecisionRule> getDecisions();
 	
 	/**
 	 * Gets decision obligations

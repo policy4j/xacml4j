@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy;
 
-import java.util.List;
 
 /**
  * An interface for a decisions which contain
@@ -11,5 +10,4 @@ import java.util.List;
  */
 public interface CompositeDecisionRule  extends DecisionRule
 {
-	List<? extends DecisionRule> getDecisions();
 }

@@ -17,11 +17,6 @@ public class MockCompositeDecisionRule extends BaseCompositeDecisionRule
 	}
 
 	@Override
-	public List<? extends DecisionRule> getDecisions() {
-		return Collections.emptyList();
-	}
-
-	@Override
 	protected Decision doEvaluate(EvaluationContext context) {
 		return d;
 	}

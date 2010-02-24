@@ -78,7 +78,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	}
 	
 	@Override
-	public List<? extends DecisionRule> getDecisions() {
+	public List<Rule> getRules(){
 		return Collections.unmodifiableList(rules);
 	}
 	
