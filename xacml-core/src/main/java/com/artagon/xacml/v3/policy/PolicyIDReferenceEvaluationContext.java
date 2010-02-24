@@ -34,6 +34,6 @@ final class PolicyIDReferenceEvaluationContext extends
 
 	@Override
 	public PolicyIDReference getCurrentPolicyIDReference() {
-			return policyRef;
+		return policyRef;
 	}
 }
