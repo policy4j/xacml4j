@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class DenyOverridesTest extends XacmlPolicyTestCase
@@ -35,7 +36,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithAllNotApplicable()
+	public void testCombineWithAllNotApplicable() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -56,7 +57,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithPermit()
+	public void testCombineWithPermit() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -72,7 +73,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithDeny()
+	public void testCombineWithDeny() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -86,7 +87,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 		
 	@Test
-	public void testCombineWithInderterminateP()
+	public void testCombineWithInderterminateP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -98,7 +99,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithInderterminateD()
+	public void testCombineWithInderterminateD() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -110,7 +111,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithInderterminateDP()
+	public void testCombineWithInderterminateDP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -126,7 +127,7 @@ public class DenyOverridesTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testAnyDecisionDenyResultIsDeny()
+	public void testAnyDecisionDenyResultIsDeny() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);

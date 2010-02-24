@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class FirstApplicableTest extends XacmlPolicyTestCase
@@ -37,7 +38,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 
 	
 	@Test
-	public void testNoApplicableDecisions()
+	public void testNoApplicableDecisions() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -53,7 +54,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testPermit()
+	public void testPermit() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -67,7 +68,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testDeny()
+	public void testDeny() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -82,7 +83,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	
 		
 	@Test
-	public void testIndeterminate()
+	public void testIndeterminate() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -96,7 +97,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testIndeterminateD()
+	public void testIndeterminateD() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -110,7 +111,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testIndeterminateP()
+	public void testIndeterminateP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);
@@ -124,7 +125,7 @@ public class FirstApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testIndeterminateDP()
+	public void testIndeterminateDP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);

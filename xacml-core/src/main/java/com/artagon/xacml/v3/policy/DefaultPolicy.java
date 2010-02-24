@@ -83,7 +83,8 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	 * Implementation creates {@link PolicyDelegatingEvaluationContext}
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context) {
+	public EvaluationContext createContext(EvaluationContext context) throws EvaluationException 
+	{
 		Preconditions.checkArgument(context.getCurrentPolicy() == this 
 				|| context.getCurrentPolicy() == null);
 		if(context.getCurrentPolicy() == this){

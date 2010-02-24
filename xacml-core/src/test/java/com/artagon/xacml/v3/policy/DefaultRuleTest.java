@@ -226,7 +226,8 @@ public class DefaultRuleTest
 	}
 
 	@Test
-	public void testDenyRuleEvaluateIfApplicableWithTargetIndeterminate()
+	public void testDenyRuleEvaluateIfApplicableWithTargetIndeterminate() 
+		throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
@@ -237,6 +238,7 @@ public class DefaultRuleTest
 	
 	@Test
 	public void testDenyRuleEvaluateIfApplicableWithTargetNoMatch()
+		throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
@@ -273,7 +275,8 @@ public class DefaultRuleTest
 	
 	
 	@Test
-	public void testPermitRuleEvaluateIfApplicableWithTargetIndeterminate()
+	public void testPermitRuleEvaluateIfApplicableWithTargetIndeterminate() 
+		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
@@ -283,7 +286,8 @@ public class DefaultRuleTest
 	}
 	
 	@Test
-	public void testPermitRuleEvaluateIfApplicableWithTargetNoMatch()
+	public void testPermitRuleEvaluateIfApplicableWithTargetNoMatch() 
+		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);

@@ -74,7 +74,7 @@ public class DefaultPolicyTest
 	}
 	
 	@Test
-	public void testPolicyIsApplicableTargetMatch()
+	public void testPolicyIsApplicableTargetMatch() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
@@ -84,7 +84,7 @@ public class DefaultPolicyTest
 	}
 	
 	@Test
-	public void testPolicyIsApplicableTargetNoMatch()
+	public void testPolicyIsApplicableTargetNoMatch() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.NOMATCH);
@@ -94,7 +94,7 @@ public class DefaultPolicyTest
 	}
 	
 	@Test
-	public void testPolicyIsApplicableTargetIndeterminate()
+	public void testPolicyIsApplicableTargetIndeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);

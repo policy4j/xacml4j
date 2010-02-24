@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class DenyUnlessPermitTest extends XacmlPolicyTestCase
@@ -35,7 +36,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithPermit()
+	public void testCombineWithPermit() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -47,7 +48,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithNotApplicable()
+	public void testCombineWithNotApplicable() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -59,7 +60,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithIndeterminate()
+	public void testCombineWithIndeterminate() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -72,7 +73,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	
 	
 	@Test
-	public void testCombineWithIndeterminateD()
+	public void testCombineWithIndeterminateD() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -84,7 +85,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithIndeterminateP()
+	public void testCombineWithIndeterminateP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -96,7 +97,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithIndeterminateDP()
+	public void testCombineWithIndeterminateDP() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		decisions.add(r1);
@@ -108,7 +109,7 @@ public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testCombineWithDenyAndPermit()
+	public void testCombineWithDenyAndPermit() throws EvaluationException
 	{
 		DecisionRule r1 = createStrictMock(DecisionRule.class);
 		DecisionRule r2 = createStrictMock(DecisionRule.class);

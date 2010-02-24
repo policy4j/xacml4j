@@ -55,6 +55,10 @@ public interface EvaluationContext
 	 */
 	PolicySet getCurrentPolicySet();
 	
+	PolicyIDReference getCurrentPolicyIDReference();
+	
+	PolicySetIDReference getCurrentPolicySetIDReference();
+	
 	/**
 	 * Gets all advice instances from
 	 * decision evaluated in this context
@@ -132,4 +136,8 @@ public interface EvaluationContext
 	 */
 	BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
+	
+	Policy resolvePolicy(String id, VersionMatch version, VersionMatch earliest, VersionMatch latest);
+	PolicySet resolvePolicySet(String id, VersionMatch version, VersionMatch earliest, VersionMatch latest);
+	
 }

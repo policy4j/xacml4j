@@ -31,8 +31,6 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate;
 	}
 	
-	
-	
 	@Override
 	public Node getContent(AttributeCategoryId categoryId) {
 		return delegate.getContent(categoryId);
@@ -123,4 +121,29 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public void setVariableEvaluationResult(String variableId, Value value) {
 		delegate.setVariableEvaluationResult(variableId, value);
 	}
+
+	@Override
+	public Policy resolvePolicy(String id, VersionMatch version,
+			VersionMatch earliest, VersionMatch latest) {
+		return delegate.resolvePolicy(id, version, earliest, latest);
+	}
+
+	@Override
+	public PolicySet resolvePolicySet(String id, VersionMatch version,
+			VersionMatch earliest, VersionMatch latest) {
+		return delegate.resolvePolicySet(id, version, earliest, latest);
+	}
+
+	@Override
+	public PolicyIDReference getCurrentPolicyIDReference() {
+		return delegate.getCurrentPolicyIDReference();
+	}
+
+	@Override
+	public PolicySetIDReference getCurrentPolicySetIDReference() {
+		return delegate.getCurrentPolicySetIDReference();
+	}
+	
+	
+	
 }

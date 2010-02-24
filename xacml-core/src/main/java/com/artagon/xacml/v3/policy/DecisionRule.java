@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.policy;
 
-import java.util.Collection;
-
 import com.artagon.xacml.v3.Decision;
 
 public interface DecisionRule extends PolicyElement
@@ -18,10 +16,15 @@ public interface DecisionRule extends PolicyElement
 	 * or evaluate this decision
 	 * 
 	 * @param context a parent evaluation context
-	 * @return {@link EvaluationContext} instance to match or evaluate
-	 * this decision 
+	 * @return {@link EvaluationContext} an evaluation
+	 * context to be used to match or evaluate this decision
+	 * @exception EvaluationException if context can not be created,
+	 * for example in case of {@link PolicyIDReference} context
+	 * can not be created because ID reference can not
+	 * be resolved to an actual policy
 	 */
-	EvaluationContext createContext(EvaluationContext context);
+	EvaluationContext createContext(EvaluationContext context) 
+		throws EvaluationException;
 		
 	/**
 	 * Combines {@link #isApplicable(EvaluationContext)} with

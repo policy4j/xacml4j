@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
 
 public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
@@ -29,9 +30,12 @@ public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<Comp
 		EvaluationContext policyContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
-			policyContext = d.createContext(context);
+			try{
+				policyContext = d.createContext(context);
+			}catch(EvaluationException e){
+				return Decision.INDETERMINATE;
+			}
 			MatchResult r = d.isApplicable(policyContext);
-			log.debug("Decision id=\"{}\" applicability=\"{}\"", d.getId(), r);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;
 			}

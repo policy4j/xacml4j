@@ -18,6 +18,7 @@ import com.artagon.xacml.v3.Obligation;
 class BaseEvaluationContext implements EvaluationContext
 {
 	private AttributeResolver attributeService;
+	private PolicyResolver policyResolver;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -124,6 +125,24 @@ class BaseEvaluationContext implements EvaluationContext
 	public Policy getCurrentPolicy() {
 		return null;
 	}
+	
+	/**
+	 * Implementation always
+	 * returns <code>null</code>
+	 */
+	@Override
+	public PolicyIDReference getCurrentPolicyIDReference() {
+		return null;
+	}
+	
+	/**
+	 * Implementation always
+	 * returns <code>null</code>
+	 */
+	@Override
+	public PolicySetIDReference getCurrentPolicySetIDReference() {
+		return null;
+	}
 
 	/**
 	 * Implementation always
@@ -159,5 +178,19 @@ class BaseEvaluationContext implements EvaluationContext
 		policyCache = new HashMap<String, Value>();
 		policyCache.put(variableId, value);
 		variableEvaluationCache.put(p.getId(), policyCache);
+	}
+
+	@Override
+	public Policy resolvePolicy(String id, VersionMatch version,
+			VersionMatch earliest, VersionMatch latest) {
+		return policyResolver.resolvePolicy(id, version, earliest, latest);
+	}
+
+	@Override
+	public PolicySet resolvePolicySet(String id, VersionMatch version,
+			VersionMatch earliest, VersionMatch latest) {
+		return policyResolver.resolvePolicySet(id, version, earliest, latest);
 	}	
+	
+	
 }
