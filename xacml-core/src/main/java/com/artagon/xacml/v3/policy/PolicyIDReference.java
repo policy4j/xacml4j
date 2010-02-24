@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
-public interface PolicyIDReference extends CompositeDecisionRule
+public interface PolicyIDReference extends CompositeDecisionRuleIDReference
 {
 	
 }

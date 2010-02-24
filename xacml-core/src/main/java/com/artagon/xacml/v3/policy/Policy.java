@@ -2,8 +2,15 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-public interface Policy extends CompositeDecisionRule
+public interface Policy extends CompositeDecisionRule, Versionable
 {
+	/**
+	 * Gets policy version
+	 * 
+	 * @return {@link Version} instance
+	 */
+	Version getVersion();
+	
 	/**
 	 * Gets rule target
 	 * 

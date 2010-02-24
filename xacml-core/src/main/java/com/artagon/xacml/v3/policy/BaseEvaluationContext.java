@@ -181,16 +181,13 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Policy resolvePolicy(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		return policyResolver.resolvePolicy(id, version, earliest, latest);
+	public Policy resolve(PolicyIDReference ref) throws EvaluationException {
+		return policyResolver.resolve(ref);
 	}
 
 	@Override
-	public PolicySet resolvePolicySet(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		return policyResolver.resolvePolicySet(id, version, earliest, latest);
-	}	
-	
-	
+	public PolicySet resolve(PolicySetIDReference ref)
+			throws EvaluationException {
+		return policyResolver.resolve(ref);
+	}
 }

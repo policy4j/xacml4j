@@ -12,7 +12,7 @@ public class Version extends XacmlObject implements Comparable<Version>
 	private String value;
     private int[] version;
 
-    public Version(String v) 
+    private Version(String v) 
     {
     	Preconditions.checkNotNull(v);
     	this.value = v;
@@ -51,5 +51,11 @@ public class Version extends XacmlObject implements Comparable<Version>
 
     public static Version valueOf(String version) {
         return new Version(version);
+    }
+    
+    public static Version valueOf(int version)
+    {
+    	Preconditions.checkArgument(version > 0);
+    	return valueOf(Integer.toString(version));
     }
 }

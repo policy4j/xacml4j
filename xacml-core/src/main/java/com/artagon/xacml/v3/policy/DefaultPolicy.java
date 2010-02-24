@@ -12,7 +12,6 @@ import com.artagon.xacml.v3.Decision;
 
 final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
-	
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
 	private DecisionCombiningAlgorithm<Rule> combine;
@@ -31,14 +30,15 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	 * @param obligationExpressions an obligation expressions
 	 */
 	public DefaultPolicy(
-			String policyId, 
+			String policyId,
+			Version version,
 			Target target, 
 			Collection<VariableDefinition> variables, 
 			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(policyId, target, adviceExpressions, obligationExpressions);
+		super(policyId, version, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(variables);
 		Preconditions.checkNotNull(rules);
 		Preconditions.checkNotNull(combine);
@@ -50,13 +50,16 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		}
 	}
 	
-	public DefaultPolicy(String policyId, 
+	public DefaultPolicy(
+			String policyId, 
+			Version version,
 			Collection<Rule> rules, 
 			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<AdviceExpression> advice,
 			Collection<ObligationExpression> obligations)
 	{
-		this(policyId, null, 
+		this(policyId, version,
+				null, 
 				Collections.<VariableDefinition>emptyList(),
 				combine,
 				rules,

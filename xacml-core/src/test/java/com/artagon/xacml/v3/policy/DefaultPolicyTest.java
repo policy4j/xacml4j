@@ -66,7 +66,9 @@ public class DefaultPolicyTest
 		adviceExpressions.add(denyAdviceExp);
 		adviceExpressions.add(permitAdviceExp);
 		
-		this.policy = new DefaultPolicy("test", target, 
+		this.policy = new DefaultPolicy("test", 
+				Version.valueOf(1),
+				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
 		

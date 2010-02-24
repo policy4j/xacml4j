@@ -10,7 +10,7 @@ public class MockCompositeDecisionRule extends BaseCompositeDecisionRule
 	private Decision d;
 	
 	public MockCompositeDecisionRule(Decision d, MatchResult m) {
-		super("MockCompisiteDecision", new MockTarget(m), 
+		super("MockCompisiteDecision", Version.valueOf(1), new MockTarget(m), 
 				Collections.<AdviceExpression>emptyList(),
 				Collections.<ObligationExpression>emptyList());
 		this.d = d;

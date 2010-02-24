@@ -30,13 +30,16 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	 * @param adviceExpressions a collection of advice expressions
 	 * @param obligationExpressions a collection of obligation expressions
 	 */
-	public DefaultPolicySet(String id, Target target, 
+	public DefaultPolicySet(
+			String id, 
+			Version version,
+			Target target, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
 			Collection<? extends CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		super(id, target, adviceExpressions, obligationExpressions);
+		super(id, version, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);

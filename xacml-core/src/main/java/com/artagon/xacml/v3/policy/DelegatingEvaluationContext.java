@@ -121,29 +121,37 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public void setVariableEvaluationResult(String variableId, Value value) {
 		delegate.setVariableEvaluationResult(variableId, value);
 	}
-
+	
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
 	@Override
-	public Policy resolvePolicy(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		return delegate.resolvePolicy(id, version, earliest, latest);
+	public Policy resolve(PolicyIDReference ref) throws EvaluationException 
+	{
+		return delegate.resolve(ref);
 	}
 
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
 	@Override
-	public PolicySet resolvePolicySet(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		return delegate.resolvePolicySet(id, version, earliest, latest);
+	public PolicySet resolve(PolicySetIDReference ref) throws EvaluationException {
+		return delegate.resolve(ref);
 	}
 
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
 	@Override
 	public PolicyIDReference getCurrentPolicyIDReference() {
 		return delegate.getCurrentPolicyIDReference();
 	}
 
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
 	@Override
 	public PolicySetIDReference getCurrentPolicySetIDReference() {
 		return delegate.getCurrentPolicySetIDReference();
 	}
-	
-	
-	
 }
