@@ -14,15 +14,6 @@ public interface DecisionRule extends PolicyElement
 	String getId();
 	
 	/**
-	 * Gets decision target
-	 * 
-	 * @return {@link DefaultTarget} or
-	 * <code>null</code> if decision
-	 * matches any request
-	 */
-	Target getTarget();
-	
-	/**
 	 * Creates an evaluation context to match 
 	 * or evaluate this decision
 	 * 
@@ -31,23 +22,7 @@ public interface DecisionRule extends PolicyElement
 	 * this decision 
 	 */
 	EvaluationContext createContext(EvaluationContext context);
-	
-	/**
-	 * Gets decision obligations
-	 * 
-	 * @return collection of {@link ObligationExpression}
-	 * instances
-	 */
-	Collection<ObligationExpression> getObligationExpressions();
-	
-	/**
-	 * Gets decision advice expressions
-	 * 
-	 * @return collection of {@link AdviceExpression}
-	 * instances
-	 */
-	Collection<AdviceExpression> getAdviceExpressions();
-	
+		
 	/**
 	 * Combines {@link #isApplicable(EvaluationContext)} with
 	 * an actual decision evaluation to one invocation.

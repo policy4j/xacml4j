@@ -63,17 +63,14 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		return id;
 	}
 	
-	@Override
 	public final Target getTarget(){
 		return target;
 	}
 	
-	@Override
 	public final Collection<ObligationExpression> getObligationExpressions(){
 		return Collections.unmodifiableCollection(obligationExpressions);
 	}
 	
-	@Override
 	public final Collection<AdviceExpression> getAdviceExpressions(){
 		return Collections.unmodifiableCollection(adviceExpressions);
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * An interface for a decisions which contain
  * other decision rules. Example of an implementation
- * of such interface is XACML policy or policy set
+ * of such interface is {@link Policy} or {@link PolicySet}
  * 
  * @author Giedrius Trumpickas
  */

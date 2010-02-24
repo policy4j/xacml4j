@@ -5,6 +5,15 @@ import java.util.Collection;
 public interface Policy extends CompositeDecisionRule
 {
 	/**
+	 * Gets rule target
+	 * 
+	 * @return {@link Target} or
+	 * <code>null</code> if rule 
+	 * matches any request
+	 */
+	Target getTarget();
+	
+	/**
 	 * Gets policy variable definitions
 	 * 
 	 * @return a collection of {@link VariableDefinition} instances
@@ -19,4 +28,20 @@ public interface Policy extends CompositeDecisionRule
 	 * if variable definition can not be resolved
 	 */
 	VariableDefinition getVariableDefinition(String variableId);	
+	
+	/**
+	 * Gets decision obligations
+	 * 
+	 * @return collection of {@link ObligationExpression}
+	 * instances
+	 */
+	Collection<ObligationExpression> getObligationExpressions();
+	
+	/**
+	 * Gets decision advice expressions
+	 * 
+	 * @return collection of {@link AdviceExpression}
+	 * instances
+	 */
+	Collection<AdviceExpression> getAdviceExpressions();
 }

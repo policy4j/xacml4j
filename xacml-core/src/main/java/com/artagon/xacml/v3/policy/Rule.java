@@ -1,7 +1,18 @@
 package com.artagon.xacml.v3.policy;
 
+import java.util.Collection;
+
 public interface Rule extends DecisionRule
 {
+	/**
+	 * Gets rule target
+	 * 
+	 * @return {@link Target} or
+	 * <code>null</code> if rule 
+	 * matches any request
+	 */
+	Target getTarget();
+	
 	/**
 	 * Gets rule effect.
 	 * 
@@ -15,4 +26,20 @@ public interface Rule extends DecisionRule
 	 * @return boolean
 	 */
 	Condition getCondition();
+	
+	/**
+	 * Gets decision obligations
+	 * 
+	 * @return collection of {@link ObligationExpression}
+	 * instances
+	 */
+	Collection<ObligationExpression> getObligationExpressions();
+	
+	/**
+	 * Gets decision advice expressions
+	 * 
+	 * @return collection of {@link AdviceExpression}
+	 * instances
+	 */
+	Collection<AdviceExpression> getAdviceExpressions();
 }
