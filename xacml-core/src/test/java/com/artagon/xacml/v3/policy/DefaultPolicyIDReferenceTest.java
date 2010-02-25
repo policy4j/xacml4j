@@ -42,6 +42,13 @@ public class DefaultPolicyIDReferenceTest
 		verify(policyResolver);
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testPolicyIDResolutionViaWrongEvaluationContext() throws EvaluationException
+	{
+		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
+		ref.evaluate(context);
+	}
+	
 	@Test
 	public void testEvaluatePolicyIDReference() throws EvaluationException
 	{

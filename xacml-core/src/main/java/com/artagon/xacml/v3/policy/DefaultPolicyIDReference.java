@@ -53,7 +53,5 @@ public final class DefaultPolicyIDReference extends
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
-	}
-	
-	
+	}	
 }
