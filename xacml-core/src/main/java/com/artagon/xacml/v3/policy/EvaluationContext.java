@@ -55,6 +55,11 @@ public interface EvaluationContext
 	 */
 	PolicySet getCurrentPolicySet();
 	
+	/**
+	 * Gets current {@link PolicyIDReference}
+	 * 
+	 * @return current {@link PolicyIDReference}
+	 */
 	PolicyIDReference getCurrentPolicyIDReference();
 	
 	PolicySetIDReference getCurrentPolicySetIDReference();

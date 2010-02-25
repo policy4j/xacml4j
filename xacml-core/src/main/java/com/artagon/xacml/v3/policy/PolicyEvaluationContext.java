@@ -11,9 +11,10 @@ final class PolicyEvaluationContext extends BaseEvaluationContext
 	 * @param policy
 	 * @param service
 	 */
-	PolicyEvaluationContext(Policy policy, AttributeResolver service)
+	PolicyEvaluationContext(Policy policy, AttributeResolver service, 
+			PolicyResolver policyResolver)
 	{
-		super(service);
+		super(service, policyResolver);
 		Preconditions.checkNotNull(policy);
 		this.policy = policy;
 	}

@@ -7,8 +7,9 @@ final class PolicySetEvaluationContext extends BaseEvaluationContext
 	private PolicySet policySet;
 	
 	public PolicySetEvaluationContext(PolicySet policySet, 
-			AttributeResolver attributeService){
-		super(attributeService);
+			AttributeResolver attributeService, 
+			PolicyResolver policyResolver){
+		super(attributeService, policyResolver);
 		Preconditions.checkNotNull(policySet);
 		this.policySet = policySet;
 	}

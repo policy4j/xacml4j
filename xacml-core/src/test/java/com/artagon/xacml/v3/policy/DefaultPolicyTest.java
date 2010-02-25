@@ -72,7 +72,9 @@ public class DefaultPolicyTest
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
 		
-		this.context = new DefaultEvaluationContextFactory(createStrictMock(AttributeResolver.class)).createContext(policy);
+		this.context = new DefaultEvaluationContextFactory(
+				createStrictMock(AttributeResolver.class), 
+				createStrictMock(PolicyResolver.class)).createContext(policy);
 	}
 	
 	@Test

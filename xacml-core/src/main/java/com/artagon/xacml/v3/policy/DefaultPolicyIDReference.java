@@ -11,6 +11,10 @@ public final class DefaultPolicyIDReference extends
 			VersionMatch earliest, VersionMatch latest) {
 		super(id, version, earliest, latest);
 	}
+	
+	public DefaultPolicyIDReference(String id, VersionMatch version) {
+		super(id, version, null, null);
+	}
 
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)

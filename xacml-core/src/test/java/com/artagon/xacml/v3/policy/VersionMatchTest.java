@@ -1,8 +1,9 @@
 package com.artagon.xacml.v3.policy;
 
-import org.junit.Test;
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class VersionMatchTest
 {

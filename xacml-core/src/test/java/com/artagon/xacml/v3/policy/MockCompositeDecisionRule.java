@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
 import java.util.Collections;
-import java.util.List;
 
 import com.artagon.xacml.v3.Decision;
 

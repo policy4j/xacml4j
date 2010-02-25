@@ -12,11 +12,11 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 
 
 
-public class MockAttributeResolutionService implements AttributeResolver
+public class MockAttributeResolver implements AttributeResolver
 {
 	private Map<AttributeCategoryId, Map<String, AttributeHolder>> attributes;
 	
-	public MockAttributeResolutionService(){
+	public MockAttributeResolver(){
 		this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeHolder>>();
 	}
 	

@@ -27,17 +27,22 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	private Map<String, Map<String, Value>> variableEvaluationCache;
 	
-	protected BaseEvaluationContext(AttributeResolver attributeService){
-		this(false, attributeService);
+	protected BaseEvaluationContext(AttributeResolver attributeService, 
+			PolicyResolver policyResolver){
+		this(false, attributeService, policyResolver);
 	}
 	
-	protected BaseEvaluationContext(boolean validateFuncParams, 
-			AttributeResolver attributeService){
+	protected BaseEvaluationContext(
+			boolean validateFuncParams, 
+			AttributeResolver attributeService,
+			PolicyResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
+		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.attributeService = attributeService;
+		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new HashMap<String, Map<String,Value>>();
 	}
 	

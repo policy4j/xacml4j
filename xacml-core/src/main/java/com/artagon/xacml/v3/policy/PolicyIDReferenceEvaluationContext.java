@@ -21,8 +21,8 @@ final class PolicyIDReferenceEvaluationContext extends
 			throws EvaluationException 
 	{
 		super(context);
-		Preconditions.checkNotNull(policy);
 		Preconditions.checkNotNull(context.getCurrentPolicySet());
+		Preconditions.checkArgument(context.getCurrentPolicy() == null);
 		this.policyRef = ref;
 		this.policy = context.resolve(policyRef);
 	}
