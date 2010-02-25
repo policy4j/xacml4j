@@ -1,8 +1,5 @@
 package com.artagon.xacml.v3.policy.combine;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.XacmlObject;
@@ -14,8 +11,6 @@ import com.artagon.xacml.v3.policy.PolicyVisitor;
 public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject
 	implements DecisionCombiningAlgorithm <D>
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseDecisionCombiningAlgorithm.class);
-	
 	private String algorithmId;
 	
 	/**
@@ -50,8 +45,7 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> ex
 	 * @param decision an decision
 	 * @return
 	 */
-	protected final Decision evaluateIfApplicable(EvaluationContext context, D decision) 
-	{
+	protected final Decision evaluateIfApplicable(EvaluationContext context, D decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluateIfApplicable(decisionContext);
 	}

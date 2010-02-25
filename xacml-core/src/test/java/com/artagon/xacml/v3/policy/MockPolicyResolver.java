@@ -28,12 +28,13 @@ public class MockPolicyResolver implements PolicyResolver
 	}
 	
 	@Override
-	public Policy resolve(PolicyIDReference ref)
+	public Policy resolve(EvaluationContext context, PolicyIDReference ref)
 			throws PolicyResolutionException {
 		return policies.get(ref.getId());
 	}
 	@Override
-	public PolicySet resolve(PolicySetIDReference ref)
+	public PolicySet resolve(EvaluationContext context,
+			PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		return policySets.get(ref.getId());
 	}

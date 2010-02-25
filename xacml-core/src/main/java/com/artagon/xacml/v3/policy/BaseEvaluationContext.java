@@ -187,12 +187,12 @@ class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public Policy resolve(PolicyIDReference ref) throws PolicyResolutionException {
-		return policyResolver.resolve(ref);
+		return policyResolver.resolve(this, ref);
 	}
 
 	@Override
 	public PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
-		return policyResolver.resolve(ref);
+		return policyResolver.resolve(this, ref);
 	}
 }
