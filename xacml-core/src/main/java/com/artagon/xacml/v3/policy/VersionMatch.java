@@ -1,8 +1,9 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.XacmlObject;
 
-public class VersionMatch 
+public class VersionMatch extends XacmlObject
 {
 	private String pattern;
     public static final String PATTERN = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";

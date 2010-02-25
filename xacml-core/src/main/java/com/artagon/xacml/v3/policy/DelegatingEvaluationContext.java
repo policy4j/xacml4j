@@ -126,7 +126,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Policy resolve(PolicyIDReference ref) throws EvaluationException 
+	public Policy resolve(PolicyIDReference ref) throws PolicyResolutionException 
 	{
 		return delegate.resolve(ref);
 	}
@@ -135,7 +135,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public PolicySet resolve(PolicySetIDReference ref) throws EvaluationException {
+	public PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException {
 		return delegate.resolve(ref);
 	}
 

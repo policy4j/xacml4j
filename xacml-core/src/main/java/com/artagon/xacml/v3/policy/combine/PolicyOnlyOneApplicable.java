@@ -5,7 +5,6 @@ import java.util.List;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
 
 public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
@@ -25,11 +24,7 @@ public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<Comp
 		EvaluationContext policyContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
-			try{
-				policyContext = d.createContext(context);
-			}catch(EvaluationException e){
-				return Decision.INDETERMINATE;
-			}
+			policyContext = d.createContext(context);
 			MatchResult r = d.isApplicable(policyContext);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;

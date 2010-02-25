@@ -6,7 +6,7 @@ final class PolicyIDReferenceEvaluationContext extends
 		DelegatingEvaluationContext 
 {
 	private PolicyIDReference policyRef;
-	private Policy policy;
+	private Policy referencedPolicy;
 
 	/**
 	 * Creates policy evaluation context with a given parent context
@@ -17,19 +17,21 @@ final class PolicyIDReferenceEvaluationContext extends
 	 *            a policy to be evaluated
 	 */
 	public PolicyIDReferenceEvaluationContext(EvaluationContext context, 
-			PolicyIDReference ref) 
-			throws EvaluationException 
+			PolicyIDReference policyIDRef, Policy referencedPolicy) 
 	{
 		super(context);
+		Preconditions.checkNotNull(policyIDRef);
 		Preconditions.checkNotNull(context.getCurrentPolicySet());
 		Preconditions.checkArgument(context.getCurrentPolicy() == null);
-		this.policyRef = ref;
-		this.policy = context.resolve(policyRef);
+		Preconditions.checkArgument(referencedPolicy == null ||
+				policyIDRef.getId().equals(referencedPolicy.getId()));
+		this.policyRef = policyIDRef;
+		this.referencedPolicy = referencedPolicy;
 	}
 
 	@Override
 	public Policy getCurrentPolicy() {
-		return policy;
+		return referencedPolicy;
 	}
 
 	@Override

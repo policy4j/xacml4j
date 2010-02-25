@@ -9,7 +9,6 @@ import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject
@@ -53,12 +52,7 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> ex
 	 */
 	protected final Decision evaluateIfApplicable(EvaluationContext context, D decision) 
 	{
-		try{
-			EvaluationContext decisionContext = decision.createContext(context);
-			return decision.evaluateIfApplicable(decisionContext);
-		}catch(EvaluationException e){
-			log.error("Failed to create an evaluation context", e);
-			return Decision.INDETERMINATE;
-		}
+		EvaluationContext decisionContext = decision.createContext(context);
+		return decision.evaluateIfApplicable(decisionContext);
 	}
 }

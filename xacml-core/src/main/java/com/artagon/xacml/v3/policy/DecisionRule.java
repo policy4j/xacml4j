@@ -18,13 +18,8 @@ public interface DecisionRule extends PolicyElement
 	 * @param context a parent evaluation context
 	 * @return {@link EvaluationContext} an evaluation
 	 * context to be used to match or evaluate this decision
-	 * @exception EvaluationException if context can not be created,
-	 * for example in case of {@link PolicyIDReference} context
-	 * can not be created because ID reference can not
-	 * be resolved to an actual policy
 	 */
-	EvaluationContext createContext(EvaluationContext context) 
-		throws EvaluationException;
+	EvaluationContext createContext(EvaluationContext context);
 		
 	/**
 	 * Combines {@link #isApplicable(EvaluationContext)} with

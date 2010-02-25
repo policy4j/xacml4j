@@ -142,7 +142,7 @@ public interface EvaluationContext
 	BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
 	
-	Policy resolve(PolicyIDReference ref) throws EvaluationException;
-	PolicySet resolve(PolicySetIDReference ref) throws EvaluationException;
+	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
+	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
 	
 }

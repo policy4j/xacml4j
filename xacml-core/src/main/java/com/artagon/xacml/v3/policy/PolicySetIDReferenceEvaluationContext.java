@@ -9,13 +9,13 @@ final class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationCo
 
 	public PolicySetIDReferenceEvaluationContext(
 			EvaluationContext context, PolicySetIDReference policySetIDRef, 
-			PolicySet policySet) {
+			PolicySet resolvedPolicySet) {
 		super(context);
-		Preconditions.checkNotNull(policySet);
 		Preconditions.checkNotNull(policySetIDRef);
-		Preconditions.checkArgument(policySet.getId().equals(policySetIDRef.getId()));
+		Preconditions.checkArgument(resolvedPolicySet != null && 
+				resolvedPolicySet.getId().equals(policySetIDRef.getId()));
 		this.policySetIDRef = policySetIDRef;
-		this.referencedPolicySet = policySet;
+		this.referencedPolicySet = resolvedPolicySet;
 	}
 
 	@Override

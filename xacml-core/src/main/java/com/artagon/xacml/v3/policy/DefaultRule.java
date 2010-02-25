@@ -78,8 +78,7 @@ final class DefaultRule extends BaseDesicionRule implements Rule
 	 * a context with a parent policy
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context) 
-		throws EvaluationException{
+	public EvaluationContext createContext(EvaluationContext context) {
 		return context;
 	}
 	

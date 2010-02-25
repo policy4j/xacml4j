@@ -6,6 +6,8 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,14 +34,20 @@ public class DefaultPolicyIDReferenceTest
 		this.context = contextFactory.createContext(policySet);
 	}
 	
-	@Test(expected=PolicyResolutionException.class)
-	public void testPolicyIDResolutionFailsWhenCreatingReferenceContext() throws EvaluationException
+	@Test
+	public void testPolicyFailsToBeResolved() throws EvaluationException
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(ref)).andThrow(new PolicyResolutionException("Failed to resolve"));
 		replay(policyResolver);
-		ref.createContext(context);
+		EvaluationContext policyRefContext = ref.createContext(context);
+		assertNull(policyRefContext.getCurrentPolicy());
+		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		verify(policyResolver);
+		reset(policyResolver);
+		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
+		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -50,7 +58,7 @@ public class DefaultPolicyIDReferenceTest
 	}
 	
 	@Test
-	public void testEvaluatePolicyIDReference() throws EvaluationException
+	public void testEvaluatePolicyIDReference() throws PolicyResolutionException
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(ref)).andReturn(policy);
