@@ -6,10 +6,8 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-
 public interface AttributeResolver 
 {
-
 	/**
 	 * Resolves an attribute by given category, attribute id,
 	 * an attribute data type and issuer

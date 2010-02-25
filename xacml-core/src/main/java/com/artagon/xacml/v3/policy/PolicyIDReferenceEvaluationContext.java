@@ -16,7 +16,7 @@ final class PolicyIDReferenceEvaluationContext extends
 	 * @param policy
 	 *            a policy to be evaluated
 	 */
-	PolicyIDReferenceEvaluationContext(EvaluationContext context, 
+	public PolicyIDReferenceEvaluationContext(EvaluationContext context, 
 			PolicyIDReference ref) 
 			throws EvaluationException 
 	{
