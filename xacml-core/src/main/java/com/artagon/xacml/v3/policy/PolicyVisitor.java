@@ -51,12 +51,17 @@ public interface PolicyVisitor
 	void visitEnter(DecisionCombiningAlgorithm<? extends DecisionRule> combine);
 	void visitLeave(DecisionCombiningAlgorithm<? extends DecisionRule> combine);
 	
+	void visitEnter(PolicyIDReference ref);
+	void visitLeave(PolicyIDReference ref);
 	
 	void visitEnter(Policy policy);
 	void visitLeave(Policy policy);
 	
 	void visitEnter(PolicySet policySet);
 	void visitLeave(PolicySet policySet);
+	
+	void visitEnter(PolicySetIDReference ref);
+	void visitLeave(PolicySetIDReference ref);
 	
 	void visitEnter(ObligationExpression obligation);
 	void visitLeave(ObligationExpression obligation);

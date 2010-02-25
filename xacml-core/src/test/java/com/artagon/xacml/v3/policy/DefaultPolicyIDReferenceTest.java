@@ -2,12 +2,15 @@ package com.artagon.xacml.v3.policy;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.artagon.xacml.v3.Decision;
 
 
 public class DefaultPolicyIDReferenceTest
@@ -40,15 +43,17 @@ public class DefaultPolicyIDReferenceTest
 	}
 	
 	@Test
-	public void testCreatePolicyIDRefEvaluationContext() throws EvaluationException
+	public void testEvaluatePolicyIDReference() throws EvaluationException
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(ref)).andReturn(policy);
-		replay(policyResolver, policy);
+		replay(policyResolver);
 		EvaluationContext ctx = ref.createContext(context);
-		assertEquals(policy, ctx.getCurrentPolicy());
-		assertEquals(ref, ctx.getCurrentPolicyIDReference());
-		assertEquals(policySet, ctx.getCurrentPolicySet());
+		reset(policyResolver);
+		expect(policy.getId()).andReturn("testId");
+		expect(policy.evaluate(ctx)).andReturn(Decision.PERMIT);
+		replay(policyResolver, policy);
+		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
 		verify(policyResolver, policy);
 	}
 }

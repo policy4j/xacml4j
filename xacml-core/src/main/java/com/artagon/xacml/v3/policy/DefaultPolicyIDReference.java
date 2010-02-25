@@ -48,4 +48,12 @@ public final class DefaultPolicyIDReference extends
 		Preconditions.checkArgument(context.getCurrentPolicy().getId().equals(getId()));
 		return context.getCurrentPolicySet().isApplicable(context);
 	}
+
+	@Override
+	public void accept(PolicyVisitor v) {
+		v.visitEnter(this);
+		v.visitLeave(this);
+	}
+	
+	
 }

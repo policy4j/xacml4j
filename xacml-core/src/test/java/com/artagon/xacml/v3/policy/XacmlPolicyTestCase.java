@@ -7,6 +7,7 @@ import org.junit.Before;
 public class XacmlPolicyTestCase
 {	
 	protected EvaluationContext context;
+	protected EvaluationContextFactory contextFactory;
 	protected MockAttributeResolver attributeService;
 	protected MockPolicyResolver policyResolver;
 	protected Policy currentPolicy;
@@ -16,7 +17,7 @@ public class XacmlPolicyTestCase
 		this.attributeService = new MockAttributeResolver();
 		this.policyResolver = new MockPolicyResolver();
 		this.currentPolicy = createStrictMock(Policy.class);
-		EvaluationContextFactory f = new DefaultEvaluationContextFactory(attributeService, policyResolver);
-		this.context = f.createContext(currentPolicy);
+		this.contextFactory = new DefaultEvaluationContextFactory(attributeService, policyResolver);
+		this.context = contextFactory.createContext(currentPolicy);
 	}
 }

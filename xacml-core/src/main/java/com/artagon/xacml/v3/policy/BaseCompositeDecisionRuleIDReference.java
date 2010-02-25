@@ -46,9 +46,4 @@ abstract class BaseCompositeDecisionRuleIDReference implements CompositeDecision
 		(earliest == null || earliest.match(v)) &&
 		(latest == null || latest.match(v)));
 	}
-
-	@Override
-	public void accept(PolicyVisitor v) {
-		
-	}
 }
