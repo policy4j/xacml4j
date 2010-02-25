@@ -85,7 +85,7 @@ final class DefaultRule extends BaseDesicionRule implements Rule
 	
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
-		return true;
+		return context.getCurrentPolicy() != null;
 	}
 	
 	/*
