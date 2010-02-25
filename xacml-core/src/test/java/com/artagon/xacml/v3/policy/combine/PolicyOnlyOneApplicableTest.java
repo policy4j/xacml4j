@@ -1,5 +1,9 @@
 package com.artagon.xacml.v3.policy.combine;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
@@ -10,8 +14,8 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.MockCompositeDecisionRule;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
@@ -26,63 +30,99 @@ public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 	}
 	
 	@Test
-	public void testWithOnlyOneDecisionPermitAndNoMatch()
+	public void testDecisionIsNoMatchContinueEvaluation() throws EvaluationException
 	{
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.NOMATCH));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.NOMATCH);
+		expect(d2.createContext(context)).andReturn(context);
+		expect(d2.isApplicable(context)).andReturn(MatchResult.NOMATCH);
+		replay(d1, d2);
 		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
+		verify(d1, d2);
 	}
 	
 	@Test
-	public void testWithOnlyOneDecisionDenyAndNoMatch()
+	public void testDecisionIndeterminateStopsEvaluation() throws EvaluationException
 	{
-		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.NOMATCH));
-		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
-	}
-	
-	@Test
-	public void testWithOnlyOneDecisionIndeterminateAndNoMatch()
-	{
-		d.add(new MockCompositeDecisionRule(Decision.INDETERMINATE, MatchResult.NOMATCH));
-		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
-	}
-	
-	@Test
-	public void testWithOnlyOneDecisionPermitAndMatchIndeterminate()
-	{
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.INDETERMINATE);
+		replay(d1, d2);
 		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		verify(d1, d2);
 	}
 	
 	@Test
-	public void testWithOnlyOneDecisionDenyAndMatchIndeterminate()
+	public void testMoreThanOneIsApplicable() throws EvaluationException
 	{
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.MATCH);
+		expect(d2.createContext(context)).andReturn(context);
+		expect(d2.isApplicable(context)).andReturn(MatchResult.MATCH);
+		replay(d1, d2);
 		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		verify(d1, d2);
 	}
 	
 	@Test
-	public void testWithOnlyOneDecisionIndeterminateAndMatchIndeterminate()
+	public void testOnlyOneIsApplicableAndDecisionIsPermit() throws EvaluationException
 	{
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.INDETERMINATE));
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.MATCH);
+		expect(d2.createContext(context)).andReturn(context);
+		expect(d2.isApplicable(context)).andReturn(MatchResult.NOMATCH);
+		expect(d1.evaluate(context)).andReturn(Decision.PERMIT);
+		replay(d1, d2);
+		assertEquals(Decision.PERMIT, c.combine(d, context));
+		verify(d1, d2);
 	}
 	
 	@Test
-	public void testMoreThanOneIsApplicable()
+	public void testOnlyOneIsApplicableAndDecisionIsDeny() throws EvaluationException
 	{
-		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.MATCH));
-		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.MATCH));
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.MATCH);
+		expect(d2.createContext(context)).andReturn(context);
+		expect(d2.isApplicable(context)).andReturn(MatchResult.NOMATCH);
+		expect(d1.evaluate(context)).andReturn(Decision.DENY);
+		replay(d1, d2);
+		assertEquals(Decision.DENY, c.combine(d, context));
+		verify(d1, d2);
 	}
 	
 	@Test
-	public void testOnlyOneIsApplicable()
+	public void testOnlyOneIsApplicableAndDecisionIsIndeterminate() throws EvaluationException
 	{
-		List<CompositeDecisionRule> d = new LinkedList<CompositeDecisionRule>();
-		d.add(new MockCompositeDecisionRule(Decision.PERMIT, MatchResult.MATCH));
-		d.add(new MockCompositeDecisionRule(Decision.DENY, MatchResult.INDETERMINATE));
-		d.add(new MockCompositeDecisionRule(Decision.INDETERMINATE, MatchResult.INDETERMINATE));
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		d.add(d1);
+		d.add(d2);
+		expect(d1.createContext(context)).andReturn(context);
+		expect(d1.isApplicable(context)).andReturn(MatchResult.MATCH);
+		expect(d2.createContext(context)).andReturn(context);
+		expect(d2.isApplicable(context)).andReturn(MatchResult.NOMATCH);
+		expect(d1.evaluate(context)).andReturn(Decision.INDETERMINATE);
+		replay(d1, d2);
 		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		verify(d1, d2);
 	}
 }

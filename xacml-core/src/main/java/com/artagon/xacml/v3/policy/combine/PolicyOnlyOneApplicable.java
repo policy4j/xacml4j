@@ -48,9 +48,6 @@ public class PolicyOnlyOneApplicable extends BaseDecisionCombiningAlgorithm<Comp
 			}
 			continue;
 		}
-		if(atLeastOne && log.isDebugEnabled()){
-			log.debug("Found one applicable decision id=\"{}\"", found.getId());
-		}
 		return atLeastOne?found.evaluate(policyContext):Decision.NOT_APPLICABLE;
 	}
 }
