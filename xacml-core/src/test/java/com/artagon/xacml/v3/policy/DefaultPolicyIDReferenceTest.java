@@ -62,7 +62,6 @@ public class DefaultPolicyIDReferenceTest
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andReturn(policy);
-		expect(policy.getId()).andReturn("testId");
 		replay(policy, policyResolver);
 		EvaluationContext ctx = ref.createContext(context);
 		reset(policy, policyResolver);

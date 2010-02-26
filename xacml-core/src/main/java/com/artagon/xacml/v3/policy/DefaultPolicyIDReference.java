@@ -26,13 +26,13 @@ public final class DefaultPolicyIDReference extends
 		if(context.getCurrentPolicyIDReference() ==  this){
 			return context;
 		}
-		Policy resolvedPolicy = null;
+		PolicyIDReferenceEvaluationContext refContext = new PolicyIDReferenceEvaluationContext(context, this);
 		try{
-			resolvedPolicy = context.resolve(this);
+			Policy resolvedPolicy = context.resolve(this);
+			return resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
-			log.debug("Failed to resolve Policy ID reference=\"{}\"", this);
+			return refContext;
 		}
-		return new PolicyIDReferenceEvaluationContext(context, this, resolvedPolicy);
 	}
 
 	@Override
