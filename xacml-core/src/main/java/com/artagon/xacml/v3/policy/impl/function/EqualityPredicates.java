@@ -1,9 +1,9 @@
-package com.artagon.xacml.v3.policy.function.impl;
+package com.artagon.xacml.v3.policy.impl.function;
 
 
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
+import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
+import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.policy.type.Base64BinaryType.Base64BinaryValue;

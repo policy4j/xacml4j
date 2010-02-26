@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.policy.impl.ParamValueTypeSequenceSpec;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;
 import com.artagon.xacml.v3.policy.type.IntegerType;

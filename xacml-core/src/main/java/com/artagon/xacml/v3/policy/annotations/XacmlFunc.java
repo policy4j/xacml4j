@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function.annotations;
+package com.artagon.xacml.v3.policy.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

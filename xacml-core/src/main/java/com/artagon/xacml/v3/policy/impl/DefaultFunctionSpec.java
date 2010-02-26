@@ -17,7 +17,6 @@ import com.artagon.xacml.v3.policy.FunctionInvocation;
 import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.ParamSpec;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
 

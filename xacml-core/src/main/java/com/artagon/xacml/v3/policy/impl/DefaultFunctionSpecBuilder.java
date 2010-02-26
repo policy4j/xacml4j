@@ -8,9 +8,6 @@ import com.artagon.xacml.v3.policy.FunctionInvocation;
 import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.FunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.ParamSpec;
-import com.artagon.xacml.v3.policy.ParamValueTypeSequenceSpec;
-import com.artagon.xacml.v3.policy.ParamValueTypeSpec;
 import com.artagon.xacml.v3.policy.ValueType;
 
 public class DefaultFunctionSpecBuilder 

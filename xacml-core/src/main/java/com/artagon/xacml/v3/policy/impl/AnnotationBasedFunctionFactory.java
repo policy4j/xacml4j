@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.policy.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -13,13 +13,12 @@ import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
-import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
-import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
+import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
+import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.annotations.XacmlParam;
+import com.artagon.xacml.v3.policy.annotations.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.policy.annotations.XacmlParamFuncReference;
+import com.artagon.xacml.v3.policy.annotations.XacmlParamVarArg;
 
 
 public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory

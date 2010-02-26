@@ -15,7 +15,6 @@ import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Match;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.ParamValueTypeSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 

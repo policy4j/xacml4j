@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.v3.policy.FunctionSpec;
 
