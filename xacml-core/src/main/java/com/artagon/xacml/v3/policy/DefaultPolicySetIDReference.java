@@ -18,10 +18,15 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		if(context.getCurrentPolicySetIDReference() ==  this){
 			return context;
 		}
-		PolicySet policySet = context.getCurrentPolicySet();
-		return new PolicySetIDReferenceEvaluationContext(context, this, policySet);
+		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context, this);
+		try{
+			PolicySet policySet = context.resolve(this);
+			return policySet.createContext(refContext);
+		}catch(PolicyResolutionException e){
+			return refContext;
+		}
 	}
-
+	
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);

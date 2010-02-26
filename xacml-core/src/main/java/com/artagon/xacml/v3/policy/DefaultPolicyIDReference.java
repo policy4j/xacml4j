@@ -1,16 +1,11 @@
 package com.artagon.xacml.v3.policy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 
 public final class DefaultPolicyIDReference extends 
 	BaseCompositeDecisionRuleIDReference implements PolicyIDReference
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyIDReference.class);
-	
 	public DefaultPolicyIDReference(String id, VersionMatch version,
 			VersionMatch earliest, VersionMatch latest) {
 		super(id, version, earliest, latest);

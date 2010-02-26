@@ -5,24 +5,15 @@ import com.artagon.xacml.util.Preconditions;
 final class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
 {
 	private PolicySetIDReference policySetIDRef;
-	private PolicySet referencedPolicySet;
 
 	public PolicySetIDReferenceEvaluationContext(
-			EvaluationContext context, PolicySetIDReference policySetIDRef, 
-			PolicySet resolvedPolicySet) {
+			EvaluationContext context, PolicySetIDReference policySetIDRef) {
 		super(context);
 		Preconditions.checkNotNull(policySetIDRef);
-		Preconditions.checkArgument(resolvedPolicySet != null && 
-				resolvedPolicySet.getId().equals(policySetIDRef.getId()));
+		Preconditions.checkNotNull(context.getCurrentPolicySet());
 		this.policySetIDRef = policySetIDRef;
-		this.referencedPolicySet = resolvedPolicySet;
 	}
-
-	@Override
-	public PolicySet getCurrentPolicySet() {
-		return referencedPolicySet;
-	}
-
+	
 	@Override
 	public PolicySetIDReference getCurrentPolicySetIDReference() {
 		return policySetIDRef;
