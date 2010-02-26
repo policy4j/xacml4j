@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3.policy.impl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.impl.ParamValueTypeSequenceSpec;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;

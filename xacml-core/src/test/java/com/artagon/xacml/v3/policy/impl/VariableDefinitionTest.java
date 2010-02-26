@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3.policy.impl;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -9,6 +9,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 
