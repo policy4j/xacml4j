@@ -4,6 +4,8 @@ import static org.easymock.EasyMock.createStrictMock;
 
 import org.junit.Before;
 
+import com.artagon.xacml.v3.policy.impl.DefaultEvaluationContextFactory;
+
 public class XacmlPolicyTestCase
 {	
 	protected EvaluationContext context;

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
@@ -20,6 +19,7 @@ import com.artagon.xacml.v3.policy.function.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.function.annotations.XacmlParamVarArg;
+import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
 
 
 public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory

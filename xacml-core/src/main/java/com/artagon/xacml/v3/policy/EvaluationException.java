@@ -5,16 +5,16 @@ package com.artagon.xacml.v3.policy;
 public class EvaluationException extends PolicyException
 {
 
-	protected EvaluationException(String template, Object... arguments) {
+	public EvaluationException(String template, Object... arguments) {
 		super(template, arguments);
 	}
 
-	protected EvaluationException(Throwable cause, String message,
+	public EvaluationException(Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
 	}
 
-	protected EvaluationException(Throwable cause) {
+	public EvaluationException(Throwable cause) {
 		super(cause);
 	}	
 }
