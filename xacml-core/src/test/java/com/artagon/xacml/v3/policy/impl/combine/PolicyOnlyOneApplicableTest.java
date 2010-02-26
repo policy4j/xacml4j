@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.combine;
+package com.artagon.xacml.v3.policy.impl.combine;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
+import com.artagon.xacml.v3.policy.impl.combine.PolicyOnlyOneApplicable;
 
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 {
