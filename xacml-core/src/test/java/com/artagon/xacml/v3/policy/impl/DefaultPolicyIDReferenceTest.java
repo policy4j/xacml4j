@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -9,12 +10,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.AttributeResolver;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -24,8 +27,6 @@ import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Version;
 import com.artagon.xacml.v3.policy.VersionMatch;
 
 public class DefaultPolicyIDReferenceTest
@@ -70,18 +71,23 @@ public class DefaultPolicyIDReferenceTest
 		ref.evaluate(context);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testEvaluatePolicyIDReference() throws PolicyResolutionException
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
-		DecisionCombiningAlgorithm<Rule> combine = createStrictMock(DecisionCombiningAlgorithm.class);
-		Rule rule = createStrictMock(Rule.class);
-		Policy policy = new DefaultPolicy("testId", Version.valueOf(1), combine, rule);
 		expect(policyResolver.resolve(context, ref)).andReturn(policy);
-		replay(policyResolver, rule, combine);
+		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		expect(policy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+			public EvaluationContext answer() throws Throwable {
+				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
+				return new PolicyDelegatingEvaluationContext(ctx, policy);
+	        }
+		});
+		expect(policy.getId()).andReturn("testId");
+		expect(policy.evaluate(refContext.getValue())).andReturn(Decision.PERMIT);
+		replay(policyResolver, policy);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
-		verify(policyResolver, rule, combine);
+		verify(policyResolver, policy);
 	}
 }

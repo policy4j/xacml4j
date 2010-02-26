@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function.impl;
+package com.artagon.xacml.v3.policy.impl.function;
 
 import static org.junit.Assert.assertEquals;
 

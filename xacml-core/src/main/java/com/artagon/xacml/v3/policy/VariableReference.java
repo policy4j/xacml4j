@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class VariableReference implements Expression
+public final class VariableReference implements Expression
 {
 	private VariableDefinition varDef;
 	

@@ -10,7 +10,7 @@ import com.artagon.xacml.util.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class VariableDefinition implements Expression
+public final class VariableDefinition implements Expression
 {
 	private final static Logger log = LoggerFactory.getLogger(VariableDefinition.class);
 	

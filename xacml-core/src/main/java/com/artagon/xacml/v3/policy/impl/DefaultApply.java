@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.policy.ValueType;
 
 /**
  * The class denotes application of a function to its arguments, 
- * thus encoding a {@link FunctionReference} call. The {@link DefaultApply} can be 
+ * thus encoding a {@link FunctionReference} call. The {@link Apply} can be 
  * applied to a given list of {@link Expression} instances.
  * 
  * @author Giedrius Trumpickas
@@ -35,6 +35,7 @@ final class DefaultApply extends XacmlObject implements Apply
 	 */
 	public DefaultApply(FunctionSpec spec, Expression ...arguments){
 		Preconditions.checkNotNull(spec);
+		Preconditions.checkNotNull(arguments == null || arguments.length > 0);
 		Preconditions.checkArgument(spec.validateParameters(arguments));
 		this.spec = spec;
 		this.arguments = arguments;
