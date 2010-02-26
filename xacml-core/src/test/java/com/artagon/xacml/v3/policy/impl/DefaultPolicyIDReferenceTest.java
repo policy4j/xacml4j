@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.impl;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
@@ -84,7 +85,8 @@ public class DefaultPolicyIDReferenceTest
 	        }
 		});
 		expect(policy.getId()).andReturn("testId");
-		expect(policy.evaluate(refContext.getValue())).andReturn(Decision.PERMIT);
+		//TODO: currently we do not match actual argument
+		expect(policy.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
 		replay(policyResolver, policy);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
