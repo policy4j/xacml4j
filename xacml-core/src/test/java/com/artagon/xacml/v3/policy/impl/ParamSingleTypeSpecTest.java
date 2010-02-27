@@ -14,8 +14,6 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.impl.ParamSpec;
-import com.artagon.xacml.v3.policy.impl.ParamValueTypeSpec;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;
 import com.artagon.xacml.v3.policy.type.StringType;

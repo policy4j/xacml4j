@@ -69,6 +69,6 @@ public interface PolicyVisitor
 	void visitEnter(AdviceExpression advice);
 	void visitLeave(AdviceExpression advice);
 	
-	void visitEnter(AttributeAssignmentExpression attribute);
-	void visitLeave(AttributeAssignmentExpression attribute);
+	void visitEnter(AttributeAssigmentExpression attribute);
+	void visitLeave(AttributeAssigmentExpression attribute);
 }

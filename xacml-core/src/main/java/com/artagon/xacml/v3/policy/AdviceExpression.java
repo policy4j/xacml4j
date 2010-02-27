@@ -7,7 +7,7 @@ public interface AdviceExpression extends DecisionRuleResponseExpression
 
 	/**
 	 * Evaluates this advice expression by evaluating
-	 * all {@link AttributeAssignmentExpression}
+	 * all {@link DefaultAttributeAssignmentExpression}
 	 * 
 	 * @param context an evaluation context
 	 * @return {@link DefaultAdvice} instance

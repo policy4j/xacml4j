@@ -1,16 +1,33 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.PolicyVisitor;
 
-public class AttributeAssignmentExpression implements PolicyElement
+final class DefaultAttributeAssignmentExpression extends XacmlObject 
+	implements AttributeAssigmentExpression
 {
 	private AttributeCategoryId category;
 	private String attributeId;
 	private String issuer;
 	private Expression expression;
-	
-	public AttributeAssignmentExpression(
+
+	/**
+	 * Constructs attribute assignment
+	 * 
+	 * @param attributeId an attribute id
+	 * @param expression an attribute assigment
+	 * expression
+	 * @param category an attribute category
+	 * @param issuer an attribute issuer
+	 */
+	public DefaultAttributeAssignmentExpression(
 			String attributeId, 
 			Expression expression, 
 			AttributeCategoryId category, 
@@ -24,36 +41,22 @@ public class AttributeAssignmentExpression implements PolicyElement
 		this.issuer = issuer;
 	}
 	
-	/**
-	 * Gets attribute identifier
-	 * 
-	 * @return attribute identifier
-	 */
+	@Override
 	public String getAttributeId(){
 		return attributeId;
 	}
 	
-	/**
-	 * An optional category of the attribute. 
-	 * If category is not specified, the attribute has no category
-	 * 
-	 * @return category identifier or <code>null</code>
-	 */
+	@Override
 	public AttributeCategoryId getCategory(){
 		return category;
 	}
 	
-	/**
-	 * Gets an issuer of the attribute.
-	 * If issuer is not specified, the attribute
-	 * has not issuer
-	 * 
-	 * @return attribute issuer or <code>null</code>
-	 */
+	@Override
 	public String getIssuer(){
 		return issuer;
 	}
 	
+	@Override
 	public AttributeValue evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{

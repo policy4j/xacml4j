@@ -3,15 +3,15 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.policy.AdviceExpression;
+import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
-import com.artagon.xacml.v3.policy.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 
-public final class DefaultAdviceExpression extends BaseDecisionResponseExpression implements AdviceExpression
+public final class DefaultAdviceExpression extends BaseDecisionRuleResponseExpression implements AdviceExpression
 {
 	/**
 	 * Constructs advice expression with a given identifier
@@ -21,7 +21,7 @@ public final class DefaultAdviceExpression extends BaseDecisionResponseExpressio
 	 * assignment expression for this advice
 	 */
 	public DefaultAdviceExpression(String id, Effect appliesTo,
-			Collection<AttributeAssignmentExpression> attributeExpressions) {
+			Collection<AttributeAssigmentExpression> attributeExpressions) {
 		super(id, appliesTo, attributeExpressions);
 	}	
 	
@@ -37,7 +37,7 @@ public final class DefaultAdviceExpression extends BaseDecisionResponseExpressio
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		for(AttributeAssignmentExpression exp : getAttributeAssignmentExpressions()){
+		for(AttributeAssigmentExpression exp : getAttributeAssignmentExpressions()){
 			exp.accept(v);
 		}
 		v.visitLeave(this);

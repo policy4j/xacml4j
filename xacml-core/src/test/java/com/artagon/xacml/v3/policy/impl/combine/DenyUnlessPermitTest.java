@@ -17,7 +17,6 @@ import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.impl.combine.DenyUnlessPermit;
 
 public class DenyUnlessPermitTest extends XacmlPolicyTestCase
 {
