@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.XacmlObject;
@@ -19,8 +16,6 @@ import com.artagon.xacml.v3.policy.PolicyElement;
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseDecisionRuleResponseExpression.class);
-	
 	private String id;
 	private Effect effect;
 	private Collection<AttributeAssigmentExpression> attributeExpressions;
