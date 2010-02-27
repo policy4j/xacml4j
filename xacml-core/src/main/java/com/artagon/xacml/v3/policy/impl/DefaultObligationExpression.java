@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
 import com.artagon.xacml.v3.policy.Effect;
@@ -18,7 +19,7 @@ final class DefaultObligationExpression extends BaseDecisionRuleResponseExpressi
 	}
 	
 	@Override
-	public DefaultObligation evaluate(EvaluationContext context) throws EvaluationException
+	public Obligation evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
 		return new DefaultObligation(getId(), attributes);

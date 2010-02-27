@@ -1,77 +1,36 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public class AttributeAssignment implements PolicyElement
+public interface AttributeAssignment extends PolicyElement
 {
-	private AttributeValue attribute;
-	private AttributeCategoryId category;
-	private String attributeId;
-	private String issuer;
-	
-	/**
-	 * Creates attribute assignment with a 
-	 * given attribute identifier
-	 * 
-	 * @param attributeId an attribute id
-	 * @param category an attribute category
-	 * @param issuer an attribute issuer
-	 * @param value an attribute value
-	 */
-	public AttributeAssignment(String attributeId, 
-			AttributeCategoryId category, String issuer, AttributeValue value){
-		Preconditions.checkNotNull(attributeId);
-		Preconditions.checkNotNull(category);
-		Preconditions.checkNotNull(value);
-		this.attributeId = attributeId;
-		this.category = category;
-		this.issuer = issuer;
-		this.attribute = value;
-	}
-	
-	
+
 	/**
 	 * Gets attribute identifier
 	 * 
 	 * @return attribute identifier
 	 */
-	public String getAttributeId(){
-		return attributeId;
-	}
-	
+	String getAttributeId();
+
 	/**
 	 * Gets attribute value
 	 * 
 	 * @return attribute value
 	 */
-	public AttributeValue getAttribute(){
-		return attribute;
-	}
-	
+	AttributeValue getAttribute();
+
 	/**
 	 * Gets attribute category
 	 * 
 	 * @return attribute category
 	 */
-	public AttributeCategoryId getCategory(){
-		return category;
-	}
-	
+	AttributeCategoryId getCategory();
+
 	/**
 	 * Gets attribute issuer identifier
 	 * 
 	 * @return attribute issuer
 	 */
-	public String getIssuer(){
-		return issuer;
-	}
+	String getIssuer();
 
-
-	@Override
-	public void accept(PolicyVisitor v) {
-		v.visitEnter(this);
-		attribute.accept(v);
-		v.visitLeave(this);
-	}
 }

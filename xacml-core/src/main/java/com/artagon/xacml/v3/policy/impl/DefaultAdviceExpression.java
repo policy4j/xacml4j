@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
@@ -28,7 +29,7 @@ public final class DefaultAdviceExpression extends BaseDecisionRuleResponseExpre
 	/* (non-Javadoc)
 	 * @see com.artagon.xacml.v3.policy.AdviceExpression#evaluate(com.artagon.xacml.v3.policy.EvaluationContext)
 	 */
-	public DefaultAdvice evaluate(EvaluationContext context) throws EvaluationException
+	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
 		return new DefaultAdvice(getId(), attributes);

@@ -22,7 +22,7 @@ final class DefaultAttributeAssignmentExpression extends XacmlObject
 	 * Constructs attribute assignment
 	 * 
 	 * @param attributeId an attribute id
-	 * @param expression an attribute assigment
+	 * @param expression an attribute assignment
 	 * expression
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer

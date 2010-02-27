@@ -82,16 +82,17 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	
 	/**
 	 * Evaluates collection of {@link DefaultAttributeAssignmentExpression} instances
-	 * and return collection of {@link AttributeAssignment} instances
+	 * and return collection of {@link DefaultAttributeAssignment} instances
 	 * @param context an evaluation context
-	 * @return collection of {@link AttributeAssignment} instances
+	 * @return collection of {@link DefaultAttributeAssignment} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	protected Collection<AttributeAssignment> evaluateAttributeAssingments(EvaluationContext context) throws EvaluationException
+	protected Collection<AttributeAssignment> evaluateAttributeAssingments(EvaluationContext context) 
+		throws EvaluationException
 	{
 		Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
 		for(AttributeAssigmentExpression attrExp : attributeExpressions){
-			attr.add(new AttributeAssignment(
+			attr.add(new DefaultAttributeAssignment(
 					attrExp.getAttributeId(), 
 					attrExp.getCategory(), 
 					attrExp.getIssuer(), 
