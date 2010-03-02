@@ -1,69 +1,73 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
+import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
-public class DefaultAttributeDesignatorTest extends XacmlPolicyTestCase
+public class DefaultAttributeDesignatorTest
 {
-	private String issuer;
-	private String attributeId;
-	private String badAttributeId;
 	private IntegerType type;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
-		this.issuer = "urn:test:issuer";
-		this.attributeId = "urn:test:attrId";
-		this.badAttributeId = "urn:test:attrId:bad";
-		this.type = DataTypes.INTEGER.getType();
+		this.type = DataTypes.INTEGER.getType();	
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test(expected=EvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
 	{
-		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, attributeId, issuer, type, true);
+		AttributeDesignator desig = new DefaultAttributeDesignator(
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
+		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
+		replay(context);
 		desig.evaluate(context);
+		verify(context);
 	}
 	
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
-		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
-		AttributeValue attr = type.create(10l);
-		attributes.add(attr);
-		attributeService.addAttribute(AttributeCategoryId.SUBJECT_RECIPIENT,
-				issuer, attributeId, type, attributes);
-		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, issuer, attributeId, 
-				type, true);
-		Value v = desig.evaluate(context);
-		assertNotNull(v);
-		assertTrue(((BagOfAttributeValues<?>)v).contains(attr));
+		AttributeDesignator desig = new DefaultAttributeDesignator(
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
+		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.bag(
+						DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2)));
+		replay(context);
+		Expression v = desig.evaluate(context);
+		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(DataTypes.INTEGER.bag(
+				DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2)), v);
 	}
 	
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws EvaluationException
 	{
-		DefaultAttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
-				badAttributeId, issuer,  type, false);
-		Value v = desig.evaluate(context);
+		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
+				"testId", "testIssuer",  type, false);
+		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
+		replay(context);
+		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(DataTypes.INTEGER.emptyBag(), v);
+		verify(context);
 	}
 }

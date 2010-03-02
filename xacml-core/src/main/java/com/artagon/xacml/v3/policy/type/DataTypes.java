@@ -116,6 +116,13 @@ public enum DataTypes
 		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> BagOfAttributeValues<T> emptyBag()
+	{
+		return (BagOfAttributeValues<T>)type.bagOf().createEmpty();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <V extends AttributeValue> V fromXacmlString(String v, Object ...params){
 		return ((V)type.fromXacmlString(v, params));

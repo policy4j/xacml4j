@@ -10,6 +10,7 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -107,7 +108,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeDesignator(AttributeCategoryId category,
+	public BagOfAttributeValues<AttributeValue> resolveAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType,
 			String issuer) {
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
@@ -118,7 +119,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category,
+	public BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category,
 			XPath location, AttributeValueType dataType) {
 		return delegate.resolveAttributeSelector(category, location, dataType);
 	}

@@ -18,11 +18,11 @@ public interface AttributeResolver
 	 * @param issuer an attribute issuer
 	 * @return {@link BagOfAttributeValues}
 	 */
-	BagOfAttributeValues<?> resolve(AttributeCategoryId category,
+	BagOfAttributeValues<AttributeValue> resolve(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
-	BagOfAttributeValues<?> resolve(AttributeCategoryId category, 
+	BagOfAttributeValues<AttributeValue> resolve(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
 	
 	Node getContent(AttributeCategoryId categoryId);

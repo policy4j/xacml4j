@@ -126,7 +126,7 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributeValues<?> resolveAttributeDesignator(AttributeCategoryId category,
+	BagOfAttributeValues<AttributeValue> resolveAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
@@ -139,7 +139,7 @@ public interface EvaluationContext
 	 * @return a bag containing resolved values if an attribute
 	 * can not be resolved an empty bag is returned to the caller
 	 */
-	BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
+	BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location, AttributeValueType dataType);
 	
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;

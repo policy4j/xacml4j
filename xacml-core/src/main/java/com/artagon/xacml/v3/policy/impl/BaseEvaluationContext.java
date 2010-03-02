@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -100,7 +101,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeDesignator(
+	public BagOfAttributeValues<AttributeValue> resolveAttributeDesignator(
 			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType, String issuer) {
@@ -117,7 +118,7 @@ class BaseEvaluationContext implements EvaluationContext
 	 * service was not specified during context construction
 	 */
 	@Override
-	public BagOfAttributeValues<?> resolveAttributeSelector(AttributeCategoryId category, 
+	public BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category, 
 			XPath location,
 			AttributeValueType dataType) {
 		return attributeService.resolve(category, location, dataType);
