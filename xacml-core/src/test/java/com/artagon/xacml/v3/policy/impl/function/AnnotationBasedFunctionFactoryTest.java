@@ -9,7 +9,6 @@ import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.impl.TestFunctions;
-import com.artagon.xacml.v3.policy.impl.function.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class AnnotationBasedFunctionFactoryTest extends XacmlPolicyTestCase
