@@ -9,20 +9,16 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;
-import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.StringType;
 
 public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 {
 	private StringType t1;
 	private DoubleType t2;
-	private IntegerType t3;
-	private BagOfAttributeValuesType<?> b1;
 	private ParamValueTypeSequenceSpec specAttrZeroOrMore;
 	private ParamValueTypeSequenceSpec specAttrOneOrMore;
 	private ParamValueTypeSequenceSpec specAttrFromOneToFour;
@@ -32,8 +28,6 @@ public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 	{
 		this.t1 = DataTypes.STRING.getType();
 		this.t2 = DataTypes.DOUBLE.getType();
-		this.t3 = DataTypes.INTEGER.getType();
-		this.b1 = t2.bagOf();
 		this.specAttrZeroOrMore = new ParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
 		this.specAttrOneOrMore = new ParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
 		this.specAttrFromOneToFour = new ParamValueTypeSequenceSpec(1, 4, t1);	
