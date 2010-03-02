@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.impl.function;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,20 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 	private Method functionMethod;
 	private boolean evalContextRequired;
 	
-	public ReflectionBasedFunctionInvocation(Object factoryInstance, 
+	/**
+	 * Constructs XACML function invoker
+	 * 
+	 * @param factoryInstance a method library instance
+	 * @param m a XACML function implementation
+	 * @param evalContextRequired a flag indicating if method
+	 * requires an {@link EvaluationContext} reference
+	 */
+	ReflectionBasedFunctionInvocation(Object factoryInstance, 
 			Method m, boolean evalContextRequired)
 	{
 		Preconditions.checkNotNull(m);
+		Preconditions.checkArgument(factoryInstance == null || 
+				!Modifier.isStatic(m.getModifiers()));
 		this.factoryInstance = factoryInstance;
 		this.functionMethod = m;
 		this.evalContextRequired = evalContextRequired;

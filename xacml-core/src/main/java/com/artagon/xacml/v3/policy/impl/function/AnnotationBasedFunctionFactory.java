@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -27,13 +28,21 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 {
 	private final static Logger log = LoggerFactory.getLogger(AnnotationBasedFunctionFactory.class);
 	
-	public AnnotationBasedFunctionFactory(Class<?> factoryClass)
-	{
+	private Object factoryInstance;
+	
+	public AnnotationBasedFunctionFactory(Object instance, Class<?> factoryClass){
+		Preconditions.checkArgument(instance == null || factoryClass.isInstance(instance));
 		List<FunctionSpec> functions = findFunctions(factoryClass);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
+		this.factoryInstance = instance;
 	}
+	
+	public AnnotationBasedFunctionFactory(Class<?> factoryClass){
+		this(null, factoryClass);
+	}
+	
 	private List<FunctionSpec> findFunctions(Class<?> clazz)
 	{
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
@@ -124,6 +133,6 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new ReflectionBasedFunctionInvocation(null, m, evalContextParamFound));
+				new ReflectionBasedFunctionInvocation(factoryInstance, m, evalContextParamFound));
 	}
 }
