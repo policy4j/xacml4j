@@ -21,7 +21,12 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	 */
 	Target getTarget();
 	
-	
+	/**
+	 * Gets all policy rules
+	 * 
+	 * @return a collection of {@link Rule}
+	 * instances
+	 */
 	List<Rule> getRules();
 	
 	/**
@@ -41,10 +46,10 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	VariableDefinition getVariableDefinition(String variableId);	
 	
 	/**
-	 * Gets decision obligations
+	 * Gets policy obligations
 	 * 
 	 * @return collection of {@link ObligationExpression}
-	 * instances
+	 * instances for this policy
 	 */
 	Collection<ObligationExpression> getObligationExpressions();
 	
@@ -52,7 +57,7 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	 * Gets decision advice expressions
 	 * 
 	 * @return collection of {@link AdviceExpression}
-	 * instances
+	 * instances for this policy
 	 */
 	Collection<AdviceExpression> getAdviceExpressions();
 }
