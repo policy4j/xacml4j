@@ -16,6 +16,16 @@ import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
 
+/**
+ * This class implements functions that take XPath expressions for arguments. 
+ * An XPath expression evaluates to a node-set, which is a set of XML nodes 
+ * that match the expression. A node or node-set is not in the formal data-type system of XACML. 
+ * All comparison or other operations on node-sets are performed in isolation of 
+ * the particular function specified. The context nodes and namespace mappings 
+ * of the XPath expressions are defined by the XPath data-type, see section B.3 (XACML 3.0 core). 
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class XPathFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
