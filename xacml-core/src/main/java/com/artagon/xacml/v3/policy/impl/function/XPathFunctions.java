@@ -56,7 +56,7 @@ public class XPathFunctions
 		
 		try{
 			NodeList nodes0 = xpathProvider.evaluateToNodeSet(xpath0.getValue(), content0);
-			NodeList nodes1 = xpathProvider.evaluateToNodeSet(xpath0.getValue(), content0);
+			NodeList nodes1 = xpathProvider.evaluateToNodeSet(xpath1.getValue(), content0);
 			for(int i = 0; i < nodes0.getLength(); i++){
 				for(int j = 0; j < nodes1.getLength(); j++){
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
@@ -64,7 +64,7 @@ public class XPathFunctions
 					}
 				}
 			}
-			return DataTypes.BOOLEAN.create(0);
+			return DataTypes.BOOLEAN.create(false);
 		}catch(XPathEvaluationException e){
 			return DataTypes.BOOLEAN.create(false);
 		}
@@ -87,7 +87,7 @@ public class XPathFunctions
 		
 		try{
 			NodeList nodes0 = xpathProvider.evaluateToNodeSet(xpath0.getValue(), content0);
-			NodeList nodes1 = xpathProvider.evaluateToNodeSet(xpath0.getValue(), content0);
+			NodeList nodes1 = xpathProvider.evaluateToNodeSet(xpath1.getValue(), content0);
 			for(int i = 0; i < nodes0.getLength(); i++)
 			{
 				for(int j = 0; j < nodes1.getLength(); j++)

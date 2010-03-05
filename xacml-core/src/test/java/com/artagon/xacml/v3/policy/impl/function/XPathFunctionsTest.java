@@ -54,8 +54,7 @@ public class XPathFunctionsTest
 	@Test
 	public void testXPathCount() throws XPathEvaluationException
 	{
-		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create(
-				"count(/md:record/md:patient)", 
+		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient", 
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
@@ -68,12 +67,11 @@ public class XPathFunctionsTest
 	@Test
 	public void testXPathCountExpressionReturnsEmptyNodeSet() throws XPathEvaluationException
 	{
-		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create(
-				"count(/test)", 
+		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToNodeSet("/test)", content)).andDelegateTo(realProvider);
+		expect(provider.evaluateToNodeSet("/test", content)).andDelegateTo(realProvider);
 		replay(context, provider);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context, provider);
@@ -83,12 +81,28 @@ public class XPathFunctionsTest
 	public void testXPathCountContentNodeIsNull()
 	{
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create(
-				"count(/test)", 
+				"/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(null);
 		replay(context, provider);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context, provider);
+	}
+	
+	@Test
+	public void testXPathNodeMatch() throws XPathEvaluationException
+	{
+		XPathExpressionValue xpath0  = DataTypes.XPATHEXPRESSION.create("/md:record", AttributeCategoryId.SUBJECT_ACCESS);
+		XPathExpressionValue xpath1  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS);
+		expect(context.getXPathProvider()).andReturn(provider);
+		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
+		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
+		expect(provider.evaluateToNodeSet("/md:record", content)).andDelegateTo(realProvider);
+		expect(provider.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", content)).andDelegateTo(realProvider);
+		replay(context, provider);
+		assertEquals(DataTypes.BOOLEAN.create(true), XPathFunctions.xpathNodeMatch(context, xpath0, xpath1));
+		verify(context, provider);
+		
 	}
 }
