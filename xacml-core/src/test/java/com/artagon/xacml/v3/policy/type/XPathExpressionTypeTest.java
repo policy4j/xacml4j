@@ -1,19 +1,20 @@
 package com.artagon.xacml.v3.policy.type;
 
-import javax.xml.xpath.XPathExpressionException;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
 
-public class XPathExpressionTypeTest 
+public class XPathExpressionTypeTest
 {
-	
+
 	@Test
-	public void testCreateXPathAttribute() throws XPathExpressionException
+	public void testCreateXPathAttribute() throws Exception
 	{
-		XPathExpressionType t = DataTypes.XPATHEXPRESSION.getType();
-		XPathExpressionValue v = t.create("md:record/md:medical", AttributeCategoryId.RESOURCE);
+		XPathExpressionValue v = DataTypes.XPATHEXPRESSION.create("/test", AttributeCategoryId.SUBJECT_RECIPIENT);
+		assertEquals("/test", v.getValue());
+		assertEquals(AttributeCategoryId.SUBJECT_RECIPIENT, v.getAttributeCategory());
 	}
 }

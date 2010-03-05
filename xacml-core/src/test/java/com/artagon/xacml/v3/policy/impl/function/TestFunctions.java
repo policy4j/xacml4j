@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.policy.impl.function;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class TestFunctions
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue test1(
 			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue b)
+			@XacmlParam(type=DataTypes.INTEGER)IntegerType.IntegerValue b) 
 	{
 		return DataTypes.BOOLEAN.create(a.equals(b));
 	}

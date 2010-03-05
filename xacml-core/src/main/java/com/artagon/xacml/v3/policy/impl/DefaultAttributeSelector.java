@@ -1,34 +1,49 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import javax.xml.xpath.XPath;
+import java.util.Collection;
+import java.util.LinkedList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.artagon.xacml.v3.policy.XPathEvaluationException;
+import com.artagon.xacml.v3.policy.XPathProvider;
 
 final class DefaultAttributeSelector extends 
 	BaseAttributeReference implements AttributeSelector
 {
-	private XPath xpath;
+	private final static Logger log = LoggerFactory.getLogger(DefaultAttributeSelector.class);
+	
+	private String xpath;
 	
 	public DefaultAttributeSelector(
 			AttributeCategoryId category, 
-			XPath xpath, 
+			String xpath, 
 			AttributeValueType dataType, 
 					boolean mustBePresent){
 		super(category, dataType, mustBePresent);
 		Preconditions.checkNotNull(xpath);
-		Preconditions.checkNotNull(dataType);
 		this.xpath = xpath;
 	}
 	
 	@Override
-	public XPath getContextPath(){
+	public String getContextPath(){
 		return xpath;
 	}
 	
@@ -40,14 +55,70 @@ final class DefaultAttributeSelector extends
 
 	@Override
 	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
-			throws EvaluationException {
-		BagOfAttributeValues<?> value = context.resolveAttributeSelector(getCategory(), 
-				getContextPath(), evaluatesTo.getDataType());
-		if(value.isEmpty() && isMustBePresent()){
-			throw new EvaluationException(
-					"Failed to select attribute catgoryId=\"%s\", context path=\"%s\"", 
-					getCategory(), xpath.toString());
+			throws EvaluationException 
+	{ 
+		Node node = context.getContent(getCategory());
+		if(node == null){
+			if(isMustBePresent()){
+				throw new AttributeReferenceEvaluationException(this, 
+					"Content node for category=\"%s\" is null and mustBePresent=true", 
+					getCategory());
+			}
+			return getDataType().bagOf().createEmpty();
 		}
-		return value;
+		try
+		{
+			XPathProvider xpathProv = context.getXPathProvider();
+			NodeList nodeSet = xpathProv.evaluateToNodeSet(xpath, node);
+			if(nodeSet == null || 
+					nodeSet.getLength() == 0){
+				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
+						xpath, getCategory());
+				if(isMustBePresent()){
+					throw new AttributeReferenceEvaluationException(this, 
+						"Selector XPath expression=\"%s\" evaluated " +
+						"to empty node set and mustBePresents=\"true\"", xpath);
+				}
+			}
+			if(log.isDebugEnabled()){
+				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
+						new Object[]{nodeSet.getLength(), xpath, getCategory()});
+			}
+			Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+			for(int i = 0; i< nodeSet.getLength(); i++)
+			{
+				Node n = nodeSet.item(i);
+				String v = null;
+				switch(n.getNodeType()){
+					case Node.TEXT_NODE:
+						v = ((Text)n).getData();
+						break;
+					case Node.PROCESSING_INSTRUCTION_NODE:
+						v = ((ProcessingInstruction)n).getData();
+						break;
+					case Node.ATTRIBUTE_NODE:
+						v = ((Attr)n).getValue();
+						break;
+					case Node.COMMENT_NODE:
+						v = ((Comment)n).getData();
+						break;
+					default:
+						throw new AttributeReferenceEvaluationException(this, 
+								"Unsupported DOM node type=\"%d\"", n.getNodeType());
+				}
+				try{
+					values.add(getDataType().fromXacmlString(v));
+				}catch(Exception e){
+					throw new AttributeReferenceEvaluationException(this, 
+							"Failed to convert xml node (at:%d in nodeset) " +
+							"text value=\"%s\" to an attribute value of type=\"%s\"", 
+							i, v, getDataType());
+				}
+			}
+		  	return getDataType().bagOf().createFromAttributes(values);
+		}
+		catch(XPathEvaluationException e){
+			throw new AttributeReferenceEvaluationException(this,e);
+		}
 	}	
 }

@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import javax.xml.xpath.XPath;
-
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Preconditions;
@@ -26,6 +24,7 @@ import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.policy.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
 {
@@ -39,23 +38,28 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	private Map<String, Map<String, Value>> variableEvaluationCache;
 	
+	private XPathProvider xpathProvider;
+	
 	protected BaseEvaluationContext(AttributeResolver attributeService, 
-			PolicyResolver policyResolver){
-		this(false, attributeService, policyResolver);
+			PolicyResolver policyResolver, XPathProvider xpathFactory){
+		this(false, attributeService, policyResolver, xpathFactory);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
 			AttributeResolver attributeService,
-			PolicyResolver policyResolver){
+			PolicyResolver policyResolver, 
+			XPathProvider xpathFactory){
 		Preconditions.checkNotNull(attributeService);
 		Preconditions.checkNotNull(policyResolver);
+		Preconditions.checkNotNull(xpathFactory);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.attributeService = attributeService;
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new HashMap<String, Map<String,Value>>();
+		this.xpathProvider = xpathFactory;
 	}
 	
 	
@@ -107,23 +111,6 @@ class BaseEvaluationContext implements EvaluationContext
 			AttributeValueType dataType, String issuer) {
 			return attributeService.resolve(category, attributeId, dataType, issuer);
 	}
-
-	/**
-	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeResolver}. If attribute
-	 * service was not specified during context creation
-	 * {@link UnsupportedOperationException} will be thrown
-	 * 
-	 * @exception UnsupportedOperationException if attribute
-	 * service was not specified during context construction
-	 */
-	@Override
-	public BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category, 
-			XPath location,
-			AttributeValueType dataType) {
-		return attributeService.resolve(category, location, dataType);
-	}
-
 	
 	/**
 	 * Implementation always
@@ -206,5 +193,10 @@ class BaseEvaluationContext implements EvaluationContext
 	public PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		return policyResolver.resolve(this, ref);
+	}
+
+	@Override
+	public XPathProvider getXPathProvider() {
+		return xpathProvider;
 	}
 }

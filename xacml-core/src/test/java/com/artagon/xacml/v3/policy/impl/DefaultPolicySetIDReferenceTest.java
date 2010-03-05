@@ -8,7 +8,6 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import org.easymock.Capture;
@@ -23,19 +22,19 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.VersionMatch;
 import com.artagon.xacml.v3.policy.XPathProvider;
 
-public class DefaultPolicyIDReferenceTest
+public class DefaultPolicySetIDReferenceTest
 {
 	private EvaluationContext context;
 	private PolicySet policySet;
-	private Policy policy;
+	private PolicySet refPolicySet;
 	private EvaluationContextFactory contextFactory;
 	private PolicyResolver policyResolver;
 	
@@ -43,7 +42,7 @@ public class DefaultPolicyIDReferenceTest
 	public void init(){
 		this.policyResolver = createStrictMock(PolicyResolver.class);
 		this.policySet = createStrictMock(PolicySet.class);
-		this.policy = createStrictMock(Policy.class);
+		this.refPolicySet = createStrictMock(PolicySet.class);
 		this.contextFactory = new DefaultEvaluationContextFactory(
 				createStrictMock(AttributeResolver.class), 
 				policyResolver,
@@ -54,11 +53,10 @@ public class DefaultPolicyIDReferenceTest
 	@Test
 	public void testNoReferencedPolicyFound() throws EvaluationException
 	{
-		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andThrow(new PolicyResolutionException("Failed to resolve"));
 		replay(policyResolver);
 		EvaluationContext policyRefContext = ref.createContext(context);
-		assertNull(policyRefContext.getCurrentPolicy());
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		verify(policyResolver);
 		reset(policyResolver);
@@ -77,21 +75,21 @@ public class DefaultPolicyIDReferenceTest
 	@Test
 	public void testEvaluatePolicyIDReference() throws PolicyResolutionException
 	{
-		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
-		expect(policyResolver.resolve(context, ref)).andReturn(policy);
+		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
+		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
-		expect(policy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return new PolicyDelegatingEvaluationContext(ctx, policy);
+				return new PolicySetDelegatingEvaluationContext(ctx, refPolicySet);
 	        }
 		});
-		expect(policy.getId()).andReturn("testId");
+		expect(refPolicySet.getId()).andReturn("testId");
 		//TODO: currently we do not match actual argument
-		expect(policy.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
-		replay(policyResolver, policy);
+		expect(refPolicySet.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
+		replay(policyResolver, refPolicySet);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
-		verify(policyResolver, policy);
+		verify(policyResolver, refPolicySet);
 	}
 }

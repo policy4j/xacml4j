@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 
+
 /**
  * Simple static methods to be called at the start of your own methods to verify
  * correct arguments and state. This allows constructs such as

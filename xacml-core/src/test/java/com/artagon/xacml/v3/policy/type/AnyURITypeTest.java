@@ -17,7 +17,8 @@ public class AnyURITypeTest
 	}
 	
 	@Test
-	public void testEquals(){
+	public void testEquals()
+	{
 		AttributeValue v0 = t1.create("http://www.test.org");
 		AttributeValue v1 = t1.create("http://www.test.org");
 		assertEquals(v0, v1);

@@ -18,6 +18,10 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 			VersionMatch earliest, VersionMatch latest) {
 		super(id, version, earliest, latest);
 	}
+	
+	public DefaultPolicySetIDReference(String id, VersionMatch version) {
+		super(id, version, null, null);
+	}
 
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)

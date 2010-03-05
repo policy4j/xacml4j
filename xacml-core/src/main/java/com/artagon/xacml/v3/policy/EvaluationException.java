@@ -4,7 +4,8 @@ package com.artagon.xacml.v3.policy;
 @SuppressWarnings("serial")
 public class EvaluationException extends PolicyException
 {
-
+	private EvaluationContext context;
+	
 	public EvaluationException(String template, Object... arguments) {
 		super(template, arguments);
 	}
@@ -17,4 +18,12 @@ public class EvaluationException extends PolicyException
 	public EvaluationException(Throwable cause) {
 		super(cause);
 	}	
+	
+	public EvaluationContext getEvaluationContext(){
+		return context;
+	}
+	
+	public void setEvaluationContext(EvaluationContext context){
+		this.context = context;
+	}
 }

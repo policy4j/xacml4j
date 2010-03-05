@@ -2,8 +2,6 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
-import javax.xml.xpath.XPath;
-
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.Advice;
@@ -130,19 +128,14 @@ public interface EvaluationContext
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
-	/**
-	 * Resolves attribute selector
-	 * 
-	 * @param <T>
-	 * @param location an XPath expression
-	 * @param dataType an attribute data type
-	 * @return a bag containing resolved values if an attribute
-	 * can not be resolved an empty bag is returned to the caller
-	 */
-	BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category, 
-			XPath location, AttributeValueType dataType);
-	
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
 	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
+	
+	/**
+	 * Gets XPath factory
+	 * 
+	 * @return {@link XPathProvider} instance
+	 */
+	XPathProvider getXPathProvider();
 	
 }

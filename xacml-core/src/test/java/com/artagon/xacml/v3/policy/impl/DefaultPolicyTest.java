@@ -31,6 +31,7 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.policy.XPathProvider;
 
 public class DefaultPolicyTest 
 {
@@ -87,7 +88,8 @@ public class DefaultPolicyTest
 		
 		this.context = new DefaultEvaluationContextFactory(
 				createStrictMock(AttributeResolver.class), 
-				createStrictMock(PolicyResolver.class)).createContext(policy);
+				createStrictMock(PolicyResolver.class), 
+				createStrictMock(XPathProvider.class)).createContext(policy);
 	}
 	
 	@Test

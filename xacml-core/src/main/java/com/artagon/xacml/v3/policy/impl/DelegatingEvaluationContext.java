@@ -2,8 +2,6 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 
-import javax.xml.xpath.XPath;
-
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Preconditions;
@@ -20,6 +18,7 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.policy.XPathProvider;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -114,16 +113,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.resolveAttributeDesignator(category, attributeId, dataType,
 				issuer);
 	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public BagOfAttributeValues<AttributeValue> resolveAttributeSelector(AttributeCategoryId category,
-			XPath location, AttributeValueType dataType) {
-		return delegate.resolveAttributeSelector(category, location, dataType);
-	}
-
+	
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
@@ -164,4 +154,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public PolicySetIDReference getCurrentPolicySetIDReference() {
 		return delegate.getCurrentPolicySetIDReference();
 	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
+	@Override
+	public XPathProvider getXPathProvider() {
+		return delegate.getXPathProvider();
+	}
+	
+	
 }

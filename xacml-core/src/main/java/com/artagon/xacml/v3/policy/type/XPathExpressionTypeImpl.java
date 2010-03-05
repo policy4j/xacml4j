@@ -1,10 +1,7 @@
 package com.artagon.xacml.v3.policy.type;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
+import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
 
@@ -20,30 +17,27 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 		return any instanceof String;
 	}
 	
+	@Override
 	public XPathExpressionValue create(String xpath, AttributeCategoryId category) 
 	{
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xp =  factory.newXPath();
-		try
-		{
-			XPathExpression xexp =  xp.compile(xpath);
-			return new XPathExpressionValue(this, xexp, category);
-		}catch(XPathExpressionException e){
-			throw new IllegalArgumentException(e);
-		}
+		return new XPathExpressionValue(this, xpath, category);
 	}
 	
-	/**
-	 * @throws UnsupportedOperationException
-	 */
-	public XPathExpressionValue create(Object v, Object ... params) {
-		return null;
+	@Override
+	public XPathExpressionValue create(Object v, Object ... params) 
+	{
+		Preconditions.checkArgument(isConvertableFrom(v), 
+				"Given instance=\"%s\" can not be converted to this type value", v);
+		Preconditions.checkArgument(params != null && params.length > 0, 
+				"XPath category must be specified");
+		return new XPathExpressionValue(this, (String)v, (AttributeCategoryId)params[0]);
 	}
 	
-	/**
-	 * @throws UnsupportedOperationException
-	 */
-	public XPathExpressionValue fromXacmlString(String v, Object ...params) {
-		return null;
+	@Override
+	public XPathExpressionValue fromXacmlString(String v, Object ...params) 
+	{
+		Preconditions.checkArgument(params != null && params.length > 0, "XPath category must be specified");
+		return new XPathExpressionValue(this, v, 
+				AttributeCategoryId.parse(String.valueOf(params[0])));
 	}
 }
