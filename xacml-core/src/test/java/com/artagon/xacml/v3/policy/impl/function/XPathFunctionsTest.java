@@ -59,7 +59,7 @@ public class XPathFunctionsTest
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToString("count(/md:record/md:patient)", content)).andDelegateTo(realProvider);
+		expect(provider.evaluateToNodeSet("/md:record/md:patient", content)).andDelegateTo(realProvider);
 		replay(context, provider);
 		assertEquals(DataTypes.INTEGER.create(1), XPathFunctions.xpathCount(context, xpath));
 		verify(context, provider);
@@ -73,7 +73,7 @@ public class XPathFunctionsTest
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToString("count(/test)", content)).andDelegateTo(realProvider);
+		expect(provider.evaluateToNodeSet("/test)", content)).andDelegateTo(realProvider);
 		replay(context, provider);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context, provider);

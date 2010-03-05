@@ -17,11 +17,11 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAttributeSelectorTest

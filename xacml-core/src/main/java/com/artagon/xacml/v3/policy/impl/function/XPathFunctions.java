@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.impl.function;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
@@ -27,9 +28,9 @@ public class XPathFunctions
 			return DataTypes.INTEGER.create(0);
 		}
 		try{
-			String n = xpathProvider.evaluateToString(xpath.getValue(), content);
-			if(n != null){
-				return DataTypes.INTEGER.create(n);
+			NodeList nodes = xpathProvider.evaluateToNodeSet(xpath.getValue(), content);
+			if(nodes != null){
+				return DataTypes.INTEGER.create(nodes.getLength());
 			}
 			return DataTypes.INTEGER.create(0);
 		}catch(XPathEvaluationException e){

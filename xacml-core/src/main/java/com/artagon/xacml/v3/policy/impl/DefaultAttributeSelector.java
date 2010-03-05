@@ -43,7 +43,7 @@ final class DefaultAttributeSelector extends
 	}
 	
 	@Override
-	public String getContextPath(){
+	public String getSelect(){
 		return xpath;
 	}
 	
