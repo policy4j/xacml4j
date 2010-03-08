@@ -32,6 +32,10 @@ public interface DateTimeType extends AttributeValueType
 			return subtract(duration.getValue());
 		}
 		
+		public DateTimeValue subtract(DayTimeDurationValue duration){
+			return subtract(duration.getValue());
+		}
+		
 		private DateTimeValue add(Duration duration){
 			XMLGregorianCalendar dateTime = getValue();
 			XMLGregorianCalendar copy = (XMLGregorianCalendar)dateTime.clone();
