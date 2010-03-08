@@ -88,22 +88,6 @@ public class ArithmeticFunctions
 		return DataTypes.INTEGER.create(Math.abs(v.getValue()));
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
-	@XacmlFuncReturnType(type=DataTypes.INTEGER)
-	public static IntegerValue integerToDouble(
-			@XacmlParam(type=DataTypes.INTEGER)IntegerValue v)
-	{
-		return DataTypes.DOUBLE.create(v.getValue());
-	}
-	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
-	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
-	public static DoubleValue doubleToInteger(
-			@XacmlParam(type=DataTypes.DOUBLE)DoubleValue v)
-	{
-		return DataTypes.DOUBLE.create(v.getValue().intValue());
-	}
-	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE)
 	public static DoubleValue abs(
@@ -155,6 +139,16 @@ public class ArithmeticFunctions
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return DataTypes.DOUBLE.create(a.getValue()/b.getValue());
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue modInteger(
+			@XacmlParam(type=DataTypes.INTEGER)IntegerValue a,
+			@XacmlParam(type=DataTypes.INTEGER)IntegerValue b) 
+	{
+		Preconditions.checkArgument(b.getValue() != 0);
+		return DataTypes.INTEGER.create(a.getValue() % b.getValue());
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")

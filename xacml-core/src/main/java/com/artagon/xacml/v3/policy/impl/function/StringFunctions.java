@@ -36,7 +36,7 @@ public class StringFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-starts-with")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue startsWith(
 			@XacmlParam(type=DataTypes.STRING)StringValue a,
 			@XacmlParam(type=DataTypes.STRING)StringValue b)
@@ -45,7 +45,7 @@ public class StringFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:uri-starts-with")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue uriStartsWith(
 			@XacmlParam(type=DataTypes.ANYURI)AnyURIValue a,
 			@XacmlParam(type=DataTypes.STRING)StringType.StringValue b)
@@ -54,7 +54,7 @@ public class StringFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue endsWith(
 			@XacmlParam(type=DataTypes.STRING)StringValue a,
 			@XacmlParam(type=DataTypes.STRING)StringValue b)
@@ -63,7 +63,7 @@ public class StringFunctions
 	}
 		
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue uriEndsWith(
 			@XacmlParam(type=DataTypes.ANYURI)AnyURIValue a,
 			@XacmlParam(type=DataTypes.STRING)StringType.StringValue b)
@@ -72,7 +72,7 @@ public class StringFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue contains(
 			@XacmlParam(type=DataTypes.STRING)StringValue a,
 			@XacmlParam(type=DataTypes.STRING)StringValue b)
@@ -81,7 +81,7 @@ public class StringFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue uriContains(
 			@XacmlParam(type=DataTypes.ANYURI)AnyURIValue a,
 			@XacmlParam(type=DataTypes.STRING)StringType.StringValue b)
