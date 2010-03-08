@@ -4,8 +4,8 @@ import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.artagon.xacml.v3.policy.type.DateType.DateValue;
 import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
+import com.artagon.xacml.v3.policy.type.DateType.DateValue;
 import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
 

@@ -5,8 +5,8 @@ import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 
 public class NumericComparisionFunctions 
 {

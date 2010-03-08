@@ -106,7 +106,7 @@ public class NonNumericComparisionFunctions
 		XMLGregorianCalendar bc = (XMLGregorianCalendar)b.getValue().clone();
 		XMLGregorianCalendar cc = (XMLGregorianCalendar)c.getValue().clone();
 		if(ac.getTimezone() == DatatypeConstants.FIELD_UNDEFINED){
-			ac.setTimezone(context.getTimeZone().getRawOffset() / 1000 * 60);
+			ac.setTimezone(context.getTimeZone().getRawOffset() / (1000 * 60));
 		}
 		if(bc.getTimezone() == DatatypeConstants.FIELD_UNDEFINED){
 			bc.setTimezone(ac.getTimezone());
