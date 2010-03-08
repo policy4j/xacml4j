@@ -13,4 +13,6 @@ public interface AttributeSelector extends AttributeReference
 	 * @return an XPath expression
 	 */
 	String getSelect();
+	
+	String getContextAttributeId();
 }

@@ -31,6 +31,7 @@ final class DefaultAttributeSelector extends
 	private final static Logger log = LoggerFactory.getLogger(DefaultAttributeSelector.class);
 	
 	private String xpath;
+	private String contextAttributeId;
 	
 	public DefaultAttributeSelector(
 			AttributeCategoryId category, 
@@ -45,6 +46,12 @@ final class DefaultAttributeSelector extends
 	@Override
 	public String getSelect(){
 		return xpath;
+	}
+	
+	@Override
+	public String getContextAttributeId()
+	{
+		return contextAttributeId;
 	}
 	
 	@Override
@@ -68,8 +75,7 @@ final class DefaultAttributeSelector extends
 		}
 		try
 		{
-			XPathProvider xpathProv = context.getXPathProvider();
-			NodeList nodeSet = xpathProv.evaluateToNodeSet(xpath, node);
+			NodeList nodeSet = selectNodes(context, node);
 			if(nodeSet == null || 
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
@@ -84,41 +90,55 @@ final class DefaultAttributeSelector extends
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
 						new Object[]{nodeSet.getLength(), xpath, getCategory()});
 			}
-			Collection<AttributeValue> values = new LinkedList<AttributeValue>();
-			for(int i = 0; i< nodeSet.getLength(); i++)
-			{
-				Node n = nodeSet.item(i);
-				String v = null;
-				switch(n.getNodeType()){
-					case Node.TEXT_NODE:
-						v = ((Text)n).getData();
-						break;
-					case Node.PROCESSING_INSTRUCTION_NODE:
-						v = ((ProcessingInstruction)n).getData();
-						break;
-					case Node.ATTRIBUTE_NODE:
-						v = ((Attr)n).getValue();
-						break;
-					case Node.COMMENT_NODE:
-						v = ((Comment)n).getData();
-						break;
-					default:
-						throw new AttributeReferenceEvaluationException(this, 
-								"Unsupported DOM node type=\"%d\"", n.getNodeType());
-				}
-				try{
-					values.add(getDataType().fromXacmlString(v));
-				}catch(Exception e){
-					throw new AttributeReferenceEvaluationException(this, 
-							"Failed to convert xml node (at:%d in nodeset) " +
-							"text value=\"%s\" to an attribute value of type=\"%s\"", 
-							i, v, getDataType());
-				}
-			}
-		  	return getDataType().bagOf().createFromAttributes(values);
+			return toBag(nodeSet);
 		}
 		catch(XPathEvaluationException e){
 			throw new AttributeReferenceEvaluationException(this,e);
 		}
-	}	
+	}
+	
+	private NodeList selectNodes(EvaluationContext context, Node contextNode) 
+		throws XPathEvaluationException
+	{
+		XPathProvider xpathProv = context.getXPathProvider();
+		NodeList nodeSet = xpathProv.evaluateToNodeSet(xpath, contextNode);
+		return nodeSet;
+	}
+	
+	private BagOfAttributeValues<?> toBag(NodeList nodeSet) 
+		throws EvaluationException
+	{
+		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		for(int i = 0; i< nodeSet.getLength(); i++)
+		{
+			Node n = nodeSet.item(i);
+			String v = null;
+			switch(n.getNodeType()){
+				case Node.TEXT_NODE:
+					v = ((Text)n).getData();
+					break;
+				case Node.PROCESSING_INSTRUCTION_NODE:
+					v = ((ProcessingInstruction)n).getData();
+					break;
+				case Node.ATTRIBUTE_NODE:
+					v = ((Attr)n).getValue();
+					break;
+				case Node.COMMENT_NODE:
+					v = ((Comment)n).getData();
+					break;
+				default:
+					throw new AttributeReferenceEvaluationException(this, 
+							"Unsupported DOM node type=\"%d\"", n.getNodeType());
+			}
+			try{
+				values.add(getDataType().fromXacmlString(v));
+			}catch(Exception e){
+				throw new AttributeReferenceEvaluationException(this, 
+						"Failed to convert xml node (at:%d in nodeset) " +
+						"text value=\"%s\" to an attribute value of type=\"%s\"", 
+						i, v, getDataType());
+			}
+		}
+	  	return getDataType().bagOf().createFromAttributes(values);
+	}
 }
