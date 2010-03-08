@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.impl.function;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
@@ -114,6 +115,7 @@ public class NonNumericComparisionFunctions
 		if(cc.getTimezone() == DatatypeConstants.FIELD_UNDEFINED){
 			cc.setTimezone(ac.getTimezone());
 		}
+		Preconditions.checkArgument(b.compareTo(c) <= 0);
 		return DataTypes.BOOLEAN.create(ac.compare(bc) >= 0 && ac.compare(cc) <= 0);
 	}
 	

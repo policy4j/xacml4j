@@ -6,7 +6,6 @@ import com.artagon.xacml.v3.policy.AttributeValueType;
 
 public interface XPathExpressionType extends AttributeValueType
 {
-	
 	XPathExpressionValue create(Object v, Object ...params);
 	XPathExpressionValue create(String xpath, AttributeCategoryId category);
 	XPathExpressionValue fromXacmlString(String v, Object ...params);
