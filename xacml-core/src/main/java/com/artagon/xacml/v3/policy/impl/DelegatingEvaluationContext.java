@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
+import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 
@@ -161,6 +162,13 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public XPathProvider getXPathProvider() {
 		return delegate.getXPathProvider();
+	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
+	public TimeZone getTimeZone() {
+		return delegate.getTimeZone();
 	}
 	
 	

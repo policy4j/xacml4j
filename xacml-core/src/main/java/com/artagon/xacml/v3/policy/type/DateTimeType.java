@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.type;
 
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -14,7 +15,8 @@ public interface DateTimeType extends AttributeValueType
 	DateTimeValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<DateTimeValue> bagOf();
 	
-	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar>
+	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar> 
+		implements Comparable<DateTimeValue>
 	{
 		public DateTimeValue(DateTimeType type, XMLGregorianCalendar value) {
 			super(type, value);
@@ -45,6 +47,18 @@ public interface DateTimeType extends AttributeValueType
 		
 		private DateTimeValue subtract(Duration duration){
 			return duration.getSign() == -1?add(duration):add(duration.negate());
+		}
+
+		@Override
+		public int compareTo(DateTimeValue v) {
+			int r = getValue().compare(v.getValue());
+			if(r == DatatypeConstants.INDETERMINATE){
+				throw new IllegalArgumentException(
+						String.format("Can't compare a=\"%s\" with b=\"%s\", " +
+								"result is INDETERMINATE", getValue(), v.getValue()));
+			}
+			return r == DatatypeConstants.EQUAL?0:(
+					(r == DatatypeConstants.GREATER)?1:-1);
 		}
 	}
 }

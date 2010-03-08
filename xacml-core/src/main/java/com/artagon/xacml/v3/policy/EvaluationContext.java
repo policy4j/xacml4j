@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
+import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 
@@ -11,6 +12,14 @@ import com.artagon.xacml.v3.Obligation;
 
 public interface EvaluationContext 
 {	
+	/**
+	 * Gets time zone used in PDP time
+	 * calculations
+	 * 
+	 * @return {@link TimeZone}
+	 */
+	TimeZone getTimeZone();
+	
 	/**
 	 * Tests if function parameters
 	 * need to be validate at runtime

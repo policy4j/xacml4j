@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 
@@ -39,6 +40,7 @@ class BaseEvaluationContext implements EvaluationContext
 	private Map<String, Map<String, Value>> variableEvaluationCache;
 	
 	private XPathProvider xpathProvider;
+	private TimeZone timezone;
 	
 	protected BaseEvaluationContext(AttributeResolver attributeService, 
 			PolicyResolver policyResolver, XPathProvider xpathFactory){
@@ -60,8 +62,14 @@ class BaseEvaluationContext implements EvaluationContext
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new HashMap<String, Map<String,Value>>();
 		this.xpathProvider = xpathFactory;
+		this.timezone = TimeZone.getTimeZone("UTC");
 	}
 	
+	@Override
+	public TimeZone getTimeZone(){
+		Preconditions.checkState(timezone != null);
+		return timezone;
+	}
 	
 	@Override
 	public Node getContent(AttributeCategoryId categoryId) {
