@@ -32,11 +32,11 @@ public class EvaluationException extends PolicyException
 		this.statusCode = code;
 	}	
 	
-	public EvaluationContext getEvaluationContext(){
+	public final EvaluationContext getEvaluationContext(){
 		return context;
 	}
 	
-	public StatusCode getStatusCode(){
+	public final StatusCode getStatusCode(){
 		return statusCode;
 	}
 }
