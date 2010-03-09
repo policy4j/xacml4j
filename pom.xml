@@ -9,6 +9,7 @@
 	<url>http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml</url>
 	<modules>
 		<module>xacml-core</module>
+        <module>xacml-compat-test</module>
 	</modules>
 	<properties>
 		<junit.version>4.4</junit.version>
@@ -42,6 +43,10 @@
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -92,6 +97,11 @@
 				<groupId>com.google.collections</groupId>
 				<artifactId>google-collections</artifactId>
 				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.infinispan</groupId>
+				<artifactId>infinispan-core</artifactId>
+				<version>4.0.0.FINAL</version>
 			</dependency> 
 		</dependencies>
 	</dependencyManagement>
@@ -117,4 +127,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>jboss-release</id>
+			<name>Jboss Release Repository</name>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+		<repository>
+			<id>jboss-snapshot</id>
+			<name>Jboss Snapshot Repository</name>
+			<url>http://snapshots.jboss.org/maven2</url>
+		</repository>
+	</repositories>
 </project>

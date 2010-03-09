@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
@@ -29,7 +30,7 @@ public class DefaultAttributeDesignatorTest
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
-	@Test(expected=EvaluationException.class)
+	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(

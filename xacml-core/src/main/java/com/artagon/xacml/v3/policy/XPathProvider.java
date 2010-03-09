@@ -16,4 +16,5 @@ public interface XPathProvider
 	
 	Number evaluateToNumber(String path, Node context) 
 		throws XPathEvaluationException;
+	
 }

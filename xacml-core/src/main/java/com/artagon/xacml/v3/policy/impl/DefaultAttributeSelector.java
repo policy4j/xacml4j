@@ -93,7 +93,7 @@ final class DefaultAttributeSelector extends
 			return toBag(nodeSet);
 		}
 		catch(XPathEvaluationException e){
-			throw new AttributeReferenceEvaluationException(this,e);
+			throw new AttributeReferenceEvaluationException(this, e);
 		}
 	}
 	
