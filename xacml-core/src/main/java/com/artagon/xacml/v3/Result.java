@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class Result 
+public class Result extends XacmlObject
 {
 	private Status status;
 	private Decision decision;
