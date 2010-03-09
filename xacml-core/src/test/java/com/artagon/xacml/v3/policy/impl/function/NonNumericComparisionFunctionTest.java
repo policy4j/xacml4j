@@ -13,7 +13,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
+
 
 
 public class NonNumericComparisionFunctionTest 
@@ -23,6 +25,20 @@ public class NonNumericComparisionFunctionTest
 	@Before
 	public void init(){
 		this.context = createStrictMock(EvaluationContext.class);
+	}
+	
+	
+	@Test
+	public void testStringGreaterThan()
+	{
+		StringValue a = DataTypes.STRING.create("aa");
+		StringValue b = DataTypes.STRING.create("ab");
+		assertEquals(DataTypes.BOOLEAN.create(true), 
+				NonNumericComparisionFunctions.greatherThan(a, b));
+		a = DataTypes.STRING.create("aa");
+		b = DataTypes.STRING.create("aaa");
+		assertEquals(DataTypes.BOOLEAN.create(true), 
+				NonNumericComparisionFunctions.greatherThan(a, b));
 	}
 	
 	@Test

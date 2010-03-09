@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum StatusId
+public enum StatusCodeId
 {
 	OK("urn:oasis:names:tc:xacml:1.0:status:ok"), 
 	MISSING_ATTRIBUTE("urn:oasis:names:tc:xacml:1.0:status:missing-attribute"),
@@ -13,19 +13,19 @@ public enum StatusId
 	
 	private String id;
 	
-	private static final Map<String, StatusId> BY_ID = new ConcurrentHashMap<String, StatusId>();
+	private static final Map<String, StatusCodeId> BY_ID = new ConcurrentHashMap<String, StatusCodeId>();
 
 	static {
-		for(StatusId t : EnumSet.allOf(StatusId.class)){
+		for(StatusCodeId t : EnumSet.allOf(StatusCodeId.class)){
 			BY_ID.put(t.id, t);
 		}
 	}
 	
-	private StatusId(String id){
+	private StatusCodeId(String id){
 		this.id = id;
 	}
 	
-	public static StatusId parse(String v){
+	public static StatusCodeId parse(String v){
 		return BY_ID.get(v);
 	}
 	

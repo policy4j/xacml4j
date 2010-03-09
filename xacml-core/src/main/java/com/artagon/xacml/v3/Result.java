@@ -14,22 +14,42 @@ public class Result
 	private Collection<Advice> associatedAdvice;
 	private Collection<Attributes> attributes;
 	
+	/**
+	 * Constructs result with a given
+	 * failure status
+	 * 
+	 * @param status an failure status
+	 */
 	public Result(Status status){
 		Preconditions.checkArgument(status.isFailure());
 		this.status = status;
 	}
 	
-	public Result(Decision decision, 
+	/**
+	 * Constructs result with a given decision
+	 * 
+	 * @param decision a decision
+	 * @param associatedAdvice an associated advice
+	 * @param obligations an associated obligations
+	 * @param attributes an attributes to be
+	 * included in response
+	 */
+	public Result(
+			Decision decision, 
 			Collection<Advice> associatedAdvice, 
 			Collection<Obligation> obligations,
 			Collection<Attributes> attributes){
 		Preconditions.checkArgument(!decision.isIndeterminate());
-		this.status = new Status(StatusId.OK);
+		this.status = Status.createSuccessStatus();
 		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
 		this.obligations = new LinkedList<Obligation>(obligations);
 		this.attributes = new LinkedList<Attributes>(attributes);
 	}
 	
+	/**
+	 * Gets result status
+	 * @return
+	 */
 	public Status getStatus(){
 		return status;
 	}

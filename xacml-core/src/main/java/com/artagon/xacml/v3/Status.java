@@ -2,13 +2,13 @@ package com.artagon.xacml.v3;
 
 import com.artagon.xacml.util.Preconditions;
 
-public final class Status 
+public final class Status extends XacmlObject
 {
-	private StatusId code;
+	private StatusCode code;
 	private String message;
 	private String detail;
 	
-	public Status(StatusId code, 
+	public Status(StatusCode code, 
 			String message, String detail){
 		Preconditions.checkNotNull(code);
 		this.code = code;
@@ -16,28 +16,20 @@ public final class Status
 		this.detail = detail;
 	}
 	
-	public Status(StatusId code){	
-		this(code, null, null);
+	public static Status createSuccessStatus(){
+		return new Status(new StatusCode(StatusCodeId.OK), null , null);
 	}
 	
-	public StatusId getCode(){
+	public StatusCode getStatusCode(){
 		return code;
 	}
 	
-	public boolean isOk(){
-		return code == StatusId.OK;
+	public boolean isSuccess(){
+		return code.getValue() == StatusCodeId.OK;
 	}
 	
 	public boolean isFailure(){
-		return code != StatusId.OK;
-	}
-	
-	public boolean isProcessingError(){
-		return code == StatusId.STATUS_PROCESSING_ERROR;
-	}
-	
-	public boolean isSyntaxError(){
-		return code == StatusId.SYNTAX_ERROR;
+		return code.getValue() != StatusCodeId.OK;
 	}
 	
 	public String getMessage(){

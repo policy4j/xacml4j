@@ -39,7 +39,7 @@ final class DefaultCondition extends XacmlObject implements Condition
 		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(DataTypes.BOOLEAN.getType()), 
 				String.format(
 						"Condition expects boolean predicate, " +
-						"but got expression which evaluates=\"%s\"",
+						"but got expression which evaluates to=\"%s\"",
 						predicate.getEvaluatesTo()));
 		this.predicate = predicate;
 	}

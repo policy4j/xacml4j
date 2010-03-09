@@ -5,11 +5,11 @@ import java.util.Collection;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class Response 
+public class ResponseContext 
 {
 	private Collection<Result> result;
 	
-	public Response(Result ...results){
+	public ResponseContext(Result ...results){
 		Preconditions.checkArgument(results != null);
 		Preconditions.checkArgument(results.length > 0);
 		this.result = Arrays.asList(results);

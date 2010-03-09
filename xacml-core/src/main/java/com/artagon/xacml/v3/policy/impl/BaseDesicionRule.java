@@ -70,14 +70,32 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		return id;
 	}
 	
+	/**
+	 * Gets decision rule target
+	 * 
+	 * @return {@link Target} or <code>null</code>
+	 * if rule is applicable to any request
+	 */
 	public final Target getTarget(){
 		return target;
 	}
 	
+	/**
+	 * Gets decision rule collection of {@link ObligationExpression}
+	 * expressions
+	 * 
+	 * @return a collection of {@link ObligationExpression}
+	 */
 	public final Collection<ObligationExpression> getObligationExpressions(){
 		return Collections.unmodifiableCollection(obligationExpressions);
 	}
 	
+	/**
+	 * Gets decision rule collection of {@link AdviceExpression}
+	 * expressions
+	 * 
+	 * @return a collection of {@link AdviceExpression}
+	 */
 	public final Collection<AdviceExpression> getAdviceExpressions(){
 		return Collections.unmodifiableCollection(adviceExpressions);
 	}
