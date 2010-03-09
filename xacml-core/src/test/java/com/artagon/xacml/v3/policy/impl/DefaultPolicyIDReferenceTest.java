@@ -55,7 +55,7 @@ public class DefaultPolicyIDReferenceTest
 	public void testNoReferencedPolicyFound() throws EvaluationException
 	{
 		PolicyIDReference ref = new DefaultPolicyIDReference("testId", new VersionMatch("1.+"));
-		expect(policyResolver.resolve(context, ref)).andThrow(new PolicyResolutionException("Failed to resolve"));
+		expect(policyResolver.resolve(context, ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		replay(policyResolver);
 		EvaluationContext policyRefContext = ref.createContext(context);
 		assertNull(policyRefContext.getCurrentPolicy());

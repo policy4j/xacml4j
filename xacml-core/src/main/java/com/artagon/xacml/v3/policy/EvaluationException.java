@@ -6,24 +6,23 @@ public class EvaluationException extends PolicyException
 {
 	private EvaluationContext context;
 	
-	public EvaluationException(String template, Object... arguments) {
+	protected EvaluationException(EvaluationContext context, 
+			String template, Object... arguments) {
 		super(template, arguments);
 	}
 
-	public EvaluationException(Throwable cause, String message,
+	protected EvaluationException(EvaluationContext context, 
+			Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
 	}
 
-	public EvaluationException(Throwable cause) {
+	protected EvaluationException(EvaluationContext context, 
+			Throwable cause) {
 		super(cause);
 	}	
 	
-	public EvaluationContext getEvaluationContext(){
+	protected EvaluationContext getEvaluationContext(){
 		return context;
-	}
-	
-	public void setEvaluationContext(EvaluationContext context){
-		this.context = context;
 	}
 }

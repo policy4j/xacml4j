@@ -76,7 +76,8 @@ class ReflectionBasedFunctionInvocation implements FunctionInvocation
 			return (T)functionMethod.invoke(factoryInstance, params);
 		}
 		catch(Exception e){
-			throw new FunctionInvocationException(spec, e, "Failed to invoke function=\"%s\"", spec.getId());
+			throw new FunctionInvocationException(context, spec, 
+					e, "Failed to invoke function=\"%s\"", spec.getId());
 		}
 	}
 }

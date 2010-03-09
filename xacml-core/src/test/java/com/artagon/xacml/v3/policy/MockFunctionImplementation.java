@@ -20,7 +20,7 @@ public class MockFunctionImplementation <T extends Value> implements FunctionInv
 		throws FunctionInvocationException 
 	{
 		if(failWithIndeterminate){
-			throw new FunctionInvocationException(spec, "Failed to invoke mock function");
+			throw new FunctionInvocationException(context, spec, "Failed to invoke mock function");
 		}
 		return expectedResult;
 	}

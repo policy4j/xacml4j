@@ -5,22 +5,25 @@ public class FunctionInvocationException extends EvaluationException
 {
 	private FunctionSpec spec;
 	
-	public FunctionInvocationException(FunctionSpec spec, 
+	public FunctionInvocationException(EvaluationContext context,
+			FunctionSpec spec, 
 			String template, Object... arguments) {
-		super(template, arguments);
+		super(context, template, arguments);
 		this.spec = spec;
 	}
 
 	public FunctionInvocationException(
+			EvaluationContext context,
 			FunctionSpec spec, 
 			Throwable cause, String message,
 			Object... arguments) {
-		super(cause, message, arguments);
+		super(context, cause, message, arguments);
 		this.spec = spec;
 	}
 
-	public FunctionInvocationException(FunctionSpec spec, Throwable cause) {
-		super(cause);
+	public FunctionInvocationException(EvaluationContext context, 
+			FunctionSpec spec, Throwable cause) {
+		super(context, cause);
 		this.spec = spec;
 	}
 	

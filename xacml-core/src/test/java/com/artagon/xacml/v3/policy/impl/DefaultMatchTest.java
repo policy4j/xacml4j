@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
@@ -55,7 +56,7 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 		expect(spec.getParamSpecAt(0)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
 		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
-		expect(ref.evaluate(context)).andThrow(new EvaluationException("Failed"));
+		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
 		replay(spec, ref);
 		Match m = new DefaultMatch(spec, DataTypes.INTEGER.create(1), ref);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));

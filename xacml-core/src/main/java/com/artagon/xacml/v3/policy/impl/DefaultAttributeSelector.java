@@ -67,7 +67,7 @@ final class DefaultAttributeSelector extends
 		Node node = context.getContent(getCategory());
 		if(node == null){
 			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(this, 
+				throw new AttributeReferenceEvaluationException(context, this, 
 					"Content node for category=\"%s\" is null and mustBePresent=true", 
 					getCategory());
 			}
@@ -81,7 +81,7 @@ final class DefaultAttributeSelector extends
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						xpath, getCategory());
 				if(isMustBePresent()){
-					throw new AttributeReferenceEvaluationException(this, 
+					throw new AttributeReferenceEvaluationException(context, this, 
 						"Selector XPath expression=\"%s\" evaluated " +
 						"to empty node set and mustBePresents=\"true\"", xpath);
 				}
@@ -90,10 +90,10 @@ final class DefaultAttributeSelector extends
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
 						new Object[]{nodeSet.getLength(), xpath, getCategory()});
 			}
-			return toBag(nodeSet);
+			return toBag(context, nodeSet);
 		}
 		catch(XPathEvaluationException e){
-			throw new AttributeReferenceEvaluationException(this, e);
+			throw new AttributeReferenceEvaluationException(context, this, e);
 		}
 	}
 	
@@ -105,7 +105,7 @@ final class DefaultAttributeSelector extends
 		return nodeSet;
 	}
 	
-	private BagOfAttributeValues<?> toBag(NodeList nodeSet) 
+	private BagOfAttributeValues<?> toBag(EvaluationContext context, NodeList nodeSet) 
 		throws EvaluationException
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
@@ -127,13 +127,13 @@ final class DefaultAttributeSelector extends
 					v = ((Comment)n).getData();
 					break;
 				default:
-					throw new AttributeReferenceEvaluationException(this, 
+					throw new AttributeReferenceEvaluationException(context, this, 
 							"Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try{
 				values.add(getDataType().fromXacmlString(v));
 			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(this, 
+				throw new AttributeReferenceEvaluationException(context, this, 
 						"Failed to convert xml node (at:%d in nodeset) " +
 						"text value=\"%s\" to an attribute value of type=\"%s\"", 
 						i, v, getDataType());
