@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.v3.StatusCode;
+
 public class AttributeReferenceEvaluationException extends EvaluationException
 {
 	private static final long serialVersionUID = 4604041385261391333L;
@@ -9,14 +11,16 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	public AttributeReferenceEvaluationException(EvaluationContext context,
 			AttributeReference ref, 
 			String message, Object ...params){
-		super(context, message, params);
+		super(StatusCode.createMissingAttribute(),
+				context, message, params);
 		this.ref = ref;
 	}
 	
 	public AttributeReferenceEvaluationException(EvaluationContext context, 
 			AttributeReference ref, 
 			Throwable cause){
-		super(context, cause);
+		super(StatusCode.createMissingAttribute(), 
+				context, cause);
 		this.ref = ref;
 	}
 	

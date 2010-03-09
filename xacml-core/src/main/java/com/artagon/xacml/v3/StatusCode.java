@@ -23,6 +23,18 @@ public class StatusCode extends XacmlObject
 		this(value, (StatusCode[])null);
 	}
 	
+	public static StatusCode createMissingAttribute(){
+		return new StatusCode(StatusCodeId.MISSING_ATTRIBUTE);
+	}
+	
+	public static StatusCode createProcessingError(){
+		return new StatusCode(StatusCodeId.STATUS_PROCESSING_ERROR);
+	}
+	
+	public static StatusCode createSyntaxError(){
+		return new StatusCode(StatusCodeId.SYNTAX_ERROR);
+	}
+	
 	public StatusCodeId getValue(){
 		return value;
 	}

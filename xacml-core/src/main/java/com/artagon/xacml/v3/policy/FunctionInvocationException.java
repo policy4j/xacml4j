@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.v3.StatusCode;
+
 @SuppressWarnings("serial")
 public class FunctionInvocationException extends EvaluationException
 {
@@ -8,7 +10,8 @@ public class FunctionInvocationException extends EvaluationException
 	public FunctionInvocationException(EvaluationContext context,
 			FunctionSpec spec, 
 			String template, Object... arguments) {
-		super(context, template, arguments);
+		super(StatusCode.createProcessingError(),
+				context, template, arguments);
 		this.spec = spec;
 	}
 
@@ -17,13 +20,15 @@ public class FunctionInvocationException extends EvaluationException
 			FunctionSpec spec, 
 			Throwable cause, String message,
 			Object... arguments) {
-		super(context, cause, message, arguments);
+		super(StatusCode.createProcessingError(), 
+				context, cause, message, arguments);
 		this.spec = spec;
 	}
 
 	public FunctionInvocationException(EvaluationContext context, 
 			FunctionSpec spec, Throwable cause) {
-		super(context, cause);
+		super(StatusCode.createProcessingError(), 
+				context, cause);
 		this.spec = spec;
 	}
 	
