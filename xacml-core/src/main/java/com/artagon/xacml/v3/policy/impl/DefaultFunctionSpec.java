@@ -103,7 +103,7 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 			Expression... params) throws FunctionInvocationException {
 		if(context.isValidateFuncParamAtRuntime()){
 			if(!validateParameters(params)){
-				throw new FunctionInvocationException(
+				throw new FunctionInvocationException(this, 
 						"Failed to validate function=\"%s\" parameters", getId());
 			}
 		}
@@ -115,7 +115,7 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 			throw e;
 		}
 		catch(Exception e){
-			throw new FunctionInvocationException(e, 
+			throw new FunctionInvocationException(this, e, 
 					"Failed to invoke function=\"%s\"", getId());
 		}
 	}

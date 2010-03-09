@@ -74,7 +74,7 @@ public class DefaultApplyTest
 	{
 		expect(function.validateParameters(DataTypes.INTEGER.create(10L))).andReturn(true);
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
-		.andThrow(new FunctionInvocationException("Failed to invoke"));
+		.andThrow(new FunctionInvocationException(function, "Failed to invoke"));
 		replay(function);
 		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);

@@ -50,7 +50,7 @@ public class DefaultFunctionSpecTest
 	{
 		Expression[] params = {DataTypes.BOOLEAN.create(false)};
 		FunctionSpec spec = b.withParam(DataTypes.BOOLEAN.getType()).build(resolver, invocation);
-		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException("Fail"));
+		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(spec, "Fail"));
 		replay(invocation);
 		replay(resolver);
 		spec.invoke(context, params);

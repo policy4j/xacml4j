@@ -3,16 +3,28 @@ package com.artagon.xacml.v3.policy;
 @SuppressWarnings("serial")
 public class FunctionInvocationException extends EvaluationException
 {
-	public FunctionInvocationException(String template, Object... arguments) {
+	private FunctionSpec spec;
+	
+	public FunctionInvocationException(FunctionSpec spec, 
+			String template, Object... arguments) {
 		super(template, arguments);
+		this.spec = spec;
 	}
 
-	public FunctionInvocationException(Throwable cause, String message,
+	public FunctionInvocationException(
+			FunctionSpec spec, 
+			Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
+		this.spec = spec;
 	}
 
-	public FunctionInvocationException(Throwable cause) {
+	public FunctionInvocationException(FunctionSpec spec, Throwable cause) {
 		super(cause);
+		this.spec = spec;
+	}
+	
+	public FunctionSpec getSpec(){
+		return spec;
 	}
 }
