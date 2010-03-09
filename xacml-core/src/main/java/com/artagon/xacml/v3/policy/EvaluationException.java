@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.StatusCode;
 
 
@@ -14,7 +15,10 @@ public class EvaluationException extends PolicyException
 			EvaluationContext context, 
 			String template, Object... arguments) {
 		super(template, arguments);
+		Preconditions.checkNotNull(code);
+		Preconditions.checkNotNull(context);
 		this.statusCode = code;
+		this.context = context;
 	}
 
 	protected EvaluationException(StatusCode code, 
@@ -22,14 +26,20 @@ public class EvaluationException extends PolicyException
 			Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
+		Preconditions.checkNotNull(code);
+		Preconditions.checkNotNull(context);
 		this.statusCode = code;
+		this.context = context;
 	}
 
 	protected EvaluationException(StatusCode code, 
 			EvaluationContext context, 
 			Throwable cause) {
 		super(cause);
+		Preconditions.checkNotNull(code);
+		Preconditions.checkNotNull(context);
 		this.statusCode = code;
+		this.context = context;
 	}	
 	
 	public final EvaluationContext getEvaluationContext(){

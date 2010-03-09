@@ -6,6 +6,8 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +40,14 @@ public class DefaultAttributeDesignatorTest
 		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
-		desig.evaluate(context);
+		try{
+			desig.evaluate(context);
+		}catch(AttributeReferenceEvaluationException e){
+			assertSame(desig, e.getReference());
+			assertSame(context, e.getEvaluationContext());
+			assertTrue(e.getStatusCode().isFailure());
+			throw e;
+		}
 		verify(context);
 	}
 	
