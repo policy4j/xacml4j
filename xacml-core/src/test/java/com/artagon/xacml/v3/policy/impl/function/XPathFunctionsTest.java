@@ -24,6 +24,7 @@ import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.XPathProvider;
+import com.artagon.xacml.v3.policy.impl.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.impl.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;

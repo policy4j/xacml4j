@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl.function;
+package com.artagon.xacml.v3.policy.impl;
 
 import java.lang.reflect.Array;
 

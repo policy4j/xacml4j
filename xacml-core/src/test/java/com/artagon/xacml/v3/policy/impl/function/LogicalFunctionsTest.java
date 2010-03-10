@@ -9,6 +9,7 @@ import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
+import com.artagon.xacml.v3.policy.impl.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
