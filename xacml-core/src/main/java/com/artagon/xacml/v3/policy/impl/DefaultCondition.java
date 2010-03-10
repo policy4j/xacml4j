@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.ConditionResult;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -34,14 +36,19 @@ final class DefaultCondition extends XacmlObject implements Condition
 	 * 
 	 * @param predicate an expression which always evaluates
 	 * to {@link BooleanValue}
+	 * @exception {@link PolicySyntaxException}
 	 */
-	public DefaultCondition(Expression predicate){
+	public DefaultCondition(Expression predicate) 
+		throws PolicySyntaxException
+	{
 		Preconditions.checkNotNull(predicate);
-		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(DataTypes.BOOLEAN.getType()), 
-				String.format(
-						"Condition expects boolean predicate, " +
-						"but got expression which evaluates to=\"%s\"",
-						predicate.getEvaluatesTo()));
+		if(!predicate.getEvaluatesTo().equals(
+				DataTypes.BOOLEAN.getType())){
+			throw new PolicySyntaxException("Condition expects an expression " +
+					"with=\"%s\" return value, but got expression " +
+					"with return value type=\"%s\"", 
+					DataTypes.BOOLEAN.getType(), predicate.getEvaluatesTo());
+		}
 		this.predicate = predicate;
 	}
 	
@@ -56,6 +63,8 @@ final class DefaultCondition extends XacmlObject implements Condition
 			}
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
+			return ConditionResult.INDETERMINATE;
+		}catch(Exception e){
 			return ConditionResult.INDETERMINATE;
 		}
 	}

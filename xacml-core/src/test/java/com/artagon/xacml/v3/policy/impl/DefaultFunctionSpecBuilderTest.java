@@ -1,34 +1,34 @@
 package com.artagon.xacml.v3.policy.impl;
 
+
+import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.policy.FunctionInvocation;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.FunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.MockFunctionImplementation;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 import com.artagon.xacml.v3.policy.type.StringType;
 
-public class DefaultFunctionSpecBuilderTest extends XacmlPolicyTestCase
+public class DefaultFunctionSpecBuilderTest
 {
 	private IntegerType type1;
 	private StringType type2;
 	
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
-	private MockFunctionImplementation<IntegerType.IntegerValue> impl;
+	private FunctionInvocation impl;
 	
 	@Before
 	public void init(){
 		this.type1 = DataTypes.INTEGER.getType();
 		this.type2 = DataTypes.STRING.getType();
-		IntegerType.IntegerValue expectedResult = DataTypes.INTEGER.create(new Integer(10));
-		this.impl =  new MockFunctionImplementation<IntegerType.IntegerValue>(expectedResult);
+		this.impl =  createStrictMock(FunctionInvocation.class);
 		
 		FunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 
 		
