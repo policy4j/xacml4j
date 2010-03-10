@@ -26,35 +26,34 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 {
 	private final static Logger log = LoggerFactory.getLogger(AnnotationBasedFunctionFactory.class);
 	
-	private Object factoryInstance;
-	private Class<?> factoryClass;
 	
 	public AnnotationBasedFunctionFactory(Object instance, Class<?> factoryClass)
 	{
 		Preconditions.checkArgument(instance == null || factoryClass.isInstance(instance));
-		List<FunctionSpec> functions = findFunctions(factoryClass);
+		List<FunctionSpec> functions = findFunctions(factoryClass, instance);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
-		this.factoryInstance = instance;
-		this.factoryClass = factoryClass;
 	}
 	
 	public AnnotationBasedFunctionFactory(Class<?> factoryClass){
 		this(null, factoryClass);
 	}
 	
-	private List<FunctionSpec> findFunctions(Class<?> clazz)
+	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
 	{
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFunc.class);
 		for(final Method m : methods){
-			specs.add(build(m));
+			specs.add(build(clazz, instance, m));
 		}
 		return specs;
 	}
 	
-	private FunctionSpec build(final Method m)
+	private FunctionSpec build(
+			final Class<?> factoryClass, 
+			final Object factoryInstance, 
+			final Method m)
 	{
 		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
 		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
