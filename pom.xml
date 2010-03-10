@@ -45,12 +45,8 @@
 			<artifactId>easymock</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
+			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -104,7 +100,7 @@
 			</dependency>
 			<dependency>
 				<groupId>cglib</groupId>
-				<artifactId>cglib</artifactId>
+				<artifactId>cglib-nodep</artifactId>
 				<version>2.2</version>
 			</dependency>
 			<dependency>

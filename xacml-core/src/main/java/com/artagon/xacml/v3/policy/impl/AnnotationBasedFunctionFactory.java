@@ -133,6 +133,6 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new CglibReflectionBasedFunctionInvocation(factoryInstance, factoryClass, m, evalContextParamFound));
+				new JDKReflectionBasedFunctionInvocation(factoryInstance, factoryClass, m, evalContextParamFound));
 	}
 }
