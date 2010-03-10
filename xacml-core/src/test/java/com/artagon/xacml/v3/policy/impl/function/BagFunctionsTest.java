@@ -13,6 +13,22 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.StringType.StringValue;
+import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
+import com.artagon.xacml.v3.policy.type.DateType.DateValue;
+import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
+import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
+import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.policy.type.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.policy.type.HexBinaryType.HexBinaryValue;
+import com.artagon.xacml.v3.policy.type.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.policy.type.IPAddressType.IPAddressValue;
+import com.artagon.xacml.v3.policy.type.DNSNameType.DNSNameValue;
+import com.artagon.xacml.v3.policy.type.X500NameType.X500NameValue;
+import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 
 public class BagFunctionsTest 
 {
@@ -107,5 +123,18 @@ public class BagFunctionsTest
 		assertEquals(DataTypes.BOOLEAN.create(true), BagFunctions.booleanIsIn(v0, bag));
 		assertEquals(DataTypes.BOOLEAN.create(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(DataTypes.BOOLEAN.bag(v0, v1), BagFunctions.booleanBag(v0, v1));
+	}
+	
+	@Test
+	public void testIntegerBagFunctions() throws EvaluationException
+	{
+		IntegerValue v0 = DataTypes.INTEGER.create(1);
+		IntegerValue v1 = DataTypes.INTEGER.create(2);
+		BagOfAttributeValues<IntegerValue> bag = DataTypes.INTEGER.bag(v0);
+		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
+		assertEquals(DataTypes.INTEGER.create(1), BagFunctions.integerBagSize(bag));
+		assertEquals(DataTypes.BOOLEAN.create(true), BagFunctions.integerIsIn(v0, bag));
+		assertEquals(DataTypes.BOOLEAN.create(false), BagFunctions.integerIsIn(v1, bag));
+		assertEquals(DataTypes.INTEGER.bag(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 }

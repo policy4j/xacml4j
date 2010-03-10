@@ -53,44 +53,6 @@ import com.artagon.xacml.v3.policy.type.StringType.StringValue;
  * bag of ‘type’ values containing the values of the arguments. 
  * An application of this function to zero arguments SHALL produce an 
  * empty bag of the specified data-type.
-   
-   
- * urn:oasis:names:tc:xacml:1.0:function:anyURI-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:anyURI-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:anyURI-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:anyURI-bag 
- * urn:oasis:names:tc:xacml:1.0:function:hexBinary-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:hexBinary-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:hexBinary-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:hexBinary-bag 
- * urn:oasis:names:tc:xacml:1.0:function:base64Binary-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:base64Binary-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:base64Binary-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:base64Binary-bag 
- * urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag 
- * urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag 
- * urn:oasis:names:tc:xacml:1.0:function:x500Name-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:x500Name-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:x500Name-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:x500Name-bag 
- * urn:oasis:names:tc:xacml:1.0:function:rfc822Name-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:rfc822Name-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag 
- * urn:oasis:names:tc:xacml:2.0:function:ipAddress-one-and-only 
- * urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag-size 
- * urn:oasis:names:tc:xacml:2.0:function:ipAddress-is-in 
- * urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag 
- * urn:oasis:names:tc:xacml:2.0:function:dnsName-one-and-only 
- * urn:oasis:names:tc:xacml:2.0:function:dnsName-bag-size 
- * urn:oasis:names:tc:xacml:2.0:function:dnsName-is-in 
- * urn:oasis:names:tc:xacml:2.0:function:dnsName-bag
  */
 public class BagFunctions 
 {
@@ -114,7 +76,7 @@ public class BagFunctions
 		return (T)bag.values().iterator().next();
 	}
 	
-	static IntegerValue bagSizeImpl(BagOfAttributeValues<? extends AttributeValue> bag) {
+	static IntegerValue typeBagSizeImpl(BagOfAttributeValues<? extends AttributeValue> bag) {
 		return DataTypes.INTEGER.create(bag.size());
 	}
 	
@@ -137,7 +99,7 @@ public class BagFunctions
 	public static IntegerValue stringBagSize(
 			@XacmlParam(type=DataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-is-in")
@@ -172,7 +134,7 @@ public class BagFunctions
 	public static IntegerValue booleanBagSize(
 			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-is-in")
@@ -207,7 +169,7 @@ public class BagFunctions
 	public static IntegerValue integerBagSize(
 			@XacmlParam(type=DataTypes.DOUBLE, isBag=true)BagOfAttributeValues<IntegerValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-is-in")
@@ -242,7 +204,7 @@ public class BagFunctions
 	public static IntegerValue timeBagSize(
 			@XacmlParam(type=DataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-is-in")
@@ -277,7 +239,7 @@ public class BagFunctions
 	public static IntegerValue doubleBagSize(
 			@XacmlParam(type=DataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-is-in")
@@ -312,7 +274,7 @@ public class BagFunctions
 	public static IntegerValue dateBagSize(
 			@XacmlParam(type=DataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-is-in")
@@ -347,7 +309,7 @@ public class BagFunctions
 	public static IntegerValue dateTimeBagSize(
 			@XacmlParam(type=DataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-is-in")
@@ -382,7 +344,7 @@ public class BagFunctions
 	public static IntegerValue anyURIBagSize(
 			@XacmlParam(type=DataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-is-in")
@@ -417,7 +379,7 @@ public class BagFunctions
 	public static IntegerValue hexBinaryBagSize(
 			@XacmlParam(type=DataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-is-in")
@@ -452,7 +414,7 @@ public class BagFunctions
 	public static IntegerValue base64BinaryBagSize(
 			@XacmlParam(type=DataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-is-in")
@@ -487,12 +449,12 @@ public class BagFunctions
 	public static IntegerValue dayTimeDurationBagSize(
 			@XacmlParam(type=DataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> bag) 
 	{
-		return bagSizeImpl(bag);
+		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
-	public static BooleanValue base64IsIn(
+	public static BooleanValue dayTimeDurationIsIn(
 			@XacmlParam(type=DataTypes.DAYTIMEDURATION)DayTimeDurationValue v,
 			@XacmlParam(type=DataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> bag) 
 	{
@@ -505,5 +467,195 @@ public class BagFunctions
 			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.DAYTIMEDURATION)
 			DayTimeDurationValue ...values){
 		return DataTypes.DAYTIMEDURATION.bag(values);
+	}
+	
+	// yearMonthDuration
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.YEARMONTHDURATION)
+	public static YearMonthDurationValue yearMonthDurationOneAndOnly(
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION, isBag=true)
+			BagOfAttributeValues<YearMonthDurationValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue yearMonthDurationBagSize(
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION, isBag=true)
+			BagOfAttributeValues<YearMonthDurationValue> bag) 
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue yearMonthDurationIsIn(
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION)YearMonthDurationValue v,
+			@XacmlParam(type=DataTypes.YEARMONTHDURATION, isBag=true)
+			BagOfAttributeValues<YearMonthDurationValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag")
+	@XacmlFuncReturnType(type=DataTypes.YEARMONTHDURATION, isBag=true)
+	public static BagOfAttributeValues<YearMonthDurationValue> yearMonthDurationBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.YEARMONTHDURATION)
+			YearMonthDurationValue ...values){
+		return DataTypes.YEARMONTHDURATION.bag(values);
+	}
+	
+	// x500Name
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.X500NAME)
+	public static X500NameValue x500NameOneAndOnly(
+			@XacmlParam(type=DataTypes.X500NAME, isBag=true)
+			BagOfAttributeValues<X500NameValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue x500NameBagSize(
+			@XacmlParam(type=DataTypes.X500NAME, isBag=true)
+			BagOfAttributeValues<X500NameValue> bag) 
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue x500NameIsIn(
+			@XacmlParam(type=DataTypes.X500NAME)X500NameValue v,
+			@XacmlParam(type=DataTypes.X500NAME, isBag=true)
+			BagOfAttributeValues<X500NameValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-bag")
+	@XacmlFuncReturnType(type=DataTypes.X500NAME, isBag=true)
+	public static BagOfAttributeValues<X500NameValue> x500NameBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.X500NAME)
+			X500NameValue ...values){
+		return DataTypes.X500NAME.bag(values);
+	}
+	
+	// rfc822Name
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.RFC822NAME)
+	public static RFC822NameValue rfc822NameOneAndOnly(
+			@XacmlParam(type=DataTypes.RFC822NAME, isBag=true)
+			BagOfAttributeValues<RFC822NameValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue rfc822NamBagSize(
+			@XacmlParam(type=DataTypes.RFC822NAME, isBag=true)
+			BagOfAttributeValues<RFC822NameValue> bag) 
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue rfc822NameIsIn(
+			@XacmlParam(type=DataTypes.RFC822NAME)RFC822NameValue v,
+			@XacmlParam(type=DataTypes.RFC822NAME, isBag=true)
+			BagOfAttributeValues<RFC822NameValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag")
+	@XacmlFuncReturnType(type=DataTypes.RFC822NAME, isBag=true)
+	public static BagOfAttributeValues<RFC822NameValue> rfc822NameBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.RFC822NAME)
+			RFC822NameValue ...values){
+		return DataTypes.RFC822NAME.bag(values);
+	}
+	
+	// ipAddress
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.IPADDRESS)
+	public static IPAddressValue ipAddressOneAndOnly(
+			@XacmlParam(type=DataTypes.IPADDRESS, isBag=true)
+			BagOfAttributeValues<IPAddressValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue ipAddressBagSize(
+			@XacmlParam(type=DataTypes.IPADDRESS, isBag=true)
+			BagOfAttributeValues<IPAddressValue> bag) 
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue ipAddressIsIn(
+			@XacmlParam(type=DataTypes.IPADDRESS)IPAddressValue v,
+			@XacmlParam(type=DataTypes.IPADDRESS, isBag=true)
+			BagOfAttributeValues<IPAddressValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag")
+	@XacmlFuncReturnType(type=DataTypes.IPADDRESS, isBag=true)
+	public static BagOfAttributeValues<IPAddressValue> ipAddressBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.IPADDRESS)
+			IPAddressValue ...values){
+		return DataTypes.IPADDRESS.bag(values);
+	}
+	
+	// dnsName
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.DNSNAME)
+	public static DNSNameValue dnsNameOneAndOnly(
+			@XacmlParam(type=DataTypes.DNSNAME, isBag=true)
+			BagOfAttributeValues<DNSNameValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue dnsNameBagSize(
+			@XacmlParam(type=DataTypes.DNSNAME, isBag=true)
+			BagOfAttributeValues<DNSNameValue> bag) 
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue dnsNameIsIn(
+			@XacmlParam(type=DataTypes.DNSNAME)DNSNameValue v,
+			@XacmlParam(type=DataTypes.DNSNAME, isBag=true)
+			BagOfAttributeValues<DNSNameValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-bag")
+	@XacmlFuncReturnType(type=DataTypes.DNSNAME, isBag=true)
+	public static BagOfAttributeValues<DNSNameValue> dnsNameBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.DNSNAME)
+			DNSNameValue ...values){
+		return DataTypes.DNSNAME.bag(values);
 	}
 }
