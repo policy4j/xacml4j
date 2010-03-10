@@ -36,6 +36,7 @@ final class DefaultCondition extends XacmlObject implements Condition
 	 * to {@link BooleanValue}
 	 */
 	public DefaultCondition(Expression predicate){
+		Preconditions.checkNotNull(predicate);
 		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(DataTypes.BOOLEAN.getType()), 
 				String.format(
 						"Condition expects boolean predicate, " +
@@ -44,9 +45,7 @@ final class DefaultCondition extends XacmlObject implements Condition
 		this.predicate = predicate;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.Condition#evaluate(com.artagon.xacml.v3.policy.EvaluationContext)
-	 */
+	@Override
 	public ConditionResult evaluate(EvaluationContext context) 
 	{
 		try
@@ -57,8 +56,6 @@ final class DefaultCondition extends XacmlObject implements Condition
 			}
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			log.debug("Received evaluation exception=\"{}\", result is=\"{}\"", 
-					e.getMessage(), ConditionResult.INDETERMINATE);
 			return ConditionResult.INDETERMINATE;
 		}
 	}

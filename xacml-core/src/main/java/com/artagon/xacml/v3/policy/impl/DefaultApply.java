@@ -6,6 +6,7 @@ import com.artagon.xacml.v3.policy.Apply;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionReference;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
@@ -64,6 +65,8 @@ final class DefaultApply extends XacmlObject implements Apply
 			return spec.invoke(context, arguments);
 		}catch(EvaluationException e){
 			throw e;
+		}catch(Exception e){
+			throw new FunctionInvocationException(context, spec, e);
 		}
 	}
 	

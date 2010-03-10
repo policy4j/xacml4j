@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -118,8 +119,11 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 		return values.contains(attr);
 	}
 	
-	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag)
-	{
+	public int frequency(AttributeValue value){
+		return Collections.frequency(values, values);
+	}
+	
+	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag){
 		Preconditions.checkArgument(getType().equals(bag.getType()));
 		Collection<AttributeValue> join = new ArrayList<AttributeValue>(values.size() + bag.size());
 		join.addAll(values);
