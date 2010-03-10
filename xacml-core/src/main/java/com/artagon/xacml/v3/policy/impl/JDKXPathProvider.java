@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl.xpath;
+package com.artagon.xacml.v3.policy.impl;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
