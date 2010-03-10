@@ -29,14 +29,17 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 	private final static Logger log = LoggerFactory.getLogger(AnnotationBasedFunctionFactory.class);
 	
 	private Object factoryInstance;
+	private Class<?> factoryClass;
 	
-	public AnnotationBasedFunctionFactory(Object instance, Class<?> factoryClass){
+	public AnnotationBasedFunctionFactory(Object instance, Class<?> factoryClass)
+	{
 		Preconditions.checkArgument(instance == null || factoryClass.isInstance(instance));
 		List<FunctionSpec> functions = findFunctions(factoryClass);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
 		this.factoryInstance = instance;
+		this.factoryClass = factoryClass;
 	}
 	
 	public AnnotationBasedFunctionFactory(Class<?> factoryClass){
@@ -133,6 +136,6 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new ReflectionBasedFunctionInvocation(factoryInstance, m, evalContextParamFound));
+				new JDKReflectionBasedFunctionInvocation(factoryInstance, factoryClass, m, evalContextParamFound));
 	}
 }

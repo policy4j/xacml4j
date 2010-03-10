@@ -1,11 +1,12 @@
 package com.artagon.xacml.v3.policy.impl.function;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.annotations.XacmlParam;
+import com.artagon.xacml.v3.policy.annotations.XacmlParamVarArg;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
@@ -39,15 +40,7 @@ import com.artagon.xacml.v3.policy.type.StringType.StringValue;
  * bag of ‘type’ values containing the values of the arguments. 
  * An application of this function to zero arguments SHALL produce an 
  * empty bag of the specified data-type.
- 
- * urn:oasis:names:tc:xacml:1.0:function:string-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:string-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:string-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:string-bag 
- * urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only 
- * urn:oasis:names:tc:xacml:1.0:function:boolean-bag-size 
- * urn:oasis:names:tc:xacml:1.0:function:boolean-is-in 
- * urn:oasis:names:tc:xacml:1.0:function:boolean-bag 
+   
  * urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only
  * urn:oasis:names:tc:xacml:1.0:function:integer-bag-size 
  * urn:oasis:names:tc:xacml:1.0:function:integer-is-in 
@@ -107,13 +100,100 @@ import com.artagon.xacml.v3.policy.type.StringType.StringValue;
  */
 public class BagFunctions 
 {
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
-	@XacmlFuncReturnType(type=DataTypes.STRING)
-	public static StringValue oneAndOnly(
-			@XacmlParam(type=DataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> bag) 
-	{
+	
+	/**
+	 * This function takes a bag of {@link AttributeValue} values as an 
+	 * argument and returns a value of {@link AttributeValue}. 
+	 * It returns the only value in the bag. If the bag does not have 
+	 * one and only one value, then this functions throws 
+	 * {@link IllegalArgumentException}
+	 * 
+	 * @param <T> a bag value type
+	 * @param bag a bag of values
+	 * @return {@link AttributeValue} one and only one value
+	 */
+	@SuppressWarnings("unchecked")
+	static <T extends AttributeValue> T oneAndOnlyImpl(
+			BagOfAttributeValues<? extends AttributeValue> bag){
 		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
 		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");
-		return bag.values().iterator().next();
+		return (T)bag.values().iterator().next();
+	}
+	
+	static IntegerValue bagSizeImpl(BagOfAttributeValues<? extends AttributeValue> bag) {
+		return DataTypes.INTEGER.create(bag.size());
+	}
+	
+	static BooleanValue containsImpl(AttributeValue v,
+			BagOfAttributeValues<? extends AttributeValue> bag){
+
+		return DataTypes.BOOLEAN.create(bag.contains(v));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.STRING)
+	public static StringValue stringOneAndOnly(
+			@XacmlParam(type=DataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue stringBagSize(
+			@XacmlParam(type=DataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> bag) 
+	{
+		return bagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue stringIsIn(
+			@XacmlParam(type=DataTypes.STRING)StringValue v,
+			@XacmlParam(type=DataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-bag")
+	@XacmlFuncReturnType(type=DataTypes.STRING, isBag=true)
+	public BagOfAttributeValues<StringValue> stringBag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.STRING)
+			StringValue ...values){
+		return DataTypes.STRING.bag(values);
+	}
+	
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue booleanOneAndOnly(
+			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> bag) 
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag-size")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER)
+	public static IntegerValue booleanBagSize(
+			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> bag) 
+	{
+		return bagSizeImpl(bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-is-in")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue booleanIsIn(
+			@XacmlParam(type=DataTypes.BOOLEAN)StringValue v,
+			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> bag) 
+	{
+		return containsImpl(v, bag);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN, isBag=true)
+	public BagOfAttributeValues<BooleanValue> bag(
+			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.BOOLEAN)
+			BooleanValue ...values){
+		return DataTypes.STRING.bag(values);
 	}
 }

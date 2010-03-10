@@ -16,20 +16,20 @@ public class BagFunctionsTest
 	public void testStringOneAndOnly() throws EvaluationException
 	{
 		BagOfAttributeValues<StringValue> bag = DataTypes.STRING.bag(DataTypes.STRING.create("a"));
-		assertEquals(DataTypes.STRING.create("a"), BagFunctions.oneAndOnly(bag));
+		assertEquals(DataTypes.STRING.create("a"), BagFunctions.stringOneAndOnly(bag));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testStringOneAndOnlyEmptyBag() throws EvaluationException
 	{
 		BagOfAttributeValues<StringValue> bag = DataTypes.STRING.emptyBag();
-		BagFunctions.oneAndOnly(bag);
+		BagFunctions.stringOneAndOnly(bag);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testStringOneAndOnlyMoreThanOne() throws EvaluationException
 	{
 		BagOfAttributeValues<StringValue> bag = DataTypes.STRING.bag(DataTypes.STRING.create("a"), DataTypes.STRING.create("c"));
-		BagFunctions.oneAndOnly(bag);
+		BagFunctions.stringOneAndOnly(bag);
 	}
 }
