@@ -23,8 +23,10 @@ public class CglibReflectionBasedFunctionInvocation extends AbstractReflectionBa
 	{
 		super(evalContextRequired);
 		Preconditions.checkNotNull(m);
+		Preconditions.checkNotNull(instanceClass);
 		Preconditions.checkArgument(instance == null || 
 			!Modifier.isStatic(m.getModifiers()));
+		Preconditions.checkArgument(m.getDeclaringClass().equals(instanceClass));
 		this.fastClass = FastClass.create(instanceClass);
 		this.fastMethod = fastClass.getMethod(m);
 		Preconditions.checkState(fastMethod != null);

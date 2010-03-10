@@ -19,6 +19,7 @@ public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBase
 	{
 		super(evalContextRequired);
 		Preconditions.checkNotNull(m);
+		Preconditions.checkNotNull(factoryClass);
 		Preconditions.checkArgument(factoryInstance == null || 
 			!Modifier.isStatic(m.getModifiers()));
 		Preconditions.checkArgument(m.getDeclaringClass().equals(factoryClass));
