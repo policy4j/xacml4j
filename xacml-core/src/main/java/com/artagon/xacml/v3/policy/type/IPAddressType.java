@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 

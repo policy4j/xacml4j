@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.type;
 import javax.security.auth.x500.X500Principal;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 
 final class X500NameTypeImpl extends BaseAttributeType<X500NameType.X500NameValue> implements X500NameType
 {

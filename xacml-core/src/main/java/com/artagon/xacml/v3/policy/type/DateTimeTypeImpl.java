@@ -6,6 +6,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
 
 final class DateTimeTypeImpl extends BaseAttributeType<DateTimeValue> implements DateTimeType

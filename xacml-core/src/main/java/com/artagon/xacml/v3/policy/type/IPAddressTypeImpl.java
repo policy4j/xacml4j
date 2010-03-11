@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.type;
 import java.net.InetAddress;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 
 final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressValue> 
 	implements IPAddressType

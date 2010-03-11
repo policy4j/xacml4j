@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.type;
 
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 /** XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
  * <br>The “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” primitive type 

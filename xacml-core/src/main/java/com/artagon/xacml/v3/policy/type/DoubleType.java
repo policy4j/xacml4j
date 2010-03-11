@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.type;
 
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 public interface DoubleType extends AttributeValueType
 {

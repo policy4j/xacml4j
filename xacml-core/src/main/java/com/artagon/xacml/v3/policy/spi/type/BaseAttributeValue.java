@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.type;
+package com.artagon.xacml.v3.policy.spi.type;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.ValueType;
 
-abstract class BaseAttributeValue<T> extends XacmlObject
+public abstract class BaseAttributeValue<T> extends XacmlObject
 	implements AttributeValue
 {
 	private T value;

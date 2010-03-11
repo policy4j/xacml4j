@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.type;
+package com.artagon.xacml.v3.policy.spi.type;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject 
+public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject 
 	implements AttributeValueType
 {
 	private String typeId;

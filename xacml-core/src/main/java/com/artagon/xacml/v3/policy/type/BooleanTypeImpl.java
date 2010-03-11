@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.type;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 
 /**
  * An implementation of XACML {@link BooleanType}

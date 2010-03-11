@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.type;
 import java.util.regex.Pattern;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 
 final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822NameValue> implements RFC822NameType
 {

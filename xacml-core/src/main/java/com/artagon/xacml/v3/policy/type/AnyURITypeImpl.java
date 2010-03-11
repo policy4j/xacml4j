@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.policy.type;
 import java.net.URI;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 
 final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> implements AnyURIType
 {

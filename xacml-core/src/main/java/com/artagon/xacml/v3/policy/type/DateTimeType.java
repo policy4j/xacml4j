@@ -6,6 +6,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
 

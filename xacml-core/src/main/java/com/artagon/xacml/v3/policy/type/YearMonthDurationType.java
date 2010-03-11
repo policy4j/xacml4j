@@ -6,6 +6,7 @@ import javax.xml.datatype.Duration;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 
 public interface YearMonthDurationType extends AttributeValueType
