@@ -10,9 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.impl.function.TestFunctions;
+import com.artagon.xacml.v3.policy.spi.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class AnnotationBasedFunctionFactoryTest

@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
+import java.util.Set;
+
 
 public interface DecisionCombiningAlgorithmFactory 
 {
@@ -14,12 +16,15 @@ public interface DecisionCombiningAlgorithmFactory
 	DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId);
 	
 	/**
-	 * Gets {@link Policy} combining algorithm via
+	 * Gets {@link CompositeDecisionRule} combining algorithm via
 	 * given algorithm identifier
 	 * 
 	 * @param algorithmId an algorithm identifier
 	 * @return {@link DecisionCombiningAlgorithm} for combining
 	 * policy or policy set decision results
 	 */
-	DecisionCombiningAlgorithm<Policy> getPolicyAlgorithm(String algorithmId);
+	DecisionCombiningAlgorithm<? extends CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
+	
+	Set<String> getSupprtedRuleAlgorithms();
+	Set<String> getSupprtedPolicyAlgorithms();
 }

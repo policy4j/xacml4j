@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.policy.spi;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -20,6 +20,7 @@ import com.artagon.xacml.v3.policy.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.annotations.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.annotations.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.annotations.XacmlParamVarArg;
+import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
 
 
 public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory

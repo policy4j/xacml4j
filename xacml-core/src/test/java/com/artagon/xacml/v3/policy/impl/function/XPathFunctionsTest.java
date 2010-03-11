@@ -19,13 +19,13 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.XPathProvider;
-import com.artagon.xacml.v3.policy.impl.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.impl.JDKXPathProvider;
+import com.artagon.xacml.v3.policy.spi.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
 

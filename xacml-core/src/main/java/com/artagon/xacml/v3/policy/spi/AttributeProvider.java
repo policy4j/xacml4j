@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.sdk;
+package com.artagon.xacml.v3.policy.spi;
 
 
 

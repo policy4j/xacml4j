@@ -1,10 +1,9 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.policy.spi;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 
 public class BaseFunctionFacatory implements FunctionFactory
