@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
@@ -19,7 +20,7 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.artagon.xacml.v3.policy.XPathEvaluationException;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -160,16 +161,43 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public XPathProvider getXPathProvider() {
-		return delegate.getXPathProvider();
+	public TimeZone getTimeZone() {
+		return delegate.getTimeZone();
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
-	public TimeZone getTimeZone() {
-		return delegate.getTimeZone();
+	@Override
+	public Node evaluateToNode(String path, Node context)
+			throws XPathEvaluationException {
+		return delegate.evaluateToNode(path, context);
+	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
+	@Override
+	public NodeList evaluateToNodeSet(String path, Node context)
+			throws XPathEvaluationException {
+		return delegate.evaluateToNodeSet(path, context);
+	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
+	@Override
+	public Number evaluateToNumber(String path, Node context)
+			throws XPathEvaluationException {
+		return delegate.evaluateToNumber(path, context);
 	}
 	
-	
+	/**
+	 * Delegates call to {@link EvaluationContext} instance
+	 */
+	@Override
+	public String evaluateToString(String path, Node context)
+			throws XPathEvaluationException {
+		return delegate.evaluateToString(path, context);
+	}
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
@@ -25,6 +26,7 @@ import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.policy.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
@@ -193,18 +195,57 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Policy resolve(PolicyIDReference ref) throws PolicyResolutionException {
+	public final Policy resolve(PolicyIDReference ref) throws PolicyResolutionException {
 		return policyResolver.resolve(this, ref);
 	}
 
 	@Override
-	public PolicySet resolve(PolicySetIDReference ref)
+	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		return policyResolver.resolve(this, ref);
 	}
 
 	@Override
-	public XPathProvider getXPathProvider() {
-		return xpathProvider;
+	public final Node evaluateToNode(String path, Node context)
+			throws XPathEvaluationException {
+		try{
+			return xpathProvider.evaluateToNode(path, context);
+		}
+		catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
+			throw new XPathEvaluationException(path, this, e);
+		}
 	}
+
+	@Override
+	public final NodeList evaluateToNodeSet(String path, Node context)
+			throws XPathEvaluationException 
+	{
+		try{
+			return xpathProvider.evaluateToNodeSet(path, context);
+		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
+			throw new XPathEvaluationException(path, this, e);
+		}
+	}
+
+	@Override
+	public final Number evaluateToNumber(String path, Node context)
+			throws XPathEvaluationException {
+		try{
+			return xpathProvider.evaluateToNumber(path, context);
+		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
+			throw new XPathEvaluationException(path, this, e);
+		}
+	}
+
+	@Override
+	public final String evaluateToString(String path, Node context)
+			throws XPathEvaluationException {
+		try{
+			return xpathProvider.evaluateToString(path, context);
+		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
+			throw new XPathEvaluationException(path, this, e);
+		}
+	}
+	
+	
 }

@@ -6,11 +6,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.util.Preconditions;
-
-import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithmFactory;
+import com.artagon.xacml.v3.policy.Rule;
 
 public class BaseDecisionCombiningAlgorithmFactory implements DecisionCombiningAlgorithmFactory
 {

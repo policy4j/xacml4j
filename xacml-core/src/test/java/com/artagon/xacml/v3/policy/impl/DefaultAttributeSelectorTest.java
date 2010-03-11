@@ -11,9 +11,12 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -23,6 +26,7 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.spi.JDKXPathProvider;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAttributeSelectorTest
@@ -37,6 +41,7 @@ public class DefaultAttributeSelectorTest
 
 	private EvaluationContext context;
 	private Node content;
+	private XPathProvider xpathProvider;
 	
 	@Before
 	public void init() throws Exception
@@ -46,6 +51,7 @@ public class DefaultAttributeSelectorTest
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = createStrictMock(EvaluationContext.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
+		this.xpathProvider = new JDKXPathProvider();
 	}
 	
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -54,7 +60,6 @@ public class DefaultAttributeSelectorTest
 		AttributeSelector desig = new DefaultAttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "/test", DataTypes.INTEGER.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(null);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -68,7 +73,8 @@ public class DefaultAttributeSelectorTest
 				"/md:record/md:patient/md:patient-number/text()", 
 				DataTypes.INTEGER.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patient-number/text()", content)).
+		andAnswer(new XPathAnswer());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(DataTypes.INTEGER.bag(DataTypes.INTEGER.create(555555)), v);
@@ -83,7 +89,8 @@ public class DefaultAttributeSelectorTest
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.DATE.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB/text()", content)).
+		andAnswer(new XPathAnswer());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(DataTypes.DATE.bag(DataTypes.DATE.fromXacmlString("1992-03-21")), v);
@@ -98,7 +105,8 @@ public class DefaultAttributeSelectorTest
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.INTEGER.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB/text()", content)).
+		andAnswer(new XPathAnswer());
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -112,7 +120,8 @@ public class DefaultAttributeSelectorTest
 				"/md:record/md:patient/md:patient-number", 
 				DataTypes.INTEGER.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patient-number", content)).
+				andAnswer(new XPathAnswer());
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -126,7 +135,7 @@ public class DefaultAttributeSelectorTest
 				"/test", 
 				DataTypes.INTEGER.getType(), false);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/test", content)).andAnswer(new XPathAnswer());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(DataTypes.INTEGER.emptyBag(), v);
@@ -141,7 +150,7 @@ public class DefaultAttributeSelectorTest
 				"/test", 
 				DataTypes.INTEGER.getType(), true);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.evaluateToNodeSet("/test", content)).andAnswer(new XPathAnswer());
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -151,11 +160,22 @@ public class DefaultAttributeSelectorTest
 	{
 		AttributeSelector desig = new DefaultAttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "/test", DataTypes.INTEGER.getType(), true);
-		expect(context.getXPathProvider()).andReturn(new JDKXPathProvider());
+		expect(context.getContent(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(content);
+		expect(context.evaluateToNodeSet("/test", content)).andAnswer(new XPathAnswer());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(DataTypes.INTEGER.emptyBag(), v);
 		verify(context);
+	}
+	
+	public class XPathAnswer implements IAnswer<NodeList>
+	{
+		@Override
+		public NodeList answer() throws Throwable {
+			Object[] args = EasyMock.getCurrentArguments();
+			return xpathProvider.evaluateToNodeSet((String)args[0], (Node)args[1]);
+		}
+		
 	}
 	
 }

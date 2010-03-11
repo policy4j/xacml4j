@@ -10,7 +10,6 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.NodeNamespaceContext;
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.XPathEvaluationException;
 
 public class JDKXPathProvider implements XPathProvider
 {

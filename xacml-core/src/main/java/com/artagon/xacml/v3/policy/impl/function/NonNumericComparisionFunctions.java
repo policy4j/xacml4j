@@ -4,13 +4,11 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.util.Preconditions;
-
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
 import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.annotations.XacmlParam;
 import com.artagon.xacml.v3.policy.annotations.XacmlParamEvaluationContext;
-
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;

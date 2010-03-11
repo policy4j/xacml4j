@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 
 public interface EvaluationContext 
@@ -40,6 +40,18 @@ public interface EvaluationContext
 	 * @return {@link Node} or <code>null</code>
 	 */
 	Node getContent(AttributeCategoryId categoryId);
+	
+	NodeList evaluateToNodeSet(String path, Node context) 
+		throws XPathEvaluationException;
+	
+	String evaluateToString(String path, Node context) 
+		throws XPathEvaluationException;
+	
+	Node evaluateToNode(String path, Node context) 
+		throws XPathEvaluationException;
+	
+	Number evaluateToNumber(String path, Node context) 
+		throws XPathEvaluationException;
 	
 	/**
 	 * Gets parent evaluation context
@@ -141,11 +153,5 @@ public interface EvaluationContext
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
 	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
 	
-	/**
-	 * Gets XPath factory
-	 * 
-	 * @return {@link XPathProvider} instance
-	 */
-	XPathProvider getXPathProvider();
 	
 }

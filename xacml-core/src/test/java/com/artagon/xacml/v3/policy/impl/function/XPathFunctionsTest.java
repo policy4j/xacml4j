@@ -12,9 +12,12 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -41,8 +44,7 @@ public class XPathFunctionsTest
 
 	private EvaluationContext context;
 	private Node content;
-	private XPathProvider provider;
-	private XPathProvider realProvider;
+	private XPathProvider xpathProvider;
 	private FunctionFactory funcF;
 	
 	@Before
@@ -53,8 +55,7 @@ public class XPathFunctionsTest
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = createStrictMock(EvaluationContext.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
-		this.provider = createStrictMock(XPathProvider.class);
-		this.realProvider = new JDKXPathProvider();
+		this.xpathProvider = new JDKXPathProvider();
 		this.funcF = new AnnotationBasedFunctionFactory(XPathFunctions.class);
 	}
 	
@@ -73,12 +74,11 @@ public class XPathFunctionsTest
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient", 
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
-		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToNodeSet("/md:record/md:patient", content)).andDelegateTo(realProvider);
-		replay(context, provider);
+		expect(context.evaluateToNodeSet("/md:record/md:patient", content)).andAnswer(new XPathAnswer());
+		replay(context);
 		assertEquals(DataTypes.INTEGER.create(1), f.invoke(context, xpath));
-		verify(context, provider);
+		verify(context);
 	}
 	
 	@Test
@@ -86,12 +86,11 @@ public class XPathFunctionsTest
 	{
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToNodeSet("/test", content)).andDelegateTo(realProvider);
-		replay(context, provider);
+		expect(context.evaluateToNodeSet("/test", content)).andAnswer(new XPathAnswer());
+		replay(context);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
-		verify(context, provider);
+		verify(context);
 	}
 	
 	@Test
@@ -100,11 +99,10 @@ public class XPathFunctionsTest
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create(
 				"/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(null);
-		replay(context, provider);
+		replay(context);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
-		verify(context, provider);
+		verify(context);
 	}
 	
 	@Test
@@ -114,13 +112,22 @@ public class XPathFunctionsTest
 		XPathExpressionValue xpath0  = DataTypes.XPATHEXPRESSION.create("/md:record", AttributeCategoryId.SUBJECT_ACCESS);
 		XPathExpressionValue xpath1  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
-		expect(context.getXPathProvider()).andReturn(provider);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
 		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(provider.evaluateToNodeSet("/md:record", content)).andDelegateTo(realProvider);
-		expect(provider.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", content)).andDelegateTo(realProvider);
-		replay(context, provider);
+		expect(context.evaluateToNodeSet("/md:record", content)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", content)).andAnswer(new XPathAnswer());
+		replay(context);
 		assertEquals(DataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
-		verify(context, provider);	
+		verify(context);	
+	}
+	
+	public class XPathAnswer implements IAnswer<NodeList>
+	{
+		@Override
+		public NodeList answer() throws Throwable {
+			Object[] args = EasyMock.getCurrentArguments();
+			return xpathProvider.evaluateToNodeSet((String)args[0], (Node)args[1]);
+		}
+		
 	}
 }

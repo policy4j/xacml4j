@@ -9,26 +9,11 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.spi.FunctionFactory;
-import com.artagon.xacml.v3.policy.type.AnyURIType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
-
-import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.policy.type.StringType.StringValue;
-import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
-import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
-import com.artagon.xacml.v3.policy.type.DateType.DateValue;
-import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
-import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
-import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
-import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
-import com.artagon.xacml.v3.policy.type.RFC822NameType.RFC822NameValue;
-import com.artagon.xacml.v3.policy.type.HexBinaryType.HexBinaryValue;
-import com.artagon.xacml.v3.policy.type.Base64BinaryType.Base64BinaryValue;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
-import com.artagon.xacml.v3.policy.type.IPAddressType.IPAddressValue;
-import com.artagon.xacml.v3.policy.type.DNSNameType.DNSNameValue;
-import com.artagon.xacml.v3.policy.type.X500NameType.X500NameValue;
+import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 
 public class BagFunctionsTest 

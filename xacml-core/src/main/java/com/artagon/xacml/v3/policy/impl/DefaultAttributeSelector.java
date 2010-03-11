@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
+
 
 final class DefaultAttributeSelector extends 
 	BaseAttributeReference implements AttributeSelector
@@ -100,8 +100,7 @@ final class DefaultAttributeSelector extends
 	private NodeList selectNodes(EvaluationContext context, Node contextNode) 
 		throws XPathEvaluationException
 	{
-		XPathProvider xpathProv = context.getXPathProvider();
-		NodeList nodeSet = xpathProv.evaluateToNodeSet(xpath, contextNode);
+		NodeList nodeSet = context.evaluateToNodeSet(xpath, contextNode);
 		return nodeSet;
 	}
 	
