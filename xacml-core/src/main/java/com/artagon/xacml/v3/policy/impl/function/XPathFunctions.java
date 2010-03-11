@@ -6,10 +6,10 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.annotations.XacmlParam;
-import com.artagon.xacml.v3.policy.annotations.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
+import com.artagon.xacml.v3.policy.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;

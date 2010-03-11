@@ -14,12 +14,6 @@ import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.annotations.XacmlFunc;
-import com.artagon.xacml.v3.policy.annotations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.annotations.XacmlParam;
-import com.artagon.xacml.v3.policy.annotations.XacmlParamEvaluationContext;
-import com.artagon.xacml.v3.policy.annotations.XacmlParamFuncReference;
-import com.artagon.xacml.v3.policy.annotations.XacmlParamVarArg;
 import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
 
 
