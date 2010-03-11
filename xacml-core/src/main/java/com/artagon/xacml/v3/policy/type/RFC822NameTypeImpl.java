@@ -10,7 +10,6 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 		"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)" +
 		"*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 	
-    
 	private Pattern rfc2822;
 	
 	public RFC822NameTypeImpl(String typeId){
@@ -26,13 +25,9 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 	@Override
 	public RFC822NameValue fromXacmlString(String v, Object ...params)
 	{
-		Preconditions.checkArgument(rfc2822.matcher(v).find());
-        String [] parts = v.split("@");
-        if (parts.length != 2) {
-            throw new IllegalArgumentException(
-            		String.format("Given value=\"%s\" is invalid RFC822 name", v));
-        }
-        return new RFC822NameValue(this, new RFC822Name(parts[0], parts[1]));
+		Preconditions.checkNotNull(v);
+		Preconditions.checkArgument(rfc2822.matcher(v).matches());
+        return new RFC822NameValue(this, RFC822Name.parse(v));
 	}
 	
 	@Override

@@ -253,7 +253,7 @@ public class BagFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-bag")
 	@XacmlFuncReturnType(type=DataTypes.DOUBLE, isBag=true)
-	public BagOfAttributeValues<IntegerValue> doubleBag(
+	public static BagOfAttributeValues<DoubleValue> doubleBag(
 			@XacmlParamVarArg(min=0, max=Integer.MAX_VALUE, type=DataTypes.DOUBLE)
 			DoubleValue ...values){
 		return DataTypes.DOUBLE.bag(values);

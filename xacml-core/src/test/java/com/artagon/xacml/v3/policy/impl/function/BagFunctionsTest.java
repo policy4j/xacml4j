@@ -9,6 +9,7 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionFactory;
 import com.artagon.xacml.v3.policy.impl.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.type.AnyURIType;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
@@ -136,5 +137,31 @@ public class BagFunctionsTest
 		assertEquals(DataTypes.BOOLEAN.create(true), BagFunctions.integerIsIn(v0, bag));
 		assertEquals(DataTypes.BOOLEAN.create(false), BagFunctions.integerIsIn(v1, bag));
 		assertEquals(DataTypes.INTEGER.bag(v0, v1), BagFunctions.integerBag(v0, v1));
+	}
+	
+	@Test
+	public void testDoubleBagFunctions() throws EvaluationException
+	{
+		DoubleValue v0 = DataTypes.DOUBLE.create(1);
+		DoubleValue v1 = DataTypes.DOUBLE.create(2);
+		BagOfAttributeValues<DoubleValue> bag = DataTypes.DOUBLE.bag(v0);
+		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
+		assertEquals(DataTypes.INTEGER.create(1), BagFunctions.doubleBagSize(bag));
+		assertEquals(DataTypes.BOOLEAN.create(true), BagFunctions.doubleIsIn(v0, bag));
+		assertEquals(DataTypes.BOOLEAN.create(false), BagFunctions.doubleIsIn(v1, bag));
+		assertEquals(DataTypes.DOUBLE.bag(v0, v1), BagFunctions.doubleBag(v0, v1));
+	}
+	
+	@Test
+	public void testAnyURIBagFunctions() throws EvaluationException
+	{
+		AnyURIValue v0 = DataTypes.ANYURI.create("http://www.test0.org");
+		AnyURIValue v1 = DataTypes.ANYURI.create("http://www.test1.org");
+		BagOfAttributeValues<AnyURIValue> bag = DataTypes.ANYURI.bag(v0);
+		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
+		assertEquals(DataTypes.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));
+		assertEquals(DataTypes.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));
+		assertEquals(DataTypes.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v1, bag));
+		assertEquals(DataTypes.ANYURI.bag(v0, v1), BagFunctions.anyURIBag(v0, v1));
 	}
 }
