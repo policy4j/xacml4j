@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl.combine;
+package com.artagon.xacml.v3.policy.spi.combine;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;

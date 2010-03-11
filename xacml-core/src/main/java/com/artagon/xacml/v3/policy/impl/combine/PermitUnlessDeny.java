@@ -5,6 +5,7 @@ import java.util.List;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class PermitUnlessDeny <DecisionType extends DecisionRule>  extends BaseDecisionCombiningAlgorithm<DecisionType>
 {

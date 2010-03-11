@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {

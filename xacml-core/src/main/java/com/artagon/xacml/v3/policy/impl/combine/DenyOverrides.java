@@ -5,6 +5,7 @@ import java.util.List;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
 /**
  * The deny overrides combining algorithm is intended for those cases where a deny 
