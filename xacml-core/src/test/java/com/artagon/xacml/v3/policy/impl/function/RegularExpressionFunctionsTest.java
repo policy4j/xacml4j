@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.spi.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.spi.FunctionFactory;
+import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.policy.type.RFC822NameType.RFC822NameValue;

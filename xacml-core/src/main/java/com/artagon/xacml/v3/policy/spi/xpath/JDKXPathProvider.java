@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.spi;
+package com.artagon.xacml.v3.policy.spi.xpath;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -10,6 +10,8 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.NodeNamespaceContext;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class JDKXPathProvider implements XPathProvider
 {

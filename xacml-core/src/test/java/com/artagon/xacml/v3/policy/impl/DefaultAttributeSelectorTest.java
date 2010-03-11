@@ -25,8 +25,8 @@ import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.spi.JDKXPathProvider;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAttributeSelectorTest
