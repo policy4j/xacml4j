@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 
 public interface EvaluationContext 

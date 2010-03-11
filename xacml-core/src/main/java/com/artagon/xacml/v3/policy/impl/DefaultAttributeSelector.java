@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.XPathProvider;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 final class DefaultAttributeSelector extends 
 	BaseAttributeReference implements AttributeSelector

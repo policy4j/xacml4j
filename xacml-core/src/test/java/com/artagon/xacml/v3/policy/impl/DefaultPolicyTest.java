@@ -31,7 +31,7 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.Version;
-import com.artagon.xacml.v3.policy.XPathProvider;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class DefaultPolicyTest 
 {

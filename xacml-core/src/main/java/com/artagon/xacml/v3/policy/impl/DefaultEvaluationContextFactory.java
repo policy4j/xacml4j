@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.XPathProvider;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory

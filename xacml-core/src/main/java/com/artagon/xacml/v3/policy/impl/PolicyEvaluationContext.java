@@ -4,7 +4,7 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyResolver;
-import com.artagon.xacml.v3.policy.XPathProvider;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 final class PolicyEvaluationContext extends BaseEvaluationContext
 {	
