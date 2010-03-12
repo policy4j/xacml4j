@@ -25,9 +25,9 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
-import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
@@ -45,7 +45,7 @@ public class XPathFunctionsTest
 	private EvaluationContext context;
 	private Node content;
 	private XPathProvider xpathProvider;
-	private FunctionFactory funcF;
+	private FunctionProvider funcF;
 	
 	@Before
 	public void init() throws Exception
@@ -56,7 +56,7 @@ public class XPathFunctionsTest
 		this.context = createStrictMock(EvaluationContext.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
 		this.xpathProvider = new JDKXPathProvider();
-		this.funcF = new AnnotationBasedFunctionFactory(XPathFunctions.class);
+		this.funcF = new ReflectionBasedFunctionProvider(XPathFunctions.class);
 	}
 	
 	@Test

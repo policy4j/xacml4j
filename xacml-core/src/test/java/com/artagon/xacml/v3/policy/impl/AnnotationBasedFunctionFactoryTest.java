@@ -12,18 +12,18 @@ import org.junit.Test;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.impl.function.TestFunctions;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
-import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class AnnotationBasedFunctionFactoryTest
 {
-	private FunctionFactory f;
+	private FunctionProvider f;
 	private EvaluationContext context;
 	
 	@Before
 	public void init(){
-		this.f = new AnnotationBasedFunctionFactory(TestFunctions.class);
+		this.f = new ReflectionBasedFunctionProvider(TestFunctions.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	

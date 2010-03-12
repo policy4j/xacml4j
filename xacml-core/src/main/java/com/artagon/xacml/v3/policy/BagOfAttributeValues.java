@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
@@ -119,16 +121,39 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 		return values.contains(attr);
 	}
 	
+		
 	public int frequency(AttributeValue value){
 		return Collections.frequency(values, values);
 	}
 	
-	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag){
+	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag)
+	{
 		Preconditions.checkArgument(getType().equals(bag.getType()));
 		Collection<AttributeValue> join = new ArrayList<AttributeValue>(values.size() + bag.size());
 		join.addAll(values);
 		join.addAll(bag.values);
-		return type.createFromAttributes(join);
+		return type.create(join);
+	}
+	
+	public BagOfAttributeValues<T> union(BagOfAttributeValues<?> bag)
+	{
+		Preconditions.checkArgument(getType().equals(bag.getType()));
+		Set<AttributeValue> union = new HashSet<AttributeValue>();
+		union.addAll(bag.values);
+		union.addAll(values);
+		return type.create(union);
+	}
+	
+	public BagOfAttributeValues<T> intersection(BagOfAttributeValues<?> bag)
+	{
+		Preconditions.checkArgument(getType().equals(bag.getType()));
+		Set<AttributeValue> intersection = new HashSet<AttributeValue>();
+		for(AttributeValue attr : values){
+			if(bag.values.contains(attr)){
+				intersection.add(attr);
+			}
+		}
+		return type.create(intersection);
 	}
 	
 	@Override

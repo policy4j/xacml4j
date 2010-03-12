@@ -138,6 +138,6 @@ final class DefaultAttributeSelector extends
 						i, v, getDataType());
 			}
 		}
-	  	return getDataType().bagOf().createFromAttributes(values);
+	  	return getDataType().bagOf().create(values);
 	}
 }

@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
-import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.policy.type.RFC822NameType.RFC822NameValue;
@@ -19,7 +19,7 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testFunctionIfImplemented()
 	{
-		FunctionFactory f = new AnnotationBasedFunctionFactory(RegularExpressionFunctions.class);
+		FunctionProvider f = new ReflectionBasedFunctionProvider(RegularExpressionFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match"));
@@ -48,7 +48,7 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testrfc822NameRegExpMatch() throws EvaluationException
 	{
-		StringValue regexp = DataTypes.STRING.create("^*@comcast.net");
+		StringValue regexp = DataTypes.STRING.create("t*@comcast.net");
 		RFC822NameValue input = DataTypes.RFC822NAME.create("trumpyla@comcast.net");
 		assertEquals(DataTypes.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}

@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpec;
 
 
 
-public interface FunctionFactory 
+public interface FunctionProvider 
 {
 	/**
 	 * Gets function spec instance for a given function
@@ -26,7 +26,7 @@ public interface FunctionFactory
 	 * @return <code>true</code> if function
 	 * is supported by this factory
 	 */
-	boolean isSupported(String functionId);
+	boolean isFunctionProvided(String functionId);
 	
 	/**
 	 * Gets all supported function by this factory
@@ -34,5 +34,5 @@ public interface FunctionFactory
 	 * @return {@link Iterable} over all supported
 	 * function by this factory
 	 */
-	Iterable<String> getSupportedFunctions();
+	Iterable<String> getProvidedFunctions();
 }

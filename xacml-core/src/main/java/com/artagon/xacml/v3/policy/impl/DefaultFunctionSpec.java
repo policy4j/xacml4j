@@ -20,7 +20,6 @@ import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
 
-
 /**
  * A XACML function specification
  *

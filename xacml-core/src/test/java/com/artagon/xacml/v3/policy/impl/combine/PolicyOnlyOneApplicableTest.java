@@ -20,12 +20,12 @@ import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
 {
-	private PolicyOnlyOneApplicable c;
+	private PolicyOnlyOneApplicableCombingingAlgorithm c;
 	private List<CompositeDecisionRule> d;
 	
 	@Before
 	public void init(){
-		this.c = new PolicyOnlyOneApplicable();
+		this.c = new PolicyOnlyOneApplicableCombingingAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
 	}
 	

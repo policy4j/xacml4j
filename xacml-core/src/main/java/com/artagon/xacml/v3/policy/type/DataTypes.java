@@ -108,13 +108,13 @@ public enum DataTypes
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValue> BagOfAttributeValues<T> bag(AttributeValue ...attributes)
 	{
-		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
+		return (BagOfAttributeValues<T>)type.bagOf().create(attributes);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValue> BagOfAttributeValues<T> bag(Collection<AttributeValue> attributes)
 	{
-		return (BagOfAttributeValues<T>)type.bagOf().createFromAttributes(attributes);
+		return (BagOfAttributeValues<T>)type.bagOf().create(attributes);
 	}
 	
 	

@@ -8,14 +8,14 @@ import org.junit.Test;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
-import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
 public class LogicalFunctionsTest extends XacmlPolicyTestCase
 {
-	private FunctionFactory f;
+	private FunctionProvider f;
 	
 	FunctionSpec andFunc;
 	FunctionSpec orFunc;
@@ -23,7 +23,7 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.f = new AnnotationBasedFunctionFactory(LogicalFunctions.class);
+		this.f = new ReflectionBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");

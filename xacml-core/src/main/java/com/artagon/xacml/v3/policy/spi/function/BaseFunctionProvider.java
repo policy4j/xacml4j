@@ -5,13 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 
-public class BaseFunctionFacatory implements FunctionFactory
+public class BaseFunctionProvider implements FunctionProvider
 {
 	private Map<String, FunctionSpec> functions;
 	
-	protected BaseFunctionFacatory(){
+	protected BaseFunctionProvider(){
 		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
 	}
 	
@@ -35,12 +35,12 @@ public class BaseFunctionFacatory implements FunctionFactory
 	}
 
 	@Override
-	public Iterable<String> getSupportedFunctions() {
+	public Iterable<String> getProvidedFunctions() {
 		return functions.keySet();
 	}
 
 	@Override
-	public boolean isSupported(String functionId) {
+	public boolean isFunctionProvided(String functionId) {
 		return functions.containsKey(functionId);
 	}
 

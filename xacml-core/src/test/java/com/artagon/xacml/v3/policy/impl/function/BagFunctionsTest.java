@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.spi.FunctionFactory;
-import com.artagon.xacml.v3.policy.spi.function.AnnotationBasedFunctionFactory;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
@@ -22,7 +22,7 @@ public class BagFunctionsTest
 	@Test
 	public void testFunctionIfImplemented()
 	{
-		FunctionFactory f = new AnnotationBasedFunctionFactory(BagFunctions.class);
+		FunctionProvider f = new ReflectionBasedFunctionProvider(BagFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-bag-size"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in"));

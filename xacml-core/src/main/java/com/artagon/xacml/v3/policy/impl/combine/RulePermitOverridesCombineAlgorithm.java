@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.impl.combine;
 
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.Rule;
 
-public class RulePermitOverridesCombineAlgorithm extends PermitOverrides<CompositeDecisionRule> 
+final class RulePermitOverridesCombineAlgorithm extends PermitOverrides<Rule> 
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides";
 	

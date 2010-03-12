@@ -17,12 +17,12 @@ import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
 
 
-public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
+public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 {
-	private final static Logger log = LoggerFactory.getLogger(AnnotationBasedFunctionFactory.class);
+	private final static Logger log = LoggerFactory.getLogger(ReflectionBasedFunctionProvider.class);
 	
 	
-	public AnnotationBasedFunctionFactory(Object instance, Class<?> factoryClass)
+	public ReflectionBasedFunctionProvider(Object instance, Class<?> factoryClass)
 	{
 		Preconditions.checkArgument(instance == null || factoryClass.isInstance(instance));
 		List<FunctionSpec> functions = findFunctions(factoryClass, instance);
@@ -31,7 +31,7 @@ public class AnnotationBasedFunctionFactory extends BaseFunctionFacatory
 		}
 	}
 	
-	public AnnotationBasedFunctionFactory(Class<?> factoryClass){
+	public ReflectionBasedFunctionProvider(Class<?> factoryClass){
 		this(null, factoryClass);
 	}
 	
