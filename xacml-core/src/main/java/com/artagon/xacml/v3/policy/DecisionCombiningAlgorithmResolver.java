@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy;
 import java.util.Set;
 
 
-public interface DecisionCombiningAlgorithmFactory 
+public interface DecisionCombiningAlgorithmResolver 
 {
 	/**
 	 * Gets {@link Rule} combining algorithm via

@@ -8,10 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithmFactory;
+import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithmResolver;
 import com.artagon.xacml.v3.policy.Rule;
 
-public class BaseDecisionCombiningAlgorithmFactory implements DecisionCombiningAlgorithmFactory
+public class BaseDecisionCombiningAlgorithmFactory implements DecisionCombiningAlgorithmResolver
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgorithms;
 	private Map<String, DecisionCombiningAlgorithm<? extends CompositeDecisionRule>> compositeDecisionAlgorithms;

@@ -18,5 +18,4 @@ public class DefaultDecisionCombiningAlgorithmProvider extends BaseDecisionCombi
 		addCompositeRuleCombineAlgorithm(new PolicyOnlyOneApplicableCombingingAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyPermitUnlessDenyCombiningAlgorithm());
 	}
-	
 }

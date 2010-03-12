@@ -8,7 +8,8 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-final class PolicyOnlyOneApplicableCombingingAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
+final class PolicyOnlyOneApplicableCombingingAlgorithm extends 
+	BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
 	
