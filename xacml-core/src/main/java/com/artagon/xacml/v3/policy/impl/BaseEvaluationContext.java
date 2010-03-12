@@ -11,6 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.util.TwoKeyHashIndex;
+import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
@@ -31,7 +33,7 @@ import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
 {
-	private AttributeResolver attributeService;
+	private AttributeResolver attributeProvider;
 	private PolicyResolver policyResolver;
 	
 	private Collection<Advice> advices;
@@ -39,7 +41,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
-	private Map<String, Map<String, Value>> variableEvaluationCache;
+	private TwoKeyIndex<String, String, Value> variableEvaluationCache;
 	
 	private XPathProvider xpathProvider;
 	private TimeZone timezone;
@@ -67,9 +69,9 @@ class BaseEvaluationContext implements EvaluationContext
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
-		this.attributeService = attributeService;
+		this.attributeProvider = attributeService;
 		this.policyResolver = policyResolver;
-		this.variableEvaluationCache = new HashMap<String, Map<String,Value>>();
+		this.variableEvaluationCache = new TwoKeyHashIndex<String, String, Value>();
 		this.xpathProvider = xpathFactory;
 		this.timezone = TimeZone.getTimeZone("UTC");
 	}
@@ -82,7 +84,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public Node getContent(AttributeCategoryId categoryId) {
-		return attributeService.getContent(categoryId);
+		return attributeProvider.getContent(categoryId);
 	}
 
 	@Override
@@ -126,7 +128,7 @@ class BaseEvaluationContext implements EvaluationContext
 			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType, String issuer) {
-			return attributeService.resolve(category, attributeId, dataType, issuer);
+			return attributeProvider.resolve(category, attributeId, dataType, issuer);
 	}
 	
 	/**
@@ -177,28 +179,17 @@ class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Value getVariableEvaluationResult(String variableId) 
 	{
-		Preconditions.checkState(getCurrentPolicy() != null);
 		Policy p = getCurrentPolicy();
-		Map<String, Value> policyCache = variableEvaluationCache.get(p.getId());
-		if(policyCache != null){
-			return policyCache.get(variableId);
-		}
-		return null;
+		Preconditions.checkState(p != null);
+		return variableEvaluationCache.get(p.getId(), variableId);
 	}
 	
 	@Override
 	public final void setVariableEvaluationResult(String variableId, Value value) 
 	{
-		Preconditions.checkState(getCurrentPolicy() != null);
 		Policy p = getCurrentPolicy();
-		Map<String, Value> policyCache = variableEvaluationCache.get(p.getId());
-		if(policyCache != null){
-			policyCache.put(variableId, value);
-			return;
-		}
-		policyCache = new HashMap<String, Value>();
-		policyCache.put(variableId, value);
-		variableEvaluationCache.put(p.getId(), policyCache);
+		Preconditions.checkState(p != null);
+		variableEvaluationCache.put(p.getId(), variableId, value);
 	}
 
 	@Override
