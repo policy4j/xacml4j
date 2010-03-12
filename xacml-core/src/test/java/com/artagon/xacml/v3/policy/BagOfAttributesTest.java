@@ -51,55 +51,54 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testContainsAll() throws Exception
 	{
 		Collection<AttributeValue> content = new LinkedList<AttributeValue>();
-		content.add(INTEGER.create(1l));
-		content.add(INTEGER.create(2l));
-		content.add(INTEGER.create(1l));	
+		content.add(INTEGER.create(1));
+		content.add(INTEGER.create(2));
+		content.add(INTEGER.create(1));	
 		BagOfAttributeValues<?> bag = INTEGER.bag(content);
 		Collection<AttributeValue> test = new LinkedList<AttributeValue>();
-		test.add(INTEGER.create(1l));
-		test.add(INTEGER.create(2l));
+		test.add(INTEGER.create(1));
+		test.add(INTEGER.create(2));
 		assertTrue(bag.containsAll(INTEGER.bag(test)));		
 		test = new LinkedList<AttributeValue>();
-		test.add(INTEGER.create(1l));
-		test.add(INTEGER.create(3l));
+		test.add(INTEGER.create(1));
+		test.add(INTEGER.create(3));
 		assertFalse(bag.containsAll(INTEGER.bag(test)));
 	}
 	
 	@Test
-	public void testEquals()
+	public void testEqualsWithElementsInTheSameOrder()
 	{
 		Collection<AttributeValue> content1 = new LinkedList<AttributeValue>();
-		content1.add(INTEGER.create(1l));
-		content1.add(INTEGER.create(2l));
-		content1.add(INTEGER.create(3l));
+		content1.add(INTEGER.create(1));
+		content1.add(INTEGER.create(2));
+		content1.add(INTEGER.create(3));
 		BagOfAttributeValues<?> bag1 = INTEGER.bag(content1);
-		BagOfAttributeValues<?> bag2 = INTEGER.bag(content1);
+		
+		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
+		content2.add(INTEGER.create(1));
+		content2.add(INTEGER.create(2));
+		content2.add(INTEGER.create(3));
+		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
+		
 		assertEquals(bag1, bag2);
+		
+		Collection<AttributeValue> content3 = new LinkedList<AttributeValue>();
+		content3.add(INTEGER.create(1));
+		content3.add(INTEGER.create(3));
+		content3.add(INTEGER.create(2));
+		BagOfAttributeValues<?> bag3= INTEGER.bag(content3);
+		
+		assertFalse(bag1.equals(bag3));
+		assertFalse(bag2.equals(bag3));
 	}
 	
-	@Test
-	public void testJoin() throws Exception
-	{
-		Collection<AttributeValue> content1 = new LinkedList<AttributeValue>();
-		content1.add(INTEGER.create(1l));
-		content1.add(INTEGER.create(2l));
-		content1.add(INTEGER.create(3l));
-		BagOfAttributeValues<?> bag1 = INTEGER.bag(content1);
-		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
-		content2.add(INTEGER.create(3l));
-		content2.add(INTEGER.create(4l));
-		content2.add(INTEGER.create(5l));
-		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
-		BagOfAttributeValues<?> bag3 = bag1.join(bag2);
-		BagOfAttributeValues<?> bag4 = bag2.join(bag1);
-		assertEquals(bag3, bag4);
-	}
+	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithDifferentAttributeTypes()
 	{
 		Collection<AttributeValue> attr = new LinkedList<AttributeValue>();
-		attr.add(INTEGER.create(1l));
+		attr.add(INTEGER.create(1));
 		attr.add(stringType.create("aaa"));
 		INTEGER.bag(attr);
 	}
@@ -108,9 +107,9 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testEvaluateBag() throws EvaluationException
 	{
 		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
-		content2.add(INTEGER.create(3l));
-		content2.add(INTEGER.create(4l));
-		content2.add(INTEGER.create(5l));
+		content2.add(INTEGER.create(3));
+		content2.add(INTEGER.create(4));
+		content2.add(INTEGER.create(5));
 		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
 		assertSame(bag2, bag2.evaluate(context));	
 	}

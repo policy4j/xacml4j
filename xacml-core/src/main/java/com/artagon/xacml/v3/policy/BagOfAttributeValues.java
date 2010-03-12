@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,32 +120,38 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 		return values.contains(attr);
 	}
 	
-		
 	public int frequency(AttributeValue value){
 		return Collections.frequency(values, values);
 	}
 	
-	public BagOfAttributeValues<T> join(BagOfAttributeValues<?> bag)
-	{
-		Preconditions.checkArgument(getType().equals(bag.getType()));
-		Collection<AttributeValue> join = new ArrayList<AttributeValue>(values.size() + bag.size());
-		join.addAll(values);
-		join.addAll(bag.values);
-		return type.create(join);
-	}
-	
+	/**
+	 * Returns a bag of such that it contains all elements of 
+	 * all the argument bags all duplicate elements are removed
+	 * 
+	 * @param bag an another bag
+	 * @return union of this and given bag without duplicate
+	 * elements
+	 */ 
 	public BagOfAttributeValues<T> union(BagOfAttributeValues<?> bag)
 	{
-		Preconditions.checkArgument(getType().equals(bag.getType()));
+		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> union = new HashSet<AttributeValue>();
 		union.addAll(bag.values);
 		union.addAll(values);
 		return type.create(union);
 	}
 	
+	/**
+	 * Returns a bag of values such that it contains only 
+	 * elements that are common between this and given bag
+	 * 
+	 * @param bag an another bag
+	 * @return bag which contains common
+	 * elements between this and given bag
+	 */
 	public BagOfAttributeValues<T> intersection(BagOfAttributeValues<?> bag)
 	{
-		Preconditions.checkArgument(getType().equals(bag.getType()));
+		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> intersection = new HashSet<AttributeValue>();
 		for(AttributeValue attr : values){
 			if(bag.values.contains(attr)){
@@ -175,6 +180,7 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 	 * is subset if this bag
 	 */
 	public boolean containsAll(BagOfAttributeValues<?> bag){		
+		Preconditions.checkArgument(type.equals(bag.type));
 		return values.containsAll(bag.values);
 	}
 
@@ -187,9 +193,8 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 			return false;
 		}
 		BagOfAttributeValues<?> bag = (BagOfAttributeValues<?>)o;
-		return getType().equals(bag.getType()) 
-		&& values.containsAll(bag.values) 
-		&& bag.values.containsAll(values);
+		return type.equals(bag.type) && 
+		values.equals(bag.values);
 	}
 	
 	
