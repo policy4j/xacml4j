@@ -65,11 +65,11 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 	}
 	
 	/**
-	 * Gets bag attribute type
+	 * Gets bag value data type
 	 * 
-	 * @return
+	 * @return {@link AttributeValueType}
 	 */
-	public AttributeValueType getAttributeType(){
+	public AttributeValueType getDataType(){
 		return type.getDataType();
 	}
 	
@@ -120,6 +120,14 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 		return values.contains(attr);
 	}
 	
+	/**
+	 * Returns the number of elements in this bag equal 
+	 * to the specified attribute value. 
+	 * 
+	 * @param value an attribute value
+	 * @return a number of elements equal to the
+	 * specified value
+	 */
 	public int frequency(AttributeValue value){
 		return Collections.frequency(values, values);
 	}
