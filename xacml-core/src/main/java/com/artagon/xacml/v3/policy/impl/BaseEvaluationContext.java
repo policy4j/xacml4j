@@ -14,7 +14,6 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -22,11 +21,12 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicyResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
+import com.artagon.xacml.v3.policy.spi.AttributeResolver;
+import com.artagon.xacml.v3.policy.spi.PolicyResolver;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
