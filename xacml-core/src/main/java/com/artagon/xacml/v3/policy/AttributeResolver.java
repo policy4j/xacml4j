@@ -1,13 +1,10 @@
-package com.artagon.xacml.v3.policy.spi;
+package com.artagon.xacml.v3.policy;
 
 import javax.xml.xpath.XPath;
 
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 public interface AttributeResolver 
 {
