@@ -73,7 +73,7 @@ public class BagFunctions
 			BagOfAttributeValues<? extends AttributeValue> bag){
 		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
 		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");
-		return (T)bag.values().iterator().next();
+		return (T)bag.value();
 	}
 	
 	static IntegerValue typeBagSizeImpl(BagOfAttributeValues<? extends AttributeValue> bag) {
