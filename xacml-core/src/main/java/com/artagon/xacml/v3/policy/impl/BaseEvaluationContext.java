@@ -2,9 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
