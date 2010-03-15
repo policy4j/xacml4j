@@ -48,7 +48,7 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testrfc822NameRegExpMatch() throws EvaluationException
 	{
-		StringValue regexp = DataTypes.STRING.create("t*@comcast.net");
+		StringValue regexp = DataTypes.STRING.create(".*@comcast.net");
 		RFC822NameValue input = DataTypes.RFC822NAME.create("trumpyla@comcast.net");
 		assertEquals(DataTypes.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}

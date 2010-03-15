@@ -26,4 +26,10 @@ public interface AttributeResolver
 			XPath location, AttributeValueType dataType);
 	
 	Node getContent(AttributeCategoryId categoryId);
+	
+	
+	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator designator);
+	
+	BagOfAttributeValues<AttributeValue> resolve(AttributeSelector selector);
+	
 }
