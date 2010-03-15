@@ -150,6 +150,30 @@ public interface EvaluationContext
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
 	
+	/**
+	 * Resolves given {@link AttributeDesignator}
+	 * 
+	 * @param designator an attribute designator
+	 * @return a bag of values
+	 * @throws EvaluationException if an error
+	 * occurs while resolving designator
+	 */
+	BagOfAttributeValues<AttributeValue> resolve(
+			AttributeDesignator designator) 
+		throws EvaluationException;
+	
+	/**
+	 * Resolves given {@link AttributeSelector}
+	 * 
+	 * @param selector an attribute selector
+	 * @return a bag of values
+	 * @throws EvaluationException if an error
+	 * occurs while resolving selector
+	 */
+	BagOfAttributeValues<AttributeValue> resolve(
+			AttributeSelector selector) 
+		throws EvaluationException;
+	
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
 	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
 	

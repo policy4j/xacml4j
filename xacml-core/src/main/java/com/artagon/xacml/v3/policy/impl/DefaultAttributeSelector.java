@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
@@ -126,8 +127,9 @@ final class DefaultAttributeSelector extends
 					v = ((Comment)n).getData();
 					break;
 				default:
-					throw new AttributeReferenceEvaluationException(context, this, 
-							"Unsupported DOM node type=\"%d\"", n.getNodeType());
+					throw new AttributeReferenceEvaluationException(
+							StatusCode.createSyntaxError(),
+							context, this, "Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try{
 				values.add(getDataType().fromXacmlString(v));

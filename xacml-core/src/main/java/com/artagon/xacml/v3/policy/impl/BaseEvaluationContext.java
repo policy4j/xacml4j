@@ -14,11 +14,14 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
@@ -242,6 +245,16 @@ class BaseEvaluationContext implements EvaluationContext
 			throw new XPathEvaluationException(path, this, e);
 		}
 	}
-	
-	
+
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			AttributeDesignator designator) throws EvaluationException {
+		return null;
+	}
+
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			AttributeSelector selector) throws EvaluationException {
+		return null;
+	}
 }

@@ -10,10 +10,13 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
@@ -199,5 +202,25 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public String evaluateToString(String path, Node context)
 			throws XPathEvaluationException {
 		return delegate.evaluateToString(path, context);
+	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext#resolve(AttributeDesignator)} 
+	 * instance
+	 */
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			AttributeDesignator designator) throws EvaluationException {
+		return delegate.resolve(designator);
+	}
+
+	/**
+	 * Delegates call to {@link EvaluationContext#resolve(AttributeSelector)} 
+	 * instance
+	 */
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			AttributeSelector selector) throws EvaluationException {
+		return delegate.resolve(selector);
 	}
 }

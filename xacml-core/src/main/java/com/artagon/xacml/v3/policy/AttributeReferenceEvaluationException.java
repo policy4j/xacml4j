@@ -16,6 +16,15 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 		this.ref = ref;
 	}
 	
+	public AttributeReferenceEvaluationException(
+			StatusCode statusCode,
+			EvaluationContext context,
+			AttributeReference ref, 
+			String message, Object ...params){
+		super(statusCode, context, message, params);
+		this.ref = ref;
+	}
+	
 	public AttributeReferenceEvaluationException(EvaluationContext context, 
 			AttributeReference ref, 
 			Throwable cause){
