@@ -5,7 +5,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.XPathEvaluationException;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
@@ -33,17 +33,13 @@ public class XPathFunctions
 			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParam(type=DataTypes.XPATHEXPRESSION) XPathExpressionValue xpath) 
 	{
-		Node content = context.getContent(xpath.getAttributeCategory());
-		if(content == null){
-			return DataTypes.INTEGER.create(0);
-		}
 		try{
-			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), content);
+			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), xpath.getAttributeCategory());
 			if(nodes != null){
 				return DataTypes.INTEGER.create(nodes.getLength());
 			}
 			return DataTypes.INTEGER.create(0);
-		}catch(XPathEvaluationException e){
+		}catch(EvaluationException e){
 			return DataTypes.INTEGER.create(0);
 		}
 	}
@@ -54,16 +50,14 @@ public class XPathFunctions
 			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParam(type=DataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
 			@XacmlParam(type=DataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
-	{
-		Node content0 = context.getContent(xpath0.getAttributeCategory());
-		Node content1 = context.getContent(xpath1.getAttributeCategory());
-		if(content0 == null || content1  == null){
-			return DataTypes.BOOLEAN.create(false);
-		}
-		
+	{		
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), content0);
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), content0);
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), xpath0.getAttributeCategory());
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), xpath1.getAttributeCategory());
+			if(nodes0 == null || 
+					nodes0  == null){
+				return DataTypes.BOOLEAN.create(false);
+			}
 			for(int i = 0; i < nodes0.getLength(); i++){
 				for(int j = 0; j < nodes1.getLength(); j++){
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
@@ -72,7 +66,7 @@ public class XPathFunctions
 				}
 			}
 			return DataTypes.BOOLEAN.create(false);
-		}catch(XPathEvaluationException e){
+		}catch(EvaluationException e){
 			return DataTypes.BOOLEAN.create(false);
 		}
 	}
@@ -83,17 +77,16 @@ public class XPathFunctions
 			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParam(type=DataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
 			@XacmlParam(type=DataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
-	{
-		Node content0 = context.getContent(xpath0.getAttributeCategory());
-		Node content1 = context.getContent(xpath1.getAttributeCategory());
-		if(content0 == null || 
-				content1  == null){
-			return DataTypes.BOOLEAN.create(false);
-		}
-		
+	{		
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), content0);
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), content0);
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), 
+					xpath0.getAttributeCategory());
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), 
+					xpath1.getAttributeCategory());
+			if(nodes0 == null || 
+					nodes0  == null){
+				return DataTypes.BOOLEAN.create(false);
+			}
 			for(int i = 0; i < nodes0.getLength(); i++)
 			{
 				for(int j = 0; j < nodes1.getLength(); j++)
@@ -118,7 +111,7 @@ public class XPathFunctions
 				}
 			}
 			return DataTypes.BOOLEAN.create(false);
-		}catch(XPathEvaluationException e){
+		}catch(EvaluationException e){
 			return DataTypes.BOOLEAN.create(false);
 		}
 	}

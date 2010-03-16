@@ -31,27 +31,18 @@ public interface EvaluationContext
 	 */
 	boolean isValidateFuncParamAtRuntime();
 	
-	/**
-	 * Gets  context root node from
-	 * request by given attribute category
-	 * identifier
-	 * 
-	 * @param categoryId an attribute category
-	 * @return {@link Node} or <code>null</code>
-	 */
-	Node getContent(AttributeCategoryId categoryId);
+		
+	NodeList evaluateToNodeSet(String xpath, AttributeCategoryId categoryId) 
+		throws EvaluationException;
 	
-	NodeList evaluateToNodeSet(String xpath, Node context) 
-		throws XPathEvaluationException;
+	String evaluateToString(String path, AttributeCategoryId categoryId) 
+		throws EvaluationException;
 	
-	String evaluateToString(String path, Node context) 
-		throws XPathEvaluationException;
+	Node evaluateToNode(String path, AttributeCategoryId categoryId) 
+		throws EvaluationException;
 	
-	Node evaluateToNode(String path, Node context) 
-		throws XPathEvaluationException;
-	
-	Number evaluateToNumber(String path, Node context) 
-		throws XPathEvaluationException;
+	Number evaluateToNumber(String path, AttributeCategoryId categoryId) 
+		throws EvaluationException;
 	
 	/**
 	 * Gets parent evaluation context

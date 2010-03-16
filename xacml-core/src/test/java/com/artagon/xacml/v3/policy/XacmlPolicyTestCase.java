@@ -11,13 +11,13 @@ public class XacmlPolicyTestCase
 {	
 	protected EvaluationContext context;
 	protected EvaluationContextFactory contextFactory;
-	protected AttributeReferenceResolver attributeService;
+	protected AttributeResolver attributeService;
 	protected DecisionRuleReferenceResolver policyResolver;
 	protected Policy currentPolicy;
 	
 	@Before
 	public void init_XACMLTestCase() throws Exception{
-		this.attributeService = createStrictMock(AttributeReferenceResolver.class);
+		this.attributeService = createStrictMock(AttributeResolver.class);
 		this.policyResolver = createStrictMock(DecisionRuleReferenceResolver.class);
 		this.currentPolicy = createStrictMock(Policy.class);
 		this.contextFactory = new DefaultEvaluationContextFactory(attributeService, policyResolver, 

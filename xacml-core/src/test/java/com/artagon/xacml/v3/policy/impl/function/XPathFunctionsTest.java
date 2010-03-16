@@ -22,9 +22,8 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
@@ -68,54 +67,41 @@ public class XPathFunctionsTest
 	}
 	
 	@Test
-	public void testXPathCount() throws XPathEvaluationException, FunctionInvocationException
+	public void testXPathCount() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count");
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient", 
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
-		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(context.evaluateToNodeSet("/md:record/md:patient", content)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategoryId.SUBJECT_ACCESS))
+		.andAnswer(new XPathAnswer());
 		replay(context);
 		assertEquals(DataTypes.INTEGER.create(1), f.invoke(context, xpath));
 		verify(context);
 	}
 	
 	@Test
-	public void testXPathCountExpressionReturnsEmptyNodeSet() throws XPathEvaluationException
+	public void testXPathCountExpressionReturnsEmptyNodeSet() throws EvaluationException
 	{
 		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create("/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(context.evaluateToNodeSet("/test", content)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/test", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
 		replay(context);
 		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
 	}
 	
-	@Test
-	public void testXPathCountContentNodeIsNull()
-	{
-		XPathExpressionValue xpath  = DataTypes.XPATHEXPRESSION.create(
-				"/test", 
-				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(null);
-		replay(context);
-		assertEquals(DataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
-		verify(context);
-	}
+	
 	
 	@Test
-	public void testXPathNodeMatch() throws XPathEvaluationException, FunctionInvocationException
+	public void testXPathNodeMatch() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match");
 		XPathExpressionValue xpath0  = DataTypes.XPATHEXPRESSION.create("/md:record", AttributeCategoryId.SUBJECT_ACCESS);
 		XPathExpressionValue xpath1  = DataTypes.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
-		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(context.getContent(AttributeCategoryId.SUBJECT_ACCESS)).andReturn(content);
-		expect(context.evaluateToNodeSet("/md:record", content)).andAnswer(new XPathAnswer());
-		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", content)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
 		replay(context);
 		assertEquals(DataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
@@ -126,7 +112,7 @@ public class XPathFunctionsTest
 		@Override
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
-			return xpathProvider.evaluateToNodeSet((String)args[0], (Node)args[1]);
+			return xpathProvider.evaluateToNodeSet((String)args[0], content);
 		}
 		
 	}

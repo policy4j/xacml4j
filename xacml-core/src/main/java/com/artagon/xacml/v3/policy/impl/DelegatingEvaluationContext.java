@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.XPathEvaluationException;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -45,11 +44,6 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate;
 	}
 	
-	@Override
-	public Node getContent(AttributeCategoryId categoryId) {
-		return delegate.getContent(categoryId);
-	}
-
 	@Override
 	public boolean isValidateFuncParamAtRuntime() {
 		return delegate.isValidateFuncParamAtRuntime();
@@ -172,36 +166,36 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Node evaluateToNode(String path, Node context)
-			throws XPathEvaluationException {
-		return delegate.evaluateToNode(path, context);
+	public Node evaluateToNode(String path, AttributeCategoryId categoryId)
+			throws EvaluationException {
+		return delegate.evaluateToNode(path, categoryId);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public NodeList evaluateToNodeSet(String path, Node context)
-			throws XPathEvaluationException {
-		return delegate.evaluateToNodeSet(path, context);
+	public NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
+			throws EvaluationException {
+		return delegate.evaluateToNodeSet(path, categoryId);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Number evaluateToNumber(String path, Node context)
-			throws XPathEvaluationException {
-		return delegate.evaluateToNumber(path, context);
+	public Number evaluateToNumber(String path, AttributeCategoryId categoryId)
+			throws EvaluationException {
+		return delegate.evaluateToNumber(path, categoryId);
 	}
 	
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public String evaluateToString(String path, Node context)
-			throws XPathEvaluationException {
-		return delegate.evaluateToString(path, context);
+	public String evaluateToString(String path, AttributeCategoryId categoryId)
+			throws EvaluationException {
+		return delegate.evaluateToString(path, categoryId);
 	}
 
 	/**

@@ -65,18 +65,9 @@ final class DefaultAttributeSelector extends
 	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		Node node = context.getContent(getCategory());
-		if(node == null){
-			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(context, this, 
-					"Content node for category=\"%s\" is null and mustBePresent=true", 
-					getCategory());
-			}
-			return getDataType().bagOf().createEmpty();
-		}
 		try
 		{
-			NodeList nodeSet = selectNodes(context, node);
+			NodeList nodeSet = context.evaluateToNodeSet(xpath, getCategory());
 			if(nodeSet == null || 
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
@@ -85,6 +76,9 @@ final class DefaultAttributeSelector extends
 					throw new AttributeReferenceEvaluationException(context, this, 
 						"Selector XPath expression=\"%s\" evaluated " +
 						"to empty node set and mustBePresents=\"true\"", xpath);
+				}
+				if(nodeSet == null){
+					return getDataType().bagOf().createEmpty();
 				}
 			}
 			if(log.isDebugEnabled()){
@@ -96,13 +90,6 @@ final class DefaultAttributeSelector extends
 		catch(XPathEvaluationException e){
 			throw new AttributeReferenceEvaluationException(context, this, e);
 		}
-	}
-	
-	private NodeList selectNodes(EvaluationContext context, Node contextNode) 
-		throws XPathEvaluationException
-	{
-		NodeList nodeSet = context.evaluateToNodeSet(xpath, contextNode);
-		return nodeSet;
 	}
 	
 	private BagOfAttributeValues<?> toBag(EvaluationContext context, NodeList nodeSet) 

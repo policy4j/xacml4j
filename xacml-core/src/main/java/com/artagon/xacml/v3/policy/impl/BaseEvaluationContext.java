@@ -15,26 +15,25 @@ import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
-import com.artagon.xacml.v3.policy.AttributeReferenceResolver;
+import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
 {
-	private AttributeReferenceResolver attributeProvider;
+	private AttributeResolver attributeProvider;
 	private DecisionRuleReferenceResolver policyResolver;
 	
 	private Collection<Advice> advices;
@@ -43,8 +42,7 @@ class BaseEvaluationContext implements EvaluationContext
 	private boolean validateAtRuntime = false;
 	
 	private TwoKeyIndex<String, String, Value> variableEvaluationCache;
-	
-	private XPathProvider xpathProvider;
+
 	private TimeZone timezone;
 		
 	/**
@@ -54,26 +52,23 @@ class BaseEvaluationContext implements EvaluationContext
 	 * @param policyResolver
 	 * @param xpathFactory
 	 */
-	protected BaseEvaluationContext(AttributeReferenceResolver attributeService, 
-			DecisionRuleReferenceResolver policyResolver, XPathProvider xpathFactory){
-		this(false, attributeService, policyResolver, xpathFactory);
+	protected BaseEvaluationContext(AttributeResolver attributeService, 
+			DecisionRuleReferenceResolver policyResolver){
+		this(false, attributeService, policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			AttributeReferenceResolver attributeService,
-			DecisionRuleReferenceResolver policyResolver, 
-			XPathProvider xpathFactory){
+			AttributeResolver attributeService,
+			DecisionRuleReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
 		Preconditions.checkNotNull(policyResolver);
-		Preconditions.checkNotNull(xpathFactory);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.attributeProvider = attributeService;
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new TwoKeyHashIndex<String, String, Value>();
-		this.xpathProvider = xpathFactory;
 		this.timezone = TimeZone.getTimeZone("UTC");
 	}
 	
@@ -83,11 +78,7 @@ class BaseEvaluationContext implements EvaluationContext
 		return timezone;
 	}
 	
-	@Override
-	public Node getContent(AttributeCategoryId categoryId) {
-		return attributeProvider.getContent(categoryId);
-	}
-
+	
 	@Override
 	public boolean isValidateFuncParamAtRuntime() {
 		return validateAtRuntime;
@@ -117,7 +108,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeReferenceResolver}. If attribute
+	 * via {@link AttributeResolver}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 
@@ -205,45 +196,28 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final Node evaluateToNode(String path, Node context)
+	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
 			throws XPathEvaluationException {
-		try{
-			return xpathProvider.evaluateToNode(path, context);
-		}
-		catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
-			throw new XPathEvaluationException(path, this, e);
-		}
+		return null;
 	}
 
 	@Override
-	public final NodeList evaluateToNodeSet(String path, Node context)
+	public final NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
 			throws XPathEvaluationException 
 	{
-		try{
-			return xpathProvider.evaluateToNodeSet(path, context);
-		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
-			throw new XPathEvaluationException(path, this, e);
-		}
+		return null;
 	}
 
 	@Override
-	public final Number evaluateToNumber(String path, Node context)
+	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
 			throws XPathEvaluationException {
-		try{
-			return xpathProvider.evaluateToNumber(path, context);
-		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
-			throw new XPathEvaluationException(path, this, e);
-		}
+		return null;
 	}
 
 	@Override
-	public final String evaluateToString(String path, Node context)
+	public final String evaluateToString(String path, AttributeCategoryId categoryId)
 			throws XPathEvaluationException {
-		try{
-			return xpathProvider.evaluateToString(path, context);
-		}catch(com.artagon.xacml.v3.policy.spi.XPathEvaluationException e){
-			throw new XPathEvaluationException(path, this, e);
-		}
+		return null;
 	}
 
 	@Override
