@@ -1,12 +1,10 @@
 package com.artagon.xacml.v3.policy;
 
-import javax.xml.xpath.XPath;
-
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public interface AttributeResolver 
+public interface AttributeReferenceResolver 
 {
 	/**
 	 * Resolves an attribute by given category, attribute id,
@@ -21,15 +19,14 @@ public interface AttributeResolver
 	BagOfAttributeValues<AttributeValue> resolve(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, 
 			String issuer);
-	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeCategoryId category, 
-			XPath location, AttributeValueType dataType);
-	
+		
 	Node getContent(AttributeCategoryId categoryId);
 	
 	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator designator);
+	BagOfAttributeValues<AttributeValue> resolve(
+			AttributeDesignator designator) throws EvaluationException;
 	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeSelector selector);
+	BagOfAttributeValues<AttributeValue> resolve(
+			AttributeSelector selector) throws EvaluationException;
 	
 }

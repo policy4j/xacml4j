@@ -1,8 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 
-
-public interface PolicyResolver 
+public interface DecisionRuleReferenceResolver 
 {
 	Policy resolve(EvaluationContext context, 
 			PolicyIDReference ref) 

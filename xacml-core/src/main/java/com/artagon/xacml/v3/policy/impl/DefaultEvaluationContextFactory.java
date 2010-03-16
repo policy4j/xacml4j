@@ -1,24 +1,24 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyResolver;
+import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private AttributeResolver attributeResolver;
-	private PolicyResolver policyResolver;
+	private AttributeReferenceResolver attributeResolver;
+	private DecisionRuleReferenceResolver policyResolver;
 	private XPathProvider xpathProvider;
 	
 	public DefaultEvaluationContextFactory(
-			AttributeResolver service, 
-			PolicyResolver policyResolver, 
+			AttributeReferenceResolver service, 
+			DecisionRuleReferenceResolver policyResolver, 
 			XPathProvider xpathProvider){
 		Preconditions.checkNotNull(service);
 		Preconditions.checkNotNull(policyResolver);

@@ -34,5 +34,4 @@ public class SpecialMatchFunctions
 		 String n1 = b.getValue().getName(X500Principal.CANONICAL);
 		 return DataTypes.BOOLEAN.create(n1.endsWith(n0));
 	}
-	
 }

@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeReferenceResolver;
 import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyResolver;
+import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 final class PolicyEvaluationContext extends BaseEvaluationContext
@@ -16,8 +16,8 @@ final class PolicyEvaluationContext extends BaseEvaluationContext
 	 * @param service
 	 */
 	PolicyEvaluationContext(Policy policy, 
-			AttributeResolver service, 
-			PolicyResolver policyResolver, 
+			AttributeReferenceResolver service, 
+			DecisionRuleReferenceResolver policyResolver, 
 			XPathProvider xpathProvider)
 	{
 		super(service, policyResolver, xpathProvider);

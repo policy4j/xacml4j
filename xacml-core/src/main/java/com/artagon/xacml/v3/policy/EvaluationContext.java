@@ -41,7 +41,7 @@ public interface EvaluationContext
 	 */
 	Node getContent(AttributeCategoryId categoryId);
 	
-	NodeList evaluateToNodeSet(String path, Node context) 
+	NodeList evaluateToNodeSet(String xpath, Node context) 
 		throws XPathEvaluationException;
 	
 	String evaluateToString(String path, Node context) 

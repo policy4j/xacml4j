@@ -17,14 +17,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicyResolver;
+import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.VersionMatch;
@@ -36,15 +36,15 @@ public class DefaultPolicySetIDReferenceTest
 	private PolicySet policySet;
 	private PolicySet refPolicySet;
 	private EvaluationContextFactory contextFactory;
-	private PolicyResolver policyResolver;
+	private DecisionRuleReferenceResolver policyResolver;
 	
 	@Before
 	public void init(){
-		this.policyResolver = createStrictMock(PolicyResolver.class);
+		this.policyResolver = createStrictMock(DecisionRuleReferenceResolver.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.refPolicySet = createStrictMock(PolicySet.class);
 		this.contextFactory = new DefaultEvaluationContextFactory(
-				createStrictMock(AttributeResolver.class), 
+				createStrictMock(AttributeReferenceResolver.class), 
 				policyResolver,
 				createStrictMock(XPathProvider.class));
 		this.context = contextFactory.createContext(policySet);

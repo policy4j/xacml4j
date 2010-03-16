@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.AttributeReferenceResolver;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
@@ -25,7 +25,7 @@ import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyIDReference;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicyResolver;
+import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
@@ -34,8 +34,8 @@ import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 class BaseEvaluationContext implements EvaluationContext
 {
-	private AttributeResolver attributeProvider;
-	private PolicyResolver policyResolver;
+	private AttributeReferenceResolver attributeProvider;
+	private DecisionRuleReferenceResolver policyResolver;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -54,15 +54,15 @@ class BaseEvaluationContext implements EvaluationContext
 	 * @param policyResolver
 	 * @param xpathFactory
 	 */
-	protected BaseEvaluationContext(AttributeResolver attributeService, 
-			PolicyResolver policyResolver, XPathProvider xpathFactory){
+	protected BaseEvaluationContext(AttributeReferenceResolver attributeService, 
+			DecisionRuleReferenceResolver policyResolver, XPathProvider xpathFactory){
 		this(false, attributeService, policyResolver, xpathFactory);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			AttributeResolver attributeService,
-			PolicyResolver policyResolver, 
+			AttributeReferenceResolver attributeService,
+			DecisionRuleReferenceResolver policyResolver, 
 			XPathProvider xpathFactory){
 		Preconditions.checkNotNull(attributeService);
 		Preconditions.checkNotNull(policyResolver);
@@ -117,7 +117,7 @@ class BaseEvaluationContext implements EvaluationContext
 	
 	/**
 	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeResolver}. If attribute
+	 * via {@link AttributeReferenceResolver}. If attribute
 	 * service was not specified during context creation
 	 * {@link UnsupportedOperationException} will be thrown
 	 * 

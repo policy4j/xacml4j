@@ -19,6 +19,24 @@ public class SetFunctions
 		return a.intersection(b);
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-union")
+	@XacmlFuncReturnType(type=DataTypes.INTEGER, isBag=true)
+	public static BagOfAttributeValues<IntegerValue> integerUnion(
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> b) 
+	{
+		return a.union(b);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-subest")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
+	public static BooleanValue integerSubest(
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
+			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> b) 
+	{
+		return DataTypes.BOOLEAN.create(b.containsAll(a));
+	}
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-intersection")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN, isBag=true)
 	public static BagOfAttributeValues<BooleanValue> booleanIntersection(
@@ -26,5 +44,14 @@ public class SetFunctions
 			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> b) 
 	{
 		return a.intersection(b);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-union")
+	@XacmlFuncReturnType(type=DataTypes.BOOLEAN, isBag=true)
+	public static BagOfAttributeValues<BooleanValue> booleanUnion(
+			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> a,
+			@XacmlParam(type=DataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> b) 
+	{
+		return a.union(b);
 	}
 }
