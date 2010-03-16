@@ -37,7 +37,7 @@ public class DefaultAttributeDesignatorTest
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
-		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
 		try{
@@ -56,7 +56,7 @@ public class DefaultAttributeDesignatorTest
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
-		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.bag(
 						DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2)));
 		replay(context);
@@ -71,7 +71,7 @@ public class DefaultAttributeDesignatorTest
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolveAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT, 
+		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
 		Expression v = desig.evaluate(context);

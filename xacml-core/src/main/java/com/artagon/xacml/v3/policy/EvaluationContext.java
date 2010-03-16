@@ -30,20 +30,7 @@ public interface EvaluationContext
 	 * need to be validated at runtime
 	 */
 	boolean isValidateFuncParamAtRuntime();
-	
 		
-	NodeList evaluateToNodeSet(String xpath, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	String evaluateToString(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	Node evaluateToNode(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	Number evaluateToNumber(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
 	/**
 	 * Gets parent evaluation context
 	 * 
@@ -126,44 +113,25 @@ public interface EvaluationContext
 	 */
 	void setVariableEvaluationResult(String variableId, Value value);
 	
-	/**
-	 * Resolves attribute designator.
-	 * 
-	 * @param <T> a bag content type
-	 * @param type a designator type
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute XACML data type
-	 * @param issuer an attribute issuer
-	 * @return a bag containing resolved values if an attribute
-	 * can not be resolved an empty bag is returned to the caller
-	 */
-	BagOfAttributeValues<AttributeValue> resolveAttributeDesignator(AttributeCategoryId category,
-			String attributeId, AttributeValueType dataType, 
-			String issuer);
 	
-	/**
-	 * Resolves given {@link AttributeDesignator}
-	 * 
-	 * @param designator an attribute designator
-	 * @return a bag of values
-	 * @throws EvaluationException if an error
-	 * occurs while resolving designator
-	 */
 	BagOfAttributeValues<AttributeValue> resolve(
-			AttributeDesignator designator) 
+			AttributeCategoryId categoryId, 
+			String attributeId, 
+			AttributeValueType dataType,
+			String issuer) throws EvaluationException;
+	
+	NodeList evaluateToNodeSet(String xpath, AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
-	/**
-	 * Resolves given {@link AttributeSelector}
-	 * 
-	 * @param selector an attribute selector
-	 * @return a bag of values
-	 * @throws EvaluationException if an error
-	 * occurs while resolving selector
-	 */
-	BagOfAttributeValues<AttributeValue> resolve(
-			AttributeSelector selector) 
+	String evaluateToString(String path, AttributeCategoryId categoryId) 
 		throws EvaluationException;
+	
+	Node evaluateToNode(String path, AttributeCategoryId categoryId) 
+		throws EvaluationException;
+	
+	Number evaluateToNumber(String path, AttributeCategoryId categoryId) 
+		throws EvaluationException;
+
 	
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
 	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;

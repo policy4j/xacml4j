@@ -14,9 +14,7 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeResolver;
-import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -29,7 +27,6 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.XPathEvaluationException;
 
 class BaseEvaluationContext implements EvaluationContext
 {
@@ -107,23 +104,6 @@ class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	/**
-	 * Implementation tries to resolve give attribute
-	 * via {@link AttributeResolver}. If attribute
-	 * service was not specified during context creation
-	 * {@link UnsupportedOperationException} will be thrown
-	 * 
-	 * @exception UnsupportedOperationException if attribute
-	 * service was not specified during context construction
-	 */
-	@Override
-	public BagOfAttributeValues<AttributeValue> resolveAttributeDesignator(
-			AttributeCategoryId category,
-			String attributeId,
-			AttributeValueType dataType, String issuer) {
-			return attributeProvider.resolve(category, attributeId, dataType, issuer);
-	}
-	
-	/**
 	 * Implementation always
 	 * return <code>null</code>
 	 */
@@ -197,38 +177,34 @@ class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
-			throws XPathEvaluationException {
-		return null;
+			throws EvaluationException {
+		return attributeProvider.evaluateToNode(this, path, categoryId);
 	}
 
 	@Override
 	public final NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
-			throws XPathEvaluationException 
+			throws EvaluationException 
 	{
-		return null;
+		return attributeProvider.evaluateToNodeList(this, path, categoryId);
 	}
 
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
-			throws XPathEvaluationException {
-		return null;
+			throws EvaluationException {
+		return attributeProvider.evaluateToNumber(this, path, categoryId);
 	}
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategoryId categoryId)
-			throws XPathEvaluationException {
-		return null;
+			throws EvaluationException {
+		return attributeProvider.evaluateToString(this, path, categoryId);
 	}
-
-	@Override
+	
 	public BagOfAttributeValues<AttributeValue> resolve(
-			AttributeDesignator designator) throws EvaluationException {
-		return null;
-	}
-
-	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
-			AttributeSelector selector) throws EvaluationException {
-		return null;
+			AttributeCategoryId categoryId, 
+			String attributeId, 
+			AttributeValueType dataType,
+			String issuer) throws EvaluationException{
+		return attributeProvider.resolve(this, categoryId, attributeId, dataType, issuer);
 	}
 }

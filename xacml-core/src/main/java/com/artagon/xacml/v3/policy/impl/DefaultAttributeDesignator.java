@@ -69,7 +69,7 @@ final class DefaultAttributeDesignator extends BaseAttributeReference
 	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues<?> bag = context.resolveAttributeDesignator(
+		BagOfAttributeValues<?> bag = context.resolve(
 				getCategory(), attributeId, evaluatesTo.getDataType(), issuer);
 		if(bag.isEmpty() && isMustBePresent()){
 			throw new AttributeReferenceEvaluationException(context, this,
