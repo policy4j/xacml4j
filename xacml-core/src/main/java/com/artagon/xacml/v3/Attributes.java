@@ -23,8 +23,16 @@ public class Attributes extends XacmlObject
 	private Multimap<String, Attribute> attributes;
 	
 	
+	public String getId(){
+		return id;
+	}
+
 	public AttributeCategoryId getCategoryId(){
 		return categoryId;
+	}
+	
+	public boolean containsAttribute(String attributeId){
+		return attributes.containsKey(attributeId);
 	}
 	
 	public Collection<Attribute> getAttribute(String attributeId){
@@ -51,11 +59,7 @@ public class Attributes extends XacmlObject
 		}
 		return type.bagOf().create(values);
 	}
-	
-	public String getId(){
-		return id;
-	}
-	
+		
 	public Node getContent(){
 		return content;
 	}
