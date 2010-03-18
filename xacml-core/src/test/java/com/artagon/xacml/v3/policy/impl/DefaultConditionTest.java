@@ -9,10 +9,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.ConditionResult;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.PolicyException;

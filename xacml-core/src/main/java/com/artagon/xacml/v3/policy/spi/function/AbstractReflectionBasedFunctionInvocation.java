@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.spi.function;
 
 import java.lang.reflect.Array;
 
-import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionInvocation;
 import com.artagon.xacml.v3.policy.FunctionInvocationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;

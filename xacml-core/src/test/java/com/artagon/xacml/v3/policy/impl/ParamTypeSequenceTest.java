@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DoubleType;

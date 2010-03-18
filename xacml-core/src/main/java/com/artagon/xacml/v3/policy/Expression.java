@@ -1,9 +1,5 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.PolicyElement;
-import com.artagon.xacml.v3.policy.ValueType;
 
 public interface Expression  extends PolicyElement
 {	
