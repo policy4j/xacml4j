@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.v3.EvaluationContext;
+
 public interface Matchable extends PolicyElement
 {
 	/**

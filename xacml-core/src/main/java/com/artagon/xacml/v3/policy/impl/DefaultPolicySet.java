@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
-import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.ObligationExpression;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;

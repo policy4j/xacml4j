@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpec;
 
 /**

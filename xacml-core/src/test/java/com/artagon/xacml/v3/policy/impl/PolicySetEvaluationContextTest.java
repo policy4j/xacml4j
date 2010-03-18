@@ -10,9 +10,9 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
-import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.XPathVersion;

@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 final class DefaultAttributeAssignmentExpression extends XacmlObject 

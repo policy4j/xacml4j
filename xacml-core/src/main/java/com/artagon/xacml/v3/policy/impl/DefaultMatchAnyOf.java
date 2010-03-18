@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchAllOf;
 import com.artagon.xacml.v3.policy.MatchAnyOf;
 import com.artagon.xacml.v3.policy.MatchResult;

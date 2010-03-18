@@ -21,8 +21,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;

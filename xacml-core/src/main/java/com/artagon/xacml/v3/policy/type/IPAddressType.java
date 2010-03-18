@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.type;
 
 import java.net.InetAddress;
 
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 /** 

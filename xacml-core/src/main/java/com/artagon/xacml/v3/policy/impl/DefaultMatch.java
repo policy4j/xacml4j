@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.AttributeReference;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Match;
 import com.artagon.xacml.v3.policy.MatchResult;

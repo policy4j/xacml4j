@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 /**

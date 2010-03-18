@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 
 public class IntegerTypeTest 

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 
 final class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext

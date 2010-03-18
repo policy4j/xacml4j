@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Match;
 import com.artagon.xacml.v3.policy.MatchAllOf;
 import com.artagon.xacml.v3.policy.MatchResult;

@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.policy.ValueType;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 

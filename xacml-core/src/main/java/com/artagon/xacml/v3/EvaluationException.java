@@ -1,7 +1,7 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.policy.PolicyException;
 
 
 @SuppressWarnings("serial")

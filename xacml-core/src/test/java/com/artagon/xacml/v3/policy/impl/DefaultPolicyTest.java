@@ -17,12 +17,12 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.ObligationExpression;
 import com.artagon.xacml.v3.policy.Policy;

@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3.policy.spi.type;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.ValueType;
 

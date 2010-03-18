@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultiset;

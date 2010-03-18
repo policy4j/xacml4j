@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.ConditionResult;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;

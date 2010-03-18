@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl.function;
 
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;

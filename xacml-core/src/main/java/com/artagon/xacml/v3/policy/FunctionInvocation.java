@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Expression;
+
 
 public interface FunctionInvocation
 {

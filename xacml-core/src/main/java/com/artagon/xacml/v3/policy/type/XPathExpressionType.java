@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.type;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 public interface XPathExpressionType extends AttributeValueType

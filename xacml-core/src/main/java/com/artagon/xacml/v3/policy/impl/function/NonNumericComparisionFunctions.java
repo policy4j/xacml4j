@@ -4,7 +4,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
