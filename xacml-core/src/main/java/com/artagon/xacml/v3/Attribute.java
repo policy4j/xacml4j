@@ -13,38 +13,25 @@ import com.google.common.collect.Multiset;
 
 public class Attribute extends XacmlObject
 {
-	private String id;
 	private String attributeId;
 	private Multiset<AttributeValue> values;
 	private boolean includeInResult;
 	private String issuer;
 	
-	public Attribute(String id, String attributeId, 
+	public Attribute(String attributeId, 
 			Collection<AttributeValue> values, 
 			String issuer, boolean includeInResult){
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(values);
-		this.id = id;
 		this.attributeId = attributeId;
 		this.values = HashMultiset.create(values.size());
 		this.values.addAll(values);
 		this.includeInResult = includeInResult;
 	}
 	
-	public Attribute(String id, String attributeId, 
+	public Attribute(String attributeId, 
 			Collection<AttributeValue> values){
-		this(id, attributeId, values, null, false);
-	}
-	
-	/**
-	 * An unique identifier of the attribute in
-	 * the request context
-	 * 
-	 * @return unique identifier of the
-	 * attribute in the request context
-	 */
-	public String getId(){
-		return id;
+		this(attributeId, values, null, false);
 	}
 	
 	/**

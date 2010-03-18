@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public interface AttributeReference extends Expression 
+public interface AttributeRefExpression extends Expression 
 {
 	/**
 	 * Governs whether this reference evaluates 

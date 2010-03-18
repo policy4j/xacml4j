@@ -15,7 +15,7 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.policy.AttributeRefExpressionEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
@@ -73,7 +73,7 @@ final class DefaultAttributeSelector extends
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						xpath, getCategory());
 				if(isMustBePresent()){
-					throw new AttributeReferenceEvaluationException(context, this, 
+					throw new AttributeRefExpressionEvaluationException(context, this, 
 						"Selector XPath expression=\"%s\" evaluated " +
 						"to empty node set and mustBePresents=\"true\"", xpath);
 				}
@@ -88,7 +88,7 @@ final class DefaultAttributeSelector extends
 			return toBag(context, nodeSet);
 		}
 		catch(XPathEvaluationException e){
-			throw new AttributeReferenceEvaluationException(context, this, e);
+			throw new AttributeRefExpressionEvaluationException(context, this, e);
 		}
 	}
 	
@@ -114,14 +114,14 @@ final class DefaultAttributeSelector extends
 					v = ((Comment)n).getData();
 					break;
 				default:
-					throw new AttributeReferenceEvaluationException(
+					throw new AttributeRefExpressionEvaluationException(
 							StatusCode.createSyntaxError(),
 							context, this, "Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try{
 				values.add(getDataType().fromXacmlString(v));
 			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(context, this, 
+				throw new AttributeRefExpressionEvaluationException(context, this, 
 						"Failed to convert xml node (at:%d in nodeset) " +
 						"text value=\"%s\" to an attribute value of type=\"%s\"", 
 						i, v, getDataType());

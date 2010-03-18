@@ -12,6 +12,7 @@ import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 
@@ -22,11 +23,34 @@ public class Attributes extends XacmlObject
 	private Node content;
 	private Multimap<String, Attribute> attributes;
 	
+	public Attributes(String id, AttributeCategoryId categoryId, 
+			Collection<Attribute> attributes, Node content){
+		Preconditions.checkNotNull(categoryId);
+		Preconditions.checkNotNull(attributes);
+		this.id = id;
+		this.categoryId = categoryId;
+		this.attributes = HashMultimap.create();
+		for(Attribute attr : attributes){
+			this.attributes.put(attr.getAttributeId(), attr);
+		}
+	}
 	
+	/**
+	 * An unique identifier of the attribute in
+	 * the request context
+	 * 
+	 * @return unique identifier of the
+	 * attribute in the request context
+	 */
 	public String getId(){
 		return id;
 	}
-
+	
+	/**
+	 * Gets an attribute category
+	 * 
+	 * @return attribute category
+	 */
 	public AttributeCategoryId getCategoryId(){
 		return categoryId;
 	}
