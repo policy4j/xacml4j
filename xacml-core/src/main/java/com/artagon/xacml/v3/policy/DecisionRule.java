@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.EvaluationContext;
 
 public interface DecisionRule extends PolicyElement
 {

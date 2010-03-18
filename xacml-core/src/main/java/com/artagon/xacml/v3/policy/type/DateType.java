@@ -5,7 +5,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
 

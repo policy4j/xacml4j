@@ -1,7 +1,5 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicySet;
 
 public interface EvaluationContextFactory 
 {

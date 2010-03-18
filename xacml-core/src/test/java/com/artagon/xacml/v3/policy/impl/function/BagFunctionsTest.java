@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;

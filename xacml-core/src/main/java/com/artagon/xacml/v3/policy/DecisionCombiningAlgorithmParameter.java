@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.AttributeValue;
 
 public class DecisionCombiningAlgorithmParameter 
 {

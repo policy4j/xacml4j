@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchAnyOf;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.Matchable;

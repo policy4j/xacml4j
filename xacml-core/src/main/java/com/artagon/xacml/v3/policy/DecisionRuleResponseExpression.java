@@ -2,8 +2,6 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionRuleResponse;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
 
 public interface DecisionRuleResponseExpression extends PolicyElement
 {

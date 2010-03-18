@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;

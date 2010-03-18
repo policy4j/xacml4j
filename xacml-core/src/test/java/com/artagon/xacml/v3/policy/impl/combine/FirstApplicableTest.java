@@ -13,9 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
 public class FirstApplicableTest extends XacmlPolicyTestCase

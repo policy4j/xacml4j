@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 import java.util.TimeZone;
@@ -6,13 +6,9 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Obligation;
 
 
 public interface EvaluationContext 

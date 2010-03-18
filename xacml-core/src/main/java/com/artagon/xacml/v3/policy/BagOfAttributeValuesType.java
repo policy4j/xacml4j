@@ -1,10 +1,10 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.ValueType;
+import com.artagon.xacml.v3.XacmlObject;
 
 /**
  * Represents a XACML bag of attributes type.

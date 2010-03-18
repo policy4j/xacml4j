@@ -11,10 +11,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
-import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import static com.artagon.xacml.v3.policy.type.DataTypes.INTEGER;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;

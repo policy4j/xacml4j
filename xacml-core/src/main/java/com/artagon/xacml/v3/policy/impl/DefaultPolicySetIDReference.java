@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
