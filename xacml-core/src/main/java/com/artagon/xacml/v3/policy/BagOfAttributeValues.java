@@ -11,6 +11,9 @@ import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 
 /**
  * XACML defines implicit collections of its data-types. 
@@ -25,10 +28,11 @@ import com.artagon.xacml.v3.XacmlObject;
  * 
  * @author Giedrius Trumpickas
  */
-public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlObject implements Value
+public final class BagOfAttributeValues<T extends AttributeValue> 
+	extends XacmlObject implements Value
 {
 	private BagOfAttributeValuesType<T> type;
-	private List<T> values = new LinkedList<T>();
+	private Multiset<T> values;
 	
 	/**
 	 * Constructs bag of attributes.
@@ -39,6 +43,7 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 	@SuppressWarnings("unchecked")
 	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
 			Collection<AttributeValue> attributes){		
+		this.values = HashMultiset.create(attributes.size());
 		for(AttributeValue attr: attributes){	
 			Preconditions.checkArgument(
 					attr.getType().equals(type.getDataType()),
@@ -128,8 +133,8 @@ public final class BagOfAttributeValues<T extends AttributeValue> extends XacmlO
 	 * @return a number of elements equal to the
 	 * specified value
 	 */
-	public int frequency(AttributeValue value){
-		return Collections.frequency(values, values);
+	public int count(AttributeValue value){
+		return values.count(value);
 	}
 	
 	/**

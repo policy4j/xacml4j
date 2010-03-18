@@ -88,8 +88,8 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 		content3.add(INTEGER.create(2));
 		BagOfAttributeValues<?> bag3= INTEGER.bag(content3);
 		
-		assertFalse(bag1.equals(bag3));
-		assertFalse(bag2.equals(bag3));
+		assertTrue(bag1.equals(bag3));
+		assertTrue(bag2.equals(bag3));
 	}
 	
 	

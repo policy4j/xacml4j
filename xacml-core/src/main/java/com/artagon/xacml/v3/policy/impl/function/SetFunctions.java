@@ -28,7 +28,7 @@ public class SetFunctions
 		return a.union(b);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-subest")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-subset")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue integerSubest(
 			@XacmlParam(type=DataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
