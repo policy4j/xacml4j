@@ -3,8 +3,6 @@ package com.artagon.xacml.v3.policy.spi;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpec;
 
-
-
 public interface FunctionProvider 
 {
 	/**

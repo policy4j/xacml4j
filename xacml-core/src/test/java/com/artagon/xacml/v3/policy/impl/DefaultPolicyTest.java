@@ -31,6 +31,7 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class DefaultPolicyTest 
@@ -82,6 +83,7 @@ public class DefaultPolicyTest
 		
 		this.policy = new DefaultPolicy("test", 
 				Version.valueOf(1),
+				new DefaultPolicyDefaults(XPathVersion.XPATH1),
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);

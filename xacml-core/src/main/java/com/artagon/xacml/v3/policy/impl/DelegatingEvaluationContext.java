@@ -21,6 +21,7 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.policy.XPathVersion;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -147,6 +148,11 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public TimeZone getTimeZone() {
 		return delegate.getTimeZone();
+	}
+	
+	@Override
+	public XPathVersion getXPathVersion() {
+		return delegate.getXPathVersion();
 	}
 
 	/**

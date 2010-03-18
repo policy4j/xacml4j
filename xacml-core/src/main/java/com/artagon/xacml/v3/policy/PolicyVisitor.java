@@ -1,3 +1,4 @@
+
 package com.artagon.xacml.v3.policy;
 
 public interface PolicyVisitor
@@ -71,4 +72,10 @@ public interface PolicyVisitor
 	
 	void visitEnter(AttributeAssigmentExpression attribute);
 	void visitLeave(AttributeAssigmentExpression attribute);
+	
+	void visitEnter(PolicyDefaults policyDefaults);
+	void visitLeave(PolicyDefaults policyDefaults);
+	
+	void visitEnter(PolicySetDefaults policySetDefaults);
+	void visitLeave(PolicySetDefaults policySetDefaults);
 }

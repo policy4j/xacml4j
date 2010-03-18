@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy.impl;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.policy.PolicyDefaults;
+import com.artagon.xacml.v3.policy.XPathVersion;
 
 final class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 {	
@@ -25,5 +27,15 @@ final class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContex
 	@Override
 	public Policy getCurrentPolicy() {
 		return policy;
+	}
+
+	@Override
+	public XPathVersion getXPathVersion() {
+		PolicyDefaults defaults = policy.getDefaults();
+		if(defaults != null && 
+				defaults.getXPathVersion() != null){
+			return defaults.getXPathVersion();
+		}
+		return super.getXPathVersion();
 	}
 }

@@ -1,14 +1,13 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.artagon.xacml.v3.policy.AttributeValue;
 
-public class Attribute 
+public class Attribute <T extends AttributeValue>
 {
 	private String attributeId;
-	private Collection<AttributeValue> values;
+	private Collection<T> values;
 	private boolean includeInResult;
 	private String issuer;
 	
@@ -16,8 +15,8 @@ public class Attribute
 		return attributeId;
 	}
 	
-	public Collection<AttributeValue> getValues(){
-		return Collections.unmodifiableCollection(values);
+	public Iterable<T> getValues(){
+		return values;
 	}
 	
 	public String getIssuer(){

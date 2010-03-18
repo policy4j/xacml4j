@@ -28,7 +28,7 @@ import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 
-class BaseEvaluationContext implements EvaluationContext
+abstract class BaseEvaluationContext implements EvaluationContext
 {
 	private AttributeResolver attributeProvider;
 	private DecisionRuleReferenceResolver policyResolver;
@@ -178,26 +178,30 @@ class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToNode(this, path, categoryId);
+		return attributeProvider.evaluateToNode(
+				getXPathVersion(), path, categoryId);
 	}
 
 	@Override
 	public final NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
 			throws EvaluationException 
 	{
-		return attributeProvider.evaluateToNodeList(this, path, categoryId);
+		return attributeProvider.evaluateToNodeList(
+				getXPathVersion(), path, categoryId);
 	}
 
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToNumber(this, path, categoryId);
+		return attributeProvider.evaluateToNumber(
+				getXPathVersion(), path, categoryId);
 	}
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToString(this, path, categoryId);
+		return attributeProvider.evaluateToString(
+				getXPathVersion(), path, categoryId);
 	}
 	
 	public BagOfAttributeValues<AttributeValue> resolve(

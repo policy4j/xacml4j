@@ -5,7 +5,7 @@ import org.w3c.dom.NodeList;
 
 
 public interface XPathProvider 
-{
+{	
 	NodeList evaluateToNodeSet(String path, Node context) 
 		throws XPathEvaluationException;
 	

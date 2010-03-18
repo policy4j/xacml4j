@@ -12,6 +12,8 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	 */
 	Version getVersion();
 	
+	PolicyDefaults getDefaults();
+	
 	/**
 	 * Gets rule target
 	 * 

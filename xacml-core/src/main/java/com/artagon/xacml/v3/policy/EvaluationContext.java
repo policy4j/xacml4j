@@ -81,6 +81,13 @@ public interface EvaluationContext
 	Collection<Obligation> getObligations();
 	
 	/**
+	 * Gets XPath version
+	 * 
+	 * @return {@link XPathVersion}
+	 */
+	XPathVersion getXPathVersion();
+	
+	/**
 	 * Adds evaluated obligation from
 	 * decision evaluated in this context 
 	 * 

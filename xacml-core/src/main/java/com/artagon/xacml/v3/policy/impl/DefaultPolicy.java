@@ -16,6 +16,7 @@ import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.ObligationExpression;
 import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.policy.PolicyDefaults;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
@@ -24,6 +25,7 @@ import com.artagon.xacml.v3.policy.Version;
 
 final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {
+	private PolicyDefaults policyDefaults;
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
 	private DecisionCombiningAlgorithm<Rule> combine;
@@ -34,6 +36,8 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	 * expressions
 	 * 
 	 * @param policyId a policy identifier
+	 * @param version a policy version
+	 * @param policyDefaults a policy defaults
 	 * @param target a policy target
 	 * @param variables a policy variable definitions
 	 * @param combine a policy rules combine algorithm
@@ -44,6 +48,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	public DefaultPolicy(
 			String policyId,
 			Version version,
+			PolicyDefaults policyDefaults,
 			Target target, 
 			Collection<VariableDefinition> variables, 
 			DecisionCombiningAlgorithm<Rule> combine,
@@ -56,6 +61,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		Preconditions.checkNotNull(combine);
 		this.rules = new LinkedList<Rule>(rules);
 		this.combine = combine;
+		this.policyDefaults = policyDefaults;
 		this.variableDefinitions = new ConcurrentHashMap<String, VariableDefinition>(variables.size());
 		for(VariableDefinition varDef : variables){
 			this.variableDefinitions.put(varDef.getVariableId(), varDef);
@@ -83,6 +89,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	{
 		this(policyId, 
 				version,
+				null,
 				null, 
 				Collections.<VariableDefinition>emptyList(),
 				combine,
@@ -111,6 +118,11 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 				Collections.<ObligationExpression>emptyList());
 	}
 	
+	@Override
+	public PolicyDefaults getDefaults() {
+		return policyDefaults;
+	}
+
 	@Override
 	public Collection<VariableDefinition> getVariableDefinitions(){
 		return Collections.unmodifiableCollection(variableDefinitions.values());

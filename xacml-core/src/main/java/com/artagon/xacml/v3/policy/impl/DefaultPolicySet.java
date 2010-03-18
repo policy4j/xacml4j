@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.ObligationExpression;
 import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.Version;
@@ -25,6 +26,7 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicySet.class);
 	
+	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
 	
@@ -43,6 +45,7 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	public DefaultPolicySet(
 			String id, 
 			Version version,
+			PolicySetDefaults policySetDefaults,
 			Target target, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
 			Collection<? extends CompositeDecisionRule> policies, 
@@ -53,8 +56,14 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 		Preconditions.checkNotNull(combine);
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
+		this.policySetDefaults = policySetDefaults;
 	}
 	
+	@Override
+	public PolicySetDefaults getDefaults() {
+		return policySetDefaults;
+	}
+
 	/**
 	 * Creates {@link EvaluationContext} to evaluate this policy
 	 * set to be used in {@link this#isApplicable(EvaluationContext)}
@@ -96,6 +105,9 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 		v.visitEnter(this);
 		if(getTarget() != null){
 			getTarget().accept(v);
+		}
+		if(policySetDefaults != null){
+			policySetDefaults.accept(v);
 		}
 		combine.accept(v);
 		for(DecisionRule decision : decisionRules){

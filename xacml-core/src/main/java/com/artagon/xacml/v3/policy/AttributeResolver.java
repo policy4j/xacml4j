@@ -7,25 +7,28 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 
 public interface AttributeResolver 
 {
-				
 	NodeList evaluateToNodeList(
-			EvaluationContext context,
-			String xpath, AttributeCategoryId categoryId) 
+			XPathVersion version,
+			String xpath, 
+			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	String evaluateToString(
-			EvaluationContext context,
-			String path, AttributeCategoryId categoryId) 
+			XPathVersion version,
+			String path, 
+			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	Node evaluateToNode(
-			EvaluationContext context,
-			String path, AttributeCategoryId categoryId) 
+			XPathVersion version,
+			String path, 
+			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	Number evaluateToNumber(
-			EvaluationContext context,
-			String path, AttributeCategoryId categoryId) 
+			XPathVersion version,
+			String path, 
+			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 
 	
