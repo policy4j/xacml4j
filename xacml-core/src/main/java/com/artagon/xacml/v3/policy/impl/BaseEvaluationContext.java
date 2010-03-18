@@ -2,14 +2,17 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.util.MapMaker;
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.util.TwoKeyHashIndex;
+import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -65,7 +68,13 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		this.validateAtRuntime = validateFuncParams;
 		this.attributeProvider = attributeService;
 		this.policyResolver = policyResolver;
-		this.variableEvaluationCache = new TwoKeyHashIndex<String, String, Value>();
+		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, Value>(
+				new MapMaker() {
+			@Override
+			public <K, V> Map<K, V> make() {
+				return new HashMap<K, V>();
+			}
+		});
 		this.timezone = TimeZone.getTimeZone("UTC");
 	}
 	

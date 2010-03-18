@@ -1,27 +1,30 @@
 package com.artagon.xacml.v3.policy.spi;
 
-import java.util.Iterator;
-
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 public interface ContextAttributeCallback 
 {
 	/**
-	 * Gets single attribute value from a 
-	 * request context
+	 * Gets {@link BagOfAttributeValues} from request context
 	 * 
-	 * @param <V>
+	 * @param <AV>
 	 * @param category an attribute category
 	 * @param attributeId an attribute identifier
-	 * @return an attribute value or <code>null</code>
-	 * if such attribute does not exist in request
-	 * context
+	 * @param issuer an attribute issuer
+	 * @return {@link BagOfAttributeValues} or empty bag
+	 * if no matching attribute exist in the request context
 	 */
-	<V extends AttributeValue> Attribute<V> getAttribute(
+	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
+			AttributeCategoryId category, String attributeId, String issuer);
+	
+	/**
+	 * Method assumes that issuer is not specified for an
+	 * attribute in the request context
+	 * 
+	 * @see {{@link #getAttribute(AttributeCategoryId, String, String)}
+	 */
+	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
 			AttributeCategoryId category, String attributeId);
-	
-	
-	
 }

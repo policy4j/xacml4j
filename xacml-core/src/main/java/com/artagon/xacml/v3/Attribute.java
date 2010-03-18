@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.policy.AttributeValue;
 
-public class Attribute <T extends AttributeValue>
+public class Attribute 
 {
 	private String attributeId;
-	private Collection<T> values;
+	private Collection<AttributeValue> values;
 	private boolean includeInResult;
 	private String issuer;
 	
@@ -15,7 +15,7 @@ public class Attribute <T extends AttributeValue>
 		return attributeId;
 	}
 	
-	public Iterable<T> getValues(){
+	public Iterable<AttributeValue> getValues(){
 		return values;
 	}
 	
