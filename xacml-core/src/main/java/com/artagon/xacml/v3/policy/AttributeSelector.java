@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 
-public interface AttributeSelector extends AttributeRefExpression
+public interface AttributeSelector extends AttributeReference
 {
 	/**
 	 * An XPath expression whose context node is the Content 

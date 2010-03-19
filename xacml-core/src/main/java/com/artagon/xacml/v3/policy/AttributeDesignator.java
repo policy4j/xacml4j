@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
-public interface AttributeDesignator extends AttributeRefExpression
+public interface AttributeDesignator extends AttributeReference
 {
 	/**
 	 * Gets attribute identifier

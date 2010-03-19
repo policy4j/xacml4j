@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeRefExpression;
+import com.artagon.xacml.v3.policy.AttributeReference;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -21,7 +21,7 @@ final class DefaultMatch implements PolicyElement, Match
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatch.class);
 	
 	private AttributeValue value;
-	private AttributeRefExpression attributeRef;
+	private AttributeReference attributeRef;
 	private FunctionSpec predicate;
 	
 	/**
@@ -32,7 +32,7 @@ final class DefaultMatch implements PolicyElement, Match
 	 * @param function a match function
 	 */
 	protected DefaultMatch(FunctionSpec spec, 
-			AttributeValue value, AttributeRefExpression attributeReference)
+			AttributeValue value, AttributeReference attributeReference)
 	{
 		Preconditions.checkNotNull(spec);
 		Preconditions.checkNotNull(value);

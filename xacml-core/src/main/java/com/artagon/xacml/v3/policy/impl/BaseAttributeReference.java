@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.AttributeRefExpression;
+import com.artagon.xacml.v3.policy.AttributeReference;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.ValueType;
@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.policy.ValueType;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeReference implements AttributeRefExpression
+abstract class BaseAttributeReference implements AttributeReference
 {
 	private boolean mustBePresent;
 	private AttributeCategoryId category;

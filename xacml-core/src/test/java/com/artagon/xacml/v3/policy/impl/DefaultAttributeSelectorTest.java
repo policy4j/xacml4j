@@ -20,7 +20,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.policy.AttributeRefExpressionEvaluationException;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -86,7 +86,7 @@ public class DefaultAttributeSelectorTest
 		verify(context);
 	}
 	
-	@Test(expected=AttributeRefExpressionEvaluationException.class)
+	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentCategoryContentExistXPathReturnsNonEmptySetValueCantBeConverted() throws EvaluationException
 	{
 		AttributeSelector desig = new DefaultAttributeSelector(
@@ -101,7 +101,7 @@ public class DefaultAttributeSelectorTest
 		verify(context);
 	}
 	
-	@Test(expected=AttributeRefExpressionEvaluationException.class)
+	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentCategoryContentExistXPathReturnsNonEmptySetWithWrongNodeType() throws EvaluationException
 	{
 		AttributeSelector desig = new DefaultAttributeSelector(
@@ -131,7 +131,7 @@ public class DefaultAttributeSelectorTest
 		verify(context);
 	}
 	
-	@Test(expected=AttributeRefExpressionEvaluationException.class)
+	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueCategoryContentExistXPathReturnsEmptySet() throws EvaluationException
 	{
 		AttributeSelector desig = new DefaultAttributeSelector(

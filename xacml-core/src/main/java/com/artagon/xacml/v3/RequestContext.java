@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,17 +16,20 @@ public class RequestContext extends XacmlObject
 	private boolean returnPolicyIdList;
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> byId;
+	private Collection<RequestReference> multiRequests;
 	
 	/**
 	 * Constructs a request with a given attributes
 	 * @param attributes
 	 */
 	public RequestContext(boolean returnPolicyIdList, 
-			Collection<Attributes> attributes)
+			Collection<Attributes> attributes, 
+			Collection<RequestReference> requestReferences)
 	{
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = HashMultimap.create();
 		this.byId = new HashMap<String, Attributes>();
+		this.multiRequests = new ArrayList<RequestReference>(requestReferences);
 		for(Attributes attr : attributes){
 			this.attributes.put(attr.getCategoryId(), attr);
 			if(attr.getId() != null){
@@ -36,6 +40,10 @@ public class RequestContext extends XacmlObject
 	
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
+	}
+	
+	public Collection<RequestReference> getMultiRequests(){
+		return Collections.unmodifiableCollection(multiRequests);
 	}
 	
 	/**
