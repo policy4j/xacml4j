@@ -16,7 +16,7 @@ public class RequestContext extends XacmlObject
 	private boolean returnPolicyIdList;
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> byId;
-	private Collection<RequestReference> multiRequests;
+	private Collection<RequestReference> multipleRequests;
 	
 	/**
 	 * Constructs a request with a given attributes
@@ -28,8 +28,8 @@ public class RequestContext extends XacmlObject
 	{
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = HashMultimap.create();
+		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
 		this.byId = new HashMap<String, Attributes>();
-		this.multiRequests = new ArrayList<RequestReference>(requestReferences);
 		for(Attributes attr : attributes){
 			this.attributes.put(attr.getCategoryId(), attr);
 			if(attr.getId() != null){
@@ -38,12 +38,39 @@ public class RequestContext extends XacmlObject
 		}
 	}
 	
+	/**
+	 * Constructs a request with a given attributes
+	 * @param attributes
+	 */
+	public RequestContext(boolean returnPolicyIdList, 
+			Collection<Attributes> attributes)
+	{
+		this(returnPolicyIdList, attributes, 
+				Collections.<RequestReference>emptyList());
+	}
+	
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
 	}
 	
-	public Collection<RequestReference> getMultiRequests(){
-		return Collections.unmodifiableCollection(multiRequests);
+	public Collection<RequestReference> getMultipleRequests(){
+		return Collections.unmodifiableCollection(multipleRequests);
+	}
+	
+	public boolean hasMultipleRequests(){
+		return !multipleRequests.isEmpty();
+	}
+	
+	/**
+	 * Resolves attribute reference to {@link Attributes}
+	 * 
+	 * @param reference an attributes reference
+	 * @return {@link Attributes} or <code>null</code> if
+	 * reference can not be resolved
+	 */
+	public Attributes getReferencedAttributes(AttributesReference reference)
+	{
+		return byId.get(reference.getReferenceId());
 	}
 	
 	/**
@@ -78,7 +105,6 @@ public class RequestContext extends XacmlObject
 			 return Collections.emptyList();
 		 }
 		 return Collections2.filter(attr, new Predicate<Attributes>() {
-
 			@Override
 			public boolean apply(Attributes a) {
 				return a.containsAttribute(attributeId);

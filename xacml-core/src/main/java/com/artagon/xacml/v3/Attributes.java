@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -23,8 +24,17 @@ public class Attributes extends XacmlObject
 	private Node content;
 	private Multimap<String, Attribute> attributes;
 	
+	/**
+	 * Constructs an attributes with a given identifier,
+	 * category, attributes and XML content
+	 * 
+	 * @param id an optional unique identifier
+	 * @param categoryId an attribute category
+	 * @param content an optional XML content
+	 * @param attributes a collection of attributes
+	 */
 	public Attributes(String id, AttributeCategoryId categoryId, 
-			Collection<Attribute> attributes, Node content){
+			Node content, Collection<Attribute> attributes){
 		Preconditions.checkNotNull(categoryId);
 		Preconditions.checkNotNull(attributes);
 		this.id = id;
@@ -33,6 +43,31 @@ public class Attributes extends XacmlObject
 		for(Attribute attr : attributes){
 			this.attributes.put(attr.getAttributeId(), attr);
 		}
+	}
+	
+	public Attributes(String id, AttributeCategoryId categoryId, 
+			Node content, Attribute ...attributes){
+		this(id, categoryId, content, Arrays.asList(attributes));
+	}
+	
+	public Attributes(AttributeCategoryId categoryId, 
+			Collection<Attribute> attributes){
+		this(null, categoryId, null, attributes);
+	}
+	
+	public Attributes(String id, AttributeCategoryId categoryId, 
+			Collection<Attribute> attributes){
+		this(id, categoryId, null, attributes);
+	}
+	
+	public Attributes(String id, AttributeCategoryId categoryId, 
+			Attribute ...attributes){
+		this(id, categoryId, null, Arrays.asList(attributes));
+	}
+	
+	public Attributes(AttributeCategoryId categoryId, 
+			Attribute ...attributes){
+		this(null, categoryId, null, Arrays.asList(attributes));
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -18,9 +19,10 @@ public class Attribute extends XacmlObject
 	private boolean includeInResult;
 	private String issuer;
 	
-	public Attribute(String attributeId, 
-			Collection<AttributeValue> values, 
-			String issuer, boolean includeInResult){
+	public Attribute(String attributeId,
+			String issuer, 
+			boolean includeInResult, 
+			Collection<AttributeValue> values){
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(values);
 		this.attributeId = attributeId;
@@ -31,7 +33,12 @@ public class Attribute extends XacmlObject
 	
 	public Attribute(String attributeId, 
 			Collection<AttributeValue> values){
-		this(attributeId, values, null, false);
+		this(attributeId, null, false, values);
+	}
+	
+	public Attribute(String attributeId, 
+			AttributeValue ...values){
+		this(attributeId, null, false, Arrays.asList(values));
 	}
 	
 	/**
