@@ -1,10 +1,12 @@
 package com.artagon.xacml.v3.profiles;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +26,7 @@ public class MultipleRequestProfileTest
 	
 	@Before
 	public void init(){
-		this.profile = new MultipleRequestsProfile();
+		this.profile = new MultipleAttributesByReferenceProfile();
 	}
 	
 	@Test
@@ -57,12 +59,47 @@ public class MultipleRequestProfileTest
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1));
-		Collection<RequestContext> requests = profile.process(context);
+		Collection<RequestContext> requests = profile.apply(context);
 		Iterator<RequestContext> it = requests.iterator();
 		assertEquals(2, requests.size());
 		RequestContext context0 = it.next();
 		RequestContext context1 = it.next();
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId6"));
+	}
+	
+	@Test(expected=RequestContextException.class)
+	public void testResolveRequestsWithInvalidReferences() throws RequestContextException
+	{
+		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
+		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
+		
+		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
+		attributes1.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		
+		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
+		attributes2.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
+		attributes2.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes0);
+		
+		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
+		attributes3.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
+		attributes3.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes0);
+		
+		
+		RequestReference reference0 = new RequestReference(new AttributesReference("resourceAttr0"), new AttributesReference("subjectAttr0"));
+		RequestReference reference1 = new RequestReference(new AttributesReference("resourceAttr1"), new AttributesReference("subjectAttr1"));
+		RequestReference reference2 = new RequestReference(new AttributesReference("resourceAttr2"), new AttributesReference("subjectAttr10"));
+		
+		RequestContext context = new RequestContext(false, 
+				Arrays.asList(attr0, attr1, attr2, attr3), 
+				Arrays.asList(reference0, reference1, reference2));
+		profile.apply(context);
+		
 	}
 }

@@ -12,17 +12,23 @@ import com.artagon.xacml.v3.RequestContextException;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.StatusCode;
 
-public class MultipleRequestsProfile implements RequestContextProfile
+public class MultipleAttributesByReferenceProfile extends BaseRequestContextProfile
 {
+	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
+	
+	public MultipleAttributesByReferenceProfile(){
+		super(ID);
+	}
+	
 	@Override
-	public Collection<RequestContext> process(RequestContext context) throws RequestContextException 
+	public Collection<RequestContext> apply(RequestContext context) throws RequestContextException 
 	{
 		if(!context.hasMultipleRequests()){
 			return Collections.singleton(context);
 		}
-		Collection<RequestReference> references = context.getMultipleRequests();
+		Collection<RequestReference> references = context.getRequestReferences();
 		Collection<RequestContext> resolved = new ArrayList<RequestContext>(references.size());
-		for(RequestReference ref : context.getMultipleRequests()){
+		for(RequestReference ref : context.getRequestReferences()){
 			resolved.add(resolveAttributes(context, ref));
 		}
 		return resolved;

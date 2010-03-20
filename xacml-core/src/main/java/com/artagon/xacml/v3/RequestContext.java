@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.artagon.xacml.util.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -53,12 +54,26 @@ public class RequestContext extends XacmlObject
 		return returnPolicyIdList;
 	}
 	
-	public Collection<RequestReference> getMultipleRequests(){
+	public Collection<RequestReference> getRequestReferences(){
 		return Collections.unmodifiableCollection(multipleRequests);
 	}
 	
 	public boolean hasMultipleRequests(){
 		return !multipleRequests.isEmpty();
+	}
+	
+	/**
+	 * Gets all attributes categories contained
+	 * in this request context
+	 * 
+	 * @return an iterator over all categories
+	 */
+	public Iterable<AttributeCategoryId> getAttributeCategories(){
+		return Collections.unmodifiableSet(attributes.keySet());
+	}
+	
+	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
+		return attributes.asMap();
 	}
 	
 	/**
@@ -68,8 +83,8 @@ public class RequestContext extends XacmlObject
 	 * @return {@link Attributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
-	public Attributes getReferencedAttributes(AttributesReference reference)
-	{
+	public Attributes getReferencedAttributes(AttributesReference reference){
+		Preconditions.checkNotNull(reference);
 		return byId.get(reference.getReferenceId());
 	}
 	
@@ -83,6 +98,7 @@ public class RequestContext extends XacmlObject
 	 * does not have attributes of given category
 	 */
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
+		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> attr =  attributes.get(categoryId);
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
@@ -100,6 +116,8 @@ public class RequestContext extends XacmlObject
 			final AttributeCategoryId categoryId, 
 			final String attributeId)
 	{
+		Preconditions.checkNotNull(categoryId);
+		Preconditions.checkNotNull(attributeId);
 		 Collection<Attributes> attr = attributes.get(categoryId);
 		 if(attr == null){
 			 return Collections.emptyList();

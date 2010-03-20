@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
+import static com.artagon.xacml.v3.policy.type.DataTypes.INTEGER;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;
@@ -12,9 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.type.DataTypes;
-import static com.artagon.xacml.v3.policy.type.DataTypes.INTEGER;
-import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.policy.type.StringType;
+import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 
 public class BagOfAttributesTest extends XacmlPolicyTestCase
 {

@@ -7,6 +7,13 @@ import com.artagon.xacml.v3.RequestContextException;
 
 public interface RequestContextProfile 
 {
-	Collection<RequestContext> process(RequestContext context) 
+	/**
+	 * Gets profile identifier
+	 * 
+	 * @return 
+	 */
+	String getId();
+	
+	Collection<RequestContext> apply(RequestContext context) 
 		throws RequestContextException;
 }

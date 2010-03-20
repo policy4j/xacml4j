@@ -12,8 +12,8 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.MapMaker;
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.util.TwoKeyIndex;
+import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
