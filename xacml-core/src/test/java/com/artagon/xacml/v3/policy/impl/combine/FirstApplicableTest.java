@@ -15,19 +15,21 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
-public class FirstApplicableTest extends XacmlPolicyTestCase
+public class FirstApplicableTest
 {
 	
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new FirstApplicable<DecisionRule>("test");
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test

@@ -15,18 +15,20 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
-public class DenyUnlessPermitTest extends XacmlPolicyTestCase
+public class DenyUnlessPermitTest
 {
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new DenyUnlessPermit<DecisionRule>("aaaa");
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test

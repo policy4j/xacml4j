@@ -12,10 +12,12 @@ public class DefaultDecisionCombiningAlgorithmProvider extends BaseDecisionCombi
 		addRuleCombineAlgorithm(new RulePermitOverridesCombineAlgorithm());
 		addRuleCombineAlgorithm(new RuleDenyOverridesCombiningAlgorithm());
 		addRuleCombineAlgorithm(new RulePermitUnlessDenyCombiningAlgorithm());
+		addRuleCombineAlgorithm(new RuleDenyUnlessPermitCombingingAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyDenyOverridesCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyPermitOverridesCombineAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyFirstApplicableCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyOnlyOneApplicableCombingingAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PolicyPermitUnlessDenyCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyDenyUnlessPermitCombingingAlgorithm());
 	}
 }

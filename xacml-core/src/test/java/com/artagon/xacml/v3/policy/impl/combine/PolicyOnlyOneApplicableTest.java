@@ -14,19 +14,21 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 
-public class PolicyOnlyOneApplicableTest extends XacmlPolicyTestCase
+public class PolicyOnlyOneApplicableTest
 {
 	private PolicyOnlyOneApplicableCombingingAlgorithm c;
 	private List<CompositeDecisionRule> d;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.c = new PolicyOnlyOneApplicableCombingingAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test
