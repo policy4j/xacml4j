@@ -45,26 +45,41 @@ public class Attributes extends XacmlObject
 		}
 	}
 	
+	/** 
+	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 */
 	public Attributes(String id, AttributeCategoryId categoryId, 
 			Node content, Attribute ...attributes){
 		this(id, categoryId, content, Arrays.asList(attributes));
 	}
 	
+	/** 
+	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 */
 	public Attributes(AttributeCategoryId categoryId, 
 			Collection<Attribute> attributes){
 		this(null, categoryId, null, attributes);
 	}
 	
+	/** 
+	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 */
 	public Attributes(String id, AttributeCategoryId categoryId, 
 			Collection<Attribute> attributes){
 		this(id, categoryId, null, attributes);
 	}
 	
+	/** 
+	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 */
 	public Attributes(String id, AttributeCategoryId categoryId, 
 			Attribute ...attributes){
 		this(id, categoryId, null, Arrays.asList(attributes));
 	}
 	
+	/** 
+	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 */
 	public Attributes(AttributeCategoryId categoryId, 
 			Attribute ...attributes){
 		this(null, categoryId, null, Arrays.asList(attributes));
