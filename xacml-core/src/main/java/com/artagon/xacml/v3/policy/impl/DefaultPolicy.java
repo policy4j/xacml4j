@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
@@ -21,7 +22,6 @@ import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
-import com.artagon.xacml.v3.policy.Version;
 
 final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 {

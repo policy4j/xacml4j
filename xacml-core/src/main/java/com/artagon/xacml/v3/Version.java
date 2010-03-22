@@ -1,8 +1,7 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3;
 
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.XacmlObject;
 
 
 public class Version extends XacmlObject implements Comparable<Version> 

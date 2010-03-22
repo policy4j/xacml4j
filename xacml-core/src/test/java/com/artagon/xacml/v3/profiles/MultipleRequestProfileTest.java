@@ -59,13 +59,27 @@ public class MultipleRequestProfileTest
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1));
-		Collection<RequestContext> requests = profile.apply(context);
+		Collection<RequestContext> requests = profile.process(context);
 		Iterator<RequestContext> it = requests.iterator();
 		assertEquals(2, requests.size());
 		RequestContext context0 = it.next();
 		RequestContext context1 = it.next();
+		
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId6"));
+		assertNotNull(context0.getAttributes(AttributeCategoryId.RESOURCE, "testId1"));
+		assertNotNull(context0.getAttributes(AttributeCategoryId.RESOURCE, "testId2"));
+		assertEquals(2, context0.getAttributes().size());
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.RESOURCE).size());
+		
+		assertNotNull(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId7"));
+		assertNotNull(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId8"));
+		assertNotNull(context1.getAttributes(AttributeCategoryId.RESOURCE, "testId3"));
+		assertNotNull(context1.getAttributes(AttributeCategoryId.RESOURCE, "testId4"));
+		assertEquals(2, context1.getAttributes().size());
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
 	}
 	
 	@Test(expected=RequestContextException.class)
@@ -99,7 +113,7 @@ public class MultipleRequestProfileTest
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1, reference2));
-		profile.apply(context);
+		profile.process(context);
 		
 	}
 }

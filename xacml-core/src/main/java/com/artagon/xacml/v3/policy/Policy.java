@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy;
 import java.util.Collection;
 import java.util.List;
 
+import com.artagon.xacml.v3.Version;
+
 public interface Policy extends CompositeDecisionRule, Versionable
 {
 	/**

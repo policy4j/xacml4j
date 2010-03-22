@@ -3,11 +3,11 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.ObligationExpression;
 import com.artagon.xacml.v3.policy.Target;
-import com.artagon.xacml.v3.policy.Version;
 import com.artagon.xacml.v3.policy.Versionable;
 
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 

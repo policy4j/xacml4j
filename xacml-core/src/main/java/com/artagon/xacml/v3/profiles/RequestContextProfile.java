@@ -14,6 +14,6 @@ public interface RequestContextProfile
 	 */
 	String getId();
 	
-	Collection<RequestContext> apply(RequestContext context) 
+	Collection<RequestContext> process(RequestContext context) 
 		throws RequestContextException;
 }

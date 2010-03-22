@@ -13,6 +13,7 @@ public class Result extends XacmlObject
 	private Collection<Obligation> obligations;
 	private Collection<Advice> associatedAdvice;
 	private Collection<Attributes> attributes;
+	private Collection<PolicyIdentifier> policyIdentifiers;
 	
 	/**
 	 * Constructs result with a given
@@ -23,6 +24,7 @@ public class Result extends XacmlObject
 	public Result(Status status){
 		Preconditions.checkArgument(status.isFailure());
 		this.status = status;
+		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
 	}
 	
 	/**
@@ -44,6 +46,7 @@ public class Result extends XacmlObject
 		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
 		this.obligations = new LinkedList<Obligation>(obligations);
 		this.attributes = new LinkedList<Attributes>(attributes);
+		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
 	}
 	
 	/**
@@ -68,5 +71,9 @@ public class Result extends XacmlObject
 	
 	public Collection<Advice> getAssociatedAdvice(){
 		return Collections.unmodifiableCollection(associatedAdvice);
+	}
+	
+	public Collection<PolicyIdentifier> getPolicyIdentifiers(){
+		return Collections.unmodifiableCollection(policyIdentifiers);
 	}
 }

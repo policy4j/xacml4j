@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.AttributeCategoryId;
+
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestContextException;
 
@@ -18,7 +19,7 @@ public class MultipleAttributesForAttributeCategoryProfile extends BaseRequestCo
 	}
 
 	@Override
-	public Collection<RequestContext> apply(RequestContext context)
+	public Collection<RequestContext> process(RequestContext context)
 			throws RequestContextException {
 		Collection<RequestContext> requests = new LinkedList<RequestContext>();
 		Map<AttributeCategoryId, Collection<Attributes>> attributes = context.getAttributes();

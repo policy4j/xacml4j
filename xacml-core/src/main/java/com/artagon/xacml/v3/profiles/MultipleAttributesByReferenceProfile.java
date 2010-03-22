@@ -21,7 +21,7 @@ public class MultipleAttributesByReferenceProfile extends BaseRequestContextProf
 	}
 	
 	@Override
-	public Collection<RequestContext> apply(RequestContext context) throws RequestContextException 
+	public Collection<RequestContext> process(RequestContext context) throws RequestContextException 
 	{
 		if(!context.hasMultipleRequests()){
 			return Collections.singleton(context);

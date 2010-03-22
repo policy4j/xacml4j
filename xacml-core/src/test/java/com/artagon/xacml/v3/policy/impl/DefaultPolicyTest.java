@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
@@ -30,7 +31,6 @@ import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
-import com.artagon.xacml.v3.policy.Version;
 import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 

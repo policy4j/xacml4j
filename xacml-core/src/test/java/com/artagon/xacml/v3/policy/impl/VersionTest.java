@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.Version;
 
 public class VersionTest 
 {

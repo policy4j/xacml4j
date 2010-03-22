@@ -72,6 +72,11 @@ public class RequestContext extends XacmlObject
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
+	/**
+	 * Gets all attributes for this context
+	 * 
+	 * @return a map by category id
+	 */
 	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
 		return attributes.asMap();
 	}
