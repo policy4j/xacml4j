@@ -12,7 +12,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class RequestContext extends XacmlObject
+public class Request extends XacmlObject
 {	
 	private boolean returnPolicyIdList;
 	private Multimap<AttributeCategoryId, Attributes> attributes;
@@ -23,7 +23,7 @@ public class RequestContext extends XacmlObject
 	 * Constructs a request with a given attributes
 	 * @param attributes
 	 */
-	public RequestContext(boolean returnPolicyIdList, 
+	public Request(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
@@ -43,7 +43,7 @@ public class RequestContext extends XacmlObject
 	 * Constructs a request with a given attributes
 	 * @param attributes
 	 */
-	public RequestContext(boolean returnPolicyIdList, 
+	public Request(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes)
 	{
 		this(returnPolicyIdList, attributes, 

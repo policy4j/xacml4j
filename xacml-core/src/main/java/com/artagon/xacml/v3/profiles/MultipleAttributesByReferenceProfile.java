@@ -1,54 +1,62 @@
 package com.artagon.xacml.v3.profiles;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestContextException;
+import com.artagon.xacml.v3.PolicyDecisionPoint;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 
 public class MultipleAttributesByReferenceProfile extends BaseRequestContextProfile
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
+	private PolicyDecisionPoint pdp;
+	
 	public MultipleAttributesByReferenceProfile(){
 		super(ID);
 	}
 	
-	@Override
-	public Collection<RequestContext> process(RequestContext context) throws RequestContextException 
+	public Response process(Request request) 
 	{
-		if(!context.hasMultipleRequests()){
-			return Collections.singleton(context);
+		Collection<Result> results = new LinkedList<Result>();
+		for(RequestReference ref : request.getRequestReferences())
+		{
+			try
+			{
+				Request req = resolveAttributes(request, ref);
+				results.add(pdp.evaluate(req));
+			}catch(RequestProcessingException e){
+				results.add(new Result(e.getStatusCode()));
+			}
 		}
-		Collection<RequestReference> references = context.getRequestReferences();
-		Collection<RequestContext> resolved = new ArrayList<RequestContext>(references.size());
-		for(RequestReference ref : context.getRequestReferences()){
-			resolved.add(resolveAttributes(context, ref));
-		}
-		return resolved;
+		return new Response(results);
 	}
 	
-	private RequestContext resolveAttributes(RequestContext context, 
-			RequestReference reqRef) throws RequestContextException
+	private Request resolveAttributes(Request request, 
+			RequestReference requestRef) throws RequestProcessingException
 	{
+		Collection<Result> results = new LinkedList<Result>();
 		Collection<Attributes> resolved = new LinkedList<Attributes>();
-		for(AttributesReference ref : reqRef.getReferencedAttributes()){
-			Attributes attributes = context.getReferencedAttributes(ref);
+		for(AttributesReference ref : requestRef.getReferencedAttributes()){
+			Attributes attributes = request.getReferencedAttributes(ref);
 			if(attributes == null){
-				throw new RequestContextException(
-						StatusCode.createSyntaxError(), 
-						"Failed to resolve attribute reference with id=\"%s\"", 
-						ref.getReferenceId());
+				results.add(new Result(
+						new Status(StatusCode.createSyntaxError(), 
+						"Failed to resolve attribute reference", 
+						ref.getReferenceId())));
+				break;
 			}
 			resolved.add(attributes);
 		}
-		return new RequestContext(context.isReturnPolicyIdList(), resolved);
+		return new Request(request.isReturnPolicyIdList(), resolved);
 	}
 	
 }

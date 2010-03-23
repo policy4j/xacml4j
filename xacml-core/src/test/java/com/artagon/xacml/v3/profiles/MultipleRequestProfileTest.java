@@ -15,8 +15,8 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestContextException;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
@@ -30,7 +30,7 @@ public class MultipleRequestProfileTest
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences() throws RequestContextException
+	public void testResolveRequestsWithValidReferences() throws RequestProcessingException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
@@ -56,14 +56,14 @@ public class MultipleRequestProfileTest
 		RequestReference reference0 = new RequestReference(new AttributesReference("resourceAttr0"), new AttributesReference("subjectAttr0"));
 		RequestReference reference1 = new RequestReference(new AttributesReference("resourceAttr1"), new AttributesReference("subjectAttr1"));
 		
-		RequestContext context = new RequestContext(false, 
+		Request context = new Request(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1));
-		Collection<RequestContext> requests = profile.process(context);
-		Iterator<RequestContext> it = requests.iterator();
+		Collection<Request> requests = profile.process(context);
+		Iterator<Request> it = requests.iterator();
 		assertEquals(2, requests.size());
-		RequestContext context0 = it.next();
-		RequestContext context1 = it.next();
+		Request context0 = it.next();
+		Request context1 = it.next();
 		
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId6"));
@@ -82,8 +82,8 @@ public class MultipleRequestProfileTest
 		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
 	}
 	
-	@Test(expected=RequestContextException.class)
-	public void testResolveRequestsWithInvalidReferences() throws RequestContextException
+	@Test(expected=RequestProcessingException.class)
+	public void testResolveRequestsWithInvalidReferences() throws RequestProcessingException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
@@ -110,7 +110,7 @@ public class MultipleRequestProfileTest
 		RequestReference reference1 = new RequestReference(new AttributesReference("resourceAttr1"), new AttributesReference("subjectAttr1"));
 		RequestReference reference2 = new RequestReference(new AttributesReference("resourceAttr2"), new AttributesReference("subjectAttr10"));
 		
-		RequestContext context = new RequestContext(false, 
+		Request context = new Request(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1, reference2));
 		profile.process(context);

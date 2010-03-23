@@ -7,7 +7,7 @@ public interface PolicyDecisionPoint
 	 * Evaluates given request
 	 * 
 	 * @param context a request context
-	 * @return {@link ResponseContext}
+	 * @return {@link Response}
 	 */
-	ResponseContext evaluate(RequestContext context);
+	Result evaluate(Request context);
 }

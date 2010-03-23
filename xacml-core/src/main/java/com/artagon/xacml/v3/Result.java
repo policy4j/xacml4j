@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -22,9 +23,10 @@ public class Result extends XacmlObject
 	 * @param status an failure status
 	 */
 	public Result(Status status){
+		Preconditions.checkNotNull(status);
 		Preconditions.checkArgument(status.isFailure());
 		this.status = status;
-		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
+		this.policyIdentifiers = Collections.emptyList();
 	}
 	
 	/**
@@ -40,19 +42,21 @@ public class Result extends XacmlObject
 			Decision decision, 
 			Collection<Advice> associatedAdvice, 
 			Collection<Obligation> obligations,
-			Collection<Attributes> attributes){
+			Collection<Attributes> attributes,
+			Collection<PolicyIdentifier> policyIdentifiers){
+		Preconditions.checkNotNull(decision);
+		Preconditions.checkNotNull(obligations);
+		Preconditions.checkNotNull(associatedAdvice);
+		Preconditions.checkNotNull(attributes);
 		Preconditions.checkArgument(!decision.isIndeterminate());
 		this.status = Status.createSuccessStatus();
 		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
 		this.obligations = new LinkedList<Obligation>(obligations);
 		this.attributes = new LinkedList<Attributes>(attributes);
-		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
+		this.policyIdentifiers = new ArrayList<PolicyIdentifier>(policyIdentifiers);
 	}
 	
-	/**
-	 * Gets result status
-	 * @return
-	 */
+
 	public Status getStatus(){
 		return status;
 	}

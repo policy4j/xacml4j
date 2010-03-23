@@ -1,9 +1,7 @@
 package com.artagon.xacml.v3.profiles;
 
-import java.util.Collection;
-
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestContextException;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.Response;
 
 public interface RequestContextProfile 
 {
@@ -14,6 +12,5 @@ public interface RequestContextProfile
 	 */
 	String getId();
 	
-	Collection<RequestContext> process(RequestContext context) 
-		throws RequestContextException;
+	Response process(Request context);
 }

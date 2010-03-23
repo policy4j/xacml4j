@@ -2,34 +2,34 @@ package com.artagon.xacml.v3;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class RequestContextException extends XacmlException
+public class RequestProcessingException extends XacmlException
 {
 	private static final long serialVersionUID = -8700243289139962516L;
-	private StatusCode statusCode;
+	private Status status;
 	
-	public RequestContextException(StatusCode code, 
+	public RequestProcessingException(Status code, 
 			String template, Object... arguments) {
 		super(template, arguments);
 		Preconditions.checkNotNull(code);
-		this.statusCode = code;
+		this.status = code;
 	}
 
-	public RequestContextException(StatusCode code, 
+	public RequestProcessingException(Status code, 
 			Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
 		Preconditions.checkNotNull(code);
-		this.statusCode = code;
+		this.status = code;
 	}
 
-	public RequestContextException(StatusCode code, 
+	public RequestProcessingException(Status code, 
 			Throwable cause) {
 		super(cause);
 		Preconditions.checkNotNull(code);
-		this.statusCode = code;
+		this.status = code;
 	}	
 	
-	public final StatusCode getStatusCode(){
-		return statusCode;
+	public final Status getStatusCode(){
+		return status;
 	}
 }
