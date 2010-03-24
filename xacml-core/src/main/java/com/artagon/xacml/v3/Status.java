@@ -16,6 +16,10 @@ public final class Status extends XacmlObject
 		this.detail = detail;
 	}
 	
+	public Status(StatusCode code){
+		this(code, null, null);
+	}
+	
 	public static Status createSuccessStatus(){
 		return new Status(new StatusCode(StatusCodeId.OK), null , null);
 	}

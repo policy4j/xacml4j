@@ -55,24 +55,58 @@ public class Result extends XacmlObject
 		this.attributes = new LinkedList<Attributes>(attributes);
 		this.policyIdentifiers = new ArrayList<PolicyIdentifier>(policyIdentifiers);
 	}
-	
-
+		
+	/**
+	 * Gets a status of this result. Status indicates 
+	 * whether errors occurred during evaluation of 
+	 * the decision request, and optionally, information 
+	 * about those errors.
+	 * 
+	 * @return {@link Status}
+	 */
 	public Status getStatus(){
 		return status;
 	}
 	
+	/**
+	 * Gets the authorization decision
+	 * 
+	 * @return {@link Decision}
+	 */
 	public Decision getDecision(){
 		return decision;
 	}
 	
+	/**
+	 * Gets a list of attributes that were part of the request. 
+	 * The choice of which attributes are included here is made 
+	 * with the request attributes {@link Attribute#isIncludeInResult()}
+	 * 
+	 * @return a collection of {@link Attribute} instances
+	 */
 	public Collection<Attributes> getAttributes(){
 		return attributes;
 	}
 	
+	/**
+	 * Returns a collection of obligations that MUST be 
+	 * fulfilled by the PEP. If the PEP does not understand 
+	 * or cannot fulfill an obligation, then the action of the 
+	 * PEP is determined by its bias
+	 * 
+	 * @return a collection of obligations
+	 */
 	public Collection<Obligation> getObligations(){
 		return Collections.unmodifiableCollection(obligations);
 	}
 	
+	/**
+	 * Returns a collection of advice that provide supplemental 
+	 * information to the PEP. If the PEP does not understand 
+	 * an advice, the PEP may safely ignore the advice.
+	 * 
+	 * @return
+	 */
 	public Collection<Advice> getAssociatedAdvice(){
 		return Collections.unmodifiableCollection(associatedAdvice);
 	}

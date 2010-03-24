@@ -4,7 +4,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
-public interface ContextAttributeCallback 
+public interface RequestAttributeCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context

@@ -35,5 +35,5 @@ public interface AttributeLocator
 	 * @return {@link BagOfAttributeValues}
 	 */
 	BagOfAttributeValues<AttributeValue> getAttribute(
-			String attributeId, ContextAttributeCallback callback);
+			String attributeId, RequestAttributeCallback callback);
 }

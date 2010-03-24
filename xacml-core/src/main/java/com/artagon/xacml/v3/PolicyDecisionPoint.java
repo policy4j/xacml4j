@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-
 public interface PolicyDecisionPoint 
 {
 	/**
@@ -9,5 +8,5 @@ public interface PolicyDecisionPoint
 	 * @param context a request context
 	 * @return {@link Response}
 	 */
-	Result evaluate(Request context);
+	Response evaluate(Request context);
 }

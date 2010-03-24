@@ -52,7 +52,8 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	 * @param policyResolver
 	 * @param xpathFactory
 	 */
-	protected BaseEvaluationContext(AttributeResolver attributeService, 
+	protected BaseEvaluationContext(
+			AttributeResolver attributeService, 
 			DecisionRuleReferenceResolver policyResolver){
 		this(false, attributeService, policyResolver);
 	}
@@ -217,7 +218,8 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeCategoryId categoryId, 
 			String attributeId, 
 			AttributeValueType dataType,
-			String issuer) throws EvaluationException{
+			String issuer) throws EvaluationException
+	{
 		return attributeProvider.resolve(this, categoryId, attributeId, dataType, issuer);
 	}
 }
