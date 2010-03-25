@@ -10,6 +10,8 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -46,12 +48,23 @@ public class DOMUtilTest
 	}
 	
 	@Test
-	public void testNodeXPath() throws Exception{
+	public void testNodeXPathElementTextNodes() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/text()", content, XPathConstants.NODESET);
-		System.out.println(nodes.getLength());
-		for(int  i = 0; i < nodes.getLength(); i++){
-			System.out.println(DOMUtil.getXPath(nodes.item(i)));
-		}
+		assertEquals("md:record[1]/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("md:record[1]/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
 	}
 	
+	@Test
+	public void testNodeXPathAttributeNodes() throws Exception{
+		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/@md:attrn1", content, XPathConstants.NODESET);
+		assertEquals("md:record[1]/md:patient[1]/md:patientDoB[1]/@md:attrn1", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("md:record[1]/md:patient[2]/md:patientDoB[1]/@md:attrn1", DOMUtil.getXPath(nodes.item(1)));
+	}
+	
+	@Test
+	public void testNodeXPathElementNodes() throws Exception{
+		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB", content, XPathConstants.NODESET);
+		assertEquals("md:record[1]/md:patient[1]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("md:record[1]/md:patient[2]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(1)));
+	}
 }

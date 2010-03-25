@@ -18,7 +18,6 @@ public class Request extends XacmlObject
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> byId;
 	private Collection<RequestReference> multipleRequests;
-	
 	/**
 	 * Constructs a request with a given attributes
 	 * @param attributes
@@ -31,8 +30,12 @@ public class Request extends XacmlObject
 		this.attributes = HashMultimap.create();
 		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
 		this.byId = new HashMap<String, Attributes>();
-		for(Attributes attr : attributes){
+		for(Attributes attr : attributes)
+		{
+			// index attributes by category
 			this.attributes.put(attr.getCategoryId(), attr);
+			// index attributes
+			// by id for fast lookup
 			if(attr.getId() != null){
 				this.byId.put(attr.getId(), attr);
 			}
@@ -54,10 +57,25 @@ public class Request extends XacmlObject
 		return returnPolicyIdList;
 	}
 	
+	/**
+	 * Gets request references contained
+	 * in this request context
+	 * 
+	 * @return a collection of {@link RequestReference}
+	 * instances
+	 */
 	public Collection<RequestReference> getRequestReferences(){
 		return Collections.unmodifiableCollection(multipleRequests);
 	}
 	
+	/**
+	 * Tests if this request has multiple
+	 * individual XACML requests
+	 * 
+	 * @return <code>true</code> if this
+	 * request has multiple XACML individual
+	 * requests
+	 */
 	public boolean hasMultipleRequests(){
 		return !multipleRequests.isEmpty();
 	}

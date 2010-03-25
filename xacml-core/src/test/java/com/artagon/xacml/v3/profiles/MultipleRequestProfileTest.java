@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProcessingException;
-import com.artagon.xacml.v3.RequestProcessingPipelineCallback;
 import com.artagon.xacml.v3.RequestProcessingProfile;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
@@ -33,13 +32,13 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleRequestProfileTest 
 {
-	private RequestProcessingPipelineCallback callback;
+	private RequestProcessingProfile callback;
 	private RequestProcessingProfile profile;
 	
 	@Before
 	public void init(){
-		this.profile = new MultipleAttributesByReferenceProfile();
-		this.callback = createStrictMock(RequestProcessingPipelineCallback.class);
+		this.callback = createStrictMock(RequestProcessingProfile.class);
+		this.profile = new MultipleResourcesByReferenceProfile(callback);
 	}
 	
 	@Test
@@ -77,12 +76,12 @@ public class MultipleRequestProfileTest
 		
 		Capture<Request> c0 = new Capture<Request>();
 		Capture<Request> c1 = new Capture<Request>();
-		expect(callback.invokeNext(capture(c0))).andReturn(
+		expect(callback.process(capture(c0))).andReturn(
 				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
-		expect(callback.invokeNext(capture(c1))).andReturn(
+		expect(callback.process(capture(c1))).andReturn(
 				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
 		replay(callback);
-		profile.process(context, callback).iterator();
+		profile.process(context).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));

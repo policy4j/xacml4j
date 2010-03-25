@@ -62,8 +62,8 @@ public class DOMUtil
 		while (prev_sibling != null) {
 			if (prev_sibling.getNodeType() == node
 					.getNodeType()) {
-				if (prev_sibling.getLocalName()
-						.equalsIgnoreCase(node.getLocalName())) {
+				if (prev_sibling.getNodeName()
+						.equalsIgnoreCase(node.getNodeName())) {
 					prev_siblings++;
 				}
 			}

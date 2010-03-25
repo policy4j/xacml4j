@@ -105,10 +105,25 @@ public class Attributes extends XacmlObject
 		return categoryId;
 	}
 	
+	/**
+	 * Tests if this instance contains an
+	 * attribute with a given identifier
+	 * 
+	 * @param attributeId an attribute id
+	 * @return <code>true</code> if contains
+	 */
 	public boolean containsAttribute(String attributeId){
 		return attributes.containsKey(attributeId);
 	}
 	
+	/**
+	 * Gets a collection of attributes by identifier
+	 * 
+	 * @param attributeId an attribute id
+	 * @return a collection of {@link Attribute}
+	 * instances or an empty collection if no
+	 * matching attributes found
+	 */
 	public Collection<Attribute> getAttribute(String attributeId){
 		return attributes.get(attributeId);
 	}
