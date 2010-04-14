@@ -1,0 +1,84 @@
+
+package artagon.xacml.v30.protocol.protbuf;
+option java_package = "com.artagon.xacml.v30.protocol.protbuf";
+option optimize_for = CODE_SIZE;
+
+enum AttributeDataTypeId
+{
+	ANYURI = 1;
+	BOOOLEAN = 2;
+	STRING = 3;
+	INTEGER = 4;
+	DOUBLE = 5;
+	TIME = 6;
+	DATETIME = 7;
+	DATE = 8;
+	DAYTIMEDURATION = 9;
+	YEARMONTHDURATION = 10;
+	RFC822NAME = 11;
+	X500NAME = 12;
+	DNSNAME = 13;
+	IPADDRESS = 14;
+	HEXBINARY = 15;
+	BASE64BINARY = 16 ;
+	XPATHEXPRESSION = 17;
+}
+
+enum AttributeCategory 
+{	
+	ACTION = 1;
+	ENVIROMENT = 2;
+	STATUSDETAIL = 3;
+	RESOURCE = 4;
+	SUBJECT_ACCESS = 5;
+	SUBJECT_REQUESTING_MACHINE = 6;
+	SUBJECT_CODEBASE = 7
+	SUBJECT_INTERMEDIARY = 8;
+}
+
+message AttributeValue
+{
+	required AttributeDataTypeId type = 1;
+	
+	optional bool booleanValue = 2;
+	optional double doubleValue = 3;
+	optional string stringVal = 4;
+	optional int64 intVal = 5;
+	optional string ipAddressVal = 6;
+	optional string dnsNameVal = 7;
+	optional string xpathExpressionVal = 8;
+	optional string timeVal = 9;
+	optional string dateTimeVal = 10;
+	optional string yearMonthDurationVal = 11;
+	optional string dayTimeDurationVal = 12;
+	optional string hexBinaryValue = 13;
+	optional string base64BinaryValue = 14;
+}
+
+message Attribute
+{
+   required string id = 1;
+   optional string issuer = 2;
+   optional bool includeInResponse = 3 [default=false];
+   repeated AttributeValue values = 4;
+}
+
+message Attributes
+{
+	required AttributeCategory category = 1;
+    optional string id = 2;
+    optional string content = 3;
+    repeated Attribute attributes = 4;
+}
+    
+message Request
+{
+    optional bool ReturnPolicyIdList = 1 [ default=false];
+    repeated Attributes attributes = 2;
+}
+
+message Response
+{
+    optional bool ReturnPolicyIdList = 1 [ default=false];
+    repeated Attributes attributes = 2;
+}

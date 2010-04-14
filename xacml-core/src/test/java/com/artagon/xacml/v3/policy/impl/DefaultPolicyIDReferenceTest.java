@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.AttributeResolver;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
+import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -37,11 +37,11 @@ public class DefaultPolicyIDReferenceTest
 	private PolicySet policySet;
 	private Policy policy;
 	private EvaluationContextFactory contextFactory;
-	private DecisionRuleReferenceResolver policyResolver;
+	private PolicyReferenceResolver policyResolver;
 	
 	@Before
 	public void init(){
-		this.policyResolver = createStrictMock(DecisionRuleReferenceResolver.class);
+		this.policyResolver = createStrictMock(PolicyReferenceResolver.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.policy = createStrictMock(Policy.class);
 		this.contextFactory = new DefaultEvaluationContextFactory(

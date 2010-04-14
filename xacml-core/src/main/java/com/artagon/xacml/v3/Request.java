@@ -18,6 +18,7 @@ public class Request extends XacmlObject
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> byId;
 	private Collection<RequestReference> multipleRequests;
+	
 	/**
 	 * Constructs a request with a given attributes
 	 * @param attributes
@@ -40,6 +41,11 @@ public class Request extends XacmlObject
 				this.byId.put(attr.getId(), attr);
 			}
 		}
+	}
+	
+	public int getCategoryOccuriences(AttributeCategoryId category){
+		Collection<Attributes> attr = attributes.get(category);
+		return (attr == null)?0:attr.size();
 	}
 	
 	/**
@@ -86,8 +92,8 @@ public class Request extends XacmlObject
 	 * 
 	 * @return an iterator over all categories
 	 */
-	public Iterable<AttributeCategoryId> getAttributeCategories(){
-		return Collections.unmodifiableSet(attributes.keySet());
+	public Iterable<AttributeCategoryId> getCategories(){
+		return attributes.keySet();
 	}
 	
 	/**

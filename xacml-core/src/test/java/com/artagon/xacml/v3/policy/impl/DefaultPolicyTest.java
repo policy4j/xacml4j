@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
+import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.MatchResult;
@@ -90,7 +90,7 @@ public class DefaultPolicyTest
 		
 		this.context = new DefaultEvaluationContextFactory(
 				createStrictMock(AttributeResolver.class), 
-				createStrictMock(DecisionRuleReferenceResolver.class), 
+				createStrictMock(PolicyReferenceResolver.class), 
 				createStrictMock(XPathProvider.class)).createContext(policy);
 	}
 	

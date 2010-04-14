@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.AttributeResolver;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
+import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
@@ -24,13 +24,13 @@ public class PolicySetEvaluationContextTest
 	
 	private PolicySet policySet;
 	private AttributeResolver resolver;
-	private DecisionRuleReferenceResolver policyResolver;
+	private PolicyReferenceResolver policyResolver;
 	private PolicySetDefaults defaults;
 	
 	@Before
 	public void setup(){
 		this.defaults = createStrictMock(PolicySetDefaults.class);
-		this.policyResolver = createStrictMock(DecisionRuleReferenceResolver.class);
+		this.policyResolver = createStrictMock(PolicyReferenceResolver.class);
 		this.resolver = createStrictMock(AttributeResolver.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.context = new PolicySetEvaluationContext(policySet, 

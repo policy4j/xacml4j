@@ -38,7 +38,7 @@ public class MultipleRequestProfileTest
 	@Before
 	public void init(){
 		this.callback = createStrictMock(RequestProcessingProfile.class);
-		this.profile = new MultipleResourcesByReferenceProfile(callback);
+		this.profile = new MultipleResourcesByReferenceProfile();
 	}
 	
 	@Test
@@ -76,12 +76,14 @@ public class MultipleRequestProfileTest
 		
 		Capture<Request> c0 = new Capture<Request>();
 		Capture<Request> c1 = new Capture<Request>();
-		expect(callback.process(capture(c0))).andReturn(
+		Capture<Collection<RequestProcessingProfile>> next0 = new Capture<Collection<RequestProcessingProfile>>();
+		Capture<Collection<RequestProcessingProfile>> next1 = new Capture<Collection<RequestProcessingProfile>>();
+		expect(callback.process(capture(c0), capture(next0))).andReturn(
 				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
-		expect(callback.process(capture(c1))).andReturn(
+		expect(callback.process(capture(c1), capture(next1))).andReturn(
 				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
 		replay(callback);
-		profile.process(context).iterator();
+		profile.process(context, Collections.singleton(callback)).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));

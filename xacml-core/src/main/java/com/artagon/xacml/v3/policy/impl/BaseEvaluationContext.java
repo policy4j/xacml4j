@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.policy.AttributeResolver;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
+import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Policy;
@@ -34,7 +34,7 @@ import com.artagon.xacml.v3.policy.Value;
 abstract class BaseEvaluationContext implements EvaluationContext
 {
 	private AttributeResolver attributeProvider;
-	private DecisionRuleReferenceResolver policyResolver;
+	private PolicyReferenceResolver policyResolver;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -54,14 +54,14 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	protected BaseEvaluationContext(
 			AttributeResolver attributeService, 
-			DecisionRuleReferenceResolver policyResolver){
+			PolicyReferenceResolver policyResolver){
 		this(false, attributeService, policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
 			AttributeResolver attributeService,
-			DecisionRuleReferenceResolver policyResolver){
+			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
 		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();

@@ -1,10 +1,13 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.PolicyDecisionPoint;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestProcessingProfile;
@@ -17,21 +20,22 @@ public class MultipleResourcesByReferenceProfile extends BaseRequestContextProfi
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
-	private RequestProcessingProfile profile;
-	public MultipleResourcesByReferenceProfile(RequestProcessingProfile profile){
+	public MultipleResourcesByReferenceProfile(){
 		super(ID);
-		this.profile = profile;
 	}
 	
-	public Collection<Result> process(Request request) 
+	public Collection<Result> process(Request request, 
+			List<RequestProcessingProfile> next, 
+			PolicyDecisionPoint pdp) 
 	{
-		Collection<Result> results = new LinkedList<Result>();
+		if(request.hasMultipleRequests()){
+			
+		}
 		for(RequestReference ref : request.getRequestReferences())
 		{
 			try
 			{
 				Request resolvedRequest = resolveAttributes(request, ref);
-				results.addAll(profile.process(resolvedRequest));
 			}catch(RequestProcessingException e){
 				results.add(new Result(e.getStatusCode()));
 			}

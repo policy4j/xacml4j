@@ -19,6 +19,18 @@ public class Attribute extends XacmlObject
 	private boolean includeInResult;
 	private String issuer;
 	
+	/**
+	 * Constructs attribute with given
+	 * parameters
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param issuer an attribute issuer
+	 * @param includeInResult a flag indicating
+	 * if attribute needs to be included in
+	 * the result
+	 * @param values a collection of 
+	 * {@link AttributeValue} instances
+	 */
 	public Attribute(String attributeId,
 			String issuer, 
 			boolean includeInResult, 
@@ -26,16 +38,31 @@ public class Attribute extends XacmlObject
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(values);
 		this.attributeId = attributeId;
+		this.issuer = issuer;
 		this.values = HashMultiset.create(values.size());
 		this.values.addAll(values);
 		this.includeInResult = includeInResult;
 	}
 	
+	/**
+	 * Constructs attribute with a given
+	 * identifier and values
+	 * 
+	 * @param attributeId an identifier
+	 * for this attribute
+	 * @param values a collection of
+	 * {@link AttributeValue} instances
+	 */
 	public Attribute(String attributeId, 
 			Collection<AttributeValue> values){
 		this(attributeId, null, false, values);
 	}
 	
+	/**
+	 * 
+	 * @param attributeId an identifier
+	 * @param values a collection of
+	 */
 	public Attribute(String attributeId, 
 			AttributeValue ...values){
 		this(attributeId, null, false, Arrays.asList(values));
@@ -61,10 +88,25 @@ public class Attribute extends XacmlObject
 		return Collections.unmodifiableCollection(values);
 	}
 	
+	/**
+	 * Gets this attribute issuer
+	 * 
+	 * @return issuer of this attribute
+	 * identifier or <code>null</code>
+	 * if it's not available
+	 */
 	public String getIssuer(){
 		return issuer;
 	}
 	
+	/**
+	 * Tests if this attribute needs
+	 * to be included back to the
+	 * evaluation result
+	 * 
+	 * @return <code>true</code>
+	 * if needs to be included
+	 */
 	public boolean isIncludeInResult(){
 		return includeInResult;
 	}

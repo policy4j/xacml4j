@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeResolver;
-import com.artagon.xacml.v3.policy.DecisionRuleReferenceResolver;
+import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyDefaults;
 import com.artagon.xacml.v3.policy.XPathVersion;
@@ -14,12 +14,14 @@ final class PolicyEvaluationContext extends BaseEvaluationContext
 	
 	/**
 	 * Creates policy evaluation context without parent evaluation context
-	 * @param policy
-	 * @param service
+	 * @param policy a target policy
+	 * @param service an attribute resolver
+	 * @param policyResolver a policy resolver
 	 */
-	PolicyEvaluationContext(Policy policy, 
+	PolicyEvaluationContext(
+			Policy policy, 
 			AttributeResolver service, 
-			DecisionRuleReferenceResolver policyResolver)
+			PolicyReferenceResolver policyResolver)
 	{
 		super(service, policyResolver);
 		Preconditions.checkNotNull(policy);
@@ -31,7 +33,7 @@ final class PolicyEvaluationContext extends BaseEvaluationContext
 	public Policy getCurrentPolicy() {
 		return policy;
 	}
-
+	
 	@Override
 	public XPathVersion getXPathVersion() {
 		PolicyDefaults defaults = policy.getDefaults();

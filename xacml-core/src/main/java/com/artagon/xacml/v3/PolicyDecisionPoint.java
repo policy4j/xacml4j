@@ -3,12 +3,11 @@ package com.artagon.xacml.v3;
 public interface PolicyDecisionPoint 
 {
 	/**
-	 * Evaluates a given request and
-	 * return a policy decision result
+	 * Evaluates a given XACML request and
+	 * returns XACML reponse
 	 * 
 	 * @param context a request context
-	 * @return {@link Result} a decision
-	 * result
+	 * @return {@link Response}
 	 */
-	Result evaluate(Request context);
+	Response evaluate(Request context);
 }
