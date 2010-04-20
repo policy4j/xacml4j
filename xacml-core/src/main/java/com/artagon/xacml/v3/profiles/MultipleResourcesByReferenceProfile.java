@@ -1,16 +1,13 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.PolicyDecisionPoint;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestProcessingCallback;
 import com.artagon.xacml.v3.RequestProcessingException;
-import com.artagon.xacml.v3.RequestProcessingProfile;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -25,17 +22,15 @@ public class MultipleResourcesByReferenceProfile extends BaseRequestContextProfi
 	}
 	
 	public Collection<Result> process(Request request, 
-			List<RequestProcessingProfile> next, 
-			PolicyDecisionPoint pdp) 
+			RequestProcessingCallback callback) 
 	{
-		if(request.hasMultipleRequests()){
-			
-		}
+		Collection<Result> results = new LinkedList<Result>();
 		for(RequestReference ref : request.getRequestReferences())
 		{
 			try
 			{
 				Request resolvedRequest = resolveAttributes(request, ref);
+				results.addAll(callback.invokeNext(resolvedRequest));
 			}catch(RequestProcessingException e){
 				results.add(new Result(e.getStatusCode()));
 			}

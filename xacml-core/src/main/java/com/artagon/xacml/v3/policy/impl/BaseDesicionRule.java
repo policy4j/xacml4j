@@ -114,7 +114,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	@Override
 	public final Decision evaluateIfApplicable(EvaluationContext context)
 	{
-		Preconditions.checkArgument(isEvaluationContextValid(context));
 		MatchResult r = isApplicable(context);
 		Preconditions.checkState(r != null);
 		if(r == MatchResult.MATCH){

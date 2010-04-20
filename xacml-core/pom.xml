@@ -24,6 +24,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<!--  
 		<plugins>
 			<plugin>
 				<groupId>com.google.protobuf.tools</groupId>
@@ -40,5 +41,6 @@
 				</executions>
 			</plugin>
 		</plugins>
+		-->
 	</build>
 </project>

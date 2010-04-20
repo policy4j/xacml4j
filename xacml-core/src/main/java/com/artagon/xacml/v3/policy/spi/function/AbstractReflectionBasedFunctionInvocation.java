@@ -27,6 +27,7 @@ public abstract class AbstractReflectionBasedFunctionInvocation implements Funct
 		this.evalContextRequired = evalContextRequired;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public final <T extends Value> T invoke(FunctionSpec spec,
 			EvaluationContext context, Expression... arguments)
@@ -51,7 +52,7 @@ public abstract class AbstractReflectionBasedFunctionInvocation implements Funct
 				}
 				params[params.length - 1] = varArgArray;
 			}
-			return invoke(params);
+			return (T)invoke(params);
 		}
 		catch(Exception e){
 			throw new FunctionInvocationException(context, spec, 

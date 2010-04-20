@@ -49,11 +49,26 @@ public class Result extends XacmlObject
 		Preconditions.checkNotNull(associatedAdvice);
 		Preconditions.checkNotNull(attributes);
 		Preconditions.checkArgument(!decision.isIndeterminate());
+		this.decision = decision;
 		this.status = Status.createSuccessStatus();
 		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
 		this.obligations = new LinkedList<Obligation>(obligations);
 		this.attributes = new LinkedList<Attributes>(attributes);
 		this.policyIdentifiers = new ArrayList<PolicyIdentifier>(policyIdentifiers);
+	}
+	
+	/**
+	 * Constructs result with given
+	 * {@link Decision} instance
+	 * 
+	 * @param decision a PDP decision
+	 */
+	public Result(Decision decision){
+		this(decision, 
+				Collections.<Advice>emptyList(),
+				Collections.<Obligation>emptyList(), 
+				Collections.<Attributes>emptyList(), 
+				Collections.<PolicyIdentifier>emptyList());
 	}
 		
 	/**
@@ -111,6 +126,11 @@ public class Result extends XacmlObject
 		return Collections.unmodifiableCollection(associatedAdvice);
 	}
 	
+	/**
+	 * Gets list of policy identifiers
+	 * 
+	 * @return list of policy identifiers
+	 */
 	public Collection<PolicyIdentifier> getPolicyIdentifiers(){
 		return Collections.unmodifiableCollection(policyIdentifiers);
 	}
