@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +28,13 @@ public class RequestProcessingPipeline
 	public Collection<Result> process(Request request, PolicyDecisionPointCallback pdp)
 	{
 		Collection<Result> results = new LinkedList<Result>();
-		ListIterator<RequestProcessingProfile> it = profiles.listIterator();
-		while(it.hasNext())
+		log.debug("Pipeline has=\"{}\" profiles", profiles.size());
+		for(int index = 0; index < profiles.size(); index++)
 		{
-			RequestProcessingProfile profile = it.next();
-			results.addAll(profile.process(request, 
-					new PipelineCallback(it.previousIndex(), pdp)));
+			RequestProcessingProfile profile = profiles.get(index);
+			log.debug("Processing profile=\"{}\" at index=\"{}\"", 
+					profile.getId(), index);
+			results.addAll(profile.process(request, new PipelineCallback(index + 1, pdp)));
 		}
 		return results.isEmpty()?Collections.singleton(pdp.decide(request)):results;
 	}
@@ -60,8 +60,9 @@ public class RequestProcessingPipeline
 				log.debug("No more profiles to invoke at index=\"{}\", invoking PDP", index);
 				return Collections.singleton(pdp.decide(request));
 			}
-			log.debug("Invoking profile at index=\"{}\"", index);
 			RequestProcessingProfile profile = profiles.get(index);
+			log.debug("Invoking profile=\"{}\" at index=\"{}\" via callback", 
+					profile.getId(), index);
 			index++;
 			return profile.process(request, this);
 			

@@ -29,6 +29,7 @@ public class RequestProcessingPipelineTest
 	private RequestProcessingProfile p1;
 	private RequestProcessingProfile p2;
 	private RequestProcessingProfile p3;
+	private RequestProcessingProfile p4;
 	
 	@Before
 	public void init(){
@@ -63,24 +64,63 @@ public class RequestProcessingPipelineTest
 	}
 	
 	@Test
-	public void testPipelineWithSingleProfile()
+	public void testPipelineWithOneProfile()
 	{
 		Capture<RequestProcessingCallback> c = new Capture<RequestProcessingCallback>();
 		pipeline.addProfile(p1);
-		expect(p1.process(eq(request) , capture(c))).andAnswer(new IAnswer<Collection<Result>>() {
-			@Override
-			public Collection<Result> answer() throws Throwable {
-				Object[] args = getCurrentArguments();
-				RequestProcessingCallback cb = (RequestProcessingCallback)args[1];
-				return cb.invokeNext(request);
-			}
-			
-		});
+		expect(p1.getId()).andReturn("testProfile1");
+		expect(p1.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
 		expect(pdp.decide(request)).andReturn(new Result(Decision.DENY));
 		replay(p1, pdp);
 		Collection<Result> results = pipeline.process(request, pdp);
 		assertEquals(1, results.size());
 		assertEquals(new Result(Decision.DENY), results.iterator().next());
 		verify(p1, pdp);
+	}
+	
+	@Test
+	public void testPipelineWithTwoProfiles()
+	{
+		Capture<RequestProcessingCallback> c = new Capture<RequestProcessingCallback>();
+		pipeline.addProfile(p1);
+		pipeline.addProfile(p2);
+		expect(p1.getId()).andReturn("testProfile0");
+		expect(p1.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
+		expect(p2.getId()).andReturn("testProfile1").times(0, 2);
+		expect(p2.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
+		expect(pdp.decide(request)).andReturn(new Result(Decision.DENY));
+		replay(p1, p2, pdp);
+		Collection<Result> results = pipeline.process(request, pdp);
+		assertEquals(1, results.size());
+		assertEquals(new Result(Decision.DENY), results.iterator().next());
+		verify(p1, p2, pdp);
+	}
+	
+	@Test
+	public void testPipelineWithTreeProfiles()
+	{
+		Capture<RequestProcessingCallback> c = new Capture<RequestProcessingCallback>();
+		pipeline.addProfile(p1);
+		pipeline.addProfile(p2);
+		pipeline.addProfile(p3);
+		expect(p1.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
+		expect(p2.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
+		expect(p3.process(eq(request) , capture(c))).andAnswer(new ProfileProcessAnswer());
+		expect(pdp.decide(request)).andReturn(new Result(Decision.DENY));
+		replay(p1, p2, p3, pdp);
+		Collection<Result> results = pipeline.process(request, pdp);
+		assertEquals(1, results.size());
+		assertEquals(new Result(Decision.DENY), results.iterator().next());
+		verify(p1, p2, p3, pdp);
+	}
+	
+	public class ProfileProcessAnswer implements IAnswer<Collection<Result>>
+	{
+		@Override
+		public Collection<Result> answer() throws Throwable {
+			Object[] args = getCurrentArguments();
+			RequestProcessingCallback cb = (RequestProcessingCallback)args[1];
+			return cb.invokeNext((Request)args[0]);
+		}
 	}
 }

@@ -53,17 +53,17 @@ public class MultipleRequestProfileTest
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
 		attributes1.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
 		attributes1.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
 		attributes2.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
 		attributes2.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
-		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes0);
+		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
 		attributes3.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
 		attributes3.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes0);
+		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
 		RequestReference reference0 = new RequestReference(
@@ -101,6 +101,30 @@ public class MultipleRequestProfileTest
 		assertEquals(2, context1.getAttributes().size());
 		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
 		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
+		verify(callback);
+	}
+	
+	@Test
+	public void testWithNoReferences()
+	{
+		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
+		attributes0.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		
+		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
+		attributes1.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
+		
+		Request request = new Request(false, 
+				Arrays.asList(attr0, attr1));
+		
+		
+		expect(callback.invokeNext(request)).andReturn(
+				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
+		replay(callback);
+		Collection<Result> results = profile.process(request, callback);
 		verify(callback);
 	}
 }

@@ -259,9 +259,9 @@ public class DefaultRuleTest
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		replay(target, condition, currentPolicy);
+		replay(target, condition, currentPolicy, context);
 		assertEquals(Decision.INDETERMINATE, ruleDeny.evaluateIfApplicable(ruleContext));
-		verify(condition, target, currentPolicy);
+		verify(condition, target, currentPolicy, context);
 	}
 	
 	@Test
@@ -271,9 +271,9 @@ public class DefaultRuleTest
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		replay(target, condition, currentPolicy);
+		replay(target, condition, currentPolicy, context);
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluateIfApplicable(ruleContext));
-		verify(condition, target, currentPolicy);
+		verify(condition, target, currentPolicy, context);
 	}
 	
 	@Test
@@ -311,9 +311,9 @@ public class DefaultRuleTest
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		replay(target, condition);
+		replay(condition, target, context, currentPolicy);
 		assertEquals(Decision.INDETERMINATE, rulePermit.evaluateIfApplicable(ruleContext));
-		verify(condition, target);
+		verify(condition, target, context, currentPolicy);
 	}
 	
 	@Test
@@ -323,9 +323,9 @@ public class DefaultRuleTest
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		replay(target, condition);
+		replay(target, condition, currentPolicy, context);
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluateIfApplicable(ruleContext));
-		verify(condition, target);
+		verify(condition, target, currentPolicy, context);
 	}	
 	
 	@Test

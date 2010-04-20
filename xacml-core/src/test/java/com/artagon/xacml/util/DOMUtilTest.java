@@ -1,5 +1,7 @@
 package com.artagon.xacml.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -10,8 +12,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;

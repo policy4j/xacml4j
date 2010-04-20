@@ -72,7 +72,7 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 						DataTypes.BOOLEAN.create(true), DataTypes.BOOLEAN.create(false)));
 	}
 	
-	@Test(expected=EvaluationException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
 		IntegerType.IntegerValue n = DataTypes.INTEGER.create(4);

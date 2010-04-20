@@ -27,7 +27,8 @@ final class RFC822NameTypeImpl extends BaseAttributeType<RFC822NameType.RFC822Na
 	public RFC822NameValue fromXacmlString(String v, Object ...params)
 	{
 		Preconditions.checkNotNull(v);
-		Preconditions.checkArgument(rfc2822.matcher(v).matches());
+		// FIXME: add regular expression check
+		//Preconditions.checkArgument(rfc2822.matcher(v).matches());
         return new RFC822NameValue(this, RFC822Name.parse(v));
 	}
 	

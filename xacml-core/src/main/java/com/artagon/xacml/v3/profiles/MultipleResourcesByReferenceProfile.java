@@ -25,10 +25,12 @@ public class MultipleResourcesByReferenceProfile extends BaseRequestContextProfi
 			RequestProcessingCallback callback) 
 	{
 		Collection<Result> results = new LinkedList<Result>();
-		for(RequestReference ref : request.getRequestReferences())
-		{
-			try
-			{
+		Collection<RequestReference> references = request.getRequestReferences();
+		if(references.isEmpty()){
+			return callback.invokeNext(request);
+		}
+		for(RequestReference ref : references){
+			try{
 				Request resolvedRequest = resolveAttributes(request, ref);
 				results.addAll(callback.invokeNext(resolvedRequest));
 			}catch(RequestProcessingException e){
