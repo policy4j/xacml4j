@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
-public interface RequestProcessingProfile 
+public interface RequestProfileHandler 
 {
 	/**
 	 * Gets profile identifier
@@ -10,6 +10,6 @@ public interface RequestProcessingProfile
 	 * @return 
 	 */
 	String getId();
-	
-	Collection<Result> process(Request request, RequestProcessingCallback next);
+		
+	Collection<Result> handle(Request request);
 }

@@ -17,7 +17,7 @@ import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -33,7 +33,7 @@ import com.artagon.xacml.v3.policy.Value;
 
 abstract class BaseEvaluationContext implements EvaluationContext
 {
-	private AttributeResolver attributeProvider;
+	private ContextHandler contextHandler;
 	private PolicyReferenceResolver policyResolver;
 	
 	private Collection<Advice> advices;
@@ -53,21 +53,21 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	 * @param xpathFactory
 	 */
 	protected BaseEvaluationContext(
-			AttributeResolver attributeService, 
+			ContextHandler attributeService, 
 			PolicyReferenceResolver policyResolver){
 		this(false, attributeService, policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			AttributeResolver attributeService,
+			ContextHandler attributeService,
 			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
 		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
-		this.attributeProvider = attributeService;
+		this.contextHandler = attributeService;
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, Value>(
 				new MapMaker() {
@@ -185,33 +185,30 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		return policyResolver.resolve(this, ref);
 	}
 
+	
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToNode(
-				getXPathVersion(), path, categoryId);
+		return contextHandler.evaluateToNode(this, path, categoryId);
 	}
 
 	@Override
 	public final NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
 			throws EvaluationException 
 	{
-		return attributeProvider.evaluateToNodeList(
-				getXPathVersion(), path, categoryId);
+		return contextHandler.evaluateToNodeList(this, path, categoryId);
 	}
 
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToNumber(
-				getXPathVersion(), path, categoryId);
+		return contextHandler.evaluateToNumber(this, path, categoryId);
 	}
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return attributeProvider.evaluateToString(
-				getXPathVersion(), path, categoryId);
+		return contextHandler.evaluateToString(this, path, categoryId);
 	}
 	
 	public BagOfAttributeValues<AttributeValue> resolve(
@@ -220,6 +217,6 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeValueType dataType,
 			String issuer) throws EvaluationException
 	{
-		return attributeProvider.resolve(this, categoryId, attributeId, dataType, issuer);
+		return contextHandler.resolve(this, categoryId, attributeId, dataType, issuer);
 	}
 }

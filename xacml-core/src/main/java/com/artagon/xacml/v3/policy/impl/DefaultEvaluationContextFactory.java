@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.Policy;
@@ -12,11 +12,11 @@ import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private AttributeResolver attributeResolver;
+	private ContextHandler attributeResolver;
 	private PolicyReferenceResolver policyResolver;
 	
 	public DefaultEvaluationContextFactory(
-			AttributeResolver service, 
+			ContextHandler service, 
 			PolicyReferenceResolver policyResolver, 
 			XPathProvider xpathProvider){
 		Preconditions.checkNotNull(service);

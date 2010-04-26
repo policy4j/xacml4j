@@ -5,28 +5,28 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 
-public interface AttributeResolver 
+public interface ContextHandler 
 {
 	NodeList evaluateToNodeList(
-			XPathVersion version,
+			EvaluationContext context,
 			String xpath, 
 			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	String evaluateToString(
-			XPathVersion version,
+			EvaluationContext context,
 			String path, 
 			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	Node evaluateToNode(
-			XPathVersion version,
+			EvaluationContext context,
 			String path, 
 			AttributeCategoryId categoryId) 
 		throws EvaluationException;
 	
 	Number evaluateToNumber(
-			XPathVersion version,
+			EvaluationContext context,
 			String path, 
 			AttributeCategoryId categoryId) 
 		throws EvaluationException;

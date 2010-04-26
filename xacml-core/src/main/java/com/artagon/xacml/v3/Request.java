@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.Condition;
+import com.artagon.xacml.v3.policy.Effect;
+import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -16,41 +21,41 @@ public class Request extends XacmlObject
 {	
 	private boolean returnPolicyIdList;
 	private Multimap<AttributeCategoryId, Attributes> attributes;
-	private Map<String, Attributes> byId;
+	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> multipleRequests;
+	private Set<String> attributeIds;
 	
 	/**
 	 * Constructs a request with a given attributes
 	 * @param attributes
 	 */
 	public Request(boolean returnPolicyIdList, 
-			Collection<Attributes> attributes, 
+			Iterable<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = HashMultimap.create();
+		this.attributeIds = new HashSet<String>();
 		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
-		this.byId = new HashMap<String, Attributes>();
+		this.attributesByXmlId = new HashMap<String, Attributes>();
 		for(Attributes attr : attributes)
 		{
 			// index attributes by category
 			this.attributes.put(attr.getCategoryId(), attr);
+			this.attributeIds.addAll(attr.getProvidedAttributeIds());
 			// index attributes
 			// by id for fast lookup
 			if(attr.getId() != null){
-				this.byId.put(attr.getId(), attr);
+				this.attributesByXmlId.put(attr.getId(), attr);
 			}
 		}
 	}
 	
-	public int getCategoryOccuriences(AttributeCategoryId category){
-		Collection<Attributes> attr = attributes.get(category);
-		return (attr == null)?0:attr.size();
-	}
-	
 	/**
 	 * Constructs a request with a given attributes
-	 * @param attributes
+	 * 
+	 * @param attributes a collection of {@link Attributes}
+	 * instances
 	 */
 	public Request(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes)
@@ -59,8 +64,29 @@ public class Request extends XacmlObject
 				Collections.<RequestReference>emptyList());
 	}
 	
+	
+	/**
+	 * If the {@link #isReturnPolicyIdList()} returns 
+	 * <code>true</code>, a PDP that implements this optional 
+	 * feature MUST return a list of all policies which were 
+	 * found to be fully applicable. That is, all policies 
+	 * where both the {@link Target} matched and the {@link Condition} 
+	 * evaluated to <code>true</code>, whether or not the {@link Effect}
+	 *  was the same or different from the {@link Decision}}
+	 *  
+	 * @return boolean value
+	 */
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
+	}
+	
+	public int getCategoryOccuriences(AttributeCategoryId category){
+		Collection<Attributes> attr = attributes.get(category);
+		return (attr == null)?0:attr.size();
+	}
+	
+	public Set<String> getProvidedAttributeIdentifiers(){
+		return Collections.unmodifiableSet(attributeIds);
 	}
 	
 	/**
@@ -92,17 +118,8 @@ public class Request extends XacmlObject
 	 * 
 	 * @return an iterator over all categories
 	 */
-	public Iterable<AttributeCategoryId> getCategories(){
-		return attributes.keySet();
-	}
-	
-	/**
-	 * Gets all attributes for this context
-	 * 
-	 * @return a map by category id
-	 */
-	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
-		return attributes.asMap();
+	public Set<AttributeCategoryId> getCategories(){
+		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
 	/**
@@ -114,7 +131,7 @@ public class Request extends XacmlObject
 	 */
 	public Attributes getReferencedAttributes(AttributesReference reference){
 		Preconditions.checkNotNull(reference);
-		return byId.get(reference.getReferenceId());
+		return attributesByXmlId.get(reference.getReferenceId());
 	}
 	
 	/**
@@ -130,6 +147,10 @@ public class Request extends XacmlObject
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> attr =  attributes.get(categoryId);
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
+	}
+	
+	public Collection<Attributes> getAttributes(){
+		return Collections.unmodifiableCollection(attributes.values());
 	}
 	
 	/**

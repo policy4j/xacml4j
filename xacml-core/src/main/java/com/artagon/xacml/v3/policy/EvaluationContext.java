@@ -121,26 +121,65 @@ public interface EvaluationContext
 	void setVariableEvaluationResult(String variableId, Value value);
 	
 	
+	/**
+	 * Resolves an attribute from context
+	 * 
+	 * @param categoryId an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute data type
+	 * @param issuer an attribute issuer
+	 * @return {@link BagOfAttributeValues} instance
+	 * @throws EvaluationException if an error
+	 * occurs while resolving attributes
+	 */
 	BagOfAttributeValues<AttributeValue> resolve(
 			AttributeCategoryId categoryId, 
 			String attributeId, 
 			AttributeValueType dataType,
 			String issuer) throws EvaluationException;
 	
-	NodeList evaluateToNodeSet(String xpath, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	String evaluateToString(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	Node evaluateToNode(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
-	
-	Number evaluateToNumber(String path, AttributeCategoryId categoryId) 
-		throws EvaluationException;
 
+	NodeList evaluateToNodeSet(
+			String xpath, 
+			AttributeCategoryId categoryId) 
+		throws EvaluationException;
 	
+	
+	String evaluateToString(
+			String path, 
+			AttributeCategoryId categoryId) 
+		throws EvaluationException;
+	
+	Node evaluateToNode(
+			String path, 
+			AttributeCategoryId categoryId) 
+		throws EvaluationException;
+	
+	Number evaluateToNumber(
+			String path, 
+			AttributeCategoryId categoryId) 
+		throws EvaluationException;
+	
+	/**
+	 * Resolves given {@link PolicyIDReference}
+	 * reference
+	 * 
+	 * @param ref a policy reference
+	 * @return resolved {@link Policy} instance
+	 * @throws PolicyResolutionException if
+	 * policy reference can not be resolved
+	 */
 	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
+	
+	/**
+	 * Resolves given {@link PolicySetIDReference}
+	 * reference
+	 * 
+	 * @param ref a policy reference
+	 * @return resolved {@link PolicySet} instance
+	 * @throws PolicyResolutionException if
+	 * policy set reference can not be resolved
+	 */
 	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
 	
 	

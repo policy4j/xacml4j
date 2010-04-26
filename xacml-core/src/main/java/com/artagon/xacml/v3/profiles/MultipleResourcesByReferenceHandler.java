@@ -5,34 +5,37 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.PolicyDecisionPoint;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProcessingCallback;
 import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 
-public class MultipleResourcesByReferenceProfile extends BaseRequestContextProfile
+public class MultipleResourcesByReferenceHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
-	public MultipleResourcesByReferenceProfile(){
-		super(ID);
+	public MultipleResourcesByReferenceHandler(PolicyDecisionPoint pdp){
+		super(ID, pdp);
 	}
 	
-	public Collection<Result> process(Request request, 
-			RequestProcessingCallback callback) 
+	/*
+	 * (non-Javadoc)
+	 * @see com.artagon.xacml.v3.RequestHandler#handle(com.artagon.xacml.v3.Request)
+	 */
+	public Collection<Result> handle(Request request) 
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		Collection<RequestReference> references = request.getRequestReferences();
 		if(references.isEmpty()){
-			return callback.invokeNext(request);
+			return handleNext(request);
 		}
 		for(RequestReference ref : references){
 			try{
 				Request resolvedRequest = resolveAttributes(request, ref);
-				results.addAll(callback.invokeNext(resolvedRequest));
+				results.addAll(handleNext(resolvedRequest));
 			}catch(RequestProcessingException e){
 				results.add(new Result(e.getStatusCode()));
 			}

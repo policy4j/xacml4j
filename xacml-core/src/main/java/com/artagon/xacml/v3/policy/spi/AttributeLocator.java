@@ -17,7 +17,7 @@ public interface AttributeLocator
 	Set<AttributeCategoryId> getCategories();
 	
 	/**
-	 * Gets an attribute identifier provided
+	 * Gets an attribute identifiers provided
 	 * by this locator
 	 * 
 	 * @return an set of attribute identifiers
@@ -29,11 +29,14 @@ public interface AttributeLocator
 	 * Resolves an attribute by given identifier
 	 * 
 	 * @param attributeId an attribute identifier
+	 * @param category an attribute category identifier
 	 * @param callback a callback to get request 
 	 * context attributes
 	 * 
 	 * @return {@link BagOfAttributeValues}
 	 */
 	BagOfAttributeValues<AttributeValue> getAttribute(
-			String attributeId, RequestAttributeCallback callback);
+			AttributeCategoryId categoryId,
+			String attributeId,
+			RequestAttributeCallback callback);
 }

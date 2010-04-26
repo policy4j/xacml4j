@@ -11,7 +11,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
@@ -23,7 +23,7 @@ public class PolicySetEvaluationContextTest
 	private EvaluationContext context;
 	
 	private PolicySet policySet;
-	private AttributeResolver resolver;
+	private ContextHandler resolver;
 	private PolicyReferenceResolver policyResolver;
 	private PolicySetDefaults defaults;
 	
@@ -31,7 +31,7 @@ public class PolicySetEvaluationContextTest
 	public void setup(){
 		this.defaults = createStrictMock(PolicySetDefaults.class);
 		this.policyResolver = createStrictMock(PolicyReferenceResolver.class);
-		this.resolver = createStrictMock(AttributeResolver.class);
+		this.resolver = createStrictMock(ContextHandler.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.context = new PolicySetEvaluationContext(policySet, 
 				resolver, policyResolver);

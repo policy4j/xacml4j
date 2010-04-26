@@ -2,7 +2,9 @@ package com.artagon.xacml.v3;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.w3c.dom.Node;
 
@@ -103,6 +105,10 @@ public class Attributes extends XacmlObject
 	 */
 	public AttributeCategoryId getCategoryId(){
 		return categoryId;
+	}
+	
+	public Set<String> getProvidedAttributeIds(){
+		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
 	/**

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.AttributeResolver;
+import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyDefaults;
 import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
@@ -20,7 +20,7 @@ final class PolicyEvaluationContext extends BaseEvaluationContext
 	 */
 	PolicyEvaluationContext(
 			Policy policy, 
-			AttributeResolver service, 
+			ContextHandler service, 
 			PolicyReferenceResolver policyResolver)
 	{
 		super(service, policyResolver);

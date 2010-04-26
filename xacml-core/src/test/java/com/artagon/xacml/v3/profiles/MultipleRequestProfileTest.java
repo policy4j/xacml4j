@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import org.easymock.Capture;
@@ -21,10 +20,10 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.PolicyDecisionPoint;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProcessingCallback;
+import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.RequestProcessingException;
-import com.artagon.xacml.v3.RequestProcessingProfile;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -33,13 +32,13 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleRequestProfileTest 
 {
-	private RequestProcessingCallback callback;
-	private RequestProcessingProfile profile;
+	private PolicyDecisionPoint pdp;
+	private RequestProfileHandler profile;
 	
 	@Before
 	public void init(){
-		this.callback = createStrictMock(RequestProcessingCallback.class);
-		this.profile = new MultipleResourcesByReferenceProfile();
+		this.pdp = createStrictMock(PolicyDecisionPoint.class);
+		this.profile = new MultipleResourcesByReferenceHandler(pdp);
 	}
 	
 	@Test
@@ -78,12 +77,12 @@ public class MultipleRequestProfileTest
 		Capture<Request> c0 = new Capture<Request>();
 		Capture<Request> c1 = new Capture<Request>();
 		
-		expect(callback.invokeNext(capture(c0))).andReturn(
-				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
-		expect(callback.invokeNext(capture(c1))).andReturn(
-				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
-		replay(callback);
-		profile.process(context, callback).iterator();
+		expect(pdp.decide(capture(c0))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		expect(pdp.decide(capture(c1))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		replay(pdp);
+		profile.handle(context).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
@@ -101,7 +100,7 @@ public class MultipleRequestProfileTest
 		assertEquals(2, context1.getAttributes().size());
 		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
 		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
-		verify(callback);
+		verify(pdp);
 	}
 	
 	@Test
@@ -120,11 +119,11 @@ public class MultipleRequestProfileTest
 		Request request = new Request(false, 
 				Arrays.asList(attr0, attr1));
 		
-		
-		expect(callback.invokeNext(request)).andReturn(
-				Collections.singleton(new Result(new Status(StatusCode.createProcessingError()))));
-		replay(callback);
-		Collection<Result> results = profile.process(request, callback);
-		verify(callback);
+		expect(pdp.decide(request)).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		replay(pdp);
+		Collection<Result> results = profile.handle(request);
+		assertEquals(new Result(new Status(StatusCode.createProcessingError())), results.iterator().next());
+		verify(pdp);
 	}
 }
