@@ -144,6 +144,15 @@ public class Attributes extends XacmlObject
 		});	
 	}
 	
+	public Collection<Attribute> getIncludeInResultAttributes(){
+		return  Collections2.filter(attributes.values(), new Predicate<Attribute>() {
+			@Override
+			public boolean apply(Attribute attr) {
+				return attr.isIncludeInResult();
+			}
+		});	
+	}
+	
 	public BagOfAttributeValues<? extends AttributeValue> getAttributeValues(
 			String attributeId, String issuer, AttributeValueType type){
 		Preconditions.checkNotNull(type);

@@ -8,8 +8,8 @@ import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Target;
 
-public interface Request {
-
+public interface Request 
+{
 	/**
 	 * If the {@link #isReturnPolicyIdList()} returns 
 	 * <code>true</code>, a PDP that implements this optional 
@@ -21,11 +21,11 @@ public interface Request {
 	 *  
 	 * @return boolean value
 	 */
-	public abstract boolean isReturnPolicyIdList();
+	boolean isReturnPolicyIdList();
 
-	public abstract int getCategoryOccuriences(AttributeCategoryId category);
+	int getCategoryOccuriences(AttributeCategoryId category);
 
-	public abstract Set<String> getProvidedAttributeIdentifiers();
+	Set<String> getProvidedAttributeIdentifiers();
 
 	/**
 	 * Gets request references contained
@@ -34,7 +34,7 @@ public interface Request {
 	 * @return a collection of {@link RequestReference}
 	 * instances
 	 */
-	public abstract Collection<RequestReference> getRequestReferences();
+	Collection<RequestReference> getRequestReferences();
 
 	/**
 	 * Tests if this request has multiple
@@ -44,7 +44,7 @@ public interface Request {
 	 * request has multiple XACML individual
 	 * requests
 	 */
-	public abstract boolean hasMultipleRequests();
+	boolean hasMultipleRequests();
 
 	/**
 	 * Gets all attributes categories contained
@@ -52,7 +52,7 @@ public interface Request {
 	 * 
 	 * @return an iterator over all categories
 	 */
-	public abstract Set<AttributeCategoryId> getCategories();
+	Set<AttributeCategoryId> getCategories();
 
 	/**
 	 * Resolves attribute reference to {@link Attributes}
@@ -61,7 +61,7 @@ public interface Request {
 	 * @return {@link Attributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
-	public abstract Attributes getReferencedAttributes(
+	Attributes getReferencedAttributes(
 			AttributesReference reference);
 
 	/**
@@ -73,10 +73,10 @@ public interface Request {
 	 * {@link Collections#emptyList()} if given request
 	 * does not have attributes of given category
 	 */
-	public abstract Collection<Attributes> getAttributes(
+	Collection<Attributes> getAttributes(
 			AttributeCategoryId categoryId);
 
-	public abstract Collection<Attributes> getAttributes();
+	Collection<Attributes> getAttributes();
 
 	/**
 	 * Gets all {@link Attributes} instances
@@ -87,7 +87,8 @@ public interface Request {
 	 * @param attributeId an attribute id
 	 * @return a collection of {@link Attributes}
 	 */
-	public abstract Collection<Attributes> getAttributes(
-			final AttributeCategoryId categoryId, final String attributeId);
-
+	Collection<Attributes> getAttributes(
+			AttributeCategoryId categoryId, String attributeId);
+	
+	Collection<Attributes> getIncludeInResultAttributes();
 }

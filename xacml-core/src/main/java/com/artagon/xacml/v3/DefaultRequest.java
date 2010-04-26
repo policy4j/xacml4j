@@ -5,13 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -64,77 +62,61 @@ public class DefaultRequest extends XacmlObject implements Request
 				Collections.<RequestReference>emptyList());
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#isReturnPolicyIdList()
-	 */
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getCategoryOccuriences(com.artagon.xacml.v3.AttributeCategoryId)
-	 */
 	public int getCategoryOccuriences(AttributeCategoryId category){
 		Collection<Attributes> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getProvidedAttributeIdentifiers()
-	 */
 	public Set<String> getProvidedAttributeIdentifiers(){
 		return Collections.unmodifiableSet(attributeIds);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getRequestReferences()
-	 */
 	public Collection<RequestReference> getRequestReferences(){
 		return Collections.unmodifiableCollection(multipleRequests);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#hasMultipleRequests()
-	 */
+
 	public boolean hasMultipleRequests(){
 		return !multipleRequests.isEmpty();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getCategories()
-	 */
 	public Set<AttributeCategoryId> getCategories(){
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getReferencedAttributes(com.artagon.xacml.v3.AttributesReference)
-	 */
+	
+	@Override
+	public Collection<Attributes> getIncludeInResultAttributes() 
+	{
+		Collection<Attributes> resultAttr = new LinkedList<Attributes>();
+		for(Attributes a : attributes.values()){
+			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
+			if(!includeInResult.isEmpty()){
+				resultAttr.add(new Attributes(a.getCategoryId(), includeInResult));
+			}
+		}
+		return resultAttr;
+	}
+	
 	public Attributes getReferencedAttributes(AttributesReference reference){
 		Preconditions.checkNotNull(reference);
 		return attributesByXmlId.get(reference.getReferenceId());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getAttributes(com.artagon.xacml.v3.AttributeCategoryId)
-	 */
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> attr =  attributes.get(categoryId);
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getAttributes()
-	 */
 	public Collection<Attributes> getAttributes(){
 		return Collections.unmodifiableCollection(attributes.values());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Request#getAttributes(com.artagon.xacml.v3.AttributeCategoryId, java.lang.String)
-	 */
+	
 	public Collection<Attributes> getAttributes(
 			final AttributeCategoryId categoryId, 
 			final String attributeId)
