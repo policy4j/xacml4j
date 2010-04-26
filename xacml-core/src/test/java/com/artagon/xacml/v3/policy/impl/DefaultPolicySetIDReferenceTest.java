@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
@@ -37,17 +38,19 @@ public class DefaultPolicySetIDReferenceTest
 	private PolicySet refPolicySet;
 	private EvaluationContextFactory contextFactory;
 	private PolicyReferenceResolver policyResolver;
+	private Request request;
 	
 	@Before
 	public void init(){
 		this.policyResolver = createStrictMock(PolicyReferenceResolver.class);
+		this.request = createStrictMock(Request.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.refPolicySet = createStrictMock(PolicySet.class);
 		this.contextFactory = new DefaultEvaluationContextFactory(
 				createStrictMock(ContextHandler.class), 
 				policyResolver,
 				createStrictMock(XPathProvider.class));
-		this.context = contextFactory.createContext(policySet);
+		this.context = contextFactory.createContext(policySet, request);
 	}
 	
 	@Test

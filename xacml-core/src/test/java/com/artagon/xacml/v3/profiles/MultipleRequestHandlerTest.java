@@ -21,6 +21,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
+import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestProfileHandler;
@@ -70,12 +71,12 @@ public class MultipleRequestHandlerTest
 		RequestReference reference1 = new RequestReference(
 				new AttributesReference("resourceAttr1"), new AttributesReference("subjectAttr1"));
 		
-		Request context = new Request(false, 
+		Request context = new DefaultRequest(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1));
 		
-		Capture<Request> c0 = new Capture<Request>();
-		Capture<Request> c1 = new Capture<Request>();
+		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
+		Capture<DefaultRequest> c1 = new Capture<DefaultRequest>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
@@ -116,7 +117,7 @@ public class MultipleRequestHandlerTest
 		attributes1.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
 		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
 		
-		Request request = new Request(false, 
+		Request request = new DefaultRequest(false, 
 				Arrays.asList(attr0, attr1));
 		
 		expect(pdp.requestDecision(request)).andReturn(

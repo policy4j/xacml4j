@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
+import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestReference;
@@ -55,7 +56,7 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			}
 			resolved.add(attributes);
 		}
-		return new Request(req.isReturnPolicyIdList(), resolved);
+		return new DefaultRequest(req.isReturnPolicyIdList(), resolved);
 	}
 	
 }

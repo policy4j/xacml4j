@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
+import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.google.common.base.Predicate;
@@ -47,7 +48,7 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 		{ 
 			Collection<Attributes> attr = new LinkedList<Attributes>(otherAttributes);
 			attr.add(resource);
-			results.addAll(handleNext(new Request(request.isReturnPolicyIdList(),  attr), pdp));
+			results.addAll(handleNext(new DefaultRequest(request.isReturnPolicyIdList(),  attr), pdp));
 		}
 		return results;
 	}

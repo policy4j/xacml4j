@@ -20,6 +20,7 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
+import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestProfileHandler;
@@ -57,11 +58,11 @@ public class MultipleResourcesHandlerTest
 		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new Request(false, 
+		Request context = new DefaultRequest(false, 
 				Arrays.asList(subject, resource0, resource1));
 		
-		Capture<Request> c0 = new Capture<Request>();
-		Capture<Request> c1 = new Capture<Request>();
+		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
+		Capture<DefaultRequest> c1 = new Capture<DefaultRequest>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));

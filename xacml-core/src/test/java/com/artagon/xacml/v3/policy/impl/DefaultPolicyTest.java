@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.ContextHandler;
@@ -51,6 +52,8 @@ public class DefaultPolicyTest
 	private ObligationExpression denyObligationExp;
 	
 	private DecisionCombiningAlgorithm<Rule> combingingAlg;
+	
+	private Request request;
 	
 	private List<Rule> rules;
 	
@@ -88,10 +91,11 @@ public class DefaultPolicyTest
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
 		
+		this.request = createStrictMock(Request.class);
 		this.context = new DefaultEvaluationContextFactory(
 				createStrictMock(ContextHandler.class), 
 				createStrictMock(PolicyReferenceResolver.class), 
-				createStrictMock(XPathProvider.class)).createContext(policy);
+				createStrictMock(XPathProvider.class)).createContext(policy, request);
 	}
 	
 	@Test
