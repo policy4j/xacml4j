@@ -20,25 +20,25 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.PolicyDecisionPoint;
+import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.RequestProcessingException;
+import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class MultipleRequestProfileTest 
+public class MultipleRequestHandlerTest 
 {
-	private PolicyDecisionPoint pdp;
+	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
 	
 	@Before
 	public void init(){
-		this.pdp = createStrictMock(PolicyDecisionPoint.class);
-		this.profile = new MultipleResourcesByReferenceHandler(pdp);
+		this.pdp = createStrictMock(PolicyDecisionCallback.class);
+		this.profile = new MultipleRequestsHandler();
 	}
 	
 	@Test
@@ -77,12 +77,12 @@ public class MultipleRequestProfileTest
 		Capture<Request> c0 = new Capture<Request>();
 		Capture<Request> c1 = new Capture<Request>();
 		
-		expect(pdp.decide(capture(c0))).andReturn(
+		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
-		expect(pdp.decide(capture(c1))).andReturn(
+		expect(pdp.requestDecision(capture(c1))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
 		replay(pdp);
-		profile.handle(context).iterator();
+		profile.handle(context, pdp).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
 		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
@@ -119,10 +119,10 @@ public class MultipleRequestProfileTest
 		Request request = new Request(false, 
 				Arrays.asList(attr0, attr1));
 		
-		expect(pdp.decide(request)).andReturn(
+		expect(pdp.requestDecision(request)).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
 		replay(pdp);
-		Collection<Result> results = profile.handle(request);
+		Collection<Result> results = profile.handle(request, pdp);
 		assertEquals(new Result(new Status(StatusCode.createProcessingError())), results.iterator().next());
 		verify(pdp);
 	}

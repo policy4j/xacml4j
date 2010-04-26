@@ -11,5 +11,7 @@ public interface RequestProfileHandler
 	 */
 	String getId();
 		
-	Collection<Result> handle(Request request);
+	Collection<Result> handle(Request request, PolicyDecisionCallback pdp);
+	
+	void setNext(RequestProfileHandler handler);
 }

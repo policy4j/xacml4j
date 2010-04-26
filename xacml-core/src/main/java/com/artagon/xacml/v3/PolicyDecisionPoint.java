@@ -9,5 +9,5 @@ public interface PolicyDecisionPoint
 	 * @param request a XACML request
 	 * @return {@link Result}
 	 */
-	Result decide(Request request);
+	Response decide(Request request);
 }
