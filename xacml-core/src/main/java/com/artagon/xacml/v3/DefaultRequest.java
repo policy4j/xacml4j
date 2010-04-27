@@ -88,6 +88,11 @@ public class DefaultRequest extends XacmlObject implements Request
 	}
 	
 	
+	/**
+	 * Gets all {@link Attributes} instances
+	 * which contain an instance of {@link Attribute}
+	 * with {@link Attribute#isIncludeInResult()} <code>true</code>
+	 */
 	@Override
 	public Collection<Attributes> getIncludeInResultAttributes() 
 	{
