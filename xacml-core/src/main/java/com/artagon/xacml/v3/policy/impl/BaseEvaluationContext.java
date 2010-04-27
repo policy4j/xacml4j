@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -17,6 +18,8 @@ import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.PolicyIdentifier;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -44,6 +47,8 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	private TwoKeyIndex<String, String, Value> variableEvaluationCache;
 
 	private TimeZone timezone;
+	
+	private List<PolicyIdentifier> evaluatedPolicies;
 		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -77,6 +82,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			}
 		});
 		this.timezone = TimeZone.getTimeZone("UTC");
+		this.evaluatedPolicies = new LinkedList<PolicyIdentifier>();
 	}
 	
 	@Override
@@ -219,4 +225,14 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		return contextHandler.resolve(this, categoryId, attributeId, dataType, issuer);
 	}
+
+	@Override
+	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
+		return Collections.unmodifiableList(evaluatedPolicies);
+	}
+	
+	public void addApplicablePolicy(String policyID,  Version version){
+		evaluatedPolicies.add(new PolicyIdentifier(policyID, version));
+	}
+	
 }

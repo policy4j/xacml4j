@@ -10,6 +10,7 @@ import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -197,5 +198,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 			AttributeValueType dataType, String issuer)
 			throws EvaluationException {
 		return delegate.resolve(categoryId, attributeId, dataType, issuer);
+	}
+
+	@Override
+	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
+		return delegate.getEvaluatedPolicies();
 	}	
+	
+	
 }

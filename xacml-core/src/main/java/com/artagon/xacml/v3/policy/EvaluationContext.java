@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.PolicyIdentifier;
 
 
 public interface EvaluationContext 
@@ -38,6 +39,14 @@ public interface EvaluationContext
 	 * <code>null</code>
 	 */
 	EvaluationContext getParentContext();
+	
+	/**
+	 * Returns a list of all policies which were found 
+	 * to be fully applicable during evaluation
+	 * 
+	 * @return
+	 */
+	Collection<PolicyIdentifier> getEvaluatedPolicies();
 	
 	/**
 	 * Gets currently evaluated policy

@@ -11,22 +11,23 @@ import com.artagon.xacml.v3.policy.PolicySet;
 public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoint
 {
 	private EvaluationContextFactory factory;
-	private PolicySet rootPolicySet;
+	private PolicySet policySet;
 	
 	public DefaultPolicyDecisionPoint(EvaluationContextFactory factory, 
-			PolicySet rootPolicySet, Collection<RequestProfileHandler> handlers){
+			PolicySet policySet, 
+			Collection<RequestProfileHandler> handlers){
 		super(handlers);
 		Preconditions.checkNotNull(factory);
-		Preconditions.checkNotNull(rootPolicySet);
+		Preconditions.checkNotNull(policySet);
 		this.factory = factory;
-		this.rootPolicySet = rootPolicySet;
+		this.policySet = policySet;
 	}
 
 	@Override
 	protected Result doDecide(Request request) 
 	{
-		EvaluationContext context = factory.createContext(rootPolicySet, request);
-		Decision decision = rootPolicySet.evaluate(context);
+		EvaluationContext context = factory.createContext(policySet, request);
+		Decision decision = policySet.evaluate(context);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
 		Collection<PolicyIdentifier> policyIdentifiers = Collections.emptyList();
 		return new Result(decision, 
