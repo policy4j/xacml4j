@@ -27,13 +27,15 @@ public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoin
 	protected Result doDecide(Request request) 
 	{
 		EvaluationContext context = factory.createContext(policySet, request);
-		Decision decision = policySet.evaluate(context);
+		EvaluationContext policySetContext = policySet.createContext(context);
+		Decision decision = policySet.evaluateIfApplicable(policySetContext);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
-		Collection<PolicyIdentifier> policyIdentifiers = Collections.emptyList();
-		return new Result(decision, 
+		return new Result(
+				decision, 
 				context.getAdvices(), 
 				context.getObligations(), 
 				includeInResult, 
-				policyIdentifiers);
+				(request.isReturnPolicyIdList()?
+						context.getEvaluatedPolicies():Collections.<PolicyIdentifier>emptyList()));
 	}
 }
