@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
@@ -43,7 +42,7 @@ public class MultipleRequestHandlerTest
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences() throws RequestProcessingException
+	public void testResolveRequestsWithValidReferences()
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));

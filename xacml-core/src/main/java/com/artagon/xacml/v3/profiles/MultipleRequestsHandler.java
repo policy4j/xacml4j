@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.DefaultRequest;
+
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProcessingException;
+import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -30,18 +30,14 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			return handleNext(request, pdp);
 		}
 		for(RequestReference ref : references){
-			try{
-				Request resolvedRequest = resolveAttributes(request, ref);
-				results.addAll(handleNext(resolvedRequest, pdp));
-			}catch(RequestProcessingException e){
-				results.add(new Result(e.getStatusCode()));
-			}
+			Request resolvedRequest = resolveAttributes(request, ref);
+			results.addAll(handleNext(resolvedRequest, pdp));
 		}
 		return results;
 	}
 	
 	private Request resolveAttributes(Request req, 
-			RequestReference reqRef) throws RequestProcessingException
+			RequestReference reqRef)
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		Collection<Attributes> resolved = new LinkedList<Attributes>();

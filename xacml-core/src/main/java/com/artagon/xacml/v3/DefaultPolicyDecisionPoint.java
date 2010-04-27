@@ -37,5 +37,5 @@ public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoin
 				includeInResult, 
 				(request.isReturnPolicyIdList()?
 						context.getEvaluatedPolicies():Collections.<PolicyIdentifier>emptyList()));
-	}
+	}	
 }

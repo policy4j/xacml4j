@@ -22,7 +22,6 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestProcessingException;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -41,7 +40,7 @@ public class MultipleResourcesHandlerTest
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences() throws RequestProcessingException
+	public void testResolveRequestsWithValidReferences()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
