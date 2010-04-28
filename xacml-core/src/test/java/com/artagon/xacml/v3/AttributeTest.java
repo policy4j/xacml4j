@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class AttributeTest 
@@ -31,7 +32,7 @@ public class AttributeTest
 	@Test
 	public void testCreateWithAllArguments()
 	{
-		Attribute attr = new Attribute("testId", "testIssuer", true, values);
+		Attribute attr = new DefaultAttribute("testId", "testIssuer", true, values);
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
@@ -43,7 +44,7 @@ public class AttributeTest
 	@Test
 	public void testCreateWithIdAndValuesCollection()
 	{
-		Attribute attr = new Attribute("testId", values);
+		Attribute attr = new DefaultAttribute("testId", values);
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
@@ -55,7 +56,7 @@ public class AttributeTest
 	@Test
 	public void testCreateWithIdAndValuesVarArg()
 	{
-		Attribute attr = new Attribute("testId", 
+		Attribute attr = new DefaultAttribute("testId", 
 				DataTypes.INTEGER.create(1), 
 				DataTypes.INTEGER.create(2),
 				DataTypes.INTEGER.create(3),

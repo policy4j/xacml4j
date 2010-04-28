@@ -16,16 +16,16 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
+import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
+import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleResourcesHandlerTest 
@@ -42,20 +42,20 @@ public class MultipleResourcesHandlerTest
 	@Test
 	public void testResolveRequestsWithValidReferences()
 	{
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		Collection<DefaultAttribute> resource0Attr = new LinkedList<DefaultAttribute>();
+		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
+		DefaultAttributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
-		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		Collection<DefaultAttribute> resource1Attr = new LinkedList<DefaultAttribute>();
+		resource1Attr.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
+		resource1Attr.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
+		DefaultAttributes resource1 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		Collection<DefaultAttribute> subjectAttr = new LinkedList<DefaultAttribute>();
+		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
+		DefaultAttributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		Request context = new DefaultRequest(false, 
 				Arrays.asList(subject, resource0, resource1));

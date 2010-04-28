@@ -3,16 +3,16 @@ package com.artagon.xacml.v3.profiles;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
+import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 {
@@ -40,9 +40,9 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			RequestReference reqRef)
 	{
 		Collection<Result> results = new LinkedList<Result>();
-		Collection<Attributes> resolved = new LinkedList<Attributes>();
+		Collection<DefaultAttributes> resolved = new LinkedList<DefaultAttributes>();
 		for(AttributesReference ref : reqRef.getReferencedAttributes()){
-			Attributes attributes = req.getReferencedAttributes(ref);
+			DefaultAttributes attributes = req.getReferencedAttributes(ref);
 			if(attributes == null){
 				results.add(new Result(
 						new Status(StatusCode.createSyntaxError(), 

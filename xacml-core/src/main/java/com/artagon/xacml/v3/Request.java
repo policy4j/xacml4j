@@ -7,6 +7,7 @@ import java.util.Set;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Target;
+import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
 
 public interface Request 
 {
@@ -55,10 +56,10 @@ public interface Request
 	Set<AttributeCategoryId> getCategories();
 
 	/**
-	 * Resolves attribute reference to {@link Attributes}
+	 * Resolves attribute reference to {@link DefaultAttributes}
 	 * 
 	 * @param reference an attributes reference
-	 * @return {@link Attributes} or <code>null</code> if
+	 * @return {@link DefaultAttributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
 	Attributes getReferencedAttributes(

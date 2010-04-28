@@ -16,18 +16,18 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.DefaultRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
+import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
+import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleRequestHandlerTest 
@@ -44,25 +44,25 @@ public class MultipleRequestHandlerTest
 	@Test
 	public void testResolveRequestsWithValidReferences()
 	{
-		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
+		Collection<DefaultAttribute> attributes0 = new LinkedList<DefaultAttribute>();
+		attributes0.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
+		attributes0.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr0 = new DefaultAttributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
 		
-		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
+		Collection<DefaultAttribute> attributes1 = new LinkedList<DefaultAttribute>();
+		attributes1.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
+		attributes1.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr1 = new DefaultAttributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
-		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
-		attributes2.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
-		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
+		Collection<DefaultAttribute> attributes2 = new LinkedList<DefaultAttribute>();
+		attributes2.add(new DefaultAttribute("testId5", DataTypes.STRING.create("value0")));
+		attributes2.add(new DefaultAttribute("testId6", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr2 = new DefaultAttributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
 		
-		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		attributes3.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
+		Collection<DefaultAttribute> attributes3 = new LinkedList<DefaultAttribute>();
+		attributes3.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
+		attributes3.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr3 = new DefaultAttributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
 		RequestReference reference0 = new RequestReference(
@@ -106,15 +106,15 @@ public class MultipleRequestHandlerTest
 	@Test
 	public void testWithNoReferences()
 	{
-		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		Collection<DefaultAttribute> attributes0 = new LinkedList<DefaultAttribute>();
+		attributes0.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
+		attributes0.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr0 = new DefaultAttributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
 		
-		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
-		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
+		Collection<DefaultAttribute> attributes1 = new LinkedList<DefaultAttribute>();
+		attributes1.add(new DefaultAttribute("testId5", DataTypes.STRING.create("value0")));
+		attributes1.add(new DefaultAttribute("testId6", DataTypes.STRING.create("value1")));
+		DefaultAttributes attr1 = new DefaultAttributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
 		
 		Request request = new DefaultRequest(false, 
 				Arrays.asList(attr0, attr1));

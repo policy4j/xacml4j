@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.Attribute;
+import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -90,8 +97,8 @@ public class DefaultRequest extends XacmlObject implements Request
 	
 	/**
 	 * Gets all {@link Attributes} instances
-	 * which contain an instance of {@link Attribute}
-	 * with {@link Attribute#isIncludeInResult()} <code>true</code>
+	 * which contain an instance of {@link DefaultAttribute}
+	 * with {@link DefaultAttribute#isIncludeInResult()} <code>true</code>
 	 */
 	@Override
 	public Collection<Attributes> getIncludeInResultAttributes() 
@@ -100,7 +107,7 @@ public class DefaultRequest extends XacmlObject implements Request
 		for(Attributes a : attributes.values()){
 			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
-				resultAttr.add(new Attributes(a.getCategoryId(), includeInResult));
+				resultAttr.add(new DefaultAttributes(a.getCategoryId(), includeInResult));
 			}
 		}
 		return resultAttr;

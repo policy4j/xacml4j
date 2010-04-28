@@ -95,9 +95,9 @@ public class Result extends XacmlObject
 	/**
 	 * Gets a list of attributes that were part of the request. 
 	 * The choice of which attributes are included here is made 
-	 * with the request attributes {@link Attribute#isIncludeInResult()}
+	 * with the request attributes {@link Attributes#isIncludeInResult()}
 	 * 
-	 * @return a collection of {@link Attribute} instances
+	 * @return a collection of {@link Attributes} instances
 	 */
 	public Collection<Attributes> getAttributes(){
 		return attributes;

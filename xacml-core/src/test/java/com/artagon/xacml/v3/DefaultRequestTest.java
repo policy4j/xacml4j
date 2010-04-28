@@ -10,6 +10,9 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
+import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
+import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultRequestTest 
@@ -17,20 +20,20 @@ public class DefaultRequestTest
 	@Test
 	public void testCreateRequest()
 	{
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		Collection<DefaultAttribute> resource0Attr = new LinkedList<DefaultAttribute>();
+		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
+		DefaultAttributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
-		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		Collection<DefaultAttribute> resource1Attr = new LinkedList<DefaultAttribute>();
+		resource1Attr.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
+		resource1Attr.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
+		DefaultAttributes resource1 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		Collection<DefaultAttribute> subjectAttr = new LinkedList<DefaultAttribute>();
+		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
+		DefaultAttributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		Request request1 = new DefaultRequest(false, 
 				Arrays.asList(subject, resource0, resource1));
@@ -49,23 +52,23 @@ public class DefaultRequestTest
 	@Test
 	public void testBehavior()
 	{
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId11", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId12", DataTypes.STRING.create("value1")));
-		resource0Attr.add(new Attribute("testId13","testIssuer", 
+		Collection<DefaultAttribute> resource0Attr = new LinkedList<DefaultAttribute>();
+		resource0Attr.add(new DefaultAttribute("testId11", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new DefaultAttribute("testId12", DataTypes.STRING.create("value1")));
+		resource0Attr.add(new DefaultAttribute("testId13","testIssuer", 
 				true, Arrays.asList(DataTypes.STRING.create("value2"))));
-		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		DefaultAttributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
-		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId21", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId22", DataTypes.STRING.create("value1")));
-		resource1Attr.add(new Attribute("testId23","testIssuer", true, Arrays.asList(DataTypes.STRING.create("value2"))));
-		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		Collection<DefaultAttribute> resource1Attr = new LinkedList<DefaultAttribute>();
+		resource1Attr.add(new DefaultAttribute("testId21", DataTypes.STRING.create("value0")));
+		resource1Attr.add(new DefaultAttribute("testId22", DataTypes.STRING.create("value1")));
+		resource1Attr.add(new DefaultAttribute("testId23","testIssuer", true, Arrays.asList(DataTypes.STRING.create("value2"))));
+		DefaultAttributes resource1 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		Collection<DefaultAttribute> subjectAttr = new LinkedList<DefaultAttribute>();
+		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
+		DefaultAttributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		Request request1 = new DefaultRequest(false, 
 				Arrays.asList(subject, resource0, resource1));

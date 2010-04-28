@@ -1,9 +1,15 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.PolicyIdentifier;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestProfileHandler;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.PolicySet;
