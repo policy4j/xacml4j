@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
 import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -28,14 +28,14 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
-		Collection<DefaultAttributes> resources = request.getAttributes(AttributeCategoryId.RESOURCE);
+		Collection<Attributes> resources = request.getAttributes(AttributeCategoryId.RESOURCE);
 		if(resources.size() <= 1){
 			return handleNext(request, pdp);
 		}
-		Collection<DefaultAttributes> otherAttributes = Collections2.filter(request.getAttributes(), 
-				new Predicate<DefaultAttributes>() {
+		Collection<Attributes> otherAttributes = Collections2.filter(request.getAttributes(), 
+				new Predicate<Attributes>() {
 			@Override
-			public boolean apply(DefaultAttributes arg) {
+			public boolean apply(Attributes arg) {
 				boolean filter = !arg.getCategoryId().equals(AttributeCategoryId.RESOURCE);
 				if(filter){
 					log.debug("Filtering attributes=\"{}\"", arg);
@@ -44,9 +44,9 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 			}
 		});
 		Collection<Result> results = new LinkedList<Result>();
-		for(DefaultAttributes resource : resources)
+		for(Attributes resource : resources)
 		{ 
-			Collection<DefaultAttributes> attr = new LinkedList<DefaultAttributes>(otherAttributes);
+			Collection<Attributes> attr = new LinkedList<Attributes>(otherAttributes);
 			attr.add(resource);
 			results.addAll(handleNext(new DefaultRequest(request.isReturnPolicyIdList(),  attr), pdp));
 		}

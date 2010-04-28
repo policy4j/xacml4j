@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.policy.impl.DefaultRequest;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler
@@ -40,9 +40,9 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			RequestReference reqRef)
 	{
 		Collection<Result> results = new LinkedList<Result>();
-		Collection<DefaultAttributes> resolved = new LinkedList<DefaultAttributes>();
+		Collection<Attributes> resolved = new LinkedList<Attributes>();
 		for(AttributesReference ref : reqRef.getReferencedAttributes()){
-			DefaultAttributes attributes = req.getReferencedAttributes(ref);
+			Attributes attributes = req.getReferencedAttributes(ref);
 			if(attributes == null){
 				results.add(new Result(
 						new Status(StatusCode.createSyntaxError(), 
