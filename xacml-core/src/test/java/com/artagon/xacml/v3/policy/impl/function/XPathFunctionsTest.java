@@ -24,6 +24,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
@@ -112,7 +113,10 @@ public class XPathFunctionsTest
 		@Override
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
-			return xpathProvider.evaluateToNodeSet((String)args[0], content);
+			return xpathProvider.evaluateToNodeSet(
+					(XPathVersion)args[0],
+					(String)args[1],
+					content);
 		}
 		
 	}

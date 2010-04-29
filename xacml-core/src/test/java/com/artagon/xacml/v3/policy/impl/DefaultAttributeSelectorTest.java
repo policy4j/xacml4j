@@ -25,6 +25,7 @@ import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -162,7 +163,10 @@ public class DefaultAttributeSelectorTest
 		@Override
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
-			return xpathProvider.evaluateToNodeSet((String)args[0], content);
+			return xpathProvider.evaluateToNodeSet(
+					(XPathVersion)args[0],
+					(String)args[1],
+					content);
 		}
 		
 	}

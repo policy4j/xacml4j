@@ -15,6 +15,7 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
 	private ContextHandler attributeResolver;
 	private PolicyReferenceResolver policyResolver;
+	private XPathProvider xpathProvider;
 	
 	public DefaultEvaluationContextFactory(
 			ContextHandler service, 
@@ -25,15 +26,16 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 		Preconditions.checkNotNull(xpathProvider);
 		this.attributeResolver = service;	
 		this.policyResolver = policyResolver;
+		this.xpathProvider = xpathProvider;
 	}
 
 	@Override
 	public EvaluationContext createContext(Policy policy, Request request) {
-		return new PolicyEvaluationContext(policy, attributeResolver, policyResolver);
+		return new PolicyEvaluationContext(policy, attributeResolver, xpathProvider, policyResolver);
 	}
 	
 	@Override
 	public EvaluationContext createContext(PolicySet policySet, Request request) {
-		return new PolicySetEvaluationContext(policySet, attributeResolver, policyResolver);
+		return new PolicySetEvaluationContext(policySet, attributeResolver, xpathProvider, policyResolver);
 	}
 }

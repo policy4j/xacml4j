@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class PolicySetEvaluationContextTest 
 {
@@ -26,15 +27,17 @@ public class PolicySetEvaluationContextTest
 	private ContextHandler resolver;
 	private PolicyReferenceResolver policyResolver;
 	private PolicySetDefaults defaults;
+	private XPathProvider xpathProvider;
 	
 	@Before
 	public void setup(){
 		this.defaults = createStrictMock(PolicySetDefaults.class);
 		this.policyResolver = createStrictMock(PolicyReferenceResolver.class);
 		this.resolver = createStrictMock(ContextHandler.class);
+		this.xpathProvider = createStrictMock(XPathProvider.class);
 		this.policySet = createStrictMock(PolicySet.class);
 		this.context = new PolicySetEvaluationContext(policySet, 
-				resolver, policyResolver);
+				resolver, xpathProvider, policyResolver);
 	}
 	
 	@Test

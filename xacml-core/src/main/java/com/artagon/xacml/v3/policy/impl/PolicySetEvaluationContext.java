@@ -6,6 +6,7 @@ import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 final class PolicySetEvaluationContext extends BaseEvaluationContext
 {
@@ -14,8 +15,9 @@ final class PolicySetEvaluationContext extends BaseEvaluationContext
 	
 	public PolicySetEvaluationContext(PolicySet policySet, 
 			ContextHandler attributeService, 
+			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
-		super(attributeService, policyResolver);
+		super(attributeService, xpathProvider, policyResolver);
 		Preconditions.checkNotNull(policySet);
 		this.policySet = policySet;
 		this.xpathVersion = XPathVersion.XPATH1;

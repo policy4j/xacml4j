@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.NodeNamespaceContext;
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
@@ -27,7 +28,7 @@ public class JDKXPathProvider implements XPathProvider
 	}
 	
 	@Override
-	public Node evaluateToNode(String path, Node context)
+	public Node evaluateToNode(XPathVersion v, String path, Node context)
 			throws XPathEvaluationException 
 	{
 		try
@@ -41,7 +42,7 @@ public class JDKXPathProvider implements XPathProvider
 	}
 
 	@Override
-	public NodeList evaluateToNodeSet(String path, Node context)
+	public NodeList evaluateToNodeSet(XPathVersion v, String path, Node context)
 			throws XPathEvaluationException {
 		try
 		{
@@ -54,7 +55,7 @@ public class JDKXPathProvider implements XPathProvider
 	}
 
 	@Override
-	public String evaluateToString(String path, Node context)
+	public String evaluateToString(XPathVersion v, String path, Node context)
 			throws XPathEvaluationException {
 		try
 		{
@@ -67,7 +68,7 @@ public class JDKXPathProvider implements XPathProvider
 	}
 	
 	@Override
-	public Number evaluateToNumber(String path, Node context)
+	public Number evaluateToNumber(XPathVersion v, String path, Node context)
 			throws XPathEvaluationException {
 		try
 		{

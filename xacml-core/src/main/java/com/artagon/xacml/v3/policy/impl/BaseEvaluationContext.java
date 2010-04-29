@@ -34,6 +34,9 @@ import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 
+import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
+import com.artagon.xacml.v3.policy.spi.XPathProvider;
+
 abstract class BaseEvaluationContext implements EvaluationContext
 {
 	private ContextHandler contextHandler;
@@ -49,6 +52,8 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	private TimeZone timezone;
 	
 	private List<PolicyIdentifier> evaluatedPolicies;
+	
+	private XPathProvider xpathProvider;
 		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -59,20 +64,24 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	protected BaseEvaluationContext(
 			ContextHandler attributeService, 
+			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
-		this(false, attributeService, policyResolver);
+		this(false, attributeService, xpathProvider, policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
 			ContextHandler attributeService,
+			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
+		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = attributeService;
+		this.xpathProvider = xpathProvider;
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, Value>(
 				new MapMaker() {
@@ -195,26 +204,61 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return contextHandler.evaluateToNode(this, path, categoryId);
+		Node content = contextHandler.getContent(categoryId);
+		if(content == null){
+			return null;
+		}
+		try{
+			return xpathProvider.evaluateToNode(
+					getXPathVersion(), path, content);
+		}catch(XPathEvaluationException e){
+			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+		}
 	}
 
 	@Override
-	public final NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
+	public final NodeList evaluateToNodeSet(String path, 
+			AttributeCategoryId categoryId)
 			throws EvaluationException 
 	{
-		return contextHandler.evaluateToNodeList(this, path, categoryId);
+		Node content = contextHandler.getContent(categoryId);
+		if(content == null){
+			return null;
+		}
+		try{
+			return xpathProvider.evaluateToNodeSet(getXPathVersion(), path, content);
+		}catch(XPathEvaluationException e){
+			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+		}
 	}
 
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return contextHandler.evaluateToNumber(this, path, categoryId);
+		Node content = contextHandler.getContent(categoryId);
+		if(content == null){
+			return null;
+		}
+		try{
+			return xpathProvider.evaluateToNumber(getXPathVersion(), path, content);
+		}catch(XPathEvaluationException e){
+			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+		}
 	}
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
-		return contextHandler.evaluateToString(this, path, categoryId);
+		Node content = contextHandler.getContent(categoryId);
+		if(content == null){
+			return null;
+		}
+		try{
+			return xpathProvider.evaluateToString(
+					getXPathVersion(), path, content);
+		}catch(XPathEvaluationException e){
+			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+		}
 	}
 	
 	public BagOfAttributeValues<AttributeValue> resolve(
