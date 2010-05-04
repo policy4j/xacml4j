@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.util.Preconditions;
+import com.google.common.collect.Iterables;
 
 public class Result extends XacmlObject
 {
@@ -40,10 +40,10 @@ public class Result extends XacmlObject
 	 */
 	public Result(
 			Decision decision, 
-			Collection<Advice> associatedAdvice, 
-			Collection<Obligation> obligations,
-			Collection<Attributes> attributes,
-			Collection<PolicyIdentifier> policyIdentifiers){
+			Iterable<Advice> associatedAdvice, 
+			Iterable<Obligation> obligations,
+			Iterable<Attributes> attributes,
+			Iterable<PolicyIdentifier> policyIdentifiers){
 		Preconditions.checkNotNull(decision);
 		Preconditions.checkNotNull(obligations);
 		Preconditions.checkNotNull(associatedAdvice);
@@ -51,10 +51,14 @@ public class Result extends XacmlObject
 		Preconditions.checkArgument(!decision.isIndeterminate());
 		this.decision = decision;
 		this.status = Status.createSuccessStatus();
-		this.associatedAdvice = new LinkedList<Advice>(associatedAdvice);
-		this.obligations = new LinkedList<Obligation>(obligations);
-		this.attributes = new LinkedList<Attributes>(attributes);
-		this.policyIdentifiers = new ArrayList<PolicyIdentifier>(policyIdentifiers);
+		this.associatedAdvice = new LinkedList<Advice>();
+		this.obligations = new LinkedList<Obligation>();
+		this.attributes = new LinkedList<Attributes>();
+		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
+		Iterables.addAll(this.associatedAdvice, associatedAdvice);
+		Iterables.addAll(this.obligations, obligations);
+		Iterables.addAll(this.attributes, attributes);
+		Iterables.addAll(this.policyIdentifiers, policyIdentifiers);
 	}
 	
 	/**

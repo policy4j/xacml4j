@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +29,7 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	private AttributeCategoryId categoryId;
 	private Node content;
 	private Multimap<String, Attribute> attributes;
+	private String scope;
 	
 	/**
 	 * Constructs an attributes with a given identifier,
@@ -96,6 +97,10 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	 */
 	public String getId(){
 		return id;
+	}
+	
+	public String getScope(){
+		return scope;
 	}
 	
 	/* (non-Javadoc)

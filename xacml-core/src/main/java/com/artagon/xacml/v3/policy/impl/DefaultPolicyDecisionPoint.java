@@ -35,7 +35,7 @@ public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoin
 		EvaluationContext context = factory.createContext(policySet, request);
 		EvaluationContext policySetContext = policySet.createContext(context);
 		Decision decision = policySet.evaluateIfApplicable(policySetContext);
-		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
+		Iterable<Attributes> includeInResult = request.getIncludeInResultAttributes();
 		return new Result(
 				decision, 
 				context.getAdvices(), 

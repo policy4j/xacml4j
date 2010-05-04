@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import com.artagon.xacml.v3.impl.DefaultAttributes;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Target;
-import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
 
 public interface Request 
 {
@@ -23,10 +23,6 @@ public interface Request
 	 * @return boolean value
 	 */
 	boolean isReturnPolicyIdList();
-
-	int getCategoryOccuriences(AttributeCategoryId category);
-
-	Set<String> getProvidedAttributeIdentifiers();
 
 	/**
 	 * Gets request references contained
@@ -74,22 +70,28 @@ public interface Request
 	 * {@link Collections#emptyList()} if given request
 	 * does not have attributes of given category
 	 */
-	Collection<Attributes> getAttributes(
-			AttributeCategoryId categoryId);
-
-	Collection<Attributes> getAttributes();
-
+	Collection<Attributes> getAttributes(AttributeCategoryId categoryId);
+	
+	
 	/**
-	 * Gets all {@link Attributes} instances
-	 * from a given  request context which has
-	 * attribute with a given identifier
+	 * Gets all {@link Attributes} of given category containing 
+	 * an attribute with a given identifier
 	 * 
 	 * @param categoryId an attribute category
-	 * @param attributeId an attribute id
+	 * @param attributeId an attribute identifier
+	 * @return a collection if matching {@link Attributes} instances
+	 */
+	Collection<Attributes> getAttributes(AttributeCategoryId categoryId, String attributeId);
+	
+	/**
+	 * Gets all {@link Attributes} instances
+	 * contained in this request
+	 * 
 	 * @return a collection of {@link Attributes}
 	 */
-	Collection<Attributes> getAttributes(
-			AttributeCategoryId categoryId, String attributeId);
+	Collection<Attributes> getAttributes();
 	
 	Collection<Attributes> getIncludeInResultAttributes();
+	
+	boolean containsRepeatingCategories();
 }

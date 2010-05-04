@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.policy.impl.DefaultRequest;
+import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 

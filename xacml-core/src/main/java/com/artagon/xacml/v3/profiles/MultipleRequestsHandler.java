@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.policy.impl.DefaultRequest;
+import com.artagon.xacml.v3.impl.DefaultRequest;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 {

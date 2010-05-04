@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.impl.DefaultRequest;
+import com.artagon.xacml.v3.impl.DefaultRequest;
 
 public interface PolicyDecisionPoint 
 {

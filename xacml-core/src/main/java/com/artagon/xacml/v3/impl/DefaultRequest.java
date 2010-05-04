@@ -1,10 +1,9 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -28,26 +27,23 @@ public class DefaultRequest extends XacmlObject implements Request
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> multipleRequests;
-	private Set<String> attributeIds;
 	
 	/**
 	 * Constructs a request with a given attributes
 	 * @param attributes
 	 */
 	public DefaultRequest(boolean returnPolicyIdList, 
-			Iterable<Attributes> attributes, 
+			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = HashMultimap.create();
-		this.attributeIds = new HashSet<String>();
 		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
 		this.attributesByXmlId = new HashMap<String, Attributes>();
 		for(Attributes attr : attributes)
 		{
 			// index attributes by category
 			this.attributes.put(attr.getCategoryId(), attr);
-			this.attributeIds.addAll(attr.getProvidedAttributeIds());
 			// index attributes
 			// by id for fast lookup
 			if(attr.getId() != null){
@@ -69,37 +65,32 @@ public class DefaultRequest extends XacmlObject implements Request
 				Collections.<RequestReference>emptyList());
 	}
 	
+	@Override
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
 	}
 	
-	public int getCategoryOccuriences(AttributeCategoryId category){
+	public int getOccuriences(AttributeCategoryId category){
 		Collection<Attributes> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
 	
-	public Set<String> getProvidedAttributeIdentifiers(){
-		return Collections.unmodifiableSet(attributeIds);
-	}
-	
+	@Override
 	public Collection<RequestReference> getRequestReferences(){
 		return Collections.unmodifiableCollection(multipleRequests);
 	}
 
+	@Override
 	public boolean hasMultipleRequests(){
 		return !multipleRequests.isEmpty();
 	}
 	
+	@Override
 	public Set<AttributeCategoryId> getCategories(){
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
 	
-	/**
-	 * Gets all {@link Attributes} instances
-	 * which contain an instance of {@link DefaultAttribute}
-	 * with {@link DefaultAttribute#isIncludeInResult()} <code>true</code>
-	 */
 	@Override
 	public Collection<Attributes> getIncludeInResultAttributes() 
 	{
@@ -113,22 +104,26 @@ public class DefaultRequest extends XacmlObject implements Request
 		return resultAttr;
 	}
 	
+	@Override
 	public Attributes getReferencedAttributes(AttributesReference reference){
 		Preconditions.checkNotNull(reference);
 		return attributesByXmlId.get(reference.getReferenceId());
 	}
 	
+	@Override
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> attr =  attributes.get(categoryId);
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
 	
+	@Override
 	public Collection<Attributes> getAttributes(){
 		return Collections.unmodifiableCollection(attributes.values());
 	}
 	
 	
+	@Override
 	public Collection<Attributes> getAttributes(
 			final AttributeCategoryId categoryId, 
 			final String attributeId)
@@ -145,5 +140,14 @@ public class DefaultRequest extends XacmlObject implements Request
 				return a.containsAttribute(attributeId);
 			}
 		});
+	}
+	
+	public boolean containsRepeatingCategories(){
+		for(AttributeCategoryId category : getCategories()){
+			if(getOccuriences(category) > 1){
+				return false;
+			}
+		}
+		return true;
 	}
 }

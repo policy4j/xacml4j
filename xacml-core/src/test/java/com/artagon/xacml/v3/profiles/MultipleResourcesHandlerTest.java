@@ -25,9 +25,9 @@ import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
-import com.artagon.xacml.v3.policy.impl.DefaultAttributes;
-import com.artagon.xacml.v3.policy.impl.DefaultRequest;
+import com.artagon.xacml.v3.impl.DefaultAttribute;
+import com.artagon.xacml.v3.impl.DefaultAttributes;
+import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleResourcesHandlerTest 

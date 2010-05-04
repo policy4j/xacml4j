@@ -1,17 +1,16 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v3.impl.DefaultAttribute;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.impl.DefaultAttribute;
 
-public interface Attributes {
-
+public interface Attributes 
+{
 	/**
 	 * An unique identifier of the attribute in
 	 * the request context
@@ -19,16 +18,16 @@ public interface Attributes {
 	 * @return unique identifier of the
 	 * attribute in the request context
 	 */
-	public abstract String getId();
+	String getId();
 
+	String getScope();
+	
 	/**
 	 * Gets an attribute category
 	 * 
 	 * @return attribute category
 	 */
-	public abstract AttributeCategoryId getCategoryId();
-
-	public abstract Set<String> getProvidedAttributeIds();
+	AttributeCategoryId getCategoryId();
 
 	/**
 	 * Tests if this instance contains an
@@ -37,7 +36,7 @@ public interface Attributes {
 	 * @param attributeId an attribute id
 	 * @return <code>true</code> if contains
 	 */
-	public abstract boolean containsAttribute(String attributeId);
+	boolean containsAttribute(String attributeId);
 
 	/**
 	 * Gets a collection of attributes by identifier
@@ -47,16 +46,15 @@ public interface Attributes {
 	 * instances or an empty collection if no
 	 * matching attributes found
 	 */
-	public abstract Collection<Attribute> getAttribute(String attributeId);
+	Collection<Attribute> getAttribute(String attributeId);
 
-	public abstract Collection<Attribute> getAttributes(
-			final String attributeId, final String issuer);
+	Collection<Attribute> getAttributes(String attributeId, String issuer);
 
-	public abstract Collection<Attribute> getIncludeInResultAttributes();
+	Collection<Attribute> getIncludeInResultAttributes();
 
-	public abstract BagOfAttributeValues<? extends AttributeValue> getAttributeValues(
+	BagOfAttributeValues<? extends AttributeValue> getAttributeValues(
 			String attributeId, String issuer, AttributeValueType type);
 
-	public abstract Node getContent();
+	Node getContent();
 
 }

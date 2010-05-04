@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -39,6 +41,8 @@ import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 abstract class BaseEvaluationContext implements EvaluationContext
 {
+	private final static Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
+	
 	private ContextHandler contextHandler;
 	private PolicyReferenceResolver policyResolver;
 	
@@ -203,15 +207,21 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
-			throws EvaluationException {
+			throws EvaluationException 
+	{
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
+		}
 		Node content = contextHandler.getContent(categoryId);
 		if(content == null){
+			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
 			return xpathProvider.evaluateToNode(
 					getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
+			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -221,13 +231,18 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeCategoryId categoryId)
 			throws EvaluationException 
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
+		}
 		Node content = contextHandler.getContent(categoryId);
 		if(content == null){
+			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
 			return xpathProvider.evaluateToNodeSet(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
+			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -235,13 +250,18 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
+		}
 		Node content = contextHandler.getContent(categoryId);
 		if(content == null){
+			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
 			return xpathProvider.evaluateToNumber(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
+			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -249,14 +269,19 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final String evaluateToString(String path, AttributeCategoryId categoryId)
 			throws EvaluationException {
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
+		}
 		Node content = contextHandler.getContent(categoryId);
 		if(content == null){
+			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
 			return xpathProvider.evaluateToString(
 					getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
+			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -267,6 +292,11 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeValueType dataType,
 			String issuer) throws EvaluationException
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Trying to resolve attribute, " +
+					"category=\"{}\", attributeId=\"{}\" dataType=\"{}\", issuer=\"{}\"",
+					new Object[]{categoryId, attributeId, dataType, issuer});
+		}
 		return contextHandler.resolve(this, categoryId, attributeId, dataType, issuer);
 	}
 
