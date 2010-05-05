@@ -6,7 +6,6 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 
 public interface ContextHandler 
 {
-	
 	/**
 	 * Gets content for a given attribute category
 	 * 
@@ -15,12 +14,13 @@ public interface ContextHandler
 	 * <code>null</code> if content is not available
 	 * for a given category 
 	 */
-	Node getContent(AttributeCategoryId categoryId);
+	Node getContent(EvaluationContext context, AttributeCategoryId categoryId);
 	
-	BagOfAttributeValues<AttributeValue> resolve(
-			EvaluationContext context, 
-			AttributeCategoryId categoryId,
-			String attributeId, 
-			AttributeValueType dataType, 
-			String issuer) throws EvaluationException;	
+	BagOfAttributeValues<? extends AttributeValue> resolve(
+			EvaluationContext context,
+			AttributeDesignator ref) throws EvaluationException;
+	
+	BagOfAttributeValues<? extends AttributeValue> resolve(
+			EvaluationContext context,
+			AttributeSelector selector) throws EvaluationException;
 }

@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.util.Preconditions;
+import com.artagon.xacml.v3.IndividualRequest;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -26,14 +27,14 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	}
 
 	@Override
-	public EvaluationContext createContext(Policy policy, Request request) {
-		ContextHandler handler = new DefaultContextHandler(request);
+	public EvaluationContext createContext(Policy policy, IndividualRequest request) {
+		ContextHandler handler = new BaseContextHandler(request);
 		return new PolicyEvaluationContext(policy, handler , xpathProvider, policyResolver);
 	}
 	
 	@Override
-	public EvaluationContext createContext(PolicySet policySet, Request request) {
-		ContextHandler handler = new DefaultContextHandler(request);
+	public EvaluationContext createContext(PolicySet policySet, IndividualRequest request) {
+		ContextHandler handler = new BaseContextHandler(request);
 		return new PolicySetEvaluationContext(policySet, handler, xpathProvider, policyResolver);
 	}
 }

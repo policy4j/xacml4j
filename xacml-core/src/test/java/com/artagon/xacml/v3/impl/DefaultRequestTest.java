@@ -58,10 +58,10 @@ public class DefaultRequestTest
 	{	
 		Request request = new DefaultRequest(false, 
 				Arrays.asList(subject0, resource0));
-		assertFalse(request.containsRepeatingCategories());
+		assertFalse(request.hasRepeatingCategories());
 		request = new DefaultRequest(false, 
 				Arrays.asList(subject0, resource0, resource1));
-		assertTrue(request.containsRepeatingCategories());
+		assertTrue(request.hasRepeatingCategories());
 	}
 	
 	public void testGetAttrobutesByCategoryId()

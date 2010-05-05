@@ -11,8 +11,9 @@ import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIdentifier;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -193,11 +194,17 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
-			AttributeCategoryId categoryId, String attributeId,
-			AttributeValueType dataType, String issuer)
+	public BagOfAttributeValues<? extends AttributeValue> resolve(
+			AttributeDesignator ref)
 			throws EvaluationException {
-		return delegate.resolve(categoryId, attributeId, dataType, issuer);
+		return delegate.resolve(ref);
+	}
+	
+	@Override
+	public BagOfAttributeValues<? extends AttributeValue> resolve(
+			AttributeSelector ref)
+			throws EvaluationException {
+		return delegate.resolve(ref);
 	}
 
 	@Override

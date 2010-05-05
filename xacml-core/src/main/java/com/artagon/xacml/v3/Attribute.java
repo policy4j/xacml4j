@@ -3,10 +3,9 @@ package com.artagon.xacml.v3;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 
-public interface Attribute {
-
+public interface Attribute 
+{
 	/**
 	 * Gets attribute identifier.
 	 * 
@@ -41,7 +40,4 @@ public interface Attribute {
 	 * if needs to be included
 	 */
 	boolean isIncludeInResult();
-
-	Collection<AttributeValue> getValuesByType(AttributeValueType type);
-
 }

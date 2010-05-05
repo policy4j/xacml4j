@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import com.artagon.xacml.v3.impl.DefaultAttributes;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Target;
@@ -60,7 +61,15 @@ public interface Request
 	 */
 	Attributes getReferencedAttributes(
 			AttributesReference reference);
-
+	
+	/**
+	 * Gets all {@link Attributes} instances
+	 * contained in this request
+	 * 
+	 * @return a collection of {@link Attributes}
+	 */
+	Collection<Attributes> getAttributes();
+	
 	/**
 	 * Gets all {@link Attributes} from request with
 	 * a given category
@@ -72,26 +81,13 @@ public interface Request
 	 */
 	Collection<Attributes> getAttributes(AttributeCategoryId categoryId);
 	
-	
-	/**
-	 * Gets all {@link Attributes} of given category containing 
-	 * an attribute with a given identifier
-	 * 
-	 * @param categoryId an attribute category
-	 * @param attributeId an attribute identifier
-	 * @return a collection if matching {@link Attributes} instances
-	 */
-	Collection<Attributes> getAttributes(AttributeCategoryId categoryId, String attributeId);
-	
-	/**
-	 * Gets all {@link Attributes} instances
-	 * contained in this request
-	 * 
-	 * @return a collection of {@link Attributes}
-	 */
-	Collection<Attributes> getAttributes();
+	Collection<AttributeValue> getAttributeValues(
+			AttributeCategoryId category, 
+			String attributeId, 
+			String issuer, 
+			AttributeValueType type);
 	
 	Collection<Attributes> getIncludeInResultAttributes();
 	
-	boolean containsRepeatingCategories();
+	boolean hasRepeatingCategories();
 }

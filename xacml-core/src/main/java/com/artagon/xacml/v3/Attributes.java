@@ -7,7 +7,6 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v3.impl.DefaultAttribute;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 public interface Attributes 
 {
@@ -19,7 +18,7 @@ public interface Attributes
 	 * attribute in the request context
 	 */
 	String getId();
-
+	
 	String getScope();
 	
 	/**
@@ -46,13 +45,15 @@ public interface Attributes
 	 * instances or an empty collection if no
 	 * matching attributes found
 	 */
-	Collection<Attribute> getAttribute(String attributeId);
+	Collection<Attribute> getAttributes(String attributeId);
 
 	Collection<Attribute> getAttributes(String attributeId, String issuer);
+	
+	Collection<Attribute> getAttributes();
 
 	Collection<Attribute> getIncludeInResultAttributes();
 
-	BagOfAttributeValues<? extends AttributeValue> getAttributeValues(
+	Collection<AttributeValue> getAttributeValues(
 			String attributeId, String issuer, AttributeValueType type);
 
 	Node getContent();

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.w3c.dom.Node;
 
@@ -15,8 +14,6 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -92,61 +89,54 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 		this(null, categoryId, null, Arrays.asList(attributes));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getId()
-	 */
+	@Override
 	public String getId(){
 		return id;
 	}
 	
+	@Override
 	public String getScope(){
 		return scope;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getCategoryId()
-	 */
+	@Override
+	public Node getContent(){
+		return content;
+	}
+	
+	@Override
 	public AttributeCategoryId getCategoryId(){
 		return categoryId;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getProvidedAttributeIds()
-	 */
-	public Set<String> getProvidedAttributeIds(){
-		return Collections.unmodifiableSet(attributes.keySet());
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#containsAttribute(java.lang.String)
-	 */
+	@Override
 	public boolean containsAttribute(String attributeId){
 		return attributes.containsKey(attributeId);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getAttribute(java.lang.String)
-	 */
-	public Collection<Attribute> getAttribute(String attributeId){
+	@Override
+	public Collection<Attribute> getAttributes(String attributeId){
 		return attributes.get(attributeId);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getAttributes(java.lang.String, java.lang.String)
-	 */
+	@Override
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
 		Collection<Attribute> v = attributes.get(attributeId);
 		return  Collections2.filter(v, new Predicate<Attribute>() {
 			@Override
 			public boolean apply(Attribute attr) {
-				return Objects.equal(issuer, attr.getIssuer());
+				return issuer == null || 
+				issuer.equals(attr.getIssuer());
 			}
 		});	
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getIncludeInResultAttributes()
-	 */
+	@Override
+	public Collection<Attribute> getAttributes() {
+		return Collections.unmodifiableCollection(attributes.values());
+	}
+
+	@Override
 	public Collection<Attribute> getIncludeInResultAttributes(){
 		return  Collections2.filter(attributes.values(), new Predicate<Attribute>() {
 			@Override
@@ -156,24 +146,21 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 		});	
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getAttributeValues(java.lang.String, java.lang.String, com.artagon.xacml.v3.policy.AttributeValueType)
-	 */
-	public BagOfAttributeValues<? extends AttributeValue> getAttributeValues(
-			String attributeId, String issuer, AttributeValueType type){
+	@Override
+	public Collection<AttributeValue> getAttributeValues(
+			String attributeId, String issuer, final AttributeValueType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> attrs = getAttributes(attributeId, issuer);
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
-		for(Attribute a : attrs){
-			values.addAll(a.getValuesByType(type));
+		for(Attribute a : attrs)
+		{
+			values.addAll(Collections2.filter(a.getValues(), new Predicate<AttributeValue>() {
+				@Override
+				public boolean apply(AttributeValue attr) {
+					return type.equals(attr.getType());
+				}
+			}));
 		}
-		return type.bagOf().create(values);
-	}
-		
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.Attributes#getContent()
-	 */
-	public Node getContent(){
-		return content;
+		return Collections.unmodifiableCollection(values);
 	}
 }

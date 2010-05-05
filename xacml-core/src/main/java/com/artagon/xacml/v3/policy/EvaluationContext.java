@@ -130,22 +130,11 @@ public interface EvaluationContext
 	void setVariableEvaluationResult(String variableId, Value value);
 	
 	
-	/**
-	 * Resolves an attribute from context
-	 * 
-	 * @param categoryId an attribute category
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @param issuer an attribute issuer
-	 * @return {@link BagOfAttributeValues} instance
-	 * @throws EvaluationException if an error
-	 * occurs while resolving attributes
-	 */
-	BagOfAttributeValues<AttributeValue> resolve(
-			AttributeCategoryId categoryId, 
-			String attributeId, 
-			AttributeValueType dataType,
-			String issuer) throws EvaluationException;
+	BagOfAttributeValues<? extends AttributeValue> resolve(AttributeDesignator ref) 
+		throws EvaluationException;
+	
+	BagOfAttributeValues<? extends AttributeValue> resolve(AttributeSelector ref) 
+		throws EvaluationException;
 	
 
 	NodeList evaluateToNodeSet(

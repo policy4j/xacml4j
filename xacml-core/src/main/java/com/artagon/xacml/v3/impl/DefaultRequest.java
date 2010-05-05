@@ -16,8 +16,8 @@ import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.XacmlObject;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -110,6 +110,12 @@ public class DefaultRequest extends XacmlObject implements Request
 		return attributesByXmlId.get(reference.getReferenceId());
 	}
 	
+	
+	@Override
+	public Collection<Attributes> getAttributes() {
+		return Collections.unmodifiableCollection(attributes.values());
+	}
+
 	@Override
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
@@ -118,31 +124,19 @@ public class DefaultRequest extends XacmlObject implements Request
 	}
 	
 	@Override
-	public Collection<Attributes> getAttributes(){
-		return Collections.unmodifiableCollection(attributes.values());
-	}
-	
-	
-	@Override
-	public Collection<Attributes> getAttributes(
-			final AttributeCategoryId categoryId, 
-			final String attributeId)
+	public Collection<AttributeValue> getAttributeValues(
+			AttributeCategoryId category, String attributeId, String issuer,
+			AttributeValueType type) 
 	{
-		Preconditions.checkNotNull(categoryId);
-		Preconditions.checkNotNull(attributeId);
-		 Collection<Attributes> attr = attributes.get(categoryId);
-		 if(attr == null){
-			 return Collections.emptyList();
-		 }
-		 return Collections2.filter(attr, new Predicate<Attributes>() {
-			@Override
-			public boolean apply(Attributes a) {
-				return a.containsAttribute(attributeId);
-			}
-		});
+		Collection<Attributes> found = getAttributes(category);
+		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		for(Attributes a : found){
+			values.addAll(a.getAttributeValues(attributeId, issuer, type));
+		}
+		return values;
 	}
-	
-	public boolean containsRepeatingCategories(){
+
+	public boolean hasRepeatingCategories(){
 		for(AttributeCategoryId category : getCategories()){
 			if(getOccuriences(category) > 1){
 				return false;

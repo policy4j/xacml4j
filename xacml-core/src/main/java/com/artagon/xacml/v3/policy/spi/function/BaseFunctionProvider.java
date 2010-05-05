@@ -24,7 +24,8 @@ public class BaseFunctionProvider implements FunctionProvider
 	protected final void add(FunctionSpec spec){
 		FunctionSpec other = functions.get(spec.getId());
 		Preconditions.checkArgument(other == null, 
-				String.format("This factory already contains function=\"%s\" with a given identifier=\"%s\"", 
+				String.format("This factory already contains " +
+						"function=\"%s\" with a given identifier=\"%s\"", 
 						spec, spec.getId()));
 		functions.put(spec.getId(), spec);
 	}

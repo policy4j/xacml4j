@@ -22,8 +22,9 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeSelector;
 import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -35,7 +36,6 @@ import com.artagon.xacml.v3.policy.PolicyResolutionException;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
-
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
@@ -212,7 +212,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = contextHandler.getContent(categoryId);
+		Node content = contextHandler.getContent(this, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -234,7 +234,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = contextHandler.getContent(categoryId);
+		Node content = contextHandler.getContent(this, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -253,7 +253,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = contextHandler.getContent(categoryId);
+		Node content = contextHandler.getContent(this, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -272,7 +272,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = contextHandler.getContent(categoryId);
+		Node content = contextHandler.getContent(this, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -286,19 +286,24 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		}
 	}
 	
-	public BagOfAttributeValues<AttributeValue> resolve(
-			AttributeCategoryId categoryId, 
-			String attributeId, 
-			AttributeValueType dataType,
-			String issuer) throws EvaluationException
+	@Override
+	public final BagOfAttributeValues<? extends AttributeValue> resolve(
+			AttributeDesignator ref) 
+		throws EvaluationException
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve attribute, " +
-					"category=\"{}\", attributeId=\"{}\" dataType=\"{}\", issuer=\"{}\"",
-					new Object[]{categoryId, attributeId, dataType, issuer});
-		}
-		return contextHandler.resolve(this, categoryId, attributeId, dataType, issuer);
+		return contextHandler.resolve(this, ref);
 	}
+	
+	
+
+	@Override
+	public final BagOfAttributeValues<? extends AttributeValue> resolve(AttributeSelector ref)
+			throws EvaluationException 
+	{
+		return contextHandler.resolve(this, ref);
+	}
+	
+	
 
 	@Override
 	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
@@ -308,5 +313,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	public void addApplicablePolicy(String policyID,  Version version){
 		evaluatedPolicies.add(new PolicyIdentifier(policyID, version));
 	}
+	
+
 	
 }
