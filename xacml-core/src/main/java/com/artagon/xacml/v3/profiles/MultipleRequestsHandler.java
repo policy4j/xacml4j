@@ -3,15 +3,14 @@ package com.artagon.xacml.v3.profiles;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
-
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.impl.DefaultRequest;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler

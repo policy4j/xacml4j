@@ -15,9 +15,6 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.impl.DefaultAttribute;
-import com.artagon.xacml.v3.impl.DefaultAttributes;
-import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultRequestTest 
@@ -64,13 +61,6 @@ public class DefaultRequestTest
 		assertTrue(request.hasRepeatingCategories());
 	}
 	
-	public void testGetAttrobutesByCategoryId()
-	{	
-		Request request = new DefaultRequest(false, 
-				Arrays.asList(subject0, resource0));
-		Collection<Attributes> attr = request.getAttributes(AttributeCategoryId.RESOURCE, "testId11");
-		assertEquals(2, attr.size());
-	}
 	
 	@Test
 	public void testCreateRequest()

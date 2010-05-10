@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.Expression;
@@ -33,12 +35,11 @@ public class DefaultAttributeDesignatorTest
 	}
 	
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresentTrueAttributeDoesNotExist() throws EvaluationException
+	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
-		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
-				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
+		expect(context.resolve(desig)).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
 		try{
 			desig.evaluate(context);
@@ -51,14 +52,32 @@ public class DefaultAttributeDesignatorTest
 		verify(context);
 	}
 	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
+	{
+		AttributeDesignator desig = new DefaultAttributeDesignator(
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
+		expect(context.resolve(desig)).andReturn(null);
+		replay(context);
+		try{
+			desig.evaluate(context);
+		}catch(AttributeReferenceEvaluationException e){
+			assertSame(desig, e.getReference());
+			assertSame(context, e.getEvaluationContext());
+			assertTrue(e.getStatusCode().isFailure());
+			throw e;
+		}
+		verify(context);
+	}
+
+	
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
-		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
-				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.bag(
-						DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2)));
+		BagOfAttributeValues<AttributeValue> bag = DataTypes.INTEGER.bag(DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2));
+		expect(context.resolve(desig)).andReturn(bag);
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
@@ -67,12 +86,25 @@ public class DefaultAttributeDesignatorTest
 	}
 	
 	@Test
-	public void testMustBePresentFalseAttributeDoesNotExistWithId() throws EvaluationException
+	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(AttributeCategoryId.SUBJECT_RECIPIENT, 
-				"testId", DataTypes.INTEGER.getType(), "testIssuer")).andReturn(DataTypes.INTEGER.emptyBag());
+		expect(context.resolve(desig)).andReturn(DataTypes.INTEGER.emptyBag());
+		replay(context);
+		Expression v = desig.evaluate(context);
+		assertNotNull(v);
+		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(DataTypes.INTEGER.emptyBag(), v);
+		verify(context);
+	}
+	
+	@Test
+	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
+	{
+		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
+				"testId", "testIssuer",  type, false);
+		expect(context.resolve(desig)).andReturn(null);
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);

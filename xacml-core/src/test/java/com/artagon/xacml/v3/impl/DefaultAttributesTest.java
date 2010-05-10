@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3.impl;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 import org.junit.Test;
 

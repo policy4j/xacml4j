@@ -31,6 +31,7 @@ import com.artagon.xacml.v3.impl.DefaultAttribute;
 import com.artagon.xacml.v3.impl.DefaultAttributes;
 import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.google.common.collect.Iterables;
 
 public class MultipleRequestHandlerTest 
 {
@@ -87,21 +88,21 @@ public class MultipleRequestHandlerTest
 		profile.handle(context, pdp).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
-		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId5"));
-		assertNotNull(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId6"));
-		assertNotNull(context0.getAttributes(AttributeCategoryId.RESOURCE, "testId1"));
-		assertNotNull(context0.getAttributes(AttributeCategoryId.RESOURCE, "testId2"));
-		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
+		assertEquals(2, Iterables.size(context0.getAttributes()));
+		assertEquals(1, Iterables.size(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)));
+		assertEquals(1, Iterables.size(context0.getAttributes(AttributeCategoryId.RESOURCE)));
 		
-		assertNotNull(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId7"));
-		assertNotNull(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS, "testId8"));
-		assertNotNull(context1.getAttributes(AttributeCategoryId.RESOURCE, "testId3"));
-		assertNotNull(context1.getAttributes(AttributeCategoryId.RESOURCE, "testId4"));
-		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
+		assertEquals(2, Iterables.size(context1.getAttributes()));
+		assertEquals(1, Iterables.size(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)));
+		assertEquals(1, Iterables.size(context1.getAttributes(AttributeCategoryId.RESOURCE)));
 		verify(pdp);
 	}
 	

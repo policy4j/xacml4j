@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import org.w3c.dom.Node;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -16,8 +18,6 @@ import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -90,20 +90,6 @@ public class DefaultRequest extends XacmlObject implements Request
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
-	
-	@Override
-	public Collection<Attributes> getIncludeInResultAttributes() 
-	{
-		Collection<Attributes> resultAttr = new LinkedList<Attributes>();
-		for(Attributes a : attributes.values()){
-			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
-			if(!includeInResult.isEmpty()){
-				resultAttr.add(new DefaultAttributes(a.getCategoryId(), includeInResult));
-			}
-		}
-		return resultAttr;
-	}
-	
 	@Override
 	public Attributes getReferencedAttributes(AttributesReference reference){
 		Preconditions.checkNotNull(reference);
@@ -123,19 +109,21 @@ public class DefaultRequest extends XacmlObject implements Request
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
 	
-	@Override
-	public Collection<AttributeValue> getAttributeValues(
-			AttributeCategoryId category, String attributeId, String issuer,
-			AttributeValueType type) 
-	{
-		Collection<Attributes> found = getAttributes(category);
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
-		for(Attributes a : found){
-			values.addAll(a.getAttributeValues(attributeId, issuer, type));
+	public Collection<Node> getContent(AttributeCategoryId categoryId){
+		Preconditions.checkNotNull(categoryId);
+		Collection<Attributes> byCategory =  attributes.get(categoryId);
+		if(byCategory == null || 
+				byCategory.isEmpty()){
+			return Collections.<Node>emptyList();
 		}
-		return values;
+		Collection<Node> content = new ArrayList<Node>(byCategory.size());
+		for(Attributes a : byCategory){
+			content.add(a.getContent());
+		}
+		return content;
 	}
-
+	
+	@Override
 	public boolean hasRepeatingCategories(){
 		for(AttributeCategoryId category : getCategories()){
 			if(getOccuriences(category) > 1){
@@ -144,4 +132,18 @@ public class DefaultRequest extends XacmlObject implements Request
 		}
 		return true;
 	}
+	
+	@Override
+	public Collection<Attributes> getIncludeInResultAttributes() 
+	{
+		Collection<Attributes> resultAttr = new LinkedList<Attributes>();
+		for(Attributes a : attributes.values()){
+			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
+			if(!includeInResult.isEmpty()){
+				resultAttr.add(new DefaultAttributes(a.getCategoryId(), includeInResult));
+			}
+		}
+		return resultAttr;
+	}	
+	
 }

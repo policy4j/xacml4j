@@ -287,7 +287,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributeValues<? extends AttributeValue> resolve(
+	public final BagOfAttributeValues<AttributeValue> resolve(
 			AttributeDesignator ref) 
 		throws EvaluationException
 	{
@@ -297,7 +297,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	
 
 	@Override
-	public final BagOfAttributeValues<? extends AttributeValue> resolve(AttributeSelector ref)
+	public final BagOfAttributeValues<AttributeValue> resolve(AttributeSelector ref)
 			throws EvaluationException 
 	{
 		return contextHandler.resolve(this, ref);

@@ -16,11 +16,11 @@ public interface ContextHandler
 	 */
 	Node getContent(EvaluationContext context, AttributeCategoryId categoryId);
 	
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException;
 	
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeSelector selector) throws EvaluationException;
 }

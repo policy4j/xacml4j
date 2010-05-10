@@ -21,7 +21,6 @@ import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -92,8 +91,7 @@ public class DefaultPolicyTest
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
 		
 		this.request = createStrictMock(Request.class);
-		this.context = new DefaultEvaluationContextFactory(
-				createStrictMock(ContextHandler.class), 
+		this.context = new DefaultEvaluationContextFactory( 
 				createStrictMock(PolicyReferenceResolver.class), 
 				createStrictMock(XPathProvider.class)).createContext(policy, request);
 	}

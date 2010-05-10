@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3.impl;
 
 import java.util.Collection;
 import java.util.Collections;

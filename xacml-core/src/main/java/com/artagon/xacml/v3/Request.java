@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
+import org.w3c.dom.Node;
+
+import com.artagon.xacml.v3.impl.DefaultAttributes;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Target;
@@ -59,8 +60,7 @@ public interface Request
 	 * @return {@link DefaultAttributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
-	Attributes getReferencedAttributes(
-			AttributesReference reference);
+	Attributes getReferencedAttributes(AttributesReference reference);
 	
 	/**
 	 * Gets all {@link Attributes} instances
@@ -80,12 +80,6 @@ public interface Request
 	 * does not have attributes of given category
 	 */
 	Collection<Attributes> getAttributes(AttributeCategoryId categoryId);
-	
-	Collection<AttributeValue> getAttributeValues(
-			AttributeCategoryId category, 
-			String attributeId, 
-			String issuer, 
-			AttributeValueType type);
 	
 	Collection<Attributes> getIncludeInResultAttributes();
 	

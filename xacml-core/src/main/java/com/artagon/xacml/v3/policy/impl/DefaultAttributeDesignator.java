@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy.impl;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -68,7 +70,14 @@ final class DefaultAttributeDesignator extends BaseAttributeReference
 	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		return context.resolve(this);
+		BagOfAttributeValues<AttributeValue> bag = context.resolve(this);
+		if((bag == null || bag.isEmpty()) && 
+				isMustBePresent()){
+			throw new AttributeReferenceEvaluationException(context, this,
+					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
+					getCategory(), getAttributeId(), getIssuer());
+		}
+		return (bag == null)?getDataType().bagOf().createEmpty():bag;
 	}
 
 	@Override

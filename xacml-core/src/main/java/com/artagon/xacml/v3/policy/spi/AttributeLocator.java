@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy.spi;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
@@ -25,18 +27,5 @@ public interface AttributeLocator
 	 */
 	Set<String> getProvidedAttributes();
 	
-	/**
-	 * Resolves an attribute by given identifier
-	 * 
-	 * @param attributeId an attribute identifier
-	 * @param category an attribute category identifier
-	 * @param callback a callback to get request 
-	 * context attributes
-	 * 
-	 * @return {@link BagOfAttributeValues}
-	 */
-	BagOfAttributeValues<AttributeValue> getAttribute(
-			AttributeCategoryId categoryId,
-			String attributeId,
-			RequestAttributeCallback callback);
+	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref, Request request);
 }

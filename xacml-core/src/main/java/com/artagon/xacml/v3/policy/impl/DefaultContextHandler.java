@@ -3,8 +3,6 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import javax.xml.xpath.XPathException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -17,7 +15,7 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.IndividualRequest;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
@@ -29,50 +27,49 @@ import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.google.common.collect.Iterables;
 
-public abstract class BaseContextHandler implements ContextHandler
+public class DefaultContextHandler implements ContextHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseContextHandler.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultContextHandler.class);
 	
-	private IndividualRequest request;
+	private Request request;
 	private XPathProvider xpathProvider;
 	
-	protected BaseContextHandler(IndividualRequest request){
+	protected DefaultContextHandler(XPathProvider xpathProvider, Request request){
 		Preconditions.checkNotNull(request);
+		Preconditions.checkArgument(!request.hasRepeatingCategories());
+		Preconditions.checkNotNull(xpathProvider);
 		this.request = request;
+		this.xpathProvider = xpathProvider;
 	}
 
 	@Override
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) {
-		Node content =  request.getContent(category);
-		return content == null?handleGetContent(category):content;
+		Attributes attr =   Iterables.getOnlyElement(request.getAttributes(category));
+		return attr == null?handleGetContent(category):attr.getContent();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public final BagOfAttributeValues<? extends AttributeValue> resolve(
+	public final BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		Attributes attributes = request.getAttributes(ref.getCategory());
+		Attributes attributes = Iterables.getOnlyElement(request.getAttributes(ref.getCategory()));
 		if(attributes != null){
 			Collection<AttributeValue> values = attributes.getAttributeValues(
 					ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
 			if(!values.isEmpty()){
-				return ref.getDataType().bagOf().create(values);
+				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
 			}
 		} 
-		BagOfAttributeValues<? extends AttributeValue> bag = handleResolve(ref);
-		if(bag.isEmpty() && 
-				ref.isMustBePresent()){
-			throw new AttributeReferenceEvaluationException(context, ref,
-					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
-					ref.getCategory(), ref.getAttributeId(), ref.getIssuer());
-		}
-		return bag;
+		return handleResolve(ref, request);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public final BagOfAttributeValues<? extends AttributeValue> resolve(
+	public final BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
 		try
@@ -88,14 +85,7 @@ public abstract class BaseContextHandler implements ContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						ref.getSelect(), ref.getCategory());
-				if(ref.isMustBePresent()){
-					throw new AttributeReferenceEvaluationException(context, ref, 
-						"Selector XPath expression=\"%s\" evaluated " +
-						"to empty node set and mustBePresents=\"true\"", ref.getSelect());
-				}
-				if(nodeSet == null){
-					return ref.getDataType().bagOf().createEmpty();
-				}
+				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
@@ -108,7 +98,8 @@ public abstract class BaseContextHandler implements ContextHandler
 		}
 	}
 	
-	private BagOfAttributeValues<?> toBag(EvaluationContext context,
+	@SuppressWarnings("unchecked")
+	private BagOfAttributeValues<AttributeValue> toBag(EvaluationContext context,
 			AttributeSelector ref, NodeList nodeSet) 
 		throws EvaluationException
 	{
@@ -144,10 +135,39 @@ public abstract class BaseContextHandler implements ContextHandler
 						i, v, ref.getDataType());
 			}
 		}
-	  	return ref.getDataType().bagOf().create(values);
+	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
 	}
 	
-	protected abstract Node handleGetContent(AttributeCategoryId category);
-	protected abstract BagOfAttributeValues<? extends AttributeValue> handleResolve(AttributeDesignator ref);
-	protected abstract BagOfAttributeValues<? extends AttributeValue> handleResolve(AttributeSelector ref);
+	/**
+	 * A default implementation always returns <code>null</code>
+	 */
+	protected  Node handleGetContent(AttributeCategoryId category){
+		return null;
+	}
+	
+	/**
+	 * A default implementation always returns an empty bag.
+	 * 
+	 * @param ref an attribute designator
+	 * @param request a decision request
+	 * @return an empty bag
+	 */
+	@SuppressWarnings("unchecked")
+	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeDesignator ref, 
+			Request request){
+		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
+	}
+	
+	
+	/**
+	 * A default implementation always returns an empty bag.
+	 * 
+	 * @param ref an attribute selector
+	 * @return an empty bag
+	 */
+	@SuppressWarnings("unchecked")
+	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeSelector ref)
+	{
+		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
+	}
 }

@@ -38,7 +38,7 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	 * @param attributes a collection of attributes
 	 */
 	public DefaultAttributes(String id, AttributeCategoryId categoryId, 
-			Node content, Collection<Attribute> attributes){
+			Node content, Iterable<Attribute> attributes){
 		Preconditions.checkNotNull(categoryId);
 		Preconditions.checkNotNull(attributes);
 		this.id = id;
@@ -61,7 +61,7 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
 	 */
 	public DefaultAttributes(AttributeCategoryId categoryId, 
-			Collection<Attribute> attributes){
+			Iterable<Attribute> attributes){
 		this(null, categoryId, null, attributes);
 	}
 	
@@ -69,7 +69,7 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
 	 */
 	public DefaultAttributes(String id, AttributeCategoryId categoryId, 
-			Collection<Attribute> attributes){
+			Iterable<Attribute> attributes){
 		this(id, categoryId, null, attributes);
 	}
 	
