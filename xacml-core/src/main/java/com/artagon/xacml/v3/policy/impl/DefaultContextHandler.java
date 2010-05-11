@@ -36,7 +36,8 @@ public class DefaultContextHandler implements ContextHandler
 	private Request request;
 	private XPathProvider xpathProvider;
 	
-	protected DefaultContextHandler(XPathProvider xpathProvider, Request request){
+	protected DefaultContextHandler(XPathProvider xpathProvider, Request request)
+	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(!request.hasRepeatingCategories());
 		Preconditions.checkNotNull(xpathProvider);
@@ -47,7 +48,7 @@ public class DefaultContextHandler implements ContextHandler
 	@Override
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) {
 		Attributes attr =   Iterables.getOnlyElement(request.getAttributes(category));
-		return attr == null?handleGetContent(category):attr.getContent();
+		return (attr == null)?handleGetContent(category):attr.getContent();
 	}
 
 	@SuppressWarnings("unchecked")

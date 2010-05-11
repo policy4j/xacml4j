@@ -167,7 +167,8 @@ public interface EvaluationContext
 	 * @throws PolicyResolutionException if
 	 * policy reference can not be resolved
 	 */
-	Policy resolve(PolicyIDReference ref) throws PolicyResolutionException;
+	Policy resolve(PolicyIDReference ref) 
+		throws PolicyResolutionException;
 	
 	/**
 	 * Resolves given {@link PolicySetIDReference}
@@ -178,7 +179,6 @@ public interface EvaluationContext
 	 * @throws PolicyResolutionException if
 	 * policy set reference can not be resolved
 	 */
-	PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException;
-	
-	
+	PolicySet resolve(PolicySetIDReference ref) 
+		throws PolicyResolutionException;
 }

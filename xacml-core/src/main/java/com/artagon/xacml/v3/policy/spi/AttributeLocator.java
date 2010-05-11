@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.policy.spi;
 
-import java.util.Set;
-
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
@@ -16,7 +14,7 @@ public interface AttributeLocator
 	 * 
 	 * @return a set of attribute categories
 	 */
-	Set<AttributeCategoryId> getCategories();
+	Iterable<AttributeCategoryId> getProvidedCategories();
 	
 	/**
 	 * Gets an attribute identifiers provided
@@ -25,7 +23,7 @@ public interface AttributeLocator
 	 * @return an set of attribute identifiers
 	 * provided by this locator
 	 */
-	Set<String> getProvidedAttributes();
+	Iterable<String> getProvidedAttributes();
 	
 	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref, Request request);
 }
