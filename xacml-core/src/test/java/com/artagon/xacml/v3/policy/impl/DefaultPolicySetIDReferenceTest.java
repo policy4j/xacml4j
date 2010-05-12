@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -58,12 +59,29 @@ public class DefaultPolicySetIDReferenceTest
 		expect(policyResolver.resolve(context, ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		replay(policyResolver);
 		EvaluationContext policyRefContext = ref.createContext(context);
-		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		verify(policyResolver);
+		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
 		reset(policyResolver);
+
+		expect(policySet.getId()).andReturn("otherTestId");
+		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		replay(policySet);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
+		verify(policySet);
+
+		reset(policySet);
+		expect(policySet.getId()).andReturn("otherTestId");
+		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		replay(policySet);
 		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		verify(policySet);
+
+		reset(policySet);
+		expect(policySet.getId()).andReturn("otherTestId");
+		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		replay(policySet);
 		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
+		verify(policySet);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -85,9 +103,11 @@ public class DefaultPolicySetIDReferenceTest
 				return new PolicySetDelegatingEvaluationContext(ctx, refPolicySet);
 	        }
 		});
+		
 		expect(refPolicySet.getId()).andReturn("testId");
-		//TODO: currently we do not match actual argument
+		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
 		expect(refPolicySet.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
+
 		replay(policyResolver, refPolicySet);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));

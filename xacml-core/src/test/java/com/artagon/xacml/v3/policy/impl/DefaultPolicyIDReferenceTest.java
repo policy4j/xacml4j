@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationContextFactory;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -63,6 +64,7 @@ public class DefaultPolicyIDReferenceTest
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		verify(policyResolver);
 		reset(policyResolver);
+		
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
 		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
@@ -87,12 +89,16 @@ public class DefaultPolicyIDReferenceTest
 				return new PolicyDelegatingEvaluationContext(ctx, policy);
 	        }
 		});
-		expect(policy.getId()).andReturn("testId");
-		//TODO: currently we do not match actual argument
+		expectPolicyMatch(policy, "testId", "1.0");
 		expect(policy.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
 		replay(policyResolver, policy);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
 		verify(policyResolver, policy);
+	}
+
+	private void expectPolicyMatch(Policy p, String id, String v) {
+		expect(p.getId()).andReturn(id);
+		expect(p.getVersion()).andReturn(Version.valueOf(v));
 	}
 }

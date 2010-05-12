@@ -23,6 +23,10 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		super(id, version, null, null);
 	}
 
+	public boolean isReferenceTo(PolicySet policySet) {
+		return policySet != null && matches(policySet.getId(), policySet.getVersion());
+	}
+
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
@@ -31,7 +35,7 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		}
 		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context, this);
 		try{
-			PolicySet policySet = context.resolve(this);
+			PolicySet policySet = refContext.resolve(this);
 			return policySet.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			return refContext;
@@ -41,30 +45,27 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
-		if(context.getCurrentPolicySet() == null){
+		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicySet().getId().equals(getId()));
 		return context.getCurrentPolicySet().evaluate(context);
 	}
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
-		if(context.getCurrentPolicySet() == null){
+		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicySet().getId().equals(getId()));
 		return context.getCurrentPolicySet().evaluateIfApplicable(context);
 	}
 
 	@Override
 	public MatchResult isApplicable(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
-		if(context.getCurrentPolicySet() == null){
+		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return MatchResult.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicySet().getId().equals(getId()));
 		return context.getCurrentPolicySet().isApplicable(context);
 	}
 	

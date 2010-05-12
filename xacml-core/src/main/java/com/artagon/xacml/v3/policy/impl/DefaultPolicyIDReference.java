@@ -22,6 +22,10 @@ public final class DefaultPolicyIDReference extends
 		super(id, version, null, null);
 	}
 
+	public boolean isReferenceTo(Policy policy) {
+		return policy != null && matches(policy.getId(), policy.getVersion());
+	}
+
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
@@ -40,30 +44,27 @@ public final class DefaultPolicyIDReference extends
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
-		if(context.getCurrentPolicy() == null){
+		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicy().getId().equals(getId()));
 		return context.getCurrentPolicy().evaluate(context);
 	}
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
-		if(context.getCurrentPolicy() == null){
+		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicy().getId().equals(getId()));
 		return context.getCurrentPolicy().evaluateIfApplicable(context);
 	}
 
 	@Override
 	public MatchResult isApplicable(EvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
-		if(context.getCurrentPolicy() == null){
+		if(!isReferenceTo(context.getCurrentPolicy())){
 			return MatchResult.INDETERMINATE;
 		}
-		Preconditions.checkArgument(context.getCurrentPolicy().getId().equals(getId()));
 		return context.getCurrentPolicySet().isApplicable(context);
 	}
 
