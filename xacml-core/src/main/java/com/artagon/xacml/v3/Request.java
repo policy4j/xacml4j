@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import org.w3c.dom.Node;
-
 import com.artagon.xacml.v3.impl.DefaultAttributes;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
