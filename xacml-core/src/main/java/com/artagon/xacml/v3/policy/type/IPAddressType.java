@@ -8,7 +8,7 @@ import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 
- * <br>The “urn:oasis:names:tc:xacml:2.0:data-type:ipAddress” primitive 
+ * <br>The "urn:oasis:names:tc:xacml:2.0:data-type:ipAddress" primitive 
  * type represents an IPv4 or IPv6 network address, with optional mask 
  * and optional port or port range. The syntax SHALL be:
  * <pre>

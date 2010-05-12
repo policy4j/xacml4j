@@ -16,6 +16,10 @@ public class RFC822NameTest
 		n = RFC822Name.parse("tEst@TeSt.org");
 		assertEquals("tEst", n.getLocalPart());
 		assertEquals("test.org", n.getDomainPart());
+
+		n = RFC822Name.parse("\"John Doe\" <tEst@TeSt.org>");
+		assertEquals("tEst", n.getLocalPart());
+		assertEquals("test.org", n.getDomainPart());
 	}
 	
 	@Test

@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3.policy.spi.type;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeValue;
@@ -16,6 +19,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 {
 	private String typeId;
 	private BagOfAttributeValuesType<V> bagType;
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	/**
 	 * Constructs attribute type with given type identifier.
