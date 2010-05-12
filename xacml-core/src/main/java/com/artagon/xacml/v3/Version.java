@@ -22,6 +22,20 @@ public class Version extends XacmlObject implements Comparable<Version>
        return value;
     }
 
+    @Override
+    public boolean equals(Object other) {
+    	if (other == null) {
+    		return false;
+    	}
+    	if (this == other) {
+    		return true;
+    	}
+    	if (!(other instanceof Version)) {
+    		return false;
+    	}
+    	return compareTo((Version)other) == 0;
+    }
+   
     public int compareTo(Version v) 
     {
         int min = Math.min(version.length, v.version.length);
@@ -31,10 +45,20 @@ public class Version extends XacmlObject implements Comparable<Version>
         		return r > 0?1:-1;
         	}
         }
+        if (checkAllZeros(version, min) && checkAllZeros(v.version, min)) {
+        	return 0;
+        }
         return version.length - v.version.length;
     }
     
-    private static int[] parseVersion(String version)
+    private boolean checkAllZeros(int[] versions, int startIdx) {
+		for (int i = versions.length-1; i >= startIdx; i--) {
+			if (versions[i] != 0) return false;
+		}
+		return true;
+	}
+
+	private static int[] parseVersion(String version)
     {
     	Preconditions.checkArgument(version.matches(VERSION_PATTERN));
     	 String[] vc = version.split("\\.");
