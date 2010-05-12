@@ -26,17 +26,16 @@ public class NonNumericComparisionFunctionTest
 	public void init(){
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
-	
+
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringValue a = DataTypes.STRING.create("aa");
-		StringValue b = DataTypes.STRING.create("ab");
+		StringValue a = DataTypes.STRING.create("ab");
+		StringValue b = DataTypes.STRING.create("aa");
 		assertEquals(DataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
-		a = DataTypes.STRING.create("aa");
-		b = DataTypes.STRING.create("aaa");
+		a = DataTypes.STRING.create("aaa");
+		b = DataTypes.STRING.create("aa");
 		assertEquals(DataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
 	}
@@ -63,7 +62,7 @@ public class NonNumericComparisionFunctionTest
 		assertEquals(DataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 	}
-	
+
 	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsNotInRange()
 	{
@@ -72,11 +71,11 @@ public class NonNumericComparisionFunctionTest
 		TimeValue a = DataTypes.TIME.create("09:30:10");
 		TimeValue b = DataTypes.TIME.create("08:30:10");
 		TimeValue c = DataTypes.TIME.create("09:30:09");
-		assertEquals(DataTypes.BOOLEAN.create(false), 
+		assertEquals(DataTypes.BOOLEAN.create(false),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
-	
+
 	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound()
 	{
@@ -85,7 +84,7 @@ public class NonNumericComparisionFunctionTest
 		TimeValue a = DataTypes.TIME.create("09:30:10");
 		TimeValue b = DataTypes.TIME.create("08:30:10");
 		TimeValue c = DataTypes.TIME.create("09:30:10");
-		assertEquals(DataTypes.BOOLEAN.create(true), 
+		assertEquals(DataTypes.BOOLEAN.create(true),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}

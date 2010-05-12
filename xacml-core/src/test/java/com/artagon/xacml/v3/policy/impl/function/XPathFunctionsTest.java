@@ -92,8 +92,6 @@ public class XPathFunctionsTest
 		verify(context);
 	}
 	
-	
-	
 	@Test
 	public void testXPathNodeMatch() throws EvaluationException
 	{
@@ -114,8 +112,8 @@ public class XPathFunctionsTest
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
 			return xpathProvider.evaluateToNodeSet(
-					(XPathVersion)args[0],
-					(String)args[1],
+					XPathVersion.XPATH2,
+					(String)args[0],
 					content);
 		}
 		
