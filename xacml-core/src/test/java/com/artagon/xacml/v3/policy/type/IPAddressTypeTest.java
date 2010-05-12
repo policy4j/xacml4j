@@ -34,9 +34,9 @@ public class IPAddressTypeTest
 	public void testToXacmlStringIPV6()
 	{
 		AttributeValue a0 = t.create(IPAddressUtils.parseAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334"));
-		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]", a0.toString());
+		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]", a0.toXacmlString());
 		AttributeValue a1 = t.create(IPAddressUtils.parseAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334"), 
-				IPAddressUtils.parseAddress("255.255.255.0"));
-		assertEquals("127.0.0.1/255.255.255.0", a1.toString());
+				IPAddressUtils.parseAddress("::0"));
+		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]/[0:0:0:0:0:0:0:0]", a1.toXacmlString());
 	}
 }

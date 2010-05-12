@@ -23,7 +23,7 @@ final class IPAddressTypeImpl extends BaseAttributeType<IPAddressType.IPAddressV
 	public IPAddressValue create(InetAddress address, InetAddress mask) {
 		Preconditions.checkNotNull(address, "IP address can't be null");
 		Preconditions.checkNotNull(mask, "IP address mask can't be null");
-		IPAddress v = new IPAddress(address, PortRange.getAnyPort());
+		IPAddress v = new IPAddress(address, mask, PortRange.getAnyPort());
 		return new IPAddressValue(this, v);
 	}
 
