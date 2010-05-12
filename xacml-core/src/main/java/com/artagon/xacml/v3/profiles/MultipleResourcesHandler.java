@@ -10,6 +10,7 @@ import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 
 public class MultipleResourcesHandler extends AbstractRequestProfileHandler
@@ -23,11 +24,11 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
-		Iterable<Attributes> resources = request.getAttributes(AttributeCategoryId.RESOURCE);
-		if(Iterables.size(resources) <= 1){
+		Collection<Attributes> resources = request.getAttributes(AttributeCategoryId.RESOURCE);
+		if(resources.size() <= 1){
 			return handleNext(request, pdp);
 		}
-		Iterable<Attributes> nonResourceAttributes = Iterables.filter(request.getAttributes(), 
+		Collection<Attributes> nonResourceAttributes = Collections2.filter(request.getAttributes(), 
 				new Predicate<Attributes>() {
 			@Override
 			public boolean apply(Attributes arg) {

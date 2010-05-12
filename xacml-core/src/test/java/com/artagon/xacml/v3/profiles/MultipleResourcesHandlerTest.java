@@ -75,8 +75,8 @@ public class MultipleResourcesHandlerTest
 		assertEquals(2, results.size());
 		Request r0 = c0.getValue();
 		Request r1 = c1.getValue();
-		assertEquals(2, Iterables.size(r0.getAttributes()));
-		assertTrue(Iterables.contains(r0.getAttributes(), subject));
+		assertEquals(2, r0.getAttributes().size());
+		assertTrue(r0.getAttributes().contains(subject));
 		assertEquals(1, Iterables.size(r0.getAttributes(AttributeCategoryId.RESOURCE)));
 		assertEquals(2, Iterables.size(r1.getAttributes()));
 		assertTrue(Iterables.contains(r1.getAttributes(), subject));

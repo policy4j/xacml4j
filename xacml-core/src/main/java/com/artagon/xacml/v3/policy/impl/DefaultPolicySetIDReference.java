@@ -34,7 +34,8 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 			return context;
 		}
 		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context, this);
-		try{
+		try
+		{
 			PolicySet policySet = refContext.resolve(this);
 			return policySet.createContext(refContext);
 		}catch(PolicyResolutionException e){

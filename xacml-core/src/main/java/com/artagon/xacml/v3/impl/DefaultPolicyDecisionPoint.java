@@ -19,7 +19,8 @@ public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoin
 	private EvaluationContextFactory factory;
 	private PolicySet policySet;
 	
-	public DefaultPolicyDecisionPoint(EvaluationContextFactory factory, 
+	public DefaultPolicyDecisionPoint(
+			EvaluationContextFactory factory, 
 			PolicySet policySet, 
 			Collection<RequestProfileHandler> handlers){
 		super(handlers);
