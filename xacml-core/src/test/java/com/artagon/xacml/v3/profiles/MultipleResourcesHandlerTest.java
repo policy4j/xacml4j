@@ -42,7 +42,7 @@ public class MultipleResourcesHandlerTest
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences()
+	public void testRequestWithTwoAttributesOfTheCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
@@ -72,10 +72,50 @@ public class MultipleResourcesHandlerTest
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
+		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		Request r0 = c0.getValue();
 		Request r1 = c1.getValue();
 		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributes(AttributeCategoryId.RESOURCE).size());
+		// order is not known so check if has 1 and at least one is in the request
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
 		assertTrue(r1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		// order is not known so check if has 1 and at least one is in the request
+		assertEquals(1, r1.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		verify(pdp);
+	}
+	
+	
+	@Test
+	public void testRequestWithNoAttributesOfTheSameCategory()
+	{
+		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
+		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
+		Attributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		
+		
+		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
+		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
+		Attributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		
+		Request context = new DefaultRequest(false, 
+				Arrays.asList(subject, resource0));
+		
+		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(1, results.size());
+		Request r0 = c0.getValue();
+		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 }
