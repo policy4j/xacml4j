@@ -20,6 +20,7 @@ import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 
 public class DefaultRequest extends XacmlObject implements Request
 {	
@@ -70,7 +71,8 @@ public class DefaultRequest extends XacmlObject implements Request
 		return returnPolicyIdList;
 	}
 	
-	public int getOccuriences(AttributeCategoryId category){
+	@Override
+	public int getCategoryOccuriences(AttributeCategoryId category){
 		Collection<Attributes> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
@@ -96,12 +98,11 @@ public class DefaultRequest extends XacmlObject implements Request
 		return attributesByXmlId.get(reference.getReferenceId());
 	}
 	
-	
 	@Override
-	public Collection<Attributes> getAttributes() {
-		return Collections.unmodifiableCollection(attributes.values());
+	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
+		return Multimaps.unmodifiableMultimap(attributes).asMap();
 	}
-
+	
 	@Override
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
@@ -109,7 +110,8 @@ public class DefaultRequest extends XacmlObject implements Request
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
 	
-	public Collection<Node> getContent(AttributeCategoryId categoryId){
+	public Collection<Node> getContent(AttributeCategoryId categoryId)
+	{
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> byCategory =  attributes.get(categoryId);
 		if(byCategory == null || 
@@ -126,7 +128,7 @@ public class DefaultRequest extends XacmlObject implements Request
 	@Override
 	public boolean hasRepeatingCategories(){
 		for(AttributeCategoryId category : getCategories()){
-			if(getOccuriences(category) > 1){
+			if(getCategoryOccuriences(category) > 1){
 				return false;
 			}
 		}

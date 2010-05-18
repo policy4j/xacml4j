@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.util.Preconditions;
 
-public class DecisionCombiningAlgorithmParameter 
+public class DecisionCombiningParameter 
 {
 	private String name;
 	private AttributeValue value;
 	
-	public DecisionCombiningAlgorithmParameter(String name, AttributeValue value)
+	public DecisionCombiningParameter(String name, AttributeValue value)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);
@@ -15,10 +15,20 @@ public class DecisionCombiningAlgorithmParameter
 		this.value = value;
 	}
 	
+	/**
+	 * Gets parameter name
+	 * 
+	 * @return parameter name
+	 */
 	public final String getName(){
 		return name;
 	}
 	
+	/**
+	 * Gets parameter value
+	 * 
+	 * @return parameter value
+	 */
 	public final AttributeValue getValue(){
 		return value;
 	}

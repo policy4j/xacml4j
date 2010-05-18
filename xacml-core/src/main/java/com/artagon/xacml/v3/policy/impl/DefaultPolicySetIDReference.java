@@ -49,7 +49,9 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		return context.getCurrentPolicySet().evaluate(context);
+		PolicySet ps = context.getCurrentPolicySet();
+		Preconditions.checkState(ps != null);
+		return ps.evaluate(context);
 	}
 
 	@Override
@@ -58,7 +60,9 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		return context.getCurrentPolicySet().evaluateIfApplicable(context);
+		PolicySet ps = context.getCurrentPolicySet();
+		Preconditions.checkState(ps != null);
+		return ps.evaluateIfApplicable(context);
 	}
 
 	@Override
@@ -67,7 +71,9 @@ public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRule
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return MatchResult.INDETERMINATE;
 		}
-		return context.getCurrentPolicySet().isApplicable(context);
+		PolicySet ps = context.getCurrentPolicySet();
+		Preconditions.checkState(ps != null);
+		return ps.isApplicable(context);
 	}
 	
 	@Override

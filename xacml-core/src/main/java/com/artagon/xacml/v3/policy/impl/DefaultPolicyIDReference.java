@@ -22,6 +22,7 @@ public final class DefaultPolicyIDReference extends
 		super(id, version, null, null);
 	}
 
+	@Override
 	public boolean isReferenceTo(Policy policy) {
 		return policy != null && matches(policy.getId(), policy.getVersion());
 	}
@@ -47,7 +48,9 @@ public final class DefaultPolicyIDReference extends
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
 		}
-		return context.getCurrentPolicy().evaluate(context);
+		Policy p = context.getCurrentPolicy();
+		Preconditions.checkState(p != null);
+		return p.evaluate(context);
 	}
 
 	@Override
@@ -56,7 +59,9 @@ public final class DefaultPolicyIDReference extends
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
 		}
-		return context.getCurrentPolicy().evaluateIfApplicable(context);
+		Policy p = context.getCurrentPolicy();
+		Preconditions.checkState(p != null);
+		return p.evaluateIfApplicable(context);
 	}
 
 	@Override
@@ -65,7 +70,9 @@ public final class DefaultPolicyIDReference extends
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return MatchResult.INDETERMINATE;
 		}
-		return context.getCurrentPolicySet().isApplicable(context);
+		Policy p = context.getCurrentPolicy();
+		Preconditions.checkState(p != null);
+		return p.isApplicable(context);
 	}
 
 	@Override

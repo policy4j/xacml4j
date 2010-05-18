@@ -1,9 +1,13 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3.policy.spi;
 
 import java.util.Set;
 
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.policy.Rule;
 
-public interface DecisionCombiningAlgorithmResolver 
+
+public interface DecisionCombiningAlgorithmProvider 
 {
 	/**
 	 * Gets {@link Rule} combining algorithm via

@@ -92,17 +92,17 @@ public class MultipleRequestHandlerTest
 		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
 		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
 		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
-		assertEquals(2, Iterables.size(context0.getAttributes()));
-		assertEquals(1, Iterables.size(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)));
-		assertEquals(1, Iterables.size(context0.getAttributes(AttributeCategoryId.RESOURCE)));
+		assertEquals(2, context0.getAttributes().size());
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS));
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.RESOURCE));
 		
 		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
 		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
 		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
 		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
-		assertEquals(2, Iterables.size(context1.getAttributes()));
-		assertEquals(1, Iterables.size(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)));
-		assertEquals(1, Iterables.size(context1.getAttributes(AttributeCategoryId.RESOURCE)));
+		assertEquals(2, context1.getAttributes().size());
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS));
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE));
 		verify(pdp);
 	}
 	

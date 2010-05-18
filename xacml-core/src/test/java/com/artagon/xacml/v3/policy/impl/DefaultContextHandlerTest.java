@@ -32,7 +32,7 @@ public class DefaultContextHandlerTest
 	}
 	
 	@Test
-	public void testGetContentWithCategoryContextIsAvailable()
+	public void testGetContentWithCategoryContentIsInRequest()
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
 		Node content1 = createStrictMock(Node.class);
@@ -47,7 +47,7 @@ public class DefaultContextHandlerTest
 	}
 	
 	@Test
-	public void testGetContentWithCategoryContextIsNull()
+	public void testGetContentWithCategoryContentIsNotInRequest()
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);

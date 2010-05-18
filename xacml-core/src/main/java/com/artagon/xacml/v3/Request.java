@@ -2,6 +2,7 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.v3.impl.DefaultAttributes;
@@ -50,6 +51,8 @@ public interface Request
 	 * @return an iterator over all categories
 	 */
 	Set<AttributeCategoryId> getCategories();
+	
+	int getCategoryOccuriences(AttributeCategoryId categoryId);
 
 	/**
 	 * Resolves attribute reference to {@link DefaultAttributes}
@@ -64,9 +67,9 @@ public interface Request
 	 * Gets all {@link Attributes} instances
 	 * contained in this request
 	 * 
-	 * @return a collection of {@link Attributes}
+	 * @return a map by category
 	 */
-	Collection<Attributes> getAttributes();
+	Map<AttributeCategoryId, Collection<Attributes>> getAttributes();
 	
 	/**
 	 * Gets all {@link Attributes} from request with

@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
 
-class DefaultObligation extends BaseDecisionRuleResponse implements Obligation
+final class DefaultObligation extends BaseDecisionRuleResponse implements Obligation
 {
 	public DefaultObligation(String id, Collection<AttributeAssignment> attributes) {
 		super(id, attributes);

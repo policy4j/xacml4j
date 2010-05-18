@@ -69,18 +69,18 @@ public class DefaultRequestTest
 		Request request1 = new DefaultRequest(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
-		assertEquals(3, request1.getAttributes().size());
-		assertTrue(request1.getAttributes().contains(resource0));
-		assertTrue(request1.getAttributes().contains(resource1));
-		assertTrue(request1.getAttributes().contains(subject0));
+		assertEquals(2, request1.getAttributes().size());
+		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
 		
 		Request request2 = new DefaultRequest(true, 
 				Arrays.asList(subject0, resource0, resource1));
 		
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAttributes().contains(resource0));
-		assertTrue(request1.getAttributes().contains(resource1));
-		assertTrue(request1.getAttributes().contains(subject0));
+		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
 	}
 	
 	@Test
