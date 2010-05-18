@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import java.util.Collection;
+
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.Apply;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -40,6 +42,10 @@ final class DefaultApply extends XacmlObject implements Apply
 		Preconditions.checkArgument(spec.validateParameters(arguments));
 		this.spec = spec;
 		this.arguments = arguments;
+	}
+	
+	public DefaultApply(FunctionSpec spec, Collection<Expression> arguments){
+		this(spec, (Expression[])arguments.toArray());
 	}
 
 	
