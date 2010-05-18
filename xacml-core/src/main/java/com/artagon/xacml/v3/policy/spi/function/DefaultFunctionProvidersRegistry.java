@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.UnsupportedFunctionException;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.google.common.base.Preconditions;
@@ -34,11 +33,10 @@ public class DefaultFunctionProvidersRegistry implements FunctionProvidersRegist
 	 * @see com.artagon.xacml.v3.policy.impl.FunctionProvidersRegistry#getFunction(java.lang.String)
 	 */
 	public FunctionSpec getFunction(String functionId) 
-		throws UnsupportedFunctionException
 	{
 		FunctionProvider provider = providers.get(functionId);
 		if(provider == null){
-			throw new UnsupportedFunctionException(functionId);
+			return null;
 		}
 		FunctionSpec spec = provider.getFunction(functionId);
 		Preconditions.checkState(spec != null);
