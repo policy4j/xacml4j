@@ -111,6 +111,58 @@ public class DefaultPolicySetIDReferenceTest
 		replay(policyResolver, refPolicySet);
 		EvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
+		assertSame(ref, ctx.getCurrentPolicySetIDReference());
+		assertSame(refPolicySet, ctx.getCurrentPolicySet());
+		verify(policyResolver, refPolicySet);
+	}
+	
+	@Test
+	public void testEvaluateIfApplicablePolicyIDReference() throws PolicyResolutionException
+	{
+		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
+		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);
+		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+			public EvaluationContext answer() throws Throwable {
+				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
+				return new PolicySetDelegatingEvaluationContext(ctx, refPolicySet);
+	        }
+		});
+		
+		expect(refPolicySet.getId()).andReturn("testId");
+		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(refPolicySet.evaluateIfApplicable(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
+
+		replay(policyResolver, refPolicySet);
+		EvaluationContext ctx = ref.createContext(context);
+		assertEquals(Decision.PERMIT, ref.evaluateIfApplicable(ctx));
+		assertSame(ref, ctx.getCurrentPolicySetIDReference());
+		assertSame(refPolicySet, ctx.getCurrentPolicySet());
+		verify(policyResolver, refPolicySet);
+	}
+	
+	@Test
+	public void testIsApplicablePolicyIDReference() throws PolicyResolutionException
+	{
+		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
+		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);
+		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+			public EvaluationContext answer() throws Throwable {
+				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
+				return new PolicySetDelegatingEvaluationContext(ctx, refPolicySet);
+	        }
+		});
+		
+		expect(refPolicySet.getId()).andReturn("testId");
+		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(refPolicySet.isApplicable(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
+
+		replay(policyResolver, refPolicySet);
+		EvaluationContext ctx = ref.createContext(context);
+		assertEquals(MatchResult.MATCH, ref.isApplicable(ctx));
+		assertSame(ref, ctx.getCurrentPolicySetIDReference());
+		assertSame(refPolicySet, ctx.getCurrentPolicySet());
 		verify(policyResolver, refPolicySet);
 	}
 }
