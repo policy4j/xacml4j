@@ -1,5 +1,7 @@
 package com.artagon.xacml.util;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Represents pair of objects
  * 

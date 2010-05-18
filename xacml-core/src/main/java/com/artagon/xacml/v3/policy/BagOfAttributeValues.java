@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 

@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.type;
 
 import java.io.Serializable;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 
 public final class DNSName extends XacmlObject implements Serializable
 {

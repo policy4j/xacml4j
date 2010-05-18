@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeReference;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
@@ -15,6 +14,7 @@ import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.PolicyElement;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
+import com.google.common.base.Preconditions;
 
 final class DefaultMatch implements PolicyElement, Match
 {	

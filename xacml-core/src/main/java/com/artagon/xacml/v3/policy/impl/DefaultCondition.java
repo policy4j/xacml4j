@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.ConditionResult;
@@ -15,6 +14,7 @@ import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
+import com.google.common.base.Preconditions;
 
 /**
  * Condition represents a Boolean expression that refines the applicability 

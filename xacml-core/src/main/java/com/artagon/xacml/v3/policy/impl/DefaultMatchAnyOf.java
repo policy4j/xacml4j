@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.MatchAllOf;
@@ -12,6 +11,7 @@ import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.Matchable;
 import com.artagon.xacml.v3.policy.PolicyElement;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.google.common.base.Preconditions;
 
 final class DefaultMatchAnyOf extends XacmlObject 
 	implements PolicyElement, MatchAnyOf

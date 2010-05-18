@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 
 public class VersionMatch extends XacmlObject
 {

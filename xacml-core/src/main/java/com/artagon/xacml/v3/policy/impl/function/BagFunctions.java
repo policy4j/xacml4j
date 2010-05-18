@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy.impl.function;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
@@ -24,6 +23,7 @@ import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
 import com.artagon.xacml.v3.policy.type.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
+import com.google.common.base.Preconditions;
 
 /**
  * 

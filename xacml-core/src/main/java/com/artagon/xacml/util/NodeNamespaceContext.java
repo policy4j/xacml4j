@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
+import com.google.common.base.Preconditions;
+
 public class NodeNamespaceContext implements NamespaceContext
 {
 	private final static Logger log = LoggerFactory.getLogger(NodeNamespaceContext.class);

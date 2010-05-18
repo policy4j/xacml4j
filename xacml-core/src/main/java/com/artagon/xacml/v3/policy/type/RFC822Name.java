@@ -5,7 +5,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 public final class RFC822Name 
 {

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.artagon.xacml.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 public class StatusCode extends XacmlObject
 {

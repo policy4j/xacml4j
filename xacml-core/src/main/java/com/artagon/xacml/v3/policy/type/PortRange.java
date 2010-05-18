@@ -3,8 +3,8 @@ package com.artagon.xacml.v3.policy.type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 
 public final class PortRange extends XacmlObject
 {

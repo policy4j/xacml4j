@@ -4,8 +4,8 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 
 
 public class IPAddress extends XacmlObject

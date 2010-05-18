@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.Match;
@@ -15,6 +14,7 @@ import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.Matchable;
 import com.artagon.xacml.v3.policy.PolicyElement;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.google.common.base.Preconditions;
 
 final class DefaultMatchAllOf extends XacmlObject 
 	implements PolicyElement, MatchAllOf

@@ -6,7 +6,6 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
@@ -24,6 +23,7 @@ import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.XPathVersion;
+import com.google.common.base.Preconditions;
 
 /**
  * An implementation of {@link EvaluationContext} which

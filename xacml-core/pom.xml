@@ -19,8 +19,12 @@
 			<artifactId>easymock</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-collections</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

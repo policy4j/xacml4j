@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpec;
+import com.google.common.base.Preconditions;
 
 /**
  * A function reference expression, used

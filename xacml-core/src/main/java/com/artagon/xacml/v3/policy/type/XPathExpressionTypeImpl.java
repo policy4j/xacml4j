@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.type;
 
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeType;
 import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue;
+import com.google.common.base.Preconditions;
 
 public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionValue> 
 	implements XPathExpressionType

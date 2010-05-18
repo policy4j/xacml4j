@@ -8,7 +8,6 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;
@@ -19,6 +18,7 @@ import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
+import com.google.common.base.Preconditions;
 
 /**
  * A XACML function specification

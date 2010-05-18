@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3;
 
 
-import com.artagon.xacml.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 
 public class Version extends XacmlObject implements Comparable<Version> 

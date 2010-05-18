@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
@@ -18,6 +17,7 @@ import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;

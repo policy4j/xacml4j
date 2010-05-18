@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -9,6 +8,7 @@ import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.google.common.base.Preconditions;
 
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory

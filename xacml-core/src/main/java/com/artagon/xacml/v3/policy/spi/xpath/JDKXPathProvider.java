@@ -9,10 +9,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.NodeNamespaceContext;
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.google.common.base.Preconditions;
 
 public class JDKXPathProvider implements XPathProvider
 {

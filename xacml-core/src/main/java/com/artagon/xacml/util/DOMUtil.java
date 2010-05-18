@@ -5,6 +5,8 @@ import java.util.Stack;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
+import com.google.common.base.Preconditions;
+
 
 public class DOMUtil 
 {	

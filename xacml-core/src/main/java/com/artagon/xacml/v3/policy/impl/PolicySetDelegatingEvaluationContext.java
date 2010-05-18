@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.XPathVersion;
+import com.google.common.base.Preconditions;
 
 final class PolicySetDelegatingEvaluationContext extends DelegatingEvaluationContext 
 {

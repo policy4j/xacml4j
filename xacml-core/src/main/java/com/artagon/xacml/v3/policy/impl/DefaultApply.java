@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.Apply;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -12,6 +11,7 @@ import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.ValueType;
+import com.google.common.base.Preconditions;
 
 /**
  * The class denotes application of a function to its arguments, 

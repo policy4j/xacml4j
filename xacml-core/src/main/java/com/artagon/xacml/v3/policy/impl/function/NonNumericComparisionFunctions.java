@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.impl.function;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
@@ -15,6 +14,7 @@ import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.policy.type.DateType.DateValue;
 import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
+import com.google.common.base.Preconditions;
 
 public class NonNumericComparisionFunctions 
 {

@@ -14,7 +14,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.MapMaker;
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.Advice;
@@ -38,6 +37,7 @@ import com.artagon.xacml.v3.policy.PolicySetIDReference;
 import com.artagon.xacml.v3.policy.Value;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.google.common.base.Preconditions;
 
 abstract class BaseEvaluationContext implements EvaluationContext
 {

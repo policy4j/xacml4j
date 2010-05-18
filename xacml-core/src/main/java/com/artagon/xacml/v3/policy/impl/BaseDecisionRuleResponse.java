@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.DecisionRuleResponse;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeAssignment;
+import com.google.common.base.Preconditions;
 
 abstract class BaseDecisionRuleResponse extends XacmlObject implements DecisionRuleResponse
 {

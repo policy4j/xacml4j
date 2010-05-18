@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.util.Preconditions;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
+import com.google.common.base.Preconditions;
 
 public class BaseDecisionCombiningAlgorithmFactory implements DecisionCombiningAlgorithmProvider
 {

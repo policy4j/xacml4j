@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.util.Preconditions;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
 public class Result extends XacmlObject

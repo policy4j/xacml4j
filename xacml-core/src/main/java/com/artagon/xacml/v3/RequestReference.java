@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 public class RequestReference extends XacmlObject
 {
