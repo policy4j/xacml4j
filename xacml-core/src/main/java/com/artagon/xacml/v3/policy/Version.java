@@ -1,6 +1,7 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
 
+import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 

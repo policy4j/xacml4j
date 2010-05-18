@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.Apply;
 import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
@@ -28,6 +27,7 @@ import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
+import com.artagon.xacml.v3.policy.Version;
 import com.artagon.xacml.v3.policy.VersionMatch;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
