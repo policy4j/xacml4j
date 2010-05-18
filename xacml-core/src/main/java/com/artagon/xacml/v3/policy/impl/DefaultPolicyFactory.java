@@ -51,7 +51,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			throw new PolicySyntaxException(
 					"TypeId=\"%s\" can not be resolved as an XACML type",typeId);
 		}
-		return type.create(value);
+		try{
+			return type.create(value);
+		}catch(Exception e){
+			throw new PolicySyntaxException(e);
+		}
 	}
 
 	@Override
