@@ -28,7 +28,8 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategoryId categoryId : request.getCategories()){
 			Collection<Attributes> attributes = request.getAttributes(categoryId);
-			if(attributes == null){
+			if(attributes == null ||
+					attributes.isEmpty()){
 				continue;
 			}
 			byCategory.add(new HashSet<Attributes>(attributes));
