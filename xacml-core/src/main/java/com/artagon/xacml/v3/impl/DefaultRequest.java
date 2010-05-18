@@ -146,6 +146,5 @@ public class DefaultRequest extends XacmlObject implements Request
 			}
 		}
 		return resultAttr;
-	}	
-	
+	}		
 }

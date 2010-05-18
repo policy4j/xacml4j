@@ -1,9 +1,10 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
@@ -11,6 +12,7 @@ import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.impl.DefaultRequest;
+import com.google.common.collect.Sets;
 
 public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 {
@@ -23,32 +25,19 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
-		Map<AttributeCategoryId, Collection<Attributes>> attributes = request.getAttributes();
-		Collection<Result> results = new LinkedList<Result>();
-		Iterator<AttributeCategoryId> it = attributes.keySet().iterator();
-		while(it.hasNext()){
-			AttributeCategoryId category = it.next();
-			for(Attributes a : attributes.get(category))
-			{
-				Collection<Attributes> cartesian = new LinkedList<Attributes>();
-				cartesian.add(a);
-				cartesian(it, cartesian, attributes);
-				results.addAll(handleNext(new DefaultRequest(request.isReturnPolicyIdList(), cartesian), pdp));
+		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
+		for(AttributeCategoryId categoryId : request.getCategories()){
+			Collection<Attributes> attributes = request.getAttributes(categoryId);
+			if(attributes == null){
+				continue;
 			}
+			byCategory.add(new HashSet<Attributes>(attributes));
+		}
+		Collection<Result> results = new LinkedList<Result>();
+		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
+		for(List<Attributes> requestAttr : cartesian){
+			results.addAll(handleNext(new DefaultRequest(request.isReturnPolicyIdList(), requestAttr), pdp));
 		}
 		return results;
-	}
-	
-	private void cartesian(Iterator<AttributeCategoryId> it, 
-			Collection<Attributes> cartesian, Map<AttributeCategoryId, Collection<Attributes>> all)
-	{
-		if(!it.hasNext()){
-			return;
-		}
-		AttributeCategoryId category = it.next();
-		for(Attributes a : all.get(category)){
-			cartesian.add(a);
-			cartesian(it, cartesian, all);
-		}		
 	}
 }
