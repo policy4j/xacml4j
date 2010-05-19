@@ -105,16 +105,36 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		return new DefaultTarget(match);
 	}
 	
+	@Override
 	public Condition createCondition(Expression predicate) throws PolicySyntaxException
 	{
+		if(predicate == null){
+			throw new PolicySyntaxException("Condition predicate must be specified");
+		}
+		if(!predicate.getEvaluatesTo().equals(
+				DataTypes.BOOLEAN.getType())){
+			throw new PolicySyntaxException(
+					"Condition predicate must evaluate to=\"%s\"", DataTypes.BOOLEAN.getType());
+		}
 		return new DefaultCondition(predicate);
 	}
 	
+	@Override
 	public Rule createRule(String ruleId, Target target, Condition condition, Effect effect) 
 		throws PolicySyntaxException
 	{
-		Rule rule = new DefaultRule(ruleId, target, condition, effect);
-		return rule;
+		if(ruleId == null){
+			throw new PolicySyntaxException("Rule identifier must be specified");
+		}
+		if(target == null && 
+				condition == null){
+			throw new PolicySyntaxException(
+					"Rule id=\"%s\" condition or target must be specified", ruleId);
+		}
+		if(effect == null){
+			throw new PolicySyntaxException("Rule id=\"%s\" effect must be specified", ruleId);
+		}
+		return new DefaultRule(ruleId, target, condition, effect);
 	}
 	
 	public Policy createPolicy(

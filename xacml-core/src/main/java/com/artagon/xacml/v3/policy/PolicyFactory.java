@@ -55,11 +55,29 @@ public interface PolicyFactory
 
 	Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException;
 
+	/**
+	 * Creates condition with a given predicate
+	 * 
+	 * @param predicate a predicate expression
+	 * @return {@link Condition} instance
+	 * @throws PolicySyntaxException
+	 */
 	Condition createCondition(Expression predicate) throws PolicySyntaxException;
 
+	/**
+	 * Creates {@link Rule} instance with a give 
+	 * target, condition and effect
+	 * 
+	 * @param ruleId a rule identifier
+	 * @param target a rule target
+	 * @param condition a rule condition
+	 * @param effect a rule effect
+	 * @return {@link Rule} instance
+	 * @throws PolicySyntaxException
+	 */
 	Rule createRule(String ruleId, Target target, Condition condition, Effect effect)
 			throws PolicySyntaxException;
-
+	
 	/**
 	 * Creates {@link AttributeAssigmentExpression} instance
 	 * for a given attribute id
