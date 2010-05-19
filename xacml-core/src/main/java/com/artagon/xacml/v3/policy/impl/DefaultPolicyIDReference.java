@@ -13,8 +13,11 @@ import com.google.common.base.Preconditions;
 public final class DefaultPolicyIDReference extends 
 	BaseCompositeDecisionRuleIDReference implements PolicyIDReference
 {
-	public DefaultPolicyIDReference(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
+	public DefaultPolicyIDReference(
+			String id, 
+			VersionMatch version,
+			VersionMatch earliest, 
+			VersionMatch latest) {
 		super(id, version, earliest, latest);
 	}
 	
@@ -50,7 +53,8 @@ public final class DefaultPolicyIDReference extends
 		}
 		Policy p = context.getCurrentPolicy();
 		Preconditions.checkState(p != null);
-x	}
+		return p.evaluate(context);
+	}
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
