@@ -10,7 +10,7 @@
 	<modules>
 		<module>xacml-core</module>
 		<module>xacml-schemas</module>
-        <module>xacml-compat-test</module>
+        <module>xacml-test</module>
 	</modules>
 	<properties>
 		<junit.version>4.4</junit.version>
