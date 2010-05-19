@@ -5,9 +5,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 
 
 public enum DataTypes

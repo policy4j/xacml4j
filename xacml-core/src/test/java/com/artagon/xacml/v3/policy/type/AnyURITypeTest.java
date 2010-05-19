@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValue;
 
 public class AnyURITypeTest 
 {

@@ -1,9 +1,5 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.Value;
 
 
 public interface AttributeValue extends Value

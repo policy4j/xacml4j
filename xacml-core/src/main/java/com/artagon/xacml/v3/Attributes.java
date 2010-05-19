@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.impl.DefaultAttribute;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 
 public interface Attributes 
 {

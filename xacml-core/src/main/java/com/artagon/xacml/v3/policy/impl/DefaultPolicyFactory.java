@@ -3,12 +3,12 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.policy.AdviceExpression;
 import com.artagon.xacml.v3.policy.Apply;
 import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.policy.AttributeReference;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;

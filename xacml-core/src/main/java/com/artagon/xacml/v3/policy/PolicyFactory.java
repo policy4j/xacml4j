@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
 
 public interface PolicyFactory 
 {

@@ -3,8 +3,8 @@ package com.artagon.xacml.v3.policy.type;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 import com.google.common.base.Preconditions;
 

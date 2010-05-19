@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.policy.spi.type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.policy.AttributeValueType;
+import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
 /**
