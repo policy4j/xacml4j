@@ -1,4 +1,6 @@
-package com.artagon.xacml.v3.policy;
+package com.artagon.xacml.v3;
+
+import com.artagon.xacml.v3.policy.ValueType;
 
 
 

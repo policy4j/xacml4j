@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.policy;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 
 public interface ContextHandler 
 {

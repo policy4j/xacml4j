@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.AttributeReference;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.ValueType;
 import com.google.common.base.Preconditions;
 

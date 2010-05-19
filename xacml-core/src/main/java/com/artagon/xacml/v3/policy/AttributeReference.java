@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValueType;
 
 public interface AttributeReference extends Expression 
 {

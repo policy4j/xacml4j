@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.AttributeValue;
+import com.artagon.xacml.v3.AttributeValue;
 
 public class RFC822NameTypeTest 
 {

@@ -13,14 +13,14 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.policy.AttributeSelector;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.ContextHandler;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.EvaluationException;

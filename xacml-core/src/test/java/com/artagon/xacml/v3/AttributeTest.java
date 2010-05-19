@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.impl.DefaultAttribute;
-import com.artagon.xacml.v3.policy.AttributeValue;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class AttributeTest 

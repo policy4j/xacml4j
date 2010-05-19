@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
 
 public interface AttributeAssigmentExpression extends PolicyElement
 {

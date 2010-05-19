@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIdentifier;
 
