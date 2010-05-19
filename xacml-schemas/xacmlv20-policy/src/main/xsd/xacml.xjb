@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	jaxb:version="2.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xjc= "http://java.sun.com/xml/ns/jaxb/xjc" 
+	jaxb:extensionBindingPrefixes="xjc">
+
+	<jaxb:bindings schemaLocation="access_control-xacml-2.0-policy-schema-os.xsd">
+		<jaxb:bindings node="/xsd:schema">
+		   <jaxb:schemaBindings>
+		       <jaxb:package name="org.oasis.xacml.v20.policy"/>
+		   </jaxb:schemaBindings>
+	   </jaxb:bindings>
+	</jaxb:bindings>	
+</bindings>
