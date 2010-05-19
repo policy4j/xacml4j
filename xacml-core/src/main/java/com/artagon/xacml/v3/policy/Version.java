@@ -12,14 +12,27 @@ public class Version extends XacmlObject implements Comparable<Version>
 	private String value;
     private int[] version;
 
-    private Version(String v) 
+    /**
+     * Constructs version from
+     * a given string
+     * 
+     * @param v a version represented
+     * as string
+     */
+    private Version(String version) 
     {
-    	Preconditions.checkNotNull(v);
-    	this.value = v;
-    	this.version = parseVersion(v);
+    	Preconditions.checkNotNull(version);
+    	this.value = version;
+    	this.version = parseVersion(version);
     }
     
-    public String getVersionValue() {
+    /**
+     * Gets version value 
+     * 
+     * @return version value as 
+     * a string
+     */
+    public String getValue() {
        return value;
     }
 
@@ -37,6 +50,7 @@ public class Version extends XacmlObject implements Comparable<Version>
     	return compareTo((Version)other) == 0;
     }
    
+    @Override
     public int compareTo(Version v) 
     {
         int min = Math.min(version.length, v.version.length);
@@ -52,13 +66,21 @@ public class Version extends XacmlObject implements Comparable<Version>
         return version.length - v.version.length;
     }
     
-    private boolean checkAllZeros(int[] versions, int startIdx) {
+    private boolean checkAllZeros(int[] versions, int startIdx)
+    {
 		for (int i = versions.length-1; i >= startIdx; i--) {
 			if (versions[i] != 0) return false;
 		}
 		return true;
 	}
 
+    /**
+     * Parses given version string and returns
+     * version as an array of non-negative integers
+     * 
+     * @param version a version string
+     * @return an array of non-negative integers
+     */
 	private static int[] parseVersion(String version)
     {
     	Preconditions.checkArgument(version.matches(VERSION_PATTERN));
@@ -72,11 +94,27 @@ public class Version extends XacmlObject implements Comparable<Version>
     	 }
     	 return v;
     }
-
+	
+	/**
+	 * A static factory method to 
+	 * create {@link Version} instances 
+	 * from a given string
+	 * 
+	 * @param version a version
+	 * @return {@link Version} instance
+	 */
     public static Version valueOf(String version) {
         return new Version(version);
     }
     
+    /**
+	 * A static factory method to 
+	 * create {@link Version} instances 
+	 * from a given integer
+	 * 
+	 * @param version a version
+	 * @return {@link Version} instance
+	 */
     public static Version valueOf(int version)
     {
     	Preconditions.checkArgument(version > 0);

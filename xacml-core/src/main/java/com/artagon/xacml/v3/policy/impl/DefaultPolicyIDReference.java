@@ -50,8 +50,7 @@ public final class DefaultPolicyIDReference extends
 		}
 		Policy p = context.getCurrentPolicy();
 		Preconditions.checkState(p != null);
-		return p.evaluate(context);
-	}
+x	}
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
