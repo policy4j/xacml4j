@@ -9,4 +9,12 @@ final class PolicyDenyOverridesCombiningAlgorithm extends DenyOverrides<Policy>
 	public PolicyDenyOverridesCombiningAlgorithm(){
 		super(ID);
 	}
+	
+	private PolicyDenyOverridesCombiningAlgorithm(String algorithmId){
+		super(algorithmId);
+	}
+	
+	public static PolicyDenyOverridesCombiningAlgorithm getLegacyInstance(){
+		return new PolicyDenyOverridesCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides");
+	}	
 }

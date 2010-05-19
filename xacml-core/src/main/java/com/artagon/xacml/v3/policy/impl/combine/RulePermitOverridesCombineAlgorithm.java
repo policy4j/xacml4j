@@ -9,5 +9,12 @@ final class RulePermitOverridesCombineAlgorithm extends PermitOverrides<Rule>
 	public RulePermitOverridesCombineAlgorithm() {
 		super(ID);
 	}
-
+	
+	private RulePermitOverridesCombineAlgorithm(String algorithmId){
+		super(algorithmId);
+	}
+	
+	public static RulePermitOverridesCombineAlgorithm getLegacyInstance(){
+		return new RulePermitOverridesCombineAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides");
+	}
 }
