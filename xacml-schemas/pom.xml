@@ -4,12 +4,12 @@
                       http://maven.apache.org/maven-v4_0_0.xsd">
    	<parent>
 		<groupId>com.artagon.xacml</groupId>
-		<artifactId>artagon-xacml</artifactId>
+		<artifactId>xacml</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<name>Oasis XACML Schemas</name>
-	<artifactId>artagon-xacml-schema</artifactId>
+	<name>OASIS XACML Schemas</name>
+	<artifactId>xacml-schemas</artifactId>
 	<packaging>pom</packaging>
 	<properties>
 		<jaxb-api-version>2.2</jaxb-api-version>

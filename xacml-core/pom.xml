@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>com.artagon.xacml</groupId>
-		<artifactId>artagon-xacml</artifactId>
+		<artifactId>xacml</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>artagon-xacml-core</artifactId>
+	<artifactId>xacml-core</artifactId>
 	<packaging>jar</packaging>
-	<name>Oasis XACML Core Functionality</name>
+	<name>OASIS XACML Core</name>
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
