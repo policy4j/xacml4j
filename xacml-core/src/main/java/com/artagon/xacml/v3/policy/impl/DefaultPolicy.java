@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.AdviceExpression;
+import com.artagon.xacml.v3.policy.CombinerParameters;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
@@ -18,6 +19,7 @@ import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicyDefaults;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Rule;
+import com.artagon.xacml.v3.policy.RuleCombinerParameters;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.Version;
@@ -29,6 +31,9 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
 	private DecisionCombiningAlgorithm<Rule> combine;
+	private CombinerParameters combinerParameters;
+	private RuleCombinerParameters ruleCombinerParameters;
+	
 	
 	/**
 	 * Creates policy with a given identifier, target, variables.
@@ -123,6 +128,17 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		return policyDefaults;
 	}
 
+	
+	@Override
+	public CombinerParameters getCombinerParameters() {
+		return combinerParameters;
+	}
+
+	@Override
+	public RuleCombinerParameters getRuleCombinerParameters() {
+		return ruleCombinerParameters;
+	}
+
 	@Override
 	public Collection<VariableDefinition> getVariableDefinitions(){
 		return Collections.unmodifiableCollection(variableDefinitions.values());
@@ -168,6 +184,12 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		v.visitEnter(this);
 		if(getTarget() != null){
 			getTarget().accept(v);
+		}
+		if(combinerParameters != null){
+			combinerParameters.accept(v);
+		}
+		if(ruleCombinerParameters != null){
+			ruleCombinerParameters.accept(v);
 		}
 		combine.accept(v);
 		for(VariableDefinition var : variableDefinitions.values()){

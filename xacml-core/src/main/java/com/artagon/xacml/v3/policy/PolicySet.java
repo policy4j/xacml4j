@@ -29,6 +29,10 @@ public interface PolicySet extends CompositeDecisionRule, Versionable
 	 */
 	Target getTarget();
 	
+	DecisionCombinerParameters getCombinerParameters();
+	PolicyCombinerParameters getPolicyCombinerParameters();
+	PolicySetCombinerParameters getPolicySetCombinerParameters();
+	
 	List<? extends CompositeDecisionRule> getDecisions();
 	
 	/**

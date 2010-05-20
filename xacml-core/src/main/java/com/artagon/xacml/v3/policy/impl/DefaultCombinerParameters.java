@@ -1,24 +1,17 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.v3.policy.CombinerParameter;
+import com.artagon.xacml.v3.policy.CombinerParameters;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.RuleCombinerParameters;
 
-final class DefaultRuleCombinerParameters extends BaseDecisionCombinerParameters 
-	implements RuleCombinerParameters
+final class DefaultCombinerParameters extends BaseDecisionCombinerParameters 
+	implements CombinerParameters
 {
-	private String ruleId; 
-	
-	public DefaultRuleCombinerParameters(
+	public DefaultCombinerParameters(
 			Iterable<CombinerParameter> parameters) {
 		super(parameters);
 	}
-
-	@Override
-	public String getRuleId() {
-		return ruleId;
-	}
-
+	
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);

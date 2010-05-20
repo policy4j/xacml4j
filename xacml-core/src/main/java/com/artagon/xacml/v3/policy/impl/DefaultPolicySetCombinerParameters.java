@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.DecisionCombinerParameter;
+import com.artagon.xacml.v3.policy.CombinerParameter;
 import com.artagon.xacml.v3.policy.PolicySetCombinerParameters;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 
@@ -10,7 +10,7 @@ final class DefaultPolicySetCombinerParameters extends BaseDecisionCombinerParam
 	private String policySetId; 
 	
 	public DefaultPolicySetCombinerParameters(
-			Iterable<DecisionCombinerParameter> parameters) {
+			Iterable<CombinerParameter> parameters) {
 		super(parameters);
 	}
 
@@ -22,7 +22,7 @@ final class DefaultPolicySetCombinerParameters extends BaseDecisionCombinerParam
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		for(DecisionCombinerParameter p : parameters.values()){
+		for(CombinerParameter p : parameters.values()){
 			p.accept(v);
 		}
 		v.visitLeave(this);

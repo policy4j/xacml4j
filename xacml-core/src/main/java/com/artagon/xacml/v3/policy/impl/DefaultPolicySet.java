@@ -10,12 +10,16 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.policy.AdviceExpression;
+import com.artagon.xacml.v3.policy.CombinerParameters;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.DecisionCombinerParameters;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.ObligationExpression;
+import com.artagon.xacml.v3.policy.PolicyCombinerParameters;
 import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.policy.PolicySetCombinerParameters;
 import com.artagon.xacml.v3.policy.PolicySetDefaults;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.artagon.xacml.v3.policy.Target;
@@ -29,6 +33,9 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
+	private CombinerParameters combinerParameters;
+	private PolicySetCombinerParameters policySetCombinerParameters;
+	private PolicyCombinerParameters policyCombinerParameters;
 	
 	/**
 	 * Constructs a policy set with a given identifier
@@ -37,6 +44,9 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	 * 
 	 * @param id a policy set identifier
 	 * @param target a policy set target
+	 * @param combinerParameters a combiner parameters
+	 * @param policyCombinerParameters a policy combiner parameters
+	 * @param policySetCombinerParameters a policy set combiner parameters
 	 * @param combine a policy combining algorithm
 	 * @param policies a collection of policies or policy sets
 	 * @param adviceExpressions a collection of advice expressions
@@ -47,6 +57,9 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 			Version version,
 			PolicySetDefaults policySetDefaults,
 			Target target, 
+			CombinerParameters combinerParameters,
+			PolicyCombinerParameters policyCombinerParameters,
+			PolicySetCombinerParameters policySetCombinerParameters,
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
 			Collection<? extends CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
@@ -57,11 +70,44 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
+		this.combinerParameters = combinerParameters;
+		this.policyCombinerParameters = policyCombinerParameters;
+		this.policySetCombinerParameters = policySetCombinerParameters;
 	}
+	
+	public DefaultPolicySet(
+			String id, 
+			Version version,
+			Target target, 
+			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
+			Collection<? extends CompositeDecisionRule> policies, 
+			Collection<AdviceExpression> adviceExpressions,
+			Collection<ObligationExpression> obligationExpressions) 
+	{
+		this(id, version, null, target, 
+				null, null, null, combine, policies, adviceExpressions, obligationExpressions);
+	}
+	
+	
 	
 	@Override
 	public PolicySetDefaults getDefaults() {
 		return policySetDefaults;
+	}
+	
+	@Override
+	public DecisionCombinerParameters getCombinerParameters() {
+		return combinerParameters;
+	}
+
+	@Override
+	public PolicyCombinerParameters getPolicyCombinerParameters() {
+		return policyCombinerParameters;
+	}
+
+	@Override
+	public PolicySetCombinerParameters getPolicySetCombinerParameters() {
+		return policySetCombinerParameters;
 	}
 
 	/**
@@ -108,6 +154,15 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 		}
 		if(policySetDefaults != null){
 			policySetDefaults.accept(v);
+		}
+		if(combinerParameters != null){
+			combinerParameters.accept(v);
+		}
+		if(policyCombinerParameters != null){
+			policyCombinerParameters.accept(v);
+		}
+		if(policySetCombinerParameters != null){
+			policySetCombinerParameters.accept(v);
 		}
 		combine.accept(v);
 		for(DecisionRule decision : decisionRules){

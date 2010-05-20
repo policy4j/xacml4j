@@ -28,6 +28,9 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	 */
 	PolicyDefaults getDefaults();
 	
+	CombinerParameters getCombinerParameters();
+	RuleCombinerParameters getRuleCombinerParameters();
+	
 	/**
 	 * Gets rule target
 	 * 

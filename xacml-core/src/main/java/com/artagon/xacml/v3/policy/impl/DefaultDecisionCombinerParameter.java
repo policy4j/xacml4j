@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.DecisionCombinerParameter;
+import com.artagon.xacml.v3.policy.CombinerParameter;
 import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.google.common.base.Preconditions;
 
@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
  * @author Giedrius Trumpickas
  */
 final class DefaultDecisionCombinerParameter extends XacmlObject 
-	implements DecisionCombinerParameter
+	implements CombinerParameter
 {
 	private String name;
 	private AttributeValue value;
