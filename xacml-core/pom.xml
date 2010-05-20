@@ -27,24 +27,24 @@
 			<artifactId>guava-collections</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-test</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-v20-schema-policy</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-v20-schema-context</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
-		<!--  
+		<!--
 		<plugins>
 			<plugin>
 				<groupId>com.google.protobuf.tools</groupId>

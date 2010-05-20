@@ -13,9 +13,9 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-v20-schema-policy</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
     <build>

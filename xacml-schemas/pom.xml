@@ -19,7 +19,7 @@
         <module>xacmlv20-policy</module>
         <module>xacmlv20-context</module>
     </modules>
-	<dependencies>		
+	<dependencies>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
