@@ -2,8 +2,10 @@ package com.artagon.xacml.v3.policy.jaxb;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
@@ -18,8 +20,11 @@ import org.oasis.xacml.v20.policy.PolicyType;
 import org.oasis.xacml.v20.policy.SubjectAttributeDesignatorType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
+import org.oasis.xacml.v20.policy.VariableReferenceType;
 
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.artagon.xacml.v3.policy.Expression;
 import com.artagon.xacml.v3.policy.FunctionReference;
 import com.artagon.xacml.v3.policy.Policy;
@@ -31,11 +36,20 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.VariableReference;
+import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
 public class JAXBPolicyMapper 
 {
 
+	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
+	
+	static{
+		designatorMappings.put("ResourceAttributeDesignator", AttributeCategoryId.RESOURCE);
+		designatorMappings.put("ActionAttributeDesignator", AttributeCategoryId.ACTION);
+		designatorMappings.put("EnviromentAttributeDesignator", AttributeCategoryId.ENVIRONMENT);
+	}
+	
 	private PolicyFactory factory;
 	
 	public JAXBPolicyMapper(PolicyFactory factory){
@@ -115,17 +129,33 @@ public class JAXBPolicyMapper
 			FunctionType f = (FunctionType)exp;
 			return factory.createFunctionReference(f.getFunctionId());
 		}
-		if(exp instanceof SubjectAttributeDesignatorType){
-			
-		}
 		if(exp instanceof AttributeDesignatorType){
-			
+			AttributeDesignatorType ref = (AttributeDesignatorType)exp;
+			AttributeValueType dataType = DataTypes.getByTypeId(ref.getDataType());
+			if(dataType == null){
+				throw new PolicySyntaxException("Unknown dataType=\"%s\"", ref.getDataType());
+			}
+			if(exp instanceof SubjectAttributeDesignatorType){	
+				SubjectAttributeDesignatorType subjectRef = (SubjectAttributeDesignatorType)exp;
+				AttributeCategoryId categoryId = AttributeCategoryId.valueOf(subjectRef.getSubjectCategory());
+				if(categoryId == null){
+					throw new PolicySyntaxException("Unknown subject " +
+							"attribute designator category=\"%s\"", expression.getName());
+				}
+			}
+			AttributeCategoryId categoryId  = designatorMappings.get(expression.getName().getLocalPart());
+			if(categoryId == null){
+				throw new PolicySyntaxException("Unknown attribute designator=\"%s\"", expression.getName());
+			}
+			return factory.createDesignator(categoryId, ref.getAttributeId(), dataType, ref.getIssuer());
 		}
 		if(exp instanceof AttributeSelectorType){
+			AttributeSelectorType selector = (AttributeSelectorType)exp;
 			
 		}
-		if(exp instanceof VariableReference){
-			
+		if(exp instanceof VariableReferenceType){
+			VariableReferenceType ref = (VariableReferenceType)exp;
+			return factory.createVariableReference(ref.getVariableId());
 		}
 		throw new PolicySyntaxException("Unsupported expression=\"%s\"", expression.getName());
 	}

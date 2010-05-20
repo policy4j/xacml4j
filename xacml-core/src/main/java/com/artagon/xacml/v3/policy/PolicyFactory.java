@@ -76,6 +76,13 @@ public interface PolicyFactory
 
 	FunctionReference createFunctionReference(String functionId) throws PolicySyntaxException;
 	
+	VariableReference createVariableReference(String variableId) throws PolicySyntaxException;
+	
+	AttributeDesignator createDesignator(AttributeCategoryId category, 
+			String attributeId, AttributeValueType dataType, String issuer) throws PolicySyntaxException;
+	
+	AttributeSelector createSelector(AttributeCategoryId category, 
+			String selectXPath, AttributeValueType dataType) throws PolicySyntaxException;
 	/**
 	 * Creates {@link Rule} instance with a give 
 	 * target, condition and effect
