@@ -7,6 +7,13 @@ import java.util.List;
 public interface PolicySet extends CompositeDecisionRule, Versionable
 {
 	/**
+	 * Gets decision policy description
+	 * 
+	 * @return description
+	 */
+	String getDescription();
+	
+	/**
 	 * Gets policy set defaults
 	 * 
 	 * @return {@link PolicySetDefaults}

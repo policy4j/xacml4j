@@ -16,14 +16,14 @@ public class DefaultDecisionCombiningAlgorithmProvider extends BaseDecisionCombi
 		addRuleCombineAlgorithm(RuleDenyOverridesCombiningAlgorithm.getLegacyInstance());
 		addRuleCombineAlgorithm(RulePermitOverridesCombineAlgorithm.getLegacyInstance());
 		
-		addPolicyCombineAlgorithm(new PolicyDenyOverridesCombiningAlgorithm());
-		addPolicyCombineAlgorithm(new PolicyPermitOverridesCombineAlgorithm());
-		addPolicyCombineAlgorithm(new PolicyFirstApplicableCombiningAlgorithm());
-		addPolicyCombineAlgorithm(new PolicyOnlyOneApplicableCombingingAlgorithm());
-		addPolicyCombineAlgorithm(new PolicyPermitUnlessDenyCombiningAlgorithm());
-		addPolicyCombineAlgorithm(new PolicyDenyUnlessPermitCombingingAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyDenyOverridesCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyPermitOverridesCombineAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyFirstApplicableCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyOnlyOneApplicableCombingingAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyPermitUnlessDenyCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PolicyDenyUnlessPermitCombingingAlgorithm());
 		
-		addPolicyCombineAlgorithm(PolicyDenyOverridesCombiningAlgorithm.getLegacyInstance());
-		addPolicyCombineAlgorithm(PolicyPermitOverridesCombineAlgorithm.getLegacyInstance());
+		addCompositeRuleCombineAlgorithm(PolicyDenyOverridesCombiningAlgorithm.getLegacyInstance());
+		addCompositeRuleCombineAlgorithm(PolicyPermitOverridesCombineAlgorithm.getLegacyInstance());
 	}
 }

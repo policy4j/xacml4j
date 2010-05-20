@@ -5,6 +5,13 @@ import java.util.Collection;
 public interface Rule extends DecisionRule
 {
 	/**
+	 * Gets decision policy description
+	 * 
+	 * @return description
+	 */
+	String getDescription();
+	
+	/**
 	 * Gets rule target
 	 * 
 	 * @return {@link Target} or

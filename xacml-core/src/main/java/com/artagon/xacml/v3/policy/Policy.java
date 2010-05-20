@@ -6,6 +6,14 @@ import java.util.List;
 
 public interface Policy extends CompositeDecisionRule, Versionable
 {
+	
+	/**
+	 * Gets decision policy description
+	 * 
+	 * @return description
+	 */
+	String getDescription();
+	
 	/**
 	 * Gets policy version
 	 * 
@@ -13,6 +21,11 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	 */
 	Version getVersion();
 	
+	/**
+	 * Gets policy defaults
+	 * 
+	 * @return policy defaults
+	 */
 	PolicyDefaults getDefaults();
 	
 	/**

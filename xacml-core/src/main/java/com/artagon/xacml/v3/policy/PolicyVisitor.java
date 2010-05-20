@@ -80,4 +80,17 @@ public interface PolicyVisitor
 	
 	void visitEnter(PolicySetDefaults policySetDefaults);
 	void visitLeave(PolicySetDefaults policySetDefaults);
+	
+	
+	void visitEnter(DecisionCombinerParameter p);
+	void visitLeave(DecisionCombinerParameter p);
+	
+	void visitEnter(RuleCombinerParameters p);
+	void visitLeave(RuleCombinerParameters p);
+	
+	void visitEnter(PolicyCombinerParameters p);
+	void visitLeave(PolicyCombinerParameters p);
+	
+	void visitEnter(PolicySetCombinerParameters p);
+	void visitLeave(PolicySetCombinerParameters p);
 }

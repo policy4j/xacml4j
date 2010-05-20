@@ -28,6 +28,12 @@
 		</dependency>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
+			<artifactId>xacml-test</artifactId>
+			<version>${pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>xacml-v20-schema-policy</artifactId>
 			<version>${pom.version}</version>
 		</dependency>

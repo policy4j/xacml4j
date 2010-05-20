@@ -34,7 +34,7 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombingin
 		Preconditions.checkState(oldAlgo != null);
 	}
 	
-	public final void addPolicyCombineAlgorithm(
+	public final void addCompositeRuleCombineAlgorithm(
 			DecisionCombiningAlgorithm<? extends CompositeDecisionRule> algorithm)
 	{
 		DecisionCombiningAlgorithm<? extends CompositeDecisionRule> oldAlgo = policyAlgo.put(

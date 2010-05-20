@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.policy.spi;
 
-import java.util.Collection;
-
 import com.artagon.xacml.v3.policy.Policy;
 import com.artagon.xacml.v3.policy.PolicySet;
 

@@ -25,6 +25,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	private final static Logger log = LoggerFactory.getLogger(BaseDesicionRule.class);
 	
 	private String id;
+	private String description;
 	private Target target;
 	private Collection<AdviceExpression> adviceExpressions;
 	private Collection<ObligationExpression> obligationExpressions;
@@ -33,22 +34,32 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * Constructs base decision with a given identifier
 	 * 
 	 * @param id an decision identifier
+	 * @param description a decision rule description
 	 * @param target a a decision target
 	 * @param adviceExpressions a decision 
 	 * advice expressions
 	 * @param obligationExpressions a decision 
 	 * obligation expressions
 	 */
-	protected BaseDesicionRule(String id, 
+	protected BaseDesicionRule(
+			String id, 
+			String description,
 			Target target, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(adviceExpressions);
 		Preconditions.checkNotNull(obligationExpressions);
 		this.id = id;
+		this.description = description;
 		this.target = target;
 		this.adviceExpressions = new LinkedList<AdviceExpression>(adviceExpressions);
 		this.obligationExpressions = new LinkedList<ObligationExpression>(obligationExpressions);
+	}
+	
+	protected BaseDesicionRule(
+			String id, Target target, Collection<AdviceExpression> adviceExpressions,
+			Collection<ObligationExpression> obligationExpressions){
+		this(id, null, target, adviceExpressions, obligationExpressions);
 	}
 	
 	/**
@@ -68,6 +79,15 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	@Override
 	public final String getId(){
 		return id;
+	}
+	
+	/**
+	 * Gets decision rule description
+	 * 
+	 * @return decision rule description
+	 */
+	public final String getDescription(){
+		return description;
 	}
 	
 	/**

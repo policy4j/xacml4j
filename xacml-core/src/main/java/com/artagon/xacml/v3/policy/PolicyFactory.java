@@ -45,6 +45,16 @@ public interface PolicyFactory
 	Apply createApply(String functionId, 
 			Collection<Expression> arguments) throws PolicySyntaxException;
 	
+	/**
+	 * Creates {@link Match} from a given
+	 * function, attribute and attribute reference
+	 * 
+	 * @param functionId
+	 * @param value
+	 * @param reference
+	 * @return {@link Match} instance
+	 * @throws PolicySyntaxException
+	 */
 	Match createMatch(String functionId, 
 			AttributeValue value, AttributeReference reference) throws PolicySyntaxException;
 	
