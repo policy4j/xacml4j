@@ -8,16 +8,16 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocation;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionReturnTypeResolver;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.ValueType;
 import com.google.common.base.Preconditions;
 
 /**

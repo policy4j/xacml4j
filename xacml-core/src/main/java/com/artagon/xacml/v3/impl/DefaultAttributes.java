@@ -9,10 +9,10 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.AttributeValueType;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

@@ -17,18 +17,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContextFactory;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.MatchResult;
+import com.artagon.xacml.v3.PolicyIDReference;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationContextFactory;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.Version;
-import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.XacmlException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class DefaultPolicySetIDReferenceTest
@@ -53,7 +54,7 @@ public class DefaultPolicySetIDReferenceTest
 	}
 	
 	@Test
-	public void testNoReferencedPolicyFound() throws EvaluationException
+	public void testNoReferencedPolicyFound() throws XacmlException
 	{
 		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -92,7 +93,7 @@ public class DefaultPolicySetIDReferenceTest
 	}
 	
 	@Test
-	public void testEvaluatePolicyIDReference() throws PolicyResolutionException
+	public void testEvaluatePolicyIDReference() throws XacmlException
 	{
 		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);
@@ -117,7 +118,7 @@ public class DefaultPolicySetIDReferenceTest
 	}
 	
 	@Test
-	public void testEvaluateIfApplicablePolicyIDReference() throws PolicyResolutionException
+	public void testEvaluateIfApplicablePolicyIDReference() throws XacmlException
 	{
 		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);
@@ -142,7 +143,7 @@ public class DefaultPolicySetIDReferenceTest
 	}
 	
 	@Test
-	public void testIsApplicablePolicyIDReference() throws PolicyResolutionException
+	public void testIsApplicablePolicyIDReference() throws XacmlException
 	{
 		PolicySetIDReference ref = new DefaultPolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(policyResolver.resolve(context, ref)).andReturn(refPolicySet);

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 

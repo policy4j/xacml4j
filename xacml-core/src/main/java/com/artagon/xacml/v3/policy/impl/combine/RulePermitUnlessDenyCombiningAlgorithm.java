@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl.combine;
 
-import com.artagon.xacml.v3.policy.Rule;
+import com.artagon.xacml.v3.Rule;
 
 final class RulePermitUnlessDenyCombiningAlgorithm extends PermitUnlessDeny<Rule>
 {

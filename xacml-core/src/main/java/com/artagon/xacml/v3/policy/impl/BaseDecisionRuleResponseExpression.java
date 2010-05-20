@@ -4,14 +4,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v3.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.PolicyElement;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.policy.AttributeAssignment;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.PolicyElement;
 import com.google.common.base.Preconditions;
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement

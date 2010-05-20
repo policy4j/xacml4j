@@ -9,14 +9,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.ConditionResult;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicyException;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
+import com.artagon.xacml.v3.Condition;
+import com.artagon.xacml.v3.ConditionResult;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicyException;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultConditionTest 

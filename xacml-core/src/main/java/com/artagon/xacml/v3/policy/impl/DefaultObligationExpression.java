@@ -2,14 +2,14 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.AttributeAssignment;
+import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.policy.AttributeAssignment;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.PolicyVisitor;
 
 final class DefaultObligationExpression extends BaseDecisionRuleResponseExpression implements ObligationExpression
 {

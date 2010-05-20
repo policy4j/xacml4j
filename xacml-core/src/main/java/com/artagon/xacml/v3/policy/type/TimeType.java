@@ -3,8 +3,8 @@ package com.artagon.xacml.v3.policy.type;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.policy.spi.type.BaseAttributeValue;
 
 public interface TimeType extends AttributeValueType

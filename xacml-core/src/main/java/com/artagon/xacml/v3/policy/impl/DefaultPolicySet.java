@@ -8,22 +8,22 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.AdviceExpression;
+import com.artagon.xacml.v3.CombinerParameters;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.CombinerParameters;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.DecisionCombinerParameters;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.DecisionRule;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.PolicyCombinerParameters;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetCombinerParameters;
-import com.artagon.xacml.v3.policy.PolicySetDefaults;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.Target;
-import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.DecisionCombinerParameters;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.DecisionRule;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.PolicyCombinerParameters;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetCombinerParameters;
+import com.artagon.xacml.v3.PolicySetDefaults;
+import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.Target;
+import com.artagon.xacml.v3.Version;
 import com.google.common.base.Preconditions;
 
 final class DefaultPolicySet extends BaseCompositeDecisionRule implements PolicySet

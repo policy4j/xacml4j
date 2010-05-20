@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl.combine;
 
-import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.Policy;
 
 public class PolicyDenyUnlessPermitCombingingAlgorithm extends DenyUnlessPermit<Policy>
 {

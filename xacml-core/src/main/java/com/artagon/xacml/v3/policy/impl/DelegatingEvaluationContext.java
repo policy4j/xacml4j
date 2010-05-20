@@ -8,21 +8,21 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeSelector;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyIdentifier;
-import com.artagon.xacml.v3.policy.AttributeDesignator;
-import com.artagon.xacml.v3.policy.AttributeSelector;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.XPathVersion;
 import com.google.common.base.Preconditions;
 
 /**

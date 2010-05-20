@@ -5,13 +5,13 @@ import java.util.Collections;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContextFactory;
 import com.artagon.xacml.v3.PolicyIdentifier;
+import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationContextFactory;
-import com.artagon.xacml.v3.policy.PolicySet;
 import com.google.common.base.Preconditions;
 
 public final class DefaultPolicyDecisionPoint extends AbstractPolicyDecisionPoint

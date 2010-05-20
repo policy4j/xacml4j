@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.XPathVersion;
 import com.google.common.base.Preconditions;
 
 class BaseCompositeDecisionRuleDefaults extends XacmlObject

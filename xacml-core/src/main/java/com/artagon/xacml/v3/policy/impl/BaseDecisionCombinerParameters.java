@@ -3,9 +3,9 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.artagon.xacml.v3.CombinerParameter;
+import com.artagon.xacml.v3.DecisionCombinerParameters;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.CombinerParameter;
-import com.artagon.xacml.v3.policy.DecisionCombinerParameters;
 
 abstract class BaseDecisionCombinerParameters extends XacmlObject 
 	implements DecisionCombinerParameters

@@ -3,11 +3,11 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.FunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.ValueType;
+import com.artagon.xacml.v3.FunctionInvocation;
+import com.artagon.xacml.v3.FunctionReturnTypeResolver;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpecBuilder;
+import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
 public class DefaultFunctionSpecBuilder 

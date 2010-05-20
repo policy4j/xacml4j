@@ -2,9 +2,9 @@ package com.artagon.xacml.v3.policy.spi;
 
 import java.util.Set;
 
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.Rule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.Rule;
 
 
 public interface DecisionCombiningAlgorithmProvider 

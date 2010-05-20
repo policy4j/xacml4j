@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy.spi.function;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.google.common.base.Preconditions;

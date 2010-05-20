@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.ListIterator;
 
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionReference;
+import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionReference;
-import com.artagon.xacml.v3.policy.ValueType;
 import com.google.common.base.Preconditions;
 
 public class ParamFuncReferenceSpec extends XacmlObject implements ParamSpec

@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.policy.impl.function.TestFunctions;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;

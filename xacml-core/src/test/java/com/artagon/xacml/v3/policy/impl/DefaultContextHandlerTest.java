@@ -15,9 +15,9 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.ContextHandler;
+import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.policy.ContextHandler;
-import com.artagon.xacml.v3.policy.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 
 public class DefaultContextHandlerTest

@@ -11,12 +11,12 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.Apply;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicyFactory;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
+import com.artagon.xacml.v3.Apply;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.artagon.xacml.v3.policy.type.DataTypes;

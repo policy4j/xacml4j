@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
 
-import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
 public class CglibReflectionBasedFunctionInvocation extends AbstractReflectionBasedFunctionInvocation 

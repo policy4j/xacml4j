@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicyFactory;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
-import com.artagon.xacml.v3.policy.Rule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.google.common.base.Preconditions;

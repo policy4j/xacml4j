@@ -1,16 +1,18 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.Version;
 
 public class VersionTest 
 {
 	@Test
-	public void testCreateVersion()
+	public void testCreateVersion() throws PolicySyntaxException
 	{
 		Version v1 = Version.valueOf("1.0");
 		Version v2 = Version.valueOf("1.0");
@@ -21,7 +23,7 @@ public class VersionTest
 	}
 	
 	@Test
-	public void testLessThanVersion()
+	public void testLessThanVersion() throws PolicySyntaxException
 	{
 		Version v1 = Version.valueOf("1.1");
 		Version v2 = Version.valueOf("1.0");
@@ -33,5 +35,24 @@ public class VersionTest
 		assertTrue(v2.compareTo(v4) == 0);
 		assertTrue(v2.compareTo(v2) == 0);
 		assertTrue(v4.compareTo(v2) == 0);
+	}
+	
+	@Test
+	public void testDefaultVersion() throws PolicySyntaxException
+	{
+		Version v = Version.valueOf(null);
+		assertEquals("1.0", v.getValue());
+	}
+	
+	@Test(expected=PolicySyntaxException.class)
+	public void testNegativeComponent() throws PolicySyntaxException
+	{
+		Version.valueOf("-1.0");
+	}
+	
+	@Test(expected=PolicySyntaxException.class)
+	public void testUnparsableVersion() throws PolicySyntaxException
+	{
+		Version.valueOf("1.a....");
 	}
 }

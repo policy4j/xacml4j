@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.v3.impl.DefaultAttributes;
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.Target;
 
 public interface Request 
 {

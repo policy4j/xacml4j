@@ -1,13 +1,13 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.MatchResult;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.VersionMatch;
 import com.google.common.base.Preconditions;
 
 public final class DefaultPolicySetIDReference extends BaseCompositeDecisionRuleIDReference 

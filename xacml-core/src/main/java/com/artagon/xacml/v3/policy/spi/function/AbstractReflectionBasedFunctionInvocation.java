@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy.spi.function;
 
 import java.lang.reflect.Array;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocation;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.Value;
 
 public abstract class AbstractReflectionBasedFunctionInvocation implements FunctionInvocation
 {

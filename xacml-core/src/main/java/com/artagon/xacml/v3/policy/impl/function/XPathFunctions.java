@@ -4,8 +4,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;

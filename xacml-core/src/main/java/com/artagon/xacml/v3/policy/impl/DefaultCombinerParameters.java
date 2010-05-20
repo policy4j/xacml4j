@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.CombinerParameter;
-import com.artagon.xacml.v3.policy.CombinerParameters;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
+import com.artagon.xacml.v3.CombinerParameter;
+import com.artagon.xacml.v3.CombinerParameters;
+import com.artagon.xacml.v3.PolicyVisitor;
 
 final class DefaultCombinerParameters extends BaseDecisionCombinerParameters 
 	implements CombinerParameters

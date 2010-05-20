@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.PolicyIDReference;
+import com.artagon.xacml.v3.PolicySetIDReference;
 import com.google.common.base.Preconditions;
 
 /**

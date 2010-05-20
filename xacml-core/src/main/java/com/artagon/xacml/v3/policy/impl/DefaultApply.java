@@ -2,17 +2,17 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.Apply;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionReference;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.Apply;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionReference;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.ValueType;
 import com.google.common.base.Preconditions;
 
 /**

@@ -8,16 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.DecisionRule;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.DecisionRule;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Preconditions;
 
 abstract class BaseDesicionRule extends XacmlObject implements DecisionRule

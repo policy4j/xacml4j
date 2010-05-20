@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.Version;
 import com.google.common.base.Preconditions;
 
 public final class PolicyIdentifier extends XacmlObject

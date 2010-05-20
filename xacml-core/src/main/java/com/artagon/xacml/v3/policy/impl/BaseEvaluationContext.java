@@ -18,23 +18,23 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeSelector;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.ContextHandler;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyIdentifier;
-import com.artagon.xacml.v3.policy.AttributeDesignator;
-import com.artagon.xacml.v3.policy.AttributeSelector;
-import com.artagon.xacml.v3.policy.AttributeValue;
-import com.artagon.xacml.v3.policy.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.ContextHandler;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.Value;
-import com.artagon.xacml.v3.policy.Version;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.google.common.base.Preconditions;
@@ -222,7 +222,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 					getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
 			log.debug("Received exception while evaluating xpath", e);
-			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
 
@@ -243,7 +243,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			return xpathProvider.evaluateToNodeSet(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
 			log.debug("Received exception while evaluating xpath", e);
-			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
 
@@ -262,7 +262,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 			return xpathProvider.evaluateToNumber(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
 			log.debug("Received exception while evaluating xpath", e);
-			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
 
@@ -282,7 +282,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 					getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
 			log.debug("Received exception while evaluating xpath", e);
-			throw new com.artagon.xacml.v3.policy.XPathEvaluationException(path, this, e);
+			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
 	

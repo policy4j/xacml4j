@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.CompositeDecisionRuleIDReference;
-import com.artagon.xacml.v3.policy.Version;
-import com.artagon.xacml.v3.policy.VersionMatch;
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject 

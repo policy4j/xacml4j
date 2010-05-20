@@ -16,22 +16,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Target;
-import com.artagon.xacml.v3.policy.VariableDefinition;
-import com.artagon.xacml.v3.policy.Version;
-import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Target;
+import com.artagon.xacml.v3.VariableDefinition;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class DefaultPolicyTest 
@@ -58,7 +59,7 @@ public class DefaultPolicyTest
 	
 	@SuppressWarnings("unchecked")
 	@Before
-	public void init()
+	public void init() throws PolicySyntaxException
 	{
 		this.rules = new LinkedList<Rule>();
 		this.rule1 = createStrictMock(Rule.class);

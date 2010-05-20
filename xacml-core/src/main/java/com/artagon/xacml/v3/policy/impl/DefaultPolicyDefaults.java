@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.PolicyDefaults;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.PolicyDefaults;
+import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.XPathVersion;
 
 public class DefaultPolicyDefaults extends BaseCompositeDecisionRuleDefaults 
 	implements PolicyDefaults {

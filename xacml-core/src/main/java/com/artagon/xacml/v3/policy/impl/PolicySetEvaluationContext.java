@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.ContextHandler;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetDefaults;
-import com.artagon.xacml.v3.policy.XPathVersion;
+import com.artagon.xacml.v3.ContextHandler;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetDefaults;
+import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 

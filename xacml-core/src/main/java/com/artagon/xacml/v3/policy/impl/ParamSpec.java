@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.impl;
 
 import java.util.ListIterator;
 
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.ValueType;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.ValueType;
 
 public interface ParamSpec 
 {	

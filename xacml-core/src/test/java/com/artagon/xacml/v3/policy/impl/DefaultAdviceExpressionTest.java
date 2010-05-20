@@ -15,14 +15,14 @@ import java.util.Iterator;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.AdviceExpression;
+import com.artagon.xacml.v3.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.policy.AttributeAssignment;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.EvaluationException;
+import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAdviceExpressionTest 

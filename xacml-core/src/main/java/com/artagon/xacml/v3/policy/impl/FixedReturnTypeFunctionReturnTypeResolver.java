@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.ValueType;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionReturnTypeResolver;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
 final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver

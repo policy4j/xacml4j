@@ -6,16 +6,16 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.AdviceExpression;
+import com.artagon.xacml.v3.Condition;
+import com.artagon.xacml.v3.ConditionResult;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.policy.AdviceExpression;
-import com.artagon.xacml.v3.policy.Condition;
-import com.artagon.xacml.v3.policy.ConditionResult;
-import com.artagon.xacml.v3.policy.Effect;
-import com.artagon.xacml.v3.policy.EvaluationContext;
-import com.artagon.xacml.v3.policy.ObligationExpression;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Target;
+import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Target;
 import com.google.common.base.Preconditions;
 
 final class DefaultRule extends BaseDesicionRule implements Rule

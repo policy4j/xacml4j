@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy.impl;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.policy.AttributeAssignment;
+import com.artagon.xacml.v3.AttributeAssignment;
 
 final class DefaultAdvice extends BaseDecisionRuleResponse implements Advice
 {

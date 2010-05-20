@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpec;
 
 /**
  * Represents a specification which

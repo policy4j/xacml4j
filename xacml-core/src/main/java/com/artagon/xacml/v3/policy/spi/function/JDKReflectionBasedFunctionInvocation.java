@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy.spi.function;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import com.artagon.xacml.v3.policy.Value;
+import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
 public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBasedFunctionInvocation

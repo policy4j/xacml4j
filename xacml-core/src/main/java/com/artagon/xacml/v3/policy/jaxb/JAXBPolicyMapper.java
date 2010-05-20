@@ -10,10 +10,13 @@ import java.util.Map;
 import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.policy.ApplyType;
+import org.oasis.xacml.v20.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.policy.AttributeDesignatorType;
 import org.oasis.xacml.v20.policy.AttributeSelectorType;
 import org.oasis.xacml.v20.policy.DefaultsType;
+import org.oasis.xacml.v20.policy.EffectType;
 import org.oasis.xacml.v20.policy.FunctionType;
+import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
@@ -22,20 +25,21 @@ import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
 
+import com.artagon.xacml.v3.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.policy.AttributeValueType;
-import com.artagon.xacml.v3.policy.Expression;
-import com.artagon.xacml.v3.policy.FunctionReference;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyDefaults;
-import com.artagon.xacml.v3.policy.PolicyFactory;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Target;
-import com.artagon.xacml.v3.policy.VariableDefinition;
-import com.artagon.xacml.v3.policy.VariableReference;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyDefaults;
+import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Target;
+import com.artagon.xacml.v3.VariableDefinition;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
@@ -58,6 +62,8 @@ public class JAXBPolicyMapper
 	
 	public Policy create(PolicyType p) throws PolicySyntaxException
 	{
+		Map<String, VariableDefinition> varDefinitions = getVariables(p);
+		Version version = Version.valueOf(p.getVersion());
 		return null;
 	}
 	
@@ -77,19 +83,20 @@ public class JAXBPolicyMapper
 		return null;
 	}
 	
-	private Collection<VariableDefinition> getVariables(PolicyType p) throws PolicySyntaxException
+	private Map<String, VariableDefinition> getVariables(PolicyType p) throws PolicySyntaxException
 	{
 		List<Object> objects = p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
 		if(objects == null || objects.isEmpty()){
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
-		List<VariableDefinition> variables = new LinkedList<VariableDefinition>();
+		Map<String, VariableDefinition> variables = new HashMap<String, VariableDefinition>();
 		for(Object o : objects){
 			if(!(o instanceof VariableDefinitionType)){
 				continue;
 			}
 			VariableDefinitionType v = (VariableDefinitionType)o;
-			variables.add(new VariableDefinition(v.getVariableId(), createExpression(v.getExpression())));
+			variables.put(v.getVariableId(), new VariableDefinition(v.getVariableId(), 
+					createExpression(v.getExpression())));
 		}
 		return variables;
 	}
@@ -99,7 +106,19 @@ public class JAXBPolicyMapper
 		return Collections.emptyList();
 	}
 	
-	private Collection<Obligation> getObligations(ObligationsType obligations)
+	private Collection<ObligationExpression> getObligations(ObligationsType obligations) 
+		throws PolicySyntaxException
+	{
+		Collection<ObligationExpression> o = new LinkedList<ObligationExpression>();
+		for(ObligationType obligation : obligations.getObligation()){
+			o.add(factory.createObligationExpression(obligation.getObligationId(), 
+					obligation.getFulfillOn() == EffectType.PERMIT?Effect.PERMIT:Effect.DENY,
+							createAttributeAssigments(obligation.getAttributeAssignment())));
+		}	
+		return o;
+	}
+	
+	private Collection<AttributeAssigmentExpression> createAttributeAssigments(Collection<AttributeAssignmentType> exp)
 	{
 		return Collections.emptyList();
 	}
@@ -147,15 +166,15 @@ public class JAXBPolicyMapper
 			if(categoryId == null){
 				throw new PolicySyntaxException("Unknown attribute designator=\"%s\"", expression.getName());
 			}
-			return factory.createDesignator(categoryId, ref.getAttributeId(), dataType, ref.getIssuer());
+			return factory.createDesignator(categoryId, 
+					ref.getAttributeId(), dataType, ref.isMustBePresent(), ref.getIssuer());
 		}
 		if(exp instanceof AttributeSelectorType){
 			AttributeSelectorType selector = (AttributeSelectorType)exp;
 			
 		}
 		if(exp instanceof VariableReferenceType){
-			VariableReferenceType ref = (VariableReferenceType)exp;
-			return factory.createVariableReference(ref.getVariableId());
+			throw new PolicySyntaxException("Unsupported");
 		}
 		throw new PolicySyntaxException("Unsupported expression=\"%s\"", expression.getName());
 	}
