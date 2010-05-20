@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Effect;
 import com.artagon.xacml.v3.policy.Expression;
+import com.artagon.xacml.v3.policy.FunctionReference;
 import com.artagon.xacml.v3.policy.Match;
 import com.artagon.xacml.v3.policy.MatchAllOf;
 import com.artagon.xacml.v3.policy.MatchAnyOf;
@@ -188,6 +189,13 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String algorithmId, Collection<CompositeDecisionRule> policies,
 			Collection<ObligationExpression> obligation,
 			Collection<AdviceExpression> advice) throws PolicySyntaxException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FunctionReference createFunctionReference(String functionId)
+			throws PolicySyntaxException {
 		// TODO Auto-generated method stub
 		return null;
 	}	

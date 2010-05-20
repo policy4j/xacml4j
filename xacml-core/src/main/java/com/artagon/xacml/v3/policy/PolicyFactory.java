@@ -74,6 +74,8 @@ public interface PolicyFactory
 	 */
 	Condition createCondition(Expression predicate) throws PolicySyntaxException;
 
+	FunctionReference createFunctionReference(String functionId) throws PolicySyntaxException;
+	
 	/**
 	 * Creates {@link Rule} instance with a give 
 	 * target, condition and effect
