@@ -2,12 +2,14 @@ package com.artagon.xacml.v3.policy.impl.function;
 
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
 
+@XacmlFunctionProvider
 public class NumericComparisionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than")

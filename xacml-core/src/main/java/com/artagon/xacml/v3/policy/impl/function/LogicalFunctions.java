@@ -5,6 +5,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamVarArg;
@@ -18,6 +19,7 @@ import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
  * 
  * @author Giedrius Trumpickas
  */
+@XacmlFunctionProvider
 public class LogicalFunctions 
 {
 	

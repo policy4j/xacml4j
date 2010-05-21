@@ -4,6 +4,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.policy.impl.function.ArithmeticFunctions;
+import com.artagon.xacml.v3.policy.impl.function.BagFunctions;
+import com.artagon.xacml.v3.policy.impl.function.DateTimeArithmeticFunctions;
+import com.artagon.xacml.v3.policy.impl.function.EqualityPredicates;
+import com.artagon.xacml.v3.policy.impl.function.LogicalFunctions;
+import com.artagon.xacml.v3.policy.impl.function.NonNumericComparisionFunctions;
+import com.artagon.xacml.v3.policy.impl.function.NumericConversionFunctions;
+import com.artagon.xacml.v3.policy.impl.function.RegularExpressionFunctions;
+import com.artagon.xacml.v3.policy.impl.function.SetFunctions;
+import com.artagon.xacml.v3.policy.impl.function.SpecialMatchFunctions;
+import com.artagon.xacml.v3.policy.impl.function.StringConversionFunctions;
+import com.artagon.xacml.v3.policy.impl.function.StringFunctions;
+import com.artagon.xacml.v3.policy.impl.function.XPathFunctions;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.google.common.base.Preconditions;
@@ -14,6 +27,19 @@ public class DefaultFunctionProvidersRegistry implements FunctionProvidersRegist
 	
 	public DefaultFunctionProvidersRegistry(){
 		this.providers = new ConcurrentHashMap<String, FunctionProvider>();
+		add(new ReflectionBasedFunctionProvider(ArithmeticFunctions.class));
+		add(new ReflectionBasedFunctionProvider(BagFunctions.class));
+		add(new ReflectionBasedFunctionProvider(DateTimeArithmeticFunctions.class));
+		add(new ReflectionBasedFunctionProvider(EqualityPredicates.class));
+		add(new ReflectionBasedFunctionProvider(LogicalFunctions.class));
+		add(new ReflectionBasedFunctionProvider(NonNumericComparisionFunctions.class));
+		add(new ReflectionBasedFunctionProvider(NumericConversionFunctions.class));
+		add(new ReflectionBasedFunctionProvider(RegularExpressionFunctions.class));
+		add(new ReflectionBasedFunctionProvider(SetFunctions.class));
+		add(new ReflectionBasedFunctionProvider(SpecialMatchFunctions.class));
+		add(new ReflectionBasedFunctionProvider(StringConversionFunctions.class));
+		add(new ReflectionBasedFunctionProvider(StringFunctions.class));
+		add(new ReflectionBasedFunctionProvider(XPathFunctions.class));
 	}
 	
 	public void add(FunctionProvider provider)
@@ -29,9 +55,6 @@ public class DefaultFunctionProvidersRegistry implements FunctionProvidersRegist
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.impl.FunctionProvidersRegistry#getFunction(java.lang.String)
-	 */
 	public FunctionSpec getFunction(String functionId) 
 	{
 		FunctionProvider provider = providers.get(functionId);

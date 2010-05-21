@@ -8,25 +8,5 @@
        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
     
-             
-    <bean id="typeRegistry" class="com.artagon.xacml.type.DefaultAttributeTypeRegistry">
-    	<property name="types">
-    		<list>
-    			<bean class="com.artagon.xacml.policy.types.IntegerType"/>
-    			<bean class="com.artagon.xacml.policy.types.StringType"/>
-    			<bean class="com.artagon.xacml.policy.types.BooleanType"/>
-    			<bean class="com.artagon.xacml.policy.types.DoubleType"/>
-    			<bean class="com.artagon.xacml.policy.types.AnyURIType"/>
-    			<bean class="com.artagon.xacml.policy.types.X500NameType"/>
-    		</list>    		
-    	</property>
-    </bean>
-    
-    <bean id="functionRegistry" class="com.artagon.xacml.policy.DefaultFunctionRegistry">
-    	<property name="functions">
-    		<list>    			
-    		</list>    		
-    	</property>
-    </bean>
             
 </beans>

@@ -8,6 +8,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -25,6 +26,7 @@ import com.artagon.xacml.v3.policy.type.XPathExpressionType.XPathExpressionValue
  * 
  * @author Giedrius Trumpickas
  */
+@XacmlFunctionProvider
 public class XPathFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")

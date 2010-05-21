@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.AnyURIType.AnyURIValue;
@@ -14,6 +15,7 @@ import com.artagon.xacml.v3.policy.type.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.X500NameType.X500NameValue;
 
+@XacmlFunctionProvider
 public class RegularExpressionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")

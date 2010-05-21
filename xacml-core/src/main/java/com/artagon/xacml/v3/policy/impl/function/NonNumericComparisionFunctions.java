@@ -6,6 +6,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -16,6 +17,7 @@ import com.artagon.xacml.v3.policy.type.StringType.StringValue;
 import com.artagon.xacml.v3.policy.type.TimeType.TimeValue;
 import com.google.common.base.Preconditions;
 
+@XacmlFunctionProvider
 public class NonNumericComparisionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-greater-than")

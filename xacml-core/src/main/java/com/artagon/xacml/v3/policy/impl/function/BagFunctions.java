@@ -4,6 +4,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamVarArg;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -54,6 +55,7 @@ import com.google.common.base.Preconditions;
  * An application of this function to zero arguments SHALL produce an 
  * empty bag of the specified data-type.
  */
+@XacmlFunctionProvider
 public class BagFunctions 
 {
 	

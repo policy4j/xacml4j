@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.impl.function;
 
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.DateTimeType.DateTimeValue;
@@ -9,6 +10,7 @@ import com.artagon.xacml.v3.policy.type.DateType.DateValue;
 import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.policy.type.YearMonthDurationType.YearMonthDurationValue;
 
+@XacmlFunctionProvider
 public class DateTimeArithmeticFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-dayTimeDuration")
