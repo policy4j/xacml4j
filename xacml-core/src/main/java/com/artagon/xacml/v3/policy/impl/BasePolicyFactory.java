@@ -14,7 +14,7 @@ public abstract class BasePolicyFactory implements PolicyFactory {
 	private FunctionProvidersRegistry functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	public BasePolicyFactory(FunctionProvidersRegistry functions,
+	protected BasePolicyFactory(FunctionProvidersRegistry functions,
 			DecisionCombiningAlgorithmProvider combiningAlgorithms) {
 		Preconditions.checkNotNull(functions);
 		Preconditions.checkNotNull(combiningAlgorithms);

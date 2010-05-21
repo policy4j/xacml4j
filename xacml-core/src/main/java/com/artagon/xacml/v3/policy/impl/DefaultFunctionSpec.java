@@ -5,9 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
@@ -15,6 +12,7 @@ import com.artagon.xacml.v3.FunctionInvocation;
 import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionReturnTypeResolver;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
@@ -25,10 +23,8 @@ import com.google.common.base.Preconditions;
  *
  * @param <ReturnType>
  */
-public final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
-{
-	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionSpec.class);
-	
+final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
+{	
 	private String functionId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	private boolean lazyParamEval = false;
@@ -101,13 +97,12 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 	@Override
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws FunctionInvocationException {
-		if(context.isValidateFuncParamAtRuntime()){
-			if(!validateParameters(params)){
-				throw new FunctionInvocationException(context, this, 
-						"Failed to validate function=\"%s\" parameters", getId());
+		
+		try
+		{
+			if(context.isValidateFuncParamAtRuntime()){
+				validateParameters(params);
 			}
-		}
-		try{
 			return (T)invocation.invoke(this, context, 
 					isRequiresLazyParamEval()?params:evaluate(context, params));
 		}
@@ -121,10 +116,35 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 	}
 
 	@Override
+	public void validateParametersAndThrow(Expression ... params) throws PolicySyntaxException
+	{
+		ListIterator<ParamSpec> it = parameters.listIterator();
+		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
+		while(it.hasNext())
+		{
+			ParamSpec p = it.next();
+			if(!p.validate(expIt)){
+				throw new PolicySyntaxException(
+						"Expression at index=\"%d\", " +
+						"can't be used as function=\"%s\" parameter", 
+						expIt.nextIndex() - 1, functionId);
+			}
+			if(!it.hasNext() && 
+					expIt.hasNext()){
+				throw new PolicySyntaxException(
+						"Expression at index=\"%d\", " +
+						"can't be used as function=\"%s\" parameter", 
+						expIt.nextIndex() - 1, functionId);
+			}
+		}
+		if(!validateAdditional(params)){
+			throw new PolicySyntaxException("Failed addition validation");
+		}
+	}
+	
+	@Override
 	public boolean validateParameters(Expression ... params)
 	{
-		log.debug("Validating function=\"{}\" parameters", getId());
-		boolean result = true;
 		ListIterator<ParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
 		while(it.hasNext())
@@ -138,7 +158,7 @@ public final class DefaultFunctionSpec extends XacmlObject implements FunctionSp
 				return false;
 			}
 		}
-		return result?validateAdditional(params):result;
+		return validateAdditional(params);
 	}
 	
 	/**

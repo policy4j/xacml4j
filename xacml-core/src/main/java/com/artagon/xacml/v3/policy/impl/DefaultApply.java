@@ -7,17 +7,16 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
-import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
-import com.google.common.base.Preconditions;
 
 /**
  * The class denotes application of a function to its arguments, 
- * thus encoding a {@link FunctionReference} call. The {@link Apply} can be 
+ * thus encoding a {@link DefaultFunctionReference} call. The {@link Apply} can be 
  * applied to a given list of {@link Expression} instances.
  * 
  * @author Giedrius Trumpickas
@@ -36,15 +35,21 @@ final class DefaultApply extends XacmlObject implements Apply
 	 * @param returnType a function return type
 	 * @param arguments a function invocation arguments
 	 */
-	public DefaultApply(FunctionSpec spec, Expression ...arguments){
-		Preconditions.checkNotNull(spec);
-		Preconditions.checkNotNull(arguments == null || arguments.length > 0);
-		Preconditions.checkArgument(spec.validateParameters(arguments));
+	public DefaultApply(FunctionSpec spec, Expression ...arguments) 
+		throws PolicySyntaxException
+	{
+		checkSyntaxCondition(spec != null, 
+				"Can't create Apply without function, function can't be null");
+		checkSyntaxCondition((arguments == null || arguments.length > 0), 
+				"At least one argument must be specified");
+		spec.validateParametersAndThrow(arguments);
 		this.spec = spec;
 		this.arguments = arguments;
 	}
 	
-	public DefaultApply(FunctionSpec spec, Collection<Expression> arguments){
+	public DefaultApply(FunctionSpec spec, Collection<Expression> arguments) 
+		throws PolicySyntaxException
+	{
 		this(spec, (Expression[])arguments.toArray());
 	}
 

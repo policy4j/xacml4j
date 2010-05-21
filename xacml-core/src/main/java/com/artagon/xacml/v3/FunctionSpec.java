@@ -54,11 +54,19 @@ public interface FunctionSpec
 	 * as potential function invocation arguments
 	 * 
 	 * @param params an array of expressions
-	 * @return <code>true</code> if a given array
-	 * can be used as function invocation arguments
 	 */
 	boolean validateParameters(Expression ... params);
 	
+	/**
+	 * Validates given array of expressions
+	 * as potential function invocation arguments
+	 * 
+	 * @param params an array of expressions
+	 * @exception PolicySyntaxException
+	 */
+	void validateParametersAndThrow(Expression ... params) 
+		throws PolicySyntaxException;
+		
 	/**
 	 * Resolves function return type based on function
 	 * invocation arguments
