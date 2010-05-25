@@ -7,9 +7,7 @@
         access_control-xacml-2.0-policy-schema-os.xsd"
       PolicySetId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet"
       PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable">
-    <Description>
-        Policy Set for Conformance Test IIIF006.
-    </Description>
+    <Description>Policy Set for Conformance Test IIIF006.</Description>
     <PolicySetDefaults>
         <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
     </PolicySetDefaults>
@@ -34,9 +32,7 @@
 <Policy
       PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policy"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
-    <Description>
-        Policy for Conformance Test IIIF006.
-    </Description>
+    <Description>Policy for Conformance Test IIIF006.</Description>
     <PolicyDefaults>
         <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
     </PolicyDefaults>

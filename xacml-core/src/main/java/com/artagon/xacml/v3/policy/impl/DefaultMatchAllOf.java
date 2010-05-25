@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import org.slf4j.Logger;
@@ -21,14 +22,19 @@ final class DefaultMatchAllOf extends XacmlObject
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatchAllOf.class);
 	
-	private Collection<Matchable> matches;
+	private Collection<Match> matches;
 	
 	public DefaultMatchAllOf(Collection<Match> match){
 		Preconditions.checkNotNull(match);
 		Preconditions.checkArgument(match.size() >= 1);
-		this.matches = new LinkedList<Matchable>(match);
+		this.matches = new LinkedList<Match>(match);
 	}
 
+	@Override
+	public Collection<Match> getMatch(){
+		return Collections.unmodifiableCollection(matches);
+	}
+	
 	@Override
 	public MatchResult match(EvaluationContext context)
 	{

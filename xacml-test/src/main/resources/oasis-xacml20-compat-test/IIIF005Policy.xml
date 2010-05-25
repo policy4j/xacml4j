@@ -7,9 +7,7 @@
         access_control-xacml-2.0-policy-schema-os.xsd"
       PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
-    <Description>
-        Policy for Conformance Test IIIF005.
-    </Description>
+    <Description>Policy for Conformance Test IIIF005.</Description>
     <PolicyDefaults>
         <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
     </PolicyDefaults>
@@ -17,9 +15,7 @@
     <Rule
           RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:rule"
           Effect="Permit">
-        <Description>
-            Julius Hibbert can read or write Bart Simpson's medical record.
-        </Description>
+        <Description>Julius Hibbert can read or write Bart Simpson's medical record.</Description>
         <Target>
             <Subjects>
                 <Subject>

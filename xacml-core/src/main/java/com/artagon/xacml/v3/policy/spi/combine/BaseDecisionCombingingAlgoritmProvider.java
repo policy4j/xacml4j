@@ -13,16 +13,16 @@ import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
-	private Map<String, DecisionCombiningAlgorithm<? extends CompositeDecisionRule>> policyAlgo;
+	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 	
 	protected BaseDecisionCombingingAlgoritmProvider(){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<? extends CompositeDecisionRule>>();
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
 	}
 	
 	
 	@Override
-	public final DecisionCombiningAlgorithm<? extends CompositeDecisionRule> getPolicyAlgorithm(
+	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
 			String algorithmId) {
 		return policyAlgo.get(algorithmId);
 	}
@@ -52,9 +52,9 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombining
 	}
 	
 	public final void addCompositeRuleCombineAlgorithm(
-			DecisionCombiningAlgorithm<? extends CompositeDecisionRule> algorithm)
+			DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm)
 	{
-		DecisionCombiningAlgorithm<? extends CompositeDecisionRule> oldAlgo = policyAlgo.put(
+		DecisionCombiningAlgorithm<CompositeDecisionRule> oldAlgo = policyAlgo.put(
 				algorithm.getId(), algorithm);
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(

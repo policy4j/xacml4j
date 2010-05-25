@@ -33,12 +33,14 @@ final class DefaultRule extends BaseDesicionRule implements Rule
 	 * @param condition a condition
 	 * @param effect a rule effect
 	 */
-	public DefaultRule(String ruleId, 
+	public DefaultRule(
+			String ruleId, 
+			String description,
 			Target target,
 			Condition condition, 
 			Effect effect, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(ruleId, target, adviceExpressions, obligationExpressions);
+		super(ruleId, description, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(ruleId);
 		Preconditions.checkNotNull(effect);
 		this.condition = condition;
@@ -49,15 +51,18 @@ final class DefaultRule extends BaseDesicionRule implements Rule
 	 * Constructs rule instance with a given identifier
 	 * target, condition and effect
 	 * @param ruleId a rule identifier
+	 * @param description
 	 * @param target a rule target
 	 * @param condition a rule condition
 	 * @param effect a rule effect
 	 */
-	public DefaultRule(String ruleId, 
+	public DefaultRule(
+			String ruleId, 
+			String description,
 			Target target,
 			Condition condition, 
 			Effect effect){
-		this(ruleId, target, condition, effect, 
+		this(ruleId, description, target, condition, effect, 
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
 	}

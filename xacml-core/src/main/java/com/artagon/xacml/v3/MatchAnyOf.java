@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3;
 
-public interface MatchAnyOf extends Matchable{
+import java.util.Collection;
 
+public interface MatchAnyOf extends Matchable
+{
+	Collection<MatchAllOf> getAllOf();
 }

@@ -26,7 +26,7 @@ public interface DecisionCombiningAlgorithmProvider
 	 * @return {@link DecisionCombiningAlgorithm} for combining
 	 * policy or policy set decision results
 	 */
-	DecisionCombiningAlgorithm<? extends CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
+	DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
 	
 	Set<String> getSupportedRuleAlgorithms();
 	Set<String> getSupportedPolicyAlgorithms();

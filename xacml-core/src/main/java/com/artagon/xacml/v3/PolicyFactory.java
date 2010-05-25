@@ -15,7 +15,7 @@ public interface PolicyFactory
 	 * 
 	 * @throws PolicySyntaxException
 	 */
-	AttributeValue createValue(String typeId, Object value) 
+	AttributeValue createAttributeValue(String typeId, Object value) 
 		throws PolicySyntaxException;
 	
 	/**
@@ -67,6 +67,12 @@ public interface PolicyFactory
 	MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException;
 	MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException;
 	
+	PolicyDefaults createPolicyDefaults(Object ...objects) 
+		throws PolicySyntaxException;
+	
+	PolicySetDefaults createPolicySetDefaults(Object ...objects) 
+		throws PolicySyntaxException;
+	
 	/**
 	 * Creates condition with a given predicate
 	 * 
@@ -93,7 +99,7 @@ public interface PolicyFactory
 	 * @return
 	 * @throws PolicySyntaxException
 	 */
-	AttributeDesignator createDesignator(AttributeCategoryId category, 
+	AttributeDesignator createAttributeDesignator(AttributeCategoryId category, 
 			String attributeId, AttributeValueType dataType, 
 			boolean mustBePresent, String issuer) throws PolicySyntaxException;
 	
@@ -109,7 +115,7 @@ public interface PolicyFactory
 	 * @return {@link AttributeSelector} instance
 	 * @throws PolicySyntaxException
 	 */
-	AttributeSelector createSelector(AttributeCategoryId category, 
+	AttributeSelector createAttributeSelector(AttributeCategoryId category, 
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
 		throws PolicySyntaxException;
 	
@@ -118,13 +124,16 @@ public interface PolicyFactory
 	 * target, condition and effect
 	 * 
 	 * @param ruleId a rule identifier
+	 * @param description a rule description
 	 * @param target a rule target
 	 * @param condition a rule condition
 	 * @param effect a rule effect
 	 * @return {@link Rule} instance
 	 * @throws PolicySyntaxException
 	 */
-	Rule createRule(String ruleId, Target target, Condition condition, Effect effect)
+	Rule createRule(String ruleId, 
+			String description, 
+			Target target, Condition condition, Effect effect)
 			throws PolicySyntaxException;
 	
 	/**
@@ -174,6 +183,7 @@ public interface PolicyFactory
 	 * 
 	 * @param policyId a policy identifier
 	 * @param version a policy version
+	 * @param description a policy description
 	 * @param policyDefaults an optional policy defaults
 	 * @param target an optional policy target
 	 * @param variables an optional policy variables
@@ -187,6 +197,7 @@ public interface PolicyFactory
 	Policy createPolicy(
 			String policyId, 
 			Version version, 
+			String description,
 			PolicyDefaults policyDefaults,
 			Target target, 
 			Collection<VariableDefinition> variables, 
@@ -198,6 +209,7 @@ public interface PolicyFactory
 	PolicySet createPolicySet(
 			String policySetId, 
 			Version version, 
+			String description,
 			PolicySetDefaults policyDefaults,
 			Target target,  
 			String algorithmId, 

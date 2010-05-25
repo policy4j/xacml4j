@@ -23,6 +23,7 @@ import org.oasis.xacml.v20.policy.EnvironmentMatchType;
 import org.oasis.xacml.v20.policy.EnvironmentType;
 import org.oasis.xacml.v20.policy.EnvironmentsType;
 import org.oasis.xacml.v20.policy.FunctionType;
+import org.oasis.xacml.v20.policy.IdReferenceType;
 import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
 import org.oasis.xacml.v20.policy.PolicySetType;
@@ -38,6 +39,8 @@ import org.oasis.xacml.v20.policy.SubjectsType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
@@ -58,19 +61,23 @@ import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
 import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetDefaults;
+import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.VariableDefinition;
 import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
 public class JAXBPolicyMapper 
 {
-
+	private final static Logger log = LoggerFactory.getLogger(JAXBPolicyMapper.class);
+	
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 	
 	static{
@@ -95,6 +102,7 @@ public class JAXBPolicyMapper
 		return factory.createPolicy(
 				p.getPolicyId(), 
 				version, 
+				p.getDescription(),
 				policyDefaults,
 				target,
 				varDefinitions.values(), 
@@ -112,25 +120,63 @@ public class JAXBPolicyMapper
 		Target target = create(p.getTarget());
 		return factory.createPolicySet(
 				p.getPolicySetId(), 
-				version, policySetDefaults, 
-				target, p.getPolicyCombiningAlgId(), 
-				policies, obligations, Collections.<AdviceExpression>emptyList());
+				version, 
+				p.getDescription(),
+				policySetDefaults, 
+				target, 
+				p.getPolicyCombiningAlgId(), 
+				policies, 
+				obligations,
+				Collections.<AdviceExpression>emptyList());
 	}
 	
 	private Collection<CompositeDecisionRule> getPolicies(PolicySetType p) throws PolicySyntaxException
 	{
-		p.getPolicySetOrPolicyOrPolicySetIdReference();
-		return Collections.emptyList();
+		Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
+		for(JAXBElement<?> o : p.getPolicySetOrPolicyOrPolicySetIdReference())
+		{
+			Object v = o.getValue();
+			if(v instanceof PolicySetType){
+				policies.add(create((PolicySetType)v));
+				continue;
+			}
+			if(v instanceof PolicyType){
+				policies.add(create((PolicyType)v));
+				continue;
+			}
+			if(v instanceof IdReferenceType){
+				IdReferenceType ref = (IdReferenceType)v;
+				if(o.getName().getLocalPart().equals("PolicySetIdReference")){
+					PolicySetIDReference policySetRef = factory.createPolicySetIDReference(
+							ref.getValue(), VersionMatch.valueOf(ref.getVersion()), 
+							VersionMatch.valueOf(ref.getEarliestVersion()), 
+							VersionMatch.valueOf(ref.getLatestVersion()));
+					policies.add(policySetRef);
+					continue;
+				}
+				if(o.getName().getLocalPart().equals("PolicyIdReference")){
+					PolicyIDReference policyRef = factory.createPolicyIDReference(
+							ref.getValue(), VersionMatch.valueOf(ref.getVersion()), 
+							VersionMatch.valueOf(ref.getEarliestVersion()), 
+							VersionMatch.valueOf(ref.getLatestVersion()));
+					policies.add(policyRef);
+					continue;
+				}
+			}
+		}
+		return policies;
 	}
 	
-	private PolicyDefaults createPolicyDefaults(DefaultsType defaults)
+	private PolicyDefaults createPolicyDefaults(DefaultsType defaults) 
+		throws PolicySyntaxException
 	{
-		return null;
+		return factory.createPolicyDefaults(defaults.getXPathVersion());
 	}
 	
-	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
+	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults) 
+		throws PolicySyntaxException
 	{
-		return null;
+		return factory.createPolicySetDefaults(defaults.getXPathVersion());
 	}
 	
 	private Target create(TargetType target) throws PolicySyntaxException
@@ -152,7 +198,7 @@ public class JAXBPolicyMapper
 		if(subjects != null){
 			match.add(create(subjects));
 		}
-		return factory.createTarget(match);
+		return match.isEmpty()?null:factory.createTarget(match);
 	}
 	
 	private MatchAnyOf create(ActionsType actions) throws PolicySyntaxException
@@ -257,6 +303,7 @@ public class JAXBPolicyMapper
 	{
 		Effect effect  = r.getEffect() == EffectType.DENY?Effect.DENY:Effect.PERMIT;
 		return factory.createRule(r.getRuleId(), 
+				r.getDescription(),
 				create(r.getTarget()), 
 				create(r.getCondition()),
 				effect);
@@ -425,7 +472,7 @@ public class JAXBPolicyMapper
 				content.isEmpty()){
 			throw new PolicySyntaxException("Attribute does not have content");
 		}
-		return factory.createValue(value.getDataType(), Iterables.getOnlyElement(content));
+		return factory.createAttributeValue(value.getDataType(), Iterables.getOnlyElement(content));
 	}
 	
 	AttributeSelector createSelector(AttributeCategoryId categoryId, 
@@ -437,7 +484,7 @@ public class JAXBPolicyMapper
 					selector.getDataType());
 		}
 		String xpath = transformSelectorXPath(selector);
-		return factory.createSelector(categoryId, xpath, dataType, selector.isMustBePresent());
+		return factory.createAttributeSelector(categoryId, xpath, dataType, selector.isMustBePresent());
 	}
 	
 	AttributeCategoryId getSelectoryCategory(AttributeSelectorType selector){
@@ -463,7 +510,7 @@ public class JAXBPolicyMapper
 			throw new PolicySyntaxException(
 					"Unknown dataType=\"%s\"", ref.getDataType());
 		}
-		return factory.createDesignator(categoryId, 
+		return factory.createAttributeDesignator(categoryId, 
 				ref.getAttributeId(), dataType, ref.isMustBePresent(), ref.getIssuer());
 	}
 	

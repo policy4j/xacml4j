@@ -19,14 +19,19 @@ final class DefaultTarget extends XacmlObject implements Target
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultTarget.class);
 	
-	private Collection<Matchable> matches;
+	private Collection<MatchAnyOf> matches;
 	
 	public DefaultTarget(Collection<MatchAnyOf> matches){
-		this.matches = new LinkedList<Matchable>(matches);
+		this.matches = new LinkedList<MatchAnyOf>(matches);
 	}
 	
 	public DefaultTarget(){
 		this(Collections.<MatchAnyOf>emptyList());
+	}
+	
+	@Override
+	public Collection<MatchAnyOf> getAnyOf(){
+		return Collections.unmodifiableCollection(matches);
 	}
 	
 	public MatchResult match(EvaluationContext context) 

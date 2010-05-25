@@ -39,20 +39,20 @@ public class DefaultPolicyFactoryTest
 	@Test
 	public void testCreateAttributeValue() throws PolicySyntaxException
 	{
-		AttributeValue v = f.createValue(DataTypes.STRING.getTypeId(), "test");
+		AttributeValue v = f.createAttributeValue(DataTypes.STRING.getTypeId(), "test");
 		assertEquals("test", v.toXacmlString());
 	}
 	
 	@Test(expected=PolicySyntaxException.class)
 	public void testCreateAttributeValueUnknownType() throws PolicySyntaxException
 	{
-		f.createValue("aaaaa", "test");
+		f.createAttributeValue("aaaaa", "test");
 	}
 	
 	@Test(expected=PolicySyntaxException.class)
 	public void testCreateAttributeValueInvalidValue() throws PolicySyntaxException
 	{
-		f.createValue(DataTypes.STRING.getTypeId(), null);
+		f.createAttributeValue(DataTypes.STRING.getTypeId(), null);
 	}
 	
 	@Test

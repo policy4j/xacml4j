@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -86,6 +87,7 @@ public class DefaultPolicyTest
 		
 		this.policy = new DefaultPolicy("test", 
 				Version.valueOf(1),
+				"Test",
 				new DefaultPolicyDefaults(XPathVersion.XPATH1),
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
@@ -95,6 +97,23 @@ public class DefaultPolicyTest
 		this.context = new DefaultEvaluationContextFactory( 
 				createStrictMock(PolicyReferenceResolver.class), 
 				createStrictMock(XPathProvider.class)).createContext(policy, request);
+	}
+	
+	@Test
+	public void testPolicyCreate() throws PolicySyntaxException
+	{
+		Policy p = new DefaultPolicy("testId", 
+				Version.valueOf(1),
+				"Test",
+				new DefaultPolicyDefaults(XPathVersion.XPATH1),
+				target, 
+				Collections.<VariableDefinition>emptyList(), 
+				combingingAlg, rules, adviceExpressions, obligationExpressions);
+		assertEquals("testId", p.getId());
+		assertEquals(Version.valueOf(1), p.getVersion());
+		assertEquals("Test", p.getDescription());
+		assertSame(target, p.getTarget());
+		assertSame(combingingAlg, p.getRuleCombiningAlgorithm());
 	}
 	
 	@Test

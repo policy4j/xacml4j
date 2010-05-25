@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v3.EvaluationContext;
@@ -16,12 +17,17 @@ import com.google.common.base.Preconditions;
 final class DefaultMatchAnyOf extends XacmlObject 
 	implements PolicyElement, MatchAnyOf
 {
-	private Collection<Matchable> matches;
+	private Collection<MatchAllOf> matches;
 	
 	public DefaultMatchAnyOf(Collection<MatchAllOf> matches){
 		Preconditions.checkNotNull(matches);
 		Preconditions.checkArgument(matches.size() >= 1);
-		this.matches = new LinkedList<Matchable>(matches);
+		this.matches = new LinkedList<MatchAllOf>(matches);
+	}
+	
+	@Override
+	public Collection<MatchAllOf> getAllOf(){
+		return Collections.unmodifiableCollection(matches);
 	}
 	
 	@Override

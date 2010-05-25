@@ -29,12 +29,22 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	protected BaseCompositeDecisionRule(
 			String id, 
 			Version version,
+			String description,
 			Target target,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(id, target, adviceExpressions, obligationExpressions);
+		super(id, description, target,  adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(version);
 		this.version = version;
+	}
+	
+	protected BaseCompositeDecisionRule(
+			String id, 
+			Version version,
+			Target target,
+			Collection<AdviceExpression> adviceExpressions,
+			Collection<ObligationExpression> obligationExpressions){
+		this(id, version, null, target, adviceExpressions, obligationExpressions);
 	}
 	
 	@Override

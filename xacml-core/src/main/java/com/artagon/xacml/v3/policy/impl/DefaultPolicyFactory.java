@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionReference;
@@ -33,6 +34,7 @@ import com.artagon.xacml.v3.VariableDefinition;
 import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -47,7 +49,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 	
 	@Override
-	public AttributeValue createValue(String typeId, Object value) 
+	public AttributeValue createAttributeValue(String typeId, Object value) 
 		throws PolicySyntaxException
 	{
 		AttributeValueType type = DataTypes.getByTypeId(typeId);
@@ -132,7 +134,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 	
 	@Override
-	public Rule createRule(String ruleId, Target target, Condition condition, Effect effect) 
+	public Rule createRule(String ruleId, String description, 
+			Target target, Condition condition, Effect effect) 
 		throws PolicySyntaxException
 	{
 		if(ruleId == null){
@@ -141,12 +144,13 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		if(effect == null){
 			throw new PolicySyntaxException("Rule id=\"%s\" effect must be specified", ruleId);
 		}
-		return new DefaultRule(ruleId, target, condition, effect);
+		return new DefaultRule(ruleId, description, target, condition, effect);
 	}
 	
 	public Policy createPolicy(
 			String policyId, 
 			Version version, 
+			String description,
 			PolicyDefaults policyDefaults, 
 			Target target, 
 			Collection<VariableDefinition> variables,
@@ -155,7 +159,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Collection<ObligationExpression> obligation, Collection<AdviceExpression> advice) 
 		throws PolicySyntaxException
 	{
-		Policy policy = new DefaultPolicy(policyId, version, policyDefaults, target, 
+		Policy policy = new DefaultPolicy(policyId, version, description, policyDefaults, target, 
 				variables,
 				createRuleCombingingAlgorithm(algorithmId), rules, advice, obligation);
 		return policy;
@@ -190,30 +194,35 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 
 	@Override
-	public PolicySet createPolicySet(String policySetId, Version version,
-			PolicySetDefaults policyDefaults, Target target,
-			String algorithmId, Collection<CompositeDecisionRule> policies,
+	public PolicySet createPolicySet(String policySetId, 
+			Version version, 
+			String description,
+			PolicySetDefaults policySetDefaults, 
+			Target target,
+			String algorithmId, 
+			Collection<CompositeDecisionRule> policies,
 			Collection<ObligationExpression> obligation,
-			Collection<AdviceExpression> advice) throws PolicySyntaxException {
-		return null;
+			Collection<AdviceExpression> advice) throws PolicySyntaxException 
+	{
+		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = createPolicyCombingingAlgorithm(algorithmId);
+		return new DefaultPolicySet(policySetId, version, description, target, algorithm, policies, advice, obligation);
 	}
 
 	@Override
 	public FunctionReference createFunctionReference(String functionId)
 			throws PolicySyntaxException {
-		// TODO Auto-generated method stub
-		return null;
+		return new DefaultFunctionReference(createFunction(functionId));
 	}
 
 	@Override
-	public AttributeDesignator createDesignator(AttributeCategoryId category,
+	public AttributeDesignator createAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, boolean mustBePresent, String issuer)
 			throws PolicySyntaxException {
 		return new DefaultAttributeDesignator(category, attributeId, issuer, dataType, mustBePresent);
 	}
 
 	@Override
-	public AttributeSelector createSelector(AttributeCategoryId category,
+	public AttributeSelector createAttributeSelector(AttributeCategoryId category,
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent)
 			throws PolicySyntaxException {
 		return new DefaultAttributeSelector(category, selectXPath, dataType, mustBePresent);
@@ -224,5 +233,39 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			throws PolicySyntaxException 
 	{
 		return new DefaultVariableReference(varDef);
+	}
+
+	@Override
+	public PolicyDefaults createPolicyDefaults(Object... objects)
+			throws PolicySyntaxException {
+		if(objects != null && 
+				objects.length > 0){
+			if(objects[0] instanceof String){
+				String value = (String)objects[0];
+				XPathVersion v = XPathVersion.parse(value);
+				if(v == null){
+					throw new PolicySyntaxException("Unparsable XPath version=\"%s\"", value);
+				}
+				return new DefaultPolicyDefaults(v);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public PolicySetDefaults createPolicySetDefaults(Object... objects)
+			throws PolicySyntaxException {
+		if(objects != null && 
+				objects.length > 0){
+			if(objects[0] instanceof String){
+				String value = (String)objects[0];
+				XPathVersion v = XPathVersion.parse(value);
+				if(v == null){
+					throw new PolicySyntaxException("Unparsable XPath version=\"%s\"", value);
+				}
+				return new DefaultPolicySetDefaults(v);
+			}
+		}
+		return null;
 	}	
 }

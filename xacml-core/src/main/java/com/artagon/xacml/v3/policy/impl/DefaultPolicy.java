@@ -53,6 +53,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 	public DefaultPolicy(
 			String policyId,
 			Version version,
+			String description,
 			PolicyDefaults policyDefaults,
 			Target target, 
 			Collection<VariableDefinition> variables, 
@@ -60,7 +61,8 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(policyId, version, target, adviceExpressions, obligationExpressions);
+		super(policyId, version, description, 
+				target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(variables);
 		Preconditions.checkNotNull(rules);
 		Preconditions.checkNotNull(combine);
@@ -95,6 +97,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		this(policyId, 
 				version,
 				null,
+				null,
 				null, 
 				Collections.<VariableDefinition>emptyList(),
 				combine,
@@ -128,6 +131,10 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		return policyDefaults;
 	}
 
+	@Override
+	public DecisionCombiningAlgorithm<Rule> getRuleCombiningAlgorithm(){
+		return combine;
+	}
 	
 	@Override
 	public CombinerParameters getCombinerParameters() {

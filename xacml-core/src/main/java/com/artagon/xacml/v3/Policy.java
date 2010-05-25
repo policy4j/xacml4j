@@ -31,6 +31,8 @@ public interface Policy extends CompositeDecisionRule, Versionable
 	CombinerParameters getCombinerParameters();
 	RuleCombinerParameters getRuleCombinerParameters();
 	
+	DecisionCombiningAlgorithm<Rule> getRuleCombiningAlgorithm();
+	
 	/**
 	 * Gets rule target
 	 * 

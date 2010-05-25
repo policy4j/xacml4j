@@ -14,4 +14,14 @@ public enum XPathVersion
 	public String toString(){
 		return versionURI;
 	}
+	
+	public static XPathVersion parse(String v)
+	{
+		for(XPathVersion version : XPathVersion.values()){
+			if(version.versionURI.equals(v)){
+				return version;
+			}
+		}
+		return null;
+	}
 }

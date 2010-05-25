@@ -55,17 +55,18 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	public DefaultPolicySet(
 			String id, 
 			Version version,
+			String description,
 			PolicySetDefaults policySetDefaults,
 			Target target, 
 			CombinerParameters combinerParameters,
 			PolicyCombinerParameters policyCombinerParameters,
 			PolicySetCombinerParameters policySetCombinerParameters,
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
-			Collection<? extends CompositeDecisionRule> policies, 
+			Collection<CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		super(id, version, target, adviceExpressions, obligationExpressions);
+		super(id, version, description, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
@@ -78,17 +79,16 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	public DefaultPolicySet(
 			String id, 
 			Version version,
+			String description,
 			Target target, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
-			Collection<? extends CompositeDecisionRule> policies, 
+			Collection<CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		this(id, version, null, target, 
+		this(id, version, description, null, target, 
 				null, null, null, combine, policies, adviceExpressions, obligationExpressions);
 	}
-	
-	
 	
 	@Override
 	public PolicySetDefaults getDefaults() {

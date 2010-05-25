@@ -45,9 +45,9 @@ public abstract class BasePolicyFactory implements PolicyFactory {
 		return algorithm;
 	}
 
-	protected final DecisionCombiningAlgorithm<? extends CompositeDecisionRule> createPolicyCombingingAlgorithm(
+	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombingingAlgorithm(
 			String algorithmId) throws PolicySyntaxException {
-		DecisionCombiningAlgorithm<? extends CompositeDecisionRule> algorithm = combingingAlgorithms
+		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combingingAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new PolicySyntaxException(

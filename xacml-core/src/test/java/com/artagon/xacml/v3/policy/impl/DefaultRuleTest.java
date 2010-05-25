@@ -74,14 +74,14 @@ public class DefaultRuleTest
 		adviceExpressions.add(denyAdviceExp);
 		adviceExpressions.add(permitAdviceExp);
 		
-		this.rulePermit = new DefaultRule("testPermitRule", target, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
-		this.ruleDeny = new DefaultRule("testDenyRule", target, condition, Effect.DENY, adviceExpressions, obligationExpressions);
+		this.rulePermit = new DefaultRule("testPermitRule", "Test Rule", target, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
+		this.ruleDeny = new DefaultRule("testDenyRule", "Test Rule", target, condition, Effect.DENY, adviceExpressions, obligationExpressions);
 	}
 	
 	@Test
 	public void testDenyRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
-		DecisionRule ruleDenyNoTarget = new DefaultRule("testDenyRuleNoTarget", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
+		DecisionRule ruleDenyNoTarget = new DefaultRule("testDenyRuleNoTarget", "Test Rule", null, condition, Effect.DENY, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		replay(context, condition, denyAdviceExp, denyObligationExp);
@@ -92,7 +92,7 @@ public class DefaultRuleTest
 	@Test
 	public void testPermitRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
-		DecisionRule rulePermitNoTarget = new DefaultRule("testPermitRuleNoTarget", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
+		DecisionRule rulePermitNoTarget = new DefaultRule("testPermitRuleNoTarget", "Test Rule", null, condition, Effect.PERMIT, adviceExpressions, obligationExpressions);
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		replay(context, condition, denyAdviceExp, denyObligationExp);
