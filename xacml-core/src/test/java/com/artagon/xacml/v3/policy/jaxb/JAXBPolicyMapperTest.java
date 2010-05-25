@@ -103,5 +103,7 @@ public class JAXBPolicyMapperTest
 		assertEquals("Policy Set for Conformance Test IIIF006.", p0.getDescription());
 		assertNotNull(p0.getDefaults());
 		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
+		assertNotNull(p0.getTarget());
+		assertEquals(1, p0.getDecisions().size());
 	}
 }

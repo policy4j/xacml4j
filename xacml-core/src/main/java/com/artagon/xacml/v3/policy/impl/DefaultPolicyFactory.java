@@ -159,9 +159,15 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Collection<ObligationExpression> obligation, Collection<AdviceExpression> advice) 
 		throws PolicySyntaxException
 	{
-		Policy policy = new DefaultPolicy(policyId, version, description, policyDefaults, target, 
+		Policy policy = new DefaultPolicy(
+				policyId, 
+				version, 
+				description, 
+				policyDefaults, 
+				target, 
 				variables,
-				createRuleCombingingAlgorithm(algorithmId), rules, advice, obligation);
+				createRuleCombingingAlgorithm(algorithmId), 
+				rules, advice, obligation);
 		return policy;
 	}
 
@@ -205,7 +211,9 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Collection<AdviceExpression> advice) throws PolicySyntaxException 
 	{
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = createPolicyCombingingAlgorithm(algorithmId);
-		return new DefaultPolicySet(policySetId, version, description, target, algorithm, policies, advice, obligation);
+		return new DefaultPolicySet(policySetId, version, description, 
+				policySetDefaults, target, null, null, null,
+				algorithm, policies, advice, obligation);
 	}
 
 	@Override
@@ -244,7 +252,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 				String value = (String)objects[0];
 				XPathVersion v = XPathVersion.parse(value);
 				if(v == null){
-					throw new PolicySyntaxException("Unparsable XPath version=\"%s\"", value);
+					throw new PolicySyntaxException(
+							"Unparsable XPath version=\"%s\"", value);
 				}
 				return new DefaultPolicyDefaults(v);
 			}
@@ -261,7 +270,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 				String value = (String)objects[0];
 				XPathVersion v = XPathVersion.parse(value);
 				if(v == null){
-					throw new PolicySyntaxException("Unparsable XPath version=\"%s\"", value);
+					throw new PolicySyntaxException(
+							"Unparsable XPath version=\"%s\"", value);
 				}
 				return new DefaultPolicySetDefaults(v);
 			}
