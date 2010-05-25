@@ -37,7 +37,9 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 	 * @param content an optional XML content
 	 * @param attributes a collection of attributes
 	 */
-	public DefaultAttributes(String id, AttributeCategoryId categoryId, 
+	public DefaultAttributes(
+			String id, 
+			AttributeCategoryId categoryId, 
 			Node content, Iterable<Attribute> attributes){
 		Preconditions.checkNotNull(categoryId);
 		Preconditions.checkNotNull(attributes);

@@ -5,20 +5,20 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.RequestContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.impl.DefaultRequest;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
-	public MultipleRequestsHandler(){
-		super(ID);
+	public MultipleRequestsHandler(RequestContextFactory contextFactory){
+		super(ID, contextFactory);
 	}
 	
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
@@ -51,7 +51,7 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			}
 			resolved.add(attributes);
 		}
-		return new DefaultRequest(req.isReturnPolicyIdList(), resolved);
+		return getContextFactory().createRequest(req.isReturnPolicyIdList(), resolved);
 	}
 	
 }

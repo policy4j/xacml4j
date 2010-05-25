@@ -21,12 +21,14 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContextFactory;
 import com.artagon.xacml.v3.RequestProfileHandler;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.impl.DefaultAttribute;
 import com.artagon.xacml.v3.impl.DefaultAttributes;
+import com.artagon.xacml.v3.impl.DefaultContextFactory;
 import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
@@ -34,11 +36,13 @@ public class MultipleResourcesHandlerTest
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
+	private RequestContextFactory contextFactory;
 	
 	@Before
 	public void init(){
+		this.contextFactory = new DefaultContextFactory();
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleResourcesHandler();
+		this.profile = new MultipleResourcesHandler(contextFactory);
 	}
 	
 	@Test

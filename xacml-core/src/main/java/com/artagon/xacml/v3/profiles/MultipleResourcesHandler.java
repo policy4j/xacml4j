@@ -8,18 +8,18 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.RequestContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.google.common.collect.Sets;
 
 public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:multiple-resource-elements";
 		
-	public MultipleResourcesHandler() {
-		super(ID);
+	public MultipleResourcesHandler(RequestContextFactory contextFactory) {
+		super(ID, contextFactory);
 	}
 	
 	@Override
@@ -37,7 +37,9 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
 		for(List<Attributes> requestAttr : cartesian){
-			results.addAll(handleNext(new DefaultRequest(request.isReturnPolicyIdList(), requestAttr), pdp));
+			
+			Request req = getContextFactory().createRequest(request.isReturnPolicyIdList(), requestAttr);
+			results.addAll(handleNext(req, pdp));
 		}
 		return results;
 	}

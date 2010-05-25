@@ -10,7 +10,6 @@ import java.util.Iterator;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,15 +32,13 @@ import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry
 public class JAXBPolicyMapperTest 
 {
 	private static JAXBContext context;
-	private static Unmarshaller unmarshaller;
 	private JAXBPolicyMapper mapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
 		try{
-			context = JAXBContext.newInstance("org.oasis.xacml.v20.policy");
-			unmarshaller = context.createUnmarshaller();
+			context = JAXBContext.newInstance("org.oasis.xacml.v20.policy:org.oasis.xacml.v20.context");
 		}catch(JAXBException e){
 			System.err.println(e.getMessage());
 		}

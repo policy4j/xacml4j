@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import com.artagon.xacml.v3.impl.DefaultAttributes;
-
 public interface Request 
 {
 	/**
@@ -52,10 +50,10 @@ public interface Request
 	int getCategoryOccuriences(AttributeCategoryId categoryId);
 
 	/**
-	 * Resolves attribute reference to {@link DefaultAttributes}
+	 * Resolves attribute reference to {@link Attributes}
 	 * 
 	 * @param reference an attributes reference
-	 * @return {@link DefaultAttributes} or <code>null</code> if
+	 * @return {@link Attributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
 	Attributes getReferencedAttributes(AttributesReference reference);
