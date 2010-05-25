@@ -39,8 +39,6 @@ import org.oasis.xacml.v20.policy.SubjectsType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
