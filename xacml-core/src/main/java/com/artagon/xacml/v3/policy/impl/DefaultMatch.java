@@ -13,10 +13,11 @@ import com.artagon.xacml.v3.Match;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.PolicyElement;
 import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.type.BooleanType.BooleanValue;
 import com.google.common.base.Preconditions;
 
-final class DefaultMatch implements PolicyElement, Match
+final class DefaultMatch extends XacmlObject implements PolicyElement, Match
 {	
 	private final static Logger log = LoggerFactory.getLogger(DefaultMatch.class);
 	

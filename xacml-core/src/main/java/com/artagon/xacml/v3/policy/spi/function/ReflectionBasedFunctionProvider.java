@@ -72,7 +72,8 @@ public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 					new IllegalArgumentException(
 							String.format(
 									"XACML evaluation context parameter must " +
-									"be a first parameter in the method=\"%s\" signature", m.getName()));
+									"be a first parameter " +
+									"in the method=\"%s\" signature", m.getName()));
 				}
 				evalContextParamFound = true;
 				continue;

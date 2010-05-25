@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
-import com.google.common.base.Preconditions;
 
 public class BaseFunctionProvider implements FunctionProvider
 {
@@ -23,10 +22,12 @@ public class BaseFunctionProvider implements FunctionProvider
 	 */
 	protected final void add(FunctionSpec spec){
 		FunctionSpec other = functions.get(spec.getId());
-		Preconditions.checkArgument(other == null, 
-				String.format("This factory already contains " +
-						"function=\"%s\" with a given identifier=\"%s\"", 
-						spec, spec.getId()));
+		if(other != null){
+			throw new IllegalArgumentException(
+					String.format("This factory already contains " +
+					"function=\"%s\" with a given identifier=\"%s\"", 
+					spec, spec.getId()));
+		}
 		functions.put(spec.getId(), spec);
 	}
 
@@ -36,12 +37,12 @@ public class BaseFunctionProvider implements FunctionProvider
 	}
 
 	@Override
-	public Iterable<String> getProvidedFunctions() {
+	public final Iterable<String> getProvidedFunctions() {
 		return functions.keySet();
 	}
 
 	@Override
-	public boolean isFunctionProvided(String functionId) {
+	public final boolean isFunctionProvided(String functionId) {
 		return functions.containsKey(functionId);
 	}
 

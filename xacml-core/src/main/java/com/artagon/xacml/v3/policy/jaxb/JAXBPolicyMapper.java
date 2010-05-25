@@ -10,21 +10,31 @@ import java.util.Map;
 import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.policy.ActionMatchType;
+import org.oasis.xacml.v20.policy.ActionType;
+import org.oasis.xacml.v20.policy.ActionsType;
 import org.oasis.xacml.v20.policy.ApplyType;
 import org.oasis.xacml.v20.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.policy.AttributeDesignatorType;
 import org.oasis.xacml.v20.policy.AttributeSelectorType;
+import org.oasis.xacml.v20.policy.ConditionType;
 import org.oasis.xacml.v20.policy.DefaultsType;
 import org.oasis.xacml.v20.policy.EffectType;
 import org.oasis.xacml.v20.policy.EnvironmentMatchType;
+import org.oasis.xacml.v20.policy.EnvironmentType;
+import org.oasis.xacml.v20.policy.EnvironmentsType;
 import org.oasis.xacml.v20.policy.FunctionType;
 import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 import org.oasis.xacml.v20.policy.ResourceMatchType;
+import org.oasis.xacml.v20.policy.ResourceType;
+import org.oasis.xacml.v20.policy.ResourcesType;
+import org.oasis.xacml.v20.policy.RuleType;
 import org.oasis.xacml.v20.policy.SubjectAttributeDesignatorType;
 import org.oasis.xacml.v20.policy.SubjectMatchType;
+import org.oasis.xacml.v20.policy.SubjectType;
+import org.oasis.xacml.v20.policy.SubjectsType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
@@ -37,13 +47,19 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.Match;
+import com.artagon.xacml.v3.MatchAllOf;
+import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
@@ -74,7 +90,7 @@ public class JAXBPolicyMapper
 		Map<String, VariableDefinition> varDefinitions = getVariables(p);
 		Version version = Version.valueOf(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
-		PolicyDefaults policyDefaults = create(p.getPolicyDefaults());
+		PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
 		Target target = create(p.getTarget());
 		return factory.createPolicy(
 				p.getPolicyId(), 
@@ -87,20 +103,124 @@ public class JAXBPolicyMapper
 				Collections.<AdviceExpression>emptyList());
 	}
 	
-	public PolicySet create(PolicySetType xmlPolicy) throws PolicySyntaxException
+	public PolicySet create(PolicySetType p) throws PolicySyntaxException
+	{
+		Version version = Version.valueOf(p.getVersion());
+		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
+		PolicySetDefaults policySetDefaults = createPolicySetDefaults(p.getPolicySetDefaults());
+		Collection<CompositeDecisionRule> policies = getPolicies(p);
+		Target target = create(p.getTarget());
+		return factory.createPolicySet(
+				p.getPolicySetId(), 
+				version, policySetDefaults, 
+				target, p.getPolicyCombiningAlgId(), 
+				policies, obligations, Collections.<AdviceExpression>emptyList());
+	}
+	
+	private Collection<CompositeDecisionRule> getPolicies(PolicySetType p) throws PolicySyntaxException
+	{
+		p.getPolicySetOrPolicyOrPolicySetIdReference();
+		return Collections.emptyList();
+	}
+	
+	private PolicyDefaults createPolicyDefaults(DefaultsType defaults)
 	{
 		return null;
 	}
 	
-	private PolicyDefaults create(DefaultsType defaults)
+	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
 	{
 		return null;
 	}
 	
-	private Target create(TargetType target)
+	private Target create(TargetType target) throws PolicySyntaxException
 	{
-		target.getActions();
-		return null;
+		Collection<MatchAnyOf> match = new LinkedList<MatchAnyOf>();
+		ActionsType actions = target.getActions();
+		if(actions != null){
+			match.add(create(actions));
+		}
+		EnvironmentsType env = target.getEnvironments();
+		if(env != null){
+			match.add(create(env));
+		}
+		ResourcesType resources = target.getResources();
+		if(resources != null){
+			match.add(create(resources));
+		}
+		SubjectsType subjects = target.getSubjects();
+		if(subjects != null){
+			match.add(create(subjects));
+		}
+		return factory.createTarget(match);
+	}
+	
+	private MatchAnyOf create(ActionsType actions) throws PolicySyntaxException
+	{
+		if(actions == null){
+			return null;
+		}
+		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		for(ActionType action : actions.getAction())
+		{
+			Collection<Match> matches = new LinkedList<Match>();
+			for(ActionMatchType match : action.getActionMatch()){
+				matches.add(createMatch(match));
+			}
+			allOf.add(factory.createAllOf(matches));
+		}
+		return factory.createAnyOf(allOf);
+	}
+	
+	private MatchAnyOf create(ResourcesType resources) throws PolicySyntaxException
+	{
+		if(resources == null){
+			return null;
+		}
+		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		for(ResourceType action : resources.getResource())
+		{
+			Collection<Match> matches = new LinkedList<Match>();
+			for(ResourceMatchType match : action.getResourceMatch()){
+				matches.add(createMatch(match));
+			}
+			allOf.add(factory.createAllOf(matches));
+		}
+		return factory.createAnyOf(allOf);
+	}
+	
+	private MatchAnyOf create(SubjectsType resources) throws PolicySyntaxException
+	{
+		if(resources == null){
+			return null;
+		}
+		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		for(SubjectType action : resources.getSubject())
+		{
+			Collection<Match> matches = new LinkedList<Match>();
+			for(SubjectMatchType match : action.getSubjectMatch()){
+				matches.add(createMatch(match));
+			}
+			allOf.add(factory.createAllOf(matches));
+		}
+		return factory.createAnyOf(allOf);
+	}
+	
+	private MatchAnyOf create(EnvironmentsType actions) throws PolicySyntaxException
+	{
+		if(actions == null){
+			return null;
+		}
+		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		for(EnvironmentType action : actions.getEnvironment())
+		{
+			Collection<Match> matches = new LinkedList<Match>();
+			for(EnvironmentMatchType match : action.getEnvironmentMatch()){
+				matches.add(createMatch(match));
+			}
+			allOf.add(factory.createAllOf(matches));
+		}
+		return factory.createAnyOf(allOf);
 	}
 	
 	private Map<String, VariableDefinition> getVariables(PolicyType p) throws PolicySyntaxException
@@ -121,14 +241,42 @@ public class JAXBPolicyMapper
 		return variables;
 	}
 	
-	private Collection<Rule> getRules(PolicyType p)
+	private Collection<Rule> getRules(PolicyType p) throws PolicySyntaxException
 	{
-		return Collections.emptyList();
+		Collection<Object> objects = p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
+		Collection<Rule> rules = new LinkedList<Rule>();
+		for(Object o : objects){
+			if(o instanceof RuleType){
+				rules.add(create((RuleType)o));
+			}
+		}
+		return rules;
+	}
+	
+	private Rule create(RuleType r) throws PolicySyntaxException
+	{
+		Effect effect  = r.getEffect() == EffectType.DENY?Effect.DENY:Effect.PERMIT;
+		return factory.createRule(r.getRuleId(), 
+				create(r.getTarget()), 
+				create(r.getCondition()),
+				effect);
+	}
+	
+	private Condition create(ConditionType c) throws PolicySyntaxException
+	{
+		if(c == null){
+			return null;
+		}
+		JAXBElement<?> expression = c.getExpression();
+		return factory.createCondition(createExpression(expression));
 	}
 	
 	private Collection<ObligationExpression> getObligations(ObligationsType obligations) 
 		throws PolicySyntaxException
 	{
+		if(obligations == null){
+			return Collections.<ObligationExpression>emptyList();
+		}
 		Collection<ObligationExpression> o = new LinkedList<ObligationExpression>();
 		for(ObligationType obligation : obligations.getObligation()){
 			o.add(factory.createObligationExpression(obligation.getObligationId(), 
@@ -157,65 +305,6 @@ public class JAXBPolicyMapper
 			FunctionType f = (FunctionType)exp;
 			return factory.createFunctionReference(f.getFunctionId());
 		}
-		if(exp instanceof SubjectMatchType){
-			SubjectMatchType match = (SubjectMatchType)exp;
-			SubjectAttributeDesignatorType desig = match.getSubjectAttributeDesignator();
-			if(desig != null){
-				AttributeCategoryId categoryId = AttributeCategoryId.valueOf(
-						desig.getSubjectCategory());
-				if(categoryId == null){
-					throw new PolicySyntaxException("Unknown subject " +
-							"attribute designator category=\"%s\"", 
-							desig.getSubjectCategory());
-				}
-				return createDesignator(categoryId, desig);
-			}
-			AttributeSelectorType selector = match.getAttributeSelector();
-			if(selector != null){
-				return createSelector(getSelectoryCategory(selector), selector);
-			}
-			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
-					"does not have designator or selector", match.getMatchId());
-		}
-		if(exp instanceof ActionMatchType){
-			ActionMatchType match = (ActionMatchType)exp;
-			AttributeDesignatorType desig = match.getActionAttributeDesignator();
-			if(desig != null){
-				return createDesignator(AttributeCategoryId.ACTION, desig);
-			}
-			AttributeSelectorType selector = match.getAttributeSelector();
-			if(selector != null){
-				return createSelector(getSelectoryCategory(selector), selector);
-			}
-			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
-					"does not have designator or selector", match.getMatchId());
-		}
-		if(exp instanceof ResourceMatchType){
-			ResourceMatchType match = (ResourceMatchType)exp;
-			AttributeDesignatorType desig = match.getResourceAttributeDesignator();
-			if(desig != null){
-				return createDesignator(AttributeCategoryId.RESOURCE, desig);
-			}
-			AttributeSelectorType selector = match.getAttributeSelector();
-			if(selector != null){
-				return createSelector(getSelectoryCategory(selector), selector);
-			}
-			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
-					"does not have designator or selector", match.getMatchId());
-		}
-		if(exp instanceof EnvironmentMatchType){
-			EnvironmentMatchType match = (EnvironmentMatchType)exp;
-			AttributeDesignatorType desig = match.getEnvironmentAttributeDesignator();
-			if(desig != null){
-				return createDesignator(AttributeCategoryId.ENVIRONMENT, desig);
-			}
-			AttributeSelectorType selector = match.getAttributeSelector();
-			if(selector != null){
-				return createSelector(getSelectoryCategory(selector), selector);
-			}
-			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
-					"does not have designator or selector", match.getMatchId());
-		}
 		if(exp instanceof AttributeDesignatorType){
 			AttributeCategoryId categoryId = getDesignatorCategory(expression);
 			return createDesignator(categoryId, (AttributeDesignatorType)exp);
@@ -229,6 +318,86 @@ public class JAXBPolicyMapper
 		}
 		throw new PolicySyntaxException(
 				"Unsupported expression=\"%s\"", expression.getName());
+	}
+	
+	Match createMatch(Object exp) throws PolicySyntaxException
+	{
+		if(exp instanceof SubjectMatchType){
+			SubjectMatchType match = (SubjectMatchType)exp;
+			SubjectAttributeDesignatorType desig = match.getSubjectAttributeDesignator();
+			if(desig != null){
+				AttributeCategoryId categoryId = AttributeCategoryId.parse(
+						desig.getSubjectCategory());
+				if(categoryId == null){
+					throw new PolicySyntaxException("Unknown subject " +
+							"attribute designator category=\"%s\"", 
+							desig.getSubjectCategory());
+				}
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createDesignator(categoryId, desig));
+			}
+			AttributeSelectorType selector = match.getAttributeSelector();
+			if(selector != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createSelector(getSelectoryCategory(selector), selector));
+			}
+			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
+					"does not have designator or selector", match.getMatchId());
+		}
+		if(exp instanceof ActionMatchType){
+			ActionMatchType match = (ActionMatchType)exp;
+			AttributeDesignatorType desig = match.getActionAttributeDesignator();
+			if(desig != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createDesignator(AttributeCategoryId.ACTION, desig));
+			}
+			AttributeSelectorType selector = match.getAttributeSelector();
+			if(selector != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createSelector(getSelectoryCategory(selector), selector));
+			}
+			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
+					"does not have designator or selector", match.getMatchId());
+		}
+		if(exp instanceof ResourceMatchType){
+			ResourceMatchType match = (ResourceMatchType)exp;
+			AttributeDesignatorType desig = match.getResourceAttributeDesignator();
+			if(desig != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createDesignator(AttributeCategoryId.RESOURCE, desig));
+			}
+			AttributeSelectorType selector = match.getAttributeSelector();
+			if(selector != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createSelector(getSelectoryCategory(selector), selector));
+			}
+			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
+					"does not have designator or selector", match.getMatchId());
+		}
+		if(exp instanceof EnvironmentMatchType){
+			EnvironmentMatchType match = (EnvironmentMatchType)exp;
+			AttributeDesignatorType desig = match.getEnvironmentAttributeDesignator();
+			if(desig != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createDesignator(AttributeCategoryId.ENVIRONMENT, desig));
+			}
+			AttributeSelectorType selector = match.getAttributeSelector();
+			if(selector != null){
+				return factory.createMatch(match.getMatchId(), 
+						createValue(match.getAttributeValue()), 
+						createSelector(getSelectoryCategory(selector), selector));
+			}
+			throw new PolicySyntaxException("Match with functionId=\"%s\" " +
+					"does not have designator or selector", match.getMatchId());
+		}
+		throw new PolicySyntaxException("Can't create Match from a given instance=\"%s\"", exp);
 	}
 	
 	Apply createApply(ApplyType apply) throws PolicySyntaxException

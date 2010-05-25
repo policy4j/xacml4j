@@ -13,8 +13,9 @@ import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Matchable;
 import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.Target;
+import com.artagon.xacml.v3.XacmlObject;
 
-final class DefaultTarget implements Target
+final class DefaultTarget extends XacmlObject implements Target
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultTarget.class);
 	

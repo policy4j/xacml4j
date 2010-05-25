@@ -64,6 +64,9 @@ public interface PolicyFactory
 
 	Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException;
 
+	MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException;
+	MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException;
+	
 	/**
 	 * Creates condition with a given predicate
 	 * 

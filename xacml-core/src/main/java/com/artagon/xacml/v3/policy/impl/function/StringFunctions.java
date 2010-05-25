@@ -259,7 +259,7 @@ public class StringFunctions
 		return DataTypes.STRING.create(v.toXacmlString());
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:x500Name-from-string")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:rfc822Name-from-string")
 	@XacmlFuncReturnType(type=DataTypes.RFC822NAME)
 	public static RFC822NameType.RFC822NameValue rfc822NameFromString(
 			@XacmlParam(type=DataTypes.STRING)StringType.StringValue v)

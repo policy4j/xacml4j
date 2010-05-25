@@ -1,15 +1,16 @@
 package com.artagon.xacml.v3.policy.spi.combine;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.policy.spi.DecisionCombingingAlgorithmProvider;
-import com.google.common.base.Preconditions;
+import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 
-public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombingingAlgorithmProvider
+public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
 	private Map<String, DecisionCombiningAlgorithm<? extends CompositeDecisionRule>> policyAlgo;
@@ -19,6 +20,19 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombingin
 		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<? extends CompositeDecisionRule>>();
 	}
 	
+	
+	@Override
+	public final DecisionCombiningAlgorithm<? extends CompositeDecisionRule> getPolicyAlgorithm(
+			String algorithmId) {
+		return policyAlgo.get(algorithmId);
+	}
+	
+	@Override
+	public final DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId) {
+		return ruleAlgo.get(algorithmId);
+	}
+
+
 	public final boolean isRuleAgorithmProvided(String algorithmId){
 		return ruleAlgo.containsKey(algorithmId);
 	}
@@ -31,7 +45,10 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombingin
 			DecisionCombiningAlgorithm<Rule> algorithm)
 	{
 		DecisionCombiningAlgorithm<Rule> oldAlgo = ruleAlgo.put(algorithm.getId(), algorithm);
-		Preconditions.checkState(oldAlgo != null);
+		if(oldAlgo != null){
+			throw new IllegalArgumentException(
+					String.format("Rule algorithm with identifier=\"%\" already exist", algorithm));
+		}
 	}
 	
 	public final void addCompositeRuleCombineAlgorithm(
@@ -39,17 +56,20 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombingin
 	{
 		DecisionCombiningAlgorithm<? extends CompositeDecisionRule> oldAlgo = policyAlgo.put(
 				algorithm.getId(), algorithm);
-		Preconditions.checkState(oldAlgo != null);
+		if(oldAlgo != null){
+			throw new IllegalArgumentException(
+					String.format("Policy algorithm with identifier=\"%\" already exist", algorithm));
+		}
 	}
 	
 	@Override
-	public final Iterable<DecisionCombiningAlgorithm<? extends CompositeDecisionRule>> getPolicyAlgorithms(){
-		return policyAlgo.values();
+	public final Set<String> getSupportedPolicyAlgorithms(){
+		return Collections.unmodifiableSet(policyAlgo.keySet());
 	}
 
 	@Override
-	public final Iterable<DecisionCombiningAlgorithm<Rule>> getRuleAlgorithms(){
-		return ruleAlgo.values();
+	public final Set<String> getSupportedRuleAlgorithms(){
+		return Collections.unmodifiableSet(ruleAlgo.keySet());
 	}
 	
 }

@@ -49,7 +49,7 @@ public class NonNumericComparisionFunctions
 		return DataTypes.BOOLEAN.create(r < 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-greater-than-or-equal")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-less-than-or-equal")
 	@XacmlFuncReturnType(type=DataTypes.BOOLEAN)
 	public static BooleanValue lessThanOrEqual(
 			@XacmlParam(type=DataTypes.STRING)StringValue a, 

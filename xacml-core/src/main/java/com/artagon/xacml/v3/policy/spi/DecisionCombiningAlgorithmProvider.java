@@ -6,7 +6,6 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 
-
 public interface DecisionCombiningAlgorithmProvider 
 {
 	/**
@@ -29,6 +28,9 @@ public interface DecisionCombiningAlgorithmProvider
 	 */
 	DecisionCombiningAlgorithm<? extends CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
 	
-	Set<String> getSupprtedRuleAlgorithms();
-	Set<String> getSupprtedPolicyAlgorithms();
+	Set<String> getSupportedRuleAlgorithms();
+	Set<String> getSupportedPolicyAlgorithms();
+	
+	boolean isRuleAgorithmProvided(String algorithmId);
+	boolean isPolicyAgorithmProvided(String algorithmId);
 }

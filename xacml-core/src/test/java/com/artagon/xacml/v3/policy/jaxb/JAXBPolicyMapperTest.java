@@ -9,13 +9,17 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
+import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.policy.impl.DefaultPolicyFactory;
+import com.artagon.xacml.v3.policy.impl.combine.DefaultDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
 
 public class JAXBPolicyMapperTest 
 {
@@ -34,10 +38,12 @@ public class JAXBPolicyMapperTest
 		}
 	}
 	
+	@Before
 	public void init() throws Exception
 	{
-		PolicyFactory p = new DefaultPolicyFactory(, combiningAlgorithms);
-		this.mapper = new JAXBPolicyMapper();
+		PolicyFactory policyFactory = new DefaultPolicyFactory(
+				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
+		mapper = new JAXBPolicyMapper(policyFactory);
 	}
 	
 	@SuppressWarnings({ "unused", "unchecked" })
@@ -54,7 +60,7 @@ public class JAXBPolicyMapperTest
 	public void testPolicyMapping() throws Exception
 	{
 		PolicyType policyF005 = getPolicy("IIIF005Policy.xml");
-		PolicySetType policyF006 = getPolicy("IIIF006Policy.xml");
-		PolicyType policyF007 = getPolicy("IIIF007Policy.xml");
+		Policy p = mapper.create(policyF005);
+		System.out.println(p.toString());
 	}
 }

@@ -40,7 +40,7 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 public class DefaultPolicyFactory extends BasePolicyFactory
 {
 		
-	public  DefaultPolicyFactory(FunctionProvidersRegistry functions, 
+	public DefaultPolicyFactory(FunctionProvidersRegistry functions, 
 			DecisionCombiningAlgorithmProvider combiningAlgorithms)
 	{
 		super(functions, combiningAlgorithms);
@@ -123,17 +123,20 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		return new DefaultCondition(predicate);
 	}
 	
+	public MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException{
+		return new DefaultMatchAnyOf(allOf);
+	}
+	
+	public MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException{
+		return new DefaultMatchAllOf(match);
+	}
+	
 	@Override
 	public Rule createRule(String ruleId, Target target, Condition condition, Effect effect) 
 		throws PolicySyntaxException
 	{
 		if(ruleId == null){
 			throw new PolicySyntaxException("Rule identifier must be specified");
-		}
-		if(target == null && 
-				condition == null){
-			throw new PolicySyntaxException(
-					"Rule id=\"%s\" condition or target must be specified", ruleId);
 		}
 		if(effect == null){
 			throw new PolicySyntaxException("Rule id=\"%s\" effect must be specified", ruleId);
