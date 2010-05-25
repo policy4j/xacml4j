@@ -76,8 +76,6 @@ import com.google.common.collect.Iterables;
 
 public class JAXBPolicyMapper 
 {
-	private final static Logger log = LoggerFactory.getLogger(JAXBPolicyMapper.class);
-	
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 	
 	static{
