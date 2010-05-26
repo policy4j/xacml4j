@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.RuleCombinerParameters;
@@ -60,7 +61,9 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
+			Collection<ObligationExpression> obligationExpressions) 
+		throws PolicySyntaxException
+	{
 		super(policyId, version, description, 
 				target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(variables);
@@ -69,7 +72,7 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 		this.rules = new LinkedList<Rule>(rules);
 		this.combine = combine;
 		this.policyDefaults = policyDefaults;
-		this.variableDefinitions = new ConcurrentHashMap<String, VariableDefinition>(variables.size());
+		this.variableDefinitions = new ConcurrentHashMap<String, VariableDefinition>();
 		for(VariableDefinition varDef : variables){
 			this.variableDefinitions.put(varDef.getVariableId(), varDef);
 		}
@@ -92,7 +95,8 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> advice,
-			Collection<ObligationExpression> obligations)
+			Collection<ObligationExpression> obligations) 
+		throws PolicySyntaxException
 	{
 		this(policyId, 
 				version,
@@ -118,7 +122,8 @@ final class DefaultPolicy extends BaseCompositeDecisionRule implements Policy
 			String policyId, 
 			Version version,
 			DecisionCombiningAlgorithm<Rule> combine,
-			Rule ...rules)
+			Rule ...rules) 
+		throws PolicySyntaxException
 	{
 		this(policyId, version, combine,
 				Arrays.asList(rules),
