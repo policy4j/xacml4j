@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
@@ -62,10 +63,24 @@ public class JAXBPolicyMapperTest
 		return policy.getValue();
 	}
 	
+	@SuppressWarnings({"unchecked" })
+	private static RequestType getRequest(String name) throws Exception
+	{
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("oasis-xacml20-compat-test/" + name);
+		assertNotNull(stream);
+		JAXBElement<RequestType> request = (JAXBElement<RequestType>)context.createUnmarshaller().unmarshal(stream);
+		assertNotNull(request);
+		return request.getValue();
+	}
+	
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
 		PolicyType policyF005 = getPolicy("IIIF005Policy.xml");
+		RequestType requestF005 = getPolicy("IIIF005Request.xml");
+		for(Object o : requestF005.getResource().get(0).getResourceContent().getContent()){
+			System.out.println(o.getClass());
+		}
 		Policy p0 = mapper.create(policyF005);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());

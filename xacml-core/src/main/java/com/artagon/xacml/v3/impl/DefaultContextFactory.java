@@ -31,7 +31,6 @@ public final class DefaultContextFactory implements RequestContextFactory
 		return new Result(decision, advice, obligations, attributes, policyIdList);
 	}
 
-
 	@Override
 	public Attribute createAttribute(String attributeId, 
 			Collection<AttributeValue> values) {
