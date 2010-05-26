@@ -13,7 +13,6 @@ import org.oasis.xacml.v20.context.EnvironmentType;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResourceContentType;
 import org.oasis.xacml.v20.context.ResourceType;
-import org.oasis.xacml.v20.context.ResponseType;
 import org.oasis.xacml.v20.context.SubjectType;
 import org.w3c.dom.Node;
 
@@ -24,15 +23,15 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.RequestSyntaxException;
-import com.artagon.xacml.v3.Response;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class JAXBContextMapper
+public class Xacml20RequestMapper
 {
 	private RequestFactory contextFactory;
 	
-	public JAXBContextMapper(RequestFactory factory){
+	public Xacml20RequestMapper(RequestFactory factory){
 		Preconditions.checkNotNull(factory);
 		this.contextFactory = factory;
 	}
@@ -57,11 +56,6 @@ public class JAXBContextMapper
 			attributes.add(createEnviroment(req.getEnvironment()));
 		}
 		return contextFactory.createRequest(false, attributes);
-	}
-	
-	public ResponseType create(Response res) throws RequestSyntaxException
-	{
-		return null;
 	}
 	
 	Attributes createSubject(SubjectType subject) throws RequestSyntaxException

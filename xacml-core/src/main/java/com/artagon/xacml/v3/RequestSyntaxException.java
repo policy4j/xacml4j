@@ -17,7 +17,8 @@ public class RequestSyntaxException extends XacmlException
 		super(cause);
 	}
 	
-	public Status getStatus(){
+	public Status getStatus()
+	{
 		return new Status(StatusCode.createSyntaxError(), getMessage(), null);
 	}
 }

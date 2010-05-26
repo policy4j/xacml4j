@@ -32,11 +32,11 @@ import com.artagon.xacml.v3.policy.impl.DefaultPolicyFactory;
 import com.artagon.xacml.v3.policy.impl.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
 
-public class JAXBPolicyMapperTest 
+public class Xacml20PolicyMapperTest 
 {
 	private static JAXBContext context;
-	private JAXBPolicyMapper mapper;
-	private JAXBContextMapper contextMapper;
+	private Xacml20PolicyMapper mapper;
+	private Xacml20RequestMapper contextMapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -53,8 +53,8 @@ public class JAXBPolicyMapperTest
 	{
 		PolicyFactory policyFactory = new DefaultPolicyFactory(
 				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
-		mapper = new JAXBPolicyMapper(policyFactory);
-		this.contextMapper = new JAXBContextMapper(new DefaultContextFactory());
+		mapper = new Xacml20PolicyMapper(policyFactory);
+		this.contextMapper = new Xacml20RequestMapper(new DefaultContextFactory());
 	}
 	
 	@SuppressWarnings({"unchecked" })

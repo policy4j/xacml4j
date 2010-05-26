@@ -2,7 +2,9 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -13,7 +15,7 @@ public class Result extends XacmlObject
 	private Decision decision;
 	private Collection<Obligation> obligations;
 	private Collection<Advice> associatedAdvice;
-	private Collection<Attributes> attributes;
+	private Map<AttributeCategoryId, Attributes> attributes;
 	private Collection<PolicyIdentifier> policyIdentifiers;
 	
 	/**
@@ -53,12 +55,14 @@ public class Result extends XacmlObject
 		this.status = Status.createSuccessStatus();
 		this.associatedAdvice = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
-		this.attributes = new LinkedList<Attributes>();
+		this.attributes = new HashMap<AttributeCategoryId, Attributes>();
 		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
 		Iterables.addAll(this.associatedAdvice, associatedAdvice);
 		Iterables.addAll(this.obligations, obligations);
-		Iterables.addAll(this.attributes, attributes);
 		Iterables.addAll(this.policyIdentifiers, policyIdentifiers);
+		for(Attributes attribute : attributes){
+			this.attributes.put(attribute.getCategoryId(), attribute);
+		}
 	}
 	
 	/**
@@ -104,7 +108,11 @@ public class Result extends XacmlObject
 	 * @return a collection of {@link Attributes} instances
 	 */
 	public Collection<Attributes> getAttributes(){
-		return attributes;
+		return Collections.unmodifiableCollection(attributes.values());
+	}
+	
+	public Attributes getAttribute(AttributeCategoryId categoryId){
+		return attributes.get(categoryId);
 	}
 	
 	/**

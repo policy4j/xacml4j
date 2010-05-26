@@ -23,10 +23,10 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
 
-public class JAXBRequestMapperTest 
+public class Xacml20RequestMapperTest 
 {
 	private static JAXBContext context;
-	private JAXBContextMapper contextMapper;
+	private Xacml20RequestMapper contextMapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -41,7 +41,7 @@ public class JAXBRequestMapperTest
 	@Before
 	public void init() throws Exception
 	{
-		this.contextMapper = new JAXBContextMapper(new DefaultContextFactory());
+		this.contextMapper = new Xacml20RequestMapper(new DefaultContextFactory());
 	}
 	
 	

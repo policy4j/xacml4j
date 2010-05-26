@@ -9,6 +9,10 @@ public class XacmlException extends Exception
 		super(cause);
 	}
 	
+	protected XacmlException(String message){
+		super(message);
+	}
+	
 	/**
 	 * Constructs exception with a given message.
 	 * 
@@ -27,7 +31,8 @@ public class XacmlException extends Exception
 	 * @param template a template {@see String#format(String, Object...)}
 	 * @param arguments an arguments for template
 	 */
-	protected XacmlException(Throwable cause, String message, Object ... arguments){
+	protected XacmlException(Throwable cause, 
+			String message, Object ... arguments){
 		super(String.format(message, arguments), cause);
 	}
 

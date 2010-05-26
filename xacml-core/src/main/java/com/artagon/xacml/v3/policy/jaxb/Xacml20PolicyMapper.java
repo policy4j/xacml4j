@@ -72,7 +72,7 @@ import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
-public class JAXBPolicyMapper 
+public class Xacml20PolicyMapper 
 {
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 	
@@ -84,7 +84,7 @@ public class JAXBPolicyMapper
 	
 	private PolicyFactory factory;
 	
-	public JAXBPolicyMapper(PolicyFactory factory){
+	public Xacml20PolicyMapper(PolicyFactory factory){
 		this.factory = factory;
 	}
 	
