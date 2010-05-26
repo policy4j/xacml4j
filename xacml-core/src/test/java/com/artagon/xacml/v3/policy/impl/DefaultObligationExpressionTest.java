@@ -20,9 +20,9 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.ObligationExpression;
+import com.artagon.xacml.v3.XacmlException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultObligationExpressionTest 
@@ -34,7 +34,7 @@ public class DefaultObligationExpressionTest
 	}
 	
 	@Test
-	public void testCreateObligationExpression()
+	public void testCreateObligationExpression() throws XacmlException
 	{
 		AttributeAssigmentExpression attrExp = createStrictMock(AttributeAssigmentExpression.class);
 		ObligationExpression exp = new DefaultObligationExpression("test",Effect.DENY, Collections.singletonList(attrExp));
@@ -45,7 +45,7 @@ public class DefaultObligationExpressionTest
 	}
 	
 	@Test
-	public void testEvaluateObligationExpression() throws EvaluationException
+	public void testEvaluateObligationExpression() throws XacmlException
 	{
 		AttributeAssigmentExpression attrExp0 = createStrictMock(AttributeAssigmentExpression.class);
 		AttributeAssigmentExpression attrExp1 = createStrictMock(AttributeAssigmentExpression.class);

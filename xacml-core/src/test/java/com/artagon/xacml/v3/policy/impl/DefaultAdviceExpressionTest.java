@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.XacmlException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAdviceExpressionTest 
@@ -34,7 +34,7 @@ public class DefaultAdviceExpressionTest
 	}
 	
 	@Test
-	public void testCreateAdviceExpression()
+	public void testCreateAdviceExpression() throws XacmlException
 	{
 		AttributeAssigmentExpression attrExp = createStrictMock(AttributeAssigmentExpression.class);
 		AdviceExpression exp = new DefaultAdviceExpression("test",Effect.DENY, Collections.singletonList(attrExp));
@@ -45,7 +45,7 @@ public class DefaultAdviceExpressionTest
 	}
 	
 	@Test
-	public void testEvaluateAdviceExpression() throws EvaluationException
+	public void testEvaluateAdviceExpression() throws XacmlException
 	{
 		AttributeAssigmentExpression attrExp0 = createStrictMock(AttributeAssigmentExpression.class);
 		AttributeAssigmentExpression attrExp1 = createStrictMock(AttributeAssigmentExpression.class);

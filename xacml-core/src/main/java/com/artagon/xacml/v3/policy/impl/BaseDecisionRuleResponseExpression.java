@@ -11,8 +11,9 @@ import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.PolicyElement;
+import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.XacmlObject;
-import com.google.common.base.Preconditions;
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
 {
@@ -32,10 +33,13 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	public BaseDecisionRuleResponseExpression(
 			String id, 
 			Effect effect, 
-			Collection<AttributeAssigmentExpression> attributeExpressions){
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(effect);
-		Preconditions.checkNotNull(attributeExpressions);
+			Collection<AttributeAssigmentExpression> attributeExpressions) 
+		throws PolicySyntaxException
+	{
+		checkNotNull(id, "Decision rule id can not be null");
+		checkNotNull(effect, "Decision rule effect can not be null");
+		checkNotNull(attributeExpressions, 
+				"Decision rule attribute expression can not be null");
 		this.id = id;
 		this.effect = effect;
 		this.attributeExpressions = new LinkedList<AttributeAssigmentExpression>(attributeExpressions);
@@ -82,17 +86,24 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	 * @return collection of {@link DefaultAttributeAssignment} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	protected Collection<AttributeAssignment> evaluateAttributeAssingments(EvaluationContext context) 
+	protected Collection<AttributeAssignment> evaluateAttributeAssingments(
+			EvaluationContext context) 
 		throws EvaluationException
 	{
-		Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-		for(AttributeAssigmentExpression attrExp : attributeExpressions){
-			attr.add(new DefaultAttributeAssignment(
-					attrExp.getAttributeId(), 
-					attrExp.getCategory(), 
-					attrExp.getIssuer(), 
-					attrExp.evaluate(context)));
+		try{
+			Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
+			for(AttributeAssigmentExpression attrExp : attributeExpressions){
+				attr.add(new DefaultAttributeAssignment(
+						attrExp.getAttributeId(), 
+						attrExp.getCategory(), 
+						attrExp.getIssuer(), 
+						attrExp.evaluate(context)));
+			}
+			return attr;
+		}catch(PolicySyntaxException e){
+			throw new EvaluationException(
+					StatusCode.createProcessingError(), context, e);
 		}
-		return attr;
+		
 	}
 }

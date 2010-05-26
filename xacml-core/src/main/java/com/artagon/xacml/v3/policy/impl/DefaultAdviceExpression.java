@@ -9,7 +9,9 @@ import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.StatusCode;
 
 
 public final class DefaultAdviceExpression extends BaseDecisionRuleResponseExpression implements AdviceExpression
@@ -20,19 +22,25 @@ public final class DefaultAdviceExpression extends BaseDecisionRuleResponseExpre
 	 * @param appliesTo an effect when this advice is applicable
 	 * @param attributeExpressions a collection of attribute
 	 * assignment expression for this advice
+	 * @exception PolicySyntaxException
 	 */
 	public DefaultAdviceExpression(String id, Effect appliesTo,
-			Collection<AttributeAssigmentExpression> attributeExpressions) {
+			Collection<AttributeAssigmentExpression> attributeExpressions) throws PolicySyntaxException 
+	{
 		super(id, appliesTo, attributeExpressions);
 	}	
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.AdviceExpression#evaluate(com.artagon.xacml.v3.policy.EvaluationContext)
-	 */
+	@Override
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		return new DefaultAdvice(getId(), attributes);
+		try{
+			return new DefaultAdvice(getId(), attributes);
+		}catch(PolicySyntaxException e){
+			throw new EvaluationException(
+					StatusCode.createProcessingError(), context, e);
+		}
+		
 	}
 	
 	@Override

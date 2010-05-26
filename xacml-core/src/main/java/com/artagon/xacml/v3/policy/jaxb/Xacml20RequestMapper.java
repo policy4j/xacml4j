@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.RequestSyntaxException;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

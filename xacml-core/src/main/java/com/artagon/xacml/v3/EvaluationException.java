@@ -10,7 +10,7 @@ public class EvaluationException extends PolicyException
 	
 	private EvaluationContext context;
 	
-	protected EvaluationException(StatusCode code, 
+	public EvaluationException(StatusCode code, 
 			EvaluationContext context, 
 			String template, Object... arguments) {
 		super(template, arguments);
@@ -20,7 +20,7 @@ public class EvaluationException extends PolicyException
 		this.context = context;
 	}
 
-	protected EvaluationException(StatusCode code, 
+	public EvaluationException(StatusCode code, 
 			EvaluationContext context, 
 			Throwable cause, String message,
 			Object... arguments) {
@@ -31,7 +31,7 @@ public class EvaluationException extends PolicyException
 		this.context = context;
 	}
 
-	protected EvaluationException(StatusCode code, 
+	public EvaluationException(StatusCode code, 
 			EvaluationContext context, 
 			Throwable cause) {
 		super(cause);

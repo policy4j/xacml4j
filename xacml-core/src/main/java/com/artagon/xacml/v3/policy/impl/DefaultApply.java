@@ -38,7 +38,7 @@ final class DefaultApply extends XacmlObject implements Apply
 	public DefaultApply(FunctionSpec spec, Expression ...arguments) 
 		throws PolicySyntaxException
 	{
-		checkSyntaxCondition(spec != null, 
+		checkNotNull(spec != null, 
 				"Can't create Apply without function, function can't be null");
 		checkSyntaxCondition((arguments == null || arguments.length > 0), 
 				"At least one argument must be specified");
