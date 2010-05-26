@@ -22,9 +22,9 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestContextFactory;
-import com.artagon.xacml.v3.RequestProfileHandler;
+import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
@@ -39,7 +39,7 @@ public class MultipleRequestHandlerTest
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
-	private RequestContextFactory contextFactory;
+	private RequestFactory contextFactory;
 	
 	@Before
 	public void init()
@@ -50,7 +50,7 @@ public class MultipleRequestHandlerTest
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences()
+	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));

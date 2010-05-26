@@ -8,9 +8,10 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.RequestContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestFactory;
+import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.google.common.collect.Sets;
 
@@ -18,13 +19,14 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:multiple-resource-elements";
 		
-	public MultipleResourcesHandler(RequestContextFactory contextFactory) {
+	public MultipleResourcesHandler(RequestFactory contextFactory) {
 		super(ID, contextFactory);
 	}
 	
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
+		RequestFactory factory = getContextFactory();
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategoryId categoryId : request.getCategories()){
 			Collection<Attributes> attributes = request.getAttributes(categoryId);
@@ -36,10 +38,14 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 		}
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
-		for(List<Attributes> requestAttr : cartesian){
-			
-			Request req = getContextFactory().createRequest(request.isReturnPolicyIdList(), requestAttr);
-			results.addAll(handleNext(req, pdp));
+		for(List<Attributes> requestAttr : cartesian)
+		{	
+			try{
+				Request req = factory.createRequest(request.isReturnPolicyIdList(), requestAttr);
+				results.addAll(handleNext(req, pdp));
+			}catch(RequestSyntaxException e){
+				results.add(new Result(e.getStatus()));
+			}
 		}
 		return results;
 	}

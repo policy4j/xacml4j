@@ -5,19 +5,18 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.RequestContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.StatusCode;
 
 public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
-	public MultipleRequestsHandler(RequestContextFactory contextFactory){
+	public MultipleRequestsHandler(RequestFactory contextFactory){
 		super(ID, contextFactory);
 	}
 	
@@ -29,25 +28,26 @@ public class MultipleRequestsHandler extends AbstractRequestProfileHandler
 			return handleNext(request, pdp);
 		}
 		for(RequestReference ref : references){
-			Request resolvedRequest = resolveAttributes(request, ref);
-			results.addAll(handleNext(resolvedRequest, pdp));
+			try{
+				Request resolvedRequest = resolveAttributes(request, ref);
+				results.addAll(handleNext(resolvedRequest, pdp));
+			}catch(RequestSyntaxException e){
+				results.add(new Result(e.getStatus()));
+			}
 		}
 		return results;
 	}
 	
 	private Request resolveAttributes(Request req, 
-			RequestReference reqRef)
+			RequestReference reqRef) throws RequestSyntaxException
 	{
-		Collection<Result> results = new LinkedList<Result>();
 		Collection<Attributes> resolved = new LinkedList<Attributes>();
 		for(AttributesReference ref : reqRef.getReferencedAttributes()){
 			Attributes attributes = req.getReferencedAttributes(ref);
 			if(attributes == null){
-				results.add(new Result(
-						new Status(StatusCode.createSyntaxError(), 
+				throw new RequestSyntaxException(
 						"Failed to resolve attribute reference", 
-						ref.getReferenceId())));
-				break;
+						ref.getReferenceId());
 			}
 			resolved.add(attributes);
 		}

@@ -23,9 +23,11 @@ import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.impl.DefaultContextFactory;
 import com.artagon.xacml.v3.policy.impl.DefaultPolicyFactory;
 import com.artagon.xacml.v3.policy.impl.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
@@ -34,6 +36,7 @@ public class JAXBPolicyMapperTest
 {
 	private static JAXBContext context;
 	private JAXBPolicyMapper mapper;
+	private JAXBContextMapper contextMapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -51,6 +54,7 @@ public class JAXBPolicyMapperTest
 		PolicyFactory policyFactory = new DefaultPolicyFactory(
 				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
 		mapper = new JAXBPolicyMapper(policyFactory);
+		this.contextMapper = new JAXBContextMapper(new DefaultContextFactory());
 	}
 	
 	@SuppressWarnings({"unchecked" })
@@ -78,9 +82,7 @@ public class JAXBPolicyMapperTest
 	{
 		PolicyType policyF005 = getPolicy("IIIF005Policy.xml");
 		RequestType requestF005 = getPolicy("IIIF005Request.xml");
-		for(Object o : requestF005.getResource().get(0).getResourceContent().getContent()){
-			System.out.println(o.getClass());
-		}
+		Request request = contextMapper.create(requestF005);
 		Policy p0 = mapper.create(policyF005);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());

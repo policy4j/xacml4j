@@ -45,6 +45,7 @@ public class DefaultAttributes extends XacmlObject implements Attributes
 		Preconditions.checkNotNull(attributes);
 		this.id = id;
 		this.categoryId = categoryId;
+		this.content = content;
 		this.attributes = HashMultimap.create();
 		for(Attribute attr : attributes){
 			this.attributes.put(attr.getAttributeId(), attr);

@@ -1,13 +1,16 @@
 package com.artagon.xacml.v3.impl;
 
+import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -16,6 +19,13 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAttributesTest 
 {
+	private Node content;
+	
+	@Before
+	public void init(){
+		this.content = createStrictMock(Node.class);
+	}
+	
 	@Test
 	public void testCreate()
 	{
@@ -23,10 +33,10 @@ public class DefaultAttributesTest
 		attr.add(new DefaultAttribute("testId10", DataTypes.STRING.create("value0")));
 		attr.add(new DefaultAttribute("testId11", DataTypes.STRING.create("value1")));
 		attr.add(new DefaultAttribute("testId11", "testIssuer", true, DataTypes.STRING.create("value1")));
-		Attributes test = new DefaultAttributes(AttributeCategoryId.RESOURCE, attr);
+		Attributes test = new DefaultAttributes("id", AttributeCategoryId.RESOURCE,  content, attr);
 		assertTrue(attr.containsAll(test.getAttributes()));
 		assertTrue(test.getAttributes().containsAll(attr));
-		assertNull(test.getContent());
+		assertSame(content, test.getContent());
 		assertEquals(AttributeCategoryId.RESOURCE, test.getCategoryId());
 	}
 }
