@@ -109,7 +109,7 @@ public class Version extends XacmlObject implements Comparable<Version>
 	 * @param version a version
 	 * @return {@link Version} instance
 	 */
-    public static Version valueOf(String version) 
+    public static Version parse(String version) 
     	throws PolicySyntaxException 
     {
         return (version == null)?new Version("1.0"):new Version(version);
@@ -127,6 +127,6 @@ public class Version extends XacmlObject implements Comparable<Version>
     	throws PolicySyntaxException
     {
     	Preconditions.checkArgument(version > 0);
-    	return valueOf(Integer.toString(version));
+    	return parse(Integer.toString(version));
     }
 }

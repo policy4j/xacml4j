@@ -148,6 +148,6 @@ public class DefaultPolicyIDReferenceTest
 	private void expectPolicyMatch(Policy p, String id, String v) throws PolicySyntaxException
 	{
 		expect(p.getId()).andReturn(id);
-		expect(p.getVersion()).andReturn(Version.valueOf(v));
+		expect(p.getVersion()).andReturn(Version.parse(v));
 	}
 }

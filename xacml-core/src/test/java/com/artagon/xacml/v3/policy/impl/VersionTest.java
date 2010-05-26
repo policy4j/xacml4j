@@ -14,8 +14,8 @@ public class VersionTest
 	@Test
 	public void testCreateVersion() throws PolicySyntaxException
 	{
-		Version v1 = Version.valueOf("1.0");
-		Version v2 = Version.valueOf("1.0");
+		Version v1 = Version.parse("1.0");
+		Version v2 = Version.parse("1.0");
 		assertTrue(v1.equals(v1));
 		assertTrue(v1.equals(v2));
 		assertFalse(v1.equals(null));
@@ -25,10 +25,10 @@ public class VersionTest
 	@Test
 	public void testLessThanVersion() throws PolicySyntaxException
 	{
-		Version v1 = Version.valueOf("1.1");
-		Version v2 = Version.valueOf("1.0");
-		Version v3 = Version.valueOf("1.0.1");
-		Version v4 = Version.valueOf("1.0.0");
+		Version v1 = Version.parse("1.1");
+		Version v2 = Version.parse("1.0");
+		Version v3 = Version.parse("1.0.1");
+		Version v4 = Version.parse("1.0.0");
 		assertTrue(v1.compareTo(v2) > 0);
 		assertTrue(v3.compareTo(v1) < 0);
 		assertTrue(v3.compareTo(v2) > 0);
@@ -40,19 +40,19 @@ public class VersionTest
 	@Test
 	public void testDefaultVersion() throws PolicySyntaxException
 	{
-		Version v = Version.valueOf(null);
+		Version v = Version.parse(null);
 		assertEquals("1.0", v.getValue());
 	}
 	
 	@Test(expected=PolicySyntaxException.class)
 	public void testNegativeComponent() throws PolicySyntaxException
 	{
-		Version.valueOf("-1.0");
+		Version.parse("-1.0");
 	}
 	
 	@Test(expected=PolicySyntaxException.class)
 	public void testUnparsableVersion() throws PolicySyntaxException
 	{
-		Version.valueOf("1.a....");
+		Version.parse("1.a....");
 	}
 }

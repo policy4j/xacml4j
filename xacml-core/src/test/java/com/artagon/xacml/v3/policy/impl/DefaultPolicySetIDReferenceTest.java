@@ -65,21 +65,21 @@ public class DefaultPolicySetIDReferenceTest
 		reset(policyResolver);
 
 		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
 		replay(policySet);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		verify(policySet);
 
 		reset(policySet);
 		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
 		replay(policySet);
 		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
 		verify(policySet);
 
 		reset(policySet);
 		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
 		replay(policySet);
 		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
 		verify(policySet);
@@ -106,7 +106,7 @@ public class DefaultPolicySetIDReferenceTest
 		});
 		
 		expect(refPolicySet.getId()).andReturn("testId");
-		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
 		expect(refPolicySet.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
 
 		replay(policyResolver, refPolicySet);
@@ -131,7 +131,7 @@ public class DefaultPolicySetIDReferenceTest
 		});
 		
 		expect(refPolicySet.getId()).andReturn("testId");
-		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
 		expect(refPolicySet.evaluateIfApplicable(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
 
 		replay(policyResolver, refPolicySet);
@@ -156,7 +156,7 @@ public class DefaultPolicySetIDReferenceTest
 		});
 		
 		expect(refPolicySet.getId()).andReturn("testId");
-		expect(refPolicySet.getVersion()).andReturn(Version.valueOf("1.0"));
+		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
 		expect(refPolicySet.isApplicable(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
 
 		replay(policyResolver, refPolicySet);

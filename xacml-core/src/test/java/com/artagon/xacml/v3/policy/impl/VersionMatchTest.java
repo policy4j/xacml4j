@@ -15,20 +15,20 @@ public class VersionMatchTest
 	public void testMatchAnySubsequentialVersions() throws PolicySyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.+");
-		assertTrue(m.match(Version.valueOf("1.2.1")));
-		assertTrue(m.match(Version.valueOf("1.1")));
-		assertFalse(m.match(Version.valueOf("2.1")));
+		assertTrue(m.match(Version.parse("1.2.1")));
+		assertTrue(m.match(Version.parse("1.1")));
+		assertFalse(m.match(Version.parse("2.1")));
 		m = new VersionMatch("1.*.+");
-		assertTrue(m.match(Version.valueOf("1.0")));
+		assertTrue(m.match(Version.parse("1.0")));
 	}
 	
 	@Test
 	public void testMatchAnySingleNumber() throws PolicySyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.1");
-		assertTrue(m.match(Version.valueOf("1.2.1")));
-		assertTrue(m.match(Version.valueOf("1.0.1")));
-		assertFalse(m.match(Version.valueOf("2.1.1")));
+		assertTrue(m.match(Version.parse("1.2.1")));
+		assertTrue(m.match(Version.parse("1.0.1")));
+		assertFalse(m.match(Version.parse("2.1.1")));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

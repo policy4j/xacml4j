@@ -91,7 +91,7 @@ public class Xacml20PolicyMapper
 	public Policy create(PolicyType p) throws PolicySyntaxException
 	{
 		Map<String, VariableDefinition> varDefinitions = getVariables(p);
-		Version version = Version.valueOf(p.getVersion());
+		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
 		PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
 		Target target = create(p.getTarget());
@@ -109,7 +109,7 @@ public class Xacml20PolicyMapper
 	
 	public PolicySet create(PolicySetType p) throws PolicySyntaxException
 	{
-		Version version = Version.valueOf(p.getVersion());
+		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
 		PolicySetDefaults policySetDefaults = createPolicySetDefaults(p.getPolicySetDefaults());
 		Collection<CompositeDecisionRule> policies = getPolicies(p);
@@ -144,17 +144,17 @@ public class Xacml20PolicyMapper
 				IdReferenceType ref = (IdReferenceType)v;
 				if(o.getName().getLocalPart().equals("PolicySetIdReference")){
 					PolicySetIDReference policySetRef = factory.createPolicySetIDReference(
-							ref.getValue(), VersionMatch.valueOf(ref.getVersion()), 
-							VersionMatch.valueOf(ref.getEarliestVersion()), 
-							VersionMatch.valueOf(ref.getLatestVersion()));
+							ref.getValue(), VersionMatch.parse(ref.getVersion()), 
+							VersionMatch.parse(ref.getEarliestVersion()), 
+							VersionMatch.parse(ref.getLatestVersion()));
 					policies.add(policySetRef);
 					continue;
 				}
 				if(o.getName().getLocalPart().equals("PolicyIdReference")){
 					PolicyIDReference policyRef = factory.createPolicyIDReference(
-							ref.getValue(), VersionMatch.valueOf(ref.getVersion()), 
-							VersionMatch.valueOf(ref.getEarliestVersion()), 
-							VersionMatch.valueOf(ref.getLatestVersion()));
+							ref.getValue(), VersionMatch.parse(ref.getVersion()), 
+							VersionMatch.parse(ref.getEarliestVersion()), 
+							VersionMatch.parse(ref.getLatestVersion()));
 					policies.add(policyRef);
 					continue;
 				}

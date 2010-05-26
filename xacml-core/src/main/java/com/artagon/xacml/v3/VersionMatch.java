@@ -77,7 +77,7 @@ public class VersionMatch extends XacmlObject
      * @param pattern a version match constraint
      * @return {@link VersionMatch} instance
      */
-    public static VersionMatch valueOf(String pattern) {
+    public static VersionMatch parse(String pattern) {
         return new VersionMatch(pattern);
     }
 }
