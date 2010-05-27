@@ -19,7 +19,8 @@ final class DefaultMatchAnyOf extends XacmlObject
 {
 	private Collection<MatchAllOf> matches;
 	
-	public DefaultMatchAnyOf(Collection<MatchAllOf> matches){
+	public DefaultMatchAnyOf(Collection<MatchAllOf> matches)
+	{
 		Preconditions.checkNotNull(matches);
 		Preconditions.checkArgument(matches.size() >= 1);
 		this.matches = new LinkedList<MatchAllOf>(matches);

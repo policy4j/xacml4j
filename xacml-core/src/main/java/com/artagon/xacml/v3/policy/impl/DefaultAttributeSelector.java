@@ -29,12 +29,12 @@ final class DefaultAttributeSelector extends
 	}
 	
 	@Override
-	public String getSelect(){
+	public String getPath(){
 		return xpath;
 	}
 	
 	@Override
-	public String getContextAttributeId()
+	public String getContextSelectorId()
 	{
 		return contextAttributeId;
 	}
@@ -54,7 +54,7 @@ final class DefaultAttributeSelector extends
 				&& isMustBePresent()){
 			throw new AttributeReferenceEvaluationException(context, this, 
 				"Selector XPath expression=\"%s\" evaluated " +
-				"to empty node set and mustBePresents=\"true\"", getSelect());
+				"to empty node set and mustBePresents=\"true\"", getPath());
 		}
 		return (bag == null)?getDataType().bagOf().createEmpty():bag;
 	}

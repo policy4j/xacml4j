@@ -103,7 +103,7 @@ public class Xacml20PolicyMapper
 				target,
 				varDefinitions.values(), 
 				p.getRuleCombiningAlgId(), 
-				getRules(p), obligations, 
+				getRules(p, varDefinitions), obligations, 
 				Collections.<AdviceExpression>emptyList());
 	}
 	
@@ -272,40 +272,44 @@ public class Xacml20PolicyMapper
 			return Collections.emptyMap();
 		}
 		Map<String, VariableDefinition> variables = new HashMap<String, VariableDefinition>();
-		for(Object o : objects){
+		for(Object o : objects)
+		{
 			if(!(o instanceof VariableDefinitionType)){
 				continue;
 			}
 			VariableDefinitionType v = (VariableDefinitionType)o;
-			variables.put(v.getVariableId(), new VariableDefinition(v.getVariableId(), 
-					createExpression(v.getExpression())));
+			Expression expression = createExpression(v.getExpression());
+			VariableDefinition varDef = factory.createVariableDefinition(
+					v.getVariableId(), expression);
+			variables.put(v.getVariableId(), varDef); 			
 		}
 		return variables;
 	}
 	
-	private Collection<Rule> getRules(PolicyType p) throws PolicySyntaxException
+	private Collection<Rule> getRules(PolicyType p, Map<String, VariableDefinition> variables) throws PolicySyntaxException
 	{
 		Collection<Object> objects = p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
 		Collection<Rule> rules = new LinkedList<Rule>();
 		for(Object o : objects){
 			if(o instanceof RuleType){
-				rules.add(create((RuleType)o));
+				rules.add(create((RuleType)o, variables));
 			}
 		}
 		return rules;
 	}
 	
-	Rule create(RuleType r) throws PolicySyntaxException
+	Rule create(RuleType r, Map<String, VariableDefinition> variables) throws PolicySyntaxException
 	{
 		Effect effect  = r.getEffect() == EffectType.DENY?Effect.DENY:Effect.PERMIT;
 		return factory.createRule(r.getRuleId(), 
 				r.getDescription(),
 				create(r.getTarget()), 
-				create(r.getCondition()),
+				create(r.getCondition(), variables),
 				effect);
 	}
 	
-	Condition create(ConditionType c) throws PolicySyntaxException
+	Condition create(ConditionType c,
+			Map<String, VariableDefinition> variables) throws PolicySyntaxException
 	{
 		if(c == null){
 			return null;
@@ -364,7 +368,10 @@ public class Xacml20PolicyMapper
 			return createSelector(categoryId, (AttributeSelectorType)exp);
 		}
 		if(exp instanceof VariableReferenceType){
-			throw new PolicySyntaxException("Unsupported");
+			VariableReferenceType varRef = (VariableReferenceType)exp;
+			throw new PolicySyntaxException(
+						"Can not resolved variable=\"%s\"", varRef.getVariableId());
+			
 		}
 		throw new PolicySyntaxException(
 				"Unsupported expression=\"%s\"", expression.getName());

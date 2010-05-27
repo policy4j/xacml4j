@@ -81,16 +81,16 @@ public class DefaultContextHandler implements ContextHandler
 			}
 			
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
-					context.getXPathVersion(), ref.getSelect(), content);
+					context.getXPathVersion(), ref.getPath(), content);
 			if(nodeSet == null || 
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
-						ref.getSelect(), ref.getCategory());
+						ref.getPath(), ref.getCategory());
 				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
-						new Object[]{nodeSet.getLength(), ref.getSelect(), ref.getCategory()});
+						new Object[]{nodeSet.getLength(), ref.getPath(), ref.getCategory()});
 			}
 			return toBag(context, ref, nodeSet);
 		}

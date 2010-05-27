@@ -249,6 +249,12 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	{
 		return new DefaultVariableReference(varDef);
 	}
+	
+	public VariableDefinition createVariableDefinition(
+			String variableId, Expression expression) throws PolicySyntaxException
+	{
+		return new DefaultVariableDefinition(variableId, expression);
+	}
 
 	@Override
 	public PolicyDefaults createPolicyDefaults(Object... objects)

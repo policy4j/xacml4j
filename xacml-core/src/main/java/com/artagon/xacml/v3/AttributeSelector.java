@@ -12,7 +12,18 @@ public interface AttributeSelector extends AttributeReference
 	 * 
 	 * @return an XPath expression
 	 */
-	String getSelect();
+	String getPath();
 	
-	String getContextAttributeId();
+	/**
+	 * This attribute id refers to the attribute (by its AttributeId) 
+	 * in the request context in the category given by the Category attribute.
+	 * The referenced attribute MUST have data type 
+	 * urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression, 
+	 * and must select a single node in the content element.  
+	 * The XPathCategory attribute of the referenced attribute MUST 
+	 * be equal to the Category attribute of the attribute selector
+	 * 
+	 * @return
+	 */
+	String getContextSelectorId();
 }

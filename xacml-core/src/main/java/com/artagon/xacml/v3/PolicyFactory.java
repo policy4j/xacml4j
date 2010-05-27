@@ -89,6 +89,9 @@ public interface PolicyFactory
 	VariableReference createVariableReference(VariableDefinition varDef) 
 		throws PolicySyntaxException;
 	
+	VariableDefinition createVariableDefinition(
+			String variableId, Expression expression) 
+		throws PolicySyntaxException;
 	/**
 	 * 
 	 * @param category
