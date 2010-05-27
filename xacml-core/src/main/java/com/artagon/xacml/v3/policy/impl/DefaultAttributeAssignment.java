@@ -25,12 +25,14 @@ public class DefaultAttributeAssignment extends XacmlObject implements Attribute
 	 * @exception PolicySyntaxException if attribute assignment can not
 	 * be created with a given values
 	 */
-	public DefaultAttributeAssignment(String attributeId, 
-			AttributeCategoryId category, String issuer, AttributeValue value)
+	public DefaultAttributeAssignment(
+			String attributeId, 
+			AttributeCategoryId category, 
+			String issuer, 
+			AttributeValue value)
 		throws PolicySyntaxException
 	{
 		checkNotNull(attributeId, "Attribute id can't be null");
-		checkNotNull(category, "Attribute category can't be null");
 		checkNotNull(value, "Attribute value can't be null");
 		this.attributeId = attributeId;
 		this.category = category;

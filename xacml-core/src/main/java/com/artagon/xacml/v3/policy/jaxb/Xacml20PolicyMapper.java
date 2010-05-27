@@ -295,7 +295,7 @@ public class Xacml20PolicyMapper
 		return rules;
 	}
 	
-	private Rule create(RuleType r) throws PolicySyntaxException
+	Rule create(RuleType r) throws PolicySyntaxException
 	{
 		Effect effect  = r.getEffect() == EffectType.DENY?Effect.DENY:Effect.PERMIT;
 		return factory.createRule(r.getRuleId(), 
@@ -305,7 +305,7 @@ public class Xacml20PolicyMapper
 				effect);
 	}
 	
-	private Condition create(ConditionType c) throws PolicySyntaxException
+	Condition create(ConditionType c) throws PolicySyntaxException
 	{
 		if(c == null){
 			return null;
@@ -314,7 +314,7 @@ public class Xacml20PolicyMapper
 		return factory.createCondition(createExpression(expression));
 	}
 	
-	private Collection<ObligationExpression> getObligations(ObligationsType obligations) 
+	Collection<ObligationExpression> getObligations(ObligationsType obligations) 
 		throws PolicySyntaxException
 	{
 		if(obligations == null){
@@ -329,9 +329,16 @@ public class Xacml20PolicyMapper
 		return o;
 	}
 	
-	private Collection<AttributeAssigmentExpression> createAttributeAssigments(Collection<AttributeAssignmentType> exp)
+	Collection<AttributeAssigmentExpression> createAttributeAssigments(
+			Collection<AttributeAssignmentType> exp) 
+			throws PolicySyntaxException
 	{
-		return Collections.emptyList();
+		Collection<AttributeAssigmentExpression> expressions = new LinkedList<AttributeAssigmentExpression>();
+		for(AttributeAssignmentType attr : exp){
+			AttributeValue value = createValue(attr.getAttributeId(), attr.getContent());
+			expressions.add(factory.createAttributeAssigmentExpression(attr.getAttributeId(), value));
+		}
+		return expressions;
 	}
 	
 	Expression createExpression(JAXBElement<?> expression) 
@@ -463,12 +470,17 @@ public class Xacml20PolicyMapper
 	AttributeValue createValue(org.oasis.xacml.v20.policy.AttributeValueType value) 
 		throws PolicySyntaxException
 	{
-		List<Object> content = value.getContent();
+		return createValue(value.getDataType(), value.getContent());
+	}
+	
+	AttributeValue createValue(String dataType, List<Object> content) 
+		throws PolicySyntaxException 
+	{
 		if(content == null || 
 				content.isEmpty()){
 			throw new PolicySyntaxException("Attribute does not have content");
 		}
-		return factory.createAttributeValue(value.getDataType(), Iterables.getOnlyElement(content));
+		return factory.createAttributeValue(dataType, Iterables.getOnlyElement(content));
 	}
 	
 	AttributeSelector createSelector(AttributeCategoryId categoryId, 

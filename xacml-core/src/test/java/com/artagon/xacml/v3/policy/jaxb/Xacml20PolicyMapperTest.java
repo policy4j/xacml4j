@@ -23,11 +23,9 @@ import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.impl.DefaultContextFactory;
 import com.artagon.xacml.v3.policy.impl.DefaultPolicyFactory;
 import com.artagon.xacml.v3.policy.impl.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
@@ -36,7 +34,6 @@ public class Xacml20PolicyMapperTest
 {
 	private static JAXBContext context;
 	private Xacml20PolicyMapper mapper;
-	private Xacml20RequestMapper contextMapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -54,7 +51,6 @@ public class Xacml20PolicyMapperTest
 		PolicyFactory policyFactory = new DefaultPolicyFactory(
 				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
 		mapper = new Xacml20PolicyMapper(policyFactory);
-		this.contextMapper = new Xacml20RequestMapper(new DefaultContextFactory());
 	}
 	
 	@SuppressWarnings({"unchecked" })
@@ -67,22 +63,11 @@ public class Xacml20PolicyMapperTest
 		return policy.getValue();
 	}
 	
-	@SuppressWarnings({"unchecked" })
-	private static RequestType getRequest(String name) throws Exception
-	{
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("oasis-xacml20-compat-test/" + name);
-		assertNotNull(stream);
-		JAXBElement<RequestType> request = (JAXBElement<RequestType>)context.createUnmarshaller().unmarshal(stream);
-		assertNotNull(request);
-		return request.getValue();
-	}
 	
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
 		PolicyType policyF005 = getPolicy("IIIF005Policy.xml");
-		RequestType requestF005 = getPolicy("IIIF005Request.xml");
-		Request request = contextMapper.create(requestF005);
 		Policy p0 = mapper.create(policyF005);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());

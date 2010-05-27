@@ -154,6 +154,20 @@ public interface PolicyFactory
 			String issuer) 
 		throws PolicySyntaxException;
 	
+	
+	/**
+	 * Creates {@link AttributeAssigmentExpression} instance
+	 * for a given attribute id
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param expression an attribute expression
+	 * @return {@link AttributeAssigmentExpression}
+	 * @throws PolicySyntaxException
+	 */
+	AttributeAssigmentExpression createAttributeAssigmentExpression(
+			String attributeId, 
+			Expression expression) throws PolicySyntaxException;
+	
 	/**
 	 * Creates {@link AdviceExpression} instance
 	 * for given advice id, effect and attribute

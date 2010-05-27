@@ -30,10 +30,6 @@ public enum DataTypes
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#dayTimeDuration</b> */
 	DAYTIMEDURATION(new DayTimeDurationTypeImpl("http://www.w3.org/2001/XMLSchema#dayTimeDuration")),
 	
-	@Deprecated
-	/** XACML DataType:  <b>http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration</b> */
-	DAYTIMEDURATION_XACML2(new DayTimeDurationTypeImpl("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration")),
-
 	DNSNAME(new DNSNameTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:dnsName")),
 
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#double</b> */
@@ -63,6 +59,10 @@ public enum DataTypes
 
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b> */
 	YEARMONTHDURATION(new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration")),
+	
+	@Deprecated
+	/** XACML DataType:  <b>http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration</b> */
+	DAYTIMEDURATION_XACML2(new DayTimeDurationTypeImpl("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration")),
 	
 	@Deprecated
 	/** XACML DataType:  <b>http://www.w3.org/TR/2002/WD-xquery-operators- 20020816#yearMonthDuration</b> */

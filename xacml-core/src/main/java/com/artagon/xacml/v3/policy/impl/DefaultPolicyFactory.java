@@ -184,6 +184,13 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 	
 	@Override
+	public AttributeAssigmentExpression createAttributeAssigmentExpression(
+			String attributeId, 
+			Expression expression) throws PolicySyntaxException {
+		return createAttributeAssigmentExpression(attributeId, expression, null, null);
+	}
+	
+	@Override
 	public AdviceExpression createAdviceExpression(String id, Effect appliesTo,
 			Collection<AttributeAssigmentExpression> attributeAssigments)
 			throws PolicySyntaxException {
