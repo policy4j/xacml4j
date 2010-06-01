@@ -14,7 +14,6 @@ import javax.xml.bind.JAXBException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
@@ -39,7 +38,7 @@ public class Xacml20PolicyMapperTest
 	public static void init_static() throws Exception
 	{
 		try{
-			context = JAXBContext.newInstance("org.oasis.xacml.v20.policy:org.oasis.xacml.v20.context");
+			context = JAXBContext.newInstance("org.oasis.xacml.v20.policy");
 		}catch(JAXBException e){
 			System.err.println(e.getMessage());
 		}
@@ -56,8 +55,9 @@ public class Xacml20PolicyMapperTest
 	@SuppressWarnings({"unchecked" })
 	private static <T> T getPolicy(String name) throws Exception
 	{
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("oasis-xacml20-compat-test/" + name);
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
+		assertNotNull(context);
 		JAXBElement<T> policy = (JAXBElement<T>)context.createUnmarshaller().unmarshal(stream);
 		assertNotNull(policy);
 		return policy.getValue();
@@ -67,7 +67,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
-		PolicyType policyF005 = getPolicy("IIIF005Policy.xml");
+		PolicyType policyF005 = getPolicy("oasis-xacml20-compat-test/IIIF005Policy.xml");
 		Policy p0 = mapper.create(policyF005);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());
@@ -95,7 +95,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testPolicyIIIF006Mapping() throws Exception
 	{
-		PolicySetType policyF006 = getPolicy("IIIF006Policy.xml");
+		PolicySetType policyF006 = getPolicy("oasis-xacml20-compat-test/IIIF006Policy.xml");
 		PolicySet p0 = mapper.create(policyF006);
 		assertNotNull(p0);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet", p0.getId());
@@ -104,5 +104,12 @@ public class Xacml20PolicyMapperTest
 		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
 		assertNotNull(p0.getTarget());
 		assertEquals(1, p0.getDecisions().size());
+	}
+	
+	@Test
+	public void testFeatures001Policy() throws Exception
+	{
+		PolicyType policyF005 = getPolicy("features/001Policy.xml");
+		Policy p0 = mapper.create(policyF005);
 	}
 }

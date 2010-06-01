@@ -5,6 +5,7 @@ import com.artagon.xacml.v3.AttributeReference;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.ValueType;
+import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 /**
@@ -13,7 +14,8 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseAttributeReference implements AttributeReference
+abstract class BaseAttributeReference extends XacmlObject 
+	implements AttributeReference
 {
 	private boolean mustBePresent;
 	private AttributeCategoryId category;

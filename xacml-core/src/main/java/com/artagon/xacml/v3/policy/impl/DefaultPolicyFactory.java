@@ -253,6 +253,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public VariableDefinition createVariableDefinition(
 			String variableId, Expression expression) throws PolicySyntaxException
 	{
+		if(variableId == null || 
+				expression == null){
+			throw new PolicySyntaxException("Variable identifier " +
+					"or expression can not be null");
+		}
 		return new DefaultVariableDefinition(variableId, expression);
 	}
 

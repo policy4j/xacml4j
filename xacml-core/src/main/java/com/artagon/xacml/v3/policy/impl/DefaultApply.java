@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.policy.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.Apply;
@@ -50,7 +51,7 @@ final class DefaultApply extends XacmlObject implements Apply
 	public DefaultApply(FunctionSpec spec, Collection<Expression> arguments) 
 		throws PolicySyntaxException
 	{
-		this(spec, (Expression[])arguments.toArray());
+		this(spec, arguments.toArray(new Expression[0]));
 	}
 
 	
