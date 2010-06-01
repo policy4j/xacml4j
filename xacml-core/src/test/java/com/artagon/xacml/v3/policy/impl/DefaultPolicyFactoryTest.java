@@ -5,8 +5,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-
-import java.util.Collection;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,6 @@ import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.google.common.collect.ImmutableList;
 
 public class DefaultPolicyFactoryTest 
 {
@@ -58,12 +56,13 @@ public class DefaultPolicyFactoryTest
 	@Test
 	public void testCreateApply() throws PolicySyntaxException
 	{
-		Collection<Expression> arguments = ImmutableList.<Expression>of(DataTypes.STRING.create("v0"), DataTypes.STRING.create("v1"));
+		Expression[] arguments = {DataTypes.STRING.create("v0"), DataTypes.STRING.create("v1")};
 		FunctionSpec spec = createStrictMock(FunctionSpec.class);
 		expect(functionRegistry.getFunction("testId")).andReturn(spec);
-		expect(spec.getNumberOfParams()).andReturn(2);
+		spec.validateParametersAndThrow(arguments);
 		replay(functionRegistry, spec);
 		Apply apply = f.createApply("testId", arguments);
+		assertNotNull(apply);
 		verify(functionRegistry, spec);
 	}
 }

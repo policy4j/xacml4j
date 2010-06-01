@@ -82,6 +82,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	{
 		return new DefaultApply(createFunction(functionId), arguments);
 	}
+	
+	public Apply createApply(String functionId, 
+			Expression ...arguments) throws PolicySyntaxException{
+		return new DefaultApply(createFunction(functionId), arguments);
+	}
 
 	@Override
 	public Match createMatch(String functionId, AttributeValue value, AttributeReference reference)

@@ -44,6 +44,9 @@ public interface PolicyFactory
 	Apply createApply(String functionId, 
 			Collection<Expression> arguments) throws PolicySyntaxException;
 	
+	Apply createApply(String functionId, 
+			Expression ...arguments) throws PolicySyntaxException;
+	
 	/**
 	 * Creates {@link Match} from a given
 	 * function, attribute and attribute reference
