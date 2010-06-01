@@ -22,6 +22,7 @@ import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
@@ -107,9 +108,42 @@ public class Xacml20PolicyMapperTest
 	}
 	
 	@Test
+	public void testPolicyIIIF007Mapping() throws Exception
+	{
+		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIIF007Policy.xml");
+		Policy p = mapper.create(policy);
+		assertNotNull(p);
+		
+	}
+	
+	@Test
 	public void testFeatures001Policy() throws Exception
 	{
-		PolicyType policyF005 = getPolicy("features/001Policy.xml");
-		Policy p0 = mapper.create(policyF005);
+		PolicyType policy001 = getPolicy("features/001Policy.xml");
+		Policy p001 = mapper.create(policy001);
+	}
+	
+	@Test(expected=PolicySyntaxException.class)
+	public void testFeatures002Policy() throws Exception
+	{
+		PolicyType policy002 = getPolicy("features/002Policy.xml");
+		Policy p002 = mapper.create(policy002);
+	}
+
+	@Test
+	public void testXpathTransformation() throws Exception
+	{
+		assertEquals("//md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("//xacml-context:Request/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		assertEquals("/md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("/xacml-context:Request/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		assertEquals("//md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		assertEquals("/md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		assertEquals("//md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("//xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		assertEquals("/md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		
+		assertEquals("//md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("//md:record/md:patient/md:patient-number/text()"));
+		assertEquals("/md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("/md:record/md:patient/md:patient-number/text()"));
+		
+		assertEquals("./md:record/md:patient/md:patient-number/text()", Xacml20PolicyMapper.transform20PathTo30("./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
+		
 	}
 }

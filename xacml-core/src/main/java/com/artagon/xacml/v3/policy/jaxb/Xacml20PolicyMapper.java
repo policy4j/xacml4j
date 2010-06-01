@@ -79,6 +79,10 @@ public class Xacml20PolicyMapper
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20PolicyMapper.class);
 	
+	private final static String REQUEST_ELEMENT_NAME = "Request";
+	private final static String RESOURCE_ELEMENT_NAME = "Resource";
+	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
+	
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 
 	static {
@@ -267,26 +271,31 @@ public class Xacml20PolicyMapper
 	private VariableManager<JAXBElement<?>> getVariables(PolicyType p)
 			throws PolicySyntaxException 
 	{
-		List<Object> objects = p
-				.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
-		if (objects == null || objects.isEmpty()) {
-			return new VariableManager<JAXBElement<?>>(Collections.<String, JAXBElement<?>>emptyMap());
-		}
-		Map<String, JAXBElement<?>> expressions = new HashMap<String, JAXBElement<?>>();
-		for (Object o : objects) {
-			if (!(o instanceof VariableDefinitionType)) {
-				continue;
-			}	
-			VariableDefinitionType varDef = (VariableDefinitionType)o;
-			if(expressions.containsKey(varDef.getVariableId())){
-				throw new PolicySyntaxException("Policy contains a variableId=\"%s\" is alerady " +
-						"used for previously defined variable", varDef.getVariableId());
+		try
+		{
+			List<Object> objects = p
+					.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
+			if (objects == null || objects.isEmpty()) {
+				return new VariableManager<JAXBElement<?>>(Collections.<String, JAXBElement<?>>emptyMap());
 			}
-			expressions.put(varDef.getVariableId(), varDef.getExpression());
+			Map<String, JAXBElement<?>> expressions = new HashMap<String, JAXBElement<?>>();
+			for (Object o : objects) {
+				if (!(o instanceof VariableDefinitionType)) {
+					continue;
+				}	
+				VariableDefinitionType varDef = (VariableDefinitionType)o;
+				if(expressions.containsKey(varDef.getVariableId())){
+					throw new PolicySyntaxException("Policy contains a variableId=\"%s\" is alerady " +
+							"used for previously defined variable", varDef.getVariableId());
+				}
+				expressions.put(varDef.getVariableId(), varDef.getExpression());
+			}
+			VariableManager<JAXBElement<?>> manager = new VariableManager<JAXBElement<?>>(expressions);
+			parseVariables(manager);
+			return manager;
+		}catch(IllegalArgumentException e){
+			throw new PolicySyntaxException(e);
 		}
-		VariableManager<JAXBElement<?>> manager = new VariableManager<JAXBElement<?>>(expressions);
-		parseVariables(manager);
-		return manager;
 	}
 
 	
@@ -570,7 +579,8 @@ public class Xacml20PolicyMapper
 	}
 
 	AttributeSelector createSelector(AttributeCategoryId categoryId,
-			AttributeSelectorType selector) throws PolicySyntaxException {
+			AttributeSelectorType selector) throws PolicySyntaxException 
+	{
 		AttributeValueType dataType = DataTypes.getByTypeId(selector
 				.getDataType());
 		if (dataType == null) {
@@ -578,6 +588,7 @@ public class Xacml20PolicyMapper
 					.getDataType());
 		}
 		String xpath = transformSelectorXPath(selector);
+		log.debug("Processing selector with xpath=\"{}\", transformed xpath=\"{}\"", selector.getRequestContextPath(), xpath);
 		return factory.createAttributeSelector(categoryId, xpath, dataType,
 				selector.isMustBePresent());
 	}
@@ -586,8 +597,47 @@ public class Xacml20PolicyMapper
 		return AttributeCategoryId.RESOURCE;
 	}
 
-	String transformSelectorXPath(AttributeSelectorType selector) {
-		return selector.getRequestContextPath();
+	String transformSelectorXPath(AttributeSelectorType selector) throws PolicySyntaxException
+	{
+		return transform20PathTo30(selector.getRequestContextPath());
+	}
+	
+	public static String transform20PathTo30(String xpath) throws PolicySyntaxException
+	{
+		StringBuffer buf = new StringBuffer(xpath);
+		int firstIndex = xpath.indexOf(REQUEST_ELEMENT_NAME);
+		if(firstIndex == -1){
+			firstIndex = xpath.indexOf(RESOURCE_ELEMENT_NAME);
+			if(firstIndex == -1){
+				firstIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
+				if(firstIndex == -1){
+					return xpath;
+				}
+			}
+		}
+		// found namespace prefix
+		if(firstIndex > 0 && 
+				buf.charAt(firstIndex - 1) == ':'){
+			int index = xpath.indexOf("/");
+			if(index == -1){
+				firstIndex = 0;
+			}
+			else
+			{
+				firstIndex = index;
+				while(xpath.charAt(index++) == '/'){
+					firstIndex++;
+				}
+			}
+		}
+		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
+		if(lastIndex == -1){
+			throw new PolicySyntaxException("Invalid XACML 2.0 xpath=\"%s\" " +
+					"expression, \"ResourceContent\" is missing in the path", xpath);
+		}
+		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
+		buf.delete(firstIndex, lastIndex + 1);
+		return buf.toString();
 	}
 
 	/**
