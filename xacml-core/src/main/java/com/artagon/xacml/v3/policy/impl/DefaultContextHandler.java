@@ -12,11 +12,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+import com.artagon.xacml.v3.AttributeCallback;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.ContextHandler;
@@ -168,8 +170,27 @@ public class DefaultContextHandler implements ContextHandler
 	 * @return an empty bag
 	 */
 	@SuppressWarnings("unchecked")
-	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeSelector ref)
-	{
+	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeSelector ref){
 		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
+	}
+	
+	class DefaultRequestAttributesCallback implements AttributeCallback
+	{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
+				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
+			Collection<Attributes> attributes = request.getAttributes(category);
+			Attributes  found = Iterables.getOnlyElement(attributes);
+			return (BagOfAttributeValues<AV>)dataType.bagOf().create(found.getAttributeValues(attributeId, issuer, dataType));
+		}
+
+		@Override
+		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
+				AttributeCategoryId category, String attributeId, AttributeValueType dataType) {
+			return getAttribute(category, attributeId, dataType, null);
+		}
+		
 	}
 }

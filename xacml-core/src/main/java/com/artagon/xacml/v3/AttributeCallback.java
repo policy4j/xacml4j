@@ -1,10 +1,7 @@
-package com.artagon.xacml.v3.policy.spi;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.BagOfAttributeValues;
 
-public interface RequestAttributeCallback 
+public interface AttributeCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context
@@ -17,7 +14,7 @@ public interface RequestAttributeCallback
 	 * if no matching attribute exist in the request context
 	 */
 	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
-			AttributeCategoryId category, String attributeId, String issuer);
+			AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer);
 	
 	/**
 	 * Method assumes that issuer is not specified for an
@@ -26,5 +23,5 @@ public interface RequestAttributeCallback
 	 * @see {{@link #getAttribute(AttributeCategoryId, String, String)}
 	 */
 	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
-			AttributeCategoryId category, String attributeId);
+			AttributeCategoryId category, String attributeId, AttributeValueType dataType);
 }
