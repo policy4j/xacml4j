@@ -30,7 +30,7 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.impl.DefaultAttribute;
 import com.artagon.xacml.v3.impl.DefaultAttributes;
-import com.artagon.xacml.v3.impl.DefaultContextFactory;
+import com.artagon.xacml.v3.impl.DefaultRequestFactory;
 import com.artagon.xacml.v3.impl.DefaultRequest;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
@@ -44,9 +44,9 @@ public class MultipleRequestHandlerTest
 	@Before
 	public void init()
 	{
-		this.contextFactory = new DefaultContextFactory();
+		this.contextFactory = new DefaultRequestFactory();
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleRequestsHandler(new DefaultContextFactory());
+		this.profile = new MultipleRequestsHandler(new DefaultRequestFactory());
 	}
 	
 	@Test

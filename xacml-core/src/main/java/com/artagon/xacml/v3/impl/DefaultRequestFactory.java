@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public final class DefaultContextFactory implements RequestFactory
+public final class DefaultRequestFactory implements RequestFactory
 {
 	
 	@Override
