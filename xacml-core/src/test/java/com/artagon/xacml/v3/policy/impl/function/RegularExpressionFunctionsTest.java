@@ -2,6 +2,10 @@ package com.artagon.xacml.v3.policy.impl.function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -27,6 +31,22 @@ public class RegularExpressionFunctionsTest
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match"));
 		
+	}
+	
+	// converts incorrectly to character class subtraction
+    // current parsing is based on substituting -[ with the &&[^
+    // without looking at the context where -[ is used
+    // in order to handle character class subtraction, we
+    // replace all instances of "-[" with "&&[^" in the reg exp
+    // SEE: http://sourceforge.net/mailarchive/forum.php?thread_name=4C055316.3080101%40stanford.edu&forum_name=sunxacml-discuss
+	@Test
+	public void testXacmlRegExptoJERegExpWithCharacterSubstraction()
+	{
+		// FIXME:
+		// converts incorrectly to class subtraction
+		// current parsing is base on substituting -[ with the &&[^
+		// without looking at the context where -[ is useds
+		assertEquals("[0-9]{3}-[0-9]{3}-[0-9]{4}", RegularExpressionFunctions.covertXacmlToJavaSyntax("[0-9]{3}-[0-9]{3}-[0-9]{4}"));
 	}
 	
 	@Test

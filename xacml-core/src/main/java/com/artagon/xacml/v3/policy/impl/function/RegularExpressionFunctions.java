@@ -160,8 +160,13 @@ public class RegularExpressionFunctions
 	           idx = buf.indexOf("\\P{Is", idx);
 	       }
 	       
+	       // FIXME:
+	       // converts incorrectly to class subtraction
+	       // current parsing is base on substituting -[ with the &&[^
+	       // without looking at the context where -[ is useds
 	       // in order to handle character class subtraction, we
 	       // replace all instances of "-[" with "&&[^" in the reg exp
+	       // SEE: http://sourceforge.net/mailarchive/forum.php?thread_name=4C055316.3080101%40stanford.edu&forum_name=sunxacml-discuss
 
 	       idx = -1;
 	       idx = buf.indexOf("-[", 0);
