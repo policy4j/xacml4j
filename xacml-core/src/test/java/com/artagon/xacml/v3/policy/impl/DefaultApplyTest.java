@@ -38,7 +38,7 @@ public class DefaultApplyTest
 	public void testApplyEvaluationWithValidFunctionAndValidParameters() throws XacmlException
 	{
 		Expression[] params = {DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L)};
-		function.validateParameters(params);
+		function.validateParametersAndThrow(params);
 		replay(function);
 		Apply apply = new DefaultApply(function, params);
 		verify(function);
@@ -54,7 +54,7 @@ public class DefaultApplyTest
 	@Test(expected=PolicySyntaxException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
-		function.validateParameters(DataTypes.INTEGER.create(10L));
+		function.validateParametersAndThrow(DataTypes.INTEGER.create(10L));
 		expectLastCall().andThrow(new PolicySyntaxException("Bad"));
 		replay(function);
 		new DefaultApply(function, DataTypes.INTEGER.create(10L));
@@ -64,7 +64,7 @@ public class DefaultApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
-		function.validateParameters(DataTypes.INTEGER.create(10L));
+		function.validateParametersAndThrow(DataTypes.INTEGER.create(10L));
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
@@ -76,7 +76,7 @@ public class DefaultApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionParamValidationFails() throws XacmlException
 	{
-		function.validateParameters(DataTypes.INTEGER.create(10L));
+		function.validateParametersAndThrow(DataTypes.INTEGER.create(10L));
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
@@ -88,8 +88,9 @@ public class DefaultApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{
-		function.validateParameters(DataTypes.INTEGER.create(10L));
-		expect(function.invoke(context, DataTypes.INTEGER.create(10L))).andReturn(DataTypes.BOOLEAN.create(Boolean.FALSE));
+		function.validateParametersAndThrow(DataTypes.INTEGER.create(10L));
+		expect(function.invoke(context, DataTypes.INTEGER.create(10L))).
+		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);
 		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
