@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.Apply;
@@ -55,9 +54,7 @@ final class DefaultApply extends XacmlObject implements Apply
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.Apply#getFunctionId()
-	 */
+	@Override
 	public String getFunctionId(){
 		return spec.getId();
 	}
@@ -67,9 +64,7 @@ final class DefaultApply extends XacmlObject implements Apply
 		return spec.resolveReturnType(arguments);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.artagon.xacml.v3.policy.Apply#evaluate(com.artagon.xacml.v3.policy.EvaluationContext)
-	 */
+	@Override
 	public Value evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{

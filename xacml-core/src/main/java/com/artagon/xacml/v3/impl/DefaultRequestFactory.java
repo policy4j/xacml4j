@@ -24,7 +24,6 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public final class DefaultRequestFactory implements RequestFactory
 {
-	
 	@Override
 	public Result createResult(Decision decision, 
 			Collection<Advice> advice,
@@ -40,10 +39,27 @@ public final class DefaultRequestFactory implements RequestFactory
 			Collection<AttributeValue> values)
 		throws RequestSyntaxException
 	{
-		return new DefaultAttribute(attributeId, values);
+		return createAttribute(attributeId, null, false, values);
 	}
 	
 	
+
+	@Override
+	public Attribute createAttribute(String attributeId,
+			boolean includeInResult, Collection<AttributeValue> values)
+			throws RequestSyntaxException 
+	{
+		return createAttribute(attributeId, null, includeInResult, values);
+	}
+	
+	@Override
+	public Attribute createAttribute(
+			String attributeId, String issuer, 
+			Collection<AttributeValue> values)
+			throws RequestSyntaxException 
+	{
+		return createAttribute(attributeId, issuer, false, values);
+	}
 
 	@Override
 	public Attribute createAttribute(
@@ -56,15 +72,6 @@ public final class DefaultRequestFactory implements RequestFactory
 		return new DefaultAttribute(attributeId, issuer, includeInResult, values);
 	}
 	
-	@Override
-	public Attribute createAttribute(
-			String attributeId, 
-			String issuer,
-			Collection<AttributeValue> values) 
-		throws RequestSyntaxException
-	{
-		return createAttribute(attributeId, issuer, false, values);
-	}
 	
 	@Override
 	public AttributeValue createValue(String typeId, Object value) 

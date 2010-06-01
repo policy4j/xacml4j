@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.jaxb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
@@ -77,6 +78,7 @@ public class Xacml20RequestMapperTest
 		assertNotNull(resource.getContent());
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
+		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(DataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
@@ -118,7 +120,9 @@ public class Xacml20RequestMapperTest
 		assertNotNull(resource);
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
+		
 		assertNotNull(resourceId);
+		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(DataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
@@ -147,6 +151,7 @@ public class Xacml20RequestMapperTest
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
+		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(DataTypes.ANYURI.create("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		Attribute simpleFileName = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:simple-file-name"));

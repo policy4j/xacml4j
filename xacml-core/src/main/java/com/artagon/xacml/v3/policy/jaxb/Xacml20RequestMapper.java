@@ -28,6 +28,8 @@ import com.google.common.collect.Iterables;
 
 public class Xacml20RequestMapper
 {
+	private final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+	
 	private RequestFactory contextFactory;
 	
 	public Xacml20RequestMapper(RequestFactory factory){
@@ -112,7 +114,9 @@ public class Xacml20RequestMapper
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(createValue(a.getDataType(), v));
 		}
-		return contextFactory.createAttribute(a.getAttributeId(), a.getIssuer(), values);
+		String attributeId = a.getAttributeId();
+		return contextFactory.createAttribute(a.getAttributeId(), a.getIssuer(), 
+				attributeId.equals(RESOURCE_ID_ATTRIBUTE), values);
 	}
 	
 	/**

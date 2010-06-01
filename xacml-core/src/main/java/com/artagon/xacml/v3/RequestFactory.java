@@ -48,12 +48,26 @@ public interface RequestFactory
 	AttributeValue createValue(String dataTypeId, Object value) 
 		throws RequestSyntaxException;
 	
-	Attribute createAttribute(String attributeId, 
-			String issuer, boolean includeInResult, Collection<AttributeValue> values) 
+	Attribute createAttribute(
+			String attributeId, 
+			String issuer, 
+			boolean includeInResult, 
+			Collection<AttributeValue> values) 
 		throws RequestSyntaxException;
 	
-	Attribute createAttribute(String attributeId, 
-			String issuer, Collection<AttributeValue> values) 
+	Attribute createAttribute(
+			String attributeId, 
+			String issuer, 
+			Collection<AttributeValue> values) 
+		throws RequestSyntaxException;
+	
+	Attribute createAttribute(
+			String attributeId, 
+			boolean includeInResult,
+			Collection<AttributeValue> values) 
+		throws RequestSyntaxException;
+	
+	Attribute createAttribute(String attributeId, Collection<AttributeValue> values) 
 		throws RequestSyntaxException;
 	
 	
@@ -69,11 +83,7 @@ public interface RequestFactory
 			Node content, 
 			Collection<Attribute> attributes) 
 		throws RequestSyntaxException;
-	
-	Attribute createAttribute(String attributeId, 
-			Collection<AttributeValue> values) 
-		throws RequestSyntaxException;
-	
+		
 	RequestReference createRequestReference(
 			Collection<AttributesReference> references) 
 		throws RequestSyntaxException;
