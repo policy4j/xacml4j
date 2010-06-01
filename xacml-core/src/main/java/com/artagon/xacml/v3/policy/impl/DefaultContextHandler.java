@@ -48,7 +48,8 @@ public class DefaultContextHandler implements ContextHandler
 	@Override
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) {
 		Attributes attr =   Iterables.getOnlyElement(request.getAttributes(category));
-		return (attr == null)?handleGetContent(category):attr.getContent();
+		return ((attr == null) || (attr.getContent() == null))?
+				handleGetContent(category, request):attr.getContent();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -142,7 +143,7 @@ public class DefaultContextHandler implements ContextHandler
 	/**
 	 * A default implementation always returns <code>null</code>
 	 */
-	protected  Node handleGetContent(AttributeCategoryId category){
+	protected  Node handleGetContent(AttributeCategoryId category, Request request){
 		return null;
 	}
 	

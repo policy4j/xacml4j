@@ -18,14 +18,23 @@ final class DefaultAttributeSelector extends
 	private String xpath;
 	private String contextAttributeId;
 	
-	public DefaultAttributeSelector(
+	DefaultAttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
+			String contextAttributeId,
 			AttributeValueType dataType, 
 					boolean mustBePresent){
 		super(category, dataType, mustBePresent);
 		Preconditions.checkNotNull(xpath);
 		this.xpath = xpath;
+		this.contextAttributeId = contextAttributeId;
+	}
+	
+	DefaultAttributeSelector(
+			AttributeCategoryId category, 
+			String xpath, 
+			AttributeValueType dataType, boolean mustBePresent){
+		this(category, xpath, null, dataType, mustBePresent);
 	}
 	
 	@Override
@@ -50,7 +59,8 @@ final class DefaultAttributeSelector extends
 			throws EvaluationException 
 	{ 
 		BagOfAttributeValues<AttributeValue> bag =  context.resolve(this);
-		if((bag == null || bag.isEmpty()) 
+		if((bag == null || 
+				bag.isEmpty()) 
 				&& isMustBePresent()){
 			throw new AttributeReferenceEvaluationException(context, this, 
 				"Selector XPath expression=\"%s\" evaluated " +
