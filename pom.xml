@@ -17,7 +17,7 @@
 		<slf4j.version>1.4.1</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
 		<junit.version>4.4</junit.version>
-		<easymock.version>2.5.2</easymock.version>
+		<easymock.version>3.0</easymock.version>
 		<xmlunit.version>1.3</xmlunit.version>
 		<guava.version>r03</guava.version>
 	</properties>
