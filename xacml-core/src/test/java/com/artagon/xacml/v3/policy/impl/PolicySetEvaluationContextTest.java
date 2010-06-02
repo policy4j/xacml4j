@@ -53,9 +53,9 @@ public class PolicySetEvaluationContextTest
 	{
 		expect(policySet.getDefaults()).andReturn(defaults);
 		expect(defaults.getXPathVersion()).andReturn(XPathVersion.XPATH2);
-		replay(policySet, resolver, policyResolver);
+		replay(policySet, defaults);
 		assertEquals(XPathVersion.XPATH2, context.getXPathVersion());
-		verify(policySet, resolver, policyResolver);
+		verify(policySet, defaults);
 	}
 	
 	@Test

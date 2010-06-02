@@ -30,9 +30,10 @@ final class PolicySetEvaluationContext extends BaseEvaluationContext
 	@Override
 	public XPathVersion getXPathVersion() {
 		PolicySetDefaults defaults = policySet.getDefaults();
-		return (defaults == null)?xpathVersion:((
-				defaults.getXPathVersion() == null)?
-						xpathVersion:defaults.getXPathVersion());
+		if (defaults == null) {
+			return xpathVersion;
+		}
+		XPathVersion version = defaults.getXPathVersion();
+		return (version == null) ? xpathVersion : version;
 	}
 }
-
