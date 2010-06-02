@@ -160,20 +160,28 @@ public class RegularExpressionFunctions
 	           idx = buf.indexOf("\\P{Is", idx);
 	       }
 	       
-	       // FIXME:
-	       // converts incorrectly to class subtraction
-	       // current parsing is base on substituting -[ with the &&[^
-	       // without looking at the context where -[ is useds
+	       // converts to class subtraction
 	       // in order to handle character class subtraction, we
-	       // replace all instances of "-[" with "&&[^" in the reg exp
-	       // SEE: http://sourceforge.net/mailarchive/forum.php?thread_name=4C055316.3080101%40stanford.edu&forum_name=sunxacml-discuss
-
+	       // replace nested instances of "-[" with "&&[^" in the reg exp
 	       idx = -1;
 	       idx = buf.indexOf("-[", 0);
 	       while (idx != -1){
-	           buf = buf.replace(idx, idx+2, "&&[^");
-	           idx = buf.indexOf("-[", idx);
+	    	   if (calculateNestLevel(buf, idx-1) > 0) {
+	    		   buf = buf.replace(idx, idx+2, "&&[^");
+	    	   }
+	    	   idx = buf.indexOf("-[", idx+1);
 	       }
+	       
 	       return buf.toString();
 	  }
+
+	private static int calculateNestLevel(StringBuffer buf, int idx) {
+		int level = 0;
+		while(idx >= 0) {
+			char ch = buf.charAt(idx--);
+			if (ch == '[') level++;
+			if (ch == ']') level --;
+		}
+		return level;
+	}
 }
