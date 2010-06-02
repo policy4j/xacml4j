@@ -10,12 +10,6 @@ import com.google.common.base.Preconditions;
 
 public class DOMUtil 
 {	
-	/**
-	 * Constructs a XPath query to the supplied node.
-	 * 
-	 * @param n
-	 * @return
-	 */
 	public static String getXPath(Node n) 
 	{
 		Preconditions.checkNotNull(n);
