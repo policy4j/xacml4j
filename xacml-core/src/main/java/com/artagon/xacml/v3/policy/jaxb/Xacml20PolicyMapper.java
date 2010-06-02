@@ -104,19 +104,23 @@ public class Xacml20PolicyMapper
 	{
 		VariableManager<JAXBElement<?>> m = getVariables(p);
 		Version version = Version.parse(p.getVersion());
-		Collection<ObligationExpression> obligations = getObligations(p
-				.getObligations());
-		PolicyDefaults policyDefaults = createPolicyDefaults(p
-				.getPolicyDefaults());
+		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
+		PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
 		Target target = create(p.getTarget());
+		Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
+		Collection<Rule> rules = getRules(p, m);
 		return factory.createPolicy(p.getPolicyId(), version, p
-				.getDescription(), policyDefaults, target, m.getVariableDefinitions().values(), 
-				p.getRuleCombiningAlgId(), getRules(p,
-				m), obligations, Collections
-				.<AdviceExpression> emptyList());
+				.getDescription(), 
+				policyDefaults, 
+				target, 
+				variableDefinitions.values(), 
+				p.getRuleCombiningAlgId(), rules, 
+				obligations, 
+				Collections.<AdviceExpression> emptyList());
 	}
 
-	public PolicySet create(PolicySetType p) throws PolicySyntaxException {
+	public PolicySet create(PolicySetType p) throws PolicySyntaxException 
+	{
 		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p
 				.getObligations());

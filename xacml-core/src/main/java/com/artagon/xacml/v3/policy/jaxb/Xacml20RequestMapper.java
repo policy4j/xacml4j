@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-
 import org.oasis.xacml.v20.context.ActionType;
 import org.oasis.xacml.v20.context.AttributeType;
 import org.oasis.xacml.v20.context.AttributeValueType;
@@ -59,25 +57,25 @@ public class Xacml20RequestMapper
 		return contextFactory.createRequest(false, attributes);
 	}
 	
-	Attributes createSubject(SubjectType subject) throws RequestSyntaxException
+	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
 	{
 		return contextFactory.createAttributes(subject.getSubjectCategory(), 
 				null, create(subject.getAttribute()));
 	}
 	
-	Attributes createEnviroment(EnvironmentType subject) throws RequestSyntaxException
+	private Attributes createEnviroment(EnvironmentType subject) throws RequestSyntaxException
 	{
 		return contextFactory.createAttributes(AttributeCategoryId.ENVIRONMENT.toString(), 
 				null, create(subject.getAttribute()));
 	}
 	
-	Attributes createAction(ActionType subject) throws RequestSyntaxException
+	private Attributes createAction(ActionType subject) throws RequestSyntaxException
 	{
 		return contextFactory.createAttributes(AttributeCategoryId.ACTION.toString(), 
 				null, create(subject.getAttribute()));
 	}
 	
-	Attributes createResource(ResourceType resource) throws RequestSyntaxException
+	private Attributes createResource(ResourceType resource) throws RequestSyntaxException
 	{
 		return contextFactory.createAttributes(AttributeCategoryId.RESOURCE.toString(), 
 				getResourceContent(resource), create(resource.getAttribute()));
@@ -119,15 +117,7 @@ public class Xacml20RequestMapper
 				attributeId.equals(RESOURCE_ID_ATTRIBUTE), values);
 	}
 	
-	/**
-	 * Creates {@link AttributeValue} from a given
-	 * {@link JAXBElement}
-	 * 
-	 * @param element a JAXB element
-	 * @return {@link AttributeValue}
-	 * @throws RequestSyntaxException
-	 */
-	AttributeValue createValue(String dataTypeId, AttributeValueType value) 
+	private AttributeValue createValue(String dataTypeId, AttributeValueType value) 
 		throws RequestSyntaxException
 	{
 		List<Object> content = value.getContent();

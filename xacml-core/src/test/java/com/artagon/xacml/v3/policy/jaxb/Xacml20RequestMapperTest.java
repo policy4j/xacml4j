@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
+import org.w3c.dom.Element;
 
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -76,6 +77,9 @@ public class Xacml20RequestMapperTest
 		Attributes resource = Iterables.getOnlyElement(request.getAttributes(AttributeCategoryId.RESOURCE));
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
+		assertEquals("record", ((Element)resource.getContent()).getLocalName());
+		assertEquals("http://www.medico.com/schemas/record", ((Element)resource.getContent()).getNamespaceURI());
+		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
 		assertTrue(resourceId.isIncludeInResult());
