@@ -49,7 +49,7 @@ public class Xacml20ContextMapperTest
 	
 	
 	
-	@SuppressWarnings({"unchecked", "unused" })
+	@SuppressWarnings({"unchecked" })
 	private static <T>  T getJAXBObject(String name) throws Exception
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
