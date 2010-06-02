@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3;
 
-public interface Response {
+import java.util.Collection;
 
+public interface Response
+{
+	Collection<Result> getResults();
 }

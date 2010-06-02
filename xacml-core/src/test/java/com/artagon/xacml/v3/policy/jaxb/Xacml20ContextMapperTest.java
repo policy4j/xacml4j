@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
+import org.oasis.xacml.v20.context.ResponseType;
 import org.w3c.dom.Element;
 
 import com.artagon.xacml.v3.Attribute;
@@ -25,10 +26,10 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
 
-public class Xacml20RequestMapperTest 
+public class Xacml20ContextMapperTest 
 {
 	private static JAXBContext context;
-	private Xacml20RequestMapper contextMapper;
+	private Xacml20ContextMapper contextMapper;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -43,25 +44,32 @@ public class Xacml20RequestMapperTest
 	@Before
 	public void init() throws Exception
 	{
-		this.contextMapper = new Xacml20RequestMapper(new DefaultRequestFactory());
+		this.contextMapper = new Xacml20ContextMapper(new DefaultRequestFactory());
 	}
 	
 	
 	
-	@SuppressWarnings({"unchecked" })
-	private static RequestType getRequest(String name) throws Exception
+	@SuppressWarnings({"unchecked", "unused" })
+	private static <T>  T getJAXBObject(String name) throws Exception
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
-		JAXBElement<RequestType> request = (JAXBElement<RequestType>)context.createUnmarshaller().unmarshal(stream);
+		JAXBElement<T> request = (JAXBElement<T>)context.createUnmarshaller().unmarshal(stream);
 		assertNotNull(request);
 		return request.getValue();
 	}
 	
 	@Test
+	public void testResponseIIIF005Mapping() throws Exception
+	{
+		@SuppressWarnings("unused")
+		ResponseType res = getJAXBObject("oasis-xacml20-compat-test/IIIF005Response.xml");
+	}
+	
+	@Test
 	public void testRequestIIIF005Mapping() throws Exception
 	{
-		RequestType req = getRequest("oasis-xacml20-compat-test/IIIF005Request.xml");
+		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIIF005Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subject = Iterables.getOnlyElement(request.getAttributes(AttributeCategoryId.SUBJECT_ACCESS));
@@ -96,7 +104,7 @@ public class Xacml20RequestMapperTest
 	@Test
 	public void testRequestIIB028Mapping() throws Exception
 	{
-		RequestType req = getRequest("oasis-xacml20-compat-test/IIB028Request.xml");
+		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB028Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subjectAccess = Iterables.getOnlyElement(request.getAttributes(AttributeCategoryId.SUBJECT_ACCESS));
@@ -140,7 +148,7 @@ public class Xacml20RequestMapperTest
 	@Test
 	public void testRequestIIB030Mapping() throws Exception
 	{
-		RequestType req = getRequest("oasis-xacml20-compat-test/IIB030Request.xml");
+		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB030Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subjectAccess = Iterables.getOnlyElement(request.getAttributes(AttributeCategoryId.SUBJECT_ACCESS));

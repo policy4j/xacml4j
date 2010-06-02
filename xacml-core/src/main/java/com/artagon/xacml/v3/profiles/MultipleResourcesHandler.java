@@ -8,10 +8,10 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.ContextFactory;
+import com.artagon.xacml.v3.ContextSyntaxException;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestFactory;
-import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.google.common.collect.Sets;
 
@@ -19,14 +19,14 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:multiple-resource-elements";
 		
-	public MultipleResourcesHandler(RequestFactory contextFactory) {
+	public MultipleResourcesHandler(ContextFactory contextFactory) {
 		super(ID, contextFactory);
 	}
 	
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
-		RequestFactory factory = getContextFactory();
+		ContextFactory factory = getContextFactory();
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategoryId categoryId : request.getCategories()){
 			Collection<Attributes> attributes = request.getAttributes(categoryId);
@@ -43,7 +43,7 @@ public class MultipleResourcesHandler extends AbstractRequestProfileHandler
 			try{
 				Request req = factory.createRequest(request.isReturnPolicyIdList(), requestAttr);
 				results.addAll(handleNext(req, pdp));
-			}catch(RequestSyntaxException e){
+			}catch(ContextSyntaxException e){
 				results.add(new Result(e.getStatus()));
 			}
 		}

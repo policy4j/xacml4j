@@ -11,25 +11,25 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.ContextFactory;
+import com.artagon.xacml.v3.ContextSyntaxException;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.RequestReference;
-import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public final class DefaultRequestFactory implements RequestFactory
+public final class DefaultRequestFactory implements ContextFactory
 {
 	@Override
 	public Result createResult(Decision decision, 
 			Collection<Advice> advice,
 			Collection<Obligation> obligations,
 			Collection<Attributes> attributes,
-			Collection<PolicyIdentifier> policyIdList) throws RequestSyntaxException
+			Collection<PolicyIdentifier> policyIdList) throws ContextSyntaxException
 	{
 		return new Result(decision, advice, obligations, attributes, policyIdList);
 	}
@@ -37,7 +37,7 @@ public final class DefaultRequestFactory implements RequestFactory
 	@Override
 	public Attribute createAttribute(String attributeId, 
 			Collection<AttributeValue> values)
-		throws RequestSyntaxException
+		throws ContextSyntaxException
 	{
 		return createAttribute(attributeId, null, false, values);
 	}
@@ -47,7 +47,7 @@ public final class DefaultRequestFactory implements RequestFactory
 	@Override
 	public Attribute createAttribute(String attributeId,
 			boolean includeInResult, Collection<AttributeValue> values)
-			throws RequestSyntaxException 
+			throws ContextSyntaxException 
 	{
 		return createAttribute(attributeId, null, includeInResult, values);
 	}
@@ -56,7 +56,7 @@ public final class DefaultRequestFactory implements RequestFactory
 	public Attribute createAttribute(
 			String attributeId, String issuer, 
 			Collection<AttributeValue> values)
-			throws RequestSyntaxException 
+			throws ContextSyntaxException 
 	{
 		return createAttribute(attributeId, issuer, false, values);
 	}
@@ -67,7 +67,7 @@ public final class DefaultRequestFactory implements RequestFactory
 			String issuer,
 			boolean includeInResult, 
 			Collection<AttributeValue> values) 
-		throws RequestSyntaxException
+		throws ContextSyntaxException
 	{
 		return new DefaultAttribute(attributeId, issuer, includeInResult, values);
 	}
@@ -75,17 +75,17 @@ public final class DefaultRequestFactory implements RequestFactory
 	
 	@Override
 	public AttributeValue createValue(String typeId, Object value) 
-		throws RequestSyntaxException
+		throws ContextSyntaxException
 	{
 		AttributeValueType type = DataTypes.getByTypeId(typeId);
 		if(type == null){
-			throw new RequestSyntaxException(
+			throw new ContextSyntaxException(
 					"TypeId=\"%s\" can not be resolved as an XACML type",typeId);
 		}
 		try{
 			return type.create(value);
 		}catch(Exception e){
-			throw new RequestSyntaxException(e);
+			throw new ContextSyntaxException(e);
 		}
 	}
 	

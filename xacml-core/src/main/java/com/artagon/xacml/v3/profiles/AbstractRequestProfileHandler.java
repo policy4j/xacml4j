@@ -3,9 +3,9 @@ package com.artagon.xacml.v3.profiles;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.artagon.xacml.v3.ContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.Result;
 import com.google.common.base.Preconditions;
 
@@ -13,9 +13,9 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 {
 	private String id;
 	private RequestProfileHandler next;
-	private RequestFactory contextFactory;
+	private ContextFactory contextFactory;
 	
-	public AbstractRequestProfileHandler(String id, RequestFactory contextFactory){
+	public AbstractRequestProfileHandler(String id, ContextFactory contextFactory){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(contextFactory);
 		this.id = id;
@@ -38,7 +38,7 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 		this.next = handler;
 	}
 	
-	protected final RequestFactory getContextFactory(){
+	protected final ContextFactory getContextFactory(){
 		return contextFactory;
 	}
 }

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-public interface RequestFactory 
+public interface ContextFactory 
 {
 	/**
 	 * Creates {@link Request} instance
@@ -19,11 +19,11 @@ public interface RequestFactory
 	Request createRequest(boolean returnPolicyIDList, 
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> references) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Request createRequest(boolean returnPolicyIDList, 
 			Collection<Attributes> attributes) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	/**
 	 * Creates {@link Response} from a
@@ -32,10 +32,10 @@ public interface RequestFactory
 	 * 
 	 * @param results a collection
 	 * @return
-	 * @throws RequestSyntaxException
+	 * @throws ContextSyntaxException
 	 */
 	Response createResponse(Collection<Result> results) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	
 	Result createResult(Decision decision, 
@@ -43,32 +43,32 @@ public interface RequestFactory
 			Collection<Obligation> obligations, 
 			Collection<Attributes> attributes, 
 			Collection<PolicyIdentifier> policyIdList) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	AttributeValue createValue(String dataTypeId, Object value) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Attribute createAttribute(
 			String attributeId, 
 			String issuer, 
 			boolean includeInResult, 
 			Collection<AttributeValue> values) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Attribute createAttribute(
 			String attributeId, 
 			String issuer, 
 			Collection<AttributeValue> values) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Attribute createAttribute(
 			String attributeId, 
 			boolean includeInResult,
 			Collection<AttributeValue> values) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Attribute createAttribute(String attributeId, Collection<AttributeValue> values) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	
 	Attributes createAttributes(
@@ -76,18 +76,18 @@ public interface RequestFactory
 			String categoryId, 
 			Node content, 
 			Collection<Attribute> attributes) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	Attributes createAttributes(
 			String categoryId, 
 			Node content, 
 			Collection<Attribute> attributes) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 		
 	RequestReference createRequestReference(
 			Collection<AttributesReference> references) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 	
 	AttributesReference createAttributesReference(String id) 
-		throws RequestSyntaxException;
+		throws ContextSyntaxException;
 }

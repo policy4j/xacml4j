@@ -19,9 +19,9 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.ContextFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestFactory;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
@@ -35,7 +35,7 @@ public class MultipleResourcesHandlerTest
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
-	private RequestFactory contextFactory;
+	private ContextFactory contextFactory;
 	
 	@Before
 	public void init(){
