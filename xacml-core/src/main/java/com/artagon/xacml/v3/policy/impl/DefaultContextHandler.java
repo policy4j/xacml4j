@@ -21,7 +21,6 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.ContextHandler;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Request;
@@ -38,7 +37,7 @@ public class DefaultContextHandler implements ContextHandler
 	private Request request;
 	private XPathProvider xpathProvider;
 	
-	protected DefaultContextHandler(XPathProvider xpathProvider, Request request)
+	public DefaultContextHandler(XPathProvider xpathProvider, Request request)
 	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(!request.hasRepeatingCategories());
@@ -50,8 +49,9 @@ public class DefaultContextHandler implements ContextHandler
 	@Override
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) {
 		Attributes attr =   Iterables.getOnlyElement(request.getAttributes(category));
-		return ((attr == null) || (attr.getContent() == null))?
-				handleGetContent(category, request):attr.getContent();
+		Node content = attr.getContent();
+		return ((attr == null) || (content == null))?
+				handleGetContent(category, request):content;
 	}
 
 	@SuppressWarnings("unchecked")

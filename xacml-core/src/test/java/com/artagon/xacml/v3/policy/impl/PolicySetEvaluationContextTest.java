@@ -11,7 +11,6 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.ContextHandler;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.PolicySet;
