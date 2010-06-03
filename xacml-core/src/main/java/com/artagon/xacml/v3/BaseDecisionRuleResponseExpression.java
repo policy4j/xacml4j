@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.google.common.base.Preconditions;
+
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
 {
@@ -24,11 +26,10 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 			String id, 
 			Effect effect, 
 			Collection<AttributeAssignmentExpression> attributeExpressions) 
-		throws PolicySyntaxException
 	{
-		checkNotNull(id, "Decision rule id can not be null");
-		checkNotNull(effect, "Decision rule effect can not be null");
-		checkNotNull(attributeExpressions, 
+		Preconditions.checkNotNull(id, "Decision rule id can not be null");
+		Preconditions.checkNotNull(effect, "Decision rule effect can not be null");
+		Preconditions.checkNotNull(attributeExpressions, 
 				"Decision rule attribute expression can not be null");
 		this.id = id;
 		this.effect = effect;

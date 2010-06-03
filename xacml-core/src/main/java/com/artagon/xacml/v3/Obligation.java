@@ -20,7 +20,6 @@ import java.util.Collection;
 public class Obligation extends BaseDecisionRuleResponse
 {
 	public Obligation(String id, Collection<AttributeAssignment> attributes) 
-		throws PolicySyntaxException 
 	{
 		super(id, attributes);
 	}

@@ -5,7 +5,7 @@ import java.util.Collection;
 public class ObligationExpression extends BaseDecisionRuleResponseExpression
 {
 	public ObligationExpression(String id, Effect effect,
-			Collection<AttributeAssignmentExpression> attributeExpressions) throws PolicySyntaxException 
+			Collection<AttributeAssignmentExpression> attributeExpressions)  
 	{
 		super(id, effect, attributeExpressions);
 	}
@@ -13,12 +13,8 @@ public class ObligationExpression extends BaseDecisionRuleResponseExpression
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		try{
-			return new Obligation(getId(), attributes);
-		}catch(PolicySyntaxException e){
-			throw new EvaluationException(
-					StatusCode.createProcessingError(), context, e);
-		}
+		return new Obligation(getId(), attributes);
+	
 	}
 
 	@Override

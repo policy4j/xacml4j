@@ -32,13 +32,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		try{
-			return new Advice(getId(), attributes);
-		}catch(PolicySyntaxException e){
-			throw new EvaluationException(
-					StatusCode.createProcessingError(), context, e);
-		}
-		
+		return new Advice(getId(), attributes);
 	}
 	
 	@Override

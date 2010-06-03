@@ -12,8 +12,8 @@ import java.util.Collection;
  */
 public class Advice extends BaseDecisionRuleResponse
 {
-	public Advice(String adviceId, Collection<AttributeAssignment> attributes) 
-		throws PolicySyntaxException 
+	public Advice(String adviceId, 
+			Collection<AttributeAssignment> attributes) 
 	{
 		super(adviceId, attributes);
 	}

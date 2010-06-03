@@ -140,10 +140,25 @@ public class Attributes extends XacmlObject
 		});	
 	}
 	
+	/**
+	 * Gets all attribute {@Link Attribute}
+	 * instances
+	 * 
+	 * @return immutable collection of {@link Attribute}
+	 * instances
+	 */
 	public Collection<Attribute> getAttributes() {
 		return Collections.unmodifiableCollection(attributes.values());
 	}
-
+	
+	/**
+	 * Finds all instance of {@Link Attribute} with
+	 * {@link Attribute#isIncludeInResult()} returning
+	 * <code>true</code>
+	 * 
+	 * @return a collection of {@link Attribute}
+	 * instances
+	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
 		return  Collections2.filter(attributes.values(), new Predicate<Attribute>() {
 			@Override
