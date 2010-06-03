@@ -1,13 +1,29 @@
 package com.artagon.xacml.v3;
 
-public interface AttributesReference {
+import com.google.common.base.Preconditions;
 
+public class AttributesReference extends XacmlObject
+{
+	private String referenceId;
+	
+	/**
+	 * Constructs an attribute reference
+	 * 
+	 * @param referenceId a reference identifier
+	 */
+	public AttributesReference(String referenceId){
+		Preconditions.checkNotNull(referenceId, 
+				"Attribute reference id can not be null");
+		this.referenceId = referenceId;
+	}
+	
 	/**
 	 * Gets an attribute reference
 	 * identifier
 	 * 
 	 * @return reference identifier
 	 */
-	String getReferenceId();
-
+	public String getReferenceId(){
+		return referenceId;
+	}
 }

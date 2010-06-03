@@ -1,11 +1,10 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.impl.DefaultRequest;
 
 public interface PolicyDecisionPoint 
 {
 	/**
-	 * Evaluates a given XACML {@link DefaultRequest}
+	 * Evaluates a given XACML {@link Request}
 	 * and returns {@link Result}
 	 * 
 	 * @param request a XACML request

@@ -1,25 +1,10 @@
-package com.artagon.xacml.v3.impl;
+package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Attribute;
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.ContextSyntaxException;
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.PolicyIdentifier;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestReference;
-import com.artagon.xacml.v3.Response;
-import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public final class DefaultRequestFactory implements ContextFactory
@@ -69,7 +54,7 @@ public final class DefaultRequestFactory implements ContextFactory
 			Collection<AttributeValue> values) 
 		throws ContextSyntaxException
 	{
-		return new DefaultAttribute(attributeId, issuer, includeInResult, values);
+		return new Attribute(attributeId, issuer, includeInResult, values);
 	}
 	
 	
@@ -94,43 +79,43 @@ public final class DefaultRequestFactory implements ContextFactory
 	public Attributes createAttributes(String id, String categoryId,
 			Node content, Collection<Attribute> attributes) {
 		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
-		return new DefaultAttributes(id, category, content, attributes);
+		return new Attributes(id, category, content, attributes);
 	}
 	
 	@Override
 	public Attributes createAttributes(String categoryId,
 			Node content, Collection<Attribute> attributes) {
 		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
-		return new DefaultAttributes(null, category, content, attributes);
+		return new Attributes(null, category, content, attributes);
 	}
 
 	@Override
 	public AttributesReference createAttributesReference(String id) {
-		return new DefaultAttributesReference(id);
+		return new AttributesReference(id);
 	}
 
 	@Override
 	public Request createRequest(boolean returnPolicyIDList,
 			Collection<Attributes> attributes,
 			Collection<RequestReference> references) {
-		return new DefaultRequest(returnPolicyIDList, attributes, references);
+		return new Request(returnPolicyIDList, attributes, references);
 	}
 
 	@Override
 	public Request createRequest(boolean returnPolicyIDList,
 			Collection<Attributes> attributes) {
-		return new DefaultRequest(returnPolicyIDList, attributes);
+		return new Request(returnPolicyIDList, attributes);
 	}
 
 	@Override
 	public RequestReference createRequestReference(
 			Collection<AttributesReference> references) {
-		return new DefaultRequestReference(references);
+		return new RequestReference(references);
 	}
 
 	@Override
 	public Response createResponse(Collection<Result> results) {
-		return new DefaultResponse(results);
+		return new Response(results);
 	}
 	
 }

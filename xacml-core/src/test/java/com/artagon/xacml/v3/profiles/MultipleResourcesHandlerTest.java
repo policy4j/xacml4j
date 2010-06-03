@@ -20,15 +20,15 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.ContextFactory;
+import com.artagon.xacml.v3.Attribute;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.DefaultRequestFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.impl.DefaultAttribute;
-import com.artagon.xacml.v3.impl.DefaultAttributes;
-import com.artagon.xacml.v3.impl.DefaultRequest;
-import com.artagon.xacml.v3.impl.DefaultRequestFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class MultipleResourcesHandlerTest 
@@ -48,25 +48,25 @@ public class MultipleResourcesHandlerTest
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes resource1 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		resource1Attr.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
+		resource1Attr.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new DefaultRequest(false, 
+		Request context = new Request(false, 
 				Arrays.asList(subject, resource0, resource1));
 		
-		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
-		Capture<DefaultRequest> c1 = new Capture<DefaultRequest>();
+		Capture<Request> c0 = new Capture<Request>();
+		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
@@ -94,20 +94,20 @@ public class MultipleResourcesHandlerTest
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes resource0 = new DefaultAttributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes subject =  new DefaultAttributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new DefaultRequest(false, 
+		Request context = new Request(false, 
 				Arrays.asList(subject, resource0));
 		
-		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
+		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));

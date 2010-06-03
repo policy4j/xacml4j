@@ -22,16 +22,16 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.ContextFactory;
 import com.artagon.xacml.v3.ContextSyntaxException;
+import com.artagon.xacml.v3.Attribute;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.DefaultRequestFactory;
 import com.artagon.xacml.v3.PolicyDecisionCallback;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.impl.DefaultAttribute;
-import com.artagon.xacml.v3.impl.DefaultAttributes;
-import com.artagon.xacml.v3.impl.DefaultRequest;
-import com.artagon.xacml.v3.impl.DefaultRequestFactory;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.google.common.collect.Iterables;
 
@@ -53,24 +53,24 @@ public class MultipleRequestHandlerTest
 	public void testResolveRequestsWithValidReferences() throws ContextSyntaxException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new DefaultAttribute("testId1", DataTypes.STRING.create("value0")));
-		attributes0.add(new DefaultAttribute("testId2", DataTypes.STRING.create("value1")));
-		Attributes attr0 = new DefaultAttributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
+		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
-		attributes1.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
-		DefaultAttributes attr1 = new DefaultAttributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
+		attributes1.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new DefaultAttribute("testId5", DataTypes.STRING.create("value0")));
-		attributes2.add(new DefaultAttribute("testId6", DataTypes.STRING.create("value1")));
-		Attributes attr2 = new DefaultAttributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
+		attributes2.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
+		attributes2.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new DefaultAttribute("testId7", DataTypes.STRING.create("value0")));
-		attributes3.add(new DefaultAttribute("testId8", DataTypes.STRING.create("value1")));
-		Attributes attr3 = new DefaultAttributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
+		attributes3.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
+		attributes3.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
 		Collection<AttributesReference> ref0 = new LinkedList<AttributesReference>();
@@ -84,12 +84,12 @@ public class MultipleRequestHandlerTest
 		RequestReference reference1 = contextFactory.createRequestReference(ref1);
 		
 			
-		Request context = new DefaultRequest(false, 
+		Request context = new Request(false, 
 				Arrays.asList(attr0, attr1, attr2, attr3), 
 				Arrays.asList(reference0, reference1));
 		
-		Capture<DefaultRequest> c0 = new Capture<DefaultRequest>();
-		Capture<DefaultRequest> c1 = new Capture<DefaultRequest>();
+		Capture<Request> c0 = new Capture<Request>();
+		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(new Status(StatusCode.createProcessingError())));
@@ -121,16 +121,16 @@ public class MultipleRequestHandlerTest
 	public void testWithNoReferences()
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new DefaultAttribute("testId3", DataTypes.STRING.create("value0")));
-		attributes0.add(new DefaultAttribute("testId4", DataTypes.STRING.create("value1")));
-		Attributes attr0 = new DefaultAttributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		attributes0.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new DefaultAttribute("testId5", DataTypes.STRING.create("value0")));
-		attributes1.add(new DefaultAttribute("testId6", DataTypes.STRING.create("value1")));
-		Attributes attr1 = new DefaultAttributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
+		attributes1.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
 		
-		Request request = new DefaultRequest(false, 
+		Request request = new Request(false, 
 				Arrays.asList(attr0, attr1));
 		
 		expect(pdp.requestDecision(request)).andReturn(

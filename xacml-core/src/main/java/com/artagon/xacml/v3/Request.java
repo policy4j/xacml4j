@@ -1,12 +1,64 @@
 package com.artagon.xacml.v3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-public interface Request 
-{
+import org.w3c.dom.Node;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+
+public class Request extends XacmlObject
+{	
+	private boolean returnPolicyIdList;
+	private Multimap<AttributeCategoryId, Attributes> attributes;
+	private Map<String, Attributes> attributesByXmlId;
+	private Collection<RequestReference> multipleRequests;
+	
+	/**
+	 * Constructs a request with a given attributes
+	 * @param attributes
+	 */
+	public Request(boolean returnPolicyIdList, 
+			Collection<Attributes> attributes, 
+			Collection<RequestReference> requestReferences)
+	{
+		this.returnPolicyIdList = returnPolicyIdList;
+		this.attributes = HashMultimap.create();
+		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
+		this.attributesByXmlId = new HashMap<String, Attributes>();
+		for(Attributes attr : attributes)
+		{
+			// index attributes by category
+			this.attributes.put(attr.getCategoryId(), attr);
+			// index attributes
+			// by id for fast lookup
+			if(attr.getId() != null){
+				this.attributesByXmlId.put(attr.getId(), attr);
+			}
+		}
+	}
+	
+	/**
+	 * Constructs a request with a given attributes
+	 * 
+	 * @param attributes a collection of {@link Attributes}
+	 * instances
+	 */
+	public Request(boolean returnPolicyIdList, 
+			Collection<Attributes> attributes)
+	{
+		this(returnPolicyIdList, attributes, 
+				Collections.<RequestReference>emptyList());
+	}
+	
 	/**
 	 * If the {@link #isReturnPolicyIdList()} returns 
 	 * <code>true</code>, a PDP that implements this optional 
@@ -18,8 +70,16 @@ public interface Request
 	 *  
 	 * @return boolean value
 	 */
-	boolean isReturnPolicyIdList();
-
+	public boolean isReturnPolicyIdList(){
+		return returnPolicyIdList;
+	}
+	
+	
+	public int getCategoryOccuriences(AttributeCategoryId category){
+		Collection<Attributes> attr = attributes.get(category);
+		return (attr == null)?0:attr.size();
+	}
+	
 	/**
 	 * Gets request references contained
 	 * in this request context
@@ -27,7 +87,9 @@ public interface Request
 	 * @return a collection of {@link RequestReference}
 	 * instances
 	 */
-	Collection<RequestReference> getRequestReferences();
+	public Collection<RequestReference> getRequestReferences(){
+		return Collections.unmodifiableCollection(multipleRequests);
+	}
 
 	/**
 	 * Tests if this request has multiple
@@ -37,18 +99,20 @@ public interface Request
 	 * request has multiple XACML individual
 	 * requests
 	 */
-	boolean hasMultipleRequests();
-
+	public boolean hasMultipleRequests(){
+		return !multipleRequests.isEmpty();
+	}
+	
 	/**
 	 * Gets all attributes categories contained
 	 * in this request context
 	 * 
 	 * @return an iterator over all categories
 	 */
-	Set<AttributeCategoryId> getCategories();
+	public Set<AttributeCategoryId> getCategories(){
+		return Collections.unmodifiableSet(attributes.keySet());
+	}
 	
-	int getCategoryOccuriences(AttributeCategoryId categoryId);
-
 	/**
 	 * Resolves attribute reference to {@link Attributes}
 	 * 
@@ -56,7 +120,10 @@ public interface Request
 	 * @return {@link Attributes} or <code>null</code> if
 	 * reference can not be resolved
 	 */
-	Attributes getReferencedAttributes(AttributesReference reference);
+	public Attributes getReferencedAttributes(AttributesReference reference){
+		Preconditions.checkNotNull(reference);
+		return attributesByXmlId.get(reference.getReferenceId());
+	}
 	
 	/**
 	 * Gets all {@link Attributes} instances
@@ -64,7 +131,9 @@ public interface Request
 	 * 
 	 * @return a map by category
 	 */
-	Map<AttributeCategoryId, Collection<Attributes>> getAttributes();
+	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
+		return Multimaps.unmodifiableMultimap(attributes).asMap();
+	}
 	
 	/**
 	 * Gets all {@link Attributes} from request with
@@ -75,9 +144,45 @@ public interface Request
 	 * {@link Collections#emptyList()} if given request
 	 * does not have attributes of given category
 	 */
-	Collection<Attributes> getAttributes(AttributeCategoryId categoryId);
+	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
+		Preconditions.checkNotNull(categoryId);
+		Collection<Attributes> attr =  attributes.get(categoryId);
+		return (attr == null)?Collections.<Attributes>emptyList():attr;
+	}
 	
-	Collection<Attributes> getIncludeInResultAttributes();
+	public Collection<Node> getContent(AttributeCategoryId categoryId)
+	{
+		Preconditions.checkNotNull(categoryId);
+		Collection<Attributes> byCategory =  attributes.get(categoryId);
+		if(byCategory == null || 
+				byCategory.isEmpty()){
+			return Collections.<Node>emptyList();
+		}
+		Collection<Node> content = new ArrayList<Node>(byCategory.size());
+		for(Attributes a : byCategory){
+			content.add(a.getContent());
+		}
+		return content;
+	}
 	
-	boolean hasRepeatingCategories();
+	public boolean hasRepeatingCategories(){
+		for(AttributeCategoryId category : getCategories()){
+			if(getCategoryOccuriences(category) > 1){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public Collection<Attributes> getIncludeInResultAttributes() 
+	{
+		Collection<Attributes> resultAttr = new LinkedList<Attributes>();
+		for(Attributes a : attributes.values()){
+			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
+			if(!includeInResult.isEmpty()){
+				resultAttr.add(new Attributes(a.getCategoryId(), includeInResult));
+			}
+		}
+		return resultAttr;
+	}		
 }
