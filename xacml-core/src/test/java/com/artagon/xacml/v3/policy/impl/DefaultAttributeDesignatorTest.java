@@ -37,7 +37,7 @@ public class DefaultAttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeDesignator desig = new DefaultAttributeDesignator(
+		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
 		expect(context.resolve(desig)).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
@@ -55,7 +55,7 @@ public class DefaultAttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
-		AttributeDesignator desig = new DefaultAttributeDesignator(
+		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
 		expect(context.resolve(desig)).andReturn(null);
 		replay(context);
@@ -74,7 +74,7 @@ public class DefaultAttributeDesignatorTest
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
-		AttributeDesignator desig = new DefaultAttributeDesignator(
+		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", DataTypes.INTEGER.getType(), true);
 		BagOfAttributeValues<AttributeValue> bag = DataTypes.INTEGER.bag(DataTypes.INTEGER.create(1), DataTypes.INTEGER.create(2));
 		expect(context.resolve(desig)).andReturn(bag);
@@ -88,7 +88,7 @@ public class DefaultAttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
+		AttributeDesignator desig = new AttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
 		expect(context.resolve(desig)).andReturn(DataTypes.INTEGER.emptyBag());
 		replay(context);
@@ -102,7 +102,7 @@ public class DefaultAttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
-		AttributeDesignator desig = new DefaultAttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
+		AttributeDesignator desig = new AttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
 		expect(context.resolve(desig)).andReturn(null);
 		replay(context);

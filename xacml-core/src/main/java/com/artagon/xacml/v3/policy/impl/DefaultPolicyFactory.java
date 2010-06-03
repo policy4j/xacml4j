@@ -238,14 +238,14 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public AttributeDesignator createAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, boolean mustBePresent, String issuer)
 			throws PolicySyntaxException {
-		return new DefaultAttributeDesignator(category, attributeId, issuer, dataType, mustBePresent);
+		return new AttributeDesignator(category, attributeId, issuer, dataType, mustBePresent);
 	}
 
 	@Override
 	public AttributeSelector createAttributeSelector(AttributeCategoryId category,
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent)
 			throws PolicySyntaxException {
-		return new DefaultAttributeSelector(category, selectXPath, dataType, mustBePresent);
+		return new AttributeSelector(category, selectXPath, dataType, mustBePresent);
 	}
 	
 	@Override

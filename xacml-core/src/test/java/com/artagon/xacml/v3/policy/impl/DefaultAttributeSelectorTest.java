@@ -30,7 +30,7 @@ public class DefaultAttributeSelectorTest
 	@Test
 	public void testMustBePresenTrueAndReturnsNonEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.DATE.getType(), true);
@@ -44,7 +44,7 @@ public class DefaultAttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.DATE.getType(), false);
@@ -58,7 +58,7 @@ public class DefaultAttributeSelectorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.DATE.getType(), true);
@@ -71,7 +71,7 @@ public class DefaultAttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DataTypes.DATE.getType(), false);

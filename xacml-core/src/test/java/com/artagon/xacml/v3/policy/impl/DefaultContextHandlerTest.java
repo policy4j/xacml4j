@@ -90,7 +90,7 @@ public class DefaultContextHandlerTest
 	@Test
 	public void testResolveSelectorWithCorrectNodeTypeAndNodeCanBeConvertedToInteger() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
 				DataTypes.INTEGER.getType(), true);
@@ -110,7 +110,7 @@ public class DefaultContextHandlerTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testResolveSelectorWithXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient", 
 				DataTypes.INTEGER.getType(), true);
@@ -129,7 +129,7 @@ public class DefaultContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testResolveSelectorMustBePresentFalseWithCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
 				DataTypes.DATE.getType(), false);
@@ -148,7 +148,7 @@ public class DefaultContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testResolveSelectorMustBePresentTrueWithCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
 				DataTypes.DATE.getType(), false);
@@ -167,7 +167,7 @@ public class DefaultContextHandlerTest
 	@Test
 	public void testMustBePresentFalseCategoryContentExistXPathReturnsEmptySet() throws EvaluationException
 	{
-		AttributeSelector ref = new DefaultAttributeSelector(
+		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/test", 
 				DataTypes.INTEGER.getType(), true);

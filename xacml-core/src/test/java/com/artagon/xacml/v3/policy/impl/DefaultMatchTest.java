@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Match;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
@@ -22,14 +23,14 @@ import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultMatchTest extends XacmlPolicyTestCase
 {
-	private DefaultFunctionSpec spec;
+	private FunctionSpec spec;
 	private AttributeDesignator ref;
 	private EvaluationContext context;
 	
 	@Before
 	public void init()
 	{	
-		this.spec = createStrictMock(DefaultFunctionSpec.class);
+		this.spec = createStrictMock(FunctionSpec.class);
 		this.ref = createStrictMock(AttributeDesignator.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}

@@ -1,11 +1,5 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeReference;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
-import com.artagon.xacml.v3.ValueType;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 /**
@@ -39,22 +33,22 @@ abstract class BaseAttributeReference extends XacmlObject
 	}
 	
 	@Override
-	public final ValueType getEvaluatesTo(){
+	public ValueType getEvaluatesTo(){
 		return evaluatesTo;
 	}
 	
 	@Override
-	public final AttributeValueType getDataType(){
+	public AttributeValueType getDataType(){
 		return evaluatesTo.getDataType();
 	}
 	
 	@Override
-	public final AttributeCategoryId getCategory(){
+	public AttributeCategoryId getCategory(){
 		return category;
 	}
 	
 	@Override
-	public final boolean isMustBePresent(){
+	public boolean isMustBePresent(){
 		return mustBePresent;
 	}
 
