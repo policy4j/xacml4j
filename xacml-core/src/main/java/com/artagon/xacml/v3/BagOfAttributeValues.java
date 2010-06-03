@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultiset;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
 /**
@@ -38,7 +38,7 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 	@SuppressWarnings("unchecked")
 	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
 			Collection<AttributeValue> attributes){		
-		this.values = HashMultiset.create(attributes.size());
+		this.values = LinkedHashMultiset.create(attributes.size());
 		for(AttributeValue attr: attributes){	
 			Preconditions.checkArgument(
 					attr.getType().equals(type.getDataType()),

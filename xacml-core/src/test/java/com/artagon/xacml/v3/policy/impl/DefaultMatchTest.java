@@ -49,8 +49,8 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andReturn(v);
-		expect(spec.invoke(eq(context), (Expression[])anyObject())).andReturn(DataTypes.BOOLEAN.create(false));
-		expect(spec.invoke(eq(context), (Expression[])anyObject())).andReturn(DataTypes.BOOLEAN.create(true));
+		expect(spec.invoke(context, int1, int2)).andReturn(DataTypes.BOOLEAN.create(false));
+		expect(spec.invoke(context, int1, int1)).andReturn(DataTypes.BOOLEAN.create(true));
 		replay(spec, ref);
 		Match m = new Match(spec, int1, ref);
 		assertEquals(MatchResult.MATCH, m.match(context));
