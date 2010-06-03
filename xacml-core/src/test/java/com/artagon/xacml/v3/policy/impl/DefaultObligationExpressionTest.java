@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.impl;
 
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -14,8 +14,8 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.AttributeAssignment;
+import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
@@ -30,14 +30,14 @@ public class DefaultObligationExpressionTest
 	private EvaluationContext context;
 	
 	public void init(){
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = createMock(EvaluationContext.class);
 	}
 	
 	@Test
 	public void testCreateObligationExpression() throws XacmlException
 	{
-		AttributeAssigmentExpression attrExp = createStrictMock(AttributeAssigmentExpression.class);
-		ObligationExpression exp = new DefaultObligationExpression("test",Effect.DENY, Collections.singletonList(attrExp));
+		AttributeAssignmentExpression attrExp = createMock(AttributeAssignmentExpression.class);
+		ObligationExpression exp = new ObligationExpression("test",Effect.DENY, Collections.singletonList(attrExp));
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
@@ -47,9 +47,9 @@ public class DefaultObligationExpressionTest
 	@Test
 	public void testEvaluateObligationExpression() throws XacmlException
 	{
-		AttributeAssigmentExpression attrExp0 = createStrictMock(AttributeAssigmentExpression.class);
-		AttributeAssigmentExpression attrExp1 = createStrictMock(AttributeAssigmentExpression.class);
-		ObligationExpression exp = new DefaultObligationExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
+		AttributeAssignmentExpression attrExp0 = createMock(AttributeAssignmentExpression.class);
+		AttributeAssignmentExpression attrExp1 = createMock(AttributeAssignmentExpression.class);
+		ObligationExpression exp = new ObligationExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0");
 		expect(attrExp0.getCategory()).andReturn(AttributeCategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");

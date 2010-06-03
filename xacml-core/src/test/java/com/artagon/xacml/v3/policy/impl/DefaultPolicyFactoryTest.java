@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
@@ -57,7 +56,7 @@ public class DefaultPolicyFactoryTest
 	public void testCreateApply() throws PolicySyntaxException
 	{
 		Expression[] arguments = {DataTypes.STRING.create("v0"), DataTypes.STRING.create("v1")};
-		FunctionSpec spec = createStrictMock(FunctionSpec.class);
+		DefaultFunctionSpec spec = createStrictMock(DefaultFunctionSpec.class);
 		expect(functionRegistry.getFunction("testId")).andReturn(spec);
 		spec.validateParametersAndThrow(arguments);
 		replay(functionRegistry, spec);

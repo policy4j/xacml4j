@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -12,18 +12,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Apply;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionInvocationException;
-import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.Value;
-import com.artagon.xacml.v3.XacmlException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class DefaultApplyTest 
+public class ApplyTest 
 {
 	private FunctionSpec function;
 	private EvaluationContext context;
@@ -40,7 +31,7 @@ public class DefaultApplyTest
 		Expression[] params = {DataTypes.INTEGER.create(10L), DataTypes.INTEGER.create(11L)};
 		function.validateParametersAndThrow(params);
 		replay(function);
-		Apply apply = new DefaultApply(function, params);
+		Apply apply = new Apply(function, params);
 		verify(function);
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(DataTypes.BOOLEAN.create(Boolean.FALSE));
@@ -57,7 +48,7 @@ public class DefaultApplyTest
 		function.validateParametersAndThrow(DataTypes.INTEGER.create(10L));
 		expectLastCall().andThrow(new PolicySyntaxException("Bad"));
 		replay(function);
-		new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		new Apply(function, DataTypes.INTEGER.create(10L));
 		verify(function);
 	}
 	
@@ -68,7 +59,7 @@ public class DefaultApplyTest
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		Apply apply = new Apply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -80,7 +71,7 @@ public class DefaultApplyTest
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		Apply apply = new Apply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -92,7 +83,7 @@ public class DefaultApplyTest
 		expect(function.invoke(context, DataTypes.INTEGER.create(10L))).
 		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);
-		Apply apply = new DefaultApply(function, DataTypes.INTEGER.create(10L));
+		Apply apply = new Apply(function, DataTypes.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}

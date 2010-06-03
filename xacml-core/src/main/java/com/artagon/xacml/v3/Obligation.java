@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import java.util.Collection;
+
 /**
  * In many applications, policies specify actions that MUST be performed, 
  * either instead of, or in addition to, actions that MAY be performed. 
@@ -15,7 +17,11 @@ package com.artagon.xacml.v3;
  * @author Giedrius Trumpickas
 
  */
-public interface Obligation extends DecisionRuleResponse
+public class Obligation extends BaseDecisionRuleResponse
 {
-	
+	public Obligation(String id, Collection<AttributeAssignment> attributes) 
+		throws PolicySyntaxException 
+	{
+		super(id, attributes);
+	}
 }

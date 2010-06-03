@@ -143,7 +143,7 @@ public interface PolicyFactory
 			throws PolicySyntaxException;
 	
 	/**
-	 * Creates {@link AttributeAssigmentExpression} instance
+	 * Creates {@link AttributeAssignmentExpression} instance
 	 * for a given attribute id
 	 * 
 	 * @param attributeId an attribute identifier
@@ -153,7 +153,7 @@ public interface PolicyFactory
 	 * @return {@link AttributeAssigmentExpression}
 	 * @throws PolicySyntaxException
 	 */
-	AttributeAssigmentExpression createAttributeAssigmentExpression(
+	AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression, 
 			AttributeCategoryId categoryId, 
@@ -162,7 +162,7 @@ public interface PolicyFactory
 	
 	
 	/**
-	 * Creates {@link AttributeAssigmentExpression} instance
+	 * Creates {@link AttributeAssignmentExpression} instance
 	 * for a given attribute id
 	 * 
 	 * @param attributeId an attribute identifier
@@ -170,7 +170,7 @@ public interface PolicyFactory
 	 * @return {@link AttributeAssigmentExpression}
 	 * @throws PolicySyntaxException
 	 */
-	AttributeAssigmentExpression createAttributeAssigmentExpression(
+	AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression) throws PolicySyntaxException;
 	
@@ -189,13 +189,13 @@ public interface PolicyFactory
 	AdviceExpression createAdviceExpression(
 			String id, 
 			Effect appliesTo,  
-			Collection<AttributeAssigmentExpression> attributeAssigments) 
+			Collection<AttributeAssignmentExpression> attributeAssigments) 
 		throws PolicySyntaxException;
 	
 	ObligationExpression createObligationExpression(
 			String id, 
 			Effect effect,  
-			Collection<AttributeAssigmentExpression> attributeAssigments) 
+			Collection<AttributeAssignmentExpression> attributeAssigments) 
 		throws PolicySyntaxException;
 	
 	/**

@@ -1,39 +1,29 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Effect;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.PolicyElement;
-import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.XacmlObject;
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
 {
 	private String id;
 	private Effect effect;
-	private Collection<AttributeAssigmentExpression> attributeExpressions;
+	private Collection<AttributeAssignmentExpression> attributeExpressions;
 	
 	/**
 	 * Constructs expression with a given identifier,
-	 * effect and collection of {@link DefaultAttributeAssignmentExpression}
+	 * effect and collection of {@link AttributeAssignmentExpression}
 	 * expressions
 	 *  
 	 * @param id an identifier
 	 * @param effect an effect
-	 * @param attributeExpressions a collection of {@link DefaultAttributeAssignmentExpression}
+	 * @param attributeExpressions a collection of {@link AttributeAssignmentExpression}
 	 */
 	public BaseDecisionRuleResponseExpression(
 			String id, 
 			Effect effect, 
-			Collection<AttributeAssigmentExpression> attributeExpressions) 
+			Collection<AttributeAssignmentExpression> attributeExpressions) 
 		throws PolicySyntaxException
 	{
 		checkNotNull(id, "Decision rule id can not be null");
@@ -42,13 +32,14 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 				"Decision rule attribute expression can not be null");
 		this.id = id;
 		this.effect = effect;
-		this.attributeExpressions = new LinkedList<AttributeAssigmentExpression>(attributeExpressions);
+		this.attributeExpressions = new LinkedList<AttributeAssignmentExpression>(attributeExpressions);
 	}
 	
 	/**
-	 * Unique identifier
+	 * Gets decision rule response 
+	 * unique identifier
 	 * 
-	 * @return an identifier
+	 * @return an unique identifier
 	 */
 	public String getId(){
 		return id;
@@ -75,15 +66,15 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 		(result == Decision.DENY && effect == Effect.DENY);
 	}
 	
-	public Collection<AttributeAssigmentExpression> getAttributeAssignmentExpressions(){
+	public Collection<AttributeAssignmentExpression> getAttributeAssignmentExpressions(){
 		return Collections.unmodifiableCollection(attributeExpressions);
 	}
 	
 	/**
-	 * Evaluates collection of {@link DefaultAttributeAssignmentExpression} instances
-	 * and return collection of {@link DefaultAttributeAssignment} instances
+	 * Evaluates collection of {@link AttributeAssignmentExpression} instances
+	 * and return collection of {@link AttributeAssignment} instances
 	 * @param context an evaluation context
-	 * @return collection of {@link DefaultAttributeAssignment} instances
+	 * @return collection of {@link AttributeAssignment} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
 	protected Collection<AttributeAssignment> evaluateAttributeAssingments(
@@ -92,8 +83,8 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	{
 		try{
 			Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-			for(AttributeAssigmentExpression attrExp : attributeExpressions){
-				attr.add(new DefaultAttributeAssignment(
+			for(AttributeAssignmentExpression attrExp : attributeExpressions){
+				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 
 						attrExp.getCategory(), 
 						attrExp.getIssuer(), 

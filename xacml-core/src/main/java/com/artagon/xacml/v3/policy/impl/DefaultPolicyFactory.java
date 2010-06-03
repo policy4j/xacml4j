@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReference;
@@ -80,12 +80,12 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public Apply createApply(String functionId, Collection<Expression> arguments)
 			throws PolicySyntaxException 
 	{
-		return new DefaultApply(createFunction(functionId), arguments);
+		return new Apply(createFunction(functionId), arguments);
 	}
 	
 	public Apply createApply(String functionId, 
 			Expression ...arguments) throws PolicySyntaxException{
-		return new DefaultApply(createFunction(functionId), arguments);
+		return new Apply(createFunction(functionId), arguments);
 	}
 
 	@Override
@@ -178,18 +178,18 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	
 	@Override
-	public AttributeAssigmentExpression createAttributeAssigmentExpression(
+	public AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression,
 			AttributeCategoryId categoryId, 
 			String issuer)
 			throws PolicySyntaxException {
-		return new DefaultAttributeAssignmentExpression(
+		return new AttributeAssignmentExpression(
 				attributeId, expression, categoryId, issuer);
 	}
 	
 	@Override
-	public AttributeAssigmentExpression createAttributeAssigmentExpression(
+	public AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression) throws PolicySyntaxException {
 		return createAttributeAssigmentExpression(attributeId, expression, null, null);
@@ -197,18 +197,18 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public AdviceExpression createAdviceExpression(String id, Effect appliesTo,
-			Collection<AttributeAssigmentExpression> attributeAssigments)
+			Collection<AttributeAssignmentExpression> attributeAssigments)
 			throws PolicySyntaxException {
-		return new DefaultAdviceExpression(id, appliesTo, attributeAssigments);
+		return new AdviceExpression(id, appliesTo, attributeAssigments);
 	}
 
 	@Override
 	public ObligationExpression createObligationExpression(String id,
 			Effect effect,
-			Collection<AttributeAssigmentExpression> attributeAssigments)
+			Collection<AttributeAssignmentExpression> attributeAssigments)
 			throws PolicySyntaxException 
 	{
-		return new DefaultObligationExpression(id, effect, attributeAssigments);
+		return new ObligationExpression(id, effect, attributeAssigments);
 	}
 
 	@Override

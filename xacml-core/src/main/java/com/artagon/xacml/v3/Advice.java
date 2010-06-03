@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import java.util.Collection;
+
 /**
  * In some applications it is helpful to specify supplemental 
  * information about a decision. XACML provides facilities 
@@ -8,7 +10,11 @@ package com.artagon.xacml.v3;
  * 
  * @author Giedrius Trumpickas
  */
-public interface Advice extends DecisionRuleResponse
+public class Advice extends BaseDecisionRuleResponse
 {
-
+	public Advice(String adviceId, Collection<AttributeAssignment> attributes) 
+		throws PolicySyntaxException 
+	{
+		super(adviceId, attributes);
+	}
 }

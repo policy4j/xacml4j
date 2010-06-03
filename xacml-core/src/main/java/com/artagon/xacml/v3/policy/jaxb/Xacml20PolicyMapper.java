@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
+import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeSelector;
@@ -407,10 +407,10 @@ public class Xacml20PolicyMapper
 		return o;
 	}
 
-	Collection<AttributeAssigmentExpression> createAttributeAssigments(
+	Collection<AttributeAssignmentExpression> createAttributeAssigments(
 			Collection<AttributeAssignmentType> exp)
 			throws PolicySyntaxException {
-		Collection<AttributeAssigmentExpression> expressions = new LinkedList<AttributeAssigmentExpression>();
+		Collection<AttributeAssignmentExpression> expressions = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentType attr : exp) {
 			AttributeValue value = createValue(attr.getAttributeId(), attr
 					.getContent());

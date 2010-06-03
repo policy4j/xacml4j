@@ -16,8 +16,8 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AdviceExpression;
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
 import com.artagon.xacml.v3.AttributeAssignment;
+import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
@@ -36,8 +36,8 @@ public class DefaultAdviceExpressionTest
 	@Test
 	public void testCreateAdviceExpression() throws XacmlException
 	{
-		AttributeAssigmentExpression attrExp = createStrictMock(AttributeAssigmentExpression.class);
-		AdviceExpression exp = new DefaultAdviceExpression("test",Effect.DENY, Collections.singletonList(attrExp));
+		AttributeAssignmentExpression attrExp = createStrictMock(AttributeAssignmentExpression.class);
+		AdviceExpression exp = new AdviceExpression("test",Effect.DENY, Collections.singletonList(attrExp));
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
@@ -47,9 +47,9 @@ public class DefaultAdviceExpressionTest
 	@Test
 	public void testEvaluateAdviceExpression() throws XacmlException
 	{
-		AttributeAssigmentExpression attrExp0 = createStrictMock(AttributeAssigmentExpression.class);
-		AttributeAssigmentExpression attrExp1 = createStrictMock(AttributeAssigmentExpression.class);
-		AdviceExpression exp = new DefaultAdviceExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
+		AttributeAssignmentExpression attrExp0 = createStrictMock(AttributeAssignmentExpression.class);
+		AttributeAssignmentExpression attrExp1 = createStrictMock(AttributeAssignmentExpression.class);
+		AdviceExpression exp = new AdviceExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0");
 		expect(attrExp0.getCategory()).andReturn(AttributeCategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");

@@ -77,7 +77,6 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		return lazyParamEval;
 	}
 
-	
 	@Override
 	public boolean isVariadic(){
 		return parameters.isEmpty()?false:parameters.get(parameters.size() - 1).isVariadic();
@@ -93,8 +92,8 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		return resolver.resolve(this, arguments);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws FunctionInvocationException {
 		
@@ -194,5 +193,5 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 */
 	protected boolean validateAdditional(Expression ... params){
 		return true;
-	}
+	}	
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.artagon.xacml.v3.FunctionInvocation;
 import com.artagon.xacml.v3.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.FunctionSpecBuilder;
 import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
@@ -51,12 +50,12 @@ public class DefaultFunctionSpecBuilder
 	}
 
 	@Override
-	public FunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
+	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
 		return new DefaultFunctionSpec(functionId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
 	@Override
-	public FunctionSpec build(ValueType returnType,
+	public DefaultFunctionSpec build(ValueType returnType,
 			FunctionInvocation invocation) {
 		return build(
 				new FixedReturnTypeFunctionReturnTypeResolver(returnType), 

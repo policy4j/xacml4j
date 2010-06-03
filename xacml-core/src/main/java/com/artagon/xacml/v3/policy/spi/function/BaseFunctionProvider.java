@@ -15,7 +15,7 @@ public class BaseFunctionProvider implements FunctionProvider
 	}
 	
 	/**
-	 * Adds given {@link FunctionSpec} to this factory
+	 * Adds given {@link DefaultFunctionSpec} to this factory
 	 * 
 	 * @param spec a function specification
 	 * @exception 

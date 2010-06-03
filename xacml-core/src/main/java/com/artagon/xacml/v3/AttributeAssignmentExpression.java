@@ -1,17 +1,9 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.AttributeAssigmentExpression;
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.PolicyVisitor;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
-final class DefaultAttributeAssignmentExpression extends XacmlObject 
-	implements AttributeAssigmentExpression
+public  class AttributeAssignmentExpression extends XacmlObject 
+	implements PolicyElement
 {
 	private AttributeCategoryId category;
 	private String attributeId;
@@ -27,7 +19,7 @@ final class DefaultAttributeAssignmentExpression extends XacmlObject
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer
 	 */
-	public DefaultAttributeAssignmentExpression(
+	public AttributeAssignmentExpression(
 			String attributeId, 
 			Expression expression, 
 			AttributeCategoryId category, 
@@ -41,22 +33,37 @@ final class DefaultAttributeAssignmentExpression extends XacmlObject
 		this.issuer = issuer;
 	}
 	
-	@Override
+	/**
+	 * Gets attribute identifier
+	 * 
+	 * @return attribute identifier
+	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
 	
-	@Override
+	/**
+	 * An optional category of the attribute. 
+	 * If category is not specified, the attribute has no category
+	 * 
+	 * @return category identifier or <code>null</code>
+	 */
 	public AttributeCategoryId getCategory(){
 		return category;
 	}
 	
-	@Override
+
+	/**
+	 * Gets an issuer of the attribute.
+	 * If issuer is not specified, the attribute
+	 * has not issuer
+	 * 
+	 * @return attribute issuer or <code>null</code>
+	 */
 	public String getIssuer(){
 		return issuer;
 	}
 	
-	@Override
 	public AttributeValue evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{

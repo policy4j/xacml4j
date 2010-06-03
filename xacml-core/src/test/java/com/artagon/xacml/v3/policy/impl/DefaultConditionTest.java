@@ -14,7 +14,6 @@ import com.artagon.xacml.v3.ConditionResult;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
-import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.PolicyException;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
@@ -45,7 +44,7 @@ public class DefaultConditionTest
 	{
 		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType());
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
-				createStrictMock(FunctionSpec.class), new NullPointerException()));
+				createStrictMock(DefaultFunctionSpec.class), new NullPointerException()));
 		replay(exp, context);
 		Condition c = new DefaultCondition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
