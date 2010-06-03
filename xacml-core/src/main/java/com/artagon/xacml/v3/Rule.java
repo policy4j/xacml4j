@@ -1,52 +1,131 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
+import java.util.Collections;
 
-public interface Rule extends DecisionRule
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
+
+public class Rule extends BaseDesicionRule implements PolicyElement
 {
-	/**
-	 * Gets decision policy description
-	 * 
-	 * @return description
-	 */
-	String getDescription();
+	private final static Logger log = LoggerFactory.getLogger(Rule.class);
+	
+	private Effect effect;
+	private Condition condition;
 	
 	/**
-	 * Gets rule target
+	 * Constructs rule with a given identifier, 
+	 * condition and effect.
 	 * 
-	 * @return {@link Target} or
-	 * <code>null</code> if rule 
-	 * matches any request
+	 * @param ruleId a rule unique identifier
+	 * @param condition a condition
+	 * @param effect a rule effect
 	 */
-	Target getTarget();
+	public Rule(
+			String ruleId, 
+			String description,
+			Target target,
+			Condition condition, 
+			Effect effect, Collection<AdviceExpression> adviceExpressions,
+			Collection<ObligationExpression> obligationExpressions){
+		super(ruleId, description, target, adviceExpressions, obligationExpressions);
+		Preconditions.checkNotNull(ruleId);
+		Preconditions.checkNotNull(effect);
+		this.condition = condition;
+		this.effect = effect;
+	}
 	
 	/**
-	 * Gets rule effect.
-	 * 
-	 * @return rule effect
+	 * Constructs rule instance with a given identifier
+	 * target, condition and effect
+	 * @param ruleId a rule identifier
+	 * @param description
+	 * @param target a rule target
+	 * @param condition a rule condition
+	 * @param effect a rule effect
 	 */
-	Effect getEffect();
+	public Rule(
+			String ruleId, 
+			String description,
+			Target target,
+			Condition condition, 
+			Effect effect){
+		this(ruleId, description, target, condition, effect, 
+				Collections.<AdviceExpression>emptyList(), 
+				Collections.<ObligationExpression>emptyList());
+	}
+	
+	/**
+	 * Gets rule effect
+	 * 
+	 * @return {@link Effect}
+	 */
+	public Effect getEffect(){
+		return effect;
+	}
+	
+	/**
+	 * Gets rule condition
+	 * 
+	 * @return {@link Collection} rule 
+	 * condition
+	 */
+	public Condition getCondition(){
+		return condition;
+	}
+	
+	/**
+	 * Implementation returns the same context which was
+	 * passed as parent context. Rule evaluation shares
+	 * a context with a parent policy
+	 */
+	@Override
+	public EvaluationContext createContext(EvaluationContext context) {
+		return context;
+	}
+	
+	@Override
+	protected boolean isEvaluationContextValid(EvaluationContext context){
+		return context.getCurrentPolicy() != null;
+	}
+	
 
+	protected Decision doEvaluate(EvaluationContext context)
+	{
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		log.debug("RuleId=\"{}\" condition evaluation result=\"{}\"", getId(), result);
+		if(result == ConditionResult.INDETERMINATE){
+			return getExtendedIndeterminate();
+		}
+		Decision d = (result == ConditionResult.TRUE)?
+				getEffect().getResult():Decision.NOT_APPLICABLE;
+		log.debug("RuleId=\"{}\" decision result=\"{}\"", getId(), d);
+		return d;
+	}
+		
 	/**
-	 * Gets rule condition.
+	 * Gets rule extended "Indeterminate" status
 	 * 
-	 * @return boolean
+	 * @return {@link Decision} instance representing
+	 * extended "Indeterminate" status
 	 */
-	Condition getCondition();
-	
-	/**
-	 * Gets decision obligations
-	 * 
-	 * @return collection of {@link ObligationExpression}
-	 * instances
-	 */
-	Collection<ObligationExpression> getObligationExpressions();
-	
-	/**
-	 * Gets decision advice expressions
-	 * 
-	 * @return collection of {@link AdviceExpression}
-	 * instances
-	 */
-	Collection<AdviceExpression> getAdviceExpressions();
+	private Decision getExtendedIndeterminate(){
+		return effect == Effect.DENY?
+				Decision.INDETERMINATE_D:Decision.INDETERMINATE_P;
+	}
+
+	@Override
+	public void accept(PolicyVisitor v) 
+	{
+		v.visitEnter(this);
+		if(getTarget() != null){
+			getTarget().accept(v);
+		}
+		if(condition != null){
+			condition.accept(v);
+		}
+		v.visitLeave(this);
+	}
 }

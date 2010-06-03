@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetDefaults;
+import com.artagon.xacml.v3.PolicySetEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
