@@ -1,7 +1,9 @@
 package com.artagon.xacml.v3.policy.impl;
 
 import static junit.framework.Assert.assertEquals;
+import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -15,6 +17,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Match;
 import com.artagon.xacml.v3.MatchResult;
@@ -46,10 +49,10 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(DataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andReturn(v);
-		expect(spec.invoke(context, int1, int2)).andReturn(DataTypes.BOOLEAN.create(false));
-		expect(spec.invoke(context, int1, int1)).andReturn(DataTypes.BOOLEAN.create(true));
+		expect(spec.invoke(eq(context), (Expression[])anyObject())).andReturn(DataTypes.BOOLEAN.create(false));
+		expect(spec.invoke(eq(context), (Expression[])anyObject())).andReturn(DataTypes.BOOLEAN.create(true));
 		replay(spec, ref);
-		Match m = new DefaultMatch(spec, int1, ref);
+		Match m = new Match(spec, int1, ref);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(spec, ref);
 	}
@@ -63,7 +66,7 @@ public class DefaultMatchTest extends XacmlPolicyTestCase
 		expect(ref.getDataType()).andReturn(DataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
 		replay(spec, ref);
-		Match m = new DefaultMatch(spec, DataTypes.INTEGER.create(1), ref);
+		Match m = new Match(spec, DataTypes.INTEGER.create(1), ref);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		verify(spec, ref);
 	}

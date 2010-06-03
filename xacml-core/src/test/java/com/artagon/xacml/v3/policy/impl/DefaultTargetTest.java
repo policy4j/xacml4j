@@ -37,16 +37,16 @@ public class DefaultTargetTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2);
-		Target t = new DefaultTarget(matches);
+		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
 		verify(m1, m2);
 	}
 	
 	@Test
 	public void testEmptyTarget(){
-		Target t = new DefaultTarget(matches);
+		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
-		t = new DefaultTarget();
+		t = new Target();
 		assertEquals(MatchResult.MATCH, t.match(context));
 	}
 	
@@ -63,7 +63,7 @@ public class DefaultTargetTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		replay(m1, m2, m3);
-		Target t = new DefaultTarget(matches);
+		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
 		verify(m1, m2, m3);
 	}
@@ -80,7 +80,7 @@ public class DefaultTargetTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		replay(m1, m2, m3);
-		Target t = new DefaultTarget(matches);
+		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
 		verify(m1, m2, m3);
 	}
@@ -96,7 +96,7 @@ public class DefaultTargetTest
 		matches.add(m3);
 		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Target t = new DefaultTarget(matches);
+		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));
 		verify(m1, m2, m3);
 	}

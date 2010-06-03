@@ -29,7 +29,7 @@ public interface PolicySet extends CompositeDecisionRule, Versionable
 	 */
 	Target getTarget();
 	
-	DecisionCombinerParameters getCombinerParameters();
+	CombinerParameters getCombinerParameters();
 	PolicyCombinerParameters getPolicyCombinerParameters();
 	PolicySetCombinerParameters getPolicySetCombinerParameters();
 	

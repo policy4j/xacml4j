@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Match;
+import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Matchable;
 
@@ -39,7 +40,7 @@ public class DefaultMatchAllOfTest
 		matches.add(m2);
 		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2);
-		Matchable m = new DefaultMatchAllOf(matches);
+		Matchable m = new MatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		verify(m1, m2);
 	}
@@ -57,7 +58,7 @@ public class DefaultMatchAllOfTest
 		expect(m2.match(context)).andReturn(MatchResult.MATCH);
 		expect(m3.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAllOf(matches);
+		Matchable m = new MatchAllOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -74,7 +75,7 @@ public class DefaultMatchAllOfTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAllOf(matches);
+		Matchable m = new MatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -92,7 +93,7 @@ public class DefaultMatchAllOfTest
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m3.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAllOf(matches);
+		Matchable m = new MatchAllOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -110,7 +111,7 @@ public class DefaultMatchAllOfTest
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m3.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAllOf(matches);
+		Matchable m = new MatchAllOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		verify(m1, m2, m3);
 	}

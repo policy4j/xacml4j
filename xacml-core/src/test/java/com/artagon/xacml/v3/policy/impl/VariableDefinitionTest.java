@@ -12,12 +12,13 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.VariableDefinition;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 
 public class VariableDefinitionTest
 {
-	private DefaultVariableDefinition varDef;
+	private VariableDefinition varDef;
 	private Expression expression;
 	private EvaluationContext context;
 	
@@ -26,7 +27,7 @@ public class VariableDefinitionTest
 	{
 		this.expression = createStrictMock(Expression.class);
 		this.context = createStrictMock(EvaluationContext.class);
-		this.varDef = new DefaultVariableDefinition("testId", expression);
+		this.varDef = new VariableDefinition("testId", expression);
 	}
 	
 	@Test

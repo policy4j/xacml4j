@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.MatchAllOf;
+import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Matchable;
 
@@ -39,7 +40,7 @@ public class DefaultMatchAnyOfTest
 		matches.add(m3);;
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAnyOf(matches);
+		Matchable m = new MatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -57,7 +58,7 @@ public class DefaultMatchAnyOfTest
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m3.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAnyOf(matches);
+		Matchable m = new MatchAnyOf(matches);
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -75,7 +76,7 @@ public class DefaultMatchAnyOfTest
 		expect(m3.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAnyOf(matches);
+		Matchable m = new MatchAnyOf(matches);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		verify(m1, m2, m3);
 	}
@@ -93,7 +94,7 @@ public class DefaultMatchAnyOfTest
 		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
 		expect(m3.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new DefaultMatchAnyOf(matches);
+		Matchable m = new MatchAnyOf(matches);
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		verify(m1, m2, m3);
 	}

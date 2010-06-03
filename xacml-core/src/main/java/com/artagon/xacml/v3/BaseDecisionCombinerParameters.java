@@ -1,14 +1,10 @@
-package com.artagon.xacml.v3.policy.impl;
+package com.artagon.xacml.v3;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v3.CombinerParameter;
-import com.artagon.xacml.v3.DecisionCombinerParameters;
-import com.artagon.xacml.v3.XacmlObject;
-
 abstract class BaseDecisionCombinerParameters extends XacmlObject 
-	implements DecisionCombinerParameters
+	implements PolicyElement
 {
 	protected Map<String, CombinerParameter> parameters;
 	
@@ -21,8 +17,15 @@ abstract class BaseDecisionCombinerParameters extends XacmlObject
 	}
 
 	
-	@Override
-	public final CombinerParameter getParameter(String name) {
+	/**
+	 * Gets parameter by name
+	 *  
+	 * @param name a parameter name
+	 * @return {@link CombinerParameter} instance
+	 * or <code>null</code> if parameter with such name
+	 * is not defined
+	 */
+	public CombinerParameter getParameter(String name) {
 		return parameters.get(name);
 	}
 }

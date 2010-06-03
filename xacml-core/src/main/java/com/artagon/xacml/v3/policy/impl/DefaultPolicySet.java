@@ -12,7 +12,6 @@ import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.CombinerParameters;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.DecisionCombinerParameters;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.DecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -96,7 +95,7 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 	}
 	
 	@Override
-	public DecisionCombinerParameters getCombinerParameters() {
+	public CombinerParameters getCombinerParameters() {
 		return combinerParameters;
 	}
 

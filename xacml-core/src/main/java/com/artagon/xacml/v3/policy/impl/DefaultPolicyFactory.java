@@ -67,13 +67,13 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public MatchAllOf createAllOfMatch(Collection<Match> matches) throws PolicySyntaxException 
 	{
-		return new DefaultMatchAllOf(matches);
+		return new MatchAllOf(matches);
 	}
 
 	@Override
 	public MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches)
 			throws PolicySyntaxException {
-		return new DefaultMatchAnyOf(matches);
+		return new MatchAnyOf(matches);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public Match createMatch(String functionId, AttributeValue value, AttributeReference reference)
 			throws PolicySyntaxException 
 	{
-		return new DefaultMatch(createFunction(functionId), value, reference);
+		return new Match(createFunction(functionId), value, reference);
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	public Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException
 	{
-		return new DefaultTarget(match);
+		return new Target(match);
 	}
 	
 	@Override
@@ -131,11 +131,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 	
 	public MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException{
-		return new DefaultMatchAnyOf(allOf);
+		return new MatchAnyOf(allOf);
 	}
 	
 	public MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException{
-		return new DefaultMatchAllOf(match);
+		return new MatchAllOf(match);
 	}
 	
 	@Override
@@ -231,7 +231,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public FunctionReference createFunctionReference(String functionId)
 			throws PolicySyntaxException {
-		return new DefaultFunctionReference(createFunction(functionId));
+		return new FunctionReference(createFunction(functionId));
 	}
 
 	@Override
@@ -252,7 +252,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public VariableReference createVariableReference(VariableDefinition varDef)
 			throws PolicySyntaxException 
 	{
-		return new DefaultVariableReference(varDef);
+		return new VariableReference(varDef);
 	}
 	
 	public VariableDefinition createVariableDefinition(
@@ -263,7 +263,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			throw new PolicySyntaxException("Variable identifier " +
 					"or expression can not be null");
 		}
-		return new DefaultVariableDefinition(variableId, expression);
+		return new VariableDefinition(variableId, expression);
 	}
 
 	@Override
