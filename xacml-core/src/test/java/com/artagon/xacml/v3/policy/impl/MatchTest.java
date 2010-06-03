@@ -24,7 +24,7 @@ import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class DefaultMatchTest extends XacmlPolicyTestCase
+public class MatchTest extends XacmlPolicyTestCase
 {
 	private FunctionSpec spec;
 	private AttributeDesignator ref;

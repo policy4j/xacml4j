@@ -14,11 +14,11 @@ import com.artagon.xacml.v3.ConditionResult;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.PolicyException;
-import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class DefaultConditionTest 
+public class ConditionTest 
 {
 	private Expression exp;
 	private EvaluationContext context;
@@ -29,24 +29,24 @@ public class DefaultConditionTest
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
-	@Test(expected=PolicySyntaxException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithExpWhichReturnsNonBooleanValue() 
 		throws PolicyException
 	{
 		expect(exp.getEvaluatesTo()).andReturn(DataTypes.INTEGER.getType()).times(1, 2);
 		replay(exp);
-		new DefaultCondition(exp);
+		new Condition(exp);
 		verify(exp);
 	}
 	
 	@Test
 	public void testExpressionThrowsEvaluationException() throws PolicyException
 	{
-		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType());
+		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
-				createStrictMock(DefaultFunctionSpec.class), new NullPointerException()));
+				createStrictMock(FunctionSpec.class), new NullPointerException()));
 		replay(exp, context);
-		Condition c = new DefaultCondition(exp);
+		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		verify(exp, context);
 	}
@@ -54,10 +54,10 @@ public class DefaultConditionTest
 	@Test
 	public void testExpressionThrowsRuntimeException() throws PolicyException
 	{
-		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType());
+		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
 		replay(exp, context);
-		Condition c = new DefaultCondition(exp);
+		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		verify(exp, context);
 	}
@@ -65,10 +65,10 @@ public class DefaultConditionTest
 	@Test
 	public void testExpressionEvaluatesToFalse() throws PolicyException
 	{
-		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType());
+		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andReturn(DataTypes.BOOLEAN.create(false));
 		replay(exp, context);
-		Condition c = new DefaultCondition(exp);
+		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.FALSE, c.evaluate(context));
 		verify(exp, context);
 	}
@@ -76,10 +76,10 @@ public class DefaultConditionTest
 	@Test
 	public void testExpressionEvaluatesToTrue() throws PolicyException
 	{
-		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType());
+		expect(exp.getEvaluatesTo()).andReturn(DataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andReturn(DataTypes.BOOLEAN.create(true));
 		replay(exp, context);
-		Condition c = new DefaultCondition(exp);
+		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.TRUE, c.evaluate(context));
 		verify(exp, context);
 	}

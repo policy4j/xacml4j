@@ -25,7 +25,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XacmlException;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
-public class DefaultAdviceExpressionTest 
+public class AdviceExpressionTest 
 {
 	private EvaluationContext context;
 	

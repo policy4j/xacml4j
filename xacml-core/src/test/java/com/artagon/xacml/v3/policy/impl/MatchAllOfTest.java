@@ -19,7 +19,7 @@ import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Matchable;
 
-public class DefaultMatchAllOfTest
+public class MatchAllOfTest
 {
 	private Collection<Match> matches;
 	private EvaluationContext context;

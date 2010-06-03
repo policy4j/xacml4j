@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 import com.artagon.xacml.v3.policy.type.IntegerType;
 
-public class DefaultAttributeDesignatorTest
+public class AttributeDesignatorTest
 {
 	private IntegerType type;
 	private EvaluationContext context;

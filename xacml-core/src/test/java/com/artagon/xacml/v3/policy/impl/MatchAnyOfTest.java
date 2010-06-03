@@ -18,7 +18,7 @@ import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.Matchable;
 
-public class DefaultMatchAnyOfTest
+public class MatchAnyOfTest
 {
 	private Collection<MatchAllOf> matches;
 	private EvaluationContext context;

@@ -14,6 +14,7 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionReference;
@@ -127,7 +128,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			throw new PolicySyntaxException(
 					"Condition predicate must evaluate to=\"%s\"", DataTypes.BOOLEAN.getType());
 		}
-		return new DefaultCondition(predicate);
+		return new Condition(predicate);
 	}
 	
 	public MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException{
