@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.Version;
-import com.google.common.base.Preconditions;
 
 final class DefaultPolicySet extends BaseCompositeDecisionRule implements PolicySet
 {
@@ -66,7 +65,7 @@ final class DefaultPolicySet extends BaseCompositeDecisionRule implements Policy
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		super(id, version, description, target, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(combine);
+		checkNotNull(combine, "Policy set combining algorithm must be specified");
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;

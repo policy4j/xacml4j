@@ -29,7 +29,7 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	{
 		checkNotNull(spec != null, 
 				"Can't create Apply without function, function can't be null");
-		checkSyntaxCondition((arguments == null || arguments.length > 0), 
+		checkArgument((arguments == null || arguments.length > 0), 
 				"At least one argument must be specified");
 		spec.validateParametersAndThrow(arguments);
 		this.spec = spec;

@@ -5,6 +5,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.google.common.base.Preconditions;
+
 public class XacmlObject {
 	@Override
 	public boolean equals(Object o) {
@@ -23,23 +25,12 @@ public class XacmlObject {
 	}
 
 	public static void checkNotNull(Object v, String template, Object... args)
-			throws PolicySyntaxException {
-		if (v == null) {
-			throw new PolicySyntaxException(template, args);
-		}
+			throws NullPointerException {
+		Preconditions.checkNotNull(v, template, args);
 	}
 	
-	/**
-	 * Checks if given condition is <code>true</code>
-	 * @param condition
-	 * @param template
-	 * @param args
-	 * @throws PolicySyntaxException
-	 */
-	protected static void checkSyntaxCondition(boolean condition, String template,
-			Object... args) throws PolicySyntaxException {
-		if (!condition) {
-			throw new PolicySyntaxException(template, args);
-		}
+	protected static void checkArgument(boolean condition, String template,
+			Object... args) throws IllegalArgumentException {
+		Preconditions.checkArgument(condition, template, args);
 	}
 }
