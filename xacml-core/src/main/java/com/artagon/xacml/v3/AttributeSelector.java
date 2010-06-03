@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 
 public class AttributeSelector extends 
-	BaseAttributeReference
+	AttributeReference
 {
 	private String xpath;
 	private String contextAttributeId;

@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author Giedrius Trumpickas
  *
  */
-public final class Apply extends XacmlObject implements Expression, PolicyElement
+public class Apply extends XacmlObject implements Expression, PolicyElement
 {	
 	private FunctionSpec spec;
 	private Expression[] arguments;

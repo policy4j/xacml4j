@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public final class DefaultRequestFactory implements ContextFactory

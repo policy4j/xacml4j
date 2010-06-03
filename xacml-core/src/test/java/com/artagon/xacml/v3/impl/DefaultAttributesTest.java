@@ -15,8 +15,6 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Attribute;
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.policy.type.DataTypes;
 
 public class DefaultAttributesTest 

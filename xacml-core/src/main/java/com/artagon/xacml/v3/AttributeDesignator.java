@@ -21,7 +21,7 @@ import com.google.common.base.Preconditions;
  * 
  * @param <T>
  */
-public class AttributeDesignator extends BaseAttributeReference 
+public class AttributeDesignator extends AttributeReference 
 {
 	private String attributeId;
 	private String issuer;
