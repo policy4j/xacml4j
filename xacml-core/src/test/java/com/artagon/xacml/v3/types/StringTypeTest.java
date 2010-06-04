@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.type;
+package com.artagon.xacml.v3.types;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
