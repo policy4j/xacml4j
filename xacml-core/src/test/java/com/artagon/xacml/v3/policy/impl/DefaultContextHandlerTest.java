@@ -107,7 +107,7 @@ public class DefaultContextHandlerTest
 		verify(context, request, attributes);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testResolveSelectorWithXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
