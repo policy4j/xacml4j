@@ -8,7 +8,9 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.type.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.DayTimeDurationType;
+import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 
 public class DayTimeDurationTypeTest 
 {
@@ -17,7 +19,7 @@ public class DayTimeDurationTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = DataTypes.DAYTIMEDURATION.getType();
+		this.t1 = XacmlDataTypes.DAYTIMEDURATION.getType();
 		this.f = DatatypeFactory.newInstance();
 	}
 	

@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.RFC822NameType;
 
 public class RFC822NameTypeTest 
 {
@@ -15,7 +17,7 @@ public class RFC822NameTypeTest
 	
 	@Before
 	public void init(){
-		this.t = DataTypes.RFC822NAME.getType();
+		this.t = XacmlDataTypes.RFC822NAME.getType();
 	}
 	
 	@Test

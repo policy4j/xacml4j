@@ -12,8 +12,8 @@ import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.policy.impl.DefaultFunctionSpecBuilder;
+import com.artagon.xacml.v3.policy.DefaultFunctionSpecBuilder;
+import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 

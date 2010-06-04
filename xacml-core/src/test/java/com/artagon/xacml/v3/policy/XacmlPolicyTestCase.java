@@ -6,10 +6,7 @@ import org.junit.Before;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyReferenceResolver;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.policy.impl.DefaultEvaluationContextFactory;
+import com.artagon.xacml.v3.context.Request;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 
 public class XacmlPolicyTestCase

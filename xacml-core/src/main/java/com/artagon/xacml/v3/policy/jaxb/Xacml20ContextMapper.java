@@ -16,15 +16,15 @@ import org.oasis.xacml.v20.context.ResultType;
 import org.oasis.xacml.v20.context.SubjectType;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.ContextSyntaxException;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.Response;
-import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.context.ContextSyntaxException;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.context.Response;
+import com.artagon.xacml.v3.context.Result;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

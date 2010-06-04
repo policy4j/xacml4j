@@ -11,11 +11,11 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultRequestTest 
 {
@@ -28,26 +28,26 @@ public class DefaultRequestTest
 	public void init()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId10", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId11", DataTypes.STRING.create("value1")));
+		resource0Attr.add(new Attribute("testId10", XacmlDataTypes.STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId11", XacmlDataTypes.STRING.create("value1")));
 		this.resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId11", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId22", DataTypes.STRING.create("value1")));
-		resource1Attr.add(new Attribute("testId23", null, true, Arrays.asList(DataTypes.STRING.create("value2"))));
-		resource1Attr.add(new Attribute("testId24","testIssuer", true, Arrays.asList(DataTypes.STRING.create("value2"))));
+		resource1Attr.add(new Attribute("testId11", XacmlDataTypes.STRING.create("value0")));
+		resource1Attr.add(new Attribute("testId22", XacmlDataTypes.STRING.create("value1")));
+		resource1Attr.add(new Attribute("testId23", null, true, Arrays.asList(XacmlDataTypes.STRING.create("value2"))));
+		resource1Attr.add(new Attribute("testId24","testIssuer", true, Arrays.asList(XacmlDataTypes.STRING.create("value2"))));
 		this.resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subject0Attr = new LinkedList<Attribute>();
-		subject0Attr.add(new Attribute("testId31", DataTypes.STRING.create("value0")));
-		subject0Attr.add(new Attribute("testId32", DataTypes.STRING.create("value1")));
+		subject0Attr.add(new Attribute("testId31", XacmlDataTypes.STRING.create("value0")));
+		subject0Attr.add(new Attribute("testId32", XacmlDataTypes.STRING.create("value1")));
 		this.subject0 =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subject0Attr);
 		
 		Collection<Attribute> subject1Attr = new LinkedList<Attribute>();
-		subject1Attr.add(new Attribute("testId41", DataTypes.STRING.create("value0")));
-		subject1Attr.add(new Attribute("testId42", DataTypes.STRING.create("value1")));
-		subject1Attr.add(new Attribute("testId43","testIssuer", true, Arrays.asList(DataTypes.STRING.create("value2"))));
+		subject1Attr.add(new Attribute("testId41", XacmlDataTypes.STRING.create("value0")));
+		subject1Attr.add(new Attribute("testId42", XacmlDataTypes.STRING.create("value1")));
+		subject1Attr.add(new Attribute("testId43","testIssuer", true, Arrays.asList(XacmlDataTypes.STRING.create("value2"))));
 		this.subject1 =  new Attributes(AttributeCategoryId.SUBJECT_CODEBASE, subject1Attr);
 	}
 	

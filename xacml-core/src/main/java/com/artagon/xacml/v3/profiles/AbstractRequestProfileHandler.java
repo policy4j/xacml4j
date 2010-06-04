@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.profiles;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.base.Preconditions;
 
 public abstract class AbstractRequestProfileHandler implements RequestProfileHandler

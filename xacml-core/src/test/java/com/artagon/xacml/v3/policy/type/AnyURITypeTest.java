@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.types.AnyURIType;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AnyURITypeTest 
 {
@@ -13,7 +15,7 @@ public class AnyURITypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = DataTypes.ANYURI.getType();
+		this.t1 = XacmlDataTypes.ANYURI.getType();
 	}
 	
 	@Test

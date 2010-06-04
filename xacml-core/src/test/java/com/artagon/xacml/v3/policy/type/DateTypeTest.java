@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.type.DateType.DateValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.DateType;
+import com.artagon.xacml.v3.types.DateType.DateValue;
 
 public class DateTypeTest 
 {
@@ -13,7 +15,7 @@ public class DateTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = DataTypes.DATE.getType();
+		this.t1 = XacmlDataTypes.DATE.getType();
 	}
 	
 	@Test

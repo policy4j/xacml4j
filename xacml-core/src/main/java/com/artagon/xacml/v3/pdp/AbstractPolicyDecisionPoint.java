@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.pdp;
 
-import com.artagon.xacml.v3.ContextFactory;
 import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.policy.PolicySet;
 import com.google.common.base.Preconditions;
 
 public abstract class AbstractPolicyDecisionPoint implements PolicyDecisionPoint 

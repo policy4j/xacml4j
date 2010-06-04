@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import com.artagon.xacml.v3.policy.PolicyElement;
+
 
 public interface Expression  extends PolicyElement
 {	

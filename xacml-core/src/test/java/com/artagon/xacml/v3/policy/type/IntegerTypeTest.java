@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.IntegerType;
+import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
 public class IntegerTypeTest 
 {
@@ -15,7 +17,7 @@ public class IntegerTypeTest
 	
 	@Before
 	public void init(){
-		this.t = DataTypes.INTEGER.getType();
+		this.t = XacmlDataTypes.INTEGER.getType();
 	}
 	
 	@Test

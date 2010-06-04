@@ -1,0 +1,14 @@
+package com.artagon.xacml.v3.policy;
+
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.Value;
+
+
+
+public interface FunctionInvocation
+{
+	<T extends Value> T invoke(FunctionSpec spoec, 
+			EvaluationContext context, Expression ...arguments) 
+		throws FunctionInvocationException;
+}

@@ -1,10 +1,9 @@
 package com.artagon.xacml.v3.policy.spi;
 
-import com.artagon.xacml.v3.AttributeCallback;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
 
 public interface AttributeLocator 
 {

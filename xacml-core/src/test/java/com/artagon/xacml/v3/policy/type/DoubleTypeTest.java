@@ -8,7 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.policy.type.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.DoubleType;
+import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 
 public class DoubleTypeTest 
 {
@@ -16,18 +18,18 @@ public class DoubleTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = DataTypes.DOUBLE.getType();
+		this.t1 = XacmlDataTypes.DOUBLE.getType();
 	}
 	
 	@Test
 	public void testCreateDouble()
 	{
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Short.valueOf("1")));
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Byte.valueOf("1")));
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Integer.valueOf("1")));
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Long.valueOf("1")));
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Float.valueOf("1")));
-		assertEquals(DataTypes.DOUBLE.create(1), DataTypes.DOUBLE.create(Double.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Short.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Byte.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Integer.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Long.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Float.valueOf("1")));
+		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Double.valueOf("1")));
 	}
 	
 	@Test

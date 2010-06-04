@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
+import com.artagon.xacml.v3.types.IPAddress;
+import com.artagon.xacml.v3.types.PortRange;
 
 public class IPAddressTest 
 {

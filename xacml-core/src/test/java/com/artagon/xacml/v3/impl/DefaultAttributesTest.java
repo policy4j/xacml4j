@@ -12,10 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultAttributesTest 
 {
@@ -30,9 +30,9 @@ public class DefaultAttributesTest
 	public void testCreate()
 	{
 		Collection<Attribute> attr = new LinkedList<Attribute>();
-		attr.add(new Attribute("testId10", DataTypes.STRING.create("value0")));
-		attr.add(new Attribute("testId11", DataTypes.STRING.create("value1")));
-		attr.add(new Attribute("testId11", "testIssuer", true, DataTypes.STRING.create("value1")));
+		attr.add(new Attribute("testId10", XacmlDataTypes.STRING.create("value0")));
+		attr.add(new Attribute("testId11", XacmlDataTypes.STRING.create("value1")));
+		attr.add(new Attribute("testId11", "testIssuer", true, XacmlDataTypes.STRING.create("value1")));
 		Attributes test = new Attributes("id", AttributeCategoryId.RESOURCE,  content, attr);
 		assertTrue(attr.containsAll(test.getAttributes()));
 		assertTrue(test.getAttributes().containsAll(attr));

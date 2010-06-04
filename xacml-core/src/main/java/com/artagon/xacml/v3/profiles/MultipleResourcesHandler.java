@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.ContextSyntaxException;
-import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.context.ContextSyntaxException;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.collect.Sets;
 
 public class MultipleResourcesHandler extends AbstractRequestProfileHandler

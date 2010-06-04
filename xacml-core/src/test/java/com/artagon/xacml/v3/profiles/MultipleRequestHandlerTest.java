@@ -16,20 +16,20 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.ContextSyntaxException;
-import com.artagon.xacml.v3.DefaultRequestFactory;
-import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestReference;
-import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.context.ContextSyntaxException;
+import com.artagon.xacml.v3.context.DefaultRequestFactory;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.context.RequestReference;
+import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.context.Status;
+import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.policy.AttributesReference;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
 public class MultipleRequestHandlerTest 
@@ -50,23 +50,23 @@ public class MultipleRequestHandlerTest
 	public void testResolveRequestsWithValidReferences() throws ContextSyntaxException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		attributes0.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		attributes1.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
-		attributes2.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		attributes2.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
+		attributes2.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		attributes3.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		attributes3.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
+		attributes3.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
@@ -118,13 +118,13 @@ public class MultipleRequestHandlerTest
 	public void testWithNoReferences()
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		attributes0.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
+		attributes0.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId5", DataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId6", DataTypes.STRING.create("value1")));
+		attributes1.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
+		attributes1.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
 		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
 		
 		Request request = new Request(false, 

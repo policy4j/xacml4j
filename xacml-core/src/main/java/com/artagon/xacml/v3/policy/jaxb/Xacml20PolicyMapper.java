@@ -42,36 +42,36 @@ import org.oasis.xacml.v20.policy.VariableReferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.AdviceExpression;
-import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeDesignator;
-import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.Match;
-import com.artagon.xacml.v3.MatchAllOf;
-import com.artagon.xacml.v3.MatchAnyOf;
-import com.artagon.xacml.v3.ObligationExpression;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyDefaults;
-import com.artagon.xacml.v3.PolicyFactory;
-import com.artagon.xacml.v3.PolicyIDReference;
-import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.PolicySetDefaults;
-import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.Target;
-import com.artagon.xacml.v3.VariableDefinition;
 import com.artagon.xacml.v3.Version;
-import com.artagon.xacml.v3.VersionMatch;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.policy.AdviceExpression;
+import com.artagon.xacml.v3.policy.Apply;
+import com.artagon.xacml.v3.policy.AttributeDesignator;
+import com.artagon.xacml.v3.policy.AttributeSelector;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.Condition;
+import com.artagon.xacml.v3.policy.Match;
+import com.artagon.xacml.v3.policy.MatchAllOf;
+import com.artagon.xacml.v3.policy.MatchAnyOf;
+import com.artagon.xacml.v3.policy.ObligationExpression;
+import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.policy.PolicyDefaults;
+import com.artagon.xacml.v3.policy.PolicyFactory;
+import com.artagon.xacml.v3.policy.PolicyIDReference;
+import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.policy.PolicySetDefaults;
+import com.artagon.xacml.v3.policy.PolicySetIDReference;
+import com.artagon.xacml.v3.policy.PolicySyntaxException;
+import com.artagon.xacml.v3.policy.Rule;
+import com.artagon.xacml.v3.policy.Target;
+import com.artagon.xacml.v3.policy.VariableDefinition;
+import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
@@ -585,7 +585,7 @@ public class Xacml20PolicyMapper
 	AttributeSelector createSelector(AttributeCategoryId categoryId,
 			AttributeSelectorType selector) throws PolicySyntaxException 
 	{
-		AttributeValueType dataType = DataTypes.getByTypeId(selector
+		AttributeValueType dataType = XacmlDataTypes.getByTypeId(selector
 				.getDataType());
 		if (dataType == null) {
 			throw new PolicySyntaxException("Unknown dataType=\"%s\"", selector
@@ -654,7 +654,7 @@ public class Xacml20PolicyMapper
 	 */
 	AttributeDesignator createDesignator(AttributeCategoryId categoryId,
 			AttributeDesignatorType ref) throws PolicySyntaxException {
-		AttributeValueType dataType = DataTypes.getByTypeId(ref.getDataType());
+		AttributeValueType dataType = XacmlDataTypes.getByTypeId(ref.getDataType());
 		if (dataType == null) {
 			throw new PolicySyntaxException("Unknown dataType=\"%s\"", ref
 					.getDataType());

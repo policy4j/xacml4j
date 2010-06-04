@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.IPAddressType;
+import com.artagon.xacml.v3.types.PortRange;
 
 public class IPAddressTypeTest 
 {
@@ -14,7 +17,7 @@ public class IPAddressTypeTest
 	
 	@Before
 	public void test(){
-		this.t = DataTypes.IPADDRESS.getType();
+		this.t = XacmlDataTypes.IPADDRESS.getType();
 	}
 	
 	@Test

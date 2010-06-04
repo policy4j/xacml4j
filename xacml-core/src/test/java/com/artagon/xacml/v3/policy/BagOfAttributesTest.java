@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy;
 
-import static com.artagon.xacml.v3.policy.type.DataTypes.INTEGER;
+import static com.artagon.xacml.v3.types.XacmlDataTypes.INTEGER;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;
@@ -16,9 +16,9 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.policy.type.DataTypes;
-import com.artagon.xacml.v3.policy.type.StringType;
-import com.artagon.xacml.v3.policy.type.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.StringType;
+import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
 public class BagOfAttributesTest extends XacmlPolicyTestCase
 {
@@ -26,7 +26,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.stringType = DataTypes.STRING.getType();
+		this.stringType = XacmlDataTypes.STRING.getType();
 	}
 	
 	@Test
@@ -47,8 +47,8 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	@Test
 	public void testEqualsEmptyBags()
 	{
-		assertEquals(DataTypes.STRING.emptyBag(), DataTypes.STRING.emptyBag());
-		assertEquals(DataTypes.STRING.emptyBag(), DataTypes.STRING.emptyBag());
+		assertEquals(XacmlDataTypes.STRING.emptyBag(), XacmlDataTypes.STRING.emptyBag());
+		assertEquals(XacmlDataTypes.STRING.emptyBag(), XacmlDataTypes.STRING.emptyBag());
 	}
 	
 	@Test
@@ -148,10 +148,10 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 	public void testIntersection()
 	{
 		BagOfAttributeValues<IntegerValue> bag0 = INTEGER.bag(
-				DataTypes.INTEGER.create(1),
-				DataTypes.INTEGER.create(2),
-				DataTypes.INTEGER.create(3),
-				DataTypes.INTEGER.create(6));
+				XacmlDataTypes.INTEGER.create(1),
+				XacmlDataTypes.INTEGER.create(2),
+				XacmlDataTypes.INTEGER.create(3),
+				XacmlDataTypes.INTEGER.create(6));
 		
 		BagOfAttributeValues<IntegerValue> bag1 = INTEGER.bag(
 				INTEGER.create(2),

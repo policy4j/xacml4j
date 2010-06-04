@@ -11,7 +11,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AttributeTest 
 {
@@ -21,10 +22,10 @@ public class AttributeTest
 	public void init()
 	{
 		this.values = new LinkedList<AttributeValue>();
-		values.add(DataTypes.INTEGER.create(1));
-		values.add(DataTypes.INTEGER.create(2));
-		values.add(DataTypes.INTEGER.create(3));
-		values.add(DataTypes.INTEGER.create(2));
+		values.add(XacmlDataTypes.INTEGER.create(1));
+		values.add(XacmlDataTypes.INTEGER.create(2));
+		values.add(XacmlDataTypes.INTEGER.create(3));
+		values.add(XacmlDataTypes.INTEGER.create(2));
 	}
 	
 	@Test
@@ -55,10 +56,10 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = new Attribute("testId", 
-				DataTypes.INTEGER.create(1), 
-				DataTypes.INTEGER.create(2),
-				DataTypes.INTEGER.create(3),
-				DataTypes.INTEGER.create(2));
+				XacmlDataTypes.INTEGER.create(1), 
+				XacmlDataTypes.INTEGER.create(2),
+				XacmlDataTypes.INTEGER.create(3),
+				XacmlDataTypes.INTEGER.create(2));
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());

@@ -16,17 +16,17 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.ContextFactory;
-import com.artagon.xacml.v3.DefaultRequestFactory;
-import com.artagon.xacml.v3.PolicyDecisionCallback;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.type.DataTypes;
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.ContextFactory;
+import com.artagon.xacml.v3.context.DefaultRequestFactory;
+import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.context.Status;
+import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MultipleResourcesHandlerTest 
 {
@@ -45,18 +45,18 @@ public class MultipleResourcesHandlerTest
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		resource0Attr.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", DataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", DataTypes.STRING.create("value1")));
+		resource1Attr.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
+		resource1Attr.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
 		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		subjectAttr.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		Request context = new Request(false, 
@@ -91,14 +91,14 @@ public class MultipleResourcesHandlerTest
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", DataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", DataTypes.STRING.create("value1")));
+		resource0Attr.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", DataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", DataTypes.STRING.create("value1")));
+		subjectAttr.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		Request context = new Request(false, 
