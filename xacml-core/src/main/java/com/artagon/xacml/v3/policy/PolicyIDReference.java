@@ -29,7 +29,7 @@ public class PolicyIDReference extends
 		if(context.getCurrentPolicyIDReference() ==  this){
 			return context;
 		}
-		PolicyIDReferenceEvaluationContext refContext = new PolicyIDReferenceEvaluationContext(context, this);
+		PolicyIDReferenceEvaluationContext refContext = new PolicyIDReferenceEvaluationContext(context);
 		try{
 			Policy resolvedPolicy = context.resolve(this);
 			return resolvedPolicy.createContext(refContext);
@@ -76,4 +76,37 @@ public class PolicyIDReference extends
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}	
+	
+	/**
+	 * An {@link EvaluationContext} implementation
+	 * to evaluate {@link PolicySetIDReference} decisions
+	 * 
+	 * @author Giedrius Trumpickas
+	 */
+	class PolicyIDReferenceEvaluationContext extends
+			DelegatingEvaluationContext 
+	{
+		/**
+		 * Creates policy evaluation context with a given parent context
+		 * 
+		 * @param context a parent evaluation context
+		 * @param policyIDRef a policy reference
+		 * @exception IllegalArgumentException if enclosing context
+		 * {@link EvaluationContext#getCurrentPolicySet()} returns
+		 * <code>null</code> or given policy ID reference is
+		 * <code>null</code>
+		 */
+		PolicyIDReferenceEvaluationContext(EvaluationContext context) 
+		{
+			super(context);
+			Preconditions.checkNotNull(context.getCurrentPolicySet());
+			Preconditions.checkArgument(context.getCurrentPolicy() == null);
+		}
+		
+		@Override
+		public PolicyIDReference getCurrentPolicyIDReference() {
+			return PolicyIDReference.this;
+		}
+	}
+
 }

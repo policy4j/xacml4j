@@ -125,9 +125,9 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	@Override
 	protected Decision doEvaluate(EvaluationContext context) 
 	{
-		log.debug("Evaluating PolicySet Id=\"{}\", Combine Algorithm Id=\"{}\"", 
-				getId(), combine.getId());
-		return combine.combine(decisionRules, context);
+		Decision decision = combine.combine(decisionRules, context);
+		context.addEvaluatedPolicySet(this, decision);
+		return decision;
 	}
 	
 	public List<? extends CompositeDecisionRule> getDecisions() {

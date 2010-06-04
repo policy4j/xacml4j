@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.context.Advice;
+import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.context.Obligation;
 import com.google.common.base.Preconditions;
 
@@ -70,6 +71,15 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public Policy getCurrentPolicy() {
 		return delegate.getCurrentPolicy();
+	}
+
+	
+	public void addEvaluatedPolicy(Policy policy, Decision result) {
+		delegate.addEvaluatedPolicy(policy, result);
+	}
+
+	public void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
+		delegate.addEvaluatedPolicySet(policySet, result);
 	}
 
 	/**

@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.context.Advice;
+import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.context.Obligation;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeSelector;
@@ -48,33 +49,57 @@ public interface EvaluationContext
 	
 	/**
 	 * Returns a list of all policies which were found 
-	 * to be fully applicable during evaluation
+	 * to be fully applicable during evaluation.
 	 * 
-	 * @return
+	 * @return a collection of {@link PolicyIdentifier}
 	 */
 	Collection<PolicyIdentifier> getEvaluatedPolicies();
 	
 	/**
+	 * Adds evaluated policy and policy 
+	 * evaluation result to the context
+	 * 
+	 * @param policy an evaluated policy
+	 * @param result a policy evaluaton result
+	 */
+	void addEvaluatedPolicy(Policy policy, Decision result);
+	
+	/**
+	 * Adds evaluated policy set and policy set
+	 * evaluation result to the context
+	 * 
+	 * @param policy an evaluated policy set
+	 * @param result a policy set evaluation result
+	 */
+	void addEvaluatedPolicySet(PolicySet policySet, Decision result);
+	
+	/**
 	 * Gets currently evaluated policy
 	 * 
-	 * @return {@link Policy}
+	 * @return {@link Policy} or <code>null</code>
 	 */
 	Policy getCurrentPolicy();
 	
 	/**
 	 * Gets currently evaluated policy set
 	 * 
-	 * @return {@link PolicySet}
+	 * @return {@link PolicySet} or <code>null</code>
 	 */
 	PolicySet getCurrentPolicySet();
 	
 	/**
 	 * Gets current {@link PolicyIDReference}
 	 * 
-	 * @return current {@link PolicyIDReference}
+	 * @return current {@link PolicyIDReference} or
+	 * <code>null</code>
 	 */
 	PolicyIDReference getCurrentPolicyIDReference();
 	
+	/**
+	 * Gets currently evaluated {@link PolicySetIDReference}
+	 * 
+	 * @return {@link PolicySetIDReference} or <code>null</code>
+	 */
 	PolicySetIDReference getCurrentPolicySetIDReference();
 	
 	/**

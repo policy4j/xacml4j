@@ -27,7 +27,7 @@ public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		if(context.getCurrentPolicySetIDReference() ==  this){
 			return context;
 		}
-		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context, this);
+		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context);
 		try
 		{
 			PolicySet policySet = refContext.resolve(this);
@@ -74,5 +74,19 @@ public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+	
+	class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
+	{
+		PolicySetIDReferenceEvaluationContext(
+				EvaluationContext context) {
+			super(context);
+			Preconditions.checkNotNull(context.getCurrentPolicySet());
+		}
+		
+		@Override
+		public PolicySetIDReference getCurrentPolicySetIDReference() {
+			return PolicySetIDReference.this;
+		}
 	}
 }

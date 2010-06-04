@@ -25,6 +25,7 @@ import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.context.Advice;
+import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.context.Obligation;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
@@ -96,6 +97,21 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	
+	
+	@Override
+	public final void addEvaluatedPolicy(Policy policy, Decision result) 
+	{
+		PolicyIdentifier policyId = new PolicyIdentifier(policy.getId(), policy.getVersion());
+		this.evaluatedPolicies.add(policyId);
+	}
+
+	@Override
+	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) 
+	{
+		PolicyIdentifier policyId = new PolicyIdentifier(policySet.getId(), policySet.getVersion());
+		this.evaluatedPolicies.add(policyId);
+	}
+
 	@Override
 	public boolean isValidateFuncParamAtRuntime() {
 		return validateAtRuntime;
