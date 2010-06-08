@@ -42,6 +42,7 @@ import org.oasis.xacml.v20.policy.VariableReferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.util.VariableManager;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
@@ -71,7 +72,6 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.VersionMatch;
-import com.artagon.xacml.v3.policy.jaxb.VariableManager;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
