@@ -607,7 +607,7 @@ public class Xacml20PolicyMapper
 		return transform20PathTo30(selector.getRequestContextPath());
 	}
 	
-	public static String transform20PathTo30(String xpath) throws PolicySyntaxException
+	public static String transform20PathTo30(String xpath)
 	{
 		StringBuffer buf = new StringBuffer(xpath);
 		int firstIndex = xpath.indexOf(REQUEST_ELEMENT_NAME);
@@ -637,8 +637,9 @@ public class Xacml20PolicyMapper
 		}
 		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
 		if(lastIndex == -1){
-			throw new PolicySyntaxException("Invalid XACML 2.0 xpath=\"%s\" " +
-					"expression, \"ResourceContent\" is missing in the path", xpath);
+			throw new IllegalArgumentException(
+					String.format("Invalid XACML 2.0 xpath=\"%s\" " +
+					"expression, \"ResourceContent\" is missing in the path", xpath));
 		}
 		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
 		buf.delete(firstIndex, lastIndex + 1);
