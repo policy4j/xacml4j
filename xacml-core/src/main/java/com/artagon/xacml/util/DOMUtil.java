@@ -17,19 +17,25 @@ public class DOMUtil
 		StringBuffer buffer = new StringBuffer();
 		hierarchy.push(n);
 		Node parent = getParent(n);
-		while (parent != null && 
-				parent.getNodeType() != Node.DOCUMENT_NODE) 
+		while (parent != null) 
 		{
 			hierarchy.push(parent);
+			if(parent.getNodeType() == Node.DOCUMENT_NODE){
+				break;
+			}
 			parent = getParent(parent);
 		}
 		Node node = null;
+		Node previous = null;
 		while (!hierarchy.isEmpty() && 
 				(node = hierarchy.pop()) != null) 
 		{
+			if(node.getNodeType() == Node.DOCUMENT_NODE){
+				buffer.append("//");
+			}
 			if (node.getNodeType() == Node.ELEMENT_NODE) 
 			{
-				if (buffer.length() > 0) {
+				if (previous != null && previous.getNodeType() != Node.DOCUMENT_NODE) {
 					buffer.append("/");
 				}
 				buffer.append(node.getNodeName());
@@ -42,16 +48,17 @@ public class DOMUtil
 				Attr attr = (Attr)node;
 				buffer.append("/@").append(attr.getName());
 			}
+			previous = node;
 		}
 		return buffer.toString();
 	}
 	
-	public static Node getParent(Node node){
+	private static Node getParent(Node node){
 		return (node.getNodeType() == Node.ATTRIBUTE_NODE)?
 				((Attr)node).getOwnerElement():node.getParentNode();
 	}
 	
-	public static int getNodeIndex(Node node)
+	private static int getNodeIndex(Node node)
 	{
 		int prev_siblings = 1;
 		Node prev_sibling = node.getPreviousSibling();
