@@ -31,7 +31,6 @@ public class Xacml20ContextMapper
 {
 	private final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
-	
 	public Xacml20ContextMapper(){
 	}
 	
@@ -75,7 +74,7 @@ public class Xacml20ContextMapper
 	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
 	{
 		AttributeCategoryId category = getCategoryId(subject.getSubjectCategory());
-		return new Attributes(category, create(subject.getAttribute()));
+		return new Attributes(category, create(subject.getAttribute(), category));
 	}
 	
 	private AttributeCategoryId getCategoryId(String id) throws RequestSyntaxException
@@ -90,19 +89,19 @@ public class Xacml20ContextMapper
 	private Attributes createEnviroment(EnvironmentType subject) throws RequestSyntaxException
 	{
 		return new Attributes(AttributeCategoryId.ENVIRONMENT, 
-				null, create(subject.getAttribute()));
+				null, create(subject.getAttribute(), AttributeCategoryId.ENVIRONMENT));
 	}
 	
 	private Attributes createAction(ActionType subject) throws RequestSyntaxException
 	{
 		return new Attributes(AttributeCategoryId.ACTION, 
-				null, create(subject.getAttribute()));
+				null, create(subject.getAttribute(), AttributeCategoryId.ACTION));
 	}
 	
 	private Attributes createResource(ResourceType resource) throws RequestSyntaxException
 	{
 		return new Attributes(AttributeCategoryId.RESOURCE, 
-				getResourceContent(resource), create(resource.getAttribute()));
+				getResourceContent(resource), create(resource.getAttribute(), AttributeCategoryId.RESOURCE));
 	}
 	
 	private Node getResourceContent(ResourceType resource)
@@ -119,29 +118,31 @@ public class Xacml20ContextMapper
 		return null;
 	}
 	
-	private Collection<Attribute> create(Collection<AttributeType> contextAttributes) 
+	private Collection<Attribute> create(Collection<AttributeType> contextAttributes, AttributeCategoryId category) 
 		throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		for(AttributeType a : contextAttributes){
-			attributes.add(createAttribute(a));
+			attributes.add(createAttribute(a, category));
 		}
 		return attributes;
 	}
 	
-	private Attribute createAttribute(AttributeType a) 
+	private Attribute createAttribute(AttributeType a, AttributeCategoryId category) 
 		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
 		for(AttributeValueType v : a.getAttributeValue()){
-			values.add(createValue(a.getDataType(), v));
+			values.add(createValue(a.getDataType(), v, category));
 		}
 		String attributeId = a.getAttributeId();
 		return new Attribute(a.getAttributeId(), a.getIssuer(), 
 				attributeId.equals(RESOURCE_ID_ATTRIBUTE), values);
 	}
 	
-	private AttributeValue createValue(String dataTypeId, AttributeValueType value) 
+	private AttributeValue createValue(String dataTypeId, 
+			AttributeValueType value, 
+			AttributeCategoryId categoryId) 
 		throws RequestSyntaxException
 	{
 		List<Object> content = value.getContent();
@@ -154,6 +155,11 @@ public class Xacml20ContextMapper
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be resolved to valid XACML type", dataTypeId);
 		}
-		return dataType.create(Iterables.getOnlyElement(content));
+		Object o = Iterables.getOnlyElement(content);
+		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
+			String xpath = Xacml20PolicyMapper.transform20PathTo30((String)o);
+			return dataType.create(xpath, categoryId);
+		}
+		return dataType.create(o);
 	}
 }

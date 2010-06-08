@@ -22,6 +22,7 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
@@ -176,6 +177,23 @@ public class Xacml20ContextMapperTest
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
 		assertEquals(XacmlDataTypes.STRING.create("read"), Iterables.getOnlyElement(actionId.getValues()));	
+	}
+	
+	@Test
+	public void testRequest001MultipleResourcesMapping() throws Exception
+	{
+		RequestType req = getJAXBObject("features/001Request-MultipleResources.xml");
+		Request request = contextMapper.create(req);
+		assertNotNull(request);
+		
+		Attributes resource = Iterables.getOnlyElement(request.getAttributes(AttributeCategoryId.RESOURCE));
+		assertNotNull(resource);
+		
+		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
+		assertNotNull(resourceId);
+		XPathExpressionType.XPathExpressionValue xpath = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(resourceId.getValues());
+		assertEquals(AttributeCategoryId.RESOURCE, xpath.getAttributeCategory());
+		assertEquals("//md:record/md:patient", xpath.getValue());
 	}
 	
 }
