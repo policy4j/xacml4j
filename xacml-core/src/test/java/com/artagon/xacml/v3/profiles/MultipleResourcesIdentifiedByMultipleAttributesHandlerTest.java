@@ -26,7 +26,7 @@ import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class MultipleResourcesHandlerTest 
+public class MultipleResourcesIdentifiedByMultipleAttributesHandlerTest 
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;

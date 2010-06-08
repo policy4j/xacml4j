@@ -4,12 +4,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.DOMUtil;
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
@@ -27,7 +26,7 @@ import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class MultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
+public class MultipleResourcesIdentifiedByXPathExpressionHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	private final static String SCOPE_ATTRIBUTE = "urn:oasis:names:tc:xacml:2.0:resource:scope";
@@ -37,7 +36,7 @@ public class MultipleResourcesIdentifiedViaXPathExpressionHandler extends Abstra
 	private XPathProvider xpathProvider;
 	
 	
-	public MultipleResourcesIdentifiedViaXPathExpressionHandler(XPathProvider xpathProvider){
+	public MultipleResourcesIdentifiedByXPathExpressionHandler(XPathProvider xpathProvider){
 		super(ID);
 		Preconditions.checkNotNull(xpathProvider);
 		this.xpathProvider = xpathProvider;
@@ -107,6 +106,34 @@ public class MultipleResourcesIdentifiedViaXPathExpressionHandler extends Abstra
 							String.format("Failed to evaluate xpath=\"%s\" expression", xpath), 
 							e.getMessage())));
 		}
-		return Collections.emptyList();
+		// Add all attributes except resource
+		Collection<Attributes> newRequestAttr = new LinkedList<Attributes>();
+		for(AttributeCategoryId category : request.getCategories()){
+			if(category.equals(AttributeCategoryId.RESOURCE)){
+				continue;
+			}
+			newRequestAttr.addAll(request.getAttributes(category));
+		}
+		Collection<Attribute> resourceAttrs = new LinkedList<Attribute>();
+		for(Attribute a : resource.getAttributes()){
+			if(a.getAttributeId().equals(RESOURCE_ID)){
+				continue;
+			}
+			if(a.getAttributeId().equals(SCOPE_ATTRIBUTE)){
+				continue;
+			}
+			resourceAttrs.add(a);
+		}
+		Collection<Result> results = new LinkedList<Result>();
+		for(String r : individualResources)
+		{
+			Collection<Attribute> newResourceAttrs = new LinkedList<Attribute>(resourceAttrs);	
+			newResourceAttrs.add(new Attribute(RESOURCE_ID, XacmlDataTypes.XPATHEXPRESSION.create(r)));
+			Collection<Attributes> requestAttr = new LinkedList<Attributes>(newRequestAttr);
+			requestAttr.add(new Attributes(resource.getId(), AttributeCategoryId.RESOURCE, resource.getContent(), newResourceAttrs));
+			results.addAll(handle(new Request(request.isReturnPolicyIdList(), requestAttr), pdp));
+			
+		}
+		return results;
 	}
 }

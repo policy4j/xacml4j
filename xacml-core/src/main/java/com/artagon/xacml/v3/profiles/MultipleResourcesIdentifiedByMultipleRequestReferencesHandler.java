@@ -11,11 +11,11 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.policy.AttributesReference;
 
-public class MultipleResourcesIdentifiedViaMultipleRequestReferencesHandler extends AbstractRequestProfileHandler
+public class MultipleResourcesIdentifiedByMultipleRequestReferencesHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	
-	public MultipleResourcesIdentifiedViaMultipleRequestReferencesHandler(){
+	public MultipleResourcesIdentifiedByMultipleRequestReferencesHandler(){
 		super(ID);
 	}
 	

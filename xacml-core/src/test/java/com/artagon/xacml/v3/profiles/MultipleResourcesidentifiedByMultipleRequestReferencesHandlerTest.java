@@ -30,7 +30,7 @@ import com.artagon.xacml.v3.policy.AttributesReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
-public class MultipleRequestHandlerTest 
+public class MultipleResourcesidentifiedByMultipleRequestReferencesHandlerTest 
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
@@ -39,7 +39,7 @@ public class MultipleRequestHandlerTest
 	public void init()
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleResourcesIdentifiedViaMultipleRequestReferencesHandler();
+		this.profile = new MultipleResourcesIdentifiedByMultipleRequestReferencesHandler();
 	}
 	
 	@Test
