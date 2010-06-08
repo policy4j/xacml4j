@@ -18,7 +18,6 @@ public abstract class AbstractPolicyDecisionPoint implements PolicyDecisionPoint
 	private EvaluationContextFactory factory;
 	private PolicySet policySet;
 	
-	
 	protected AbstractPolicyDecisionPoint(
 			Collection<RequestProfileHandler> handlers,
 			EvaluationContextFactory factory,  
