@@ -1,6 +1,5 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 public final class Status extends XacmlObject
@@ -17,9 +16,14 @@ public final class Status extends XacmlObject
 		this.detail = detail;
 	}
 	
+	public Status(StatusCode code, String message){
+		this(code, message, null);
+	}
+	
 	public Status(StatusCode code){
 		this(code, null, null);
 	}
+	
 	
 	public static Status createSuccessStatus(){
 		return new Status(new StatusCode(StatusCodeId.OK), null , null);

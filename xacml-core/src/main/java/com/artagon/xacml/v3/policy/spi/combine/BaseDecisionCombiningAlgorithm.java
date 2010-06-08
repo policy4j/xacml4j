@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.spi.combine;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
 import com.artagon.xacml.v3.policy.PolicyVisitor;

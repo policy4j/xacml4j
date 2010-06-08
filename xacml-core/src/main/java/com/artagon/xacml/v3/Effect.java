@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.context.Decision;
 
 
 public enum Effect 

@@ -12,9 +12,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.policy.DefaultPolicyFactory;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
 import com.artagon.xacml.v3.types.XacmlDataTypes;

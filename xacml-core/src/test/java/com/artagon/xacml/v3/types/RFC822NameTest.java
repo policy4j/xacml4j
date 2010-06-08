@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.RFC822Name;
-
 public class RFC822NameTest 
 {
 	@Test

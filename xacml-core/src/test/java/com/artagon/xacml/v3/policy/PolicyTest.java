@@ -16,22 +16,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.Advice;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.Obligation;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.PolicyDefaults;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class PolicyTest 

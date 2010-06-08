@@ -3,8 +3,8 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.List;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.context.Decision;
 
 
 public interface DecisionCombiningAlgorithm <D extends DecisionRule> extends PolicyElement

@@ -11,12 +11,6 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.policy.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 

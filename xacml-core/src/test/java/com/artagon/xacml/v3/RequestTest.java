@@ -1,7 +1,8 @@
-package com.artagon.xacml.v3.impl;
+package com.artagon.xacml.v3;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -11,13 +12,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.Request;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class DefaultRequestTest 
+public class RequestTest 
 {
 	private Attributes resource0;
 	private Attributes resource1;
@@ -95,6 +92,14 @@ public class DefaultRequestTest
 		assertTrue(attr.contains(resource1));
 		attr = request.getAttributes(AttributeCategoryId.ENVIRONMENT);
 		assertEquals(0, attr.size());		
+	}
+	
+	@Test
+	public void testGetRequestDefaults(){
+		Request request = new Request(false, 
+				Arrays.asList(subject0, resource0, resource1));
+		assertNotNull(request.getRequestDefaults());
+		assertEquals(XPathVersion.XPATH1, request.getRequestDefaults().getXPathVersion());
 	}
 	
 	@Test

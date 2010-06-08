@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.PolicyIdentifier;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

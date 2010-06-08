@@ -16,17 +16,15 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.ContextFactory;
-import com.artagon.xacml.v3.context.ContextSyntaxException;
-import com.artagon.xacml.v3.context.DefaultRequestFactory;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.context.RequestReference;
-import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.context.Status;
-import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.policy.AttributesReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -36,18 +34,16 @@ public class MultipleRequestHandlerTest
 {
 	private PolicyDecisionCallback pdp;
 	private RequestProfileHandler profile;
-	private ContextFactory contextFactory;
 	
 	@Before
 	public void init()
 	{
-		this.contextFactory = new DefaultRequestFactory();
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleRequestsHandler(new DefaultRequestFactory());
+		this.profile = new MultipleRequestsHandler();
 	}
 	
 	@Test
-	public void testResolveRequestsWithValidReferences() throws ContextSyntaxException
+	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
@@ -71,14 +67,15 @@ public class MultipleRequestHandlerTest
 		
 		
 		Collection<AttributesReference> ref0 = new LinkedList<AttributesReference>();
-		ref0.add(contextFactory.createAttributesReference("resourceAttr0"));
-		ref0.add(contextFactory.createAttributesReference("subjectAttr0"));	
-		RequestReference reference0 = contextFactory.createRequestReference(ref0);
+		ref0.add(new AttributesReference("resourceAttr0"));
+		ref0.add(new AttributesReference("subjectAttr0"));	
+		RequestReference reference0 = new RequestReference(ref0);
 		
 		Collection<AttributesReference> ref1 = new LinkedList<AttributesReference>();
-		ref1.add(contextFactory.createAttributesReference("resourceAttr1"));
-		ref1.add(contextFactory.createAttributesReference("subjectAttr1"));	
-		RequestReference reference1 = contextFactory.createRequestReference(ref1);
+		ref1.add(new AttributesReference("resourceAttr1"));
+		ref1.add(new AttributesReference("subjectAttr1"));	
+		
+		RequestReference reference1 = new RequestReference(ref1);
 		
 			
 		Request context = new Request(false, 

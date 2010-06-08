@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.context.Obligation;
+import com.artagon.xacml.v3.Obligation;
 
 public class ObligationExpression extends BaseDecisionRuleResponseExpression
 {

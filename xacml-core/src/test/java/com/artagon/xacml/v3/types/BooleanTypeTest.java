@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 
 public class BooleanTypeTest 

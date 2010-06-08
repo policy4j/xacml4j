@@ -12,12 +12,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.policy.DecisionRule;
-import com.artagon.xacml.v3.policy.combine.DenyUnlessPermit;
 
 public class DenyUnlessPermitTest
 {

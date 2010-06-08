@@ -6,9 +6,9 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.context.Decision;
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDesicionRule implements PolicyElement

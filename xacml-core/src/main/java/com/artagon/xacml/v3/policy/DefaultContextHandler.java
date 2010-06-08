@@ -15,12 +15,12 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.policy.spi.AttributeCallback;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
@@ -45,10 +45,8 @@ public class DefaultContextHandler implements ContextHandler
 
 	@Override
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) {
-		Attributes attr =   Iterables.getOnlyElement(request.getAttributes(category));
-		Node content = attr.getContent();
-		return ((attr == null) || (content == null))?
-				handleGetContent(category, request):content;
+		Node content = request.getContent(category);
+		return ((content == null))?handleGetContent(category, request):content;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,11 +1,9 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;

@@ -2,8 +2,8 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.context.Decision;
 import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;

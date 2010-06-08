@@ -8,13 +8,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.FunctionSpecBuilder;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultFunctionSpecBuilderTest
 {

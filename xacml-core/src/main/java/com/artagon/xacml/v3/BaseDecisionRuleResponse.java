@@ -1,10 +1,8 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.XacmlObject;
 
 
 abstract class BaseDecisionRuleResponse extends XacmlObject

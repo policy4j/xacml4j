@@ -17,8 +17,8 @@ import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamFuncReference;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParamVarArg;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.IntegerType;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 
 @Ignore

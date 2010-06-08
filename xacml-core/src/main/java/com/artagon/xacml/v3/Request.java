@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,16 +10,13 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.Effect;
-import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributesReference;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 public class Request extends XacmlObject
 {	
@@ -27,19 +24,32 @@ public class Request extends XacmlObject
 	private Multimap<AttributeCategoryId, Attributes> attributes;
 	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> multipleRequests;
+	private RequestDefaults requestDefaults;
 	
 	/**
-	 * Constructs a request with a given attributes
-	 * @param attributes
+	 * Constructs request with a given arguments
+	 * 
+	 * @param returnPolicyIdList a flag indicating
+	 * that response should contains applicable 
+	 * evaluated policy or policy set identifiers
+	 * list
+	 * @param attributes a collection of request attributes
+	 * @param requestReferences a request references
+	 * @param requestDefaults a request defaults
 	 */
 	public Request(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes, 
-			Collection<RequestReference> requestReferences)
+			Collection<RequestReference> requestReferences, 
+			RequestDefaults requestDefaults)
 	{
+		Preconditions.checkNotNull(attributes);
+		Preconditions.checkNotNull(requestReferences);
+		Preconditions.checkNotNull(requestDefaults);
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = HashMultimap.create();
 		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
 		this.attributesByXmlId = new HashMap<String, Attributes>();
+		this.requestDefaults = requestDefaults;
 		for(Attributes attr : attributes)
 		{
 			// index attributes by category
@@ -50,6 +60,20 @@ public class Request extends XacmlObject
 				this.attributesByXmlId.put(attr.getId(), attr);
 			}
 		}
+	}
+	
+	/**
+	 * Constructs a request with a given attributes
+	 * 
+	 * @param attributes a collection of {@link Attributes}
+	 * instances
+	 */
+	public Request(boolean returnPolicyIdList, 
+			Collection<Attributes> attributes, 
+			Collection<RequestReference> requestReferences)
+	{
+		this(returnPolicyIdList, attributes, 
+				requestReferences, new RequestDefaults());
 	}
 	
 	/**
@@ -80,7 +104,23 @@ public class Request extends XacmlObject
 		return returnPolicyIdList;
 	}
 	
+	/**
+	 * Gets request defaults
+	 * 
+	 * @return an instance of {@link RequestDefaults}
+	 */
+	public RequestDefaults getRequestDefaults(){
+		return requestDefaults;
+	}
 	
+	/**
+	 * Gets occurrence of the given category attributes 
+	 * in this request
+	 * 
+	 * @param category a category
+	 * @return a non-negative number indicating attributes of given 
+	 * category occurrence in this request
+	 */
 	public int getCategoryOccuriences(AttributeCategoryId category){
 		Collection<Attributes> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
@@ -133,21 +173,23 @@ public class Request extends XacmlObject
 	
 	/**
 	 * Gets all {@link Attributes} instances
-	 * contained in this request
+	 * contained in this request by the category
 	 * 
-	 * @return a map by category
+	 * @return a modifiable map by category
 	 */
 	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
-		return Multimaps.unmodifiableMultimap(attributes).asMap();
+		Map<AttributeCategoryId, Collection<Attributes>> copy = 
+			new HashMap<AttributeCategoryId, Collection<Attributes>>(attributes.asMap());
+		return copy;
 	}
 	
 	/**
-	 * Gets all {@link Attributes} from request with
-	 * a given category
+	 * Gets all {@link Attributes} instances 
+	 * from request of a given category
 	 * 
 	 * @param categoryId an attribute category
 	 * @return a collection of {@link Attributes} or
-	 * {@link Collections#emptyList()} if given request
+	 * {@link Collections#emptyList()} if a given request
 	 * does not have attributes of given category
 	 */
 	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
@@ -156,21 +198,39 @@ public class Request extends XacmlObject
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
 	}
 	
-	public Collection<Node> getContent(AttributeCategoryId categoryId)
+	/**
+	 * Gets content as {@link Node} instance of 
+	 * the given category
+	 * 
+	 * @param categoryId a category identifier
+	 * @return {@link Node} or <code>null</code>
+	 * if category does not have content or
+	 * there is not attributes of given category
+	 * in this request
+	 * @exception IllegalArgumentException if request
+	 * has more than one instance {@link Attributes}
+	 * of given category
+	 */
+	public Node getContent(AttributeCategoryId categoryId) 
 	{
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> byCategory =  attributes.get(categoryId);
 		if(byCategory == null || 
 				byCategory.isEmpty()){
-			return Collections.<Node>emptyList();
+			return null;
 		}
-		Collection<Node> content = new ArrayList<Node>(byCategory.size());
-		for(Attributes a : byCategory){
-			content.add(a.getContent());
-		}
-		return content;
+		Preconditions.checkArgument(byCategory.size() == 1);
+		return Iterables.getOnlyElement(byCategory).getContent();
 	}
 	
+	/**
+	 * Tests if this request has an multiple 
+	 * {@link Attributes} instances with the
+	 * same {@link Attributes#getCategoryId()} value
+	 * 
+	 * @return <code>true</code> if this request
+	 * has multiple attributes of same category
+	 */
 	public boolean hasRepeatingCategories(){
 		for(AttributeCategoryId category : getCategories()){
 			if(getCategoryOccuriences(category) > 1){
@@ -180,6 +240,15 @@ public class Request extends XacmlObject
 		return true;
 	}
 	
+	/**
+	 * Gets all {@link Attributes} instances
+	 * containing an attributes with {@link Attribute#isIncludeInResult()}
+	 * returning <code>true</code>
+	 * 
+	 * @return a collection of {@link Attributes} instances
+	 * containing only {@link Attribute} with 
+	 * {@link Attribute#isIncludeInResult()} returning <code>true</code>
+	 */
 	public Collection<Attributes> getIncludeInResultAttributes() 
 	{
 		Collection<Attributes> resultAttr = new LinkedList<Attributes>();

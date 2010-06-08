@@ -12,7 +12,6 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.function.TestFunctions;
-import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 

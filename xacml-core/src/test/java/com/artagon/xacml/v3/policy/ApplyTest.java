@@ -17,9 +17,6 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.XacmlException;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class ApplyTest 

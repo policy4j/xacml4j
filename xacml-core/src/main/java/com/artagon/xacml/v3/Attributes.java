@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,10 +7,6 @@ import java.util.LinkedList;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -37,7 +33,8 @@ public class Attributes extends XacmlObject
 	public Attributes(
 			String id, 
 			AttributeCategoryId categoryId, 
-			Node content, Iterable<Attribute> attributes){
+			Node content, 
+			Iterable<Attribute> attributes){
 		Preconditions.checkNotNull(categoryId);
 		Preconditions.checkNotNull(attributes);
 		this.id = id;
@@ -65,10 +62,17 @@ public class Attributes extends XacmlObject
 		this(null, categoryId, null, attributes);
 	}
 	
+	public Attributes(AttributeCategoryId categoryId, 
+			Node content,
+			Iterable<Attribute> attributes){
+		this(null, categoryId, content, attributes);
+	}
+	
 	/** 
 	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
 	 */
-	public Attributes(String id, AttributeCategoryId categoryId, 
+	public Attributes(String id, 
+			AttributeCategoryId categoryId, 
 			Iterable<Attribute> attributes){
 		this(id, categoryId, null, attributes);
 	}

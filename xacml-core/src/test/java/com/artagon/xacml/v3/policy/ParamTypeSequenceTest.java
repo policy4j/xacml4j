@@ -10,10 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.policy.ParamValueTypeSequenceSpec;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.StringType;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class ParamTypeSequenceTest extends XacmlPolicyTestCase
 {

@@ -13,10 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.MatchAllOf;
-import com.artagon.xacml.v3.policy.MatchAnyOf;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.Matchable;
 
 public class MatchAnyOfTest
 {

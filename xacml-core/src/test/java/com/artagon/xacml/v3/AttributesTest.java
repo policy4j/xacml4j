@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.impl;
+package com.artagon.xacml.v3;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.assertEquals;
@@ -12,12 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class DefaultAttributesTest 
+public class AttributesTest 
 {
 	private Node content;
 	

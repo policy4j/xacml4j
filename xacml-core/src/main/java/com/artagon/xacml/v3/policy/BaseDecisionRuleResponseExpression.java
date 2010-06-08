@@ -6,12 +6,12 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.StatusCode;
 
 
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement

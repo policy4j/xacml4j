@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.policy;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.context.Decision;
 import com.google.common.base.Preconditions;
 
 public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 

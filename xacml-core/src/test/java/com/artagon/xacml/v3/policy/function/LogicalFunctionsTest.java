@@ -8,11 +8,10 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.function.LogicalFunctions;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.IntegerType;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class LogicalFunctionsTest extends XacmlPolicyTestCase
 {

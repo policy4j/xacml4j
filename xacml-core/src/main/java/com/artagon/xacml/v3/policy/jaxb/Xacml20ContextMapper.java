@@ -16,27 +16,23 @@ import org.oasis.xacml.v20.context.ResultType;
 import org.oasis.xacml.v20.context.SubjectType;
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.ContextFactory;
-import com.artagon.xacml.v3.context.ContextSyntaxException;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.context.Response;
-import com.artagon.xacml.v3.context.Result;
-import com.google.common.base.Preconditions;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
 public class Xacml20ContextMapper
 {
 	private final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
-	private ContextFactory contextFactory;
 	
-	public Xacml20ContextMapper(ContextFactory factory){
-		Preconditions.checkNotNull(factory);
-		this.contextFactory = factory;
+	public Xacml20ContextMapper(){
 	}
 	
 	public ResponseType create(Response response)
@@ -54,7 +50,7 @@ public class Xacml20ContextMapper
 		return resultv2;
 	}
 	
-	public Request create(RequestType req) throws ContextSyntaxException
+	public Request create(RequestType req) throws RequestSyntaxException
 	{
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		if(!req.getResource().isEmpty()){
@@ -73,30 +69,39 @@ public class Xacml20ContextMapper
 		if(req.getEnvironment() != null){
 			attributes.add(createEnviroment(req.getEnvironment()));
 		}
-		return contextFactory.createRequest(false, attributes);
+		return new Request(false, attributes);
 	}
 	
-	private Attributes createSubject(SubjectType subject) throws ContextSyntaxException
+	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
 	{
-		return contextFactory.createAttributes(subject.getSubjectCategory(), 
+		AttributeCategoryId category = getCategoryId(subject.getSubjectCategory());
+		return new Attributes(category, create(subject.getAttribute()));
+	}
+	
+	private AttributeCategoryId getCategoryId(String id) throws RequestSyntaxException
+	{
+		AttributeCategoryId category = AttributeCategoryId.parse(id);
+		if(category == null){
+			throw new RequestSyntaxException("Unknown attrobute category=\"%s\"", id);
+		}
+		return category;
+	}
+	
+	private Attributes createEnviroment(EnvironmentType subject) throws RequestSyntaxException
+	{
+		return new Attributes(AttributeCategoryId.ENVIRONMENT, 
 				null, create(subject.getAttribute()));
 	}
 	
-	private Attributes createEnviroment(EnvironmentType subject) throws ContextSyntaxException
+	private Attributes createAction(ActionType subject) throws RequestSyntaxException
 	{
-		return contextFactory.createAttributes(AttributeCategoryId.ENVIRONMENT.toString(), 
+		return new Attributes(AttributeCategoryId.ACTION, 
 				null, create(subject.getAttribute()));
 	}
 	
-	private Attributes createAction(ActionType subject) throws ContextSyntaxException
+	private Attributes createResource(ResourceType resource) throws RequestSyntaxException
 	{
-		return contextFactory.createAttributes(AttributeCategoryId.ACTION.toString(), 
-				null, create(subject.getAttribute()));
-	}
-	
-	private Attributes createResource(ResourceType resource) throws ContextSyntaxException
-	{
-		return contextFactory.createAttributes(AttributeCategoryId.RESOURCE.toString(), 
+		return new Attributes(AttributeCategoryId.RESOURCE, 
 				getResourceContent(resource), create(resource.getAttribute()));
 	}
 	
@@ -115,7 +120,7 @@ public class Xacml20ContextMapper
 	}
 	
 	private Collection<Attribute> create(Collection<AttributeType> contextAttributes) 
-		throws ContextSyntaxException
+		throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		for(AttributeType a : contextAttributes){
@@ -125,25 +130,30 @@ public class Xacml20ContextMapper
 	}
 	
 	private Attribute createAttribute(AttributeType a) 
-		throws ContextSyntaxException
+		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(createValue(a.getDataType(), v));
 		}
 		String attributeId = a.getAttributeId();
-		return contextFactory.createAttribute(a.getAttributeId(), a.getIssuer(), 
+		return new Attribute(a.getAttributeId(), a.getIssuer(), 
 				attributeId.equals(RESOURCE_ID_ATTRIBUTE), values);
 	}
 	
 	private AttributeValue createValue(String dataTypeId, AttributeValueType value) 
-		throws ContextSyntaxException
+		throws RequestSyntaxException
 	{
 		List<Object> content = value.getContent();
 		if(content == null || 
 				content.isEmpty()){
-			throw new ContextSyntaxException("Attribute does not have content");
+			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		return contextFactory.createValue(dataTypeId, Iterables.getOnlyElement(content));
+		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypes.getByTypeId(dataTypeId);
+		if(dataType == null){
+			throw new RequestSyntaxException(
+					"DataTypeId=\"%s\" can be be resolved to valid XACML type", dataTypeId);
+		}
+		return dataType.create(Iterables.getOnlyElement(content));
 	}
 }

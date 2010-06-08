@@ -17,11 +17,10 @@ import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
 import org.w3c.dom.Element;
 
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.DefaultRequestFactory;
-import com.artagon.xacml.v3.context.Request;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
@@ -44,7 +43,7 @@ public class Xacml20ContextMapperTest
 	@Before
 	public void init() throws Exception
 	{
-		this.contextMapper = new Xacml20ContextMapper(new DefaultRequestFactory());
+		this.contextMapper = new Xacml20ContextMapper();
 	}
 	
 	

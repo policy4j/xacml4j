@@ -16,20 +16,13 @@ import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlException;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.policy.MatchResult;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.VersionMatch;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class PolicySetIDReferenceTest

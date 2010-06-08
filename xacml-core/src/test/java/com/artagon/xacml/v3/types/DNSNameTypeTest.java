@@ -7,9 +7,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.DNSNameType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
-
 public class DNSNameTypeTest 
 {
 	private DNSNameType t1;

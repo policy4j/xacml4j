@@ -17,11 +17,11 @@ import org.junit.Test;
 import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XacmlException;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.Obligation;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultObligationExpressionTest 

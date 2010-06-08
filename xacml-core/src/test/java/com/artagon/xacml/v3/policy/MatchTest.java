@@ -13,10 +13,6 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.Match;
-import com.artagon.xacml.v3.policy.MatchResult;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MatchTest extends XacmlPolicyTestCase

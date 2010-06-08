@@ -13,11 +13,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.policy.ContextHandler;
-import com.artagon.xacml.v3.policy.PolicyReferenceResolver;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetDefaults;
-import com.artagon.xacml.v3.policy.PolicySetEvaluationContext;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 
 public class PolicySetEvaluationContextTest 

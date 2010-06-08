@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.context.Advice;
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression
 {

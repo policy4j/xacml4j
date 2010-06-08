@@ -7,12 +7,12 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.context.Advice;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.Obligation;
 import com.google.common.base.Preconditions;
 
 abstract class BaseDesicionRule extends XacmlObject implements DecisionRule

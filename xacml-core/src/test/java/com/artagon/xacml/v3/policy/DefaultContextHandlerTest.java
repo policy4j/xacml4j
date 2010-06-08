@@ -20,15 +20,12 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.Request;
-import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.policy.ContextHandler;
-import com.artagon.xacml.v3.policy.DefaultContextHandler;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 

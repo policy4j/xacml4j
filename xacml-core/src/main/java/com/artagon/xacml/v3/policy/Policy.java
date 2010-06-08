@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.Decision;
 import com.google.common.base.Preconditions;
 
 public class Policy extends BaseCompositeDecisionRule implements PolicyElement

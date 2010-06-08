@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 
 public class DoubleTypeTest 

@@ -6,17 +6,17 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.Advice;
-import com.artagon.xacml.v3.context.Decision;
-import com.artagon.xacml.v3.context.Obligation;
 import com.google.common.base.Preconditions;
 
 /**
