@@ -120,7 +120,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testFeatures001Policy() throws Exception
 	{
-		PolicyType policy = getPolicy("features/001Policy.xml");
+		PolicyType policy = getPolicy("features/001B-Policy.xml");
 		Policy p = mapper.create(policy);
 		assertEquals(5, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
@@ -133,7 +133,7 @@ public class Xacml20PolicyMapperTest
 	@Test(expected=PolicySyntaxException.class)
 	public void testFeatures002Policy() throws Exception
 	{
-		PolicyType policy = getPolicy("features/002Policy.xml");
+		PolicyType policy = getPolicy("features/002B-Policy.xml");
 		Policy p = mapper.create(policy);
 		assertEquals(2, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
