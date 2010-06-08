@@ -49,7 +49,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		Collection<Result> results = new LinkedList<Result>();
 		for(AttributeCategoryId category : request.getCategories())
 		{
-			Attributes attr = Iterables.getOnlyElement(request.getAttributes(category));
+			Attributes attr = Iterables.getOnlyElement(request.getAllAttributes(category));
 			Collection<AttributeValue> values = attr.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 					XacmlDataTypes.XPATHEXPRESSION.getType());
 			if(values == null || 

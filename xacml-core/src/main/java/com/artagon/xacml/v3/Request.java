@@ -17,7 +17,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 public class Request extends XacmlObject
 {	
@@ -137,7 +136,17 @@ public class Request extends XacmlObject
 	public Collection<RequestReference> getRequestReferences(){
 		return Collections.unmodifiableCollection(multipleRequests);
 	}
-
+	
+	/**
+	 * Gets all {@link Attributes} instances contained
+	 * in this request
+	 * @return a collection of {@link Attributes}
+	 * instances
+	 */
+	public Collection<Attributes> getAttributes(){
+		return Collections.unmodifiableCollection(attributes.values());
+	}
+	
 	/**
 	 * Tests if this request has multiple
 	 * individual XACML requests
@@ -173,17 +182,6 @@ public class Request extends XacmlObject
 	}
 	
 	/**
-	 * Gets all {@link Attributes} instances
-	 * contained in this request by the category
-	 * 
-	 * @return a  map by category
-	 */
-	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
-		Multimap<AttributeCategoryId, Attributes> attr = Multimaps.unmodifiableMultimap(attributes);
-		return attr.asMap();
-	}
-	
-	/**
 	 * Gets all {@link Attributes} instances 
 	 * from request of a given category
 	 * 
@@ -192,10 +190,16 @@ public class Request extends XacmlObject
 	 * {@link Collections#emptyList()} if a given request
 	 * does not have attributes of given category
 	 */
-	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
+	public Collection<Attributes> getAllAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
 		Collection<Attributes> attr =  attributes.get(categoryId);
 		return (attr == null)?Collections.<Attributes>emptyList():attr;
+	}
+	
+	public Attributes getAttributes(AttributeCategoryId category)
+	{
+		Collection<Attributes> all = getAllAttributes(category);
+		return all.isEmpty()?null:Iterables.getOnlyElement(all);
 	}
 	
 	/**

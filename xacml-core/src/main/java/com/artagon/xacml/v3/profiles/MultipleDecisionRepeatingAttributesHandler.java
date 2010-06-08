@@ -20,7 +20,7 @@ final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestPr
 	{
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategoryId categoryId : request.getCategories()){
-			Collection<Attributes> attributes = request.getAttributes(categoryId);
+			Collection<Attributes> attributes = request.getAllAttributes(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()){
 				continue;

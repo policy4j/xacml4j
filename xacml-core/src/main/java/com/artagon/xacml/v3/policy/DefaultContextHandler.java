@@ -55,7 +55,7 @@ public class DefaultContextHandler implements ContextHandler
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		Attributes attributes = Iterables.getOnlyElement(request.getAttributes(ref.getCategory()));
+		Attributes attributes = Iterables.getOnlyElement(request.getAllAttributes(ref.getCategory()));
 		if(attributes != null){
 			Collection<AttributeValue> values = attributes.getAttributeValues(
 					ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
@@ -176,7 +176,7 @@ public class DefaultContextHandler implements ContextHandler
 		@Override
 		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
-			Collection<Attributes> attributes = request.getAttributes(category);
+			Collection<Attributes> attributes = request.getAllAttributes(category);
 			Attributes  found = Iterables.getOnlyElement(attributes);
 			return (BagOfAttributeValues<AV>)dataType.bagOf().create(found.getAttributeValues(attributeId, issuer, dataType));
 		}
