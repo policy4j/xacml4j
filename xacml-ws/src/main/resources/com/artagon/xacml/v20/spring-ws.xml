@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="xacml20Endpoint" class="com.artagon.xacml.v20.endpoints.XacmlV20Endpoint">
+		<constructor-arg>
+			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+				<property name="classesToBeBound">
+					<list>
+						<value>org.oasis.xacml.v20.context.RequestType</value>
+						<value>org.oasis.xacml.v20.context.ResponseType</value>
+					</list>
+				</property>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="xacmlPDP"/>
+	</bean>
+
+	<bean id="Xacml20WSDL"
+		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl"
+			value="classpath:/com/artagon/xacml/v20/xacml29.wsdl" />
+	</bean>
+</beans>
