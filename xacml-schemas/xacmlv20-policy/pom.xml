@@ -11,6 +11,19 @@
 	<name>OASIS XACML 2.0 Policy schema</name>
 	<artifactId>xacml-v20-schema-policy</artifactId>
 	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
     <build>
 		<plugins>
 			<plugin>

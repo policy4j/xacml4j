@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.jaxb;
+package com.artagon.xacml.v20;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -71,6 +71,7 @@ import com.artagon.xacml.v3.policy.Rule;
 import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.VariableDefinition;
 import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.policy.jaxb.VariableManager;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;

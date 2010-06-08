@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.jaxb;
+package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +17,7 @@ import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
 import org.w3c.dom.Element;
 
+import com.artagon.xacml.v20.Xacml20ContextMapper;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;

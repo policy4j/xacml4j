@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.jaxb;
+package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
+import com.artagon.xacml.v20.Xacml20PolicyMapper;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.policy.DefaultPolicyFactory;

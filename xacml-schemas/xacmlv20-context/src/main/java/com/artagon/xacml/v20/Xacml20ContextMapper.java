@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.jaxb;
+package com.artagon.xacml.v20;
 
 import java.util.Collection;
 import java.util.LinkedList;
