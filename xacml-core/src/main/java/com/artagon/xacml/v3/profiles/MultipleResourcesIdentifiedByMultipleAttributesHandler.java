@@ -13,11 +13,11 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.collect.Sets;
 
-public class MultipleResourcesHandler extends AbstractRequestProfileHandler
+public class MultipleResourcesIdentifiedByMultipleAttributesHandler extends AbstractRequestProfileHandler
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:multiple-resource-elements";
 		
-	public MultipleResourcesHandler() {
+	public MultipleResourcesIdentifiedByMultipleAttributesHandler() {
 		super(ID);
 	}
 	

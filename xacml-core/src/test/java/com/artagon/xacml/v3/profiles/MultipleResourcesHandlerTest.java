@@ -34,7 +34,7 @@ public class MultipleResourcesHandlerTest
 	@Before
 	public void init(){
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleResourcesHandler();
+		this.profile = new MultipleResourcesIdentifiedByMultipleAttributesHandler();
 	}
 	
 	@Test

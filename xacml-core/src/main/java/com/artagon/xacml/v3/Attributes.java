@@ -104,11 +104,18 @@ public class Attributes extends XacmlObject
 		return id;
 	}
 	
+	// TBD:
 	public String getScope(){
 		return scope;
 	}
 	
-	
+	/**
+	 * Gets content as {@link Node}
+	 * instance
+	 * 
+	 * @return a {@link Node} instance
+	 * or <code>null</code>
+	 */
 	public Node getContent(){
 		return content;
 	}
@@ -176,6 +183,23 @@ public class Attributes extends XacmlObject
 		});	
 	}
 	
+	/**
+	 * @see {@link Attributes#getAttributeValues(String, String, AttributeValueType)
+	 */
+	public Collection<AttributeValue> getAttributeValues(String attributeId, 
+			AttributeValueType dataType){
+		return getAttributeValues(attributeId, null, dataType);
+	}
+	
+	/**
+	 * Gets all {@link AttributeValue} instances
+	 * contained in this attributes instance
+	 * 
+	 * @param attributeId an attribute id
+	 * @param issuer an attribute issuer
+	 * @param type an attribute value data type
+	 * @return a collection of {@link AttributeValue} instances
+	 */
 	public Collection<AttributeValue> getAttributeValues(
 			String attributeId, String issuer, final AttributeValueType type){
 		Preconditions.checkNotNull(type);

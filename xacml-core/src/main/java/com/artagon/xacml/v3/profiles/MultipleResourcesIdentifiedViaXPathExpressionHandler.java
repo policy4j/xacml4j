@@ -1,9 +1,8 @@
 package com.artagon.xacml.v3.profiles;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +24,24 @@ import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class MultipleResourcesXPathExpressionHandler extends AbstractRequestProfileHandler
+public class MultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesXPathExpressionHandler.class);
-	
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	private final static String SCOPE_ATTRIBUTE = "urn:oasis:names:tc:xacml:2.0:resource:scope";
 	private final static String SCOPE_XPATH_EXPRESSION = "XPath-expression";
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
 	
 	private XPathProvider xpathProvider;
+	
+	
+	public MultipleResourcesIdentifiedViaXPathExpressionHandler(XPathProvider xpathProvider){
+		super(ID);
+		Preconditions.checkNotNull(xpathProvider);
+		this.xpathProvider = xpathProvider;
+	}
 	
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
@@ -86,22 +91,22 @@ public class MultipleResourcesXPathExpressionHandler extends AbstractRequestProf
 							new Status(StatusCode.createSyntaxError(), 
 									"Content must be specified in the request")));
 		}
-		Map<AttributeCategoryId, Collection<Attributes>> copy = request.getAttributes();
-		copy.remove(AttributeCategoryId.RESOURCE);
 		RequestDefaults requestDefaults = request.getRequestDefaults();
+		Collection<String> individualResources = new LinkedList<String>();
 		try
 		{
 			NodeList nodes = xpathProvider.evaluateToNodeSet(requestDefaults.getXPathVersion(), xpath.getValue(), content);
-			Collection<String> xpaths = new ArrayList<String>(nodes.getLength());
 			for(int i  = 0; i < nodes.getLength(); i++){
-				xpaths.add(DOMUtil.getXPath(nodes.item(i)));
+				individualResources.add(DOMUtil.getXPath(nodes.item(i)));
 			}
+			
 		}catch(XPathEvaluationException e){
 			return Collections.singleton(new Result(
 					new Status(
 							StatusCode.createProcessingError(), 
-							"Failed to evaluate xpath expression", 
+							String.format("Failed to evaluate xpath=\"%s\" expression", xpath), 
 							e.getMessage())));
 		}
+		return Collections.emptyList();
 	}
 }

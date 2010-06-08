@@ -17,6 +17,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 
 public class Request extends XacmlObject
 {	
@@ -175,12 +176,11 @@ public class Request extends XacmlObject
 	 * Gets all {@link Attributes} instances
 	 * contained in this request by the category
 	 * 
-	 * @return a modifiable map by category
+	 * @return a  map by category
 	 */
 	public Map<AttributeCategoryId, Collection<Attributes>> getAttributes(){
-		Map<AttributeCategoryId, Collection<Attributes>> copy = 
-			new HashMap<AttributeCategoryId, Collection<Attributes>>(attributes.asMap());
-		return copy;
+		Multimap<AttributeCategoryId, Attributes> attr = Multimaps.unmodifiableMultimap(attributes);
+		return attr.asMap();
 	}
 	
 	/**

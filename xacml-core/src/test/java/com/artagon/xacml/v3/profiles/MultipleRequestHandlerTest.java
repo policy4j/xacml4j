@@ -39,7 +39,7 @@ public class MultipleRequestHandlerTest
 	public void init()
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleRequestsHandler();
+		this.profile = new MultipleResourcesIdentifiedViaMultipleRequestReferencesHandler();
 	}
 	
 	@Test
