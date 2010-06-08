@@ -48,6 +48,13 @@ public class DOMUtilTest
 	}
 	
 	@Test
+	public void testNodeXPathElementNodes1() throws Exception{
+		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient", content, XPathConstants.NODESET);
+		assertEquals("md:record[1]/md:patient[1]", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("md:record[1]/md:patient[2]", DOMUtil.getXPath(nodes.item(1)));
+	}
+	
+	@Test
 	public void testNodeXPathElementTextNodes() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/text()", content, XPathConstants.NODESET);
 		assertEquals("md:record[1]/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
@@ -62,7 +69,7 @@ public class DOMUtilTest
 	}
 	
 	@Test
-	public void testNodeXPathElementNodes() throws Exception{
+	public void testNodeXPathElementNodes2() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB", content, XPathConstants.NODESET);
 		assertEquals("md:record[1]/md:patient[1]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("md:record[1]/md:patient[2]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(1)));

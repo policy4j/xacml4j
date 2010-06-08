@@ -9,13 +9,6 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 public interface RequestProfileHandler 
 {
 	/**
-	 * Gets profile identifier
-	 * 
-	 * @return 
-	 */
-	String getId();
-	
-	/**
 	 * Handles given request
 	 * 
 	 * @param request a decision request

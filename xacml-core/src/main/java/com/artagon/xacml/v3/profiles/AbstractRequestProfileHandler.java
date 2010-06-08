@@ -10,19 +10,8 @@ import com.google.common.base.Preconditions;
 
 public abstract class AbstractRequestProfileHandler implements RequestProfileHandler
 {
-	private String id;
 	private RequestProfileHandler next;
-	
-	public AbstractRequestProfileHandler(String id){
-		Preconditions.checkNotNull(id);
-		this.id = id;
-	}
-
-	@Override
-	public final String getId() {
-		return id;
-	}
-	
+		
 	protected final Collection<Result> handleNext(Request request, PolicyDecisionCallback pdp){
 		return (next == null)?
 				Collections.singleton(pdp.requestDecision(request)):
