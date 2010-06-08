@@ -58,15 +58,7 @@ public enum XacmlDataTypes
 	XPATHEXPRESSION(new XPathExpressionTypeImpl("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression")),
 
 	/** XACML DataType:  <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b> */
-	YEARMONTHDURATION(new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration")),
-	
-	@Deprecated
-	/** XACML DataType:  <b>http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration</b> */
-	DAYTIMEDURATION_XACML2(new DayTimeDurationTypeImpl("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration")),
-	
-	@Deprecated
-	/** XACML DataType:  <b>http://www.w3.org/TR/2002/WD-xquery-operators- 20020816#yearMonthDuration</b> */
-	YEARMONTHDURATION_XACML2(new YearMonthDurationTypeImpl("http://www.w3.org/TR/2002/WD-xquery-operators- 20020816#yearMonthDuration"));
+	YEARMONTHDURATION(new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration"));
 	
 	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 
@@ -74,6 +66,10 @@ public enum XacmlDataTypes
 		for(XacmlDataTypes t : EnumSet.allOf(XacmlDataTypes.class)){
 			BY_TYPE_ID.put(t.getTypeId(), t.getType());
 		}
+		// legacy XACML 2.0 type mappings
+		BY_TYPE_ID.put("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XacmlDataTypes.XPATHEXPRESSION.getType());
+		BY_TYPE_ID.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration", XacmlDataTypes.DAYTIMEDURATION.getType());
+		BY_TYPE_ID.put("http://www.w3.org/TR/2002/WD-xquery-operators- 20020816#yearMonthDuration", XacmlDataTypes.YEARMONTHDURATION.getType());
 	}
 
 	private AttributeValueType type;
