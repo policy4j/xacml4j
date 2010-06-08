@@ -48,7 +48,8 @@ public class RequestTest
 		this.subject1 =  new Attributes(AttributeCategoryId.SUBJECT_CODEBASE, subject1Attr);
 	}
 	
-	public void testHasDublicateCategories()
+	@Test
+	public void testHasRepeatingCategories()
 	{	
 		Request request = new Request(false, 
 				Arrays.asList(subject0, resource0));
@@ -66,7 +67,7 @@ public class RequestTest
 		Request request1 = new Request(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
-		assertEquals(2, request1.getAttributes().size());
+		assertEquals(3, request1.getAttributes().size());
 		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
 		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
 		assertTrue(request1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));

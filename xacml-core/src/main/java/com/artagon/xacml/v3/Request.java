@@ -90,6 +90,20 @@ public class Request extends XacmlObject
 	}
 	
 	/**
+	 * Constructs a request with a given attributes
+	 * 
+	 * @param attributes a collection of {@link Attributes}
+	 * instances
+	 */
+	public Request(boolean returnPolicyIdList, 
+			Collection<Attributes> attributes, RequestDefaults requestDefaults)
+	{
+		this(returnPolicyIdList, attributes, 
+				Collections.<RequestReference>emptyList(), requestDefaults);
+	}
+	
+	
+	/**
 	 * If the {@link #isReturnPolicyIdList()} returns 
 	 * <code>true</code>, a PDP that implements this optional 
 	 * feature MUST return a list of all policies which were 
@@ -238,10 +252,10 @@ public class Request extends XacmlObject
 	public boolean hasRepeatingCategories(){
 		for(AttributeCategoryId category : getCategories()){
 			if(getCategoryOccuriences(category) > 1){
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,7 @@ final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestPr
 					attributes.isEmpty()){
 				continue;
 			}
-			byCategory.add(new HashSet<Attributes>(attributes));
+			byCategory.add(new LinkedHashSet<Attributes>(attributes));
 		}
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
