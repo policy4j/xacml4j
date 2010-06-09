@@ -8,6 +8,15 @@ public final class Status extends XacmlObject
 	private String message;
 	private String detail;
 	
+	/**
+	 * Creates status with a given status
+	 * code, message and detailed message
+	 * 
+	 * @param code a status code
+	 * @param message a message
+	 * @param detail a detailed
+	 * description
+	 */
 	public Status(StatusCode code, 
 			String message, String detail){
 		Preconditions.checkNotNull(code);
@@ -24,7 +33,7 @@ public final class Status extends XacmlObject
 		this(code, null, null);
 	}
 	
-	
+
 	public static Status createSuccessStatus(){
 		return new Status(new StatusCode(StatusCodeId.OK), null , null);
 	}

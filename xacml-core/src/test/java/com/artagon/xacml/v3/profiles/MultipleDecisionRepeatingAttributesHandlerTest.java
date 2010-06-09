@@ -6,10 +6,12 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import org.easymock.Capture;
@@ -71,14 +73,14 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		Request r0 = c0.getValue();
 		Request r1 = c1.getValue();
-		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributes(AttributeCategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(r1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(r1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
-		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 	
@@ -110,8 +112,27 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		Request r0 = c0.getValue();
-		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
+		verify(pdp);
+	}
+	
+	@Test
+	public void testWithEmptyRequest()
+	{
+		Request context = new Request(false, 
+				Collections.<Attributes>emptyList());
+		
+		Capture<Request> c0 = new Capture<Request>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(1, results.size());
+		assertSame(context, c0.getValue());
 		verify(pdp);
 	}
 }

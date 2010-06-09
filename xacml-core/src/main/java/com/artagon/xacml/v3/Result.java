@@ -20,7 +20,7 @@ public class Result extends XacmlObject
 	
 	/**
 	 * Constructs result with a given
-	 * failure status
+	 * failure status and {@link Decision#INDETERMINATE}
 	 * 
 	 * @param status an failure status
 	 */

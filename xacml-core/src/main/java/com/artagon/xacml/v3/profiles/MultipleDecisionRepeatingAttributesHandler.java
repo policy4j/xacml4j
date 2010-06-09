@@ -18,9 +18,12 @@ final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestPr
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
+		if(!request.hasRepeatingCategories()){
+			return handleNext(request, pdp);
+		}
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategoryId categoryId : request.getCategories()){
-			Collection<Attributes> attributes = request.getAttributesByCategory(categoryId);
+			Collection<Attributes> attributes = request.getAttributes(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()){
 				continue;

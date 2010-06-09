@@ -7,9 +7,11 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import org.easymock.Capture;
@@ -99,22 +101,22 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
 		
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
 		
 		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributes(AttributeCategoryId.RESOURCE).size());
 		
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
 		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
 		verify(pdp);
 	}
 	
@@ -139,6 +141,25 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		replay(pdp);
 		Collection<Result> results = profile.handle(request, pdp);
 		assertEquals(new Result(new Status(StatusCode.createProcessingError())), results.iterator().next());
+		verify(pdp);
+	}
+	
+	@Test
+	public void testWithEmptyRequest()
+	{
+		Request context = new Request(false, 
+				Collections.<Attributes>emptyList());
+		
+		Capture<Request> c0 = new Capture<Request>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(1, results.size());
+		assertSame(context, c0.getValue());
 		verify(pdp);
 	}
 }

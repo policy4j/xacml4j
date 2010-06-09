@@ -11,6 +11,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 public class Attributes extends XacmlObject
@@ -19,7 +20,6 @@ public class Attributes extends XacmlObject
 	private AttributeCategoryId categoryId;
 	private Node content;
 	private Multimap<String, Attribute> attributes;
-	private String scope;
 	
 	/**
 	 * Constructs an attributes with a given identifier,
@@ -104,11 +104,6 @@ public class Attributes extends XacmlObject
 		return id;
 	}
 	
-	// TBD:
-	public String getScope(){
-		return scope;
-	}
-	
 	/**
 	 * Gets content as {@link Node}
 	 * instance
@@ -140,10 +135,39 @@ public class Attributes extends XacmlObject
 		return attributes.containsKey(attributeId);
 	}
 	
+	/**
+	 * Gets all attributes with a given identifier
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @return a collection of attributes if there is no
+	 * attributes with a given identifier empty collection
+	 * is returned
+	 */
 	public Collection<Attribute> getAttributes(String attributeId){
-		return attributes.get(attributeId);
+		return  Collections.unmodifiableCollection(attributes.get(attributeId));
 	}
 	
+	/**
+	 * Gets a single {@link Attribute} instance with
+	 * a given attribute identifier
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @return {@link Attribute} instance or <code>null</code>
+	 * if no attribute available with a given identifier
+	 */
+	public Attribute getOnlyAttribute(String attributeId){
+		return Iterables.getOnlyElement(attributes.get(attributeId), null);
+	}
+	
+	/**
+	 * Gets all attributes with a given attribute 
+	 * identifier and issuer
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param issuer an attribute issuer
+	 * @return a collection of attributes with a given identifier
+	 * and given issuer
+	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
 		Collection<Attribute> v = attributes.get(attributeId);
 		return  Collections2.filter(v, new Predicate<Attribute>() {
@@ -189,6 +213,21 @@ public class Attributes extends XacmlObject
 	public Collection<AttributeValue> getAttributeValues(String attributeId, 
 			AttributeValueType dataType){
 		return getAttributeValues(attributeId, null, dataType);
+	}
+	
+	/**
+	 * Gets only one {@link AttributeValue} instance of the given type 
+	 * from an attribute with a given identifier
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute value data type
+	 * @return {@link AttributeValue} of the given type or <code>null</code>
+	 * if value matching given criteria does not exist
+	 * @exception IllegalArgumentException if more than one value is found
+	 * matching given criteria
+	 */
+	public AttributeValue getOnlyAttributeValue(String attributeId, AttributeValueType dataType){
+		return Iterables.getOnlyElement(getAttributeValues(attributeId, dataType), null);
 	}
 	
 	/**

@@ -7,7 +7,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.google.common.base.Preconditions;
 
-public class XacmlObject {
+public class XacmlObject 
+{
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o);
@@ -24,7 +25,7 @@ public class XacmlObject {
 				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static void checkNotNull(Object v, String template, Object... args)
+	protected static void checkNotNull(Object v, String template, Object... args)
 			throws NullPointerException {
 		Preconditions.checkNotNull(v, template, args);
 	}

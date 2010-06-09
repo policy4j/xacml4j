@@ -96,7 +96,8 @@ public class Request extends XacmlObject
 	 * instances
 	 */
 	public Request(boolean returnPolicyIdList, 
-			Collection<Attributes> attributes, RequestDefaults requestDefaults)
+			Collection<Attributes> attributes, 
+			RequestDefaults requestDefaults)
 	{
 		this(returnPolicyIdList, attributes, 
 				Collections.<RequestReference>emptyList(), requestDefaults);
@@ -174,10 +175,11 @@ public class Request extends XacmlObject
 	}
 	
 	/**
-	 * Gets all attributes categories contained
-	 * in this request context
+	 * Gets all attribute categories contained
+	 * in this request 
 	 * 
-	 * @return an iterator over all categories
+	 * @return a set of all attribute categories in 
+	 * this request
 	 */
 	public Set<AttributeCategoryId> getCategories(){
 		return Collections.unmodifiableSet(attributes.keySet());
@@ -200,20 +202,28 @@ public class Request extends XacmlObject
 	 * from request of a given category
 	 * 
 	 * @param categoryId an attribute category
-	 * @return a collection of {@link Attributes} or
-	 * {@link Collections#emptyList()} if a given request
-	 * does not have attributes of given category
+	 * @return a collection of {@link Attributes}, if
+	 * a request does not have attributes of a specified
+	 * category an empty collection is returned
 	 */
-	public Collection<Attributes> getAttributesByCategory(AttributeCategoryId categoryId){
+	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
-		Collection<Attributes> attr =  attributes.get(categoryId);
-		return (attr == null)?Collections.<Attributes>emptyList():attr;
+		return Collections.unmodifiableCollection(attributes.get(categoryId));
 	}
 	
-	public Attributes getAttributes(AttributeCategoryId category)
-	{
-		Collection<Attributes> all = getAttributesByCategory(category);
-		return all.isEmpty()?null:Iterables.getOnlyElement(all);
+	/**
+	 * Gets only one attribute of the given category
+	 * 
+	 * @param category a category identifier
+	 * @return {@link Attributes} or <code>null</code>
+	 * if request does not have attributes of given category
+	 * @exception IllegalArgumentException if a request
+	 * has more than one instance of {@link Attributes}
+	 * of the requested category
+	 */
+	public Attributes getOnlyAttributes(AttributeCategoryId category){
+		Collection<Attributes> attributes = getAttributes(category);
+		return Iterables.getOnlyElement(attributes, null);
 	}
 	
 	/**
@@ -226,19 +236,13 @@ public class Request extends XacmlObject
 	 * there is no attributes of given category
 	 * in this request
 	 * @exception IllegalArgumentException if request
-	 * has more than one instance {@link Attributes}
-	 * of given category
+	 * has more than one instance of {@link Attributes}
+	 * of the requested category
 	 */
-	public Node getContent(AttributeCategoryId categoryId) 
+	public Node getOnlyContent(AttributeCategoryId categoryId) 
 	{
-		Preconditions.checkNotNull(categoryId);
-		Collection<Attributes> byCategory =  attributes.get(categoryId);
-		if(byCategory == null || 
-				byCategory.isEmpty()){
-			return null;
-		}
-		Preconditions.checkArgument(byCategory.size() == 1);
-		return Iterables.getOnlyElement(byCategory).getContent();
+		Attributes attributes = getOnlyAttributes(categoryId);
+		return (attributes == null)?null:attributes.getContent();
 	}
 	
 	/**

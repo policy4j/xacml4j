@@ -1,0 +1,19 @@
+package com.artagon.xacml.v3.profiles;
+
+import java.util.Collection;
+
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+
+public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
+{
+	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
+	
+	@Override
+	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
+	{
+		return handleNext(request, pdp);
+	}
+}

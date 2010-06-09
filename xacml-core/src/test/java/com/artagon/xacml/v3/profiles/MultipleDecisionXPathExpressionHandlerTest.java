@@ -7,10 +7,12 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -104,8 +106,8 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Request r0 = c0.getValue();
 		Request r1 = c1.getValue();
 		
-		Attribute selector0 = Iterables.getOnlyElement(r0.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector1 = Iterables.getOnlyElement(r1.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector0 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector1 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
@@ -166,27 +168,27 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Request r2 = c2.getValue();
 		Request r3 = c3.getValue();
 		
-		Attribute selector00 = Iterables.getOnlyElement(r0.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector01 = Iterables.getOnlyElement(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector00 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector01 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
 		
-		Attribute selector10 = Iterables.getOnlyElement(r1.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector11 = Iterables.getOnlyElement(r1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector10 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector11 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 		
-		Attribute selector20 = Iterables.getOnlyElement(r2.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector21 = Iterables.getOnlyElement(r2.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector20 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector21 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
 		
 		
-		Attribute selector30 = Iterables.getOnlyElement(r3.getAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector31 = Iterables.getOnlyElement(r3.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector30 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector31 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategoryId.RESOURCE),  Iterables.getOnlyElement(selector30.getValues()));
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record[1]/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector31.getValues()));
@@ -266,6 +268,25 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		profile.handle(request, pdp);
 		
 		assertEquals(request, c0.getValue());
+		verify(pdp);
+	}
+	
+	@Test
+	public void testWithEmptyRequest()
+	{
+		Request context = new Request(false, 
+				Collections.<Attributes>emptyList());
+		
+		Capture<Request> c0 = new Capture<Request>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+				new Result(new Status(StatusCode.createProcessingError())));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(1, results.size());
+		assertSame(context, c0.getValue());
 		verify(pdp);
 	}
 }

@@ -10,8 +10,8 @@ import com.google.common.collect.Multiset;
 
 /**
  * A XACML request context attribute
- * @author trumpyla
- *
+ * 
+ * @author Giedrius Trumpickas
  */
 public class Attribute extends XacmlObject
 {

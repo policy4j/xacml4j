@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +17,6 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
@@ -36,7 +33,6 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	private final static Logger log = LoggerFactory.getLogger(MultipleDecisionXPathExpressionHandler.class);
 	
 	final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
-	final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
 	
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
@@ -52,14 +48,11 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
-		if(request.hasRepeatingCategories())
-		{
+		if(request.hasRepeatingCategories()){
 			if(log.isDebugEnabled()){
 				log.debug("Request=\"{}\" has repeating categories", request);
 			}
-			return Collections.singleton(new Result(new Status(
-					StatusCode.createSyntaxError(), 
-					"Request contains repeating attributes in the same category"))); 
+			return handleNext(request, pdp); 
 		}
 		List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
 		for(Attributes attribute : request.getAttributes()){
@@ -82,17 +75,11 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 				XacmlDataTypes.XPATHEXPRESSION.getType());
-		// if we found syntax error
-		// in multiple decision xpath syntax
-		// ignore attribute and return
 		if(values == null || 
 				values.isEmpty()){
 			log.debug("No values found");
 			return ImmutableSet.of(attribute);
 		}
-		// if we found syntax error
-		// in multiple decision xpath syntax
-		// ignore attribute and return
 		if(values.size() > 1){
 			return ImmutableSet.of(attribute);
 		}

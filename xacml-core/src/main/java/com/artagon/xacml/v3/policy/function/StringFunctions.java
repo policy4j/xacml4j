@@ -37,6 +37,19 @@ public class StringFunctions
 		return XacmlDataTypes.STRING.create(buf.append(a).append(b).toString());
 	}
 	
+	@Deprecated
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:uri-string-concatenate")
+	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	public static StringValue uriStringconcatenate(
+			@XacmlParam(type=XacmlDataTypes.ANYURI)AnyURIValue a,
+			@XacmlParam(type=XacmlDataTypes.STRING)StringValue b)
+	{
+		StringBuilder buf = new StringBuilder();
+		return XacmlDataTypes.STRING.create(buf.append(a.toXacmlString()).append(b).toString());
+	}
+	
+	
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:string-starts-with")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue startsWith(
