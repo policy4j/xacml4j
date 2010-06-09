@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;

@@ -2,9 +2,9 @@ package com.artagon.xacml.v3;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 
 import java.util.Collection;
 import java.util.LinkedList;
