@@ -16,6 +16,6 @@ final class PolicyOrderedPermitOverridesCombineAlgorithm extends
 	}
 	
 	public static PolicyOrderedPermitOverridesCombineAlgorithm getLegacyInstance(){
-		return new PolicyOrderedPermitOverridesCombineAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:ordered-permit-overrides");
+		return new PolicyOrderedPermitOverridesCombineAlgorithm("urn:oasis:names:tc:xacml:1.1:policy-combining-algorithm:ordered-permit-overrides");
 	}
 }

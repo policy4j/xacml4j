@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.policy.combine;
 
-import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 
-final class PolicyOrderedDenyOverridesCombiningAlgorithm extends DenyOverrides<Policy>
+final class PolicyOrderedDenyOverridesCombiningAlgorithm extends DenyOverrides<CompositeDecisionRule>
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:ordered-deny-overrides";
 	
@@ -15,7 +15,7 @@ final class PolicyOrderedDenyOverridesCombiningAlgorithm extends DenyOverrides<P
 	}
 	
 	public static PolicyOrderedDenyOverridesCombiningAlgorithm getLegacyInstance(){
-		return new PolicyOrderedDenyOverridesCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:ordered-deny-overrides");
+		return new PolicyOrderedDenyOverridesCombiningAlgorithm("urn:oasis:names:tc:xacml:1.1:policy-combining-algorithm:ordered-deny-overrides");
 	}	
 }
 
