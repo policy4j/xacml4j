@@ -117,6 +117,16 @@ public class Xacml20PolicyMapperTest
 		
 	}
 	
+	
+	@Test
+	public void testPolicyIIC231Mapping() throws Exception
+	{
+		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIC231Policy.xml");
+		Policy p = mapper.create(policy);
+		assertNotNull(p);
+		
+	}
+	
 	@Test
 	public void testFeatures001Policy() throws Exception
 	{

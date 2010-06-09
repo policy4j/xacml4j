@@ -176,7 +176,11 @@ public class Xacml20PolicyMapper
 	}
 
 	private PolicyDefaults createPolicyDefaults(DefaultsType defaults)
-			throws PolicySyntaxException {
+			throws PolicySyntaxException 
+	{
+		if(defaults == null){
+			return null;
+		}
 		return factory.createPolicyDefaults(defaults.getXPathVersion());
 	}
 
