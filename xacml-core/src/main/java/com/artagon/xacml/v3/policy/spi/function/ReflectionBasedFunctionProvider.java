@@ -51,9 +51,10 @@ public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 			final Method m)
 	{
 		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
+		final XacmlLegacyFunc legacyFuncId = m.getAnnotation(XacmlLegacyFunc.class);
 		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
 		log.debug("Found functionId=\"{}\" method name=\"{}\"", funcId.id(), m.getName());
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(funcId.id());
+		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(funcId.id(), (legacyFuncId == null)?null:legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		boolean evalContextParamFound = false;

@@ -16,6 +16,14 @@ public interface FunctionSpec
 	String getId();
 
 	/**
+	 * Gets function legacy identifier
+	 * if any available
+	 * 
+	 * @return legacy identifier
+	 */
+	String getLegacyId();
+	
+	/**
 	 * Gets parameter specification
 	 * at given
 	 * 

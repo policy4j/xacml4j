@@ -21,6 +21,7 @@ import com.google.common.base.Preconditions;
 final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 {	
 	private String functionId;
+	private String legacyId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
 	private boolean lazyParamEval = false;
 	
@@ -32,6 +33,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 * identifier and parameters
 	 * 
 	 * @param functionId a function identifier
+	 * @param legacyId a legacy identifier
 	 * @param params a function parameters spec
 	 * @param resolver a function return type resolver
 	 * @param invocation a function implementation
@@ -41,6 +43,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 */
 	public DefaultFunctionSpec(
 			String functionId, 
+			String legacyId,
 			List<ParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
@@ -54,6 +57,16 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		this.resolver = resolver;
 		this.invocation = invocation;
 		this.lazyParamEval = lazyParamEval;
+		this.legacyId = legacyId;
+	}
+	
+	public DefaultFunctionSpec(
+			String functionId, 
+			List<ParamSpec> params, 
+			FunctionReturnTypeResolver resolver,
+			FunctionInvocation invocation,
+			boolean lazyParamEval){
+		this(functionId, null, params, resolver, invocation, lazyParamEval);
 	}
 	
 	@Override
@@ -62,6 +75,12 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 	
 	
+	
+	@Override
+	public String getLegacyId() {
+		return legacyId;
+	}
+
 	@Override
 	public final ParamSpec getParamSpecAt(int index){
 		return parameters.get(index);

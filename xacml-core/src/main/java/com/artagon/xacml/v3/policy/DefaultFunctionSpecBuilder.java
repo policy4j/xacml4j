@@ -10,13 +10,19 @@ public class DefaultFunctionSpecBuilder
 	implements FunctionSpecBuilder
 {
 	private String functionId;
+	private String legacyId;
 	private List<ParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
 	
 	public DefaultFunctionSpecBuilder(String functionId){
+		this(functionId, null);
+	}
+	
+	public DefaultFunctionSpecBuilder(String functionId, String legacyId){
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
+		this.legacyId = legacyId;
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
 	
@@ -48,7 +54,7 @@ public class DefaultFunctionSpecBuilder
 
 	@Override
 	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
-		return new DefaultFunctionSpec(functionId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
+		return new DefaultFunctionSpec(functionId, legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
 	@Override

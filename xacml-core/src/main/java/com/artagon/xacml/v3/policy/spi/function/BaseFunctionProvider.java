@@ -29,6 +29,9 @@ public class BaseFunctionProvider implements FunctionProvider
 					spec, spec.getId()));
 		}
 		functions.put(spec.getId(), spec);
+		if(spec.getLegacyId() != null){
+			functions.put(spec.getLegacyId(), spec);
+		}
 	}
 
 	@Override

@@ -4,6 +4,7 @@ package com.artagon.xacml.v3.policy.function;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.XacmlLegacyFunc;
 import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
@@ -127,6 +128,7 @@ public class EqualityPredicates
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
@@ -137,6 +139,7 @@ public class EqualityPredicates
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(

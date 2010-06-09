@@ -243,7 +243,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	@Override
 	public PolicyDefaults createPolicyDefaults(Object... objects)
-			throws PolicySyntaxException {
+			throws PolicySyntaxException 
+	{
 		if(objects != null && 
 				objects.length > 0){
 			if(objects[0] instanceof String){

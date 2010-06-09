@@ -1,0 +1,17 @@
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+<title>Movies</title>
+    <item>
+        <title>Movie 1</title>
+        <link>http://www.tve.net/movie1.htm</link>
+        <media:content url="http://www.tve.net/movie1.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
+        <media:rating scheme="urn:mpaa">r</media:rating>
+    </item>
+    <item>
+        <title>Movie 2</title>
+        <link>http://www.tve.net/movie2.htm</link>
+        <media:content url="http://www.tve.net/movie2.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
+        <media:rating scheme="urn:mpaa">pg</media:rating>
+    </item>
+</channel>
+</rss>
