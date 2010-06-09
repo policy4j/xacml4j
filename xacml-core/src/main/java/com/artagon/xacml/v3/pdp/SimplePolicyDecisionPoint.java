@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.pdp;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.v3.Decision;
@@ -20,7 +19,6 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 {
 	private EvaluationContextFactory factory;
 	private PolicySet policySet;
-	private List<RequestProfileHandler> handlers;
 	
 	public SimplePolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
@@ -31,7 +29,6 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 		Preconditions.checkNotNull(policySet);
 		this.factory = factory;
 		this.policySet = policySet;
-		this.handlers = new LinkedList<RequestProfileHandler>(handlers);
 	}
 
 	@Override

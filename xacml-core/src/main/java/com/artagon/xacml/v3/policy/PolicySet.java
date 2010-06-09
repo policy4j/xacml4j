@@ -5,20 +5,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XPathVersion;
 import com.google.common.base.Preconditions;
 
-
 public class PolicySet extends BaseCompositeDecisionRule implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(PolicySet.class);
-	
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
