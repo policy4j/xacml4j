@@ -56,14 +56,19 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
-		attributes2.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
-		Attributes attr2 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
+		attributes2.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
+		attributes2.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
+		Attributes attr2 = new Attributes("actionAttr1",  AttributeCategoryId.ACTION, attributes1);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
-		attributes3.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
-		Attributes attr3 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
+		attributes3.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
+		attributes3.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
+		Attributes attr3 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
+		
+		Collection<Attribute> attributes4 = new LinkedList<Attribute>();
+		attributes4.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
+		attributes4.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
+		Attributes attr4 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
 		Collection<AttributesReference> ref0 = new LinkedList<AttributesReference>();
@@ -79,7 +84,7 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		
 			
 		Request context = new Request(false, 
-				Arrays.asList(attr0, attr1, attr2, attr3), 
+				Arrays.asList(attr0, attr1, attr2, attr3, attr4), 
 				Arrays.asList(reference0, reference1));
 		
 		Capture<Request> c0 = new Capture<Request>();
@@ -93,21 +98,23 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		profile.handle(context, pdp).iterator();
 		Request context0 = c0.getValue();
 		Request context1 = c0.getValue();
-		assertNotNull(Iterables.getOnlyElement(context0.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAllAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAllAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
-		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAllAttributes(AttributeCategoryId.RESOURCE).size());
 		
-		assertNotNull(Iterables.getOnlyElement(context1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAllAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAllAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
+		
+		assertEquals(2, context0.getAttributes().size());
+		assertEquals(1, context0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
+		
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributesByCategory(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
 		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAllAttributes(AttributeCategoryId.RESOURCE).size());
+		assertEquals(1, context1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
 		verify(pdp);
 	}
 	

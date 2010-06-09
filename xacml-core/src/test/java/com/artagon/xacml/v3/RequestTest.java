@@ -68,17 +68,17 @@ public class RequestTest
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
 		
 		Request request2 = new Request(true, 
 				Arrays.asList(subject0, resource0, resource1));
 		
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
 	}
 	
 	@Test
@@ -87,11 +87,11 @@ public class RequestTest
 
 		Request request = new Request(false, 
 				Arrays.asList(subject0, resource0, resource1));
-		Collection<Attributes> attr = request.getAllAttributes(AttributeCategoryId.RESOURCE);
+		Collection<Attributes> attr = request.getAttributesByCategory(AttributeCategoryId.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
 		assertTrue(attr.contains(resource1));
-		attr = request.getAllAttributes(AttributeCategoryId.ENVIRONMENT);
+		attr = request.getAttributesByCategory(AttributeCategoryId.ENVIRONMENT);
 		assertEquals(0, attr.size());		
 	}
 	

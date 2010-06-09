@@ -61,7 +61,7 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		Node content1 = createStrictMock(Node.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.RESOURCE)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.RESOURCE)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content1);
 		replay(request, attributes);
 		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
@@ -75,7 +75,7 @@ public class DefaultContextHandlerTest
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.RESOURCE)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.RESOURCE)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(null);
 		replay(request, attributes);
 		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
@@ -95,7 +95,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -115,7 +115,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -134,7 +134,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -153,7 +153,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -172,7 +172,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getAttributesByCategory(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);

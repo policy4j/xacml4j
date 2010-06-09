@@ -37,7 +37,7 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	@Override
 	public Response decide(Request request)
 	{
-		if(request.hasMultipleRequests()){
+		if(request.hasRequestReferences()){
 			return new Response(Collections.singleton(
 					new Result(
 							new Status(StatusCode.createSyntaxError(), 

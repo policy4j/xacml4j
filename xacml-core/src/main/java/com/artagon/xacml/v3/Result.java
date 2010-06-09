@@ -28,6 +28,7 @@ public class Result extends XacmlObject
 		Preconditions.checkNotNull(status);
 		Preconditions.checkArgument(status.isFailure());
 		this.status = status;
+		this.decision = Decision.INDETERMINATE;
 		this.policyIdentifiers = Collections.emptyList();
 	}
 	

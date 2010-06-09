@@ -71,14 +71,14 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		Request r0 = c0.getValue();
 		Request r1 = c1.getValue();
-		assertTrue(r0.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAllAttributes(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(r1.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertTrue(r1.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAllAttributes(AttributeCategoryId.RESOURCE).size());
-		assertTrue(r0.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getAttributesByCategory(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 	
@@ -110,8 +110,8 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		Request r0 = c0.getValue();
-		assertTrue(r0.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAllAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributesByCategory(AttributeCategoryId.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 }
