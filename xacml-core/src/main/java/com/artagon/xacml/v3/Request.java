@@ -14,8 +14,8 @@ import com.artagon.xacml.v3.policy.AttributesReference;
 import com.artagon.xacml.v3.policy.Condition;
 import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
 public class Request extends XacmlObject
@@ -46,7 +46,7 @@ public class Request extends XacmlObject
 		Preconditions.checkNotNull(requestReferences);
 		Preconditions.checkNotNull(requestDefaults);
 		this.returnPolicyIdList = returnPolicyIdList;
-		this.attributes = HashMultimap.create();
+		this.attributes = LinkedListMultimap.create();
 		this.multipleRequests = new ArrayList<RequestReference>(requestReferences);
 		this.attributesByXmlId = new HashMap<String, Attributes>();
 		this.requestDefaults = requestDefaults;
