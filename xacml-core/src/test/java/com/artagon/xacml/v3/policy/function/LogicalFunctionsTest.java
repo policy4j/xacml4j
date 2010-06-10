@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
-import com.artagon.xacml.v3.policy.XacmlPolicyTestCase;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
 import com.artagon.xacml.v3.types.IntegerType;

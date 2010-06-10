@@ -1,8 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.PolicyElement;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
 
 
 public class AttributeAssignment extends XacmlObject implements PolicyElement

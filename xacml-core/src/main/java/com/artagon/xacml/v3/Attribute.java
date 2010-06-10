@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultiset;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
 /**
@@ -41,7 +41,7 @@ public class Attribute extends XacmlObject
 		Preconditions.checkNotNull(values);
 		this.attributeId = attributeId;
 		this.issuer = issuer;
-		this.values = HashMultiset.create(values.size());
+		this.values = LinkedHashMultiset.create(values.size());
 		this.values.addAll(values);
 		this.includeInResult = includeInResult;
 	}

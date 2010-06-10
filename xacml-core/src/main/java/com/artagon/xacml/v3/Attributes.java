@@ -210,7 +210,8 @@ public class Attributes extends XacmlObject
 	/**
 	 * @see {@link Attributes#getAttributeValues(String, String, AttributeValueType)
 	 */
-	public Collection<AttributeValue> getAttributeValues(String attributeId, 
+	public Collection<AttributeValue> getAttributeValues(
+			String attributeId, 
 			AttributeValueType dataType){
 		return getAttributeValues(attributeId, null, dataType);
 	}

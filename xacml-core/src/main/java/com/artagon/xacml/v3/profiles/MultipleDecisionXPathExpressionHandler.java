@@ -75,15 +75,10 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 				XacmlDataTypes.XPATHEXPRESSION.getType());
-		if(values == null || 
-				values.isEmpty()){
-			log.debug("No values found");
-			return ImmutableSet.of(attribute);
-		}
 		if(values.size() > 1){
 			return ImmutableSet.of(attribute);
 		}
-		XPathExpressionType.XPathExpressionValue selector = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(values);
+		XPathExpressionType.XPathExpressionValue selector = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(values, null);
 		Node content = attribute.getContent();
 		// if there is no content
 		// specified ignore it and return
@@ -107,13 +102,15 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		}
 	}
 	
-	private Attributes transform(String xpath, Attributes attributes)
+	private Attributes transform(String xpath, Attributes attributes) 
 	{
 		Collection<Attribute> newAttributes = new LinkedList<Attribute>();
 		for(Attribute a : attributes.getAttributes())
 		{
 			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
-				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR, a.getIssuer(), a.isIncludeInResult(), 
+				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR, 
+						a.getIssuer(), 
+						a.isIncludeInResult(), 
 						XacmlDataTypes.XPATHEXPRESSION.create(xpath, attributes.getCategoryId()));
 				newAttributes.add(selectorAttr);
 				continue;

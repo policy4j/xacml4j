@@ -4,10 +4,10 @@ import java.lang.reflect.Array;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocation;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Value;
-import com.artagon.xacml.v3.policy.FunctionInvocation;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
 
 public abstract class AbstractReflectionBasedFunctionInvocation implements FunctionInvocation
 {

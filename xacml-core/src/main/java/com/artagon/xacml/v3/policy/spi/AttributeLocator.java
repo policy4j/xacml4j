@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.spi;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.policy.AttributeDesignator;
 
 public interface AttributeLocator 
 {
@@ -24,5 +24,6 @@ public interface AttributeLocator
 	 */
 	Iterable<String> getProvidedAttributes();
 	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref, AttributeCallback callback);
+	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref, 
+			AttributeCallback callback);
 }

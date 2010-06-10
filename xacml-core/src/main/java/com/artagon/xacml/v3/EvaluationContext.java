@@ -6,13 +6,6 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.policy.AttributeDesignator;
-import com.artagon.xacml.v3.policy.AttributeSelector;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
 
 
 

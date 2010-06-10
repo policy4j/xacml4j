@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3;
 
 
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
 import com.google.common.base.Preconditions;
 
 

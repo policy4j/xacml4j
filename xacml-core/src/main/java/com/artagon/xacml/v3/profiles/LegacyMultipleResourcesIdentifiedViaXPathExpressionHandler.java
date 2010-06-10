@@ -2,9 +2,13 @@ package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
 {
@@ -14,6 +18,20 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
+		if(request.hasRepeatingCategories()){
+			return handleNext(request, pdp);
+		}
+		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
+		if(resource == null){
+			return handleNext(request, pdp);
+		}
+		Collection<AttributeValue> resourceId = resource.getAttributeValues(
+				RESOURCE_ID_ATTRIBUTE, 
+				XacmlDataTypes.XPATHEXPRESSION.getType());
+		if(resourceId.isEmpty()){
+			return handleNext(request, pdp);
+		}
+		
 		return handleNext(request, pdp);
 	}
 }

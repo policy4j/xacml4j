@@ -6,12 +6,12 @@ import java.util.List;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
+import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.policy.PolicySet;
 import com.artagon.xacml.v3.profiles.RequestProfileHandler;
 import com.google.common.base.Preconditions;
 
@@ -34,6 +34,18 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	@Override
 	public Response decide(Request request)
 	{
+		EvaluationContext context = factory.createContext(policySet, request);
+		Decision decision = policySet.evaluateIfApplicable(context);
+		Result result = new Result(decision, 
+				context.getAdvices(), 
+				context.getObligations(), 
+				request.getIncludeInResultAttributes(), 
+				context.getEvaluatedPolicies());
+		return new Response(Collections.singleton(result));
+	}
+	
+	private Response validateRequest(Request request)
+	{
 		if(request.hasRequestReferences()){
 			return new Response(Collections.singleton(
 					new Result(
@@ -52,13 +64,6 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 							)
 					)); 
 		}
-		EvaluationContext context = factory.createContext(policySet, request);
-		Decision decision = policySet.evaluateIfApplicable(context);
-		Result result = new Result(decision, 
-				context.getAdvices(), 
-				context.getObligations(), 
-				request.getIncludeInResultAttributes(), 
-				context.getEvaluatedPolicies());
-		return new Response(Collections.singleton(result));
+		return null;
 	}
 }

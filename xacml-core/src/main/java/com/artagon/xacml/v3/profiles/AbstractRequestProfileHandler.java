@@ -12,7 +12,8 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 {
 	private RequestProfileHandler next;
 		
-	protected final Collection<Result> handleNext(Request request, PolicyDecisionCallback pdp){
+	protected final Collection<Result> handleNext(Request request, PolicyDecisionCallback pdp)
+	{
 		return (next == null)?
 				Collections.singleton(pdp.requestDecision(request)):
 					next.handle(request, pdp);
@@ -22,5 +23,4 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 		Preconditions.checkNotNull(handler);
 		this.next = handler;
 	}
-
 }

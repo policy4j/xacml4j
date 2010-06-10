@@ -19,7 +19,10 @@ public interface AttributeCallback
 	 * if no matching attribute exist in the request context
 	 */
 	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
-			AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer);
+			AttributeCategoryId category, 
+			String attributeId, 
+			AttributeValueType dataType,
+			String issuer);
 	
 	/**
 	 * Method assumes that issuer is not specified for an
@@ -28,5 +31,7 @@ public interface AttributeCallback
 	 * @see {{@link #getAttribute(AttributeCategoryId, String, String)}
 	 */
 	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
-			AttributeCategoryId category, String attributeId, AttributeValueType dataType);
+			AttributeCategoryId category, 
+			String attributeId, 
+			AttributeValueType dataType);
 }

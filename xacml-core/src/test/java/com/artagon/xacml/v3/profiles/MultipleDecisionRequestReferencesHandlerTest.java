@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.RequestSyntaxException;
@@ -28,7 +29,6 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.policy.AttributesReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 

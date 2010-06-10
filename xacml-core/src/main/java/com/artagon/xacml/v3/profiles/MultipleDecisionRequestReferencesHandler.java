@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.policy.AttributesReference;
 
 final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProfileHandler
 {
