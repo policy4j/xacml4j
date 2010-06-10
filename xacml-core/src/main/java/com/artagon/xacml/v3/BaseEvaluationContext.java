@@ -85,20 +85,14 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		return timezone;
 	}
 	
-	
-	
 	@Override
-	public final void addEvaluatedPolicy(Policy policy, Decision result) 
-	{
-		PolicyIdentifier policyId = new PolicyIdentifier(policy.getId(), policy.getVersion());
-		this.evaluatedPolicies.add(policyId);
+	public final void addEvaluatedPolicy(Policy policy, Decision result) {
+		this.evaluatedPolicies.add(policy.getPolicyIdentifier());
 	}
-
+	
 	@Override
-	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) 
-	{
-		PolicyIdentifier policyId = new PolicyIdentifier(policySet.getId(), policySet.getVersion());
-		this.evaluatedPolicies.add(policyId);
+	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
+		this.evaluatedPolicies.add(policySet.getPolicyIdentifier());
 	}
 
 	@Override

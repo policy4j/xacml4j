@@ -12,6 +12,7 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Rule.class);
 	
+	private String ruleId;
 	private Effect effect;
 	private Condition condition;
 	
@@ -30,9 +31,10 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 			Condition condition, 
 			Effect effect, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(ruleId, description, target, adviceExpressions, obligationExpressions);
+		super(description, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(ruleId);
 		Preconditions.checkNotNull(effect);
+		this.ruleId = ruleId;
 		this.condition = condition;
 		this.effect = effect;
 	}
@@ -55,6 +57,11 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		this(ruleId, description, target, condition, effect, 
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	@Override
+	public String getId(){
+		return ruleId;
 	}
 	
 	/**

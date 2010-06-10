@@ -12,7 +12,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v3.policy.spi.AttributeCallback;
+import com.artagon.xacml.v3.policy.spi.AttributesCallback;
 import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.google.common.base.Preconditions;
@@ -165,7 +165,7 @@ public class DefaultContextHandler implements ContextHandler
 		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 	}
 	
-	class DefaultRequestAttributesCallback implements AttributeCallback
+	class DefaultRequestAttributesCallback implements AttributesCallback
 	{
 
 		@SuppressWarnings("unchecked")

@@ -25,5 +25,5 @@ public interface AttributeLocator
 	Iterable<String> getProvidedAttributes();
 	
 	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref, 
-			AttributeCallback callback);
+			AttributesCallback callback);
 }

@@ -7,5 +7,5 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 public interface ContentLocator 
 {
 	Iterable<AttributeCategoryId> getProvidedCategories();
-	Node getContent(AttributeCategoryId category, AttributeCallback callback);
+	Node getContent(AttributeCategoryId category, AttributesCallback callback);
 }

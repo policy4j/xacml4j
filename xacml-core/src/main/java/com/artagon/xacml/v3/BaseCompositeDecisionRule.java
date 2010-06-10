@@ -7,8 +7,7 @@ import com.google.common.base.Preconditions;
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
 	implements CompositeDecisionRule, Versionable
 {
-	
-	private Version version;
+	private PolicyIdentifier identifier;
 	
 	/**
 	 * Constructs composite decision rule
@@ -21,15 +20,15 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	 * expressions
 	 */
 	protected BaseCompositeDecisionRule(
-			String id, 
+			String id,
 			Version version,
 			String description,
 			Target target,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(id, description, target,  adviceExpressions, obligationExpressions);
+		super(description, target,  adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(version);
-		this.version = version;
+		this.identifier = new PolicyIdentifier(id, version);
 	}
 	
 	protected BaseCompositeDecisionRule(
@@ -42,7 +41,16 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	}
 	
 	@Override
+	public String getId(){
+		return identifier.getId();
+	}
+	
+	@Override
 	public  Version getVersion() {
-		return version;
+		return identifier.getVersion();
+	}
+	
+	public PolicyIdentifier getPolicyIdentifier(){
+		return identifier;
 	}
 }

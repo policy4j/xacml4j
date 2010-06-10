@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 
 
-public interface AttributeCallback 
+public interface AttributesCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context

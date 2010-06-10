@@ -13,7 +13,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseDesicionRule.class);
 	
-	private String id;
 	private String description;
 	private Target target;
 	private Collection<AdviceExpression> adviceExpressions;
@@ -30,13 +29,10 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * @param obligationExpressions a decision 
 	 * obligation expressions
 	 */
-	protected BaseDesicionRule(
-			String id, 
+	protected BaseDesicionRule( 
 			String description,
 			Target target, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		checkNotNull(id, "Decision Rule identifier can't be null");
-		this.id = id;
 		this.description = description;
 		this.target = target;
 		this.adviceExpressions = (adviceExpressions == null)?
@@ -48,9 +44,9 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	}
 	
 	protected BaseDesicionRule(
-			String id, Target target, Collection<AdviceExpression> adviceExpressions,
+			Target target, Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		this(id, null, target, adviceExpressions, obligationExpressions);
+		this(null, target, adviceExpressions, obligationExpressions);
 	}
 	
 	/**
@@ -65,11 +61,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		this(id, target, 
 				Collections.<AdviceExpression>emptyList(),
 				Collections.<ObligationExpression>emptyList());
-	}
-	
-	@Override
-	public String getId(){
-		return id;
 	}
 	
 	/**
