@@ -46,7 +46,7 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	
 	private Response validateRequest(Request request)
 	{
-		if(request.hasRequestReferences()){
+		if(request.containsRequestReferences()){
 			return new Response(Collections.singleton(
 					new Result(
 							new Status(StatusCode.createSyntaxError(), 

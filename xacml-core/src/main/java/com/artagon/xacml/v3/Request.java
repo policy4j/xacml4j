@@ -167,7 +167,7 @@ public class Request extends XacmlObject
 	 * request has multiple XACML individual
 	 * requests
 	 */
-	public boolean hasRequestReferences(){
+	public boolean containsRequestReferences(){
 		return !requestReferences.isEmpty();
 	}
 	
