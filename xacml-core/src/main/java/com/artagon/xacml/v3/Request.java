@@ -259,6 +259,22 @@ public class Request extends XacmlObject
 		return false;
 	}
 	
+	public boolean containsAttributeValues(String attributeId, String issuer, AttributeValueType type)
+	{
+		for(Attributes a : getAttributes()){
+			Collection<AttributeValue> values =  a.getAttributeValues(attributeId, issuer, type);
+			if(!values.isEmpty()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean containsAttributeValues(String attributeId, AttributeValueType type)
+	{
+		return containsAttributeValues(attributeId, null, type);
+	}
+	
 	/**
 	 * Gets all {@link Attributes} instances
 	 * containing an attributes with {@link Attribute#isIncludeInResult()}

@@ -54,6 +54,14 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			}
 			return handleNext(request, pdp); 
 		}
+		if(!request.containsAttributeValues(
+				MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType())){
+			if(log.isDebugEnabled()){
+				log.debug("Request does not contain attributes with id=\"{}\" of type=\"{}\"", 
+						MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
+			}
+			return handleNext(request, pdp);
+		}
 		List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
 		for(Attributes attribute : request.getAttributes()){
 			all.add(getAttributes(request, attribute));
@@ -62,10 +70,8 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		List<Result> results = new LinkedList<Result>();
 		for(List<Attributes> requestAttr : cartesian)
 		{	
-			Request req = new Request(request.isReturnPolicyIdList(),  requestAttr, request.getRequestDefaults());
-			if(log.isDebugEnabled()){
-				log.debug("Created request=\"{}\"", req);
-			}
+			Request req = new Request(request.isReturnPolicyIdList(), 
+					requestAttr, request.getRequestDefaults());
 			results.addAll(handleNext(req, pdp));
 		}
 		return results;
@@ -75,7 +81,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 				XacmlDataTypes.XPATHEXPRESSION.getType());
-		if(values.size() > 1){
+		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
 		XPathExpressionType.XPathExpressionValue selector = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(values, null);

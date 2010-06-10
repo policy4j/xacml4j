@@ -1,10 +1,11 @@
 package com.artagon.xacml.v3;
 
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
-public class Version extends XacmlObject implements Comparable<Version> 
+public class Version implements Comparable<Version> 
 {
 	private  static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
 	
@@ -47,6 +48,12 @@ public class Version extends XacmlObject implements Comparable<Version>
     		return false;
     	}
     	return compareTo((Version)other) == 0;
+    }
+    
+    @Override
+    public String toString(){
+    	return Objects.toStringHelper(this).
+    	add("version", value).toString();
     }
    
     @Override

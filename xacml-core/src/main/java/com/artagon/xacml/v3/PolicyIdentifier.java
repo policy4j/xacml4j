@@ -24,6 +24,11 @@ public final class PolicyIdentifier extends XacmlObject
 		return id;
 	}
 	
+	/**
+	 * Gets policy or policy set version
+	 * 
+	 * @return policy or policy set version
+	 */
 	public Version getVersion(){
 		return version;
 	}

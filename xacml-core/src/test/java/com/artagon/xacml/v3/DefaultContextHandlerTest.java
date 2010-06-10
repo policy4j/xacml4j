@@ -9,7 +9,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.StringReader;
-import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -88,7 +87,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -108,7 +107,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -127,7 +126,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -146,7 +145,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
@@ -165,7 +164,7 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(Collections.singletonList(attributes));
+		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
