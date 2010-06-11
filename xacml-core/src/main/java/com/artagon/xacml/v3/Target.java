@@ -13,6 +13,12 @@ public class Target extends XacmlObject implements PolicyElement
 	
 	private Collection<MatchAnyOf> matches;
 	
+	/**
+	 * Creates target with a collection
+	 * of {@link MatchAnyOf}
+	 * 
+	 * @param matches a collection of {@link MatchAnyOf}
+	 */
 	public Target(Collection<MatchAnyOf> matches){
 		this.matches = new LinkedList<MatchAnyOf>(matches);
 	}
@@ -45,7 +51,6 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
-		// restore old scope
 		context.setAttributeResolutionScope(scope);
 		return state;
 	}

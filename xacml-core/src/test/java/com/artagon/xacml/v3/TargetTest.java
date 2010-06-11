@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 

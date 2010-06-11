@@ -40,14 +40,17 @@ public class DefaultContextHandler implements ContextHandler
 		Attributes attr = request.getOnlyAttributes(category);
 		if(attr == null){
 			if(context.getAttributeResolutionScope() == 
-				AttributeResolutionScope.REQUEST_ONLY)
+				AttributeResolutionScope.REQUEST_AND_LOCATORS)
 			return handleGetContent(category, request);
 		}
 		Node content = attr.getContent();
 		if(content == null){
-			
+			if(context.getAttributeResolutionScope() == 
+				AttributeResolutionScope.REQUEST_AND_LOCATORS){
+				return handleGetContent(category, request);
+			}
 		}
-		return (content == null)?handleGetContent(category, request):content;
+		return content;
 	}
 
 	@SuppressWarnings("unchecked")

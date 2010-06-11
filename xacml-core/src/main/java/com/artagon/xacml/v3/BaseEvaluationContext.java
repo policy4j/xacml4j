@@ -287,8 +287,6 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		return contextHandler.resolve(this, ref);
 	}
 	
-	
-
 	@Override
 	public final BagOfAttributeValues<AttributeValue> resolve(AttributeSelector ref)
 			throws EvaluationException 
@@ -296,8 +294,6 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		return contextHandler.resolve(this, ref);
 	}
 	
-	
-
 	@Override
 	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
