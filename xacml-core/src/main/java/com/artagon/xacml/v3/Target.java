@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 public class Target extends XacmlObject implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Target.class);
@@ -29,6 +27,8 @@ public class Target extends XacmlObject implements PolicyElement
 	
 	public MatchResult match(EvaluationContext context) 
 	{
+		AttributeResolutionScope scope = context.getAttributeResolutionScope();
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
 			MatchResult r = m.match(context);
@@ -45,6 +45,8 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
+		// restore old scope
+		context.setAttributeResolutionScope(scope);
 		return state;
 	}
 

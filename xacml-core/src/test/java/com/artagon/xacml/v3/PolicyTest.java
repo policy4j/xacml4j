@@ -91,6 +91,7 @@ public class PolicyTest
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
+		assertEquals(new PolicyIdentifier("testId", Version.parse("1.0")), p.getPolicyIdentifier());
 		assertEquals("testId", p.getId());
 		assertEquals(Version.valueOf(1), p.getVersion());
 		assertEquals("Test", p.getDescription());

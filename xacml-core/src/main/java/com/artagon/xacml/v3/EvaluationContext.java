@@ -29,6 +29,9 @@ public interface EvaluationContext
 	 */
 	boolean isValidateFuncParamAtRuntime();
 		
+	AttributeResolutionScope getAttributeResolutionScope();
+	void setAttributeResolutionScope(AttributeResolutionScope scope);
+	
 	/**
 	 * Gets parent evaluation context
 	 * 

@@ -202,7 +202,17 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
 		return delegate.getEvaluatedPolicies();
+	}
+
+	@Override
+	public void setAttributeResolutionScope(
+			AttributeResolutionScope scope) {
+		delegate.setAttributeResolutionScope(scope);
+		
+	}
+
+	@Override
+	public AttributeResolutionScope getAttributeResolutionScope() {
+		return delegate.getAttributeResolutionScope();
 	}	
-	
-	
 }

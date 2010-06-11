@@ -39,9 +39,14 @@ public class DefaultContextHandler implements ContextHandler
 	{
 		Attributes attr = request.getOnlyAttributes(category);
 		if(attr == null){
+			if(context.getAttributeResolutionScope() == 
+				AttributeResolutionScope.REQUEST_ONLY)
 			return handleGetContent(category, request);
 		}
 		Node content = attr.getContent();
+		if(content == null){
+			
+		}
 		return (content == null)?handleGetContent(category, request):content;
 	}
 
@@ -56,10 +61,11 @@ public class DefaultContextHandler implements ContextHandler
 			Collection<AttributeValue> values = attributes.getAttributeValues(
 					ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
 			if(!values.isEmpty()){
-				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
+				return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
 			}
 		} 
-		return handleResolve(ref, request);
+		return (context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST_ONLY)? 
+				((BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty()):handleResolve(ref, request);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,8 +30,11 @@ public class TargetTest
 		MatchAnyOf m2 = createStrictMock(MatchAnyOf.class);
 		matches.add(m1);
 		matches.add(m2);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.MATCH);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
 		replay(m1, m2);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
@@ -55,8 +59,11 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
@@ -72,8 +79,11 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
@@ -89,7 +99,10 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
 		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));

@@ -39,6 +39,9 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	private List<PolicyIdentifier> evaluatedPolicies;
 	
 	private XPathProvider xpathProvider;
+	
+	private AttributeResolutionScope scope;
+	
 		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -303,7 +306,18 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	public void addApplicablePolicy(String policyID,  Version version){
 		evaluatedPolicies.add(new PolicyIdentifier(policyID, version));
 	}
-	
 
-	
+	@Override
+	public AttributeResolutionScope getAttributeResolutionScope() {
+		return (scope == null)?AttributeResolutionScope.REQUEST_AND_LOCATORS:scope;
+	}
+
+
+
+	@Override
+	public void setAttributeResolutionScope(
+			AttributeResolutionScope scope) {
+		Preconditions.checkNotNull(scope);
+		this.scope = scope;	
+	}	
 }
