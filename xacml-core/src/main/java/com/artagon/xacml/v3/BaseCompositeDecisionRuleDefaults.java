@@ -12,7 +12,7 @@ abstract class BaseCompositeDecisionRuleDefaults extends XacmlObject
 		this.version = version;
 	}
 	
-	public final XPathVersion getXPathVersion(){
+	public XPathVersion getXPathVersion(){
 		return version;
 	}
 }

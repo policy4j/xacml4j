@@ -52,8 +52,11 @@ public class TargetTest
 		assertEquals(MatchResult.MATCH, t.match(context));
 		verify(context);
 		reset(context);
-		t = new Target();
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
 		replay(context);
+		t = new Target();
 		assertEquals(MatchResult.MATCH, t.match(context));
 	}
 	
@@ -72,10 +75,10 @@ public class TargetTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
-		replay(m1, m2, m3);
+		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
-		verify(m1, m2, m3);
+		verify(m1, m2, m3, context);
 	}
 	
 	@Test
@@ -92,10 +95,10 @@ public class TargetTest
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
-		replay(m1, m2, m3);
+		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
-		verify(m1, m2, m3);
+		verify(m1, m2, m3, context);
 	}
 	
 	@Test
@@ -111,10 +114,10 @@ public class TargetTest
 		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
 		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
-		replay(m1, m2, m3);
+		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		verify(m1, m2, m3);
+		verify(m1, m2, m3, context);
 	}
 	
 }
