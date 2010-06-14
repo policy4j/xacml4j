@@ -40,13 +40,13 @@ public class DefaultContextHandler implements ContextHandler
 		Attributes attr = request.getOnlyAttributes(category);
 		if(attr == null){
 			if(context.getAttributeResolutionScope() == 
-				AttributeResolutionScope.REQUEST_AND_LOCATORS)
+				AttributeResolutionScope.REQUEST_EXTERNAL)
 			return handleGetContent(category, request);
 		}
 		Node content = attr.getContent();
 		if(content == null){
 			if(context.getAttributeResolutionScope() == 
-				AttributeResolutionScope.REQUEST_AND_LOCATORS){
+				AttributeResolutionScope.REQUEST_EXTERNAL){
 				return handleGetContent(category, request);
 			}
 		}
@@ -67,7 +67,7 @@ public class DefaultContextHandler implements ContextHandler
 				return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
 			}
 		} 
-		return (context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST_ONLY)? 
+		return (context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
 				((BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty()):handleResolve(ref, request);
 	}
 

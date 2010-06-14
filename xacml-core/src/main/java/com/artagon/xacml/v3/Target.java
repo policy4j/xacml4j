@@ -34,7 +34,7 @@ public class Target extends XacmlObject implements PolicyElement
 	public MatchResult match(EvaluationContext context) 
 	{
 		AttributeResolutionScope scope = context.getAttributeResolutionScope();
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
 			MatchResult r = m.match(context);

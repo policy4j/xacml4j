@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 
-public interface AttributeLocator 
+public interface AttributeResolver 
 {
 	/**
 	 * Gets an attribute categories supported

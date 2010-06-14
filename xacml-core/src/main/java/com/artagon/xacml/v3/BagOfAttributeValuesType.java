@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -66,5 +67,10 @@ public final class BagOfAttributeValuesType<VT extends AttributeValue> extends X
 	 */
 	public BagOfAttributeValues<VT> create(AttributeValue ...attr){
 		return new BagOfAttributeValues<VT>(this, attr);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this).add("TypeId", type.getDataTypeId()).toString();
 	}
 }

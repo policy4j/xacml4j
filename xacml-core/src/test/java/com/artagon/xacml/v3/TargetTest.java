@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.reset;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
@@ -29,22 +30,30 @@ public class TargetTest
 		MatchAnyOf m2 = createStrictMock(MatchAnyOf.class);
 		matches.add(m1);
 		matches.add(m2);
-		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.MATCH);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
-		replay(m1, m2);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
+		replay(m1, m2, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
-		verify(m1, m2);
+		verify(m1, m2, context);
 	}
 	
 	@Test
-	public void testEmptyTarget(){
+	public void testEmptyTarget()
+	{
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
+		replay(context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
+		verify(context);
+		reset(context);
 		t = new Target();
+		replay(context);
 		assertEquals(MatchResult.MATCH, t.match(context));
 	}
 	
@@ -58,11 +67,11 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
@@ -78,11 +87,11 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
@@ -98,10 +107,10 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_AND_LOCATORS);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_ONLY);
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		expect(m1.match(context)).andReturn(MatchResult.NOMATCH);
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_AND_LOCATORS);
+		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST_EXTERNAL);
 		replay(m1, m2, m3);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));

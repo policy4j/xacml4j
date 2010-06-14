@@ -7,6 +7,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.XacmlObject;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -19,7 +20,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 {
 	private String typeId;
 	private BagOfAttributeValuesType<V> bagType;
-	protected Logger log = LoggerFactory.getLogger(this.getClass());
+	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	/**
 	 * Constructs attribute type with given type identifier.
@@ -40,5 +41,10 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	@Override
 	public final BagOfAttributeValuesType<V> bagOf(){
 		return bagType;
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("TypeId=", typeId).toString();
 	}
 }

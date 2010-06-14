@@ -22,7 +22,7 @@ public class XacmlObject
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+				ToStringStyle.SIMPLE_STYLE);
 	}
 
 	protected static void checkNotNull(Object v, String template, Object... args)

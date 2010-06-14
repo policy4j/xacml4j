@@ -305,7 +305,7 @@ abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public AttributeResolutionScope getAttributeResolutionScope() {
-		return (scope == null)?AttributeResolutionScope.REQUEST_AND_LOCATORS:scope;
+		return (scope == null)?AttributeResolutionScope.REQUEST_EXTERNAL:scope;
 	}
 
 
