@@ -17,7 +17,6 @@ import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
 import org.w3c.dom.Element;
 
-import com.artagon.xacml.v20.Xacml20ContextMapper;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
@@ -73,7 +72,7 @@ public class Xacml20ContextMapperTest
 		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIIF005Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
-		Attributes subject = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS));
+		Attributes subject = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subject);
 	
 		Attribute subjectId = Iterables.getOnlyElement(subject.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
@@ -83,7 +82,7 @@ public class Xacml20ContextMapperTest
 		assertEquals(XacmlDataTypes.STRING.create("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 		assertEquals(XacmlDataTypes.STRING.create("riddle me this"), Iterables.getOnlyElement(subjectSomeAttribute.getValues()));
 		
-		Attributes resource = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.RESOURCE));
+		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
 		assertEquals("record", ((Element)resource.getContent()).getLocalName());
@@ -95,7 +94,7 @@ public class Xacml20ContextMapperTest
 		assertEquals(XacmlDataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
-		Attributes action = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.ACTION));
+		Attributes action = request.getOnlyAttributes(AttributeCategoryId.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -108,28 +107,28 @@ public class Xacml20ContextMapperTest
 		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB028Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
-		Attributes subjectAccess = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS));
+		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
 	
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(XacmlDataTypes.STRING.create("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 		
-		Attributes subjectRecepient = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.SUBJECT_RECIPIENT));
+		Attributes subjectRecepient = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT);
 		assertNotNull(subjectRecepient);
 		
 		subjectId = Iterables.getOnlyElement(subjectRecepient.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(XacmlDataTypes.STRING.create("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
 		
-		Attributes subjectCodebase = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.SUBJECT_CODEBASE));
+		Attributes subjectCodebase = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_CODEBASE);
 		assertNotNull(subjectCodebase);
 		
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(XacmlDataTypes.ANYURI.create("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 		
-		Attributes resource = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.RESOURCE));
+		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		assertNotNull(resource);
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
@@ -139,7 +138,7 @@ public class Xacml20ContextMapperTest
 		assertEquals(XacmlDataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
-		Attributes action = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.ACTION));
+		Attributes action = request.getOnlyAttributes(AttributeCategoryId.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -152,14 +151,14 @@ public class Xacml20ContextMapperTest
 		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB030Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
-		Attributes subjectAccess = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.SUBJECT_ACCESS));
+		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
 	
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(XacmlDataTypes.STRING.create("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 				
-		Attributes resource = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.RESOURCE));
+		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		assertNotNull(resource);
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
@@ -172,7 +171,7 @@ public class Xacml20ContextMapperTest
 		assertEquals(XacmlDataTypes.STRING.create("BartSimpson"), Iterables.getOnlyElement(simpleFileName.getValues()));
 		
 		
-		Attributes action = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.ACTION));
+		Attributes action = request.getOnlyAttributes(AttributeCategoryId.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -186,7 +185,7 @@ public class Xacml20ContextMapperTest
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		
-		Attributes resource = Iterables.getOnlyElement(request.getAllAttributes(AttributeCategoryId.RESOURCE));
+		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		assertNotNull(resource);
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
