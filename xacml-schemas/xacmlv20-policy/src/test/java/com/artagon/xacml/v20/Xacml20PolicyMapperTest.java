@@ -17,17 +17,16 @@ import org.junit.Test;
 import org.oasis.xacml.v20.policy.PolicySetType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
-import com.artagon.xacml.v20.Xacml20PolicyMapper;
+import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.MatchAnyOf;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.policy.DefaultPolicyFactory;
-import com.artagon.xacml.v3.policy.MatchAnyOf;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyFactory;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySyntaxException;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Target;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
 
