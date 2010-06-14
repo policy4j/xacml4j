@@ -10,4 +10,25 @@
 	<artifactId>xacml-test</artifactId>
 	<packaging>jar</packaging>
 	<name>OASIS XACML Conformance Tests</name>
+	<dependencies>
+	<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-core</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-v20-schema-policy</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-v20-schema-context</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
 </project>
