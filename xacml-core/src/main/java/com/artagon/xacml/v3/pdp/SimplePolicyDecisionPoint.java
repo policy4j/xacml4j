@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.pdp;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v3.Decision;
@@ -36,33 +35,33 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	{
 		EvaluationContext context = factory.createContext(policySet, request);
 		Decision decision = policySet.evaluateIfApplicable(context);
-		Result result = new Result(decision, 
-				context.getAdvices(), 
-				context.getObligations(), 
-				request.getIncludeInResultAttributes(), 
-				context.getEvaluatedPolicies());
-		return new Response(Collections.singleton(result));
+		return new Response(
+				new Result(
+						decision, 
+						context.getAdvices(), 
+						context.getObligations(), 
+						request.getIncludeInResultAttributes(), 
+						context.getEvaluatedPolicies()));
 	}
 	
 	private Response validateRequest(Request request)
 	{
 		if(request.containsRequestReferences()){
-			return new Response(Collections.singleton(
+			return new Response(
 					new Result(
 							new Status(StatusCode.createSyntaxError(), 
 									"Request contains multiple references", 
 									"PDP misconfiguration")
 							)
-					)); 
+					); 
 		}
 		if(request.hasRepeatingCategories()){
-			return new Response(Collections.singleton(
+			return new Response(
 					new Result(
 							new Status(StatusCode.createSyntaxError(), 
 									"Request contains attrobutes with repeating categores",
 									"PDP misconfiguration")
-							)
-					)); 
+							)); 
 		}
 		return null;
 	}

@@ -3,12 +3,17 @@ package com.artagon.xacml.v3;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.google.common.base.Preconditions;
 
 public class Response extends XacmlObject
 {
 	private Collection<Result> results;
+	
+	public Response(Result result){
+		this(Collections.singleton(result));
+	}
 	
 	public Response(Collection<Result> results){
 		Preconditions.checkNotNull(results);
