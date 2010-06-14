@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
@@ -205,7 +206,13 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 		values.equals(bag.values);
 	}
 	
-	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).
+		add("Type", type.getDataType()).
+		add("Values", values).toString();
+	}
+
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);

@@ -156,7 +156,7 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 				INTEGER.create(6));
 		
 		BagOfAttributeValues<IntegerValue> bag3 = bag0.intersection(bag1);
-		
+		System.out.println(bag3);
 		assertTrue(bag3.contains(INTEGER.create(2)));
 		assertTrue(bag3.contains(INTEGER.create(6)));
 		assertEquals(2, bag3.size());
