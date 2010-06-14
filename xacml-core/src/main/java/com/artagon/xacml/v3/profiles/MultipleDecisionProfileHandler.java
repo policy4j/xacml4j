@@ -8,6 +8,7 @@ public class MultipleDecisionProfileHandler extends CompositeRequestProfileHandl
 	{
 		super(new MultipleDecisionRequestReferencesHandler(), 
 				new MultipleDecisionRepeatingAttributesHandler(),
+				new LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler(),
 				new MultipleDecisionProfileHandler(xpathProvider));
 	}
 	

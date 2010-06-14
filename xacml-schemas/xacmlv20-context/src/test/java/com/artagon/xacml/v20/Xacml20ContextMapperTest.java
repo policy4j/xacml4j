@@ -63,13 +63,13 @@ public class Xacml20ContextMapperTest
 	public void testResponseIIIF005Mapping() throws Exception
 	{
 		@SuppressWarnings("unused")
-		ResponseType res = getJAXBObject("oasis-xacml20-compat-test/IIIF005Response.xml");
+		ResponseType res = getJAXBObject("IIIF005Response.xml");
 	}
 	
 	@Test
 	public void testRequestIIIF005Mapping() throws Exception
 	{
-		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIIF005Request.xml");
+		RequestType req = getJAXBObject("IIIF005Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subject = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
@@ -104,7 +104,7 @@ public class Xacml20ContextMapperTest
 	@Test
 	public void testRequestIIB028Mapping() throws Exception
 	{
-		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB028Request.xml");
+		RequestType req = getJAXBObject("IIB028Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
@@ -148,7 +148,7 @@ public class Xacml20ContextMapperTest
 	@Test
 	public void testRequestIIB030Mapping() throws Exception
 	{
-		RequestType req = getJAXBObject("oasis-xacml20-compat-test/IIB030Request.xml");
+		RequestType req = getJAXBObject("IIB030Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
@@ -181,7 +181,7 @@ public class Xacml20ContextMapperTest
 	@Test
 	public void testRequest001MultipleResourcesMapping() throws Exception
 	{
-		RequestType req = getJAXBObject("features/001A-Request.xml");
+		RequestType req = getJAXBObject("001A-Request.xml");
 		Request request = contextMapper.create(req);
 		assertNotNull(request);
 		

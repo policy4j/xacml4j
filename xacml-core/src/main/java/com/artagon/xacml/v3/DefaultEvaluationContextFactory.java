@@ -3,7 +3,6 @@ package com.artagon.xacml.v3;
 import com.artagon.xacml.v3.policy.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 
-
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
 	private PolicyReferenceResolver policyResolver;
@@ -19,14 +18,18 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	}
 
 	@Override
-	public EvaluationContext createContext(Policy policy, Request request) {
+	public EvaluationContext createContext(CompositeDecisionRule policy, Request request) {
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request);
-		return new PolicyEvaluationContext(policy, handler , xpathProvider, policyResolver);
-	}
-	
-	@Override
-	public EvaluationContext createContext(PolicySet policySet, Request request) {
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request);
-		return new PolicySetEvaluationContext(policySet, handler, xpathProvider, policyResolver);
-	}
+		try{
+			
+			return new PolicySetEvaluationContext(
+					(PolicySet)policy, handler , xpathProvider, policyResolver);
+		}catch(ClassCastException e){
+			return new PolicyEvaluationContext(
+					(Policy)policy, 
+					handler , 
+					xpathProvider, 
+					policyResolver);
+		}
+	}	
 }

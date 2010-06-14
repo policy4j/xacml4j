@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.pdp;
 
 import java.util.List;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
@@ -17,12 +17,12 @@ import com.google.common.base.Preconditions;
 public class SimplePolicyDecisionPoint implements PolicyDecisionPoint 
 {
 	private EvaluationContextFactory factory;
-	private PolicySet policySet;
+	private CompositeDecisionRule policySet;
 	
 	public SimplePolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
 			EvaluationContextFactory factory,  
-			PolicySet policySet)
+			CompositeDecisionRule policySet)
 	{
 		Preconditions.checkNotNull(factory);
 		Preconditions.checkNotNull(policySet);
@@ -44,6 +44,7 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 						context.getEvaluatedPolicies()));
 	}
 	
+	@SuppressWarnings("unused")
 	private Response validateRequest(Request request)
 	{
 		if(request.containsRequestReferences()){
