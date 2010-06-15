@@ -2,11 +2,16 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
 	implements CompositeDecisionRule, Versionable
 {
+	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
+	
 	private PolicyIdentifier identifier;
 	
 	/**
@@ -52,5 +57,31 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	
 	public PolicyIdentifier getPolicyIdentifier(){
 		return identifier;
+	}
+	
+	/**
+	 * Combines {@link #isApplicable(EvaluationContext)} and 
+	 * {@link #evaluate(EvaluationContext)} calls to one single
+	 * method invocation
+	 */
+	@Override
+	public  Decision evaluateIfApplicable(EvaluationContext context)
+	{
+		if(log.isDebugEnabled()){
+			log.debug("Invoking decision rule id=\"{}\" evaluateIfApplicable", getId());
+		}
+		MatchResult r = isApplicable(context);
+		Preconditions.checkState(r != null);
+		if(r == MatchResult.MATCH){
+			if(log.isDebugEnabled()){
+				log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
+			}
+			return evaluate(context);
+		}
+		if(log.isDebugEnabled()){
+			log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
+		}
+		return (r == MatchResult.INDETERMINATE)?
+				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
 	}
 }

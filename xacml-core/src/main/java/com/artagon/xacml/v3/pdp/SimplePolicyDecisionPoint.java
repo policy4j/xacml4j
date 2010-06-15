@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.StatusCodeId;
 import com.artagon.xacml.v3.profiles.RequestProfileHandler;
 import com.google.common.base.Preconditions;
 
@@ -35,35 +36,21 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	{
 		EvaluationContext context = factory.createContext(policySet, request);
 		Decision decision = policySet.evaluateIfApplicable(context);
+		if(decision.isIndeterminate() || 
+				decision == Decision.NOT_APPLICABLE){
+			return new Response(
+					new Result(decision, 
+							new Status(StatusCode.createProcessingError()),
+							request.getIncludeInResultAttributes(), 
+							context.getEvaluatedPolicies()));
+		}
 		return new Response(
 				new Result(
 						decision, 
+						new Status(new StatusCode(StatusCodeId.OK)),
 						context.getAdvices(), 
 						context.getObligations(), 
 						request.getIncludeInResultAttributes(), 
 						context.getEvaluatedPolicies()));
-	}
-	
-	@SuppressWarnings("unused")
-	private Response validateRequest(Request request)
-	{
-		if(request.containsRequestReferences()){
-			return new Response(
-					new Result(
-							new Status(StatusCode.createSyntaxError(), 
-									"Request contains multiple references", 
-									"PDP misconfiguration")
-							)
-					); 
-		}
-		if(request.hasRepeatingCategories()){
-			return new Response(
-					new Result(
-							new Status(StatusCode.createSyntaxError(), 
-									"Request contains attrobutes with repeating categores",
-									"PDP misconfiguration")
-							)); 
-		}
-		return null;
 	}
 }

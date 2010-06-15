@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -64,9 +65,9 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
@@ -105,7 +106,7 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
@@ -126,7 +127,7 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.RequestSyntaxException;
@@ -26,7 +27,7 @@ final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProf
 				Request resolvedRequest = resolveAttributes(request, ref);
 				results.addAll(handleNext(resolvedRequest, pdp));
 			}catch(RequestSyntaxException e){
-				results.add(new Result(e.getStatus()));
+				results.add(new Result(Decision.INDETERMINATE, e.getStatus()));
 			}
 		}
 		return results;

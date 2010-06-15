@@ -111,6 +111,32 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		log.debug("RuleId=\"{}\" decision result=\"{}\"", getId(), d);
 		return d;
 	}
+	
+	/**
+	 * Combines {@link #isApplicable(EvaluationContext)} and 
+	 * {@link #evaluate(EvaluationContext)} calls to one single
+	 * method invocation
+	 */
+	@Override
+	public  Decision evaluateIfApplicable(EvaluationContext context)
+	{
+		if(log.isDebugEnabled()){
+			log.debug("Invoking decision rule id=\"{}\" evaluateIfApplicable", getId());
+		}
+		MatchResult r = isApplicable(context);
+		Preconditions.checkState(r != null);
+		if(r == MatchResult.MATCH){
+			if(log.isDebugEnabled()){
+				log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
+			}
+			return evaluate(context);
+		}
+		if(log.isDebugEnabled()){
+			log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
+		}
+		return (r == MatchResult.INDETERMINATE)?
+				getExtendedIndeterminate():Decision.NOT_APPLICABLE;
+	}
 		
 	/**
 	 * Gets rule extended "Indeterminate" status

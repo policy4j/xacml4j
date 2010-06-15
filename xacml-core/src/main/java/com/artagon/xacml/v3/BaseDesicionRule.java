@@ -109,25 +109,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	}
 	
 	/**
-	 * Combines {@link #isApplicable(EvaluationContext)} and 
-	 * {@link #evaluate(EvaluationContext)} calls to one single
-	 * method invocation
-	 */
-	@Override
-	public  Decision evaluateIfApplicable(EvaluationContext context)
-	{
-		MatchResult r = isApplicable(context);
-		Preconditions.checkState(r != null);
-		if(r == MatchResult.MATCH){
-			log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
-			return evaluate(context);
-		}
-		log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
-		return (r == MatchResult.INDETERMINATE)?
-				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
-	}
-	
-	/**
 	 * Evaluates this decision, if decision is applicable to
 	 * the current request then appropriate decision
 	 * advice and obligations are evaluated
@@ -135,12 +116,16 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	@Override
 	public  Decision evaluate(EvaluationContext context) 
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Invoking decision rule id=\"{}\" evaluate", getId());
+		}
 		Preconditions.checkArgument(isEvaluationContextValid(context));
 		Decision result = doEvaluate(context);
 		if(result.isIndeterminate() || 
 				result == Decision.NOT_APPLICABLE){
 			log.debug("Not evaluating advices and " +
-					"obligations for decision result=\"{}\"", result);
+					"obligations for decision rule id=\"{}\" " +
+					"evaluation result=\"{}\"", getId(), result);
 			return result;
 		}
 		try

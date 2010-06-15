@@ -28,6 +28,7 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
@@ -94,9 +95,9 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		replay(pdp);
 			
 		Collection<Result> results = profile.handle(context, pdp);
@@ -148,13 +149,13 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Capture<Request> c3 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		expect(pdp.requestDecision(capture(c2))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		expect(pdp.requestDecision(capture(c3))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 			
@@ -224,7 +225,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		
@@ -261,7 +262,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		
@@ -280,7 +281,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);

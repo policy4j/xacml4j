@@ -7,7 +7,7 @@ final class PolicyPermitUnlessDenyCombiningAlgorithm extends
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny";
 
-	public PolicyPermitUnlessDenyCombiningAlgorithm() {
+	PolicyPermitUnlessDenyCombiningAlgorithm() {
 		super(ID);
 	}	
 }

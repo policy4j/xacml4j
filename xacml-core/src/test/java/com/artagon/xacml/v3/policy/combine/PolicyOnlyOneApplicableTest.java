@@ -20,13 +20,13 @@ import com.artagon.xacml.v3.MatchResult;
 
 public class PolicyOnlyOneApplicableTest
 {
-	private PolicyOnlyOneApplicableCombingingAlgorithm c;
+	private OnlyOneApplicablePolicyCombingingAlgorithm c;
 	private List<CompositeDecisionRule> d;
 	private EvaluationContext context;
 	
 	@Before
 	public void init(){
-		this.c = new PolicyOnlyOneApplicableCombingingAlgorithm();
+		this.c = new OnlyOneApplicablePolicyCombingingAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
 		this.context = createStrictMock(EvaluationContext.class);
 	}

@@ -24,12 +24,32 @@ public class Result extends XacmlObject
 	 * 
 	 * @param status an failure status
 	 */
-	public Result(Status status){
-		Preconditions.checkNotNull(status);
+	public Result(Decision decision, 
+			Status status, 
+			Collection<Attributes> attributes, 
+			Collection<PolicyIdentifier> evaluatedPolicies){
+		this(decision, status, 
+				Collections.<Advice>emptyList(),
+				Collections.<Obligation>emptyList(),
+				attributes, evaluatedPolicies);
+		Preconditions.checkArgument(decision.isIndeterminate() || 
+				decision == Decision.NOT_APPLICABLE);
 		Preconditions.checkArgument(status.isFailure());
-		this.status = status;
-		this.decision = Decision.INDETERMINATE;
-		this.policyIdentifiers = Collections.emptyList();
+	}
+	
+	/**
+	 * Constructs result with a given
+	 * failure status and {@link Decision#INDETERMINATE}
+	 * 
+	 * @param status an failure status
+	 */
+	public Result(Decision decision, 
+			Status status){
+		this(decision, status, 
+				Collections.<Advice>emptyList(),
+				Collections.<Obligation>emptyList(),
+				Collections.<Attributes>emptyList(), 
+				Collections.<PolicyIdentifier>emptyList());
 	}
 	
 	/**
@@ -43,17 +63,18 @@ public class Result extends XacmlObject
 	 */
 	public Result(
 			Decision decision, 
+			Status status,
 			Iterable<Advice> associatedAdvice, 
 			Iterable<Obligation> obligations,
 			Iterable<Attributes> attributes,
 			Iterable<PolicyIdentifier> policyIdentifiers){
 		Preconditions.checkNotNull(decision);
+		Preconditions.checkNotNull(status);
 		Preconditions.checkNotNull(obligations);
 		Preconditions.checkNotNull(associatedAdvice);
 		Preconditions.checkNotNull(attributes);
-		Preconditions.checkArgument(!decision.isIndeterminate());
 		this.decision = decision;
-		this.status = Status.createSuccessStatus();
+		this.status = status;
 		this.associatedAdvice = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.attributes = new HashMap<AttributeCategoryId, Attributes>();
@@ -66,20 +87,6 @@ public class Result extends XacmlObject
 		}
 	}
 	
-	/**
-	 * Constructs result with given
-	 * {@link Decision} instance
-	 * 
-	 * @param decision a PDP decision
-	 */
-	public Result(Decision decision){
-		this(decision, 
-				Collections.<Advice>emptyList(),
-				Collections.<Obligation>emptyList(), 
-				Collections.<Attributes>emptyList(), 
-				Collections.<PolicyIdentifier>emptyList());
-	}
-		
 	/**
 	 * Gets a status of this result. Status indicates 
 	 * whether errors occurred during evaluation of 

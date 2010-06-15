@@ -64,8 +64,7 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 			if(decision == Decision.INDETERMINATE_DP){
 				atLeastOneIndeterminateDP = true;
 				continue;
-			}
-			
+			}	
 		}
 		if(atLeastOneIndeterminateDP){
 			return Decision.INDETERMINATE_DP;

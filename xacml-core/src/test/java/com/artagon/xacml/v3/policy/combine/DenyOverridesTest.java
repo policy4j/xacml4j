@@ -99,7 +99,7 @@ public class DenyOverridesTest
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(decisions, context));
 		verify(r1);
 	}
-	
+		
 	@Test
 	public void testCombineWithInderterminateD() throws EvaluationException
 	{
@@ -109,6 +109,18 @@ public class DenyOverridesTest
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_D);
 		replay(r1);
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(decisions, context));
+		verify(r1);
+	}
+	
+	@Test
+	public void testCombineWithInderterminate() throws EvaluationException
+	{
+		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		decisions.add(r1);
+		expect(r1.createContext(context)).andReturn(context);
+		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
+		replay(r1);
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
 		verify(r1);
 	}
 	
