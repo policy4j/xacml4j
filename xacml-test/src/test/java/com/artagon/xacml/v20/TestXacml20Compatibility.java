@@ -22,6 +22,7 @@ import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
+import com.artagon.xacml.v3.NullPolicyReferenceResolver;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicyIDReference;
@@ -68,7 +69,7 @@ public class TestXacml20Compatibility
 				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
 		policyMapper = new Xacml20PolicyMapper(policyFactory);
 		contextMapper = new Xacml20ContextMapper();
-		this.factory = new DefaultEvaluationContextFactory(new NullPolicyReferenceResolver(),  new JDKXPathProvider());
+		this.factory = new DefaultEvaluationContextFactory();
 		
 	}
 	
