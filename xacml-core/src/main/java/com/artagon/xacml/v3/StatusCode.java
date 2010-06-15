@@ -35,6 +35,10 @@ public class StatusCode extends XacmlObject
 		return new StatusCode(StatusCodeId.SYNTAX_ERROR);
 	}
 	
+	public static StatusCode createOk(){
+		return new StatusCode(StatusCodeId.OK);
+	}
+	
 	public StatusCodeId getValue(){
 		return value;
 	}

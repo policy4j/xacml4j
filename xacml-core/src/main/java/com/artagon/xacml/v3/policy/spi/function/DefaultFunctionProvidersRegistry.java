@@ -10,6 +10,7 @@ import com.artagon.xacml.v3.policy.function.DateTimeArithmeticFunctions;
 import com.artagon.xacml.v3.policy.function.EqualityPredicates;
 import com.artagon.xacml.v3.policy.function.LogicalFunctions;
 import com.artagon.xacml.v3.policy.function.NonNumericComparisionFunctions;
+import com.artagon.xacml.v3.policy.function.NumericComparisionFunctions;
 import com.artagon.xacml.v3.policy.function.NumericConversionFunctions;
 import com.artagon.xacml.v3.policy.function.RegularExpressionFunctions;
 import com.artagon.xacml.v3.policy.function.SetFunctions;
@@ -34,6 +35,7 @@ public class DefaultFunctionProvidersRegistry implements FunctionProvidersRegist
 		add(new ReflectionBasedFunctionProvider(LogicalFunctions.class));
 		add(new ReflectionBasedFunctionProvider(NonNumericComparisionFunctions.class));
 		add(new ReflectionBasedFunctionProvider(NumericConversionFunctions.class));
+		add(new ReflectionBasedFunctionProvider(NumericComparisionFunctions.class));
 		add(new ReflectionBasedFunctionProvider(RegularExpressionFunctions.class));
 		add(new ReflectionBasedFunctionProvider(SetFunctions.class));
 		add(new ReflectionBasedFunctionProvider(SpecialMatchFunctions.class));

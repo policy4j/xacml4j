@@ -11,7 +11,6 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.StatusCodeId;
 import com.artagon.xacml.v3.profiles.RequestProfileHandler;
 import com.google.common.base.Preconditions;
 
@@ -40,14 +39,14 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 				decision == Decision.NOT_APPLICABLE){
 			return new Response(
 					new Result(decision, 
-							new Status(StatusCode.createProcessingError()),
+							new Status(decision.isIndeterminate()?StatusCode.createProcessingError():StatusCode.createOk()),
 							request.getIncludeInResultAttributes(), 
 							context.getEvaluatedPolicies()));
 		}
 		return new Response(
 				new Result(
 						decision, 
-						new Status(new StatusCode(StatusCodeId.OK)),
+						new Status(StatusCode.createOk()),
 						context.getAdvices(), 
 						context.getObligations(), 
 						request.getIncludeInResultAttributes(), 

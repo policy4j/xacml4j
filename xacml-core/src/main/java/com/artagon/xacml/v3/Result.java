@@ -32,9 +32,6 @@ public class Result extends XacmlObject
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
 				attributes, evaluatedPolicies);
-		Preconditions.checkArgument(decision.isIndeterminate() || 
-				decision == Decision.NOT_APPLICABLE);
-		Preconditions.checkArgument(status.isFailure());
 	}
 	
 	/**
