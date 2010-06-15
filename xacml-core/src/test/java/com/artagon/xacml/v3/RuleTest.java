@@ -244,7 +244,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		replay(target, condition, currentPolicy, context);
-		assertEquals(Decision.INDETERMINATE, ruleDeny.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluateIfApplicable(ruleContext));
 		verify(condition, target, currentPolicy, context);
 	}
 	
@@ -296,7 +296,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		replay(condition, target, context, currentPolicy);
-		assertEquals(Decision.INDETERMINATE, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluateIfApplicable(ruleContext));
 		verify(condition, target, context, currentPolicy);
 	}
 	
