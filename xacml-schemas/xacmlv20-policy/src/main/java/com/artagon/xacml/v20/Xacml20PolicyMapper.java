@@ -92,7 +92,7 @@ public class Xacml20PolicyMapper
 				AttributeCategoryId.RESOURCE);
 		designatorMappings.put("ActionAttributeDesignator",
 				AttributeCategoryId.ACTION);
-		designatorMappings.put("EnviromentAttributeDesignator",
+		designatorMappings.put("EnvironmentAttributeDesignator",
 				AttributeCategoryId.ENVIRONMENT);
 	}
 
@@ -684,8 +684,7 @@ public class Xacml20PolicyMapper
 			}
 			return categoryId;
 		}
-		AttributeCategoryId categoryId = designatorMappings.get(element
-				.getName().getLocalPart());
+		AttributeCategoryId categoryId = designatorMappings.get(element.getName().getLocalPart());
 		if (categoryId == null) {
 			throw new PolicySyntaxException(
 					"Unknown attribute designator=\"%s\"", element.getName());
