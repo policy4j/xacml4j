@@ -1,6 +1,7 @@
 package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.net.Authenticator.RequestorType;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.policy.PolicyType;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -28,12 +30,15 @@ import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.StatusCodeId;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.SimplePolicyDecisionPoint;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
 import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.profiles.RequestProfileHandler;
+import com.google.common.collect.Iterables;
 
 public class TestXacml20Compatibility 
 {
@@ -96,7 +101,9 @@ public class TestXacml20Compatibility
 		RequestType request = getContext("oasis-xacml20-compat-test/IIIF005Request.xml");
 		this.pdp = new SimplePolicyDecisionPoint(Collections.<RequestProfileHandler>emptyList(), factory, policyMapper.create(policy));
 		Response response = pdp.decide(contextMapper.create(request));
-		System.out.println(response);
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.INDETERMINATE, r.getDecision());
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, r.getStatus().getStatusCode().getValue());
 	}
 	
 	@Test
@@ -106,6 +113,32 @@ public class TestXacml20Compatibility
 		RequestType request = getContext("oasis-xacml20-compat-test/IID001Request.xml");
 		this.pdp = new SimplePolicyDecisionPoint(Collections.<RequestProfileHandler>emptyList(), factory, policyMapper.create(policy));
 		Response response = pdp.decide(contextMapper.create(request));
-		System.out.println(response);
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
+		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
+	}
+	
+	@Test
+	public void testIID002() throws Exception
+	{
+		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID002Policy.xml");
+		RequestType request = getContext("oasis-xacml20-compat-test/IID002Request.xml");
+		this.pdp = new SimplePolicyDecisionPoint(Collections.<RequestProfileHandler>emptyList(), factory, policyMapper.create(policy));
+		Response response = pdp.decide(contextMapper.create(request));
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
+		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
+	}
+	
+	@Test
+	public void testIID003() throws Exception
+	{
+		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID003Policy.xml");
+		RequestType request = getContext("oasis-xacml20-compat-test/IID003Request.xml");
+		this.pdp = new SimplePolicyDecisionPoint(Collections.<RequestProfileHandler>emptyList(), factory, policyMapper.create(policy));
+		Response response = pdp.decide(contextMapper.create(request));
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
+		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
 	}
 }
