@@ -22,4 +22,5 @@
 		<property name="wsdl"
 			value="classpath:/com/artagon/xacml/v20/xacml29.wsdl" />
 	</bean>
+
 </beans>
