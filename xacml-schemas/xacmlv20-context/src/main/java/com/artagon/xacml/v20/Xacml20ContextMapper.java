@@ -29,8 +29,6 @@ import com.google.common.collect.Iterables;
 
 public class Xacml20ContextMapper
 {
-	private final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-	
 	public Xacml20ContextMapper(){
 	}
 	
@@ -135,9 +133,7 @@ public class Xacml20ContextMapper
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(createValue(a.getDataType(), v, category));
 		}
-		String attributeId = a.getAttributeId();
-		return new Attribute(a.getAttributeId(), a.getIssuer(), 
-				attributeId.equals(RESOURCE_ID_ATTRIBUTE), values);
+		return new Attribute(a.getAttributeId(), a.getIssuer(), false, values);
 	}
 	
 	private AttributeValue createValue(String dataTypeId, 
