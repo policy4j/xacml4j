@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.combine;
+package com.artagon.xacml.v3.policy.combine.legacy;
 
 import java.util.List;
 
@@ -7,16 +7,16 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-public class DenyOverridesPolicyLegacyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides";
 
 	
-	DenyOverridesPolicyLegacyCombineAlgorithm() {
+	public LegacyDenyOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
 	
-	DenyOverridesPolicyLegacyCombineAlgorithm(String algorithmId) {
+	protected LegacyDenyOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
 	

@@ -33,7 +33,7 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 	}
 	
 	@Override
-	public Decision combine(List<D> decisions,
+	public final Decision combine(List<D> decisions,
 			EvaluationContext context) 
 	{
 		boolean atLeastOneIndeterminateD = false;

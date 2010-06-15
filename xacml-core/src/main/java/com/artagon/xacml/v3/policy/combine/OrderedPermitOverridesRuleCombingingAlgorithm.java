@@ -14,8 +14,5 @@ final class OrderedPermitOverridesRuleCombingingAlgorithm extends PermitOverride
 	protected OrderedPermitOverridesRuleCombingingAlgorithm(String algorithmId){
 		super(algorithmId);
 	}
-	
-	public static OrderedPermitOverridesRuleCombingingAlgorithm getLegacyInstance(){
-		return new OrderedPermitOverridesRuleCombingingAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-permit-overrides");
-	}
+
 }

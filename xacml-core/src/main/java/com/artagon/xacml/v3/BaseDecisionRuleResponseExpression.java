@@ -2,15 +2,20 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
-
-
+/**
+ * A base class for XACML Obligation or Advice expressions
+ * 
+ * @author Giedrius Trumpickas
+ */
 abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
 {
 	private String id;
 	private Effect effect;
-	private Collection<AttributeAssignmentExpression> attributeExpressions;
+	private Map<String, AttributeAssignmentExpression> attributeExpressions;
 	
 	/**
 	 * Constructs expression with a given identifier,
@@ -32,7 +37,16 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 				"Decision rule attribute expression can not be null");
 		this.id = id;
 		this.effect = effect;
-		this.attributeExpressions = new LinkedList<AttributeAssignmentExpression>(attributeExpressions);
+		this.attributeExpressions = new LinkedHashMap<String, AttributeAssignmentExpression>();
+		for(AttributeAssignmentExpression exp : attributeExpressions){
+			AttributeAssignmentExpression oldExp = this.attributeExpressions.put(exp.getAttributeId(), exp);
+			if(oldExp != null){
+				throw new IllegalArgumentException(
+						String.format("Decision rule response expression already " +
+								"contains attribute assignment expression with id=\"%s\"", 
+								oldExp.getAttributeId()));
+			}
+		}
 	}
 	
 	/**
@@ -67,7 +81,7 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	}
 	
 	public Collection<AttributeAssignmentExpression> getAttributeAssignmentExpressions(){
-		return Collections.unmodifiableCollection(attributeExpressions);
+		return Collections.unmodifiableCollection(attributeExpressions.values());
 	}
 	
 	/**
@@ -83,7 +97,7 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	{
 		try{
 			Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-			for(AttributeAssignmentExpression attrExp : attributeExpressions){
+			for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
 				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 
 						attrExp.getCategory(), 

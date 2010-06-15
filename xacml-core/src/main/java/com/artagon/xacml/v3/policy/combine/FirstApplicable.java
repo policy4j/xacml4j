@@ -9,13 +9,12 @@ import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
-	
 	protected FirstApplicable(String algorithmId) {
 		super(algorithmId);
 	}
 
 	@Override
-	public Decision combine(List<D> decisions,
+	public final Decision combine(List<D> decisions,
 			EvaluationContext context) 
 	{
 		for(D d : decisions){

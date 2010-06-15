@@ -13,7 +13,7 @@ public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombin
 		super(algorithmId);
 	}
 	
-	public Decision combine(List<D> decisions,
+	public final Decision combine(List<D> decisions,
 			EvaluationContext context)
 	{
 		for(D d : decisions){

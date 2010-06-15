@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.combine;
+package com.artagon.xacml.v3.policy.combine.legacy;
 
 import java.util.List;
 
@@ -7,15 +7,15 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-class PermitOverridesPolicyLegacyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+public class LegacyPermitOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides";
 
-	protected PermitOverridesPolicyLegacyCombineAlgorithm(String algorithmId) {
+	protected LegacyPermitOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
 	
-	PermitOverridesPolicyLegacyCombineAlgorithm() {
+	public LegacyPermitOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
 

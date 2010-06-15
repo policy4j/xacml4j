@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -13,8 +14,8 @@ public class Result extends XacmlObject
 {
 	private Status status;
 	private Decision decision;
-	private Collection<Obligation> obligations;
-	private Collection<Advice> associatedAdvice;
+	private Map<String, Obligation> obligations;
+	private Map<String, Advice> associatedAdvice;
 	private Map<AttributeCategoryId, Attributes> attributes;
 	private Collection<PolicyIdentifier> policyIdentifiers;
 	
@@ -72,15 +73,19 @@ public class Result extends XacmlObject
 		Preconditions.checkNotNull(attributes);
 		this.decision = decision;
 		this.status = status;
-		this.associatedAdvice = new LinkedList<Advice>();
-		this.obligations = new LinkedList<Obligation>();
+		this.associatedAdvice = new LinkedHashMap<String, Advice>();
+		this.obligations = new LinkedHashMap<String, Obligation>();
 		this.attributes = new HashMap<AttributeCategoryId, Attributes>();
 		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
-		Iterables.addAll(this.associatedAdvice, associatedAdvice);
-		Iterables.addAll(this.obligations, obligations);
 		Iterables.addAll(this.policyIdentifiers, policyIdentifiers);
 		for(Attributes attribute : attributes){
 			this.attributes.put(attribute.getCategoryId(), attribute);
+		}
+		for(Obligation o : obligations){
+			this.obligations.put(o.getId(), o);
+		}
+		for(Advice a : associatedAdvice){
+			this.associatedAdvice.put(a.getId(), a);
 		}
 	}
 	
@@ -129,7 +134,11 @@ public class Result extends XacmlObject
 	 * @return a collection of obligations
 	 */
 	public Collection<Obligation> getObligations(){
-		return Collections.unmodifiableCollection(obligations);
+		return Collections.unmodifiableCollection(obligations.values());
+	}
+	
+	public Obligation getObligation(String obligationId){
+		return obligations.get(obligationId);
 	}
 	
 	/**
@@ -140,7 +149,11 @@ public class Result extends XacmlObject
 	 * @return
 	 */
 	public Collection<Advice> getAssociatedAdvice(){
-		return Collections.unmodifiableCollection(associatedAdvice);
+		return Collections.unmodifiableCollection(associatedAdvice.values());
+	}
+	
+	public Advice getAssociatedAdvice(String adviceId){
+		return associatedAdvice.get(adviceId);
 	}
 	
 	/**
