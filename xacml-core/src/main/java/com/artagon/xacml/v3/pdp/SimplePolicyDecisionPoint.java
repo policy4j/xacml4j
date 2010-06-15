@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.pdp;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
@@ -28,6 +29,13 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 		Preconditions.checkNotNull(policySet);
 		this.factory = factory;
 		this.policySet = policySet;
+	}
+	
+	public SimplePolicyDecisionPoint(
+			EvaluationContextFactory factory,  
+			CompositeDecisionRule policySet)
+	{
+		this(Collections.<RequestProfileHandler>emptyList(), factory, policySet);
 	}
 
 	@Override
