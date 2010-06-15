@@ -90,7 +90,6 @@ public class Xacml20ContextMapperTest
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(XacmlDataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
@@ -134,7 +133,6 @@ public class Xacml20ContextMapperTest
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		
 		assertNotNull(resourceId);
-		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(XacmlDataTypes.ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		
@@ -163,7 +161,6 @@ public class Xacml20ContextMapperTest
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertTrue(resourceId.isIncludeInResult());
 		assertEquals(XacmlDataTypes.ANYURI.create("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 		
 		Attribute simpleFileName = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:simple-file-name"));
