@@ -7,16 +7,15 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+class DenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides";
 
-	
-	public LegacyDenyOverridesPolicyCombineAlgorithm() {
+	public DenyOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
 	
-	protected LegacyDenyOverridesPolicyCombineAlgorithm(String algorithmId) {
+	protected DenyOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
 	

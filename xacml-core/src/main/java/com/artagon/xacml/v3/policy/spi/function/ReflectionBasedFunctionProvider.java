@@ -21,33 +21,32 @@ public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 {
 	private final static Logger log = LoggerFactory.getLogger(ReflectionBasedFunctionProvider.class);
 	
-	
-	public ReflectionBasedFunctionProvider(Object instance, Class<?> factoryClass)
+	/**
+	 * Constructs
+	 * @param instance
+	 * @param factoryClass
+	 */
+	public ReflectionBasedFunctionProvider(Class<?> factoryClass)
 	{
-		Preconditions.checkArgument(instance == null || factoryClass.isInstance(instance));
-		List<FunctionSpec> functions = findFunctions(factoryClass, instance);
+		Preconditions.checkNotNull(factoryClass);
+		List<FunctionSpec> functions = findFunctions(factoryClass);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
 	}
 	
-	public ReflectionBasedFunctionProvider(Class<?> factoryClass){
-		this(null, factoryClass);
-	}
-	
-	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
+	private List<FunctionSpec> findFunctions(Class<?> clazz)
 	{
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFunc.class);
 		for(final Method m : methods){
-			specs.add(build(clazz, instance, m));
+			specs.add(build(clazz, m));
 		}
 		return specs;
 	}
 	
 	private FunctionSpec build(
 			final Class<?> factoryClass, 
-			final Object factoryInstance, 
 			final Method m)
 	{
 		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
@@ -130,6 +129,6 @@ public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new JDKReflectionBasedFunctionInvocation(factoryInstance, factoryClass, m, evalContextParamFound));
+				new JDKReflectionBasedFunctionInvocation(factoryClass, m, evalContextParamFound));
 	}
 }

@@ -10,12 +10,4 @@ final class PermitOverridesPolicyCombineAlgorithm extends
 	public PermitOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
-	
-	private PermitOverridesPolicyCombineAlgorithm(String algorithmId){
-		super(algorithmId);
-	}
-	
-	public static PermitOverridesPolicyCombineAlgorithm getLegacyInstance(){
-		return new PermitOverridesPolicyCombineAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides");
-	}
 }

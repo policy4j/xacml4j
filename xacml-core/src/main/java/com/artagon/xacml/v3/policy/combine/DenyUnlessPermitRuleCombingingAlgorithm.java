@@ -6,7 +6,7 @@ final class DenyUnlessPermitRuleCombingingAlgorithm extends DenyUnlessPermit<Rul
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit";
 	
-	DenyUnlessPermitRuleCombingingAlgorithm(){
+	public DenyUnlessPermitRuleCombingingAlgorithm(){
 		super(ID);
 	}
 }

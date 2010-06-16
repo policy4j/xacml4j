@@ -10,9 +10,4 @@ final class OrderedPermitOverridesRuleCombingingAlgorithm extends PermitOverride
 	public OrderedPermitOverridesRuleCombingingAlgorithm() {
 		super(ID);
 	}
-	
-	protected OrderedPermitOverridesRuleCombingingAlgorithm(String algorithmId){
-		super(algorithmId);
-	}
-
 }

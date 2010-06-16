@@ -6,7 +6,7 @@ final class OrderedDenyOverridesPolicyCombiningAlgorithm extends DenyOverrides<C
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:ordered-deny-overrides";
 	
-	OrderedDenyOverridesPolicyCombiningAlgorithm(){
+	public OrderedDenyOverridesPolicyCombiningAlgorithm(){
 		super(ID);
 	}	
 }

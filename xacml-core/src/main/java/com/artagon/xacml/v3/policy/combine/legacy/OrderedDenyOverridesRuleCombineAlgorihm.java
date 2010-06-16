@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.combine.legacy;
 
-public final class LegacyOrderedDenyOverridesRuleCombineAlgorihm extends LegacyDenyOverridesRuleCombineAlgorithm
+final class OrderedDenyOverridesRuleCombineAlgorihm extends DenyOverridesRuleCombineAlgorithm
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides";
 
-	public LegacyOrderedDenyOverridesRuleCombineAlgorihm() {
+	public OrderedDenyOverridesRuleCombineAlgorihm() {
 		super(ID);
 	}	
 }

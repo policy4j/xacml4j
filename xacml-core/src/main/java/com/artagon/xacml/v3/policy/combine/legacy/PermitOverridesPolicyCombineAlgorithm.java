@@ -7,15 +7,15 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-public class LegacyPermitOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+class PermitOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
-	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides";
+	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides";
 
-	protected LegacyPermitOverridesPolicyCombineAlgorithm(String algorithmId) {
+	protected PermitOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
 	
-	public LegacyPermitOverridesPolicyCombineAlgorithm() {
+	public PermitOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
 

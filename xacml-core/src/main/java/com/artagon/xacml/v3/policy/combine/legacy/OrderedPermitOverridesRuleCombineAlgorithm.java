@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.combine.legacy;
 
-public final class LegacyOrderedPermitOverridesRuleCombineAlgorithm extends LegacyPermitOverridesRuleCombineAlgorithm 
+final class OrderedPermitOverridesRuleCombineAlgorithm extends PermitOverridesRuleCombineAlgorithm 
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-permit-overrides";
 
-	public LegacyOrderedPermitOverridesRuleCombineAlgorithm() {
+	public OrderedPermitOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
 }

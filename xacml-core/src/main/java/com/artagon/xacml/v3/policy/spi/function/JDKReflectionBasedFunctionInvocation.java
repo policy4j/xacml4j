@@ -12,8 +12,8 @@ public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBase
 	private Object instance;
 	
 	public JDKReflectionBasedFunctionInvocation(
-			Object factoryInstance, 
 			Class<?> factoryClass,
+			Object factoryInstance, 
 			Method m, 
 			boolean evalContextRequired)
 	{
@@ -24,6 +24,14 @@ public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBase
 			!Modifier.isStatic(m.getModifiers()));
 		Preconditions.checkArgument(m.getDeclaringClass().equals(factoryClass));
 		this.functionMethod = m;
+	}
+	
+	public JDKReflectionBasedFunctionInvocation(
+			Class<?> factoryClass,
+			Method m, 
+			boolean evalContextRequired)
+	{
+		this(factoryClass, null, m, evalContextRequired);
 	}
 	
 	@SuppressWarnings("unchecked")

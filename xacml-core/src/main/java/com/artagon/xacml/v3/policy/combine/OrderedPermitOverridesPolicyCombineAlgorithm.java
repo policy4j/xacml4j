@@ -7,7 +7,7 @@ final class OrderedPermitOverridesPolicyCombineAlgorithm extends
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:ordered-permit-overrides";
 	
-	OrderedPermitOverridesPolicyCombineAlgorithm() {
+	public OrderedPermitOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
 }

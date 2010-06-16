@@ -58,7 +58,8 @@ public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombining
 				algorithm.getId(), algorithm);
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(
-					String.format("Policy algorithm with identifier=\"%\" already exist", algorithm));
+					String.format("Policy decision combining" +
+							" algorithm with identifier=\"%\" already exist", algorithm));
 		}
 	}
 	

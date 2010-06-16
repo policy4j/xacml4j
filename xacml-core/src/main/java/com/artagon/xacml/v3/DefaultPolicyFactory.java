@@ -2,17 +2,20 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
+import com.artagon.xacml.v3.policy.spi.combine.DecisionCombiningAlgorithmProviderRegistry;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyFactory extends BasePolicyFactory
 {
-		
-	public DefaultPolicyFactory(FunctionProvidersRegistry functions, 
-			DecisionCombiningAlgorithmProvider combiningAlgorithms)
+	public DefaultPolicyFactory()
 	{
-		super(functions, combiningAlgorithms);
+		super(new DefaultFunctionProvider(), 
+				new DecisionCombiningAlgorithmProviderRegistry(
+						new DefaultDecisionCombiningAlgorithmProvider(), 
+						new LegacyDecisionCombiningAlgorithmProvider()));
 	}
 	
 	@Override

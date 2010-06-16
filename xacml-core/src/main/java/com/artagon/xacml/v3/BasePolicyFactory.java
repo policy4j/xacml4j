@@ -1,14 +1,16 @@
 package com.artagon.xacml.v3;
 
 import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.policy.spi.FunctionProvidersRegistry;
+import com.artagon.xacml.v3.policy.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
-public abstract class BasePolicyFactory implements PolicyFactory {
-	private FunctionProvidersRegistry functions;
+public abstract class BasePolicyFactory implements PolicyFactory 
+{
+	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	protected BasePolicyFactory(FunctionProvidersRegistry functions,
+	protected BasePolicyFactory(
+			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider combiningAlgorithms) {
 		Preconditions.checkNotNull(functions);
 		Preconditions.checkNotNull(combiningAlgorithms);

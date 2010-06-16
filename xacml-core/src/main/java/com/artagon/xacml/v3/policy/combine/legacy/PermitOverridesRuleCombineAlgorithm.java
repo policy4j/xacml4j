@@ -8,16 +8,16 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
 
-public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
+class PermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {
 	private final static String ID ="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides";
 
 	
-	protected LegacyPermitOverridesRuleCombineAlgorithm(String algorithmId) {
+	protected PermitOverridesRuleCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
 	
-	public LegacyPermitOverridesRuleCombineAlgorithm() {
+	public PermitOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
 

@@ -16,7 +16,6 @@ public class CglibReflectionBasedFunctionInvocation extends AbstractReflectionBa
 	private FastMethod fastMethod;
 	
 	public CglibReflectionBasedFunctionInvocation(
-			Object instance, 
 			Class<?> instanceClass,
 			Method m, 
 			boolean evalContextRequired)
