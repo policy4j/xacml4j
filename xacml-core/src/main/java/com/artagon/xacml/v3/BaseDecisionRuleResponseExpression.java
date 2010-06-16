@@ -2,9 +2,11 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * A base class for XACML Obligation or Advice expressions
@@ -15,7 +17,7 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 {
 	private String id;
 	private Effect effect;
-	private Map<String, AttributeAssignmentExpression> attributeExpressions;
+	private Multimap<String, AttributeAssignmentExpression> attributeExpressions;
 	
 	/**
 	 * Constructs expression with a given identifier,
@@ -37,15 +39,10 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 				"Decision rule attribute expression can not be null");
 		this.id = id;
 		this.effect = effect;
-		this.attributeExpressions = new LinkedHashMap<String, AttributeAssignmentExpression>();
+		this.attributeExpressions = LinkedHashMultimap.create();
 		for(AttributeAssignmentExpression exp : attributeExpressions){
-			AttributeAssignmentExpression oldExp = this.attributeExpressions.put(exp.getAttributeId(), exp);
-			if(oldExp != null){
-				throw new IllegalArgumentException(
-						String.format("Decision rule response expression already " +
-								"contains attribute assignment expression with id=\"%s\"", 
-								oldExp.getAttributeId()));
-			}
+			Preconditions.checkArgument(exp == null, "Attribute assignment expression can not be null");
+			this.attributeExpressions.put(exp.getAttributeId(), exp);
 		}
 	}
 	

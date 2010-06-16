@@ -2,13 +2,15 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 abstract class BaseDecisionRuleResponse extends XacmlObject
 {
 	private String id;
-	private Map<String, AttributeAssignment> attributes;
+	private Multimap<String, AttributeAssignment> attributes;
 	
 	protected BaseDecisionRuleResponse(
 			String id, Collection<AttributeAssignment> attributes) 
@@ -17,17 +19,10 @@ abstract class BaseDecisionRuleResponse extends XacmlObject
 		checkNotNull(attributes, 
 				"Decision rule attribute assignments can not be null");
 		this.id = id;
-		this.attributes = new LinkedHashMap<String, AttributeAssignment>();
-		for(AttributeAssignment a : attributes)
-		{
-			AttributeAssignment old = this.attributes.put(a.getAttributeId(), a);
-			if(old != null){
-				throw new IllegalArgumentException(
-						String.format(
-						"Decision rule response already " +
-						"contains attribute assignment with id=\"%s\"", 
-					old.getAttributeId()));
-			}
+		this.attributes = LinkedHashMultimap.create();
+		for(AttributeAssignment a : attributes){
+			Preconditions.checkArgument(a == null, "Attribute assignment can not be null");
+			this.attributes.put(a.getAttributeId(), a);
 		}
 	}
 	
@@ -39,7 +34,7 @@ abstract class BaseDecisionRuleResponse extends XacmlObject
 		return Collections.unmodifiableCollection(attributes.values());
 	}
 	
-	public final AttributeAssignment getAttribute(String id){
-		return this.attributes.get(id);
+	public final Collection<AttributeAssignment> getAttribute(String attributeId){
+		return this.attributes.get(attributeId);
 	}
 }
