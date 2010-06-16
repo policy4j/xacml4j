@@ -21,7 +21,9 @@ abstract class BaseDecisionRuleResponse extends XacmlObject
 		this.id = id;
 		this.attributes = LinkedHashMultimap.create();
 		for(AttributeAssignment a : attributes){
-			Preconditions.checkArgument(a == null, "Attribute assignment can not be null");
+			Preconditions.checkArgument(a != null, 
+					"Decision rule with id=\"%s\" " +
+					"attribute assignment can not be null", id);
 			this.attributes.put(a.getAttributeId(), a);
 		}
 	}

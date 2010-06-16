@@ -33,15 +33,17 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 			Effect effect, 
 			Collection<AttributeAssignmentExpression> attributeExpressions) 
 	{
-		checkNotNull(id, "Decision rule id can not be null");
-		checkNotNull(effect, "Decision rule effect can not be null");
+		checkNotNull(id, "Decision rule expression id can not be null");
+		checkNotNull(effect, "Decision rule expression effect can not be null");
 		checkNotNull(attributeExpressions, 
-				"Decision rule attribute expression can not be null");
+				"Decision rule expression attribute expressions can not be null");
 		this.id = id;
 		this.effect = effect;
 		this.attributeExpressions = LinkedHashMultimap.create();
 		for(AttributeAssignmentExpression exp : attributeExpressions){
-			Preconditions.checkArgument(exp == null, "Attribute assignment expression can not be null");
+			Preconditions.checkArgument(exp != null, 
+					"Decision rule response expression with id=\"%s\" " +
+					"attribute assignment expression can not be null", id);
 			this.attributeExpressions.put(exp.getAttributeId(), exp);
 		}
 	}
