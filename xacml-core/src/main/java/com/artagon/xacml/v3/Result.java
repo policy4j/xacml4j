@@ -137,6 +137,12 @@ public class Result extends XacmlObject
 		return Collections.unmodifiableCollection(obligations.values());
 	}
 	
+	/**
+	 * Gets obligation via obligation identifier
+	 * 
+	 * @param obligationId an obligation identifier
+	 * @return {@link Obligation}
+	 */
 	public Obligation getObligation(String obligationId){
 		return obligations.get(obligationId);
 	}
@@ -146,12 +152,18 @@ public class Result extends XacmlObject
 	 * information to the PEP. If the PEP does not understand 
 	 * an advice, the PEP may safely ignore the advice.
 	 * 
-	 * @return
+	 * @return a collection of associated advice
 	 */
 	public Collection<Advice> getAssociatedAdvice(){
 		return Collections.unmodifiableCollection(associatedAdvice.values());
 	}
 	
+	/**
+	 * Gets associated advice via advice identifier
+	 * 
+	 * @param adviceId an advice identifier
+	 * @return {@link Advice}
+	 */
 	public Advice getAssociatedAdvice(String adviceId){
 		return associatedAdvice.get(adviceId);
 	}
