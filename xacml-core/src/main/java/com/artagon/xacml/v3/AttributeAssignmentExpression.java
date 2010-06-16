@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import com.google.common.base.Preconditions;
 
-public  class AttributeAssignmentExpression extends XacmlObject 
+public class AttributeAssignmentExpression extends XacmlObject 
 	implements PolicyElement
 {
 	private AttributeCategoryId category;

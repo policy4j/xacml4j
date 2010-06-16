@@ -12,14 +12,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class DefaultObligationExpressionTest 
+public class ObligationExpressionTest 
 {
 	private EvaluationContext context;
 	
+	@Before
 	public void init(){
 		this.context = createMock(EvaluationContext.class);
 	}
@@ -40,16 +42,16 @@ public class DefaultObligationExpressionTest
 	{
 		AttributeAssignmentExpression attrExp0 = createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = createMock(AttributeAssignmentExpression.class);
-		ObligationExpression exp = new ObligationExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
-		expect(attrExp0.getAttributeId()).andReturn("attributeId0");
+		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
 		expect(attrExp0.getCategory()).andReturn(AttributeCategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
 		expect(attrExp0.evaluate(context)).andReturn(XacmlDataTypes.INTEGER.create(1));
-		expect(attrExp1.getAttributeId()).andReturn("attributeId1");
+		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategoryId.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
 		expect(attrExp1.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
-		replay(attrExp0, attrExp1);
+		replay(attrExp0, attrExp1, context);
+		ObligationExpression exp = new ObligationExpression("test", Effect.DENY, Arrays.asList(attrExp0, attrExp1));
 		Obligation obligation = exp.evaluate(context);
 		Iterator<AttributeAssignment> it = obligation.getAttributes().iterator();
 		AttributeAssignment a0 = it.next();
@@ -62,6 +64,6 @@ public class DefaultObligationExpressionTest
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(AttributeCategoryId.RESOURCE, a1.getCategory());
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), a1.getAttribute());
-		verify(attrExp0, attrExp1);
+		verify(attrExp0, attrExp1, context);
 	}
 }

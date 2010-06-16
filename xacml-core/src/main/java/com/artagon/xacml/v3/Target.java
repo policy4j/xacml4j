@@ -31,9 +31,19 @@ public class Target extends XacmlObject implements PolicyElement
 		return Collections.unmodifiableCollection(matches);
 	}
 	
+	/**
+	 * Evaluates a target against given {@link EvaluationContext}.
+	 * During target evaluation {@link AttributeDesignator} or
+	 * {@link AttributeSelector} are resolved only from request
+	 * context
+	 * 
+	 * @param context an evaluation context
+	 * @return {@link MatchResult}
+	 */
 	public MatchResult match(EvaluationContext context) 
 	{
 		AttributeResolutionScope scope = context.getAttributeResolutionScope();
+		// set attribute resolution scope to request context only
 		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
@@ -51,6 +61,7 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
+		// set back old attribute resolution scope
 		context.setAttributeResolutionScope(scope);
 		return state;
 	}

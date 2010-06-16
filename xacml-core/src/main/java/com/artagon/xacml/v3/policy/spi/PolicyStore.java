@@ -6,5 +6,5 @@ import com.artagon.xacml.v3.PolicySet;
 public interface PolicyStore 
 {
 	Policy getPolicy(String policyId);
-	PolicySet getPolicySet(String policySetId);
+	PolicySet getPolicySet(String policyId);
 }

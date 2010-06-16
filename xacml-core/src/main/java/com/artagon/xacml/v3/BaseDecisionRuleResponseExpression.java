@@ -96,7 +96,8 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 	{
 		try{
 			Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-			for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
+			for(AttributeAssignmentExpression attrExp : attributeExpressions.values())
+			{
 				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 
 						attrExp.getCategory(), 
