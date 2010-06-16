@@ -19,6 +19,8 @@ import org.oasis.xacml.v20.context.SubjectType;
 import org.oasis.xacml.v20.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.Attribute;
@@ -34,9 +36,13 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 public class Xacml20ContextMapper
 {
+	private final static Logger log = LoggerFactory.getLogger(Xacml20ContextMapper.class);
+	
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
 	
@@ -64,10 +70,13 @@ public class Xacml20ContextMapper
 	
 	private StatusType createStatus(Status status)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Mapping status=\"{}\"", status);
+		}
 		StatusType statusType = new StatusType();
 		StatusCodeType codeType = new StatusCodeType();
-		codeType.setValue(status.getStatusCode().getValue().toString());
 		statusType.setStatusCode(codeType);
+		codeType.setValue(status.getStatusCode().getValue().toString());
 		statusType.setStatusMessage(status.getMessage());
 		return statusType;
 	}
@@ -137,18 +146,38 @@ public class Xacml20ContextMapper
 				attributes.add(createResource(resource));
 			}
 		}
-		if(!req.getSubject().isEmpty()){
-			for(SubjectType resource : req.getSubject()){
-				attributes.add(createSubject(resource));
+		if(!req.getSubject().isEmpty())
+		{
+			Multimap<AttributeCategoryId, Attributes> map = LinkedHashMultimap.create();
+			for(SubjectType subject : req.getSubject()){
+				Attributes attr =  createSubject(subject);
+				map.put(attr.getCategoryId(), attr);
 			}
+			attributes.addAll(normalize(map));
 		}
-		if(req.getAction() != null){
+		if(req.getAction() != null)
+		{
 			attributes.add(createAction(req.getAction()));
 		}
-		if(req.getEnvironment() != null){
+		if(req.getEnvironment() != null)
+		{
 			attributes.add(createEnviroment(req.getEnvironment()));
 		}
 		return new Request(false, attributes);
+	}
+	
+	public Collection<Attributes> normalize(Multimap<AttributeCategoryId, Attributes> attributes)
+	{
+		Collection<Attributes> normalized = new LinkedList<Attributes>();
+		for(AttributeCategoryId categoryId : attributes.keySet()){
+			Collection<Attributes> byCategory = attributes.get(categoryId);
+			Collection<Attribute> categoryAttr = new LinkedList<Attribute>();
+			for(Attributes a : byCategory){
+				categoryAttr.addAll(a.getAttributes());
+			}
+			normalized.add(new Attributes(categoryId, categoryAttr));
+		}
+		return normalized;
 	}
 	
 	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
