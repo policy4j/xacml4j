@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
-import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
@@ -19,7 +19,7 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testFunctionIfImplemented()
 	{
-		FunctionProvider f = new ReflectionBasedFunctionProvider(RegularExpressionFunctions.class);
+		FunctionProvider f = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match"));

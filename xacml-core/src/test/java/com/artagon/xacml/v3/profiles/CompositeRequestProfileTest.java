@@ -8,8 +8,7 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Test;
 
 public class CompositeRequestProfileTest 
-{	
-	
+{		
 	@Test
 	public void testCreateCompositeHandlerWith1Handler()
 	{

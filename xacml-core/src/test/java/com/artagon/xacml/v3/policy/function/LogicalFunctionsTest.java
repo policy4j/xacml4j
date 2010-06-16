@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlPolicyTestCase;
 import com.artagon.xacml.v3.policy.spi.FunctionProvider;
-import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -23,7 +23,7 @@ public class LogicalFunctionsTest extends XacmlPolicyTestCase
 	
 	@Before
 	public void init(){
-		this.f = new ReflectionBasedFunctionProvider(LogicalFunctions.class);
+		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");

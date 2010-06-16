@@ -12,13 +12,16 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.profiles.CompositeRequestProfileHandler;
 import com.artagon.xacml.v3.profiles.RequestProfileHandler;
 import com.google.common.base.Preconditions;
 
-public class SimplePolicyDecisionPoint implements PolicyDecisionPoint 
+public class SimplePolicyDecisionPoint implements PolicyDecisionPoint, 
+	PolicyDecisionCallback
 {
 	private EvaluationContextFactory factory;
 	private CompositeDecisionRule policySet;
+	private CompositeRequestProfileHandler handler;
 	
 	public SimplePolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
@@ -29,6 +32,7 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 		Preconditions.checkNotNull(policySet);
 		this.factory = factory;
 		this.policySet = policySet;
+		this.handler = new CompositeRequestProfileHandler(handlers);
 	}
 	
 	public SimplePolicyDecisionPoint(
@@ -41,23 +45,29 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint
 	@Override
 	public Response decide(Request request)
 	{
+		return new Response(handler.handle(request, this));			
+	}
+
+	@Override
+	public Result requestDecision(Request request) 
+	{
 		EvaluationContext context = factory.createContext(policySet, request);
 		Decision decision = policySet.evaluateIfApplicable(context);
 		if(decision.isIndeterminate() || 
 				decision == Decision.NOT_APPLICABLE){
-			return new Response(
-					new Result(decision, 
+			return new Result(decision, 
 							new Status(decision.isIndeterminate()?StatusCode.createProcessingError():StatusCode.createOk()),
 							request.getIncludeInResultAttributes(), 
-							context.getEvaluatedPolicies()));
+							context.getEvaluatedPolicies());
 		}
-		return new Response(
-				new Result(
-						decision, 
-						new Status(StatusCode.createOk()),
-						context.getAdvices(), 
-						context.getObligations(), 
-						request.getIncludeInResultAttributes(), 
-						context.getEvaluatedPolicies()));
+		return new Result(
+				decision, 
+				new Status(StatusCode.createOk()),
+				context.getAdvices(), 
+				context.getObligations(), 
+				request.getIncludeInResultAttributes(), 
+				context.getEvaluatedPolicies());
 	}
+	
+	
 }

@@ -9,13 +9,13 @@ import net.sf.cglib.reflect.FastMethod;
 import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
-public class CglibReflectionBasedFunctionInvocation extends AbstractReflectionBasedFunctionInvocation 
+public class CglibFunctionInvocation extends AbstractReflectionBasedFunctionInvocation 
 {
 	private Object instance;
 	private FastClass fastClass;
 	private FastMethod fastMethod;
 	
-	public CglibReflectionBasedFunctionInvocation(
+	public CglibFunctionInvocation(
 			Class<?> instanceClass,
 			Method m, 
 			boolean evalContextRequired)

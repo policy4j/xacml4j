@@ -6,12 +6,12 @@ import java.lang.reflect.Modifier;
 import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
-public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBasedFunctionInvocation
+public class DefaultFunctionInvocation extends AbstractReflectionBasedFunctionInvocation
 {
 	private Method functionMethod;
 	private Object instance;
 	
-	public JDKReflectionBasedFunctionInvocation(
+	public DefaultFunctionInvocation(
 			Class<?> factoryClass,
 			Object factoryInstance, 
 			Method m, 
@@ -26,7 +26,7 @@ public class JDKReflectionBasedFunctionInvocation extends AbstractReflectionBase
 		this.functionMethod = m;
 	}
 	
-	public JDKReflectionBasedFunctionInvocation(
+	public DefaultFunctionInvocation(
 			Class<?> factoryClass,
 			Method m, 
 			boolean evalContextRequired)

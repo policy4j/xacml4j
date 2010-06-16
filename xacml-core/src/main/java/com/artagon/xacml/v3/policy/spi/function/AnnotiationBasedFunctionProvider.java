@@ -17,16 +17,16 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 
-public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
+public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 {
-	private final static Logger log = LoggerFactory.getLogger(ReflectionBasedFunctionProvider.class);
+	private final static Logger log = LoggerFactory.getLogger(AnnotiationBasedFunctionProvider.class);
 	
 	/**
 	 * Constructs
 	 * @param instance
 	 * @param factoryClass
 	 */
-	public ReflectionBasedFunctionProvider(Class<?> factoryClass)
+	public AnnotiationBasedFunctionProvider(Class<?> factoryClass)
 	{
 		Preconditions.checkNotNull(factoryClass);
 		List<FunctionSpec> functions = findFunctions(factoryClass);
@@ -129,6 +129,6 @@ public class ReflectionBasedFunctionProvider extends BaseFunctionProvider
 		}
 		AttributeValueType type = returnType.type().getType();
 		return b.build(returnType.isBag()?type.bagOf():type, 
-				new JDKReflectionBasedFunctionInvocation(factoryClass, m, evalContextParamFound));
+				new DefaultFunctionInvocation(factoryClass, m, evalContextParamFound));
 	}
 }

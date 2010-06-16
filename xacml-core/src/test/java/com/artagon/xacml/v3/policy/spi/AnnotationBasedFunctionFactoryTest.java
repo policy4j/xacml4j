@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.policy.function.TestFunctions;
-import com.artagon.xacml.v3.policy.spi.function.ReflectionBasedFunctionProvider;
+import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AnnotationBasedFunctionFactoryTest
@@ -22,7 +22,7 @@ public class AnnotationBasedFunctionFactoryTest
 	
 	@Before
 	public void init(){
-		this.f = new ReflectionBasedFunctionProvider(TestFunctions.class);
+		this.f = new AnnotiationBasedFunctionProvider(TestFunctions.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
