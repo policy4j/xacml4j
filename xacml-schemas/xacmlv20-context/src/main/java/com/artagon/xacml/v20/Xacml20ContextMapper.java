@@ -13,22 +13,33 @@ import org.oasis.xacml.v20.context.ResourceContentType;
 import org.oasis.xacml.v20.context.ResourceType;
 import org.oasis.xacml.v20.context.ResponseType;
 import org.oasis.xacml.v20.context.ResultType;
+import org.oasis.xacml.v20.context.StatusCodeType;
+import org.oasis.xacml.v20.context.StatusType;
 import org.oasis.xacml.v20.context.SubjectType;
+import org.oasis.xacml.v20.policy.AttributeAssignmentType;
+import org.oasis.xacml.v20.policy.ObligationType;
+import org.oasis.xacml.v20.policy.ObligationsType;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.Attribute;
+import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
 public class Xacml20ContextMapper
 {
+	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
+	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
+	
 	public Xacml20ContextMapper(){
 	}
 	
@@ -42,9 +53,80 @@ public class Xacml20ContextMapper
 		return responseV2;
 	}
 		
-	private ResultType create(Result result){
+	private ResultType create(Result result)
+	{
 		ResultType resultv2 = new ResultType();
+		resultv2.setStatus(createStatus(result.getStatus()));
+		resultv2.setResourceId(getResourceId(result));
+		resultv2.setObligations(getObligations(result));
 		return resultv2;
+	}
+	
+	private StatusType createStatus(Status status)
+	{
+		StatusType statusType = new StatusType();
+		StatusCodeType codeType = new StatusCodeType();
+		codeType.setValue(status.getStatusCode().getValue().toString());
+		statusType.setStatusCode(codeType);
+		statusType.setStatusMessage(status.getMessage());
+		return statusType;
+	}
+	
+	/**
+	 * Tries to locate resource id attribute
+	 * 
+	 * @param result an evaluation result
+	 * @return a resource id attribute
+	 */
+	private String getResourceId(Result result)
+	{
+		Attributes resource = result.getAttribute(AttributeCategoryId.RESOURCE);
+		if(resource == null){
+			return null;
+		}
+		Collection<Attribute> attrs = resource.getAttributes(RESOURCE_ID);
+		if(attrs.size() == 1){
+			Attribute resourceId = Iterables.getOnlyElement(attrs);
+			return Iterables.getOnlyElement(resourceId.getValues()).toXacmlString();
+		}
+		Collection<AttributeValue> values =  resource.getAttributeValues(
+				CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
+		if(values.isEmpty() ||
+				values.size() > 1){
+			return null;
+		}
+		return Iterables.getOnlyElement(values).toXacmlString();
+	}
+	
+	public ObligationsType getObligations(Result result)
+	{
+		Collection<Obligation> obligations = result.getObligations();
+		if(obligations.isEmpty()){
+			return null;
+		}
+		ObligationsType obligationsv2  = new ObligationsType();
+		for(Obligation o : obligations){
+			obligationsv2.getObligation().add(create(o));
+		}
+		return obligationsv2;
+	}
+	
+	private ObligationType create(Obligation o){
+		ObligationType obligation = new ObligationType();
+		for(AttributeAssignment a : o.getAttributes()){
+			obligation.getAttributeAssignment().add(create(a));
+		}
+		return obligation;
+	}
+	
+	private AttributeAssignmentType create(AttributeAssignment a)
+	{
+		AttributeAssignmentType attr = new AttributeAssignmentType();
+		com.artagon.xacml.v3.AttributeValueType t = (com.artagon.xacml.v3.AttributeValueType)(a.getAttribute().getType());
+		attr.setDataType(t.getDataTypeId());
+		attr.setAttributeId(a.getAttributeId());
+		attr.getContent().add(a.getAttribute().toXacmlString());
+		return attr;
 	}
 	
 	public Request create(RequestType req) throws RequestSyntaxException
@@ -149,7 +231,8 @@ public class Xacml20ContextMapper
 		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypes.getByTypeId(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
-					"DataTypeId=\"%s\" can be be resolved to valid XACML type", dataTypeId);
+					"DataTypeId=\"%s\" can be be " +
+					"resolved to valid XACML type", dataTypeId);
 		}
 		Object o = Iterables.getOnlyElement(content);
 		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){

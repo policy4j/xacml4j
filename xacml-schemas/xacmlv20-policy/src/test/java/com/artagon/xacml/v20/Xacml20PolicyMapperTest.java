@@ -27,8 +27,6 @@ import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.policy.spi.function.DefaultFunctionProvidersRegistry;
 
 public class Xacml20PolicyMapperTest 
 {
@@ -48,8 +46,7 @@ public class Xacml20PolicyMapperTest
 	@Before
 	public void init() throws Exception
 	{
-		PolicyFactory policyFactory = new DefaultPolicyFactory(
-				new DefaultFunctionProvidersRegistry(), new DefaultDecisionCombiningAlgorithmProvider());
+		PolicyFactory policyFactory = new DefaultPolicyFactory();
 		mapper = new Xacml20PolicyMapper(policyFactory);
 	}
 	

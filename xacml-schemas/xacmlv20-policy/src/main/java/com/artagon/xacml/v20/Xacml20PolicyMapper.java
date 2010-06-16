@@ -186,7 +186,11 @@ public class Xacml20PolicyMapper
 	}
 
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
-			throws PolicySyntaxException {
+			throws PolicySyntaxException 
+	{
+		if(defaults == null){
+			return null;
+		}
 		return factory.createPolicySetDefaults(defaults.getXPathVersion());
 	}
 
@@ -418,7 +422,7 @@ public class Xacml20PolicyMapper
 			throws PolicySyntaxException {
 		Collection<AttributeAssignmentExpression> expressions = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentType attr : exp) {
-			AttributeValue value = createValue(attr.getAttributeId(), attr
+			AttributeValue value = createValue(attr.getDataType(), attr
 					.getContent());
 			expressions.add(factory.createAttributeAssigmentExpression(attr
 					.getAttributeId(), value));
