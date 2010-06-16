@@ -66,7 +66,7 @@ public class Xacml20PolicyMapperTest
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
 		PolicyType policy = getPolicy("IIIF005Policy.xml");
-		Policy p0 = mapper.create(policy);
+		Policy p0 = (Policy)mapper.create(policy);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());
 		assertNotNull(p0.getDefaults());
@@ -94,7 +94,7 @@ public class Xacml20PolicyMapperTest
 	public void testPolicyIIIF006Mapping() throws Exception
 	{
 		PolicySetType policy = getPolicy("IIIF006Policy.xml");
-		PolicySet p0 = mapper.create(policy);
+		PolicySet p0 = (PolicySet)mapper.create(policy);
 		assertNotNull(p0);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet", p0.getId());
 		assertEquals("Policy Set for Conformance Test IIIF006.", p0.getDescription());
@@ -108,7 +108,7 @@ public class Xacml20PolicyMapperTest
 	public void testPolicyIIIF007Mapping() throws Exception
 	{
 		PolicyType policy = getPolicy("IIIF007Policy.xml");
-		Policy p = mapper.create(policy);
+		Policy p = (Policy)mapper.create(policy);
 		assertNotNull(p);
 		
 	}
@@ -118,7 +118,7 @@ public class Xacml20PolicyMapperTest
 	public void testPolicyIIC231Mapping() throws Exception
 	{
 		PolicyType policy = getPolicy("IIC231Policy.xml");
-		Policy p = mapper.create(policy);
+		Policy p = (Policy)mapper.create(policy);
 		assertNotNull(p);
 		
 	}
@@ -127,7 +127,7 @@ public class Xacml20PolicyMapperTest
 	public void testFeatures001Policy() throws Exception
 	{
 		PolicyType policy = getPolicy("001B-Policy.xml");
-		Policy p = mapper.create(policy);
+		Policy p = (Policy)mapper.create(policy);
 		assertEquals(5, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
 		assertNotNull(p.getVariableDefinition("VAR02"));
@@ -140,7 +140,7 @@ public class Xacml20PolicyMapperTest
 	public void testFeatures002Policy() throws Exception
 	{
 		PolicyType policy = getPolicy("002B-Policy.xml");
-		Policy p = mapper.create(policy);
+		Policy p = (Policy)mapper.create(policy);
 		assertEquals(2, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
 		assertNotNull(p.getVariableDefinition("VAR02"));

@@ -101,8 +101,20 @@ public class Xacml20PolicyMapper
 	public Xacml20PolicyMapper(PolicyFactory factory) {
 		this.factory = factory;
 	}
+	
+	public CompositeDecisionRule create(Object o) throws PolicySyntaxException
+	{
+		if(o instanceof PolicyType){
+			return createPolicy((PolicyType)o);
+		}
+		if(o instanceof PolicySetType){
+			return createPolicySet((PolicySetType)o);
+		}
+		throw new PolicySyntaxException(
+				"Given object can not be mapped to Policy or PolicySet");
+	}
 
-	public Policy create(PolicyType p) throws PolicySyntaxException 
+	public Policy createPolicy(PolicyType p) throws PolicySyntaxException 
 	{
 		VariableManager<JAXBElement<?>> m = getVariables(p);
 		Version version = Version.parse(p.getVersion());
@@ -121,7 +133,7 @@ public class Xacml20PolicyMapper
 				Collections.<AdviceExpression> emptyList());
 	}
 
-	public PolicySet create(PolicySetType p) throws PolicySyntaxException 
+	public PolicySet createPolicySet(PolicySetType p) throws PolicySyntaxException 
 	{
 		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p
@@ -321,12 +333,12 @@ public class Xacml20PolicyMapper
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);	
 			log.debug("Parsing variable definition=\"{}\"", varId);
 			m.pushVariableDefinition(varId);
-			Expression expression = parseVariableExpression(varDefExp, m);
+			Expression expression = parseExpression(varDefExp, m);
 			m.resolveVariableDefinition(factory.createVariableDefinition(varId, expression));
 		}
 	}
 	
-	Expression parseVariableExpression(JAXBElement<?> expression, 
+	Expression parseExpression(JAXBElement<?> expression, 
 			VariableManager<JAXBElement<?>> m) throws PolicySyntaxException
 	{	
 		log.debug("Parsing variable definition expression=\"{}\"", expression.getName());
@@ -357,7 +369,7 @@ public class Xacml20PolicyMapper
 			}
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			m.pushVariableDefinition(varRef.getVariableId());
-			parseVariableExpression(varDefExp, m);
+			parseExpression(varDefExp, m);
 			varDef = m.getVariableDefinition(varRef.getVariableId());
 			Preconditions.checkState(varDef != null);
 			m.resolveVariableDefinition(varDef);
@@ -562,7 +574,7 @@ public class Xacml20PolicyMapper
 		List<Expression> arguments = new LinkedList<Expression>();
 		for (JAXBElement<?> arg : apply.getExpression()) 
 		{
-			Expression exp = parseVariableExpression(arg, m);
+			Expression exp = parseExpression(arg, m);
 			log.debug("Apply argument=\"{}\"", exp);
 			arguments.add(exp);
 		}
