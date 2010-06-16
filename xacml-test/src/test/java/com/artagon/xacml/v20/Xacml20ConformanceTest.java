@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -11,6 +13,7 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
@@ -30,7 +33,7 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.SimplePolicyDecisionPoint;
 import com.google.common.collect.Iterables;
 
-public class TestXacml20Compatibility 
+public class Xacml20ConformanceTest 
 {
 	private static JAXBContext context1;
 	private static JAXBContext context2;
@@ -64,6 +67,7 @@ public class TestXacml20Compatibility
 	@SuppressWarnings({"unchecked" })
 	private static <T> T getPolicy(String name) throws Exception
 	{
+		System.out.println("Laading policy + " + name);
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
 		assertNotNull(context1);
@@ -93,6 +97,8 @@ public class TestXacml20Compatibility
 		Result r = Iterables.getOnlyElement(response.getResults());
 		assertEquals(Decision.INDETERMINATE, r.getDecision());
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, r.getStatus().getStatusCode().getValue());
+		ResponseType expected = getContext("oasis-xacml20-compat-test/IIIF005Response.xml");
+		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
 	}
 	
 	@Test
@@ -210,5 +216,90 @@ public class TestXacml20Compatibility
 		assertNotNull(Iterables.getOnlyElement(o2.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")));
 		assertNotNull(Iterables.getOnlyElement(o2.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")));
 		assertNotNull(o1);
+		
+		ResponseType expected = getContext("oasis-xacml20-compat-test/IIIA001Response.xml");
+		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));	
+	}
+	
+	@Test
+	public void testIIC125() throws Exception
+	{
+		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIC142Policy.xml");
+		RequestType request = getContext("oasis-xacml20-compat-test/IIC142Request.xml");
+		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
+		Response response = pdp.decide(contextMapper.create(request));
+		
+		ResponseType expected = getContext("oasis-xacml20-compat-test/IIC142Response.xml");
+		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+		
+	}
+	
+	@Ignore
+	@Test
+	public void testIIATests() throws Exception
+	{	
+		for(int i = 6; i < 22; i++)
+		{
+			System.out.println("Executing test case " + i);
+			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Policy.xml"));
+			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Request.xml"));
+			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
+			Response response = pdp.decide(contextMapper.create(request));
+			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Response.xml"));
+			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+		}	
+	}
+	
+	@Ignore
+	@Test
+	public void testIIBTests() throws Exception
+	{	
+		for(int i = 1; i < 54; i++)
+		{
+			System.out.println("Executing test case " + i);
+			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Policy.xml"));
+			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Request.xml"));
+			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
+			Response response = pdp.decide(contextMapper.create(request));
+			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Response.xml"));
+			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+		}	
+	}
+	
+	@Test
+	public void testIICTests() throws Exception
+	{	
+		Collection<Integer> skipTests = new LinkedList<Integer>();
+		skipTests.add(3);
+		skipTests.add(12);
+		skipTests.add(14);
+		skipTests.add(20);
+		skipTests.add(23);
+		skipTests.add(28);
+		skipTests.add(29);
+		skipTests.add(32);
+		skipTests.add(33);
+		skipTests.add(54);
+		skipTests.add(55);
+		skipTests.add(88);
+		skipTests.add(89);
+		skipTests.add(92);
+		skipTests.add(93);
+		skipTests.add(98);
+		skipTests.add(99);
+		for(int i = 4; i < 233; i++)
+		{
+			if(skipTests.contains(i)){
+				System.out.println("Skipping test case " + i);
+				continue;
+			}
+			System.out.println("Executing test case " + i);
+			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Policy.xml"));
+			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Request.xml"));
+			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
+			Response response = pdp.decide(contextMapper.create(request));
+			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Response.xml"));
+			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+		}	
 	}
 }
