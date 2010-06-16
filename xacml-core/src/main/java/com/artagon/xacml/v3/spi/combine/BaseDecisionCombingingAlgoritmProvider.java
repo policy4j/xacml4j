@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.spi.combine;
+package com.artagon.xacml.v3.spi.combine;
 
 import java.util.Collections;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 
 public class BaseDecisionCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
 {

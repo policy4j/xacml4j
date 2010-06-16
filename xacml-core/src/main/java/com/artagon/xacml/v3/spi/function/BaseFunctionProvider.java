@@ -1,10 +1,10 @@
-package com.artagon.xacml.v3.policy.spi.function;
+package com.artagon.xacml.v3.spi.function;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 
 public class BaseFunctionProvider implements FunctionProvider
 {

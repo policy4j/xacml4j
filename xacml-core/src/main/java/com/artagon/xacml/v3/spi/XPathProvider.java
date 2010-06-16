@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.spi;
+package com.artagon.xacml.v3.spi;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

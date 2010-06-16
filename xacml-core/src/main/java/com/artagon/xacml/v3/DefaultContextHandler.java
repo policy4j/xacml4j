@@ -12,9 +12,9 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v3.policy.spi.AttributesCallback;
-import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.AttributesCallback;
+import com.artagon.xacml.v3.spi.XPathEvaluationException;
+import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

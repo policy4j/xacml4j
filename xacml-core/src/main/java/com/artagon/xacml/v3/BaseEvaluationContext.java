@@ -16,8 +16,8 @@ import org.w3c.dom.NodeList;
 import com.artagon.xacml.util.MapMaker;
 import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
-import com.artagon.xacml.v3.policy.spi.XPathEvaluationException;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.XPathEvaluationException;
+import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 
 abstract class BaseEvaluationContext implements EvaluationContext

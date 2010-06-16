@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
-import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory

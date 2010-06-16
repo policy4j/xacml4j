@@ -1,17 +1,18 @@
-package com.artagon.xacml.v3.policy.spi;
+package com.artagon.xacml.v3.spi.function;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
-public class FunctionProviderRegistry implements FunctionProvider
+public class AggregatingFunctionProvider implements FunctionProvider
 {
 	private Map<String, FunctionProvider> functions;
 	
-	public FunctionProviderRegistry(){
+	public AggregatingFunctionProvider(){
 		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 	}
 	

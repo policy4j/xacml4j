@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.function;
 
-import com.artagon.xacml.v3.policy.spi.FunctionProviderRegistry;
-import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
+import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 
-public class DefaultFunctionProvider extends FunctionProviderRegistry
+public class DefaultFunctionProvider extends AggregatingFunctionProvider
 {
 	public DefaultFunctionProvider()
 	{

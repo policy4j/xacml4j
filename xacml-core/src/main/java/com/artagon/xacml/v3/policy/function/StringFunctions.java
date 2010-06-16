@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.function;
 
-import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
+import com.artagon.xacml.v3.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.DNSNameType;

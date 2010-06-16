@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.policy.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
 public abstract class BasePolicyFactory implements PolicyFactory 

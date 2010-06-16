@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.function;
 
-import com.artagon.xacml.v3.policy.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.policy.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.policy.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.policy.spi.function.XacmlLegacyFunc;
-import com.artagon.xacml.v3.policy.spi.function.XacmlParam;
+import com.artagon.xacml.v3.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
+import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;

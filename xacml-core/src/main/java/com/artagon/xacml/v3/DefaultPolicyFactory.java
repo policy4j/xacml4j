@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
-import com.artagon.xacml.v3.policy.spi.combine.DecisionCombiningAlgorithmProviderRegistry;
+import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyFactory extends BasePolicyFactory
@@ -13,7 +13,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public DefaultPolicyFactory()
 	{
 		super(new DefaultFunctionProvider(), 
-				new DecisionCombiningAlgorithmProviderRegistry(
+				new AggregatingDecisionCombiningAlgorithmProvider(
 						new DefaultDecisionCombiningAlgorithmProvider(), 
 						new LegacyDecisionCombiningAlgorithmProvider()));
 	}

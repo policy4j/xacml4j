@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.spi.combine;
+package com.artagon.xacml.v3.policy.spi;
 
 import java.util.Collections;
 import java.util.Map;

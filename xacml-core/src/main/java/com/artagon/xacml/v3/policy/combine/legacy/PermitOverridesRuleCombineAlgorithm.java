@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class PermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {

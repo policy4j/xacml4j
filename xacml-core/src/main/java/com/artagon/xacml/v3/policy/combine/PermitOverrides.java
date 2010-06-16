@@ -6,7 +6,7 @@ import java.util.List;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
