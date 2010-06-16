@@ -4,7 +4,7 @@ import static org.easymock.EasyMock.createStrictMock;
 
 import org.junit.Before;
 
-import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
 
 public class XacmlPolicyTestCase
 {	

@@ -25,10 +25,10 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.policy.spi.FunctionProvider;
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
-import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
-import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 

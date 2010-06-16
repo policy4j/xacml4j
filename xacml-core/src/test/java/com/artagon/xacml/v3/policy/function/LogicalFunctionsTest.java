@@ -8,8 +8,8 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlPolicyTestCase;
-import com.artagon.xacml.v3.policy.spi.FunctionProvider;
-import com.artagon.xacml.v3.policy.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 

@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v3.policy.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultContextHandlerTest

@@ -17,7 +17,7 @@ import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class PolicyIDReferenceTest
 {
