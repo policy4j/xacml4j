@@ -1,9 +1,13 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.spi.function;
+
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.ValueType;
 
 
 public interface FunctionSpecBuilder 
 {
 	
+	FunctionSpecBuilder withParamAnyBag();
 	FunctionSpecBuilder withParam(ValueType type);	
 	FunctionSpecBuilder withLazyArgumentsEvaluation();
 	FunctionSpecBuilder withParam(ValueType type, int min, int max);

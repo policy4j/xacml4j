@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.function;
 
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlLegacyFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;
@@ -56,7 +56,7 @@ public class DateTimeArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-add-yearMonthDuration")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DATETIME)
+	@XacmlFuncReturnType(type=XacmlDataTypes.DATE)
 	public static DateValue add(
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
 			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationValue b)

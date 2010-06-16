@@ -5,7 +5,11 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v3.XPathVersion;
 
-
+/**
+ * An XPath provider for executing XPath expressions
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface XPathProvider 
 {	
 	NodeList evaluateToNodeSet(

@@ -33,11 +33,15 @@ public class JDKXPathProvider implements XPathProvider
 	{
 		try
 		{
+			if(!v.equals(XPathVersion.XPATH1)){
+				throw new XPathEvaluationException(
+						"Unsupported XPath version", path, v, context);
+			}
 			XPath xpath = xpathFactory.newXPath();
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (Node)xpath.evaluate(path, context, XPathConstants.NODE);
 		}catch(XPathExpressionException e){
-			throw new XPathEvaluationException(e);
+			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
 
@@ -46,11 +50,15 @@ public class JDKXPathProvider implements XPathProvider
 			throws XPathEvaluationException {
 		try
 		{
+			if(!v.equals(XPathVersion.XPATH1)){
+				throw new XPathEvaluationException(
+						"Unsupported XPath version", path, v, context);
+			}
 			XPath xpath = xpathFactory.newXPath();
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (NodeList)xpath.evaluate(path, context, XPathConstants.NODESET);
 		}catch(XPathExpressionException e){
-			throw new XPathEvaluationException(e);
+			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
 
@@ -59,11 +67,15 @@ public class JDKXPathProvider implements XPathProvider
 			throws XPathEvaluationException {
 		try
 		{
+			if(!v.equals(XPathVersion.XPATH1)){
+				throw new XPathEvaluationException(
+						"Unsupported XPath version", path, v, context);
+			}
 			XPath xpath = xpathFactory.newXPath();
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (String)xpath.evaluate(path, context, XPathConstants.STRING);
 		}catch(XPathExpressionException e){
-			throw new XPathEvaluationException(e);
+			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
 	
@@ -72,11 +84,15 @@ public class JDKXPathProvider implements XPathProvider
 			throws XPathEvaluationException {
 		try
 		{
+			if(!v.equals(XPathVersion.XPATH1)){
+				throw new XPathEvaluationException(
+						"Unsupported XPath version", path, v, context);
+			}
 			XPath xpath = xpathFactory.newXPath();
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (Number)xpath.evaluate(path, context, XPathConstants.NUMBER);
 		}catch(XPathExpressionException e){
-			throw new XPathEvaluationException(e);
+			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
 	

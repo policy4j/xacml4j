@@ -142,11 +142,15 @@ public class BagFunctionsTest
 	{
 		AnyURIValue v0 = XacmlDataTypes.ANYURI.create("http://www.test0.org");
 		AnyURIValue v1 = XacmlDataTypes.ANYURI.create("http://www.test1.org");
+		AnyURIValue v2 = XacmlDataTypes.ANYURI.create("http://www.test2.org");
 		BagOfAttributeValues<AnyURIValue> bag = XacmlDataTypes.ANYURI.bag(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
 		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v1, bag));
 		assertEquals(XacmlDataTypes.ANYURI.bag(v0, v1), BagFunctions.anyURIBag(v0, v1));
+		
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
 	}
 }

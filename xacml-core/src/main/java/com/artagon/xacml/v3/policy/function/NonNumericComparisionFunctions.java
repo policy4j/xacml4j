@@ -4,11 +4,11 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
-import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
@@ -68,7 +68,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue greatherThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue a, 
@@ -87,7 +87,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue lessThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue a, 
@@ -130,7 +130,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue greatherThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
@@ -149,7 +149,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue lessThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
@@ -168,7 +168,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue greatherThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
@@ -187,7 +187,7 @@ public class NonNumericComparisionFunctions
 		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equals")
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue lessThanOrEquals(
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 

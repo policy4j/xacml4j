@@ -8,6 +8,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.spi.function.DefaultFunctionSpecBuilder;
+import com.artagon.xacml.v3.spi.function.FunctionInvocation;
+import com.artagon.xacml.v3.spi.function.FunctionReturnTypeResolver;
+import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 

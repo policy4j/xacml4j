@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.policy.function;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;

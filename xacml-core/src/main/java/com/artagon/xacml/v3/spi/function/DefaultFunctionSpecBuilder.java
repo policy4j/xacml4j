@@ -1,11 +1,13 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.spi.function;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.v3.ParamSpec;
+import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
-public class DefaultFunctionSpecBuilder 
+public final class DefaultFunctionSpecBuilder 
 	implements FunctionSpecBuilder
 {
 	private String functionId;
@@ -48,6 +50,12 @@ public class DefaultFunctionSpecBuilder
 		Preconditions.checkArgument(max - min > 1, "Max and min should be different at least by 1");
 		hadVarArg = true;
 		this.paramSpec.add(new ParamValueTypeSequenceSpec(min, max, type));
+		return this;
+	}
+	
+	@Override
+	public FunctionSpecBuilder withParamAnyBag() {
+		this.paramSpec.add(new ParamAnyBagSpec());
 		return this;
 	}
 

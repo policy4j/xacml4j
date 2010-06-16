@@ -29,10 +29,11 @@ final class YearMonthDurationTypeImpl extends
 	}
 
 	@Override
-	public YearMonthDurationValue fromXacmlString(String v, Object ...params) {
+	public YearMonthDurationValue fromXacmlString(String v, Object ...params) 
+	{
 		Preconditions.checkNotNull(v);
-		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
-		return new YearMonthDurationValue(this, validate(dayTimeDuration));
+		Duration yearMonthDuration = xmlDataTypesFactory.newDurationYearMonth(v);
+		return new YearMonthDurationValue(this, validate(yearMonthDuration));
 	}
 	
 	@Override
@@ -48,13 +49,14 @@ final class YearMonthDurationTypeImpl extends
 		return new YearMonthDurationValue(this, validate((Duration)any));
 	}
 	
-	private Duration validate(Duration duration){
+	private Duration validate(Duration duration)
+	{
 		if(!(duration.isSet(DatatypeConstants.DAYS) 
-				&& duration.isSet(DatatypeConstants.HOURS)) &&
-				duration.isSet(DatatypeConstants.MINUTES) &&
-				duration.isSet(DatatypeConstants.SECONDS)){
+				|| duration.isSet(DatatypeConstants.HOURS) 
+				|| duration.isSet(DatatypeConstants.MINUTES) 
+				|| duration.isSet(DatatypeConstants.SECONDS))){
 			return duration;
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Invalid duration");
 	}
 }

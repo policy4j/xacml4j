@@ -10,10 +10,16 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.DefaultFunctionSpecBuilder;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlLegacyFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamFuncReference;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamVarArg;
 import com.google.common.base.Preconditions;
 
 

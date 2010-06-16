@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3.spi.function.annotiations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFunc 
+public @interface XacmlLegacyFunc 
 {
 	String id();
-	boolean evaluateArguments() default true;
 }
+
+

@@ -9,6 +9,7 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.spi.function.ParamValueTypeSpec;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MatchTest extends XacmlPolicyTestCase

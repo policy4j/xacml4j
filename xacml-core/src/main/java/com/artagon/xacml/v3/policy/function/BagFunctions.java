@@ -2,11 +2,11 @@ package com.artagon.xacml.v3.policy.function;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
-import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamVarArg;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
@@ -124,7 +124,7 @@ public class BagFunctions
 	// boolean
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue booleanOneAndOnly(
 			@XacmlParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> bag) 
 	{
@@ -169,7 +169,7 @@ public class BagFunctions
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag-size")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerValue integerBagSize(
-			@XacmlParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<IntegerValue> bag) 
+			@XacmlParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
@@ -350,7 +350,7 @@ public class BagFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-is-in")
-	@XacmlFuncReturnType(type=XacmlDataTypes.ANYURI)
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue anyURIIsIn(
 			@XacmlParam(type=XacmlDataTypes.ANYURI)AnyURIValue v,
 			@XacmlParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> bag) 

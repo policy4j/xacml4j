@@ -1,11 +1,12 @@
 package com.artagon.xacml.v3.policy.function;
 
 
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlLegacyFunc;
+import com.artagon.xacml.v3.spi.function.annotiations.XacmlParam;
+
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
@@ -98,6 +99,7 @@ public class EqualityPredicates
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
@@ -108,6 +110,7 @@ public class EqualityPredicates
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
@@ -118,11 +121,12 @@ public class EqualityPredicates
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:time-equal")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
 			BooleanValue equals(
-			@XacmlParam(type=XacmlDataTypes.DATETIME)TimeValue a, 
-			@XacmlParam(type=XacmlDataTypes.DATETIME)TimeValue b)
+			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue a, 
+			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue b)
 	{
 		return XacmlDataTypes.BOOLEAN.create(a.equals(b));
 	}
