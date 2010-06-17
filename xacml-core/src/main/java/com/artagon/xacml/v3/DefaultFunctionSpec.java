@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -14,6 +17,8 @@ import com.google.common.base.Preconditions;
  */
 final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 {	
+	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionSpec.class);
+	
 	private String functionId;
 	private String legacyId;
 	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
@@ -123,8 +128,13 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			if(context.isValidateFuncParamAtRuntime()){
 				validateParameters(params);
 			}
-			return (T)invocation.invoke(this, context, 
+			T result = invocation.invoke(this, context, 
 					isRequiresLazyParamEval()?params:evaluate(context, params));
+			if(log.isDebugEnabled()){
+				log.debug("Function=\"{}\" " +
+						"invocation result=\"{}\"", getId(), result);
+			}
+			return result;
 		}
 		catch(EvaluationException e){
 			throw e;

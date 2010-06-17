@@ -4,7 +4,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
@@ -54,8 +54,8 @@ public class XPathFunctions
 			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath) 
 	{
-		XPathExpressionValue xpathExp = XacmlDataTypes.XPATHEXPRESSION.create(xpath.getValue(), AttributeCategoryId.RESOURCE);
-		return xpathCount(context, xpathExp);
+		return xpathCount(context, 
+				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
@@ -89,12 +89,12 @@ public class XPathFunctions
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeEqualXacml20(
 			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath1)
+			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath0,
+			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath1)
 	{
-		XPathExpressionValue xpathExp0 = XacmlDataTypes.XPATHEXPRESSION.create(xpath0.getValue(), AttributeCategoryId.RESOURCE);
-		XPathExpressionValue xpathExp1 = XacmlDataTypes.XPATHEXPRESSION.create(xpath1.getValue(), AttributeCategoryId.RESOURCE);
-		return xpathNodeEqual(context, xpathExp0, xpathExp1);
+		return xpathNodeEqual(context, 
+				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
+				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
@@ -146,13 +146,14 @@ public class XPathFunctions
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeMatchXacml20(
 			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath1) 
+			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath0,
+			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath1) 
 	{
-		XPathExpressionValue xpathExp0 = XacmlDataTypes.XPATHEXPRESSION.create(xpath0.getValue(), AttributeCategoryId.RESOURCE);
-		XPathExpressionValue xpathExp1 = XacmlDataTypes.XPATHEXPRESSION.create(xpath1.getValue(), AttributeCategoryId.RESOURCE);
-		return xpathNodeMatch(context, xpathExp0, xpathExp1);
+		return xpathNodeMatch(context, 
+				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
+				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
 	}
+	
 	/**
 	 * Recursively compares the child nodes of the first 
 	 * element with the second element

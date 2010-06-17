@@ -47,6 +47,8 @@ public class XPathFunctionsTest
 	private XPathProvider xpathProvider;
 	private FunctionProvider funcF;
 	
+	private Node content1;
+	
 	@Before
 	public void init() throws Exception
 	{
@@ -55,6 +57,8 @@ public class XPathFunctionsTest
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = createStrictMock(EvaluationContext.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
+		this.content1 = builder.parse(new InputSource(
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
 		this.xpathProvider = new JDKXPathProvider();
 		this.funcF = new AnnotiationBasedFunctionProvider(XPathFunctions.class);
 	}
@@ -65,6 +69,15 @@ public class XPathFunctionsTest
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count"));
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match"));
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal"));
+	}
+	
+	@Test
+	public void testXpathEvaluation() throws Exception
+	{
+		NodeList result = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record", content1); 
+		NodeList result1 = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record//md:name", content1);
+		assertEquals(1, result.getLength());
+		assertEquals(2, result1.getLength());
 	}
 	
 	@Test
