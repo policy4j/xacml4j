@@ -103,16 +103,17 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	protected Decision doEvaluate(EvaluationContext context)
 	{
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
-		log.debug("RuleId=\"{}\" condition evaluation result=\"{}\"", getId(), result);
+		log.debug("Rule=\"{}\" condition evaluation result=\"{}\"", getId(), result);
 		if(result == ConditionResult.INDETERMINATE){
 			if(log.isDebugEnabled()){
-				log.debug("Rule id=\"{}\" condition evaluated to=\"{}\"", getId(), result);
+				log.debug("Rule=\"{}\" condition " +
+						"evaluated to=\"{}\"", getId(), result);
 			}
 			return getExtendedIndeterminate();
 		}
 		Decision d = (result == ConditionResult.TRUE)?
 				getEffect().getResult():Decision.NOT_APPLICABLE;
-		log.debug("RuleId=\"{}\" decision result=\"{}\"", getId(), d);
+		log.debug("Rule=\"{}\" decision result=\"{}\"", getId(), d);
 		return d;
 	}
 	
@@ -124,19 +125,18 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	@Override
 	public  Decision evaluateIfApplicable(EvaluationContext context)
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Invoking decision rule id=\"{}\" evaluateIfApplicable", getId());
-		}
 		MatchResult r = isApplicable(context);
 		Preconditions.checkState(r != null);
 		if(r == MatchResult.MATCH){
 			if(log.isDebugEnabled()){
-				log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
+				log.debug("Rule=\"{}\" match " +
+						"result is=\"{}\", evaluating rule", getId(), r);
 			}
 			return evaluate(context);
 		}
 		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
+			log.debug("Rule=\"{}\" " +
+					"match result is=\"{}\", not evaluating rule", getId(), r);
 		}
 		return (r == MatchResult.INDETERMINATE)?
 				getExtendedIndeterminate():Decision.NOT_APPLICABLE;
