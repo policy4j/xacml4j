@@ -21,6 +21,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	
 	private FunctionInvocation invocation;
 	private FunctionReturnTypeResolver resolver;
+	private FunctionParametersValidator validator;
 	
 	/**
 	 * Constructs function spec with given function
@@ -41,6 +42,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			List<ParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
+			FunctionParametersValidator validator,
 			boolean lazyParamEval){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
@@ -49,9 +51,20 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		this.functionId = functionId;
 		this.parameters.addAll(params);
 		this.resolver = resolver;
+		this.validator = validator;
 		this.invocation = invocation;
 		this.lazyParamEval = lazyParamEval;
 		this.legacyId = legacyId;
+	}
+	
+	public DefaultFunctionSpec(
+			String functionId, 
+			String legacyId,
+			List<ParamSpec> params, 
+			FunctionReturnTypeResolver resolver,
+			FunctionInvocation invocation,
+			boolean lazyParamEval){
+		this(functionId, legacyId, params, resolver, invocation, null, lazyParamEval);
 	}
 	
 	public DefaultFunctionSpec(
@@ -60,7 +73,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
 			boolean lazyParamEval){
-		this(functionId, null, params, resolver, invocation, lazyParamEval);
+		this(functionId, null, params, resolver, invocation, null, lazyParamEval);
 	}
 	
 	@Override
@@ -199,7 +212,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 * @return <code>true</code> if a given parameter is valid
 	 * according specification
 	 */
-	protected boolean validateAdditional(Expression ... params){
-		return true;
+	private boolean validateAdditional(Expression ... params){
+		return (validator == null)?true:validator.validate(this, params);
 	}	
 }

@@ -24,6 +24,12 @@ public final class FunctionSpecBuilder
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
 	
+	public FunctionSpecBuilder withParamFunctionReference()
+	{
+		this.paramSpec.add(new ParamFuncReferenceSpec());
+		return this;
+	}
+	
 	public FunctionSpecBuilder withParam(ValueType type){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg, 
@@ -63,7 +69,8 @@ public final class FunctionSpecBuilder
 	 * @return {@link DefaultFunctionSpec} a f
 	 */
 	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
-		return new DefaultFunctionSpec(functionId, legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
+		return new DefaultFunctionSpec(functionId, 
+				legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
 	public DefaultFunctionSpec build(ValueType returnType,

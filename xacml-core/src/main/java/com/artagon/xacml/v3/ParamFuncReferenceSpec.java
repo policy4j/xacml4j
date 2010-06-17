@@ -2,17 +2,8 @@ package com.artagon.xacml.v3;
 
 import java.util.ListIterator;
 
-import com.google.common.base.Preconditions;
-
 public final class ParamFuncReferenceSpec extends XacmlObject implements ParamSpec
-{
-	private FunctionFamily family;
-	
-	public ParamFuncReferenceSpec(FunctionFamily family){
-		Preconditions.checkNotNull(family);
-		this.family = family;
-	}
-	
+{		
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return false;
@@ -25,10 +16,6 @@ public final class ParamFuncReferenceSpec extends XacmlObject implements ParamSp
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		Expression exp = it.next();
-		if(exp instanceof FunctionReference){
-			FunctionReference fexp = (FunctionReference)exp;
-			return family.isMemeberOf(fexp.getSpec());
-		}
-		return false;
+		return (exp instanceof FunctionReference);
 	}
 }

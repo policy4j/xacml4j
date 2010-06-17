@@ -11,5 +11,5 @@ public interface FunctionParametersValidator
 	 * @return <code>true</code> if function
 	 * arguments are valid
 	 */
-	boolean validate(Expression ...arguments);
+	boolean validate(FunctionSpec spec, Expression ...arguments);
 }
