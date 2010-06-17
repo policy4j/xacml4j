@@ -13,8 +13,10 @@ public enum Decision
 	private String value;
 	private boolean indeterminate;
 	
-	private Decision(boolean indeterminate, String value){
+	private Decision(boolean indeterminate, 
+			String value){
 		this.indeterminate = indeterminate;
+		this.value = value;
 	}
 	
 	public boolean isIndeterminate(){

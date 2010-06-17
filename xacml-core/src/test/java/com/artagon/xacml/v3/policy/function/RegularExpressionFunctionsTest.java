@@ -36,25 +36,19 @@ public class RegularExpressionFunctionsTest
 	}
 	
 	@Test
+	public void testXacmlRegExpWithSpaceBugTrimming()
+	{
+		StringValue regexp1 = XacmlDataTypes.STRING.create("  *This .*is not IT! *");
+		StringValue input1 = XacmlDataTypes.STRING.create("   This  is not IT!  ");
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
+	}
+	
+	@Test
 	public void testStringRegExpMatch() throws EvaluationException
 	{
 		StringValue regexp = XacmlDataTypes.STRING.create("G*,Trumpickas");
 		StringValue input = XacmlDataTypes.STRING.create("Giedrius,Trumpickas");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));
-		
-		StringValue regexp1 = XacmlDataTypes.STRING.create(" *This .*is not IT! *");
-		StringValue regexp2 = XacmlDataTypes.STRING.create("     This .*is IT!  ");
-		StringValue input1 = XacmlDataTypes.STRING.create("   This  is IT!  ");
-		StringValue input2 = XacmlDataTypes.STRING.create("   This  is not IT!  ");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
-		
-		
-		
-		
-		
-
-		     
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
 	}
 	
 	@Test

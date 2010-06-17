@@ -56,8 +56,12 @@ public class Condition extends XacmlObject implements PolicyElement
 			}
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate condition with error=\"{}\"", e.getMessage());
+			}
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
+			log.debug("Failed to evaluate condition with error=\"{}\"", e.getMessage());
 			return ConditionResult.INDETERMINATE;
 		}
 	}

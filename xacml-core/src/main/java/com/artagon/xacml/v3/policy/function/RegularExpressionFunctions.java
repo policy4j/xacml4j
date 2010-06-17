@@ -2,6 +2,9 @@ package com.artagon.xacml.v3.policy.function;
 
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
@@ -19,6 +22,8 @@ import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 @XacmlFunctionProvider
 public class RegularExpressionFunctions 
 {
+	private final static Logger log = LoggerFactory.getLogger(RegularExpressionFunctions.class);
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static 
@@ -127,7 +132,7 @@ public class RegularExpressionFunctions
 	       // in several ways; the next several code blocks transform
 	       // the XACML syntax into a semantically equivalent Pattern syntax
 
-	       StringBuffer buf = new StringBuffer(xpr.trim());
+	       StringBuffer buf = new StringBuffer(xpr);
 	       
 	       // in order to handle the requirement that the string is
 	       // considered to match the pattern if any substring matches
@@ -172,7 +177,9 @@ public class RegularExpressionFunctions
 	    	   idx = buf.indexOf("-[", idx+1);
 	       }
 	       
-	       return buf.toString();
+	       String regexp = buf.toString();
+	       log.debug("XACML regexp=\"{}\", Java regexp=\"{}\"", xpr, regexp);
+	       return regexp;
 	  }
 
 	private static int calculateNestLevel(StringBuffer buf, int idx) {

@@ -105,6 +105,9 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
 		log.debug("RuleId=\"{}\" condition evaluation result=\"{}\"", getId(), result);
 		if(result == ConditionResult.INDETERMINATE){
+			if(log.isDebugEnabled()){
+				log.debug("Rule id=\"{}\" condition evaluated to=\"{}\"", getId(), result);
+			}
 			return getExtendedIndeterminate();
 		}
 		Decision d = (result == ConditionResult.TRUE)?
