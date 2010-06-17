@@ -1,12 +1,15 @@
 package com.artagon.xacml.v20;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.oasis.xacml.v20.context.ActionType;
 import org.oasis.xacml.v20.context.AttributeType;
 import org.oasis.xacml.v20.context.AttributeValueType;
+import org.oasis.xacml.v20.context.DecisionType;
 import org.oasis.xacml.v20.context.EnvironmentType;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResourceContentType;
@@ -23,11 +26,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
@@ -45,6 +50,18 @@ public class Xacml20ContextMapper
 	
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
+	
+	private final static Map<Decision, DecisionType> decisionMapping = new HashMap<Decision, DecisionType>();
+	
+	static{
+		decisionMapping.put(Decision.DENY, DecisionType.DENY);
+		decisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
+		decisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
+		decisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
+		decisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
+		decisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
+		decisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
+	}
 	
 	public Xacml20ContextMapper(){
 	}
@@ -65,6 +82,7 @@ public class Xacml20ContextMapper
 		resultv2.setStatus(createStatus(result.getStatus()));
 		resultv2.setResourceId(getResourceId(result));
 		resultv2.setObligations(getObligations(result));
+		resultv2.setDecision(decisionMapping.get(result.getDecision()));
 		return resultv2;
 	}
 	
@@ -265,7 +283,7 @@ public class Xacml20ContextMapper
 		}
 		Object o = Iterables.getOnlyElement(content);
 		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
-			String xpath = Xacml20PolicyMapper.transform20PathTo30((String)o);
+			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
 			return dataType.create(xpath, categoryId);
 		}
 		return dataType.create(o);
