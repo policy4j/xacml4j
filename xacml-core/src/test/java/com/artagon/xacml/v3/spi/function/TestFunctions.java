@@ -67,7 +67,7 @@ public class TestFunctions
 	
 	@XacmlFunc(id="test5")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER, isBag=true)
-	public static BagOfAttributeValues<IntegerType.IntegerValue> test4(
+	public static BagOfAttributeValues<IntegerType.IntegerValue> test5(
 			@XacmlParamEvaluationContext EvaluationContext context,
 			@XacmlParamFuncReference FunctionSpec function,
 			@XacmlParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
@@ -83,8 +83,8 @@ public class TestFunctions
 	}
 	
 	@XacmlFunc(id="test5VarArg")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER, isBag=true)
-	public static BooleanValue test5(
+	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	public static BooleanValue test5VarArg(
 			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue value,
 			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
@@ -93,7 +93,7 @@ public class TestFunctions
 	}
 	
 	@XacmlFunc(id="test6VarArg")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER, isBag=true)
+	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static BooleanValue test6(
 			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a,
 			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b,

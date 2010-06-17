@@ -172,8 +172,8 @@ class JavaMethodToFunctionSpecConverter {
 		if (returnTypeResolver != null) {
 			return;
 		}
-		if (returnType.isBag()) {
-			if (!BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
+			if (returnType.isBag() && 
+					!BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
 				throw new IllegalArgumentException(
 						String
 								.format(
@@ -182,8 +182,7 @@ class JavaMethodToFunctionSpecConverter {
 										m.getName(), returnType.type(), m
 												.getReturnType()));
 			}
-		}
-		if (BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
+		if(!returnType.isBag() && BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
 			throw new IllegalArgumentException(String.format(
 					"Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
