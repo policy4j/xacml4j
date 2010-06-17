@@ -38,6 +38,18 @@ public class JavaMethodToFunctionSpecTest
 		builder.createFunctionSpec(getTestMethod("returnsNonXacmlExpression"));
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void returnTypeDeclarationExistButWrongMethodReturnType1()
+	{
+		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1"));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void returnTypeDeclarationExistButWrongMethodReturnType2()
+	{
+		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2"));
+	}
+	
 	private static Method getTestMethod(String name)
 	{
 		for(Method m : JavaMethodToFunctionSpecTestFunctions.class.getDeclaredMethods()){
