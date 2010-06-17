@@ -24,8 +24,10 @@ import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
@@ -40,6 +42,7 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -227,8 +230,13 @@ public class Xacml20ContextMapper
 	
 	private Attributes createResource(ResourceType resource) throws RequestSyntaxException
 	{
+		Node content = getResourceContent(resource);
+		if(content != null){
+			content = DOMUtil.copyNode(content);
+		}
 		return new Attributes(AttributeCategoryId.RESOURCE, 
-				getResourceContent(resource), create(resource.getAttribute(), AttributeCategoryId.RESOURCE));
+				content, 
+				create(resource.getAttribute(), AttributeCategoryId.RESOURCE));
 	}
 	
 	private Node getResourceContent(ResourceType resource)
@@ -237,9 +245,11 @@ public class Xacml20ContextMapper
 		if(content == null){
 			return null;
 		}
-		for(Object o : content.getContent()){
-			if(o instanceof Node){
-				return (Node)o;
+		for(Object o : content.getContent())
+		{
+			if(o instanceof Element){
+				Node node = (Node)o;
+				return node;
 			}
 		}
 		return null;
