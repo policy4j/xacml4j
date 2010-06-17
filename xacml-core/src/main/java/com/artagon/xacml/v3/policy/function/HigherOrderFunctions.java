@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.FunctionSpec;
 
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncDynamicReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFuncReturnTypeResolver;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlParamAnyBag;
@@ -45,7 +45,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")
-	@XacmlFuncDynamicReturnType(resolver="resolveMapType")
+	@XacmlFuncReturnTypeResolver(methodName="resolveMapType")
 	public BagOfAttributeValues<? extends AttributeValue> map(
 			@XacmlParamEvaluationContext EvaluationContext context, 
 			@XacmlParamFuncReference FunctionReference ref, 

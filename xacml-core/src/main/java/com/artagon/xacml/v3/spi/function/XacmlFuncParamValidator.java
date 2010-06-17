@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFuncDynamicReturnType 
+public @interface XacmlFuncParamValidator 
 {
-	String resolver();
+	String methodName();
 }
