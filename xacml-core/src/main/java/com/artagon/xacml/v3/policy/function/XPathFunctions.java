@@ -4,17 +4,18 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
 import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 
 /**
@@ -31,7 +32,6 @@ import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 public class XPathFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
-	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerValue xpathCount(
 			@XacmlParamEvaluationContext EvaluationContext context,
@@ -48,8 +48,17 @@ public class XPathFunctions
 		}
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
+	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	public static IntegerValue xpathCountXacml2(
+			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath) 
+	{
+		XPathExpressionValue xpathExp = XacmlDataTypes.XPATHEXPRESSION.create(xpath.getValue(), AttributeCategoryId.RESOURCE);
+		return xpathCount(context, xpathExp);
+	}
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
-	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeEqual(
 			@XacmlParamEvaluationContext EvaluationContext context,
@@ -76,8 +85,19 @@ public class XPathFunctions
 		}
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue xpathNodeEqualXacml20(
+			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath0,
+			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath1)
+	{
+		XPathExpressionValue xpathExp0 = XacmlDataTypes.XPATHEXPRESSION.create(xpath0.getValue(), AttributeCategoryId.RESOURCE);
+		XPathExpressionValue xpathExp1 = XacmlDataTypes.XPATHEXPRESSION.create(xpath1.getValue(), AttributeCategoryId.RESOURCE);
+		return xpathNodeEqual(context, xpathExp0, xpathExp1);
+	}
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
-	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-matchl")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeMatch(
 			@XacmlParamEvaluationContext EvaluationContext context,
@@ -122,6 +142,17 @@ public class XPathFunctions
 		}
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue xpathNodeMatchXacml20(
+			@XacmlParamEvaluationContext EvaluationContext context,
+			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath0,
+			@XacmlParam(type=XacmlDataTypes.STRING) XPathExpressionValue xpath1) 
+	{
+		XPathExpressionValue xpathExp0 = XacmlDataTypes.XPATHEXPRESSION.create(xpath0.getValue(), AttributeCategoryId.RESOURCE);
+		XPathExpressionValue xpathExp1 = XacmlDataTypes.XPATHEXPRESSION.create(xpath1.getValue(), AttributeCategoryId.RESOURCE);
+		return xpathNodeMatch(context, xpathExp0, xpathExp1);
+	}
 	/**
 	 * Recursively compares the child nodes of the first 
 	 * element with the second element
