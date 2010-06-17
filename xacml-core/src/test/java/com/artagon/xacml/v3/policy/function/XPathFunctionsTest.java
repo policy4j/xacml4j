@@ -31,6 +31,7 @@ import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
+import com.artagon.xacml.v3.types.StringType.StringValue;
 
 public class XPathFunctionsTest 
 {
@@ -69,6 +70,9 @@ public class XPathFunctionsTest
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count"));
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match"));
 		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal"));
+		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count"));
+		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match"));
+		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal"));
 	}
 	
 	@Test
@@ -88,9 +92,22 @@ public class XPathFunctionsTest
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategoryId.SUBJECT_ACCESS))
-		.andAnswer(new XPathAnswer());
+		.andAnswer(new XPathAnswer(content));
 		replay(context);
 		assertEquals(XacmlDataTypes.INTEGER.create(1), f.invoke(context, xpath));
+		verify(context);
+	}
+	
+	@Test
+	public void testXPathCountXacml20() throws EvaluationException
+	{
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count");
+		StringValue xpath  = XacmlDataTypes.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
+		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.evaluateToNodeSet("./md:record//md:name", AttributeCategoryId.RESOURCE))
+		.andAnswer(new XPathAnswer(content1));
+		replay(context);
+		assertEquals(XacmlDataTypes.INTEGER.create(2), f.invoke(context, xpath));
 		verify(context);
 	}
 	
@@ -99,7 +116,7 @@ public class XPathFunctionsTest
 	{
 		XPathExpressionValue xpath  = XacmlDataTypes.XPATHEXPRESSION.create("/test", 
 				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.evaluateToNodeSet("/test", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/test", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
 		assertEquals(XacmlDataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
@@ -112,22 +129,43 @@ public class XPathFunctionsTest
 		XPathExpressionValue xpath0  = XacmlDataTypes.XPATHEXPRESSION.create("/md:record", AttributeCategoryId.SUBJECT_ACCESS);
 		XPathExpressionValue xpath1  = XacmlDataTypes.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
-		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
-		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer());
+		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
+		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
 	}
 	
+	@Test
+	public void testXPathNodeMatchXacml20() throws EvaluationException
+	{
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match");
+		StringValue xpath0  = XacmlDataTypes.STRING.create(".");
+		StringValue xpath1  = XacmlDataTypes.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
+		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.evaluateToNodeSet(".", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
+		expect(context.evaluateToNodeSet("./md:record", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
+		replay(context);
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
+		verify(context);	
+	}
+
+	
 	public class XPathAnswer implements IAnswer<NodeList>
 	{
+		private Node xml;
+		
+		public XPathAnswer(Node content){
+			this.xml = content;
+		}
+		
 		@Override
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
 			return xpathProvider.evaluateToNodeSet(
 					XPathVersion.XPATH1,
 					(String)args[0],
-					content);
+					xml);
 		}
 		
 	}

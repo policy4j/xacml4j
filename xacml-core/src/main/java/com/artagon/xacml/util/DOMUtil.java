@@ -3,6 +3,8 @@ package com.artagon.xacml.util;
 import java.util.Stack;
 
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.google.common.base.Preconditions;
@@ -53,6 +55,33 @@ public class DOMUtil
 		return buffer.toString();
 	}
 	
+	/**
+	 * Copies node and all its children
+	 * to the new document as root element
+	 * in the new document
+	 * 
+	 * @param source a source node
+	 * @return {@link Document} a new DOM
+	 * document with copy of the node as 
+	 * root element
+	 */
+	public static Document copyNode(Node source)
+	{
+		Document sourceDoc = source.getOwnerDocument();
+		DOMImplementation domImpl = sourceDoc.getImplementation();
+		Document doc = domImpl.createDocument(
+				null, null, null); 
+		Node copy =  doc.importNode(source, true);
+		doc.appendChild(copy);
+		return doc;
+	}
+	
+	/**
+	 * Gets parent node of the given node
+	 * 
+	 * @param node a DOM node
+	 * @return a parent node {@link Node} instance
+	 */
 	private static Node getParent(Node node){
 		return (node.getNodeType() == Node.ATTRIBUTE_NODE)?
 				((Attr)node).getOwnerElement():node.getParentNode();
