@@ -48,6 +48,49 @@ public class HigherOrderFunctions
 		return XacmlDataTypes.BOOLEAN.create(false);
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue allOf(
+			@XacmlParamEvaluationContext EvaluationContext context, 
+			@XacmlParamFuncReference FunctionReference ref, 
+			@XacmlParamAnyAttribute AttributeValue value,
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
+		throws EvaluationException
+	{
+		FunctionSpec p =  ref.getSpec();
+		for(AttributeValue valueFromBag : bag.values()){
+			BooleanValue r = p.invoke(context, value, valueFromBag);
+			if(!r.getValue()){
+				return XacmlDataTypes.BOOLEAN.create(false);
+			}
+		}
+		return XacmlDataTypes.BOOLEAN.create(true);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue anyOfAny(
+			@XacmlParamEvaluationContext EvaluationContext context, 
+			@XacmlParamFuncReference FunctionReference ref, 
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> a,
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+		throws EvaluationException
+	{
+		FunctionSpec p =  ref.getSpec();
+		for(AttributeValue aValue : a.values()){
+			for(AttributeValue bValue : b.values()){
+				BooleanValue r = p.invoke(context, aValue, bValue);
+				if(r.getValue()){
+					return XacmlDataTypes.BOOLEAN.create(true);
+				}
+			}
+		}
+		return XacmlDataTypes.BOOLEAN.create(false);
+	}
+	
+	
+	
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)

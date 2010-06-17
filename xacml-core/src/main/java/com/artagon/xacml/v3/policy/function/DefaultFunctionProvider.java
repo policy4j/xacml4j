@@ -21,6 +21,7 @@ public class DefaultFunctionProvider extends AggregatingFunctionProvider
 		add(new AnnotiationBasedFunctionProvider(StringConversionFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(StringFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(XPathFunctions.class));
+		add(new AnnotiationBasedFunctionProvider(HigherOrderFunctions.class));
 	}
 }
 
