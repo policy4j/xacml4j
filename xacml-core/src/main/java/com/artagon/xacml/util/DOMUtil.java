@@ -87,6 +87,12 @@ public class DOMUtil
 				((Attr)node).getOwnerElement():node.getParentNode();
 	}
 	
+	/**
+	 * Gets node index relative to its siblings
+	 * 
+	 * @param node a node
+	 * @return a node index
+	 */
 	private static int getNodeIndex(Node node)
 	{
 		int prev_siblings = 1;
