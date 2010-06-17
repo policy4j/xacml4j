@@ -22,7 +22,7 @@ public class Xacml20ConformanceUtility
 	{
 		assertEquals(a.getResult().size(), a.getResult().size());
 		List<ResultType> ar = a.getResult();
-		List<ResultType> br = a.getResult();
+		List<ResultType> br = b.getResult();
 		for(int i = 0; i < ar.size(); i++){
 			assertResults(ar.get(i), br.get(i));
 		}
@@ -30,6 +30,8 @@ public class Xacml20ConformanceUtility
 	
 	public static void assertResults(ResultType a, ResultType b)
 	{
+		System.out.println(a.getDecision());
+		System.out.println(b.getDecision());
 		assertEquals(a.getDecision(), b.getDecision());
 		assertEquals(a.getResourceId(), b.getResourceId());
 		assertStatus(a.getStatus(), b.getStatus());

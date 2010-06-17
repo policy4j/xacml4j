@@ -4,8 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -13,7 +14,6 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
@@ -88,206 +88,28 @@ public class Xacml20ConformanceTest
 	}
 	
 	@Test
-	public void testIIIF005() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIIF005Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IIIF005Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.INDETERMINATE, r.getDecision());
-		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, r.getStatus().getStatusCode().getValue());
-		ResponseType expected = getContext("oasis-xacml20-compat-test/IIIF005Response.xml");
-		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-	}
-	
-	@Test
-	public void testIID001() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID001Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID001Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.PERMIT, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID002() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID002Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID002Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.DENY, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID003() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID003Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID003Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID004() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IID004Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID004Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.INDETERMINATE, r.getDecision());
-		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID005() throws Exception
-	{
-		PolicySetType policy = getPolicy("oasis-xacml20-compat-test/IID005Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID005Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.PERMIT, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID006() throws Exception
-	{
-		PolicySetType policy = getPolicy("oasis-xacml20-compat-test/IID006Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID006Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.DENY, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID007() throws Exception
-	{
-		PolicySetType policy = getPolicy("oasis-xacml20-compat-test/IID007Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID007Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIID008() throws Exception
-	{
-		PolicySetType policy = getPolicy("oasis-xacml20-compat-test/IID008Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IID008Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.DENY, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-	}
-	
-	@Test
-	public void testIIIA001() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIIA001Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IIIA001Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		Result r = Iterables.getOnlyElement(response.getResults());
-		assertEquals(Decision.PERMIT, r.getDecision());
-		assertEquals(StatusCodeId.OK, r.getStatus().getStatusCode().getValue());
-		assertEquals(2, r.getObligations().size());
-		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
-		assertNotNull(o1);
-		assertNotNull(Iterables.getOnlyElement(o1.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")));
-		assertNotNull(Iterables.getOnlyElement(o1.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")));
-		Obligation o2 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2");
-		assertNotNull(Iterables.getOnlyElement(o2.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")));
-		assertNotNull(Iterables.getOnlyElement(o2.getAttribute("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")));
-		assertNotNull(o1);
-		
-		ResponseType expected = getContext("oasis-xacml20-compat-test/IIIA001Response.xml");
-		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));	
-	}
-	
-	@Test
-	public void testIIC125() throws Exception
-	{
-		PolicyType policy = getPolicy("oasis-xacml20-compat-test/IIC142Policy.xml");
-		RequestType request = getContext("oasis-xacml20-compat-test/IIC142Request.xml");
-		this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-		Response response = pdp.decide(contextMapper.create(request));
-		
-		ResponseType expected = getContext("oasis-xacml20-compat-test/IIC142Response.xml");
-		Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-		
-	}
-	
-	@Test
 	public void testIIATests() throws Exception
 	{	
-		for(int i = 6; i < 22; i++)
-		{
-			System.out.println("Executing test case " + i);
-			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Policy.xml"));
-			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Request.xml"));
-			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-			Response response = pdp.decide(contextMapper.create(request));
-			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIA", i, "Response.xml"));
-			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-		}	
+		Set<Integer> skipTests = new HashSet<Integer>();
+		skipTests.add(1);
+		skipTests.add(2);
+		skipTests.add(3);
+		skipTests.add(4);
+		skipTests.add(5);
+		skipTests.add(6);
+		executeXacmlConformanceTestCase(skipTests, "IIA", 22);	
 	}
 	
 	@Test
 	public void testIIBTests() throws Exception
 	{	
-		for(int i = 1; i < 54; i++)
-		{
-			System.out.println("Executing test case " + i);
-			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Policy.xml"));
-			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Request.xml"));
-			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-			Response response = pdp.decide(contextMapper.create(request));
-			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Response.xml"));
-			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-		}	
-	}
-	
-	@Test
-	public void testIIDTests() throws Exception
-	{	
-		Collection<Integer> skipTests = new LinkedList<Integer>();
-		skipTests.add(29);
-		for(int i = 1; i < 30; i++)
-		{
-			if(skipTests.contains(i)){
-				System.out.println("Skipping test case " + i);
-				continue;
-			}
-			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Policy.xml"));
-			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Request.xml"));
-			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-			Response response = pdp.decide(contextMapper.create(request));
-			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Response.xml"));
-			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-		}	
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIB", 54);	
 	}
 	
 	@Test
 	public void testIICTests() throws Exception
 	{	
-		Collection<Integer> skipTests = new LinkedList<Integer>();
+		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(3);
 		skipTests.add(12);
 		skipTests.add(14);
@@ -305,19 +127,54 @@ public class Xacml20ConformanceTest
 		skipTests.add(93);
 		skipTests.add(98);
 		skipTests.add(99);
-		for(int i = 4; i < 233; i++)
+		executeXacmlConformanceTestCase(skipTests, "IIC", 233);	
+	}
+	
+	@Test
+	public void testIIDTests() throws Exception
+	{	
+		Set<Integer> skipTests = new HashSet<Integer>();
+		skipTests.add(29);
+		executeXacmlConformanceTestCase(skipTests, "IID", 30);	
+	}
+	
+	@Test
+	public void testIIIFTests() throws Exception
+	{	
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIIF", 7);	
+	}
+	
+	@Test
+	public void testIIIGTests() throws Exception
+	{	
+		Set<Integer> skipTests = new HashSet<Integer>();
+		skipTests.add(1);
+		skipTests.add(2);
+		skipTests.add(3);
+		skipTests.add(4);
+		skipTests.add(5);
+		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);	
+	}
+		
+	private void executeXacmlConformanceTestCase(Set<Integer> exclude, String testPrefix, int testCount) throws Exception
+	{
+		for(int i = 1; i < testCount; i++)
 		{
-			if(skipTests.contains(i)){
-				System.out.println("Skipping test case " + i);
+
+			String policyPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Policy.xml");
+			String requestPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Request.xml");
+			String responsePath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Response.xml");
+			if(exclude.contains(i)){
+				System.out.println("Skipping - " + policyPath);
 				continue;
 			}
-			System.out.println("Executing test case " + i);
-			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Policy.xml"));
-			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Request.xml"));
+			System.out.println("Executing - " + policyPath);
+			Object policy = getPolicy(policyPath);
+			RequestType request = getContext(requestPath);
 			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
 			Response response = pdp.decide(contextMapper.create(request));
-			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIC", i, "Response.xml"));
+			ResponseType expected = getContext(responsePath);
 			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
-		}	
+		}
 	}
 }
