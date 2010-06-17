@@ -234,7 +234,6 @@ public class Xacml20ConformanceTest
 		
 	}
 	
-	@Ignore
 	@Test
 	public void testIIATests() throws Exception
 	{	
@@ -250,7 +249,6 @@ public class Xacml20ConformanceTest
 		}	
 	}
 	
-	@Ignore
 	@Test
 	public void testIIBTests() throws Exception
 	{	
@@ -262,6 +260,26 @@ public class Xacml20ConformanceTest
 			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
 			Response response = pdp.decide(contextMapper.create(request));
 			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IIB", i, "Response.xml"));
+			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+		}	
+	}
+	
+	@Test
+	public void testIIDTests() throws Exception
+	{	
+		Collection<Integer> skipTests = new LinkedList<Integer>();
+		skipTests.add(29);
+		for(int i = 1; i < 30; i++)
+		{
+			if(skipTests.contains(i)){
+				System.out.println("Skipping test case " + i);
+				continue;
+			}
+			Object policy = getPolicy("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Policy.xml"));
+			RequestType request = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Request.xml"));
+			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
+			Response response = pdp.decide(contextMapper.create(request));
+			ResponseType expected = getContext("oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName("IID", i, "Response.xml"));
 			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
 		}	
 	}
