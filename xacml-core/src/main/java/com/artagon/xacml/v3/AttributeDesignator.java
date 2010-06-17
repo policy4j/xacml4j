@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -23,6 +26,8 @@ import com.google.common.base.Preconditions;
  */
 public class AttributeDesignator extends AttributeReference 
 {
+	private final static Logger log = LoggerFactory.getLogger(AttributeDesignator.class);
+	
 	private String attributeId;
 	private String issuer;
 	
@@ -69,6 +74,10 @@ public class AttributeDesignator extends AttributeReference
 		BagOfAttributeValues<AttributeValue> bag = context.resolve(this);
 		if((bag == null || bag.isEmpty()) && 
 				isMustBePresent()){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to resolved attributeId=\"{}\", category=\"{}\"", 
+						getAttributeId(), getCategory());
+			}
 			throw new AttributeReferenceEvaluationException(context, this,
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());

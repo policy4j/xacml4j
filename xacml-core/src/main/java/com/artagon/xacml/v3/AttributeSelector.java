@@ -1,11 +1,16 @@
 package com.artagon.xacml.v3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 
 public class AttributeSelector extends 
 	AttributeReference
 {
+	private final static Logger log = LoggerFactory.getLogger(AttributeSelector.class);
+	
 	private String xpath;
 	private String contextAttributeId;
 	
@@ -71,6 +76,10 @@ public class AttributeSelector extends
 		if((bag == null || 
 				bag.isEmpty()) 
 				&& isMustBePresent()){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to resolved xpath=\"{}\", category=\"{}\"", 
+						getPath(), getCategory());
+			}
 			throw new AttributeReferenceEvaluationException(context, this, 
 				"Selector XPath expression=\"%s\" evaluated " +
 				"to empty node set and mustBePresents=\"true\"", getPath());

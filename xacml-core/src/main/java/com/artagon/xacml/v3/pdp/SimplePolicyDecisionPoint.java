@@ -53,10 +53,17 @@ public class SimplePolicyDecisionPoint implements PolicyDecisionPoint,
 	{
 		EvaluationContext context = factory.createContext(policySet, request);
 		Decision decision = policySet.evaluateIfApplicable(context);
-		if(decision.isIndeterminate() || 
-				decision == Decision.NOT_APPLICABLE){
+		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
-							new Status(decision.isIndeterminate()?StatusCode.createProcessingError():StatusCode.createOk()),
+					new Status(StatusCode.createOk()),
+					request.getIncludeInResultAttributes(), 
+					context.getEvaluatedPolicies());
+		}
+		if(decision.isIndeterminate()){
+			StatusCode status = (context.getEvaluationStatus() == null)?
+					StatusCode.createProcessingError():context.getEvaluationStatus();
+			return new Result(decision, 
+							new Status(status),
 							request.getIncludeInResultAttributes(), 
 							context.getEvaluatedPolicies());
 		}

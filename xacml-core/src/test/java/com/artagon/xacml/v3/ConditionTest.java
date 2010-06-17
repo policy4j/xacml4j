@@ -38,6 +38,7 @@ public class ConditionTest
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
 				createStrictMock(FunctionSpec.class), new NullPointerException()));
+		context.setEvaluationStatus(StatusCode.createProcessingError());
 		replay(exp, context);
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
@@ -49,6 +50,7 @@ public class ConditionTest
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
+		context.setEvaluationStatus(StatusCode.createProcessingError());
 		replay(exp, context);
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));

@@ -38,10 +38,10 @@ public class MatchTest extends XacmlPolicyTestCase
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(spec.invoke(context, int1, int2)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
 		expect(spec.invoke(context, int1, int1)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
-		replay(spec, ref);
+		replay(spec, ref, context);
 		Match m = new Match(spec, int1, ref);
 		assertEquals(MatchResult.MATCH, m.match(context));
-		verify(spec, ref);
+		verify(spec, ref, context);
 	}
 	
 	@Test
@@ -52,9 +52,10 @@ public class MatchTest extends XacmlPolicyTestCase
 		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
-		replay(spec, ref);
+		context.setEvaluationStatus(StatusCode.createMissingAttribute());
+		replay(spec, ref, context);
 		Match m = new Match(spec, XacmlDataTypes.INTEGER.create(1), ref);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
-		verify(spec, ref);
+		verify(spec, ref, context);
 	}
 }

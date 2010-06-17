@@ -29,6 +29,9 @@ public interface EvaluationContext
 	 */
 	boolean isValidateFuncParamAtRuntime();
 		
+	StatusCode getEvaluationStatus();
+	void setEvaluationStatus(StatusCode code);
+	
 	AttributeResolutionScope getAttributeResolutionScope();
 	void setAttributeResolutionScope(AttributeResolutionScope scope);
 	

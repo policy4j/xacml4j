@@ -73,6 +73,7 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 			}
 			return MatchResult.NOMATCH;
 		}catch(EvaluationException e){
+			context.setEvaluationStatus(e.getStatusCode());
 			return MatchResult.INDETERMINATE;
 		}
 	}

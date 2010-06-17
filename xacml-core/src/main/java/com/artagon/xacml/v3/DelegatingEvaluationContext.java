@@ -61,12 +61,25 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public Policy getCurrentPolicy() {
 		return delegate.getCurrentPolicy();
 	}
-
 	
+	
+
+	@Override
+	public StatusCode getEvaluationStatus() {
+		return delegate.getEvaluationStatus();
+	}
+
+	@Override
+	public void setEvaluationStatus(StatusCode code) {
+		delegate.setEvaluationStatus(code);
+	}
+
+	@Override
 	public void addEvaluatedPolicy(Policy policy, Decision result) {
 		delegate.addEvaluatedPolicy(policy, result);
 	}
 
+	@Override
 	public void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
 		delegate.addEvaluatedPolicySet(policySet, result);
 	}

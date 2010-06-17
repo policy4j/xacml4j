@@ -51,17 +51,12 @@ public class Condition extends XacmlObject implements PolicyElement
 		try
 		{
 			BooleanValue result = (BooleanValue)predicate.evaluate(context);
-			if(log.isDebugEnabled()){
-				log.debug("Condition predicate evaluation result=\"{}\"", result);
-			}
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate condition with error=\"{}\"", e.getMessage());
-			}
+			context.setEvaluationStatus(e.getStatusCode());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
-			log.debug("Failed to evaluate condition with error=\"{}\"", e.getMessage());
+			context.setEvaluationStatus(StatusCode.createProcessingError());
 			return ConditionResult.INDETERMINATE;
 		}
 	}

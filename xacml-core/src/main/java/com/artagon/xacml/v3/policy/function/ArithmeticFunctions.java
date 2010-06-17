@@ -6,7 +6,6 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.google.common.base.Preconditions;
@@ -72,7 +71,7 @@ public class ArithmeticFunctions
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
 	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
-	public static BooleanValue multiplyDouble(
+	public static DoubleValue multiplyDouble(
 			@XacmlParamVarArg(type=XacmlDataTypes.DOUBLE, min=2)DoubleValue ...values)
 	{
 		Double value = 1.0;

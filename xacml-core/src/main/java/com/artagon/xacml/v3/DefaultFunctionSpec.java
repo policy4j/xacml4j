@@ -116,7 +116,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Value> T invoke(EvaluationContext context,
-			Expression... params) throws FunctionInvocationException {
+			Expression... params) throws EvaluationException {
 		
 		try
 		{
@@ -126,7 +126,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			return (T)invocation.invoke(this, context, 
 					isRequiresLazyParamEval()?params:evaluate(context, params));
 		}
-		catch(FunctionInvocationException e){
+		catch(EvaluationException e){
 			throw e;
 		}
 		catch(Exception e){

@@ -4,9 +4,9 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
@@ -56,7 +56,7 @@ public class HigherOrderFunctionsTest
 	}
 	
 	@Test
-	public void testMap() throws FunctionInvocationException
+	public void testMap() throws EvaluationException
 	{
 		Collection<AttributeValue> v = new LinkedList<AttributeValue>();
 		v.add(XacmlDataTypes.INTEGER.create(10));
@@ -72,7 +72,7 @@ public class HigherOrderFunctionsTest
 	}
 	
 	@Test
-	public void testAnyOf() throws FunctionInvocationException
+	public void testAnyOf() throws EvaluationException
 	{
 		Collection<AttributeValue> v = new LinkedList<AttributeValue>();
 		v.add(XacmlDataTypes.INTEGER.create(10));

@@ -90,5 +90,5 @@ public interface FunctionSpec
 	 * function invocation result
 	 */
 	<T extends Value> T invoke(EvaluationContext context, Expression ...expressions) 
-		throws FunctionInvocationException;
+		throws EvaluationException;
 }

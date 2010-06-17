@@ -112,7 +112,7 @@ public class XPathFunctionsTest
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
 			return xpathProvider.evaluateToNodeSet(
-					XPathVersion.XPATH2,
+					XPathVersion.XPATH1,
 					(String)args[0],
 					content);
 		}

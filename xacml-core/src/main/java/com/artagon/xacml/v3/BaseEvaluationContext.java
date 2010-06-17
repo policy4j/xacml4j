@@ -42,6 +42,8 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private AttributeResolutionScope scope;
 	
+	private StatusCode evaluationStatus;
+	
 		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -82,6 +84,16 @@ abstract class BaseEvaluationContext implements EvaluationContext
 		this.evaluatedPolicies = new LinkedList<PolicyIdentifier>();
 	}
 	
+	@Override
+	public StatusCode getEvaluationStatus() {
+		return evaluationStatus;
+	}
+	
+	@Override
+	public void setEvaluationStatus(StatusCode status){
+		this.evaluationStatus = status;
+	}
+
 	@Override
 	public TimeZone getTimeZone(){
 		Preconditions.checkState(timezone != null);
