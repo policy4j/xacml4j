@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3;
 
 
-
 public interface FunctionSpec 
 {
 	/**
@@ -46,6 +45,7 @@ public interface FunctionSpec
 	 * <code>false</code> otherwise
 	 */
 	boolean isVariadic();
+	
 	/**
 	 * Tests if this function requires lazy
 	 * parameters evaluation

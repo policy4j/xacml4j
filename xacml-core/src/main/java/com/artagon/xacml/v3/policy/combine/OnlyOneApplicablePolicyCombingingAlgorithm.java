@@ -23,6 +23,7 @@ final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 	{
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;
+		EvaluationContext foundEvalContext = null;
 		EvaluationContext policyContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
@@ -37,9 +38,10 @@ final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 				}
 				atLeastOne = true;
 				found = d;
+				foundEvalContext = policyContext;
 			}
 			continue;
 		}
-		return atLeastOne?found.evaluate(policyContext):Decision.NOT_APPLICABLE;
+		return atLeastOne?found.evaluate(foundEvalContext):Decision.NOT_APPLICABLE;
 	}
 }

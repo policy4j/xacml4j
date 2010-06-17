@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
-public final class ParamValueTypeSpec extends XacmlObject implements ParamSpec
+final class ParamValueTypeSpec extends XacmlObject implements ParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(ParamValueTypeSpec.class);
 	

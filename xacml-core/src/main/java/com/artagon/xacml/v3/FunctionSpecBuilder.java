@@ -57,20 +57,26 @@ public final class FunctionSpecBuilder
 		this.paramSpec.add(new ParamAnyBagSpec());
 		return this;
 	}
+	
+	public FunctionSpecBuilder withParamAnyAttribute() {
+		this.paramSpec.add(new ParamAnyAttributeSpec());
+		return this;
+	}
 
-	/**
-	 * Builds {@link FunctionSpec} with a given
-	 * {@link ValueType} as a function return type
-	 * and given {@link FunctionInvocation} as a
-	 * function implementation
-	 * 
-	 * @param returnType a function return type
-	 * @param invocation a function
-	 * @return {@link DefaultFunctionSpec} a f
-	 */
-	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
+	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, 
+			FunctionInvocation invocation) {
 		return new DefaultFunctionSpec(functionId, 
 				legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
+	}
+	
+	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, 
+			FunctionParametersValidator validator,
+			FunctionInvocation invocation) {
+		return new DefaultFunctionSpec(functionId, 
+				legacyId, paramSpec, returnType, 
+				invocation, 
+				validator, 
+				lazyArgumentEvaluation);
 	}
 
 	public DefaultFunctionSpec build(ValueType returnType,
@@ -80,5 +86,13 @@ public final class FunctionSpecBuilder
 				invocation);
 	}
 	
+	public DefaultFunctionSpec build(ValueType returnType,
+			FunctionParametersValidator validator,
+			FunctionInvocation invocation) {
+		return build(
+				new FixedReturnTypeFunctionReturnTypeResolver(returnType), 
+				validator,
+				invocation);
+	}
 	
 }

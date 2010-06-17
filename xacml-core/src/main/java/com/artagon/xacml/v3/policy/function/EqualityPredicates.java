@@ -6,7 +6,6 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
 import com.artagon.xacml.v3.spi.function.XacmlParam;
-
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;

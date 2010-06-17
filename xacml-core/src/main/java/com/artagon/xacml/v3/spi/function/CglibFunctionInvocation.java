@@ -16,17 +16,13 @@ public class CglibFunctionInvocation extends BaseReflectionFunctionInvocation
 	private FastMethod fastMethod;
 	
 	public CglibFunctionInvocation(
-			Class<?> instanceClass,
 			Method m, 
 			boolean evalContextRequired)
 	{
 		super(evalContextRequired);
 		Preconditions.checkNotNull(m);
-		Preconditions.checkNotNull(instanceClass);
-		Preconditions.checkArgument(instance == null || 
-			!Modifier.isStatic(m.getModifiers()));
-		Preconditions.checkArgument(m.getDeclaringClass().equals(instanceClass));
-		this.fastClass = FastClass.create(instanceClass);
+		Preconditions.checkArgument(Modifier.isStatic(m.getModifiers()));
+		this.fastClass = FastClass.create(m.getDeclaringClass());
 		this.fastMethod = fastClass.getMethod(m);
 		Preconditions.checkState(fastMethod != null);
 	}

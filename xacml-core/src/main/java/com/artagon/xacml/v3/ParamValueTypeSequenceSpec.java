@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 
 
-public final class ParamValueTypeSequenceSpec extends XacmlObject implements ParamSpec
+final class ParamValueTypeSequenceSpec extends XacmlObject implements ParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(ParamValueTypeSequenceSpec.class);
 	

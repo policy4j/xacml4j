@@ -119,7 +119,8 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		if(log.isDebugEnabled()){
 			log.debug("Invoking decision rule id=\"{}\" evaluate", getId());
 		}
-		Preconditions.checkArgument(isEvaluationContextValid(context));
+		Preconditions.checkArgument(
+				isEvaluationContextValid(context));
 		Decision result = doEvaluate(context);
 		if(result.isIndeterminate() || 
 				result == Decision.NOT_APPLICABLE){

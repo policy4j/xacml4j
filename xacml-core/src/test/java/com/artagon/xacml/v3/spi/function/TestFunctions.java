@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.policy.function;
+package com.artagon.xacml.v3.spi.function;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -11,12 +11,6 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
-import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
-import com.artagon.xacml.v3.spi.function.XacmlParamFuncReference;
-import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;

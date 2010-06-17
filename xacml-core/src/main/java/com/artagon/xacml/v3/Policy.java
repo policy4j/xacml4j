@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 {
+	private final static Logger log = LoggerFactory.getLogger(Policy.class);
+	
 	private PolicyDefaults policyDefaults;
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
@@ -179,6 +184,12 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	{
 		Preconditions.checkArgument(context.getCurrentPolicy() == this 
 				|| context.getCurrentPolicy() == null);
+		if(log.isDebugEnabled()){
+			log.debug("Creating policy evaluation " +
+					"context for Policy id=\"{}\", " +
+					"parent PolicySet id=\"{}\"", getId(), 
+					context.getCurrentPolicySet() == null?null:context.getCurrentPolicySet().getId());
+		}
 		if(context.getCurrentPolicy() == this){
 			return context;
 		}

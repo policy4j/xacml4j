@@ -1,34 +1,21 @@
 package com.artagon.xacml.v3.spi.function;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.FunctionSpecBuilder;
 import com.google.common.base.Preconditions;
-
 
 public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 {
-	private final static Logger log = LoggerFactory.getLogger(AnnotiationBasedFunctionProvider.class);
+	private JavaMethodToFunctionSpecConverter converter;
 	
-	/**
-	 * Constructs
-	 * @param instance
-	 * @param factoryClass
-	 */
 	public AnnotiationBasedFunctionProvider(Class<?> factoryClass)
 	{
 		Preconditions.checkNotNull(factoryClass);
+		this.converter = new JavaMethodToFunctionSpecConverter();
 		List<FunctionSpec> functions = findFunctions(factoryClass);
 		for(FunctionSpec spec : functions){
 			add(spec);
@@ -40,95 +27,9 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFunc.class);
 		for(final Method m : methods){
-			specs.add(build(clazz, m));
+			specs.add(converter.createFunctionSpec(m));
 		}
 		return specs;
 	}
-	
-	private FunctionSpec build(
-			final Class<?> factoryClass, 
-			final Method m)
-	{
-		final XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
-		final XacmlLegacyFunc legacyFuncId = m.getAnnotation(XacmlLegacyFunc.class);
-		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
-		log.debug("Found functionId=\"{}\" method name=\"{}\"", funcId.id(), m.getName());
-		FunctionSpecBuilder b = new FunctionSpecBuilder(funcId.id(), (legacyFuncId == null)?null:legacyFuncId.id());
-		Annotation[][] params = m.getParameterAnnotations();
-		Class<?>[] types = m.getParameterTypes();
-		boolean evalContextParamFound = false;
-		for(int  i = 0; i < params.length; i++)
-		{
-			if(params[i] == null){
-				throw new IllegalArgumentException(
-						String.format("Method=\"%s\" contains parameter without annotation", m.getName()));
-			}
-			if(params[i][0] instanceof XacmlParamEvaluationContext){
-				if(!types[i].isInstance(EvaluationContext.class)){
-					new IllegalArgumentException(
-							String.format("XACML evaluation context annotation annotates wrong parameter type"));
-				}
-				if(i > 0){
-					new IllegalArgumentException(
-							String.format(
-									"XACML evaluation context parameter must " +
-									"be a first parameter " +
-									"in the method=\"%s\" signature", m.getName()));
-				}
-				evalContextParamFound = true;
-				continue;
-			}
-			if(params[i][0] instanceof XacmlParam){
-				XacmlParam param = (XacmlParam)params[i][0];
-				AttributeValueType type = param.type().getType();
-				if(param.isBag() && 
-						!Expression.class.isAssignableFrom(types[i])){
-					log.debug("Excpecting bag at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
-					throw new IllegalArgumentException(String.format(
-							"Parameter type annotates bag of=\"%s\" " +
-							"but method=\"%s\" is of class=\"%s\"", 
-							type, m.getName(), types[i]));
-				}
-				if(!param.isBag() && 
-						!Expression.class.isAssignableFrom(types[i])){
-					log.debug("Excpecting attribute value at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
-					throw new IllegalArgumentException(String.format(
-							"Parameter type annotates attribute value of " +
-							"type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"", 
-							type, m.getName(), types[i]));
-				}
-				b.withParam(param.isBag()?type.bagOf():type);
-				continue;
-			}
-			if(params[i][0] instanceof XacmlParamVarArg){
-				if(!m.isVarArgs()){
-					throw new IllegalArgumentException(String.format("Found vararg parameter " +
-							"declaration but actual method=\"%s\" is not vararg", m.getName()));
-				}
-				if(m.isVarArgs() && 
-						i < params.length - 1){
-					throw new IllegalArgumentException(String.format("Found vararg parameter " +
-							"declaration in incorect place, vararg parameter must be a last parameter in the method"));
-				}
-				XacmlParamVarArg param = (XacmlParamVarArg)params[i][0];
-				AttributeValueType type = param.type().getType();
-				b.withParam(param.isBag()?type.bagOf():type, param.min(), param.max());
-				continue;
-			}
-			if(params[i][0] instanceof XacmlParamFuncReference){
-				continue;
-			}
-			if(params[i][0] == null){
-				throw new IllegalArgumentException(String.format(
-						"Found method=\"%s\" parameter at " +
-						"index=\"%s\" with no annotation", m.getName(), i));
-			}
-			throw new IllegalArgumentException(String.format(
-						"Found method=\"%s\" parameter at " +
-						"index=\"%s\" with unknown annotation=\"%s\"", m.getName(), i, params[i][0]));
-		}
-		AttributeValueType type = returnType.type().getType();
-		return b.build(returnType.isBag()?type.bagOf():type, 
-				new DefaultFunctionInvocation(factoryClass, m, evalContextParamFound));
-	}
+
 }

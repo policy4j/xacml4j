@@ -31,7 +31,7 @@ public class HigherOrderFunctions
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
-	public BooleanValue anyOf(
+	public static BooleanValue anyOf(
 			@XacmlParamEvaluationContext EvaluationContext context, 
 			@XacmlParamFuncReference FunctionReference ref, 
 			@XacmlParamAnyAttribute AttributeValue value,
@@ -51,7 +51,7 @@ public class HigherOrderFunctions
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)
-	public BagOfAttributeValues<? extends AttributeValue> map(
+	public static  BagOfAttributeValues<? extends AttributeValue> map(
 			@XacmlParamEvaluationContext EvaluationContext context, 
 			@XacmlParamFuncReference FunctionReference ref, 
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
@@ -73,9 +73,12 @@ public class HigherOrderFunctions
 	 * 
 	 * @author Giedrius Trumpickas
 	 */
-	class MapFunctionResolverValidator implements 
+	public static class MapFunctionResolverValidator implements 
 		FunctionParametersValidator, FunctionReturnTypeResolver
 	{
+		public MapFunctionResolverValidator(){
+		}
+		
 		@Override
 		public ValueType resolve(FunctionSpec spec, 
 				Expression... arguments) {
@@ -86,13 +89,7 @@ public class HigherOrderFunctions
 		@Override
 		public boolean validate(FunctionSpec spec, Expression... arguments) 
 		{
-			FunctionReference ref = (FunctionReference)arguments[0];
-			if(ref.getSpec().getNumberOfParams() != 1){
-				return false;
-			}
-			BagOfAttributeValues<AttributeValue> bag = (BagOfAttributeValues<AttributeValue>)arguments[1];
 			return true;
 		}
-		
 	}
 }

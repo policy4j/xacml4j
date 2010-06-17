@@ -18,7 +18,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.MatchResult;
 
-public class PolicyOnlyOneApplicableTest
+public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 {
 	private OnlyOneApplicablePolicyCombingingAlgorithm c;
 	private List<CompositeDecisionRule> d;
@@ -66,15 +66,17 @@ public class PolicyOnlyOneApplicableTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
+		EvaluationContext context1 = createStrictMock(EvaluationContext.class);
+		EvaluationContext context2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
-		expect(d1.createContext(context)).andReturn(context);
-		expect(d1.isApplicable(context)).andReturn(MatchResult.MATCH);
-		expect(d2.createContext(context)).andReturn(context);
-		expect(d2.isApplicable(context)).andReturn(MatchResult.MATCH);
-		replay(d1, d2);
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
-		verify(d1, d2);
+		expect(d1.createContext(context)).andReturn(context1);
+		expect(d1.isApplicable(context1)).andReturn(MatchResult.MATCH);
+		expect(d2.createContext(context)).andReturn(context2);
+		expect(d2.isApplicable(context2)).andReturn(MatchResult.MATCH);
+		replay(d1, d2, context, context1, context2);
+		assertEquals(Decision.INDETERMINATE, c.combine(d, context2));
+		verify(d1, d2, context, context2);
 	}
 	
 	@Test

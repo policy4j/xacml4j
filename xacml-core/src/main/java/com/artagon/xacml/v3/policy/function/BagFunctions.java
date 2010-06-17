@@ -54,6 +54,8 @@ import com.google.common.base.Preconditions;
  * bag of ‘type’ values containing the values of the arguments. 
  * An application of this function to zero arguments SHALL produce an 
  * empty bag of the specified data-type.
+ * 
+ * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider
 public class BagFunctions 
