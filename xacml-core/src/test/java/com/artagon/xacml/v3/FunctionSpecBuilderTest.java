@@ -8,14 +8,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.spi.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.spi.function.FunctionInvocation;
-import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
+import com.artagon.xacml.v3.FunctionInvocation;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class DefaultFunctionSpecBuilderTest
+public class FunctionSpecBuilderTest
 {
 	private IntegerType type1;
 	private StringType type2;
@@ -30,11 +30,11 @@ public class DefaultFunctionSpecBuilderTest
 		this.type2 = XacmlDataTypes.STRING.getType();
 		this.impl =  createStrictMock(FunctionInvocation.class);
 		
-		FunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc1"); 
+		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
 		
 		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypes.INTEGER.getType(), impl);
 		
-		b = new DefaultFunctionSpecBuilder("testFunc2"); 
+		b = new FunctionSpecBuilder("testFunc2"); 
 		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypes.INTEGER.getType(), impl);
 	}
 	
@@ -62,14 +62,14 @@ public class DefaultFunctionSpecBuilderTest
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc");
+		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc");
 		b.withParam(type1, 1, 10).withParam(type1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder("testFunc");
+		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc");
 		b.withParam(type1, 3, 3).withParam(type1);
 	}
 }

@@ -105,6 +105,7 @@ public class IPAddress extends XacmlObject
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() 
 	{
 		StringBuilder b = new StringBuilder(64);

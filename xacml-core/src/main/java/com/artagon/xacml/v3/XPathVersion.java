@@ -11,6 +11,7 @@ public enum XPathVersion
 		this.versionURI = versionURI;
 	}
 	
+	@Override
 	public String toString(){
 		return versionURI;
 	}

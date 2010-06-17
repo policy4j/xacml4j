@@ -1,8 +1,5 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
 final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver

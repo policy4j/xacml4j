@@ -9,7 +9,7 @@ import net.sf.cglib.reflect.FastMethod;
 import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
-public class CglibFunctionInvocation extends AbstractReflectionBasedFunctionInvocation 
+public class CglibFunctionInvocation extends BaseReflectionFunctionInvocation 
 {
 	private Object instance;
 	private FastClass fastClass;
@@ -31,6 +31,7 @@ public class CglibFunctionInvocation extends AbstractReflectionBasedFunctionInvo
 		Preconditions.checkState(fastMethod != null);
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	protected <T extends Value> T invoke(Object ...params) throws Exception
 	{

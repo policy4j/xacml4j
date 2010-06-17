@@ -17,10 +17,12 @@ public class BinaryValue
 		this.value = value;
 	}
 	
+	@Override
 	public int hashCode(){
 		return Arrays.hashCode(value);
 	}
 	
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;

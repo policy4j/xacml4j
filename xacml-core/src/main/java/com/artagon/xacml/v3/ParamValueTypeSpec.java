@@ -1,14 +1,10 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3;
 
 import java.util.ListIterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.ParamSpec;
-import com.artagon.xacml.v3.ValueType;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 public final class ParamValueTypeSpec extends XacmlObject implements ParamSpec

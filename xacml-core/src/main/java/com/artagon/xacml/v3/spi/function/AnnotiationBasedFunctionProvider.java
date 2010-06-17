@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpecBuilder;
 import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
 import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.annotiations.XacmlLegacyFunc;
@@ -59,7 +60,7 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		final XacmlLegacyFunc legacyFuncId = m.getAnnotation(XacmlLegacyFunc.class);
 		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
 		log.debug("Found functionId=\"{}\" method name=\"{}\"", funcId.id(), m.getName());
-		DefaultFunctionSpecBuilder b = new DefaultFunctionSpecBuilder(funcId.id(), (legacyFuncId == null)?null:legacyFuncId.id());
+		FunctionSpecBuilder b = new FunctionSpecBuilder(funcId.id(), (legacyFuncId == null)?null:legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		boolean evalContextParamFound = false;

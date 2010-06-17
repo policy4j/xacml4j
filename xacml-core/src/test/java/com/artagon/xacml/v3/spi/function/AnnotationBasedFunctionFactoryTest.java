@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi;
+package com.artagon.xacml.v3.spi.function;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;

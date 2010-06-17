@@ -23,7 +23,7 @@ public class IntegerTypeTest
 	{
 		AttributeValue v0 = t.create((short)2);
 		AttributeValue v1 = t.create((byte)2);
-		AttributeValue v2 = t.create((int)2);
+		AttributeValue v2 = t.create(2);
 		AttributeValue v3 = t.create(2l);
 		assertEquals(v3, v0);
 		assertEquals(v3, v1);

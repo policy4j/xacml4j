@@ -200,6 +200,7 @@ public final class PortRange extends XacmlObject
 	 * 
 	 * @return true if this object and the input represent the same value
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if(o == this){
 			return true;
@@ -213,6 +214,7 @@ public final class PortRange extends XacmlObject
 	}
 	
 
+	@Override
 	public String toString() 
 	{
 		if (isUnbound()){

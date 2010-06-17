@@ -1,14 +1,11 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.v3.ParamSpec;
-import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
-public final class DefaultFunctionSpecBuilder 
-	implements FunctionSpecBuilder
+public final class FunctionSpecBuilder 
 {
 	private String functionId;
 	private String legacyId;
@@ -16,18 +13,17 @@ public final class DefaultFunctionSpecBuilder
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
 	
-	public DefaultFunctionSpecBuilder(String functionId){
+	public FunctionSpecBuilder(String functionId){
 		this(functionId, null);
 	}
 	
-	public DefaultFunctionSpecBuilder(String functionId, String legacyId){
+	public FunctionSpecBuilder(String functionId, String legacyId){
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
 		this.paramSpec = new LinkedList<ParamSpec>();
 	}
 	
-	@Override
 	public FunctionSpecBuilder withParam(ValueType type){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg, 
@@ -36,13 +32,11 @@ public final class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
-	@Override
 	public FunctionSpecBuilder withLazyArgumentsEvaluation(){
 		this.lazyArgumentEvaluation = true;
 		return this;
 	}
 	
-	@Override
 	public FunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
@@ -53,18 +47,25 @@ public final class DefaultFunctionSpecBuilder
 		return this;
 	}
 	
-	@Override
 	public FunctionSpecBuilder withParamAnyBag() {
 		this.paramSpec.add(new ParamAnyBagSpec());
 		return this;
 	}
 
-	@Override
+	/**
+	 * Builds {@link FunctionSpec} with a given
+	 * {@link ValueType} as a function return type
+	 * and given {@link FunctionInvocation} as a
+	 * function implementation
+	 * 
+	 * @param returnType a function return type
+	 * @param invocation a function
+	 * @return {@link DefaultFunctionSpec} a f
+	 */
 	public DefaultFunctionSpec build(FunctionReturnTypeResolver returnType, FunctionInvocation invocation) {
 		return new DefaultFunctionSpec(functionId, legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
-	@Override
 	public DefaultFunctionSpec build(ValueType returnType,
 			FunctionInvocation invocation) {
 		return build(

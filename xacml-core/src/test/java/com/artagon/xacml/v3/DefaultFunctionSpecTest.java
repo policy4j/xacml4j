@@ -8,10 +8,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.spi.function.DefaultFunctionSpecBuilder;
-import com.artagon.xacml.v3.spi.function.FunctionInvocation;
-import com.artagon.xacml.v3.spi.function.FunctionReturnTypeResolver;
-import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 
@@ -26,7 +22,7 @@ public class DefaultFunctionSpecTest
 	public void init(){
 		this.invocation = createStrictMock(FunctionInvocation.class);
 		this.resolver = createStrictMock(FunctionReturnTypeResolver.class);
-		this.b = new DefaultFunctionSpecBuilder("testId");
+		this.b = new FunctionSpecBuilder("testId");
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	

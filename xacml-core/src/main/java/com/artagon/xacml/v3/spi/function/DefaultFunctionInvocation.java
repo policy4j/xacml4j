@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 import com.artagon.xacml.v3.Value;
 import com.google.common.base.Preconditions;
 
-public class DefaultFunctionInvocation extends AbstractReflectionBasedFunctionInvocation
+public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
 {
 	private Method functionMethod;
 	private Object instance;
@@ -34,6 +34,7 @@ public class DefaultFunctionInvocation extends AbstractReflectionBasedFunctionIn
 		this(factoryClass, null, m, evalContextRequired);
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	protected <T extends Value> T invoke(Object ...params) throws Exception
 	{

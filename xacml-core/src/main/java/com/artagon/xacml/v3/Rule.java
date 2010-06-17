@@ -99,6 +99,7 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	}
 	
 
+	@Override
 	protected Decision doEvaluate(EvaluationContext context)
 	{
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 

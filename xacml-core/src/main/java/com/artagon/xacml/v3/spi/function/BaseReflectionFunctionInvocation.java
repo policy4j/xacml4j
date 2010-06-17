@@ -4,11 +4,12 @@ import java.lang.reflect.Array;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocation;
 import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Value;
 
-public abstract class AbstractReflectionBasedFunctionInvocation implements FunctionInvocation
+abstract class BaseReflectionFunctionInvocation implements FunctionInvocation
 {
 	private boolean evalContextRequired;
 	
@@ -20,7 +21,7 @@ public abstract class AbstractReflectionBasedFunctionInvocation implements Funct
 	 * @param evalContextRequired a flag indicating if method
 	 * requires an {@link EvaluationContext} reference
 	 */
-	AbstractReflectionBasedFunctionInvocation( 
+	BaseReflectionFunctionInvocation( 
 			boolean evalContextRequired)
 	{		
 		this.evalContextRequired = evalContextRequired;

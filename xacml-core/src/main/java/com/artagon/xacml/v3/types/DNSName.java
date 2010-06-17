@@ -27,6 +27,7 @@ public final class DNSName extends XacmlObject implements Serializable
 		return portRange;
 	}
 	
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
