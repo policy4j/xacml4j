@@ -12,13 +12,13 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.FunctionSpec;
 
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunc;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncDynamicReturnType;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamAnyBag;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamEvaluationContext;
-import com.artagon.xacml.v3.spi.function.annotiations.XacmlParamFuncReference;
+import com.artagon.xacml.v3.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.XacmlFuncDynamicReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.XacmlParamAnyBag;
+import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.spi.function.XacmlParamFuncReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 

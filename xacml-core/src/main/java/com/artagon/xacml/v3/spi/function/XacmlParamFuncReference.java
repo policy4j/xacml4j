@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.function.annotiations;
+package com.artagon.xacml.v3.spi.function;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,8 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface XacmlFunctionProvider 
+@Target(ElementType.PARAMETER)
+public @interface XacmlParamFuncReference 
 {
-
 }
