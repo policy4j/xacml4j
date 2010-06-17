@@ -39,11 +39,11 @@ import org.oasis.xacml.v20.policy.SubjectsType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.VariableManager;
+import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
@@ -80,10 +80,6 @@ import com.google.common.collect.Iterables;
 public class Xacml20PolicyMapper 
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20PolicyMapper.class);
-	
-	private final static String REQUEST_ELEMENT_NAME = "Request";
-	private final static String RESOURCE_ELEMENT_NAME = "Resource";
-	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
 	
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 
@@ -625,46 +621,7 @@ public class Xacml20PolicyMapper
 
 	String transformSelectorXPath(AttributeSelectorType selector) throws PolicySyntaxException
 	{
-		return transform20PathTo30(selector.getRequestContextPath());
-	}
-	
-	public static String transform20PathTo30(String xpath)
-	{
-		StringBuffer buf = new StringBuffer(xpath);
-		int firstIndex = xpath.indexOf(REQUEST_ELEMENT_NAME);
-		if(firstIndex == -1){
-			firstIndex = xpath.indexOf(RESOURCE_ELEMENT_NAME);
-			if(firstIndex == -1){
-				firstIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
-				if(firstIndex == -1){
-					return xpath;
-				}
-			}
-		}
-		// found namespace prefix
-		if(firstIndex > 0 && 
-				buf.charAt(firstIndex - 1) == ':'){
-			int index = xpath.indexOf("/");
-			if(index == -1){
-				firstIndex = 0;
-			}
-			else
-			{
-				firstIndex = index;
-				while(xpath.charAt(index++) == '/'){
-					firstIndex++;
-				}
-			}
-		}
-		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
-		if(lastIndex == -1){
-			throw new IllegalArgumentException(
-					String.format("Invalid XACML 2.0 xpath=\"%s\" " +
-					"expression, \"ResourceContent\" is missing in the path", xpath));
-		}
-		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
-		buf.delete(firstIndex, lastIndex + 1);
-		return buf.toString();
+		return Xacml20XPathTo30Transformer.transform20PathTo30(selector.getRequestContextPath());
 	}
 
 	/**

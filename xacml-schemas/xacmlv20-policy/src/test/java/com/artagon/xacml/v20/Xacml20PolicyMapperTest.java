@@ -146,37 +146,4 @@ public class Xacml20PolicyMapperTest
 		assertNotNull(p.getVariableDefinition("VAR02"));
 	}
 
-	@Test
-	public void testXpathTransformation() throws Exception
-	{
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//Resource/ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//xacml-context:Request/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		assertEquals("/md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("/xacml-context:Request/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		assertEquals("/md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("/xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		assertEquals("/md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		
-		assertEquals("//md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("//md:record/md:patient/md:patient-number/text()"));
-		assertEquals("/md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("/md:record/md:patient/md:patient-number/text()"));
-		
-		assertEquals("./md:record/md:patient/md:patient-number/text()", 
-				Xacml20PolicyMapper.transform20PathTo30("./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()"));
-		
-		assertEquals("./md:record//md:name", 
-				Xacml20PolicyMapper.transform20PathTo30("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name"));
-	}
 }
