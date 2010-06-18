@@ -27,15 +27,33 @@ public class FunctionReference extends XacmlObject implements Expression
 		Preconditions.checkState(returnType != null);
 	}
 	
-	public FunctionSpec getSpec(){
-		return spec;
-	}
-	
 	@Override
 	public ValueType getEvaluatesTo(){
 		return returnType;
 	}
-
+	
+	/**
+	 * Invokes a function with a given parameters
+	 * 
+	 * @param <T>
+	 * @param context
+	 * @param params
+	 * @return
+	 * @throws EvaluationException
+	 */
+	public <T extends Value> T invoke(EvaluationContext context, 
+			Expression ...params) throws EvaluationException
+	{
+		try{
+			return spec.invoke(context, params);
+		}finally{
+			
+		}
+	}
+	
+	/**
+	 * Implementation returns itself
+	 */
 	@Override
 	public FunctionReference evaluate(EvaluationContext context)
 			throws EvaluationException {

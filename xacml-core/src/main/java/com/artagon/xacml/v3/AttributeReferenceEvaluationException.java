@@ -8,7 +8,8 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	
 	private AttributeReference ref;
 	
-	public AttributeReferenceEvaluationException(EvaluationContext context,
+	public AttributeReferenceEvaluationException(
+			EvaluationContext context,
 			AttributeReference ref, 
 			String message, Object ...params){
 		super(StatusCode.createMissingAttribute(),
@@ -28,7 +29,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	public AttributeReferenceEvaluationException(EvaluationContext context, 
 			AttributeReference ref, 
 			Throwable cause){
-		super(StatusCode.createMissingAttribute(), 
+		super(StatusCode.createProcessingError(), 
 				context, cause);
 		this.ref = ref;
 	}

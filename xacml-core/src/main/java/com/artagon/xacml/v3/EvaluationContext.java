@@ -28,6 +28,8 @@ public interface EvaluationContext
 	 * need to be validated at runtime
 	 */
 	boolean isValidateFuncParamAtRuntime();
+	
+	void setValidateFuncParamAtRuntime(boolean validate);
 		
 	StatusCode getEvaluationStatus();
 	void setEvaluationStatus(StatusCode code);

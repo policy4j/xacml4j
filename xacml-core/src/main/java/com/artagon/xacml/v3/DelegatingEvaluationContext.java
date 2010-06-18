@@ -32,6 +32,11 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public boolean isValidateFuncParamAtRuntime() {
 		return delegate.isValidateFuncParamAtRuntime();
 	}
+	
+	@Override
+	public void setValidateFuncParamAtRuntime(boolean validate){
+		delegate.setValidateFuncParamAtRuntime(validate);
+	}
 
 	@Override
 	public void addAdvices(Collection<Advice> advices) {

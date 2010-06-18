@@ -114,6 +114,11 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	public boolean isValidateFuncParamAtRuntime() {
 		return validateAtRuntime;
 	}
+	
+	@Override
+	public void setValidateFuncParamAtRuntime(boolean validate){
+		this.validateAtRuntime = validate;
+	}
 
 	@Override
 	public void addAdvices(Collection<Advice> advices) {

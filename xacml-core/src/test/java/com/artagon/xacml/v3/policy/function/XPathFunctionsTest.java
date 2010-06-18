@@ -80,8 +80,10 @@ public class XPathFunctionsTest
 	{
 		NodeList result = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record", content1); 
 		NodeList result1 = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record//md:name", content1);
+		NodeList result2 = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']", content);
 		assertEquals(1, result.getLength());
 		assertEquals(2, result1.getLength());
+		assertEquals(1, result2.getLength());
 	}
 	
 	@Test

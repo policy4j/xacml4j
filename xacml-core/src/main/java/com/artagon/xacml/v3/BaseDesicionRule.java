@@ -50,20 +50,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	}
 	
 	/**
-	 * Constructs base decision with a given
-	 * identifier and target
-	 * 
-	 * @param id a decision identifier
-	 * @param target a decision target
-	 */
-	protected BaseDesicionRule(String id, 
-			Target target){
-		this(id, target, 
-				Collections.<AdviceExpression>emptyList(),
-				Collections.<ObligationExpression>emptyList());
-	}
-	
-	/**
 	 * Gets decision rule description
 	 * 
 	 * @return decision rule description
@@ -102,7 +88,13 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		return Collections.unmodifiableCollection(adviceExpressions);
 	}
 	
-	@Override
+	/**
+	 * Testing if this decision rule is applicable to
+	 * the current evaluation context
+	 * 
+	 * @param context an evaluation context
+	 * @return {@link MatchResult} a match result
+	 */
 	public MatchResult isApplicable(EvaluationContext context){ 
 		Preconditions.checkArgument(isEvaluationContextValid(context));
 		return (target == null)?MatchResult.MATCH:target.match(context);
@@ -117,7 +109,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	public  Decision evaluate(EvaluationContext context) 
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Invoking decision rule id=\"{}\" evaluate", getId());
+			log.debug("Evaluating decision ruleId=\"{}\"", getId());
 		}
 		Preconditions.checkArgument(
 				isEvaluationContextValid(context));

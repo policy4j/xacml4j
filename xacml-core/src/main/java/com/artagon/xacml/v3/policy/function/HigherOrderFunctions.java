@@ -38,9 +38,8 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
 		throws EvaluationException
 	{
-		FunctionSpec p =  ref.getSpec();
 		for(AttributeValue valueFromBag : bag.values()){
-			BooleanValue r = p.invoke(context, value, valueFromBag);
+			BooleanValue r = ref.invoke(context, value, valueFromBag);
 			if(r.getValue()){
 				return XacmlDataTypes.BOOLEAN.create(true);
 			}
@@ -57,9 +56,8 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
 		throws EvaluationException
 	{
-		FunctionSpec p =  ref.getSpec();
 		for(AttributeValue valueFromBag : bag.values()){
-			BooleanValue r = p.invoke(context, value, valueFromBag);
+			BooleanValue r = ref.invoke(context, value, valueFromBag);
 			if(!r.getValue()){
 				return XacmlDataTypes.BOOLEAN.create(false);
 			}
@@ -76,10 +74,9 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
 		throws EvaluationException
 	{
-		FunctionSpec p =  ref.getSpec();
 		for(AttributeValue aValue : a.values()){
 			for(AttributeValue bValue : b.values()){
-				BooleanValue r = p.invoke(context, aValue, bValue);
+				BooleanValue r = ref.invoke(context, aValue, bValue);
 				if(r.getValue()){
 					return XacmlDataTypes.BOOLEAN.create(true);
 				}
@@ -87,9 +84,6 @@ public class HigherOrderFunctions
 		}
 		return XacmlDataTypes.BOOLEAN.create(false);
 	}
-	
-	
-	
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
@@ -100,10 +94,9 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
 		throws EvaluationException
 	{
-		FunctionSpec p =  ref.getSpec();
 		Collection<AttributeValue> values = new ArrayList<AttributeValue>(bag.size());
 		for(AttributeValue v : bag.values()){
-			values.add((AttributeValue)p.invoke(context, v));
+			values.add((AttributeValue)ref.invoke(context, v));
 		}
 		AttributeValueType type = (AttributeValueType)ref.getEvaluatesTo();
 		return type.bagOf().create(values);
