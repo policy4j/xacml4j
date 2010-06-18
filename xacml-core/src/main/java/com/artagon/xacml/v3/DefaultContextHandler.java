@@ -38,19 +38,13 @@ public class DefaultContextHandler implements ContextHandler
 	public final Node getContent(EvaluationContext context, AttributeCategoryId category) 
 	{
 		Attributes attr = request.getOnlyAttributes(category);
-		if(attr == null){
+		if(attr == null || 
+				attr.getContent() == null){
 			if(context.getAttributeResolutionScope() == 
 				AttributeResolutionScope.REQUEST_EXTERNAL)
 			return handleGetContent(category, request);
 		}
-		Node content = attr.getContent();
-		if(content == null){
-			if(context.getAttributeResolutionScope() == 
-				AttributeResolutionScope.REQUEST_EXTERNAL){
-				return handleGetContent(category, request);
-			}
-		}
-		return content;
+		return (attr != null)?attr.getContent():null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,11 +126,8 @@ public class DefaultContextHandler implements ContextHandler
 			}
 			try{
 				values.add(ref.getDataType().fromXacmlString(v));
-			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(context, ref, 
-						"Failed to convert xml node (at:%d in nodeset) " +
-						"text value=\"%s\" to an attribute value of type=\"%s\"", 
-						i, v, ref.getDataType());
+			}catch(RuntimeException e){
+				throw new AttributeReferenceEvaluationException(context, ref, e);
 			}
 		}
 	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);

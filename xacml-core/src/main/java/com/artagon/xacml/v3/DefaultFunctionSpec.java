@@ -119,7 +119,6 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws EvaluationException {
 		
