@@ -62,7 +62,7 @@ public class HigherOrderFunctionsTest
 		v.add(XacmlDataTypes.INTEGER.create(10));
 		v.add(XacmlDataTypes.INTEGER.create(20));
 		v.add(XacmlDataTypes.INTEGER.create(30));
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(false).times(4);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 		replay(context);
 		BagOfAttributeValues<StringValue> bag =  map.invoke(context, new FunctionReference(intToString), XacmlDataTypes.INTEGER.bag(v));
 		verify(context);	
@@ -78,7 +78,7 @@ public class HigherOrderFunctionsTest
 		v.add(XacmlDataTypes.INTEGER.create(10));
 		v.add(XacmlDataTypes.INTEGER.create(20));
 		v.add(XacmlDataTypes.INTEGER.create(30));
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(false).times(7);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(7);
 		replay(context);
 		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), XacmlDataTypes.INTEGER.create(20), XacmlDataTypes.INTEGER.bag(v));
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), r);

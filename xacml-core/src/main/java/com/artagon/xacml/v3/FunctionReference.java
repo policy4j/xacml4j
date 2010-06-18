@@ -41,13 +41,16 @@ public class FunctionReference extends XacmlObject implements Expression
 	 * @return
 	 * @throws EvaluationException
 	 */
+	@SuppressWarnings("unchecked")
 	public <T extends Value> T invoke(EvaluationContext context, 
 			Expression ...params) throws EvaluationException
 	{
+		boolean validate = context.isValidateFuncParamsAtRuntime();
 		try{
-			return spec.invoke(context, params);
+			context.setValidateFuncParamsAtRuntime(true);
+			return (T)spec.invoke(context, params);
 		}finally{
-			
+			context.setValidateFuncParamsAtRuntime(validate);
 		}
 	}
 	

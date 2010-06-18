@@ -125,7 +125,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		
 		try
 		{
-			if(context.isValidateFuncParamAtRuntime()){
+			if(context.isValidateFuncParamsAtRuntime()){
 				validateParameters(params);
 			}
 			T result = invocation.invoke(this, context, 

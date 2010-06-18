@@ -111,12 +111,12 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public boolean isValidateFuncParamAtRuntime() {
+	public boolean isValidateFuncParamsAtRuntime() {
 		return validateAtRuntime;
 	}
 	
 	@Override
-	public void setValidateFuncParamAtRuntime(boolean validate){
+	public void setValidateFuncParamsAtRuntime(boolean validate){
 		this.validateAtRuntime = validate;
 	}
 

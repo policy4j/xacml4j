@@ -92,7 +92,7 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count");
 		XPathExpressionValue xpath  = XacmlDataTypes.XPATHEXPRESSION.create("/md:record/md:patient", 
 				AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategoryId.SUBJECT_ACCESS))
 		.andAnswer(new XPathAnswer(content));
 		replay(context);
@@ -105,7 +105,7 @@ public class XPathFunctionsTest
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count");
 		StringValue xpath  = XacmlDataTypes.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("./md:record//md:name", AttributeCategoryId.RESOURCE))
 		.andAnswer(new XPathAnswer(content1));
 		replay(context);
@@ -130,7 +130,7 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match");
 		XPathExpressionValue xpath0  = XacmlDataTypes.XPATHEXPRESSION.create("/md:record", AttributeCategoryId.SUBJECT_ACCESS);
 		XPathExpressionValue xpath1  = XacmlDataTypes.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS);
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
@@ -144,7 +144,7 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match");
 		StringValue xpath0  = XacmlDataTypes.STRING.create(".");
 		StringValue xpath1  = XacmlDataTypes.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet(".", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		expect(context.evaluateToNodeSet("./md:record", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		replay(context);

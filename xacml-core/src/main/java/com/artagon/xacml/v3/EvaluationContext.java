@@ -27,9 +27,9 @@ public interface EvaluationContext
 	 * @return <code>true</code> if parameters
 	 * need to be validated at runtime
 	 */
-	boolean isValidateFuncParamAtRuntime();
+	boolean isValidateFuncParamsAtRuntime();
 	
-	void setValidateFuncParamAtRuntime(boolean validate);
+	void setValidateFuncParamsAtRuntime(boolean validate);
 		
 	StatusCode getEvaluationStatus();
 	void setEvaluationStatus(StatusCode code);

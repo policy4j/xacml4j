@@ -28,7 +28,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testTest1And2Functions() throws Exception
 	{
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(false).times(2);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		replay(context);
 		FunctionSpec spec1 = f.getFunction("test1");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE),  
@@ -45,7 +45,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testLazyParamEvaluationPassingEvaluationContext() throws Exception
 	{
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(false).times(3);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		replay(context);
 		FunctionSpec spec3 = f.getFunction("test3");
 		FunctionSpec spec4 = f.getFunction("test4");
@@ -59,7 +59,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testVarArgFunctionInvocation() throws Exception
 	{
-		expect(context.isValidateFuncParamAtRuntime()).andReturn(false).times(5);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(5);
 		replay(context);
 		FunctionSpec spec5 = f.getFunction("test5VarArg");
 		FunctionSpec spec6 = f.getFunction("test6VarArg");
