@@ -1,10 +1,15 @@
 package com.artagon.xacml.v3.spi;
 
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicySet;
+import java.util.Collection;
 
-public interface PolicyStore 
+import com.artagon.xacml.v3.CompositeDecisionRule;
+
+public interface PolicyStore extends PolicyReferenceResolver
 {
-	Policy getPolicy(String policyId);
-	PolicySet getPolicySet(String policyId);
+	/**
+	 * Gets root policies
+	 * 
+	 * @return a collection of {@link CompositeDecisionRule} instances
+	 */
+	Collection<CompositeDecisionRule> getPolicies();
 }

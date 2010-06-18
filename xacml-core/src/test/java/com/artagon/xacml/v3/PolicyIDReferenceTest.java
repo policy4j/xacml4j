@@ -10,6 +10,7 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -17,6 +18,7 @@ import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class PolicyIDReferenceTest
@@ -134,5 +136,16 @@ public class PolicyIDReferenceTest
 	{
 		expect(p.getId()).andReturn(id);
 		expect(p.getVersion()).andReturn(Version.parse(v));
+	}
+	
+	@Test
+	public void testReferersTo() throws Exception
+	{
+		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
+		expect(refPolicy.getId()).andReturn("testId");
+		expect(refPolicy.getVersion()).andReturn(Version.parse("1.0.1"));
+		assertTrue(ref.isReferenceTo(refPolicy));
+		replay(refPolicy);
+		verify(refPolicy);
 	}
 }

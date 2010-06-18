@@ -11,6 +11,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class PolicySetEvaluationContextTest 
