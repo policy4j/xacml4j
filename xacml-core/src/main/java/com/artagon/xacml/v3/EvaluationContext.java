@@ -7,8 +7,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-
-
 public interface EvaluationContext 
 {	
 	/**
@@ -29,11 +27,32 @@ public interface EvaluationContext
 	 */
 	boolean isValidateFuncParamsAtRuntime();
 	
+	/**
+	 * Enables/Disables function parameters validation
+	 * at runtime
+	 * 
+	 * @param validate a flag to validate
+	 */
 	void setValidateFuncParamsAtRuntime(boolean validate);
 		
+	/**
+	 * Gets XACML policy evaluation failure 
+	 * status
+	 * 
+	 * @return a failure {@link Status}
+	 */
 	StatusCode getEvaluationStatus();
 	void setEvaluationStatus(StatusCode code);
 	
+	/**
+	 * Gets current attribute reference resolution 
+	 * scope. For example scope while evaluating
+	 * {@link Match} is {@link AttributeResolutionScope#REQUEST}
+	 * and {@link AttributeResolutionScope#REQUEST_EXTERNAL} while
+	 * evaluating policy rules
+	 * 
+	 * @return {@link AttributeResolutionScope}
+	 */
 	AttributeResolutionScope getAttributeResolutionScope();
 	void setAttributeResolutionScope(AttributeResolutionScope scope);
 	

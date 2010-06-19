@@ -1,5 +1,7 @@
 package com.artagon.xacml.util;
 
+import static com.artagon.xacml.util.Xacml20XPathTo30Transformer.fromXacml20String;
+import static com.artagon.xacml.util.Xacml20XPathTo30Transformer.transform20PathTo30;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
@@ -9,7 +11,6 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
-import static com.artagon.xacml.util.Xacml20XPathTo30Transformer.*;
 
 public class Xacml20XPathTo30TransformerTest 
 {

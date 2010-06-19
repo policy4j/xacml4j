@@ -31,7 +31,6 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		if(resourceId.isEmpty()){
 			return handleNext(request, pdp);
 		}
-		
 		return handleNext(request, pdp);
 	}
 }

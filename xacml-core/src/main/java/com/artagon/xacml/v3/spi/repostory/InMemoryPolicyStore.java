@@ -5,26 +5,38 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultPolicyVisitor;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
+import com.google.common.base.Preconditions;
 
 public final class InMemoryPolicyStore extends AbstractPolicyRepository 
 {	
+	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyStore.class);
+	
 	private Map<String, Policy> policies;
 	private Map<String, PolicySet> policySets;
-	private Map<String, CompositeDecisionRule> rootPolicies;
+	private Map<String, CompositeDecisionRule> topLevel;
 	
 	public InMemoryPolicyStore()
 	{
 		this.policies = new ConcurrentHashMap<String, Policy>();
 		this.policySets = new ConcurrentHashMap<String, PolicySet>();
+		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();
 	}
 	
 	public void add(CompositeDecisionRule rule)
 	{
-		rootPolicies.put(rule.getId(), rule);
+		if(log.isDebugEnabled()){
+			log.debug("Adding decision ruleId=\"{}\"", rule.getId());
+		}
+		CompositeDecisionRule old = topLevel.put(rule.getId(), rule);
+		Preconditions.checkState(old == null, 
+				"Decision rule with id=\"%s\" already exist in the store", rule.getId());
 		rule.accept(new PolicyTreeWalker());
 	}
 	
@@ -53,18 +65,30 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 
 	@Override
 	public Collection<CompositeDecisionRule> getPolicies() {
-		return Collections.unmodifiableCollection(rootPolicies.values());
+		return Collections.unmodifiableCollection(topLevel.values());
 	}
 
 
 	class PolicyTreeWalker extends DefaultPolicyVisitor
 	{		
-		public void visitEnter(Policy policy) {
-			policies.put(policy.getId(), policy);
+		public void visitEnter(Policy p) {
+			Preconditions.checkArgument(p != null);
+			if(log.isDebugEnabled()){
+				log.debug("Adding child PolicyId=\"{}\"", p.getId());
+			}
+			Policy old = policies.put(p.getId(), p);
+			Preconditions.checkState(old == null, 
+					"Policy with id=\"%s\" already exist in the store", p.getId());
 		}
 		
-		public void visitEnter(PolicySet policySet) {
-			policySets.put(policySet.getId(), policySet);
+		public void visitEnter(PolicySet p) {
+			Preconditions.checkArgument(p != null);
+			if(log.isDebugEnabled()){
+				log.debug("Adding child PolicySetId=\"{}\"", p.getId());
+			}
+			PolicySet old = policySets.put(p.getId(), p);
+			Preconditions.checkState(old == null, 
+					"PolicySet with id=\"%s\" already exist in the store", p.getId());
 		}		
 	}
 }

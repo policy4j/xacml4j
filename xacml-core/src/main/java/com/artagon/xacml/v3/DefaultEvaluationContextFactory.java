@@ -1,41 +1,51 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
-import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private PolicyReferenceResolver policyResolver;
+	private PolicyRepository repository;
 	private XPathProvider xpathProvider;
+	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
+	private boolean validateFuncParamsAtRuntime = false;
 	
-	public DefaultEvaluationContextFactory(){
-		this(new NullPolicyReferenceResolver(), new JDKXPathProvider());
+	public DefaultEvaluationContextFactory(PolicyRepository repository){
+		this(repository, new DefaultPathProvider());
 	}
 	
 	public DefaultEvaluationContextFactory(
-			PolicyReferenceResolver policyResolver, 
+			PolicyRepository repository, 
 			XPathProvider xpathProvider){
-		Preconditions.checkNotNull(policyResolver);
+		Preconditions.checkNotNull(repository);
 		Preconditions.checkNotNull(xpathProvider);
-		this.policyResolver = policyResolver;
+		this.repository = repository;
 		this.xpathProvider = xpathProvider;
 	}
 
 	@Override
-	public EvaluationContext createContext(CompositeDecisionRule policy, Request request) {
+	public EvaluationContext createContext(Request request) 
+	{
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request);
-		try{
-			
-			return new PolicySetEvaluationContext(
-					(PolicySet)policy, handler , xpathProvider, policyResolver);
-		}catch(ClassCastException e){
-			return new PolicyEvaluationContext(
-					(Policy)policy, 
-					handler , 
-					xpathProvider, 
-					policyResolver);
+		return new RootEvaluationContext(handler);
+	}
+	
+	class RootEvaluationContext extends BaseEvaluationContext
+	{
+		public RootEvaluationContext(ContextHandler contextHandler) {
+			super(
+					DefaultEvaluationContextFactory.this.validateFuncParamsAtRuntime,
+					contextHandler,
+					DefaultEvaluationContextFactory.this.xpathProvider, 
+					DefaultEvaluationContextFactory.this.repository);
 		}
-	}	
+
+		@Override
+		public XPathVersion getXPathVersion() { 
+			return DefaultEvaluationContextFactory.this.defaultXPathVersion;
+		}
+		
+	}
 }

@@ -11,12 +11,19 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.collect.Iterables;
 
-public class CompositeRequestProfileHandler implements RequestProfileHandler
+/**
+ * A chain of {@link RequestProfileHandler}
+ * implementations implemented as {@link RequestProfileHandler}
+ * 
+ * @author Giedrius Trumopickas
+ */
+public class RequestProfileHandlerChain implements RequestProfileHandler
 {
 	private List<RequestProfileHandler> handlers;
 	
-	public CompositeRequestProfileHandler(
-			Iterable<RequestProfileHandler> handlers){
+	public RequestProfileHandlerChain(
+			Iterable<RequestProfileHandler> handlers)
+	{
 		this.handlers = new LinkedList<RequestProfileHandler>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestProfileHandler prev = null;
@@ -30,7 +37,7 @@ public class CompositeRequestProfileHandler implements RequestProfileHandler
 		}
 	}
 	
-	public CompositeRequestProfileHandler(
+	public RequestProfileHandlerChain(
 			RequestProfileHandler ...handlers){
 		this(Arrays.asList(handlers));
 	}

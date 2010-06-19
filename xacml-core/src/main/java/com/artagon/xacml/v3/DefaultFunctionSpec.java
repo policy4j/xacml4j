@@ -118,6 +118,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		return resolver.resolve(this, arguments);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Value> T invoke(EvaluationContext context,
 			Expression... params) throws EvaluationException {
@@ -127,7 +128,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			if(context.isValidateFuncParamsAtRuntime()){
 				validateParameters(params);
 			}
-			T result = invocation.invoke(this, context, 
+			T result = (T)invocation.invoke(this, context, 
 					isRequiresLazyParamEval()?params:evaluate(context, params));
 			if(log.isDebugEnabled()){
 				log.debug("Function=\"{}\" " +

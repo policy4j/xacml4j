@@ -1,11 +1,12 @@
 package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
 
-public interface PolicyRepostory extends PolicyReferenceResolver
+public interface PolicyRepository extends PolicyReferenceResolver
 {
 	/**
 	 * Gets root policies
@@ -20,6 +21,6 @@ public interface PolicyRepostory extends PolicyReferenceResolver
 	 * @param context an evaluation context
 	 * @return a collection of {@link CompositeDecisionRule} instances
 	 */
-	Collection<CompositeDecisionRule> findApplicable(
+	Map<String, CompositeDecisionRule> findApplicable(
 				EvaluationContext context);
 }

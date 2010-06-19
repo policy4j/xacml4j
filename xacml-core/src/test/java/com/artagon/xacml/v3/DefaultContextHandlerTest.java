@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultContextHandlerTest
@@ -54,9 +54,9 @@ public class DefaultContextHandlerTest
 		Node content1 = createStrictMock(Node.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.RESOURCE)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content1);
+		expect(attributes.getContent()).andReturn(content1).times(2);
 		replay(request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		Node content2 = handler.getContent(context, AttributeCategoryId.RESOURCE);
 		assertSame(content1, content2);
 		verify(request, attributes);
@@ -68,9 +68,9 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.RESOURCE)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(null);
+		expect(attributes.getContent()).andReturn(null).times(2);
 		replay(request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		Node content2 = handler.getContent(context, AttributeCategoryId.RESOURCE);
 		assertNull(content2);
 		verify(request, attributes);
@@ -88,10 +88,10 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content);
+		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, XacmlDataTypes.INTEGER.bag(XacmlDataTypes.INTEGER.create(555555)));
 		verify(context, request, attributes);
@@ -108,10 +108,10 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content);
+		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		handler.resolve(context, ref);
 		verify(context, request, attributes);
 	}
@@ -127,10 +127,10 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content);
+		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		handler.resolve(context, ref);
 		verify(context, request, attributes);
 	}
@@ -146,10 +146,10 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content);
+		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		handler.resolve(context, ref);
 		verify(context, request, attributes);
 	}
@@ -165,10 +165,10 @@ public class DefaultContextHandlerTest
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content);
+		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes);
-		ContextHandler handler = new DefaultContextHandler(new JDKXPathProvider(), request);
+		ContextHandler handler = new DefaultContextHandler(new DefaultPathProvider(), request);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, XacmlDataTypes.INTEGER.emptyBag());
 		verify(context, request, attributes);

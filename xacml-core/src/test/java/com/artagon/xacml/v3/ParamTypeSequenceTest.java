@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class ParamTypeSequenceTest extends XacmlPolicyTestCase
+public class ParamTypeSequenceTest
 {
 	private StringType t1;
 	private DoubleType t2;

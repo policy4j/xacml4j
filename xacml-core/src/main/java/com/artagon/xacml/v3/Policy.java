@@ -244,10 +244,8 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		 * 
 		 * @param context a parent evaluation context
 		 */
-		PolicyDelegatingEvaluationContext(EvaluationContext context)
-		{
+		PolicyDelegatingEvaluationContext(EvaluationContext context){
 			super(context);
-			Preconditions.checkNotNull(context.getCurrentPolicySet());
 		}
 
 		@Override

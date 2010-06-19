@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.profiles;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,9 @@ import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
@@ -62,22 +65,31 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			}
 			return handleNext(request, pdp);
 		}
-		List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
-		for(Attributes attribute : request.getAttributes()){
-			all.add(getAttributes(request, attribute));
+		try
+		{
+			List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
+			for(Attributes attribute : request.getAttributes()){
+				all.add(getAttributes(request, attribute));
+			}
+			Set<List<Attributes>> cartesian = Sets.cartesianProduct(all);
+			List<Result> results = new LinkedList<Result>();
+			for(List<Attributes> requestAttr : cartesian)
+			{	
+				Request req = new Request(request.isReturnPolicyIdList(), 
+						requestAttr, request.getRequestDefaults());
+				results.addAll(handleNext(req, pdp));
+			}
+			return results;
+		}catch(RequestSyntaxException e){
+			return Collections.singleton(
+					new Result(
+							Decision.INDETERMINATE, 
+							e.getStatus()));
 		}
-		Set<List<Attributes>> cartesian = Sets.cartesianProduct(all);
-		List<Result> results = new LinkedList<Result>();
-		for(List<Attributes> requestAttr : cartesian)
-		{	
-			Request req = new Request(request.isReturnPolicyIdList(), 
-					requestAttr, request.getRequestDefaults());
-			results.addAll(handleNext(req, pdp));
-		}
-		return results;
 	}
 	
-	private Set<Attributes> getAttributes(Request request, Attributes attribute)
+	private Set<Attributes> getAttributes(Request request, Attributes attribute) 
+		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 				XacmlDataTypes.XPATHEXPRESSION.getType());
@@ -89,7 +101,9 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		// if there is no content
 		// specified ignore it and return
 		if(content == null){
-			return ImmutableSet.of(attribute);
+			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
+					"for selector=\"%s\" must be specified", 
+					attribute.getCategoryId(), selector.getValue());
 		}
 		try 
 		{

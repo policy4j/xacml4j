@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class MatchTest extends XacmlPolicyTestCase
+public class MatchTest
 {
 	private FunctionSpec spec;
 	private AttributeDesignator ref;

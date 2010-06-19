@@ -37,7 +37,8 @@ public class Result extends XacmlObject
 	
 	/**
 	 * Constructs result with a given
-	 * failure status and {@link Decision#INDETERMINATE}
+	 * failure status and {@link Decision#isIndeterminate()}
+	 * <code>true</code> or {@link Decision#NOT_APPLICABLE}
 	 * 
 	 * @param status an failure status
 	 */
@@ -48,6 +49,8 @@ public class Result extends XacmlObject
 				Collections.<Obligation>emptyList(),
 				Collections.<Attributes>emptyList(), 
 				Collections.<PolicyIdentifier>emptyList());
+		Preconditions.checkArgument(decision == Decision.NOT_APPLICABLE 
+				|| decision.isIndeterminate());
 	}
 	
 	/**

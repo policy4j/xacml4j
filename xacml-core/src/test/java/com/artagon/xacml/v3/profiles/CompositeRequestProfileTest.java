@@ -14,7 +14,7 @@ public class CompositeRequestProfileTest
 	{
 		RequestProfileHandler m0 = createStrictMock(RequestProfileHandler.class);
 		replay(m0);
-		CompositeRequestProfileHandler h = new CompositeRequestProfileHandler(m0);
+		RequestProfileHandlerChain h = new RequestProfileHandlerChain(m0);
 		verify(m0);
 		reset(m0);
 		RequestProfileHandler m1 = createStrictMock(RequestProfileHandler.class);
@@ -35,7 +35,7 @@ public class CompositeRequestProfileTest
 		m1.setNext(m2);
 		m2.setNext(m3);
 		replay(m0, m1, m2, m3);
-		RequestProfileHandler h = new CompositeRequestProfileHandler(m0, m1, m2, m3);
+		RequestProfileHandler h = new RequestProfileHandlerChain(m0, m1, m2, m3);
 		verify(m0, m1, m2);
 		reset(m0, m1, m2, m3);
 		RequestProfileHandler m4 = createStrictMock(RequestProfileHandler.class);

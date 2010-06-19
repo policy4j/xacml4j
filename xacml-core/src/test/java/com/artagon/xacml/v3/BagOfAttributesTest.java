@@ -5,6 +5,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,13 +19,15 @@ import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
-public class BagOfAttributesTest extends XacmlPolicyTestCase
+public class BagOfAttributesTest
 {
 	private StringType stringType;
+	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.stringType = XacmlDataTypes.STRING.getType();
+		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test
@@ -111,7 +116,9 @@ public class BagOfAttributesTest extends XacmlPolicyTestCase
 		content2.add(INTEGER.create(4));
 		content2.add(INTEGER.create(5));
 		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
+		replay(context);
 		assertSame(bag2, bag2.evaluate(context));	
+		verify(context);
 	}
 	
 	@Test

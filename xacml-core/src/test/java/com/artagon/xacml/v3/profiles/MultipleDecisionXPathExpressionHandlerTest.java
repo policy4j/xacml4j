@@ -34,7 +34,7 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.spi.xpath.JDKXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
@@ -61,7 +61,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 	public void init() throws Exception
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleDecisionXPathExpressionHandler(new JDKXPathProvider());
+		this.profile = new MultipleDecisionXPathExpressionHandler(new DefaultPathProvider());
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
