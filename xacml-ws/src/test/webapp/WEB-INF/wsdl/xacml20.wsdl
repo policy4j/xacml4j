@@ -50,7 +50,7 @@
          <soap:address location="https://login.comcast.net/xacml/20/private/soap"/>
       </wsdl:port>
       <wsdl:port name="Xacml20SoapPublicEndpoint" binding="tns:Xacml20SoapHttpBinding">
-         <soap:address location="https://login.comcast.net/xacml/20/public/soap"/>
+         <soap:address location="http://localhost:8080/xacml-ws/"/>
       </wsdl:port>
    </wsdl:service>
    

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	 xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="xacml20Endpoint" class="com.artagon.xacml.v20.endpoints.XacmlV20Endpoint">
+
+ 
+
+	<bean id="xacml20Endpoint" class="com.artagon.xacml.v20.endpoints.Xacml20Endpoint">
 		<constructor-arg>
 			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 				<property name="classesToBeBound">
@@ -16,11 +21,48 @@
 		</constructor-arg>
 		<constructor-arg ref="xacmlPDP"/>
 	</bean>
-
+	
+	<bean id="endpointMapping" class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+		<property name="interceptors">
+            <list>
+                <ref bean="loggingInterceptor"/>
+            </list>
+        </property>
+		<property name="mappings">
+            <props>
+                <prop key="{urn:oasis:names:tc:xacml:2.0:context:schema:os}Request">xacml20Endpoint</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+    
 	<bean id="Xacml20WSDL"
 		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
 		<property name="wsdl"
-			value="classpath:/com/artagon/xacml/v20/xacml29.wsdl" />
+			value="/WEB-INF/wsdl/xacml20.wsdl" />
+	</bean>
+	
+
+	<bean id="xpathProvider" class="com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider"/>
+	<bean id="policyRepository" class="com.artagon.xacml.v20.endpoints.InMemoryPolicyStoreFactoryBean">
+		<property name="policySet" value="classpath:/PolicySet.xml"/>
 	</bean>
 
+	<bean id="xacmlPDP" class="com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.artagon.xacml.v3.pdp.profiles.MultipleDecisionProfileHandler">
+					<constructor-arg ref="xpathProvider"/>
+				</bean>
+			</util:list>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.artagon.xacml.v3.DefaultEvaluationContextFactory">
+				<constructor-arg ref="xpathProvider"/>
+				<constructor-arg ref="policyRepository"/>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="policyRepository"/>
+	</bean>
 </beans>
