@@ -1,28 +1,31 @@
 package com.artagon.xacml.v3.pdp;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.artagon.xacml.v3.Attributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.PolicyIdentifier;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.profiles.RequestProfileHandlerChain;
-import com.artagon.xacml.v3.profiles.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.profiles.RequestProfileHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 
 public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
 	PolicyDecisionCallback
 {
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
+	
 	private EvaluationContextFactory factory;
 	private PolicyRepository policyRepository;
 	private RequestProfileHandlerChain requestProcessingPipeline;
@@ -56,12 +59,20 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	public Result requestDecision(Request request) 
 	{
 		EvaluationContext context = factory.createContext(request);
-		Map<String, CompositeDecisionRule> applicable = policyRepository.findApplicable(context);
-		CompositeDecisionRule policy = resolver.resolve(applicable);
-		if(policy  == null){
+		Collection<CompositeDecisionRule> applicable = policyRepository.findApplicable(context);
+		if(applicable.size() == 0){
+			if(log.isDebugEnabled()){
+				log.debug("Found no applicable policies");
+			}
 			return new Result(Decision.NOT_APPLICABLE, 
 					new Status(StatusCode.createOk()));
 		}
+		if(applicable.size() > 1){
+			log.debug("Found more than one applicable policy");
+			return new Result(Decision.NOT_APPLICABLE, 
+					new Status(StatusCode.createProcessingError()));
+		}
+		CompositeDecisionRule policy = Iterables.getOnlyElement(applicable);
 		EvaluationContext policyContext = policy.createContext(context);
 		Decision decision = policy.evaluateIfApplicable(policyContext);
 		if(decision == Decision.NOT_APPLICABLE){

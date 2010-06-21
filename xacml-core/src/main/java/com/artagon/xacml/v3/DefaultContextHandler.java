@@ -53,14 +53,14 @@ public class DefaultContextHandler implements ContextHandler
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		Attributes attributes = request.getOnlyAttributes(ref.getCategory());
-		if(attributes != null){
-			Collection<AttributeValue> values = attributes.getAttributeValues(
-					ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
-			if(!values.isEmpty()){
-				return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
-			}
-		} 
+		if(log.isDebugEnabled()){
+			log.debug("Resolving designator=\"{}\" request=\"{}\"", ref, request);
+		}
+		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
+				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
+		if(!values.isEmpty()){
+			return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
+		}
 		return (context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
 				((BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty()):handleResolve(ref, request);
 	}

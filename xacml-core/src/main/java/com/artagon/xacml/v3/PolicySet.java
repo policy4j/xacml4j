@@ -169,7 +169,6 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 		PolicySetDelegatingEvaluationContext(
 				EvaluationContext parentContext){
 			super(parentContext);
-			Preconditions.checkArgument(parentContext.getCurrentPolicySet() != null);
 			Preconditions.checkArgument(parentContext.getCurrentPolicySet() != PolicySet.this);
 			Preconditions.checkArgument(parentContext.getCurrentPolicy() == null);
 		}

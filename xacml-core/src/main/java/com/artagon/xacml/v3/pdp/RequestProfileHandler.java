@@ -1,10 +1,9 @@
-package com.artagon.xacml.v3.profiles;
+package com.artagon.xacml.v3.pdp;
 
 import java.util.Collection;
 
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 
 public interface RequestProfileHandler 
 {

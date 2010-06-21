@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3.spi.repostory;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
@@ -49,14 +52,16 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	}
 	
 	@Override
-	public final Map<String, CompositeDecisionRule> findApplicable(
+	public final Collection<CompositeDecisionRule> findApplicable(
 			EvaluationContext context) 
 	{
 		Iterable<CompositeDecisionRule> rules = getPolicies();
-		Map<String, CompositeDecisionRule> applicable = new LinkedHashMap<String, CompositeDecisionRule>();
-		for(CompositeDecisionRule r : rules){
-			if(r.isApplicable(context) == MatchResult.MATCH){
-				applicable.put(r.getId(), r);
+		List<CompositeDecisionRule> applicable = new LinkedList<CompositeDecisionRule>();
+		for(CompositeDecisionRule r : rules)
+		{
+			EvaluationContext ruleContext = r.createContext(context);
+			if(r.isApplicable(ruleContext) == MatchResult.MATCH){
+				applicable.add(r);
 			}
 		}
 		return applicable;

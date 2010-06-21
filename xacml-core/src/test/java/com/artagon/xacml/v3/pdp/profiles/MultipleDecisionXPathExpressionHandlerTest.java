@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.profiles;
+package com.artagon.xacml.v3.pdp.profiles;
 
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
@@ -34,6 +34,8 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionXPathExpressionHandler;
 import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;

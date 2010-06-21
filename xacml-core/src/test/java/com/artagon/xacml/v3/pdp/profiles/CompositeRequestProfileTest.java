@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.profiles;
+package com.artagon.xacml.v3.pdp.profiles;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
@@ -6,6 +6,9 @@ import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 
 import org.junit.Test;
+
+import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.profiles.RequestProfileHandlerChain;
 
 public class CompositeRequestProfileTest 
 {		

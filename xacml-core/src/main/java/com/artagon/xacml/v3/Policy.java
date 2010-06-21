@@ -184,12 +184,6 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	{
 		Preconditions.checkArgument(context.getCurrentPolicy() == this 
 				|| context.getCurrentPolicy() == null);
-		if(log.isDebugEnabled()){
-			log.debug("Creating policy evaluation " +
-					"context for Policy id=\"{}\", " +
-					"parent PolicySet id=\"{}\"", getId(), 
-					context.getCurrentPolicySet() == null?null:context.getCurrentPolicySet().getId());
-		}
 		if(context.getCurrentPolicy() == this){
 			return context;
 		}

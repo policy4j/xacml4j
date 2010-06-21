@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.profiles;
+package com.artagon.xacml.v3.pdp.profiles;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

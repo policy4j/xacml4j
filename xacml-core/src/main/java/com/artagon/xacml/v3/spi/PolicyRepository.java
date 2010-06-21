@@ -21,6 +21,5 @@ public interface PolicyRepository extends PolicyReferenceResolver
 	 * @param context an evaluation context
 	 * @return a collection of {@link CompositeDecisionRule} instances
 	 */
-	Map<String, CompositeDecisionRule> findApplicable(
-				EvaluationContext context);
+	Collection<CompositeDecisionRule> findApplicable(EvaluationContext context);
 }
