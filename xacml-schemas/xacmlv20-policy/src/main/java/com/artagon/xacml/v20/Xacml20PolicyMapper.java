@@ -399,7 +399,7 @@ public class Xacml20PolicyMapper
 				.getTarget()), create(r.getCondition(), variables), effect);
 	}
 
-	Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)
+	private Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)
 			throws PolicySyntaxException {
 		if (c == null) {
 			return null;
@@ -442,6 +442,9 @@ public class Xacml20PolicyMapper
 			VariableManager<JAXBElement<?>> m)
 			throws PolicySyntaxException 
 	{
+		if(expression == null){
+			return null;
+		}
 		Object exp = expression.getValue();
 		if (exp instanceof org.oasis.xacml.v20.policy.AttributeValueType) {
 			return createValue((org.oasis.xacml.v20.policy.AttributeValueType) exp);
