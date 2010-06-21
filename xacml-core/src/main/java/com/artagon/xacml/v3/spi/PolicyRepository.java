@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;

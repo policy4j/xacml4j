@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
-import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
@@ -13,7 +13,7 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	private boolean validateFuncParamsAtRuntime = false;
 	
 	public DefaultEvaluationContextFactory(PolicyRepository repository){
-		this(repository, new DefaultPathProvider());
+		this(repository, new DefaultXPathProvider());
 	}
 	
 	public DefaultEvaluationContextFactory(

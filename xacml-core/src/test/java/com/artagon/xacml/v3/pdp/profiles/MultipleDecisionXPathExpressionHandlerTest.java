@@ -35,8 +35,7 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
-import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionXPathExpressionHandler;
-import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
@@ -63,7 +62,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 	public void init() throws Exception
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleDecisionXPathExpressionHandler(new DefaultPathProvider());
+		this.profile = new MultipleDecisionXPathExpressionHandler(new DefaultXPathProvider());
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
@@ -260,17 +259,12 @@ public class MultipleDecisionXPathExpressionHandlerTest
 				Arrays.asList(subject, resource));
 		
 		assertFalse(request.hasRepeatingCategories());
-		Capture<Request> c0 = new Capture<Request>();
-		
-		
-		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
 		
 		replay(pdp);
 		
-		profile.handle(request, pdp);
+		Collection<Result> results = profile.handle(request, pdp);
+		assertEquals(Decision.INDETERMINATE, Iterables.getOnlyElement(results).getDecision());
 		
-		assertEquals(request, c0.getValue());
 		verify(pdp);
 	}
 	

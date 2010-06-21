@@ -16,17 +16,17 @@ import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 
-public class DefaultPathProvider implements XPathProvider
+public class DefaultXPathProvider implements XPathProvider
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPathProvider.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultXPathProvider.class);
 	
 	private XPathFactory xpathFactory;
 
-	public DefaultPathProvider(){
+	public DefaultXPathProvider(){
 		this(XPathFactory.newInstance());
 	}
 	
-	public DefaultPathProvider(XPathFactory xpathFactory){
+	public DefaultXPathProvider(XPathFactory xpathFactory){
 		Preconditions.checkNotNull(xpathFactory);
 		this.xpathFactory = xpathFactory;
 	}

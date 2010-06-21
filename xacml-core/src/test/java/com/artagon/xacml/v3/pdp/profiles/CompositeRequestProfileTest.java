@@ -8,7 +8,6 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
-import com.artagon.xacml.v3.pdp.profiles.RequestProfileHandlerChain;
 
 public class CompositeRequestProfileTest 
 {		

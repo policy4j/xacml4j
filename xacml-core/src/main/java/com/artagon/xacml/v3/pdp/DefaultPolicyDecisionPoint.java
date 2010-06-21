@@ -54,7 +54,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	{
 		return new Response(requestProcessingPipeline.handle(request, this));			
 	}
-
+	
 	@Override
 	public Result requestDecision(Request request) 
 	{
@@ -65,12 +65,14 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 				log.debug("Found no applicable policies");
 			}
 			return new Result(Decision.NOT_APPLICABLE, 
-					new Status(StatusCode.createOk()));
+					new Status(StatusCode.createOk(), 
+							"No applicable policies found"));
 		}
 		if(applicable.size() > 1){
 			log.debug("Found more than one applicable policy");
 			return new Result(Decision.NOT_APPLICABLE, 
-					new Status(StatusCode.createProcessingError()));
+					new Status(StatusCode.createProcessingError(), 
+							"Found more than one applicable policy"));
 		}
 		CompositeDecisionRule policy = Iterables.getOnlyElement(applicable);
 		EvaluationContext policyContext = policy.createContext(context);

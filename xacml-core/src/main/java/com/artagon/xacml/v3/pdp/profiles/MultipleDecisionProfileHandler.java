@@ -9,7 +9,7 @@ public class MultipleDecisionProfileHandler extends RequestProfileHandlerChain
 		super(new MultipleDecisionRequestReferencesHandler(), 
 				new MultipleDecisionRepeatingAttributesHandler(),
 				new LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler(),
-				new MultipleDecisionProfileHandler(xpathProvider));
+				new MultipleDecisionXPathExpressionHandler(xpathProvider));
 	}
 	
 }

@@ -28,7 +28,7 @@ import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
-import com.artagon.xacml.v3.spi.xpath.DefaultPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
@@ -60,7 +60,7 @@ public class XPathFunctionsTest
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
 		this.content1 = builder.parse(new InputSource(
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
-		this.xpathProvider = new DefaultPathProvider();
+		this.xpathProvider = new DefaultXPathProvider();
 		this.funcF = new AnnotiationBasedFunctionProvider(XPathFunctions.class);
 	}
 	
