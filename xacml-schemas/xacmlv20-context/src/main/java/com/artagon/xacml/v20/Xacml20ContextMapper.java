@@ -42,7 +42,6 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -82,6 +81,9 @@ public class Xacml20ContextMapper
 	private ResultType create(Result result)
 	{
 		ResultType resultv2 = new ResultType();
+		if(log.isDebugEnabled()){
+			log.debug("Mapping result=\"{}\"", result);
+		}
 		resultv2.setStatus(createStatus(result.getStatus()));
 		resultv2.setResourceId(getResourceId(result));
 		resultv2.setObligations(getObligations(result));
@@ -91,9 +93,6 @@ public class Xacml20ContextMapper
 	
 	private StatusType createStatus(Status status)
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Mapping status=\"{}\"", status);
-		}
 		StatusType statusType = new StatusType();
 		StatusCodeType codeType = new StatusCodeType();
 		statusType.setStatusCode(codeType);
@@ -204,6 +203,9 @@ public class Xacml20ContextMapper
 	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
 	{
 		AttributeCategoryId category = getCategoryId(subject.getSubjectCategory());
+		if(log.isDebugEnabled()){
+			log.debug("Processing subject category=\"{}\"", category);
+		}
 		return new Attributes(category, create(subject.getAttribute(), category));
 	}
 	
@@ -211,7 +213,7 @@ public class Xacml20ContextMapper
 	{
 		AttributeCategoryId category = AttributeCategoryId.parse(id);
 		if(category == null){
-			throw new RequestSyntaxException("Unknown attrobute category=\"%s\"", id);
+			throw new RequestSyntaxException("Unknown attribute category=\"%s\"", id);
 		}
 		return category;
 	}
@@ -270,7 +272,11 @@ public class Xacml20ContextMapper
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
 		for(AttributeValueType v : a.getAttributeValue()){
-			values.add(createValue(a.getDataType(), v, category));
+			AttributeValue value = createValue(a.getDataType(), v, category);
+			if(log.isDebugEnabled()){
+				log.debug("Found attribute value=\"{}\" in request", value);
+			}
+			values.add(value);
 		}
 		return new Attribute(a.getAttributeId(), a.getIssuer(), false, values);
 	}

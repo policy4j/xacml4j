@@ -2,7 +2,6 @@ package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
@@ -15,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
-import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -85,8 +84,8 @@ public class Xacml20ContextMapperTest
 		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
-		assertEquals("record", ((Element)resource.getContent()).getLocalName());
-		assertEquals("http://www.medico.com/schemas/record", ((Element)resource.getContent()).getNamespaceURI());
+		assertEquals("record", ((Document)resource.getContent()).getDocumentElement().getLocalName());
+		assertEquals("http://www.medico.com/schemas/record", ((Document)resource.getContent()).getDocumentElement().getNamespaceURI());
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
@@ -98,6 +97,16 @@ public class Xacml20ContextMapperTest
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
 		assertEquals(XacmlDataTypes.STRING.create("read"), Iterables.getOnlyElement(actionId.getValues()));	
+	}
+	
+	@Test
+	public void testRequestIIA13Mapping() throws Exception
+	{
+		RequestType req = getJAXBObject("IIA013Request.xml");
+		Request request = contextMapper.create(req);
+		assertNotNull(request);	
+		assertEquals(2, request.getAttributeValues(AttributeCategoryId.SUBJECT_ACCESS, 
+				"urn:oasis:names:tc:xacml:2.0:conformance-test:age", null, XacmlDataTypes.INTEGER.getType()).size());
 	}
 	
 	@Test
