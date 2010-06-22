@@ -58,16 +58,23 @@ class Xacml20ContextMapper
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
 	
-	private final static Map<Decision, DecisionType> decisionMapping = new HashMap<Decision, DecisionType>();
+	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
+	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
 	
 	static{
-		decisionMapping.put(Decision.DENY, DecisionType.DENY);
-		decisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
-		decisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
-		decisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-		decisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
-		decisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
-		decisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
+		v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
+		v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
+		
+		v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
+		v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
+		v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
+		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
+	
 	}
 	
 	private static JAXBContext context;
@@ -97,14 +104,29 @@ class Xacml20ContextMapper
 		}
 		return responseV2;
 	}
-		
+	
+	public Response create(ResponseType response)
+	{
+		Collection<Result> results = new LinkedList<Result>();
+		for(ResultType result : response.getResult()){
+			results.add(create(result));
+		}
+		return new Response(results);
+	}
+	
+	private Result create(ResultType result)
+	{
+		Decision decision = v20ToV30DecisionMapping.get(result.getDecision());
+		return null;
+	}
+	
 	private ResultType create(Result result)
 	{
 		ResultType resultv2 = new ResultType();
 		resultv2.setStatus(createStatus(result.getStatus()));
 		resultv2.setResourceId(getResourceId(result));
 		resultv2.setObligations(getObligations(result));
-		resultv2.setDecision(decisionMapping.get(result.getDecision()));
+		resultv2.setDecision(v30ToV20DecisionMapping.get(result.getDecision()));
 		return resultv2;
 	}
 	
