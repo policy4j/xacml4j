@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.oasis.xacml.v20.policy.ObjectFactory;
+import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.PolicyFactory;
@@ -30,16 +31,29 @@ public class Xacml20PolicyReader implements XacmlPolicyReader
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public CompositeDecisionRule getPolicy(InputStream source)
+	public CompositeDecisionRule getPolicy(Object source)
 			throws PolicySyntaxException 
 	{
 		Preconditions.checkNotNull(source);
 		try{
 			Unmarshaller u = context.createUnmarshaller();
-			JAXBElement<CompositeDecisionRule> policy =  (JAXBElement<CompositeDecisionRule>)u.unmarshal(source);
-			return mapper.create(policy.getValue());
+			JAXBElement<?> policy = null;
+			if(source instanceof InputSource){
+				policy =  (JAXBElement<?>)u.unmarshal((InputSource)source);
+			}
+			if(source instanceof InputStream){
+				policy =  (JAXBElement<?>)u.unmarshal((InputStream)source);
+			}
+			if(source instanceof JAXBElement<?>){
+				policy =  (JAXBElement<?>)source;
+			}
+			if(policy != null){
+				return mapper.create(policy.getValue());
+			}
+			throw new IllegalArgumentException(
+					String.format("Unsupported policy source=\"%s\"", 
+							source.getClass().getName()));
 		}catch(JAXBException e){
 			throw new PolicySyntaxException(e);
 		}

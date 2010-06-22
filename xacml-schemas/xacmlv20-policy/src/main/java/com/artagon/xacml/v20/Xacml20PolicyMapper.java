@@ -77,7 +77,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class Xacml20PolicyMapper 
+class Xacml20PolicyMapper 
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20PolicyMapper.class);
 	
