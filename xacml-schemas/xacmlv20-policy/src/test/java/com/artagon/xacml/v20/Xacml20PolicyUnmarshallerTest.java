@@ -20,16 +20,16 @@ import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.XacmlPolicyReader;
+import com.artagon.xacml.v3.XacmlPolicyUnmarsaller;
 
-public class Xacml20PolicyReaderTest 
+public class Xacml20PolicyUnmarshallerTest 
 {
-	private static XacmlPolicyReader reader; 
+	private static XacmlPolicyUnmarsaller reader; 
 	
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml20PolicyReader(new DefaultPolicyFactory());
+		reader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
 	}
 	
 	@SuppressWarnings("unchecked")

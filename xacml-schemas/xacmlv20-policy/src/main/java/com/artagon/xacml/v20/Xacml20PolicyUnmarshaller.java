@@ -14,15 +14,15 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.XacmlPolicyReader;
+import com.artagon.xacml.v3.XacmlPolicyUnmarsaller;
 import com.google.common.base.Preconditions;
 
-public class Xacml20PolicyReader implements XacmlPolicyReader
+public class Xacml20PolicyUnmarshaller implements XacmlPolicyUnmarsaller
 {
 	private JAXBContext context;
 	private Xacml20PolicyMapper mapper;
 	
-	public Xacml20PolicyReader(PolicyFactory factory){
+	public Xacml20PolicyUnmarshaller(PolicyFactory factory){
 		Preconditions.checkNotNull(factory);
 		this.mapper = new Xacml20PolicyMapper(factory);
 		try{
