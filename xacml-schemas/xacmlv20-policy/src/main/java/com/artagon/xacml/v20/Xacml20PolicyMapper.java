@@ -405,6 +405,9 @@ public class Xacml20PolicyMapper
 			return null;
 		}
 		JAXBElement<?> expression = c.getExpression();
+		if(expression == null){
+			return null;
+		}
 		return factory.createCondition(createExpression(expression, variables));
 	}
 

@@ -7,66 +7,44 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oasis.xacml.v20.policy.PolicySetType;
-import org.oasis.xacml.v20.policy.PolicyType;
+import org.xml.sax.InputSource;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.XacmlPolicyReader;
 
 public class Xacml20PolicyMapperTest 
 {
-	private static JAXBContext context;
-	private Xacml20PolicyMapper mapper;
+	private static XacmlPolicyReader reader; 
 	
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		try{
-			context = JAXBContext.newInstance("org.oasis.xacml.v20.policy");
-		}catch(JAXBException e){
-			System.err.println(e.getMessage());
-		}
+		reader = new Xacml20PolicyReader(new DefaultPolicyFactory());
 	}
 	
-	@Before
-	public void init() throws Exception
-	{
-		PolicyFactory policyFactory = new DefaultPolicyFactory();
-		mapper = new Xacml20PolicyMapper(policyFactory);
-	}
-	
-	@SuppressWarnings({"unchecked" })
-	private static <T> T getPolicy(String name) throws Exception
+	@SuppressWarnings("unchecked")
+	private static <T extends CompositeDecisionRule> T getPolicy(String name) throws Exception
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		assertNotNull(stream);
-		assertNotNull(context);
-		JAXBElement<T> policy = (JAXBElement<T>)context.createUnmarshaller().unmarshal(stream);
-		assertNotNull(policy);
-		return policy.getValue();
+		return  (T)reader.getPolicy(new InputSource(stream));
 	}
 	
 	
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
-		PolicyType policy = getPolicy("IIIF005Policy.xml");
-		Policy p0 = (Policy)mapper.create(policy);
+		Policy p0 = getPolicy("IIIF005Policy.xml");
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:policy", p0.getId());
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());
 		assertNotNull(p0.getDefaults());
@@ -93,8 +71,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testPolicyIIIF006Mapping() throws Exception
 	{
-		PolicySetType policy = getPolicy("IIIF006Policy.xml");
-		PolicySet p0 = (PolicySet)mapper.create(policy);
+		PolicySet p0 = getPolicy("IIIF006Policy.xml");
 		assertNotNull(p0);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet", p0.getId());
 		assertEquals("Policy Set for Conformance Test IIIF006.", p0.getDescription());
@@ -107,8 +84,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testPolicyIIIF007Mapping() throws Exception
 	{
-		PolicyType policy = getPolicy("IIIF007Policy.xml");
-		Policy p = (Policy)mapper.create(policy);
+		Policy p = getPolicy("IIIF007Policy.xml");
 		assertNotNull(p);
 		
 	}
@@ -117,8 +93,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testPolicyIIC231Mapping() throws Exception
 	{
-		PolicyType policy = getPolicy("IIC231Policy.xml");
-		Policy p = (Policy)mapper.create(policy);
+		Policy p = getPolicy("IIC231Policy.xml");
 		assertNotNull(p);
 		
 	}
@@ -126,8 +101,7 @@ public class Xacml20PolicyMapperTest
 	@Test
 	public void testFeatures001Policy() throws Exception
 	{
-		PolicyType policy = getPolicy("001B-Policy.xml");
-		Policy p = (Policy)mapper.create(policy);
+		Policy p = getPolicy("001B-Policy.xml");
 		assertEquals(5, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
 		assertNotNull(p.getVariableDefinition("VAR02"));
@@ -139,8 +113,7 @@ public class Xacml20PolicyMapperTest
 	@Test(expected=PolicySyntaxException.class)
 	public void testFeatures002Policy() throws Exception
 	{
-		PolicyType policy = getPolicy("002B-Policy.xml");
-		Policy p = (Policy)mapper.create(policy);
+		Policy p = getPolicy("002B-Policy.xml");
 		assertEquals(2, p.getVariableDefinitions().size());
 		assertNotNull(p.getVariableDefinition("VAR01"));
 		assertNotNull(p.getVariableDefinition("VAR02"));
