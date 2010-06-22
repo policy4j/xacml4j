@@ -6,11 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.oasis.xacml.v20.context.ActionType;
 import org.oasis.xacml.v20.context.AttributeType;
 import org.oasis.xacml.v20.context.AttributeValueType;
 import org.oasis.xacml.v20.context.DecisionType;
 import org.oasis.xacml.v20.context.EnvironmentType;
+import org.oasis.xacml.v20.context.ObjectFactory;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResourceContentType;
 import org.oasis.xacml.v20.context.ResourceType;
@@ -42,11 +46,12 @@ import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-public class Xacml20ContextMapper
+class Xacml20ContextMapper
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20ContextMapper.class);
 	
@@ -65,7 +70,22 @@ public class Xacml20ContextMapper
 		decisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
 	}
 	
+	private static JAXBContext context;
+	
+	static{
+		try{
+			context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+		}catch(JAXBException e){
+		}
+	}
+	
 	public Xacml20ContextMapper(){
+		Preconditions.checkState(context != null, 
+				"Failed to initialize JAXB context");
+	}
+	
+	static JAXBContext getJaxbContext(){
+		return context;
 	}
 	
 	public ResponseType create(Response response)
