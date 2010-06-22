@@ -1,8 +1,5 @@
 package com.artagon.xacml.v3;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 
@@ -15,8 +12,6 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
  */
 public class Condition extends XacmlObject implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(Condition.class);
-	
 	private Expression predicate;
 
 	/**
