@@ -92,6 +92,22 @@ public class Result extends XacmlObject
 		}
 	}
 	
+	
+	public static Result createIndeterminate(Status status){
+		return new Result(Decision.INDETERMINATE, status);
+	}
+	
+	public static Result createIndeterminateSyntaxError(String format, Object ...params){
+		return new Result(Decision.INDETERMINATE, 
+				Status.createSyntaxError(format, params));
+	}
+	
+	public static Result createIndeterminateProcessingError(String format, Object ...params){
+		return new Result(Decision.INDETERMINATE, 
+				Status.createSyntaxError(format, params));
+	}
+	
+	
 	/**
 	 * Gets a status of this result. Status indicates 
 	 * whether errors occurred during evaluation of 

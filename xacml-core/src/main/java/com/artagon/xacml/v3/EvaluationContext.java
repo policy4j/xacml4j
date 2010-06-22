@@ -54,7 +54,6 @@ public interface EvaluationContext
 	 * @return {@link AttributeResolutionScope}
 	 */
 	AttributeResolutionScope getAttributeResolutionScope();
-	void setAttributeResolutionScope(AttributeResolutionScope scope);
 	
 	/**
 	 * Gets parent evaluation context

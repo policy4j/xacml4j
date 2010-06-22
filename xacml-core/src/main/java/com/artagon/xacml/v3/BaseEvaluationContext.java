@@ -41,8 +41,6 @@ abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private XPathProvider xpathProvider;
 	
-	private AttributeResolutionScope scope;
-	
 	private StatusCode evaluationStatus;
 	
 		
@@ -323,15 +321,6 @@ abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public AttributeResolutionScope getAttributeResolutionScope() {
-		return (scope == null)?AttributeResolutionScope.REQUEST_EXTERNAL:scope;
-	}
-
-
-
-	@Override
-	public void setAttributeResolutionScope(
-			AttributeResolutionScope scope) {
-		Preconditions.checkNotNull(scope);
-		this.scope = scope;	
+		return AttributeResolutionScope.REQUEST_EXTERNAL;
 	}	
 }

@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.pdp.profiles;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
@@ -19,7 +20,9 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
 		if(request.hasRepeatingCategories()){
-			return handleNext(request, pdp);
+			return Collections.singleton(
+					Result.createIndeterminateSyntaxError(
+							"Found repeating categories in the request"));
 		}
 		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
 		if(resource == null){

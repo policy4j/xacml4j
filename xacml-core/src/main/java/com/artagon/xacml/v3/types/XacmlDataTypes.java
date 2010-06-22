@@ -67,7 +67,7 @@ public enum XacmlDataTypes
 			BY_TYPE_ID.put(t.getTypeId(), t.getType());
 		}
 		// legacy XACML 2.0 type mappings
-		BY_TYPE_ID.put("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XacmlDataTypes.XPATHEXPRESSION.getType());
+		BY_TYPE_ID.put("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression", XacmlDataTypes.XPATHEXPRESSION.getType());
 		BY_TYPE_ID.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration", XacmlDataTypes.DAYTIMEDURATION.getType());
 		BY_TYPE_ID.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration", XacmlDataTypes.YEARMONTHDURATION.getType());
 	}

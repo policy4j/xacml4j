@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -16,7 +14,6 @@ import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
@@ -33,8 +30,6 @@ import com.google.common.collect.Sets;
 
 final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfileHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(MultipleDecisionXPathExpressionHandler.class);
-	
 	final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
@@ -52,17 +47,11 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
 	{
 		if(request.hasRepeatingCategories()){
-			if(log.isDebugEnabled()){
-				log.debug("Request=\"{}\" has repeating categories", request);
-			}
 			return handleNext(request, pdp); 
 		}
 		if(!request.containsAttributeValues(
-				MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType())){
-			if(log.isDebugEnabled()){
-				log.debug("Request does not contain attributes with id=\"{}\" of type=\"{}\"", 
-						MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
-			}
+				MULTIPLE_CONTENT_SELECTOR, 
+				XacmlDataTypes.XPATHEXPRESSION.getType())){
 			return handleNext(request, pdp);
 		}
 		try
@@ -82,9 +71,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			return results;
 		}catch(RequestSyntaxException e){
 			return Collections.singleton(
-					new Result(
-							Decision.INDETERMINATE, 
-							e.getStatus()));
+					Result.createIndeterminate(e.getStatus()));
 		}
 	}
 	
@@ -112,7 +99,6 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			Set<Attributes> attributes = new LinkedHashSet<Attributes>();
 			for(int i = 0; i < nodeSet.getLength(); i++){	
 				String xpath = DOMUtil.getXPath(nodeSet.item(i));
-				log.debug("Xpath=\"{}\" category=\"{}\"", xpath, attribute.getCategoryId());
 				attributes.add(transform(xpath, attribute));
 			}
 			return attributes;

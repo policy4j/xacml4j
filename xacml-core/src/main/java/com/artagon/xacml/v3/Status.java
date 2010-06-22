@@ -33,9 +33,23 @@ public final class Status extends XacmlObject
 		this(code, null, null);
 	}
 	
-
-	public static Status createSuccessStatus(){
+	public static Status createSuccess(){
 		return new Status(new StatusCode(StatusCodeId.OK), null , null);
+	}
+	
+	public static Status createSyntaxError(String format, Object ...params){
+		return new Status(StatusCode.createSyntaxError(), 
+				(format == null)?null:String.format(format, params), null);
+	}
+	
+	public static Status createProcessingError(String format, Object ...params){
+		return new Status(StatusCode.createProcessingError(), 
+				(format == null)?null:String.format(format, params), null);
+	}
+	
+	public static Status createMissingAttribute(String format, Object ...params){
+		return new Status(StatusCode.createMissingAttribute(), 
+				(format == null)?null:String.format(format, params), null);
 	}
 	
 	public StatusCode getStatusCode(){

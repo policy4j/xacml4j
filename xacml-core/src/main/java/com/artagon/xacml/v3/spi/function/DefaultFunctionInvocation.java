@@ -34,7 +34,8 @@ public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
 			return (T)functionMethod.invoke(instance, params);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed with error message=\"{}\"", e);
+				log.debug("Failed to invoke methd=\"{}\" with error message=\"{}\"", 
+						functionMethod.getName(), e.getMessage());
 			}
 			throw e;
 		}

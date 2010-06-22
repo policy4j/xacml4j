@@ -276,11 +276,15 @@ public class Request extends XacmlObject
 	{
 		Collection<AttributeValue> found = new LinkedList<AttributeValue>();
 		for(Attributes a : attributes.get(categoryId)){
-			System.out.println("Found values " + attributeId + " -- " + issuer + "--" + dataType);
 			found.addAll(a.getAttributeValues(attributeId, issuer, dataType));
 		}
-		System.out.println("Found values - " + found.size());
 		return found;
+	}
+	
+	public Collection<AttributeValue> getAttributeValues(AttributeCategoryId categoryId, 
+			String attributeId, AttributeValueType dataType)
+	{
+		return getAttributeValues(categoryId, attributeId, null, dataType);
 	}
 	
 	public boolean containsAttributeValues(String attributeId, AttributeValueType type)

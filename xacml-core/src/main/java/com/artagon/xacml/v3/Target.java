@@ -42,12 +42,10 @@ public class Target extends XacmlObject implements PolicyElement
 	 */
 	public MatchResult match(EvaluationContext context) 
 	{
-		AttributeResolutionScope scope = context.getAttributeResolutionScope();
-		// set attribute resolution scope to request context only
-		context.setAttributeResolutionScope(AttributeResolutionScope.REQUEST);
+		EvaluationContext targetContext = new TargetEvaluationContext(context);
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
-			MatchResult r = m.match(context);
+			MatchResult r = m.match(targetContext);
 			if(r == MatchResult.NOMATCH){
 				state = r;
 				log.debug("Found AnyOf with match result=\"{}\", " +
@@ -61,8 +59,6 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
-		// set back old attribute resolution scope
-		context.setAttributeResolutionScope(scope);
 		return state;
 	}
 
@@ -73,6 +69,18 @@ public class Target extends XacmlObject implements PolicyElement
 			m.accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	class TargetEvaluationContext extends DelegatingEvaluationContext
+	{
+		public TargetEvaluationContext(EvaluationContext context) {
+			super(context);
+		}
+		
+		@Override
+		public AttributeResolutionScope getAttributeResolutionScope() {		
+			return AttributeResolutionScope.REQUEST;
+		}
 	}
 		
 }
