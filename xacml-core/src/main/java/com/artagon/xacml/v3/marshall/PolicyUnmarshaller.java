@@ -7,7 +7,7 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.PolicySyntaxException;
 
-public interface XacmlPolicyUnmarshaller 
+public interface PolicyUnmarshaller 
 {
 	/**
 	 * Creates policy from a given {@link InputSource}
