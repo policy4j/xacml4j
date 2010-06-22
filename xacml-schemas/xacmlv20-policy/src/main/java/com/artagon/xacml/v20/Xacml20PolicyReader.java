@@ -1,5 +1,6 @@
 package com.artagon.xacml.v20;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
@@ -47,6 +48,9 @@ public class Xacml20PolicyReader implements XacmlPolicyReader
 			}
 			if(source instanceof JAXBElement<?>){
 				policy =  (JAXBElement<?>)source;
+			}
+			if(source instanceof byte[]){
+				policy =  (JAXBElement<?>)u.unmarshal(new ByteArrayInputStream((byte[])source));
 			}
 			if(policy != null){
 				return mapper.create(policy.getValue());
