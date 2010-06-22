@@ -14,10 +14,10 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.XacmlPolicyUnmarsaller;
+import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
-public class Xacml20PolicyUnmarshaller implements XacmlPolicyUnmarsaller
+public class Xacml20PolicyUnmarshaller implements PolicyUnmarshaller
 {
 	private JAXBContext context;
 	private Xacml20PolicyMapper mapper;

@@ -20,11 +20,11 @@ import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.XacmlPolicyUnmarsaller;
+import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 
 public class Xacml20PolicyUnmarshallerTest 
 {
-	private static XacmlPolicyUnmarsaller reader; 
+	private static PolicyUnmarshaller reader; 
 	
 	@BeforeClass
 	public static void init_static() throws Exception
