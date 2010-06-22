@@ -9,7 +9,6 @@ import java.util.Iterator;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
@@ -23,7 +22,7 @@ import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.XacmlPolicyReader;
 
-public class Xacml20PolicyMapperTest 
+public class Xacml20PolicyReaderTest 
 {
 	private static XacmlPolicyReader reader; 
 	
@@ -37,7 +36,8 @@ public class Xacml20PolicyMapperTest
 	private static <T extends CompositeDecisionRule> T getPolicy(String name) throws Exception
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		return  (T)reader.getPolicy(new InputSource(stream));
+		assertNotNull(stream);
+		return  (T)reader.getPolicy(stream);
 	}
 	
 	
