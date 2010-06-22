@@ -8,15 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 
 public class Policy extends BaseCompositeDecisionRule implements PolicyElement
-{
-	private final static Logger log = LoggerFactory.getLogger(Policy.class);
-	
+{	
 	private PolicyDefaults policyDefaults;
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;

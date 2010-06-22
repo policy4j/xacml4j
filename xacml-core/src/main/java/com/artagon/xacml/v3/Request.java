@@ -271,6 +271,15 @@ public class Request extends XacmlObject
 		return false;
 	}
 	
+	/**
+	 * Gets attribute values for given category, issuer, attribute id and data type
+	 * 
+	 * @param categoryId an category
+	 * @param attributeId an attribute identifier
+	 * @param issuer an attribute issuer
+	 * @param dataType an attribute data type
+	 * @return a collection of {@link AttributeValue} instances
+	 */
 	public Collection<AttributeValue> getAttributeValues(AttributeCategoryId categoryId, 
 			String attributeId, String issuer, AttributeValueType dataType)
 	{

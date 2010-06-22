@@ -12,6 +12,7 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultPolicyVisitor;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicyVisitor;
 import com.google.common.base.Preconditions;
 
 public final class InMemoryPolicyStore extends AbstractPolicyRepository 
@@ -29,6 +30,11 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();
 	}
 	
+	/**
+	 * Adds {@link CompositeDecisionRule} to this repository
+	 * 
+	 * @param rule a policy or policy set
+	 */
 	public void add(CompositeDecisionRule rule)
 	{
 		if(log.isDebugEnabled()){
@@ -40,6 +46,11 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 		rule.accept(new PolicyTreeWalker());
 	}
 	
+	/**
+	 * Adds collection of policies to this repository
+	 * 
+	 * @param rules a collection of policies
+	 */
 	public void addAll(Collection<CompositeDecisionRule> rules)
 	{
 		for(CompositeDecisionRule r : rules){
@@ -68,7 +79,10 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 		return Collections.unmodifiableCollection(topLevel.values());
 	}
 
-
+	/**
+	 * A {@link PolicyVisitor} implementation
+	 * to index policies by policy identifier
+	 */
 	class PolicyTreeWalker extends DefaultPolicyVisitor
 	{		
 		public void visitEnter(Policy p) {
@@ -78,7 +92,8 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 			}
 			Policy old = policies.put(p.getId(), p);
 			Preconditions.checkState(old == null, 
-					"Policy with id=\"%s\" already exist in the store", p.getId());
+					"Policy with id=\"%s\" " +
+					"already exist in the store", p.getId());
 		}
 		
 		public void visitEnter(PolicySet p) {
@@ -88,7 +103,8 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 			}
 			PolicySet old = policySets.put(p.getId(), p);
 			Preconditions.checkState(old == null, 
-					"PolicySet with id=\"%s\" already exist in the store", p.getId());
+					"PolicySet with id=\"%s\" " +
+					"already exist in the store", p.getId());
 		}		
 	}
 }
