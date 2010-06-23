@@ -25,6 +25,7 @@ import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlParamFuncReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider
 public class HigherOrderFunctions 
@@ -155,7 +156,8 @@ public class HigherOrderFunctions
 		
 		@Override
 		public ValueType resolve(FunctionSpec spec, 
-				Expression... arguments) {
+				Expression... arguments) 
+		{
 			AttributeValueType type = (AttributeValueType)((FunctionReference)arguments[0]).getEvaluatesTo();
 			return type.bagOf();
 		}
@@ -163,7 +165,7 @@ public class HigherOrderFunctions
 		@Override
 		public boolean validate(FunctionSpec spec, Expression... arguments) 
 		{
-			return true;
+			return false;
 		}
 	}
 }

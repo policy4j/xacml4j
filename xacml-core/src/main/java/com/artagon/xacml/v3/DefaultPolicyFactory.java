@@ -67,7 +67,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public Match createMatch(String functionId, AttributeValue value, AttributeReference reference)
 			throws PolicySyntaxException 
 	{
-		return new Match(createFunction(functionId), value, reference);
+		try{
+			return new Match(createFunction(functionId), value, reference);
+		}catch(IllegalArgumentException e){
+			throw new PolicySyntaxException(e);
+		}
 	}
 	
 	@Override
