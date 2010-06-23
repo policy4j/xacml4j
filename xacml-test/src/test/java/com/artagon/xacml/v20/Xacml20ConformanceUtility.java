@@ -2,13 +2,20 @@ package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.oasis.xacml.v20.context.ObjectFactory;
 import org.oasis.xacml.v20.context.ResponseType;
 import org.oasis.xacml.v20.context.ResultType;
 import org.oasis.xacml.v20.context.StatusType;
@@ -18,6 +25,15 @@ import org.oasis.xacml.v20.policy.ObligationsType;
 
 public class Xacml20ConformanceUtility 
 {
+	private static JAXBContext context;
+	
+	static{
+		try{
+			context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+		}catch(JAXBException e){
+			
+		}
+	}
 	public static void assertResponse(ResponseType a, ResponseType b)
 	{
 		assertEquals(a.getResult().size(), a.getResult().size());
@@ -108,16 +124,25 @@ public class Xacml20ConformanceUtility
 		return map;
 	}
 	
-	public static String createName(String prefix, int testCaseNum, String sufix)
+	public static String createTestAssetName(String prefix, int testCaseNum, String sufix)
 	{
 		return new StringBuilder(prefix)
 		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
 		.append(sufix).toString();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static ResponseType getResponse(String prefix, int num) throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		InputStream in = cl.getResourceAsStream("oasis-xacml20-compat-test/" + createTestAssetName(prefix, num, "Response.xml"));
+		assertNotNull(in);
+		return ((JAXBElement<ResponseType>)context.createUnmarshaller().unmarshal(in)).getValue();
+	}
+	
 	@Test
 	public void testName()
 	{
-		assertEquals("AA003B", createName("AA", 3, "B"));
+		assertEquals("AA003B", createTestAssetName("AA", 3, "B"));
 	}
 }

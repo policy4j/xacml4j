@@ -4,14 +4,14 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
         access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIA1:policy"
+      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIA015:policy"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
     <Description>
         Policy for Conformance Test IIA015.
     </Description>
     <Target/>
     <Rule
-          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIA1:rule"
+          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIA015:rule"
           Effect="Permit">
         <Description>
             Anyone who is 45 integer years old may perform any

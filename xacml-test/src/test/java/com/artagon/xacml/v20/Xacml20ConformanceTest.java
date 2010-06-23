@@ -1,8 +1,8 @@
 package com.artagon.xacml.v20;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,74 +17,38 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
-import org.oasis.xacml.v20.policy.PolicySetType;
-import org.oasis.xacml.v20.policy.PolicyType;
 
-import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
-import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
-import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.StatusCodeId;
+import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
+import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
+import com.artagon.xacml.v3.marshall.ResponseMarshaller;
+import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.pdp.SimplePolicyDecisionPoint;
-import com.google.common.collect.Iterables;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyStore;
 
 public class Xacml20ConformanceTest 
 {
-	private static JAXBContext context1;
-	private static JAXBContext context2;
-	private Xacml20PolicyMapper policyMapper;
-	private Xacml20ContextMapper contextMapper;
-	private PolicyDecisionPoint pdp;
-	private EvaluationContextFactory factory;
-	
-	
-	@BeforeClass
-	public static void init_static() throws Exception
-	{
-		try{
-			context1 = JAXBContext.newInstance("org.oasis.xacml.v20.policy");
-			context2 = JAXBContext.newInstance("org.oasis.xacml.v20.context");
-		}catch(JAXBException e){
-			System.err.println(e.getMessage());
-		}
-	}
+	private PolicyUnmarshaller policyReader;
+	private RequestUnmarshaller requestUnmarshaller;
+	private ResponseMarshaller responseMarshaller;
+	private InMemoryPolicyStore store;
+	private  PolicyDecisionPoint pdp;
 	
 	@Before
 	public void init() throws Exception
 	{
-		PolicyFactory policyFactory = new DefaultPolicyFactory();
-		policyMapper = new Xacml20PolicyMapper(policyFactory);
-		contextMapper = new Xacml20ContextMapper();
-		this.factory = new DefaultEvaluationContextFactory();
+		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
+		this.responseMarshaller = new Xacml20ResponseMarshaller();
+		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
+		this.store = new InMemoryPolicyStore();
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store), store);
 		
-	}
-	
-	@SuppressWarnings({"unchecked" })
-	private static <T> T getPolicy(String name) throws Exception
-	{
-		System.out.println("Laading policy + " + name);
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		assertNotNull(stream);
-		assertNotNull(context1);
-		JAXBElement<T> e = (JAXBElement<T>)context1.createUnmarshaller().unmarshal(stream);
-		assertNotNull(e);
-		return e.getValue();
-	}
-	
-	@SuppressWarnings({"unchecked" })
-	private static <T> T getContext(String name) throws Exception
-	{
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		assertNotNull(stream);
-		assertNotNull(context2);
-		JAXBElement<T> e = (JAXBElement<T>)context2.createUnmarshaller().unmarshal(stream);
-		assertNotNull(e);
-		return e.getValue();
 	}
 	
 	@Test
@@ -155,26 +119,80 @@ public class Xacml20ConformanceTest
 		skipTests.add(5);
 		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);	
 	}
-		
-	private void executeXacmlConformanceTestCase(Set<Integer> exclude, String testPrefix, int testCount) throws Exception
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIIE001() throws Exception
+	{	
+		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		repository.addTopLevelPolicy(getPolicy("IIE", 1, "Policy.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicyId1.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicySetId1.xml"));
+		Request request = getRequest("IIE", 1);
+		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		Response response = pdp.decide(request);
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 1));	
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIIE002() throws Exception
+	{	
+		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		repository.addTopLevelPolicy(getPolicy("IIE", 2, "Policy.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicyId1.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicySetId1.xml"));
+		Request request = getRequest("IIE", 2);
+		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		Response response = pdp.decide(request);
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 2));	
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testIIE003() throws Exception
+	{	
+		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		repository.addTopLevelPolicy(getPolicy("IIE", 3, "Policy.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId1.xml"));
+		repository.addReferencedPolicy(getPolicy("IIE", 3, "PolicySetId1.xml"));
+		Request request = getRequest("IIE", 3);
+		Response response = pdp.decide(request);
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 3));	
+	}
+			
+	@SuppressWarnings("unchecked")
+	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
 	{
 		for(int i = 1; i < testCount; i++)
 		{
-
-			String policyPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Policy.xml");
-			String requestPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Request.xml");
-			String responsePath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createName(testPrefix, i, "Response.xml");
 			if(exclude.contains(i)){
-				System.out.println("Skipping - " + policyPath);
 				continue;
 			}
-			System.out.println("Executing - " + policyPath);
-			Object policy = getPolicy(policyPath);
-			RequestType request = getContext(requestPath);
-			this.pdp = new SimplePolicyDecisionPoint(factory, policyMapper.create(policy));
-			Response response = pdp.decide(contextMapper.create(request));
-			ResponseType expected = getContext(responsePath);
-			Xacml20ConformanceUtility.assertResponse(expected, contextMapper.create(response));
+			InMemoryPolicyStore repository = new InMemoryPolicyStore();
+			repository.addTopLevelPolicy(getPolicy(testPrefix, i, "Policy.xml"));
+			Request request = getRequest(testPrefix, i);
+			this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+			Response response = pdp.decide(request);
+			ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+			Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse(testPrefix, i));
 		}
+	}
+	
+	private Request getRequest(String prefix, int number) throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		String requestPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, "Request.xml");
+		return requestUnmarshaller.unmarshalRequest(cl.getResourceAsStream(requestPath));
+	}
+	
+	private CompositeDecisionRule getPolicy(String prefix, int number, String sufix) throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		String path = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, sufix);
+		return policyReader.getPolicy(cl.getResourceAsStream(path));
 	}
 }
