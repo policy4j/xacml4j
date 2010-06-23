@@ -177,13 +177,14 @@ public class Xacml20ConformanceTest
 			if(exclude.contains(i)){
 				continue;
 			}
+			System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, i, "Policy.xml"));
 			InMemoryPolicyStore repository = new InMemoryPolicyStore();
 			repository.addTopLevelPolicy(getPolicy(testPrefix, i, "Policy.xml"));
 			Request request = getRequest(testPrefix, i);
 			this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
 			Response response = pdp.decide(request);
-			ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
-			Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse(testPrefix, i));
+			ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+			Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, i), actual);
 		}
 	}
 	
