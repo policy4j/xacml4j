@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
@@ -82,6 +84,17 @@ public class Attribute extends XacmlObject
 	 */
 	public Collection<AttributeValue> getValues(){
 		return Collections.unmodifiableCollection(values);
+	}
+	
+	public Collection<AttributeValue> getValuesByType(final AttributeValueType type)
+	{
+		return Collections2.filter(values, new Predicate<AttributeValue>() {
+			@Override
+			public boolean apply(AttributeValue a) {
+				return a.getType().equals(type);
+			}
+			
+		});
 	}
 	
 	/**

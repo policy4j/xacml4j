@@ -10,8 +10,8 @@ import org.w3c.dom.Node;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
 public class Attributes extends XacmlObject
@@ -34,14 +34,14 @@ public class Attributes extends XacmlObject
 			String id, 
 			AttributeCategoryId categoryId, 
 			Node content, 
-			Iterable<Attribute> attributes){
+			Iterable<Attribute> attrs){
 		Preconditions.checkNotNull(categoryId);
-		Preconditions.checkNotNull(attributes);
+		Preconditions.checkNotNull(attrs);
 		this.id = id;
 		this.categoryId = categoryId;
 		this.content = content;
-		this.attributes = HashMultimap.create();
-		for(Attribute attr : attributes){
+		this.attributes = LinkedListMultimap.create();
+		for(Attribute attr : attrs){
 			this.attributes.put(attr.getAttributeId(), attr);
 		}
 	}
@@ -243,17 +243,11 @@ public class Attributes extends XacmlObject
 	public Collection<AttributeValue> getAttributeValues(
 			String attributeId, String issuer, final AttributeValueType type){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> attrs = getAttributes(attributeId, issuer);
+		Collection<Attribute> found = getAttributes(attributeId, issuer);
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
-		for(Attribute a : attrs)
-		{
-			values.addAll(Collections2.filter(a.getValues(), new Predicate<AttributeValue>() {
-				@Override
-				public boolean apply(AttributeValue attr) {
-					return type.equals(attr.getType());
-				}
-			}));
+		for(Attribute a : found){
+			values.addAll(a.getValuesByType(type));
 		}
-		return Collections.unmodifiableCollection(values);
+		return values;
 	}
 }

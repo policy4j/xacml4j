@@ -81,6 +81,17 @@ public class AttributesTest
 	}
 	
 	@Test
+	public void testCreateWithTheSameAttributes()
+	{
+		Collection<Attribute> attributes = new LinkedList<Attribute>();
+		attributes.add(new Attribute("testId10", XacmlDataTypes.STRING.create("value0")));
+		attributes.add(new Attribute("testId10", XacmlDataTypes.STRING.create("value0")));
+		assertEquals(2, attributes.size());
+		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		assertEquals(2, test.getAttributeValues("testId10", XacmlDataTypes.STRING.getType()).size());
+	}
+	
+	@Test
 	public void testGetAttributeValuesByIdAndIssuerAndType()
 	{
 		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);

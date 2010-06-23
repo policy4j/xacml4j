@@ -40,6 +40,21 @@ public class AttributeTest
 	}
 	
 	@Test
+	public void testCreateWithTheSameValues()
+	{
+		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		values.add(XacmlDataTypes.INTEGER.create(1));
+		values.add(XacmlDataTypes.INTEGER.create(1));
+		Attribute attr = new Attribute("testId", "testIssuer", true, values);
+		assertEquals("testId", attr.getAttributeId());
+		assertEquals("testIssuer", attr.getIssuer());
+		assertTrue(attr.isIncludeInResult());
+		assertEquals(values.size(), attr.getValues().size());
+		assertTrue(attr.getValues().containsAll(values));
+		assertTrue(values.containsAll(attr.getValues()));
+	}
+	
+	@Test
 	public void testCreateWithIdAndValuesCollection()
 	{
 		Attribute attr = new Attribute("testId", values);
