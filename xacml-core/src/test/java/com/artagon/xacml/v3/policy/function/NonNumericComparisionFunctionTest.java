@@ -41,6 +41,18 @@ public class NonNumericComparisionFunctionTest
 	}
 	
 	@Test
+	public void testTimeLessThan()
+	{
+		TimeValue t1 = XacmlDataTypes.TIME.create("08:23:47-05:00");
+		TimeValue t2 = XacmlDataTypes.TIME.create("08:23:48-05:00");
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), NonNumericComparisionFunctions.lessThan(t1, t2));
+		t2 = XacmlDataTypes.TIME.create("08:23:47-05:00");
+		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NonNumericComparisionFunctions.lessThan(t1, t2));
+		t2 = XacmlDataTypes.TIME.create("08:23:46-05:00");
+		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NonNumericComparisionFunctions.lessThan(t1, t2));
+	}
+	
+	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsInRange()
 	{
 		expect(context.getTimeZone()).andReturn(TimeZone.getDefault());

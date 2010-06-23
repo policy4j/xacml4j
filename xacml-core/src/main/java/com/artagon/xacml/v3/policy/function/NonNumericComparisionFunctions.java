@@ -84,7 +84,7 @@ public class NonNumericComparisionFunctions
 			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.TIME)TimeValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
+		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than-or-equal")
@@ -146,7 +146,7 @@ public class NonNumericComparisionFunctions
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
+		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equal")
@@ -184,7 +184,7 @@ public class NonNumericComparisionFunctions
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) > 0);
+		return XacmlDataTypes.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal")

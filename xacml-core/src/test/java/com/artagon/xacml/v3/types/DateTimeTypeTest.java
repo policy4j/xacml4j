@@ -60,6 +60,18 @@ public class DateTimeTypeTest
 	}
 	
 	@Test
+	public void compareTest()
+	{
+		DateTimeValue dateTime1 = XacmlDataTypes.DATETIME.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = XacmlDataTypes.DATETIME.create("2002-03-22T10:23:47-05:00");
+		assertEquals(-1, dateTime1.compareTo(dateTime2));
+		dateTime2 = XacmlDataTypes.DATETIME.create("2002-03-22T08:23:47-05:00");
+		assertEquals(0, dateTime1.compareTo(dateTime2));
+		dateTime2 = XacmlDataTypes.DATETIME.create("2002-03-22T08:22:47-05:00");
+		assertEquals(1, dateTime1.compareTo(dateTime2));
+	}
+	
+	@Test
 	public void addYearMonthDuration()
 	{
 		DateTimeValue dateTime1 = XacmlDataTypes.DATETIME.create("2002-03-22T08:23:47-05:00");
