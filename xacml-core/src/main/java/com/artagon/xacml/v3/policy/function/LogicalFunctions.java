@@ -3,12 +3,14 @@ package com.artagon.xacml.v3.policy.function;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.Value;
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
@@ -120,15 +122,32 @@ public class LogicalFunctions
 			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression...values) 
 		throws EvaluationException
 	{
-		Boolean r = Boolean.TRUE;
 		if(values.length < n.getValue()){
 			throw new IllegalArgumentException(String.format(
-					"Number of arguments=\"%s\" is less than minimum required number=\"%s\"", 
+					"Number of arguments=\"%s\" is less " +
+					"than minimum required number=\"%s\"", 
 					values.length, n.getValue()));
 		}
-		for(int i = 0; i < n.getValue(); i++ ){
-			r &= ((BooleanValue)values[i].evaluate(context)).getValue();
+		if(n.getValue() > Integer.MAX_VALUE){
+			throw new IllegalArgumentException(String.format(
+					"First parameter=\"%s\" is bigger than=\"%d\"", 
+					n, Integer.MAX_VALUE));
 		}
-		return XacmlDataTypes.BOOLEAN.create(r);
+		BooleanValue TRUE = XacmlDataTypes.BOOLEAN.create(true);
+		if(n.getValue() == 0){
+			return TRUE;
+		}
+		int count = 0;
+		int num = n.getValue().intValue();
+		for(int i = 0; i < values.length; i++ ){
+			Value v = (Value)values[i].evaluate(context);
+			 if(v.equals(TRUE)){
+				 count++;
+				 if(num == count){
+					 return TRUE;
+				 }
+			 }
+		}
+		return XacmlDataTypes.BOOLEAN.create(false);
 	}
 }

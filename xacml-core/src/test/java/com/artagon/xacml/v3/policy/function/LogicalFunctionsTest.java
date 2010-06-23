@@ -108,6 +108,13 @@ public class LogicalFunctionsTest
 				LogicalFunctions.nof(context, n, 
 						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false)));
 		verify(context);
+		reset(context);
+		replay(context);
+		n = XacmlDataTypes.INTEGER.create(2);
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
+				LogicalFunctions.nof(context, n, 
+						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(true)));
+		verify(context);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
