@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.function;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 

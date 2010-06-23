@@ -14,7 +14,7 @@ public interface DayTimeDurationType extends AttributeValueType
 	DayTimeDurationValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType<DayTimeDurationValue> bagOf();
 	
-	final class DayTimeDurationValue extends BaseAttributeValue<Duration>
+	final class DayTimeDurationValue extends BaseDurationValue
 	{
 		public DayTimeDurationValue(DayTimeDurationType type, 
 				Duration value) {

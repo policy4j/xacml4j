@@ -10,7 +10,6 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
-import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;

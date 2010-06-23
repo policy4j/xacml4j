@@ -21,7 +21,7 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION)DayTimeDurationValue b)
 	{
-		return XacmlDataTypes.DATETIME.create(a.add(b));
+		return a.add(b);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-dayTimeDuration")
@@ -31,7 +31,7 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION)DayTimeDurationValue b)
 	{
-		return XacmlDataTypes.DATETIME.create(a.subtract(b));
+		return a.subtract(b);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-yearMonthDuration")
@@ -41,7 +41,7 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
-		return XacmlDataTypes.DATETIME.create(a.add(b));
+		return a.add(b);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-yearMonthDuration")
@@ -51,7 +51,7 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATETIME)DateTimeValue a, 
 			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
-		return XacmlDataTypes.DATETIME.create(a.subtract(b));
+		return a.subtract(b);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration")
@@ -61,7 +61,7 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
 			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
-		return XacmlDataTypes.DATE.create(a.add(b));
+		return a.add(b);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:date-subtract-yearMonthDuration")
@@ -71,6 +71,6 @@ public class DateTimeArithmeticFunctions
 			@XacmlParam(type=XacmlDataTypes.DATE)DateValue a, 
 			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationValue b)
 	{
-		return XacmlDataTypes.DATE.create(a.subtract(b));
+		return a.subtract(b);
 	}
 }

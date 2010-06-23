@@ -15,7 +15,7 @@ public interface YearMonthDurationType extends AttributeValueType
 	
 	BagOfAttributeValuesType<YearMonthDurationValue> bagOf();
 	
-	final class YearMonthDurationValue extends BaseAttributeValue<Duration>
+	final class YearMonthDurationValue extends BaseDurationValue
 	{
 		public YearMonthDurationValue(YearMonthDurationType type, 
 				Duration value) {

@@ -37,7 +37,7 @@ public interface DateType extends AttributeValueType
 		}
 		
 		private DateValue subtract(Duration duration){
-			return duration.getSign() == -1?add(duration):add(duration.negate());
+			return add(duration.negate());
 		}
 		
 		@Override

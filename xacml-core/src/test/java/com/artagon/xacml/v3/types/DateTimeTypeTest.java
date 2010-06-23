@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
+import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
 public class DateTimeTypeTest 
 {
@@ -47,4 +49,33 @@ public class DateTimeTypeTest
 	public void testFromXacmlStringJustDate(){
 		t1.fromXacmlString("2002-09-24Z");
 	}
+	
+	@Test
+	public void addDayTimeDurationTest()
+	{
+		DateTimeValue dateTime1 = XacmlDataTypes.DATETIME.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = XacmlDataTypes.DATETIME.create("2002-03-27T10:23:47-05:00");
+		DayTimeDurationValue duration = XacmlDataTypes.DAYTIMEDURATION.create("P5DT2H0M0S");
+		assertEquals(dateTime2, dateTime1.add(duration));
+	}
+	
+	@Test
+	public void addYearMonthDuration()
+	{
+		DateTimeValue dateTime1 = XacmlDataTypes.DATETIME.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = XacmlDataTypes.DATETIME.create("2001-01-22T08:23:47-05:00");
+		YearMonthDurationValue duration = XacmlDataTypes.YEARMONTHDURATION.create("-P1Y2M");
+		assertEquals(dateTime2, dateTime1.add(duration));
+	}
+	
+	@Test
+	public void substractYearMonthDuration()
+	{
+		
+		DateTimeValue dateTime1 = XacmlDataTypes.DATETIME.create("2002-07-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = XacmlDataTypes.DATETIME.create("2006-08-22T08:23:47-05:00");
+		YearMonthDurationValue duration = XacmlDataTypes.YEARMONTHDURATION.create("-P4Y1M");
+		assertEquals(dateTime2, dateTime1.subtract(duration));
+	}
+	
 }
