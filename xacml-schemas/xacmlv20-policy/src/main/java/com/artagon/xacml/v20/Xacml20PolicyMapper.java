@@ -162,20 +162,18 @@ class Xacml20PolicyMapper
 				if (o.getName().getLocalPart().equals("PolicySetIdReference")) {
 					PolicySetIDReference policySetRef = factory
 							.createPolicySetIDReference(ref.getValue(),
-									VersionMatch.parse(ref.getVersion()),
-									VersionMatch
-											.parse(ref.getEarliestVersion()),
-									VersionMatch.parse(ref.getLatestVersion()));
+									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
+									(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
+									(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
 					policies.add(policySetRef);
 					continue;
 				}
 				if (o.getName().getLocalPart().equals("PolicyIdReference")) {
 					PolicyIDReference policyRef = factory
 							.createPolicyIDReference(ref.getValue(),
-									VersionMatch.parse(ref.getVersion()),
-									VersionMatch
-											.parse(ref.getEarliestVersion()),
-									VersionMatch.parse(ref.getLatestVersion()));
+									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
+									(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
+									(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
 					policies.add(policyRef);
 					continue;
 				}
