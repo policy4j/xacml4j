@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.repostory;
+package com.artagon.xacml.v3.spi.repository;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,20 +31,33 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	}
 	
 	/**
-	 * Adds {@link CompositeDecisionRule} to this repository
+	 * Adds top level {@link CompositeDecisionRule} to this repository
 	 * 
-	 * @param rule a policy or policy set
+	 * @param policy a policy or policy set
 	 */
-	public void add(CompositeDecisionRule rule)
+	public void addTopLevelPolicy(CompositeDecisionRule policy)
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Adding decision ruleId=\"{}\"", rule.getId());
+			log.debug("Adding decision ruleId=\"{}\"", policy.getId());
 		}
-		CompositeDecisionRule old = topLevel.put(rule.getId(), rule);
+		CompositeDecisionRule old = topLevel.put(policy.getId(), policy);
 		Preconditions.checkState(old == null, 
-				"Decision rule with id=\"%s\" already exist in the store", rule.getId());
-		rule.accept(new PolicyTreeWalker());
+				"Decision rule with id=\"%s\" already exist in the store", policy.getId());
+		policy.accept(new PolicyTreeWalker());
 	}
+	
+	/**
+	 * Adds a policy  {@link CompositeDecisionRule} reference by other
+	 * policies in this repository
+	 * 
+	 * @param policy a policy or policy set
+	 */
+	public void addReferencedPolicy(CompositeDecisionRule policy)
+	{
+		Preconditions.checkArgument(policy != null); 
+		policy.accept(new PolicyTreeWalker());
+	}
+	
 	
 	/**
 	 * Adds collection of policies to this repository
@@ -54,7 +67,7 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	public void addAll(Collection<CompositeDecisionRule> rules)
 	{
 		for(CompositeDecisionRule r : rules){
-			add(r);
+			addTopLevelPolicy(r);
 		}
 	}
 	

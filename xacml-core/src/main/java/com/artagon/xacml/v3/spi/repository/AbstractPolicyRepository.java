@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.repostory;
+package com.artagon.xacml.v3.spi.repository;
 
 import java.util.Collection;
 import java.util.LinkedList;

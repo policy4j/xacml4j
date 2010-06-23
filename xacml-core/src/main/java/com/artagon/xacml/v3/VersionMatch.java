@@ -78,6 +78,7 @@ public class VersionMatch extends XacmlObject
      * @return {@link VersionMatch} instance
      */
     public static VersionMatch parse(String pattern) {
+    	Preconditions.checkNotNull(pattern);
         return new VersionMatch(pattern);
     }
 }
