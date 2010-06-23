@@ -1,6 +1,7 @@
 package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
@@ -154,10 +156,13 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE003() throws Exception
 	{	
-		InMemoryPolicyStore repository = new InMemoryPolicyStore();
-		repository.addTopLevelPolicy(getPolicy("IIE", 3, "Policy.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId1.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 3, "PolicySetId1.xml"));
+		store.addTopLevelPolicy(getPolicy("IIE", 3, "Policy.xml"));
+		store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId1.xml"));
+		try{
+			store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId2.xml"));
+			fail();
+		}catch(PolicySyntaxException e){	
+		}
 		Request request = getRequest("IIE", 3);
 		Response response = pdp.decide(request);
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
