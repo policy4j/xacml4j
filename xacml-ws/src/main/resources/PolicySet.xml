@@ -20,10 +20,7 @@
         <Rule
               RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IID005:rule1"
               Effect="Deny">
-            <Description>
-                A subject whose name is J. Hibbert may not
-                read Bart Simpson's medical record.  NOTAPPLICABLE
-            </Description>
+
             <Target>
                 <Subjects>
                     <Subject>
