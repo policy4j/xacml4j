@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
@@ -43,6 +42,7 @@ public class HigherOrderFunctionsTest
 	private FunctionSpec anyOf;
 	private FunctionSpec allOfAny;
 	private FunctionSpec anyOfAll;
+	private FunctionSpec allOfAll;
 	
 	@Before
 	public void init()
@@ -60,6 +60,7 @@ public class HigherOrderFunctionsTest
 		this.anyOf = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:any-of");
 		this.allOfAny = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:all-of-any");
 		this.anyOfAll = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:any-of-all");
+		this.allOfAll = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:all-of-all");
 		assertNotNull(map);
 		assertNotNull(intToString);
 		assertNotNull(intEq);
@@ -157,7 +158,6 @@ public class HigherOrderFunctionsTest
 		verify(context);
 	}
 	
-	@Ignore
 	@Test
 	public void testAnyOfAll() throws EvaluationException
 	{
@@ -185,6 +185,35 @@ public class HigherOrderFunctionsTest
 		
 		replay(context);
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+				XacmlDataTypes.INTEGER.bag(a), XacmlDataTypes.INTEGER.bag(b));
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), r);
+		verify(context);
+	}
+	
+	@Test
+	public void testAllOfAll() throws EvaluationException
+	{
+		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		a.add(XacmlDataTypes.INTEGER.create(5));
+		a.add(XacmlDataTypes.INTEGER.create(6));
+		
+		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		b.add(XacmlDataTypes.INTEGER.create(1));
+		b.add(XacmlDataTypes.INTEGER.create(2));
+		b.add(XacmlDataTypes.INTEGER.create(3));
+		b.add(XacmlDataTypes.INTEGER.create(4));
+		
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+		
+		for(int i = 0; i < 8; i ++){
+			expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+			context.setValidateFuncParamsAtRuntime(true);
+			expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+			context.setValidateFuncParamsAtRuntime(false);
+		}
+		
+		replay(context);
+		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				XacmlDataTypes.INTEGER.bag(a), XacmlDataTypes.INTEGER.bag(b));
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), r);
 		verify(context);

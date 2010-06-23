@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3.policy.function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.spi.function.XacmlFunc;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;

@@ -112,6 +112,27 @@ public class HigherOrderFunctions
 		return XacmlDataTypes.BOOLEAN.create(true);
 	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue allOfAll(
+			@XacmlParamEvaluationContext EvaluationContext context, 
+			@XacmlParamFuncReference FunctionReference ref, 
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> a,
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+		throws EvaluationException
+	{
+		for(AttributeValue aValue : a.values())
+		{
+			for(AttributeValue bValue : b.values()){
+				BooleanValue r = ref.invoke(context, aValue, bValue);
+				if(!r.getValue()){
+					return XacmlDataTypes.BOOLEAN.create(false);
+				}
+			}
+		}
+		return XacmlDataTypes.BOOLEAN.create(true);
+	}
+	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue anyOfAll(

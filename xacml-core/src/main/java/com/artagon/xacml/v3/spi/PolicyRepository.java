@@ -8,14 +8,14 @@ import com.artagon.xacml.v3.EvaluationContext;
 public interface PolicyRepository extends PolicyReferenceResolver
 {
 	/**
-	 * Gets root policies
+	 * Gets top level policies
 	 * 
 	 * @return a collection of {@link CompositeDecisionRule} instances
 	 */
 	Collection<CompositeDecisionRule> getPolicies();
 	
 	/**
-	 * Finds applicable decision rules
+	 * Finds all applicable top level policies
 	 * 
 	 * @param context an evaluation context
 	 * @return a collection of {@link CompositeDecisionRule} instances
