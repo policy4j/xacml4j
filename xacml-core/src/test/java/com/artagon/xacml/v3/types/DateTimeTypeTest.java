@@ -2,6 +2,8 @@ package com.artagon.xacml.v3.types;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Calendar;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +18,13 @@ public class DateTimeTypeTest
 	@Before
 	public void init() throws Exception{
 		this.t1 = XacmlDataTypes.DATETIME.getType();
+	}
+	
+	@Test
+	public void testCreateFromCalendar()
+	{
+		Calendar c = Calendar.getInstance();
+		DateTimeValue v = t1.create(c);
 	}
 	
 	@Test

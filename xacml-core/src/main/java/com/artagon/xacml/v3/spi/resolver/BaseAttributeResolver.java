@@ -1,49 +1,38 @@
 package com.artagon.xacml.v3.spi.resolver;
 
-import java.util.Collections;
-import java.util.Set;
-
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.AttributeResolver;
+import com.artagon.xacml.v3.spi.AttributeResolverDescriptor;
+import com.artagon.xacml.v3.spi.AttributesCallback;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
 
 public abstract class BaseAttributeResolver implements AttributeResolver
 {
-	private String issuer;
-	private Set<String> providedAttributeIds;
-	private Set<AttributeCategoryId> providedAttributeCategories;
+	private AttributeResolverDescriptor descriptor;
 	
-	protected BaseAttributeResolver(String issuer, 
-			Set<AttributeCategoryId> providedCategories, 
-			Set<String> providedAttributes){
-		Preconditions.checkArgument(providedCategories != null);
-		Preconditions.checkArgument(providedCategories.size() > 0);
-		Preconditions.checkArgument(providedAttributes != null);
-		Preconditions.checkArgument(providedAttributes.size() > 0);
-		this.issuer = issuer;
-		this.providedAttributeCategories = Sets.immutableEnumSet(providedCategories);
-		this.providedAttributeIds = Collections.unmodifiableSet(providedAttributes);
-	}
-	
-	protected BaseAttributeResolver(
-			Set<AttributeCategoryId> providedCategories, 
-			Set<String> providedAttributes){
-		this(null, providedCategories, providedAttributes);
+	protected BaseAttributeResolver(AttributeResolverDescriptor descriptor){
+		Preconditions.checkNotNull(descriptor);
+		this.descriptor = descriptor;
 	}
 	
 	@Override
-	public final String getIssuer() {
-		return issuer;
+	public final AttributeResolverDescriptor getDescriptor(){
+		return descriptor;
 	}
 
 	@Override
-	public final Set<String> getProvidedAttributes() {
-		return providedAttributeIds;
+	public final BagOfAttributeValues<? extends AttributeValue> resolve(
+			AttributeDesignator ref, AttributesCallback callback) 
+	{
+		Preconditions.checkArgument(ref != null);
+		Preconditions.checkArgument(callback != null);
+		Preconditions.checkArgument(descriptor.getProvidedCategories().contains(ref.getCategory()));
+		Preconditions.checkArgument(descriptor.getProvidedAttributes().contains(ref.getAttributeId()));
+		return doResolve(ref, callback);
 	}
-
-	@Override
-	public final Set<AttributeCategoryId> getProvidedCategories() {
-		return providedAttributeCategories;
-	}	
+	
+	protected abstract BagOfAttributeValues<? extends AttributeValue> doResolve(
+			AttributeDesignator ref, AttributesCallback callback);
 }
