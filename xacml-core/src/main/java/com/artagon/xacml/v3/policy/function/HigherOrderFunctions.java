@@ -3,6 +3,9 @@ package com.artagon.xacml.v3.policy.function;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -177,6 +180,8 @@ public class HigherOrderFunctions
 	public static class MapFunctionResolverValidator implements 
 		FunctionParametersValidator, FunctionReturnTypeResolver
 	{
+		private final static Logger log = LoggerFactory.getLogger(MapFunctionResolverValidator.class);
+		
 		public MapFunctionResolverValidator(){
 		}
 		
@@ -191,7 +196,21 @@ public class HigherOrderFunctions
 		@Override
 		public boolean validate(FunctionSpec spec, Expression... arguments) 
 		{
-			return false;
+			if(log.isDebugEnabled()){
+				log.debug("Validating function=\"{}\" parameters", spec.getId());
+			}
+			if(arguments == null || 
+					arguments.length != 2){
+				return false;
+			}
+			if(!(arguments[0] instanceof FunctionReference)){
+				return false;
+			}
+			FunctionReference ref = (FunctionReference)arguments[0];
+			if(ref.getNumberOfParams() != 1){
+				return false;
+			}
+			return true;
 		}
 	}
 }

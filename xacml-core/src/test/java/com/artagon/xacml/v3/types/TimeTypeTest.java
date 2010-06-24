@@ -1,7 +1,8 @@
 package com.artagon.xacml.v3.types;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 

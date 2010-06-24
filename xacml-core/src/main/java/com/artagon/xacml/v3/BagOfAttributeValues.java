@@ -170,6 +170,16 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 		return type.create(intersection);
 	}
 	
+	public boolean containsAtLeastOneOf(BagOfAttributeValues<?> bag)
+	{
+		for(AttributeValue v : bag.values){
+			if(values.contains(v)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public BagOfAttributeValues<T> evaluate(EvaluationContext context)
 			throws EvaluationException {

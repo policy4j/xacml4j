@@ -54,6 +54,14 @@ public class FunctionReference extends XacmlObject implements Expression
 		}
 	}
 	
+	public int getNumberOfParams(){
+		return spec.getNumberOfParams();
+	}
+	
+	public ParamSpec getParamSpecAt(int index){
+		return spec.getParamSpecAt(index);
+	}
+	
 	/**
 	 * Implementation returns itself
 	 */
