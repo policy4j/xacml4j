@@ -94,21 +94,39 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
 		throws EvaluationException
 	{
-		for(AttributeValue aValue : a.values())
-		{
-			boolean atLeastOne = false;
-			for(AttributeValue bValue : b.values()){
-				BooleanValue r = ref.invoke(context, aValue, bValue);
-				if(r.getValue()){
-					atLeastOne = true;
+		boolean result = true;
+		for(AttributeValue v : a.values()){
+			result  &= anyOf(context, ref, v, b).getValue();
+			if(!result){
+				break;
+			}
+		}
+		return XacmlDataTypes.BOOLEAN.create(result);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue anyOfAll(
+			@XacmlParamEvaluationContext EvaluationContext context, 
+			@XacmlParamFuncReference FunctionReference ref, 
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> a,
+			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+		throws EvaluationException
+	{
+		for(AttributeValue va : a.values()){
+			boolean result = true;
+			for(AttributeValue vb : b.values()){
+				BooleanValue r = ref.invoke(context, va, vb);
+				if(!r.getValue()){
+					result = false;
 					break;
 				}
 			}
-			if(!atLeastOne){
-				return XacmlDataTypes.BOOLEAN.create(false);
+			if(result){
+				return XacmlDataTypes.BOOLEAN.create(true);
 			}
 		}
-		return XacmlDataTypes.BOOLEAN.create(true);
+		return XacmlDataTypes.BOOLEAN.create(false);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
@@ -130,18 +148,6 @@ public class HigherOrderFunctions
 			}
 		}
 		return XacmlDataTypes.BOOLEAN.create(true);
-	}
-	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
-	public static BooleanValue anyOfAll(
-			@XacmlParamEvaluationContext EvaluationContext context, 
-			@XacmlParamFuncReference FunctionReference ref, 
-			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> a,
-			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
-		throws EvaluationException
-	{
-		return allOfAny(context, ref, b, a);
 	}
 	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")

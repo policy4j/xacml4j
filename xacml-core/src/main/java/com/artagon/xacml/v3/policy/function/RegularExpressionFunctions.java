@@ -87,6 +87,9 @@ public class RegularExpressionFunctions
 	
 	
 	private static BooleanValue matches(StringValue regexp, AttributeValue input){
+		if(log.isDebugEnabled()){
+			log.debug("Matching input=\"{}\" via regexp=\"{}\"", input, regexp);
+		}
 		 return XacmlDataTypes.BOOLEAN.create(Pattern.matches(
 				 covertXacmlToJavaSyntax(regexp.getValue()), 
 				 input.toXacmlString()));

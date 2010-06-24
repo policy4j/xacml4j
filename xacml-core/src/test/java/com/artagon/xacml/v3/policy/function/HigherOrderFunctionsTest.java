@@ -32,11 +32,13 @@ public class HigherOrderFunctionsTest
 	private FunctionProvider stringFunctions;
 	private FunctionProvider equalityFunctions;
 	private FunctionProvider numericComparisionFunctions;
+	private FunctionProvider regExpFunctions;
 	private EvaluationContext context;
 	
 	private FunctionSpec intToString;
 	private FunctionSpec intEq;
 	private FunctionSpec intGreaterThan;
+	private FunctionSpec stringRegExpMatch;
 	
 	private FunctionSpec map;
 	private FunctionSpec anyOf;
@@ -51,11 +53,12 @@ public class HigherOrderFunctionsTest
 		this.stringFunctions = new AnnotiationBasedFunctionProvider(StringFunctions.class);
 		this.equalityFunctions = new AnnotiationBasedFunctionProvider(EqualityPredicates.class);
 		this.numericComparisionFunctions = new AnnotiationBasedFunctionProvider(NumericComparisionFunctions.class);
+		this.regExpFunctions = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
 		this.context = createStrictMock(EvaluationContext.class);
 		this.intToString = stringFunctions.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-from-integer");
 		this.intEq = equalityFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-equal");
 		this.intGreaterThan = numericComparisionFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-greater-than");
-		
+		this.stringRegExpMatch = regExpFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match");
 		this.map = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:map");
 		this.anyOf = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:any-of");
 		this.allOfAny = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:all-of-any");
@@ -173,19 +176,50 @@ public class HigherOrderFunctionsTest
 		
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
+		for(int i = 0; i < 7; i++){
+			expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+			context.setValidateFuncParamsAtRuntime(true);
+			expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+			context.setValidateFuncParamsAtRuntime(false);
+		}
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
 		
 		replay(context);
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				XacmlDataTypes.INTEGER.bag(a), XacmlDataTypes.INTEGER.bag(b));
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), r);
+		verify(context);
+	}
+	
+	@Test
+	public void testAnyOfAllIIC168() throws EvaluationException
+	{
+				
+		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		a.add(XacmlDataTypes.STRING.create("   This  is n*o*t* *IT!  "));
+		a.add(XacmlDataTypes.STRING.create("   This is not a match to IT!  "));
+		
+		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		b.add(XacmlDataTypes.STRING.create("   This  is IT!  "));
+		b.add(XacmlDataTypes.STRING.create("   This  is not IT!  "));
+
+		
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+		
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+		context.setValidateFuncParamsAtRuntime(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		context.setValidateFuncParamsAtRuntime(false);
+		
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+		context.setValidateFuncParamsAtRuntime(true);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		context.setValidateFuncParamsAtRuntime(false);
+		
+		
+		replay(context);
+		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
+				XacmlDataTypes.STRING.bag(a), XacmlDataTypes.STRING.bag(b));
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), r);
 		verify(context);
 	}
