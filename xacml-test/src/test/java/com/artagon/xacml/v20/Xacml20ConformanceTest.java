@@ -1,31 +1,22 @@
 package com.artagon.xacml.v20;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oasis.xacml.v20.context.RequestType;
 import org.oasis.xacml.v20.context.ResponseType;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
-import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
@@ -168,8 +159,13 @@ public class Xacml20ConformanceTest
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 3));	
 	}
+	
+	@Test
+	public void testIIC168() throws Exception
+	{
+		executeTestCase("IIC", 168);
+	}
 			
-	@SuppressWarnings("unchecked")
 	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
 	{
 		for(int i = 1; i < testCount; i++)
@@ -177,15 +173,21 @@ public class Xacml20ConformanceTest
 			if(exclude.contains(i)){
 				continue;
 			}
-			System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, i, "Policy.xml"));
-			InMemoryPolicyStore repository = new InMemoryPolicyStore();
-			repository.addTopLevelPolicy(getPolicy(testPrefix, i, "Policy.xml"));
-			Request request = getRequest(testPrefix, i);
-			this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
-			Response response = pdp.decide(request);
-			ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
-			Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, i), actual);
+			executeTestCase(testPrefix, i);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
+	{
+		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
+		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		repository.addTopLevelPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
+		Request request = getRequest(testPrefix, testCaseNum);
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		Response response = pdp.decide(request);
+		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);
 	}
 	
 	private Request getRequest(String prefix, int number) throws Exception
