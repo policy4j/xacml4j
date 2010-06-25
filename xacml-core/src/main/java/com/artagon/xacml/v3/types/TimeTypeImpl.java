@@ -1,7 +1,6 @@
 
 package com.artagon.xacml.v3.types;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;

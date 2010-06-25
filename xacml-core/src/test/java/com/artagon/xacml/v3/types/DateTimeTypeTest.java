@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
