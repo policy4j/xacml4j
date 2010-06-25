@@ -7,7 +7,6 @@ import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 
-
 public interface PolicyReferenceResolver 
 {
 	Policy resolve(EvaluationContext context, 

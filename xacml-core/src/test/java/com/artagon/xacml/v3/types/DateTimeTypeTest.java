@@ -3,6 +3,8 @@ package com.artagon.xacml.v3.types;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +25,9 @@ public class DateTimeTypeTest
 	@Test
 	public void testCreateFromCalendar()
 	{
-		Calendar c = Calendar.getInstance();
+		Calendar c = new GregorianCalendar();
 		DateTimeValue v = t1.create(c);
+		System.out.println(v.toXacmlString());
 	}
 	
 	@Test

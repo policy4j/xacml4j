@@ -1,6 +1,9 @@
 
 package com.artagon.xacml.v3.types;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -25,7 +28,8 @@ final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeTyp
 
 	@Override
 	public boolean isConvertableFrom(Object any) {
-		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any);
+		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any) ||
+		GregorianCalendar.class.isInstance(any);
 	}
 	
 	@Override
@@ -45,13 +49,20 @@ final class TimeTypeImpl extends BaseAttributeType<TimeValue> implements TimeTyp
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new TimeValue(this, validateXmlTime((XMLGregorianCalendar)any));
+		if(GregorianCalendar.class.isInstance(any)){
+			XMLGregorianCalendar dt = xmlDataTypesFactory.newXMLGregorianCalendar((GregorianCalendar)any);
+			return new TimeValue(this, xmlDataTypesFactory.newXMLGregorianCalendarTime(
+					dt.getHour(), dt.getMinute(), 
+					dt.getSecond(), dt.getMillisecond(), 
+					dt.getTimezone()));
+		}
+		return new TimeValue(this, validateXmlTime(((XMLGregorianCalendar)any)));
 	}
 	
 	private XMLGregorianCalendar validateXmlTime(XMLGregorianCalendar time){
 		if(!time.getXMLSchemaType().equals(DatatypeConstants.TIME)){
 			throw new IllegalArgumentException(String.format("Given value=\"%s\" does " +
-					"not represent type=\"%s\"", time.toXMLFormat(), DatatypeConstants.DATETIME));
+					"not represent type=\"%s\"", time.toXMLFormat(), DatatypeConstants.TIME));
 		}
 		return time;
 	}
