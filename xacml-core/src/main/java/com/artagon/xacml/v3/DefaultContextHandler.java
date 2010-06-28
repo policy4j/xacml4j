@@ -28,7 +28,14 @@ public class DefaultContextHandler implements ContextHandler
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 	
-	private Map<AttributeDesignator, BagOfAttributeValues<AttributeValue>> attributes;
+	/* Request scope attribute designator resolution cache */
+	private Map<AttributeDesignator, BagOfAttributeValues<AttributeValue>> attributeDesignatorCache;
+	
+	/* Request scope attribute selector resolution cache */
+	private Map<AttributeSelector, BagOfAttributeValues<AttributeValue>> attributeSelectorCache;
+	
+	/* Request scope attribute selector resolution cache */
+	private Map<AttributeCategoryId, Node> contentCache;
 	
 	public DefaultContextHandler(XPathProvider xpathProvider, 
 			Request request, PolicyInformationPoint pip)
@@ -40,11 +47,61 @@ public class DefaultContextHandler implements ContextHandler
 		this.request = request;
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
-		this.attributes = new HashMap<AttributeDesignator, BagOfAttributeValues<AttributeValue>>();
+		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues<AttributeValue>>();
+		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues<AttributeValue>>();
+		this.contentCache = new HashMap<AttributeCategoryId, Node>();
 	}
 	
+	
 	@Override
-	public final Node getContent(EvaluationContext context, AttributeCategoryId category) 
+	public Node getContent(EvaluationContext context,
+			AttributeCategoryId categoryId) 
+	{
+		Node content = contentCache.get(categoryId);
+		if(content == null)
+		{
+			content = doGetContent(context, categoryId);
+			if(content != null){
+				contentCache.put(categoryId, content);
+			}
+		}
+		return content;
+	}
+
+
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			EvaluationContext context, AttributeDesignator ref)
+			throws EvaluationException 
+	{
+		BagOfAttributeValues<AttributeValue> v = attributeDesignatorCache.get(ref);
+		if(v == null){
+			v = doResolve(context, ref);
+			if(v != null){
+				attributeDesignatorCache.put(ref, v);
+			}
+		}
+		return v;
+	}
+
+
+	@Override
+	public BagOfAttributeValues<AttributeValue> resolve(
+			EvaluationContext context, AttributeSelector ref)
+			throws EvaluationException {
+		
+		BagOfAttributeValues<AttributeValue> v = attributeSelectorCache.get(ref);
+		if(v == null){
+			v = doResolve(context, ref);
+			if(v != null){
+				attributeSelectorCache.put(ref, v);
+			}
+		}
+		return v;
+	}
+
+
+	private final Node doGetContent(EvaluationContext context, AttributeCategoryId category) 
 	{
 		Attributes attr = request.getOnlyAttributes(category);
 		if(attr == null || 
@@ -57,19 +114,13 @@ public class DefaultContextHandler implements ContextHandler
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public final BagOfAttributeValues<AttributeValue> resolve(
+	private final BagOfAttributeValues<AttributeValue> doResolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Resolving designator=\"{}\" " +
 					"request=\"{}\"", ref, request);
-		}
-		// look at the local cache
-		BagOfAttributeValues<AttributeValue> resolved = attributes.get(ref);
-		if(resolved != null){
-			return resolved;
 		}
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
 				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
@@ -80,11 +131,11 @@ public class DefaultContextHandler implements ContextHandler
 				(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
 				ref.getDataType().bagOf().createEmpty():
 					pip.resolve(context, ref, new DefaultRequestAttributesCallback()));
-	}
 
+	}
+	
 	@SuppressWarnings("unchecked")
-	@Override
-	public final BagOfAttributeValues<AttributeValue> resolve(
+	private final BagOfAttributeValues<AttributeValue> doResolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
 		try
@@ -156,7 +207,6 @@ public class DefaultContextHandler implements ContextHandler
 	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
 	}
 
-	
 	class DefaultRequestAttributesCallback implements RequestAttributesCallback
 	{
 
