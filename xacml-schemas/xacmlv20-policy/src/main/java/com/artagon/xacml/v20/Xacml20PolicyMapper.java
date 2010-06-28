@@ -160,6 +160,10 @@ class Xacml20PolicyMapper
 			if (v instanceof IdReferenceType) {
 				IdReferenceType ref = (IdReferenceType) v;
 				if (o.getName().getLocalPart().equals("PolicySetIdReference")) {
+					if(ref.getValue() == null){
+						throw new PolicySyntaxException(
+								"PolicySet reference id can't be null");
+					}
 					PolicySetIDReference policySetRef = factory
 							.createPolicySetIDReference(ref.getValue(),
 									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
@@ -169,6 +173,10 @@ class Xacml20PolicyMapper
 					continue;
 				}
 				if (o.getName().getLocalPart().equals("PolicyIdReference")) {
+					if(ref.getValue() == null){
+						throw new PolicySyntaxException(
+								"Policy reference id can't be null");
+					}
 					PolicyIDReference policyRef = factory
 							.createPolicyIDReference(ref.getValue(),
 									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
