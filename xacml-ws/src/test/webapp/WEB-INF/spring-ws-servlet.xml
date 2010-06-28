@@ -6,8 +6,6 @@
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 
- 
-
 	<bean id="xacml20Endpoint" class="com.artagon.xacml.v20.endpoints.Xacml20Endpoint">
 		<constructor-arg>
 			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
@@ -68,6 +66,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<bean class="com.artagon.xacml.v3.DefaultEvaluationContextFactory">
 				<constructor-arg ref="xpathProvider"/>
 				<constructor-arg ref="policyRepository"/>
+				<constructor-arg>
+					<bean class="com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint">
+						<property name="resolvers">
+							<list>
+								<bean class="com.artagon.xacml.v3.spi.pip.DefaultEnviromentAttributeResolver"/>
+							</list>
+						</property>
+					</bean>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="policyRepository"/>

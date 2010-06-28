@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="TVE XACML Test Cases" resourceRoot="" soapui-version="3.5" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Xacml20SoapHttpBinding" type="wsdl" bindingName="{urn:oasis:names:tc:xacml:2.0:context:schema:os}Xacml20SoapHttpBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl"><con:part><con:url>file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:tns="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="urn:oasis:names:tc:xacml:2.0:policy:schema:os" schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"/>
+      <xs:import namespace="urn:oasis:names:tc:xacml:2.0:context:schema:os" schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-context-schema-os.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="XACML20Request">
+    <wsdl:part name="request" element="xacml-context:Request"/>
+  </wsdl:message>
+  <wsdl:message name="XACML20Response">
+    <wsdl:part name="response" element="xacml-context:Response"/>
+  </wsdl:message>
+  <wsdl:portType name="Xacml20PdpService">
+    <wsdl:operation name="Authorize">
+      <wsdl:input message="tns:XACML20Request"/>
+      <wsdl:output message="tns:XACML20Request"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Xacml20SoapHttpBinding" type="tns:Xacml20PdpService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Authorize">
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Xacml20SoapHttpService">
+    <wsdl:port name="Xacml20SoapPrivateEndpoint" binding="tns:Xacml20SoapHttpBinding">
+      <soap:address location="https://login.comcast.net/xacml/20/private/soap"/>
+    </wsdl:port>
+    <wsdl:port name="Xacml20SoapPublicEndpoint" binding="tns:Xacml20SoapHttpBinding">
+      <soap:address location="http://localhost:8080/xacml-ws/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="urn:oasis:names:tc:xacml:2.0:policy:schema:os" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!---->
+  <xs:element name="PolicySet" type="xacml:PolicySetType"/>
+  <xs:complexType name="PolicySetType">
+    <xs:sequence>
+      <xs:element ref="xacml:Description" minOccurs="0"/>
+      <xs:element ref="xacml:PolicySetDefaults" minOccurs="0"/>
+      <xs:element ref="xacml:Target"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="xacml:PolicySet"/>
+        <xs:element ref="xacml:Policy"/>
+        <xs:element ref="xacml:PolicySetIdReference"/>
+        <xs:element ref="xacml:PolicyIdReference"/>
+        <xs:element ref="xacml:CombinerParameters"/>
+        <xs:element ref="xacml:PolicyCombinerParameters"/>
+        <xs:element ref="xacml:PolicySetCombinerParameters"/>
+      </xs:choice>
+      <xs:element ref="xacml:Obligations" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="PolicySetId" type="xs:anyURI" use="required"/>
+    <xs:attribute name="Version" type="xacml:VersionType" default="1.0"/>
+    <xs:attribute name="PolicyCombiningAlgId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="CombinerParameters" type="xacml:CombinerParametersType"/>
+  <xs:complexType name="CombinerParametersType">
+    <xs:sequence>
+      <xs:element ref="xacml:CombinerParameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="CombinerParameter" type="xacml:CombinerParameterType"/>
+  <xs:complexType name="CombinerParameterType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeValue"/>
+    </xs:sequence>
+    <xs:attribute name="ParameterName" type="xs:string" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="RuleCombinerParameters" type="xacml:RuleCombinerParametersType"/>
+  <xs:complexType name="RuleCombinerParametersType">
+    <xs:complexContent>
+      <xs:extension base="xacml:CombinerParametersType">
+        <xs:attribute name="RuleIdRef" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="PolicyCombinerParameters" type="xacml:PolicyCombinerParametersType"/>
+  <xs:complexType name="PolicyCombinerParametersType">
+    <xs:complexContent>
+      <xs:extension base="xacml:CombinerParametersType">
+        <xs:attribute name="PolicyIdRef" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="PolicySetCombinerParameters" type="xacml:PolicySetCombinerParametersType"/>
+  <xs:complexType name="PolicySetCombinerParametersType">
+    <xs:complexContent>
+      <xs:extension base="xacml:CombinerParametersType">
+        <xs:attribute name="PolicySetIdRef" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="PolicySetIdReference" type="xacml:IdReferenceType"/>
+  <xs:element name="PolicyIdReference" type="xacml:IdReferenceType"/>
+  <!---->
+  <xs:element name="PolicySetDefaults" type="xacml:DefaultsType"/>
+  <xs:element name="PolicyDefaults" type="xacml:DefaultsType"/>
+  <xs:complexType name="DefaultsType">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element ref="xacml:XPathVersion"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="XPathVersion" type="xs:anyURI"/>
+  <!---->
+  <xs:complexType name="IdReferenceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="Version" type="xacml:VersionMatchType" use="optional"/>
+        <xs:attribute name="EarliestVersion" type="xacml:VersionMatchType" use="optional"/>
+        <xs:attribute name="LatestVersion" type="xacml:VersionMatchType" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!---->
+  <xs:simpleType name="VersionType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\d+\.)*\d+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!---->
+  <xs:simpleType name="VersionMatchType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!---->
+  <xs:element name="Policy" type="xacml:PolicyType"/>
+  <xs:complexType name="PolicyType">
+    <xs:sequence>
+      <xs:element ref="xacml:Description" minOccurs="0"/>
+      <xs:element ref="xacml:PolicyDefaults" minOccurs="0"/>
+      <xs:element ref="xacml:CombinerParameters" minOccurs="0"/>
+      <xs:element ref="xacml:Target"/>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="xacml:CombinerParameters" minOccurs="0"/>
+        <xs:element ref="xacml:RuleCombinerParameters" minOccurs="0"/>
+        <xs:element ref="xacml:VariableDefinition"/>
+        <xs:element ref="xacml:Rule"/>
+      </xs:choice>
+      <xs:element ref="xacml:Obligations" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="PolicyId" type="xs:anyURI" use="required"/>
+    <xs:attribute name="Version" type="xacml:VersionType" default="1.0"/>
+    <xs:attribute name="RuleCombiningAlgId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Description" type="xs:string"/>
+  <!---->
+  <xs:element name="Rule" type="xacml:RuleType"/>
+  <xs:complexType name="RuleType">
+    <xs:sequence>
+      <xs:element ref="xacml:Description" minOccurs="0"/>
+      <xs:element ref="xacml:Target" minOccurs="0"/>
+      <xs:element ref="xacml:Condition" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="RuleId" type="xs:string" use="required"/>
+    <xs:attribute name="Effect" type="xacml:EffectType" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:simpleType name="EffectType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Permit"/>
+      <xs:enumeration value="Deny"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!---->
+  <xs:element name="Target" type="xacml:TargetType"/>
+  <xs:complexType name="TargetType">
+    <xs:sequence>
+      <xs:element ref="xacml:Subjects" minOccurs="0"/>
+      <xs:element ref="xacml:Resources" minOccurs="0"/>
+      <xs:element ref="xacml:Actions" minOccurs="0"/>
+      <xs:element ref="xacml:Environments" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Subjects" type="xacml:SubjectsType"/>
+  <xs:complexType name="SubjectsType">
+    <xs:sequence>
+      <xs:element ref="xacml:Subject" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Subject" type="xacml:SubjectType"/>
+  <xs:complexType name="SubjectType">
+    <xs:sequence>
+      <xs:element ref="xacml:SubjectMatch" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Resources" type="xacml:ResourcesType"/>
+  <xs:complexType name="ResourcesType">
+    <xs:sequence>
+      <xs:element ref="xacml:Resource" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Resource" type="xacml:ResourceType"/>
+  <xs:complexType name="ResourceType">
+    <xs:sequence>
+      <xs:element ref="xacml:ResourceMatch" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Actions" type="xacml:ActionsType"/>
+  <xs:complexType name="ActionsType">
+    <xs:sequence>
+      <xs:element ref="xacml:Action" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Action" type="xacml:ActionType"/>
+  <xs:complexType name="ActionType">
+    <xs:sequence>
+      <xs:element ref="xacml:ActionMatch" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Environments" type="xacml:EnvironmentsType"/>
+  <xs:complexType name="EnvironmentsType">
+    <xs:sequence>
+      <xs:element ref="xacml:Environment" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Environment" type="xacml:EnvironmentType"/>
+  <xs:complexType name="EnvironmentType">
+    <xs:sequence>
+      <xs:element ref="xacml:EnvironmentMatch" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="SubjectMatch" type="xacml:SubjectMatchType"/>
+  <xs:complexType name="SubjectMatchType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeValue"/>
+      <xs:choice>
+        <xs:element ref="xacml:SubjectAttributeDesignator"/>
+        <xs:element ref="xacml:AttributeSelector"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="MatchId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="ResourceMatch" type="xacml:ResourceMatchType"/>
+  <xs:complexType name="ResourceMatchType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeValue"/>
+      <xs:choice>
+        <xs:element ref="xacml:ResourceAttributeDesignator"/>
+        <xs:element ref="xacml:AttributeSelector"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="MatchId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="ActionMatch" type="xacml:ActionMatchType"/>
+  <xs:complexType name="ActionMatchType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeValue"/>
+      <xs:choice>
+        <xs:element ref="xacml:ActionAttributeDesignator"/>
+        <xs:element ref="xacml:AttributeSelector"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="MatchId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="EnvironmentMatch" type="xacml:EnvironmentMatchType"/>
+  <xs:complexType name="EnvironmentMatchType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeValue"/>
+      <xs:choice>
+        <xs:element ref="xacml:EnvironmentAttributeDesignator"/>
+        <xs:element ref="xacml:AttributeSelector"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="MatchId" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="VariableDefinition" type="xacml:VariableDefinitionType"/>
+  <xs:complexType name="VariableDefinitionType">
+    <xs:sequence>
+      <xs:element ref="xacml:Expression"/>
+    </xs:sequence>
+    <xs:attribute name="VariableId" type="xs:string" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Expression" type="xacml:ExpressionType" abstract="true"/>
+  <xs:complexType name="ExpressionType" abstract="true"/>
+  <!---->
+  <xs:element name="VariableReference" type="xacml:VariableReferenceType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="VariableReferenceType">
+    <xs:complexContent>
+      <xs:extension base="xacml:ExpressionType">
+        <xs:attribute name="VariableId" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="AttributeSelector" type="xacml:AttributeSelectorType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="AttributeSelectorType">
+    <xs:complexContent>
+      <xs:extension base="xacml:ExpressionType">
+        <xs:attribute name="RequestContextPath" type="xs:string" use="required"/>
+        <xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+        <xs:attribute name="MustBePresent" type="xs:boolean" use="optional" default="false"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="ResourceAttributeDesignator" type="xacml:AttributeDesignatorType" substitutionGroup="xacml:Expression"/>
+  <xs:element name="ActionAttributeDesignator" type="xacml:AttributeDesignatorType" substitutionGroup="xacml:Expression"/>
+  <xs:element name="EnvironmentAttributeDesignator" type="xacml:AttributeDesignatorType" substitutionGroup="xacml:Expression"/>
+  <!---->
+  <xs:complexType name="AttributeDesignatorType">
+    <xs:complexContent>
+      <xs:extension base="xacml:ExpressionType">
+        <xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+        <xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+        <xs:attribute name="Issuer" type="xs:string" use="optional"/>
+        <xs:attribute name="MustBePresent" type="xs:boolean" use="optional" default="false"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="SubjectAttributeDesignator" type="xacml:SubjectAttributeDesignatorType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="SubjectAttributeDesignatorType">
+    <xs:complexContent>
+      <xs:extension base="xacml:AttributeDesignatorType">
+        <xs:attribute name="SubjectCategory" type="xs:anyURI" use="optional" default="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="AttributeValue" type="xacml:AttributeValueType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="AttributeValueType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="xacml:ExpressionType">
+        <xs:sequence>
+          <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+        <xs:anyAttribute namespace="##any" processContents="lax"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Function" type="xacml:FunctionType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="FunctionType">
+    <xs:complexContent>
+      <xs:extension base="xacml:ExpressionType">
+        <xs:attribute name="FunctionId" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Condition" type="xacml:ConditionType"/>
+  <xs:complexType name="ConditionType">
+    <xs:sequence>
+      <xs:element ref="xacml:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Apply" type="xacml:ApplyType" substitutionGroup="xacml:Expression"/>
+  <xs:complexType name="ApplyType">
+    <xs:complexContent>
+      <xs:extension base="xacml:ExpressionType">
+        <xs:sequence>
+          <xs:element ref="xacml:Expression" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="FunctionId" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Obligations" type="xacml:ObligationsType"/>
+  <xs:complexType name="ObligationsType">
+    <xs:sequence>
+      <xs:element ref="xacml:Obligation" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Obligation" type="xacml:ObligationType"/>
+  <xs:complexType name="ObligationType">
+    <xs:sequence>
+      <xs:element ref="xacml:AttributeAssignment" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ObligationId" type="xs:anyURI" use="required"/>
+    <xs:attribute name="FulfillOn" type="xacml:EffectType" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="AttributeAssignment" type="xacml:AttributeAssignmentType"/>
+  <xs:complexType name="AttributeAssignmentType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="xacml:AttributeValueType">
+        <xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!---->
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>http://docs.oasis-open.org/xacml/access_control-xacml-2.0-context-schema-os.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="urn:oasis:names:tc:xacml:2.0:context:schema:os" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn:oasis:names:tc:xacml:2.0:policy:schema:os" schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"/>
+  <!---->
+  <xs:element name="Request" type="xacml-context:RequestType"/>
+  <xs:complexType name="RequestType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Subject" maxOccurs="unbounded"/>
+      <xs:element ref="xacml-context:Resource" maxOccurs="unbounded"/>
+      <xs:element ref="xacml-context:Action"/>
+      <xs:element ref="xacml-context:Environment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Response" type="xacml-context:ResponseType"/>
+  <xs:complexType name="ResponseType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Result" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Subject" type="xacml-context:SubjectType"/>
+  <xs:complexType name="SubjectType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="SubjectCategory" type="xs:anyURI" default="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Resource" type="xacml-context:ResourceType"/>
+  <xs:complexType name="ResourceType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:ResourceContent" minOccurs="0"/>
+      <xs:element ref="xacml-context:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="ResourceContent" type="xacml-context:ResourceContentType"/>
+  <xs:complexType name="ResourceContentType" mixed="true">
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##any" processContents="lax"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Action" type="xacml-context:ActionType"/>
+  <xs:complexType name="ActionType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Environment" type="xacml-context:EnvironmentType"/>
+  <xs:complexType name="EnvironmentType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Attribute" type="xacml-context:AttributeType"/>
+  <xs:complexType name="AttributeType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:AttributeValue" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+    <xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+    <xs:attribute name="Issuer" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="AttributeValue" type="xacml-context:AttributeValueType"/>
+  <xs:complexType name="AttributeValueType" mixed="true">
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##any" processContents="lax"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Result" type="xacml-context:ResultType"/>
+  <xs:complexType name="ResultType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:Decision"/>
+      <xs:element ref="xacml-context:Status" minOccurs="0"/>
+      <xs:element ref="xacml:Obligations" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="ResourceId" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="Decision" type="xacml-context:DecisionType"/>
+  <xs:simpleType name="DecisionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Permit"/>
+      <xs:enumeration value="Deny"/>
+      <xs:enumeration value="Indeterminate"/>
+      <xs:enumeration value="NotApplicable"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!---->
+  <xs:element name="Status" type="xacml-context:StatusType"/>
+  <xs:complexType name="StatusType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:StatusCode"/>
+      <xs:element ref="xacml-context:StatusMessage" minOccurs="0"/>
+      <xs:element ref="xacml-context:StatusDetail" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="StatusCode" type="xacml-context:StatusCodeType"/>
+  <xs:complexType name="StatusCodeType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:StatusCode" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="Value" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <!---->
+  <xs:element name="StatusMessage" type="xs:string"/>
+  <!---->
+  <xs:element name="StatusDetail" type="xacml-context:StatusDetailType"/>
+  <xs:complexType name="StatusDetailType">
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!---->
+  <xs:element name="MissingAttributeDetail" type="xacml-context:MissingAttributeDetailType"/>
+  <xs:complexType name="MissingAttributeDetailType">
+    <xs:sequence>
+      <xs:element ref="xacml-context:AttributeValue" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+    <xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+    <xs:attribute name="Issuer" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <!---->
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://login.comcast.net/xacml/20/private/soap</con:endpoint><con:endpoint>http://localhost:8080/xacml-ws/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="Multi-Resource Test Cases" bindingOperationName="Authorize" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Multi-Resource via Attributes"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/xacml-ws/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xacml-context:Request>
+         <xacml-context:Subject>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
+               <xacml-context:AttributeValue>test@comcast.net</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Subject>
+         <xacml-context:Resource>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+               <xacml-context:AttributeValue>http://www.fancast.com/tv/True-Blood/97877/1525399921/True-Blood-26-(HBO)/videos</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Attribute AttributeId="urn:otc:names:otc:xacml:1.0:tv-network-name" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>HBO</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Action>
+               <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+                  <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+               </xacml-context:Attribute>
+            </xacml-context:Action>
+         </xacml-context:Resource>
+	<xacml-context:Resource>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+               <xacml-context:AttributeValue>http://www.fancast.com/tv/True-Blood/97877/1525399921/True-Blood-26-(HBO)/videos</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Attribute AttributeId="urn:otc:names:otc:xacml:1.0:tv-network-name" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>Starz</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Resource>
+         <xacml-context:Action>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Action>
+         <xacml-context:Environment></xacml-context:Environment>
+      </xacml-context:Request>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:oasis:names:tc:xacml:2.0:context:schema:os/Xacml20PdpService/AuthorizeRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Multi-Resource via XPath"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/xacml-ws/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xacml-context:Request>
+         <xacml-context:Subject>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
+               <xacml-context:AttributeValue>test@comcast.net</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Subject>
+         <xacml-context:Resource>
+            <xacml-context:ResourceContent>
+               <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">
+                  <channel>
+                     <item>
+                        <media:content url="http://www.tve.net/movie1.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
+                        <media:rating scheme="urn:mpaa">r</media:rating>
+                     </item>
+                     <item>
+                        <media:content url="http://www.tve.net/movie2.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
+                        <media:rating scheme="urn:mpaa">pg</media:rating>
+                     </item>
+                  </channel>
+               </rss>
+            </xacml-context:ResourceContent>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression">
+               <xacml-context:AttributeValue>//rss/channel/item</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Resource>
+         <xacml-context:Action>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Action>
+         <xacml-context:Environment/>
+      </xacml-context:Request>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:oasis:names:tc:xacml:2.0:context:schema:os/Xacml20PdpService/Multi-Resource Test CasesRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
