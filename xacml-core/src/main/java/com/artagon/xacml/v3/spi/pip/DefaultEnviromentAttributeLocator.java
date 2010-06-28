@@ -21,14 +21,13 @@ public class DefaultEnviromentAttributeLocator extends BaseAttributeResolver
 	
 	public DefaultEnviromentAttributeLocator(){
 		super(AttributeResolverDescriptorBuilder.create().
-				withCategory(AttributeCategoryId.ENVIRONMENT).
-				withAttribute(CURRENT_DATE).
-				withAttribute(CURRENT_TIME).
-				withAttribute(CURRENT_DATETIME).build());
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATE).
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_TIME).
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATETIME).build());
 	}
 	
 	@Override
-	protected BagOfAttributeValues<? extends AttributeValue> doResolve(
+	public BagOfAttributeValues<? extends AttributeValue> resolve(
 			AttributeDesignator ref, RequestAttributesCallback callback) 
 	{
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

@@ -20,10 +20,5 @@ public interface AttributeResolverDescriptor
 	 */
 	Set<AttributeCategoryId> getProvidedCategories();
 	
-	/**
-	 * Gets provided attribute identifiers
-	 * 
-	 * @return a set of attribute identifiers
-	 */
-	Set<String> getProvidedAttributes();
+	Set<String> getProvidedAttributes(AttributeCategoryId categoryId);
 }

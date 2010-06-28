@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,4 +40,23 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 			AttributeCategoryId categoryId, RequestAttributesCallback callback) {
 		return null;
 	} 
+	
+	public void setResolvers(Collection<AttributeResolver> resolvers)
+	{
+		for(AttributeResolver r : resolvers)
+		{
+			AttributeResolverDescriptor d = r.getDescriptor();
+			for(AttributeCategoryId c : d.getProvidedCategories())
+			{
+				Map<String, AttributeResolver> byCategory = registry.get(c);
+				if(byCategory == null){
+					byCategory = new ConcurrentHashMap<String, AttributeResolver>();
+					registry.put(c, byCategory);
+				}
+				for(String attributeId : d.getProvidedAttributes(c)){
+					byCategory.put(attributeId, r);
+				}
+			}
+		}
+	}
 }
