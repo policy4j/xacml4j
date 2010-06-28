@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -42,6 +44,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private StatusCode evaluationStatus;
 			
+	private AttributeValue currentTime;
+	private AttributeValue currentDateTime;
+	private AttributeValue currentDate;
+	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -78,6 +84,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			}
 		});
 		this.timezone = TimeZone.getTimeZone("UTC");
+		Calendar now = Calendar.getInstance(timezone);
+		this.currentDate = XacmlDataTypes.DATE.create(now);
+		this.currentDateTime = XacmlDataTypes.DATETIME.create(now);
+		this.currentTime = XacmlDataTypes.TIME.create(now);
 		this.evaluatedPolicies = new LinkedList<PolicyIdentifier>();
 	}
 	
@@ -97,6 +107,21 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		return timezone;
 	}
 	
+	@Override
+	public AttributeValue getCurrentDate() {
+		return currentDate;
+	}
+
+	@Override
+	public AttributeValue getCurrentDateTime() {
+		return currentDateTime;
+	}
+
+	@Override
+	public AttributeValue getCurrentTime() {
+		return currentTime;
+	}
+
 	@Override
 	public final void addEvaluatedPolicy(Policy policy, Decision result) {
 		this.evaluatedPolicies.add(policy.getPolicyIdentifier());

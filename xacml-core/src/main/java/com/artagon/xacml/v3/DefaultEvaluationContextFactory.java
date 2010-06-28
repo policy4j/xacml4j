@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
@@ -11,24 +12,29 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	private XPathProvider xpathProvider;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	private boolean validateFuncParamsAtRuntime = false;
+	private PolicyInformationPoint pip;
 	
-	public DefaultEvaluationContextFactory(PolicyRepository repository){
-		this(repository, new DefaultXPathProvider());
+	public DefaultEvaluationContextFactory(PolicyRepository repository, 
+			PolicyInformationPoint pip){
+		this(repository, new DefaultXPathProvider(), pip);
 	}
 	
 	public DefaultEvaluationContextFactory(
 			PolicyRepository repository, 
-			XPathProvider xpathProvider){
+			XPathProvider xpathProvider, 
+			PolicyInformationPoint pip){
 		Preconditions.checkNotNull(repository);
 		Preconditions.checkNotNull(xpathProvider);
+		Preconditions.checkNotNull(pip);
 		this.repository = repository;
 		this.xpathProvider = xpathProvider;
+		this.pip = pip;
 	}
 
 	@Override
 	public EvaluationContext createContext(Request request) 
 	{
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request);
+		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		return new RootEvaluationContext(handler);
 	}
 	

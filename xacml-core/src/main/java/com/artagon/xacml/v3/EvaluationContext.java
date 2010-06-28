@@ -17,6 +17,10 @@ public interface EvaluationContext
 	 */
 	TimeZone getTimeZone();
 	
+	AttributeValue getCurrentTime();
+	AttributeValue getCurrentDate();
+	AttributeValue getCurrentDateTime();
+	
 	/**
 	 * Tests if function parameters
 	 * need to be validate at runtime

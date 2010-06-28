@@ -31,13 +31,15 @@ public class DefaultContextHandler implements ContextHandler
 	private Map<AttributeDesignator, BagOfAttributeValues<AttributeValue>> attributes;
 	
 	public DefaultContextHandler(XPathProvider xpathProvider, 
-			Request request)
+			Request request, PolicyInformationPoint pip)
 	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(!request.hasRepeatingCategories());
 		Preconditions.checkNotNull(xpathProvider);
+		Preconditions.checkNotNull(pip);
 		this.request = request;
 		this.xpathProvider = xpathProvider;
+		this.pip = pip;
 		this.attributes = new HashMap<AttributeDesignator, BagOfAttributeValues<AttributeValue>>();
 	}
 	
@@ -49,7 +51,7 @@ public class DefaultContextHandler implements ContextHandler
 				attr.getContent() == null){
 			if(context.getAttributeResolutionScope() == 
 				AttributeResolutionScope.REQUEST_EXTERNAL)
-			return handleGetContent(category, request);
+			return pip.resolve(context, category, new DefaultRequestAttributesCallback());
 		}
 		return (attr != null)?attr.getContent():null;
 	}
@@ -74,8 +76,10 @@ public class DefaultContextHandler implements ContextHandler
 		if(!values.isEmpty()){
 			return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
 		}
-		return (context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
-				((BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty()):handleResolve(ref, request);
+		return (BagOfAttributeValues<AttributeValue>)(
+				(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
+				ref.getDataType().bagOf().createEmpty():
+					pip.resolve(context, ref, new DefaultRequestAttributesCallback()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,7 +91,13 @@ public class DefaultContextHandler implements ContextHandler
 		{
 			Node content = getContent(context, ref.getCategory());
 			if(content == null){
-				return handleResolve(ref);
+				if(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST_EXTERNAL){
+					content = pip.resolve(context, ref.getCategory(), 
+							new DefaultRequestAttributesCallback());
+				}
+			}
+			if(content == null){
+				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 			}
 			
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
@@ -145,38 +155,7 @@ public class DefaultContextHandler implements ContextHandler
 		}
 	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
 	}
-	
-	/**
-	 * A default implementation always returns <code>null</code>
-	 */
-	protected  Node handleGetContent(AttributeCategoryId category, Request request){
-		return null;
-	}
-	
-	/**
-	 * A default implementation always returns an empty bag.
-	 * 
-	 * @param ref an attribute designator
-	 * @param request a decision request
-	 * @return an empty bag
-	 */
-	@SuppressWarnings("unchecked")
-	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeDesignator ref, 
-			Request request){
-		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
-	}
-	
-	
-	/**
-	 * A default implementation always returns an empty bag.
-	 * 
-	 * @param ref an attribute selector
-	 * @return an empty bag
-	 */
-	@SuppressWarnings("unchecked")
-	protected BagOfAttributeValues<AttributeValue> handleResolve(AttributeSelector ref){
-		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
-	}
+
 	
 	class DefaultRequestAttributesCallback implements RequestAttributesCallback
 	{
