@@ -56,7 +56,7 @@ class Xacml20ContextMapper
 	private final static Logger log = LoggerFactory.getLogger(Xacml20ContextMapper.class);
 	
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:2.0:resource:resource-id";
+	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
 	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
