@@ -26,13 +26,13 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 			AttributeDesignator ref, RequestAttributesCallback callback) 
 	{
 		if(ref.getAttributeId().equals(CURRENT_DATETIME)){
-			 return XacmlDataTypes.TIME.bag(context.getCurrentDateTime());
+			 return XacmlDataTypes.DATETIME.bag(context.getCurrentDateTime());
 		}
 		if(ref.getAttributeId().equals(CURRENT_DATE)){
 			return XacmlDataTypes.DATE.bag(context.getCurrentDate());
 		}
 		if(ref.getAttributeId().equals(CURRENT_TIME)){
-			return XacmlDataTypes.DATETIME.bag(context.getCurrentDateTime());
+			return XacmlDataTypes.TIME.bag(context.getCurrentTime());
 		}
 		return ref.getDataType().bagOf().createEmpty();
 	}
