@@ -29,6 +29,9 @@ public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		try
 		{
 			PolicySet policySet = refContext.resolve(this);
+			if(policySet == null){
+				return refContext;
+			}
 			return policySet.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			return refContext;

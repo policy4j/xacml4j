@@ -31,12 +31,33 @@ public class PolicySetIDReferenceTest
 	}
 	
 	@Test
-	public void testEvaluateFailToResolveReference() throws XacmlException
+	public void testEvaluateFailToResolveReferenceViaException() throws XacmlException
 	{
 		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
+		replay(context, policySet);
+		EvaluationContext policyRefContext = ref.createContext(context);
+		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
+		verify(context, policySet);
+		reset(context, policySet);
+
+		expect(context.getCurrentPolicySet()).andReturn(policySet);
+		expect(policySet.getId()).andReturn("otherTestId");
+		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
+		replay(context, policySet);
+		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
+		verify(context, policySet);
+	}
+	
+	@Test
+	public void testEvaluateFailToResolveReferenceReturnsNull() throws XacmlException
+	{
+		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
+		expect(context.getCurrentPolicySet()).andReturn(policySet);
+		expect(context.resolve(ref)).andReturn(null);
 		replay(context, policySet);
 		EvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());

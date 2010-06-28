@@ -30,6 +30,9 @@ public class PolicyIDReference extends
 		PolicyIDReferenceEvaluationContext refContext = new PolicyIDReferenceEvaluationContext(context);
 		try{
 			Policy resolvedPolicy = context.resolve(this);
+			if(resolvedPolicy == null){
+				return refContext;
+			}
 			return resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			return refContext;
