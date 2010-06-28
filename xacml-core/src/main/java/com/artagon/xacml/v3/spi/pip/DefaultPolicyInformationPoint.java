@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.google.common.base.Preconditions;
 
 public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 {
@@ -52,23 +53,28 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	
 	public void setResolvers(Collection<AttributeResolver> resolvers)
 	{
-		for(AttributeResolver r : resolvers)
+		for(AttributeResolver r : resolvers){
+			addResolver(r);
+		}
+	}
+	
+	public void addResolver(AttributeResolver resolver)
+	{
+		Preconditions.checkNotNull(resolver);
+		AttributeResolverDescriptor d = resolver.getDescriptor();
+		for(AttributeCategoryId c : d.getProvidedCategories())
 		{
-			AttributeResolverDescriptor d = r.getDescriptor();
-			for(AttributeCategoryId c : d.getProvidedCategories())
-			{
-				Map<String, AttributeResolver> byCategory = registry.get(c);
-				if(byCategory == null){
-					byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-					registry.put(c, byCategory);
+			Map<String, AttributeResolver> byCategory = registry.get(c);
+			if(byCategory == null){
+				byCategory = new ConcurrentHashMap<String, AttributeResolver>();
+				registry.put(c, byCategory);
+			}
+			for(String attributeId : d.getProvidedAttributes(c)){
+				if(log.isDebugEnabled()){
+					log.debug("Adding resolver for category=\"{}\" " +
+							"attributeId=\"{}\"", c, attributeId);
 				}
-				for(String attributeId : d.getProvidedAttributes(c)){
-					if(log.isDebugEnabled()){
-						log.debug("Adding resolver for category=\"{}\" " +
-								"attributeId=\"{}\"", c, attributeId);
-					}
-					byCategory.put(attributeId, r);
-				}
+				byCategory.put(attributeId, resolver);
 			}
 		}
 	}
