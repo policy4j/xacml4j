@@ -46,8 +46,6 @@ public class Xacml20ConformanceUtility
 	
 	public static void assertResults(ResultType a, ResultType b)
 	{
-		System.out.println(a.getDecision());
-		System.out.println(b.getDecision());
 		assertEquals(a.getDecision(), b.getDecision());
 		assertEquals(a.getResourceId(), b.getResourceId());
 		assertStatus(a.getStatus(), b.getStatus());
