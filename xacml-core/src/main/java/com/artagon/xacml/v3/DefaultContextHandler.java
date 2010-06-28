@@ -162,7 +162,7 @@ public class DefaultContextHandler implements ContextHandler
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
+		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
 			Collection<Attributes> attributes = request.getAttributes(category);
 			Attributes  found = Iterables.getOnlyElement(attributes);
@@ -170,9 +170,26 @@ public class DefaultContextHandler implements ContextHandler
 		}
 
 		@Override
-		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttribute(
+		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType) {
-			return getAttribute(category, attributeId, dataType, null);
+			return getAttributeValues(category, attributeId, dataType, null);
 		}
+
+		@Override
+		public <AV extends AttributeValue> AV getAttributeValue(
+				AttributeCategoryId categoryId, String attributeId,
+				AttributeValueType dataType, String issuer) {
+			BagOfAttributeValues<AV> bag = getAttributeValues(categoryId, attributeId, dataType, issuer);
+			return bag.isEmpty()?null:bag.value();
+		}
+
+		@Override
+		public <AV extends AttributeValue> AV getAttributeValue(
+				AttributeCategoryId categoryId, 
+				String attributeId,
+				AttributeValueType dataType) {
+			BagOfAttributeValues<AV> bag = getAttributeValues(categoryId, attributeId, dataType);
+			return bag.isEmpty()?null:bag.value();
+		}	
 	}
 }

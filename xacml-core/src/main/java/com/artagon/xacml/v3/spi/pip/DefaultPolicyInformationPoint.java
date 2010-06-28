@@ -25,7 +25,8 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	@Override
 	public BagOfAttributeValues<? extends AttributeValue> resolve(
 			EvaluationContext context,
-			AttributeDesignator ref, RequestAttributesCallback callback) 
+			AttributeDesignator ref, 
+			RequestAttributesCallback callback) 
 	{
 	 	Map<String, AttributeResolver> byCategory = registry.get(ref.getCategory());
 	 	if(byCategory == null){
