@@ -12,6 +12,13 @@ import com.google.common.base.Preconditions;
 
 public class DOMUtil 
 {	
+	/**
+	 * Creates XPath expression for a 
+	 * given DOM node
+	 * @param n a DOM node
+	 * @return an XPath expression of the node
+	 * representing node location in the document
+	 */
 	public static String getXPath(Node n) 
 	{
 		Preconditions.checkNotNull(n);
