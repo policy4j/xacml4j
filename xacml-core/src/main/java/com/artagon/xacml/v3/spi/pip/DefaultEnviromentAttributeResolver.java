@@ -1,17 +1,11 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import static com.artagon.xacml.v3.types.XacmlDataTypes.DATE;
-import static com.artagon.xacml.v3.types.XacmlDataTypes.DATETIME;
-import static com.artagon.xacml.v3.types.XacmlDataTypes.TIME;
-
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.RequestAttributesCallback;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
@@ -28,17 +22,17 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	
 	@Override
 	public BagOfAttributeValues<? extends AttributeValue> resolve(
+			PolicyInformationPointContext context,
 			AttributeDesignator ref, RequestAttributesCallback callback) 
 	{
-		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		if(ref.getAttributeId().equals(CURRENT_DATETIME)){
-			 return DATETIME.bag(DATETIME.getType().create(now));
+			 return XacmlDataTypes.TIME.bag(context.getCurrentDateTime());
 		}
 		if(ref.getAttributeId().equals(CURRENT_DATE)){
-			 return DATE.bag(DATE.getType().create(now));
+			return XacmlDataTypes.DATE.bag(context.getCurrentDate());
 		}
 		if(ref.getAttributeId().equals(CURRENT_TIME)){
-			 return TIME.bag(TIME.getType().create(now));
+			return XacmlDataTypes.DATETIME.bag(context.getCurrentDateTime());
 		}
 		return ref.getDataType().bagOf().createEmpty();
 	}

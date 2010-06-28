@@ -37,7 +37,11 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	 		return ref.getDataType().bagOf().createEmpty();
 	 	}
 	 	AttributeResolver r = byCategory.get(ref.getAttributeId());
-	 	return (r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(ref, callback);
+	 	if(log.isDebugEnabled()){
+	 		log.debug("Found resolver attribute reference=\"{}\"", ref);
+	 	}
+	 	return (r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
+	 			new DefaultPolicyInformationPointContext(context), ref, callback);
 	}
 
 	@Override

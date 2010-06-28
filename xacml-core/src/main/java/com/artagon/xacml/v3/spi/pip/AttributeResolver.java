@@ -9,6 +9,7 @@ public interface AttributeResolver
 {
 	AttributeResolverDescriptor getDescriptor();
 	
-	BagOfAttributeValues<? extends AttributeValue> resolve(AttributeDesignator ref, 
+	BagOfAttributeValues<? extends AttributeValue> resolve(PolicyInformationPointContext context,
+			AttributeDesignator ref, 
 			RequestAttributesCallback callback);
 }
