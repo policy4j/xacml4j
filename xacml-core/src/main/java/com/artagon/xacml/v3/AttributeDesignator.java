@@ -84,7 +84,7 @@ public class AttributeDesignator extends AttributeReference
 		}
 		return (BagOfAttributeValues<AttributeValue>)((bag == null)?getDataType().bagOf().createEmpty():bag);
 	}
-
+	
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);

@@ -2,6 +2,8 @@ package com.artagon.xacml.v3.types;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Calendar;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +31,16 @@ public class DateTypeTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
 		t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+	}
+	
+	@Test
+	public void testCreateFromCalendar()
+	{
+		Calendar now = Calendar.getInstance();
+		DateType.DateValue d1 = XacmlDataTypes.DATE.create(now);
+		DateType.DateValue d2 = XacmlDataTypes.DATE.create(now);
+		System.out.println(d1.toXacmlString());
+		assertEquals(d1, d2);
 	}
 }
 

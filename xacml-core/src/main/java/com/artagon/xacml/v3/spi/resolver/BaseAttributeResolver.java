@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.spi.resolver;
 
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.AttributeResolver;
 import com.artagon.xacml.v3.spi.AttributeResolverDescriptor;
-import com.artagon.xacml.v3.spi.AttributesCallback;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseAttributeResolver implements AttributeResolver
@@ -24,7 +24,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final BagOfAttributeValues<? extends AttributeValue> resolve(
-			AttributeDesignator ref, AttributesCallback callback) 
+			AttributeDesignator ref, RequestAttributesCallback callback) 
 	{
 		Preconditions.checkArgument(ref != null);
 		Preconditions.checkArgument(callback != null);
@@ -34,5 +34,5 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 	
 	protected abstract BagOfAttributeValues<? extends AttributeValue> doResolve(
-			AttributeDesignator ref, AttributesCallback callback);
+			AttributeDesignator ref, RequestAttributesCallback callback);
 }

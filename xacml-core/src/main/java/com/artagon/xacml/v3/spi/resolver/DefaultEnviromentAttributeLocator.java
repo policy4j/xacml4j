@@ -10,9 +10,9 @@ import java.util.TimeZone;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.AttributeResolverDescriptorBuilder;
-import com.artagon.xacml.v3.spi.AttributesCallback;
 
 public class DefaultEnviromentAttributeLocator extends BaseAttributeResolver
 {	
@@ -30,7 +30,7 @@ public class DefaultEnviromentAttributeLocator extends BaseAttributeResolver
 	
 	@Override
 	protected BagOfAttributeValues<? extends AttributeValue> doResolve(
-			AttributeDesignator ref, AttributesCallback callback) 
+			AttributeDesignator ref, RequestAttributesCallback callback) 
 	{
 		Calendar now = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		if(ref.getAttributeId().equals(CURRENT_DATETIME)){

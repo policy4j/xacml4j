@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
 
 public interface PolicyRepository extends PolicyReferenceResolver
 {

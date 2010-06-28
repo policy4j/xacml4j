@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.GregorianCalendar;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -24,7 +26,8 @@ final class DateTypeImpl extends BaseAttributeType<DateValue> implements DateTyp
 	
 	@Override
 	public boolean isConvertableFrom(Object any) {
-		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any);
+		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any) ||
+		GregorianCalendar.class.isInstance(any);
 	}
 
 	@Override
@@ -48,6 +51,11 @@ final class DateTypeImpl extends BaseAttributeType<DateValue> implements DateTyp
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
+		}
+		if(GregorianCalendar.class.isInstance(any)){
+			XMLGregorianCalendar date = xmlDataTypesFactory.newXMLGregorianCalendar((GregorianCalendar)any);
+			return new DateValue(this, xmlDataTypesFactory.newXMLGregorianCalendarDate(
+					date.getYear(), date.getMonth(), date.getDay(), date.getTimezone()));
 		}
 		XMLGregorianCalendar date = validateXmlDate((XMLGregorianCalendar)any);
 		// XACML default time zone is UTC

@@ -1,7 +1,9 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +14,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v3.spi.AttributesCallback;
+import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
@@ -24,14 +26,19 @@ public class DefaultContextHandler implements ContextHandler
 	
 	private Request request;
 	private XPathProvider xpathProvider;
+	private PolicyInformationPoint pip;
 	
-	public DefaultContextHandler(XPathProvider xpathProvider, Request request)
+	private Map<AttributeDesignator, BagOfAttributeValues<AttributeValue>> attributes;
+	
+	public DefaultContextHandler(XPathProvider xpathProvider, 
+			Request request)
 	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(!request.hasRepeatingCategories());
 		Preconditions.checkNotNull(xpathProvider);
 		this.request = request;
 		this.xpathProvider = xpathProvider;
+		this.attributes = new HashMap<AttributeDesignator, BagOfAttributeValues<AttributeValue>>();
 	}
 	
 	@Override
@@ -54,7 +61,13 @@ public class DefaultContextHandler implements ContextHandler
 			AttributeDesignator ref) throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Resolving designator=\"{}\" request=\"{}\"", ref, request);
+			log.debug("Resolving designator=\"{}\" " +
+					"request=\"{}\"", ref, request);
+		}
+		// look at the local cache
+		BagOfAttributeValues<AttributeValue> resolved = attributes.get(ref);
+		if(resolved != null){
+			return resolved;
 		}
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
 				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
@@ -165,7 +178,7 @@ public class DefaultContextHandler implements ContextHandler
 		return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 	}
 	
-	class DefaultRequestAttributesCallback implements AttributesCallback
+	class DefaultRequestAttributesCallback implements RequestAttributesCallback
 	{
 
 		@SuppressWarnings("unchecked")
@@ -182,6 +195,5 @@ public class DefaultContextHandler implements ContextHandler
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType) {
 			return getAttribute(category, attributeId, dataType, null);
 		}
-		
 	}
 }

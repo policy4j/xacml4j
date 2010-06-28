@@ -5,10 +5,8 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 
-public interface AttributeResolver 
+public interface PolicyInformationPoint 
 {
-	AttributeResolverDescriptor getDescriptor();
-	
 	BagOfAttributeValues<? extends AttributeValue> resolve(AttributeDesignator ref, 
 			RequestAttributesCallback callback);
 }

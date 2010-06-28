@@ -1,12 +1,6 @@
-package com.artagon.xacml.v3.spi;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValues;
-
-
-public interface AttributesCallback 
+public interface RequestAttributesCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context
