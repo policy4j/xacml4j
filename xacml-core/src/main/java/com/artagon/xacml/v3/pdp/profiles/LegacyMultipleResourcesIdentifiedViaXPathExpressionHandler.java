@@ -43,12 +43,18 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 							XacmlDataTypes.XPATHEXPRESSION.getTypeId()));
 		}
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
-		for(Attributes attrs : request.getAttributes()){
+		for(Attributes attrs : request.getAttributes())
+		{
 			if(attrs.getCategoryId().equals(AttributeCategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				for(Attribute attr : attrs.getAttributes()){
-					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE)){
+					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
+					{
+						Attribute selector = new Attribute(MULTIPLE_CONTENT_SELECTOR, attr.getValues());
+						resourceAttr.add(selector);
+						continue;
 					}
+					resourceAttr.add(attr);
 				}
 				attributes.add(new Attributes(attrs.getCategoryId(), resourceAttr));
 				continue;
@@ -57,9 +63,5 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		}
 		return handleNext(request, pdp);
 	}
-	
-	private Attributes convertResourceAttributes(Attributes resource)
-	{
-		return resource;
-	}
+
 }
