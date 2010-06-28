@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -30,6 +32,8 @@ import com.google.common.collect.Sets;
 
 final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfileHandler
 {
+	private final static Logger log = LoggerFactory.getLogger(MultipleDecisionXPathExpressionHandler.class);
+	
 	final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
@@ -52,6 +56,11 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR, 
 				XacmlDataTypes.XPATHEXPRESSION.getType())){
+			if(log.isDebugEnabled()){
+				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
+						"passing request to next handler", 
+						MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
+			}
 			return handleNext(request, pdp);
 		}
 		try
@@ -66,6 +75,9 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			{	
 				Request req = new Request(request.isReturnPolicyIdList(), 
 						requestAttr, request.getRequestDefaults());
+				if(log.isDebugEnabled()){
+					log.debug("Created request=\"{}\"", req);
+				}
 				results.addAll(handleNext(req, pdp));
 			}
 			return results;
@@ -104,6 +116,10 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			return attributes;
 		}
 		catch (XPathEvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate xpath " +
+						"expression", e);
+			}
 			return ImmutableSet.of(attribute);
 		}
 	}

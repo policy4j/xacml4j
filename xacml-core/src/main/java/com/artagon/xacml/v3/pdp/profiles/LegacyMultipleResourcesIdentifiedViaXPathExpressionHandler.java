@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
@@ -15,8 +18,9 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
 {
+	private final static Logger log = LoggerFactory.getLogger(LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler.class);
+	
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
 	
 	@Override
 	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
@@ -50,18 +54,20 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 				for(Attribute attr : attrs.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
-						Attribute selector = new Attribute(MULTIPLE_CONTENT_SELECTOR, attr.getValues());
+						log.debug("Transforming resource attr=\"{}\"", attr);
+						Attribute selector = new Attribute(MultipleDecisionXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
+								attr.getValues());
 						resourceAttr.add(selector);
 						continue;
 					}
 					resourceAttr.add(attr);
 				}
-				attributes.add(new Attributes(attrs.getCategoryId(), resourceAttr));
+				attributes.add(new Attributes(attrs.getCategoryId(), attrs.getContent(), resourceAttr));
 				continue;
 			}
 			attributes.add(attrs);
 		}
-		return handleNext(request, pdp);
+		return handleNext(new Request(request.isReturnPolicyIdList(), attributes), pdp);
 	}
 
 }
