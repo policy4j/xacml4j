@@ -13,13 +13,13 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 
-public class DefaultEnviromentAttributeLocator extends BaseAttributeResolver
+public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
 	private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
 	private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
 	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
 	
-	public DefaultEnviromentAttributeLocator(){
+	public DefaultEnviromentAttributeResolver(){
 		super(AttributeResolverDescriptorBuilder.create().
 				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATE).
 				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_TIME).

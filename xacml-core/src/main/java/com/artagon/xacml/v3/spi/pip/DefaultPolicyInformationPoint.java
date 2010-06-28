@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -16,6 +18,8 @@ import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 
 public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 {
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
+	
 	private Map<AttributeCategoryId, Map<String, AttributeResolver>> registry;
 	
 	public DefaultPolicyInformationPoint(){
@@ -55,6 +59,10 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 					registry.put(c, byCategory);
 				}
 				for(String attributeId : d.getProvidedAttributes(c)){
+					if(log.isDebugEnabled()){
+						log.debug("Adding resolver for category=\"{}\" " +
+								"attributeId=\"{}\"", c, attributeId);
+					}
 					byCategory.put(attributeId, r);
 				}
 			}
