@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
@@ -18,8 +15,6 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler.class);
-	
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
 	@Override
@@ -54,9 +49,9 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 				for(Attribute attr : attrs.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
-						log.debug("Transforming resource attr=\"{}\"", attr);
-						Attribute selector = new Attribute(MultipleDecisionXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
-								attr.getValues());
+						Attribute selector = new Attribute(
+								MultipleDecisionXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
+								attr.getIssuer(), true, attr.getValues());
 						resourceAttr.add(selector);
 						continue;
 					}
