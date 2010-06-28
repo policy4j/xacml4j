@@ -116,15 +116,9 @@ public class HigherOrderFunctions
 			@XacmlParamAnyBag BagOfAttributeValues<AttributeValue> b) 
 		throws EvaluationException
 	{
-		for(AttributeValue va : a.values()){
-			boolean result = true;
-			for(AttributeValue vb : b.values()){
-				BooleanValue r = ref.invoke(context, va, vb);
-				if(!r.getValue()){
-					result = false;
-					break;
-				}
-			}
+		for(AttributeValue va : a.values())
+		{
+			boolean result = allOf(context, ref, va, b).getValue();
 			if(result){
 				return XacmlDataTypes.BOOLEAN.create(true);
 			}
