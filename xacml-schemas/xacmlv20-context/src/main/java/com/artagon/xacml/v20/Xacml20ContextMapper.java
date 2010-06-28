@@ -116,7 +116,6 @@ class Xacml20ContextMapper
 	
 	private Result create(ResultType result)
 	{
-		Decision decision = v20ToV30DecisionMapping.get(result.getDecision());
 		return null;
 	}
 	
@@ -148,6 +147,9 @@ class Xacml20ContextMapper
 	 */
 	private String getResourceId(Result result)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Mapping result=\"{}\" to resourceId", result);
+		}
 		Attributes resource = result.getAttribute(AttributeCategoryId.RESOURCE);
 		if(resource == null){
 			return null;
@@ -279,7 +281,8 @@ class Xacml20ContextMapper
 		}
 		return new Attributes(AttributeCategoryId.RESOURCE, 
 				content, 
-				create(resource.getAttribute(), AttributeCategoryId.RESOURCE, false));
+				create(resource.getAttribute(), 
+						AttributeCategoryId.RESOURCE, multipleResources));
 	}
 	
 	private Node getResourceContent(ResourceType resource)
@@ -299,12 +302,12 @@ class Xacml20ContextMapper
 	}
 	
 	private Collection<Attribute> create(Collection<AttributeType> contextAttributes, 
-			AttributeCategoryId category, boolean incudeInResultResourceId) 
+			AttributeCategoryId category, boolean includeInResult) 
 		throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		for(AttributeType a : contextAttributes){
-			attributes.add(createAttribute(a, category, incudeInResultResourceId));
+			attributes.add(createAttribute(a, category, includeInResult));
 		}
 		return attributes;
 	}
@@ -322,7 +325,7 @@ class Xacml20ContextMapper
 			values.add(value);
 		}
 		return new Attribute(a.getAttributeId(), a.getIssuer(), 
-				a.getAttributeId().equals(RESOURCE_ID)?incudeInResultResourceId:false, values);
+				((a.getAttributeId().equals(RESOURCE_ID))?incudeInResultResourceId:false), values);
 	}
 	
 	private AttributeValue createValue(String dataTypeId, 
