@@ -2,9 +2,6 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
@@ -13,8 +10,6 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyFactory extends BasePolicyFactory
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyFactory.class);
-	
 	public DefaultPolicyFactory()
 	{
 		super(new DefaultFunctionProvider(), 
@@ -218,10 +213,6 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String attributeId, AttributeValueType dataType, boolean mustBePresent, String issuer)
 			throws PolicySyntaxException 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Creating attribute designator " +
-					"category=\"{}\", attributeId=\"{}\"", category, attributeId);
-		}
 		return new AttributeDesignator(category, attributeId, issuer, dataType, mustBePresent);
 	}
 
