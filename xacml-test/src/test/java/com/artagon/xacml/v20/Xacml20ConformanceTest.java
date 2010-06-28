@@ -23,6 +23,8 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyStore;
 
 public class Xacml20ConformanceTest 
@@ -32,6 +34,7 @@ public class Xacml20ConformanceTest
 	private ResponseMarshaller responseMarshaller;
 	private InMemoryPolicyStore store;
 	private  PolicyDecisionPoint pdp;
+	private PolicyInformationPoint pip;
 	
 	@Before
 	public void init() throws Exception
@@ -40,7 +43,8 @@ public class Xacml20ConformanceTest
 		this.responseMarshaller = new Xacml20ResponseMarshaller();
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		this.store = new InMemoryPolicyStore();
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store), store);
+		this.pip = new DefaultPolicyInformationPoint();
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		
 	}
 	
@@ -101,6 +105,12 @@ public class Xacml20ConformanceTest
 		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIIF", 7);	
 	}
 	
+	
+	public void testRSA2008() throws Exception
+	{
+			
+	}
+	
 	@Test
 	public void testIIIGTests() throws Exception
 	{	
@@ -122,7 +132,7 @@ public class Xacml20ConformanceTest
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicySetId1.xml"));
 		Request request = getRequest("IIE", 1);
-		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		Response response = pdp.decide(request);
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 1));	
@@ -137,7 +147,7 @@ public class Xacml20ConformanceTest
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicySetId1.xml"));
 		Request request = getRequest("IIE", 2);
-		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		Response response = pdp.decide(request);
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 2));	
@@ -184,7 +194,7 @@ public class Xacml20ConformanceTest
 		InMemoryPolicyStore repository = new InMemoryPolicyStore();
 		repository.addTopLevelPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		Request request = getRequest(testPrefix, testCaseNum);
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository), repository);
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		Response response = pdp.decide(request);
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);
