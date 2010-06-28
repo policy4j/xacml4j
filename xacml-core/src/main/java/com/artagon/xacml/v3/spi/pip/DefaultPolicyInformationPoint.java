@@ -25,6 +25,7 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	
 	public DefaultPolicyInformationPoint(){
 		this.registry = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 
 	@Override
