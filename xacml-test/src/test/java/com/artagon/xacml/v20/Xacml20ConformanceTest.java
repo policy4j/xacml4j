@@ -24,6 +24,7 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.DefaultEnviromentAttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyStore;
 
@@ -43,7 +44,9 @@ public class Xacml20ConformanceTest
 		this.responseMarshaller = new Xacml20ResponseMarshaller();
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		this.store = new InMemoryPolicyStore();
-		this.pip = new DefaultPolicyInformationPoint();
+		DefaultPolicyInformationPoint dpip = new DefaultPolicyInformationPoint();
+		dpip.addResolver(new DefaultEnviromentAttributeResolver());
+		this.pip = dpip;
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		
 	}
