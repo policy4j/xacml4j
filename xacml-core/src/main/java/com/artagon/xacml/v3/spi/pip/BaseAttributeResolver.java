@@ -2,10 +2,8 @@ package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.AttributeResolver;
-import com.artagon.xacml.v3.spi.AttributeResolverDescriptor;
+import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseAttributeResolver implements AttributeResolver

@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.AttributeResolverDescriptorBuilder;
+import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptorBuilder;
 
 public class DefaultEnviromentAttributeLocator extends BaseAttributeResolver
 {	
