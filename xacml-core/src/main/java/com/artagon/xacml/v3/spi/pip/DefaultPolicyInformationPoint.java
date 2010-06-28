@@ -75,7 +75,11 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 					log.debug("Adding resolver for category=\"{}\" " +
 							"attributeId=\"{}\"", c, attributeId);
 				}
-				byCategory.put(attributeId, resolver);
+				AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
+				if(oldResolver != null){
+					throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
+							"category=\"%s\" already provided via other resolver", attributeId, c));
+				}
 			}
 		}
 	}
