@@ -28,22 +28,23 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<? extends AttributeValue> resolve(
+	public BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestAttributesCallback callback) 
 	{
 	 	Map<String, AttributeResolver> byCategory = registry.get(ref.getCategory());
 	 	if(byCategory == null){
-	 		return ref.getDataType().bagOf().createEmpty();
+	 		return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty();
 	 	}
 	 	AttributeResolver r = byCategory.get(ref.getAttributeId());
 	 	if(log.isDebugEnabled()){
 	 		log.debug("Found resolver attribute reference=\"{}\"", ref);
 	 	}
-	 	return (r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
-	 			new DefaultPolicyInformationPointContext(context), ref, callback);
+	 	return (BagOfAttributeValues<AttributeValue>)((r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
+	 			new DefaultPolicyInformationPointContext(context), ref, callback));
 	}
 
 	@Override

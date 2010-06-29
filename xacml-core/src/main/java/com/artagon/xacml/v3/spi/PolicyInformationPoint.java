@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.RequestAttributesCallback;
 
 public interface PolicyInformationPoint 
 {
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context, 
 			AttributeDesignator ref, 
 			RequestAttributesCallback callback);
