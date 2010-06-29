@@ -23,8 +23,9 @@ public class Xacml20XPathTo30TransformerTest
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record/md:patient/md:patient-number/text()", AttributeCategoryId.RESOURCE), xpathExp);
 	}
 	
-	@Ignore
+	// FIXME: Implement transformation
 	@Test
+	@Ignore
 	public void testXPathTransformationWithFunctions()
 	{
 		assertEquals("//md:record/md:patient/md:patient-number/text()", 
