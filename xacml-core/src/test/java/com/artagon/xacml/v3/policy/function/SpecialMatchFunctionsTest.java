@@ -29,8 +29,12 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testRFC822NameMatch()
 	{
-		StringValue p = XacmlDataTypes.STRING.create(".sun.com ");
-		RFC822NameValue n = XacmlDataTypes.RFC822NAME.create("test@sun.com");
+		StringValue p = XacmlDataTypes.STRING.create(".sun.com");
+		RFC822NameValue n = XacmlDataTypes.RFC822NAME.create("test@east.sun.com");
+		assertEquals(XacmlDataTypes.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		
+		p = XacmlDataTypes.STRING.create("sun.com");
+		n = XacmlDataTypes.RFC822NAME.create("test@sun.com");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 }

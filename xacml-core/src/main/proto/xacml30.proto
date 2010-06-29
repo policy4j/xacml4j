@@ -1,6 +1,6 @@
 
-package artagon.xacml.v30.protocol.protbuf;
-option java_package = "com.artagon.xacml.v30.protocol.protbuf";
+package com.artagon.xacml.v30.protbuf;
+option java_package = "com.artagon.xacml.v30.protbuf";
 option optimize_for = CODE_SIZE;
 
 enum AttributeDataTypeId
@@ -71,13 +71,13 @@ message Attributes
     repeated Attribute attributes = 4;
 }
     
-message Request
+message Response
 {
     optional bool ReturnPolicyIdList = 1 [ default=false];
     repeated Attributes attributes = 2;
 }
 
-message Response
+message Request
 {
     optional bool ReturnPolicyIdList = 1 [ default=false];
     repeated Attributes attributes = 2;
