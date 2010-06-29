@@ -29,7 +29,7 @@ public class DefaultContextHandler implements ContextHandler
 	private PolicyInformationPoint pip;
 	
 	/* Request scope attribute designator resolution cache */
-	private Map<AttributeDesignator, BagOfAttributeValues<AttributeValue>> attributeDesignatorCache;
+	private Map<AttributeDesignator, BagOfAttributeValues<? extends AttributeValue>> attributeDesignatorCache;
 	
 	/* Request scope attribute selector resolution cache */
 	private Map<AttributeSelector, BagOfAttributeValues<AttributeValue>> attributeSelectorCache;
@@ -47,7 +47,7 @@ public class DefaultContextHandler implements ContextHandler
 		this.request = request;
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
-		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues<AttributeValue>>();
+		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues<? extends AttributeValue>>();
 		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues<AttributeValue>>();
 		this.contentCache = new HashMap<AttributeCategoryId, Node>();
 	}
@@ -70,18 +70,17 @@ public class DefaultContextHandler implements ContextHandler
 
 
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
-			EvaluationContext context, AttributeDesignator ref)
-			throws EvaluationException 
+	public BagOfAttributeValues<? extends AttributeValue> resolve(EvaluationContext context, AttributeDesignator ref) throws EvaluationException 
 	{
-		BagOfAttributeValues<AttributeValue> v = attributeDesignatorCache.get(ref);
-		if(v == null){
-			v = doResolve(context, ref);
-			if(v != null){
-				attributeDesignatorCache.put(ref, v);
-			}
+		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
+				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
+		if(!values.isEmpty()){
+			return ref.getDataType().bagOf().create(values);
 		}
-		return v;
+		if(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST){
+			return ref.getDataType().bagOf().createEmpty();
+		}
+		return doResolve(context, ref);
 	}
 
 
@@ -100,7 +99,6 @@ public class DefaultContextHandler implements ContextHandler
 		return v;
 	}
 
-
 	private final Node doGetContent(EvaluationContext context, AttributeCategoryId category) 
 	{
 		Attributes attr = request.getOnlyAttributes(category);
@@ -113,25 +111,16 @@ public class DefaultContextHandler implements ContextHandler
 		return (attr != null)?attr.getContent():null;
 	}
 
-	@SuppressWarnings("unchecked")
-	private final BagOfAttributeValues<AttributeValue> doResolve(
+	private final BagOfAttributeValues<? extends AttributeValue> doResolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Resolving designator=\"{}\" " +
-					"request=\"{}\"", ref, request);
+		BagOfAttributeValues<? extends AttributeValue> v = attributeDesignatorCache.get(ref);
+		if(v == null){
+			v = pip.resolve(context, ref, new DefaultRequestAttributesCallback());
+			attributeDesignatorCache.put(ref, v);
 		}
-		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
-				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
-		if(!values.isEmpty()){
-			return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().create(values);
-		}
-		return (BagOfAttributeValues<AttributeValue>)(
-				(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST)? 
-				ref.getDataType().bagOf().createEmpty():
-					pip.resolve(context, ref, new DefaultRequestAttributesCallback()));
-
+		return v;
 	}
 	
 	@SuppressWarnings("unchecked")

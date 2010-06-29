@@ -318,12 +318,13 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public final BagOfAttributeValues<AttributeValue> resolve(
 			AttributeDesignator ref) 
 		throws EvaluationException
 	{
-		BagOfAttributeValues<AttributeValue> v =  contextHandler.resolve(this, ref);
+		BagOfAttributeValues<AttributeValue> v =  (BagOfAttributeValues<AttributeValue>)contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
 			log.debug("Resolved attribute " +
 					"designator=\"{}\" to value=\"{}\"", ref, v);
@@ -331,11 +332,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		return v;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public final BagOfAttributeValues<AttributeValue> resolve(AttributeSelector ref)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues<AttributeValue> v =  contextHandler.resolve(this, ref);
+		BagOfAttributeValues<AttributeValue> v =  (BagOfAttributeValues<AttributeValue>)contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
 			log.debug("Resolved attribute " +
 					"selector=\"{}\" to value=\"{}\"", ref, v);

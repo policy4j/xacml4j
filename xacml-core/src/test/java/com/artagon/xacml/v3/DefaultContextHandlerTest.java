@@ -217,7 +217,7 @@ public class DefaultContextHandlerTest
 		
 		replay(context, request, attributes, pip);
 		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<AttributeValue> v = h.resolve(context, ref);
+		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
@@ -237,7 +237,7 @@ public class DefaultContextHandlerTest
 		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")));
 		replay(context, request, attributes, pip);
 		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<AttributeValue> v = h.resolve(context, ref);
+		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
@@ -255,7 +255,7 @@ public class DefaultContextHandlerTest
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
 		replay(context, request, attributes, pip);
 		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<AttributeValue> v = h.resolve(context, ref);
+		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.emptyBag(), v);
 		verify(context, request, attributes, pip);
 	}
