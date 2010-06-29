@@ -184,10 +184,10 @@ public class HigherOrderFunctions
 		public ValueType resolve(FunctionSpec spec, 
 				Expression... arguments) 
 		{
-			Preconditions.checkArgument(arguments == null, 
+			Preconditions.checkArgument(arguments != null, 
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, arguments must be specified", spec.getId());
-			Preconditions.checkArgument(arguments.length != spec.getNumberOfParams(), 
+			Preconditions.checkArgument(arguments.length == spec.getNumberOfParams(), 
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, function requires 2 parameters to be specified", spec.getId());
 			if(log.isDebugEnabled()){
