@@ -28,6 +28,7 @@ import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlParamFuncReference;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider
 public class HigherOrderFunctions 
@@ -183,6 +184,16 @@ public class HigherOrderFunctions
 		public ValueType resolve(FunctionSpec spec, 
 				Expression... arguments) 
 		{
+			Preconditions.checkArgument(arguments == null, 
+					"Can't resolve function=\"%s\" return type " +
+					"dynamically, arguments must be specified", spec.getId());
+			Preconditions.checkArgument(arguments.length != spec.getNumberOfParams(), 
+					"Can't resolve function=\"%s\" return type " +
+					"dynamically, function requires 2 parameters to be specified", spec.getId());
+			if(log.isDebugEnabled()){
+				log.debug("Resolving function=\"%s\" " +
+						"return type dynamically", spec.getId());
+			}
 			AttributeValueType type = (AttributeValueType)((FunctionReference)arguments[0]).getEvaluatesTo();
 			return type.bagOf();
 		}

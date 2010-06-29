@@ -70,7 +70,7 @@ public class HigherOrderFunctionsTest
 	}
 	
 	@Test
-	public void testMap() throws EvaluationException
+	public void testMapWithValidArguments() throws EvaluationException
 	{
 		Collection<AttributeValue> v = new LinkedList<AttributeValue>();
 		v.add(XacmlDataTypes.INTEGER.create(10));
