@@ -150,12 +150,19 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		Collection<Advice> advices = new LinkedList<Advice>();
 		for(AdviceExpression adviceExp : adviceExpressions){
 			if(adviceExp.isApplicable(result)){
-				log.debug("Evaluating advice id=\"{}\" for decision=\"{}\"", 
-						adviceExp.getId(), result);
-				advices.add(adviceExp.evaluate(context));
+				Advice a = adviceExp.evaluate(context);
+				if(log.isDebugEnabled()){
+					log.debug("Evaluating applicable advice id=\"{}\" to=\"{}\"", 
+							adviceExp.getId(), a);
+				}
+				Preconditions.checkState(a != null);
+				advices.add(a);
 			}
 		}
-		log.debug("Evaluated \"{}\" applicable advices", advices.size());
+		if(log.isDebugEnabled()){
+			log.debug("Evaluated=\"{}\" applicable advices", 
+					advices.size());
+		}
 		return advices;
 	}
 	
@@ -174,12 +181,19 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		for(ObligationExpression obligationExp : obligationExpressions){
 			if(obligationExp.isApplicable(result)){
-				log.debug("Evaluating obligation id=\"{}\" for decision=\"{}\"", 
-						obligationExp.getId(), result);
-				obligations.add(obligationExp.evaluate(context));
+				Obligation o  = obligationExp.evaluate(context);
+				if(log.isDebugEnabled()){
+					log.debug("Evaluating applicable obligation id=\"{}\" for decision=\"{}\"", 
+							obligationExp.getId(), result);
+				}
+				Preconditions.checkState(o != null);
+				obligations.add(o);
 			}
 		}
-		log.debug("Evaluated \"{}\" applicable obligations", obligations.size());
+		if(log.isDebugEnabled()){
+			log.debug("Evaluated=\"{}\" applicable obligations", 
+					obligations.size());
+		}
 		return obligations;
 	}
 	

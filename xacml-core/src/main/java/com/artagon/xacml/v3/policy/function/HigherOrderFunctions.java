@@ -190,10 +190,8 @@ public class HigherOrderFunctions
 			Preconditions.checkArgument(arguments.length == spec.getNumberOfParams(), 
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, function requires 2 parameters to be specified", spec.getId());
-			if(log.isDebugEnabled()){
-				log.debug("Resolving function=\"%s\" " +
-						"return type dynamically", spec.getId());
-			}
+			Preconditions.checkArgument(arguments[0] instanceof FunctionReference, 
+					"First function argument must be function reference");
 			AttributeValueType type = (AttributeValueType)((FunctionReference)arguments[0]).getEvaluatesTo();
 			return type.bagOf();
 		}

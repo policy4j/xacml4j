@@ -39,7 +39,7 @@ enum AttributeCategory
 message AttributeValue
 {
 	required AttributeDataTypeId type = 1;
-	
+		
 	optional bool booleanValue = 2;
 	optional double doubleValue = 3;
 	optional string stringVal = 4;
