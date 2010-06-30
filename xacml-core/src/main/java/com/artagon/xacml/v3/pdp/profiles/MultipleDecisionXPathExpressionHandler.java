@@ -142,6 +142,6 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		}
 		return new Attributes(attributes.getId(), 
 				attributes.getCategoryId(), 
-				DOMUtil.copyNode(attributes.getContent()), newAttributes);
+				attributes.getContent(), newAttributes);
 	}
 }
