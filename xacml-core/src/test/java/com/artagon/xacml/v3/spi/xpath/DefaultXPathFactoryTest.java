@@ -4,8 +4,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.XPathVersion;
-
 public class DefaultXPathFactoryTest 
 {
 	
@@ -13,6 +11,5 @@ public class DefaultXPathFactoryTest
 	public void testCreateXPathFactory() throws Exception
 	{
 		XPathFactory xpf = XPathFactory.newInstance();
-		xpf.getFeature(XPathVersion.XPATH1.toString());
 	}
 }

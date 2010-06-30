@@ -152,8 +152,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 			if(adviceExp.isApplicable(result)){
 				Advice a = adviceExp.evaluate(context);
 				if(log.isDebugEnabled()){
-					log.debug("Evaluating applicable advice id=\"{}\" to=\"{}\"", 
-							adviceExp.getId(), a);
+					log.debug("Evaluated advice=\"{}\"", a);
 				}
 				Preconditions.checkState(a != null);
 				advices.add(a);
@@ -183,8 +182,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 			if(obligationExp.isApplicable(result)){
 				Obligation o  = obligationExp.evaluate(context);
 				if(log.isDebugEnabled()){
-					log.debug("Evaluating applicable obligation id=\"{}\" for decision=\"{}\"", 
-							obligationExp.getId(), result);
+					log.debug("Evaluated obligation=\"{}\"", o);
 				}
 				Preconditions.checkState(o != null);
 				obligations.add(o);
