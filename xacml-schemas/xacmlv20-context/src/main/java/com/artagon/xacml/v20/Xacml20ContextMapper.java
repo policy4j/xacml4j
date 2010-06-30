@@ -24,6 +24,7 @@ import org.oasis.xacml.v20.context.StatusCodeType;
 import org.oasis.xacml.v20.context.StatusType;
 import org.oasis.xacml.v20.context.SubjectType;
 import org.oasis.xacml.v20.policy.AttributeAssignmentType;
+import org.oasis.xacml.v20.policy.EffectType;
 import org.oasis.xacml.v20.policy.ObligationType;
 import org.oasis.xacml.v20.policy.ObligationsType;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
@@ -61,6 +63,9 @@ class Xacml20ContextMapper
 	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
 	
+	private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
+	private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
+	
 	static{
 		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
 		v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
@@ -74,6 +79,13 @@ class Xacml20ContextMapper
 		v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
 		v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
 		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
+		
+		
+		v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
+		v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
+		
+		v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
+		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 	
 	}
 	
@@ -97,6 +109,9 @@ class Xacml20ContextMapper
 	
 	public ResponseType create(Response response)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Mapping response=\"{}\"", response);
+		}
 		ResponseType responseV2 = new ResponseType();
 		List<ResultType> results = responseV2.getResult();
 		for(Result resultV3 : response.getResults()){
@@ -183,6 +198,8 @@ class Xacml20ContextMapper
 	
 	private ObligationType create(Obligation o){
 		ObligationType obligation = new ObligationType();
+		obligation.setObligationId(o.getId());
+		obligation.setFulfillOn(v30ToV20EffectnMapping.get(o.getFullfillOn()));
 		for(AttributeAssignment a : o.getAttributes()){
 			obligation.getAttributeAssignment().add(create(a));
 		}
