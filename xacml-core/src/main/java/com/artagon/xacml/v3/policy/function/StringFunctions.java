@@ -26,7 +26,6 @@ import com.artagon.xacml.v3.types.StringType.StringValue;
 @XacmlFunctionProvider
 public class StringFunctions 
 {
-	
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:string-concatenate")
 	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
 	public static StringValue concatenate(
