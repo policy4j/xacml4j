@@ -38,6 +38,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		replay(context);
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -72,6 +73,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
 		replay(context);
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -105,6 +107,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		replay(context);
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -126,6 +129,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
 		replay(context);
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -148,6 +152,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		replay(context);
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -175,6 +180,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
@@ -200,6 +206,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
@@ -225,6 +232,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
+		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
