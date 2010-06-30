@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
@@ -33,7 +34,7 @@ public class RSA2008InteropTest
 		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		InMemoryPolicyStore store = new InMemoryPolicyStore();
-		store.addTopLevelPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		store.addPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));
 		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02b-N.xml"));
 		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
@@ -52,7 +53,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-01-01.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -60,7 +62,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-01-02.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -68,7 +71,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-01-03.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -76,7 +80,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-01-04.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -84,7 +89,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-02-01.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -100,7 +106,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-02-03.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -108,7 +115,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-02-04.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -116,7 +124,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-03-01.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -124,7 +133,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-03-02.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -132,7 +142,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-03-03.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -140,7 +151,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-04-01.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -148,7 +160,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-04-02.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -156,7 +169,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-04-03.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -164,7 +178,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-04-04.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
@@ -172,7 +187,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-05-01.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
@@ -180,7 +196,8 @@ public class RSA2008InteropTest
 	{
 		Request request = getRequest("XacmlRequest-05-02.xml");
 		Response response = pdp.decide(request);
-		assertEquals(Decision.PERMIT, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = Iterables.getOnlyElement(response.getResults());
+		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	private CompositeDecisionRule getPolicy(String name) throws Exception

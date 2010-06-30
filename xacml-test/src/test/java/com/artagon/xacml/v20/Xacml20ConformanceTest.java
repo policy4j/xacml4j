@@ -128,7 +128,7 @@ public class Xacml20ConformanceTest
 	public void testIIE001() throws Exception
 	{	
 		InMemoryPolicyStore repository = new InMemoryPolicyStore();
-		repository.addTopLevelPolicy(getPolicy("IIE", 1, "Policy.xml"));
+		repository.addPolicy(getPolicy("IIE", 1, "Policy.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicySetId1.xml"));
 		Request request = getRequest("IIE", 1);
@@ -143,7 +143,7 @@ public class Xacml20ConformanceTest
 	public void testIIE002() throws Exception
 	{	
 		InMemoryPolicyStore repository = new InMemoryPolicyStore();
-		repository.addTopLevelPolicy(getPolicy("IIE", 2, "Policy.xml"));
+		repository.addPolicy(getPolicy("IIE", 2, "Policy.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicySetId1.xml"));
 		Request request = getRequest("IIE", 2);
@@ -157,7 +157,7 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE003() throws Exception
 	{	
-		store.addTopLevelPolicy(getPolicy("IIE", 3, "Policy.xml"));
+		store.addPolicy(getPolicy("IIE", 3, "Policy.xml"));
 		store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId1.xml"));
 		try{
 			store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId2.xml"));
@@ -192,7 +192,7 @@ public class Xacml20ConformanceTest
 	{
 		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
 		InMemoryPolicyStore repository = new InMemoryPolicyStore();
-		repository.addTopLevelPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
+		repository.addPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		Request request = getRequest(testPrefix, testCaseNum);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		Response response = pdp.decide(request);
