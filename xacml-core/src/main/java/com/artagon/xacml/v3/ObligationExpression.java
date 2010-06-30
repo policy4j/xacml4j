@@ -14,7 +14,7 @@ public class ObligationExpression extends BaseDecisionRuleResponseExpression
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		return new Obligation(getId(), attributes);
+		return new Obligation(getId(), attributes, getEffect());
 	
 	}
 

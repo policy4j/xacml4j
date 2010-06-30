@@ -31,7 +31,7 @@ abstract class BaseDecisionRuleResponse extends XacmlObject
 	public final String getId(){
 		return id;
 	}
-	
+		
 	public final Collection<AttributeAssignment> getAttributes(){
 		return Collections.unmodifiableCollection(attributes.values());
 	}
