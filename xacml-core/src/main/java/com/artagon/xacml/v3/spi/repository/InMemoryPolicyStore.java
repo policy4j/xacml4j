@@ -35,7 +35,7 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	 * 
 	 * @param policy a policy or policy set
 	 */
-	public void addTopLevelPolicy(CompositeDecisionRule policy)
+	public void addPolicy(CompositeDecisionRule policy)
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Adding decision ruleId=\"{}\"", policy.getId());
@@ -67,7 +67,7 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	public void addAll(Collection<CompositeDecisionRule> rules)
 	{
 		for(CompositeDecisionRule r : rules){
-			addTopLevelPolicy(r);
+			addPolicy(r);
 		}
 	}
 	

@@ -18,6 +18,8 @@ import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
+import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
 @XacmlFunctionProvider
 public class SetFunctions 
@@ -562,5 +564,94 @@ public class SetFunctions
 	{
 		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
+
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection")
+	@XacmlFuncReturnType(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)
+	public static BagOfAttributeValues<DayTimeDurationValue> dayTimeDurationIntersection(
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
+	{
+		return a.intersection(b);
+	}
 	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union")
+	@XacmlFuncReturnType(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)
+	public static BagOfAttributeValues<DayTimeDurationValue> dayTimeDurationUnion(
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
+	{
+		return a.union(b);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue dayTimeDurationSubest(
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue dayTimeDurationAtLeastOneMemberOf(
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue dayTimeDurationSetEquals(
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection")
+	@XacmlFuncReturnType(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)
+	public static BagOfAttributeValues<YearMonthDurationValue> yearMonthDurationIntersection(
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return a.intersection(b);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union")
+	@XacmlFuncReturnType(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)
+	public static BagOfAttributeValues<YearMonthDurationValue> yearMonthDurationUnion(
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return a.union(b);
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue yearMonthDurationSubest(
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue yearMonthDurationAtLeastOneMemberOf(
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+	}
+	
+	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue yearMonthDurationSetEquals(
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
+			@XacmlParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+	}
 }
