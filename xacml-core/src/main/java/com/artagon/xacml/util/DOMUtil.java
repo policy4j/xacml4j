@@ -74,11 +74,13 @@ public class DOMUtil
 	 */
 	public static Document copyNode(Node source)
 	{
-		Document sourceDoc = source.getOwnerDocument();
+		Document sourceDoc = (source.getNodeType() == Node.DOCUMENT_NODE)?(Document)source:source.getOwnerDocument();
+		Node rootNode = (source.getNodeType() == Node.DOCUMENT_NODE)?sourceDoc.getDocumentElement():source;
+		Preconditions.checkState(sourceDoc != null);
 		DOMImplementation domImpl = sourceDoc.getImplementation();
 		Document doc = domImpl.createDocument(
 				null, null, null); 
-		Node copy =  doc.importNode(source, true);
+		Node copy =  doc.importNode(rootNode, true);
 		doc.appendChild(copy);
 		return doc;
 	}

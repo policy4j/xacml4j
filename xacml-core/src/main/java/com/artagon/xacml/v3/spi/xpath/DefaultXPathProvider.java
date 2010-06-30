@@ -59,6 +59,9 @@ public class DefaultXPathProvider implements XPathProvider
 			}
 			return result;
 		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
@@ -87,6 +90,9 @@ public class DefaultXPathProvider implements XPathProvider
 			}
 			return result;
 		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
@@ -110,6 +116,9 @@ public class DefaultXPathProvider implements XPathProvider
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (String)xpath.evaluate(path, context, XPathConstants.STRING);
 		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
@@ -133,6 +142,9 @@ public class DefaultXPathProvider implements XPathProvider
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			return (Number)xpath.evaluate(path, context, XPathConstants.NUMBER);
 		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
