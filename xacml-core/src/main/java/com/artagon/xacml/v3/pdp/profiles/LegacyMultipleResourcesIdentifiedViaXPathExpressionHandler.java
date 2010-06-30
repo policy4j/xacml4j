@@ -23,6 +23,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		if(request.hasRepeatingCategories()){
 			return Collections.singleton(
 					Result.createIndeterminateSyntaxError(
+							request.getIncludeInResultAttributes(),
 							"Found repeating categories in the request"));
 		}
 		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
@@ -37,6 +38,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		if(resourceId.size() > 1){
 			return Collections.singleton(
 					Result.createIndeterminateSyntaxError(
+							request.getIncludeInResultAttributes(),
 							"Found more than AttributeId=\"%s\" " +
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
 							XacmlDataTypes.XPATHEXPRESSION.getTypeId()));

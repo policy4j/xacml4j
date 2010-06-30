@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -63,38 +64,39 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		}
 		EvaluationContext context = factory.createContext(request);
 		Collection<CompositeDecisionRule> applicable = policyRepository.findApplicable(context);
+		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
 		if(applicable.size() == 0){
 			if(log.isDebugEnabled()){
 				log.debug("Found no applicable policies");
 			}
 			return new Result(Decision.NOT_APPLICABLE, 
 					new Status(StatusCode.createOk(), 
-							"No applicable policies found"));
+							"No applicable policies found"), includeInResult);
 		}
 		if(applicable.size() > 1){
 			log.debug("Found more than one applicable policy");
 			return new Result(Decision.NOT_APPLICABLE, 
 					new Status(StatusCode.createProcessingError(), 
-							"Found more than one applicable policy"));
+							"Found more than one applicable policy"), includeInResult);
 		}
 		CompositeDecisionRule policy = Iterables.getOnlyElement(applicable);
 		EvaluationContext policyContext = policy.createContext(context);
 		Decision decision = policy.evaluateIfApplicable(policyContext);
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
-					new Status(StatusCode.createOk()));
+					new Status(StatusCode.createOk()), includeInResult);
 		}
 		if(decision.isIndeterminate()){
 			StatusCode status = (context.getEvaluationStatus() == null)?
 					StatusCode.createProcessingError():context.getEvaluationStatus();
-			return new Result(decision, new Status(status));
+			return new Result(decision, new Status(status), includeInResult);
 		}
 		return new Result(
 				decision, 
 				new Status(StatusCode.createOk()),
 				context.getAdvices(), 
 				context.getObligations(), 
-				request.getIncludeInResultAttributes(), 
+				includeInResult, 
 				context.getEvaluatedPolicies());
 	}
 }

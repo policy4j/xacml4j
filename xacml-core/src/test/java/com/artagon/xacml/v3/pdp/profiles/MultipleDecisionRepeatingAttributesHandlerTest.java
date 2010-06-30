@@ -66,9 +66,13 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()), 
+						Collections.<Attributes>emptyList()));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+				Collections.<Attributes>emptyList()));
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
@@ -107,7 +111,9 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()), 
+						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
@@ -128,7 +134,9 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);

@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;
+import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
@@ -18,7 +19,6 @@ import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
 @XacmlFunctionProvider

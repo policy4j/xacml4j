@@ -3,11 +3,8 @@ package com.artagon.xacml.v3.pdp.profiles;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
 import com.google.common.base.Preconditions;
@@ -27,18 +24,5 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 		Preconditions.checkNotNull(handler);
 		this.next = handler;
 	}
-	
-	protected Result createError(Status status){
-		return new Result(Decision.INDETERMINATE, status);
-	}
-	
-	protected Result createSyntaxError(String message){
-		return createError(new Status(StatusCode.createSyntaxError(), 
-				message));
-	}
-	
-	protected Result createProcessingError(String message){
-		return createError(new Status(StatusCode.createProcessingError(), 
-				message));
-	}
+
 }

@@ -95,9 +95,13 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Capture<Request> c1 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList()));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList()));
 		replay(pdp);
 		profile.handle(context, pdp).iterator();
 		Request context0 = c0.getValue();
@@ -139,10 +143,14 @@ public class MultipleDecisionRequestReferencesHandlerTest
 				Arrays.asList(attr0, attr1));
 		
 		expect(pdp.requestDecision(request)).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList()));
 		replay(pdp);
 		Collection<Result> results = profile.handle(request, pdp);
-		assertEquals(new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())), results.iterator().next());
+		assertEquals(new Result(Decision.INDETERMINATE, 
+				new Status(StatusCode.createProcessingError()), 
+				Collections.<Attributes>emptyList()), results.iterator().next());
 		verify(pdp);
 	}
 	
@@ -155,7 +163,9 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Capture<Request> c0 = new Capture<Request>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, new Status(StatusCode.createProcessingError())));
+				new Result(Decision.INDETERMINATE, 
+						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);

@@ -83,7 +83,8 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			return results;
 		}catch(RequestSyntaxException e){
 			return Collections.singleton(
-					Result.createIndeterminate(e.getStatus()));
+					Result.createIndeterminate(e.getStatus(), 
+							request.getIncludeInResultAttributes()));
 		}
 	}
 	

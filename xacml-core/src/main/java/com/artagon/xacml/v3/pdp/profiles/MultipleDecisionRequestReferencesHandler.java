@@ -27,7 +27,8 @@ final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProf
 				Request resolvedRequest = resolveAttributes(request, ref);
 				results.addAll(handleNext(resolvedRequest, pdp));
 			}catch(RequestSyntaxException e){
-				results.add(new Result(Decision.INDETERMINATE, e.getStatus()));
+				results.add(new Result(Decision.INDETERMINATE, e.getStatus(), 
+						request.getIncludeInResultAttributes()));
 			}
 		}
 		return results;

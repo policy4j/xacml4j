@@ -43,11 +43,11 @@ public class Result extends XacmlObject
 	 * @param status an failure status
 	 */
 	public Result(Decision decision, 
-			Status status){
+			Status status, Collection<Attributes> attributes){
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
-				Collections.<Attributes>emptyList(), 
+				attributes, 
 				Collections.<PolicyIdentifier>emptyList());
 		Preconditions.checkArgument(decision == Decision.NOT_APPLICABLE 
 				|| decision.isIndeterminate());
@@ -93,18 +93,20 @@ public class Result extends XacmlObject
 	}
 	
 	
-	public static Result createIndeterminate(Status status){
-		return new Result(Decision.INDETERMINATE, status);
+	public static Result createIndeterminate(Status status, Collection<Attributes> attributes){
+		return new Result(Decision.INDETERMINATE, status, attributes);
 	}
 	
-	public static Result createIndeterminateSyntaxError(String format, Object ...params){
+	public static Result createIndeterminateSyntaxError(Collection<Attributes> attributes, 
+			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
-				Status.createSyntaxError(format, params));
+				Status.createSyntaxError(format, params), attributes);
 	}
 	
-	public static Result createIndeterminateProcessingError(String format, Object ...params){
+	public static Result createIndeterminateProcessingError(Collection<Attributes> attributes,
+			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
-				Status.createSyntaxError(format, params));
+				Status.createSyntaxError(format, params), attributes);
 	}
 	
 	
