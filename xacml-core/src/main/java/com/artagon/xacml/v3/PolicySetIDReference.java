@@ -77,12 +77,24 @@ public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		v.visitLeave(this);
 	}
 	
+	private static boolean isReferenceCyclic(PolicySetIDReference ref, EvaluationContext context)
+	{
+		if(context.getCurrentPolicySetIDReference() != null){
+			if(ref.equals(context.getCurrentPolicySetIDReference())){
+				throw new IllegalStateException("Cyclic reference detected");
+			}
+			return isReferenceCyclic(ref, context.getParentContext());
+		}
+		return false;				
+	}
+	
 	class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
 	{
 		PolicySetIDReferenceEvaluationContext(
 				EvaluationContext context) {
 			super(context);
 			Preconditions.checkNotNull(context.getCurrentPolicySet());
+			Preconditions.checkArgument(!isReferenceCyclic(PolicySetIDReference.this, context));
 		}
 		
 		@Override
