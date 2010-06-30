@@ -29,7 +29,8 @@ public class AttributeSelector extends
 	public AttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
-			AttributeValueType dataType, boolean mustBePresent){
+			AttributeValueType dataType, 
+			boolean mustBePresent){
 		this(category, xpath, null, dataType, mustBePresent);
 	}
 	

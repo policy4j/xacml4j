@@ -17,12 +17,16 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
 public class DefaultContextHandler implements ContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultContextHandler.class);
+	
+	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
 	private Request request;
 	private XPathProvider xpathProvider;
@@ -139,9 +143,26 @@ public class DefaultContextHandler implements ContextHandler
 			if(content == null){
 				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
 			}
-			
+			Node contextNode = content;
+			Collection<AttributeValue> v = request.getAttributeValues(ref.getCategory(), 
+						ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId(), 
+								XacmlDataTypes.XPATHEXPRESSION.getType());
+			if(v.size() > 1){
+				throw new AttributeReferenceEvaluationException(context, ref, 
+						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
+			}
+			if(v.size() == 1){
+				XPathExpressionValue xpath = (XPathExpressionValue)Iterables.getOnlyElement(v);
+				if(xpath.getAttributeCategory() != ref.getCategory()){
+					throw new AttributeReferenceEvaluationException(context, ref, 
+							"AttributeSelector category=\"%s\" and " +
+							"ContextAttributeId category=\"%s\" do not match", ref.getCategory(), 
+							xpath.getAttributeCategory());
+				}
+				contextNode = xpathProvider.evaluateToNode(context.getXPathVersion(), xpath.getValue(), content);
+			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
-					context.getXPathVersion(), ref.getPath(), content);
+					context.getXPathVersion(), ref.getPath(), contextNode);
 			if(nodeSet == null || 
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
