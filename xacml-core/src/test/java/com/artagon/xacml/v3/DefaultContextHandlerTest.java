@@ -119,6 +119,9 @@ public class DefaultContextHandlerTest
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
+		expect(request.getAttributeValues(ref.getCategory(), 
+				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getType())).
+				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
@@ -139,6 +142,9 @@ public class DefaultContextHandlerTest
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
+		expect(request.getAttributeValues(ref.getCategory(), 
+				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getType())).
+				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
@@ -158,6 +164,9 @@ public class DefaultContextHandlerTest
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
+		expect(request.getAttributeValues(ref.getCategory(), 
+				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getType())).
+				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
@@ -177,6 +186,9 @@ public class DefaultContextHandlerTest
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
+		expect(request.getAttributeValues(ref.getCategory(), 
+				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getType())).
+				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
@@ -196,6 +208,9 @@ public class DefaultContextHandlerTest
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
+		expect(request.getAttributeValues(ref.getCategory(), 
+				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getType())).
+				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);

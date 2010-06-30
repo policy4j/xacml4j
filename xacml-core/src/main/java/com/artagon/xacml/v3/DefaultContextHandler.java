@@ -26,7 +26,7 @@ public class DefaultContextHandler implements ContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultContextHandler.class);
 	
-	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
+	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
 	private Request request;
 	private XPathProvider xpathProvider;
@@ -152,6 +152,9 @@ public class DefaultContextHandler implements ContextHandler
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
 			}
 			if(v.size() == 1){
+				if(log.isDebugEnabled()){
+					log.debug("Found ContextSelector attribute");
+				}
 				XPathExpressionValue xpath = (XPathExpressionValue)Iterables.getOnlyElement(v);
 				if(xpath.getAttributeCategory() != ref.getCategory()){
 					throw new AttributeReferenceEvaluationException(context, ref, 
@@ -159,6 +162,7 @@ public class DefaultContextHandler implements ContextHandler
 							"ContextAttributeId category=\"%s\" do not match", ref.getCategory(), 
 							xpath.getAttributeCategory());
 				}
+				log.debug("Evaluating contextSelecrtor xpath=\"{}\"", xpath.getValue());
 				contextNode = xpathProvider.evaluateToNode(context.getXPathVersion(), xpath.getValue(), content);
 			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
