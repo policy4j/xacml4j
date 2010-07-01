@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.function;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,6 +17,26 @@ public class AggregatingFunctionProvider implements FunctionProvider
 		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 	}
 	
+	/**
+	 * Creates aggregating function provider with a given providers
+	 * 
+	 * @param providers a collection  of {@link FunctionProvider} instances
+	 */
+	public AggregatingFunctionProvider(Collection<FunctionProvider> providers){
+		this();
+		for(FunctionProvider p : providers){
+			add(p);
+		}
+	}
+	
+	/**
+	 * Adds {@link FunctionProvider} to this aggregating provider
+	 * 
+	 * @param provider a provider instance
+	 * @exception IllegalArgumentException if function exported via
+	 * given provider already exported via provider previously registered
+	 * with this aggregating provider
+	 */
 	public void add(FunctionProvider provider)
 	{
 		Preconditions.checkNotNull(provider);
@@ -34,10 +55,7 @@ public class AggregatingFunctionProvider implements FunctionProvider
 	@Override
 	public FunctionSpec getFunction(String functionId) {
 		FunctionProvider provider = functions.get(functionId);
-		if(provider != null){
-			return provider.getFunction(functionId);
-		}
-		return null;
+		return (provider != null)?provider.getFunction(functionId):null;
 	}
 
 	@Override

@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML set functions")
 public class SetFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-intersection")

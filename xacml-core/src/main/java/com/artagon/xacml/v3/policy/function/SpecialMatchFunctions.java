@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML special match functions")
 public class SpecialMatchFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-match")

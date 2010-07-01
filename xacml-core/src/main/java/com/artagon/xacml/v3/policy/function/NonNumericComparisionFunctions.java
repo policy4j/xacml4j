@@ -17,7 +17,7 @@ import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.google.common.base.Preconditions;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML non-numeric comparision functions")
 public class NonNumericComparisionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-greater-than")

@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML numeric conversion functions")
 public class NumericConversionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")

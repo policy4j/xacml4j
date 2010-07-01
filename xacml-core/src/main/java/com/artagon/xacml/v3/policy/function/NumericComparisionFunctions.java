@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML numeric comparision functions")
 public class NumericComparisionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than")

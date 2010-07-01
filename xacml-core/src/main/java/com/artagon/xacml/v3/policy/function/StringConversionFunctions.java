@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlParam;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML string conversion functions")
 public class StringConversionFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-space")

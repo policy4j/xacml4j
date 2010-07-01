@@ -27,7 +27,7 @@ import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML equality predicates")
 public class EqualityPredicates 
 {
 	

@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML string functions")
 public class StringFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:2.0:function:string-concatenate")

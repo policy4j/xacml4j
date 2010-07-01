@@ -57,7 +57,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML 3.0 bag functions")
 public class BagFunctions 
 {
 	

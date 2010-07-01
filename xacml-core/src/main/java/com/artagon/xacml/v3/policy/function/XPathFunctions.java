@@ -28,7 +28,7 @@ import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML XPath functions")
 public class XPathFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")

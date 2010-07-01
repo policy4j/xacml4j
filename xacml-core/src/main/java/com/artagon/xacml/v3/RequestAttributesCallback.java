@@ -29,9 +29,30 @@ public interface RequestAttributesCallback
 			String attributeId, 
 			AttributeValueType dataType);
 	
+	/**
+	 * Gets single attribute value from a request
+	 * 
+	 * @param <AV>
+	 * @param categoryId an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute value data type
+	 * @return {@link AV} instance or <code>null</code> if attribute
+	 * with a given constraints can not be located in the request
+	 */
 	<AV extends AttributeValue> AV getAttributeValue(AttributeCategoryId categoryId, 
 			String attributeId, AttributeValueType dataType);
 	
+	/**
+	 * Gets single attribute value from a request
+	 * 
+	 * @param <AV>
+	 * @param categoryId an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute value data type
+	 * @param issuer an attribute issuer
+	 * @return {@link AV} instance or <code>null</code> if attribute
+	 * with a given constraints can not be located in the request
+	 */
 	<AV extends AttributeValue> AV getAttributeValue(AttributeCategoryId categoryId, 
 			String attributeId, AttributeValueType dataType, String issuer);
 }

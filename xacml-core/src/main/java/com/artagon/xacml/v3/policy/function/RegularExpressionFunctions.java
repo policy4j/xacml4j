@@ -19,7 +19,7 @@ import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML regular expression functions")
 public class RegularExpressionFunctions 
 {
 	private final static Logger log = LoggerFactory.getLogger(RegularExpressionFunctions.class);

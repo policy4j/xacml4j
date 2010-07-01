@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.types.DateType.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML date time arithmetic functions")
 public class DateTimeArithmeticFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-dayTimeDuration")

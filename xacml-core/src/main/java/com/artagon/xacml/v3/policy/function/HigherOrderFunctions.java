@@ -30,7 +30,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.google.common.base.Preconditions;
 
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML higher order functions")
 public class HigherOrderFunctions 
 {
 	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of")

@@ -20,7 +20,7 @@ import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider
+@XacmlFunctionProvider(description="XACML logical fucntions")
 public class LogicalFunctions 
 {
 	
