@@ -12,6 +12,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Value;

@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.ValueType;
-
 
 final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 {

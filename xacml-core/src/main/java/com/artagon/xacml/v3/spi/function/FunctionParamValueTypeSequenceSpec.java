@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
 

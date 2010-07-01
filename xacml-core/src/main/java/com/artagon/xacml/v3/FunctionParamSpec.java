@@ -1,9 +1,7 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3;
 
 import java.util.ListIterator;
 
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.ValueType;
 
 
 public interface FunctionParamSpec 

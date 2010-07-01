@@ -4,6 +4,7 @@ import java.util.ListIterator;
 
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.ValueType;
 
 
