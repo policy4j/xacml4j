@@ -20,6 +20,18 @@ public interface PolicyFactory
 		throws PolicySyntaxException;
 	
 	/**
+	 * Creates {@link AttributeCategoryId} from a given category
+	 * identifier
+	 * 
+	 * @param categoryId a category identifier
+	 * @return {@link AttributeCategoryId} instance
+	 * @throws PolicySyntaxException if given category identifier
+	 * does not correspond to any known attribute category
+	 */
+	AttributeCategoryId createAttributeCategory(String categoryId) 
+		throws PolicySyntaxException;
+	
+	/**
 	 * Creates an {@link PolicySetIDReference} to a
 	 * given policy set specified via given identifier
 	 * 
@@ -60,9 +72,6 @@ public interface PolicyFactory
 	 */
 	Match createMatch(String functionId, 
 			AttributeValue value, AttributeReference reference) throws PolicySyntaxException;
-	
-	MatchAllOf createAllOfMatch(Collection<Match> matches) 
-		throws PolicySyntaxException;
 	
 	MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches) throws PolicySyntaxException;
 
@@ -110,6 +119,9 @@ public interface PolicyFactory
 			String attributeId, AttributeValueType dataType, 
 			boolean mustBePresent, String issuer) throws PolicySyntaxException;
 	
+	AttributeDesignator createAttributeDesignator(String category, 
+			String attributeId, AttributeValueType dataType, 
+			boolean mustBePresent, String issuer) throws PolicySyntaxException;
 	
 	/**
 	 * Creates {@link AttributeSelector}
@@ -123,6 +135,11 @@ public interface PolicyFactory
 	 * @throws PolicySyntaxException
 	 */
 	AttributeSelector createAttributeSelector(AttributeCategoryId category, 
+			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
+		throws PolicySyntaxException;
+	
+	
+	AttributeSelector createAttributeSelector(String category, 
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
 		throws PolicySyntaxException;
 	
@@ -161,6 +178,13 @@ public interface PolicyFactory
 			String issuer) 
 		throws PolicySyntaxException;
 	
+	
+	AttributeAssignmentExpression createAttributeAssigmentExpression(
+			String attributeId, 
+			Expression expression, 
+			String categoryId, 
+			String issuer) 
+		throws PolicySyntaxException;
 	
 	/**
 	 * Creates {@link AttributeAssignmentExpression} instance

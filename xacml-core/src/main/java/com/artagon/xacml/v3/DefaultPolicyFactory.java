@@ -35,14 +35,9 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 
 	@Override
-	public MatchAllOf createAllOfMatch(Collection<Match> matches) throws PolicySyntaxException 
-	{
-		return new MatchAllOf(matches);
-	}
-
-	@Override
 	public MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches)
-			throws PolicySyntaxException {
+			throws PolicySyntaxException 
+	{
 		return new MatchAnyOf(matches);
 	}
 
@@ -162,11 +157,22 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 				attributeId, expression, categoryId, issuer);
 	}
 	
+	
+	@Override
+	public AttributeAssignmentExpression createAttributeAssigmentExpression(
+			String attributeId, Expression expression, String categoryId,
+			String issuer) throws PolicySyntaxException {
+		
+		return createAttributeAssigmentExpression(attributeId, expression, 
+				createAttributeCategory(categoryId), issuer);
+	}
+
 	@Override
 	public AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression) throws PolicySyntaxException {
-		return createAttributeAssigmentExpression(attributeId, expression, null, null);
+		return createAttributeAssigmentExpression(attributeId, expression, 
+				(AttributeCategoryId)null, null);
 	}
 	
 	@Override
@@ -277,4 +283,35 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		}
 		return null;
 	}	
+	
+	@Override
+	public AttributeCategoryId createAttributeCategory(String categoryId) 
+		throws PolicySyntaxException
+	{
+		AttributeCategoryId c = AttributeCategoryId.parse(categoryId);
+		if(c == null){
+				throw new PolicySyntaxException(
+						"Unknown c=attribute category=\"%s\"", categoryId);
+		}
+		return c;
+	}
+
+	@Override
+	public AttributeDesignator createAttributeDesignator(String categoryId,
+			String attributeId, AttributeValueType dataType,
+			boolean mustBePresent, String issuer) throws PolicySyntaxException {
+	
+		return createAttributeDesignator(createAttributeCategory(categoryId), 
+				attributeId, dataType, mustBePresent, issuer);
+	}
+
+	@Override
+	public AttributeSelector createAttributeSelector(String category,
+			String selectXPath, AttributeValueType dataType,
+			boolean mustBePresent) throws PolicySyntaxException {		
+		return createAttributeSelector(createAttributeCategory(category), 
+				selectXPath, dataType, mustBePresent);
+	}
+	
+	
 }
