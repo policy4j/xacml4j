@@ -22,11 +22,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public AttributeValue createAttributeValue(String typeId, Object value) 
 		throws PolicySyntaxException
 	{
-		AttributeValueType type = XacmlDataTypes.getByTypeId(typeId);
-		if(type == null){
-			throw new PolicySyntaxException(
-					"TypeId=\"%s\" can not be resolved as an XACML type",typeId);
-		}
+		AttributeValueType type = createAttributeValueType(typeId);
 		try{
 			return type.create(value);
 		}catch(Exception e){
@@ -219,7 +215,19 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String attributeId, AttributeValueType dataType, boolean mustBePresent, String issuer)
 			throws PolicySyntaxException 
 	{
-		return new AttributeDesignator(category, attributeId, issuer, dataType, mustBePresent);
+		return new AttributeDesignator(category, 
+				attributeId, issuer, dataType, mustBePresent);
+	}
+	
+	@Override
+	public AttributeDesignator createAttributeDesignator(String categoryId,
+			String attributeId, String dataTypeId,
+			boolean mustBePresent, String issuer) throws PolicySyntaxException 
+	{
+		return createAttributeDesignator(createAttributeCategory(
+				categoryId), 
+				attributeId, createAttributeValueType(dataTypeId), 
+				mustBePresent, issuer);
 	}
 
 	@Override
@@ -227,6 +235,38 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent)
 			throws PolicySyntaxException {
 		return new AttributeSelector(category, selectXPath, dataType, mustBePresent);
+	}
+	
+	@Override
+	public AttributeSelector createAttributeSelector(AttributeCategoryId category,
+			String selectXPath, String contextAttributeId, 
+			AttributeValueType dataType, boolean mustBePresent)
+			throws PolicySyntaxException {
+		return new AttributeSelector(category, selectXPath, 
+				contextAttributeId, dataType, mustBePresent);
+	}
+	
+	
+	@Override
+	public AttributeSelector createAttributeSelector(String categoryId,
+			String selectXPath, String contextAttributeId,
+			String dataTypeId, boolean mustBePresent)
+			throws PolicySyntaxException 
+	{
+		return createAttributeSelector(createAttributeCategory(categoryId),
+				selectXPath, contextAttributeId, 
+				createAttributeValueType(dataTypeId), mustBePresent);
+	}
+
+	@Override
+	public AttributeSelector createAttributeSelector(String categoryId,
+			String selectXPath, 
+			String dataTypeId, boolean mustBePresent)
+			throws PolicySyntaxException 
+	{
+		return createAttributeSelector(createAttributeCategory(categoryId),
+				selectXPath, null, 
+				createAttributeValueType(dataTypeId), mustBePresent);
 	}
 	
 	@Override
@@ -295,23 +335,16 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		}
 		return c;
 	}
-
+	
 	@Override
-	public AttributeDesignator createAttributeDesignator(String categoryId,
-			String attributeId, AttributeValueType dataType,
-			boolean mustBePresent, String issuer) throws PolicySyntaxException {
-	
-		return createAttributeDesignator(createAttributeCategory(categoryId), 
-				attributeId, dataType, mustBePresent, issuer);
+	public AttributeValueType createAttributeValueType(String dataTypeId) 
+		throws PolicySyntaxException
+	{
+		AttributeValueType type = XacmlDataTypes.getByTypeId(dataTypeId); 
+		if(type == null){
+			throw new PolicySyntaxException(
+					"Unknown XACML dataTypeId=\"%s\"", dataTypeId);
+		}
+		return type;
 	}
-
-	@Override
-	public AttributeSelector createAttributeSelector(String category,
-			String selectXPath, AttributeValueType dataType,
-			boolean mustBePresent) throws PolicySyntaxException {		
-		return createAttributeSelector(createAttributeCategory(category), 
-				selectXPath, dataType, mustBePresent);
-	}
-	
-	
 }

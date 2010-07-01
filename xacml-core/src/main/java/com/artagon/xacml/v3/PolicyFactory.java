@@ -6,6 +6,18 @@ import java.util.Collection;
 
 public interface PolicyFactory 
 {
+	
+	/**
+	 * Creates {@link AttributeValueType} from a given type
+	 * identifier
+	 * 
+	 * @param dataTypeId an XACML type identifier
+	 * @return {@link AttributeValueType} instance
+	 * @exception PolicySyntaxException
+	 */
+	AttributeValueType createAttributeValueType(String dataTypeId) 
+		throws PolicySyntaxException;
+	
 	/**
 	 * Creates an {@link AttributeValue} of the
 	 * given type initialized with a given value
@@ -119,10 +131,21 @@ public interface PolicyFactory
 			String attributeId, AttributeValueType dataType, 
 			boolean mustBePresent, String issuer) throws PolicySyntaxException;
 	
+	/**
+	 * Creates {@link AttributeDesignator} instance
+	 * 
+	 * @param category an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataTypeId an attribute data type identifier
+	 * @param mustBePresent a flag 
+	 * @param issuer an attribute issuer identifier
+	 * @return {@link AttributeDesignator} instance
+	 * @throws PolicySyntaxException
+	 */
 	AttributeDesignator createAttributeDesignator(String category, 
-			String attributeId, AttributeValueType dataType, 
+			String attributeId, String dataTypeId, 
 			boolean mustBePresent, String issuer) throws PolicySyntaxException;
-	
+
 	/**
 	 * Creates {@link AttributeSelector}
 	 * 
@@ -138,9 +161,18 @@ public interface PolicyFactory
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
 		throws PolicySyntaxException;
 	
+	AttributeSelector createAttributeSelector(AttributeCategoryId category, 
+			String selectXPath, String contextAttributeId,
+			AttributeValueType dataType, boolean mustBePresent) 
+		throws PolicySyntaxException;
 	
-	AttributeSelector createAttributeSelector(String category, 
-			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
+	AttributeSelector createAttributeSelector(String categoryId, 
+			String selectXPath, String dataTypeId, boolean mustBePresent) 
+		throws PolicySyntaxException;
+	
+	AttributeSelector createAttributeSelector(String categoryId, 
+			String selectXPath, String contextAttributeId,
+			String dataTypeId, boolean mustBePresent) 
 		throws PolicySyntaxException;
 	
 	/**
