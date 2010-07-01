@@ -11,10 +11,7 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionParametersValidator;
-import com.artagon.xacml.v3.FunctionReturnTypeResolver;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.FunctionSpecBuilder;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter {

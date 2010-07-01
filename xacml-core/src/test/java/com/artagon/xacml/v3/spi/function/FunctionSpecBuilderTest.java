@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.spi.function;
 
 
 import static org.easymock.EasyMock.createStrictMock;
@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;

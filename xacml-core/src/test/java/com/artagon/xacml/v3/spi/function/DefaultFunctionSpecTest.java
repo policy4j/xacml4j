@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.spi.function;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -8,6 +8,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 

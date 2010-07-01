@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.artagon.xacml.v3.spi.function.FunctionParamSpec;
 import com.google.common.base.Preconditions;
 
 /**

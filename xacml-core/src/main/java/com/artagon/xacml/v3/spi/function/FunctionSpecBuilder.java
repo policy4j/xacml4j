@@ -1,8 +1,9 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.spi.function;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
 public final class FunctionSpecBuilder 
