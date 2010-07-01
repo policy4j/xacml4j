@@ -7,11 +7,11 @@ import org.w3c.dom.NodeList;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
-import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
@@ -31,11 +31,11 @@ import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 @XacmlFunctionProvider(description="XACML XPath functions")
 public class XPathFunctions 
 {
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerValue xpathCount(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath) 
 	{
 		try{
 			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), xpath.getAttributeCategory());
@@ -48,22 +48,22 @@ public class XPathFunctions
 		}
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerValue xpathCountXacml2(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue xpath) 
 	{
 		return xpathCount(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeEqual(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
+			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
 	{		
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), xpath0.getAttributeCategory());
@@ -85,24 +85,24 @@ public class XPathFunctions
 		}
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeEqualXacml20(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath1)
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue xpath0,
+			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue xpath1)
 	{
 		return xpathNodeEqual(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeMatch(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath0,
+			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
 	{		
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), 
@@ -142,12 +142,12 @@ public class XPathFunctions
 		}
 	}
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue xpathNodeMatchXacml20(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath0,
-			@XacmlParam(type=XacmlDataTypes.STRING) StringValue xpath1) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue xpath0,
+			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue xpath1) 
 	{
 		return xpathNodeMatch(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),

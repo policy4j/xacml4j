@@ -18,28 +18,28 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 @Ignore
 public class TestFunctions 
 {
-	@XacmlFunc(id="test1")
+	@XacmlFuncSpec(id="test1")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue test1(
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
 	{
 		return XacmlDataTypes.BOOLEAN.create(a.equals(b));
 	}
 	
-	@XacmlFunc(id="test2")
+	@XacmlFuncSpec(id="test2")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerType.IntegerValue test2(
-			@XacmlParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
 		return XacmlDataTypes.INTEGER.create(bag.size());
 	}
 	
-	@XacmlFunc(id="test3", evaluateArguments=false)
+	@XacmlFuncSpec(id="test3", evaluateArguments=false)
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerType.IntegerValue and(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamVarArg(type=XacmlDataTypes.INTEGER, min=2)IntegerType.IntegerValue ...values) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)IntegerType.IntegerValue ...values) 
 		throws EvaluationException
 	{
 		Long v = 0L;
@@ -50,11 +50,11 @@ public class TestFunctions
 		return XacmlDataTypes.INTEGER.create(v);
 	}
 	
-	@XacmlFunc(id="test4", evaluateArguments=false)
+	@XacmlFuncSpec(id="test4", evaluateArguments=false)
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static IntegerType.IntegerValue and(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamVarArg(type=XacmlDataTypes.INTEGER, min=2)Expression ...values) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)Expression ...values) 
 		throws EvaluationException
 	{
 		Long v = 0L;
@@ -65,12 +65,12 @@ public class TestFunctions
 		return XacmlDataTypes.INTEGER.create(v);
 	}
 	
-	@XacmlFunc(id="test5")
+	@XacmlFuncSpec(id="test5")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER, isBag=true)
 	public static BagOfAttributeValues<IntegerType.IntegerValue> test5(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamFuncReference FunctionSpec function,
-			@XacmlParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionSpec function,
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
 		throws EvaluationException
 	{
 		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
@@ -82,22 +82,22 @@ public class TestFunctions
 		return XacmlDataTypes.INTEGER.bag(attributes);
 	}
 	
-	@XacmlFunc(id="test5VarArg")
+	@XacmlFuncSpec(id="test5VarArg")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static BooleanValue test5VarArg(
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue value,
-			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue value,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
 		return XacmlDataTypes.BOOLEAN.create(false);
 	}
 	
-	@XacmlFunc(id="test6VarArg")
+	@XacmlFuncSpec(id="test6VarArg")
 	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
 	public static BooleanValue test6(
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a,
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b,
-			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a,
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
 		return XacmlDataTypes.BOOLEAN.create(false);

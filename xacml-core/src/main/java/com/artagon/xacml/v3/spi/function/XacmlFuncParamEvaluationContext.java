@@ -6,9 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface XacmlFunc 
+@Target(ElementType.PARAMETER)
+public @interface XacmlFuncParamEvaluationContext 
 {
-	String id();
-	boolean evaluateArguments() default true;
+
 }

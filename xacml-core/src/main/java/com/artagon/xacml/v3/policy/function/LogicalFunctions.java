@@ -4,12 +4,12 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.Value;
-import com.artagon.xacml.v3.spi.function.XacmlFunc;
+import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.spi.function.XacmlParam;
-import com.artagon.xacml.v3.spi.function.XacmlParamEvaluationContext;
-import com.artagon.xacml.v3.spi.function.XacmlParamVarArg;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParamEvaluationContext;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
@@ -36,11 +36,11 @@ public class LogicalFunctions
 	 * @return
 	 * @throws EvaluationException
 	 */
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue and(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression ...values) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression ...values) 
 		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -54,10 +54,10 @@ public class LogicalFunctions
 	}
 
 	
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:not")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:not")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue not(
-			@XacmlParam(type=XacmlDataTypes.BOOLEAN)BooleanValue v)
+			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN)BooleanValue v)
 	{
 		return XacmlDataTypes.BOOLEAN.create(!v.getValue());
 	}
@@ -74,11 +74,11 @@ public class LogicalFunctions
 	 * @return
 	 * @throws EvaluationException
 	 */
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue or(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression...values) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression...values) 
 		throws EvaluationException
 	{
 		Boolean r = Boolean.TRUE;
@@ -113,12 +113,12 @@ public class LogicalFunctions
 	 * @return
 	 * @throws EvaluationException
 	 */
-	@XacmlFunc(id="urn:oasis:names:tc:xacml:1.0:function:n-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:n-of")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BooleanValue nof(
-			@XacmlParamEvaluationContext EvaluationContext context,
-			@XacmlParam(type=XacmlDataTypes.INTEGER)IntegerValue n,
-			@XacmlParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression...values) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue n,
+			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)Expression...values) 
 		throws EvaluationException
 	{
 		if(values.length < n.getValue()){

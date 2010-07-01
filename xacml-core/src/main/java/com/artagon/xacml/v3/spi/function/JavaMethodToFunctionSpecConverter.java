@@ -30,7 +30,7 @@ class JavaMethodToFunctionSpecConverter {
 		Preconditions.checkArgument(Expression.class.isAssignableFrom(m
 				.getReturnType()),
 				"Method=\"%s\" must return XACML expression", m.getName());
-		XacmlFunc funcId = m.getAnnotation(XacmlFunc.class);
+		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		Preconditions.checkArgument(funcId != null,
 				"Method=\"%s\" must be annotated via XacmlFunc annotation", m.getName());
 		
@@ -55,7 +55,7 @@ class JavaMethodToFunctionSpecConverter {
 						"Method=\"%s\" contains parameter without annotation",
 						m.getName()));
 			}
-			if (params[i][0] instanceof XacmlParamEvaluationContext) {
+			if (params[i][0] instanceof XacmlFuncParamEvaluationContext) {
 				if (!types[i].isInstance(EvaluationContext.class)) {
 					new IllegalArgumentException(
 							String
@@ -72,8 +72,8 @@ class JavaMethodToFunctionSpecConverter {
 				evalContextParamFound = true;
 				continue;
 			}
-			if (params[i][0] instanceof XacmlParam) {
-				XacmlParam param = (XacmlParam) params[i][0];
+			if (params[i][0] instanceof XacmlFuncParam) {
+				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
 				AttributeValueType type = param.type().getType();
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
@@ -100,7 +100,7 @@ class JavaMethodToFunctionSpecConverter {
 				b.withParam(param.isBag() ? type.bagOf() : type);
 				continue;
 			}
-			if (params[i][0] instanceof XacmlParamVarArg) {
+			if (params[i][0] instanceof XacmlFuncParamVarArg) {
 				if (!m.isVarArgs()) {
 					throw new IllegalArgumentException(
 							String.format("Found varArg parameter "
@@ -113,21 +113,21 @@ class JavaMethodToFunctionSpecConverter {
 									+ "declaration in incorect place, "
 									+ "varArg parameter must be a last parameter in the method"));
 				}
-				XacmlParamVarArg param = (XacmlParamVarArg) params[i][0];
+				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				AttributeValueType type = param.type().getType();
 				b.withParam(param.isBag() ? type.bagOf() : type, param.min(),
 						param.max());
 				continue;
 			}
-			if (params[i][0] instanceof XacmlParamFuncReference) {
+			if (params[i][0] instanceof XacmlFuncParamFunctionReference) {
 				b.withParamFunctionReference();
 				continue;
 			}
-			if (params[i][0] instanceof XacmlParamAnyBag) {
+			if (params[i][0] instanceof XacmlFuncParamAnyBag) {
 				b.withParamAnyBag();
 				continue;
 			}
-			if (params[i][0] instanceof XacmlParamAnyAttribute) {
+			if (params[i][0] instanceof XacmlFuncParamAnyAttribute) {
 				b.withParamAnyAttribute();
 				continue;
 			}

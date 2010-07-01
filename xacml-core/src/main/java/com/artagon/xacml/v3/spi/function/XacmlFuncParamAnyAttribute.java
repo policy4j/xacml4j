@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlParamAnyAttribute {
+public @interface XacmlFuncParamAnyAttribute {
 
 }

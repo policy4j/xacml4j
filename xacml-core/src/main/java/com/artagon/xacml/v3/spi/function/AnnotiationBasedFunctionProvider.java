@@ -25,7 +25,7 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 	private List<FunctionSpec> findFunctions(Class<?> clazz)
 	{
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
-		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFunc.class);
+		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class);
 		for(final Method m : methods){
 			specs.add(converter.createFunctionSpec(m));
 		}

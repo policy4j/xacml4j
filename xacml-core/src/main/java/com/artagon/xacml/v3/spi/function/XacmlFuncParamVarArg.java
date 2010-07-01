@@ -9,8 +9,10 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlParam 
+public @interface XacmlFuncParamVarArg 
 {
 	XacmlDataTypes type();
+	int min() default 2;
+	int max() default Integer.MAX_VALUE;
 	boolean isBag() default false;
 }

@@ -7,11 +7,11 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 public class JavaMethodToFunctionSpecTestFunctions 
 {
 	
-	@XacmlFunc(id="returnsVoid")
+	@XacmlFuncSpec(id="returnsVoid")
 	public void returnsVoid(){
 	}
 	
-	@XacmlFunc(id="returnsNonXacmlExpression")
+	@XacmlFuncSpec(id="returnsNonXacmlExpression")
 	public Integer returnsNonXacmlExpression(){
 		return null;
 	}
@@ -20,18 +20,18 @@ public class JavaMethodToFunctionSpecTestFunctions
 		return null;
 	}
 	
-	@XacmlFunc(id="missingReturnTypeDeclaration1")
+	@XacmlFuncSpec(id="missingReturnTypeDeclaration1")
 	public static BooleanValue missingReturnTypeDeclaration1(){
 		return null;
 	}
 	
-	@XacmlFunc(id="returnTypeDeclarationExistButWrongMethodReturnType1")
+	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN, isBag=true)
 	public static BooleanValue returnTypeDeclarationExistButWrongMethodReturnType1(){
 		return null;
 	}
 	
-	@XacmlFunc(id="returnTypeDeclarationExistButWrongMethodReturnType2")
+	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType2")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
 	public static BagOfAttributeValues<BooleanValue> returnTypeDeclarationExistButWrongMethodReturnType2(){
 		return null;
