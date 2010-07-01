@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 
 
-final class ParamValueTypeSequenceSpec extends XacmlObject implements ParamSpec
+final class FunctionParamValueTypeSequenceSpec extends XacmlObject implements FunctionParamSpec
 {
-	private final static Logger log = LoggerFactory.getLogger(ParamValueTypeSequenceSpec.class);
+	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSequenceSpec.class);
 	
 	private Integer min = 0;
 	private Integer max = Integer.MAX_VALUE;
@@ -23,14 +23,14 @@ final class ParamValueTypeSequenceSpec extends XacmlObject implements ParamSpec
 	 * @param max a maximum number
 	 * @param paramType an argument type
 	 */
-	public ParamValueTypeSequenceSpec(Integer min, Integer max, 
+	public FunctionParamValueTypeSequenceSpec(Integer min, Integer max, 
 			ValueType paramType){
 		this.min = min;
 		this.max = max;
 		this.paramType = paramType;
 	}
 	
-	public ParamValueTypeSequenceSpec(int min, 
+	public FunctionParamValueTypeSequenceSpec(int min, 
 			ValueType paramType){
 		this(min, null, paramType);
 	}

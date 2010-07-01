@@ -23,10 +23,10 @@ public interface FunctionSpec
 	 * at given
 	 * 
 	 * @param index a parameter index
-	 * @return {@link ParamSpec} at given 
+	 * @return {@link FunctionParamSpec} at given 
 	 * index
 	 */
-	ParamSpec getParamSpecAt(int index);
+	FunctionParamSpec getParamSpecAt(int index);
 
 	/**
 	 * Gets number of function formal 

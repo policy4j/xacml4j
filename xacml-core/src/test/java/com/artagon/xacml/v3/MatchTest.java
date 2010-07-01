@@ -32,8 +32,8 @@ public class MatchTest
 		AttributeValue int2 = XacmlDataTypes.INTEGER.create(2);
 		BagOfAttributeValues<AttributeValue> v = XacmlDataTypes.INTEGER.bag(int2, int1);
 		expect(spec.getNumberOfParams()).andReturn(2);
-		expect(spec.getParamSpecAt(0)).andReturn(new ParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
-		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(0)).andReturn(new FunctionParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(1)).andReturn(new FunctionParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(spec.invoke(context, int1, int2)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
@@ -48,8 +48,8 @@ public class MatchTest
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
 		expect(spec.getNumberOfParams()).andReturn(2);
-		expect(spec.getParamSpecAt(0)).andReturn(new ParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
-		expect(spec.getParamSpecAt(1)).andReturn(new ParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(0)).andReturn(new FunctionParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
+		expect(spec.getParamSpecAt(1)).andReturn(new FunctionParamValueTypeSpec(XacmlDataTypes.INTEGER.getType()));
 		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getType());
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttribute());

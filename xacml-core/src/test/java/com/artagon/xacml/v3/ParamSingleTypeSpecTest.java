@@ -29,7 +29,7 @@ public class ParamSingleTypeSpecTest
 	@Test
 	public void testValidateWithAttributeType() throws Exception
 	{
-		ParamSpec spec = new ParamValueTypeSpec(t1);
+		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1);
 		List<Expression> good = Collections.<Expression>singletonList(t1.create(new Double(0.1)));
 		List<Expression> bad = Collections.<Expression>singletonList(t2.create("AAAA"));
 		assertTrue(spec.validate(good.listIterator()));		
@@ -39,7 +39,7 @@ public class ParamSingleTypeSpecTest
 	@Test
 	public void testValidateWithBagType() throws Exception
 	{		
-		ParamSpec spec = new ParamValueTypeSpec(t1);
+		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1);
 		AttributeValue v = t1.create(new Double(0.1));
 		BagOfAttributeValues<?> bag = b1.create(Collections.<AttributeValue>singletonList(v));
 		List<Expression> good = Collections.<Expression>singletonList(bag);

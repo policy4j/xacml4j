@@ -68,11 +68,11 @@ public class FunctionReference extends XacmlObject implements Expression
 	 * at the given index
 	 * 
 	 * @param index a parameter index
-	 * @return {@link ParamSpec} instance
+	 * @return {@link FunctionParamSpec} instance
 	 * @exception IndexOutOfBoundsException if index
 	 * is outside of bounds
 	 */
-	public ParamSpec getParamSpecAt(int index){
+	public FunctionParamSpec getParamSpecAt(int index){
 		return spec.getParamSpecAt(index);
 	}
 	

@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.ListIterator;
 
 
-public interface ParamSpec 
+public interface FunctionParamSpec 
 {	
 	/**
 	 * Validates if the "sequence" of expressions 

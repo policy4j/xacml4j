@@ -21,7 +21,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	
 	private String functionId;
 	private String legacyId;
-	private List<ParamSpec> parameters = new LinkedList<ParamSpec>();
+	private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
 	private boolean lazyParamEval = false;
 	
 	private FunctionInvocation invocation;
@@ -44,7 +44,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	public DefaultFunctionSpec(
 			String functionId, 
 			String legacyId,
-			List<ParamSpec> params, 
+			List<FunctionParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
 			FunctionParametersValidator validator,
@@ -65,7 +65,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	public DefaultFunctionSpec(
 			String functionId, 
 			String legacyId,
-			List<ParamSpec> params, 
+			List<FunctionParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
 			boolean lazyParamEval){
@@ -74,7 +74,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	
 	public DefaultFunctionSpec(
 			String functionId, 
-			List<ParamSpec> params, 
+			List<FunctionParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
 			boolean lazyParamEval){
@@ -94,7 +94,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 
 	@Override
-	public final ParamSpec getParamSpecAt(int index){
+	public final FunctionParamSpec getParamSpecAt(int index){
 		return parameters.get(index);
 	}
 	
@@ -148,11 +148,11 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	@Override
 	public void validateParametersAndThrow(Expression ... params) throws PolicySyntaxException
 	{
-		ListIterator<ParamSpec> it = parameters.listIterator();
+		ListIterator<FunctionParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
 		while(it.hasNext())
 		{
-			ParamSpec p = it.next();
+			FunctionParamSpec p = it.next();
 			if(!p.validate(expIt)){
 				throw new PolicySyntaxException(
 						"Expression at index=\"%d\", " +
@@ -175,11 +175,11 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	@Override
 	public boolean validateParameters(Expression ... params)
 	{
-		ListIterator<ParamSpec> it = parameters.listIterator();
+		ListIterator<FunctionParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
 		while(it.hasNext())
 		{
-			ParamSpec p = it.next();
+			FunctionParamSpec p = it.next();
 			if(!p.validate(expIt)){
 				return false;
 			}

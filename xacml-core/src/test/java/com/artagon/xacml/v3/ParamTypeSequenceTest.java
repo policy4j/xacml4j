@@ -17,18 +17,18 @@ public class ParamTypeSequenceTest
 {
 	private StringType t1;
 	private DoubleType t2;
-	private ParamValueTypeSequenceSpec specAttrZeroOrMore;
-	private ParamValueTypeSequenceSpec specAttrOneOrMore;
-	private ParamValueTypeSequenceSpec specAttrFromOneToFour;
+	private FunctionParamValueTypeSequenceSpec specAttrZeroOrMore;
+	private FunctionParamValueTypeSequenceSpec specAttrOneOrMore;
+	private FunctionParamValueTypeSequenceSpec specAttrFromOneToFour;
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		this.t1 = XacmlDataTypes.STRING.getType();
 		this.t2 = XacmlDataTypes.DOUBLE.getType();
-		this.specAttrZeroOrMore = new ParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
-		this.specAttrOneOrMore = new ParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
-		this.specAttrFromOneToFour = new ParamValueTypeSequenceSpec(1, 4, t1);	
+		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
+		this.specAttrOneOrMore = new FunctionParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
+		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, t1);	
 	}
 	
 	@Test

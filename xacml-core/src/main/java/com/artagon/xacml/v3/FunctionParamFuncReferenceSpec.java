@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import java.util.ListIterator;
 
-final class ParamFuncReferenceSpec extends XacmlObject implements ParamSpec
+final class FunctionParamFuncReferenceSpec extends XacmlObject implements FunctionParamSpec
 {		
 	@Override
 	public boolean isValidParamType(ValueType type) {

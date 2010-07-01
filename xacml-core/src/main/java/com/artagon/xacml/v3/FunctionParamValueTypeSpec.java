@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
-final class ParamValueTypeSpec extends XacmlObject implements ParamSpec
+final class FunctionParamValueTypeSpec extends XacmlObject implements FunctionParamSpec
 {
-	private final static Logger log = LoggerFactory.getLogger(ParamValueTypeSpec.class);
+	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSpec.class);
 	
 	private ValueType type;
 	
-	public ParamValueTypeSpec(ValueType type){
+	public FunctionParamValueTypeSpec(ValueType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
 	}

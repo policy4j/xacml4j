@@ -9,7 +9,7 @@ public final class FunctionSpecBuilder
 {
 	private String functionId;
 	private String legacyId;
-	private List<ParamSpec> paramSpec;
+	private List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
 	
@@ -21,12 +21,12 @@ public final class FunctionSpecBuilder
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
-		this.paramSpec = new LinkedList<ParamSpec>();
+		this.paramSpec = new LinkedList<FunctionParamSpec>();
 	}
 	
 	public FunctionSpecBuilder withParamFunctionReference()
 	{
-		this.paramSpec.add(new ParamFuncReferenceSpec());
+		this.paramSpec.add(new FunctionParamFuncReferenceSpec());
 		return this;
 	}
 	
@@ -34,7 +34,7 @@ public final class FunctionSpecBuilder
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg, 
 				String.format("Can't add parameter after variadic parameter"));
-		this.paramSpec.add(new ParamValueTypeSpec(type));
+		this.paramSpec.add(new FunctionParamValueTypeSpec(type));
 		return this;
 	}
 	
@@ -49,17 +49,17 @@ public final class FunctionSpecBuilder
 		Preconditions.checkArgument(max > min);
 		Preconditions.checkArgument(max - min > 1, "Max and min should be different at least by 1");
 		hadVarArg = true;
-		this.paramSpec.add(new ParamValueTypeSequenceSpec(min, max, type));
+		this.paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max, type));
 		return this;
 	}
 	
 	public FunctionSpecBuilder withParamAnyBag() {
-		this.paramSpec.add(new ParamAnyBagSpec());
+		this.paramSpec.add(new FunctionParamAnyBagSpec());
 		return this;
 	}
 	
 	public FunctionSpecBuilder withParamAnyAttribute() {
-		this.paramSpec.add(new ParamAnyAttributeSpec());
+		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
 		return this;
 	}
 

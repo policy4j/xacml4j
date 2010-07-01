@@ -3,11 +3,11 @@ package com.artagon.xacml.v3;
 import java.util.ListIterator;
 
 
-final class ParamAnyBagSpec implements ParamSpec
+final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 {
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return (type instanceof BagOfAttributeValuesType<?>);
+		return (type instanceof AttributeValueType);
 	}
 
 	@Override
