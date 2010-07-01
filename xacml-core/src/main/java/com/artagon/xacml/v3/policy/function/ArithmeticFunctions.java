@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider(description="XACML 3.0 arithmetic functions")
+@XacmlFunctionProvider(description="XACML arithmetic functions")
 public class ArithmeticFunctions 
 {
 	/**
