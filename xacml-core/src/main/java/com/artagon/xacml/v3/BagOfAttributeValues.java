@@ -170,6 +170,14 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 		return type.create(intersection);
 	}
 	
+	/**
+	 * Tests if this bag contains at least on value
+	 * from the given bag
+	 * 
+	 * @param bag a bag
+	 * @return <code>true</code> if this bag contains
+	 * at least one value from the given bag
+	 */
 	public boolean containsAtLeastOneOf(BagOfAttributeValues<?> bag)
 	{
 		for(AttributeValue v : bag.values){
