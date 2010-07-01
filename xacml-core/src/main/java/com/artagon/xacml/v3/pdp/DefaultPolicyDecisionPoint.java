@@ -59,9 +59,6 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	@Override
 	public Result requestDecision(Request request) 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating request=\"{}\"", request);
-		}
 		EvaluationContext context = factory.createContext(request);
 		Collection<CompositeDecisionRule> applicable = policyRepository.findApplicable(context);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
