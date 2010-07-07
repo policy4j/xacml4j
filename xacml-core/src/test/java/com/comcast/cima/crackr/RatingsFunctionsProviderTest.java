@@ -1,4 +1,4 @@
-package com.comcast.cima.ratings;
+package com.comcast.cima.crackr;
 
 
 import static com.comcast.cima.crackr.RatingsFunctionsProvider.isLessRestrictiveThanOrEqualVChip;
