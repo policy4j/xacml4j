@@ -1,13 +1,13 @@
 package com.comcast.cima.ratings;
 
 
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.isLessRestrictiveThanOrEqualVChip;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.isLessThanOrEqualMPAA;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.MPAARatings.NC17;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.MPAARatings.PG;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.VChipRatings.TV_G;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.VChipRatings.TV_MA;
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.VChipRatings.TV_Y;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.isLessRestrictiveThanOrEqualVChip;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.isLessThanOrEqualMPAA;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.MPAARatings.NC17;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.MPAARatings.PG;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.VChipRatings.TV_G;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.VChipRatings.TV_MA;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.VChipRatings.TV_Y;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
