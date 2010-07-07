@@ -1,9 +1,8 @@
 package com.comcast.cima.ratings;
 
 
-import static com.comcast.cima.ratings.RatingsFunctionsProvider.isLessThanOrEqualMPAA;
 import static com.comcast.cima.ratings.RatingsFunctionsProvider.isLessRestrictiveThanOrEqualVChip;
-
+import static com.comcast.cima.ratings.RatingsFunctionsProvider.isLessThanOrEqualMPAA;
 import static com.comcast.cima.ratings.RatingsFunctionsProvider.MPAARatings.NC17;
 import static com.comcast.cima.ratings.RatingsFunctionsProvider.MPAARatings.PG;
 import static com.comcast.cima.ratings.RatingsFunctionsProvider.VChipRatings.TV_G;
