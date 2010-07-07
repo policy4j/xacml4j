@@ -52,6 +52,18 @@ public class AggregatingFunctionProvider implements FunctionProvider
 		}
 	}
 	
+	/**
+	 * Sets additional functions to this provider
+	 * 
+	 * @param extensions an extension functions
+	 */
+	public void setExtensionFunctions(Collection<FunctionProvider> extensions)
+	{
+		for(FunctionProvider p : extensions){
+			add(p);
+		}
+	}
+	
 	@Override
 	public FunctionSpec getFunction(String functionId) {
 		FunctionProvider provider = functions.get(functionId);

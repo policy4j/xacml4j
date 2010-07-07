@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.policy.function;
 
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.comcast.cima.crackr.RatingsFunctionsProvider;
 
 public class DefaultFunctionProvider extends AggregatingFunctionProvider
 {
@@ -22,6 +23,7 @@ public class DefaultFunctionProvider extends AggregatingFunctionProvider
 		add(new AnnotiationBasedFunctionProvider(StringFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(XPathFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(HigherOrderFunctions.class));
+		add(new AnnotiationBasedFunctionProvider(RatingsFunctionsProvider.class));
 	}
 }
 

@@ -1,6 +1,5 @@
 package com.comcast.cima.crackr;
 
-
 import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
@@ -13,9 +12,9 @@ import com.google.common.base.Preconditions;
 @XacmlFunctionProvider(description="Provides MPAA Movie and V-Chip TV ratings related functions")
 public class RatingsFunctionsProvider 
 {
-	@XacmlFuncSpec(id="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-less-than-or-equals")
+	@XacmlFuncSpec(id="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-greater-than")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
-	public static BooleanValue isLessThanOrEqualMPAA(
+	public static BooleanValue isGreaterThanMPAA(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
 	{
@@ -28,30 +27,13 @@ public class RatingsFunctionsProvider
 				"Given value=\"%s\" can not be converted to MPAA rating", 
 				b.getValue());
 		int r = ar.compareTo(br);
-		return XacmlDataTypes.BOOLEAN.create(r < 0 || r == 0);
+		return XacmlDataTypes.BOOLEAN.create(r > 0);
 	}
 	
-	@XacmlFuncSpec(id="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-less-than")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
-	public static BooleanValue isLessThanOrMPAA(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a, 
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
-	{
-		MPAARatings ar = MPAARatings.parse(a.getValue());
-		Preconditions.checkArgument(ar != null, 
-				"Given value=\"%s\" can not be converted to MPAA rating", 
-				a.getValue());
-		MPAARatings br = MPAARatings.parse(b.getValue());
-		Preconditions.checkArgument(br != null, 
-				"Given value=\"%s\" can not be converted to MPAA rating", 
-				b.getValue());
-		int r = ar.compareTo(br);
-		return XacmlDataTypes.BOOLEAN.create(r < 0);
-	}
 	
-	@XacmlFuncSpec(id="urn:comcast:names:tc:xacml:1.0:function:vhip-is-less-or-equals")
+	@XacmlFuncSpec(id="urn:comcast:names:tc:xacml:1.0:function:vchip-is-greater-than")
 	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
-	public static BooleanValue isLessRestrictiveThanOrEqualVChip(
+	public static BooleanValue isGreaterThanVChip(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING) StringValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
 	{
@@ -64,8 +46,9 @@ public class RatingsFunctionsProvider
 				"Given value=\"%s\" can not be converted to V-Chip rating", 
 				b.getValue());
 		int r = ar.compareTo(br);
-		return XacmlDataTypes.BOOLEAN.create(r < 0 || r == 0);
+		return XacmlDataTypes.BOOLEAN.create(r > 0);
 	}
+	
 	
 	public enum MPAARatings implements Comparable<MPAARatings>
 	{
