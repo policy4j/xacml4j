@@ -3,10 +3,9 @@
       xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/2.0/access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicySetId="urn:tve:names:tc:xacml:2.0:policy:tve-root-policy-set"
+      PolicySetId="urn:oasis:names:tc:xacml:2.0:policy:tve"
       PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
     <Description>A TVE Root Policy Set</Description>
     <Target/>
-    <PolicySetIdReference>1000</PolicySetIdReference>
-    <PolicySetIdReference>1000</PolicySetIdReference>
+    <PolicySetIdReference>urn:oasis:names:tc:xacml:2.0:policy:tve:providers</PolicySetIdReference>
 </PolicySet>

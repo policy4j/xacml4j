@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 import com.artagon.xacml.v20.Xacml20PolicyUnmarshaller;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyStore;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyStore;
 import com.google.common.base.Preconditions;
 
@@ -19,6 +19,7 @@ public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean
 {
 	private InMemoryPolicyStore policyStore;
 	private Collection<Resource> policySetResources;
+	private Collection<Resource> referencedPolicySetResources;
 	private PolicyUnmarshaller policyMapper;
 	
 	public InMemoryPolicyStoreFactoryBean(PolicyFactory factory) 
@@ -28,10 +29,15 @@ public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean
 		this.policyStore = new InMemoryPolicyStore();
 		this.policyMapper = new Xacml20PolicyUnmarshaller(factory);
 		this.policySetResources = new LinkedList<Resource>();
+		this.referencedPolicySetResources = new LinkedList<Resource>();
 	}
 	
 	public void setPolicies(Collection<Resource> resources){
 		this.policySetResources = resources;
+	}
+	
+	public void setReferencedPolicies(Collection<Resource> resources){
+		this.referencedPolicySetResources = resources;
 	}
 	
 	@Override
@@ -39,14 +45,17 @@ public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean
 	{
 		Preconditions.checkState(policySetResources != null);
 		for(Resource r : policySetResources){
-			policyStore.addTopLevelPolicy(policyMapper.getPolicy(r.getInputStream()));
+			policyStore.addPolicy(policyMapper.unmarshall(r.getInputStream()));
+		}
+		for(Resource r : referencedPolicySetResources){
+			policyStore.addReferencedPolicy(policyMapper.unmarshall(r.getInputStream()));
 		}
 		return policyStore;
 	}
 
 	@Override
-	public Class<PolicyRepository> getObjectType() {
-		return PolicyRepository.class;
+	public Class<PolicyStore> getObjectType() {
+		return PolicyStore.class;
 	}
 	
 }

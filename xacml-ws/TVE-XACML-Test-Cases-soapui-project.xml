@@ -551,7 +551,13 @@
    <soapenv:Header/>
    <soapenv:Body>
       <xacml-context:Request>
-         <xacml-context:Subject>
+	 <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>tbs</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Subject>
+         <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
                <xacml-context:AttributeValue>test@comcast.net</xacml-context:AttributeValue>
             </xacml-context:Attribute>
@@ -560,51 +566,70 @@
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
                <xacml-context:AttributeValue>http://www.fancast.com/tv/True-Blood/97877/1525399921/True-Blood-26-(HBO)/videos</xacml-context:AttributeValue>
             </xacml-context:Attribute>
-            <xacml-context:Attribute AttributeId="urn:otc:names:otc:xacml:1.0:tv-network-name" DataType="http://www.w3.org/2001/XMLSchema#string">
-               <xacml-context:AttributeValue>HBO</xacml-context:AttributeValue>
+            <xacml-context:Attribute AttributeId="urn:tve:names:1.0:content:channel" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>hbo</xacml-context:AttributeValue>
             </xacml-context:Attribute>
-            <xacml-context:Action>
+	    <xacml-context:Attribute AttributeId="urn:tve:names:1.0:content:ratings:mpaa" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>TV-MA</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+	    <xacml-context:Action>
                <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
                   <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
                </xacml-context:Attribute>
             </xacml-context:Action>
          </xacml-context:Resource>
+
 	<xacml-context:Resource>
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
                <xacml-context:AttributeValue>http://www.fancast.com/tv/True-Blood/97877/1525399921/True-Blood-26-(HBO)/videos</xacml-context:AttributeValue>
             </xacml-context:Attribute>
-            <xacml-context:Attribute AttributeId="urn:otc:names:otc:xacml:1.0:tv-network-name" DataType="http://www.w3.org/2001/XMLSchema#string">
-               <xacml-context:AttributeValue>Starz</xacml-context:AttributeValue>
+	    <xacml-context:Attribute AttributeId="urn:tve:names:1.0:content:channel" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>tbs</xacml-context:AttributeValue>
             </xacml-context:Attribute>
+	    <xacml-context:Attribute AttributeId="urn:tve:names:1.0:content:ratings:mpaa" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>TV-M</xacml-context:AttributeValue>
+            </xacml-context:Attribute>  
          </xacml-context:Resource>
          <xacml-context:Action>
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
                <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
             </xacml-context:Attribute>
          </xacml-context:Action>
-         <xacml-context:Environment></xacml-context:Environment>
+         <xacml-context:Environment>
+	</xacml-context:Environment>
       </xacml-context:Request>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:oasis:names:tc:xacml:2.0:context:schema:os/Xacml20PdpService/AuthorizeRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Multi-Resource via XPath"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/xacml-ws/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
    <soapenv:Header/>
    <soapenv:Body>
       <xacml-context:Request>
-         <xacml-context:Subject>
+	 <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>tbs</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Subject>
+         <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
                <xacml-context:AttributeValue>test@comcast.net</xacml-context:AttributeValue>
             </xacml-context:Attribute>
          </xacml-context:Subject>
          <xacml-context:Resource>
             <xacml-context:ResourceContent>
-               <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">
+               <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" 
+		xmlns:dcterms="http://purl.org/dc/terms/">
                   <channel>
                      <item>
                         <media:content url="http://www.tve.net/movie1.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
-                        <media:rating scheme="urn:mpaa">r</media:rating>
+                        <media:rating scheme="urn:mpaa">R</media:rating>
+			<media:category scheme="urn:tve:names:1.0:content:channel">tbs</media:category>
                      </item>
-                     <item>
+		     <item>
                         <media:content url="http://www.tve.net/movie2.mov" fileSize="12216320" type="video/quicktime" expression="full"/>
-                        <media:rating scheme="urn:mpaa">pg</media:rating>
+                        <media:rating scheme="urn:mpaa">PG</media:rating>
+			<media:category scheme="urn:tve:names:1.0:content:channel">discovery</media:category>	
                      </item>
                   </channel>
                </rss>
