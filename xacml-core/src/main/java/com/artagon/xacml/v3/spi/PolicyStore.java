@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 
-public interface PolicyRepository extends PolicyReferenceResolver
+public interface PolicyStore extends PolicyReferenceResolver
 {
 	/**
 	 * Gets top level policies

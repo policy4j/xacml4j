@@ -12,9 +12,9 @@ import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyStore;
 
-public abstract class AbstractPolicyRepository implements PolicyRepository
+public abstract class AbstractPolicyRepository implements PolicyStore
 {
 	@Override
 	public final Policy resolve(EvaluationContext context, PolicyIDReference ref)
