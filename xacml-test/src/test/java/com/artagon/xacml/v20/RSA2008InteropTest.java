@@ -204,7 +204,7 @@ public class RSA2008InteropTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "rsa2008-interop/" + name;
-		return policyReader.getPolicy(cl.getResourceAsStream(path));
+		return policyReader.unmarshall(cl.getResourceAsStream(path));
 	}
 	
 	private Request getRequest(String name) throws Exception
