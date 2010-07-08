@@ -33,7 +33,7 @@ public class Xacml20PolicyUnmarshaller implements PolicyUnmarshaller
 	}
 	
 	@Override
-	public CompositeDecisionRule getPolicy(Object source)
+	public CompositeDecisionRule unmarshall(Object source)
 			throws PolicySyntaxException 
 	{
 		Preconditions.checkNotNull(source);

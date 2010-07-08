@@ -330,20 +330,17 @@ class Xacml20PolicyMapper
 	
 	private void parseVariables(VariableManager<JAXBElement<?>> m) throws PolicySyntaxException
 	{
-		for(String varId : m.getVariableDefinitionExpressions())
-		{
+		for(String varId : m.getVariableDefinitionExpressions()){
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);	
-			log.debug("Parsing variable definition=\"{}\"", varId);
 			m.pushVariableDefinition(varId);
 			Expression expression = parseExpression(varDefExp, m);
 			m.resolveVariableDefinition(factory.createVariableDefinition(varId, expression));
 		}
 	}
 	
-	Expression parseExpression(JAXBElement<?> expression, 
+	private Expression parseExpression(JAXBElement<?> expression, 
 			VariableManager<JAXBElement<?>> m) throws PolicySyntaxException
 	{	
-		log.debug("Parsing variable definition expression=\"{}\"", expression.getName());
 		Object exp = expression.getValue();
 		if (exp instanceof org.oasis.xacml.v20.policy.AttributeValueType) {
 			return createValue((org.oasis.xacml.v20.policy.AttributeValueType) exp);
@@ -396,7 +393,7 @@ class Xacml20PolicyMapper
 		return rules;
 	}
 	
-	Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
+	private Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
 			throws PolicySyntaxException 
 	{
 		Effect effect = r.getEffect() == EffectType.DENY ? Effect.DENY
@@ -417,7 +414,7 @@ class Xacml20PolicyMapper
 		return factory.createCondition(createExpression(expression, variables));
 	}
 
-	Collection<ObligationExpression> getObligations(ObligationsType obligations)
+	private Collection<ObligationExpression> getObligations(ObligationsType obligations)
 			throws PolicySyntaxException {
 		if (obligations == null) {
 			return Collections.<ObligationExpression> emptyList();
@@ -434,7 +431,7 @@ class Xacml20PolicyMapper
 		return o;
 	}
 
-	Collection<AttributeAssignmentExpression> createAttributeAssigments(
+	private Collection<AttributeAssignmentExpression> createAttributeAssigments(
 			Collection<AttributeAssignmentType> exp)
 			throws PolicySyntaxException {
 		Collection<AttributeAssignmentExpression> expressions = new LinkedList<AttributeAssignmentExpression>();
@@ -447,7 +444,7 @@ class Xacml20PolicyMapper
 		return expressions;
 	}
 
-	Expression createExpression(JAXBElement<?> expression, 
+	private Expression createExpression(JAXBElement<?> expression, 
 			VariableManager<JAXBElement<?>> m)
 			throws PolicySyntaxException 
 	{
@@ -507,7 +504,8 @@ class Xacml20PolicyMapper
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
 				return factory.createMatch(match.getMatchId(),
-						createValue(match.getAttributeValue()), createSelector(
+						createValue(match.getAttributeValue()), 
+						createSelector(
 								getSelectoryCategory(selector), selector));
 			}
 			throw new PolicySyntaxException("Match with functionId=\"%s\" "
@@ -576,14 +574,13 @@ class Xacml20PolicyMapper
 				"Can't create Match from a given instance=\"%s\"", exp);
 	}
 
-	Apply createApply(ApplyType apply, VariableManager<JAXBElement<?>> m) 
+	private Apply createApply(ApplyType apply, VariableManager<JAXBElement<?>> m) 
 		throws PolicySyntaxException 
 	{
 		List<Expression> arguments = new LinkedList<Expression>();
 		for (JAXBElement<?> arg : apply.getExpression()) 
 		{
 			Expression exp = parseExpression(arg, m);
-			log.debug("Apply argument=\"{}\"", exp);
 			arguments.add(exp);
 		}
 		return factory.createApply(apply.getFunctionId(), arguments);
@@ -597,41 +594,35 @@ class Xacml20PolicyMapper
 	 * @return {@link AttributeValue}
 	 * @throws PolicySyntaxException
 	 */
-	AttributeValue createValue(
+	private AttributeValue createValue(
 			org.oasis.xacml.v20.policy.AttributeValueType value)
 			throws PolicySyntaxException {
 		return createValue(value.getDataType(), value.getContent());
 	}
 
-	AttributeValue createValue(String dataType, List<Object> content)
+	private AttributeValue createValue(String dataType, List<Object> content)
 			throws PolicySyntaxException {
 		if (content == null || content.isEmpty()) {
 			throw new PolicySyntaxException("Attribute does not have content");
 		}
-		return factory.createAttributeValue(dataType, Iterables
-				.getOnlyElement(content));
+		return factory.createAttributeValue(dataType, Iterables.getOnlyElement(content));
 	}
-
-	AttributeSelector createSelector(AttributeCategoryId categoryId,
+	
+	private AttributeSelector createSelector(AttributeCategoryId categoryId,
 			AttributeSelectorType selector) throws PolicySyntaxException 
 	{
-		AttributeValueType dataType = XacmlDataTypes.getByTypeId(selector
-				.getDataType());
-		if (dataType == null) {
-			throw new PolicySyntaxException("Unknown dataType=\"%s\"", selector
-					.getDataType());
-		}
-		String xpath = transformSelectorXPath(selector);
-		log.debug("Processing selector with xpath=\"{}\", transformed xpath=\"{}\"", selector.getRequestContextPath(), xpath);
-		return factory.createAttributeSelector(categoryId, xpath, dataType,
+		String xpath = transformSelectorXPath(selector);	
+		return factory.createAttributeSelector(categoryId, 
+				xpath, 
+				factory.createAttributeValueType(selector.getDataType()),
 				selector.isMustBePresent());
 	}
-
-	AttributeCategoryId getSelectoryCategory(AttributeSelectorType selector) {
+	
+	private AttributeCategoryId getSelectoryCategory(AttributeSelectorType selector) {
 		return AttributeCategoryId.RESOURCE;
 	}
 
-	String transformSelectorXPath(AttributeSelectorType selector) throws PolicySyntaxException
+	private String transformSelectorXPath(AttributeSelectorType selector) throws PolicySyntaxException
 	{
 		return Xacml20XPathTo30Transformer.transform20PathTo30(selector.getRequestContextPath());
 	}
@@ -644,7 +635,7 @@ class Xacml20PolicyMapper
 	 * @return {@link AttributeDesignator} instance
 	 * @throws PolicySyntaxException
 	 */
-	AttributeDesignator createDesignator(AttributeCategoryId categoryId,
+	private AttributeDesignator createDesignator(AttributeCategoryId categoryId,
 			AttributeDesignatorType ref) throws PolicySyntaxException {
 		AttributeValueType dataType = XacmlDataTypes.getByTypeId(ref.getDataType());
 		if (dataType == null) {
@@ -655,9 +646,18 @@ class Xacml20PolicyMapper
 				.getAttributeId(), dataType, ref.isMustBePresent(), ref
 				.getIssuer());
 	}
-
-	AttributeCategoryId getDesignatorCategory(JAXBElement<?> element)
-			throws PolicySyntaxException {
+	
+	/**
+	 * Gets {@link AttributeCategoryId} from a given XACML 2.0
+	 * attribute designator instance
+	 * 
+	 * @param element an designator element
+	 * @return {@link AttributeCategoryId} instance
+	 * @throws PolicySyntaxException if error occurs
+	 */
+	private AttributeCategoryId getDesignatorCategory(JAXBElement<?> element)
+			throws PolicySyntaxException 
+	{
 		Object ref = element.getValue();
 		if (ref instanceof SubjectAttributeDesignatorType) {
 			SubjectAttributeDesignatorType subjectRef = (SubjectAttributeDesignatorType) ref;

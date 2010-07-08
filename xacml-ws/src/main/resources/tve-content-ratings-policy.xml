@@ -3,11 +3,11 @@
       xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/2.0/access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicyId="urn:oasis:names:tc:xacml:2.0:policy:tve:content:ratings"
+      PolicyId="urn:tve:policy:content:ratings"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny">
     <Description>A TV Everywhere video assets level parental control policy</Description>
    <Target/>
-   <Rule Effect="Deny" RuleId="urn:oasis:names:tc:xacml:2.0:rule:tve:content:ratings:mrss:mpaa">
+   <Rule Effect="Deny" RuleId="urn:tve:rule:content:ratings:mrss:mpaa">
    		<Condition>
    			<Apply FunctionId="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-greater-than">
    				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -21,7 +21,7 @@
    			</Apply>
    		</Condition>
    </Rule>
-   <Rule Effect="Deny" RuleId="urn:oasis:names:tc:xacml:2.0:rule:tve:content:ratings:mrss:v-chip">
+   <Rule Effect="Deny" RuleId="urn:tve:rule:content:ratings:mrss:v-chip">
    		<Condition>
    			<Apply FunctionId="urn:comcast:names:tc:xacml:1.0:function:vchip-is-greater-than">
    				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -35,7 +35,7 @@
    			</Apply>
    		</Condition>
    </Rule>
-   <Rule Effect="Deny" RuleId="urn:oasis:names:tc:xacml:2.0:rule:tve:content:ratings:attribute:mpaa">
+   <Rule Effect="Deny" RuleId="urn:tve:rule:content:ratings:attribute:mpaa">
    		<Condition>
    			<Apply FunctionId="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-greater-than">
 	   			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -49,7 +49,7 @@
 	   		</Apply>   		
    		</Condition>
    </Rule>
-   <Rule Effect="Deny" RuleId="urn:oasis:names:tc:xacml:2.0:rule:tve:content:ratings:attribute:v-chip">
+   <Rule Effect="Deny" RuleId="urn:tve:rule:content:ratings:attribute:v-chip">
    		<Condition>
    			<Apply FunctionId="urn:comcast:names:tc:xacml:1.0:function:mpaa-is-greater-than">
 	   			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -67,3 +67,4 @@
    		<Obligation FulfillOn="Deny" ObligationId="urn:tve:names:1.0:obligations:restric-pc"/>
    </Obligations>
 </Policy>
+

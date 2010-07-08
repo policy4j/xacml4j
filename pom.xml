@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.artagon.xacml</groupId>
 	<artifactId>xacml</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>OASIS XACML Project</name>
 	<url>http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml
 	</url>
 	<modules>
 		<module>xacml-core</module>
+		<module>xacml-policy-store</module>
 		<module>xacml-schemas</module>
 		<module>xacml-test</module>
+		<module>xacml-protobuf</module>
 		<module>xacml-ws</module>
 	</modules>
 	<properties>
@@ -19,6 +22,7 @@
 		<slf4j.version>1.4.1</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
 		<junit.version>4.4</junit.version>
+		<google.protobuf.version>2.3.0</google.protobuf.version>
 		<easymock.version>3.0</easymock.version>
 		<xmlunit.version>1.3</xmlunit.version>
 		<guava.version>r03</guava.version>
@@ -60,6 +64,21 @@
 			<dependency>
 				<groupId>org.springframework.ws</groupId>
 				<artifactId>spring-oxm</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-oxm-tiger</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-support</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-security</artifactId>
 				<version>${spring.ws.version}</version>
 			</dependency>
 			<dependency>
@@ -152,6 +171,11 @@
 				<artifactId>cglib-nodep</artifactId>
 				<version>2.2</version>
 			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>2.3.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -223,5 +247,22 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+		<pluginRepository>
+             <id>dtrott</id>
+             <url>http://maven.davidtrott.com/repository</url>
+		</pluginRepository>
 	</pluginRepositories>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>comcast-release-repo</id>
+			<url>scp://cim-trac.comcastonline.com/opt/csw/apache2/share/htdocs/http/godzilla/maven/repo/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<id>comcast-snapshot-repo</id>
+			<url>scp://cim-trac.comcastonline.com/opt/csw/apache2/share/htdocs/http/godzilla/maven/repo/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

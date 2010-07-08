@@ -37,7 +37,7 @@ public class Xacml20PolicyUnmarshallerTest
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
-		return  (T)reader.getPolicy(stream);
+		return  (T)reader.unmarshall(stream);
 	}
 	
 	

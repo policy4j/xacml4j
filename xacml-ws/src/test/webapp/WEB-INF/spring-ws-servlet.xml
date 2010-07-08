@@ -49,14 +49,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</constructor-arg>
 		<property name="policies">
 			<list>
-				<value>classpath:/tve-policyset.xml</value>
+				<value>classpath:/tve-providers.xml</value>
 			</list>
 		</property>
 		<property name="referencedPolicies">
 			<list>
-				<value>classpath:/tve-providers.xml</value>
-				<value>classpath:/tve-tbs-policyset.xml</value>
-				<value>classpath:/tbs-subscription-policy.xml</value>
+				<value>classpath:/providers/tve-tbs-policyset.xml</value>
+				<value>classpath:/providers/tve-tnt-policyset.xml</value>
+				<value>classpath:/providers//tve-discovery-policyset.xml</value>
+				<value>classpath:/subscription/tbs-subscription-policy.xml</value>
+				<value>classpath:/subscription/tnt-subscription-policy.xml</value>
+				<value>classpath:/subscription/discovery-subscription-policy.xml</value>
 				<value>classpath:/tve-content-ratings-policy.xml</value>
 			</list>
 		</property>

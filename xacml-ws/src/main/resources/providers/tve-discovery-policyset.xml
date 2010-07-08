@@ -3,14 +3,14 @@
       xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/2.0/access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicySetId="urn:oasis:names:tc:xacml:2.0:policy:tve:providers:tbs"
+      PolicySetId="urn:tve:policyset:providers:discovery"
       PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
-    <Description>A TV Everywhere CBS content provider policy set</Description>
+    <Description>A TV Everywhere TBS content provider policy set</Description>
     <Target>
     	<Subjects>
     		<Subject>
-    			<SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-    				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">tbs</AttributeValue>
+    			<SubjectMatch MatchId="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case">
+    				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">discovery</AttributeValue>
     				<SubjectAttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#string" 
     				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
     				SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject"/>
@@ -18,6 +18,6 @@
     		</Subject>
     	</Subjects>
     </Target>
-    <PolicySetIdReference EarliestVersion="1.0">urn:comcast:names:tc:xacml:1.0:policy:tve:channels:subscription:tbs</PolicySetIdReference>
-    <PolicyIdReference EarliestVersion="1.0" >urn:oasis:names:tc:xacml:2.0:policy:tve:content:ratings</PolicyIdReference>
+    <PolicySetIdReference EarliestVersion="1.0">urn:tve:plicyset:subscription:discovery</PolicySetIdReference>
+    <PolicyIdReference EarliestVersion="1.0">urn:tve:policy:content:ratings</PolicyIdReference>
 </PolicySet>
