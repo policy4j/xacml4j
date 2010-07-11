@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class SpecialMatchFunctionsTest 
 {

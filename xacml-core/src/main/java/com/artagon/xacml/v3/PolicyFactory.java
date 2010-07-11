@@ -85,6 +85,12 @@ public interface PolicyFactory
 	Match createMatch(String functionId, 
 			AttributeValue value, AttributeReference reference) throws PolicySyntaxException;
 	
+	/**
+	 * Creates {@link MatchAnyOf} from a give
+	 * @param matches
+	 * @return
+	 * @throws PolicySyntaxException
+	 */
 	MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches) throws PolicySyntaxException;
 
 	Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException;

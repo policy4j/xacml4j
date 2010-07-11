@@ -1,9 +1,9 @@
 package com.artagon.xacml.util;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class Xacml20XPathTo30Transformer 
 {

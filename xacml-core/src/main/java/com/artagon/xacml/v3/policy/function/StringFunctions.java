@@ -5,7 +5,9 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
+import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateType;
@@ -15,13 +17,11 @@ import com.artagon.xacml.v3.types.IPAddressType;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.StringType;
+import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
-import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.types.StringType.StringValue;
 
 @XacmlFunctionProvider(description="XACML string functions")
 public class StringFunctions 

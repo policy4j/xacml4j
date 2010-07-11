@@ -15,9 +15,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
 public class BagOfAttributesTest
 {

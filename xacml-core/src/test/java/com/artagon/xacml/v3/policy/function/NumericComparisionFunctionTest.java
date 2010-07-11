@@ -4,9 +4,9 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 
 public class NumericComparisionFunctionTest

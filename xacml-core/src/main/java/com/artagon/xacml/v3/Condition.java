@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 /**
  * Condition represents a Boolean expression that refines the applicability 

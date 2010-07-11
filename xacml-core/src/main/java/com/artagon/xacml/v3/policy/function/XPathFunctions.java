@@ -12,11 +12,11 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 /**
  * This class implements functions that take XPath expressions for arguments. 

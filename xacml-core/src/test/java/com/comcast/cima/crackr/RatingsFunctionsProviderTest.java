@@ -1,8 +1,8 @@
 package com.comcast.cima.crackr;
 
 
-import static com.comcast.cima.crackr.RatingsFunctionsProvider.isGreaterThanVChip;
 import static com.comcast.cima.crackr.RatingsFunctionsProvider.isGreaterThanMPAA;
+import static com.comcast.cima.crackr.RatingsFunctionsProvider.isGreaterThanVChip;
 import static com.comcast.cima.crackr.RatingsFunctionsProvider.MPAARatings.NC17;
 import static com.comcast.cima.crackr.RatingsFunctionsProvider.MPAARatings.PG;
 import static com.comcast.cima.crackr.RatingsFunctionsProvider.VChipRatings.TV_G;
@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class RatingsFunctionsProviderTest 
 {

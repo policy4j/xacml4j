@@ -24,7 +24,7 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	 * @param condition a condition
 	 * @param effect a rule effect
 	 */
-	public Rule(
+	Rule(
 			String ruleId, 
 			String description,
 			Target target,
@@ -48,7 +48,7 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	 * @param condition a rule condition
 	 * @param effect a rule effect
 	 */
-	public Rule(
+	Rule(
 			String ruleId, 
 			String description,
 			Target target,

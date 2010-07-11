@@ -12,9 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 
 
