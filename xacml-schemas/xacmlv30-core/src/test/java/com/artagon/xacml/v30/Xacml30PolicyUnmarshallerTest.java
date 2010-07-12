@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.DefaultPolicyFactory;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
@@ -68,6 +69,13 @@ public class Xacml30PolicyUnmarshallerTest
 		assertEquals("urn:oasis:names:tc:xacml:3.0:example:policyid:3", p.getId());
 		assertEquals(Version.parse("1.0"), p.getVersion());
 		assertEquals("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides", p.getRuleCombiningAlgorithm().getId());
+	}
+	
+	@Test
+	public void testPolicySet1Mapping() throws Exception
+	{
+		PolicySet p = getPolicy("PolicySet1.xml");
+		
 	}
 }
 
