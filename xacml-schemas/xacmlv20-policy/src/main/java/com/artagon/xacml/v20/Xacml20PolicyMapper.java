@@ -113,14 +113,13 @@ class Xacml20PolicyMapper
 	public Policy createPolicy(PolicyType p) throws PolicySyntaxException 
 	{
 		VariableManager<JAXBElement<?>> m = getVariables(p);
-		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
 		PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
 		Target target = create(p.getTarget());
 		Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
 		Collection<Rule> rules = getRules(p, m);
-		return factory.createPolicy(p.getPolicyId(), version, p
-				.getDescription(), 
+		return factory.createPolicy(p.getPolicyId(), p.getVersion(), 
+				p.getDescription(), 
 				policyDefaults, 
 				target, 
 				variableDefinitions.values(), 
@@ -131,15 +130,14 @@ class Xacml20PolicyMapper
 
 	public PolicySet createPolicySet(PolicySetType p) throws PolicySyntaxException 
 	{
-		Version version = Version.parse(p.getVersion());
 		Collection<ObligationExpression> obligations = getObligations(p
 				.getObligations());
 		PolicySetDefaults policySetDefaults = createPolicySetDefaults(p
 				.getPolicySetDefaults());
 		Collection<CompositeDecisionRule> policies = getPolicies(p);
 		Target target = create(p.getTarget());
-		return factory.createPolicySet(p.getPolicySetId(), version, p
-				.getDescription(), policySetDefaults, target, p
+		return factory.createPolicySet(p.getPolicySetId(), p.getVersion(), 
+				p.getDescription(), policySetDefaults, target, p
 				.getPolicyCombiningAlgId(), policies, obligations, Collections
 				.<AdviceExpression> emptyList());
 	}
