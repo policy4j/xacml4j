@@ -16,6 +16,7 @@ import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
@@ -77,5 +78,18 @@ public class Xacml30PolicyUnmarshallerTest
 		PolicySet p = getPolicy("PolicySet1.xml");
 		
 	}
+	
+	@Test
+	public void testPolicy3() throws Exception
+	{
+		Policy p = getPolicy("Policy3.xml");
+		assertEquals(5, p.getVariableDefinitions().size());
+		assertNotNull(p.getVariableDefinition("VAR01"));
+		assertNotNull(p.getVariableDefinition("VAR02"));
+		assertNotNull(p.getVariableDefinition("VAR03"));
+		assertNotNull(p.getVariableDefinition("VAR04"));
+		assertNotNull(p.getVariableDefinition("VAR05"));
+	}
+	
 }
 

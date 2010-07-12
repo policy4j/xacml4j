@@ -28,8 +28,7 @@
         </Resources>
 
     </Target>
-
-<Policy
+    <Policy
       PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policy"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
     <Description>Policy for Conformance Test IIIF006.</Description>
