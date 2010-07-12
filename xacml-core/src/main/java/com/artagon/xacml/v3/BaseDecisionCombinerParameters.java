@@ -16,7 +16,6 @@ abstract class BaseDecisionCombinerParameters extends XacmlObject
 			this.parameters.put(p.getName(), p);
 		}
 	}
-
 	
 	/**
 	 * Gets parameter by name

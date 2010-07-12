@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	private Map<String, VariableDefinition> variableDefinitions;
 	private DecisionCombiningAlgorithm<Rule> combine;
 	private CombinerParameters combinerParameters;
-	private RuleCombinerParameters ruleCombinerParameters;
+	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
 	
 	
 	/**
@@ -41,7 +42,9 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 			String description,
 			PolicyDefaults policyDefaults,
 			Target target, 
-			Collection<VariableDefinition> variables, 
+			Collection<VariableDefinition> variables,
+			Collection<CombinerParameters> combinerParameters,
+			Collection<RuleCombinerParameters> ruleCombinerParameters,
 			DecisionCombiningAlgorithm<Rule> combine,
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
@@ -60,6 +63,25 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		for(VariableDefinition varDef : variables){
 			this.variableDefinitions.put(varDef.getVariableId(), varDef);
 		}
+	}
+	
+	Policy(
+			String policyId,
+			Version version,
+			String description,
+			PolicyDefaults policyDefaults,
+			Target target, 
+			Collection<VariableDefinition> variables,
+			DecisionCombiningAlgorithm<Rule> combine,
+			Collection<Rule> rules, 
+			Collection<AdviceExpression> adviceExpressions,
+			Collection<ObligationExpression> obligationExpressions) 
+		throws PolicySyntaxException
+	{
+		this(policyId, version, description, policyDefaults, target, variables, 
+				Collections.<CombinerParameters>emptyList(), 
+				Collections.<RuleCombinerParameters>emptyList(),
+				combine, rules, adviceExpressions, obligationExpressions);
 	}
 	
 	/**
@@ -133,12 +155,24 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		return combine;
 	}
 	
-	public CombinerParameters getCombinerParameters() {
-		return combinerParameters;
+	/**
+	 * A rule combining algorithm parameters
+	 * 
+	 * @return {@link CombinerParameters} or <code>null</code>
+	 * if no parameters are specified
+	 */
+	public CombinerParameters getCombinerParameter(String name) {
+		throw new UnsupportedOperationException();
 	}
-
-	public RuleCombinerParameters getRuleCombinerParameters() {
-		return ruleCombinerParameters;
+	
+	/**
+	 * A rule combining algorithm parameters
+	 * 
+	 * @return {@link CombinerParameters} or <code>null</code>
+	 * if no parameters are specified
+	 */
+	public RuleCombinerParameters getRuleCombinerParameter(String ruleId, String name) {
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -204,12 +238,12 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		if(getTarget() != null){
 			getTarget().accept(v);
 		}
-		if(combinerParameters != null){
-			combinerParameters.accept(v);
-		}
-		if(ruleCombinerParameters != null){
-			ruleCombinerParameters.accept(v);
-		}
+//		if(combinerParameters != null){
+//			combinerParameters.accept(v);
+//		}
+//		if(ruleCombinerParameters != null){
+//			ruleCombinerParameters.accept(v);
+//		}
 		combine.accept(v);
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
