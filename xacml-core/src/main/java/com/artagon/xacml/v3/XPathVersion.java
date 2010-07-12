@@ -19,7 +19,7 @@ public enum XPathVersion
 	public static XPathVersion parse(String v)
 	{
 		for(XPathVersion version : XPathVersion.values()){
-			if(version.versionURI.equals(v)){
+			if(version.versionURI.equalsIgnoreCase(v)){
 				return version;
 			}
 		}

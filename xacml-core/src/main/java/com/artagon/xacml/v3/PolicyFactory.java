@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
 
 
 
@@ -29,6 +32,9 @@ public interface PolicyFactory
 	 * @throws PolicySyntaxException
 	 */
 	AttributeValue createAttributeValue(String typeId, Object value) 
+		throws PolicySyntaxException;
+	
+	AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> values) 
 		throws PolicySyntaxException;
 	
 	/**

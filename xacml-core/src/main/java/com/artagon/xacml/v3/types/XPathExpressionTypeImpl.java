@@ -36,7 +36,8 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 	@Override
 	public XPathExpressionValue fromXacmlString(String v, Object ...params) 
 	{
-		Preconditions.checkArgument(params != null && params.length > 0, "XPath category must be specified");
+		Preconditions.checkArgument(params != null && params.length > 0, 
+				"XPath category must be specified");
 		return new XPathExpressionValue(this, v, 
 				AttributeCategoryId.parse(String.valueOf(params[0])));
 	}

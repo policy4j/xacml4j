@@ -87,6 +87,11 @@
 				<version>${spring.ws.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-core-tiger</artifactId>
+				<version>${spring.ws.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.version}</version>

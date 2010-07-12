@@ -1,6 +1,10 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
 
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
@@ -22,12 +26,29 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public AttributeValue createAttributeValue(String typeId, Object value) 
 		throws PolicySyntaxException
 	{
+		return createAttributeValue(typeId, value, 
+				Collections.<QName, String>emptyMap());
+	}
+	
+	@Override
+	public AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> values) 
+		throws PolicySyntaxException
+	{
 		AttributeValueType type = createAttributeValueType(typeId);
 		try{
-			return type.create(value);
+			return type.create(value, getXPathCategory(values));
 		}catch(Exception e){
 			throw new PolicySyntaxException(e);
 		}
+	}
+	
+	private AttributeCategoryId getXPathCategory(Map<QName, String> attr){
+		for(QName n : attr.keySet()){
+			if(n.getLocalPart().equals("XPathCategory")){
+				return AttributeCategoryId.parse(attr.get(n));
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -240,8 +261,10 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	}
 	
 	@Override
-	public AttributeSelector createAttributeSelector(AttributeCategoryId category,
-			String selectXPath, String contextAttributeId, 
+	public AttributeSelector createAttributeSelector(
+			AttributeCategoryId category,
+			String selectXPath, 
+			String contextAttributeId, 
 			AttributeValueType dataType, boolean mustBePresent)
 			throws PolicySyntaxException {
 		return new AttributeSelector(category, selectXPath, 
@@ -250,8 +273,10 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	
 	@Override
-	public AttributeSelector createAttributeSelector(String categoryId,
-			String selectXPath, String contextAttributeId,
+	public AttributeSelector createAttributeSelector(
+			String categoryId,
+			String selectXPath, 
+			String contextAttributeId,
 			String dataTypeId, boolean mustBePresent)
 			throws PolicySyntaxException 
 	{
