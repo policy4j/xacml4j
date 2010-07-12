@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:md="http://www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:3.0:example:policyid:1"
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:md="http://www.med.example.com/schemas/record.xsd" 
+	PolicyId="urn:oasis:names:tc:xacml:3.0:example:policyid:1"
 	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
 	Version="1.0">
 	<PolicyDefaults>
@@ -26,11 +28,9 @@
 	</VariableDefinition>
 	<Rule RuleId="urn:oasis:names:tc:xacml:3.0:example:ruleid:1"
 		Effect="Permit">
-		<Description>
-			A person may read any medical record in the
-			http://www.med.example.com/schemas/record.xsd namespace
-			for which he or she is the designated patient
-            </Description>
+		<Description>A person may read any medical record in the
+		http://www.med.example.com/schemas/record.xsd namespace
+		for which he or she is the designated patient</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
