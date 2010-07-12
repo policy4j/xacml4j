@@ -355,6 +355,9 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public AttributeCategoryId createAttributeCategory(String categoryId) 
 		throws PolicySyntaxException
 	{
+		if(categoryId == null){
+			return null;
+		}
 		AttributeCategoryId c = AttributeCategoryId.parse(categoryId);
 		if(c == null){
 				throw new PolicySyntaxException(
