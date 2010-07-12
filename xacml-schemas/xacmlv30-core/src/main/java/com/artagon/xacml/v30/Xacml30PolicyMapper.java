@@ -88,6 +88,15 @@ public class Xacml30PolicyMapper
 		this.factory = factory;
 	}
 
+	/**
+	 * Creates {@link Policy} instance from a giveb JAXB
+	 * {@link PolicyType} object
+	 * 
+	 * @param p a JAXB policy representation
+	 * @return {@link Policy} instance
+	 * @throws PolicySyntaxException if syntax error occurs
+	 * while creating XACML policy
+	 */
 	public Policy createPolicy(PolicyType p) throws PolicySyntaxException 
 	{
 		VariableManager<JAXBElement<?>> variableDef = getVariables(p);
@@ -115,6 +124,16 @@ public class Xacml30PolicyMapper
 		return rules;
 	}
 	
+	/**
+	 * Tries to create either {@link Policy} or {@link PolicySet}
+	 * based on runtime type of the given JAXB object
+	 * 
+	 * @param jaxbObject a JAXB object representing either 
+	 * {@link PolicySetType} or {@link PolicyType}
+	 * @return {@link CompositeDecisionRule}
+	 * @throws PolicySyntaxException if given policy or policy set
+	 * can not be created due syntactical errors
+	 */
 	public CompositeDecisionRule create(Object jaxbObject) throws PolicySyntaxException
 	{
 		if(jaxbObject instanceof PolicyType){
@@ -127,6 +146,15 @@ public class Xacml30PolicyMapper
 				"Given object can not be mapped to Policy or PolicySet");
 	}
 	
+	/**
+	 * Creates {@link PolicySet} instance from a given JAXB
+	 * {@link PolicySetType} object
+	 * 
+	 * @param p a JAXB policy set representation
+	 * @return {@link PolicySet} instance
+	 * @throws PolicySyntaxException if syntax error occurs
+	 * while creating XACML policy set
+	 */
 	public PolicySet createPolicySet(PolicySetType p) throws PolicySyntaxException 
 	{
 		VariableManager<JAXBElement<?>> variableDef = new VariableManager<JAXBElement<?>>(
@@ -413,13 +441,13 @@ public class Xacml30PolicyMapper
 	}
 
 	/**
-	 * Creates {@link AttributeValue} instance
+	 * Creates {@link AttributeValueExpression} instance
 	 * 
 	 * @param dataType
 	 *            a data type identifier
 	 * @param content
 	 *            an list with attribute content
-	 * @return {@link AttributeValue} instance
+	 * @return {@link AttributeValueExpression} instance
 	 * @throws PolicySyntaxException
 	 */
 	private AttributeValue createValue(String dataType, List<Object> content, 

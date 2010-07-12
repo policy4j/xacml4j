@@ -16,7 +16,6 @@ import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;

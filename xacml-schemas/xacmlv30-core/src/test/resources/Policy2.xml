@@ -103,8 +103,7 @@
 			</AttributeAssignmentExpression>
 			<AttributeAssignmentExpression
 				AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
-					Your medical record has been accessed by:</AttributeValue>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your medical record has been accessed by:</AttributeValue>
 			</AttributeAssignmentExpression>
 			<AttributeAssignmentExpression
 				AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
