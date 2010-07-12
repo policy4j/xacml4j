@@ -119,7 +119,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	public Policy createPolicy(
 			String policyId, 
-			Version version, 
+			String version, 
 			String description,
 			PolicyDefaults policyDefaults, 
 			Target target, 
@@ -129,9 +129,10 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Collection<ObligationExpression> obligation, Collection<AdviceExpression> advice) 
 		throws PolicySyntaxException
 	{
+		Version v = Version.parse(version);
 		Policy policy = new Policy(
 				policyId, 
-				version, 
+				v, 
 				description, 
 				policyDefaults, 
 				target, 
@@ -189,7 +190,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	@Override
 	public PolicySet createPolicySet(String policySetId, 
-			Version version, 
+			String version, 
 			String description,
 			PolicySetDefaults policySetDefaults, 
 			Target target,
@@ -199,7 +200,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Collection<AdviceExpression> advice) throws PolicySyntaxException 
 	{
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = createPolicyCombingingAlgorithm(algorithmId);
-		return new PolicySet(policySetId, version, description, 
+		Version v = Version.parse(version);
+		return new PolicySet(policySetId, v, description, 
 				policySetDefaults, target, null, null, null,
 				algorithm, policies, advice, obligation);
 	}

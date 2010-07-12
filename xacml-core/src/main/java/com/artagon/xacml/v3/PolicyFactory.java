@@ -279,7 +279,7 @@ public interface PolicyFactory
 	 */
 	Policy createPolicy(
 			String policyId, 
-			Version version, 
+			String version, 
 			String description,
 			PolicyDefaults policyDefaults,
 			Target target, 
@@ -291,7 +291,7 @@ public interface PolicyFactory
 	
 	PolicySet createPolicySet(
 			String policySetId, 
-			Version version, 
+			String version, 
 			String description,
 			PolicySetDefaults policyDefaults,
 			Target target,  
