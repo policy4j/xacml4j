@@ -16,15 +16,15 @@ import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
-public final class InMemoryPolicyStore extends AbstractPolicyRepository 
+public final class DefaultPolicyStore extends AbstractPolicyRepository 
 {	
-	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyStore.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyStore.class);
 	
 	private Map<String, Policy> policies;
 	private Map<String, PolicySet> policySets;
 	private Map<String, CompositeDecisionRule> topLevel;
 	
-	public InMemoryPolicyStore()
+	public DefaultPolicyStore()
 	{
 		super(Mode.FIRST_APPLICABLE, new DefaultDecisionCombiningAlgorithmProvider());
 		this.policies = new ConcurrentHashMap<String, Policy>();
