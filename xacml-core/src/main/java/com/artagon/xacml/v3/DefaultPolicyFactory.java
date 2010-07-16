@@ -9,17 +9,29 @@ import javax.xml.namespace.QName;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyFactory extends BasePolicyFactory
 {
 	public DefaultPolicyFactory()
 	{
-		super(new DefaultFunctionProvider(), 
+		this(new DefaultFunctionProvider(), 
 				new AggregatingDecisionCombiningAlgorithmProvider(
 						new DefaultDecisionCombiningAlgorithmProvider(), 
 						new LegacyDecisionCombiningAlgorithmProvider()));
+	}
+	
+	public DefaultPolicyFactory(FunctionProvider extensionFunctions, 
+			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms)
+	{
+		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider(), extensionFunctions),
+				new AggregatingDecisionCombiningAlgorithmProvider(
+				new DefaultDecisionCombiningAlgorithmProvider(), 
+				new LegacyDecisionCombiningAlgorithmProvider(), extensionCombiningAlgorithms));
 	}
 	
 	@Override

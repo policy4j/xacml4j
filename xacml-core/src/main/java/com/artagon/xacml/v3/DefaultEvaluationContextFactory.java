@@ -14,7 +14,8 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	private boolean validateFuncParamsAtRuntime = false;
 	private PolicyInformationPoint pip;
 	
-	public DefaultEvaluationContextFactory(PolicyStore repository, 
+	public DefaultEvaluationContextFactory(
+			PolicyStore repository, 
 			PolicyInformationPoint pip){
 		this(repository, new DefaultXPathProvider(), pip);
 	}

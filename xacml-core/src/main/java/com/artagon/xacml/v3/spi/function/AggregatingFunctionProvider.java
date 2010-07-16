@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.function;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -13,8 +14,8 @@ public class AggregatingFunctionProvider implements FunctionProvider
 {
 	private Map<String, FunctionProvider> functions;
 	
-	public AggregatingFunctionProvider(){
-		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
+	public AggregatingFunctionProvider(FunctionProvider ...providers){
+		this(Arrays.asList(providers));
 	}
 	
 	/**
@@ -23,7 +24,7 @@ public class AggregatingFunctionProvider implements FunctionProvider
 	 * @param providers a collection  of {@link FunctionProvider} instances
 	 */
 	public AggregatingFunctionProvider(Collection<FunctionProvider> providers){
-		this();
+		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 		for(FunctionProvider p : providers){
 			add(p);
 		}
@@ -57,7 +58,7 @@ public class AggregatingFunctionProvider implements FunctionProvider
 	 * 
 	 * @param extensions an extension functions
 	 */
-	public void setExtensionFunctions(Collection<FunctionProvider> extensions)
+	public void setFunctionProviders(Collection<FunctionProvider> extensions)
 	{
 		for(FunctionProvider p : extensions){
 			add(p);
