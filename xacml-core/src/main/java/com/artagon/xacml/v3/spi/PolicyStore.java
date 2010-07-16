@@ -3,11 +3,26 @@ package com.artagon.xacml.v3.spi;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 
 public interface PolicyStore extends PolicyReferenceResolver
 {
+	public enum Mode
+	{
+		FIRST_APPLICABLE,
+		ONLY_ONE_APPLICABLE,
+		DENY_OVERRIDES;
+	}
+	
+	/**
+	 * Gets policy store mode
+	 * 
+	 * @return {@link Mode} a policy store mode
+	 */
+	Mode getMode();
+	
 	/**
 	 * Gets top level policies
 	 * 
@@ -16,10 +31,11 @@ public interface PolicyStore extends PolicyReferenceResolver
 	Collection<CompositeDecisionRule> getPolicies();
 	
 	/**
-	 * Finds all applicable top level policies
+	 * Evaluates given context against top level 
+	 * policies stored in this policy store
 	 * 
 	 * @param context an evaluation context
-	 * @return a collection of {@link CompositeDecisionRule} instances
+	 * @return {@link Decision}
 	 */
-	Collection<CompositeDecisionRule> findApplicable(EvaluationContext context);
+	Decision evaluate(EvaluationContext context);
 }

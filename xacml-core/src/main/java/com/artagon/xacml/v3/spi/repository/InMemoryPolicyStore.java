@@ -25,6 +25,7 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	
 	public InMemoryPolicyStore()
 	{
+		super(Mode.FIRST_APPLICABLE);
 		this.policies = new ConcurrentHashMap<String, Policy>();
 		this.policySets = new ConcurrentHashMap<String, PolicySet>();
 		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();

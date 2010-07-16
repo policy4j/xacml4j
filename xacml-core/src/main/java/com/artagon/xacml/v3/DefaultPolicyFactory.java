@@ -19,10 +19,10 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 {
 	public DefaultPolicyFactory()
 	{
-		this(new DefaultFunctionProvider(), 
+		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider()),
 				new AggregatingDecisionCombiningAlgorithmProvider(
-						new DefaultDecisionCombiningAlgorithmProvider(), 
-						new LegacyDecisionCombiningAlgorithmProvider()));
+				new DefaultDecisionCombiningAlgorithmProvider(), 
+				new LegacyDecisionCombiningAlgorithmProvider()));
 	}
 	
 	public DefaultPolicyFactory(FunctionProvider extensionFunctions, 
@@ -372,8 +372,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 		}
 		AttributeCategoryId c = AttributeCategoryId.parse(categoryId);
 		if(c == null){
-				throw new PolicySyntaxException(
-						"Unknown c=attribute category=\"%s\"", categoryId);
+			throw new PolicySyntaxException(
+					"Unknown c=attribute category=\"%s\"", categoryId);
 		}
 		return c;
 	}

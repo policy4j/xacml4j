@@ -4,11 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
@@ -20,13 +16,10 @@ import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.profiles.RequestProfileHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyStore;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
 public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
 	PolicyDecisionCallback
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
-	
 	private EvaluationContextFactory factory;
 	private PolicyStore policyRepository;
 	private RequestProfileHandlerChain requestProcessingPipeline;
@@ -60,22 +53,8 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	public Result requestDecision(Request request) 
 	{
 		EvaluationContext context = factory.createContext(request);
-		Collection<CompositeDecisionRule> applicable = policyRepository.findApplicable(context);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
-		if(applicable.size() == 0){
-			return new Result(Decision.NOT_APPLICABLE, 
-					new Status(StatusCode.createOk(), 
-							"No applicable policies found"), includeInResult);
-		}
-		if(applicable.size() > 1){
-			return new Result(Decision.INDETERMINATE, 
-					new Status(StatusCode.createProcessingError(), 
-							"Found more than one applicable policy"), 
-							includeInResult);
-		}
-		CompositeDecisionRule policy = Iterables.getOnlyElement(applicable);
-		EvaluationContext policyContext = policy.createContext(context);
-		Decision decision = policy.evaluateIfApplicable(policyContext);
+		Decision decision = policyRepository.evaluate(context);
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					new Status(StatusCode.createOk()), includeInResult);
