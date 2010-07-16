@@ -16,18 +16,28 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 	{
 		Preconditions.checkNotNull(factoryClass);
 		this.converter = new JavaMethodToFunctionSpecConverter();
-		List<FunctionSpec> functions = findFunctions(factoryClass);
+		List<FunctionSpec> functions = findFunctions(factoryClass, null);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
 	}
 	
-	private List<FunctionSpec> findFunctions(Class<?> clazz)
+	public AnnotiationBasedFunctionProvider(Object instance)
+	{
+		Preconditions.checkNotNull(instance);
+		this.converter = new JavaMethodToFunctionSpecConverter();
+		List<FunctionSpec> functions = findFunctions(instance.getClass(), instance);
+		for(FunctionSpec spec : functions){
+			add(spec);
+		}
+	}
+		
+	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
 	{
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class);
 		for(final Method m : methods){
-			specs.add(converter.createFunctionSpec(m));
+			specs.add(converter.createFunctionSpec(m, instance));
 		}
 		return specs;
 	}

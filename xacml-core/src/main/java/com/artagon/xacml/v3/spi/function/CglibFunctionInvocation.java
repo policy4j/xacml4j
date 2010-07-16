@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.spi.function;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
@@ -19,11 +18,19 @@ public class CglibFunctionInvocation extends BaseReflectionFunctionInvocation
 			Method m, 
 			boolean evalContextRequired)
 	{
+		this(m, null ,evalContextRequired);
+	}
+	
+	public CglibFunctionInvocation(
+			Method m,
+			Object instance,
+			boolean evalContextRequired)
+	{
 		super(evalContextRequired);
 		Preconditions.checkNotNull(m);
-		Preconditions.checkArgument(Modifier.isStatic(m.getModifiers()));
 		this.fastClass = FastClass.create(m.getDeclaringClass());
 		this.fastMethod = fastClass.getMethod(m);
+		this.instance = instance;
 		Preconditions.checkState(fastMethod != null);
 	}
 	

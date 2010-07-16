@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3.spi.function;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +17,12 @@ public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
 	
 	public DefaultFunctionInvocation(
 			Method m, 
+			Object instance,
 			boolean evalContextRequired)
 	{
 		super(evalContextRequired);
 		Preconditions.checkNotNull(m);
-		Preconditions.checkArgument(Modifier.isStatic(m.getModifiers()));
+		this.instance = instance;
 		this.functionMethod = m;
 	}
 	
@@ -31,11 +31,16 @@ public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
 	protected <T extends Value> T invoke(Object ...params) throws Exception
 	{
 		try{
+			if(log.isDebugEnabled()){
+				log.debug("Invoking method=\"{}\" " +
+						"on instace=\"{}\"", functionMethod.getName(), instance);
+			}
 			return (T)functionMethod.invoke(instance, params);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to invoke methd=\"{}\" with error message=\"{}\"", 
 						functionMethod.getName(), e.getMessage());
+				log.debug("Stack trace", e);
 			}
 			throw e;
 		}

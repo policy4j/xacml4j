@@ -18,7 +18,12 @@ class JavaMethodToFunctionSpecConverter {
 	private final static Logger log = LoggerFactory
 			.getLogger(JavaMethodToFunctionSpecConverter.class);
 
-	public FunctionSpec createFunctionSpec(Method m) 
+	public FunctionSpec createFunctionSpec(Method m)
+	{
+		return createFunctionSpec(m, null);
+	}
+	
+	public FunctionSpec createFunctionSpec(Method m, Object instance) 
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		Preconditions.checkArgument(!m.getReturnType().equals(Void.TYPE),
@@ -31,9 +36,10 @@ class JavaMethodToFunctionSpecConverter {
 		Preconditions.checkArgument(funcId != null,
 				"Method=\"%s\" must be annotated via XacmlFunc annotation", m.getName());
 		
-		Preconditions.checkArgument(Modifier.isStatic(m.getModifiers()),
+		Preconditions.checkArgument((instance != null ^ Modifier.isStatic(m.getModifiers())),
 						"Only static method can be annotiated via XacmlFunc annotiation, method=\"%s\" "
-								+ "in the declaring class=\"%s\" is not static",
+								+ "in the stateless function provider, " +
+										"declaring class=\"%s\" is not static",
 						m.getName(), m.getDeclaringClass());
 		XacmlLegacyFunc legacyFuncId = m.getAnnotation(XacmlLegacyFunc.class);
 		XacmlFuncReturnType returnType = m
@@ -144,13 +150,13 @@ class JavaMethodToFunctionSpecConverter {
 			return b.build(returnType.isBag() ? type.bagOf() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(m, evalContextParamFound));
+					new DefaultFunctionInvocation(m, instance, evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(returnTypeResolver.resolverClass()),
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(m, evalContextParamFound));
+					new DefaultFunctionInvocation(m, instance, evalContextParamFound));
 		}
 		throw new IllegalArgumentException(
 				"Either static return type or return type resolver must be specified");
