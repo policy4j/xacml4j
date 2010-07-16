@@ -14,30 +14,31 @@ import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.policy.combine.DenyOverridesPolicyCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.combine.FirstApplicablePolicyCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.combine.OnlyOneApplicablePolicyCombingingAlgorithm;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.PolicyStore;
 import com.google.common.base.Preconditions;
 
 public abstract class AbstractPolicyRepository implements PolicyStore
 {
-	private final static Map<Mode, DecisionCombiningAlgorithm<CompositeDecisionRule>> MODE = new HashMap<PolicyStore.Mode, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+	private final static Map<Mode, String> MODE = new HashMap<PolicyStore.Mode, String>();
 	
 	static
 	{
-		MODE.put(Mode.DENY_OVERRIDES, new DenyOverridesPolicyCombiningAlgorithm());
-		MODE.put(Mode.FIRST_APPLICABLE, new FirstApplicablePolicyCombiningAlgorithm());
-		MODE.put(Mode.ONLY_ONE_APPLICABLE, new OnlyOneApplicablePolicyCombingingAlgorithm());
+		MODE.put(Mode.DENY_OVERRIDES, "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides");
+		MODE.put(Mode.FIRST_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable");
+		MODE.put(Mode.ONLY_ONE_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable");
 	}
 	
 	private Mode mode;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	
-	protected AbstractPolicyRepository(Mode mode)
+	protected AbstractPolicyRepository(Mode mode, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider)
 	{
 		this.mode = mode;
-		this.combineDecision = MODE.get(mode);
+		String algorithmId = MODE.get(mode);
+		Preconditions.checkState(algorithmId != null);
+		this.combineDecision = decisionAlgorithmProvider.getPolicyAlgorithm(algorithmId);
 		Preconditions.checkState(combineDecision != null);
 	}
 	

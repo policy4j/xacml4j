@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.DefaultPolicyVisitor;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicyVisitor;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
 public final class InMemoryPolicyStore extends AbstractPolicyRepository 
@@ -25,7 +26,7 @@ public final class InMemoryPolicyStore extends AbstractPolicyRepository
 	
 	public InMemoryPolicyStore()
 	{
-		super(Mode.FIRST_APPLICABLE);
+		super(Mode.FIRST_APPLICABLE, new DefaultDecisionCombiningAlgorithmProvider());
 		this.policies = new ConcurrentHashMap<String, Policy>();
 		this.policySets = new ConcurrentHashMap<String, PolicySet>();
 		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();
