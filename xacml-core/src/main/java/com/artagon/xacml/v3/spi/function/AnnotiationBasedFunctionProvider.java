@@ -34,6 +34,8 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		
 	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
 	{
+		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null, 
+				"Function provider=\"%s\" must have provider annotiation", clazz.getName());
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class);
 		for(final Method m : methods){

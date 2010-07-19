@@ -8,6 +8,7 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
+@XacmlFunctionProvider(description="TestInstanceFunctions")
 @Ignore
 public class TestInstanceFunctions 
 {

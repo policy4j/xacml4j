@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
+@XacmlFunctionProvider(description="TestFunctions")
 @Ignore
 public class TestFunctions 
 {

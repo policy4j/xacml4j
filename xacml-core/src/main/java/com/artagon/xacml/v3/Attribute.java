@@ -86,6 +86,12 @@ public class Attribute extends XacmlObject
 		return Collections.unmodifiableCollection(values);
 	}
 	
+	/**
+	 * Gets all instances of {@link AttributeValue} by type
+	 * 
+	 * @param type an attribute type
+	 * @return a collection of {@link AttributeValue} of given type
+	 */
 	public Collection<AttributeValue> getValuesByType(final AttributeValueType type)
 	{
 		return Collections2.filter(values, new Predicate<AttributeValue>() {

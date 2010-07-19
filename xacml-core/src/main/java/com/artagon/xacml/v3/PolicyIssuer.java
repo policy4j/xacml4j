@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import org.w3c.dom.Node;
@@ -17,7 +18,7 @@ public class PolicyIssuer extends XacmlObject
 	{
 		Preconditions.checkArgument(attributes != null);
 		this.content = content;
-		this.attributes = new LinkedList<Attribute>(attributes);
+		this.attributes = Collections.unmodifiableList(new LinkedList<Attribute>(attributes));
 	}
 	
 	/**
@@ -28,5 +29,14 @@ public class PolicyIssuer extends XacmlObject
 	 */
 	public Node getContent(){
 		return content;
+	}
+	
+	/**
+	 * Gets additional issuer attributes
+	 * 
+	 * @return additional issuer attributes
+	 */
+	public Collection<Attribute> getAttributes(){
+		return attributes;
 	}
 }
