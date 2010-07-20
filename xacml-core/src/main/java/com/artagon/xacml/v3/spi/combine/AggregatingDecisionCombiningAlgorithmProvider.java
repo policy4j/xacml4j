@@ -21,7 +21,13 @@ public final class AggregatingDecisionCombiningAlgorithmProvider implements Deci
 		this.policyAlgorithms = new ConcurrentHashMap<String, DecisionCombiningAlgorithmProvider>();
 	}
 	
-	public AggregatingDecisionCombiningAlgorithmProvider(DecisionCombiningAlgorithmProvider ...providers){
+	/**
+	 * Constructs an aggregating decision algorithm provider
+	 * 
+	 * @param providers an array of providers
+	 */
+	public AggregatingDecisionCombiningAlgorithmProvider(
+			DecisionCombiningAlgorithmProvider ...providers){
 		this();
 		Preconditions.checkNotNull(providers);
 		for(DecisionCombiningAlgorithmProvider p : providers){

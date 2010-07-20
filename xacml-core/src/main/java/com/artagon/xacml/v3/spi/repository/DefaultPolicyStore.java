@@ -26,7 +26,7 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 	
 	public DefaultPolicyStore()
 	{
-		super(Mode.FIRST_APPLICABLE, new DefaultDecisionCombiningAlgorithmProvider());
+		super(Type.FIRST_APPLICABLE, new DefaultDecisionCombiningAlgorithmProvider());
 		this.policies = new ConcurrentHashMap<String, Policy>();
 		this.policySets = new ConcurrentHashMap<String, PolicySet>();
 		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();

@@ -20,19 +20,19 @@ import com.google.common.base.Preconditions;
 
 public abstract class AbstractPolicyStore implements PolicyStore
 {
-	private final static Map<Mode, String> MODE = new HashMap<PolicyStore.Mode, String>();
+	private final static Map<Type, String> MODE = new HashMap<PolicyStore.Type, String>();
 	
 	static
 	{
-		MODE.put(Mode.DENY_OVERRIDES, "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides");
-		MODE.put(Mode.FIRST_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable");
-		MODE.put(Mode.ONLY_ONE_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable");
+		MODE.put(Type.DENY_OVERRIDES, "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides");
+		MODE.put(Type.FIRST_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable");
+		MODE.put(Type.ONLY_ONE_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable");
 	}
 	
-	private Mode mode;
+	private Type mode;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	
-	protected AbstractPolicyStore(Mode mode, 
+	protected AbstractPolicyStore(Type mode, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider)
 	{
 		this.mode = mode;
@@ -77,7 +77,7 @@ public abstract class AbstractPolicyStore implements PolicyStore
 	}
 	
 	@Override
-	public Mode getMode(){
+	public Type getMode(){
 		return mode;
 	}
 	

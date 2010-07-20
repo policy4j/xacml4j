@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.PolicyReferenceResolver;
 
 public interface PolicyStore extends PolicyReferenceResolver
 {
-	public enum Mode
+	public enum Type
 	{
 		FIRST_APPLICABLE,
 		ONLY_ONE_APPLICABLE,
@@ -19,9 +19,9 @@ public interface PolicyStore extends PolicyReferenceResolver
 	/**
 	 * Gets policy store mode
 	 * 
-	 * @return {@link Mode} a policy store mode
+	 * @return {@link Type} a policy store mode
 	 */
-	Mode getMode();
+	Type getMode();
 	
 	/**
 	 * Gets top level policies
