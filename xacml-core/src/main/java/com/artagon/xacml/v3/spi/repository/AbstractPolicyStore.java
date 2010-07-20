@@ -18,7 +18,7 @@ import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.PolicyStore;
 import com.google.common.base.Preconditions;
 
-public abstract class AbstractPolicyRepository implements PolicyStore
+public abstract class AbstractPolicyStore implements PolicyStore
 {
 	private final static Map<Mode, String> MODE = new HashMap<PolicyStore.Mode, String>();
 	
@@ -32,7 +32,7 @@ public abstract class AbstractPolicyRepository implements PolicyStore
 	private Mode mode;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	
-	protected AbstractPolicyRepository(Mode mode, 
+	protected AbstractPolicyStore(Mode mode, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider)
 	{
 		this.mode = mode;

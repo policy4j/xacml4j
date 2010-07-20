@@ -16,7 +16,7 @@ import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
-public final class DefaultPolicyStore extends AbstractPolicyRepository 
+public final class DefaultPolicyStore extends AbstractPolicyStore 
 {	
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyStore.class);
 	
