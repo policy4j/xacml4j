@@ -1,7 +1,10 @@
 package com.artagon.xacml.v3;
 
-
-
+/**
+ * A XACML policy evaluatable expression
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface Expression extends PolicyElement
 {	
 	/**
@@ -18,7 +21,7 @@ public interface Expression extends PolicyElement
 	 * @param context an evaluation context
 	 * @return {@link Expression} an expression 
 	 * representing evaluation result, usually evaluation result
-	 * is an instance {@link Value} but in some cases
+	 * is an instance {@link ValueExpression} but in some cases
 	 * expression evaluates to itself
 	 * @throws EvaluationException if an evaluation error
 	 * occurs

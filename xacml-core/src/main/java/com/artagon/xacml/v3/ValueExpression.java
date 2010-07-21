@@ -7,7 +7,7 @@ package com.artagon.xacml.v3;
  * 
  * @author Giedrius Trumpickas
  */
-public interface Value extends Expression
+public interface ValueExpression extends Expression
 {	
 	/**
 	 * Returns {@link ValueType} representing

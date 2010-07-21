@@ -109,7 +109,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Value getVariableEvaluationResult(String variableId) {
+	public ValueExpression getVariableEvaluationResult(String variableId) {
 		return delegate.getVariableEvaluationResult(variableId);
 	}
 	
@@ -117,7 +117,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public void setVariableEvaluationResult(String variableId, Value value) {
+	public void setVariableEvaluationResult(String variableId, ValueExpression value) {
 		delegate.setVariableEvaluationResult(variableId, value);
 	}
 	

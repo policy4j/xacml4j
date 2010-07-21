@@ -51,15 +51,15 @@ public class VariableDefinition extends XacmlObject implements Expression
 	 * {@link EvaluationContext} evaluation context
 	 */
 	@Override
-	public Value evaluate(EvaluationContext context) throws EvaluationException
+	public ValueExpression evaluate(EvaluationContext context) throws EvaluationException
 	{
-		Value result = context.getVariableEvaluationResult(variableId);
+		ValueExpression result = context.getVariableEvaluationResult(variableId);
 		if(result != null){
 			log.debug("Found cached variable=\"{}\" evaluation result=\"{}\"", 
 					variableId, result);
 			return result;
 		}
-		result = (Value)expression.evaluate(context);
+		result = (ValueExpression)expression.evaluate(context);
 		context.setVariableEvaluationResult(variableId, result);
 		return result;
 	}

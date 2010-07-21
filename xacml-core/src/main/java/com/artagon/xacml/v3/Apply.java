@@ -63,11 +63,11 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	 * with a given parameters
 	 * 
 	 * @param context an evaluation context
-	 * @return expression evaluation result as {@link Value}
+	 * @return expression evaluation result as {@link ValueExpression}
 	 * instance
 	 */
 	@Override
-	public Value evaluate(EvaluationContext context) 
+	public ValueExpression evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{
 		try{

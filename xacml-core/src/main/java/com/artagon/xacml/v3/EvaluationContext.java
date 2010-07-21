@@ -168,9 +168,9 @@ public interface EvaluationContext
 	 * variable identifier.
 	 * 
 	 * @param variableId a variable identifier
-	 * @return {@link Value} instance or {@code null}
+	 * @return {@link ValueExpression} instance or {@code null}
 	 */
-	 Value getVariableEvaluationResult(String variableId);
+	 ValueExpression getVariableEvaluationResult(String variableId);
 	
 	/**
 	 * Caches current policy variable evaluation result.
@@ -178,7 +178,7 @@ public interface EvaluationContext
 	 * @param variableId a variable identifier
 	 * @param value a variable value
 	 */
-	void setVariableEvaluationResult(String variableId, Value value);
+	void setVariableEvaluationResult(String variableId, ValueExpression value);
 	
 	
 	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref) 

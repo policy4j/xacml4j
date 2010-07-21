@@ -25,7 +25,7 @@ import com.google.common.collect.Multiset;
  * @author Giedrius Trumpickas
  */
 public final class BagOfAttributeValues<T extends AttributeValue> 
-	extends XacmlObject implements Value
+	extends XacmlObject implements ValueExpression
 {
 	private BagOfAttributeValuesType<T> type;
 	private Multiset<T> values;

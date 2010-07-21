@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.policy.function;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
@@ -139,7 +139,7 @@ public class LogicalFunctions
 		int count = 0;
 		int num = n.getValue().intValue();
 		for(int i = 0; i < values.length; i++ ){
-			Value v = (Value)values[i].evaluate(context);
+			ValueExpression v = (ValueExpression)values[i].evaluate(context);
 			 if(v.equals(TRUE)){
 				 count++;
 				 if(num == count){

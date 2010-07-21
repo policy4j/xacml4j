@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
 
-import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueExpression;
 import com.google.common.base.Preconditions;
 
 public class CglibFunctionInvocation extends BaseReflectionFunctionInvocation 
@@ -36,7 +36,7 @@ public class CglibFunctionInvocation extends BaseReflectionFunctionInvocation
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	protected <T extends Value> T invoke(Object ...params) throws Exception
+	protected <T extends ValueExpression> T invoke(Object ...params) throws Exception
 	{
 		return (T)fastMethod.invoke(instance, params);
 	}

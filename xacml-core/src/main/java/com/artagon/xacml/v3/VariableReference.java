@@ -29,10 +29,10 @@ public class VariableReference extends XacmlObject implements Expression
 	 * Evaluates appropriate variable definition.
 	 * 
 	 * @param context a policy evaluation context
-	 * @return {@link Value} representing evaluation
+	 * @return {@link ValueExpression} representing evaluation
 	 * result
 	 */
-	public Value evaluate(EvaluationContext context) 
+	public ValueExpression evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{
 		return varDef.evaluate(context);

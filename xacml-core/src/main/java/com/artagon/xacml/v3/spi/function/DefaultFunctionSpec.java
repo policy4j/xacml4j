@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.PolicySyntaxException;
-import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
@@ -130,7 +130,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Value> T invoke(EvaluationContext context,
+	public <T extends ValueExpression> T invoke(EvaluationContext context,
 			Expression... params) throws EvaluationException {
 		
 		try

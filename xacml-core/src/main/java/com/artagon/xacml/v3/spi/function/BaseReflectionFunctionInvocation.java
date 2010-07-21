@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueExpression;
 
 abstract class BaseReflectionFunctionInvocation implements FunctionInvocation
 {
@@ -28,7 +28,7 @@ abstract class BaseReflectionFunctionInvocation implements FunctionInvocation
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends Value> T invoke(FunctionSpec spec,
+	public final <T extends ValueExpression> T invoke(FunctionSpec spec,
 			EvaluationContext context, Expression... arguments)
 			throws FunctionInvocationException 
 	{
@@ -59,5 +59,5 @@ abstract class BaseReflectionFunctionInvocation implements FunctionInvocation
 		}
 	}
 	
-	protected abstract <T extends Value> T invoke(Object ...params) throws Exception;
+	protected abstract <T extends ValueExpression> T invoke(Object ...params) throws Exception;
 }

@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.Value;
+import com.artagon.xacml.v3.ValueExpression;
 import com.google.common.base.Preconditions;
 
 public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
@@ -28,7 +28,7 @@ public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	protected <T extends Value> T invoke(Object ...params) throws Exception
+	protected <T extends ValueExpression> T invoke(Object ...params) throws Exception
 	{
 		try{
 			if(log.isDebugEnabled()){

@@ -11,12 +11,12 @@ public interface Function
 	 * @param context an evaluation context
 	 * @param parameters a function 
 	 * invocation parameters
-	 * @return {@link Value} a function invocation
+	 * @return {@link ValueExpression} a function invocation
 	 * result
 	 * @throws EvaluationException if an error occurs
 	 * while invoking function or evaluating function
 	 * parameters
 	 */
-	<T extends Value> T invoke(EvaluationContext context, Expression ...parameters) 
+	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...parameters) 
 		throws EvaluationException;
 }

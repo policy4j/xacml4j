@@ -36,7 +36,7 @@ public class ApplyTest
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE));
 		replay(function);
-		Value v = apply.evaluate(context);
+		ValueExpression v = apply.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE), v);
 		verify(function);

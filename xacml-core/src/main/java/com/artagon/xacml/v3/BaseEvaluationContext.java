@@ -34,7 +34,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
-	private TwoKeyIndex<String, String, Value> variableEvaluationCache;
+	private TwoKeyIndex<String, String, ValueExpression> variableEvaluationCache;
 
 	private TimeZone timezone;
 	
@@ -76,7 +76,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.contextHandler = attributeService;
 		this.xpathProvider = xpathProvider;
 		this.policyResolver = policyResolver;
-		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, Value>(
+		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, ValueExpression>(
 				new MapMaker() {
 			@Override
 			public <K, V> Map<K, V> make() {
@@ -210,7 +210,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final Value getVariableEvaluationResult(String variableId) 
+	public final ValueExpression getVariableEvaluationResult(String variableId) 
 	{
 		Policy p = getCurrentPolicy();
 		Preconditions.checkState(p != null);
@@ -218,7 +218,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final void setVariableEvaluationResult(String variableId, Value value) 
+	public final void setVariableEvaluationResult(String variableId, ValueExpression value) 
 	{
 		Policy p = getCurrentPolicy();
 		Preconditions.checkState(p != null);
