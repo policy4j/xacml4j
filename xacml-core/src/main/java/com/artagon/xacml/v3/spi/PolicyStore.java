@@ -38,4 +38,19 @@ public interface PolicyStore extends PolicyReferenceResolver
 	 * @return {@link Decision}
 	 */
 	Decision evaluate(EvaluationContext context);
+	
+	/**
+	 * Adds top level policy to this store
+	 * 
+	 * @param policy a top level policy
+	 */
+	void addPolicy(CompositeDecisionRule policy);
+	
+	/**
+	 * Adds a policy referenced by top level policies
+	 * 
+	 * @param policy a referenced policy
+	 */
+	void addReferencedPolicy(CompositeDecisionRule policy);
+		
 }

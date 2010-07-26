@@ -16,9 +16,10 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
 	private DecisionCombiningAlgorithm<Rule> combine;
-	private CombinerParameters combinerParameters;
-	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
-	private PolicyIssuer policyIssuer;
+	
+//	private CombinerParameters combinerParameters;
+//	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
+//	private PolicyIssuer policyIssuer;
 	
 	/**
 	 * Creates policy with a given identifier, target, variables.

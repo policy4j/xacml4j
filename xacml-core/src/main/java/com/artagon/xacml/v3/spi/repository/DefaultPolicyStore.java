@@ -40,37 +40,20 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 	public void addPolicy(CompositeDecisionRule policy)
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Adding decision ruleId=\"{}\"", policy.getId());
+			log.debug("Adding decision " +
+					"ruleId=\"{}\"", policy.getId());
 		}
 		CompositeDecisionRule old = topLevel.put(policy.getId(), policy);
 		Preconditions.checkState(old == null, 
-				"Decision rule with id=\"%s\" already exist in the store", policy.getId());
+				"Decision rule with id=\"%s\" " +
+				"already exist in the store", policy.getId());
 		policy.accept(new PolicyTreeWalker());
 	}
 	
-	/**
-	 * Adds a policy  {@link CompositeDecisionRule} reference by other
-	 * policies in this repository
-	 * 
-	 * @param policy a policy or policy set
-	 */
 	public void addReferencedPolicy(CompositeDecisionRule policy)
 	{
 		Preconditions.checkArgument(policy != null); 
 		policy.accept(new PolicyTreeWalker());
-	}
-	
-	
-	/**
-	 * Adds collection of policies to this repository
-	 * 
-	 * @param rules a collection of policies
-	 */
-	public void addAll(Collection<CompositeDecisionRule> rules)
-	{
-		for(CompositeDecisionRule r : rules){
-			addPolicy(r);
-		}
 	}
 	
 	@Override

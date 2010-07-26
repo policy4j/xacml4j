@@ -1,9 +1,9 @@
 package com.artagon.xacml.v3.policy.combine;
 
 
-import com.artagon.xacml.v3.spi.combine.BaseDecisionCombingingAlgoritmProvider;
+import com.artagon.xacml.v3.spi.combine.DefaultCombingingAlgoritmProvider;
 
-public class DefaultDecisionCombiningAlgorithmProvider extends BaseDecisionCombingingAlgoritmProvider 
+public class DefaultDecisionCombiningAlgorithmProvider extends DefaultCombingingAlgoritmProvider 
 {
 	public DefaultDecisionCombiningAlgorithmProvider() 
 	{
