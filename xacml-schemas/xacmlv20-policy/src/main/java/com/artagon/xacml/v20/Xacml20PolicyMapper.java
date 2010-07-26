@@ -71,7 +71,6 @@ import com.artagon.xacml.v3.PolicySyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.VariableDefinition;
-import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
