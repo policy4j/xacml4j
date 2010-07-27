@@ -58,6 +58,12 @@ public final class AttributeResolverDescriptorBuilder
 		public String getIssuer() {
 			return issuer;
 		}
+		
+		public boolean isAttributeProvided(AttributeCategoryId categoryId, 
+				String attributeId){
+			Set<String> v = attributes.get(categoryId);
+			return (v == null)?false:v.contains(attributeId);
+		}
 
 		@Override
 		public Set<String> getProvidedAttributes(AttributeCategoryId caregoryId) {

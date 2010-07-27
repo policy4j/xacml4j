@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithms;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
@@ -21,8 +21,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	{
 		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider()),
 				new AggregatingDecisionCombiningAlgorithmProvider(
-				new DefaultDecisionCombiningAlgorithmProvider(), 
-				new LegacyDecisionCombiningAlgorithmProvider()));
+				new DefaultDecisionCombiningAlgorithms(), 
+				new LegacyDecisionCombiningAlgorithms()));
 	}
 	
 	public DefaultPolicyFactory(FunctionProvider extensionFunctions, 
@@ -30,8 +30,8 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	{
 		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider(), extensionFunctions),
 				new AggregatingDecisionCombiningAlgorithmProvider(
-				new DefaultDecisionCombiningAlgorithmProvider(), 
-				new LegacyDecisionCombiningAlgorithmProvider(), extensionCombiningAlgorithms));
+				new DefaultDecisionCombiningAlgorithms(), 
+				new LegacyDecisionCombiningAlgorithms(), extensionCombiningAlgorithms));
 	}
 	
 	@Override

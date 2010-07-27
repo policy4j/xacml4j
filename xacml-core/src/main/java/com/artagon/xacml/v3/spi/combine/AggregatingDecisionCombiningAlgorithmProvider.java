@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.combine;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +30,16 @@ public final class AggregatingDecisionCombiningAlgorithmProvider implements Deci
 	 */
 	public AggregatingDecisionCombiningAlgorithmProvider(
 			DecisionCombiningAlgorithmProvider ...providers){
+		this(Arrays.asList(providers));
+	}
+	
+	/**
+	 * Constructs an aggregating decision algorithm provider
+	 * 
+	 * @param providers an array of providers
+	 */
+	public AggregatingDecisionCombiningAlgorithmProvider(
+			Collection<DecisionCombiningAlgorithmProvider> providers){
 		this();
 		Preconditions.checkNotNull(providers);
 		for(DecisionCombiningAlgorithmProvider p : providers){

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.combine;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -10,14 +11,27 @@ import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 
-public class DefaultCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
+public class DefaultDecisionCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
 	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 	
-	protected DefaultCombingingAlgoritmProvider(){
+	protected DefaultDecisionCombingingAlgoritmProvider(){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
 		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+	}
+	
+	public DefaultDecisionCombingingAlgoritmProvider(
+			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
+			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
+		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
+		for(DecisionCombiningAlgorithm<Rule> algo : ruleAlgorithms){
+			addRuleCombineAlgorithm(algo);
+		}
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		for(DecisionCombiningAlgorithm<CompositeDecisionRule> algo : policyAlgorithms){
+			addCompositeRuleCombineAlgorithm(algo);
+		}
 	}
 	
 	

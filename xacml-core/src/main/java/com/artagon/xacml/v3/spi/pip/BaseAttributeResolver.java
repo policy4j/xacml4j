@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import com.artagon.xacml.v3.AttributeDesignator;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseAttributeResolver implements AttributeResolver
@@ -14,5 +15,13 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	@Override
 	public final AttributeResolverDescriptor getDescriptor(){
 		return descriptor;
+	}
+	
+	public final boolean canResolve(AttributeDesignator ref)
+	{
+		return (ref.getIssuer() != null && 
+				ref.getIssuer().equals(descriptor.getIssuer())) 
+				&& descriptor.isAttributeProvided(
+						ref.getCategory(), ref.getAttributeId());
 	}
 }

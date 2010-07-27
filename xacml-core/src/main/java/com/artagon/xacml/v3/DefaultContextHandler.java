@@ -103,6 +103,15 @@ public class DefaultContextHandler implements ContextHandler
 		return v;
 	}
 
+	/**
+	 * Resolves category content via {@link PolicyInformationPoint}
+	 * 
+	 * @param context an evaluation context
+	 * @param ref an attribute reference
+	 * @return {@link BagOfAttributeValues}
+	 * @throws EvaluationException if an error occurs
+	 * while resolving reference
+	 */
 	private final Node doGetContent(EvaluationContext context, AttributeCategoryId category) 
 	{
 		Attributes attr = request.getOnlyAttributes(category);
@@ -115,6 +124,15 @@ public class DefaultContextHandler implements ContextHandler
 		return (attr != null)?attr.getContent():null;
 	}
 
+	/**
+	 * Resolves attribute via {@link PolicyInformationPoint}
+	 * 
+	 * @param context an evaluation context
+	 * @param ref an attribute reference
+	 * @return {@link BagOfAttributeValues}
+	 * @throws EvaluationException if an error occurs
+	 * while resolving reference
+	 */
 	private final BagOfAttributeValues<? extends AttributeValue> doResolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 

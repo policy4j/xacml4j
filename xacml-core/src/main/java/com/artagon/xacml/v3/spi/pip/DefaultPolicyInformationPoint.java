@@ -16,15 +16,21 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
-	private Map<AttributeCategoryId, Map<String, AttributeResolver>> registry;
+	private Map<AttributeCategoryId, Map<String, AttributeResolver>> globalResolvers;
+	
+	private Multimap<String, AttributeResolver> resolversByPolicyId;
+	
 	
 	public DefaultPolicyInformationPoint(){
-		this.registry = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		this.globalResolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		this.resolversByPolicyId = HashMultimap.create();
 		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 
@@ -35,14 +41,7 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 			AttributeDesignator ref, 
 			RequestAttributesCallback callback) 
 	{
-	 	Map<String, AttributeResolver> byCategory = registry.get(ref.getCategory());
-	 	if(byCategory == null){
-	 		return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty();
-	 	}
-	 	AttributeResolver r = byCategory.get(ref.getAttributeId());
-	 	if(log.isDebugEnabled()){
-	 		log.debug("Found resolver attribute reference=\"{}\"", ref);
-	 	}
+	 	AttributeResolver r = findResolver(context, ref);
 	 	return (BagOfAttributeValues<AttributeValue>)((r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
 	 			new DefaultPolicyInformationPointContext(context), ref, callback));
 	}
@@ -53,23 +52,21 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 		return null;
 	} 
 	
-	public void setResolvers(Collection<AttributeResolver> resolvers)
-	{
-		for(AttributeResolver r : resolvers){
-			addResolver(r);
-		}
-	}
-	
+	/**
+	 * Adds new attribute resolver
+	 * 
+	 * @param resolver an attribute resolver
+	 */
 	public void addResolver(AttributeResolver resolver)
 	{
 		Preconditions.checkNotNull(resolver);
 		AttributeResolverDescriptor d = resolver.getDescriptor();
 		for(AttributeCategoryId c : d.getProvidedCategories())
 		{
-			Map<String, AttributeResolver> byCategory = registry.get(c);
+			Map<String, AttributeResolver> byCategory = globalResolvers.get(c);
 			if(byCategory == null){
 				byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-				registry.put(c, byCategory);
+				globalResolvers.put(c, byCategory);
 			}
 			for(String attributeId : d.getProvidedAttributes(c)){
 				if(log.isDebugEnabled()){
@@ -83,5 +80,39 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Finds {@link AttributeResolver} for given evaluation context and
+	 * {@link AttributeResolver} instance
+	 * 
+	 * @param context an evaluation context
+	 * @param ref an attribute reference
+	 * @return {@link AttributeResolver} or <code>null</code> if no
+	 * resolver found
+	 */
+	private AttributeResolver findResolver(EvaluationContext context, 
+			AttributeDesignator ref)
+	{
+		if(context == null){
+			Map<String, AttributeResolver> byCategory = globalResolvers.get(ref.getCategory());
+		 	if(byCategory == null){
+		 		return null;
+		 	}
+		 	return byCategory.get(ref.getAttributeId());
+		}
+		String policyId = (context.getCurrentPolicy() != null)?
+				context.getCurrentPolicy().getId():
+					(context.getCurrentPolicySet() != null?context.getCurrentPolicySet().getId():null);
+		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
+		if(found.isEmpty()){
+			return findResolver(context.getParentContext(), ref);
+		}
+		for(AttributeResolver r : found){
+			if(r.canResolve(ref)){
+				return r;
+			}
+		}
+		return findResolver(context.getParentContext(), ref);
 	}
 }

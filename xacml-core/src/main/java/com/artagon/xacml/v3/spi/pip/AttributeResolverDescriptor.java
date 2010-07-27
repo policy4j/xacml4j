@@ -20,6 +20,8 @@ public interface AttributeResolverDescriptor
 	 */
 	Set<AttributeCategoryId> getProvidedCategories();
 	
+
+	
 	/**
 	 * Gets attribute identifiers provided by this resolver
 	 * 
@@ -27,4 +29,6 @@ public interface AttributeResolverDescriptor
 	 * @return a {@link Set} with all attribute identifiers
 	 */
 	Set<String> getProvidedAttributes(AttributeCategoryId categoryId);
+	
+	boolean isAttributeProvided(AttributeCategoryId categoryId, String attributeId);
 }

@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.repository;
+package com.artagon.xacml.v3.spi.store;
 
 import java.util.Collection;
 import java.util.Collections;

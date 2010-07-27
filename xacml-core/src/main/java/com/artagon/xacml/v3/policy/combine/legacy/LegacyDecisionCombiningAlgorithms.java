@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3.policy.combine.legacy;
 
 
-import com.artagon.xacml.v3.spi.combine.DefaultCombingingAlgoritmProvider;
+import com.artagon.xacml.v3.spi.combine.DefaultDecisionCombingingAlgoritmProvider;
 
-public class LegacyDecisionCombiningAlgorithmProvider extends DefaultCombingingAlgoritmProvider 
+public class LegacyDecisionCombiningAlgorithms extends DefaultDecisionCombingingAlgoritmProvider 
 {
-	public LegacyDecisionCombiningAlgorithmProvider() 
+	public LegacyDecisionCombiningAlgorithms() 
 	{
 		// rule combining algorithms
 		addRuleCombineAlgorithm(new DenyOverridesRuleCombineAlgorithm());
