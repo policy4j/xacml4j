@@ -11,7 +11,7 @@
 	</url>
 	<modules>
 		<module>xacml-core</module>
-		<module>xacml-policy-store</module>
+		<module>xacml-spring</module>
 		<module>xacml-schemas</module>
 		<module>xacml-test</module>
 		<module>xacml-protobuf</module>
@@ -53,10 +53,6 @@
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

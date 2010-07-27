@@ -7,6 +7,11 @@ import com.artagon.xacml.v3.RequestAttributesCallback;
 
 public interface AttributeResolver 
 {
+	/**
+	 * Gets attribute resolver descriptor
+	 * 
+	 * @return {@link AttributeResolverDescriptor}
+	 */
 	AttributeResolverDescriptor getDescriptor();
 	
 	BagOfAttributeValues<? extends AttributeValue> resolve(

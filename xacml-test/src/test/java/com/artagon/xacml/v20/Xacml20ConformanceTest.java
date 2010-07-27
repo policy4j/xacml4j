@@ -25,14 +25,14 @@ import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyStore;
+import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 
 public class Xacml20ConformanceTest 
 {
 	private PolicyUnmarshaller policyReader;
 	private RequestUnmarshaller requestUnmarshaller;
 	private ResponseMarshaller responseMarshaller;
-	private InMemoryPolicyStore store;
+	private DefaultPolicyStore store;
 	private  PolicyDecisionPoint pdp;
 	private PolicyInformationPoint pip;
 	
@@ -42,7 +42,7 @@ public class Xacml20ConformanceTest
 		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
 		this.responseMarshaller = new Xacml20ResponseMarshaller();
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		this.store = new InMemoryPolicyStore();
+		this.store = new DefaultPolicyStore();
 		this.pip = new DefaultPolicyInformationPoint();
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		
@@ -127,7 +127,7 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE001() throws Exception
 	{	
-		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		DefaultPolicyStore repository = new DefaultPolicyStore();
 		repository.addPolicy(getPolicy("IIE", 1, "Policy.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicySetId1.xml"));
@@ -142,7 +142,7 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE002() throws Exception
 	{	
-		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		DefaultPolicyStore repository = new DefaultPolicyStore();
 		repository.addPolicy(getPolicy("IIE", 2, "Policy.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicyId1.xml"));
 		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicySetId1.xml"));
@@ -191,7 +191,7 @@ public class Xacml20ConformanceTest
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
 		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
-		InMemoryPolicyStore repository = new InMemoryPolicyStore();
+		DefaultPolicyStore repository = new DefaultPolicyStore();
 		repository.addPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		Request request = getRequest(testPrefix, testCaseNum);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);

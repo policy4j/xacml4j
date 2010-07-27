@@ -32,6 +32,16 @@ public class Xacml30PolicyUnmarshaller implements PolicyUnmarshaller
 		}
 	}
 	
+	public Xacml30PolicyUnmarshaller(PolicyFactory factory, JAXBContext context){
+		Preconditions.checkNotNull(factory);
+		this.mapper = new Xacml30PolicyMapper(factory);
+		try{
+			this.context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+		}catch(JAXBException e){
+			throw new IllegalStateException(e);
+		}
+	}
+	
 	@Override
 	public CompositeDecisionRule unmarshall(Object source)
 			throws PolicySyntaxException 
