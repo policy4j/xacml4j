@@ -1,9 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -11,32 +9,31 @@ import com.google.common.base.Preconditions;
 
 public final class AttributeResolverDescriptorBuilder 
 {
-	private Map<AttributeCategoryId, Set<String>> attributes;
+	private AttributeCategoryId categoryId;
+	private Set<String> attributes;
 	private String issuer;
 	
-	private AttributeResolverDescriptorBuilder(String issuer){
+	private AttributeResolverDescriptorBuilder(String issuer, 
+			AttributeCategoryId categoryId){
 		this.issuer = issuer;
-		this.attributes = new HashMap<AttributeCategoryId, Set<String>>();
+		this.categoryId = categoryId;
+		this.attributes = new HashSet<String>();
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(String issuer){
-		return new AttributeResolverDescriptorBuilder(issuer);
+	public static AttributeResolverDescriptorBuilder create(String issuer, 
+			AttributeCategoryId categoryId){
+		return new AttributeResolverDescriptorBuilder(issuer, categoryId);
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(){
-		return create(null);
+	public static AttributeResolverDescriptorBuilder create(AttributeCategoryId categoryId){
+		return create(null, categoryId);
 	}
 	
 	public AttributeResolverDescriptorBuilder attribute(
-			AttributeCategoryId category, String attributeId){
-		Preconditions.checkNotNull(category);
+			String attributeId){
+	
 		Preconditions.checkNotNull(attributeId);
-		Set<String> v = attributes.get(category);
-		if(v == null){
-			v = new HashSet<String>();
-			attributes.put(category, v);
-		}
-		v.add(attributeId);
+		this.attributes.add(attributeId);
 		return this;
 	}
 		
@@ -50,8 +47,8 @@ public final class AttributeResolverDescriptorBuilder
 		
 		AttributeResolverImpl(){
 			this.issuer = AttributeResolverDescriptorBuilder.this.issuer;
-			Preconditions.checkState(attributes.keySet().size() > 0, 
-					"At least one attribute category must be specified");
+			Preconditions.checkState(attributes.size() > 0, 
+					"At least one attribute  must be specified");
 		}
 		
 		@Override
@@ -59,21 +56,18 @@ public final class AttributeResolverDescriptorBuilder
 			return issuer;
 		}
 		
-		public boolean isAttributeProvided(AttributeCategoryId categoryId, 
-				String attributeId){
-			Set<String> v = attributes.get(categoryId);
-			return (v == null)?false:v.contains(attributeId);
+		public boolean isAttributeProvided( String attributeId){
+			return attributes.contains(attributeId);
 		}
 
 		@Override
-		public Set<String> getProvidedAttributes(AttributeCategoryId caregoryId) {
-			Set<String> v = attributes.get(caregoryId);
-			return (v == null)?Collections.<String>emptySet():Collections.unmodifiableSet(v);
+		public Set<String> getProvidedAttributes() {
+			return Collections.unmodifiableSet(attributes);
 		}
 
 		@Override
-		public Set<AttributeCategoryId> getProvidedCategories() {
-			return Collections.unmodifiableSet(attributes.keySet());
+		public AttributeCategoryId getCategory() {
+			return categoryId;
 		}
 	}
 }

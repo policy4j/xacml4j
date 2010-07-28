@@ -14,21 +14,26 @@ public interface AttributeResolverDescriptor
 	String getIssuer();
 	
 	/**
-	 * Gets provided attribute categories
-	 *  
-	 * @return a set of provided {@link AttributeCategoryId} instances
+	 * Gets category of attributes
+	 * 
+	 * @return {@link AttributeCategoryId}
 	 */
-	Set<AttributeCategoryId> getProvidedCategories();
-	
+	AttributeCategoryId getCategory();
 
-	
 	/**
 	 * Gets attribute identifiers provided by this resolver
 	 * 
 	 * @param categoryId an attribute category
 	 * @return a {@link Set} with all attribute identifiers
 	 */
-	Set<String> getProvidedAttributes(AttributeCategoryId categoryId);
+	Set<String> getProvidedAttributes();
 	
-	boolean isAttributeProvided(AttributeCategoryId categoryId, String attributeId);
+	/**
+	 * Tests if an attribute resolver can resolve
+	 * an attribute with a given identifier
+	 * 
+	 * @param attributeId
+	 * @return
+	 */
+	boolean isAttributeProvided(String attributeId);
 }

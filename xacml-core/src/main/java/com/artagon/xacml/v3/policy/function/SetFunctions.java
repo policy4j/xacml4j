@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.types.DateType.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
+import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
@@ -21,7 +22,7 @@ import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
-@XacmlFunctionProvider(description="XACML set functions")
+@XacmlFunctionProvider(description="XACML Set Functions")
 public class SetFunctions 
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-intersection")
@@ -620,7 +621,7 @@ public class SetFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)
+	@XacmlFuncReturnType(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)
 	public static BagOfAttributeValues<YearMonthDurationValue> yearMonthDurationUnion(
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
@@ -651,6 +652,52 @@ public class SetFunctions
 	public static BooleanValue yearMonthDurationSetEquals(
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+	}
+	
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-intersection")
+	@XacmlFuncReturnType(type=XacmlDataTypes.IPADDRESS, isBag=true)
+	public static BagOfAttributeValues<IPAddressValue> ipAddressIntersection(
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
+	{
+		return a.intersection(b);
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-union")
+	@XacmlFuncReturnType(type=XacmlDataTypes.IPADDRESS, isBag=true)
+	public static BagOfAttributeValues<IPAddressValue> ipAddressDurationUnion(
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
+	{
+		return a.union(b);
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-subset")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue ipAddressDurationSubest(
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-at-least-one-member-of")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue ipAddressAtLeastOneMemberOf(
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
+	{
+		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-set-equals")
+	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	public static BooleanValue ipAddressSetEquals(
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
+			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
 	{
 		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}

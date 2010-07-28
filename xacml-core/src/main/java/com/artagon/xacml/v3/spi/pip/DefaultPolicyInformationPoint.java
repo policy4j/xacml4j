@@ -24,9 +24,7 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
 	private Map<AttributeCategoryId, Map<String, AttributeResolver>> globalResolvers;
-	
 	private Multimap<String, AttributeResolver> resolversByPolicyId;
-	
 	
 	public DefaultPolicyInformationPoint(){
 		this.globalResolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
@@ -36,7 +34,7 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	public BagOfAttributeValues<AttributeValue> resolve(1
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestAttributesCallback callback) 
@@ -61,25 +59,30 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	{
 		Preconditions.checkNotNull(resolver);
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		for(AttributeCategoryId c : d.getProvidedCategories())
-		{
-			Map<String, AttributeResolver> byCategory = globalResolvers.get(c);
-			if(byCategory == null){
-				byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-				globalResolvers.put(c, byCategory);
-			}
-			for(String attributeId : d.getProvidedAttributes(c)){
+		Map<String, AttributeResolver> byCategory = globalResolvers.get(d.getCategory());
+		if(byCategory == null || 
+				byCategory.isEmpty()){
+			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
+			globalResolvers.put(d.getCategory(), byCategory);
+		}
+		for(String attributeId : d.getProvidedAttributes()){
 				if(log.isDebugEnabled()){
 					log.debug("Adding resolver for category=\"{}\" " +
-							"attributeId=\"{}\"", c, attributeId);
-				}
-				AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
-				if(oldResolver != null){
-					throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
-							"category=\"%s\" already provided via other resolver", attributeId, c));
-				}
+							"attributeId=\"{}\"", 
+							d.getCategory(), attributeId);
+		}
+		AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
+		if(oldResolver != null){
+			throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
+							"category=\"%s\" already provided via other resolver", 
+							attributeId, d.getCategory()));
 			}
 		}
+	}
+	
+	public void addResolver(String policyId, AttributeResolver resolver)
+	{
+		resolversByPolicyId.put(policyId, resolver);
 	}
 	
 	/**

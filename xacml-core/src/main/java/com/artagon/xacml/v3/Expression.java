@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3;
 
 /**
- * A XACML policy evaluatable expression
+ * A XACML policy expression
  * 
  * @author Giedrius Trumpickas
  */

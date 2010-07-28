@@ -18,6 +18,14 @@ public abstract class BasePolicyFactory implements PolicyFactory
 		this.combingingAlgorithms = combiningAlgorithms;
 	}
 
+	/**
+	 * Creates function from a given identifier
+	 * 
+	 * @param functionId a function identifier
+	 * @return {@link FunctionSpec} instance
+	 * @throws PolicySyntaxException if function with a given
+	 * identifier is not known to this factory
+	 */
 	protected final FunctionSpec createFunction(String functionId)
 			throws PolicySyntaxException 
 	{
@@ -28,14 +36,14 @@ public abstract class BasePolicyFactory implements PolicyFactory
 		}
 		return spec;
 	}
-
+	
 	protected final DecisionCombiningAlgorithm<Rule> createRuleCombingingAlgorithm(
 			String algorithmId) throws PolicySyntaxException {
 		DecisionCombiningAlgorithm<Rule> algorithm = combingingAlgorithms
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new PolicySyntaxException(
-					"Rile comnbining algorithm=\"%s\" can not be resolved",
+					"Rule comnbining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}
 		return algorithm;

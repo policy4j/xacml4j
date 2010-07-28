@@ -21,7 +21,6 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	{
 		return (ref.getIssuer() != null && 
 				ref.getIssuer().equals(descriptor.getIssuer())) 
-				&& descriptor.isAttributeProvided(
-						ref.getCategory(), ref.getAttributeId());
+				&& descriptor.isAttributeProvided(ref.getAttributeId());
 	}
 }

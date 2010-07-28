@@ -14,10 +14,10 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
 	
 	public DefaultEnviromentAttributeResolver(){
-		super(AttributeResolverDescriptorBuilder.create().
-				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATE).
-				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_TIME).
-				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATETIME).build());
+		super(AttributeResolverDescriptorBuilder.create(AttributeCategoryId.ENVIRONMENT).
+				attribute(CURRENT_DATE).
+				attribute(CURRENT_TIME).
+				attribute(CURRENT_DATETIME).build());
 	}
 	
 	@Override
