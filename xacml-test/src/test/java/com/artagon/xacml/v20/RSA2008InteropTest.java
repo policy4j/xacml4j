@@ -18,7 +18,7 @@ import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v3.spi.repository.DefaultPolicyStore;
+import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 

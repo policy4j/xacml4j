@@ -12,7 +12,7 @@ import com.artagon.xacml.v20.Xacml20PolicyUnmarshaller;
 import com.artagon.xacml.v3.PolicyFactory;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.PolicyStore;
-import com.artagon.xacml.v3.spi.repository.DefaultPolicyStore;
+import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 import com.google.common.base.Preconditions;
 
 public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean

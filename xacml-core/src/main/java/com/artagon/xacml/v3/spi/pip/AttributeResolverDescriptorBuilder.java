@@ -31,7 +31,6 @@ public final class AttributeResolverDescriptorBuilder
 	
 	public AttributeResolverDescriptorBuilder attribute(
 			String attributeId){
-	
 		Preconditions.checkNotNull(attributeId);
 		this.attributes.add(attributeId);
 		return this;

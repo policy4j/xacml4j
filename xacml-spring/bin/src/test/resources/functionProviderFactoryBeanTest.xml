@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xacml="http://www.artagon.com/schema/xacml/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+						http://www.artagon.com/schema/xacml/spring http://www.artagon.com/schema/xacml/spring/xacml.xsd">
+ 	
+	
+	<bean id="testProvider1" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
+	
+	<xacml:function-providers id="extensionFunctions">
+		<xacml:function-provider id="provider1" class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml:function-provider id="provider2" ref="testProvider1"/>
+	</xacml:function-providers>
+	
+</beans>

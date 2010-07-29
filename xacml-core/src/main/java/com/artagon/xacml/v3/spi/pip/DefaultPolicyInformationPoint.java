@@ -19,22 +19,30 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class DefaultPolicyInformationPoint implements PolicyInformationPoint
+public class DefaultPolicyInformationPoint 
+	implements PolicyInformationPoint
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
-	private Map<AttributeCategoryId, Map<String, AttributeResolver>> globalResolvers;
+	/**
+	 * Resolvers index by category and attribute identifier
+	 */
+	private Map<AttributeCategoryId, Map<String, AttributeResolver>> resolvers;
+	
+	/**
+	 * Resolvers index by policy identifier
+	 */
 	private Multimap<String, AttributeResolver> resolversByPolicyId;
 	
 	public DefaultPolicyInformationPoint(){
-		this.globalResolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
 		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(1
+	public BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestAttributesCallback callback) 
@@ -59,11 +67,11 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 	{
 		Preconditions.checkNotNull(resolver);
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Map<String, AttributeResolver> byCategory = globalResolvers.get(d.getCategory());
+		Map<String, AttributeResolver> byCategory = resolvers.get(d.getCategory());
 		if(byCategory == null || 
 				byCategory.isEmpty()){
 			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-			globalResolvers.put(d.getCategory(), byCategory);
+			resolvers.put(d.getCategory(), byCategory);
 		}
 		for(String attributeId : d.getProvidedAttributes()){
 				if(log.isDebugEnabled()){
@@ -80,9 +88,14 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 		}
 	}
 	
-	public void addResolver(String policyId, AttributeResolver resolver)
-	{
-		resolversByPolicyId.put(policyId, resolver);
+	/**
+	 * Adds resolver for specific policy or policy set
+	 * 
+	 * @param policyId a policy identifier
+	 * @param resolver an attribute resolver
+	 */
+	public void addResolver(String policyId, AttributeResolver resolver){
+		this.resolversByPolicyId.put(policyId, resolver);
 	}
 	
 	/**
@@ -98,7 +111,7 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 			AttributeDesignator ref)
 	{
 		if(context == null){
-			Map<String, AttributeResolver> byCategory = globalResolvers.get(ref.getCategory());
+			Map<String, AttributeResolver> byCategory = resolvers.get(ref.getCategory());
 		 	if(byCategory == null){
 		 		return null;
 		 	}
@@ -107,6 +120,10 @@ public class DefaultPolicyInformationPoint implements PolicyInformationPoint
 		String policyId = (context.getCurrentPolicy() != null)?
 				context.getCurrentPolicy().getId():
 					(context.getCurrentPolicySet() != null?context.getCurrentPolicySet().getId():null);
+		if(log.isDebugEnabled()){
+			log.debug("Trying to locate attribute " +
+					"resolvers for PolicyId=\"{}\"", policyId);
+		}
 		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
 		if(found.isEmpty()){
 			return findResolver(context.getParentContext(), ref);
