@@ -17,7 +17,7 @@ public class AttributeAssignment extends XacmlObject implements PolicyElement
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer
 	 * @param value an attribute value
-	 * @exception PolicySyntaxException if attribute assignment can not
+	 * @exception XacmlSyntaxException if attribute assignment can not
 	 * be created with a given values
 	 */
 	public AttributeAssignment(
@@ -25,7 +25,7 @@ public class AttributeAssignment extends XacmlObject implements PolicyElement
 			AttributeCategoryId category, 
 			String issuer, 
 			AttributeValue value)
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		checkNotNull(attributeId, "Attribute id can't be null");
 		checkNotNull(value, "Attribute value can't be null");

@@ -105,7 +105,7 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 						attrExp.evaluate(context)));
 			}
 			return attr;
-		}catch(PolicySyntaxException e){
+		}catch(XacmlSyntaxException e){
 			throw new EvaluationException(
 					StatusCode.createProcessingError(), context, e);
 		}

@@ -15,9 +15,9 @@ import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmPro
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class DefaultPolicyFactory extends BasePolicyFactory
+public class DefaultXacmlFactory extends BaseXacmlFactory
 {
-	public DefaultPolicyFactory()
+	public DefaultXacmlFactory()
 	{
 		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider()),
 				new AggregatingDecisionCombiningAlgorithmProvider(
@@ -25,7 +25,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 				new LegacyDecisionCombiningAlgorithms()));
 	}
 	
-	public DefaultPolicyFactory(FunctionProvider extensionFunctions, 
+	public DefaultXacmlFactory(FunctionProvider extensionFunctions, 
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms)
 	{
 		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider(), extensionFunctions),
@@ -36,21 +36,22 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public AttributeValue createAttributeValue(String typeId, Object value) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		return createAttributeValue(typeId, value, 
 				Collections.<QName, String>emptyMap());
 	}
 	
 	@Override
-	public AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> values) 
-		throws PolicySyntaxException
+	public AttributeValue createAttributeValue(String typeId, Object value, 
+			Map<QName, String> values) 
+		throws XacmlSyntaxException
 	{
 		AttributeValueType type = createAttributeValueType(typeId);
 		try{
 			return type.create(value, getXPathCategory(values));
 		}catch(Exception e){
-			throw new PolicySyntaxException(e);
+			throw new XacmlSyntaxException(e);
 		}
 	}
 	
@@ -65,38 +66,38 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	@Override
 	public MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return new MatchAnyOf(matches);
 	}
 
 	@Override
 	public Apply createApply(String functionId, Collection<Expression> arguments)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return new Apply(createFunction(functionId), arguments);
 	}
 	
 	public Apply createApply(String functionId, 
-			Expression ...arguments) throws PolicySyntaxException{
+			Expression ...arguments) throws XacmlSyntaxException{
 		return new Apply(createFunction(functionId), arguments);
 	}
 
 	@Override
 	public Match createMatch(String functionId, AttributeValue value, AttributeReference reference)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		try{
 			return new Match(createFunction(functionId), value, reference);
 		}catch(IllegalArgumentException e){
-			throw new PolicySyntaxException(e);
+			throw new XacmlSyntaxException(e);
 		}
 	}
 	
 	@Override
 	public PolicySetIDReference createPolicySetIDReference(String policyId,
 			VersionMatch version, VersionMatch earliest, VersionMatch latest) 
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		return new PolicySetIDReference(policyId, version, earliest, latest);
 	}
@@ -104,48 +105,48 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public PolicyIDReference createPolicyIDReference(String policyId,
 			VersionMatch version, VersionMatch earliest, VersionMatch latest) 
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		return new PolicyIDReference(policyId, version, earliest, latest);
 	}
 	
-	public Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException
+	public Target createTarget(Collection<MatchAnyOf> match) throws XacmlSyntaxException
 	{
 		return new Target(match);
 	}
 	
 	@Override
-	public Condition createCondition(Expression predicate) throws PolicySyntaxException
+	public Condition createCondition(Expression predicate) throws XacmlSyntaxException
 	{
 		if(predicate == null){
-			throw new PolicySyntaxException("Condition predicate must be specified");
+			throw new XacmlSyntaxException("Condition predicate must be specified");
 		}
 		if(!predicate.getEvaluatesTo().equals(
 				XacmlDataTypes.BOOLEAN.getType())){
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Condition predicate must evaluate to=\"%s\"", XacmlDataTypes.BOOLEAN.getType());
 		}
 		return new Condition(predicate);
 	}
 	
-	public MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException{
+	public MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws XacmlSyntaxException{
 		return new MatchAnyOf(allOf);
 	}
 	
-	public MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException{
+	public MatchAllOf createAllOf(Collection<Match> match) throws XacmlSyntaxException{
 		return new MatchAllOf(match);
 	}
 	
 	@Override
 	public Rule createRule(String ruleId, String description, 
 			Target target, Condition condition, Effect effect) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		if(ruleId == null){
-			throw new PolicySyntaxException("Rule identifier must be specified");
+			throw new XacmlSyntaxException("Rule identifier must be specified");
 		}
 		if(effect == null){
-			throw new PolicySyntaxException("Rule id=\"%s\" effect must be specified", ruleId);
+			throw new XacmlSyntaxException("Rule id=\"%s\" effect must be specified", ruleId);
 		}
 		return new Rule(ruleId, description, target, condition, effect);
 	}
@@ -160,7 +161,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String algorithmId,
 			Collection<Rule> rules, 
 			Collection<ObligationExpression> obligation, Collection<AdviceExpression> advice) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		Version v = Version.parse(version);
 		Policy policy = new Policy(
@@ -182,7 +183,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			Expression expression,
 			AttributeCategoryId categoryId, 
 			String issuer)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		return new AttributeAssignmentExpression(
 				attributeId, expression, categoryId, issuer);
 	}
@@ -191,7 +192,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, Expression expression, String categoryId,
-			String issuer) throws PolicySyntaxException {
+			String issuer) throws XacmlSyntaxException {
 		
 		return createAttributeAssigmentExpression(attributeId, expression, 
 				createAttributeCategory(categoryId), issuer);
@@ -200,7 +201,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
-			Expression expression) throws PolicySyntaxException {
+			Expression expression) throws XacmlSyntaxException {
 		return createAttributeAssigmentExpression(attributeId, expression, 
 				(AttributeCategoryId)null, null);
 	}
@@ -208,7 +209,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public AdviceExpression createAdviceExpression(String id, Effect appliesTo,
 			Collection<AttributeAssignmentExpression> attributeAssigments)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		return new AdviceExpression(id, appliesTo, attributeAssigments);
 	}
 
@@ -216,7 +217,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public ObligationExpression createObligationExpression(String id,
 			Effect effect,
 			Collection<AttributeAssignmentExpression> attributeAssigments)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return new ObligationExpression(id, effect, attributeAssigments);
 	}
@@ -230,7 +231,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String algorithmId, 
 			Collection<CompositeDecisionRule> policies,
 			Collection<ObligationExpression> obligation,
-			Collection<AdviceExpression> advice) throws PolicySyntaxException 
+			Collection<AdviceExpression> advice) throws XacmlSyntaxException 
 	{
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = createPolicyCombingingAlgorithm(algorithmId);
 		Version v = Version.parse(version);
@@ -241,14 +242,14 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	@Override
 	public FunctionReference createFunctionReference(String functionId)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		return new FunctionReference(createFunction(functionId));
 	}
 
 	@Override
 	public AttributeDesignator createAttributeDesignator(AttributeCategoryId category,
 			String attributeId, AttributeValueType dataType, boolean mustBePresent, String issuer)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return new AttributeDesignator(category, 
 				attributeId, issuer, dataType, mustBePresent);
@@ -257,7 +258,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public AttributeDesignator createAttributeDesignator(String categoryId,
 			String attributeId, String dataTypeId,
-			boolean mustBePresent, String issuer) throws PolicySyntaxException 
+			boolean mustBePresent, String issuer) throws XacmlSyntaxException 
 	{
 		return createAttributeDesignator(createAttributeCategory(
 				categoryId), 
@@ -268,7 +269,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	@Override
 	public AttributeSelector createAttributeSelector(AttributeCategoryId category,
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		return new AttributeSelector(category, selectXPath, dataType, mustBePresent);
 	}
 	
@@ -278,7 +279,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String selectXPath, 
 			String contextAttributeId, 
 			AttributeValueType dataType, boolean mustBePresent)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		return new AttributeSelector(category, selectXPath, 
 				contextAttributeId, dataType, mustBePresent);
 	}
@@ -290,7 +291,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 			String selectXPath, 
 			String contextAttributeId,
 			String dataTypeId, boolean mustBePresent)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return createAttributeSelector(createAttributeCategory(categoryId),
 				selectXPath, contextAttributeId, 
@@ -301,7 +302,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	public AttributeSelector createAttributeSelector(String categoryId,
 			String selectXPath, 
 			String dataTypeId, boolean mustBePresent)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return createAttributeSelector(createAttributeCategory(categoryId),
 				selectXPath, null, 
@@ -310,17 +311,17 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public VariableReference createVariableReference(VariableDefinition varDef)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		return new VariableReference(varDef);
 	}
 	
 	public VariableDefinition createVariableDefinition(
-			String variableId, Expression expression) throws PolicySyntaxException
+			String variableId, Expression expression) throws XacmlSyntaxException
 	{
 		if(variableId == null || 
 				expression == null){
-			throw new PolicySyntaxException("Variable identifier " +
+			throw new XacmlSyntaxException("Variable identifier " +
 					"or expression can not be null");
 		}
 		return new VariableDefinition(variableId, expression);
@@ -328,7 +329,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 
 	@Override
 	public PolicyDefaults createPolicyDefaults(Object... objects)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		if(objects != null && 
 				objects.length > 0){
@@ -336,7 +337,7 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 				String value = (String)objects[0];
 				XPathVersion v = XPathVersion.parse(value);
 				if(v == null){
-					throw new PolicySyntaxException(
+					throw new XacmlSyntaxException(
 							"Unparsable XPath version=\"%s\"", value);
 				}
 				return new PolicyDefaults(v);
@@ -347,14 +348,14 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public PolicySetDefaults createPolicySetDefaults(Object... objects)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		if(objects != null && 
 				objects.length > 0){
 			if(objects[0] instanceof String){
 				String value = (String)objects[0];
 				XPathVersion v = XPathVersion.parse(value);
 				if(v == null){
-					throw new PolicySyntaxException(
+					throw new XacmlSyntaxException(
 							"Unparsable XPath version=\"%s\"", value);
 				}
 				return new PolicySetDefaults(v);
@@ -365,14 +366,14 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public AttributeCategoryId createAttributeCategory(String categoryId) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		if(categoryId == null){
 			return null;
 		}
 		AttributeCategoryId c = AttributeCategoryId.parse(categoryId);
 		if(c == null){
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Unknown c=attribute category=\"%s\"", categoryId);
 		}
 		return c;
@@ -380,11 +381,11 @@ public class DefaultPolicyFactory extends BasePolicyFactory
 	
 	@Override
 	public AttributeValueType createAttributeValueType(String dataTypeId) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		AttributeValueType type = XacmlDataTypes.getByTypeId(dataTypeId); 
 		if(type == null){
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Unknown XACML dataTypeId=\"%s\"", dataTypeId);
 		}
 		return type;

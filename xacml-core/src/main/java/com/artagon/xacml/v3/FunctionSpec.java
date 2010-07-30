@@ -70,10 +70,10 @@ public interface FunctionSpec
 	 * as potential function invocation arguments
 	 * 
 	 * @param params an array of expressions
-	 * @exception PolicySyntaxException
+	 * @exception XacmlSyntaxException
 	 */
 	void validateParametersAndThrow(Expression ... params) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 		
 	/**
 	 * Resolves function return type based on function

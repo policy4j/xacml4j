@@ -48,7 +48,7 @@ public class PolicyTest
 	
 	@SuppressWarnings("unchecked")
 	@Before
-	public void init() throws PolicySyntaxException
+	public void init() throws XacmlSyntaxException
 	{
 		this.rules = new LinkedList<Rule>();
 		this.rule1 = createStrictMock(Rule.class);
@@ -89,7 +89,7 @@ public class PolicyTest
 	}
 	
 	@Test
-	public void testPolicyCreate() throws PolicySyntaxException
+	public void testPolicyCreate() throws XacmlSyntaxException
 	{
 		Policy p = new Policy("testId", 
 				Version.valueOf(1),

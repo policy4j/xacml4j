@@ -4,12 +4,12 @@ import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
-public abstract class BasePolicyFactory implements PolicyFactory 
+public abstract class BaseXacmlFactory implements XacmlFactory 
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	protected BasePolicyFactory(
+	protected BaseXacmlFactory(
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider combiningAlgorithms) {
 		Preconditions.checkNotNull(functions);
@@ -23,26 +23,26 @@ public abstract class BasePolicyFactory implements PolicyFactory
 	 * 
 	 * @param functionId a function identifier
 	 * @return {@link FunctionSpec} instance
-	 * @throws PolicySyntaxException if function with a given
+	 * @throws XacmlSyntaxException if function with a given
 	 * identifier is not known to this factory
 	 */
 	protected final FunctionSpec createFunction(String functionId)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		FunctionSpec spec = functions.getFunction(functionId);
 		if (spec == null) {
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Function with id=\"%s\" can not be resolved", functionId);
 		}
 		return spec;
 	}
 	
 	protected final DecisionCombiningAlgorithm<Rule> createRuleCombingingAlgorithm(
-			String algorithmId) throws PolicySyntaxException {
+			String algorithmId) throws XacmlSyntaxException {
 		DecisionCombiningAlgorithm<Rule> algorithm = combingingAlgorithms
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Rule comnbining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}
@@ -50,11 +50,11 @@ public abstract class BasePolicyFactory implements PolicyFactory
 	}
 
 	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombingingAlgorithm(
-			String algorithmId) throws PolicySyntaxException {
+			String algorithmId) throws XacmlSyntaxException {
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combingingAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Policy comnbining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}

@@ -9,7 +9,7 @@ import org.junit.Test;
 public class VersionTest 
 {
 	@Test
-	public void testCreateVersion() throws PolicySyntaxException
+	public void testCreateVersion() throws XacmlSyntaxException
 	{
 		Version v1 = Version.parse("1.0");
 		Version v2 = Version.parse("1.0");
@@ -20,7 +20,7 @@ public class VersionTest
 	}
 	
 	@Test
-	public void testLessThanVersion() throws PolicySyntaxException
+	public void testLessThanVersion() throws XacmlSyntaxException
 	{
 		Version v1 = Version.parse("1.1");
 		Version v2 = Version.parse("1.0");
@@ -35,20 +35,20 @@ public class VersionTest
 	}
 	
 	@Test
-	public void testDefaultVersion() throws PolicySyntaxException
+	public void testDefaultVersion() throws XacmlSyntaxException
 	{
 		Version v = Version.parse(null);
 		assertEquals("1.0", v.getValue());
 	}
 	
-	@Test(expected=PolicySyntaxException.class)
-	public void testNegativeComponent() throws PolicySyntaxException
+	@Test(expected=XacmlSyntaxException.class)
+	public void testNegativeComponent() throws XacmlSyntaxException
 	{
 		Version.parse("-1.0");
 	}
 	
-	@Test(expected=PolicySyntaxException.class)
-	public void testUnparsableVersion() throws PolicySyntaxException
+	@Test(expected=XacmlSyntaxException.class)
+	public void testUnparsableVersion() throws XacmlSyntaxException
 	{
 		Version.parse("1.a....");
 	}

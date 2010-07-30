@@ -26,7 +26,7 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	 * @param arguments a function invocation arguments
 	 */
 	public Apply(FunctionSpec spec, Expression ...arguments) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		checkNotNull(spec != null, 
 				"Can't create Apply without function, function can't be null");
@@ -38,7 +38,7 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	}
 	
 	public Apply(FunctionSpec spec, Collection<Expression> arguments) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		this(spec, arguments.toArray(new Expression[0]));
 	}

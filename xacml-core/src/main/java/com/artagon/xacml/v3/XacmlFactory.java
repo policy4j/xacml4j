@@ -6,8 +6,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 
-
-public interface PolicyFactory 
+public interface XacmlFactory 
 {
 	
 	/**
@@ -16,10 +15,10 @@ public interface PolicyFactory
 	 * 
 	 * @param dataTypeId an XACML type identifier
 	 * @return {@link AttributeValueType} instance
-	 * @exception PolicySyntaxException
+	 * @exception XacmlSyntaxException
 	 */
 	AttributeValueType createAttributeValueType(String dataTypeId) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates an {@link AttributeValue} of the
@@ -29,13 +28,13 @@ public interface PolicyFactory
 	 * @param value an attribute value
 	 * @return {@link AttributeValue} instance
 	 * 
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeValue createAttributeValue(String typeId, Object value) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> values) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link AttributeCategoryId} from a given category
@@ -43,11 +42,11 @@ public interface PolicyFactory
 	 * 
 	 * @param categoryId a category identifier
 	 * @return {@link AttributeCategoryId} instance
-	 * @throws PolicySyntaxException if given category identifier
+	 * @throws XacmlSyntaxException if given category identifier
 	 * does not correspond to any known attribute category
 	 */
 	AttributeCategoryId createAttributeCategory(String categoryId) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates an {@link PolicySetIDReference} to a
@@ -58,25 +57,25 @@ public interface PolicyFactory
 	 * @param earliest a policy set earliest version
 	 * @param latest a policy set latest version
 	 * @return {@link PolicySetIDReference}
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	PolicySetIDReference createPolicySetIDReference(
 			String policyId, 
 			VersionMatch version, 
 			VersionMatch earliest, 
-			VersionMatch latest) throws PolicySyntaxException;
+			VersionMatch latest) throws XacmlSyntaxException;
 	
 	PolicyIDReference createPolicyIDReference(
 			String policyId, 
 			VersionMatch version, 
 			VersionMatch earliest, 
-			VersionMatch latest) throws PolicySyntaxException;
+			VersionMatch latest) throws XacmlSyntaxException;
 	
 	Apply createApply(String functionId, 
-			Collection<Expression> arguments) throws PolicySyntaxException;
+			Collection<Expression> arguments) throws XacmlSyntaxException;
 	
 	Apply createApply(String functionId, 
-			Expression ...arguments) throws PolicySyntaxException;
+			Expression ...arguments) throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link Match} from a given
@@ -86,49 +85,49 @@ public interface PolicyFactory
 	 * @param value
 	 * @param reference
 	 * @return {@link Match} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	Match createMatch(String functionId, 
-			AttributeValue value, AttributeReference reference) throws PolicySyntaxException;
+			AttributeValue value, AttributeReference reference) throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link MatchAnyOf} from a give
 	 * @param matches
 	 * @return
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
-	MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches) throws PolicySyntaxException;
+	MatchAnyOf createAnyOfMatch(Collection<MatchAllOf> matches) throws XacmlSyntaxException;
 
-	Target createTarget(Collection<MatchAnyOf> match) throws PolicySyntaxException;
+	Target createTarget(Collection<MatchAnyOf> match) throws XacmlSyntaxException;
 
-	MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws PolicySyntaxException;
-	MatchAllOf createAllOf(Collection<Match> match) throws PolicySyntaxException;
+	MatchAnyOf createAnyOf(Collection<MatchAllOf> allOf) throws XacmlSyntaxException;
+	MatchAllOf createAllOf(Collection<Match> match) throws XacmlSyntaxException;
 	
 	PolicyDefaults createPolicyDefaults(Object ...objects) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	PolicySetDefaults createPolicySetDefaults(Object ...objects) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates condition with a given predicate
 	 * 
 	 * @param predicate a predicate expression
 	 * @return {@link Condition} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	Condition createCondition(Expression predicate) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 
 	FunctionReference createFunctionReference(String functionId) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	VariableReference createVariableReference(VariableDefinition varDef) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	VariableDefinition createVariableDefinition(
 			String variableId, Expression expression) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	/**
 	 * 
 	 * @param category
@@ -137,11 +136,11 @@ public interface PolicyFactory
 	 * @param issuer
 	 * @param mustBePresent
 	 * @return
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeDesignator createAttributeDesignator(AttributeCategoryId category, 
 			String attributeId, AttributeValueType dataType, 
-			boolean mustBePresent, String issuer) throws PolicySyntaxException;
+			boolean mustBePresent, String issuer) throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link AttributeDesignator} instance
@@ -152,11 +151,11 @@ public interface PolicyFactory
 	 * @param mustBePresent a flag 
 	 * @param issuer an attribute issuer identifier
 	 * @return {@link AttributeDesignator} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeDesignator createAttributeDesignator(String category, 
 			String attributeId, String dataTypeId, 
-			boolean mustBePresent, String issuer) throws PolicySyntaxException;
+			boolean mustBePresent, String issuer) throws XacmlSyntaxException;
 
 	/**
 	 * Creates {@link AttributeSelector}
@@ -167,25 +166,25 @@ public interface PolicyFactory
 	 * @param mustBePresent a flag indicating
 	 * if attribute must be present
 	 * @return {@link AttributeSelector} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeSelector createAttributeSelector(AttributeCategoryId category, 
 			String selectXPath, AttributeValueType dataType, boolean mustBePresent) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	AttributeSelector createAttributeSelector(AttributeCategoryId category, 
 			String selectXPath, String contextAttributeId,
 			AttributeValueType dataType, boolean mustBePresent) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	AttributeSelector createAttributeSelector(String categoryId, 
 			String selectXPath, String dataTypeId, boolean mustBePresent) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	AttributeSelector createAttributeSelector(String categoryId, 
 			String selectXPath, String contextAttributeId,
 			String dataTypeId, boolean mustBePresent) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link Rule} instance with a give 
@@ -197,12 +196,12 @@ public interface PolicyFactory
 	 * @param condition a rule condition
 	 * @param effect a rule effect
 	 * @return {@link Rule} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	Rule createRule(String ruleId, 
 			String description, 
 			Target target, Condition condition, Effect effect)
-			throws PolicySyntaxException;
+			throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link AttributeAssignmentExpression} instance
@@ -213,14 +212,14 @@ public interface PolicyFactory
 	 * @param categoryId an attribute category
 	 * @param issuer an attribute issuer
 	 * @return {@link AttributeAssigmentExpression}
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
 			Expression expression, 
 			AttributeCategoryId categoryId, 
 			String issuer) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	
 	AttributeAssignmentExpression createAttributeAssigmentExpression(
@@ -228,7 +227,7 @@ public interface PolicyFactory
 			Expression expression, 
 			String categoryId, 
 			String issuer) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link AttributeAssignmentExpression} instance
@@ -237,11 +236,11 @@ public interface PolicyFactory
 	 * @param attributeId an attribute identifier
 	 * @param expression an attribute expression
 	 * @return {@link AttributeAssigmentExpression}
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AttributeAssignmentExpression createAttributeAssigmentExpression(
 			String attributeId, 
-			Expression expression) throws PolicySyntaxException;
+			Expression expression) throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link AdviceExpression} instance
@@ -253,19 +252,19 @@ public interface PolicyFactory
 	 * applicable
 	 * @param attributeAssigments an advice attributes
 	 * @return {@link AdviceExpression} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	AdviceExpression createAdviceExpression(
 			String id, 
 			Effect appliesTo,  
 			Collection<AttributeAssignmentExpression> attributeAssigments) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	ObligationExpression createObligationExpression(
 			String id, 
 			Effect effect,  
 			Collection<AttributeAssignmentExpression> attributeAssigments) 
-		throws PolicySyntaxException;
+		throws XacmlSyntaxException;
 	
 	/**
 	 * Creates {@link Policy} instance
@@ -281,7 +280,7 @@ public interface PolicyFactory
 	 * @param obligation a collection of policy obligations
 	 * @param advice a collection of policy advice
 	 * @return {@link Policy}
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	Policy createPolicy(
 			String policyId, 
@@ -293,7 +292,7 @@ public interface PolicyFactory
 			String algorithmId, 
 			Collection<Rule> rules, 
 			Collection<ObligationExpression> obligation,
-			Collection<AdviceExpression> advice) throws PolicySyntaxException;
+			Collection<AdviceExpression> advice) throws XacmlSyntaxException;
 	
 	PolicySet createPolicySet(
 			String policySetId, 
@@ -304,6 +303,6 @@ public interface PolicyFactory
 			String algorithmId, 
 			Collection<CompositeDecisionRule> policies, 
 			Collection<ObligationExpression> obligation,
-			Collection<AdviceExpression> advice) throws PolicySyntaxException;
+			Collection<AdviceExpression> advice) throws XacmlSyntaxException;
 
 }

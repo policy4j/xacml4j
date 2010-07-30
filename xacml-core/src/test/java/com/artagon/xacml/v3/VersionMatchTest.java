@@ -8,7 +8,7 @@ import org.junit.Test;
 public class VersionMatchTest
 {
 	@Test
-	public void testMatchAnySubsequentialVersions() throws PolicySyntaxException
+	public void testMatchAnySubsequentialVersions() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.+");
 		assertTrue(m.match(Version.parse("1.2.1")));
@@ -19,7 +19,7 @@ public class VersionMatchTest
 	}
 	
 	@Test
-	public void testMatchAnySingleNumber() throws PolicySyntaxException
+	public void testMatchAnySingleNumber() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.1");
 		assertTrue(m.match(Version.parse("1.2.1")));
@@ -28,12 +28,12 @@ public class VersionMatchTest
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateWithSubsquentialTwoTimes() throws PolicySyntaxException
+	public void testCreateWithSubsquentialTwoTimes() throws XacmlSyntaxException
 	{
 		new VersionMatch("1.+.+");
 	}
 
-	public void testCreateWithAnySingleDigitAndSubseq() throws PolicySyntaxException
+	public void testCreateWithAnySingleDigitAndSubseq() throws XacmlSyntaxException
 	{
 		new VersionMatch("1.*.+");
 	}

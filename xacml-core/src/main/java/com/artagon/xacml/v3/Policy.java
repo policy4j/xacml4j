@@ -49,7 +49,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		super(policyId, version, description, 
 				target, adviceExpressions, obligationExpressions);
@@ -76,7 +76,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		this(policyId, version, description, policyDefaults, target, variables, 
 				Collections.<CombinerParameters>emptyList(), 
@@ -102,7 +102,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 			Collection<Rule> rules, 
 			Collection<AdviceExpression> advice,
 			Collection<ObligationExpression> obligations) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		this(policyId, 
 				version,
@@ -129,7 +129,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 			Version version,
 			DecisionCombiningAlgorithm<Rule> combine,
 			Rule ...rules) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		this(policyId, version, combine,
 				Arrays.asList(rules),

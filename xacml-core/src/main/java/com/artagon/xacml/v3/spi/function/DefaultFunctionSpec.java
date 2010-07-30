@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
@@ -156,7 +156,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 
 	@Override
-	public void validateParametersAndThrow(Expression ... params) throws PolicySyntaxException
+	public void validateParametersAndThrow(Expression ... params) throws XacmlSyntaxException
 	{
 		ListIterator<FunctionParamSpec> it = parameters.listIterator();
 		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
@@ -164,21 +164,21 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		{
 			FunctionParamSpec p = it.next();
 			if(!p.validate(expIt)){
-				throw new PolicySyntaxException(
+				throw new XacmlSyntaxException(
 						"Expression at index=\"%d\", " +
 						"can't be used as function=\"%s\" parameter", 
 						expIt.nextIndex() - 1, functionId);
 			}
 			if(!it.hasNext() && 
 					expIt.hasNext()){
-				throw new PolicySyntaxException(
+				throw new XacmlSyntaxException(
 						"Expression at index=\"%d\", " +
 						"can't be used as function=\"%s\" parameter", 
 						expIt.nextIndex() - 1, functionId);
 			}
 		}
 		if(!validateAdditional(params)){
-			throw new PolicySyntaxException("Failed addition validation");
+			throw new XacmlSyntaxException("Failed addition validation");
 		}
 	}
 	

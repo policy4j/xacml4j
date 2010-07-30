@@ -11,12 +11,12 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 * @param appliesTo an effect when this advice is applicable
 	 * @param attributeExpressions a collection of attribute
 	 * assignment expression for this advice
-	 * @exception PolicySyntaxException
+	 * @exception XacmlSyntaxException
 	 */
 	public AdviceExpression(String id, 
 			Effect appliesTo,
 			Collection<AttributeAssignmentExpression> attributeExpressions) 
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		super(id, appliesTo, attributeExpressions);
 	}	

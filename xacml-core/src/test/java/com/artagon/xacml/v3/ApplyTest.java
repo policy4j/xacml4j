@@ -42,11 +42,11 @@ public class ApplyTest
 		verify(function);
 	}
 	
-	@Test(expected=PolicySyntaxException.class)
+	@Test(expected=XacmlSyntaxException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
 		function.validateParametersAndThrow(XacmlDataTypes.INTEGER.create(10L));
-		expectLastCall().andThrow(new PolicySyntaxException("Bad"));
+		expectLastCall().andThrow(new XacmlSyntaxException("Bad"));
 		replay(function);
 		new Apply(function, XacmlDataTypes.INTEGER.create(10L));
 		verify(function);

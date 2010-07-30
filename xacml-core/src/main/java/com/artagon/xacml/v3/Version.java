@@ -17,9 +17,9 @@ public class Version implements Comparable<Version>
      * a given string
      * 
      * @param v a version represented as string
-     * @exception PolicySyntaxException if version can not be parsed
+     * @exception XacmlSyntaxException if version can not be parsed
      */
-    private Version(String version) throws PolicySyntaxException
+    private Version(String version) throws XacmlSyntaxException
     {
     	Preconditions.checkNotNull(version);
     	this.value = version;
@@ -87,10 +87,10 @@ public class Version implements Comparable<Version>
      * @param version a version string
      * @return an array of non-negative integers
      */
-	private static int[] parseVersion(String version) throws PolicySyntaxException
+	private static int[] parseVersion(String version) throws XacmlSyntaxException
     {
     	if(!version.matches(VERSION_PATTERN)){
-    		throw new PolicySyntaxException(
+    		throw new XacmlSyntaxException(
     				"Invalid version=\"%s\", " +
     				"does not match regular expression=\"%s\"", 
     				version, VERSION_PATTERN);
@@ -100,7 +100,7 @@ public class Version implements Comparable<Version>
     	 for(int i = 0; i < vc.length; i++){
     		 v[i] = Integer.parseInt(vc[i]);
     		 if(v[i] < 0){
-    			 throw new PolicySyntaxException("Invalid version=\"%s\", " +
+    			 throw new XacmlSyntaxException("Invalid version=\"%s\", " +
     			 		"component=\"%s\" is negative number", version,
     					 Integer.toString(v[i]));
     		 }
@@ -117,7 +117,7 @@ public class Version implements Comparable<Version>
 	 * @return {@link Version} instance
 	 */
     public static Version parse(String version) 
-    	throws PolicySyntaxException 
+    	throws XacmlSyntaxException 
     {
         return (version == null)?new Version("1.0"):new Version(version);
     }
@@ -131,7 +131,7 @@ public class Version implements Comparable<Version>
 	 * @return {@link Version} instance
 	 */
     public static Version valueOf(int version) 
-    	throws PolicySyntaxException
+    	throws XacmlSyntaxException
     {
     	Preconditions.checkArgument(version > 0);
     	return parse(Integer.toString(version));

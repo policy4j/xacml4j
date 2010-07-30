@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.marshall;
 import java.io.IOException;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 
 public interface PolicyUnmarshaller 
 {
@@ -12,10 +12,10 @@ public interface PolicyUnmarshaller
 	 * 
 	 * @param source an input source
 	 * @return {@link CompositeDecisionRule} instance
-	 * @exception PolicySyntaxException if an error
+	 * @exception XacmlSyntaxException if an error
 	 * occurs while parsing policy definition
 	 * @return {@link CompositeDecisionRule} instance
 	 */
 	CompositeDecisionRule unmarshall(Object source) 
-		throws PolicySyntaxException, IOException;
+		throws XacmlSyntaxException, IOException;
 }

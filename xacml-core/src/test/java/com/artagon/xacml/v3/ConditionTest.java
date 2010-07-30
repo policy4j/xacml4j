@@ -24,7 +24,7 @@ public class ConditionTest
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithExpWhichReturnsNonBooleanValue() 
-		throws PolicyException
+		throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.INTEGER.getType()).times(1, 2);
 		replay(exp);
@@ -33,7 +33,7 @@ public class ConditionTest
 	}
 	
 	@Test
-	public void testExpressionThrowsEvaluationException() throws PolicyException
+	public void testExpressionThrowsEvaluationException() throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
@@ -46,7 +46,7 @@ public class ConditionTest
 	}
 	
 	@Test
-	public void testExpressionThrowsRuntimeException() throws PolicyException
+	public void testExpressionThrowsRuntimeException() throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
@@ -58,7 +58,7 @@ public class ConditionTest
 	}
 	
 	@Test
-	public void testExpressionEvaluatesToFalse() throws PolicyException
+	public void testExpressionEvaluatesToFalse() throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
@@ -69,7 +69,7 @@ public class ConditionTest
 	}
 	
 	@Test
-	public void testExpressionEvaluatesToTrue() throws PolicyException
+	public void testExpressionEvaluatesToTrue() throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
 		expect(exp.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(true));

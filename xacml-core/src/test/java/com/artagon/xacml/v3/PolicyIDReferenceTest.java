@@ -251,7 +251,7 @@ public class PolicyIDReferenceTest
 		verify(context, refPolicy);
 	}
 
-	private void expectPolicyMatch(Policy p, String id, String v) throws PolicySyntaxException
+	private void expectPolicyMatch(Policy p, String id, String v) throws XacmlSyntaxException
 	{
 		expect(p.getId()).andReturn(id);
 		expect(p.getVersion()).andReturn(Version.parse(v));

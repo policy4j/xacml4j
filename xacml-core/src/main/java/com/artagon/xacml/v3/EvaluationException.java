@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 
 @SuppressWarnings("serial")
-public class EvaluationException extends PolicyException
+public class EvaluationException extends XacmlException
 {
 	private StatusCode statusCode;
 	
