@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
-import com.artagon.xacml.v3.DefaultPolicyFactory;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
@@ -31,8 +31,8 @@ public class RSA2008InteropTest
 	@Before
 	public void init() throws Exception
 	{
-		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
-		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
+		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultXacmlFactory());
+		this.requestUnmarshaller = new Xacml20RequestUnmarshaller(new DefaultXacmlFactory());
 		DefaultPolicyStore store = new DefaultPolicyStore();
 		store.addPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));

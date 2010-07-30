@@ -14,8 +14,8 @@ import org.oasis.xacml.v20.context.ResponseType;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
-import com.artagon.xacml.v3.DefaultPolicyFactory;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
@@ -39,9 +39,9 @@ public class Xacml20ConformanceTest
 	@Before
 	public void init() throws Exception
 	{
-		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
-		this.responseMarshaller = new Xacml20ResponseMarshaller();
-		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
+		this.policyReader = new Xacml20PolicyUnmarshaller(new DefaultXacmlFactory());
+		this.responseMarshaller = new Xacml20ResponseMarshaller(new DefaultXacmlFactory());
+		this.requestUnmarshaller = new Xacml20RequestUnmarshaller(new DefaultXacmlFactory());
 		this.store = new DefaultPolicyStore();
 		this.pip = new DefaultPolicyInformationPoint();
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
@@ -162,7 +162,7 @@ public class Xacml20ConformanceTest
 		try{
 			store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId2.xml"));
 			fail();
-		}catch(PolicySyntaxException e){	
+		}catch(XacmlSyntaxException e){	
 		}
 		Request request = getRequest("IIE", 3);
 		Response response = pdp.decide(request);
