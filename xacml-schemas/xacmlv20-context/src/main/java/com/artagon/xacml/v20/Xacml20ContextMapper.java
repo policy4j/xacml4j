@@ -47,6 +47,8 @@ import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.XacmlFactory;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -98,9 +100,13 @@ class Xacml20ContextMapper
 		}
 	}
 	
-	public Xacml20ContextMapper(){
+	private XacmlFactory factory;
+	
+	public Xacml20ContextMapper(XacmlFactory factory){
 		Preconditions.checkState(context != null, 
 				"Failed to initialize JAXB context");
+		Preconditions.checkArgument(factory != null);
+		this.factory = factory;
 	}
 	
 	static JAXBContext getJaxbContext(){
@@ -216,7 +222,7 @@ class Xacml20ContextMapper
 		return attr;
 	}
 	
-	public Request create(RequestType req) throws RequestSyntaxException
+	public Request create(RequestType req) throws XacmlSyntaxException
 	{
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		if(!req.getResource().isEmpty()){
@@ -259,7 +265,8 @@ class Xacml20ContextMapper
 		return normalized;
 	}
 	
-	private Attributes createSubject(SubjectType subject) throws RequestSyntaxException
+	private Attributes createSubject(SubjectType subject) 
+		throws XacmlSyntaxException
 	{
 		AttributeCategoryId category = getCategoryId(subject.getSubjectCategory());
 		if(log.isDebugEnabled()){
@@ -268,7 +275,8 @@ class Xacml20ContextMapper
 		return new Attributes(category, create(subject.getAttribute(), category, false));
 	}
 	
-	private AttributeCategoryId getCategoryId(String id) throws RequestSyntaxException
+	private AttributeCategoryId getCategoryId(String id) 
+		throws XacmlSyntaxException
 	{
 		AttributeCategoryId category = AttributeCategoryId.parse(id);
 		if(category == null){
@@ -277,20 +285,21 @@ class Xacml20ContextMapper
 		return category;
 	}
 	
-	private Attributes createEnviroment(EnvironmentType subject) throws RequestSyntaxException
+	private Attributes createEnviroment(EnvironmentType subject) 
+		throws XacmlSyntaxException
 	{
 		return new Attributes(AttributeCategoryId.ENVIRONMENT, 
 				null, create(subject.getAttribute(), AttributeCategoryId.ENVIRONMENT, false));
 	}
 	
-	private Attributes createAction(ActionType subject) throws RequestSyntaxException
+	private Attributes createAction(ActionType subject) throws XacmlSyntaxException
 	{
 		return new Attributes(AttributeCategoryId.ACTION, 
 				null, create(subject.getAttribute(), AttributeCategoryId.ACTION, false));
 	}
 	
 	private Attributes createResource(ResourceType resource, 
-			boolean multipleResources) throws RequestSyntaxException
+			boolean multipleResources) throws XacmlSyntaxException
 	{
 		Node content = getResourceContent(resource);
 		if(content != null){
@@ -320,7 +329,7 @@ class Xacml20ContextMapper
 	
 	private Collection<Attribute> create(Collection<AttributeType> contextAttributes, 
 			AttributeCategoryId category, boolean includeInResult) 
-		throws RequestSyntaxException
+		throws XacmlSyntaxException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
 		for(AttributeType a : contextAttributes){
@@ -331,7 +340,7 @@ class Xacml20ContextMapper
 	
 	private Attribute createAttribute(AttributeType a, AttributeCategoryId category, 
 				boolean incudeInResultResourceId) 
-		throws RequestSyntaxException
+		throws XacmlSyntaxException
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
 		for(AttributeValueType v : a.getAttributeValue()){
@@ -348,7 +357,7 @@ class Xacml20ContextMapper
 	private AttributeValue createValue(String dataTypeId, 
 			AttributeValueType value, 
 			AttributeCategoryId categoryId) 
-		throws RequestSyntaxException
+		throws XacmlSyntaxException
 	{
 		List<Object> content = value.getContent();
 		if(content == null || 
@@ -362,9 +371,9 @@ class Xacml20ContextMapper
 					"resolved to valid XACML type", dataTypeId);
 		}
 		Object o = Iterables.getOnlyElement(content);
-		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
+		if(dataTypeId.equals(XacmlDataTypes.XPATHEXPRESSION.getTypeId())){
 			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
-			return dataType.create(xpath, categoryId);
+			return factory.createAttributeValue(dataTypeId, o, value.getOtherAttributes());
 		}
 		return dataType.create(o);
 	}

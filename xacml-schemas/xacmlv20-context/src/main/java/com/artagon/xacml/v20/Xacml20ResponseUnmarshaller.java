@@ -13,6 +13,7 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.ResponseSyntaxException;
+import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.marshall.ResponseUnmarshaller;
 import com.google.common.base.Preconditions;
 
@@ -20,8 +21,8 @@ public class Xacml20ResponseUnmarshaller implements ResponseUnmarshaller
 {
 private Xacml20ContextMapper mapper;
 	
-	public Xacml20ResponseUnmarshaller(){
-		this.mapper = new Xacml20ContextMapper();
+	public Xacml20ResponseUnmarshaller(XacmlFactory factory){
+		this.mapper = new Xacml20ContextMapper(factory);
 	}
 	
 	@SuppressWarnings("unchecked")

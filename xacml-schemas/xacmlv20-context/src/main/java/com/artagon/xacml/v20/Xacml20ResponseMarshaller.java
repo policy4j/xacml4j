@@ -14,6 +14,7 @@ import org.oasis.xacml.v20.context.ResponseType;
 
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.google.common.base.Preconditions;
 
@@ -27,8 +28,8 @@ public class Xacml20ResponseMarshaller implements ResponseMarshaller
 	private Xacml20ContextMapper mapper;
 	private ObjectFactory contextJaxbFactory;
 	
-	public Xacml20ResponseMarshaller(){
-		this.mapper = new Xacml20ContextMapper();
+	public Xacml20ResponseMarshaller(XacmlFactory factory){
+		this.mapper = new Xacml20ContextMapper(factory);
 		this.contextJaxbFactory = new ObjectFactory();
 	}
 

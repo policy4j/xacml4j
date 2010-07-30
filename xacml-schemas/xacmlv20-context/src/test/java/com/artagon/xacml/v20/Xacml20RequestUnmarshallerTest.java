@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.types.XPathExpressionType;
@@ -28,7 +29,7 @@ public class Xacml20RequestUnmarshallerTest
 	@Before
 	public void init() throws Exception
 	{
-		this.unmarshaller = new Xacml20RequestUnmarshaller();
+		this.unmarshaller = new Xacml20RequestUnmarshaller(new DefaultXacmlFactory());
 	}
 		
 	@Test

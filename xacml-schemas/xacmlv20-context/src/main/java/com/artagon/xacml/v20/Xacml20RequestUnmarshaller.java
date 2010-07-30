@@ -13,6 +13,8 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.XacmlFactory;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.google.common.base.Preconditions;
 
@@ -20,14 +22,14 @@ public class Xacml20RequestUnmarshaller implements RequestUnmarshaller
 {
 	private Xacml20ContextMapper mapper;
 	
-	public Xacml20RequestUnmarshaller(){
-		this.mapper = new Xacml20ContextMapper();
+	public Xacml20RequestUnmarshaller(XacmlFactory factory){
+		this.mapper = new Xacml20ContextMapper(factory);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Request unmarshalRequest(Object source)
-			throws RequestSyntaxException, IOException {
+			throws XacmlSyntaxException, IOException {
 		Preconditions.checkNotNull(source);
 		try{
 			Unmarshaller u = Xacml20ContextMapper.getJaxbContext().createUnmarshaller();
