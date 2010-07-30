@@ -38,7 +38,7 @@ public class XPathFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath) 
 	{
 		try{
-			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), xpath.getAttributeCategory());
+			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), xpath.getCategory());
 			if(nodes != null){
 				return XacmlDataTypes.INTEGER.create(nodes.getLength());
 			}
@@ -66,8 +66,8 @@ public class XPathFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.XPATHEXPRESSION) XPathExpressionValue xpath1) 
 	{		
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), xpath0.getAttributeCategory());
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), xpath1.getAttributeCategory());
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), xpath0.getCategory());
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), xpath1.getCategory());
 			if(nodes0 == null || 
 					nodes0  == null){
 				return XacmlDataTypes.BOOLEAN.create(false);
@@ -106,9 +106,9 @@ public class XPathFunctions
 	{		
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getValue(), 
-					xpath0.getAttributeCategory());
+					xpath0.getCategory());
 			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), 
-					xpath1.getAttributeCategory());
+					xpath1.getCategory());
 			if(nodes0 == null || 
 					nodes0  == null){
 				return XacmlDataTypes.BOOLEAN.create(false);

@@ -24,12 +24,20 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 	private Map<String, PolicySet> policySets;
 	private Map<String, CompositeDecisionRule> topLevel;
 	
-	public DefaultPolicyStore()
+	/**
+	 * Constructs default policy store
+	 */
+	public DefaultPolicyStore(Type mode)
 	{
-		super(Type.FIRST_APPLICABLE, new DefaultDecisionCombiningAlgorithms());
+		super(mode, new DefaultDecisionCombiningAlgorithms());
 		this.policies = new ConcurrentHashMap<String, Policy>();
 		this.policySets = new ConcurrentHashMap<String, PolicySet>();
 		this.topLevel = new ConcurrentHashMap<String, CompositeDecisionRule>();
+	}
+	
+	public DefaultPolicyStore()
+	{
+		this(Type.FIRST_APPLICABLE);
 	}
 	
 	/**

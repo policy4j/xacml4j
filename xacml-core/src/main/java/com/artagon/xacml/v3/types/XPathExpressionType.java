@@ -21,7 +21,7 @@ public interface XPathExpressionType extends AttributeValueType
 			this.categoryId = categoryId;
 		}
 		
-		public AttributeCategoryId getAttributeCategory(){
+		public AttributeCategoryId getCategory(){
 			return categoryId;
 		}
 	}

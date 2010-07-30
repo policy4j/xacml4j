@@ -174,11 +174,11 @@ public class DefaultContextHandler implements ContextHandler
 					log.debug("Found ContextSelector attribute");
 				}
 				XPathExpressionValue xpath = (XPathExpressionValue)Iterables.getOnlyElement(v);
-				if(xpath.getAttributeCategory() != ref.getCategory()){
+				if(xpath.getCategory() != ref.getCategory()){
 					throw new AttributeReferenceEvaluationException(context, ref, 
 							"AttributeSelector category=\"%s\" and " +
 							"ContextAttributeId category=\"%s\" do not match", ref.getCategory(), 
-							xpath.getAttributeCategory());
+							xpath.getCategory());
 				}
 				log.debug("Evaluating contextSelecrtor xpath=\"{}\"", xpath.getValue());
 				contextNode = xpathProvider.evaluateToNode(context.getXPathVersion(), xpath.getValue(), content);

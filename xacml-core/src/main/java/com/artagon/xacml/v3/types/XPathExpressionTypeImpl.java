@@ -38,7 +38,12 @@ public class XPathExpressionTypeImpl extends BaseAttributeType<XPathExpressionVa
 	{
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
-		return new XPathExpressionValue(this, v, 
-				AttributeCategoryId.parse(String.valueOf(params[0])));
+		AttributeCategoryId categoryId = AttributeCategoryId.parse(String.valueOf(params[0]));
+		if(categoryId == null){
+			throw new IllegalArgumentException(
+					String.format(
+							"Unparsable attribute category=\"%s\"", params[0]));
+		}
+		return new XPathExpressionValue(this, v, categoryId);
 	}
 }

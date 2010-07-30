@@ -24,9 +24,10 @@ public interface PolicyStore extends PolicyReferenceResolver
 	Type getMode();
 	
 	/**
-	 * Gets top level policies
+	 * Gets store policies
 	 * 
-	 * @return a collection of {@link CompositeDecisionRule} instances
+	 * @return a collection of 
+	 * {@link CompositeDecisionRule} instances
 	 */
 	Collection<CompositeDecisionRule> getPolicies();
 	
@@ -37,20 +38,5 @@ public interface PolicyStore extends PolicyReferenceResolver
 	 * @param context an evaluation context
 	 * @return {@link Decision}
 	 */
-	Decision evaluate(EvaluationContext context);
-	
-	/**
-	 * Adds top level policy to this store
-	 * 
-	 * @param policy a top level policy
-	 */
-	void addPolicy(CompositeDecisionRule policy);
-	
-	/**
-	 * Adds a policy referenced by top level policies
-	 * 
-	 * @param policy a referenced policy
-	 */
-	void addReferencedPolicy(CompositeDecisionRule policy);
-		
+	Decision evaluate(EvaluationContext context);	
 }
