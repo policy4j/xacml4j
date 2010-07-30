@@ -5,10 +5,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-
 public interface XacmlFactory 
 {
-	
 	/**
 	 * Creates {@link AttributeValueType} from a given type
 	 * identifier

@@ -31,7 +31,7 @@ public class AttributeDesignator extends AttributeReference
 	private String attributeId;
 	private String issuer;
 	
-	public AttributeDesignator(
+	AttributeDesignator(
 			AttributeCategoryId  category,
 			String attributeId, 
 			String issuer,

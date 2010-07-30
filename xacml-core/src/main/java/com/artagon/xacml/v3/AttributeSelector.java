@@ -14,7 +14,7 @@ public class AttributeSelector extends
 	private String xpath;
 	private String contextAttributeId;
 	
-	public AttributeSelector(
+	AttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
 			String contextAttributeId,
@@ -26,7 +26,7 @@ public class AttributeSelector extends
 		this.contextAttributeId = contextAttributeId;
 	}
 	
-	public AttributeSelector(
+	AttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
 			AttributeValueType dataType, 
