@@ -54,12 +54,12 @@ import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
-import com.artagon.xacml.v3.PolicyFactory;
+import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.VariableDefinition;
@@ -71,7 +71,7 @@ public class Xacml30PolicyMapper
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyMapper.class);
 	
-	private PolicyFactory factory;
+	private XacmlFactory factory;
 
 	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = new HashMap<Effect, EffectType>();
 	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = new HashMap<EffectType, Effect>();
@@ -83,7 +83,7 @@ public class Xacml30PolicyMapper
 		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
 	}
 
-	public Xacml30PolicyMapper(PolicyFactory factory) {
+	public Xacml30PolicyMapper(XacmlFactory factory) {
 		Preconditions.checkNotNull(factory);
 		this.factory = factory;
 	}
@@ -94,10 +94,10 @@ public class Xacml30PolicyMapper
 	 * 
 	 * @param p a JAXB policy representation
 	 * @return {@link Policy} instance
-	 * @throws PolicySyntaxException if syntax error occurs
+	 * @throws XacmlSyntaxException if syntax error occurs
 	 * while creating XACML policy
 	 */
-	public Policy createPolicy(PolicyType p) throws PolicySyntaxException 
+	public Policy createPolicy(PolicyType p) throws XacmlSyntaxException 
 	{
 		VariableManager<JAXBElement<?>> variableDef = getVariables(p);
 		Collection<AdviceExpression> adviceExpressions = getExpressions(
@@ -111,8 +111,18 @@ public class Xacml30PolicyMapper
 				createRules(p, variableDef), obligationExpressions, adviceExpressions);
 	}
 	
+	
+	/**
+	 * Creates {@link Rule} instance from given 
+	 * {@link PolicyType} JAXB object
+	 * 
+	 * @param p a JAXB policy
+	 * @param m a variable manager
+	 * @return collection of {@link Rule} instances
+	 * @throws XacmlSyntaxException
+	 */
 	private Collection<Rule> createRules(PolicyType p, VariableManager<JAXBElement<?>> m) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		Collection<Rule> rules = new LinkedList<Rule>();
 		for(Object o : p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition())
@@ -131,10 +141,10 @@ public class Xacml30PolicyMapper
 	 * @param jaxbObject a JAXB object representing either 
 	 * {@link PolicySetType} or {@link PolicyType}
 	 * @return {@link CompositeDecisionRule}
-	 * @throws PolicySyntaxException if given policy or policy set
+	 * @throws XacmlSyntaxException if given policy or policy set
 	 * can not be created due syntactical errors
 	 */
-	public CompositeDecisionRule create(Object jaxbObject) throws PolicySyntaxException
+	public CompositeDecisionRule create(Object jaxbObject) throws XacmlSyntaxException
 	{
 		if(jaxbObject instanceof PolicyType){
 			return createPolicy((PolicyType)jaxbObject);
@@ -142,7 +152,7 @@ public class Xacml30PolicyMapper
 		if(jaxbObject instanceof PolicySetType){
 			return createPolicySet((PolicySetType)jaxbObject);
 		}
-		throw new PolicySyntaxException(
+		throw new XacmlSyntaxException(
 				"Given object can not be mapped to Policy or PolicySet");
 	}
 	
@@ -152,10 +162,10 @@ public class Xacml30PolicyMapper
 	 * 
 	 * @param p a JAXB policy set representation
 	 * @return {@link PolicySet} instance
-	 * @throws PolicySyntaxException if syntax error occurs
+	 * @throws XacmlSyntaxException if syntax error occurs
 	 * while creating XACML policy set
 	 */
-	public PolicySet createPolicySet(PolicySetType p) throws PolicySyntaxException 
+	public PolicySet createPolicySet(PolicySetType p) throws XacmlSyntaxException 
 	{
 		VariableManager<JAXBElement<?>> variableDef = new VariableManager<JAXBElement<?>>(
 				Collections.<String, JAXBElement<?>>emptyMap());
@@ -172,7 +182,7 @@ public class Xacml30PolicyMapper
 	}
 	
 	private Collection<CompositeDecisionRule> createPolicies(PolicySetType policySet) 
-		throws PolicySyntaxException
+		throws XacmlSyntaxException
 	{
 		Collection<CompositeDecisionRule> all = new LinkedList<CompositeDecisionRule>();
 		for(JAXBElement<?> e : policySet.getPolicySetOrPolicyOrPolicySetIdReference())
@@ -190,7 +200,7 @@ public class Xacml30PolicyMapper
 					IdReferenceType ref = (IdReferenceType)e.getValue();
 					if (e.getName().getLocalPart().equals("PolicySetIdReference")) {
 						if(ref.getValue() == null){
-							throw new PolicySyntaxException(
+							throw new XacmlSyntaxException(
 									"PolicySet reference id can't be null");
 						}
 						PolicySetIDReference policySetRef = factory
@@ -203,7 +213,7 @@ public class Xacml30PolicyMapper
 					}
 					if(e.getName().getLocalPart().equals("PolicyIdReference")) {
 						if(ref.getValue() == null){
-							throw new PolicySyntaxException(
+							throw new XacmlSyntaxException(
 									"Policy reference id can't be null");
 						}
 						PolicyIDReference policyRef = factory
@@ -220,7 +230,7 @@ public class Xacml30PolicyMapper
 	}
 
 	private Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		Effect effect = r.getEffect() == EffectType.DENY ? Effect.DENY: Effect.PERMIT;
 		return factory.createRule(r.getRuleId(), r.getDescription(), 
@@ -228,7 +238,7 @@ public class Xacml30PolicyMapper
 	}
 	
 	private Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		if (c == null) {
 			return null;
@@ -242,7 +252,7 @@ public class Xacml30PolicyMapper
 	
 	
 	private PolicyDefaults createPolicyDefaults(DefaultsType defaults)
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		if(defaults == null){
 			return null;
@@ -250,7 +260,7 @@ public class Xacml30PolicyMapper
 		return factory.createPolicyDefaults(defaults.getXPathVersion());
 	}
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		if(defaults == null){
 			return null;
@@ -259,7 +269,7 @@ public class Xacml30PolicyMapper
 	}
 
 	private Collection<AdviceExpression> getExpressions(
-			AdviceExpressionsType expressions, VariableManager<JAXBElement<?>> m) throws PolicySyntaxException 
+			AdviceExpressionsType expressions, VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException 
 	{
 		if (expressions == null) {
 			return Collections.emptyList();
@@ -278,10 +288,10 @@ public class Xacml30PolicyMapper
 	 * @param expressions an JAXB object
 	 * @param m a variable definition manager
 	 * @return a collection of {@link ObligationExpression} instances
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	private Collection<ObligationExpression> getExpressions(
-			ObligationExpressionsType expressions, VariableManager<JAXBElement<?>> m) throws PolicySyntaxException 
+			ObligationExpressionsType expressions, VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException 
 	{
 		if (expressions == null) {
 			return Collections.emptyList();
@@ -299,12 +309,12 @@ public class Xacml30PolicyMapper
 	 * @param exp
 	 *            a JAXB object representing {@link AdviceExpression}
 	 * @return {@link AdviceExpression} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 *             if {@link AdviceExpression} can not be created from a given
 	 *             JAXB object due syntactical error
 	 */
 	private AdviceExpression create(AdviceExpressionType exp, VariableManager<JAXBElement<?>> m)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
 		Collection<AttributeAssignmentExpression> attrExp = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentExpressionType e : exp
@@ -321,13 +331,13 @@ public class Xacml30PolicyMapper
 	 * @param exp
 	 *            a JAXB object representing {@link ObligationExpression}
 	 * @return {@link ObligationExpression} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 *             if {@link ObligationExpression} can not be created from a
 	 *             given JAXB object due syntactical error
 	 */
 	private ObligationExpression create(ObligationExpressionType exp, 
 			VariableManager<JAXBElement<?>> m)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
 		Collection<AttributeAssignmentExpression> attrExp = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentExpressionType e : exp
@@ -344,11 +354,11 @@ public class Xacml30PolicyMapper
 	 * @param target
 	 *            a JAXB target instance
 	 * @return {@link Target} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 *             if {@link Target} can not be created from a given JAXB object
 	 *             due syntactical error
 	 */
-	private Target create(TargetType target) throws PolicySyntaxException {
+	private Target create(TargetType target) throws XacmlSyntaxException {
 		if (target == null) {
 			return null;
 		}
@@ -359,7 +369,7 @@ public class Xacml30PolicyMapper
 		return new Target(m);
 	}
 
-	private MatchAnyOf create(AnyOfType anyOf) throws PolicySyntaxException {
+	private MatchAnyOf create(AnyOfType anyOf) throws XacmlSyntaxException {
 		Preconditions.checkArgument(anyOf != null);
 		Collection<MatchAllOf> m = new LinkedList<MatchAllOf>();
 		for (AllOfType allOf : anyOf.getAllOf()) {
@@ -368,7 +378,7 @@ public class Xacml30PolicyMapper
 		return factory.createAnyOf(m);
 	}
 
-	private MatchAllOf create(AllOfType allOf) throws PolicySyntaxException {
+	private MatchAllOf create(AllOfType allOf) throws XacmlSyntaxException {
 		Preconditions.checkArgument(allOf != null);
 		List<Match> m = new LinkedList<Match>();
 		for (MatchType match : allOf.getMatch()) {
@@ -383,13 +393,13 @@ public class Xacml30PolicyMapper
 	 * @param m
 	 *            a JAXB representation of XACML match
 	 * @return {@link Match} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
-	private Match createMatch(MatchType m) throws PolicySyntaxException {
+	private Match createMatch(MatchType m) throws XacmlSyntaxException {
 		Preconditions.checkArgument(m != null);
 		AttributeValueType v = m.getAttributeValue();
 		if (v == null) {
-			throw new PolicySyntaxException(
+			throw new XacmlSyntaxException(
 					"Match=\"%s\" attribute value must be specified");
 		}
 		return factory.createMatch(m.getMatchId(), createValue(v.getDataType(),
@@ -406,13 +416,13 @@ public class Xacml30PolicyMapper
 	 *            an instance of {@link AttributeSelectorType} or
 	 *            {@link AttributeDesignatorType}
 	 * @return {@link AttributeReference} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 *             if given
 	 * @exception IllegalArgumentException
 	 *                if given argument is <code>null</code>
 	 */
 	private AttributeReference createAttributeReference(Object ref)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		Preconditions.checkArgument(ref != null);
 		if (ref instanceof AttributeSelectorType) {
 			AttributeSelectorType selector = (AttributeSelectorType)ref;
@@ -434,7 +444,7 @@ public class Xacml30PolicyMapper
 					desig.isMustBePresent(), 
 					desig.getIssuer());
 		}
-		throw new PolicySyntaxException(
+		throw new XacmlSyntaxException(
 				"Given JAXB object instance of=\"%s\" can not be converted"
 						+ "to XACML AttributeSelector or AttributeDesignator",
 				ref.getClass().getName());
@@ -448,13 +458,13 @@ public class Xacml30PolicyMapper
 	 * @param content
 	 *            an list with attribute content
 	 * @return {@link AttributeValueExpression} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	private AttributeValue createValue(String dataType, List<Object> content, 
 			Map<QName, String> otherAttributes)
-			throws PolicySyntaxException {
+			throws XacmlSyntaxException {
 		if (content == null || content.isEmpty()) {
-			throw new PolicySyntaxException("Attribute does not have content");
+			throw new XacmlSyntaxException("Attribute does not have content");
 		}
 		return factory.createAttributeValue(dataType, Iterables
 				.getOnlyElement(content), otherAttributes);
@@ -467,11 +477,11 @@ public class Xacml30PolicyMapper
 	 * @param exp
 	 *            a JAXB instance
 	 * @return {@link AttributeAssignmentExpression} instance
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	private AttributeAssignmentExpression create(
 			AttributeAssignmentExpressionType exp, 
-			VariableManager<JAXBElement<?>> m) throws PolicySyntaxException {
+			VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
 		return factory.createAttributeAssigmentExpression(exp.getAttributeId(),
 				parseExpression(exp.getExpression(), m), exp.getCategory(), exp
@@ -484,10 +494,10 @@ public class Xacml30PolicyMapper
 	 * @param apply an JAXB XACML apply instance
 	 * @param m an variable state manager
 	 * @return {@link Apply} instance
-	 * @throws PolicySyntaxException if an syntax error
+	 * @throws XacmlSyntaxException if an syntax error
 	 * occurs while mapping JAXB instance
 	 */
-	private Apply createApply(ApplyType apply, VariableManager<JAXBElement<?>> m) throws PolicySyntaxException 
+	private Apply createApply(ApplyType apply, VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException 
 	{
 		Collection<Expression> arguments = new LinkedList<Expression>();
 		for (JAXBElement<?> exp : apply.getExpression()) {
@@ -501,10 +511,10 @@ public class Xacml30PolicyMapper
 	 * 
 	 * @param expression
 	 * @return
-	 * @throws PolicySyntaxException
+	 * @throws XacmlSyntaxException
 	 */
 	private Expression parseExpression(JAXBElement<?> expression,
-			VariableManager<JAXBElement<?>> m) throws PolicySyntaxException 
+			VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException 
 	{
 		Preconditions.checkArgument(expression != null);
 		Object e = expression.getValue();
@@ -538,7 +548,7 @@ public class Xacml30PolicyMapper
 			FunctionType fRef = (FunctionType) e;
 			return factory.createFunctionReference(fRef.getFunctionId());
 		}
-		throw new PolicySyntaxException(
+		throw new XacmlSyntaxException(
 				"Unknown XACML expression JAXB object=\"%s\"", e.getClass());
 	}
 
@@ -550,11 +560,11 @@ public class Xacml30PolicyMapper
 	 * 
 	 * @param p an JAXB representation of XACML policy
 	 * @return {@link VariableManager}
-	 * @throws PolicySyntaxException if and syntax error occurs
+	 * @throws XacmlSyntaxException if and syntax error occurs
 	 * while parsing variable definitions
 	 */
 	private VariableManager<JAXBElement<?>> getVariables(PolicyType p)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		try {
 			List<Object> objects = p
@@ -570,7 +580,7 @@ public class Xacml30PolicyMapper
 				}
 				VariableDefinitionType varDef = (VariableDefinitionType) o;
 				if (expressions.containsKey(varDef.getVariableId())) {
-					throw new PolicySyntaxException(
+					throw new XacmlSyntaxException(
 							"Policy contains a variableId=\"%s\" is alerady "
 									+ "used for previously defined variable",
 							varDef.getVariableId());
@@ -582,12 +592,12 @@ public class Xacml30PolicyMapper
 			parseVariables(manager);
 			return manager;
 		} catch (IllegalArgumentException e) {
-			throw new PolicySyntaxException(e);
+			throw new XacmlSyntaxException(e);
 		}
 	}
 	
 	private void parseVariables(VariableManager<JAXBElement<?>> m)
-		throws PolicySyntaxException 
+		throws XacmlSyntaxException 
 	{
 		for (String varId : m.getVariableDefinitionExpressions()) 
 		{

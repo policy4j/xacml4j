@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.DefaultPolicyFactory;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
@@ -27,7 +27,7 @@ public class Xacml30PolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml30PolicyUnmarshaller(new DefaultPolicyFactory());
+		reader = new Xacml30PolicyUnmarshaller(new DefaultXacmlFactory());
 	}
 	
 	@SuppressWarnings("unchecked")
