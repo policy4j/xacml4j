@@ -215,7 +215,7 @@ public class Xacml20RequestUnmarshallerTest
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
 		XPathExpressionType.XPathExpressionValue xpath = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(resourceId.getValues());
-		assertEquals(AttributeCategoryId.RESOURCE, xpath.getAttributeCategory());
+		assertEquals(AttributeCategoryId.RESOURCE, xpath.getCategory());
 		assertEquals("//md:record/md:patient", xpath.getValue());
 	}
 	
