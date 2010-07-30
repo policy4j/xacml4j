@@ -12,8 +12,8 @@ import org.oasis.xacml.v20.policy.ObjectFactory;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.PolicyFactory;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.XacmlFactory;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
@@ -22,7 +22,7 @@ public class Xacml20PolicyUnmarshaller implements PolicyUnmarshaller
 	private JAXBContext context;
 	private Xacml20PolicyMapper mapper;
 	
-	public Xacml20PolicyUnmarshaller(PolicyFactory factory){
+	public Xacml20PolicyUnmarshaller(XacmlFactory factory){
 		Preconditions.checkNotNull(factory);
 		this.mapper = new Xacml20PolicyMapper(factory);
 		try{
@@ -34,7 +34,7 @@ public class Xacml20PolicyUnmarshaller implements PolicyUnmarshaller
 	
 	@Override
 	public CompositeDecisionRule unmarshall(Object source)
-			throws PolicySyntaxException 
+			throws XacmlSyntaxException 
 	{
 		Preconditions.checkNotNull(source);
 		try{
@@ -59,7 +59,7 @@ public class Xacml20PolicyUnmarshaller implements PolicyUnmarshaller
 					String.format("Unsupported policy source=\"%s\"", 
 							source.getClass().getName()));
 		}catch(JAXBException e){
-			throw new PolicySyntaxException(e);
+			throw new XacmlSyntaxException(e);
 		}
 	}
 }

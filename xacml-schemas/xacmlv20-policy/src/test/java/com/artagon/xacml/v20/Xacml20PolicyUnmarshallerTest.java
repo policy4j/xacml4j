@@ -11,12 +11,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.DefaultPolicyFactory;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.PolicySyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
@@ -29,7 +29,7 @@ public class Xacml20PolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml20PolicyUnmarshaller(new DefaultPolicyFactory());
+		reader = new Xacml20PolicyUnmarshaller(new DefaultXacmlFactory());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -110,7 +110,7 @@ public class Xacml20PolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR05"));
 	}
 	
-	@Test(expected=PolicySyntaxException.class)
+	@Test(expected=XacmlSyntaxException.class)
 	public void testFeatures002Policy() throws Exception
 	{
 		Policy p = getPolicy("002B-Policy.xml");
