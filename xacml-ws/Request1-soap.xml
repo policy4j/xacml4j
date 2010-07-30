@@ -1,4 +1,8 @@
-<xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xacml-context:Request>
 
 	<!-- A TVE subject token representing Access and Intermediary subjects 
 	
@@ -91,5 +95,6 @@
          </xacml-context:Action>
          <xacml-context:Environment>
 	</xacml-context:Environment>
-</xacml-context:Request>
-  
+      </xacml-context:Request>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,7 +1,5 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <xacml-context:Request>
+<?xml version="1.0" encoding="utf-8"?>
+<xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
 
 	<!-- A TVE subject token representing Access and Intermediary subjects 
 	
@@ -27,7 +25,7 @@
 		DataType="http://www.w3.org/2001/XMLSchema#string">
                <xacml-context:AttributeValue>tbs</xacml-context:AttributeValue>
             </xacml-context:Attribute>
-         </xacml-context:Subject>
+     </xacml-context:Subject>
 
 	<!--- Access subject will be decoded from TVE spec subject-token -->  
 
@@ -86,14 +84,14 @@
             <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
                <xacml-context:AttributeValue>http://www.tbs.com/movies/movie2</xacml-context:AttributeValue>
             </xacml-context:Attribute>
-         </xacml-context:Resource>
-         <xacml-context:Action>
-            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
-               <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
-            </xacml-context:Attribute>
-         </xacml-context:Action>
-         <xacml-context:Environment>
+    </xacml-context:Resource>
+    <xacml-context:Action>
+       <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+          <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+       </xacml-context:Attribute>
+    </xacml-context:Action>
+   <xacml-context:Environment>
 	</xacml-context:Environment>
-      </xacml-context:Request>
-   </soapenv:Body>
-</soapenv:Envelope>
+</xacml-context:Request>
+
+  

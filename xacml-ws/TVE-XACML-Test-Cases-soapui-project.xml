@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="TVE XACML Test Cases" resourceRoot="" soapui-version="3.5" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Xacml20SoapHttpBinding" type="wsdl" bindingName="{urn:oasis:names:tc:xacml:2.0:context:schema:os}Xacml20SoapHttpBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl"><con:part><con:url>file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:tns="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
+<con:soapui-project name="TVE XACML Test Cases" resourceRoot="" soapui-version="3.5.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Xacml20SoapHttpBinding" type="wsdl" bindingName="{urn:oasis:names:tc:xacml:2.0:context:schema:os}Xacml20SoapHttpBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl"><con:part><con:url>file:/Users/trumpyla/Projects/Artagon/artagon-xacml/xacml-ws/src/test/webapp/WEB-INF/wsdl/xacml20.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:tns="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
   <wsdl:types>
     <xs:schema>
       <xs:import namespace="urn:oasis:names:tc:xacml:2.0:policy:schema:os" schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"/>
@@ -559,62 +559,104 @@
     <xs:attribute name="Issuer" type="xs:string" use="optional"/>
   </xs:complexType>
   <!---->
-</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/xacml-ws/soap</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="Authorize" bindingOperationName="Authorize" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/xacml-ws/soap</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://login-dev.comcast.net/api/xacml/soap/tve</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="Authorize" bindingOperationName="Authorize" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://login-dev.comcast.net/api/xacml/soap/tve</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
    <soapenv:Header/>
    <soapenv:Body>
-      <urn:Request>
-         <!--1 or more repetitions:-->
-         <urn:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
-            <!--Zero or more repetitions:-->
-            <urn:Attribute AttributeId="?" DataType="?" Issuer="?">
-               <!--1 or more repetitions:-->
-               <urn:AttributeValue>
-                  e
-                  <!--You may enter ANY elements at this point-->
-                  gero
-               </urn:AttributeValue>
-            </urn:Attribute>
-         </urn:Subject>
-         <!--1 or more repetitions:-->
-         <urn:Resource>
-            <!--Optional:-->
-            <urn:ResourceContent>
-               cum
-               <!--You may enter ANY elements at this point-->
-               sonoras
-            </urn:ResourceContent>
-            <!--Zero or more repetitions:-->
-            <urn:Attribute AttributeId="?" DataType="?" Issuer="?">
-               <!--1 or more repetitions:-->
-               <urn:AttributeValue>
-                  aeoliam
-                  <!--You may enter ANY elements at this point-->
-                  quae
-               </urn:AttributeValue>
-            </urn:Attribute>
-         </urn:Resource>
-         <urn:Action>
-            <!--Zero or more repetitions:-->
-            <urn:Attribute AttributeId="?" DataType="?" Issuer="?">
-               <!--1 or more repetitions:-->
-               <urn:AttributeValue>
-                  ventos
-                  <!--You may enter ANY elements at this point-->
-                  verrantque
-               </urn:AttributeValue>
-            </urn:Attribute>
-         </urn:Action>
-         <urn:Environment>
-            <!--Zero or more repetitions:-->
-            <urn:Attribute AttributeId="?" DataType="?" Issuer="?">
-               <!--1 or more repetitions:-->
-               <urn:AttributeValue>
-                  temperat
-                  <!--You may enter ANY elements at this point-->
-                  per
-               </urn:AttributeValue>
-            </urn:Attribute>
-         </urn:Environment>
-      </urn:Request>
+      <xacml-context:Request>
+
+	<!-- A TVE subject token representing Access and Intermediary subjects 
+	
+	<xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+            <xacml-context:Attribute AttributeId="urn:tve:names:tc:xacml:1.0:subject:subject-token" 
+             DataType="http://www.w3.org/2001/XMLSchema#base64Binary">
+               <xacml-context:AttributeValue>==AABABSABSBSBABAB ..... AKAKA</xacml-context:AttributeValue>
+            </xacml-context:Attribute>  
+        </xacml-context:Subject>
+
+        -->
+	
+	<!--- Begin decoded subject token -->
+
+	<!-- 
+	     Intermediary subject will be decoded from TVE spec subject-token.
+	     Intermediary subject represents an identity of TVE provider requesting
+	     authorization decision for an access subject
+        -->
+
+	 <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>tbs</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Subject>
+
+	<!--- Access subject will be decoded from TVE spec subject-token -->  
+
+        <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
+               <xacml-context:AttributeValue>test@comcast.net</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+	   <!-- 
+               Subscriber content rating attributes will not be included in production request.
+               They are used in this example to test XACML policies related to MPAA & V-Chip content
+	       ratings and will be resolved from subscriber parental control settings
+            -->	
+	   <xacml-context:Attribute AttributeId="urn:comcast:names:1.0:subscriber:pc:ratings:v-chip" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>TV-G</xacml-context:AttributeValue>
+           </xacml-context:Attribute>
+	   <xacml-context:Attribute AttributeId="urn:comcast:names:1.0:subscriber:pc:ratings:mpaa" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>PG</xacml-context:AttributeValue>
+           </xacml-context:Attribute>
+        </xacml-context:Subject>
+	
+	<!--- End decoded subject token -->
+
+	<!-- A TV show with TV-MA rating will result in "Permit" -->
+
+         <xacml-context:Resource>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+               <xacml-context:AttributeValue>http://www.tbs.com/tv/tv-show</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+	    <xacml-context:Attribute AttributeId="urn:v-chip" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>TV-MA</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+	    <xacml-context:Action>
+               <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+                  <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+               </xacml-context:Attribute>
+            </xacml-context:Action>
+         </xacml-context:Resource>
+
+	<!-- PG13 movie will result in "Deny" because subscriber MPAA rating threshold is PG -->
+
+	<xacml-context:Resource>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+               <xacml-context:AttributeValue>http://www.tbs.com/movies/movie</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+	    <xacml-context:Attribute AttributeId="urn:mpaa" 
+		DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>PG13</xacml-context:AttributeValue>
+            </xacml-context:Attribute>  
+         </xacml-context:Resource>
+
+	<!-- Resource without rating scheme will not be checked for parental controls, decision "Permit" -->
+
+	<xacml-context:Resource>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+               <xacml-context:AttributeValue>http://www.tbs.com/movies/movie2</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Resource>
+         <xacml-context:Action>
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+               <xacml-context:AttributeValue>view</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+         </xacml-context:Action>
+         <xacml-context:Environment>
+	</xacml-context:Environment>
+      </xacml-context:Request>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:oasis:names:tc:xacml:2.0:context:schema:os/Xacml20PdpService/AuthorizeRequest"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>
+]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:oasis:names:tc:xacml:2.0:context:schema:os/Xacml20PdpService/AuthorizeRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

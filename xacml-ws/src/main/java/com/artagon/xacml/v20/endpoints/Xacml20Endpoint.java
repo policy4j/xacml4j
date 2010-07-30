@@ -5,6 +5,7 @@ import org.springframework.ws.server.endpoint.AbstractMarshallingPayloadEndpoint
 
 import com.artagon.xacml.v20.Xacml20RequestUnmarshaller;
 import com.artagon.xacml.v20.Xacml20ResponseMarshaller;
+import com.artagon.xacml.v3.DefaultXacmlFactory;
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.Response;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
@@ -21,8 +22,8 @@ public class Xacml20Endpoint extends AbstractMarshallingPayloadEndpoint
 			PolicyDecisionPoint pdp) {
 		super(marshaller);
 		this.pdp = pdp;
-		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		this.responseMarshaller = new Xacml20ResponseMarshaller();
+		this.requestUnmarshaller = new Xacml20RequestUnmarshaller(new DefaultXacmlFactory());
+		this.responseMarshaller = new Xacml20ResponseMarshaller(new DefaultXacmlFactory());
 	}
 	
 	protected Object invokeInternal(Object source) throws Exception 
