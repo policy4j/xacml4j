@@ -35,13 +35,13 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	@Override
 	public EvaluationContext createContext(Request request) 
 	{
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		return new RootEvaluationContext(handler);
 	}
 	
 	class RootEvaluationContext extends BaseEvaluationContext
 	{
-		public RootEvaluationContext(ContextHandler contextHandler) {
+		public RootEvaluationContext(EvaluationContextHandler contextHandler) {
 			super(
 					DefaultEvaluationContextFactory.this.validateFuncParamsAtRuntime,
 					contextHandler,

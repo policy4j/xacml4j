@@ -26,7 +26,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
 	
-	private ContextHandler contextHandler;
+	private EvaluationContextHandler contextHandler;
 	private PolicyReferenceResolver policyResolver;
 	
 	private Collection<Advice> advices;
@@ -56,7 +56,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 * @param xpathFactory
 	 */
 	protected BaseEvaluationContext(
-			ContextHandler attributeService, 
+			EvaluationContextHandler attributeService, 
 			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
 		this(false, attributeService, xpathProvider, policyResolver);
@@ -64,7 +64,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			ContextHandler attributeService,
+			EvaluationContextHandler attributeService,
 			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);

@@ -31,7 +31,17 @@ public interface XacmlFactory
 	AttributeValue createAttributeValue(String typeId, Object value) 
 		throws XacmlSyntaxException;
 	
-	AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> values) 
+	/**
+	 * Creates an {@link AttributeValue} of the given type
+	 * 
+	 * @param typeId a type identifier
+	 * @param value an attribute value
+	 * @param values an additional information
+	 * @return {@link AttributeValue} instance
+	 * @throws XacmlSyntaxException if an XACML
+	 * syntax error occurs
+	 */
+	AttributeValue createAttributeValue(String typeId, Object value, Map<QName, String> other) 
 		throws XacmlSyntaxException;
 	
 	/**

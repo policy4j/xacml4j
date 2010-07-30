@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class DefaultContextHandler implements ContextHandler
+public class DefaultContextHandler implements EvaluationContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultContextHandler.class);
 	

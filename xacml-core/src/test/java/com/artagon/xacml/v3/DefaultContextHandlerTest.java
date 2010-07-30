@@ -68,7 +68,7 @@ public class DefaultContextHandlerTest
 		expect(request.getOnlyAttributes(AttributeCategoryId.RESOURCE)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content1).times(2);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Node content2 = handler.getContent(context, AttributeCategoryId.RESOURCE);
 		assertSame(content1, content2);
 		verify(context, request, attributes, pip);
@@ -83,7 +83,7 @@ public class DefaultContextHandlerTest
 		expect(attributes.getContent()).andReturn(null).times(2);
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Node content2 = handler.getContent(context, AttributeCategoryId.RESOURCE);
 		assertNull(content2);
 		verify(context, request, attributes, pip);
@@ -100,7 +100,7 @@ public class DefaultContextHandlerTest
 		Capture<RequestAttributesCallback> c = new Capture<RequestAttributesCallback>();
 		expect(pip.resolve(eq(context), eq(AttributeCategoryId.RESOURCE), capture(c))).andReturn(null);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Node content2 = handler.getContent(context, AttributeCategoryId.RESOURCE);
 		assertNull(content2);
 		verify(context, request, attributes, pip);
@@ -124,7 +124,7 @@ public class DefaultContextHandlerTest
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, XacmlDataTypes.INTEGER.bag(XacmlDataTypes.INTEGER.create(555555)));
 		verify(context, request, attributes, pip);
@@ -147,7 +147,7 @@ public class DefaultContextHandlerTest
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		handler.resolve(context, ref);
 		verify(context, request, attributes, pip);
 	}
@@ -169,7 +169,7 @@ public class DefaultContextHandlerTest
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		handler.resolve(context, ref);
 		verify(context, request, attributes, pip);
 	}
@@ -191,7 +191,7 @@ public class DefaultContextHandlerTest
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		handler.resolve(context, ref);
 		verify(context, request, attributes, pip);
 	}
@@ -213,7 +213,7 @@ public class DefaultContextHandlerTest
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
-		ContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, XacmlDataTypes.INTEGER.emptyBag());
 		verify(context, request, attributes, pip);
@@ -231,7 +231,7 @@ public class DefaultContextHandlerTest
 		andReturn(Collections.singleton(XacmlDataTypes.ANYURI.create("testValue")));
 		
 		replay(context, request, attributes, pip);
-		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
@@ -251,7 +251,7 @@ public class DefaultContextHandlerTest
 		Capture<RequestAttributesCallback> c = new Capture<RequestAttributesCallback>();
 		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")));
 		replay(context, request, attributes, pip);
-		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
@@ -269,7 +269,7 @@ public class DefaultContextHandlerTest
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
 		replay(context, request, attributes, pip);
-		ContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.emptyBag(), v);
 		verify(context, request, attributes, pip);

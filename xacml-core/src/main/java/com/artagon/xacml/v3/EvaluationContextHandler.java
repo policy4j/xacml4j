@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import org.w3c.dom.Node;
 
-public interface ContextHandler 
+public interface EvaluationContextHandler 
 {
 	/**
 	 * Gets content for a given attribute category
