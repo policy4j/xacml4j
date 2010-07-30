@@ -7,6 +7,13 @@ public final class PolicyIdentifier extends XacmlObject
 	private String id;
 	private Version version;
 	
+	/**
+	 * Constructs policy identifier from given
+	 * id and  version
+	 * 
+	 * @param id a policy identifier
+	 * @param version a policy version
+	 */
 	public PolicyIdentifier(String id, Version version)
 	{
 		Preconditions.checkNotNull(id);

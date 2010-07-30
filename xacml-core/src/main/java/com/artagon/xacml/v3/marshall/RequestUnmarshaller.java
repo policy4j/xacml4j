@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.artagon.xacml.v3.Request;
 import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 
 public interface RequestUnmarshaller 
 {
@@ -16,5 +17,5 @@ public interface RequestUnmarshaller
 	 * @throws IOException
 	 */
 	Request unmarshalRequest(Object source) 
-		throws RequestSyntaxException, IOException;
+		throws XacmlSyntaxException, IOException;
 }
