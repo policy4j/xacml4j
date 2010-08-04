@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.RequestAttributesCallback;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
+public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
 	private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
 	private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";

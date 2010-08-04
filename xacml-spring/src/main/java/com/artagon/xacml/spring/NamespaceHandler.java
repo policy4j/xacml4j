@@ -9,5 +9,6 @@ public class NamespaceHandler extends NamespaceHandlerSupport
 	public void init() 
 	{
 		registerBeanDefinitionParser("function-providers", new FunctionProviderDefinitionParser());
+		registerBeanDefinitionParser("pip",  new PolicyInformationPointDefinitionParser());
 	}
 }

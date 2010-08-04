@@ -1,41 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsd:schema xmlns="http://www.artagon.com/schema/xacml/spring"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:beans="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
-  targetNamespace="http://www.artagon.com/schema/xacml/spring"
-  elementFormDefault="qualified"
-  attributeFormDefault="unqualified">
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
+	targetNamespace="http://www.artagon.com/schema/xacml/spring"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-  <xsd:import namespace="http://www.springframework.org/schema/beans"  schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd"/>
+	<xsd:import namespace="http://www.springframework.org/schema/beans"
+		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
+
+
+	<xsd:element name="function-provider">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="class" type="xsd:string" use="optional" />
+					<xsd:attribute name="ref" type="xsd:string" use="optional" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="function-providers">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="xacml-spring:function-provider"
+							minOccurs="1" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 	
- 
- <xsd:element name="function-provider">
-      <xsd:complexType>
-         <xsd:complexContent>
-            <xsd:extension base="beans:identifiedType">
-            	<xsd:attribute name="class" type="xsd:string" use="optional"/>
-            	<xsd:attribute name="ref" type="xsd:string" use="optional"/>
-            </xsd:extension>
-         </xsd:complexContent>
-      </xsd:complexType>
- </xsd:element>
- 
- <xsd:element name="function-providers">
-      <xsd:complexType>
-         <xsd:complexContent>
-            <xsd:extension base="beans:identifiedType">
-            	<xsd:sequence>
-            		<xsd:element ref="xacml-spring:function-provider" minOccurs="1" maxOccurs="unbounded"/>
-            	</xsd:sequence>
-            </xsd:extension>
-         </xsd:complexContent>
-      </xsd:complexType>
- </xsd:element>
+	<xsd:element name="attribute-resolver">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="ref" type="xsd:string" use="optional" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 
- 
-   	
-  
+	<xsd:element name="pip">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="xacml-spring:attribute-resolver"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
 </xsd:schema>
