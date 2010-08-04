@@ -13,7 +13,14 @@ import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
-public final class AggregatingDecisionCombiningAlgorithmProvider implements DecisionCombiningAlgorithmProvider
+/**
+ * An implementation of {@link DecisionCombiningAlgorithmProvider}
+ * which aggregates other instance of {@link DecisionCombiningAlgorithmProvider}
+ * 
+ * @author Giedrius Trumpickas
+ */
+public  class AggregatingDecisionCombiningAlgorithmProvider 
+	implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithmProvider> ruleAlgorithms;
 	private Map<String, DecisionCombiningAlgorithmProvider> policyAlgorithms;

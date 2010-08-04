@@ -10,9 +10,20 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
-public class AggregatingFunctionProvider implements FunctionProvider
+/**
+ * An implementation of {@link FunctionProvider} which
+ * aggregates instances of {@link FunctionProvider}
+ * 
+ * @author Giedrius Trumpickas
+ */
+public class AggregatingFunctionProvider 
+	implements FunctionProvider
 {
 	private Map<String, FunctionProvider> functions;
+	
+	public AggregatingFunctionProvider(){
+		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
+	}
 	
 	public AggregatingFunctionProvider(FunctionProvider ...providers){
 		this(Arrays.asList(providers));
@@ -38,7 +49,7 @@ public class AggregatingFunctionProvider implements FunctionProvider
 	 * given provider already exported via provider previously registered
 	 * with this aggregating provider
 	 */
-	public void add(FunctionProvider provider)
+	public final void add(FunctionProvider provider)
 	{
 		Preconditions.checkNotNull(provider);
 		for(String functionId : provider.getProvidedFunctions()){
@@ -54,18 +65,18 @@ public class AggregatingFunctionProvider implements FunctionProvider
 	}
 	
 	@Override
-	public FunctionSpec getFunction(String functionId) {
+	public final FunctionSpec getFunction(String functionId) {
 		FunctionProvider provider = functions.get(functionId);
 		return (provider != null)?provider.getFunction(functionId):null;
 	}
 
 	@Override
-	public Iterable<String> getProvidedFunctions() {
+	public final Iterable<String> getProvidedFunctions() {
 		return  Collections.unmodifiableCollection(functions.keySet());
 	}
 
 	@Override
-	public boolean isFunctionProvided(String functionId) {
+	public final boolean isFunctionProvided(String functionId) {
 		return functions.containsKey(functionId);
 	}
 	
