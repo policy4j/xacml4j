@@ -29,9 +29,10 @@ public class DefaultXacmlFactory extends BaseXacmlFactory
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms)
 	{
 		super(	new AggregatingFunctionProvider(new DefaultFunctionProvider(), extensionFunctions),
-				new AggregatingDecisionCombiningAlgorithmProvider(
-				new DefaultDecisionCombiningAlgorithms(), 
-				new LegacyDecisionCombiningAlgorithms(), extensionCombiningAlgorithms));
+					new AggregatingDecisionCombiningAlgorithmProvider(
+					new DefaultDecisionCombiningAlgorithms(), 
+					new LegacyDecisionCombiningAlgorithms(), 
+					extensionCombiningAlgorithms));
 	}
 	
 	@Override

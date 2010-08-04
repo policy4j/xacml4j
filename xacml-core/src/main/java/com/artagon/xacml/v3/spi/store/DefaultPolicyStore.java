@@ -58,6 +58,11 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 		policy.accept(new PolicyTreeWalker());
 	}
 	
+	/**
+	 * Adds referenced policy
+	 * 
+	 * @param policy a referenced policy
+	 */
 	public void addReferencedPolicy(CompositeDecisionRule policy)
 	{
 		Preconditions.checkArgument(policy != null); 

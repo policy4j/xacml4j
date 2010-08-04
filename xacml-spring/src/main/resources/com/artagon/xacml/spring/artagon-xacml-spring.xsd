@@ -57,5 +57,16 @@
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-
+	
+	<xsd:element name="pdp">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="pip-ref" type="xsd:string" use="required"/>
+					<xsd:attribute name="policyStore-ref" type="xsd:string" use="required"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
 </xsd:schema>
