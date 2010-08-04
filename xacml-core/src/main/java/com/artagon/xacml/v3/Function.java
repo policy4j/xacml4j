@@ -1,8 +1,11 @@
 package com.artagon.xacml.v3;
 
 
-
-
+/**
+ * A XACML function
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface Function 
 {
 	/**
@@ -17,6 +20,6 @@ public interface Function
 	 * while invoking function or evaluating function
 	 * parameters
 	 */
-	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...parameters) 
-		throws EvaluationException;
+	<T extends ValueExpression> T invoke(EvaluationContext context, 
+			Expression ...parameters) throws EvaluationException;
 }

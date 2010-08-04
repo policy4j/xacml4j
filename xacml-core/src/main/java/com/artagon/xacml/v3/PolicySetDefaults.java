@@ -1,7 +1,6 @@
 package com.artagon.xacml.v3;
 
 
-
 public class PolicySetDefaults extends BaseCompositeDecisionRuleDefaults
 {
 	public PolicySetDefaults(XPathVersion version){

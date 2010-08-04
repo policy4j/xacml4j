@@ -18,6 +18,17 @@ public interface XacmlFactory
 	AttributeValueType createAttributeValueType(String dataTypeId) 
 		throws XacmlSyntaxException;
 	
+	Advice createAdvice(String adviceId, 
+			Collection<AttributeAssignment> attributes) 
+		throws XacmlSyntaxException;
+	
+	Obligation createObligation(
+			String obligationId, 
+			Effect effect,
+			Collection<AttributeAssignment> attributes) 
+		throws XacmlSyntaxException;
+	
+	
 	/**
 	 * Creates an {@link AttributeValue} of the
 	 * given type initialized with a given value
@@ -312,5 +323,9 @@ public interface XacmlFactory
 			Collection<CompositeDecisionRule> policies, 
 			Collection<ObligationExpression> obligation,
 			Collection<AdviceExpression> advice) throws XacmlSyntaxException;
+	
+	
+	AttributesReference createAttributesReference(String refercenceId) 
+		throws XacmlSyntaxException;
 
 }

@@ -2,7 +2,12 @@ package com.artagon.xacml.v3;
 
 import com.google.common.base.Preconditions;
 
-public  class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 
+/**
+ * A XACML {@link PolicySet} reference
+ * 
+ * @author Giedrius Trumpickas
+ */
+public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 
 	implements PolicyElement
 {
 

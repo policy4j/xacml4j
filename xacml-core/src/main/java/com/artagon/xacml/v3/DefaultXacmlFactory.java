@@ -390,4 +390,28 @@ public class DefaultXacmlFactory extends BaseXacmlFactory
 		}
 		return type;
 	}
+
+	@Override
+	public Advice createAdvice(String adviceId,
+			Collection<AttributeAssignment> attributes)
+			throws XacmlSyntaxException {
+		return new Advice(adviceId, attributes);
+	}
+
+	@Override
+	public Obligation createObligation(
+			String obligationId,
+			Effect effect,
+			Collection<AttributeAssignment> attributes)
+			throws XacmlSyntaxException {
+		return  new Obligation(obligationId, attributes, effect);
+	}
+
+	
+	@Override
+	public AttributesReference createAttributesReference(String refercenceId)
+			throws XacmlSyntaxException {
+		return new AttributesReference(refercenceId);
+	}
+	
 }

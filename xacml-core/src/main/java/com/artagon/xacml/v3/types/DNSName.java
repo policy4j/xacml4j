@@ -4,23 +4,24 @@ import java.io.Serializable;
 
 import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
+import com.google.common.net.InternetDomainName;
 
 public final class DNSName extends XacmlObject implements Serializable
 {
 	private static final long serialVersionUID = 5614192765257814372L;
-	private String name;
+	private InternetDomainName name;
 	private PortRange portRange;
 	
 	public DNSName(String name, PortRange range)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(range);
-		this.name = name;
+		this.name = InternetDomainName.from(name);
 		this.portRange = range;
 	}
 	
 	public String getName(){
-		return name;
+		return name.name();
 	}
 	
 	public PortRange getPortRange(){
@@ -42,7 +43,7 @@ public final class DNSName extends XacmlObject implements Serializable
 		
 	@Override
 	public String toString(){
-		StringBuilder b = new StringBuilder(name);
+		StringBuilder b = new StringBuilder(name.name());
 		if(!portRange.isUnbound()){
 			b.append(":").append(portRange.toString());
 		}
