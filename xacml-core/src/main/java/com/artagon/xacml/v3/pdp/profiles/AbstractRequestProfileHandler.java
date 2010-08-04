@@ -24,5 +24,4 @@ public abstract class AbstractRequestProfileHandler implements RequestProfileHan
 		Preconditions.checkNotNull(handler);
 		this.next = handler;
 	}
-
 }
