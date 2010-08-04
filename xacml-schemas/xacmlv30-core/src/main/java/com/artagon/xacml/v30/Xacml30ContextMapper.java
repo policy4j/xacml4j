@@ -80,14 +80,9 @@ public class Xacml30ContextMapper
 	{
 		Collection<AttributesReference> references = new LinkedList<AttributesReference>();
 		for(AttributesReferenceType r : m.getAttributesReference()){
-			references.add(create(r));
+			references.add(factory.createAttributesReference(r.getReferenceId().toString()));
 		}
 		return new RequestReference(references);
-	}
-	
-	private AttributesReference create(AttributesReferenceType ref) throws XacmlSyntaxException
-	{
-		return null;
 	}
 	
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
