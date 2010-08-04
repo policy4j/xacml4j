@@ -42,6 +42,18 @@ public class DefaultXacmlFactory extends BaseXacmlFactory
 				Collections.<QName, String>emptyMap());
 	}
 	
+	public AttributeValue createAttributeValue(String typeId, Object value, 
+			Object ...values) 
+		throws XacmlSyntaxException
+	{
+		AttributeValueType type = createAttributeValueType(typeId);
+		try{
+			return type.create(value, values);
+		}catch(Exception e){
+			throw new XacmlSyntaxException(e);
+		}
+	}
+	
 	@Override
 	public AttributeValue createAttributeValue(String typeId, Object value, 
 			Map<QName, String> values) 

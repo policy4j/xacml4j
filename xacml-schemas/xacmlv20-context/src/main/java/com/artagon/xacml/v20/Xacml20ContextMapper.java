@@ -371,9 +371,12 @@ class Xacml20ContextMapper
 					"resolved to valid XACML type", dataTypeId);
 		}
 		Object o = Iterables.getOnlyElement(content);
-		if(dataTypeId.equals(XacmlDataTypes.XPATHEXPRESSION.getTypeId())){
+		if(log.isDebugEnabled()){
+			log.debug("Creating typeId=\"{}\" value=\"{}\"", dataType, o);
+		}
+		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
 			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
-			return factory.createAttributeValue(dataTypeId, o, value.getOtherAttributes());
+			return factory.createAttributeValue(dataTypeId, xpath, categoryId);
 		}
 		return dataType.create(o);
 	}

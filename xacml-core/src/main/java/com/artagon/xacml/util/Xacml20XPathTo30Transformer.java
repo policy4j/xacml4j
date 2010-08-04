@@ -1,5 +1,8 @@
 package com.artagon.xacml.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
@@ -7,6 +10,8 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class Xacml20XPathTo30Transformer 
 {
+	private final static Logger log = LoggerFactory.getLogger(Xacml20XPathTo30Transformer.class);
+	
 	private final static String REQUEST_ELEMENT_NAME = "Request";
 	private final static String RESOURCE_ELEMENT_NAME = "Resource";
 	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
@@ -55,6 +60,11 @@ public class Xacml20XPathTo30Transformer
 		}
 		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
 		buf.delete(firstIndex, lastIndex + 1);
-		return buf.toString();
+		String transformedXpath =  buf.toString();
+		if(log.isDebugEnabled()){
+			log.debug("Original xpath=\"{}\", " +
+					"transformed xpath=\"{}\"", xpath, transformedXpath);
+		}
+		return transformedXpath;
 	}
 }
