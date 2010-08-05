@@ -11,9 +11,8 @@ import javax.xml.bind.Unmarshaller;
 import org.oasis.xacml.v20.context.RequestType;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestSyntaxException;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.google.common.base.Preconditions;
@@ -22,13 +21,13 @@ public class Xacml20RequestUnmarshaller implements RequestUnmarshaller
 {
 	private Xacml20ContextMapper mapper;
 	
-	public Xacml20RequestUnmarshaller(XacmlFactory factory){
-		this.mapper = new Xacml20ContextMapper(factory);
+	public Xacml20RequestUnmarshaller(){
+		this.mapper = new Xacml20ContextMapper();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Request unmarshalRequest(Object source)
+	public RequestContext unmarshalRequest(Object source)
 			throws XacmlSyntaxException, IOException {
 		Preconditions.checkNotNull(source);
 		try{

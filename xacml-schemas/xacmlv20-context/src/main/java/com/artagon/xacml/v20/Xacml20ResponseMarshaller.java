@@ -12,14 +12,13 @@ import javax.xml.stream.XMLStreamWriter;
 import org.oasis.xacml.v20.context.ObjectFactory;
 import org.oasis.xacml.v20.context.ResponseType;
 
-import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.google.common.base.Preconditions;
 
 /**
- * Marshals XACML 3.0 {@link Response} to the XACML 2.0 response
+ * Marshals XACML 3.0 {@link ResponseContext} to the XACML 2.0 response
  * 
  * @author Giedrius Trumpickas
  */
@@ -28,14 +27,14 @@ public class Xacml20ResponseMarshaller implements ResponseMarshaller
 	private Xacml20ContextMapper mapper;
 	private ObjectFactory contextJaxbFactory;
 	
-	public Xacml20ResponseMarshaller(XacmlFactory factory){
-		this.mapper = new Xacml20ContextMapper(factory);
+	public Xacml20ResponseMarshaller(){
+		this.mapper = new Xacml20ContextMapper();
 		this.contextJaxbFactory = new ObjectFactory();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void marshall(Response response, Object output) throws IOException 
+	public void marshall(ResponseContext response, Object output) throws IOException 
 	{
 		Preconditions.checkArgument(response != null);
 		Preconditions.checkArgument(output != null);
@@ -67,7 +66,7 @@ public class Xacml20ResponseMarshaller implements ResponseMarshaller
 	}
 
 	@Override
-	public Object marshall(Response response) throws IOException 
+	public Object marshall(ResponseContext response) throws IOException 
 	{
 		ResponseType responseType = mapper.create(response);
 		return contextJaxbFactory.createResponse(responseType);

@@ -42,12 +42,11 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestSyntaxException;
-import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
@@ -100,20 +99,17 @@ class Xacml20ContextMapper
 		}
 	}
 	
-	private XacmlFactory factory;
 	
-	public Xacml20ContextMapper(XacmlFactory factory){
+	public Xacml20ContextMapper(){
 		Preconditions.checkState(context != null, 
 				"Failed to initialize JAXB context");
-		Preconditions.checkArgument(factory != null);
-		this.factory = factory;
 	}
 	
 	static JAXBContext getJaxbContext(){
 		return context;
 	}
 	
-	public ResponseType create(Response response)
+	public ResponseType create(ResponseContext response)
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Mapping response=\"{}\"", response);
@@ -126,13 +122,13 @@ class Xacml20ContextMapper
 		return responseV2;
 	}
 	
-	public Response create(ResponseType response)
+	public ResponseContext create(ResponseType response)
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		for(ResultType result : response.getResult()){
 			results.add(create(result));
 		}
-		return new Response(results);
+		return new ResponseContext(results);
 	}
 	
 	private Result create(ResultType result)
@@ -222,7 +218,7 @@ class Xacml20ContextMapper
 		return attr;
 	}
 	
-	public Request create(RequestType req) throws XacmlSyntaxException
+	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		if(!req.getResource().isEmpty()){
@@ -248,7 +244,7 @@ class Xacml20ContextMapper
 		{
 			attributes.add(createEnviroment(req.getEnvironment()));
 		}
-		return new Request(false, attributes);
+		return new RequestContext(false, attributes);
 	}
 	
 	public Collection<Attributes> normalize(Multimap<AttributeCategoryId, Attributes> attributes)
@@ -364,7 +360,7 @@ class Xacml20ContextMapper
 				content.isEmpty()){
 			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypes.getByTypeId(dataTypeId);
+		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypes.getType(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be " +
@@ -376,7 +372,7 @@ class Xacml20ContextMapper
 		}
 		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
 			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
-			return factory.createAttributeValue(dataTypeId, xpath, categoryId);
+			return dataType.create(xpath, categoryId);
 		}
 		return dataType.create(o);
 	}
