@@ -2,8 +2,6 @@ package com.artagon.xacml.v3;
 
 import java.util.Collection;
 
-
-
 /**
  * In many applications, policies specify actions that MUST be performed, 
  * either instead of, or in addition to, actions that MAY be performed. 

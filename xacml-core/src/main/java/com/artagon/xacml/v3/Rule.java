@@ -28,7 +28,8 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 			String description,
 			Target target,
 			Condition condition, 
-			Effect effect, Collection<AdviceExpression> adviceExpressions,
+			Effect effect, 
+			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(ruleId);
