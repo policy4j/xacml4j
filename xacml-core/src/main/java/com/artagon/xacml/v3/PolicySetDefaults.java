@@ -7,7 +7,7 @@ public class PolicySetDefaults extends BaseCompositeDecisionRuleDefaults
 		super(version);
 	}
 
-	public static PolicySetDefaults createPolicySetDefaults(Object... objects)
+	public static PolicySetDefaults create(Object... objects)
 			throws XacmlSyntaxException {
 		if(objects != null && 
 				objects.length > 0){

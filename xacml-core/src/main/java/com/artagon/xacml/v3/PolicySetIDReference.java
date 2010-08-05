@@ -20,6 +20,15 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		super(id, version, null, null);
 	}
 
+	public static PolicySetIDReference create(String policyId, String version, 
+			String earliest, String latest) throws XacmlSyntaxException
+	{
+		return new PolicySetIDReference(policyId,
+				(version != null)?VersionMatch.parse(version):null,
+				(earliest != null)?VersionMatch.parse(earliest):null,
+				(latest != null)?VersionMatch.parse(latest):null);
+	}
+	
 	public boolean isReferenceTo(PolicySet policySet) {
 		return policySet != null && matches(policySet.getId(), policySet.getVersion());
 	}

@@ -20,7 +20,16 @@ public class PolicyIDReference extends
 	public boolean isReferenceTo(Policy policy) {
 		return policy != null && matches(policy.getId(), policy.getVersion());
 	}
-
+	
+	public static PolicyIDReference create(String policyId, String version, 
+			String earliest, String latest) throws XacmlSyntaxException
+	{
+		return new PolicyIDReference(policyId,
+				(version != null)?VersionMatch.parse(version):null,
+				(earliest != null)?VersionMatch.parse(earliest):null,
+				(latest != null)?VersionMatch.parse(latest):null);
+	}
+	
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
