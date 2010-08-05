@@ -38,7 +38,7 @@ public class PolicyTest
 	
 	private DecisionCombiningAlgorithm<Rule> combingingAlg;
 	
-	private Request request;
+	private RequestContext request;
 	
 	private List<Rule> rules;
 	
@@ -83,7 +83,7 @@ public class PolicyTest
 		this.repository = createStrictMock(PolicyStore.class);
 		this.xpathProvider = createStrictMock(XPathProvider.class);
 		this.pip = createStrictMock(PolicyInformationPoint.class);
-		this.request = createStrictMock(Request.class);
+		this.request = createStrictMock(RequestContext.class);
 		this.context = new DefaultEvaluationContextFactory(
 				repository, xpathProvider, pip).createContext(request);
 	}

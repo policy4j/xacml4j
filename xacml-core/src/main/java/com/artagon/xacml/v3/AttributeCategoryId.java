@@ -31,8 +31,24 @@ public enum AttributeCategoryId
 		this.id = id;
 	}
 	
-	public static AttributeCategoryId parse(String v){
-		return BY_ID.get(v);
+	/**
+	 * Parses given value to the {@link AttributeCategoryId}
+	 * 
+	 * @param v a value
+	 * @return {@link AttributeCategoryId}
+	 * @throws XacmlSyntaxException if given
+	 * value can not be converted to the
+	 * {@link AttributeCategoryId} value
+	 */
+	public static AttributeCategoryId parse(String v) 
+		throws XacmlSyntaxException
+	{
+		AttributeCategoryId c = BY_ID.get(v);
+		if(c == null){
+			throw new XacmlSyntaxException(
+					"Unknown c=attribute category=\"%s\"", v);
+		}
+		return c;
 	}
 	
 	@Override

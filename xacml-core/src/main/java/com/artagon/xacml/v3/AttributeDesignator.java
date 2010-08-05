@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 /**
@@ -31,7 +32,17 @@ public class AttributeDesignator extends AttributeReference
 	private String attributeId;
 	private String issuer;
 	
-	AttributeDesignator(
+	/**
+	 * Creates attribute designator
+	 * 
+	 * @param category an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param issuer an attribute issuer
+	 * @param dataType an attribute data type
+	 * @param mustBePresent a flag indicating
+	 * that attribute must be present in the context
+	 */
+	public AttributeDesignator(
 			AttributeCategoryId  category,
 			String attributeId, 
 			String issuer,
@@ -41,6 +52,24 @@ public class AttributeDesignator extends AttributeReference
 		Preconditions.checkNotNull(attributeId);
 		this.issuer = issuer;
 		this.attributeId = attributeId;
+	}
+	
+	
+	public static AttributeDesignator create(String categoryId, 
+			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
+		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		AttributeValueType type = XacmlDataTypes.getType(dataTypeId);
+		return new AttributeDesignator(category, attributeId, 
+				issuer, type, mustBePresent);
+	}
+	
+	public static AttributeDesignator create(String categoryId, 
+			String attributeId, String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
+		return create(categoryId, attributeId, null, dataTypeId, mustBePresent);
 	}
 	
 	/**

@@ -51,10 +51,10 @@ public class RequestTest
 	@Test
 	public void testHasRepeatingCategories()
 	{	
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
 		assertFalse(request.hasRepeatingCategories());
-		request = new Request(false, 
+		request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		assertTrue(request.hasRepeatingCategories());
 	}
@@ -64,7 +64,7 @@ public class RequestTest
 	public void testCreateRequest()
 	{
 
-		Request request1 = new Request(false, 
+		RequestContext request1 = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
@@ -72,7 +72,7 @@ public class RequestTest
 		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
 		assertTrue(request1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
 		
-		Request request2 = new Request(true, 
+		RequestContext request2 = new RequestContext(true, 
 				Arrays.asList(subject0, resource0, resource1));
 		
 		assertTrue(request2.isReturnPolicyIdList());
@@ -85,7 +85,7 @@ public class RequestTest
 	public void testGetAttributesByCategory()
 	{
 
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		Collection<Attributes> attr = request.getAttributes(AttributeCategoryId.RESOURCE);
 		assertEquals(2, attr.size());
@@ -99,7 +99,7 @@ public class RequestTest
 	public void testGetAttributeByCategory()
 	{
 
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
 		Collection<Attributes> attr = request.getAttributes(AttributeCategoryId.ACTION);
 		assertNotNull(attr);		
@@ -108,7 +108,7 @@ public class RequestTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetOnlyAttributesMultipleInstancesOfTheSameCategory()
 	{
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		request.getOnlyAttributes(AttributeCategoryId.RESOURCE);		
 	}
@@ -116,7 +116,7 @@ public class RequestTest
 	@Test
 	public void testGetOnlyAttributeSingleInstanceOfTheSameCategory()
 	{
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
 		Attributes attr = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);		
 		assertEquals(resource0, attr);
@@ -124,7 +124,7 @@ public class RequestTest
 	
 	@Test
 	public void testGetRequestDefaults(){
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
 		assertNotNull(request.getRequestDefaults());
 		assertEquals(XPathVersion.XPATH1, request.getRequestDefaults().getXPathVersion());
@@ -134,17 +134,17 @@ public class RequestTest
 	public void testGetIncludeInResult()
 	{
 		
-		Request request0 = new Request(false, 
+		RequestContext request0 = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
 		
 		assertEquals(0, request0.getIncludeInResultAttributes().size());
 		
-		Request request1 = new Request(false, 
+		RequestContext request1 = new RequestContext(false, 
 				Arrays.asList(subject0, subject1, resource0, resource1));
 		
 		assertEquals(2, request1.getIncludeInResultAttributes().size());
 		
-		Request request2 = new Request(false, 
+		RequestContext request2 = new RequestContext(false, 
 				Arrays.asList(subject0, subject1, resource0, resource1));
 		assertEquals(2, request2.getIncludeInResultAttributes().size());	
 	}

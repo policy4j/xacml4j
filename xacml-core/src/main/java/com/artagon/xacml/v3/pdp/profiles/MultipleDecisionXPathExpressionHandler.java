@@ -16,7 +16,7 @@ import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfileHandler
+final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(MultipleDecisionXPathExpressionHandler.class);
 	
@@ -48,7 +48,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 	}
 	
 	@Override
-	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
 	{
 		if(request.hasRepeatingCategories()){
 			return handleNext(request, pdp); 
@@ -73,7 +73,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 			List<Result> results = new LinkedList<Result>();
 			for(List<Attributes> requestAttr : cartesian)
 			{	
-				Request req = new Request(request.isReturnPolicyIdList(), 
+				RequestContext req = new RequestContext(request.isReturnPolicyIdList(), 
 						requestAttr, request.getRequestDefaults());
 				if(log.isDebugEnabled()){
 					log.debug("Created request=\"{}\"", req);
@@ -88,7 +88,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestProfil
 		}
 	}
 	
-	private Set<Attributes> getAttributes(Request request, Attributes attribute) 
+	private Set<Attributes> getAttributes(RequestContext request, Attributes attribute) 
 		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 

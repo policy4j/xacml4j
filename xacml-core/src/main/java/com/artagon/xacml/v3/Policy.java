@@ -36,7 +36,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	 * @param adviceExpressions an advice expressions
 	 * @param obligationExpressions an obligation expressions
 	 */
-	Policy(
+	public Policy(
 			String policyId,
 			Version version,
 			String description,
@@ -65,7 +65,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		}
 	}
 	
-	Policy(
+	public Policy(
 			String policyId,
 			Version version,
 			String description,
@@ -95,7 +95,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	 * @param obligations a collection of 
 	 * obligation expressions
 	 */
-	Policy(
+	public Policy(
 			String policyId, 
 			Version version,
 			DecisionCombiningAlgorithm<Rule> combine,
@@ -124,7 +124,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	 * @param combine a rules combining algorithm
 	 * @param rules an array of rules
 	 */
-	Policy(
+	public Policy(
 			String policyId, 
 			Version version,
 			DecisionCombiningAlgorithm<Rule> combine,

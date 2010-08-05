@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
@@ -59,11 +59,11 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource0, resource1));
 		
-		Capture<Request> c0 = new Capture<Request>();
-		Capture<Request> c1 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
@@ -77,8 +77,8 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
-		Request r0 = c0.getValue();
-		Request r1 = c1.getValue();
+		RequestContext r0 = c0.getValue();
+		RequestContext r1 = c1.getValue();
 		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
 		assertEquals(1, r0.getAttributes(AttributeCategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
@@ -105,10 +105,10 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource0));
 		
-		Capture<Request> c0 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
@@ -119,7 +119,7 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		Request r0 = c0.getValue();
+		RequestContext r0 = c0.getValue();
 		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
 		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
 		verify(pdp);
@@ -128,10 +128,10 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 	@Test
 	public void testWithEmptyRequest()
 	{
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Collections.<Attributes>emptyList());
 		
-		Capture<Request> c0 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 

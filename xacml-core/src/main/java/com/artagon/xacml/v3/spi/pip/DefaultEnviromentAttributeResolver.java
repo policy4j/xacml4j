@@ -4,7 +4,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.RequestAttributesCallback;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
@@ -23,7 +23,7 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	@Override
 	public BagOfAttributeValues<? extends AttributeValue> resolve(
 			PolicyInformationPointContext context,
-			AttributeDesignator ref, RequestAttributesCallback callback) 
+			AttributeDesignator ref, RequestContextAttributesCallback callback) 
 	{
 		if(ref.getAttributeId().equals(CURRENT_DATETIME)){
 			 return XacmlDataTypes.DATETIME.bag(context.getCurrentDateTime());

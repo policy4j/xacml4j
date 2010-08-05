@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 
-final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProfileHandler
+final class MultipleDecisionRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	
-	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		Collection<RequestReference> references = request.getRequestReferences();
@@ -24,7 +24,7 @@ final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProf
 		}
 		for(RequestReference ref : references){
 			try{
-				Request resolvedRequest = resolveAttributes(request, ref);
+				RequestContext resolvedRequest = resolveAttributes(request, ref);
 				results.addAll(handleNext(resolvedRequest, pdp));
 			}catch(RequestSyntaxException e){
 				results.add(new Result(Decision.INDETERMINATE, e.getStatus(), 
@@ -34,7 +34,7 @@ final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProf
 		return results;
 	}
 	
-	private Request resolveAttributes(Request req, 
+	private RequestContext resolveAttributes(RequestContext req, 
 			RequestReference reqRef) throws RequestSyntaxException
 	{
 		Collection<Attributes> resolved = new LinkedList<Attributes>();
@@ -47,7 +47,7 @@ final class MultipleDecisionRequestReferencesHandler extends AbstractRequestProf
 			}
 			resolved.add(attributes);
 		}
-		return new Request(req.isReturnPolicyIdList(), resolved);
+		return new RequestContext(req.isReturnPolicyIdList(), resolved);
 	}
 	
 }

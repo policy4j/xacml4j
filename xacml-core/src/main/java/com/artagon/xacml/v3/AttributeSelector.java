@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 
@@ -14,7 +15,7 @@ public class AttributeSelector extends
 	private String xpath;
 	private String contextAttributeId;
 	
-	AttributeSelector(
+	public AttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
 			String contextAttributeId,
@@ -26,12 +27,29 @@ public class AttributeSelector extends
 		this.contextAttributeId = contextAttributeId;
 	}
 	
-	AttributeSelector(
+	public AttributeSelector(
 			AttributeCategoryId category, 
 			String xpath, 
 			AttributeValueType dataType, 
 			boolean mustBePresent){
 		this(category, xpath, null, dataType, mustBePresent);
+	}
+	
+	public AttributeSelector create(String categoryId, String xpath, 
+			String contextAttributeId, String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
+		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		AttributeValueType dataType = XacmlDataTypes.getType(dataTypeId);
+		return new AttributeSelector(category, xpath, 
+				contextAttributeId, dataType, mustBePresent);
+	}
+	
+	public AttributeSelector create(String categoryId, String xpath, 
+			String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
+		return create(categoryId, xpath, null, dataTypeId, mustBePresent);
 	}
 	
 	/**

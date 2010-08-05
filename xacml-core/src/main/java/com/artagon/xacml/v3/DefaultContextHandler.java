@@ -28,7 +28,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
-	private Request request;
+	private RequestContext request;
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 	
@@ -42,7 +42,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	private Map<AttributeCategoryId, Node> contentCache;
 	
 	public DefaultContextHandler(XPathProvider xpathProvider, 
-			Request request, PolicyInformationPoint pip)
+			RequestContext request, PolicyInformationPoint pip)
 	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(!request.hasRepeatingCategories());
@@ -239,7 +239,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
 	}
 
-	class DefaultRequestAttributesCallback implements RequestAttributesCallback
+	class DefaultRequestAttributesCallback implements RequestContextAttributesCallback
 	{
 
 		@SuppressWarnings("unchecked")

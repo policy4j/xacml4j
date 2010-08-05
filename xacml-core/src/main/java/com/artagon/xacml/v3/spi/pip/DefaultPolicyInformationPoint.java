@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.RequestAttributesCallback;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
@@ -45,7 +45,7 @@ public class DefaultPolicyInformationPoint
 	public BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
 			AttributeDesignator ref, 
-			RequestAttributesCallback callback) 
+			RequestContextAttributesCallback callback) 
 	{
 	 	AttributeResolver r = findResolver(context, ref);
 	 	return (BagOfAttributeValues<AttributeValue>)((r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
@@ -54,7 +54,7 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public Node resolve(EvaluationContext context,
-			AttributeCategoryId categoryId, RequestAttributesCallback callback) {
+			AttributeCategoryId categoryId, RequestContextAttributesCallback callback) {
 		return null;
 	} 
 	

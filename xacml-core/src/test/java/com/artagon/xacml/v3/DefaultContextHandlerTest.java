@@ -39,7 +39,7 @@ public class DefaultContextHandlerTest
 	"</md:record>";
 	
 	private EvaluationContext context;
-	private Request request;
+	private RequestContext request;
 	
 	private Node content;
 	
@@ -53,7 +53,7 @@ public class DefaultContextHandlerTest
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = createStrictMock(EvaluationContext.class);
-		this.request = createStrictMock(Request.class);
+		this.request = createStrictMock(RequestContext.class);
 		this.pip = createStrictMock(PolicyInformationPoint.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
 		this.xpathProvider = new DefaultXPathProvider();
@@ -97,7 +97,7 @@ public class DefaultContextHandlerTest
 		expect(request.getOnlyAttributes(AttributeCategoryId.RESOURCE)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(null);
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
-		Capture<RequestAttributesCallback> c = new Capture<RequestAttributesCallback>();
+		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
 		expect(pip.resolve(eq(context), eq(AttributeCategoryId.RESOURCE), capture(c))).andReturn(null);
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
@@ -248,7 +248,7 @@ public class DefaultContextHandlerTest
 		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getType())).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
-		Capture<RequestAttributesCallback> c = new Capture<RequestAttributesCallback>();
+		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
 		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(XacmlDataTypes.ANYURI.bag(XacmlDataTypes.ANYURI.create("testValue")));
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);

@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.spi.pip;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.RequestAttributesCallback;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 
 public interface AttributeResolver 
 {
@@ -17,7 +17,7 @@ public interface AttributeResolver
 	BagOfAttributeValues<? extends AttributeValue> resolve(
 			PolicyInformationPointContext context,
 			AttributeDesignator ref, 
-			RequestAttributesCallback callback);
+			RequestContextAttributesCallback callback);
 	
 	boolean canResolve(AttributeDesignator ref);
 }

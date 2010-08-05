@@ -8,12 +8,12 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.Request;
-import com.artagon.xacml.v3.Response;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.pdp.profiles.RequestProfileHandlerChain;
+import com.artagon.xacml.v3.pdp.profiles.RequestContextHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyStore;
 import com.google.common.base.Preconditions;
 
@@ -22,7 +22,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 {
 	private EvaluationContextFactory factory;
 	private PolicyStore policyRepository;
-	private RequestProfileHandlerChain requestProcessingPipeline;
+	private RequestContextHandlerChain requestProcessingPipeline;
 	
 	public DefaultPolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
@@ -33,7 +33,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		Preconditions.checkNotNull(policyRepository);
 		this.factory = factory;
 		this.policyRepository = policyRepository;
-		this.requestProcessingPipeline = new RequestProfileHandlerChain(handlers);
+		this.requestProcessingPipeline = new RequestContextHandlerChain(handlers);
 	}
 	
 	public DefaultPolicyDecisionPoint(
@@ -44,13 +44,13 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	}
 
 	@Override
-	public Response decide(Request request)
+	public ResponseContext decide(RequestContext request)
 	{
-		return new Response(requestProcessingPipeline.handle(request, this));			
+		return new ResponseContext(requestProcessingPipeline.handle(request, this));			
 	}
 	
 	@Override
-	public Result requestDecision(Request request) 
+	public Result requestDecision(RequestContext request) 
 	{
 		EvaluationContext context = factory.createContext(request);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();

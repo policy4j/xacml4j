@@ -8,17 +8,17 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestProfileHandler
+public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestContextHandler
 {
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
 	@Override
-	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
 	{
 		if(request.hasRepeatingCategories()){
 			return Collections.singleton(
@@ -64,7 +64,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 			}
 			attributes.add(attrs);
 		}
-		return handleNext(new Request(request.isReturnPolicyIdList(), attributes), pdp);
+		return handleNext(new RequestContext(request.isReturnPolicyIdList(), attributes), pdp);
 	}
 
 }

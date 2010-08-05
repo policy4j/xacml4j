@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public interface RequestAttributesCallback 
+public interface RequestContextAttributesCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context

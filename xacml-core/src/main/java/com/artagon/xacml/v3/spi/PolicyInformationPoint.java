@@ -7,17 +7,17 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.RequestAttributesCallback;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 
 public interface PolicyInformationPoint 
 {
 	BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context, 
 			AttributeDesignator ref, 
-			RequestAttributesCallback callback);
+			RequestContextAttributesCallback callback);
 	
 	Node resolve(
 			EvaluationContext context, 
 			AttributeCategoryId categoryId, 
-			RequestAttributesCallback callback);
+			RequestContextAttributesCallback callback);
 }

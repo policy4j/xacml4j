@@ -4,12 +4,12 @@ import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
-public abstract class BaseXacmlFactory implements XacmlFactory 
+public abstract class BasePolicyFactory 
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	protected BaseXacmlFactory(
+	protected BasePolicyFactory(
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider combiningAlgorithms) {
 		Preconditions.checkNotNull(functions);

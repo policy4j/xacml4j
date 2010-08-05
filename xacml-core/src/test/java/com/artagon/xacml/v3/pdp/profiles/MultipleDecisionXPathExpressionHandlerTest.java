@@ -29,7 +29,7 @@ import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
@@ -88,12 +88,12 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
 		assertFalse(context.hasRepeatingCategories());
-		Capture<Request> c0 = new Capture<Request>();
-		Capture<Request> c1 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
@@ -109,8 +109,8 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Iterator<Result> it = results.iterator();
 		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
 		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
-		Request r0 = c0.getValue();
-		Request r1 = c1.getValue();
+		RequestContext r0 = c0.getValue();
+		RequestContext r1 = c1.getValue();
 		
 		Attribute selector0 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector1 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
@@ -144,14 +144,14 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, content, subjectAttr);
 		
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
 		assertFalse(context.hasRepeatingCategories());
-		Capture<Request> c0 = new Capture<Request>();
-		Capture<Request> c1 = new Capture<Request>();
-		Capture<Request> c2 = new Capture<Request>();
-		Capture<Request> c3 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c2 = new Capture<RequestContext>();
+		Capture<RequestContext> c3 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
@@ -177,10 +177,10 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
 		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
 		
-		Request r0 = c0.getValue();
-		Request r1 = c1.getValue();
-		Request r2 = c2.getValue();
-		Request r3 = c3.getValue();
+		RequestContext r0 = c0.getValue();
+		RequestContext r1 = c1.getValue();
+		RequestContext r2 = c2.getValue();
+		RequestContext r3 = c3.getValue();
 		
 		Attribute selector00 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.RESOURCE).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector01 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS).getAttributes(MultipleDecisionXPathExpressionHandler.CONTENT_SELECTOR));
@@ -230,11 +230,11 @@ public class MultipleDecisionXPathExpressionHandlerTest
 				
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, content, subjectAttr);
 		
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
 		assertFalse(request.hasRepeatingCategories());
-		Capture<Request> c0 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
@@ -269,7 +269,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 				
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
-		Request request = new Request(false, 
+		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
 		assertFalse(request.hasRepeatingCategories());
@@ -285,10 +285,10 @@ public class MultipleDecisionXPathExpressionHandlerTest
 	@Test
 	public void testWithEmptyRequest()
 	{
-		Request context = new Request(false, 
+		RequestContext context = new RequestContext(false, 
 				Collections.<Attributes>emptyList());
 		
-		Capture<Request> c0 = new Capture<Request>();
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 

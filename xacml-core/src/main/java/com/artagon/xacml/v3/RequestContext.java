@@ -15,7 +15,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
-public class Request extends XacmlObject
+public class RequestContext extends XacmlObject
 {	
 	private boolean returnPolicyIdList;
 	private Multimap<AttributeCategoryId, Attributes> attributes;
@@ -34,7 +34,7 @@ public class Request extends XacmlObject
 	 * @param requestReferences a request references
 	 * @param requestDefaults a request defaults
 	 */
-	public Request(boolean returnPolicyIdList, 
+	public RequestContext(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences, 
 			RequestDefaults requestDefaults)
@@ -65,7 +65,7 @@ public class Request extends XacmlObject
 	 * @param attributes a collection of {@link Attributes}
 	 * instances
 	 */
-	public Request(boolean returnPolicyIdList, 
+	public RequestContext(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
@@ -79,7 +79,7 @@ public class Request extends XacmlObject
 	 * @param attributes a collection of {@link Attributes}
 	 * instances
 	 */
-	public Request(boolean returnPolicyIdList, 
+	public RequestContext(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes)
 	{
 		this(returnPolicyIdList, attributes, 
@@ -92,7 +92,7 @@ public class Request extends XacmlObject
 	 * @param attributes a collection of {@link Attributes}
 	 * instances
 	 */
-	public Request(boolean returnPolicyIdList, 
+	public RequestContext(boolean returnPolicyIdList, 
 			Collection<Attributes> attributes, 
 			RequestDefaults requestDefaults)
 	{

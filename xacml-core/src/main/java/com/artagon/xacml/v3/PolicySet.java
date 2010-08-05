@@ -31,7 +31,7 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	 * @param adviceExpressions a collection of advice expressions
 	 * @param obligationExpressions a collection of obligation expressions
 	 */
-	PolicySet(
+	public PolicySet(
 			String id, 
 			Version version,
 			String description,
@@ -55,7 +55,7 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 		this.policySetCombinerParameters = policySetCombinerParameters;
 	}
 	
-	PolicySet(
+	public PolicySet(
 			String id, 
 			Version version,
 			String description,

@@ -8,15 +8,15 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.collect.Sets;
 
-final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestProfileHandler
+final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
 	@Override
-	public Collection<Result> handle(Request request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
 	{
 		if(!request.hasRepeatingCategories()){
 			return handleNext(request, pdp);
@@ -34,7 +34,7 @@ final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestPr
 		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
 		for(List<Attributes> requestAttr : cartesian)
 		{	
-			Request req = new Request(request.isReturnPolicyIdList(), requestAttr);
+			RequestContext req = new RequestContext(request.isReturnPolicyIdList(), requestAttr);
 			results.addAll(handleNext(req, pdp));
 		}
 		return results;

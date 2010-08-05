@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.pdp;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 
 public interface RequestProfileHandler 
@@ -14,7 +14,7 @@ public interface RequestProfileHandler
 	 * @param pdp a policy decision point
 	 * @return collection of {@link Result} instances
 	 */
-	Collection<Result> handle(Request request, PolicyDecisionCallback pdp);
+	Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp);
 	
 	/**
 	 * Sets next handler in a chain

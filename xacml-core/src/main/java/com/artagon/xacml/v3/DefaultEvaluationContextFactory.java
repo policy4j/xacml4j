@@ -33,7 +33,7 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	}
 
 	@Override
-	public EvaluationContext createContext(Request request) 
+	public EvaluationContext createContext(RequestContext request) 
 	{
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		return new RootEvaluationContext(handler);
