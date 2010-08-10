@@ -128,46 +128,59 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 
 	public Policy createPolicy(PolicyType p) throws XacmlSyntaxException 
 	{
-		VariableManager<JAXBElement<?>> m = getVariables(p);
-		Collection<ObligationExpression> obligations = getObligations(p.getObligations());
-		PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
-		Target target = create(p.getTarget());
-		Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
-		Collection<Rule> rules = getRules(p, m);
-		return new Policy(
-				p.getPolicyId(), 
-				Version.parse(p.getVersion()), 
-				p.getDescription(), 
-				policyDefaults, 
-				target, 
-				variableDefinitions.values(),
-				createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()),
-				rules, 
-				Collections.<AdviceExpression> emptyList(),
-				obligations);
+		try{
+			VariableManager<JAXBElement<?>> m = getVariables(p);
+			Collection<ObligationExpression> obligations = getObligations(p.getObligations());
+			PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
+			Target target = create(p.getTarget());
+			Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
+			Collection<Rule> rules = getRules(p, m);
+			return new Policy(
+					p.getPolicyId(), 
+					Version.parse(p.getVersion()), 
+					p.getDescription(), 
+					policyDefaults, 
+					target, 
+					variableDefinitions.values(),
+					createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()),
+					rules, 
+					Collections.<AdviceExpression> emptyList(),
+					obligations);
+		}catch(XacmlSyntaxException e){
+			throw e;
+		}catch(IllegalArgumentException e){
+			throw new XacmlSyntaxException(e);
+		}
 	}
 
 	public PolicySet createPolicySet(PolicySetType p) throws XacmlSyntaxException 
 	{
-		Collection<ObligationExpression> obligations = getObligations(p
-				.getObligations());
-		PolicySetDefaults policySetDefaults = createPolicySetDefaults(p
-				.getPolicySetDefaults());
-		Collection<CompositeDecisionRule> policies = getPolicies(p);
-		Target target = create(p.getTarget());
-		return new PolicySet(
-				p.getPolicySetId(), 
-				Version.parse(p.getVersion()), 
-				p.getDescription(), 
-				policySetDefaults, 
-				target,
-				null, 
-				null,
-				null,
-				createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
-				policies, 
-				Collections.<AdviceExpression> emptyList(),
-				obligations);
+		try
+		{
+			Collection<ObligationExpression> obligations = getObligations(p
+					.getObligations());
+			PolicySetDefaults policySetDefaults = createPolicySetDefaults(p
+					.getPolicySetDefaults());
+			Collection<CompositeDecisionRule> policies = getPolicies(p);
+			Target target = create(p.getTarget());
+			return new PolicySet(
+					p.getPolicySetId(), 
+					Version.parse(p.getVersion()), 
+					p.getDescription(), 
+					policySetDefaults, 
+					target,
+					null, 
+					null,
+					null,
+					createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
+					policies, 
+					Collections.<AdviceExpression> emptyList(),
+					obligations);
+		}catch(XacmlSyntaxException e){
+			throw e;
+		}catch(Exception e){
+			throw new XacmlSyntaxException(e);
+		}
 	}
 
 	private Collection<CompositeDecisionRule> getPolicies(PolicySetType p)
@@ -521,8 +534,7 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 			if (selector != null) {
 				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()), 
-						createSelector(
-								getSelectoryCategory(selector), selector));
+						createSelector(getSelectoryCategory(selector), selector));
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match
@@ -621,8 +633,8 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		AttributeValueType type =  XacmlDataTypes.getType(dataType);
-		return type.create(Iterables.getOnlyElement(content));
+		
+		return XacmlDataTypes.createAttributeValue(dataType, content.iterator().next());
 	}
 	
 	private AttributeSelector createSelector(AttributeCategoryId categoryId,
