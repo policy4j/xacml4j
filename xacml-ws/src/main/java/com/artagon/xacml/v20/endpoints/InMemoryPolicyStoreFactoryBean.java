@@ -9,7 +9,6 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.v20.Xacml20PolicyUnmarshaller;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.PolicyStore;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
@@ -22,12 +21,11 @@ public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean
 	private Collection<Resource> referencedPolicySetResources;
 	private PolicyUnmarshaller policyMapper;
 	
-	public InMemoryPolicyStoreFactoryBean(XacmlFactory factory) 
+	public InMemoryPolicyStoreFactoryBean() 
 		throws JAXBException
 	{
-		Preconditions.checkNotNull(factory);
 		this.policyStore = new DefaultPolicyStore();
-		this.policyMapper = new Xacml20PolicyUnmarshaller(factory);
+		this.policyMapper = new Xacml20PolicyUnmarshaller();
 		this.policySetResources = new LinkedList<Resource>();
 		this.referencedPolicySetResources = new LinkedList<Resource>();
 	}
