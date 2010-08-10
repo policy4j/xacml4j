@@ -39,8 +39,6 @@ import org.oasis.xacml.v20.policy.SubjectsType;
 import org.oasis.xacml.v20.policy.TargetType;
 import org.oasis.xacml.v20.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.policy.VariableReferenceType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.VariableManager;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
@@ -51,7 +49,6 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
@@ -74,13 +71,10 @@ import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
-import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
-import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
 class Xacml20PolicyMapper extends PolicyMapperSupport
 {
