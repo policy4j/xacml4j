@@ -19,13 +19,13 @@ public class PolicyMapperSupport
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
 	protected PolicyMapperSupport(
-			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider combiningAlgorithms) 
+			FunctionProvider extendsionFunctions,
+			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) 
 	{
-		Preconditions.checkNotNull(functions);
-		Preconditions.checkNotNull(combiningAlgorithms);
-		this.functions = functions;
-		this.combingingAlgorithms = combiningAlgorithms;
+		Preconditions.checkNotNull(extendsionFunctions);
+		Preconditions.checkNotNull(extensionCombiningAlgorithms);
+		this.functions = extendsionFunctions;
+		this.combingingAlgorithms = extensionCombiningAlgorithms;
 	}
 	
 	protected PolicyMapperSupport()
@@ -55,6 +55,15 @@ public class PolicyMapperSupport
 		return spec;
 	}
 	
+	/**
+	 * Creates {@link DecisionCombiningAlgorithmProvider} based
+	 * on a given algorithm identifier
+	 * 
+	 * @param algorithmId an algorithm identifier
+	 * @return {@link DecisionCombiningAlgorithmProvider} instance
+	 * @throws XacmlSyntaxException if no algorithm can be found
+	 * for given identifier
+	 */
 	protected final DecisionCombiningAlgorithm<Rule> createRuleCombingingAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
 		DecisionCombiningAlgorithm<Rule> algorithm = combingingAlgorithms
@@ -66,7 +75,16 @@ public class PolicyMapperSupport
 		}
 		return algorithm;
 	}
-
+	
+	/**
+	 * Creates {@link DecisionCombiningAlgorithmProvider} based
+	 * on a given algorithm identifier
+	 * 
+	 * @param algorithmId an algorithm identifier
+	 * @return {@link DecisionCombiningAlgorithmProvider} instance
+	 * @throws XacmlSyntaxException if no algorithm can be found
+	 * for given identifier
+	 */
 	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombingingAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combingingAlgorithms
@@ -78,5 +96,4 @@ public class PolicyMapperSupport
 		}
 		return algorithm;
 	}
-
 }

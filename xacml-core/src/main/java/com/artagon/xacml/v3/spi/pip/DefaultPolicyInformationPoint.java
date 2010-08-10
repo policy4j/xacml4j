@@ -117,9 +117,7 @@ public class DefaultPolicyInformationPoint
 		 	}
 		 	return byCategory.get(ref.getAttributeId());
 		}
-		String policyId = (context.getCurrentPolicy() != null)?
-				context.getCurrentPolicy().getId():
-					(context.getCurrentPolicySet() != null?context.getCurrentPolicySet().getId():null);
+		String policyId = getCurrentIdentifier(context);
 		if(log.isDebugEnabled()){
 			log.debug("Trying to locate attribute " +
 					"resolvers for PolicyId=\"{}\"", policyId);
@@ -134,5 +132,12 @@ public class DefaultPolicyInformationPoint
 			}
 		}
 		return findResolver(context.getParentContext(), ref);
+	}
+	
+	private String getCurrentIdentifier(EvaluationContext context)
+	{
+		return (context.getCurrentPolicy() != null)?
+			context.getCurrentPolicy().getId():
+				(context.getCurrentPolicySet() != null?context.getCurrentPolicySet().getId():null);
 	}
 }

@@ -40,12 +40,22 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 		this(Type.FIRST_APPLICABLE);
 	}
 	
+	
+	@Override
+	public void add(CompositeDecisionRule p, boolean topLevel) {
+		if(topLevel){
+			addTopLevel(p);
+			return;
+		}
+		addReferenced(p);
+	}
+
 	/**
 	 * Adds top level {@link CompositeDecisionRule} to this repository
 	 * 
 	 * @param policy a policy or policy set
 	 */
-	public void addPolicy(CompositeDecisionRule policy)
+	private void addTopLevel(CompositeDecisionRule policy)
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Adding decision " +
@@ -63,7 +73,7 @@ public final class DefaultPolicyStore extends AbstractPolicyStore
 	 * 
 	 * @param policy a referenced policy
 	 */
-	public void addReferencedPolicy(CompositeDecisionRule policy)
+	private void addReferenced(CompositeDecisionRule policy)
 	{
 		Preconditions.checkArgument(policy != null); 
 		policy.accept(new PolicyTreeWalker());

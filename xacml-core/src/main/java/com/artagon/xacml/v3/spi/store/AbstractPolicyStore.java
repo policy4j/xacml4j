@@ -76,6 +76,14 @@ public abstract class AbstractPolicyStore implements PolicyStore
 		}
 	}
 	
+	
+	
+	@Override
+	public final void add(CompositeDecisionRule rule) {
+		add(rule, true);
+	}
+
+
 	@Override
 	public Type getMode(){
 		return mode;

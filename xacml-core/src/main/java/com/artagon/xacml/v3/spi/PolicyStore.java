@@ -39,4 +39,9 @@ public interface PolicyStore extends PolicyReferenceResolver
 	 * @return {@link Decision}
 	 */
 	Decision evaluate(EvaluationContext context);	
+	
+	void add(CompositeDecisionRule rule);
+	
+	void add(CompositeDecisionRule rule, boolean topLevel);
+	
 }
