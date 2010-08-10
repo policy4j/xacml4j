@@ -237,8 +237,8 @@
 			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
-             <id>dtrott</id>
-             <url>http://maven.davidtrott.com/repository</url>
+			<id>dtrott</id>
+			<url>http://maven.davidtrott.com/repository</url>
 		</pluginRepository>
 	</pluginRepositories>
 	<distributionManagement>
@@ -254,4 +254,10 @@
 			<layout>default</layout>
 		</snapshotRepository>
 	</distributionManagement>
+	<scm>
+		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</connection>
+		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</developerConnection>
+		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</url>
+	</scm>
+	
 </project>
