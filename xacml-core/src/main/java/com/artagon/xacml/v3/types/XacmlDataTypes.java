@@ -166,15 +166,17 @@ public enum XacmlDataTypes {
 		return (T) type;
 	}
 
-	public AttributeValue createAttributeValue(String typeId, Object value)
+	public static AttributeValue createAttributeValue(String typeId, Object value)
 			throws XacmlSyntaxException {
 		return createAttributeValue(typeId, value,
 				Collections.<QName, String> emptyMap());
 	}
 
-	public AttributeValue createAttributeValue(Object value,
+	public static AttributeValue createAttributeValue(
+			String typeId,
+			Object value,
 			Object... values) throws XacmlSyntaxException {
-		
+		AttributeValueType type = getType(typeId);
 		try {
 			return type.create(value, values);
 		} catch (Exception e) {
@@ -182,8 +184,11 @@ public enum XacmlDataTypes {
 		}
 	}
 
-	public AttributeValue createAttributeValue(Object value,
+	public static AttributeValue createAttributeValue(
+			String typeId, 
+			Object value,
 			Map<QName, String> values) throws XacmlSyntaxException {
+		AttributeValueType type = getType(typeId);
 		try {
 			return type.create(value, getXPathCategory(values));
 		} catch (Exception e) {
@@ -191,7 +196,7 @@ public enum XacmlDataTypes {
 		}
 	}
 
-	private AttributeCategoryId getXPathCategory(Map<QName, String> attr) 
+	private static AttributeCategoryId getXPathCategory(Map<QName, String> attr) 
 		throws XacmlSyntaxException
 	{
 		for (QName n : attr.keySet()) {

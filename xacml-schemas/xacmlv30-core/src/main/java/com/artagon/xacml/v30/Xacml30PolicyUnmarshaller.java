@@ -12,7 +12,6 @@ import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
@@ -22,19 +21,8 @@ public class Xacml30PolicyUnmarshaller implements PolicyUnmarshaller
 	private JAXBContext context;
 	private Xacml30PolicyMapper mapper;
 	
-	public Xacml30PolicyUnmarshaller(XacmlFactory factory){
-		Preconditions.checkNotNull(factory);
-		this.mapper = new Xacml30PolicyMapper(factory);
-		try{
-			this.context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
-		}catch(JAXBException e){
-			throw new IllegalStateException(e);
-		}
-	}
-	
-	public Xacml30PolicyUnmarshaller(XacmlFactory factory, JAXBContext context){
-		Preconditions.checkNotNull(factory);
-		this.mapper = new Xacml30PolicyMapper(factory);
+	public Xacml30PolicyUnmarshaller(){
+		this.mapper = new Xacml30PolicyMapper();
 		try{
 			this.context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
 		}catch(JAXBException e){

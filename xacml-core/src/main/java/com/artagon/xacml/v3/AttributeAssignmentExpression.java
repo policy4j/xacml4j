@@ -33,6 +33,11 @@ public class AttributeAssignmentExpression extends XacmlObject
 		this.issuer = issuer;
 	}
 	
+	public AttributeAssignmentExpression(String attributeId, 
+			Expression expression){
+		this(attributeId, expression, null, null);
+	}
+	
 	/**
 	 * Gets attribute identifier
 	 * 

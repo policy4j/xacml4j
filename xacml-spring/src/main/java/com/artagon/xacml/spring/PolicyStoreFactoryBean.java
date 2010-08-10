@@ -7,8 +7,6 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.v20.Xacml20PolicyUnmarshaller;
-import com.artagon.xacml.v3.DefaultXacmlFactory;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
@@ -43,8 +41,7 @@ public class PolicyStoreFactoryBean extends AbstractFactoryBean
 	@Override
 	protected PolicyStore createInstance() throws Exception 
 	{
-		XacmlFactory factory = new DefaultXacmlFactory(extensionFunctions, combiningAlgorithmProvider);
-		PolicyUnmarshaller unmarshaller = new Xacml20PolicyUnmarshaller(factory);
+		PolicyUnmarshaller unmarshaller = new Xacml20PolicyUnmarshaller();
 		Preconditions.checkState(policySetResources != null);
 		for(Resource r : policySetResources){
 			policyStore.addPolicy(unmarshaller.unmarshall(r.getInputStream()));

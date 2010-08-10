@@ -35,17 +35,27 @@ public class AttributeSelector extends
 		this(category, xpath, null, dataType, mustBePresent);
 	}
 	
-	public AttributeSelector create(String categoryId, String xpath, 
+	public static AttributeSelector create(String categoryId, String xpath, 
 			String contextAttributeId, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
 		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		return create(category, xpath, contextAttributeId, dataTypeId, mustBePresent);
+	}
+	
+	public static AttributeSelector create(
+			AttributeCategoryId category, 
+			String xpath, 
+			String contextAttributeId, 
+			String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
 		AttributeValueType dataType = XacmlDataTypes.getType(dataTypeId);
 		return new AttributeSelector(category, xpath, 
 				contextAttributeId, dataType, mustBePresent);
 	}
 	
-	public AttributeSelector create(String categoryId, String xpath, 
+	public static AttributeSelector create(String categoryId, String xpath, 
 			String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{

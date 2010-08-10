@@ -1,21 +1,39 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.marshall;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
-public abstract class BasePolicyFactory 
+public class PolicyMapperSupport 
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	protected BasePolicyFactory(
+	protected PolicyMapperSupport(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider combiningAlgorithms) {
+			DecisionCombiningAlgorithmProvider combiningAlgorithms) 
+	{
 		Preconditions.checkNotNull(functions);
 		Preconditions.checkNotNull(combiningAlgorithms);
 		this.functions = functions;
 		this.combingingAlgorithms = combiningAlgorithms;
+	}
+	
+	protected PolicyMapperSupport()
+	{
+		this(new DefaultFunctionProvider(), 
+				new AggregatingDecisionCombiningAlgorithmProvider(
+						new DefaultDecisionCombiningAlgorithms(), 
+						new LegacyDecisionCombiningAlgorithms()));
 	}
 
 	/**

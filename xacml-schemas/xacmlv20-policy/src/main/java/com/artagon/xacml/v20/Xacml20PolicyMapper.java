@@ -56,45 +56,62 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.Match;
 import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.VariableDefinition;
-import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.VariableReference;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-class Xacml20PolicyMapper 
+class Xacml20PolicyMapper extends PolicyMapperSupport
 {
-	private final static Logger log = LoggerFactory.getLogger(Xacml20PolicyMapper.class);
-	
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 
-	static {
+	private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
+	private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
+	
+	static 
+	{
 		designatorMappings.put("ResourceAttributeDesignator",
 				AttributeCategoryId.RESOURCE);
 		designatorMappings.put("ActionAttributeDesignator",
 				AttributeCategoryId.ACTION);
 		designatorMappings.put("EnvironmentAttributeDesignator",
 				AttributeCategoryId.ENVIRONMENT);
+		
+		v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
+		v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
+		
+		v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
+		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 	}
-
-	private XacmlFactory factory;
-
-	public Xacml20PolicyMapper(XacmlFactory factory) {
-		this.factory = factory;
+	
+	public Xacml20PolicyMapper(FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms){
+		super(functions, decisionAlgorithms);
+	}
+	
+	public Xacml20PolicyMapper(){
+		super();
 	}
 	
 	public CompositeDecisionRule create(Object o) throws XacmlSyntaxException
@@ -117,14 +134,17 @@ class Xacml20PolicyMapper
 		Target target = create(p.getTarget());
 		Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
 		Collection<Rule> rules = getRules(p, m);
-		return factory.createPolicy(p.getPolicyId(), p.getVersion(), 
+		return new Policy(
+				p.getPolicyId(), 
+				Version.parse(p.getVersion()), 
 				p.getDescription(), 
 				policyDefaults, 
 				target, 
-				variableDefinitions.values(), 
-				p.getRuleCombiningAlgId(), rules, 
-				obligations, 
-				Collections.<AdviceExpression> emptyList());
+				variableDefinitions.values(),
+				createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()),
+				rules, 
+				Collections.<AdviceExpression> emptyList(),
+				obligations);
 	}
 
 	public PolicySet createPolicySet(PolicySetType p) throws XacmlSyntaxException 
@@ -135,10 +155,19 @@ class Xacml20PolicyMapper
 				.getPolicySetDefaults());
 		Collection<CompositeDecisionRule> policies = getPolicies(p);
 		Target target = create(p.getTarget());
-		return factory.createPolicySet(p.getPolicySetId(), p.getVersion(), 
-				p.getDescription(), policySetDefaults, target, p
-				.getPolicyCombiningAlgId(), policies, obligations, Collections
-				.<AdviceExpression> emptyList());
+		return new PolicySet(
+				p.getPolicySetId(), 
+				Version.parse(p.getVersion()), 
+				p.getDescription(), 
+				policySetDefaults, 
+				target,
+				null, 
+				null,
+				null,
+				createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
+				policies, 
+				Collections.<AdviceExpression> emptyList(),
+				obligations);
 	}
 
 	private Collection<CompositeDecisionRule> getPolicies(PolicySetType p)
@@ -161,11 +190,9 @@ class Xacml20PolicyMapper
 						throw new XacmlSyntaxException(
 								"PolicySet reference id can't be null");
 					}
-					PolicySetIDReference policySetRef = factory
-							.createPolicySetIDReference(ref.getValue(),
-									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
-									(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
-									(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
+					PolicySetIDReference policySetRef = 
+						PolicySetIDReference.create(ref.getValue(),
+								ref.getVersion(), ref.getEarliestVersion(), ref.getLatestVersion());
 					policies.add(policySetRef);
 					continue;
 				}
@@ -174,11 +201,8 @@ class Xacml20PolicyMapper
 						throw new XacmlSyntaxException(
 								"Policy reference id can't be null");
 					}
-					PolicyIDReference policyRef = factory
-							.createPolicyIDReference(ref.getValue(),
-									(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
-									(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
-									(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
+					PolicyIDReference policyRef = PolicyIDReference.create(ref.getValue(),
+							ref.getVersion(), ref.getEarliestVersion(), ref.getLatestVersion());
 					policies.add(policyRef);
 					continue;
 				}
@@ -193,7 +217,7 @@ class Xacml20PolicyMapper
 		if(defaults == null){
 			return null;
 		}
-		return factory.createPolicyDefaults(defaults.getXPathVersion());
+		return PolicyDefaults.create(defaults.getXPathVersion());
 	}
 
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
@@ -202,7 +226,7 @@ class Xacml20PolicyMapper
 		if(defaults == null){
 			return null;
 		}
-		return factory.createPolicySetDefaults(defaults.getXPathVersion());
+		return PolicySetDefaults.create(defaults.getXPathVersion());
 	}
 
 	private Target create(TargetType target) throws XacmlSyntaxException 
@@ -227,7 +251,7 @@ class Xacml20PolicyMapper
 		if (subjects != null) {
 			match.add(create(subjects));
 		}
-		return match.isEmpty() ? null : factory.createTarget(match);
+		return !match.isEmpty() ?new Target(match):null;
 	}
 
 	private MatchAnyOf create(ActionsType actions) throws XacmlSyntaxException {
@@ -240,9 +264,9 @@ class Xacml20PolicyMapper
 			for (ActionMatchType match : action.getActionMatch()) {
 				matches.add(createMatch(match));
 			}
-			allOf.add(factory.createAllOf(matches));
+			allOf.add(new MatchAllOf(matches));
 		}
-		return factory.createAnyOf(allOf);
+		return new MatchAnyOf(allOf);
 	}
 
 	private MatchAnyOf create(ResourcesType resources)
@@ -256,9 +280,9 @@ class Xacml20PolicyMapper
 			for (ResourceMatchType match : action.getResourceMatch()) {
 				matches.add(createMatch(match));
 			}
-			allOf.add(factory.createAllOf(matches));
+			allOf.add(new MatchAllOf(matches));
 		}
-		return factory.createAnyOf(allOf);
+		return new MatchAnyOf(allOf);
 	}
 
 	private MatchAnyOf create(SubjectsType resources)
@@ -272,9 +296,9 @@ class Xacml20PolicyMapper
 			for (SubjectMatchType match : action.getSubjectMatch()) {
 				matches.add(createMatch(match));
 			}
-			allOf.add(factory.createAllOf(matches));
+			allOf.add(new MatchAllOf(matches));
 		}
-		return factory.createAnyOf(allOf);
+		return new MatchAnyOf(allOf);
 	}
 
 	private MatchAnyOf create(EnvironmentsType actions)
@@ -288,9 +312,9 @@ class Xacml20PolicyMapper
 			for (EnvironmentMatchType match : action.getEnvironmentMatch()) {
 				matches.add(createMatch(match));
 			}
-			allOf.add(factory.createAllOf(matches));
+			allOf.add(new MatchAllOf(matches));
 		}
-		return factory.createAnyOf(allOf);
+		return new MatchAnyOf(allOf);
 	}
 
 	private VariableManager<JAXBElement<?>> getVariables(PolicyType p)
@@ -331,7 +355,7 @@ class Xacml20PolicyMapper
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);	
 			m.pushVariableDefinition(varId);
 			Expression expression = parseExpression(varDefExp, m);
-			m.resolveVariableDefinition(factory.createVariableDefinition(varId, expression));
+			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 		}
 	}
 	
@@ -347,7 +371,8 @@ class Xacml20PolicyMapper
 		}
 		if (exp instanceof FunctionType) {
 			FunctionType f = (FunctionType) exp;
-			return factory.createFunctionReference(f.getFunctionId());
+			return new FunctionReference(
+					createFunction(f.getFunctionId()));
 		}
 		if (exp instanceof AttributeDesignatorType) {
 			AttributeCategoryId categoryId = getDesignatorCategory(expression);
@@ -361,7 +386,7 @@ class Xacml20PolicyMapper
 			VariableReferenceType varRef = (VariableReferenceType) exp;
 			VariableDefinition varDef = m.getVariableDefinition(varRef.getVariableId());
 			if(varDef != null){
-				return factory.createVariableReference(varDef);
+				return new VariableReference(varDef);
 			}
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			m.pushVariableDefinition(varRef.getVariableId());
@@ -369,7 +394,7 @@ class Xacml20PolicyMapper
 			varDef = m.getVariableDefinition(varRef.getVariableId());
 			Preconditions.checkState(varDef != null);
 			m.resolveVariableDefinition(varDef);
-			return factory.createVariableReference(varDef);
+			return new VariableReference(varDef);
 		}
 		throw new XacmlSyntaxException("Expression=\"%s\" is not supported",
 				expression.getName());
@@ -393,10 +418,12 @@ class Xacml20PolicyMapper
 	private Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
 			throws XacmlSyntaxException 
 	{
-		Effect effect = r.getEffect() == EffectType.DENY ? Effect.DENY
-				: Effect.PERMIT;
-		return factory.createRule(r.getRuleId(), r.getDescription(), create(r
-				.getTarget()), create(r.getCondition(), variables), effect);
+		return new Rule(
+				r.getRuleId(), 
+				r.getDescription(), 
+				create(r.getTarget()), 
+				create(r.getCondition(), variables), 
+				v20ToV30EffectnMapping.get(r.getEffect()));
 	}
 
 	private Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)
@@ -408,7 +435,7 @@ class Xacml20PolicyMapper
 		if(expression == null){
 			return null;
 		}
-		return factory.createCondition(createExpression(expression, variables));
+		return new Condition(createExpression(expression, variables));
 	}
 
 	private Collection<ObligationExpression> getObligations(ObligationsType obligations)
@@ -418,8 +445,7 @@ class Xacml20PolicyMapper
 		}
 		Collection<ObligationExpression> o = new LinkedList<ObligationExpression>();
 		for (ObligationType obligation : obligations.getObligation()) {
-			o.add(factory.createObligationExpression(
-									obligation.getObligationId(),
+			o.add(new ObligationExpression(obligation.getObligationId(),
 									obligation.getFulfillOn() == EffectType.PERMIT ? Effect.PERMIT
 											: Effect.DENY,
 									createAttributeAssigments(obligation
@@ -435,8 +461,7 @@ class Xacml20PolicyMapper
 		for (AttributeAssignmentType attr : exp) {
 			AttributeValue value = createValue(attr.getDataType(), attr
 					.getContent());
-			expressions.add(factory.createAttributeAssigmentExpression(attr
-					.getAttributeId(), value));
+			expressions.add(new AttributeAssignmentExpression(attr.getAttributeId(), value));
 		}
 		return expressions;
 	}
@@ -457,7 +482,7 @@ class Xacml20PolicyMapper
 		}
 		if (exp instanceof FunctionType) {
 			FunctionType f = (FunctionType) exp;
-			return factory.createFunctionReference(f.getFunctionId());
+			return new FunctionReference(createFunction(f.getFunctionId()));
 		}
 		if (exp instanceof AttributeDesignatorType) {
 			AttributeCategoryId categoryId = getDesignatorCategory(expression);
@@ -474,7 +499,7 @@ class Xacml20PolicyMapper
 				throw new XacmlSyntaxException("Can not resolve variable=\"%s\"",
 						varRef.getVariableId());
 			}
-			return factory.createVariableReference(varDef);
+			return new VariableReference(varDef);
 		}
 		throw new XacmlSyntaxException("Expression=\"%s\" is not supported",
 				expression.getName());
@@ -487,20 +512,14 @@ class Xacml20PolicyMapper
 			SubjectAttributeDesignatorType desig = match
 					.getSubjectAttributeDesignator();
 			if (desig != null) {
-				AttributeCategoryId categoryId = AttributeCategoryId
-						.parse(desig.getSubjectCategory());
-				if (categoryId == null) {
-					throw new XacmlSyntaxException("Unknown subject "
-							+ "attribute designator category=\"%s\"", desig
-							.getSubjectCategory());
-				}
-				return factory.createMatch(match.getMatchId(),
+				AttributeCategoryId categoryId = AttributeCategoryId.parse(desig.getSubjectCategory());
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()),
 						createDesignator(categoryId, desig));
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return factory.createMatch(match.getMatchId(),
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()), 
 						createSelector(
 								getSelectoryCategory(selector), selector));
@@ -511,16 +530,15 @@ class Xacml20PolicyMapper
 		}
 		if (exp instanceof ActionMatchType) {
 			ActionMatchType match = (ActionMatchType) exp;
-			AttributeDesignatorType desig = match
-					.getActionAttributeDesignator();
+			AttributeDesignatorType desig = match.getActionAttributeDesignator();
 			if (desig != null) {
-				return factory.createMatch(match.getMatchId(),
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()),
 						createDesignator(AttributeCategoryId.ACTION, desig));
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return factory.createMatch(match.getMatchId(),
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()), createSelector(
 								getSelectoryCategory(selector), selector));
 			}
@@ -533,13 +551,13 @@ class Xacml20PolicyMapper
 			AttributeDesignatorType desig = match
 					.getResourceAttributeDesignator();
 			if (desig != null) {
-				return factory.createMatch(match.getMatchId(),
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()),
 						createDesignator(AttributeCategoryId.RESOURCE, desig));
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return factory.createMatch(match.getMatchId(),
+				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()), createSelector(
 								getSelectoryCategory(selector), selector));
 			}
@@ -549,19 +567,19 @@ class Xacml20PolicyMapper
 		}
 		if (exp instanceof EnvironmentMatchType) {
 			EnvironmentMatchType match = (EnvironmentMatchType) exp;
-			AttributeDesignatorType desig = match
-					.getEnvironmentAttributeDesignator();
+			AttributeDesignatorType desig = match.getEnvironmentAttributeDesignator();
 			if (desig != null) {
-				return factory
-						.createMatch(match.getMatchId(), createValue(match
-								.getAttributeValue()), createDesignator(
-								AttributeCategoryId.ENVIRONMENT, desig));
+				return new Match(createFunction(match.getMatchId()), 
+						createValue(match.getAttributeValue()), 
+						createDesignator(AttributeCategoryId.ENVIRONMENT, desig));
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return factory.createMatch(match.getMatchId(),
-						createValue(match.getAttributeValue()), createSelector(
-								getSelectoryCategory(selector), selector));
+				return new Match(
+						createFunction(match.getMatchId()),
+						createValue(match.getAttributeValue()),
+						createSelector(getSelectoryCategory(selector), 
+								selector));
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match
@@ -580,7 +598,8 @@ class Xacml20PolicyMapper
 			Expression exp = parseExpression(arg, m);
 			arguments.add(exp);
 		}
-		return factory.createApply(apply.getFunctionId(), arguments);
+		return new Apply(
+				createFunction(apply.getFunctionId()), arguments);
 	}
 
 	/**
@@ -602,16 +621,16 @@ class Xacml20PolicyMapper
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		return factory.createAttributeValue(dataType, Iterables.getOnlyElement(content));
+		AttributeValueType type =  XacmlDataTypes.getType(dataType);
+		return type.create(Iterables.getOnlyElement(content));
 	}
 	
 	private AttributeSelector createSelector(AttributeCategoryId categoryId,
 			AttributeSelectorType selector) throws XacmlSyntaxException 
 	{
 		String xpath = transformSelectorXPath(selector);	
-		return factory.createAttributeSelector(categoryId, 
-				xpath, 
-				factory.createAttributeValueType(selector.getDataType()),
+		return AttributeSelector.create(categoryId, xpath, null,
+				selector.getDataType(),
 				selector.isMustBePresent());
 	}
 	
@@ -634,14 +653,12 @@ class Xacml20PolicyMapper
 	 */
 	private AttributeDesignator createDesignator(AttributeCategoryId categoryId,
 			AttributeDesignatorType ref) throws XacmlSyntaxException {
-		AttributeValueType dataType = XacmlDataTypes.getByTypeId(ref.getDataType());
-		if (dataType == null) {
-			throw new XacmlSyntaxException("Unknown dataType=\"%s\"", ref
-					.getDataType());
-		}
-		return factory.createAttributeDesignator(categoryId, ref
-				.getAttributeId(), dataType, ref.isMustBePresent(), ref
-				.getIssuer());
+	
+		return AttributeDesignator.create(categoryId, 
+				ref.getAttributeId(), 
+				ref.getIssuer(), 
+				ref.getDataType(), 
+				ref.isMustBePresent());
 	}
 	
 	/**

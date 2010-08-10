@@ -20,21 +20,20 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.Request;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestReference;
-import com.artagon.xacml.v3.Response;
-import com.artagon.xacml.v3.XacmlFactory;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-public class Xacml30ContextMapper 
+public class Xacml30ContextMapper extends PolicyMapperSupport
 {
-	private XacmlFactory factory;
 	
-	public Xacml30ContextMapper(XacmlFactory factory){
-		this.factory = factory;
+	public Xacml30ContextMapper(){
 	}
 	
-	public Request create(RequestType req) throws XacmlSyntaxException
+	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(AttributesType a : req.getAttributes()){
@@ -46,10 +45,10 @@ public class Xacml30ContextMapper
 				multiRequests.add(create(m));
 			}
 		}
-		return new Request(req.isReturnPolicyIdList(), attributes, multiRequests, null);
+		return new RequestContext(req.isReturnPolicyIdList(), attributes, multiRequests, null);
 	}
 	
-	public ResponseType create(Response res) throws XacmlSyntaxException
+	public ResponseType create(ResponseContext res) throws XacmlSyntaxException
 	{
 		return null;
 	}
@@ -80,7 +79,7 @@ public class Xacml30ContextMapper
 	{
 		Collection<AttributesReference> references = new LinkedList<AttributesReference>();
 		for(AttributesReferenceType r : m.getAttributesReference()){
-			references.add(factory.createAttributesReference(r.getReferenceId().toString()));
+			references.add(new AttributesReference(r.getReferenceId().toString()));
 		}
 		return new RequestReference(references);
 	}
@@ -105,7 +104,8 @@ public class Xacml30ContextMapper
 			throw new XacmlSyntaxException(
 					"Attribute does not have content");
 		}
-		return factory.createAttributeValue(value.getDataType(), 
+		
+		return XacmlDataTypes.createAttributeValue(value.getDataType(), 
 				content.iterator().next(), value.getOtherAttributes());
 	}
 }

@@ -40,6 +40,7 @@ import com.artagon.xacml.util.VariableManager;
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
+import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReference;
 import com.artagon.xacml.v3.AttributeSelector;
@@ -48,30 +49,31 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.Match;
 import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyDefaults;
-import com.artagon.xacml.v3.XacmlFactory;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.VariableDefinition;
-import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.VariableReference;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
-public class Xacml30PolicyMapper 
+public class Xacml30PolicyMapper extends PolicyMapperSupport
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyMapper.class);
 	
-	private XacmlFactory factory;
 
 	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = new HashMap<Effect, EffectType>();
 	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = new HashMap<EffectType, Effect>();
@@ -83,9 +85,8 @@ public class Xacml30PolicyMapper
 		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
 	}
 
-	public Xacml30PolicyMapper(XacmlFactory factory) {
-		Preconditions.checkNotNull(factory);
-		this.factory = factory;
+	public Xacml30PolicyMapper() {
+		super();
 	}
 
 	/**
@@ -105,10 +106,15 @@ public class Xacml30PolicyMapper
 		Collection<ObligationExpression> obligationExpressions = getExpressions(
 				p.getObligationExpressions(), variableDef);
 		Target target = create(p.getTarget());
-		return factory.createPolicy(p.getPolicyId(), p.getVersion() , 
-				p.getDescription(), createPolicyDefaults(p.getPolicyDefaults()), target, 
-				variableDef.getVariableDefinitions().values(), p.getRuleCombiningAlgId(), 
-				createRules(p, variableDef), obligationExpressions, adviceExpressions);
+		return new Policy(p.getPolicyId(), 
+				Version.parse(p.getVersion()), 
+				p.getDescription(), 
+				createPolicyDefaults(p.getPolicyDefaults()), 
+				target, 
+				variableDef.getVariableDefinitions().values(),  
+				createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()), 
+				createRules(p, variableDef), 
+				adviceExpressions, obligationExpressions);
 	}
 	
 	
@@ -172,13 +178,18 @@ public class Xacml30PolicyMapper
 		Collection<AdviceExpression> adviceExpressions = getExpressions(p.getAdviceExpressions(), variableDef);
 		Collection<ObligationExpression> obligationExpressions = getExpressions(p.getObligationExpressions(), variableDef);
 		Target target = create(p.getTarget());
-		return factory.createPolicySet(
+		return new PolicySet(
 				p.getPolicySetId(), 
-				p.getVersion(),
+				Version.parse(p.getVersion()), 
 				p.getDescription(), 
-				createPolicySetDefaults(p.getPolicySetDefaults()),   
-				target, p.getPolicyCombiningAlgId(), 
-				createPolicies(p), obligationExpressions, adviceExpressions);
+				createPolicySetDefaults(p.getPolicySetDefaults()), 
+				target,   
+				null,
+				null,
+				null,
+				createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
+				createPolicies(p), 
+				adviceExpressions, obligationExpressions); 
 	}
 	
 	private Collection<CompositeDecisionRule> createPolicies(PolicySetType policySet) 
@@ -203,11 +214,10 @@ public class Xacml30PolicyMapper
 							throw new XacmlSyntaxException(
 									"PolicySet reference id can't be null");
 						}
-						PolicySetIDReference policySetRef = factory
-								.createPolicySetIDReference(ref.getValue(),
-										(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
-										(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
-										(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
+						PolicySetIDReference policySetRef = PolicySetIDReference.create(ref.getValue(),
+										ref.getVersion(),
+										ref.getEarliestVersion(),
+										ref.getLatestVersion());
 						all.add(policySetRef);
 						continue;
 					}
@@ -216,12 +226,11 @@ public class Xacml30PolicyMapper
 							throw new XacmlSyntaxException(
 									"Policy reference id can't be null");
 						}
-						PolicyIDReference policyRef = factory
-								.createPolicyIDReference(ref.getValue(),
-										(ref.getVersion() != null)?VersionMatch.parse(ref.getVersion()):null,
-										(ref.getEarliestVersion() != null)?VersionMatch.parse(ref.getEarliestVersion()):null,
-										(ref.getLatestVersion() != null)?VersionMatch.parse(ref.getLatestVersion()):null);
-						all.add(policyRef);
+						PolicyIDReference policySetRef = PolicyIDReference.create(ref.getValue(),
+								ref.getVersion(),
+								ref.getEarliestVersion(),
+								ref.getLatestVersion());
+						all.add(policySetRef);
 						continue;
 					}
 				}
@@ -233,7 +242,7 @@ public class Xacml30PolicyMapper
 		throws XacmlSyntaxException 
 	{
 		Effect effect = r.getEffect() == EffectType.DENY ? Effect.DENY: Effect.PERMIT;
-		return factory.createRule(r.getRuleId(), r.getDescription(), 
+		return new Rule(r.getRuleId(), r.getDescription(), 
 				create(r.getTarget()), create(r.getCondition(), variables), effect);
 	}
 	
@@ -247,7 +256,7 @@ public class Xacml30PolicyMapper
 		if(expression == null){
 			return null;
 		}
-		return factory.createCondition(parseExpression(expression, variables));
+		return new Condition(parseExpression(expression, variables));
 	}
 	
 	
@@ -257,7 +266,7 @@ public class Xacml30PolicyMapper
 		if(defaults == null){
 			return null;
 		}
-		return factory.createPolicyDefaults(defaults.getXPathVersion());
+		return PolicyDefaults.create(defaults.getXPathVersion());
 	}
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
 		throws XacmlSyntaxException 
@@ -265,7 +274,7 @@ public class Xacml30PolicyMapper
 		if(defaults == null){
 			return null;
 		}
-		return factory.createPolicySetDefaults(defaults.getXPathVersion());
+		return PolicySetDefaults.create(defaults.getXPathVersion());
 	}
 
 	private Collection<AdviceExpression> getExpressions(
@@ -375,7 +384,7 @@ public class Xacml30PolicyMapper
 		for (AllOfType allOf : anyOf.getAllOf()) {
 			m.add(create(allOf));
 		}
-		return factory.createAnyOf(m);
+		return new MatchAnyOf(m);
 	}
 
 	private MatchAllOf create(AllOfType allOf) throws XacmlSyntaxException {
@@ -384,7 +393,7 @@ public class Xacml30PolicyMapper
 		for (MatchType match : allOf.getMatch()) {
 			m.add(createMatch(match));
 		}
-		return factory.createAllOf(m);
+		return new MatchAllOf(m);
 	}
 
 	/**
@@ -402,7 +411,7 @@ public class Xacml30PolicyMapper
 			throw new XacmlSyntaxException(
 					"Match=\"%s\" attribute value must be specified");
 		}
-		return factory.createMatch(m.getMatchId(), createValue(v.getDataType(),
+		return new Match(createFunction(m.getMatchId()), createValue(v.getDataType(),
 				v.getContent(), v.getOtherAttributes()), createAttributeReference((m
 				.getAttributeDesignator() != null) ? m.getAttributeDesignator()
 				: m.getAttributeSelector()));
@@ -429,7 +438,7 @@ public class Xacml30PolicyMapper
 			if(log.isDebugEnabled()){
 				log.debug(selector.getPath());
 			}
-			return factory.createAttributeSelector(
+			return AttributeSelector.create(
 					selector.getCategory(),
 					selector.getPath(), 
 					selector.getContextSelectorId(),
@@ -438,11 +447,12 @@ public class Xacml30PolicyMapper
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
-			return factory.createAttributeDesignator(desig.getCategory(), 
+			return AttributeDesignator.create(
+					desig.getCategory(), 
 					desig.getAttributeId(), 
+					desig.getIssuer(),
 					desig.getDataType(), 
-					desig.isMustBePresent(), 
-					desig.getIssuer());
+					desig.isMustBePresent());
 		}
 		throw new XacmlSyntaxException(
 				"Given JAXB object instance of=\"%s\" can not be converted"
@@ -466,8 +476,8 @@ public class Xacml30PolicyMapper
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		return factory.createAttributeValue(dataType, Iterables
-				.getOnlyElement(content), otherAttributes);
+		return XacmlDataTypes.createAttributeValue(dataType, 
+				content.iterator().next(), otherAttributes);
 	}
 
 	/**
@@ -483,9 +493,11 @@ public class Xacml30PolicyMapper
 			AttributeAssignmentExpressionType exp, 
 			VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
-		return factory.createAttributeAssigmentExpression(exp.getAttributeId(),
-				parseExpression(exp.getExpression(), m), exp.getCategory(), exp
-						.getIssuer());
+		return new AttributeAssignmentExpression(
+				exp.getAttributeId(),
+				parseExpression(exp.getExpression(), m), 
+				AttributeCategoryId.parse(exp.getCategory()),
+				exp.getIssuer());
 	}
 
 	/**
@@ -503,7 +515,7 @@ public class Xacml30PolicyMapper
 		for (JAXBElement<?> exp : apply.getExpression()) {
 			arguments.add(parseExpression(exp, m));
 		}
-		return factory.createApply(apply.getFunctionId(), arguments);
+		return new Apply(createFunction(apply.getFunctionId()), arguments);
 	}
 
 	/**
@@ -534,7 +546,7 @@ public class Xacml30PolicyMapper
 			VariableReferenceType varRef = (VariableReferenceType)e;
 			VariableDefinition varDef = m.getVariableDefinition(varRef.getVariableId());
 			if(varDef != null){
-				return factory.createVariableReference(varDef);
+				return new VariableReference(varDef);
 			}
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			m.pushVariableDefinition(varRef.getVariableId());
@@ -542,11 +554,12 @@ public class Xacml30PolicyMapper
 			varDef = m.getVariableDefinition(varRef.getVariableId());
 			Preconditions.checkState(varDef != null);
 			m.resolveVariableDefinition(varDef);
-			return factory.createVariableReference(varDef);
+			return new VariableReference(varDef);
 		}
 		if (e instanceof FunctionType) {
 			FunctionType fRef = (FunctionType) e;
-			return factory.createFunctionReference(fRef.getFunctionId());
+			return new FunctionReference(
+					createFunction(fRef.getFunctionId()));
 		}
 		throw new XacmlSyntaxException(
 				"Unknown XACML expression JAXB object=\"%s\"", e.getClass());
@@ -609,7 +622,7 @@ public class Xacml30PolicyMapper
 				log.debug("Resolved variable " +
 						"defintion variableId=\"{}\", expression=\"{}\"", varId, expression);
 			}
-			m.resolveVariableDefinition(factory.createVariableDefinition(varId, expression));
+			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 	}
 }
 }

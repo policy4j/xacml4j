@@ -43,6 +43,9 @@ public enum AttributeCategoryId
 	public static AttributeCategoryId parse(String v) 
 		throws XacmlSyntaxException
 	{
+		if(v == null){
+			return null;
+		}
 		AttributeCategoryId c = BY_ID.get(v);
 		if(c == null){
 			throw new XacmlSyntaxException(

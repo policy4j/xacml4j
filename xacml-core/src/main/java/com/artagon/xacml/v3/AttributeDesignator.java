@@ -55,11 +55,10 @@ public class AttributeDesignator extends AttributeReference
 	}
 	
 	
-	public static AttributeDesignator create(String categoryId, 
+	public static AttributeDesignator create(AttributeCategoryId category, 
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
 		AttributeValueType type = XacmlDataTypes.getType(dataTypeId);
 		return new AttributeDesignator(category, attributeId, 
 				issuer, type, mustBePresent);
@@ -70,6 +69,14 @@ public class AttributeDesignator extends AttributeReference
 		throws XacmlSyntaxException
 	{
 		return create(categoryId, attributeId, null, dataTypeId, mustBePresent);
+	}
+	
+	public static AttributeDesignator create(String categoryId, 
+			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
+		throws XacmlSyntaxException
+	{
+		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		return create(category, attributeId, issuer, dataTypeId, mustBePresent);
 	}
 	
 	/**

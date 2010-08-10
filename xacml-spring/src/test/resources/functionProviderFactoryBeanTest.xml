@@ -17,13 +17,13 @@
 		<xacml:function-provider id="provider2" ref="testProvider1"/>
 	</xacml:function-providers>
 	
+	<!--  
+	<xacml:policy-store id="policyStore" ext-func="extensionFunctions"/>
 	
-	
-	<xacml:pip id="testPip">
-	</xacml:pip>
-	
-	<xacml:policy-store id="policyStore"/>
+	<xacml:pip id="testPip"/>
 	
 	<xacml:pdp pip-ref="testPip" policyStore-ref="policyStore"/>
+	
+	-->
 	
 </beans>
