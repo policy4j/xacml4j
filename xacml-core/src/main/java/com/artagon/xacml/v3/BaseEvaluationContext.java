@@ -42,7 +42,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	private TimeZone timezone;
 	
-	private List<PolicyIdentifier> evaluatedPolicies;
+	private List<DecisionRuleIDReference> evaluatedPolicies;
 	
 	private XPathProvider xpathProvider;
 	
@@ -92,7 +92,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.currentDate = XacmlDataTypes.DATE.create(now);
 		this.currentDateTime = XacmlDataTypes.DATETIME.create(now);
 		this.currentTime = XacmlDataTypes.TIME.create(now);
-		this.evaluatedPolicies = new LinkedList<PolicyIdentifier>();
+		this.evaluatedPolicies = new LinkedList<DecisionRuleIDReference>();
 	}
 	
 	@Override
@@ -128,12 +128,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final void addEvaluatedPolicy(Policy policy, Decision result) {
-		this.evaluatedPolicies.add(policy.getPolicyIdentifier());
+		this.evaluatedPolicies.add(new PolicyIDReference(policy.getId(), policy.getVersion()));
 	}
 	
 	@Override
 	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
-		this.evaluatedPolicies.add(policySet.getPolicyIdentifier());
+		this.evaluatedPolicies.add(new PolicySetIDReference(policySet.getId(), policySet.getVersion()));
 	}
 
 	@Override
@@ -347,14 +347,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Collection<PolicyIdentifier> getEvaluatedPolicies() {
+	public Collection<DecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
 	
-	public void addApplicablePolicy(String policyID,  Version version){
-		evaluatedPolicies.add(new PolicyIdentifier(policyID, version));
-	}
-
 	@Override
 	public AttributeResolutionScope getAttributeResolutionScope() {
 		return AttributeResolutionScope.REQUEST_EXTERNAL;

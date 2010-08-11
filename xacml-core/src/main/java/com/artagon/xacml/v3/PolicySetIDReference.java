@@ -19,6 +19,10 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 	public PolicySetIDReference(String id, VersionMatch version) {
 		super(id, version, null, null);
 	}
+	
+	public PolicySetIDReference(String id, Version version) {
+		super(id, VersionMatch.parse(version.getValue()), null, null);
+	}
 
 	public static PolicySetIDReference create(String policyId, String version, 
 			String earliest, String latest) throws XacmlSyntaxException

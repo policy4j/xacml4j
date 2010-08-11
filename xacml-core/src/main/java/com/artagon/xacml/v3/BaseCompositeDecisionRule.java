@@ -12,7 +12,8 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 	
-	private PolicyIdentifier identifier;
+	private String id;
+	private Version version;
 	
 	/**
 	 * Constructs composite decision rule
@@ -33,7 +34,8 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target,  adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(version);
-		this.identifier = new PolicyIdentifier(id, version);
+		this.id = id;
+		this.version = version;
 	}
 	
 	protected BaseCompositeDecisionRule(
@@ -47,18 +49,14 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	
 	@Override
 	public String getId(){
-		return identifier.getId();
+		return id;
 	}
 	
 	@Override
 	public  Version getVersion() {
-		return identifier.getVersion();
+		return version;
 	}
-	
-	public PolicyIdentifier getPolicyIdentifier(){
-		return identifier;
-	}
-	
+		
 	/**
 	 * Combines {@link #isApplicable(EvaluationContext)} and 
 	 * {@link #evaluate(EvaluationContext)} calls to one single

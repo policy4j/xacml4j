@@ -16,6 +16,10 @@ public class PolicyIDReference extends
 	public PolicyIDReference(String id, VersionMatch version) {
 		super(id, version, null, null);
 	}
+	
+	public PolicyIDReference(String id, Version version) {
+		super(id, VersionMatch.parse(version.getValue()), null, null);
+	}
 
 	public boolean isReferenceTo(Policy policy) {
 		return policy != null && matches(policy.getId(), policy.getVersion());

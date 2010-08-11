@@ -17,7 +17,7 @@ public class Result extends XacmlObject
 	private Map<String, Obligation> obligations;
 	private Map<String, Advice> associatedAdvice;
 	private Map<AttributeCategoryId, Attributes> attributes;
-	private Collection<PolicyIdentifier> policyIdentifiers;
+	private Collection<DecisionRuleIDReference> policyReferences;
 	
 	/**
 	 * Constructs result with a given
@@ -28,7 +28,7 @@ public class Result extends XacmlObject
 	public Result(Decision decision, 
 			Status status, 
 			Collection<Attributes> attributes, 
-			Collection<PolicyIdentifier> evaluatedPolicies){
+			Collection<DecisionRuleIDReference> evaluatedPolicies){
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
@@ -48,7 +48,7 @@ public class Result extends XacmlObject
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
 				attributes, 
-				Collections.<PolicyIdentifier>emptyList());
+				Collections.<DecisionRuleIDReference>emptyList());
 		Preconditions.checkArgument(decision == Decision.NOT_APPLICABLE 
 				|| decision.isIndeterminate());
 	}
@@ -68,7 +68,7 @@ public class Result extends XacmlObject
 			Iterable<Advice> associatedAdvice, 
 			Iterable<Obligation> obligations,
 			Iterable<Attributes> attributes,
-			Iterable<PolicyIdentifier> policyIdentifiers){
+			Iterable<DecisionRuleIDReference> policyIdentifiers){
 		Preconditions.checkNotNull(decision);
 		Preconditions.checkNotNull(status);
 		Preconditions.checkNotNull(obligations);
@@ -79,8 +79,8 @@ public class Result extends XacmlObject
 		this.associatedAdvice = new LinkedHashMap<String, Advice>();
 		this.obligations = new LinkedHashMap<String, Obligation>();
 		this.attributes = new HashMap<AttributeCategoryId, Attributes>();
-		this.policyIdentifiers = new LinkedList<PolicyIdentifier>();
-		Iterables.addAll(this.policyIdentifiers, policyIdentifiers);
+		this.policyReferences = new LinkedList<DecisionRuleIDReference>();
+		Iterables.addAll(this.policyReferences, policyIdentifiers);
 		for(Attributes attribute : attributes){
 			this.attributes.put(attribute.getCategoryId(), attribute);
 		}
@@ -194,7 +194,7 @@ public class Result extends XacmlObject
 	 * 
 	 * @return list of policy identifiers
 	 */
-	public Collection<PolicyIdentifier> getPolicyIdentifiers(){
-		return Collections.unmodifiableCollection(policyIdentifiers);
+	public Collection<DecisionRuleIDReference> getPolicyIdentifiers(){
+		return Collections.unmodifiableCollection(policyReferences);
 	}
 }
