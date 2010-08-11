@@ -211,6 +211,6 @@ public class RSA2008InteropTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "rsa2008-interop/" + name;
-		return requestUnmarshaller.unmarshalRequest(cl.getResourceAsStream(path));
+		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(path));
 	}
 }

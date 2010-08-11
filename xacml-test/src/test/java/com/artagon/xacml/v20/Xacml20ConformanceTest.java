@@ -132,7 +132,7 @@ public class Xacml20ConformanceTest
 		store.add(getPolicy("IIE", 1, "PolicySetId1.xml"), false);
 		RequestContext request = getRequest("IIE", 1);
 		ResponseContext response = pdp.decide(request);
-		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 1));	
 	}
 	
@@ -145,7 +145,7 @@ public class Xacml20ConformanceTest
 		store.add(getPolicy("IIE", 2, "PolicySetId1.xml"), false);
 		RequestContext request = getRequest("IIE", 2);
 		ResponseContext response = pdp.decide(request);
-		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 2));	
 	}
 	
@@ -162,7 +162,7 @@ public class Xacml20ConformanceTest
 		}
 		RequestContext request = getRequest("IIE", 3);
 		ResponseContext response = pdp.decide(request);
-		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 3));	
 	}
 	
@@ -192,7 +192,7 @@ public class Xacml20ConformanceTest
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		ResponseContext response = pdp.decide(request);
-		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
+		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);
 	}
 	
@@ -200,7 +200,7 @@ public class Xacml20ConformanceTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String requestPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, "Request.xml");
-		return requestUnmarshaller.unmarshalRequest(cl.getResourceAsStream(requestPath));
+		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(requestPath));
 	}
 	
 	private CompositeDecisionRule getPolicy(String prefix, int number, String sufix) throws Exception

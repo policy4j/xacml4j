@@ -6,12 +6,11 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
-import com.artagon.xacml.v20.Xacml20PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.PolicyStore;
-import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
+import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
 public class PolicyStoreFactoryBean extends AbstractFactoryBean
@@ -41,13 +40,14 @@ public class PolicyStoreFactoryBean extends AbstractFactoryBean
 	@Override
 	protected PolicyStore createInstance() throws Exception 
 	{
-		PolicyUnmarshaller unmarshaller = new Xacml20PolicyUnmarshaller();
+		PolicyUnmarshaller unmarshaller = new Xacml30PolicyUnmarshaller(extensionFunctions, 
+				combiningAlgorithmProvider);
 		Preconditions.checkState(policySetResources != null);
 		for(Resource r : policySetResources){
-			policyStore.add(unmarshaller.unmarshall(r.getInputStream()));
+			policyStore.add(unmarshaller.unmarshal(r.getInputStream()));
 		}
 		for(Resource r : referencedPolicySetResources){
-			policyStore.add(unmarshaller.unmarshall(r.getInputStream()), false);
+			policyStore.add(unmarshaller.unmarshal(r.getInputStream()), false);
 		}
 		return policyStore;
 	}

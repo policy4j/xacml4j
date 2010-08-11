@@ -27,8 +27,8 @@ public class Xacml20Endpoint extends AbstractMarshallingPayloadEndpoint
 	
 	protected Object invokeInternal(Object source) throws Exception 
 	{
-		RequestContext request = requestUnmarshaller.unmarshalRequest(source);
+		RequestContext request = requestUnmarshaller.unmarshal(source);
 		ResponseContext response = pdp.decide(request);
-		return responseMarshaller.marshall(response);
+		return responseMarshaller.marshal(response);
 	}
 }

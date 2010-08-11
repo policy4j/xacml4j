@@ -32,25 +32,19 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws JAXBException
 	{
-		this(getContextInstance(), functions, decisionAlgorithms);
+		this(JAXBContextUtil.getInstance(), 
+				functions, decisionAlgorithms);
 	}
 	
 	public Xacml30PolicyUnmarshaller() 
 		throws JAXBException
 	{
-		super(getContextInstance());
+		super(JAXBContextUtil.getInstance());
 		this.v30mapper = new Xacml30PolicyMapper();
 		this.v20mapper = new Xacml20PolicyMapper();
 	}
 	
-	public static JAXBContext getContextInstance() throws JAXBException
-	{
-		StringBuilder b = new StringBuilder();
-		b.append(org.oasis.xacml.v30.jaxb.ObjectFactory.class.getPackage().getName()).append(":");
-		b.append(org.oasis.xacml.v20.jaxb.policy.ObjectFactory.class.getPackage().getName()).append(":");
-		b.append(org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
-		return JAXBContext.newInstance(b.toString());
-	}
+	
 	
 	@Override
 	protected CompositeDecisionRule create(JAXBElement<?> jaxbInstance)

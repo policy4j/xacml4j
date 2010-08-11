@@ -18,11 +18,6 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-v20-schema-policy</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-v30-schema-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>

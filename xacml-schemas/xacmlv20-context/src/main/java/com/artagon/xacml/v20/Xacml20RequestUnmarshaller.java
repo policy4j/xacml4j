@@ -11,7 +11,9 @@ import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.google.common.base.Preconditions;
 
-public class Xacml20RequestUnmarshaller extends BaseJAXBUnmarshaller<RequestContext> implements RequestUnmarshaller 
+public class Xacml20RequestUnmarshaller extends 
+	BaseJAXBUnmarshaller<RequestContext> 
+implements RequestUnmarshaller 
 {
 	private Xacml20ContextMapper mapper;
 	
