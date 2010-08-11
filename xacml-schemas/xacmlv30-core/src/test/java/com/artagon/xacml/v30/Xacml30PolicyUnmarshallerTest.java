@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 
 public class Xacml30PolicyUnmarshallerTest 
@@ -34,7 +35,7 @@ public class Xacml30PolicyUnmarshallerTest
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
-		return  (T)reader.unmarshall(stream);
+		return  (T)reader.unmarshal(stream);
 	}
 	
 	
@@ -73,7 +74,7 @@ public class Xacml30PolicyUnmarshallerTest
 	@Test
 	public void testPolicySet1Mapping() throws Exception
 	{
-		PolicySet p = getPolicy("PolicySet1.xml");
+		getPolicy("PolicySet1.xml");
 		
 	}
 	
@@ -87,6 +88,19 @@ public class Xacml30PolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR03"));
 		assertNotNull(p.getVariableDefinition("VAR04"));
 		assertNotNull(p.getVariableDefinition("VAR05"));
+	}
+	
+	@Test
+	public void testPolicyIIIF006Mapping() throws Exception
+	{
+		PolicySet p0 = getPolicy("IIIF006Policy.xml");
+		assertNotNull(p0);
+		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet", p0.getId());
+		assertEquals("Policy Set for Conformance Test IIIF006.", p0.getDescription());
+		assertNotNull(p0.getDefaults());
+		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
+		assertNotNull(p0.getTarget());
+		assertEquals(1, p0.getDecisions().size());
 	}
 	
 }

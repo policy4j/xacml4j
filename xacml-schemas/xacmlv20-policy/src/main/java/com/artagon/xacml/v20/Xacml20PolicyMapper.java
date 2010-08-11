@@ -70,13 +70,13 @@ import com.artagon.xacml.v3.VariableDefinition;
 import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
+import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
-class Xacml20PolicyMapper extends PolicyMapperSupport
+public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 {
 	private final static Map<String, AttributeCategoryId> designatorMappings = new HashMap<String, AttributeCategoryId>();
 

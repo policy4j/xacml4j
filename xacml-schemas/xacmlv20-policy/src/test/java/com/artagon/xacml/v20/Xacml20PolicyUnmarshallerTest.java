@@ -7,8 +7,11 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBContext;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Effect;
@@ -28,7 +31,7 @@ public class Xacml20PolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml20PolicyUnmarshaller();
+		reader = new Xacml20PolicyUnmarshaller(JAXBContext.newInstance(ObjectFactory.class.getPackage().getName()));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -36,7 +39,7 @@ public class Xacml20PolicyUnmarshallerTest
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertNotNull(stream);
-		return  (T)reader.unmarshall(stream);
+		return  (T)reader.unmarshal(stream);
 	}
 	
 	
