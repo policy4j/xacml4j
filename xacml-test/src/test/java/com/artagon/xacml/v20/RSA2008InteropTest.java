@@ -16,6 +16,7 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyStore;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 import com.google.common.collect.Iterables;
@@ -32,16 +33,16 @@ public class RSA2008InteropTest
 	{
 		this.policyReader = new Xacml20PolicyUnmarshaller();
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		DefaultPolicyStore store = new DefaultPolicyStore();
-		store.addPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02b-N.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02d-prog-note.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02e-MA.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-02f-emergency.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
-		store.addReferencedPolicy(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		PolicyStore store = new DefaultPolicyStore();
+		store.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		store.add(getPolicy("XacmlPolicySet-02a-CDA.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-02b-N.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-02d-prog-note.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-02e-MA.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-02f-emergency.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"), false);
+		store.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"), false);
 		this.pip = new DefaultPolicyInformationPoint();
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		

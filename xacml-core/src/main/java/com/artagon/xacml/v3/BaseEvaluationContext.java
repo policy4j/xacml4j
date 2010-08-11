@@ -34,6 +34,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
+	// TODO: remove cache from root context and move
+	// it to the policy or policy set level
+	// optimization for case when context
+	// is re-used ti evaluate large number of policies or policy sets
 	private TwoKeyIndex<String, String, ValueExpression> variableEvaluationCache;
 
 	private TimeZone timezone;
@@ -274,7 +278,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		try{
 			return xpathProvider.evaluateToNodeSet(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
-			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -293,7 +296,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		try{
 			return xpathProvider.evaluateToNumber(getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
-			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}
@@ -313,7 +315,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			return xpathProvider.evaluateToString(
 					getXPathVersion(), path, content);
 		}catch(XPathEvaluationException e){
-			log.debug("Received exception while evaluating xpath", e);
 			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
 		}
 	}

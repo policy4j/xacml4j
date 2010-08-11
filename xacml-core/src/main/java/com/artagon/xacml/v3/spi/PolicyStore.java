@@ -40,8 +40,21 @@ public interface PolicyStore extends PolicyReferenceResolver
 	 */
 	Decision evaluate(EvaluationContext context);	
 	
-	void add(CompositeDecisionRule rule);
+	/**
+	 * Adds top level policy to this store
+	 * 
+	 * @param p a top level policy
+	 */
+	void add(CompositeDecisionRule p);
 	
-	void add(CompositeDecisionRule rule, boolean topLevel);
+	/**
+	 * Adds policy to this store
+	 * 
+	 * @param p a policy to be added
+	 * to this store
+	 * @param topLevel a flag indicating
+	 * that policy is top level
+	 */
+	void add(CompositeDecisionRule p, boolean topLevel);
 	
 }

@@ -23,6 +23,7 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyStore;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 
@@ -126,12 +127,10 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE001() throws Exception
 	{	
-		DefaultPolicyStore repository = new DefaultPolicyStore();
-		repository.addPolicy(getPolicy("IIE", 1, "Policy.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicyId1.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 1, "PolicySetId1.xml"));
+		store.add(getPolicy("IIE", 1, "Policy.xml"));
+		store.add(getPolicy("IIE", 1, "PolicyId1.xml"), false);
+		store.add(getPolicy("IIE", 1, "PolicySetId1.xml"), false);
 		RequestContext request = getRequest("IIE", 1);
-		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		ResponseContext response = pdp.decide(request);
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 1));	
@@ -141,12 +140,10 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE002() throws Exception
 	{	
-		DefaultPolicyStore repository = new DefaultPolicyStore();
-		repository.addPolicy(getPolicy("IIE", 2, "Policy.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicyId1.xml"));
-		repository.addReferencedPolicy(getPolicy("IIE", 2, "PolicySetId1.xml"));
+		store.add(getPolicy("IIE", 2, "Policy.xml"));
+		store.add(getPolicy("IIE", 2, "PolicyId1.xml"), false);
+		store.add(getPolicy("IIE", 2, "PolicySetId1.xml"), false);
 		RequestContext request = getRequest("IIE", 2);
-		PolicyDecisionPoint pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
 		ResponseContext response = pdp.decide(request);
 		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 2));	
@@ -156,10 +153,10 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testIIE003() throws Exception
 	{	
-		store.addPolicy(getPolicy("IIE", 3, "Policy.xml"));
-		store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId1.xml"));
+		store.add(getPolicy("IIE", 3, "Policy.xml"));
+		store.add(getPolicy("IIE", 3, "PolicyId1.xml"), false);
 		try{
-			store.addReferencedPolicy(getPolicy("IIE", 3, "PolicyId2.xml"));
+			store.add(getPolicy("IIE", 3, "PolicyId2.xml"), false);
 			fail();
 		}catch(XacmlSyntaxException e){	
 		}
@@ -190,10 +187,10 @@ public class Xacml20ConformanceTest
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
 		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
-		DefaultPolicyStore repository = new DefaultPolicyStore();
-		repository.addPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
+		PolicyStore store = new DefaultPolicyStore();
+		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), repository);
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
 		ResponseContext response = pdp.decide(request);
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshall(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);

@@ -61,13 +61,17 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 		try
 		{
 			BagOfAttributeValues<?> attributes = (BagOfAttributeValues<?>)attributeRef.evaluate(context);
-			log.debug("Evaluated attribute reference=\"{}\" to " +
-					"bag=\"{}\"", attributeRef, attributes);
+			if(log.isDebugEnabled()){
+				log.debug("Evaluated attribute reference=\"{}\" to " +
+						"bag=\"{}\"", attributeRef, attributes);
+			}
 			for(AttributeValue v : attributes.values()){
 				BooleanValue match = predicate.invoke(context, value, v);
 				if(match.getValue()){
-					log.debug("Attribute value=\"{}\" " +
-							"matches attribute value=\"{}\"", value, v);
+					if(log.isDebugEnabled()){
+						log.debug("Attribute value=\"{}\" " +
+								"matches attribute value=\"{}\"", value, v);
+					}
 					return MatchResult.MATCH;
 				}
 			}

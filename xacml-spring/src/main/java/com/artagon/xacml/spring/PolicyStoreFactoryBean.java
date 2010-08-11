@@ -16,7 +16,7 @@ import com.google.common.base.Preconditions;
 
 public class PolicyStoreFactoryBean extends AbstractFactoryBean
 {
-	private DefaultPolicyStore policyStore;
+	private PolicyStore policyStore;
 	private Collection<Resource> policySetResources;
 	private Collection<Resource> referencedPolicySetResources;
 	
@@ -44,10 +44,10 @@ public class PolicyStoreFactoryBean extends AbstractFactoryBean
 		PolicyUnmarshaller unmarshaller = new Xacml20PolicyUnmarshaller();
 		Preconditions.checkState(policySetResources != null);
 		for(Resource r : policySetResources){
-			policyStore.addPolicy(unmarshaller.unmarshall(r.getInputStream()));
+			policyStore.add(unmarshaller.unmarshall(r.getInputStream()));
 		}
 		for(Resource r : referencedPolicySetResources){
-			policyStore.addReferencedPolicy(unmarshaller.unmarshall(r.getInputStream()));
+			policyStore.add(unmarshaller.unmarshall(r.getInputStream()), false);
 		}
 		return policyStore;
 	}
