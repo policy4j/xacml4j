@@ -203,7 +203,7 @@ public class Xacml30PolicyMapper extends PolicyMapperSupport
 				continue;
 			}
 			if(e.getValue() instanceof PolicySetType){
-				all.add(create((PolicySetType)e.getValue()));
+				all.add(createPolicySet((PolicySetType)e.getValue()));
 				continue;
 			}
 			if(e.getValue() instanceof IdReferenceType)
