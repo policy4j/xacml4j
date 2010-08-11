@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public class ResponseSyntaxException extends XacmlException
+public class ResponseSyntaxException extends XacmlSyntaxException
 {
 
 	private static final long serialVersionUID = 3874931918490495608L;

@@ -6,6 +6,9 @@ import com.artagon.xacml.v3.ResponseContext;
 
 public interface ResponseMarshaller 
 {
-	Object marshall(ResponseContext request) throws IOException;
-	void marshall(ResponseContext request,  Object source) throws IOException;
+	Object marshal(ResponseContext request) 
+		throws IOException;
+	
+	void marshal(ResponseContext response, Object source) 
+		throws IOException;
 }

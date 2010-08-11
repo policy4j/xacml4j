@@ -13,12 +13,18 @@ import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
-public class PolicyMapperSupport 
+/**
+ * A support class for dealing with XACML 
+ * functions and decision combining algorithms
+ * 
+ * @author Giedrius Trumpickas
+ */
+public class PolicyUnmarshallerSupport 
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
-	protected PolicyMapperSupport(
+	protected PolicyUnmarshallerSupport(
 			FunctionProvider extendsionFunctions,
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) 
 	{
@@ -28,7 +34,7 @@ public class PolicyMapperSupport
 		this.combingingAlgorithms = extensionCombiningAlgorithms;
 	}
 	
-	protected PolicyMapperSupport()
+	protected PolicyUnmarshallerSupport()
 	{
 		this(new DefaultFunctionProvider(), 
 				new AggregatingDecisionCombiningAlgorithmProvider(
