@@ -34,13 +34,13 @@ public class Xacml20ResponseMarshaller implements ResponseMarshaller
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void marshall(ResponseContext response, Object output) throws IOException 
+	public void marshal(ResponseContext response, Object output) throws IOException 
 	{
 		Preconditions.checkArgument(response != null);
 		Preconditions.checkArgument(output != null);
 		try{
 			Marshaller m = Xacml20ContextMapper.getJaxbContext().createMarshaller();
-			JAXBElement<ResponseType> jaxbElement = (JAXBElement<ResponseType>)marshall(response);
+			JAXBElement<ResponseType> jaxbElement = (JAXBElement<ResponseType>)marshal(response);
 			if(output instanceof OutputStream){
 				m.marshal(jaxbElement, (OutputStream)output);
 				return;
@@ -66,7 +66,7 @@ public class Xacml20ResponseMarshaller implements ResponseMarshaller
 	}
 
 	@Override
-	public Object marshall(ResponseContext response) throws IOException 
+	public Object marshal(ResponseContext response) throws IOException 
 	{
 		ResponseType responseType = mapper.create(response);
 		return contextJaxbFactory.createResponse(responseType);

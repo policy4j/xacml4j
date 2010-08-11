@@ -13,6 +13,7 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.ResponseSyntaxException;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.ResponseUnmarshaller;
 import com.google.common.base.Preconditions;
 
@@ -27,7 +28,7 @@ private Xacml20ContextMapper mapper;
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseContext unmarshal(Object source)
-			throws ResponseSyntaxException, IOException {
+			throws XacmlSyntaxException, IOException {
 		Preconditions.checkNotNull(source);
 		try{
 			Unmarshaller u = Xacml20ContextMapper.getJaxbContext().createUnmarshaller();

@@ -67,7 +67,8 @@ class Xacml20ContextMapper
 	private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 	private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
 	
-	static{
+	static
+	{
 		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
 		v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
 		v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);

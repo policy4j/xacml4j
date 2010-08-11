@@ -7,8 +7,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBContext;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.w3c.dom.Document;
 
 import com.artagon.xacml.v3.Attribute;
@@ -28,14 +31,14 @@ public class Xacml20RequestUnmarshallerTest
 	@Before
 	public void init() throws Exception
 	{
-		this.unmarshaller = new Xacml20RequestUnmarshaller();
+		this.unmarshaller = new Xacml20RequestUnmarshaller(JAXBContext.newInstance(ObjectFactory.class.getPackage().getName()));
 	}
 		
 	@Test
 	public void testRequestIIIF005Mapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("IIIF005Request.xml"));
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIIF005Request.xml"));
 		assertNotNull(request);
 		Attributes subject = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subject);
@@ -69,7 +72,7 @@ public class Xacml20RequestUnmarshallerTest
 	public void testRequestIIA13Mapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("IIA013Request.xml"));
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIA013Request.xml"));
 		assertNotNull(request);	
 		assertEquals(2, request.getAttributeValues(AttributeCategoryId.SUBJECT_ACCESS, 
 				"urn:oasis:names:tc:xacml:2.0:conformance-test:age", null, XacmlDataTypes.INTEGER.getType()).size());
@@ -79,7 +82,7 @@ public class Xacml20RequestUnmarshallerTest
 	public void testRequestIIB028Mapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("IIB028Request.xml"));
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIB028Request.xml"));
 		assertNotNull(request);
 		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
@@ -122,7 +125,7 @@ public class Xacml20RequestUnmarshallerTest
 	public void testMultiResourceRequestMapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("MultiResource-Request.xml"));
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("MultiResource-Request.xml"));
 		assertNotNull(request);
 		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
@@ -174,7 +177,7 @@ public class Xacml20RequestUnmarshallerTest
 	public void testRequestIIB030Mapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("IIB030Request.xml"));	
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIB030Request.xml"));	
 		assertNotNull(request);
 		Attributes subjectAccess = request.getOnlyAttributes(AttributeCategoryId.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
@@ -206,7 +209,7 @@ public class Xacml20RequestUnmarshallerTest
 	public void testRequest001MultipleResourcesMapping() throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		RequestContext request = unmarshaller.unmarshalRequest(cl.getResourceAsStream("001A-Request.xml"));
+		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("001A-Request.xml"));
 		assertNotNull(request);
 		
 		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
