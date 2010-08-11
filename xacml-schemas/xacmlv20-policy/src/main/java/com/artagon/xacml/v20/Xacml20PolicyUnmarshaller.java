@@ -1,9 +1,10 @@
 package com.artagon.xacml.v20;
 
-import javax.naming.spi.ObjectFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+
+import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
