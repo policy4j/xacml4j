@@ -10,6 +10,6 @@ public class DefaultXPathFactoryTest
 	@Test
 	public void testCreateXPathFactory() throws Exception
 	{
-		XPathFactory xpf = XPathFactory.newInstance();
+		XPathFactory.newInstance();
 	}
 }
