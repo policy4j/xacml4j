@@ -73,7 +73,7 @@ public interface EvaluationContext
 	 * 
 	 * @return a collection of {@link PolicyIdentifier}
 	 */
-	Collection<DecisionRuleIDReference> getEvaluatedPolicies();
+	Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies();
 	
 	/**
 	 * Adds evaluated policy and policy 

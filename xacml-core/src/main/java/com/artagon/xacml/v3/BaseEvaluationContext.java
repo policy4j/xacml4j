@@ -42,7 +42,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	private TimeZone timezone;
 	
-	private List<DecisionRuleIDReference> evaluatedPolicies;
+	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 	
 	private XPathProvider xpathProvider;
 	
@@ -92,7 +92,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.currentDate = XacmlDataTypes.DATE.create(now);
 		this.currentDateTime = XacmlDataTypes.DATETIME.create(now);
 		this.currentTime = XacmlDataTypes.TIME.create(now);
-		this.evaluatedPolicies = new LinkedList<DecisionRuleIDReference>();
+		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 	}
 	
 	@Override
@@ -128,12 +128,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final void addEvaluatedPolicy(Policy policy, Decision result) {
-		this.evaluatedPolicies.add(new PolicyIDReference(policy.getId(), policy.getVersion()));
+		this.evaluatedPolicies.add(policy.getReference());
 	}
 	
 	@Override
 	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
-		this.evaluatedPolicies.add(new PolicySetIDReference(policySet.getId(), policySet.getVersion()));
+		this.evaluatedPolicies.add(policySet.getReference());
 	}
 
 	@Override
@@ -347,7 +347,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Collection<DecisionRuleIDReference> getEvaluatedPolicies() {
+	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
 	

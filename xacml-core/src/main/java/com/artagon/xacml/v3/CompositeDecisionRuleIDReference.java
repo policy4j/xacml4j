@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public interface DecisionRuleIDReference extends PolicyElement
+public interface CompositeDecisionRuleIDReference extends PolicyElement
 {
 	String getId();
 	VersionMatch getVersion();	

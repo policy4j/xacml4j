@@ -15,6 +15,7 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	private CombinerParameters combinerParameters;
 	private PolicySetCombinerParameters policySetCombinerParameters;
 	private PolicyCombinerParameters policyCombinerParameters;
+	private PolicySetIDReference reference;
 	
 	/**
 	 * Constructs a policy set with a given identifier
@@ -47,6 +48,7 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	{
 		super(id, version, description, target, adviceExpressions, obligationExpressions);
 		checkNotNull(combine, "Policy set combining algorithm must be specified");
+		this.reference = new PolicySetIDReference(id, version);
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
@@ -69,6 +71,12 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 				null, null, null, combine, policies, adviceExpressions, obligationExpressions);
 	}
 	
+	
+	@Override
+	public CompositeDecisionRuleIDReference getReference() {
+		return reference;
+	}
+
 	/**
 	 * Gets policy set defaults
 	 * 

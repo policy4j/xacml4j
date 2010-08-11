@@ -22,6 +22,11 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 //	private PolicyIssuer policyIssuer;
 	
 	/**
+	 * A reference to itself
+	 */
+	private PolicyIDReference reference;
+	
+	/**
 	 * Creates policy with a given identifier, target, variables.
 	 * decision combining algorithm, rules and advice and obligation
 	 * expressions
@@ -57,6 +62,7 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		Preconditions.checkNotNull(combine);
 		this.rules = new LinkedList<Rule>(rules);
 		this.combine = combine;
+		this.reference = new PolicyIDReference(policyId, version);
 		this.policyDefaults = policyDefaults;
 		this.variableDefinitions = new ConcurrentHashMap<String, VariableDefinition>();
 		for(VariableDefinition varDef : variables){
@@ -178,6 +184,12 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 	 */
 	public Collection<VariableDefinition> getVariableDefinitions(){
 		return Collections.unmodifiableCollection(variableDefinitions.values());
+	}
+	
+	
+	@Override
+	public CompositeDecisionRuleIDReference getReference() {
+		return reference;
 	}
 	
 	/**

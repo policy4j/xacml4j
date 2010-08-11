@@ -232,7 +232,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Collection<DecisionRuleIDReference> getEvaluatedPolicies() {
+	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return delegate.getEvaluatedPolicies();
 	}
 	
