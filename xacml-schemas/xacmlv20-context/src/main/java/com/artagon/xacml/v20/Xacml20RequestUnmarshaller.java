@@ -17,9 +17,13 @@ implements RequestUnmarshaller
 {
 	private Xacml20ContextMapper mapper;
 	
-	public Xacml20RequestUnmarshaller(JAXBContext context)
-	{
+	public Xacml20RequestUnmarshaller(JAXBContext context){
 		super(context);
+		this.mapper = new Xacml20ContextMapper();
+	}
+	
+	public Xacml20RequestUnmarshaller(){
+		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml20ContextMapper();
 	}
 

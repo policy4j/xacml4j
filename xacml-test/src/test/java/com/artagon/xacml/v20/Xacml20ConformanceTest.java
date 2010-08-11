@@ -207,6 +207,6 @@ public class Xacml20ConformanceTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, sufix);
-		return policyReader.unmarshall(cl.getResourceAsStream(path));
+		return policyReader.unmarshal(cl.getResourceAsStream(path));
 	}
 }

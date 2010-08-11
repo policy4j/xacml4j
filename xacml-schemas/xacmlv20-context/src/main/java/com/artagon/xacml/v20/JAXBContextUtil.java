@@ -12,6 +12,8 @@ public class JAXBContextUtil
 	static{
 		StringBuilder b = new StringBuilder();
 		b.append(org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
+		b.append(":");
+		b.append(org.oasis.xacml.v20.jaxb.policy.ObjectFactory.class.getPackage().getName());
 		try{
 			INSTANCE = JAXBContext.newInstance(b.toString());
 		}catch(JAXBException e){

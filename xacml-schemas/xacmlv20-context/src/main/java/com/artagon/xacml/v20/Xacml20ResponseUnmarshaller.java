@@ -20,6 +20,10 @@ implements ResponseUnmarshaller
 		super(context);
 		this.mapper = new Xacml20ContextMapper();
 	}
+	
+	public Xacml20ResponseUnmarshaller(){
+		this(JAXBContextUtil.getInstance());
+	}
 
 	@Override
 	protected ResponseContext create(JAXBElement<?> jaxbInstance)
