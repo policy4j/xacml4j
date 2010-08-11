@@ -67,6 +67,8 @@ import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyMapperSupport;
+import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
@@ -87,6 +89,11 @@ public class Xacml30PolicyMapper extends PolicyMapperSupport
 
 	public Xacml30PolicyMapper() {
 		super();
+	}
+	
+	public Xacml30PolicyMapper(FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms){
+		super(functions, decisionAlgorithms);
 	}
 
 	/**

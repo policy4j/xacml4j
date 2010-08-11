@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.oasis.xacml.v20.policy.ObjectFactory;
+import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;

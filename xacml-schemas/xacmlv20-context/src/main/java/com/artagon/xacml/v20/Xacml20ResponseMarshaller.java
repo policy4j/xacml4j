@@ -9,8 +9,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.oasis.xacml.v20.context.ObjectFactory;
-import org.oasis.xacml.v20.context.ResponseType;
+import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
+import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;

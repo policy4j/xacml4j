@@ -15,13 +15,13 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.oasis.xacml.v20.context.ObjectFactory;
-import org.oasis.xacml.v20.context.ResponseType;
-import org.oasis.xacml.v20.context.ResultType;
-import org.oasis.xacml.v20.context.StatusType;
-import org.oasis.xacml.v20.policy.AttributeAssignmentType;
-import org.oasis.xacml.v20.policy.ObligationType;
-import org.oasis.xacml.v20.policy.ObligationsType;
+import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
+import org.oasis.xacml.v20.jaxb.context.ResponseType;
+import org.oasis.xacml.v20.jaxb.context.ResultType;
+import org.oasis.xacml.v20.jaxb.context.StatusType;
+import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
+import org.oasis.xacml.v20.jaxb.policy.ObligationType;
+import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 
 public class Xacml20ConformanceUtility 
 {

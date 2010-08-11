@@ -9,7 +9,7 @@
 	 
 	<bindings schemaLocation="access_control-xacml-2.0-context-schema-os.xsd" node="/xsd:schema">
 		   <schemaBindings>
-		       <package name="org.oasis.xacml.v20.context"/>
+		       <package name="org.oasis.xacml.v20.jaxb.context"/>
 		   </schemaBindings>
 	</bindings>
 		

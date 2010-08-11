@@ -9,36 +9,36 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
-import org.oasis.xacml.v20.policy.ActionMatchType;
-import org.oasis.xacml.v20.policy.ActionType;
-import org.oasis.xacml.v20.policy.ActionsType;
-import org.oasis.xacml.v20.policy.ApplyType;
-import org.oasis.xacml.v20.policy.AttributeAssignmentType;
-import org.oasis.xacml.v20.policy.AttributeDesignatorType;
-import org.oasis.xacml.v20.policy.AttributeSelectorType;
-import org.oasis.xacml.v20.policy.ConditionType;
-import org.oasis.xacml.v20.policy.DefaultsType;
-import org.oasis.xacml.v20.policy.EffectType;
-import org.oasis.xacml.v20.policy.EnvironmentMatchType;
-import org.oasis.xacml.v20.policy.EnvironmentType;
-import org.oasis.xacml.v20.policy.EnvironmentsType;
-import org.oasis.xacml.v20.policy.FunctionType;
-import org.oasis.xacml.v20.policy.IdReferenceType;
-import org.oasis.xacml.v20.policy.ObligationType;
-import org.oasis.xacml.v20.policy.ObligationsType;
-import org.oasis.xacml.v20.policy.PolicySetType;
-import org.oasis.xacml.v20.policy.PolicyType;
-import org.oasis.xacml.v20.policy.ResourceMatchType;
-import org.oasis.xacml.v20.policy.ResourceType;
-import org.oasis.xacml.v20.policy.ResourcesType;
-import org.oasis.xacml.v20.policy.RuleType;
-import org.oasis.xacml.v20.policy.SubjectAttributeDesignatorType;
-import org.oasis.xacml.v20.policy.SubjectMatchType;
-import org.oasis.xacml.v20.policy.SubjectType;
-import org.oasis.xacml.v20.policy.SubjectsType;
-import org.oasis.xacml.v20.policy.TargetType;
-import org.oasis.xacml.v20.policy.VariableDefinitionType;
-import org.oasis.xacml.v20.policy.VariableReferenceType;
+import org.oasis.xacml.v20.jaxb.policy.ActionMatchType;
+import org.oasis.xacml.v20.jaxb.policy.ActionType;
+import org.oasis.xacml.v20.jaxb.policy.ActionsType;
+import org.oasis.xacml.v20.jaxb.policy.ApplyType;
+import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
+import org.oasis.xacml.v20.jaxb.policy.AttributeDesignatorType;
+import org.oasis.xacml.v20.jaxb.policy.AttributeSelectorType;
+import org.oasis.xacml.v20.jaxb.policy.ConditionType;
+import org.oasis.xacml.v20.jaxb.policy.DefaultsType;
+import org.oasis.xacml.v20.jaxb.policy.EffectType;
+import org.oasis.xacml.v20.jaxb.policy.EnvironmentMatchType;
+import org.oasis.xacml.v20.jaxb.policy.EnvironmentType;
+import org.oasis.xacml.v20.jaxb.policy.EnvironmentsType;
+import org.oasis.xacml.v20.jaxb.policy.FunctionType;
+import org.oasis.xacml.v20.jaxb.policy.IdReferenceType;
+import org.oasis.xacml.v20.jaxb.policy.ObligationType;
+import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
+import org.oasis.xacml.v20.jaxb.policy.PolicySetType;
+import org.oasis.xacml.v20.jaxb.policy.PolicyType;
+import org.oasis.xacml.v20.jaxb.policy.ResourceMatchType;
+import org.oasis.xacml.v20.jaxb.policy.ResourceType;
+import org.oasis.xacml.v20.jaxb.policy.ResourcesType;
+import org.oasis.xacml.v20.jaxb.policy.RuleType;
+import org.oasis.xacml.v20.jaxb.policy.SubjectAttributeDesignatorType;
+import org.oasis.xacml.v20.jaxb.policy.SubjectMatchType;
+import org.oasis.xacml.v20.jaxb.policy.SubjectType;
+import org.oasis.xacml.v20.jaxb.policy.SubjectsType;
+import org.oasis.xacml.v20.jaxb.policy.TargetType;
+import org.oasis.xacml.v20.jaxb.policy.VariableDefinitionType;
+import org.oasis.xacml.v20.jaxb.policy.VariableReferenceType;
 
 import com.artagon.xacml.util.VariableManager;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
@@ -370,8 +370,8 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 			VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException
 	{	
 		Object exp = expression.getValue();
-		if (exp instanceof org.oasis.xacml.v20.policy.AttributeValueType) {
-			return createValue((org.oasis.xacml.v20.policy.AttributeValueType) exp);
+		if (exp instanceof org.oasis.xacml.v20.jaxb.policy.AttributeValueType) {
+			return createValue((org.oasis.xacml.v20.jaxb.policy.AttributeValueType) exp);
 		}
 		if (exp instanceof ApplyType) {
 			return createApply((ApplyType)exp, m);
@@ -481,8 +481,8 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 			return null;
 		}
 		Object exp = expression.getValue();
-		if (exp instanceof org.oasis.xacml.v20.policy.AttributeValueType) {
-			return createValue((org.oasis.xacml.v20.policy.AttributeValueType) exp);
+		if (exp instanceof org.oasis.xacml.v20.jaxb.policy.AttributeValueType) {
+			return createValue((org.oasis.xacml.v20.jaxb.policy.AttributeValueType) exp);
 		}
 		if (exp instanceof ApplyType) {
 			return createApply((ApplyType)exp, m);
@@ -617,7 +617,7 @@ class Xacml20PolicyMapper extends PolicyMapperSupport
 	 * @throws XacmlSyntaxException
 	 */
 	private AttributeValue createValue(
-			org.oasis.xacml.v20.policy.AttributeValueType value)
+			org.oasis.xacml.v20.jaxb.policy.AttributeValueType value)
 			throws XacmlSyntaxException {
 		return createValue(value.getDataType(), value.getContent());
 	}

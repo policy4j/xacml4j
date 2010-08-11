@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.oasis.xacml.v20.context.ResponseType;
+import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.ResponseContext;

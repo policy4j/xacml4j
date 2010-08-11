@@ -10,7 +10,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.oasis.xacml.v20.context.ResponseType;
+import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
