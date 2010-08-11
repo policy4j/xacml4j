@@ -43,10 +43,10 @@ public class InMemoryPolicyStoreFactoryBean extends AbstractFactoryBean
 	{
 		Preconditions.checkState(policySetResources != null);
 		for(Resource r : policySetResources){
-			policyStore.addPolicy(policyMapper.unmarshall(r.getInputStream()));
+			policyStore.add(policyMapper.unmarshall(r.getInputStream()));
 		}
 		for(Resource r : referencedPolicySetResources){
-			policyStore.addReferencedPolicy(policyMapper.unmarshall(r.getInputStream()));
+			policyStore.add(policyMapper.unmarshall(r.getInputStream()), false);
 		}
 		return policyStore;
 	}
