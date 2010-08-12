@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject 
-	implements CompositeDecisionRule, CompositeDecisionRuleIDReference
+	implements CompositeDecisionRuleIDReference
 {
 	private String id;
 	private VersionMatch version;
@@ -25,17 +25,18 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 	public final String getId(){
 		return id;
 	}
-
 	
+	@Override
 	public final VersionMatch getEarliestVersion() {
 		return earliest;
 	}
-
-
+	
+	@Override
 	public final VersionMatch getLatestVersion() {
 		return latest;
 	}
-
+	
+	@Override
 	public final VersionMatch getVersion() {
 		return version;
 	}

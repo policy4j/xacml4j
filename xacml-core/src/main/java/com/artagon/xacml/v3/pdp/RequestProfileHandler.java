@@ -11,10 +11,11 @@ public interface RequestProfileHandler
 	 * Handles given request
 	 * 
 	 * @param request a decision request
-	 * @param pdp a policy decision point
+	 * @param pdp a policy decision point callback
 	 * @return collection of {@link Result} instances
 	 */
-	Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp);
+	Collection<Result> handle(RequestContext request, 
+			PolicyDecisionCallback pdp);
 	
 	/**
 	 * Sets next handler in a chain
