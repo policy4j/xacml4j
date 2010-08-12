@@ -50,7 +50,7 @@ public class RequestContext extends XacmlObject
 		for(Attributes attr : attributes)
 		{
 			// index attributes by category
-			this.attributes.put(attr.getCategoryId(), attr);
+			this.attributes.put(attr.getCategory(), attr);
 			// index attributes
 			// by id for fast lookup
 			if(attr.getId() != null){
@@ -245,7 +245,7 @@ public class RequestContext extends XacmlObject
 	/**
 	 * Tests if this request has an multiple 
 	 * {@link Attributes} instances with the
-	 * same {@link Attributes#getCategoryId()} value
+	 * same {@link Attributes#getCategory()} value
 	 * 
 	 * @return <code>true</code> if this request
 	 * has multiple attributes of same category
@@ -316,7 +316,7 @@ public class RequestContext extends XacmlObject
 		for(Attributes a : attributes.values()){
 			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
-				resultAttr.add(new Attributes(a.getCategoryId(), includeInResult));
+				resultAttr.add(new Attributes(a.getCategory(), includeInResult));
 			}
 		}
 		return resultAttr;

@@ -46,7 +46,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())
 		{
-			if(attrs.getCategoryId().equals(AttributeCategoryId.RESOURCE)){
+			if(attrs.getCategory().equals(AttributeCategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				for(Attribute attr : attrs.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
@@ -59,7 +59,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 					}
 					resourceAttr.add(attr);
 				}
-				attributes.add(new Attributes(attrs.getCategoryId(), attrs.getContent(), resourceAttr));
+				attributes.add(new Attributes(attrs.getCategory(), attrs.getContent(), resourceAttr));
 				continue;
 			}
 			attributes.add(attrs);

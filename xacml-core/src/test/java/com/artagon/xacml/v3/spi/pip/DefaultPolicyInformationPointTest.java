@@ -1,11 +1,9 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import static org.easymock.EasyMock.createStrictMock;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.easymock.EasyMock.*;
-
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 
 public class DefaultPolicyInformationPointTest 
 {

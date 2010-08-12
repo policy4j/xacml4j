@@ -7,7 +7,14 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 
-public interface PolicyStore extends PolicyReferenceResolver
+/**
+ * A collection of one or more policy or policy sets
+ * with an ability to resolve references
+ * 
+ * @author Giedrius Trumpickas
+ */
+public interface PolicyStore 
+	extends PolicyReferenceResolver
 {
 	public enum Type
 	{

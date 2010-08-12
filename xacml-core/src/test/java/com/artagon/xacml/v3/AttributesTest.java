@@ -41,7 +41,7 @@ public class AttributesTest
 		assertTrue(test.getAttributes().containsAll(attributes));
 		assertEquals("id", test.getId());
 		assertSame(content, test.getContent());
-		assertEquals(AttributeCategoryId.RESOURCE, test.getCategoryId());
+		assertEquals(AttributeCategoryId.RESOURCE, test.getCategory());
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class AttributesTest
 		assertTrue(test.getAttributes().containsAll(attributes));
 		assertNull(test.getId());
 		assertSame(content, test.getContent());
-		assertEquals(AttributeCategoryId.RESOURCE, test.getCategoryId());
+		assertEquals(AttributeCategoryId.RESOURCE, test.getCategory());
 	}
 	
 	@Test

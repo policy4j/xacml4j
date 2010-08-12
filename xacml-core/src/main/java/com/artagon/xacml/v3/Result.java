@@ -82,7 +82,7 @@ public class Result extends XacmlObject
 		this.policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
 		Iterables.addAll(this.policyReferences, policyIdentifiers);
 		for(Attributes attribute : attributes){
-			this.attributes.put(attribute.getCategoryId(), attribute);
+			this.attributes.put(attribute.getCategory(), attribute);
 		}
 		for(Obligation o : obligations){
 			this.obligations.put(o.getId(), o);

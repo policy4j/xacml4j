@@ -6,15 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.oasis.xacml.v20.jaxb.context.ActionType;
 import org.oasis.xacml.v20.jaxb.context.AttributeType;
 import org.oasis.xacml.v20.jaxb.context.AttributeValueType;
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
 import org.oasis.xacml.v20.jaxb.context.EnvironmentType;
-import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.RequestType;
 import org.oasis.xacml.v20.jaxb.context.ResourceContentType;
 import org.oasis.xacml.v20.jaxb.context.ResourceType;
@@ -49,7 +45,6 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -89,25 +84,6 @@ class Xacml20ContextMapper
 		v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
 		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 	
-	}
-	
-	private static JAXBContext context;
-	
-	static{
-		try{
-			context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
-		}catch(JAXBException e){
-		}
-	}
-	
-	
-	public Xacml20ContextMapper(){
-		Preconditions.checkState(context != null, 
-				"Failed to initialize JAXB context");
-	}
-	
-	static JAXBContext getJaxbContext(){
-		return context;
 	}
 	
 	public ResponseType create(ResponseContext response)
@@ -233,7 +209,7 @@ class Xacml20ContextMapper
 			Multimap<AttributeCategoryId, Attributes> map = LinkedHashMultimap.create();
 			for(SubjectType subject : req.getSubject()){
 				Attributes attr =  createSubject(subject);
-				map.put(attr.getCategoryId(), attr);
+				map.put(attr.getCategory(), attr);
 			}
 			attributes.addAll(normalize(map));
 		}

@@ -37,6 +37,10 @@ public abstract class BaseAttributeValue<T> extends XacmlObject
 		return type;
 	}
 	
+	public AttributeValueType getDataType(){
+		return type;
+	}
+	
 	@Override
 	public String toXacmlString() {
 		return value.toString();

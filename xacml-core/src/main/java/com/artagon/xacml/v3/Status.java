@@ -6,7 +6,7 @@ public final class Status extends XacmlObject
 {
 	private StatusCode code;
 	private String message;
-	private String detail;
+	private StatusDetail detail;
 	
 	/**
 	 * Creates status with a given status
@@ -18,7 +18,7 @@ public final class Status extends XacmlObject
 	 * description
 	 */
 	public Status(StatusCode code, 
-			String message, String detail){
+			String message, StatusDetail detail){
 		Preconditions.checkNotNull(code);
 		this.code = code;
 		this.message = message;
@@ -68,7 +68,7 @@ public final class Status extends XacmlObject
 		return message;
 	}
 	
-	public String getDetail(){
+	public StatusDetail getDetail(){
 		return detail;
 	}
 }

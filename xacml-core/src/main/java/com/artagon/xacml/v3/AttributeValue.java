@@ -11,6 +11,8 @@ public interface AttributeValue extends ValueExpression
 	 */
 	String toXacmlString();
 	
+	AttributeValueType getDataType();
+	
 	/**
 	 * Implementation of this method 
 	 * returns reference to itself

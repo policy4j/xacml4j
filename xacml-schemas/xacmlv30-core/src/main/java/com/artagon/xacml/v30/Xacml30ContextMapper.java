@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.oasis.xacml.v30.jaxb.AdviceType;
 import org.oasis.xacml.v30.jaxb.AssociatedAdviceType;
+import org.oasis.xacml.v30.jaxb.AttributeAssignmentType;
 import org.oasis.xacml.v30.jaxb.AttributeType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.oasis.xacml.v30.jaxb.AttributesReferenceType;
@@ -24,12 +25,15 @@ import org.oasis.xacml.v30.jaxb.RequestReferenceType;
 import org.oasis.xacml.v30.jaxb.RequestType;
 import org.oasis.xacml.v30.jaxb.ResponseType;
 import org.oasis.xacml.v30.jaxb.ResultType;
+import org.oasis.xacml.v30.jaxb.StatusCodeType;
+import org.oasis.xacml.v30.jaxb.StatusDetailType;
 import org.oasis.xacml.v30.jaxb.StatusType;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Attribute;
+import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
@@ -45,9 +49,12 @@ import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.StatusDetail;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.google.common.base.Preconditions;
 
 public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 {
@@ -139,6 +146,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 			}
 		}
 		result.setStatus(create(r.getStatus()));
+		result.setDecision(create(r.getDecision()));
 		return result;
 	}
 	
@@ -150,21 +158,81 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 		return idRef;
 	}
 	
-	private AttributesType create(Attributes a){
+	private AttributesType create(Attributes a)
+	{
+		AttributesType attributes = new AttributesType();
+		attributes.setId(a.getId());
+		attributes.setCategory(a.getCategory().toString());
+		for(Attribute attr : a.getAttributes()){
+			attributes.getAttribute().add(create(attr));
+		}
+		return attributes;
+	}
+	
+	private AttributeType create(Attribute a){
 		return null;
 	}
 	
-	private AdviceType create(Advice a){
-		return null;
+	private DecisionType create(Decision d){
+		DecisionType jaxbD = v30ToV20DecisionMapping.get(d);
+		Preconditions.checkState(jaxbD != null);
+		return jaxbD;
+	}
+	
+	private AdviceType create(Advice a)
+	{
+		AdviceType advice = new AdviceType();
+		advice.setAdviceId(a.getId());
+		for(AttributeAssignment attr : a.getAttributes()){
+			advice.getAttributeAssignment().add(create(attr));
+		}
+		return advice;
 	}
 	
 	private ObligationType create(Obligation a){
-		return null;
+		ObligationType obligation = new ObligationType();
+		obligation.setObligationId(a.getId());
+		for(AttributeAssignment attr : a.getAttributes()){
+			obligation.getAttributeAssignment().add(create(attr));
+		}
+		return obligation;
 	}
 	
 	private StatusType create(Status status)
 	{
+		StatusType s = new StatusType();
+		s.setStatusCode(create(status.getStatusCode()));
+		s.setStatusMessage(status.getMessage());
+		s.setStatusDetail(create(status.getDetail()));
+		return s;
+	}
+	
+	private StatusCodeType create(StatusCode c)
+	{
+		if(c == null){
+			return null;
+		}
+		StatusCodeType code = new StatusCodeType();
+		code.setValue(c.getValue().toString());
+		code.setStatusCode(create(c.getMinorStatus()));
+		return code;
+	}
+	
+	private StatusDetailType create(StatusDetail d)
+	{
 		return null;
+	}
+	
+	private AttributeAssignmentType create(AttributeAssignment a)
+	{
+		AttributeAssignmentType attr = new AttributeAssignmentType();
+		attr.setAttributeId(a.getAttributeId());
+		attr.setIssuer(a.getIssuer());
+		attr.setCategory(a.getCategory().toString());
+		AttributeValue v = a.getAttribute();
+		attr.setDataType(v.getDataType().getDataTypeId());
+		attr.getContent().add(v.toXacmlString());
+		return attr;
 	}
 	
 	private Attributes create(AttributesType attributes) throws XacmlSyntaxException

@@ -103,7 +103,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		if(content == null){
 			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
 					"for selector=\"%s\" must be specified", 
-					attribute.getCategoryId(), selector.getValue());
+					attribute.getCategory(), selector.getValue());
 		}
 		try 
 		{
@@ -134,14 +134,14 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR, 
 						a.getIssuer(), 
 						a.isIncludeInResult(), 
-						XacmlDataTypes.XPATHEXPRESSION.create(xpath, attributes.getCategoryId()));
+						XacmlDataTypes.XPATHEXPRESSION.create(xpath, attributes.getCategory()));
 				newAttributes.add(selectorAttr);
 				continue;
 			}
 			newAttributes.add(a);
 		}
 		return new Attributes(attributes.getId(), 
-				attributes.getCategoryId(), 
+				attributes.getCategory(), 
 				attributes.getContent(), newAttributes);
 	}
 }

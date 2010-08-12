@@ -1,26 +1,21 @@
 package com.artagon.xacml.v3;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Preconditions;
 
 public class StatusCode extends XacmlObject
 {
 	private StatusCodeId value;
-	private List<StatusCode> minorStatus;
+	private StatusCode minorStatus;
 	
 	public StatusCode(StatusCodeId value, 
-			StatusCode ...minorStatus){
+			StatusCode minorStatus){
 		Preconditions.checkNotNull(value);
 		this.value = value;
-		this.minorStatus = (minorStatus == null)?
-				Collections.<StatusCode>emptyList():Arrays.asList(minorStatus);
+		this.minorStatus = minorStatus;
 	}
 	
 	public StatusCode(StatusCodeId value){
-		this(value, (StatusCode[])null);
+		this(value, null);
 	}
 	
 	public static StatusCode createMissingAttribute(){
@@ -39,11 +34,23 @@ public class StatusCode extends XacmlObject
 		return new StatusCode(StatusCodeId.OK);
 	}
 	
+	/**
+	 * Gets status code value
+	 * 
+	 * @return status code value
+	 */
 	public StatusCodeId getValue(){
 		return value;
 	}
 	
-	public Iterable<StatusCode> getMinorStatus(){
+	/**
+	 * Gets a minor status code, 
+	 * this status code qualifies its 
+	 * parent status code
+	 * 
+	 * @return a minor status code
+	 */
+	public StatusCode getMinorStatus(){
 		return minorStatus;
 	}
 	

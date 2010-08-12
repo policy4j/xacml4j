@@ -120,7 +120,7 @@ public class Attributes extends XacmlObject
 	 * 
 	 * @return attribute category
 	 */
-	public AttributeCategoryId getCategoryId(){
+	public AttributeCategoryId getCategory(){
 		return categoryId;
 	}
 
