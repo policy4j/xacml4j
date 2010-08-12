@@ -14,7 +14,8 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 
-public enum XacmlDataTypes {
+public enum XacmlDataTypes 
+{
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
 	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),
 
@@ -127,6 +128,14 @@ public enum XacmlDataTypes {
 		return ((V) type.create(o, params));
 	}
 
+	/**
+	 * Creates a XACML bag of given 
+	 * {@link AttributeValue} instances
+	 * 
+	 * @param <T>
+	 * @param attributes an attribute values
+	 * @return {@link BagOfAttributeValues} a XACML bag
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValue> BagOfAttributeValues<T> bag(
 			AttributeValue... attributes) {
@@ -166,6 +175,16 @@ public enum XacmlDataTypes {
 		return (T) type;
 	}
 
+	/**
+	 * Creates attribute value of given type
+	 * 
+	 * @param typeId a type identifier
+	 * @param value an attribute value
+	 * @return {@link AttributeValue} instance
+	 * @throws XacmlSyntaxException if attribute can 
+	 * not be created from a given value or given type
+	 * identifier does not represent valid XACML data type
+	 */
 	public static AttributeValue createAttributeValue(String typeId, Object value)
 			throws XacmlSyntaxException {
 		return createAttributeValue(typeId, value,
