@@ -13,7 +13,6 @@
 		<jaxb-runtime-version>2.2</jaxb-runtime-version>
 	</properties>
     <modules>
-        <module>xacmlv20-policy</module>
         <module>xacmlv20-context</module>
         <module>xacmlv30-core</module>
     </modules>

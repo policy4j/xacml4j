@@ -1,7 +1,10 @@
 package com.artagon.xacml.v30;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+
+
 
 import com.artagon.xacml.v20.Xacml20PolicyMapper;
 import com.artagon.xacml.v3.CompositeDecisionRule;
@@ -11,20 +14,26 @@ import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 
-public class Xacml30PolicyUnmarshaller 
-extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
+public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller
 {
 	private Xacml30PolicyMapper v30mapper;
 	private Xacml20PolicyMapper v20mapper;
 	
-	public Xacml30PolicyUnmarshaller(
-			FunctionProvider functions, 
+	public Xacml30PolicyUnmarshaller(JAXBContext context, FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 	{
-		super(JAXBContextUtil.getInstance());
+		super(context);
 		this.v30mapper = new Xacml30PolicyMapper(functions, decisionAlgorithms);
 		this.v20mapper = new Xacml20PolicyMapper(functions, decisionAlgorithms);
+	}
+	
+	public Xacml30PolicyUnmarshaller(FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
+		throws JAXBException
+	{
+		this(JAXBContextUtil.getInstance(), 
+				functions, decisionAlgorithms);
 	}
 	
 	public Xacml30PolicyUnmarshaller() 
@@ -34,6 +43,8 @@ extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 		this.v30mapper = new Xacml30PolicyMapper();
 		this.v20mapper = new Xacml20PolicyMapper();
 	}
+	
+	
 	
 	@Override
 	protected CompositeDecisionRule create(JAXBElement<?> jaxbInstance)

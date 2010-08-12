@@ -12,5 +12,11 @@
 		       <package name="org.oasis.xacml.v20.jaxb.context"/>
 		   </schemaBindings>
 	</bindings>
+	
+	<bindings schemaLocation="access_control-xacml-2.0-policy-schema-os.xsd" node="/xsd:schema">
+		   <schemaBindings>
+		       <package name="org.oasis.xacml.v20.jaxb.policy"/>
+		   </schemaBindings>
+	</bindings>
 		
 </bindings>
