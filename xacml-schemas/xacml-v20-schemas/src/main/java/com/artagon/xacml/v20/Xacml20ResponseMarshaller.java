@@ -23,18 +23,11 @@ public class Xacml20ResponseMarshaller
 	private Xacml20ContextMapper mapper;
 	private ObjectFactory factory;
 	
-	public Xacml20ResponseMarshaller(JAXBContext context)
-	{
-		super(context);
+	public Xacml20ResponseMarshaller(){
+		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml20ContextMapper();
-		this.factory = new ObjectFactory();
 	}
 	
-	public Xacml20ResponseMarshaller()
-	{
-		this(JAXBContextUtil.getInstance());
-	}
-
 	@Override
 	public Object marshal(ResponseContext source) throws IOException {
 		ResponseType response = mapper.create(source);
