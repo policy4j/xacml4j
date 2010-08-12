@@ -13,8 +13,8 @@
 		<jaxb-runtime-version>2.2</jaxb-runtime-version>
 	</properties>
     <modules>
-        <module>xacmlv20-context</module>
-        <module>xacmlv30-core</module>
+        <module>xacml-v20-schemas</module>
+        <module>xacml-v30-schemas</module>
     </modules>
 	<dependencies>
 		<dependency>
