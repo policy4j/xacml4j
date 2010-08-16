@@ -2,8 +2,6 @@ package com.artagon.xacml.v20;
 
 import java.io.IOException;
 
-import javax.xml.bind.JAXBContext;
-
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
@@ -26,6 +24,7 @@ public class Xacml20ResponseMarshaller
 	public Xacml20ResponseMarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml20ContextMapper();
+		this.factory = new ObjectFactory();
 	}
 	
 	@Override

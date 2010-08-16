@@ -32,7 +32,7 @@ public class Xacml20ConformanceTest
 	private PolicyUnmarshaller policyReader;
 	private RequestUnmarshaller requestUnmarshaller;
 	private ResponseMarshaller responseMarshaller;
-	private DefaultPolicyStore store;
+	private PolicyStore store;
 	private  PolicyDecisionPoint pdp;
 	private PolicyInformationPoint pip;
 	
