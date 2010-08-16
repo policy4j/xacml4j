@@ -14,20 +14,20 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.profiles.RequestContextHandlerChain;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.google.common.base.Preconditions;
 
 public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
 	PolicyDecisionCallback
 {
 	private EvaluationContextFactory factory;
-	private PolicyStore policyRepository;
+	private PolicyDomain policyRepository;
 	private RequestContextHandlerChain requestProcessingPipeline;
 	
 	public DefaultPolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
 			EvaluationContextFactory factory,  
-			PolicyStore policyRepository)
+			PolicyDomain policyRepository)
 	{
 		Preconditions.checkNotNull(factory);
 		Preconditions.checkNotNull(policyRepository);
@@ -38,7 +38,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	
 	public DefaultPolicyDecisionPoint(
 			EvaluationContextFactory factory,  
-			PolicyStore policyRepostory)
+			PolicyDomain policyRepostory)
 	{
 		this(Collections.<RequestProfileHandler>emptyList(), factory, policyRepostory);
 	}

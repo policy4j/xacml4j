@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.PolicyReferenceResolver;
  * 
  * @author Giedrius Trumpickas
  */
-public interface PolicyStore 
+public interface PolicyDomain 
 	extends PolicyReferenceResolver
 {
 	public enum Type

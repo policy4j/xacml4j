@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 
@@ -32,7 +32,7 @@ public class Xacml20ConformanceTest
 	private PolicyUnmarshaller policyReader;
 	private RequestUnmarshaller requestUnmarshaller;
 	private ResponseMarshaller responseMarshaller;
-	private PolicyStore store;
+	private PolicyDomain store;
 	private  PolicyDecisionPoint pdp;
 	private PolicyInformationPoint pip;
 	
@@ -187,7 +187,7 @@ public class Xacml20ConformanceTest
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
 		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
-		PolicyStore store = new DefaultPolicyStore();
+		PolicyDomain store = new DefaultPolicyStore();
 		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);

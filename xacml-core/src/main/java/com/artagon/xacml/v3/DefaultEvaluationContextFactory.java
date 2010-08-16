@@ -1,27 +1,27 @@
 package com.artagon.xacml.v3;
 
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private PolicyStore repository;
+	private PolicyDomain repository;
 	private XPathProvider xpathProvider;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	private boolean validateFuncParamsAtRuntime = false;
 	private PolicyInformationPoint pip;
 	
 	public DefaultEvaluationContextFactory(
-			PolicyStore repository, 
+			PolicyDomain repository, 
 			PolicyInformationPoint pip){
 		this(repository, new DefaultXPathProvider(), pip);
 	}
 	
 	public DefaultEvaluationContextFactory(
-			PolicyStore repository, 
+			PolicyDomain repository, 
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip){
 		Preconditions.checkNotNull(repository);

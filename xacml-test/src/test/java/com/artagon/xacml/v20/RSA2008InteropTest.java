@@ -16,7 +16,7 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 import com.google.common.collect.Iterables;
@@ -33,7 +33,7 @@ public class RSA2008InteropTest
 	{
 		this.policyReader = new Xacml20PolicyUnmarshaller();
 		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		PolicyStore store = new DefaultPolicyStore();
+		PolicyDomain store = new DefaultPolicyStore();
 		store.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		store.add(getPolicy("XacmlPolicySet-02a-CDA.xml"), false);
 		store.add(getPolicy("XacmlPolicySet-02b-N.xml"), false);

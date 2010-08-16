@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionProfileHandler;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
 public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 {
 	private PolicyInformationPoint pip;
-	private PolicyStore policyStore;
+	private PolicyDomain policyStore;
 	private XPathProvider xpathProvider;
 	private List<RequestProfileHandler> handlers;
 	
@@ -39,7 +39,7 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 		this.pip = pip;
 	}
 	
-	public void setPolicyStore(PolicyStore policyStore){
+	public void setPolicyStore(PolicyDomain policyStore){
 		this.policyStore = policyStore;
 	}
 	

@@ -9,13 +9,13 @@ import org.springframework.core.io.Resource;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
 public class PolicyStoreFactoryBean extends AbstractFactoryBean
 {
-	private PolicyStore policyStore;
+	private PolicyDomain policyStore;
 	private Collection<Resource> policySetResources;
 	private Collection<Resource> referencedPolicySetResources;
 	
@@ -38,7 +38,7 @@ public class PolicyStoreFactoryBean extends AbstractFactoryBean
 	}
 	
 	@Override
-	protected PolicyStore createInstance() throws Exception 
+	protected PolicyDomain createInstance() throws Exception 
 	{
 		PolicyUnmarshaller unmarshaller = new Xacml30PolicyUnmarshaller(extensionFunctions, 
 				combiningAlgorithmProvider);
@@ -53,8 +53,8 @@ public class PolicyStoreFactoryBean extends AbstractFactoryBean
 	}
 
 	@Override
-	public Class<PolicyStore> getObjectType() {
-		return PolicyStore.class;
+	public Class<PolicyDomain> getObjectType() {
+		return PolicyDomain.class;
 	}
 }
 

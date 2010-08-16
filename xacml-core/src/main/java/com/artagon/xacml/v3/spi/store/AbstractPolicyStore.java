@@ -15,12 +15,12 @@ import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.PolicyStore;
+import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.google.common.base.Preconditions;
 
-public abstract class AbstractPolicyStore implements PolicyStore
+public abstract class AbstractPolicyStore implements PolicyDomain
 {
-	private final static Map<Type, String> MODE = new HashMap<PolicyStore.Type, String>();
+	private final static Map<Type, String> MODE = new HashMap<PolicyDomain.Type, String>();
 	
 	static
 	{
