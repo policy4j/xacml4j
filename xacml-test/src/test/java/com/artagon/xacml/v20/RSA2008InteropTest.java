@@ -2,7 +2,7 @@ package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
@@ -15,36 +15,41 @@ import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
+import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyDomain;
+import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 
 {
-	private PolicyUnmarshaller policyReader;
-	private RequestUnmarshaller requestUnmarshaller;
-	private  PolicyDecisionPoint pdp;
-	private PolicyInformationPoint pip;
+	private static PolicyUnmarshaller policyReader;
+	private static RequestUnmarshaller requestUnmarshaller;
+	private static PolicyDecisionPoint pdp;
+	private static PolicyInformationPoint pip;
 	
-	@Before
-	public void init() throws Exception
+	@BeforeClass
+	public static void init() throws Exception
 	{
-		this.policyReader = new Xacml20PolicyUnmarshaller();
-		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		PolicyDomain store = new DefaultPolicyStore();
+		policyReader = new Xacml20PolicyUnmarshaller();
+		requestUnmarshaller = new Xacml20RequestUnmarshaller();
+		
+		PolicyDomain store = new DefaultPolicyDomain("test");
+		PolicyRepository repository = new InMemoryPolicyRepository();
 		store.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
-		store.add(getPolicy("XacmlPolicySet-02a-CDA.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-02b-N.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-02d-prog-note.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-02e-MA.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-02f-emergency.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"), false);
-		store.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"), false);
-		this.pip = new DefaultPolicyInformationPoint();
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(store, pip), store);
+		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02a-CDA.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02b-N.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02d-prog-note.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02e-MA.xml"));
+		repository.add(getPolicy("XacmlPolicySet-02f-emergency.xml"));
+		repository.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
+		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		pip = new DefaultPolicyInformationPoint();
+		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), store);
 		
 	}
 	
@@ -200,7 +205,7 @@ public class RSA2008InteropTest
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
-	private CompositeDecisionRule getPolicy(String name) throws Exception
+	private static CompositeDecisionRule getPolicy(String name) throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "rsa2008-interop/" + name;
