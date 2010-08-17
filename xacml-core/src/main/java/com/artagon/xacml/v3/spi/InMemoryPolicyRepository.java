@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
@@ -17,6 +20,8 @@ import com.google.common.collect.Collections2;
 
 public class InMemoryPolicyRepository implements PolicyRepository
 {
+	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
+	
 	private Map<String, Map<Version, Policy>> policies;
 	private Map<String, Map<Version, PolicySet>> policySets;
 	
@@ -60,6 +65,12 @@ public class InMemoryPolicyRepository implements PolicyRepository
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();
 		Version v = policy.getVersion();
+		if(log.isDebugEnabled()){
+			log.debug("Adding PolicySet with " +
+					"id=\"{}\" version=\"{}\"", id, v);
+			log.debug("Currently repository " +
+					"contains=\"{}\" policies", policies.size());
+		}
 		Map<Version, Policy> versions = policies.get(id);
 		if(versions == null || 
 				versions.isEmpty()){
@@ -78,9 +89,16 @@ public class InMemoryPolicyRepository implements PolicyRepository
 		Preconditions.checkArgument(policySet != null);
 		String id = policySet.getId();
 		Version v = policySet.getVersion();
+		if(log.isDebugEnabled()){
+			log.debug("Adding Policy with " +
+					"id=\"{}\" version=\"{}\"", id, v);
+			log.debug("Currently repository " +
+					"contains=\"{}\" policy sets", policySets.size());
+		}
 		Map<Version, PolicySet> versions = policySets.get(id);
 		if(versions == null || 
-				versions.isEmpty()){
+				versions.isEmpty())
+		{
 			versions = new TreeMap<Version, PolicySet>();
 			policySets.put(id, versions);
 		}
