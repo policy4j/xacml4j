@@ -36,7 +36,6 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -71,7 +70,6 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
@@ -105,7 +103,6 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -127,7 +124,6 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
@@ -150,7 +146,6 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -178,7 +173,6 @@ public class PolicyIDReferenceTest
 	{
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
@@ -204,7 +198,6 @@ public class PolicyIDReferenceTest
 	{
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
@@ -230,7 +223,6 @@ public class PolicyIDReferenceTest
 	{
 		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);

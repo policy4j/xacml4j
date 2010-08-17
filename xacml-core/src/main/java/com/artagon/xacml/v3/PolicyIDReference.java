@@ -130,7 +130,6 @@ public class PolicyIDReference extends
 		PolicyIDReferenceEvaluationContext(EvaluationContext context) 
 		{
 			super(context);
-			Preconditions.checkNotNull(context.getCurrentPolicySet());
 			Preconditions.checkArgument(context.getCurrentPolicy() == null);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicyIDReference.this, context));
 		}

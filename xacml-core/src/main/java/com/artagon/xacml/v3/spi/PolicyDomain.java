@@ -2,10 +2,9 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 
-
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.CompositeDecisionRule;
 
 /**
  * A collection of one or more policy or policy sets
