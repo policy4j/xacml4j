@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,22 +27,37 @@ public class InMemoryPolicyRepository implements PolicyRepository
 	private Map<String, Map<Version, Policy>> policies;
 	private Map<String, Map<Version, PolicySet>> policySets;
 	
+	private ReadWriteLock policyLock;
+	private ReadWriteLock policySetLock;
+	
 	public InMemoryPolicyRepository(){
 		this.policies = new ConcurrentHashMap<String, Map<Version, Policy>>();
 		this.policySets = new ConcurrentHashMap<String, Map<Version, PolicySet>>();
+		this.policyLock = new ReentrantReadWriteLock();
+		this.policySetLock = new ReentrantReadWriteLock();
 	}
 
 	@Override
 	public Collection<Policy> getPolicies(String id, VersionMatch version) 
 	{
 		Map<Version, Policy> byId = policies.get(id);
-		return find((byId != null)?byId.values():null, version, null, null);
+		try{
+			policyLock.readLock().lock();
+			return find((byId != null)?byId.values():null, version, null, null);
+		}finally{
+			policyLock.readLock().unlock();
+		}
 	}
 
 	@Override
 	public Collection<PolicySet> getPolicySets(String id, VersionMatch version) {
 		Map<Version, PolicySet> byId = policySets.get(id);
-		return find((byId != null)?byId.values():null, version, null, null);	
+		try{
+			policySetLock.readLock().lock();
+			return find((byId != null)?byId.values():null, version, null, null);
+		}finally{
+			policySetLock.readLock().unlock();
+		}
 	}
 
 	@Override
@@ -48,7 +65,12 @@ public class InMemoryPolicyRepository implements PolicyRepository
 			VersionMatch earliest, VersionMatch latest) 
 	{
 		Map<Version, Policy> byId = policies.get(id);
-		return find((byId != null)?byId.values():null, version, earliest, latest);
+		try{
+			policyLock.readLock().lock();
+			return find((byId != null)?byId.values():null, version, earliest, latest);
+		}finally{
+			policyLock.readLock().unlock();
+		}
 	}
 
 	@Override
@@ -56,7 +78,12 @@ public class InMemoryPolicyRepository implements PolicyRepository
 			VersionMatch earliest, VersionMatch latest) 
 	{
 		Map<Version, PolicySet> byId = policySets.get(id);
-		return find((byId != null)?byId.values():null, version, earliest, latest);
+		try{
+			policySetLock.readLock().lock();
+			return find((byId != null)?byId.values():null, version, earliest, latest);
+		}finally{
+			policySetLock.readLock().unlock();
+		}
 	}
 	
 	@Override
@@ -72,15 +99,20 @@ public class InMemoryPolicyRepository implements PolicyRepository
 					"contains=\"{}\" policies", policies.size());
 		}
 		Map<Version, Policy> versions = policies.get(id);
-		if(versions == null || 
-				versions.isEmpty()){
-			versions = new TreeMap<Version, Policy>();
-			policies.put(id, versions);
+		try{
+			policyLock.writeLock().lock();
+			if(versions == null || 
+					versions.isEmpty()){
+				versions = new TreeMap<Version, Policy>();
+				policies.put(id, versions);
+			}
+			Preconditions.checkArgument(!versions.containsKey(v), 
+					"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
+								id, v);
+			versions.put(v, policy);
+		}finally{
+			policyLock.writeLock().unlock();
 		}
-		Preconditions.checkArgument(!versions.containsKey(v), 
-				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-							id, v);
-		versions.put(v, policy);
 	}
 
 	@Override
