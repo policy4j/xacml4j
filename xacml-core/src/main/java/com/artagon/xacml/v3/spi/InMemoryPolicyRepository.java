@@ -26,55 +26,67 @@ public class InMemoryPolicyRepository implements PolicyRepository
 	}
 
 	@Override
-	public Iterable<Policy> getPolicies(String id, VersionMatch version) {
-		return Collections.<Policy>emptyList();
+	public Collection<Policy> getPolicies(String id, VersionMatch version) 
+	{
+		Map<Version, Policy> byId = policies.get(id);
+		return find((byId != null)?byId.values():null, version, null, null);
 	}
 
 	@Override
-	public Iterable<PolicySet> getPolicySets(String id, VersionMatch version) {
-		return Collections.<PolicySet>emptyList();	
+	public Collection<PolicySet> getPolicySets(String id, VersionMatch version) {
+		Map<Version, PolicySet> byId = policySets.get(id);
+		return find((byId != null)?byId.values():null, version, null, null);	
 	}
 
 	@Override
-	public Iterable<Policy> getPolicies(String id, VersionMatch version,
+	public Collection<Policy> getPolicies(String id, VersionMatch version,
 			VersionMatch earliest, VersionMatch latest) 
 	{
-		return Collections.<Policy>emptyList();
+		Map<Version, Policy> byId = policies.get(id);
+		return find((byId != null)?byId.values():null, version, earliest, latest);
 	}
 
 	@Override
-	public Iterable<PolicySet> getPolicySets(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		return Collections.<PolicySet>emptyList();
+	public Collection<PolicySet> getPolicySets(String id, VersionMatch version,
+			VersionMatch earliest, VersionMatch latest) 
+	{
+		Map<Version, PolicySet> byId = policySets.get(id);
+		return find((byId != null)?byId.values():null, version, earliest, latest);
 	}
 	
 	@Override
 	public void add(Policy policy) 
 	{
-		Map<Version, Policy> versions = policies.get(policy.getId());
+		Preconditions.checkArgument(policy != null);
+		String id = policy.getId();
+		Version v = policy.getVersion();
+		Map<Version, Policy> versions = policies.get(id);
 		if(versions == null || 
 				versions.isEmpty()){
 			versions = new TreeMap<Version, Policy>();
-			policies.put(policy.getId(), versions);
+			policies.put(id, versions);
 		}
-		Preconditions.checkArgument(versions.containsKey(policy.getVersion()), 
+		Preconditions.checkArgument(!versions.containsKey(v), 
 				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-				policy.getId(), policy.getVersion());
-		versions.put(policy.getVersion(), policy);
+							id, v);
+		versions.put(v, policy);
 	}
 
 	@Override
 	public void add(PolicySet policySet) 
 	{
-		Map<Version, PolicySet> versions = policySets.get(policySet.getId());
+		Preconditions.checkArgument(policySet != null);
+		String id = policySet.getId();
+		Version v = policySet.getVersion();
+		Map<Version, PolicySet> versions = policySets.get(id);
 		if(versions == null || 
 				versions.isEmpty()){
 			versions = new TreeMap<Version, PolicySet>();
-			policySets.put(policySet.getId(), versions);
+			policySets.put(id, versions);
 		}
-		Preconditions.checkArgument(versions.containsKey(policySet.getVersion()), 
+		Preconditions.checkArgument(!versions.containsKey(v), 
 				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-				policySet.getId(), policySet.getVersion());
+				id, v);
 		versions.put(policySet.getVersion(), policySet);
 	}
 

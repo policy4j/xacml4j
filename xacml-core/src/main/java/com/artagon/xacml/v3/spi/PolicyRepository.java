@@ -1,6 +1,8 @@
 package com.artagon.xacml.v3.spi;
 
 
+import java.util.Collection;
+
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.VersionMatch;
@@ -16,7 +18,7 @@ public interface PolicyRepository
 	 * @param version a policy version match constraint
 	 * @return an {@link Iterable} to found policies
 	 */
-	Iterable<Policy> getPolicies(String id, VersionMatch version);
+	Collection<Policy> getPolicies(String id, VersionMatch version);
 	
 	
 	/**
@@ -28,12 +30,12 @@ public interface PolicyRepository
 	 * @param version a policy version match constraint
 	 * @return an {@link Iterable} to found policies
 	 */
-	Iterable<PolicySet> getPolicySets(String id, VersionMatch version);
+	Collection<PolicySet> getPolicySets(String id, VersionMatch version);
 	
-	Iterable<Policy> getPolicies(String id, VersionMatch version, 
+	Collection<Policy> getPolicies(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
 	
-	Iterable<PolicySet> getPolicySets(String id, VersionMatch version, 
+	Collection<PolicySet> getPolicySets(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
 	
 	/**
