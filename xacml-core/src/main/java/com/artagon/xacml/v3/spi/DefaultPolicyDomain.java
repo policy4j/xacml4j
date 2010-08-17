@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,9 +55,7 @@ public final class DefaultPolicyDomain implements PolicyDomain
 	{
 		this(name, mode, new DefaultDecisionCombiningAlgorithms());
 	}
-	
-	
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -67,6 +67,11 @@ public final class DefaultPolicyDomain implements PolicyDomain
 		Preconditions.checkState(oldPolicy == null);
 	}
 	
+	@Override
+	public Collection<CompositeDecisionRule> getDomainPolicies() {
+		return Collections.unmodifiableCollection(policies.values());
+	}
+
 	@Override
 	public Type getMode(){
 		return mode;

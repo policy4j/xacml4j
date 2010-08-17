@@ -1,8 +1,11 @@
 package com.artagon.xacml.v3.spi;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import java.util.Collection;
+
+
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 
 /**
  * A collection of one or more policy or policy sets
@@ -49,5 +52,6 @@ public interface PolicyDomain
 	 */
 	void add(CompositeDecisionRule p);
 	
+	Collection<CompositeDecisionRule> getDomainPolicies();
 	
 }
