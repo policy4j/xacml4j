@@ -1,17 +1,24 @@
 package com.artagon.xacml.v3;
 
+import java.util.Arrays;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-
+/**
+ * A XACML version  is expressed as a sequence of decimal numbers, 
+ * each separated by a period (.).
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class Version implements Comparable<Version> 
 {
 	private  static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
 	
 	private String value;
     private int[] version;
-
+    private int hashCode;
+    
     /**
      * Constructs version from
      * a given string
@@ -24,6 +31,7 @@ public class Version implements Comparable<Version>
     	Preconditions.checkNotNull(version);
     	this.value = version;
     	this.version = parseVersion(version);
+    	this.hashCode = Arrays.hashCode(this.version);
     }
     
     /**
@@ -54,6 +62,11 @@ public class Version implements Comparable<Version>
     public String toString(){
     	return Objects.toStringHelper(this).
     	add("version", value).toString();
+    }
+    
+    @Override
+    public int hashCode(){
+    	return hashCode;
     }
    
     @Override
