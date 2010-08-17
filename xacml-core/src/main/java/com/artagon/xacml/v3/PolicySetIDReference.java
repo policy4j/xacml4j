@@ -33,12 +33,6 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 				(latest != null)?VersionMatch.parse(latest):null);
 	}
 	
-	
-	@Override
-	public CompositeDecisionRuleIDReference getReference() {
-		return this;
-	}
-	
 	public boolean isReferenceTo(PolicySet policySet) {
 		return policySet != null && matches(policySet.getId(), policySet.getVersion());
 	}

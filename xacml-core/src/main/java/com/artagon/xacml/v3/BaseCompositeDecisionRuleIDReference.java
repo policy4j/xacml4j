@@ -37,7 +37,7 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 	}
 	
 	@Override
-	public final VersionMatch getVersion() {
+	public final VersionMatch getVersionMatch() {
 		return version;
 	}
 	

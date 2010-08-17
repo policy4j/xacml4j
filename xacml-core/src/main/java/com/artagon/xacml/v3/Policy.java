@@ -10,7 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.base.Preconditions;
 
-public class Policy extends BaseCompositeDecisionRule implements PolicyElement
+public class Policy extends BaseCompositeDecisionRule 
+	implements PolicyElement
 {	
 	private PolicyDefaults policyDefaults;
 	private List<Rule> rules;
@@ -186,8 +187,6 @@ public class Policy extends BaseCompositeDecisionRule implements PolicyElement
 		return Collections.unmodifiableCollection(variableDefinitions.values());
 	}
 	
-	
-	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}

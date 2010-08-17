@@ -71,8 +71,6 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 				null, null, null, combine, policies, adviceExpressions, obligationExpressions);
 	}
 	
-	
-	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}
