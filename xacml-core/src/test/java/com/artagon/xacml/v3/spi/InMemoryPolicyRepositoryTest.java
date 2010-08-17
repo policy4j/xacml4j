@@ -22,6 +22,7 @@ public class InMemoryPolicyRepositoryTest
 	private Policy p1v1;
 	private Policy p1v2;
 	private Policy p1v3;
+	private Policy p1v4;
 	
 	private PolicyRepository r;
 	private DecisionCombiningAlgorithm<Rule> algorithm;
@@ -34,6 +35,7 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v1 = new Policy("id1", Version.parse("1"), algorithm);
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
+		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
 		this.r = new InMemoryPolicyRepository();
 
 	}
@@ -55,6 +57,9 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("1"), it.next().getVersion());
 		assertEquals(Version.parse("1.1"), it.next().getVersion());
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
+		
+		found = r.getPolicies("id1", VersionMatch.parse("1.2.+"));
+		assertEquals(1, found.size());
 		
 		verify(algorithm);
 	}
