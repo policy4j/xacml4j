@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-public class InMemoryPolicyRepository implements PolicyRepository
+public class InMemoryPolicyRepository extends AbstractPolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
 	
@@ -35,29 +35,6 @@ public class InMemoryPolicyRepository implements PolicyRepository
 		this.policySets = new ConcurrentHashMap<String, Map<Version, PolicySet>>();
 		this.policyLock = new ReentrantReadWriteLock();
 		this.policySetLock = new ReentrantReadWriteLock();
-	}
-
-	@Override
-	public Collection<Policy> getPolicies(String id, VersionMatch version) 
-	{
-		Map<Version, Policy> byId = policies.get(id);
-		try{
-			policyLock.readLock().lock();
-			return find((byId != null)?byId.values():null, version, null, null);
-		}finally{
-			policyLock.readLock().unlock();
-		}
-	}
-
-	@Override
-	public Collection<PolicySet> getPolicySets(String id, VersionMatch version) {
-		Map<Version, PolicySet> byId = policySets.get(id);
-		try{
-			policySetLock.readLock().lock();
-			return find((byId != null)?byId.values():null, version, null, null);
-		}finally{
-			policySetLock.readLock().unlock();
-		}
 	}
 
 	@Override

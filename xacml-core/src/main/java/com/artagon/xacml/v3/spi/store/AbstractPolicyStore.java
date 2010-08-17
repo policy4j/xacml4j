@@ -76,8 +76,6 @@ public abstract class AbstractPolicyStore implements PolicyDomain
 		}
 	}
 	
-	
-	
 	@Override
 	public final void add(CompositeDecisionRule rule) {
 		add(rule, true);
