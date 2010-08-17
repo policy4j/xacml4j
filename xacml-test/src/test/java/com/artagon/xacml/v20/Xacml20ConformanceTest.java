@@ -54,6 +54,18 @@ public class Xacml20ConformanceTest
 		addAllPolicies(repository, "IID", 30);
 		addAllPolicies(repository, "IIIF", 7);
 		addAllPolicies(repository, "IIIG", 7);
+		
+		addPolicy(repository, "IIE", "Policy.xml", 1);
+		addPolicy(repository, "IIE", "PolicyId1.xml", 1);
+		addPolicy(repository, "IIE", "PolicySetId1.xml", 1);
+		
+		addPolicy(repository, "IIE", "Policy.xml", 2);
+		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
+		addPolicy(repository, "IIE", "PolicySetId1.xml", 2);
+		
+		addPolicy(repository, "IIE", "Policy.xml", 2);
+		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
+		addPolicy(repository, "IIE", "PolicyId2.xml", 2);
 	}
 	
 	@Test
@@ -108,15 +120,15 @@ public class Xacml20ConformanceTest
 	}
 	
 	@Test
+	public void testIIETests() throws Exception
+	{	
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIE", 3);	
+	}
+	
+	@Test
 	public void testIIIFTests() throws Exception
 	{	
 		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIIF", 7);	
-	}
-	
-	
-	public void testRSA2008() throws Exception
-	{
-			
 	}
 	
 	@Test
@@ -131,41 +143,7 @@ public class Xacml20ConformanceTest
 		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);	
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testIIE001() throws Exception
-	{	
-		PolicyDomain store = new DefaultPolicyDomain("Test");
-		store.add(getPolicy("IIE", 1, "Policy.xml"));
-		RequestContext request = getRequest("IIE", 1);
-		ResponseContext response = pdp.decide(request);
-		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
-		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse("IIE", 1), actual);	
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testIIE002() throws Exception
-	{	
-		PolicyDomain store = new DefaultPolicyDomain("Test");
-		store.add(getPolicy("IIE", 2, "Policy.xml"));
-		RequestContext request = getRequest("IIE", 2);
-		ResponseContext response = pdp.decide(request);
-		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
-		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse("IIE", 2), actual);	
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testIIE003() throws Exception
-	{	
-		PolicyDomain store = new DefaultPolicyDomain("Test");
-		store.add(getPolicy("IIE", 3, "Policy.xml"));
-		RequestContext request = getRequest("IIE", 3);
-		ResponseContext response = pdp.decide(request);
-		ResponseType expected = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
-		Xacml20ConformanceUtility.assertResponse(expected, Xacml20ConformanceUtility.getResponse("IIE", 3));	
-	}
+
 	
 	@Test
 	public void testIIC168() throws Exception
@@ -217,24 +195,30 @@ public class Xacml20ConformanceTest
 		return (T)policyReader.unmarshal(in);
 	}
 	
-	public static void addAllPolicies(PolicyRepository r, String prefix, int count) throws Exception
+	public static void addAllPolicies(PolicyRepository r, 
+			String prefix, int count) throws Exception
 	{
 		for(int i = 1; i < count; i++)
 		{
-			try{
-				CompositeDecisionRule rule = getPolicy(prefix, i, "Policy.xml");
-				if(rule == null){
-					continue;
-				}
-				if(rule instanceof Policy){
-					r.add((Policy)rule);
-				}
-				if(rule instanceof PolicySet){
-					r.add((PolicySet)rule);
-				}
-			}catch(Exception e){
-				
+			addPolicy(r, prefix, "Policy.xml", i);
+		}
+	}
+	
+	private static void addPolicy(PolicyRepository r, String prefix, String sufix, int index)
+	{
+		try{
+			CompositeDecisionRule rule = getPolicy(prefix, index, sufix);
+			if(rule == null){
+				return;
 			}
+			if(rule instanceof Policy){
+				r.add((Policy)rule);
+			}
+			if(rule instanceof PolicySet){
+				r.add((PolicySet)rule);
+			}
+		}catch(Exception e){
+			
 		}
 	}
 }
