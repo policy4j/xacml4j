@@ -154,7 +154,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 	{
 		IdReferenceType idRef = new IdReferenceType();
 		idRef.setValue(ref.getId());
-		idRef.setVersion(ref.getVersion().toString());
+		idRef.setVersion(ref.getVersionMatch().toString());
 		return idRef;
 	}
 	

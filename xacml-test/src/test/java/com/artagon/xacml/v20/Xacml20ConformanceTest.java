@@ -2,6 +2,7 @@ package com.artagon.xacml.v20;
 
 import static org.junit.Assert.fail;
 
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,8 @@ import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -22,8 +25,10 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyDomain;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.store.DefaultPolicyStore;
 
@@ -203,10 +208,38 @@ public class Xacml20ConformanceTest
 		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(requestPath));
 	}
 	
-	private CompositeDecisionRule getPolicy(String prefix, int number, String sufix) throws Exception
+	@SuppressWarnings("unchecked")
+	private <T extends CompositeDecisionRule> T getPolicy(String prefix, int number, String sufix) throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, sufix);
-		return policyReader.unmarshal(cl.getResourceAsStream(path));
+		InputStream in = cl.getResourceAsStream(path);
+		if(in == null){
+			return null;
+		}
+		return (T)policyReader.unmarshal(in);
+	}
+	
+	@Test
+	public void addAllPolicies() throws Exception
+	{
+		PolicyRepository r = new InMemoryPolicyRepository();
+		for(int i = 1; i < 233; i++)
+		{
+			try{
+				CompositeDecisionRule rule = getPolicy("IIC", i, "Policy.xml");
+				if(rule == null){
+					continue;
+				}
+				if(rule instanceof Policy){
+					r.add((Policy)rule);
+				}
+				if(rule instanceof PolicySet){
+					r.add((PolicySet)rule);
+				}
+			}catch(XacmlSyntaxException e){
+				
+			}
+		}
 	}
 }
