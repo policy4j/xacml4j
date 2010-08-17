@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
@@ -64,7 +65,16 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 	
 	@Override
-	public void add(Policy policy) 
+	public void add(CompositeDecisionRule policy) {
+		if(policy instanceof Policy){
+			addInternal((Policy)policy);
+		}
+		if(policy instanceof PolicySet){
+			addInternal((PolicySet)policy);
+		}
+	}
+
+	private void addInternal(Policy policy) 
 	{
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();
@@ -92,8 +102,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 	}
 
-	@Override
-	public void add(PolicySet policySet) 
+	private void addInternal(PolicySet policySet) 
 	{
 		Preconditions.checkArgument(policySet != null);
 		String id = policySet.getId();
@@ -133,5 +142,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			
 		});
 	}
+	
+	
 
 }

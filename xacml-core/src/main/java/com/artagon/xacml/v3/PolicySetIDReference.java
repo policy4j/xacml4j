@@ -144,7 +144,6 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		PolicySetIDReferenceEvaluationContext(
 				EvaluationContext context) {
 			super(context);
-			Preconditions.checkNotNull(context.getCurrentPolicySet());
 			Preconditions.checkArgument(!isReferenceCyclic(PolicySetIDReference.this, context));
 		}
 		

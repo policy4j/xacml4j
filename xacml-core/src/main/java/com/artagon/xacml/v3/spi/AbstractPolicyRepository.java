@@ -31,7 +31,13 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		}
 		Collection<Policy> found = getPolicies(ref.getId(), ref.getVersionMatch(), 
 				ref.getEarliestVersion(), ref.getLatestVersion());
-		return found.isEmpty()?null:Iterables.getLast(found);
+		Policy policy =  found.isEmpty()?null:Iterables.getLast(found);
+		if(log.isDebugEnabled() && 
+				policy != null){
+			log.debug("Resolved reference to policySet id=\"{}\" " +
+					"version=\"{}\"", policy.getId(), policy.getVersion());
+		}
+		return policy;
 	}
 
 	@Override
@@ -42,7 +48,13 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		if(log.isDebugEnabled()){
 			log.debug("Resolving policy reference=\"{}\"", ref);
 		}
-		return found.isEmpty()?null:Iterables.getLast(found);
+		PolicySet policySet = found.isEmpty()?null:Iterables.getLast(found);
+		if(log.isDebugEnabled() && 
+				policySet != null){
+			log.debug("Resolved reference to policySet id=\"{}\" " +
+					"version=\"{}\"", policySet.getId(), policySet.getVersion());
+		}
+		return policySet;
 	}
 	
 	@Override

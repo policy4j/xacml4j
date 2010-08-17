@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.PolicySet;
@@ -44,12 +45,6 @@ public interface PolicyRepository extends PolicyReferenceResolver
 	 * 
 	 * @param policy a new version of the policy
 	 */
-	void add(Policy policy);
+	void add(CompositeDecisionRule policy);
 	
-	/**
-	 * Adds a new version of a given policy set
-	 * 
-	 * @param policySet a new version of policy set
-	 */
-	void add(PolicySet policySet);
 }
