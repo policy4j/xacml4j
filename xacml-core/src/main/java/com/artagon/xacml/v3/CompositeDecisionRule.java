@@ -8,6 +8,14 @@ package com.artagon.xacml.v3;
  * 
  * @author Giedrius Trumpickas
  */
-public interface CompositeDecisionRule extends DecisionRule
+public interface CompositeDecisionRule  extends DecisionRule
 {
+	/**
+	 * Gets a {@link CompositeDecisionRuleIDReference} 
+	 * to this composite decision rule
+	 * 
+	 * @return {@link CompositeDecisionRuleIDReference} instance
+	 * pointing to this composite decision rule
+	 */
+	CompositeDecisionRuleIDReference getReference();
 }

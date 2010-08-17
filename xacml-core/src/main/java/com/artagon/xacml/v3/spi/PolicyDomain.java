@@ -20,6 +20,13 @@ public interface PolicyDomain
 	}
 	
 	/**
+	 * Gets policy domain name
+	 * 
+	 * @return policy domain name
+	 */
+	String getName();
+	
+	/**
 	 * Gets policy store mode
 	 * 
 	 * @return {@link Type} a policy store mode

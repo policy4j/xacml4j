@@ -24,17 +24,23 @@ public final class DefaultPolicyDomain implements PolicyDomain
 		MODE.put(Type.ONLY_ONE_APPLICABLE, "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable");
 	}
 	
+	private String name;
 	private Type mode;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	private Map<String, CompositeDecisionRule> policies;
 	
-	public DefaultPolicyDomain(){
-		this(Type.FIRST_APPLICABLE);
+	public DefaultPolicyDomain(String name){
+		this(name, Type.FIRST_APPLICABLE);
 	}
 	
-	public DefaultPolicyDomain(Type mode, 
+	public DefaultPolicyDomain(String name, 
+			Type mode, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider)
 	{
+		Preconditions.checkArgument(name != null);
+		Preconditions.checkArgument(mode != null);
+		Preconditions.checkArgument(decisionAlgorithmProvider != null);
+		this.name = name;
 		this.mode = mode;
 		String algorithmId = MODE.get(mode);
 		Preconditions.checkState(algorithmId != null);
@@ -43,14 +49,21 @@ public final class DefaultPolicyDomain implements PolicyDomain
 		this.policies = new ConcurrentHashMap<String, CompositeDecisionRule>();
 	}
 	
-	public DefaultPolicyDomain(Type mode)
+	public DefaultPolicyDomain(String name, Type mode)
 	{
-		this(mode, new DefaultDecisionCombiningAlgorithms());
+		this(name, mode, new DefaultDecisionCombiningAlgorithms());
 	}
 	
+	
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public final void add(CompositeDecisionRule policy) {
-		CompositeDecisionRule oldPolicy = policies.put(policy.getId(), policy);
+		CompositeDecisionRule oldPolicy = policies.put(policy.getId(), policy.getReference());
 		Preconditions.checkState(oldPolicy == null);
 	}
 	

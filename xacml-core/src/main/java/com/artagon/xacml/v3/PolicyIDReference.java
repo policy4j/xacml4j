@@ -35,6 +35,11 @@ public class PolicyIDReference extends
 	}
 	
 	@Override
+	public CompositeDecisionRuleIDReference getReference() {
+		return this;
+	}
+
+	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
 		if(context.getCurrentPolicyIDReference() ==  this){

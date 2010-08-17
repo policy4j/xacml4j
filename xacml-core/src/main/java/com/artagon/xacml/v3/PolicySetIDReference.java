@@ -114,13 +114,18 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
-	
+
+	@Override
+	public CompositeDecisionRuleIDReference getReference() {
+		return this;
+	}
+
 	/**
 	 * A static helper method to detect cyclic references
 	 * 
 	 * @param ref a policy set id reference
 	 * @param context an evaluation context
-	 * @return <code>true</code> if a given reference is cyclic
+	 * @return <code>true</code> if a given reference 
 	 */
 	private static boolean isReferenceCyclic(PolicySetIDReference ref, 
 			EvaluationContext context)
