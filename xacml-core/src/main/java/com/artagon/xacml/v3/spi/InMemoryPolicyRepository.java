@@ -48,7 +48,6 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			log.debug("Found=\"{}\" versions of policy with id=\"{}\"", 
 					byId.size(), id);
 		}
-		log.debug(policies.keySet().toString());
 		try{
 			policyLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -67,7 +66,6 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			log.debug("Found=\"{}\" versions of policy set with id=\"{}\"", 
 					byId.size(), id);
 		}
-		log.debug(policySets.keySet().toString());
 		try{
 			policySetLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
