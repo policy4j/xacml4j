@@ -2,6 +2,9 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyIDReference;
@@ -18,9 +21,14 @@ import com.google.common.collect.Iterables;
  */
 public abstract class AbstractPolicyRepository implements PolicyRepository
 {
+	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
+	
 	@Override
 	public final Policy resolve(EvaluationContext context, PolicyIDReference ref)
 			throws PolicyResolutionException {
+		if(log.isDebugEnabled()){
+			log.debug("Resolving policy reference=\"{}\"", ref);
+		}
 		Collection<Policy> found = getPolicies(ref.getId(), ref.getVersionMatch(), 
 				ref.getEarliestVersion(), ref.getLatestVersion());
 		return found.isEmpty()?null:Iterables.getLast(found);
@@ -31,6 +39,9 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 			throws PolicyResolutionException {
 		Collection<PolicySet> found = getPolicySets(ref.getId(), ref.getVersionMatch(), 
 				ref.getEarliestVersion(), ref.getLatestVersion());
+		if(log.isDebugEnabled()){
+			log.debug("Resolving policy reference=\"{}\"", ref);
+		}
 		return found.isEmpty()?null:Iterables.getLast(found);
 	}
 	

@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
@@ -8,26 +7,39 @@ import com.google.common.base.Preconditions;
 
 public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 {
-	private PolicyDomain repository;
+	private PolicyReferenceResolver policyReferenceResolver;
 	private XPathProvider xpathProvider;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	private boolean validateFuncParamsAtRuntime = false;
 	private PolicyInformationPoint pip;
 	
+	/**
+	 * Constructs default evaluation context factory
+	 * 
+	 * @param referenceResolver a policy reference resolver
+	 * @param pip a policy information point
+	 */
 	public DefaultEvaluationContextFactory(
-			PolicyDomain repository, 
+			PolicyReferenceResolver referenceResolver, 
 			PolicyInformationPoint pip){
-		this(repository, new DefaultXPathProvider(), pip);
+		this(referenceResolver, new DefaultXPathProvider(), pip);
 	}
 	
+	/**
+	 * Constructs default evaluation context factory
+	 * 
+	 * @param referenceResolver a policy reference resolver
+	 * @param xpathProvider an XPath provider
+	 * @param pip a policy information point
+	 */
 	public DefaultEvaluationContextFactory(
-			PolicyDomain repository, 
+			PolicyReferenceResolver referenceResolver, 
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip){
-		Preconditions.checkNotNull(repository);
+		Preconditions.checkNotNull(referenceResolver);
 		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(pip);
-		this.repository = repository;
+		this.policyReferenceResolver = referenceResolver;
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 	}
@@ -46,7 +58,7 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 					DefaultEvaluationContextFactory.this.validateFuncParamsAtRuntime,
 					contextHandler,
 					DefaultEvaluationContextFactory.this.xpathProvider, 
-					DefaultEvaluationContextFactory.this.repository);
+					DefaultEvaluationContextFactory.this.policyReferenceResolver);
 		}
 
 		@Override

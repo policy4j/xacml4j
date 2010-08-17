@@ -1,11 +1,8 @@
 package com.artagon.xacml.v3.spi;
 
-import java.util.Collection;
-
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.PolicyReferenceResolver;
 
 /**
  * A collection of one or more policy or policy sets
@@ -14,7 +11,6 @@ import com.artagon.xacml.v3.PolicyReferenceResolver;
  * @author Giedrius Trumpickas
  */
 public interface PolicyDomain 
-	extends PolicyReferenceResolver
 {
 	public enum Type
 	{
@@ -29,14 +25,6 @@ public interface PolicyDomain
 	 * @return {@link Type} a policy store mode
 	 */
 	Type getMode();
-	
-	/**
-	 * Gets store policies
-	 * 
-	 * @return a collection of 
-	 * {@link CompositeDecisionRule} instances
-	 */
-	Collection<CompositeDecisionRule> getPolicies();
 	
 	/**
 	 * Evaluates given context against top level 
@@ -54,14 +42,5 @@ public interface PolicyDomain
 	 */
 	void add(CompositeDecisionRule p);
 	
-	/**
-	 * Adds policy to this store
-	 * 
-	 * @param p a policy to be added
-	 * to this store
-	 * @param topLevel a flag indicating
-	 * that policy is top level
-	 */
-	void add(CompositeDecisionRule p, boolean topLevel);
 	
 }
