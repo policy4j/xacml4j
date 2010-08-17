@@ -9,6 +9,14 @@ import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.VersionMatch;
 
+/**
+ * A repository for XACML policies, implements
+ * {@link PolicyReferenceResolver} to resolve
+ * policies referenced by the top level policies
+ * in the {@link PolicyDomain}
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface PolicyRepository extends PolicyReferenceResolver
 {
 	/**
