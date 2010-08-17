@@ -31,6 +31,9 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		}
 		Collection<Policy> found = getPolicies(ref.getId(), ref.getVersionMatch(), 
 				ref.getEarliestVersion(), ref.getLatestVersion());
+		if(log.isDebugEnabled()){
+			log.debug("Found=\"{}\" matching policies", found.size());
+		}
 		Policy policy =  found.isEmpty()?null:Iterables.getLast(found);
 		if(log.isDebugEnabled() && 
 				policy != null){
@@ -43,10 +46,13 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	@Override
 	public final PolicySet resolve(EvaluationContext context, PolicySetIDReference ref)
 			throws PolicyResolutionException {
+		if(log.isDebugEnabled()){
+			log.debug("Resolving policy reference=\"{}\"", ref);
+		}
 		Collection<PolicySet> found = getPolicySets(ref.getId(), ref.getVersionMatch(), 
 				ref.getEarliestVersion(), ref.getLatestVersion());
 		if(log.isDebugEnabled()){
-			log.debug("Resolving policy reference=\"{}\"", ref);
+			log.debug("Found=\"{}\" matching policy sets", found.size());
 		}
 		PolicySet policySet = found.isEmpty()?null:Iterables.getLast(found);
 		if(log.isDebugEnabled() && 

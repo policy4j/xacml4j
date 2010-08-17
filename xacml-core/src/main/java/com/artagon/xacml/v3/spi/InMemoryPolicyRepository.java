@@ -43,6 +43,12 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			VersionMatch earliest, VersionMatch latest) 
 	{
 		Map<Version, Policy> byId = policies.get(id);
+		if(log.isDebugEnabled() && 
+				byId != null){
+			log.debug("Found=\"{}\" versions of policy with id=\"{}\"", 
+					byId.size(), id);
+		}
+		log.debug(policies.keySet().toString());
 		try{
 			policyLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -56,6 +62,12 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			VersionMatch earliest, VersionMatch latest) 
 	{
 		Map<Version, PolicySet> byId = policySets.get(id);
+		if(log.isDebugEnabled() && 
+				byId != null){
+			log.debug("Found=\"{}\" versions of policy set with id=\"{}\"", 
+					byId.size(), id);
+		}
+		log.debug(policySets.keySet().toString());
 		try{
 			policySetLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -68,9 +80,11 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	public void add(CompositeDecisionRule policy) {
 		if(policy instanceof Policy){
 			addInternal((Policy)policy);
+			return;
 		}
 		if(policy instanceof PolicySet){
 			addInternal((PolicySet)policy);
+			return;
 		}
 	}
 
@@ -142,7 +156,4 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			
 		});
 	}
-	
-	
-
 }
