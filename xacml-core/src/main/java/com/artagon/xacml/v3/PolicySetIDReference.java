@@ -24,6 +24,16 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		super(id, VersionMatch.parse(version.getValue()), null, null);
 	}
 
+	/**
+	 * Creates {@link PolicySetIDReference}
+	 * 
+	 * @param policyId a policy identifier
+	 * @param version a policy version match
+	 * @param earliest a policy earliest version match
+	 * @param latest a policy latest version match
+	 * @return {@link PolicySetIDReference} instance
+	 * @throws XacmlSyntaxException if syntax error occurs
+	 */
 	public static PolicySetIDReference create(String policyId, String version, 
 			String earliest, String latest) throws XacmlSyntaxException
 	{
@@ -33,10 +43,21 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 				(latest != null)?VersionMatch.parse(latest):null);
 	}
 	
+	/**
+	 * Tests if a given {@link PolicySet} is referenced
+	 * by this reference
+	 * 
+	 * @param policySet a policy set
+	 * @return <code>true</code> if this reference
+	 * references given policy set
+	 */
 	public boolean isReferenceTo(PolicySet policySet) {
 		return policySet != null && matches(policySet.getId(), policySet.getVersion());
 	}
 
+	/**
+	 * Creates an {@link EvaluationContext} to evaluate this reference.
+	 */
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
@@ -44,8 +65,7 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 			return context;
 		}
 		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context);
-		try
-		{
+		try{
 			PolicySet policySet = refContext.resolve(this);
 			if(policySet == null){
 				return refContext;
@@ -95,7 +115,15 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		v.visitLeave(this);
 	}
 	
-	private static boolean isReferenceCyclic(PolicySetIDReference ref, EvaluationContext context)
+	/**
+	 * A static helper method to detect cyclic references
+	 * 
+	 * @param ref a policy set id reference
+	 * @param context an evaluation context
+	 * @return <code>true</code> if a given reference is cyclic
+	 */
+	private static boolean isReferenceCyclic(PolicySetIDReference ref, 
+			EvaluationContext context)
 	{
 		if(context.getCurrentPolicySetIDReference() != null){
 			if(ref.equals(context.getCurrentPolicySetIDReference())){
