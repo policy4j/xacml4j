@@ -1,12 +1,15 @@
 package com.artagon.xacml.v3.spi;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.Version;
@@ -50,7 +53,7 @@ public class InMemoryPolicyRepositoryTest
 		r.add(p1v2);
 		r.add(p1v3);
 		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
-		assertEquals(1, found.size());
+		assertEquals(3, found.size());
 		verify(p1v1, p1v2, p1v3);
 	}
 }
