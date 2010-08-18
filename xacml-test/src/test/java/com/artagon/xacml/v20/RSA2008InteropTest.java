@@ -36,9 +36,10 @@ public class RSA2008InteropTest
 		policyReader = new Xacml20PolicyUnmarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		
-		PolicyDomain store = new DefaultPolicyDomain("test");
+		PolicyDomain domain = new DefaultPolicyDomain("test");
 		PolicyRepository repository = new InMemoryPolicyRepository();
-		store.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		domain.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		
 		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.add(getPolicy("XacmlPolicySet-02a-CDA.xml"));
 		repository.add(getPolicy("XacmlPolicySet-02b-N.xml"));
@@ -48,8 +49,9 @@ public class RSA2008InteropTest
 		repository.add(getPolicy("XacmlPolicySet-02f-emergency.xml"));
 		repository.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
 		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		
 		pip = new DefaultPolicyInformationPoint();
-		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), store);
+		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), domain);
 		
 	}
 	
