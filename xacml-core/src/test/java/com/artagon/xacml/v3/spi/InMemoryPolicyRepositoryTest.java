@@ -37,18 +37,20 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
 		this.r = new InMemoryPolicyRepository();
+		
+	
 
 	}
 	
 	@Test
 	public void testAddPolicies() throws Exception
 	{
-					
-		replay(algorithm);
-		
 		r.add(p1v2);
 		r.add(p1v1);
 		r.add(p1v3);
+		r.add(p1v4);
+		
+		replay(algorithm);
 		
 		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
 		assertEquals(3, found.size());
@@ -67,21 +69,26 @@ public class InMemoryPolicyRepositoryTest
 	@Test
 	public void testFindPolicies() throws Exception
 	{
-					
+		
+		
 		replay(algorithm);
 		
 		r.add(p1v2);
 		r.add(p1v1);
 		r.add(p1v3);
+		r.add(p1v4);
 		
 		Collection<Policy> found = r.getPolicies("id1", null, null, null);
-		assertEquals(3, found.size());
+		assertEquals(4, found.size());
 		Iterator<Policy> it = found.iterator();
 		
 		assertEquals(Version.parse("1"), it.next().getVersion());
 		assertEquals(Version.parse("1.1"), it.next().getVersion());
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
+		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
 		
 		verify(algorithm);
+		
+		
 	}
 }

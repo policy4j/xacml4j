@@ -20,12 +20,10 @@ import org.junit.Test;
 public class PolicyIDReferenceTest
 {
 	private EvaluationContext context;
-	private PolicySet policySet;
 	private Policy refPolicy;
 	
 	@Before
 	public void init(){
-		this.policySet = createStrictMock(PolicySet.class);
 		this.refPolicy = createStrictMock(Policy.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}

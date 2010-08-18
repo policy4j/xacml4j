@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.spi.pip;
 import static org.easymock.EasyMock.createStrictMock;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DefaultPolicyInformationPointTest 
@@ -24,8 +25,11 @@ public class DefaultPolicyInformationPointTest
 	}
 	
 	@Test
+	@Ignore
 	public void testResolverResolution()
 	{
-		
+		pip.addResolver(r1);
+		pip.addResolver(r2);
+		pip.addResolver(r3);
 	}
 }
