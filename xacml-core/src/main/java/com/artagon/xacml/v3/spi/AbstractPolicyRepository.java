@@ -63,6 +63,19 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		return policySet;
 	}
 	
+	
+	
+	@Override
+	public final Collection<Policy> getPolicies(String id) {
+		return getPolicies(id, null);
+	}
+
+	@Override
+	public final Collection<Policy> getPolicies(String id, VersionMatch earliest,
+			VersionMatch latest) {
+		return getPolicies(id, null, earliest, latest);
+	}
+
 	@Override
 	public final Collection<Policy> getPolicies(String id, VersionMatch version){
 		return getPolicies(id, version, null, null);

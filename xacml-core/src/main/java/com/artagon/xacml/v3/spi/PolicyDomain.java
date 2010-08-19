@@ -8,7 +8,6 @@ import com.artagon.xacml.v3.EvaluationContext;
 
 /**
  * A collection of one or more policy or policy sets
- * with an ability to resolve references
  * 
  * @author Giedrius Trumpickas
  */
@@ -29,15 +28,15 @@ public interface PolicyDomain
 	String getName();
 	
 	/**
-	 * Gets policy store mode
+	 * Gets policy domain mode
 	 * 
-	 * @return {@link Type} a policy store mode
+	 * @return {@link Type} a policy domain mode
 	 */
 	Type getMode();
 	
 	/**
 	 * Evaluates given context against top level 
-	 * policies stored in this policy store
+	 * policies stored in this policy domain
 	 * 
 	 * @param context an evaluation context
 	 * @return {@link Decision}
@@ -45,12 +44,25 @@ public interface PolicyDomain
 	Decision evaluate(EvaluationContext context);	
 	
 	/**
-	 * Adds top level policy to this store
+	 * Adds top level policy to this domain
 	 * 
 	 * @param p a top level policy
 	 */
 	void add(CompositeDecisionRule p);
 	
+	/**
+	 * Removes top level policy from this domain
+	 * 
+	 * @param p a policy to be removed
+	 */
+	void remove(CompositeDecisionRule p);
+	
+	/**
+	 * Gets domain policies
+	 * 
+	 * @return a collection of policies 
+	 * in this domain
+	 */
 	Collection<CompositeDecisionRule> getDomainPolicies();
 	
 }

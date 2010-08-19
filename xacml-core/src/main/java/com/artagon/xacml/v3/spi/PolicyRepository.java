@@ -30,6 +30,13 @@ public interface PolicyRepository extends PolicyReferenceResolver
 	 */
 	Collection<Policy> getPolicies(String id, VersionMatch version);
 	
+	Collection<Policy> getPolicies(String id);
+	
+	Collection<Policy> getPolicies(String id, 
+			VersionMatch earliest, VersionMatch latest);
+	
+	Collection<Policy> getPolicies(String id, VersionMatch version, 
+			VersionMatch earliest, VersionMatch latest);
 	
 	/**
 	 * Queries policy repository for a given
@@ -42,8 +49,7 @@ public interface PolicyRepository extends PolicyReferenceResolver
 	 */
 	Collection<PolicySet> getPolicySets(String id, VersionMatch version);
 	
-	Collection<Policy> getPolicies(String id, VersionMatch version, 
-			VersionMatch earliest, VersionMatch latest);
+	
 	
 	Collection<PolicySet> getPolicySets(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);

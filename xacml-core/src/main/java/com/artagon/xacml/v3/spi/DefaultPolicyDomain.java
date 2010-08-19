@@ -68,6 +68,11 @@ public final class DefaultPolicyDomain implements PolicyDomain
 	}
 	
 	@Override
+	public void remove(CompositeDecisionRule p) {
+		policies.remove(p.getId());
+	}
+
+	@Override
 	public Collection<CompositeDecisionRule> getDomainPolicies() {
 		return Collections.unmodifiableCollection(policies.values());
 	}
