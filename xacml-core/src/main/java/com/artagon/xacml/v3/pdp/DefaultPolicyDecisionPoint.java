@@ -17,11 +17,11 @@ import com.artagon.xacml.v3.pdp.profiles.RequestContextHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.google.common.base.Preconditions;
 
-public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
+public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
 	PolicyDecisionCallback
 {
 	private EvaluationContextFactory factory;
-	private PolicyDomain policyRepository;
+	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
 	
 	public DefaultPolicyDecisionPoint(
@@ -32,7 +32,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		Preconditions.checkNotNull(factory);
 		Preconditions.checkNotNull(policyRepository);
 		this.factory = factory;
-		this.policyRepository = policyRepository;
+		this.policyDomain = policyRepository;
 		this.requestProcessingPipeline = new RequestContextHandlerChain(handlers);
 	}
 	
@@ -46,7 +46,8 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
-		return new ResponseContext(requestProcessingPipeline.handle(request, this));			
+		Collection<Result> results = requestProcessingPipeline.handle(request, this);
+		return new ResponseContext(results);			
 	}
 	
 	@Override
@@ -54,7 +55,7 @@ public class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	{
 		EvaluationContext context = factory.createContext(request);
 		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
-		Decision decision = policyRepository.evaluate(context);
+		Decision decision = policyDomain.evaluate(context);
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					new Status(StatusCode.createOk()), includeInResult);
