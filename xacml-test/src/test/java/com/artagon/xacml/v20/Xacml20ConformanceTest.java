@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
@@ -48,6 +49,7 @@ public class Xacml20ConformanceTest
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		pip = new DefaultPolicyInformationPoint();
+		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
 		addAllPolicies(repository, "IIC", 233);
@@ -144,13 +146,7 @@ public class Xacml20ConformanceTest
 	}
 	
 
-	
-	@Test
-	public void testIIC168() throws Exception
-	{
-		executeTestCase("IIC", 168);
-	}
-			
+				
 	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
 	{
 		for(int i = 1; i < testCount; i++)
@@ -165,12 +161,18 @@ public class Xacml20ConformanceTest
 	@SuppressWarnings("unchecked")
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
-		System.out.printf("Executing test=\"%s\"\n", Xacml20ConformanceUtility.createTestAssetName(testPrefix, testCaseNum, "Policy.xml"));
+		String name = new StringBuilder(testPrefix)
+		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
+		.toString();
 		PolicyDomain store = new DefaultPolicyDomain("Test");
 		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), store);
+		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
+		long end = System.currentTimeMillis();
+		System.out.printf("Executing test=\"%s\", " +
+				"execution took=\"%d\" miliseconds\n", name, (end - start));
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);
 	}
