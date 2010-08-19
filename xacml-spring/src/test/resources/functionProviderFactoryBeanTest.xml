@@ -25,11 +25,11 @@
 	<xacml:pdp pip-ref="testPip" policyStore-ref="policyStore"/>
 	
 	-->
-	
+	<!-- 
 	<xacml:policy-domain name="TestDomain">
 		<xacml:idRef id="testId1" version="1.+"/>
 		<xacml:idRef id="testId1" version="1.+"/>
 		<xacml:idRef id="testId1" version="1.+"/>
 	</xacml:policy-domain>
-	
+	 -->
 </beans>

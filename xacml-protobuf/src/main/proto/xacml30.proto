@@ -1,5 +1,6 @@
 
 package com.artagon.xacml.v30.protbuf;
+
 option java_package = "com.artagon.xacml.v30.protbuf";
 option optimize_for = CODE_SIZE;
 

@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-protobuf</artifactId>
 	<packaging>jar</packaging>
-	<name>OASIS XACML Request/Response Goole Protobuf Binding</name>
+	<name>OASIS XACML Request/Response Google protobuf serialization</name>
 	<dependencies>
 		<dependency>
 		<groupId>${project.groupId}</groupId>
@@ -25,6 +25,7 @@
 			<plugin>
 				<groupId>com.google.protobuf.tools</groupId>
 				<artifactId>maven-protoc-plugin</artifactId>
+				<version>0.1.4</version>
 				<executions>
 					<execution>
 						<id>generate-sources</id>
