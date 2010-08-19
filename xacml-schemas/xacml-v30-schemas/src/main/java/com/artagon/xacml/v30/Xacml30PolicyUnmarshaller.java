@@ -42,12 +42,17 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 				functions, decisionAlgorithms, true);
 	}
 	
-	public Xacml30PolicyUnmarshaller() 
+	public Xacml30PolicyUnmarshaller(boolean supportsXacml20Policies) 
 		throws JAXBException
 	{
 		super(JAXBContextUtil.getInstance());
+		this.supportsXacml20Policies = supportsXacml20Policies;
 		this.v30mapper = new Xacml30PolicyMapper();
 		this.v20mapper = new Xacml20PolicyMapper();
+	}
+	
+	public Xacml30PolicyUnmarshaller() throws JAXBException{
+		this(true);
 	}
 	
 	
@@ -74,7 +79,7 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 			return v30mapper.create(jaxbInstance.getValue());
 		}
 		throw new IllegalArgumentException(
-				String.format("Can not unmarshall=\"%s\" elemement", 
+				String.format("Can not unmarshall=\"%s\" element", 
 						jaxbInstance.getName()));
 	}	
 }
