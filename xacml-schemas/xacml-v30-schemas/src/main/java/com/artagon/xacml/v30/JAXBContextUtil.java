@@ -17,7 +17,7 @@ public class JAXBContextUtil
 		try{
 			INSTANCE = JAXBContext.newInstance(b.toString());
 		}catch(JAXBException e){
-			
+			e.printStackTrace(System.err);
 		}
 	}
 	

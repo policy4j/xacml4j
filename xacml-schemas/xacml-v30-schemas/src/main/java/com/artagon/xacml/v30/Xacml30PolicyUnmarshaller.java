@@ -20,10 +20,16 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 	private Xacml30PolicyMapper v30mapper;
 	private Xacml20PolicyMapper v20mapper;
 	
-	public Xacml30PolicyUnmarshaller(JAXBContext context, FunctionProvider functions, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithms)
+	private boolean supportsXacml20Policies;
+	
+	public Xacml30PolicyUnmarshaller(
+			JAXBContext context, 
+			FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms, 
+			boolean supportsXacml20Policies)
 	{
 		super(context);
+		this.supportsXacml20Policies = supportsXacml20Policies;
 		this.v30mapper = new Xacml30PolicyMapper(functions, decisionAlgorithms);
 		this.v20mapper = new Xacml20PolicyMapper(functions, decisionAlgorithms);
 	}
@@ -33,7 +39,7 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 		throws JAXBException
 	{
 		this(JAXBContextUtil.getInstance(), 
-				functions, decisionAlgorithms);
+				functions, decisionAlgorithms, true);
 	}
 	
 	public Xacml30PolicyUnmarshaller() 
@@ -49,11 +55,13 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 	@Override
 	protected CompositeDecisionRule create(JAXBElement<?> jaxbInstance)
 			throws XacmlSyntaxException {
-		if(jaxbInstance.getValue() 
+		if(supportsXacml20Policies && 
+				jaxbInstance.getValue() 
 				instanceof org.oasis.xacml.v20.jaxb.policy.PolicySetType){
 			return v20mapper.create(jaxbInstance.getValue());
 		}
-		if(jaxbInstance.getValue() 
+		if(supportsXacml20Policies &&
+				jaxbInstance.getValue() 
 				instanceof org.oasis.xacml.v20.jaxb.policy.PolicyType){
 			return v20mapper.create(jaxbInstance.getValue());
 		}
