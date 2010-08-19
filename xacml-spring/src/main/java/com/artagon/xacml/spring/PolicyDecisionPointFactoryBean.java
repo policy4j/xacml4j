@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.pdp.RequestProfileHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionProfileHandler;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyDomain;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
@@ -20,7 +21,8 @@ import com.google.common.base.Preconditions;
 public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 {
 	private PolicyInformationPoint pip;
-	private PolicyDomain policyStore;
+	private PolicyDomain policyDomain;
+	private PolicyRepository policyRepository;
 	private XPathProvider xpathProvider;
 	private List<RequestProfileHandler> handlers;
 	
@@ -39,8 +41,13 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 		this.pip = pip;
 	}
 	
-	public void setPolicyStore(PolicyDomain policyStore){
-		this.policyStore = policyStore;
+	public void setPolicyDomain(PolicyDomain policyStore){
+		this.policyDomain = policyStore;
+	}
+	
+	public void setPolicyRepository(PolicyRepository policyRepository)
+	{
+		this.policyRepository = policyRepository;
 	}
 	
 	public void setRequestProcessingHandlers(List<RequestProfileHandler> handlers){
@@ -51,8 +58,10 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 	protected Object createInstance() throws Exception 
 	{
 		Preconditions.checkState(pip != null);
-		Preconditions.checkState(policyStore != null);
-		EvaluationContextFactory evalCtxFactory = new DefaultEvaluationContextFactory(policyStore, xpathProvider, pip);
-		return new DefaultPolicyDecisionPoint(handlers, evalCtxFactory, policyStore);
+		Preconditions.checkState(policyDomain != null);
+		Preconditions.checkState(policyRepository != null);
+		EvaluationContextFactory evalCtxFactory = new DefaultEvaluationContextFactory(
+				policyRepository, xpathProvider, pip);
+		return new DefaultPolicyDecisionPoint(handlers, evalCtxFactory, policyDomain);
 	}
 }

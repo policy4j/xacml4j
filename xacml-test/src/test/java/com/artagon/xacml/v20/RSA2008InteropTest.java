@@ -58,152 +58,120 @@ public class RSA2008InteropTest
 	@Test
 	public void testCase1Request01() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-01-01.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-01-01.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase1Request02() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-01-02.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		
+		Result r = executeTest("XacmlRequest-01-02.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase1Request03() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-01-03.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-01-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase1Request04() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-01-04.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-01-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase2Request01() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-02-01.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-02-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase2Request02() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-02-02.xml");
-		ResponseContext response = pdp.decide(request);
-		assertEquals(Decision.DENY, Iterables.getOnlyElement(response.getResults()).getDecision());
+		Result r = executeTest("XacmlRequest-02-02.xml");
+		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase2Request03() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-02-03.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-02-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase2Request04() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-02-04.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-02-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase3Request01() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-03-01.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-03-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase3Request02() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-03-02.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-03-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase3Request03() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-03-03.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-03-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase4Request01() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-04-01.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-04-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase4Request02() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-04-02.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-04-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase4Request03() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-04-03.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-04-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase4Request04() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-04-04.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-04-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
 	
 	@Test
 	public void testCase5Request01() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-05-01.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-05-01.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
 	@Test
 	public void testCase5Request02() throws Exception
 	{
-		RequestContext request = getRequest("XacmlRequest-05-02.xml");
-		ResponseContext response = pdp.decide(request);
-		Result r = Iterables.getOnlyElement(response.getResults());
+		Result r = executeTest("XacmlRequest-05-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
@@ -219,5 +187,15 @@ public class RSA2008InteropTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "rsa2008-interop/" + name;
 		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(path));
+	}
+	
+	private Result executeTest(String name) throws Exception
+	{
+		RequestContext request = getRequest(name);
+		long start = System.currentTimeMillis();
+		ResponseContext response = pdp.decide(request);
+		long end = System.currentTimeMillis();
+		System.out.printf("Test=\"%s\" execution took=\"%d\" miliseconds\n", name, (end - start));
+		return Iterables.getOnlyElement(response.getResults());
 	}
 }
