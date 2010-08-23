@@ -4,6 +4,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 import com.artagon.xacml.spring.domain.PolicyDomainDefinitionParser;
 import com.artagon.xacml.spring.pip.PolicyInformationPointDefinitionParser;
+import com.artagon.xacml.spring.repository.InMemoryPolicyRepositoryDefinitionParser;
 
 public class NamespaceHandler extends NamespaceHandlerSupport
 {
@@ -14,5 +15,6 @@ public class NamespaceHandler extends NamespaceHandlerSupport
 		registerBeanDefinitionParser("FunctionProviders", new FunctionProvidersDefintionParser());
 		registerBeanDefinitionParser("PolicyInformationPoint",  new PolicyInformationPointDefinitionParser());
 		registerBeanDefinitionParser("PolicyDomain",  new PolicyDomainDefinitionParser());
+		registerBeanDefinitionParser("InMemoryPolicyRepository",  new InMemoryPolicyRepositoryDefinitionParser());
 	}
 }

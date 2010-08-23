@@ -24,6 +24,10 @@
 	
 	<xacml:PolicyInformationPoint id="pip"/>
 	
+	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection"/>
+	
+	<xacml:InMemoryPolicyRepository id="repository" resources="resources"/>
+	
 	<!-- 
 	<xacml:PolicyDecisionPoint 
 		domain="domain" 

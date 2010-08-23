@@ -99,4 +99,14 @@
 		</xsd:complexType>
 	</xsd:element>
 	
+	<xsd:element name="InMemoryPolicyRepository" type="xacml-spring:InMemoryPolicyRepositoryType"/>
+	
+	<xsd:complexType name="InMemoryPolicyRepositoryType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:attribute name="resources" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
 </xsd:schema>
