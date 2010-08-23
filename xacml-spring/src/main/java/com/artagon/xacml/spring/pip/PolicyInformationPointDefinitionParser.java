@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-import com.artagon.xacml.spring.AttributeResolverFactoryBean;
 
 public class PolicyInformationPointDefinitionParser extends AbstractBeanDefinitionParser
 {
