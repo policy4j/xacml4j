@@ -29,7 +29,7 @@ public class PolicyUnmarshallerSupport
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) 
 	{
 		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(new DefaultFunctionProvider(), extendsionFunctions);
-		this.combingingAlgorithms = (extensionCombiningAlgorithms != null)? 
+		this.combingingAlgorithms = (extensionCombiningAlgorithms == null)? 
 				new AggregatingDecisionCombiningAlgorithmProvider(
 						new DefaultDecisionCombiningAlgorithms(), 
 						new LegacyDecisionCombiningAlgorithms()):
