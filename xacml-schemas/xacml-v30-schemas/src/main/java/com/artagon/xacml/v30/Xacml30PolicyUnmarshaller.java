@@ -45,10 +45,8 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 	public Xacml30PolicyUnmarshaller(boolean supportsXacml20Policies) 
 		throws JAXBException
 	{
-		super(JAXBContextUtil.getInstance());
-		this.supportsXacml20Policies = supportsXacml20Policies;
-		this.v30mapper = new Xacml30PolicyMapper();
-		this.v20mapper = new Xacml20PolicyMapper();
+		this(JAXBContextUtil.getInstance(), 
+				null, null, supportsXacml20Policies);
 	}
 	
 	public Xacml30PolicyUnmarshaller() throws JAXBException{

@@ -18,7 +18,7 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 			ParserContext parserContext) {
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(PolicyInformationPointFactoryBean.class);
 		@SuppressWarnings("unchecked")
-		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(element, "attribute-resolver");
+		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(element, "AttributeResolver");
 	      if (childElements != null && childElements.size() > 0) {
 	         parseChildComponents(childElements, factory);
 	      }

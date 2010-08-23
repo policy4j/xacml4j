@@ -11,7 +11,7 @@
 		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
 
 
-	<xsd:element name="function-provider">
+	<xsd:element name="FunctionProvider">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
@@ -22,12 +22,12 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="function-providers">
+	<xsd:element name="FunctionProviders">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
 					<xsd:sequence>
-						<xsd:element ref="xacml-spring:function-provider"
+						<xsd:element ref="xacml-spring:FunctionProvider"
 							minOccurs="1" maxOccurs="unbounded" />
 					</xsd:sequence>
 				</xsd:extension>
@@ -35,7 +35,7 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="attribute-resolver">
+	<xsd:element name="AttributeResolver">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
@@ -45,26 +45,51 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="pip">
+	<xsd:element name="PolicyInformationPoint">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
 					<xsd:sequence>
-						<xsd:element ref="xacml-spring:attribute-resolver"
+						<xsd:element ref="xacml-spring:AttributeResolver"
 							minOccurs="0" maxOccurs="unbounded" />
 					</xsd:sequence>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
+
 	
-	<xsd:element name="pdp">
+	<xsd:complexType name="IdReferenceType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:anyURI">
+				<xsd:attribute name="Version" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xsd:attribute name="EarliestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xsd:attribute name="LatestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="VersionMatchType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:element name="PolicySetIdReference" type="xacml-spring:IdReferenceType"/>
+	<xsd:element name="PolicyIdReference" type="xacml-spring:IdReferenceType"/>
+	
+	<xsd:element name="PolicyDomain">
 		<xsd:complexType>
 			<xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:attribute name="pip-ref" type="xsd:string" use="required"/>
-					<xsd:attribute name="policyStore-ref" type="xsd:string" use="required"/>
-				</xsd:extension>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:choice minOccurs="1" maxOccurs="unbounded">
+						<xsd:element ref="xacml-spring:PolicySetIdReference"/>
+						<xsd:element ref="xacml-spring:PolicyIdReference"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+			</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>

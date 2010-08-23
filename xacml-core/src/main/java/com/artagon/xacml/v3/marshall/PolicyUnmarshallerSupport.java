@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
-import com.google.common.base.Preconditions;
+import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 
 /**
  * A support class for dealing with XACML 
@@ -28,18 +28,20 @@ public class PolicyUnmarshallerSupport
 			FunctionProvider extendsionFunctions,
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) 
 	{
-		Preconditions.checkNotNull(extendsionFunctions);
-		Preconditions.checkNotNull(extensionCombiningAlgorithms);
-		this.functions = extendsionFunctions;
-		this.combingingAlgorithms = extensionCombiningAlgorithms;
+		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(new DefaultFunctionProvider(), extendsionFunctions);
+		this.combingingAlgorithms = (extensionCombiningAlgorithms != null)? 
+				new AggregatingDecisionCombiningAlgorithmProvider(
+						new DefaultDecisionCombiningAlgorithms(), 
+						new LegacyDecisionCombiningAlgorithms()):
+				new AggregatingDecisionCombiningAlgorithmProvider(
+						new DefaultDecisionCombiningAlgorithms(), 
+						new LegacyDecisionCombiningAlgorithms(), 
+						extensionCombiningAlgorithms);
 	}
 	
 	protected PolicyUnmarshallerSupport()
 	{
-		this(new DefaultFunctionProvider(), 
-				new AggregatingDecisionCombiningAlgorithmProvider(
-						new DefaultDecisionCombiningAlgorithms(), 
-						new LegacyDecisionCombiningAlgorithms()));
+		this(null, null);
 	}
 
 	/**

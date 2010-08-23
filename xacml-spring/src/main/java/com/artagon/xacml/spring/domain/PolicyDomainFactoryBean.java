@@ -1,4 +1,4 @@
-package com.artagon.xacml.spring;
+package com.artagon.xacml.spring.domain;
 
 import java.util.Collection;
 
@@ -14,19 +14,19 @@ public class PolicyDomainFactoryBean extends AbstractFactoryBean
 	private String name;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;
 	
-	public PolicyDomainFactoryBean(String name) 
-		throws Exception
-	{
+	public void setName(String name){
 		this.name = name;
 	}
 	
-	public void setPolicyReferences(Collection<CompositeDecisionRuleIDReference> policyReferences){
+	public void setReferences(Collection<CompositeDecisionRuleIDReference> policyReferences){
 		this.policyReferences = policyReferences;
 	}
 	
 	@Override
 	protected PolicyDomain createInstance() throws Exception 
 	{
+		Preconditions.checkArgument(name != null, 
+				"Policy domain name must be specified");
 		Preconditions.checkArgument(policyReferences != null, 
 				"At least on policy reference must be specified");
 		Preconditions.checkArgument(policyReferences.size() > 0, 

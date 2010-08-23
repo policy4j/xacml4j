@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
@@ -17,6 +20,8 @@ import com.google.common.base.Preconditions;
 
 public final class DefaultPolicyDomain implements PolicyDomain
 {
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDomain.class);
+	
 	private final static Map<Type, String> MODE = new HashMap<PolicyDomain.Type, String>();
 	
 	static
@@ -63,6 +68,10 @@ public final class DefaultPolicyDomain implements PolicyDomain
 
 	@Override
 	public final void add(CompositeDecisionRule policy) {
+		if(log.isDebugEnabled()){
+			log.debug("Adding composite policy id=\"{}\" to the domain", 
+					policy.getId());
+		}
 		CompositeDecisionRule oldPolicy = policies.put(policy.getId(), policy.getReference());
 		Preconditions.checkState(oldPolicy == null);
 	}

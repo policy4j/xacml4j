@@ -12,24 +12,14 @@
 	
 	<bean id="testProvider1" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
 	
-	<xacml:function-providers id="extensionFunctions">
-		<xacml:function-provider id="provider1" class="com.artagon.xacml.spring.TestStaticFunctions"/>
-		<xacml:function-provider id="provider2" ref="testProvider1"/>
-	</xacml:function-providers>
+	<xacml:FunctionProviders id="extensionFunctions">
+		<xacml:FunctionProvider id="provider1" class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml:FunctionProvider id="provider2" ref="testProvider1"/>
+	</xacml:FunctionProviders>
 	
-	<!--  
-	<xacml:policy-store id="policyStore" ext-func="extensionFunctions"/>
+	<xacml:PolicyDomain id="domain" name="TestDomain">
+		<xacml:PolicySetIdReference Version="1.+">aaaaaa</xacml:PolicySetIdReference>
+		<xacml:PolicySetIdReference Version="1.+">11111</xacml:PolicySetIdReference>
+	</xacml:PolicyDomain>
 	
-	<xacml:pip id="testPip"/>
-	
-	<xacml:pdp pip-ref="testPip" policyStore-ref="policyStore"/>
-	
-	-->
-	<!-- 
-	<xacml:policy-domain name="TestDomain">
-		<xacml:idRef id="testId1" version="1.+"/>
-		<xacml:idRef id="testId1" version="1.+"/>
-		<xacml:idRef id="testId1" version="1.+"/>
-	</xacml:policy-domain>
-	 -->
 </beans>

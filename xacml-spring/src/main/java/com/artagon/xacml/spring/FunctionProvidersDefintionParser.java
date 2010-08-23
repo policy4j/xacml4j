@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-public class FunctionProviderDefinitionParser extends AbstractBeanDefinitionParser
+public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionParser
 {
 		
 	@Override
@@ -20,7 +20,7 @@ public class FunctionProviderDefinitionParser extends AbstractBeanDefinitionPars
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(FunctionProvidersFactoryBean.class);
 		@SuppressWarnings("unchecked")
 		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(
-				element, "function-provider");
+				element, "FunctionProvider");
 	      if (childElements != null && childElements.size() > 0) {
 	         parseChildComponents(childElements, factory);
 	      }
