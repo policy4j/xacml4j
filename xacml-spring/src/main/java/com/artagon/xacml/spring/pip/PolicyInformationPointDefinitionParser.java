@@ -1,4 +1,4 @@
-package com.artagon.xacml.spring;
+package com.artagon.xacml.spring.pip;
 
 import java.util.List;
 
@@ -11,21 +11,27 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
+import com.artagon.xacml.spring.AttributeResolverFactoryBean;
+
 public class PolicyInformationPointDefinitionParser extends AbstractBeanDefinitionParser
 {
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(PolicyInformationPointFactoryBean.class);
-		@SuppressWarnings("unchecked")
-		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(element, "AttributeResolver");
-	      if (childElements != null && childElements.size() > 0) {
-	         parseChildComponents(childElements, factory);
-	      }
+		
+		Element resolvers = DomUtils.getChildElementByTagName(element, "AttributeResolvers");
+		if(resolvers != null){
+			@SuppressWarnings("unchecked")
+			List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(resolvers, "AttributeResolver");
+		      if (childElements != null && childElements.size() > 0) {
+		         parseAttributeResolvers(childElements, factory);
+		    }
+		}
 	    return factory.getBeanDefinition();
 	}
 	
-	private static BeanDefinitionBuilder parseComponent(Element element) 
+	private static BeanDefinitionBuilder parseAttributeResolver(Element element) 
 	{
 	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(AttributeResolverFactoryBean.class);
 	      String ref = element.getAttribute("ref");
@@ -36,12 +42,12 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) 
+	private static void parseAttributeResolvers(List<Element> childElements, BeanDefinitionBuilder factory) 
 	{
 	      ManagedList children = new ManagedList(childElements.size());
 	      for (int i = 0; i < childElements.size(); ++i) {
 	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder child = parseComponent(childElement);
+	         BeanDefinitionBuilder child = parseAttributeResolver(childElement);
 	         children.add(child.getBeanDefinition());
 	      }
 	      factory.addPropertyValue("attributeResolvers", children);

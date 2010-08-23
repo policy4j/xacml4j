@@ -1,4 +1,4 @@
-package com.artagon.xacml.spring;
+package com.artagon.xacml.spring.pip;
 
 import java.util.Collection;
 import java.util.Collections;

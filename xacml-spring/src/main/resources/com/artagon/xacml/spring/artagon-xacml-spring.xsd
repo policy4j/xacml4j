@@ -35,30 +35,35 @@
 		</xsd:complexType>
 	</xsd:element>
 	
-	<xsd:element name="AttributeResolver">
-		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:attribute name="ref" type="xsd:string" use="optional" />
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
-	</xsd:element>
-
+	<xsd:element name="AttributeResolver" type="xacml-spring:AttributeResolverType"/>
+	
+	<xsd:complexType name="AttributeResolverType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:attribute name="ref" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:element name="AttributeResolvers" type="xacml-spring:AttributeResolversType"/>
+	<xsd:complexType name="AttributeResolversType">
+		<xsd:sequence>
+			<xsd:element ref="xacml-spring:AttributeResolver" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
 	<xsd:element name="PolicyInformationPoint">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
 					<xsd:sequence>
-						<xsd:element ref="xacml-spring:AttributeResolver"
-							minOccurs="0" maxOccurs="unbounded" />
+						<xsd:element ref="xacml-spring:AttributeResolvers" minOccurs="0" maxOccurs="1"/> 
 					</xsd:sequence>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 
-	
 	<xsd:complexType name="IdReferenceType">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:anyURI">

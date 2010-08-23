@@ -22,4 +22,19 @@
 		<xacml:PolicySetIdReference Version="1.+">11111</xacml:PolicySetIdReference>
 	</xacml:PolicyDomain>
 	
+	<xacml:PolicyInformationPoint id="pip"/>
+	
+	<!-- 
+	<xacml:PolicyDecisionPoint 
+		domain="domain" 
+		repository="repository" 
+		pip="pip">
+		
+		<xacml:RequestProfileHandler ref="handler1"/>
+		<xacml:RequestProfileHandler ref="handler1"/>
+		<xacml:RequestProfileHandler ref="handler1"/>
+		
+	</xacml:PolicyDecisionPoint>
+	
+	 -->
 </beans>
