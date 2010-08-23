@@ -13,30 +13,26 @@
 
 	<xsd:element name="FunctionProvider">
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:attribute name="class" type="xsd:string" use="optional" />
-					<xsd:attribute name="ref" type="xsd:string" use="optional" />
-				</xsd:extension>
-			</xsd:complexContent>
+			<xsd:attribute name="class" type="xsd:string" use="optional" />
+			<xsd:attribute name="ref" type="xsd:string" use="optional" />
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="FunctionProviders">
-		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:extension base="beans:identifiedType">
-					<xsd:sequence>
-						<xsd:element ref="xacml-spring:FunctionProvider"
-							minOccurs="1" maxOccurs="unbounded" />
-					</xsd:sequence>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
-	</xsd:element>
+	<xsd:element name="FunctionProviders" type="xacml-spring:FunctionProvidersType"/>	
+
+	<xsd:complexType name="FunctionProvidersType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:element ref="xacml-spring:FunctionProvider"
+						minOccurs="1" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
 	
 	<xsd:element name="AttributeResolver" type="xacml-spring:AttributeResolverType"/>
-	
 	<xsd:complexType name="AttributeResolverType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
@@ -99,11 +95,21 @@
 		</xsd:complexType>
 	</xsd:element>
 	
+	<xsd:complexType name="PolicyRepositoryBaseType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:element name="ExtensionFunctions" type="xacml-spring:FunctionProvidersType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
 	<xsd:element name="InMemoryPolicyRepository" type="xacml-spring:InMemoryPolicyRepositoryType"/>
 	
 	<xsd:complexType name="InMemoryPolicyRepositoryType">
 		<xsd:complexContent>
-			<xsd:extension base="beans:identifiedType">
+			<xsd:extension base="xacml-spring:PolicyRepositoryBaseType">
 				<xsd:attribute name="resources" type="xsd:string" use="required" />
 			</xsd:extension>
 		</xsd:complexContent>

@@ -13,8 +13,8 @@
 	<bean id="testProvider1" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
 	
 	<xacml:FunctionProviders id="extensionFunctions">
-		<xacml:FunctionProvider id="provider1" class="com.artagon.xacml.spring.TestStaticFunctions"/>
-		<xacml:FunctionProvider id="provider2" ref="testProvider1"/>
+		<xacml:FunctionProvider class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml:FunctionProvider ref="testProvider1"/>
 	</xacml:FunctionProviders>
 	
 	<xacml:PolicyDomain id="domain" name="TestDomain">
