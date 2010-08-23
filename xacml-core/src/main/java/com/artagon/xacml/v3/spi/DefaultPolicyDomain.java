@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -68,14 +69,21 @@ public final class DefaultPolicyDomain implements PolicyDomain
 
 	@Override
 	public final void add(CompositeDecisionRule policy) {
+		CompositeDecisionRuleIDReference r = policy.getReference();
 		if(log.isDebugEnabled()){
-			log.debug("Adding composite policy id=\"{}\" to the domain", 
-					policy.getId());
+			log.debug("Adding composite rule reference id=\"{}\" version=\"{}\", " +
+					"EarliestVersion=\"{}\", LatestVersion=\"{}\" to the policy domain=\"{}\"", 
+					new String[]{r.getId(), 
+					r.getVersionMatch() == null?"any":r.getVersionMatch().getPattern(),
+					r.getEarliestVersion() == null?"any":r.getEarliestVersion().getPattern(),
+					r.getLatestVersion() == null?"any":r.getLatestVersion().getPattern(), 
+					name
+				});
 		}
-		CompositeDecisionRule oldPolicy = policies.put(policy.getId(), policy.getReference());
+		CompositeDecisionRule oldPolicy = policies.put(r.getId(), r);
 		Preconditions.checkState(oldPolicy == null);
 	}
-	
+		
 	@Override
 	public void remove(CompositeDecisionRule p) {
 		policies.remove(p.getId());
