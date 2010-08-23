@@ -98,9 +98,7 @@
 	<xsd:complexType name="PolicyRepositoryBaseType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
-				<xsd:sequence>
-					<xsd:element name="ExtensionFunctions" type="xacml-spring:FunctionProvidersType" minOccurs="0"/>
-				</xsd:sequence>
+				<xsd:attribute name="extensionFunctions" type="xsd:string"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>

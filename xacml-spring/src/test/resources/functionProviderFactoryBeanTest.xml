@@ -17,16 +17,23 @@
 		<xacml:FunctionProvider ref="testProvider1"/>
 	</xacml:FunctionProviders>
 	
+	<xacml:PolicyInformationPoint id="pip"/>
+	
+	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
+		<beans:property name="resources">
+			<util:list>
+				<value>classpath:/Policy1.xml</value>
+			</util:list>
+		</beans:property>
+	</bean>
+	
+	<xacml:InMemoryPolicyRepository id="repository" 
+	resources="resources" extensionFunctions="extensionFunctions"/>
+	
 	<xacml:PolicyDomain id="domain" name="TestDomain">
 		<xacml:PolicySetIdReference Version="1.+">aaaaaa</xacml:PolicySetIdReference>
 		<xacml:PolicySetIdReference Version="1.+">11111</xacml:PolicySetIdReference>
-	</xacml:PolicyDomain>
-	
-	<xacml:PolicyInformationPoint id="pip"/>
-	
-	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection"/>
-	
-	<xacml:InMemoryPolicyRepository id="repository" resources="resources"/>
+	</xacml:PolicyDomain>	
 	
 	<!-- 
 	<xacml:PolicyDecisionPoint 
