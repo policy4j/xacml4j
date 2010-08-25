@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.spi.DefaultPolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
