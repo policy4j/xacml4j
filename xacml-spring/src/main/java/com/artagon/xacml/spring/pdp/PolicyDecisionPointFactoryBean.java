@@ -23,13 +23,13 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 	private PolicyInformationPoint pip;
 	private PolicyDomain policyDomain;
 	private PolicyRepository policyRepository;
-	private XPathProvider xpathProvider;
 	private List<RequestProfileHandler> handlers;
+	private XPathProvider xpathProvider;
 	
 	public PolicyDecisionPointFactoryBean(){
-		this.xpathProvider = new DefaultXPathProvider();
 		this.handlers = new LinkedList<RequestProfileHandler>();
-		this.handlers.add(new MultipleDecisionProfileHandler(xpathProvider));
+		this.handlers.add(new MultipleDecisionProfileHandler());
+		this.xpathProvider = new DefaultXPathProvider();
 	}
 	
 	@Override
@@ -39,6 +39,10 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 	
 	public void setPolicyInformationPoint(PolicyInformationPoint pip){
 		this.pip = pip;
+	}
+	
+	public void setXPathProvider(XPathProvider xpathProvider){
+		this.xpathProvider = xpathProvider;
 	}
 	
 	public void setPolicyDomain(PolicyDomain policyStore){

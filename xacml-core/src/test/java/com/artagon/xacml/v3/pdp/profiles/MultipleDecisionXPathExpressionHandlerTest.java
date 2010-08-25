@@ -35,6 +35,7 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
@@ -58,11 +59,14 @@ public class MultipleDecisionXPathExpressionHandlerTest
 	private RequestProfileHandler profile;
 	private Node content;
 	
+	private XPathProvider xpathProvider;
+	
 	@Before
 	public void init() throws Exception
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleDecisionXPathExpressionHandler(new DefaultXPathProvider());
+		this.profile = new MultipleDecisionXPathExpressionHandler();
+		this.xpathProvider = new DefaultXPathProvider();
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
@@ -95,14 +99,18 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		
+		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
+		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
 						Collections.<Attributes>emptyList()));
+	
 		expect(pdp.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
 						Collections.<Attributes>emptyList()));
+		
 		replay(pdp);
 			
 		Collection<Result> results = profile.handle(context, pdp);
@@ -152,6 +160,8 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		
+		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
@@ -236,7 +246,6 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		assertFalse(request.hasRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
-		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
@@ -268,6 +277,8 @@ public class MultipleDecisionXPathExpressionHandlerTest
 		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
 				
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		
+		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 		
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject, resource));

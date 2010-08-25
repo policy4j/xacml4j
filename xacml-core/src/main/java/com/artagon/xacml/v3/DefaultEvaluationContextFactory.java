@@ -44,6 +44,11 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 	}
+	
+	@Override
+	public XPathProvider getXPathProvider() {
+		return xpathProvider;
+	}
 
 	@Override
 	public EvaluationContext createContext(RequestContext request) 

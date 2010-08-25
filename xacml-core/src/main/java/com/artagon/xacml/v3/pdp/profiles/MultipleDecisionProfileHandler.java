@@ -1,15 +1,14 @@
 package com.artagon.xacml.v3.pdp.profiles;
 
-import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class MultipleDecisionProfileHandler extends RequestContextHandlerChain
 {
-	public MultipleDecisionProfileHandler(XPathProvider xpathProvider)
+	public MultipleDecisionProfileHandler()
 	{
 		super(new MultipleDecisionRequestReferencesHandler(), 
 				new MultipleDecisionRepeatingAttributesHandler(),
 				new LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler(),
-				new MultipleDecisionXPathExpressionHandler(xpathProvider));
+				new MultipleDecisionXPathExpressionHandler());
 	}
 	
 }

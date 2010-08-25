@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.pdp;
 
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.spi.XPathProvider;
 
 /**
  * An interface to the {@link PolicyDecisionPoint} used
@@ -13,4 +14,11 @@ import com.artagon.xacml.v3.Result;
 public interface PolicyDecisionCallback 
 {
 	Result requestDecision(RequestContext request);
+	
+	/**
+	 * Gets an xpath provider
+	 * 
+	 * @return {@link XPathProvider}
+	 */
+	XPathProvider getXPathProvider();
 }

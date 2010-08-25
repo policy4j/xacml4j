@@ -25,7 +25,6 @@ import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -39,13 +38,6 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
-	private XPathProvider xpathProvider;
-	
-	
-	public MultipleDecisionXPathExpressionHandler(XPathProvider xpathProvider){
-		Preconditions.checkNotNull(xpathProvider);
-		this.xpathProvider = xpathProvider;
-	}
 	
 	@Override
 	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
@@ -65,9 +57,10 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		}
 		try
 		{
+			XPathProvider xpathProvider = pdp.getXPathProvider();
 			List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
 			for(Attributes attribute : request.getAttributes()){
-				all.add(getAttributes(request, attribute));
+				all.add(getAttributes(request, attribute, xpathProvider));
 			}
 			Set<List<Attributes>> cartesian = Sets.cartesianProduct(all);
 			List<Result> results = new LinkedList<Result>();
@@ -88,7 +81,8 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		}
 	}
 	
-	private Set<Attributes> getAttributes(RequestContext request, Attributes attribute) 
+	private Set<Attributes> getAttributes(RequestContext request, Attributes attribute, 
+			XPathProvider xpathProvider) 
 		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 

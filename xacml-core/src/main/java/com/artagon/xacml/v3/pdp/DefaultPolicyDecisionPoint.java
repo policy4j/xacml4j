@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.profiles.RequestContextHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
+import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 
 public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
@@ -73,4 +74,9 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 				includeInResult, 
 				context.getEvaluatedPolicies());
 	}
+
+	@Override
+	public XPathProvider getXPathProvider() {
+		return factory.getXPathProvider();
+	}	
 }

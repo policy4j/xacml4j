@@ -23,6 +23,10 @@ public class PolicyDecisionPointDefinitionParser extends AbstractSingleBeanDefin
 	      if (StringUtils.hasText(handlers)) {
 	    	  bean.addPropertyReference("handlers", handlers);
 	      }
+	      String xpathProvider = element.getAttribute("xpath-provider");
+	      if (StringUtils.hasText(xpathProvider)) {
+	    	  bean.addPropertyReference("xpathProvider", xpathProvider);
+	      }
 	   }
 	}
 

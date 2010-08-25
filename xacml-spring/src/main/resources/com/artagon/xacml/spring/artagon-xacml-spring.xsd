@@ -120,6 +120,7 @@
 				<xsd:attribute name="domain" type="xsd:string" use="required"/>
 				<xsd:attribute name="handlers" type="xsd:string" use="optional"/>
 				<xsd:attribute name="pip" type="xsd:string" use="required"/>
+				<xsd:attribute name="xpathProvider" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
