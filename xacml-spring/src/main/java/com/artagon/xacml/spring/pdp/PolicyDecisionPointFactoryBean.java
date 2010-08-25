@@ -50,7 +50,7 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 		this.policyRepository = policyRepository;
 	}
 	
-	public void setRequestProcessingHandlers(List<RequestProfileHandler> handlers){
+	public void setHandlers(List<RequestProfileHandler> handlers){
 		this.handlers.addAll(handlers);
 	}
 	

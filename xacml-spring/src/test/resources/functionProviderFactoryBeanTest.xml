@@ -17,6 +17,8 @@
 		<xacml:FunctionProvider ref="testProvider1"/>
 	</xacml:FunctionProviders>
 	
+	<bean id="testAttributeResolver" class="com.artagon.xacml.spring.TestAttributeResolver"/>
+	
 	<xacml:PolicyInformationPoint id="pip"/>
 	
 	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
@@ -34,18 +36,11 @@
 		<xacml:PolicySetIdReference Version="1.+">aaaaaa</xacml:PolicySetIdReference>
 		<xacml:PolicySetIdReference Version="1.+">11111</xacml:PolicySetIdReference>
 	</xacml:PolicyDomain>	
-	
-	<!-- 
-	<xacml:PolicyDecisionPoint 
+	 
+	<xacml:PolicyDecisionPoint
+		id="pdp"
 		domain="domain" 
 		repository="repository" 
-		pip="pip">
-		
-		<xacml:RequestProfileHandler ref="handler1"/>
-		<xacml:RequestProfileHandler ref="handler1"/>
-		<xacml:RequestProfileHandler ref="handler1"/>
-		
-	</xacml:PolicyDecisionPoint>
+		pip="pip"/>
 	
-	 -->
 </beans>

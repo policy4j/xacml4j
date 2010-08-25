@@ -104,7 +104,6 @@
 	</xsd:complexType>
 	
 	<xsd:element name="InMemoryPolicyRepository" type="xacml-spring:InMemoryPolicyRepositoryType"/>
-	
 	<xsd:complexType name="InMemoryPolicyRepositoryType">
 		<xsd:complexContent>
 			<xsd:extension base="xacml-spring:PolicyRepositoryBaseType">
@@ -113,26 +112,14 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	
-	<xsd:element name="RequestHandler" type="xacml-spring:RequestHandlerType"/>
-	<xsd:complexType name="RequestHandlerType">
-		<xsd:attribute name="ref" type="xsd:string" use="required"/>
-	</xsd:complexType>
-	
-	<xsd:element name="RequestHandlers" type="xacml-spring:RequestHandlersType"/>
-	<xsd:complexType name="RequestHandlersType">
-		<xsd:sequence>
-			<xsd:element ref="xacml-spring:RequestHandler" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	
+	<xsd:element name="PolicyDecisionPoint" type="xacml-spring:PolicyDecisionPointType"/>
 	<xsd:complexType name="PolicyDecisionPointType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
-				<xsd:sequence>
-					<xsd:element ref="xacml-spring:RequestHandlers" minOccurs="0" maxOccurs="1"/>
-				</xsd:sequence>
-				<xsd:attribute name="repository" type="xsd:string"/>
-				<xsd:attribute name="domain" type="xsd:string"/>
+				<xsd:attribute name="repository" type="xsd:string" use="required"/>
+				<xsd:attribute name="domain" type="xsd:string" use="required"/>
+				<xsd:attribute name="handlers" type="xsd:string" use="optional"/>
+				<xsd:attribute name="pip" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
