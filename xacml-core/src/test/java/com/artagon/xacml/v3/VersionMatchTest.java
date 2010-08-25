@@ -33,6 +33,7 @@ public class VersionMatchTest
 		new VersionMatch("1.+.+");
 	}
 
+	@Test
 	public void testCreateWithAnySingleDigitAndSubseq() throws XacmlSyntaxException
 	{
 		new VersionMatch("1.*.+");

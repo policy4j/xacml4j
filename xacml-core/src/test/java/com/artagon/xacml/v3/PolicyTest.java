@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class PolicyTest 
@@ -41,7 +42,7 @@ public class PolicyTest
 	
 	private List<Rule> rules;
 	
-	private PolicyReferenceResolver repository;
+	private PolicyRepository repository;
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 	
@@ -79,7 +80,7 @@ public class PolicyTest
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
-		this.repository = createStrictMock(PolicyReferenceResolver.class);
+		this.repository = createStrictMock(PolicyRepository.class);
 		this.xpathProvider = createStrictMock(XPathProvider.class);
 		this.pip = createStrictMock(PolicyInformationPoint.class);
 		this.request = createStrictMock(RequestContext.class);

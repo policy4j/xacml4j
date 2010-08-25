@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3;
 
-import java.util.Arrays;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -31,7 +29,7 @@ public class Version implements Comparable<Version>
     	Preconditions.checkNotNull(version);
     	this.value = version;
     	this.version = parseVersion(version);
-    	this.hashCode = Arrays.hashCode(this.version);
+    	this.hashCode = value.hashCode();
     }
     
     /**

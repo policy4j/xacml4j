@@ -1,18 +1,12 @@
 package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyIDReference;
-import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.VersionMatch;
-import com.google.common.collect.Iterables;
 
 /**
  * A base class for {@link PolicyRepository} implementations
@@ -21,49 +15,33 @@ import com.google.common.collect.Iterables;
  */
 public abstract class AbstractPolicyRepository implements PolicyRepository
 {
-	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
 	
 	@Override
-	public final Policy resolve(EvaluationContext context, PolicyIDReference ref)
-			throws PolicyResolutionException {
-		if(log.isDebugEnabled()){
-			log.debug("Resolving policy reference=\"{}\"", ref);
-		}
-		Collection<Policy> found = getPolicies(ref.getId(), ref.getVersionMatch(), 
-				ref.getEarliestVersion(), ref.getLatestVersion());
-		if(log.isDebugEnabled()){
-			log.debug("Found=\"{}\" matching policies", found.size());
-		}
-		Policy policy =  found.isEmpty()?null:Iterables.getLast(found);
-		if(log.isDebugEnabled() && 
-				policy != null){
-			log.debug("Resolved reference to policySet id=\"{}\" " +
-					"version=\"{}\"", policy.getId(), policy.getVersion());
-		}
-		return policy;
+	public final Policy getPolicy(String id, VersionMatch version, 
+			VersionMatch earliest, VersionMatch latest){
+		Collection<Policy> found = getPolicies(id, version, earliest, latest);
+		return Collections.<Policy>max(found, new Comparator<Policy>() {
+			@Override
+			public int compare(Policy a, Policy b) {
+				return a.getVersion().compareTo(b.getVersion());
+			}
+			
+		});
 	}
-
+	
 	@Override
-	public final PolicySet resolve(EvaluationContext context, PolicySetIDReference ref)
-			throws PolicyResolutionException {
-		if(log.isDebugEnabled()){
-			log.debug("Resolving policy reference=\"{}\"", ref);
-		}
-		Collection<PolicySet> found = getPolicySets(ref.getId(), ref.getVersionMatch(), 
-				ref.getEarliestVersion(), ref.getLatestVersion());
-		if(log.isDebugEnabled()){
-			log.debug("Found=\"{}\" matching policy sets", found.size());
-		}
-		PolicySet policySet = found.isEmpty()?null:Iterables.getLast(found);
-		if(log.isDebugEnabled() && 
-				policySet != null){
-			log.debug("Resolved reference to policySet id=\"{}\" " +
-					"version=\"{}\"", policySet.getId(), policySet.getVersion());
-		}
-		return policySet;
+	public final PolicySet getPolicySet(String id, VersionMatch version, 
+			VersionMatch earliest, VersionMatch latest)
+	{
+		Collection<PolicySet> found = getPolicySets(id, version, earliest, latest);
+		return Collections.<PolicySet>max(found, new Comparator<PolicySet>() {
+			@Override
+			public int compare(PolicySet a, PolicySet b) {
+				return a.getVersion().compareTo(b.getVersion());
+			}
+			
+		});
 	}
-	
-	
 	
 	@Override
 	public final Collection<Policy> getPolicies(String id) {

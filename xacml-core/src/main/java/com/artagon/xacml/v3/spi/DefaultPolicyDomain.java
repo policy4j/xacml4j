@@ -34,6 +34,7 @@ public final class DefaultPolicyDomain implements PolicyDomain
 	
 	private String name;
 	private Type mode;
+	
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	private Map<String, CompositeDecisionRule> policies;
 	

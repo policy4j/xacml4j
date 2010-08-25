@@ -17,21 +17,41 @@ import com.artagon.xacml.v3.VersionMatch;
  * 
  * @author Giedrius Trumpickas
  */
-public interface PolicyRepository extends PolicyReferenceResolver
+public interface PolicyRepository
 {
 	/**
-	 * Queries policy repository for a given
-	 * policy via policy identifier and version
-	 * match constraint
+	 * Gets all versions of the policy with a given
+	 * identifier matching given version constraints
 	 * 
 	 * @param id a policy identifier
 	 * @param version a policy version match constraint
-	 * @return an {@link Iterable} to found policies
+	 * @return an {@link Collection} of matching policies
+	 * sorted from the earliest to latest version 
 	 */
 	Collection<Policy> getPolicies(String id, VersionMatch version);
 	
+	/**
+	 * Gets all versions of the policy with a given
+	 * identifier
+	 * 
+	 * @param id a policy identifier
+	 * @return an {@link Collection} of matching policies
+	 * sorted from the earliest to latest version 
+	 */
 	Collection<Policy> getPolicies(String id);
 	
+	/**
+	 * Gets all versions of the policy with a given
+	 * identifier matching given version constraints
+	 * 
+	 * @param id a policy identifier
+	 * @param earliest an earliest policy version 
+	 * match constraint
+	 * @param latest a latest policy version matching
+	 * constraint
+	 * @return an {@link Collection} of matching policies
+	 * sorted from the earliest to latest version 
+	 */
 	Collection<Policy> getPolicies(String id, 
 			VersionMatch earliest, VersionMatch latest);
 	
@@ -52,6 +72,32 @@ public interface PolicyRepository extends PolicyReferenceResolver
 	
 	
 	Collection<PolicySet> getPolicySets(String id, VersionMatch version, 
+			VersionMatch earliest, VersionMatch latest);
+	
+	/**
+	 * Gets latest policy matching given version constraints
+	 * 
+	 * @param id a policy identifier
+	 * @param version a  version match constraint
+	 * @param earliest a lower bound version match constraint
+	 * @param latest an upper bound version match constraint
+	 * @return {@link Policy} or <code>null</code> if this 
+	 * repository does not contain matching policy
+	 */
+	Policy getPolicy(String id, VersionMatch version, 
+			VersionMatch earliest, VersionMatch latest);
+	
+	/**
+	 * Gets latest policy set matching given version constraints
+	 * 
+	 * @param id a policy identifier
+	 * @param version a  version match constraint
+	 * @param earliest a lower bound version match constraint
+	 * @param latest an upper bound version match constraint
+	 * @return {@link PolicySet} or <code>null</code> if this 
+	 * repository does not contain matching policy set
+	 */
+	PolicySet getPolicySet(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
 	
 	/**

@@ -1,6 +1,8 @@
 package com.artagon.xacml.v3;
 
+import com.artagon.xacml.v3.spi.DefaultPolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
@@ -20,9 +22,9 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	 * @param pip a policy information point
 	 */
 	public DefaultEvaluationContextFactory(
-			PolicyReferenceResolver referenceResolver, 
+			PolicyRepository repository, 
 			PolicyInformationPoint pip){
-		this(referenceResolver, new DefaultXPathProvider(), pip);
+		this(repository, new DefaultXPathProvider(), pip);
 	}
 	
 	/**
@@ -33,13 +35,13 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	 * @param pip a policy information point
 	 */
 	public DefaultEvaluationContextFactory(
-			PolicyReferenceResolver referenceResolver, 
+			PolicyRepository repository, 
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip){
-		Preconditions.checkNotNull(referenceResolver);
+		Preconditions.checkNotNull(repository);
 		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(pip);
-		this.policyReferenceResolver = referenceResolver;
+		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 	}
