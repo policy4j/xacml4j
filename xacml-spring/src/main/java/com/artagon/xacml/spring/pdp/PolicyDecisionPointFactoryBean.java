@@ -1,4 +1,4 @@
-package com.artagon.xacml.spring;
+package com.artagon.xacml.spring.pdp;
 
 import java.util.LinkedList;
 import java.util.List;

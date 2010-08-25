@@ -49,10 +49,10 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 					byId.size(), id);
 		}
 		try{
-			policyLock.readLock().lock();
+			//policyLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
 		}finally{
-			policyLock.readLock().unlock();
+			//policyLock.readLock().unlock();
 		}
 	}
 

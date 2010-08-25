@@ -192,10 +192,14 @@ public class RSA2008InteropTest
 	private Result executeTest(String name) throws Exception
 	{
 		RequestContext request = getRequest(name);
-		long start = System.currentTimeMillis();
-		ResponseContext response = pdp.decide(request);
-		long end = System.currentTimeMillis();
-		System.out.printf("Test=\"%s\" execution took=\"%d\" miliseconds\n", name, (end - start));
+		ResponseContext response = null;
+		for(int i = 0; i < 1; i++){
+			long start = System.currentTimeMillis();
+			response = pdp.decide(request);
+			long end = System.currentTimeMillis();
+			System.out.printf("Test=\"%s\" execution took=\"%d\" miliseconds\n", name, (end - start));
+		}
+		
 		return Iterables.getOnlyElement(response.getResults());
 	}
 }
