@@ -17,9 +17,13 @@
 		<xacml:FunctionProvider ref="testProvider1"/>
 	</xacml:FunctionProviders>
 	
-	<bean id="testAttributeResolver" class="com.artagon.xacml.spring.TestAttributeResolver"/>
+	<xacml:InMemoryPolicyRepository id="repository" resources="resources" extensionFunctions="extensionFunctions"/>
 	
-	<xacml:PolicyInformationPoint id="pip"/>
+	<util:list id="attributeResolvers">
+		<bean id="testAttributeResolver" class="com.artagon.xacml.spring.TestAttributeResolver"/>
+	</util:list>
+	
+	<xacml:PolicyInformationPoint id="pip" attributeResolvers="attributeResolvers"/>
 	
 	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
 		<beans:property name="resources">
@@ -28,9 +32,6 @@
 			</util:list>
 		</beans:property>
 	</bean>
-	
-	<xacml:InMemoryPolicyRepository id="repository" 
-	resources="resources" extensionFunctions="extensionFunctions"/>
 	
 	<xacml:PolicyDomain id="domain" name="TestDomain">
 		<xacml:PolicySetIdReference Version="1.+">aaaaaa</xacml:PolicySetIdReference>

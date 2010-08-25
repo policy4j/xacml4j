@@ -52,9 +52,8 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
-					<xsd:sequence>
-						<xsd:element ref="xacml-spring:AttributeResolvers" minOccurs="0" maxOccurs="1"/> 
-					</xsd:sequence>
+					<xsd:attribute name="attributeResolvers" type="xsd:string"/>
+					<xsd:attribute name="contentResolvers" type="xsd:string"/>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
