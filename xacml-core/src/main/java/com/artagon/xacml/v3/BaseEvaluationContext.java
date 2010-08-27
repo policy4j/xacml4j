@@ -52,6 +52,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private AttributeValue currentDateTime;
 	private AttributeValue currentDate;
 	
+	private Map<AttributeCategoryId, Map<Object, Object>> contextValues;
+	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -355,4 +357,20 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public AttributeResolutionScope getAttributeResolutionScope() {
 		return AttributeResolutionScope.REQUEST_EXTERNAL;
 	}	
+	
+	@Override
+	public final Object getValue(AttributeCategoryId categoryId, Object key) {
+		Map<Object, Object> byCategory = contextValues.get(categoryId);
+		return (byCategory != null)?byCategory.get(key):null;
+	}
+
+	@Override
+	public final Object setValue(AttributeCategoryId categoryId, Object key, Object v) {
+		Map<Object, Object> byCategory = contextValues.get(categoryId);
+		if(byCategory == null){
+			byCategory = new HashMap<Object, Object>();
+			contextValues.put(categoryId, byCategory);
+		}
+		return byCategory.put(key, v);
+	}
 }

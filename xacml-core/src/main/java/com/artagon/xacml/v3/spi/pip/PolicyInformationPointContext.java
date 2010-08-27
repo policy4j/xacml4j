@@ -7,4 +7,8 @@ public interface PolicyInformationPointContext
 	AttributeValue getCurrentTime();
 	AttributeValue getCurrentDateTime();
 	AttributeValue getCurrentDate();
+	
+	Object getValue(Object key);
+	
+	Object setValue(Object key, Object v);
 }

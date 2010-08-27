@@ -49,7 +49,7 @@ public class DefaultPolicyInformationPoint
 	{
 	 	AttributeResolver r = findResolver(context, ref);
 	 	return (BagOfAttributeValues<AttributeValue>)((r == null)?ref.getDataType().bagOf().createEmpty():r.resolve(
-	 			new DefaultPolicyInformationPointContext(context), ref, callback));
+	 			new DefaultPolicyInformationPointContext(context, ref), ref, callback));
 	}
 
 	@Override

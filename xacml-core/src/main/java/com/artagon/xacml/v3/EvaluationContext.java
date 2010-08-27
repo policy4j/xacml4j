@@ -232,4 +232,18 @@ public interface EvaluationContext
 	 */
 	PolicySet resolve(PolicySetIDReference ref) 
 		throws PolicyResolutionException;
+	
+	/**
+	 * Gets value of a given category from this context
+	 * 
+	 * @param categoryId an attribute category
+	 * @param key an key used to identify value
+	 * @return {@link Object} an value or <code>null</code>
+	 * if no value exist for given category and key
+	 */
+	Object getValue(AttributeCategoryId categoryId, 
+			Object key);
+	
+	Object setValue(AttributeCategoryId categoryId, 
+			Object key, Object v);
 }
