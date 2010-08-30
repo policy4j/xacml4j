@@ -10,6 +10,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 
+import org.w3c.dom.Node;
+
 import com.google.common.base.Preconditions;
 
 public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
@@ -43,6 +45,10 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 			}
 			if(target instanceof Writer){
 				m.marshal(jaxbElement, (Writer)target);
+				return;
+			}
+			if(target instanceof Node){
+				m.marshal(jaxbElement, (Node)target);
 				return;
 			}
 			throw new IllegalArgumentException(

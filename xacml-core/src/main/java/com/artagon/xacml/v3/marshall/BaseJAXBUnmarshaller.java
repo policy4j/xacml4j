@@ -7,7 +7,9 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.Source;
 
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -37,6 +39,12 @@ public abstract class BaseJAXBUnmarshaller <T>
 			}
 			if(source instanceof JAXBElement<?>){
 				jaxbInstance =  (JAXBElement<?>)source;
+			}
+			if(source instanceof Node){
+				jaxbInstance = (JAXBElement<?>)u.unmarshal((Node)source);
+			}
+			if(source instanceof Source){
+				jaxbInstance =  (JAXBElement<?>)u.unmarshal((Source)source);
 			}
 			if(source instanceof byte[]){
 				jaxbInstance = (JAXBElement<?>)u.unmarshal(new ByteArrayInputStream((byte[])source));
