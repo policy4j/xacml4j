@@ -90,6 +90,7 @@ public class DefaultPolicyInformationPoint
 	
 	/**
 	 * Adds resolver for specific policy or policy set
+	 * and policies down the evaluation tree
 	 * 
 	 * @param policyId a policy identifier
 	 * @param resolver an attribute resolver

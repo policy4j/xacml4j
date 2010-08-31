@@ -4,7 +4,6 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
-
 import com.google.common.base.Preconditions;
 
 public class FunctionProviderFactoryBean extends AbstractFactoryBean

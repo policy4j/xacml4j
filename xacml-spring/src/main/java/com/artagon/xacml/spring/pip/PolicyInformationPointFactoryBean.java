@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 public class PolicyInformationPointFactoryBean extends AbstractFactoryBean
 {
 	private Collection<AttributeResolver> resolvers = Collections.emptyList();
-
+	
 	@Override
 	public Class<PolicyInformationPoint> getObjectType() {
 		return PolicyInformationPoint.class;

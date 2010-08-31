@@ -14,7 +14,7 @@ public interface AttributeResolver
 	 */
 	AttributeResolverDescriptor getDescriptor();
 	
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	BagOfAttributeValues<AttributeValue> resolve(
 			PolicyInformationPointContext context,
 			AttributeDesignator ref, 
 			RequestContextAttributesCallback callback);

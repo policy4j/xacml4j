@@ -19,7 +19,13 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
 import com.google.common.base.Preconditions;
 
-public final class DefaultPolicyDomain implements PolicyDomain
+/**
+ * A default implementation of {@link PolicyDomain}
+ * 
+ * @author Giedrius Trumpickas
+ */
+public final class DefaultPolicyDomain 
+	implements PolicyDomain
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDomain.class);
 	

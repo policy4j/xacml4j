@@ -20,7 +20,7 @@ public class TestAttributeResolver extends BaseAttributeResolver
 	}
 	
 	@Override
-	public BagOfAttributeValues<? extends AttributeValue> resolve(
+	public BagOfAttributeValues<AttributeValue> resolve(
 			PolicyInformationPointContext context, AttributeDesignator ref,
 			RequestContextAttributesCallback callback) {
 		// TODO Auto-generated method stub

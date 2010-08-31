@@ -20,8 +20,9 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 				attribute(CURRENT_DATETIME).build());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<? extends AttributeValue> resolve(
+	public BagOfAttributeValues<AttributeValue> resolve(
 			PolicyInformationPointContext context,
 			AttributeDesignator ref, RequestContextAttributesCallback callback) 
 	{
@@ -34,6 +35,6 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 		if(ref.getAttributeId().equals(CURRENT_TIME)){
 			return XacmlDataTypes.TIME.bag(context.getCurrentTime());
 		}
-		return ref.getDataType().bagOf().createEmpty();
+		return (BagOfAttributeValues<AttributeValue>)ref.getDataType().bagOf().createEmpty();
 	}
 }
