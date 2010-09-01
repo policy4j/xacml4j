@@ -15,19 +15,26 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * A default implementation of {@link PolicyInformationPoint}
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class DefaultPolicyInformationPoint 
 	implements PolicyInformationPoint
 {
+	@SuppressWarnings("unused")
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategoryId, Map<String, AttributeResolver>> resolvers;
+	private Map<AttributeCategoryId, Multimap<String, AttributeResolver>> resolvers;
 	
 	/**
 	 * Resolvers index by policy identifier
@@ -35,7 +42,7 @@ public class DefaultPolicyInformationPoint
 	private Multimap<String, AttributeResolver> resolversByPolicyId;
 	
 	public DefaultPolicyInformationPoint(){
-		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Multimap<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
 		addResolver(new DefaultEnviromentAttributeResolver());
 	}
@@ -67,16 +74,16 @@ public class DefaultPolicyInformationPoint
 	{
 		Preconditions.checkNotNull(resolver);
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Map<String, AttributeResolver> byCategory = resolvers.get(d.getCategory());
+		Multimap<String, AttributeResolver> byCategory = resolvers.get(d.getCategory());
 		if(byCategory == null || 
 				byCategory.isEmpty()){
-			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
+			byCategory = HashMultimap.create();
 			resolvers.put(d.getCategory(), byCategory);
 		}
 		for(String attributeId : d.getProvidedAttributeIds())
 		{
-			AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
-			if(oldResolver != null){
+			boolean changed = byCategory.put(attributeId, resolver);
+			if(changed){
 				throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
 							"category=\"%s\" already provided via other resolver", 
 							attributeId, d.getCategory()));
@@ -108,11 +115,20 @@ public class DefaultPolicyInformationPoint
 			AttributeDesignator ref)
 	{
 		if(context == null){
-			Map<String, AttributeResolver> byCategory = resolvers.get(ref.getCategory());
+			Multimap<String, AttributeResolver> byCategory = resolvers.get(ref.getCategory());
 		 	if(byCategory == null){
 		 		return null;
 		 	}
-		 	return byCategory.get(ref.getAttributeId());
+		 	Collection<AttributeResolver> resolvers = byCategory.get(ref.getAttributeId());
+		 	AttributeResolver found = null;
+		 	for(AttributeResolver r : resolvers){
+		 		if(Objects.equal(ref.getIssuer(), 
+		 				r.getDescriptor().getIssuer())){
+		 			found = r;
+		 			break;
+		 		}
+		 	}
+		 	return found;
 		}
 		String policyId = getCurrentIdentifier(context);
 		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
