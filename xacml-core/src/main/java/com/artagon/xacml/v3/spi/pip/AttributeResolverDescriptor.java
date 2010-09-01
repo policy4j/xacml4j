@@ -26,7 +26,7 @@ public interface AttributeResolverDescriptor
 	 * @param categoryId an attribute category
 	 * @return a {@link Set} with all attribute identifiers
 	 */
-	Set<String> getProvidedAttributes();
+	Set<String> getProvidedAttributeIds();
 	
 	/**
 	 * Tests if an attribute resolver can resolve

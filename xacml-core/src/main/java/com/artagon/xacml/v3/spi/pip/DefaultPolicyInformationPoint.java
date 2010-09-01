@@ -73,15 +73,11 @@ public class DefaultPolicyInformationPoint
 			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
 			resolvers.put(d.getCategory(), byCategory);
 		}
-		for(String attributeId : d.getProvidedAttributes()){
-				if(log.isDebugEnabled()){
-					log.debug("Adding resolver for category=\"{}\" " +
-							"attributeId=\"{}\"", 
-							d.getCategory(), attributeId);
-		}
-		AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
-		if(oldResolver != null){
-			throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
+		for(String attributeId : d.getProvidedAttributeIds())
+		{
+			AttributeResolver oldResolver = byCategory.put(attributeId, resolver);
+			if(oldResolver != null){
+				throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
 							"category=\"%s\" already provided via other resolver", 
 							attributeId, d.getCategory()));
 			}
@@ -119,10 +115,6 @@ public class DefaultPolicyInformationPoint
 		 	return byCategory.get(ref.getAttributeId());
 		}
 		String policyId = getCurrentIdentifier(context);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to locate attribute " +
-					"resolvers for PolicyId=\"{}\"", policyId);
-		}
 		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
 		if(found.isEmpty()){
 			return findResolver(context.getParentContext(), ref);

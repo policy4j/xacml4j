@@ -17,7 +17,7 @@ class DefaultPolicyInformationPointContext implements PolicyInformationPointCont
 		this.context = context;
 		this.ref = ref;
 	}
-
+	
 	@Override
 	public AttributeValue getCurrentDate() {
 		return context.getCurrentDate();

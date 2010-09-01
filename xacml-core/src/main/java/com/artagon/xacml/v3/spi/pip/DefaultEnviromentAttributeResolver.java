@@ -15,9 +15,9 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	
 	public DefaultEnviromentAttributeResolver(){
 		super(AttributeResolverDescriptorBuilder.create(AttributeCategoryId.ENVIRONMENT).
-				attribute(CURRENT_DATE).
-				attribute(CURRENT_TIME).
-				attribute(CURRENT_DATETIME).build());
+				attribute(CURRENT_DATE, XacmlDataTypes.DATE.getType()).
+				attribute(CURRENT_TIME, XacmlDataTypes.TIME.getType()).
+				attribute(CURRENT_DATETIME, XacmlDataTypes.DATETIME.getType()).build());
 	}
 	
 	@SuppressWarnings("unchecked")

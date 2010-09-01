@@ -42,7 +42,7 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
 		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1").build();
+				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d);
 		expect(context.getCurrentPolicy()).andReturn(p).times(2);
@@ -60,6 +60,41 @@ public class DefaultPolicyInformationPointTest
 		replay(r1, context, callback, ref, p);
 		
 		pip.addResolver(r1);
+		BagOfAttributeValues<AttributeValue> r = pip.resolve(context, ref , callback);
+		
+		verify(r1, context, callback, ref, p);
+		
+		assertEquals(result, r);
+		assertSame(ref, refCap.getValue());
+	}
+	
+	@Test
+	public void testPolicyBoundResolverAddAndResolve()
+	{
+		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
+		EvaluationContext context = createStrictMock(EvaluationContext.class);
+		Policy p = createStrictMock(Policy.class);
+		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
+		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create(
+				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.STRING).build();
+		
+		expect(r1.getDescriptor()).andReturn(d);
+		expect(context.getCurrentPolicy()).andReturn(p).times(2);
+		expect(p.getId()).andReturn("testId");
+		expect(context.getParentContext()).andReturn(null);
+		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
+		expect(ref.getAttributeId()).andReturn("test1");
+		
+		Capture<PolicyInformationPointContext> pipCtx = new Capture<PolicyInformationPointContext>();
+		Capture<AttributeDesignator> refCap = new Capture<AttributeDesignator>();
+		Capture<RequestContextAttributesCallback> callbackCapt = new Capture<RequestContextAttributesCallback>();
+		BagOfAttributeValues<AttributeValue> result = XacmlDataTypes.STRING.emptyBag();
+		
+		expect(r1.resolve(capture(pipCtx), capture(refCap), capture(callbackCapt))).andReturn(result);	
+		replay(r1, context, callback, ref, p);
+		
+		pip.addResolver("testId", r1);
 		BagOfAttributeValues<AttributeValue> r = pip.resolve(context, ref , callback);
 		
 		verify(r1, context, callback, ref, p);
