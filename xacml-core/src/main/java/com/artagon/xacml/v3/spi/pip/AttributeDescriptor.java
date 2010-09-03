@@ -8,15 +8,21 @@ public final class AttributeDescriptor
 	private String attributeId;
 	private AttributeValueType dataType;
 	
+	/**
+	 * Constructs attribute descriptor
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute data type
+	 */
 	public AttributeDescriptor(String attributeId, 
-				AttributeValueType dataType)
+			AttributeValueType dataType)
 	{
 		Preconditions.checkArgument(attributeId != null);
 		Preconditions.checkArgument(dataType != null);
 		this.attributeId = attributeId;
 		this.dataType = dataType;
 	}
-	
+		
 	/**
 	 * Gets an attribute identifier
 	 * 

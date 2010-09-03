@@ -22,7 +22,7 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	protected  BagOfAttributeValues<AttributeValue> doResolve(
 			PolicyInformationPointContext context,
 			AttributeDesignator ref, RequestContextAttributesCallback callback) 
 	{

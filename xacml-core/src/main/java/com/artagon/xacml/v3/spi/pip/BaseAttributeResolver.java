@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseAttributeResolver implements AttributeResolver
@@ -17,10 +20,25 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		return descriptor;
 	}
 	
+	@Override
+	public final BagOfAttributeValues<AttributeValue> resolve(
+			PolicyInformationPointContext context, AttributeDesignator ref,
+			RequestContextAttributesCallback callback) {
+		
+		return doResolve(context, ref, callback);
+	}
+	
+	protected abstract BagOfAttributeValues<AttributeValue> doResolve(PolicyInformationPointContext context, 
+			AttributeDesignator ref, RequestContextAttributesCallback callback);
+
+	@Override
 	public final boolean canResolve(AttributeDesignator ref)
 	{
-		return (ref.getIssuer() != null && 
-				ref.getIssuer().equals(descriptor.getIssuer())) 
-				&& descriptor.isAttributeProvided(ref.getAttributeId());
+		if(descriptor.isCategorySupported(ref.getCategory()) && 
+				((ref.getIssuer() != null)?ref.getIssuer().equals(descriptor.getIssuer()):true)){
+			AttributeDescriptor d = descriptor.getAttributeDescriptor(ref.getAttributeId());
+			return d.getDataType().equals(ref.getDataType());
+		}
+		return false;
 	}
 }

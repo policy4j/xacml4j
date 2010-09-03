@@ -13,13 +13,19 @@ public interface AttributeResolverDescriptor
 	 */
 	String getIssuer();
 	
+	boolean isCategorySupported(AttributeCategoryId category);
+	
+	Set<AttributeCategoryId> getSupportedCategores();
+	
 	/**
-	 * Gets category of attributes
+	 * Gets attribute of the given category
+	 * with a given identifier descriptor
 	 * 
-	 * @return {@link AttributeCategoryId}
+	 * @param attributeId an attribute identifier
+	 * @return {@link AttributeDescriptor}
 	 */
-	AttributeCategoryId getCategory();
-
+	AttributeDescriptor getAttributeDescriptor(String attributeId);
+	
 	/**
 	 * Gets attribute identifiers provided by this resolver
 	 * 

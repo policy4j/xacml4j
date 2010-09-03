@@ -21,7 +21,7 @@ public class TestAttributeResolver extends BaseAttributeResolver
 	}
 	
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	protected BagOfAttributeValues<AttributeValue> doResolve(
 			PolicyInformationPointContext context, AttributeDesignator ref,
 			RequestContextAttributesCallback callback) {
 		return null;
