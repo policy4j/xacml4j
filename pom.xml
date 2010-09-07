@@ -254,9 +254,9 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<scm>
-		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.0.0</connection>
-		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.0.0</developerConnection>
-		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.0.0</url>
+		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</connection>
+		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</developerConnection>
+		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</url>
 	</scm>
 	
 </project>
