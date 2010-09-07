@@ -2,6 +2,8 @@ package com.artagon.xacml.v3.spi.pip;
 
 import java.util.Collection;
 
+import org.junit.Ignore;
+
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -13,6 +15,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 		@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_RECIPIENT)
 	}
 )
+@Ignore
 public class TestAnnotatedResolver 
 {
 	@XacmlAttributeDescriptor(id="testId", dataType=XacmlDataTypes.STRING)

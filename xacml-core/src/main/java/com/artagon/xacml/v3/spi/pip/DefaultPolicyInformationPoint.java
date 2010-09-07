@@ -122,8 +122,8 @@ public class DefaultPolicyInformationPoint
 	 * 
 	 * @param context an evaluation context
 	 * @param ref an attribute reference
-	 * @return {@link AttributeResolver} or <code>null</code> if no
-	 * resolver found
+	 * @return {@link AttributeResolver} or <code>null</code> if 
+	 * no matching resolver found
 	 */
 	private AttributeResolver findResolver(EvaluationContext context, 
 			AttributeDesignator ref)
