@@ -10,16 +10,6 @@
 	<name>OASIS XACML Web Service</name>
 	<dependencies>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-v20-schema-policy</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-v20-schema-context</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-core</artifactId>
 		</dependency>
@@ -38,6 +28,16 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-v20-schema-jaxb</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-v30-schema-jaxb</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
