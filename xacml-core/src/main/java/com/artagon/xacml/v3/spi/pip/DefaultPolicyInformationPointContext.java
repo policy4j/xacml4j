@@ -42,4 +42,8 @@ class DefaultPolicyInformationPointContext implements PolicyInformationPointCont
 	public Object setValue(Object key, Object v) {
 		return context.setValue(ref.getCategory(), key, v);
 	}	
+	
+	public EvaluationContext getEvaluationContext(){
+		return context;
+	}
 }

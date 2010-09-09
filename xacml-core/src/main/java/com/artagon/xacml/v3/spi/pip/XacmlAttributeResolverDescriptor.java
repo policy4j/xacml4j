@@ -7,8 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface XacmlAttributeResolverDesc 
+public @interface XacmlAttributeResolverDescriptor 
 {
 	String name();
-	XacmlAttributeCategory[] categories();
 }

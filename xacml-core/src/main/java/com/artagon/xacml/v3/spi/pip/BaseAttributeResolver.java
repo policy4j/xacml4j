@@ -23,20 +23,23 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	@Override
 	public final BagOfAttributeValues<AttributeValue> resolve(
 			PolicyInformationPointContext context, AttributeDesignator ref,
-			RequestContextAttributesCallback callback) {
-		
+			RequestContextAttributesCallback callback) throws Exception 
+	{
+		Preconditions.checkArgument(canResolve(ref));
 		return doResolve(context, ref, callback);
 	}
 	
 	protected abstract BagOfAttributeValues<AttributeValue> doResolve(PolicyInformationPointContext context, 
-			AttributeDesignator ref, RequestContextAttributesCallback callback);
+			AttributeDesignator ref, RequestContextAttributesCallback callback) 
+				throws Exception;
 
 	@Override
 	public final boolean canResolve(AttributeDesignator ref)
 	{
 		if(descriptor.isCategorySupported(ref.getCategory()) && 
 				((ref.getIssuer() != null)?ref.getIssuer().equals(descriptor.getIssuer()):true)){
-			AttributeDescriptor d = descriptor.getAttributeDescriptor(ref.getAttributeId());
+			AttributeDescriptor d = descriptor.getAttributeDescriptor(
+					ref.getCategory(), ref.getAttributeId());
 			return d.getDataType().equals(ref.getDataType());
 		}
 		return false;

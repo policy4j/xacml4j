@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,50 +9,105 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 public final class AttributeResolverDescriptorBuilder 
 {
-	private Map<String, AttributeDescriptor> attributes;
+	private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
 	private String issuer;
-	private Set<AttributeCategoryId> categories;
 	
-	private AttributeResolverDescriptorBuilder(AttributeCategoryId category, String issuer){
-		Preconditions.checkArgument(category != null);
+	private AttributeResolverDescriptorBuilder(String issuer){
 		this.issuer = issuer;
-		this.categories = new HashSet<AttributeCategoryId>();
-		this.categories.add(category);
-		this.attributes = new HashMap<String, AttributeDescriptor>();
+		this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(AttributeCategoryId category, String issuer){
-		return new AttributeResolverDescriptorBuilder(category, issuer);
+	public static AttributeResolverDescriptorBuilder create(){
+		return create(null);
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(AttributeCategoryId category){
-		return create(category, null);
+	public static AttributeResolverDescriptorBuilder create(String issuer){
+		return new AttributeResolverDescriptorBuilder(issuer);
 	}
-	
+		
 	public AttributeResolverDescriptorBuilder attribute(
-			String attributeId, AttributeValueType dataType){
-		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType);
-		attributes.put(d.getAttributeId(), d);
+			AttributeCategoryId category,
+			String attributeId, 
+			AttributeValueType dataType){
+		Map<String, AttributeDescriptor> byId = attributes.get(category);
+		if(byId == null){
+			byId = new HashMap<String, AttributeDescriptor>();
+			attributes.put(category, byId);
+		}
+		AttributeDescriptor old = byId.put(attributeId, new AttributeDescriptor(attributeId, dataType));
+		Preconditions.checkState(old == null, 
+				"Given category=\"%s\" already has an attribute with id=\"%s\"", 
+				category, attributeId);
 		return this;
 	}
 	
-	public AttributeResolverDescriptorBuilder category(AttributeCategoryId category)
-	{
-		categories.add(category);
-		return this;
-	}
-	
 	public AttributeResolverDescriptorBuilder attribute(
+			AttributeCategoryId category,
 			String attributeId, XacmlDataTypes dataType){
-		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType.getType());
-		attributes.put(d.getAttributeId(), d);
-		return this;
+		return attribute(category, attributeId, dataType.getType());
 	}
 		
 	public AttributeResolverDescriptor build(){
-		return new AttributeResolverDescriptorImpl(issuer, categories, attributes);
+		return new AttributeResolverDescriptorImpl(issuer, attributes);
+	}
+
+	private class AttributeResolverDescriptorImpl implements
+			AttributeResolverDescriptor 
+	{
+		private String issuer;
+		private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
+		
+		AttributeResolverDescriptorImpl(String issuer,
+				Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes) {
+			this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
+			for(AttributeCategoryId c : attributes.keySet()){
+				this.attributes.put(c, ImmutableMap.copyOf(attributes.get(c)));
+			}
+			this.issuer = issuer;
+		}
+
+		@Override
+		public String getIssuer() {
+			return issuer;
+		}
+
+		@Override
+		public boolean isCategorySupported(AttributeCategoryId category) {
+			return attributes.containsKey(category);
+		}
+
+		@Override
+		public Set<AttributeCategoryId> getSupportedCategores() {
+			return attributes.keySet();
+		}
+		
+		public Set<String> getProvidedAttributeIds(AttributeCategoryId category){
+			Map<String, AttributeDescriptor> byId = attributes.get(category);
+			return (byId == null)?Collections.<String>emptySet():byId.keySet();
+		}
+
+		@Override
+		public Map<String, AttributeDescriptor> getAttributes(
+				AttributeCategoryId category) {
+			Map<String, AttributeDescriptor> byId = attributes.get(category);
+			return (byId == null)?Collections.<String, AttributeDescriptor>emptyMap():byId;
+		}
+
+
+		@Override
+		public AttributeDescriptor getAttributeDescriptor(AttributeCategoryId category, 
+				String attributeId) {
+			Map<String, AttributeDescriptor> byId = attributes.get(category);
+			return (byId == null)?null:byId.get(attributeId);
+		}
+
+		public boolean isAttributeProvided(AttributeCategoryId category, String attributeId) {
+			Map<String, AttributeDescriptor> byId = attributes.get(category);
+			return (byId == null)?false:byId.containsKey(attributeId);
+		}
 	}
 }

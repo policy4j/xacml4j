@@ -158,7 +158,7 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 	 * @return bag which contains common
 	 * elements between this and given bag
 	 */
-	public BagOfAttributeValues<T> intersection(BagOfAttributeValues<?> bag)
+	public BagOfAttributeValues<T> intersection(BagOfAttributeValues<? extends AttributeValue> bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> intersection = new HashSet<AttributeValue>();
@@ -206,7 +206,7 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 	 * @return <code>true</code> if given bag 
 	 * is subset if this bag
 	 */
-	public boolean containsAll(BagOfAttributeValues<?> bag){		
+	public boolean containsAll(BagOfAttributeValues<? extends AttributeValue> bag){		
 		Preconditions.checkArgument(type.equals(bag.type));
 		return values.containsAll(bag.values);
 	}

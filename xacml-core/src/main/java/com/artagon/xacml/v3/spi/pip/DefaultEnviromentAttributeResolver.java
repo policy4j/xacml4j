@@ -14,17 +14,17 @@ public class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
 	
 	public DefaultEnviromentAttributeResolver(){
-		super(AttributeResolverDescriptorBuilder.create(AttributeCategoryId.ENVIRONMENT).
-				attribute(CURRENT_DATE, XacmlDataTypes.DATE.getType()).
-				attribute(CURRENT_TIME, XacmlDataTypes.TIME.getType()).
-				attribute(CURRENT_DATETIME, XacmlDataTypes.DATETIME.getType()).build());
+		super(AttributeResolverDescriptorBuilder.create().
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATE, XacmlDataTypes.DATE).
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_TIME, XacmlDataTypes.TIME).
+				attribute(AttributeCategoryId.ENVIRONMENT, CURRENT_DATETIME, XacmlDataTypes.DATETIME).build());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected  BagOfAttributeValues<AttributeValue> doResolve(
 			PolicyInformationPointContext context,
-			AttributeDesignator ref, RequestContextAttributesCallback callback) 
+			AttributeDesignator ref, RequestContextAttributesCallback callback) throws Exception 
 	{
 		if(ref.getAttributeId().equals(CURRENT_DATETIME)){
 			 return XacmlDataTypes.DATETIME.bag(context.getCurrentDateTime());

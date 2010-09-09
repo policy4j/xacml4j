@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -24,15 +25,17 @@ public interface AttributeResolverDescriptor
 	 * @param attributeId an attribute identifier
 	 * @return {@link AttributeDescriptor}
 	 */
-	AttributeDescriptor getAttributeDescriptor(String attributeId);
+	AttributeDescriptor getAttributeDescriptor(AttributeCategoryId categoryId, String attributeId);
+	
+	Set<String> getProvidedAttributeIds(AttributeCategoryId category);
 	
 	/**
-	 * Gets attribute identifiers provided by this resolver
+	 * Gets attributes of the given category
 	 * 
-	 * @param categoryId an attribute category
-	 * @return a {@link Set} with all attribute identifiers
+	 * @param category an attribute category
+	 * @return a map by the attribute id
 	 */
-	Set<String> getProvidedAttributeIds();
+	Map<String, AttributeDescriptor> getAttributes(AttributeCategoryId category);
 	
 	/**
 	 * Tests if an attribute resolver can resolve
@@ -41,5 +44,5 @@ public interface AttributeResolverDescriptor
 	 * @param attributeId
 	 * @return
 	 */
-	boolean isAttributeProvided(String attributeId);
+	boolean isAttributeProvided(AttributeCategoryId category, String attributeId);
 }

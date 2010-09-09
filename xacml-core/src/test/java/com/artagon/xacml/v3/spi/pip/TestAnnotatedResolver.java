@@ -5,22 +5,28 @@ import java.util.Collection;
 import org.junit.Ignore;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
-@XacmlAttributeResolverDesc(
-	name="Test Resolver", 
-	categories={
-		@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_ACCESS), 
-		@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_INTERMEDIARY),
-		@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_RECIPIENT)
-	}
-)
+@XacmlAttributeResolverDescriptor(name="Test Resolver")
+@XacmlAttributeIssuer("testIssuer")
 @Ignore
 public class TestAnnotatedResolver 
 {
-	@XacmlAttributeDescriptor(id="testId", dataType=XacmlDataTypes.STRING)
+	@XacmlAttributeDescriptor(id="testId1", dataType=XacmlDataTypes.STRING)
+	@XacmlAttributeCategory(AttributeCategoryId.RESOURCE)
 	public Collection<String> getUserDevices(
-			PolicyInformationPointContext context, String username)
+			PolicyInformationPointContext context, 
+			RequestContextAttributesCallback callback)
+	{
+		return null;
+	}
+	
+	@XacmlAttributeDescriptor(id="testId2", dataType=XacmlDataTypes.INTEGER)
+	@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_ACCESS)
+	public Collection<String> getOtherStuff(
+			PolicyInformationPointContext context, 
+			RequestContextAttributesCallback callback)
 	{
 		return null;
 	}

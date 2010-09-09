@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.easymock.EasyMock.same;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
@@ -42,10 +41,10 @@ public class DefaultPolicyInformationPointTest
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		AttributeResolver r2 = createStrictMock(AttributeResolver.class);
 	
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.BOOLEAN).build();
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.INTEGER).build();
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.BOOLEAN).build();
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.INTEGER).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -64,10 +63,11 @@ public class DefaultPolicyInformationPointTest
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		AttributeResolver r2 = createStrictMock(AttributeResolver.class);
 	
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION, "test").attribute("test1", XacmlDataTypes.BOOLEAN).build();
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.BOOLEAN).build();
+		
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("test")
+		.attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.BOOLEAN).build();
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -86,10 +86,10 @@ public class DefaultPolicyInformationPointTest
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		AttributeResolver r2 = createStrictMock(AttributeResolver.class);
 	
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION, "test").attribute("test1", XacmlDataTypes.BOOLEAN).build();
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.SUBJECT_ACCESS).attribute("test1", XacmlDataTypes.BOOLEAN).build();
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("test").
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.BOOLEAN).build();
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ENVIRONMENT, "test1", XacmlDataTypes.BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -104,15 +104,15 @@ public class DefaultPolicyInformationPointTest
 
 	
 	@Test
-	public void testRootResolverAddAndResolve()
+	public void testRootResolverAddAndResolve() throws Exception
 	{
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		EvaluationContext context = createStrictMock(EvaluationContext.class);
 		Policy p = createStrictMock(Policy.class);
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
 		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.BOOLEAN).build();
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d).times(2);
 		
@@ -143,15 +143,15 @@ public class DefaultPolicyInformationPointTest
 	
 	@Test
 	@Ignore
-	public void testPolicyBoundResolverAddAndResolve()
+	public void testPolicyBoundResolverAddAndResolve() throws Exception
 	{
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		EvaluationContext context = createStrictMock(EvaluationContext.class);
 		Policy p = createStrictMock(Policy.class);
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
 		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create(
-				AttributeCategoryId.ACTION).attribute("test1", XacmlDataTypes.STRING).build();
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create().
+		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.STRING).build();
 		
 		expect(r1.getDescriptor()).andReturn(d).times(2);
 		

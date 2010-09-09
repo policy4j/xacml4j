@@ -16,8 +16,8 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 public class TestAttributeResolver extends BaseAttributeResolver
 {
 	public TestAttributeResolver(){
-		super(AttributeResolverDescriptorBuilder.create(AttributeCategoryId.ENVIRONMENT).
-				attribute("test", XacmlDataTypes.STRING.getType()).build());
+		super(AttributeResolverDescriptorBuilder.create().
+				attribute(AttributeCategoryId.ENVIRONMENT, "test", XacmlDataTypes.STRING.getType()).build());
 	}
 	
 	@Override

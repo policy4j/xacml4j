@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -50,14 +51,19 @@ public class DefaultPolicyInformationPoint
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestContextAttributesCallback callback) 
+				throws AttributeReferenceEvaluationException 
 	{
 	 	AttributeResolver r = findResolver(context, ref);
-	 	return (BagOfAttributeValues<AttributeValue>)((r == null)?
-	 			ref.getDataType().bagOf().createEmpty():
-	 				r.resolve(
-	 						new DefaultPolicyInformationPointContext(context, ref), 
-	 						ref, 
-	 						callback));
+	 	try{
+	 		return (BagOfAttributeValues<AttributeValue>)((r == null)?
+		 			ref.getDataType().bagOf().createEmpty():
+		 				r.resolve(
+		 						new DefaultPolicyInformationPointContext(context, ref), 
+		 						ref, 
+		 						callback));
+	 	}catch(Exception e){
+	 		throw new AttributeReferenceEvaluationException(context, ref, e);
+	 	}
 	}
 
 	@Override
@@ -70,25 +76,28 @@ public class DefaultPolicyInformationPoint
 	private void addResolverForCategory(AttributeCategoryId category, AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Map<String, AttributeResolver> byCategory = resolvers.get(category);
-		if(byCategory == null || 
-				byCategory.isEmpty()){
-			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-			resolvers.put(category, byCategory);
-		}
-		for(String attributeId : d.getProvidedAttributeIds())
+		for(AttributeCategoryId c : d.getSupportedCategores())
 		{
-			if(log.isDebugEnabled()){
-				log.debug("Adding resolver for category=\"{}\", " +
-						"attributeId=\"{}\"", category, attributeId);
+			Map<String, AttributeResolver> byCategory = resolvers.get(category);
+			if(byCategory == null){
+				byCategory = new ConcurrentHashMap<String, AttributeResolver>();
+				resolvers.put(c, byCategory);
 			}
-			AttributeResolver oldResolver = byCategory.get(attributeId);
-			if(oldResolver != null){
-				throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
-							"category=\"%s\" already provided via other resolver", attributeId, category));
+			for(String attributeId : d.getProvidedAttributeIds(c))
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Adding resolver for category=\"{}\", " +
+							"attributeId=\"{}\"", category, attributeId);
+				}
+				AttributeResolver oldResolver = byCategory.get(attributeId);
+				if(oldResolver != null){
+					throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
+								"category=\"%s\" already provided via other resolver", attributeId, category));
+				}
+				byCategory.put(attributeId, resolver);
 			}
-			byCategory.put(attributeId, resolver);
 		}
+		
 
 	}
 	

@@ -1,9 +1,10 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
-public final class AttributeDescriptor 
+public final class AttributeDescriptor extends XacmlObject
 {
 	private String attributeId;
 	private AttributeValueType dataType;

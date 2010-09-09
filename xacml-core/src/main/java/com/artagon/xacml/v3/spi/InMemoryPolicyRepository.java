@@ -2,9 +2,9 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -32,8 +32,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	private ReadWriteLock policySetLock;
 	
 	public InMemoryPolicyRepository(){
-		this.policies = new ConcurrentHashMap<String, Map<Version, Policy>>();
-		this.policySets = new ConcurrentHashMap<String, Map<Version, PolicySet>>();
+		this.policies = new HashMap<String, Map<Version, Policy>>();
+		this.policySets = new HashMap<String, Map<Version, PolicySet>>();
 		this.policyLock = new ReentrantReadWriteLock();
 		this.policySetLock = new ReentrantReadWriteLock();
 	}
@@ -49,10 +49,10 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 					byId.size(), id);
 		}
 		try{
-			//policyLock.readLock().lock();
+			policyLock.readLock().lock();
 			return find((byId != null)?byId.values():null, version, earliest, latest);
 		}finally{
-			//policyLock.readLock().unlock();
+			policyLock.readLock().unlock();
 		}
 	}
 
@@ -106,7 +106,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				policies.put(id, versions);
 			}
 			Preconditions.checkArgument(!versions.containsKey(v), 
-					"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
+					"Repository already contains a " +
+					"policy with id=\"%s\" and version=\"%s\"", 
 								id, v);
 			versions.put(v, policy);
 		}finally{
@@ -126,16 +127,22 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 					"contains=\"{}\" policy sets", policySets.size());
 		}
 		Map<Version, PolicySet> versions = policySets.get(id);
-		if(versions == null || 
-				versions.isEmpty())
-		{
-			versions = new TreeMap<Version, PolicySet>();
-			policySets.put(id, versions);
+		try{
+			policySetLock.writeLock().lock();
+			if(versions == null || 
+					versions.isEmpty())
+			{
+				versions = new TreeMap<Version, PolicySet>();
+				policySets.put(id, versions);
+			}
+			Preconditions.checkArgument(!versions.containsKey(v), 
+					"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
+					id, v);
+			versions.put(policySet.getVersion(), policySet);
+		}finally{
+			policySetLock.writeLock().unlock();
 		}
-		Preconditions.checkArgument(!versions.containsKey(v), 
-				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-				id, v);
-		versions.put(policySet.getVersion(), policySet);
+		
 	}
 
 	private <T extends Versionable> Collection<T> find(Collection<T> c, 

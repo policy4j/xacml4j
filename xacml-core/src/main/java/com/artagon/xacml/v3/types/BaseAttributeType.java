@@ -33,7 +33,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 		this.typeId = typeId;		
 		this.bagType = new BagOfAttributeValuesType<V>(this);
 	}
-		
+	
 	public final String getDataTypeId(){
 		return typeId;
 	}
