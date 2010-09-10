@@ -1,8 +1,10 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
 
 public interface PolicyInformationPointContext 
+	extends RequestContextAttributesCallback
 {
 	AttributeValue getCurrentTime();
 	AttributeValue getCurrentDateTime();

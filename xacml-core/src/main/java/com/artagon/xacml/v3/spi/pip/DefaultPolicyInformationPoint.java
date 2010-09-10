@@ -42,7 +42,6 @@ public class DefaultPolicyInformationPoint
 	public DefaultPolicyInformationPoint(){
 		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
-		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,9 +57,11 @@ public class DefaultPolicyInformationPoint
 	 		return (BagOfAttributeValues<AttributeValue>)((r == null)?
 		 			ref.getDataType().bagOf().createEmpty():
 		 				r.resolve(
-		 						new DefaultPolicyInformationPointContext(context, ref), 
-		 						ref, 
-		 						callback));
+		 						new DefaultPolicyInformationPointContext(context, callback, ref), 
+		 						ref.getCategory(), 
+		 			 			ref.getAttributeId(), 
+		 			 			ref.getDataType(),
+		 			 			ref.getIssuer()));
 	 	}catch(Exception e){
 	 		throw new AttributeReferenceEvaluationException(context, ref, e);
 	 	}
@@ -144,7 +145,11 @@ public class DefaultPolicyInformationPoint
 		 		return null;
 		 	}
 		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
-		 	return (resolver != null && resolver.canResolve(ref))?resolver:null;
+		 	return (resolver != null && resolver.canResolve(
+		 			ref.getCategory(), 
+		 			ref.getAttributeId(), 
+		 			ref.getDataType(),
+		 			ref.getIssuer()))?resolver:null;
 		}
 		String policyId = getCurrentIdentifier(context);
 		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
@@ -154,7 +159,10 @@ public class DefaultPolicyInformationPoint
 					found.size(), policyId);
 		}
 		for(AttributeResolver r : found){
-			if(r.canResolve(ref)){
+			if(r.canResolve(ref.getCategory(), 
+		 			ref.getAttributeId(), 
+		 			ref.getDataType(),
+		 			ref.getIssuer())){
 				if(log.isDebugEnabled()){
 					log.debug("Found PolicyId=\"{}\" scoped resolver", policyId);
 				}

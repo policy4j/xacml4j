@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.pip;
+package com.artagon.xacml.v3.sdk;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,26 +7,30 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
+import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
 public final class AttributeResolverDescriptorBuilder 
 {
+	private String name;
 	private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
 	private String issuer;
 	
-	private AttributeResolverDescriptorBuilder(String issuer){
+	private AttributeResolverDescriptorBuilder(String name, String issuer){
+		this.name = name;
 		this.issuer = issuer;
 		this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(){
-		return create(null);
+	public static AttributeResolverDescriptorBuilder create(String name){
+		return create(name, null);
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(String issuer){
-		return new AttributeResolverDescriptorBuilder(issuer);
+	public static AttributeResolverDescriptorBuilder create(String name, String issuer){
+		return new AttributeResolverDescriptorBuilder(name, issuer);
 	}
 		
 	public AttributeResolverDescriptorBuilder attribute(
@@ -52,24 +56,34 @@ public final class AttributeResolverDescriptorBuilder
 	}
 		
 	public AttributeResolverDescriptor build(){
-		return new AttributeResolverDescriptorImpl(issuer, attributes);
+		return new AttributeResolverDescriptorImpl(name, issuer, attributes);
 	}
 
 	private class AttributeResolverDescriptorImpl implements
 			AttributeResolverDescriptor 
 	{
+		private String name;
 		private String issuer;
 		private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
 		
-		AttributeResolverDescriptorImpl(String issuer,
+		AttributeResolverDescriptorImpl(
+				String name,
+				String issuer,
 				Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes) {
+			Preconditions.checkArgument(name != null);
 			this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
 			for(AttributeCategoryId c : attributes.keySet()){
 				this.attributes.put(c, ImmutableMap.copyOf(attributes.get(c)));
 			}
+			this.name = name;
 			this.issuer = issuer;
 		}
-
+		
+		@Override
+		public String getName(){
+			return name;
+		}
+		
 		@Override
 		public String getIssuer() {
 			return issuer;

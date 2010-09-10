@@ -8,6 +8,13 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 public interface AttributeResolverDescriptor 
 {
 	/**
+	 * Gets resolver name
+	 * 
+	 * @return resolver name
+	 */
+	String getName();
+	
+	/**
 	 * Gets resolver identifier
 	 * 
 	 * @return a resolver identifier

@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.pip;
+package com.artagon.xacml.v3.sdk;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

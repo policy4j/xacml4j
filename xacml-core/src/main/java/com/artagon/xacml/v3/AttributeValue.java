@@ -11,6 +11,11 @@ public interface AttributeValue extends ValueExpression
 	 */
 	String toXacmlString();
 	
+	/**
+	 * Gets attribute value XACML data type
+	 * 
+	 * @return {@link AttributeValueType} instance
+	 */
 	AttributeValueType getDataType();
 	
 	/**
