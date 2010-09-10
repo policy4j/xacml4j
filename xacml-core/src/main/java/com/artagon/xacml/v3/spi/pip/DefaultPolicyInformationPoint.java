@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -42,6 +43,7 @@ public class DefaultPolicyInformationPoint
 	public DefaultPolicyInformationPoint(){
 		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
+		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
 	}
 
 	@SuppressWarnings("unchecked")

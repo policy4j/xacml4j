@@ -1,13 +1,15 @@
-package com.artagon.xacml.v3.sdk;
+package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
+import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
+import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
+import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlAttributeResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
-public class DefaultEnviromentAttributeResolver 
+class DefaultEnviromentAttributeResolver 
 {	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-time", dataType=XacmlDataTypes.TIME)
 	@XacmlAttributeCategory(AttributeCategoryId.ENVIRONMENT)

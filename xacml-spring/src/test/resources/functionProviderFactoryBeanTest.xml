@@ -20,11 +20,6 @@
 	<xacml:InMemoryPolicyRepository id="repository" resources="resources" extensionFunctions="extensionFunctions"/>
 	
 	<util:list id="attributeResolvers">
-		<bean class="com.artagon.xacml.spring.pip.AnnotationBasedAttributeResolverFactoryBean">
-			<beans:property name="resolverBean">
-				<beans:bean class="com.artagon.xacml.v3.sdk.DefaultEnviromentAttributeResolver"/>
-			</beans:property>
-		</bean>
 	</util:list>
 	
 	<xacml:PolicyInformationPoint id="pip" attributeResolvers="attributeResolvers"/>

@@ -23,8 +23,6 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
-import com.artagon.xacml.v3.sdk.DefaultEnviromentAttributeResolver;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyDomain;
@@ -50,9 +48,7 @@ public class Xacml20ConformanceTest
 		policyReader = new Xacml20PolicyUnmarshaller();
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		DefaultPolicyInformationPoint defaultPip = new DefaultPolicyInformationPoint();
-		defaultPip.addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
-		pip = defaultPip;
+		pip = new DefaultPolicyInformationPoint();
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
