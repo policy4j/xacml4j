@@ -61,7 +61,14 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			log.debug("Invoking resolver=\"{}\" method=\"{}\"", 
 					getDescriptor().getName(), m.getName());
 		}
-		return (BagOfAttributeValues<AttributeValue>)m.invoke(instance, new Object[]{context});
+		try{
+			return (BagOfAttributeValues<AttributeValue>)m.invoke(instance, new Object[]{context});
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
+			throw e;
+		}
 		
 	}	
 	
@@ -89,6 +96,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 				byId = new HashMap<String, Method>();
 				methods.put(c.value(), byId);
 			}
+			r.setAccessible(true);
 			byId.put(d.id(), r);
 		}
 		return new AnnotatedAttributeResolver(builder.build(), methods, instance);
