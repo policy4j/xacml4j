@@ -199,7 +199,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 			return toBag(context, ref, nodeSet);
 		}
 		catch(XPathEvaluationException e){
-			throw new AttributeReferenceEvaluationException(context, ref, e);
+			throw new AttributeReferenceEvaluationException(context, ref, 
+					StatusCode.createProcessingError(), e);
 		}
 	}
 	
