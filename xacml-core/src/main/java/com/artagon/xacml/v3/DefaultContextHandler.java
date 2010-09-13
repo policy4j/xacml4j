@@ -181,7 +181,10 @@ public class DefaultContextHandler implements EvaluationContextHandler
 							"ContextAttributeId category=\"%s\" do not match", ref.getCategory(), 
 							xpath.getCategory());
 				}
-				log.debug("Evaluating contextSelecrtor xpath=\"{}\"", xpath.getValue());
+				if(log.isDebugEnabled()){
+					log.debug("Evaluating " +
+							"contextSelector xpath=\"{}\"", xpath.getValue());
+				}
 				contextNode = xpathProvider.evaluateToNode(context.getXPathVersion(), xpath.getValue(), content);
 			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
@@ -234,8 +237,9 @@ public class DefaultContextHandler implements EvaluationContextHandler
 			}
 			try{
 				values.add(ref.getDataType().fromXacmlString(v));
-			}catch(RuntimeException e){
-				throw new AttributeReferenceEvaluationException(context, ref, e);
+			}catch(Exception e){
+				throw new AttributeReferenceEvaluationException(context, 
+						ref, StatusCode.createProcessingError(), e);
 			}
 		}
 	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
