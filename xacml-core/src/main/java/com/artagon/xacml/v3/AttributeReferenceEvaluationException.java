@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Preconditions;
+
 
 
 public class AttributeReferenceEvaluationException extends EvaluationException
@@ -23,14 +25,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 			AttributeReference ref, 
 			String message, Object ...params){
 		super(statusCode, context, message, params);
-		this.ref = ref;
-	}
-	
-	public AttributeReferenceEvaluationException(EvaluationContext context, 
-			AttributeReference ref, 
-			Throwable cause){
-		super(StatusCode.createMissingAttribute(), 
-				context, cause);
+		Preconditions.checkNotNull(ref);
 		this.ref = ref;
 	}
 	

@@ -126,7 +126,8 @@ public class AttributeDesignator extends AttributeReference
 						toString(), e.getMessage());
 			}
 			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(context, this, e);
+				throw new AttributeReferenceEvaluationException(context, this, 
+						StatusCode.createMissingAttribute(), e);
 			}
 			return (BagOfAttributeValues<AttributeValue>)getDataType().bagOf().createEmpty();
 		}

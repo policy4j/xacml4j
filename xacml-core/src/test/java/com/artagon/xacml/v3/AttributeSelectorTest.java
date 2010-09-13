@@ -76,8 +76,60 @@ public class AttributeSelectorTest
 		verify(context);
 	}
 	
+	@Test
+	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	{
+		AttributeSelector ref = new AttributeSelector(
+				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patientDoB/text()", 
+				XacmlDataTypes.DATE.getType(), false);
+		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
+				StatusCode.createProcessingError(), new NullPointerException()));
+		replay(context);
+		Expression v = ref.evaluate(context);
+		assertEquals(v, XacmlDataTypes.DATE.emptyBag());
+		verify(context);
+	}
 	
+	@Test
+	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
+	{
+		AttributeSelector ref = new AttributeSelector(
+				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patientDoB/text()", 
+				XacmlDataTypes.DATE.getType(), false);
+		expect(context.resolve(ref)).andThrow(new NullPointerException());
+		replay(context);
+		Expression v = ref.evaluate(context);
+		assertEquals(v, XacmlDataTypes.DATE.emptyBag());
+		verify(context);
+	}
 	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
+	{
+		AttributeSelector ref = new AttributeSelector(
+				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patientDoB/text()", 
+				XacmlDataTypes.DATE.getType(), true);
+		expect(context.resolve(ref)).andThrow(new NullPointerException());
+		replay(context);
+		ref.evaluate(context);
+		verify(context);
+	}
 	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	{
+		AttributeSelector ref = new AttributeSelector(
+				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patientDoB/text()", 
+				XacmlDataTypes.DATE.getType(), true);
+		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
+				StatusCode.createProcessingError(), new NullPointerException()));
+		replay(context);
+		ref.evaluate(context);
+		verify(context);
+	}
 }
 

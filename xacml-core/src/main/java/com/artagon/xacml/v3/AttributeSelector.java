@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
-
 public class AttributeSelector extends 
 	AttributeReference
 {
@@ -97,13 +96,29 @@ public class AttributeSelector extends
 		v.visitLeave(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<?> evaluate(EvaluationContext context)
+	public BagOfAttributeValues<AttributeValue> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		BagOfAttributeValues<AttributeValue> bag =  context.resolve(this);
-		if((bag == null || 
-				bag.isEmpty()) 
+		BagOfAttributeValues<AttributeValue> v = null;
+		try{
+			v =  context.resolve(this);
+		}catch(AttributeReferenceEvaluationException e){
+			if(isMustBePresent()){
+				throw e;
+			}
+			return (BagOfAttributeValues<AttributeValue>) getDataType().bagOf().createEmpty();
+		}catch(Exception e){
+			if(isMustBePresent()){
+				throw new AttributeReferenceEvaluationException(
+						context, this, 
+						StatusCode.createMissingAttribute(), e);
+			}
+			return (BagOfAttributeValues<AttributeValue>) getDataType().bagOf().createEmpty();
+		}
+		if((v == null || 
+				v.isEmpty()) 
 				&& isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolved xpath=\"{}\", category=\"{}\"", 
@@ -113,8 +128,6 @@ public class AttributeSelector extends
 				"Selector XPath expression=\"%s\" evaluated " +
 				"to empty node set and mustBePresents=\"true\"", getPath());
 		}
-		return (bag == null)?getDataType().bagOf().createEmpty():bag;
+		return (BagOfAttributeValues<AttributeValue>)((v == null)?getDataType().bagOf().createEmpty():v);
 	}
-	
-	
 }

@@ -233,7 +233,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 				default:
 					throw new AttributeReferenceEvaluationException(
 							StatusCode.createSyntaxError(),
-							context, ref, "Unsupported DOM node type=\"%d\"", n.getNodeType());
+							context, ref, 
+							"Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try{
 				values.add(ref.getDataType().fromXacmlString(v));

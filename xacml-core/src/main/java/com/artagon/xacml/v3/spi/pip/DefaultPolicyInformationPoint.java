@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.collect.HashMultimap;
@@ -66,8 +67,11 @@ public class DefaultPolicyInformationPoint
 		 			 			ref.getAttributeId(), 
 		 			 			ref.getDataType(),
 		 			 			ref.getIssuer());
+	 	}catch(AttributeReferenceEvaluationException e){
+	 		throw e;
 	 	}catch(Exception e){
-	 		throw new AttributeReferenceEvaluationException(context, ref, e);
+	 		throw new AttributeReferenceEvaluationException(
+	 				context, ref, StatusCode.createMissingAttribute() , e);
 	 	}
 	}
 
