@@ -90,14 +90,17 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 					"Class=\"%s\" method=\"%s\" does not have attribute category specified", 
 					instance.getClass().getName(), r.getName());
 			Preconditions.checkState(validateResolverMethod(r));
-			builder.attribute(c.value(), d.id(), d.dataType());
-			Map<String, Method> byId = methods.get(c.value());
-			if(byId == null){
-				byId = new HashMap<String, Method>();
-				methods.put(c.value(), byId);
+			for(AttributeCategoryId category : c.value())
+			{
+				builder.attribute(category, d.id(), d.dataType());
+				Map<String, Method> byId = methods.get(category);
+				if(byId == null){
+					byId = new HashMap<String, Method>();
+					methods.put(category, byId);
+				}
+				r.setAccessible(true);
+				byId.put(d.id(), r);
 			}
-			r.setAccessible(true);
-			byId.put(d.id(), r);
 		}
 		return new AnnotatedAttributeResolver(builder.build(), methods, instance);
 	} 

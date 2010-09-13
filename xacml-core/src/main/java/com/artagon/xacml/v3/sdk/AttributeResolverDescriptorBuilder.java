@@ -119,9 +119,23 @@ public final class AttributeResolverDescriptorBuilder
 			return (byId == null)?null:byId.get(attributeId);
 		}
 
+		@Override
 		public boolean isAttributeProvided(AttributeCategoryId category, String attributeId) {
 			Map<String, AttributeDescriptor> byId = attributes.get(category);
 			return (byId == null)?false:byId.containsKey(attributeId);
+		}
+		
+		@Override
+		public boolean canResolve(AttributeCategoryId category, 
+				String attributeId, AttributeValueType dataType, String issuer)
+		{
+			if(isCategorySupported(category) && 
+					((issuer != null)?issuer.equals(getIssuer()):true)){
+				AttributeDescriptor d = getAttributeDescriptor(
+						category, attributeId);
+				return d.getDataType().equals(dataType);
+			}
+			return false;
 		}
 	}
 }

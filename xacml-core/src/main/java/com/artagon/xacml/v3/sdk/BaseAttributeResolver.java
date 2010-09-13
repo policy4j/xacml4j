@@ -4,7 +4,6 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
@@ -32,7 +31,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 			AttributeValueType dataType,
 			String issuer) throws Exception 
 	{
-		Preconditions.checkArgument(canResolve(category, attributeId, dataType, issuer));
+		Preconditions.checkArgument(descriptor.canResolve(category, attributeId, dataType, issuer));
 		return doResolve(context, category, attributeId, dataType, issuer);
 	}
 	
@@ -42,17 +41,4 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 			String attributeId,
 			AttributeValueType dataType,
 			String issuer) throws Exception;
-
-	@Override
-	public final boolean canResolve(AttributeCategoryId category, 
-			String attributeId, AttributeValueType dataType, String issuer)
-	{
-		if(descriptor.isCategorySupported(category) && 
-				((issuer != null)?issuer.equals(descriptor.getIssuer()):true)){
-			AttributeDescriptor d = descriptor.getAttributeDescriptor(
-					category, attributeId);
-			return d.getDataType().equals(dataType);
-		}
-		return false;
-	}
 }

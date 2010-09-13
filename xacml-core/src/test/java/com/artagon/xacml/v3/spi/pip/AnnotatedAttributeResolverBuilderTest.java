@@ -30,6 +30,7 @@ public class AnnotatedAttributeResolverBuilderTest
 		assertNotNull(d);
 		assertTrue(d.getSupportedCategores().contains(AttributeCategoryId.RESOURCE));
 		assertTrue(d.isCategorySupported(AttributeCategoryId.RESOURCE));
+		assertTrue(d.isCategorySupported(AttributeCategoryId.ACTION));
 		assertTrue(d.getSupportedCategores().contains(AttributeCategoryId.SUBJECT_ACCESS));
 		assertTrue(d.isCategorySupported(AttributeCategoryId.SUBJECT_ACCESS));
 		AttributeDescriptor attr1 = d.getAttributeDescriptor(AttributeCategoryId.RESOURCE, "testId1");
@@ -43,12 +44,16 @@ public class AnnotatedAttributeResolverBuilderTest
 	}
 	
 	@Test
-	public void testInvokeResolver() throws Exception
+	public void testInvokeResolverWithValidParameters() throws Exception
 	{
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		BagOfAttributeValues<AttributeValue> v1 = resolver.resolve(context, 
 				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getType(), "testIssuer");
+		assertEquals(XacmlDataTypes.STRING.emptyBag(), v1);
+		
+		v1 = resolver.resolve(context, 
+				AttributeCategoryId.ACTION, "testId1", XacmlDataTypes.STRING.getType(), "testIssuer");
 		assertEquals(XacmlDataTypes.STRING.emptyBag(), v1);
 		
 		BagOfAttributeValues<AttributeValue> v2 = resolver.resolve(context, 

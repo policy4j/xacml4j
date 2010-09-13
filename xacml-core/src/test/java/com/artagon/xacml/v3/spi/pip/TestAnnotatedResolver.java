@@ -17,7 +17,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 public class TestAnnotatedResolver 
 {
 	@XacmlAttributeDescriptor(id="testId1", dataType=XacmlDataTypes.STRING)
-	@XacmlAttributeCategory(AttributeCategoryId.RESOURCE)
+	@XacmlAttributeCategory({AttributeCategoryId.RESOURCE,AttributeCategoryId.ACTION})
 	public BagOfAttributeValues<AttributeValue> getTestId1Attribute(
 			PolicyInformationPointContext context)
 	{

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeValueType;
 
 public interface AttributeResolverDescriptor 
 {
@@ -14,6 +15,21 @@ public interface AttributeResolverDescriptor
 	 */
 	String getName();
 	
+	/**
+	 * Tests if resolver is capable of resolving
+	 * given attribute
+	 * 
+	 * @param category an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute data type
+	 * @param issuer an optional attribute issuer
+	 * @return <code>true</code> if resolver
+	 * is capable of resolving given attribute
+	 */
+	boolean canResolve(AttributeCategoryId category,
+			String attributeId,
+			AttributeValueType dataType,
+			String issuer);
 	/**
 	 * Gets resolver identifier
 	 * 

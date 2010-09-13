@@ -14,6 +14,8 @@ import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
@@ -46,7 +48,6 @@ public class DefaultPolicyInformationPoint
 		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public BagOfAttributeValues<AttributeValue> resolve(
 			EvaluationContext context,
@@ -56,14 +57,15 @@ public class DefaultPolicyInformationPoint
 	{
 	 	AttributeResolver r = findResolver(context, ref);
 	 	try{
-	 		return (BagOfAttributeValues<AttributeValue>)((r == null)?
-		 			ref.getDataType().bagOf().createEmpty():
-		 				r.resolve(
-		 						new DefaultPolicyInformationPointContext(context, callback, ref), 
+	 		if(r == null){
+	 			throw new AttributeReferenceEvaluationException(context, ref, 
+	 					"No resolver is found, to resolve given reference");
+	 		}
+	 		return r.resolve(new DefaultPolicyInformationPointContext(context, callback, ref), 
 		 						ref.getCategory(), 
 		 			 			ref.getAttributeId(), 
 		 			 			ref.getDataType(),
-		 			 			ref.getIssuer()));
+		 			 			ref.getIssuer());
 	 	}catch(Exception e){
 	 		throw new AttributeReferenceEvaluationException(context, ref, e);
 	 	}
@@ -100,8 +102,6 @@ public class DefaultPolicyInformationPoint
 				byCategory.put(attributeId, resolver);
 			}
 		}
-		
-
 	}
 	
 	/**
@@ -140,6 +140,8 @@ public class DefaultPolicyInformationPoint
 	private AttributeResolver findResolver(EvaluationContext context, 
 			AttributeDesignator ref)
 	{
+		// stop recursive call if 
+		// context is null
 		if(context == null)
 		{
 			Map<String, AttributeResolver> byCategory = resolvers.get(ref.getCategory());
@@ -147,7 +149,7 @@ public class DefaultPolicyInformationPoint
 		 		return null;
 		 	}
 		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
-		 	return (resolver != null && resolver.canResolve(
+		 	return (resolver != null && resolver.getDescriptor().canResolve(
 		 			ref.getCategory(), 
 		 			ref.getAttributeId(), 
 		 			ref.getDataType(),
@@ -160,8 +162,10 @@ public class DefaultPolicyInformationPoint
 					"scoped for a PolicyId=\"{}\"", 
 					found.size(), policyId);
 		}
-		for(AttributeResolver r : found){
-			if(r.canResolve(ref.getCategory(), 
+		for(AttributeResolver r : found)
+		{
+			AttributeResolverDescriptor d = r.getDescriptor();
+			if(d.canResolve(ref.getCategory(), 
 		 			ref.getAttributeId(), 
 		 			ref.getDataType(),
 		 			ref.getIssuer())){
@@ -176,8 +180,11 @@ public class DefaultPolicyInformationPoint
 	
 	private String getCurrentIdentifier(EvaluationContext context)
 	{
-		return (context.getCurrentPolicy() != null)?
-			context.getCurrentPolicy().getId():
-				(context.getCurrentPolicySet() != null?context.getCurrentPolicySet().getId():null);
+		Policy currentPolicy = context.getCurrentPolicy();
+		if(currentPolicy == null){
+			PolicySet currentPolicySet = context.getCurrentPolicySet();
+			return currentPolicySet != null?currentPolicySet.getId():null;
+		}
+		return (currentPolicy != null)?currentPolicy.getId():null;		
 	}
 }

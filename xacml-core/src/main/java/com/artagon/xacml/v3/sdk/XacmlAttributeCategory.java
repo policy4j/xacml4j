@@ -11,5 +11,5 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 @Target(ElementType.METHOD)
 public @interface XacmlAttributeCategory 
 {
-	AttributeCategoryId value();
+	AttributeCategoryId[] value();
 }

@@ -31,20 +31,5 @@ public interface AttributeResolver
 			AttributeValueType dataType,
 			String issuer) 
 				throws Exception;
-	
-	/**
-	 * Tests if this resolver is capable of resolving
-	 * given attribute
-	 * 
-	 * @param category an attribute category
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @param issuer an optional attribute issuer
-	 * @return <code>true</code> if this resolver
-	 * can resolve given designator
-	 */
-	boolean canResolve(AttributeCategoryId category,
-			String attributeId,
-			AttributeValueType dataType,
-			String issuer);
+
 }

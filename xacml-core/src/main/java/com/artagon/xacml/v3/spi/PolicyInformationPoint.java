@@ -9,6 +9,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 
 public interface PolicyInformationPoint 
 {
@@ -22,4 +23,21 @@ public interface PolicyInformationPoint
 			EvaluationContext context, 
 			AttributeCategoryId categoryId, 
 			RequestContextAttributesCallback callback);
+	
+	/**
+	 * Adds attribute resolver
+	 * 
+	 * @param resolver an attribute resolver
+	 */
+	void addResolver(AttributeResolver resolver);
+	
+	/**
+	 * Adds attribute resolver with the scope
+	 * of a given policy or policy set and
+	 * down bellow evaluation tree
+	 * 
+	 * @param policyId a policy or policy set identifier
+	 * @param resolver an attribute resolver
+	 */
+	void addResolver(String policyId, AttributeResolver resober);
 }

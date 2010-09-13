@@ -44,7 +44,7 @@ public interface AttributeValueType extends ValueType
 	 * @param params  an additional parameters used to
 	 * create a value of this type
 	 * @return {@link AttributeValue}
-	 * @exception IllegalArgumentException if atribute value of 
+	 * @exception IllegalArgumentException if attribute value of 
 	 * this type can not be created from a given value
 	 * and parameters
 	 */

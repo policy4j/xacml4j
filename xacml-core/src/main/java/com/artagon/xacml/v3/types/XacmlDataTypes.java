@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 
-public enum XacmlDataTypes 
+public enum XacmlDataTypes
 {
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
 	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),
@@ -156,7 +156,7 @@ public enum XacmlDataTypes
 	@SuppressWarnings("unchecked")
 	public <V extends AttributeValue> V fromXacmlString(String v,
 			Object... params) {
-		return ((V) type.fromXacmlString(v, params));
+		return (V)type.fromXacmlString(v, params);
 	}
 
 	@SuppressWarnings("unchecked")
