@@ -29,7 +29,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	public AttributeReferenceEvaluationException(EvaluationContext context, 
 			AttributeReference ref, 
 			Throwable cause){
-		super(StatusCode.createProcessingError(), 
+		super(StatusCode.createMissingAttribute(), 
 				context, cause);
 		this.ref = ref;
 	}

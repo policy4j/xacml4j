@@ -74,7 +74,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 
 	@Override
-	public BagOfAttributeValues<? extends AttributeValue> resolve(EvaluationContext context, AttributeDesignator ref) throws EvaluationException 
+	public BagOfAttributeValues<? extends AttributeValue> resolve(EvaluationContext context, AttributeDesignator ref) 
+		throws EvaluationException 
 	{
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
 				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());

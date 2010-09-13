@@ -329,8 +329,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		BagOfAttributeValues<AttributeValue> v =  (BagOfAttributeValues<AttributeValue>)contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
-			log.debug("Resolved attribute " +
-					"designator=\"{}\" to value=\"{}\"", ref, v);
+				log.debug("Resolved attribute " +
+						"designator=\"{}\" to value=\"{}\"", ref, v);
 		}
 		return v;
 	}

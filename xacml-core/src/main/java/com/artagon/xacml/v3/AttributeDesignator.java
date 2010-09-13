@@ -107,8 +107,30 @@ public class AttributeDesignator extends AttributeReference
 	public BagOfAttributeValues<AttributeValue> evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues<AttributeValue> bag = context.resolve(this);
-		if((bag == null || bag.isEmpty()) && 
+		BagOfAttributeValues<AttributeValue> v = null;
+		try{
+			v = context.resolve(this);
+		}catch(AttributeReferenceEvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
+						toString(), e.getMessage());
+			}
+			if(isMustBePresent()){
+				log.debug("Re-throwing error");
+				throw e;
+			}
+			return (BagOfAttributeValues<AttributeValue>)getDataType().bagOf().createEmpty();
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
+						toString(), e.getMessage());
+			}
+			if(isMustBePresent()){
+				throw new AttributeReferenceEvaluationException(context, this, e);
+			}
+			return (BagOfAttributeValues<AttributeValue>)getDataType().bagOf().createEmpty();
+		}
+		if((v == null || v.isEmpty()) && 
 				isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolved attributeId=\"{}\", category=\"{}\"", 
@@ -118,7 +140,7 @@ public class AttributeDesignator extends AttributeReference
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}
-		return (BagOfAttributeValues<AttributeValue>)((bag == null)?getDataType().bagOf().createEmpty():bag);
+		return (BagOfAttributeValues<AttributeValue>)((v == null)?getDataType().bagOf().createEmpty():v);
 	}
 	
 	@Override
