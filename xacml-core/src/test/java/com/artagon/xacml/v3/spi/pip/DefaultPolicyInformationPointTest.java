@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.easymock.Capture;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
@@ -151,6 +152,7 @@ public class DefaultPolicyInformationPointTest
 	}
 	
 	@Test
+	@Ignore
 	public void testResolveAttributeViaPolicySetBoundResolver() throws Exception
 	{
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
