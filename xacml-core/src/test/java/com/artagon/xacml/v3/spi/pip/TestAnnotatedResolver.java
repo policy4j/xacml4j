@@ -2,7 +2,6 @@ package com.artagon.xacml.v3.spi.pip;
 
 import org.junit.Ignore;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
@@ -17,7 +16,8 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 public class TestAnnotatedResolver 
 {
 	@XacmlAttributeDescriptor(id="testId1", dataType=XacmlDataTypes.STRING)
-	@XacmlAttributeCategory({AttributeCategoryId.RESOURCE,AttributeCategoryId.ACTION})
+	@XacmlAttributeCategory({"urn:oasis:names:tc:xacml:3.0:attribute-category:resource", 
+		"urn:oasis:names:tc:xacml:3.0:attribute-category:action"})
 	public BagOfAttributeValues<AttributeValue> getTestId1Attribute(
 			PolicyInformationPointContext context)
 	{
@@ -25,7 +25,7 @@ public class TestAnnotatedResolver
 	}
 	
 	@XacmlAttributeDescriptor(id="testId2", dataType=XacmlDataTypes.INTEGER)
-	@XacmlAttributeCategory(AttributeCategoryId.SUBJECT_ACCESS)
+	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
 	public BagOfAttributeValues<AttributeValue> getTestId2Attribute(
 			PolicyInformationPointContext context)
 	{

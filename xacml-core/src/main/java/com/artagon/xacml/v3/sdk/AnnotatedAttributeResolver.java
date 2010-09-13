@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
@@ -40,7 +41,11 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 	
 	public static AttributeResolver create(Object instance)
 	{
-		return build(instance);
+		try{
+			return build(instance);
+		}catch(XacmlSyntaxException e){
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -72,7 +77,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 		
 	}	
 	
-	private static AttributeResolver build(Object instance)
+	private static AttributeResolver build(Object instance) throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(instance != null);
 		XacmlAttributeResolverDescriptor descriptor = instance.getClass().getAnnotation(XacmlAttributeResolverDescriptor.class);
@@ -90,8 +95,9 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 					"Class=\"%s\" method=\"%s\" does not have attribute category specified", 
 					instance.getClass().getName(), r.getName());
 			Preconditions.checkState(validateResolverMethod(r));
-			for(AttributeCategoryId category : c.value())
+			for(String cat : c.value())
 			{
+				AttributeCategoryId category = AttributeCategoryId.parse(cat);
 				builder.attribute(category, d.id(), d.dataType());
 				Map<String, Method> byId = methods.get(category);
 				if(byId == null){
