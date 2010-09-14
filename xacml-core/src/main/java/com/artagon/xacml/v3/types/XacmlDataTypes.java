@@ -143,11 +143,10 @@ public enum XacmlDataTypes
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bag(
-			Collection<AttributeValue> attributes) {
+	public <T extends AttributeValue> BagOfAttributeValues<T> bag(Collection<AttributeValue> attributes) {
 		return (BagOfAttributeValues<T>) type.bagOf().create(attributes);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValue> BagOfAttributeValues<T> emptyBag() {
 		return (BagOfAttributeValues<T>) type.bagOf().createEmpty();

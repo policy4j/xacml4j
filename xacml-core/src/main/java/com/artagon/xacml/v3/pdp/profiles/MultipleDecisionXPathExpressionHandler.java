@@ -51,7 +51,8 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler", 
-						MULTIPLE_CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
+						MULTIPLE_CONTENT_SELECTOR, 
+						XacmlDataTypes.XPATHEXPRESSION.getType());
 			}
 			return handleNext(request, pdp);
 		}
