@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.XMLConstants;
@@ -45,6 +46,15 @@ public class SimpleNamespaceContext implements NamespaceContext {
     private Map<String, String> prefixToNamespaceUri = new HashMap<String, String>();
 
     private Multimap<String, String> namespaceUriToPrefixes = LinkedListMultimap.create();
+    
+    public SimpleNamespaceContext(){
+    }
+    
+    public SimpleNamespaceContext(Map<String, String> bindings){
+    	for(Entry<String, String> e : bindings.entrySet()){
+    		bindNamespaceUri(e.getKey(), e.getValue());
+    	}
+    }
 
     public String getNamespaceURI(String prefix) {
         Preconditions.checkNotNull(prefix);
