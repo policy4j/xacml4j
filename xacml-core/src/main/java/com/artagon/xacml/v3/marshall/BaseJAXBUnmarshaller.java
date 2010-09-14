@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
 import org.w3c.dom.Node;
@@ -39,6 +40,9 @@ public abstract class BaseJAXBUnmarshaller <T>
 			}
 			if(source instanceof JAXBElement<?>){
 				jaxbInstance =  (JAXBElement<?>)source;
+			}
+			if(source instanceof XMLStreamReader){
+				jaxbInstance = (JAXBElement<?>)u.unmarshal((XMLStreamReader)source);
 			}
 			if(source instanceof Node){
 				jaxbInstance = (JAXBElement<?>)u.unmarshal((Node)source);
