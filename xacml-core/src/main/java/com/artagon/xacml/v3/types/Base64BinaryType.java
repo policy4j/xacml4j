@@ -14,7 +14,7 @@ public interface Base64BinaryType extends AttributeValueType
 		public Base64BinaryValue(Base64BinaryType type, BinaryValue value) {
 			super(type, value);
 		}
-	
+		
 		@Override
 		public String toXacmlString() {
 			return getValue().toBase64();

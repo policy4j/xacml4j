@@ -19,13 +19,4 @@ public interface AnyURIType extends AttributeValueType
 			super(type, value);
 		}
 	}
-	
-	public class Factory
-	{
-		private final static AnyURIType INSTANCE = new AnyURITypeImpl("");
-		
-		public static AnyURIType getInstance(){
-			return INSTANCE;
-		}
-	}
 }

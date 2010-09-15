@@ -18,7 +18,7 @@ public class TestAnnotatedResolver
 	@XacmlAttributeDescriptor(id="testId1", dataType=XacmlDataTypes.STRING)
 	@XacmlAttributeCategory({"urn:oasis:names:tc:xacml:3.0:attribute-category:resource", 
 		"urn:oasis:names:tc:xacml:3.0:attribute-category:action"})
-	public BagOfAttributeValues<AttributeValue> getTestId1Attribute(
+	public BagOfAttributeValues<? extends AttributeValue> getTestId1Attribute(
 			PolicyInformationPointContext context)
 	{
 		return XacmlDataTypes.STRING.emptyBag();
@@ -26,7 +26,7 @@ public class TestAnnotatedResolver
 	
 	@XacmlAttributeDescriptor(id="testId2", dataType=XacmlDataTypes.INTEGER)
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
-	public BagOfAttributeValues<AttributeValue> getTestId2Attribute(
+	public BagOfAttributeValues<? extends AttributeValue> getTestId2Attribute(
 			PolicyInformationPointContext context)
 	{
 		return XacmlDataTypes.INTEGER.bag(XacmlDataTypes.INTEGER.create(1));

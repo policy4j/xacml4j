@@ -141,7 +141,7 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 	 * @return union of this and given bag without duplicate
 	 * elements
 	 */ 
-	public BagOfAttributeValues<T> union(BagOfAttributeValues<?> bag)
+	public BagOfAttributeValues<T> union(BagOfAttributeValues<? extends AttributeValue> bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> union = new HashSet<AttributeValue>();
@@ -178,7 +178,7 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 	 * @return <code>true</code> if this bag contains
 	 * at least one value from the given bag
 	 */
-	public boolean containsAtLeastOneOf(BagOfAttributeValues<?> bag)
+	public boolean containsAtLeastOneOf(BagOfAttributeValues<? extends AttributeValue> bag)
 	{
 		for(AttributeValue v : bag.values){
 			if(values.contains(v)){

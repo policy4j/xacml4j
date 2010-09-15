@@ -34,7 +34,7 @@ public interface AttributeValueType extends ValueType
 	 * represent value of this type
 	 */
 	AttributeValue fromXacmlString(String v, Object ...params);
-	
+
 	/**
 	 * Creates an attribute from a given object.
 	 * Object can be instance of {@link this#getValueClazz()}
@@ -57,5 +57,5 @@ public interface AttributeValueType extends ValueType
 	 * 
 	 * @return {@link BagOfAttributeValuesType} instance
 	 */
-	BagOfAttributeValuesType<?> bagOf();
+	BagOfAttributeValuesType<? extends AttributeValue> bagOf();
 }

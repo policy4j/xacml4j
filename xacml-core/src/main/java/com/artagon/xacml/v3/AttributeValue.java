@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-
 public interface AttributeValue extends ValueExpression
 {
 	/**

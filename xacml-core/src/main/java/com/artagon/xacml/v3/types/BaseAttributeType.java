@@ -42,7 +42,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	public final BagOfAttributeValuesType<V> bagOf(){
 		return bagType;
 	}
-
+	
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("TypeId=", typeId).toString();
