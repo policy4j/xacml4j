@@ -47,7 +47,7 @@
          </wsdl:output>
       </wsdl:operation>
    </wsdl:binding>
-    
+      
    <wsdl:binding name="Xacml20PoxBinding" type="tns:Xacml20PdpPort">	
    	  <http:binding verb="POST"/>
    	  <wsdl:operation name="decide">
@@ -60,18 +60,20 @@
             </wsdl:output>
         </wsdl:operation>
    </wsdl:binding>
-   
+
+    
    <wsdl:service name="Xacml20SoapService"> 
       <wsdl:port name="Xacml20PdpPort" binding="tns:Xacml20SoapBinding">
          <soap:address location="http://localhost:8080/xacml-ws/soap"/>
       </wsdl:port>
    </wsdl:service>
    
+ 
    <wsdl:service name="Xacml20PoxService"> 
       <wsdl:port name="Xacml20PdpPort" binding="tns:Xacml20PoxBinding">
          <http:address location="http://localhost:8080/xacml-ws/pox"/>
    	</wsdl:port>
    </wsdl:service>
-   
+
 
 </wsdl:definitions>
