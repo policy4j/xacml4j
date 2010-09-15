@@ -37,7 +37,17 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring-soap</servlet-name>
+		<url-pattern>/soap</url-pattern>
+	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>spring-pox</servlet-name>
+		<url-pattern>/pox</url-pattern>
+	</servlet-mapping>
+	
+	
 <!--  	
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
