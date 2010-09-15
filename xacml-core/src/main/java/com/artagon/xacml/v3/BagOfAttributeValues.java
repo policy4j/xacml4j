@@ -219,7 +219,8 @@ public final class BagOfAttributeValues<T extends AttributeValue>
 		if(!(o instanceof BagOfAttributeValues<?>)){
 			return false;
 		}
-		BagOfAttributeValues<?> bag = (BagOfAttributeValues<?>)o;
+		@SuppressWarnings("unchecked")
+		BagOfAttributeValues<? extends AttributeValue> bag = (BagOfAttributeValues<? extends AttributeValue>)o;
 		return type.equals(bag.type) && 
 		values.equals(bag.values);
 	}

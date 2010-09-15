@@ -20,4 +20,13 @@ public interface StringType extends AttributeValueType
 			return getValue().equalsIgnoreCase(v.getValue());
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static StringType INSTANCE = new StringTypeImpl("http://www.w3.org/2001/XMLSchema#string");
+		
+		public static StringType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

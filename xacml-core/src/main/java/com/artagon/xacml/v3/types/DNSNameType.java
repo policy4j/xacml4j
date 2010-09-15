@@ -41,4 +41,13 @@ public interface DNSNameType extends AttributeValueType
 		}
 		
 	}
+	
+	public final class Factory
+	{
+		private final static DNSNameType INSTANCE = new DNSNameTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
+		
+		public static DNSNameType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

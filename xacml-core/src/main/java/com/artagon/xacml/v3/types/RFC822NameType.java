@@ -35,4 +35,13 @@ public interface RFC822NameType extends AttributeValueType
 			super(type, value);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static RFC822NameType INSTANCE = new RFC822NameTypeImpl("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
+		
+		public static RFC822NameType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

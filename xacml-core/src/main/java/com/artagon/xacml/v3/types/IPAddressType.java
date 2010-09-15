@@ -37,4 +37,13 @@ public interface IPAddressType extends AttributeValueType
 			super(type, value);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static IPAddressType INSTANCE = new IPAddressTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
+		
+		public static IPAddressType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

@@ -16,4 +16,13 @@ public interface DoubleType extends AttributeValueType
 			super(type, value);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static DoubleType INSTANCE = new DoubleTypeImpl("http://www.w3.org/2001/XMLSchema#double");
+		
+		public static DoubleType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

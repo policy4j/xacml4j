@@ -24,6 +24,15 @@ public interface YearMonthDurationType extends AttributeValueType
 					value.getXMLSchemaType() == DatatypeConstants.DURATION_YEARMONTH);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static YearMonthDurationType INSTANCE = new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration");
+		
+		public static YearMonthDurationType getInstance(){
+			return INSTANCE;
+		}
+	}
 }
 
 

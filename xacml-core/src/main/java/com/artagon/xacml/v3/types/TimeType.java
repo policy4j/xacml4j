@@ -31,6 +31,15 @@ public interface TimeType extends AttributeValueType
 					(r == DatatypeConstants.GREATER)?1:-1);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static TimeType INSTANCE = new TimeTypeImpl("http://www.w3.org/2001/XMLSchema#time");
+		
+		public static TimeType getInstance(){
+			return INSTANCE;
+		}
+	}
 }
 
 

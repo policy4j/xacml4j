@@ -52,4 +52,13 @@ public interface DateType extends AttributeValueType
 					(r == DatatypeConstants.GREATER)?1:-1);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static DateType INSTANCE = new DateTypeImpl("http://www.w3.org/2001/XMLSchema#date");
+		
+		public static DateType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

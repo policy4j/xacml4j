@@ -62,4 +62,13 @@ public interface DateTimeType extends AttributeValueType
 					(r == DatatypeConstants.GREATER)?1:-1);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static DateTimeType INSTANCE = new DateTimeTypeImpl("http://www.w3.org/2001/XMLSchema#dateTime");
+		
+		public static DateTimeType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

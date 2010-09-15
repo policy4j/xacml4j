@@ -23,5 +23,14 @@ public interface DayTimeDurationType extends AttributeValueType
 					!value.isSet(DatatypeConstants.MONTHS));
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static DayTimeDurationType INSTANCE = new DayTimeDurationTypeImpl("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
+		
+		public static DayTimeDurationType getInstance(){
+			return INSTANCE;
+		}
+	}
 }
 

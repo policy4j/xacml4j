@@ -25,4 +25,13 @@ public interface XPathExpressionType extends AttributeValueType
 			return categoryId;
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static XPathExpressionType INSTANCE = new XPathExpressionTypeImpl("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
+		
+		public static XPathExpressionType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

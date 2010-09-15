@@ -36,4 +36,13 @@ public interface X500NameType extends AttributeValueType
 		}
 		
 	}
+	
+	public final class Factory
+	{
+		private final static X500NameType INSTANCE = new X500NameTypeImpl("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
+		
+		public static X500NameType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

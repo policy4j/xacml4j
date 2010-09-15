@@ -17,66 +17,57 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
 public enum XacmlDataTypes
 {
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
-	ANYURI(new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI")),
+	ANYURI(AnyURIType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#boolean</b> */
-	BOOLEAN(new BooleanTypeImpl("http://www.w3.org/2001/XMLSchema#boolean")),
+	BOOLEAN(BooleanType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#base64Binary</b> */
-	BASE64BINARY(new Base64BinaryTypeImpl(
-			"http://www.w3.org/2001/XMLSchema#base64Binary")),
+	BASE64BINARY(Base64BinaryType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#date</b> */
-	DATE(new DateTypeImpl("http://www.w3.org/2001/XMLSchema#date")),
+	DATE(DateType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dateTime</b> */
-	DATETIME(new DateTimeTypeImpl("http://www.w3.org/2001/XMLSchema#dateTime")),
+	DATETIME(DateTimeType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dayTimeDuration</b> */
-	DAYTIMEDURATION(new DayTimeDurationTypeImpl(
-			"http://www.w3.org/2001/XMLSchema#dayTimeDuration")),
+	DAYTIMEDURATION(DayTimeDurationType.Factory.getInstance()),
 
-	DNSNAME(new DNSNameTypeImpl(
-			"urn:oasis:names:tc:xacml:2.0:data-type:dnsName")),
+	DNSNAME(DNSNameType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#double</b> */
-	DOUBLE(new DoubleTypeImpl("http://www.w3.org/2001/XMLSchema#double")),
+	DOUBLE(DoubleType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#hexBinary</b> */
-	HEXBINARY(new HexBinaryTypeImpl(
-			"http://www.w3.org/2001/XMLSchema#hexBinary")),
+	HEXBINARY(HexBinaryType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#integer</b> */
-	INTEGER(new IntegerTypeImpl("http://www.w3.org/2001/XMLSchema#integer")),
+	INTEGER(IntegerType.Factory.getInstance()),
 
-	IPADDRESS(new IPAddressTypeImpl(
-			"urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")),
-
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
-	RFC822NAME(new RFC822NameTypeImpl(
-			"urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")),
+	IPADDRESS(IPAddressType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
-	STRING(new StringTypeImpl("http://www.w3.org/2001/XMLSchema#string")),
+	RFC822NAME(RFC822NameType.Factory.getInstance()),
+
+	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
+	STRING(StringType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#time</b> */
-	TIME(new TimeTypeImpl("http://www.w3.org/2001/XMLSchema#time")),
+	TIME(TimeType.Factory.getInstance()),
 
-	X500NAME(new X500NameTypeImpl(
-			"urn:oasis:names:tc:xacml:1.0:data-type:x500Name")),
+	X500NAME(X500NameType.Factory.getInstance()),
 
 	/**
 	 * XACML DataType:
 	 * <b>urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression</b>
 	 */
-	XPATHEXPRESSION(new XPathExpressionTypeImpl(
-			"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression")),
+	XPATHEXPRESSION(XPathExpressionType.Factory.getInstance()),
 
 	/**
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b>
 	 */
-	YEARMONTHDURATION(new YearMonthDurationTypeImpl(
-			"http://www.w3.org/2001/XMLSchema#yearMonthDuration"));
+	YEARMONTHDURATION(YearMonthDurationType.Factory.getInstance());
 
 	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 

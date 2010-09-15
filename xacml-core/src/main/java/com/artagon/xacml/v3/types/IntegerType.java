@@ -16,4 +16,13 @@ public interface IntegerType extends AttributeValueType
 		}
 		
 	}
+	
+	public final class Factory
+	{
+		private final static IntegerType INSTANCE = new IntegerTypeImpl("http://www.w3.org/2001/XMLSchema#integer");
+		
+		public static IntegerType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

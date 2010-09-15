@@ -19,6 +19,14 @@ public interface HexBinaryType  extends AttributeValueType
 		public String toXacmlString() {
 			return getValue().toHex();
 		}
+	}
+	
+	public final class Factory
+	{
+		private final static HexBinaryType INSTANCE = new HexBinaryTypeImpl("http://www.w3.org/2001/XMLSchema#hexBinary");
 		
+		public static HexBinaryType getInstance(){
+			return INSTANCE;
+		}
 	}
 }

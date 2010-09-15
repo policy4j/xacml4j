@@ -16,4 +16,13 @@ public interface BooleanType extends AttributeValueType
 			super(type, value);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static BooleanType INSTANCE = new BooleanTypeImpl("http://www.w3.org/2001/XMLSchema#boolean");
+		
+		public static BooleanType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

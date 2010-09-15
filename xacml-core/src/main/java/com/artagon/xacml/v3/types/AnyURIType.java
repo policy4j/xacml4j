@@ -19,4 +19,13 @@ public interface AnyURIType extends AttributeValueType
 			super(type, value);
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static AnyURIType INSTANCE = new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI");
+		
+		public static AnyURIType getInstance(){
+			return INSTANCE;
+		}
+	}
 }

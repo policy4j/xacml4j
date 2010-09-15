@@ -20,4 +20,13 @@ public interface Base64BinaryType extends AttributeValueType
 			return getValue().toBase64();
 		}
 	}
+	
+	public final class Factory
+	{
+		private final static Base64BinaryType INSTANCE = new Base64BinaryTypeImpl("http://www.w3.org/2001/XMLSchema#base64Binary");
+		
+		public static Base64BinaryType getInstance(){
+			return INSTANCE;
+		}
+	}
 }
