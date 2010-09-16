@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.policy.function;
 
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
@@ -116,7 +118,7 @@ public class StringFunctions
 	public static BooleanType.BooleanValue booleanFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.BOOLEAN.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.BOOLEAN.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")
@@ -132,7 +134,7 @@ public class StringFunctions
 	public static IntegerType.IntegerValue integerFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.INTEGER.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.INTEGER.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
@@ -148,7 +150,7 @@ public class StringFunctions
 	public static DoubleType.DoubleValue doubleFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.DOUBLE.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.DOUBLE.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
@@ -164,7 +166,7 @@ public class StringFunctions
 	public static TimeType.TimeValue timeFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.TIME.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.TIME.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
@@ -180,7 +182,7 @@ public class StringFunctions
 	public static DateType.DateValue dateFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.DATE.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.DATE.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dateTime")
@@ -196,7 +198,7 @@ public class StringFunctions
 	public static DateTimeType.DateTimeValue dateTimeFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.DATETIME.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.DATETIME.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
@@ -212,7 +214,7 @@ public class StringFunctions
 	public static AnyURIType.AnyURIValue anyURIFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.ANYURI.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.ANYURI.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")
@@ -228,7 +230,7 @@ public class StringFunctions
 	public static DayTimeDurationType.DayTimeDurationValue dayTimeDurationFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.DAYTIMEDURATION.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.DAYTIMEDURATION.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")
@@ -244,7 +246,7 @@ public class StringFunctions
 	public static DayTimeDurationType.DayTimeDurationValue yearMonthDurationFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.YEARMONTHDURATION.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.YEARMONTHDURATION.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")
@@ -260,7 +262,7 @@ public class StringFunctions
 	public static X500NameType.X500NameValue x500NameFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.X500NAME.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.X500NAME.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")
@@ -276,7 +278,7 @@ public class StringFunctions
 	public static RFC822NameType.RFC822NameValue rfc822NameFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.RFC822NAME.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.RFC822NAME.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-ipAddress")
@@ -292,7 +294,7 @@ public class StringFunctions
 	public static IPAddressType.IPAddressValue ipAddressFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.IPADDRESS.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.IPADDRESS.getType(), v);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")
@@ -308,7 +310,12 @@ public class StringFunctions
 	public static DNSNameType.DNSNameValue dnsNameFromString(
 			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
 	{
-		return XacmlDataTypes.DNSNAME.fromXacmlString(v.getValue());
+		return fromXacmlString(XacmlDataTypes.DNSNAME.getType(), v);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	private static <T extends AttributeValue> T fromXacmlString(AttributeValueType type, StringValue value)
+	{
+		return (T)type.fromXacmlString(value.toXacmlString());
+	}
 }

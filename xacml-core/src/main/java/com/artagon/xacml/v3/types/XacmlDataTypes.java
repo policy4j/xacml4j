@@ -143,11 +143,11 @@ public enum XacmlDataTypes
 		return (BagOfAttributeValues<T>) type.bagOf().createEmpty();
 	}
 
-	@SuppressWarnings("unchecked")
-	public <V extends AttributeValue> V fromXacmlString(String v,
-			Object... params) {
-		return (V)type.fromXacmlString(v, params);
-	}
+//	@SuppressWarnings("unchecked")
+//	public <V extends AttributeValue> V fromXacmlString(String v,
+//			Object... params) {
+//		return (V)type.fromXacmlString(v, params);
+//	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValueType> T getType() {
@@ -176,9 +176,9 @@ public enum XacmlDataTypes
 	 * identifier does not represent valid XACML data type
 	 */
 	public static AttributeValue createAttributeValue(String typeId, Object value)
-			throws XacmlSyntaxException {
-		return createAttributeValue(typeId, value,
-				Collections.<QName, String> emptyMap());
+			throws XacmlSyntaxException 
+	{
+		return createAttributeValue(typeId, value, Collections.<QName, String> emptyMap());
 	}
 
 	public static AttributeValue createAttributeValue(
@@ -193,10 +193,9 @@ public enum XacmlDataTypes
 		}
 	}
 
-	public static AttributeValue createAttributeValue(
-			String typeId, 
-			Object value,
-			Map<QName, String> values) throws XacmlSyntaxException {
+	public static AttributeValue createAttributeValue(String typeId, 
+			Object value, Map<QName, String> values) throws XacmlSyntaxException 
+	{
 		AttributeValueType type = getType(typeId);
 		try {
 			return type.create(value, getXPathCategory(values));
