@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 
 import com.google.common.base.Preconditions;
 
-public class FileSystemResourceCollectionFactoryBean extends AbstractFactoryBean
+public class FileSystemResourceCollectionFactoryBean extends AbstractFactoryBean<ResourceCollection>
 {
 	private File folder;
 	private String fileNameFilter;
@@ -32,7 +32,7 @@ public class FileSystemResourceCollectionFactoryBean extends AbstractFactoryBean
 	}
 	
 	@Override
-	protected Object createInstance() throws Exception 
+	protected ResourceCollection createInstance() throws Exception 
 	{
 		Preconditions.checkState(folder != null);
 		Preconditions.checkState(folder.exists());

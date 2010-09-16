@@ -18,7 +18,8 @@ import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
-public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
+public class PolicyDecisionPointFactoryBean extends 
+	AbstractFactoryBean<PolicyDecisionPoint>
 {
 	private PolicyInformationPoint pip;
 	private PolicyDomain policyDomain;
@@ -59,7 +60,7 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean
 	}
 	
 	@Override
-	protected Object createInstance() throws Exception 
+	protected PolicyDecisionPoint createInstance() throws Exception 
 	{
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(policyDomain != null);

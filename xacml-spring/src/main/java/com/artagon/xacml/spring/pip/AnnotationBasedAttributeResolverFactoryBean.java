@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.google.common.base.Preconditions;
 
-public class AnnotationBasedAttributeResolverFactoryBean extends AbstractFactoryBean
+public class AnnotationBasedAttributeResolverFactoryBean extends AbstractFactoryBean<AttributeResolver>
 {
 	private Object resolverBean;
 	
@@ -20,7 +20,7 @@ public class AnnotationBasedAttributeResolverFactoryBean extends AbstractFactory
 	}
 
 	@Override
-	protected Object createInstance() throws Exception {
+	protected AttributeResolver createInstance() throws Exception {
 		Preconditions.checkState(resolverBean != null, "Resolver bean must be specified");
 		return AnnotatedAttributeResolver.create(resolverBean);
 	}

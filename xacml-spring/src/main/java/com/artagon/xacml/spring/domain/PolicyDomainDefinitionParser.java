@@ -2,6 +2,7 @@ package com.artagon.xacml.spring.domain;
 
 import java.util.List;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
@@ -19,7 +20,6 @@ public class PolicyDomainDefinitionParser extends AbstractBeanDefinitionParser
 			ParserContext parserContext) {
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(PolicyDomainFactoryBean.class);
 		factory.addPropertyValue("name", element.getAttribute("name"));
-		@SuppressWarnings("unchecked")
 		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(
 				element, new String[]{"PolicySetIdReference", "PolicyIdReference"});
 	      if (childElements != null && childElements.size() > 0) {
@@ -52,12 +52,12 @@ public class PolicyDomainDefinitionParser extends AbstractBeanDefinitionParser
 		
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) 
+	private static void parseChildComponents(List<Element> childElements, 
+			BeanDefinitionBuilder factory) 
 	{
-	      ManagedList children = new ManagedList(childElements.size());
+	      ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	      for (int i = 0; i < childElements.size(); ++i) {
-	         Element childElement = (Element) childElements.get(i);
+	         Element childElement = childElements.get(i);
 	         BeanDefinitionBuilder child = parseComponent(childElement);
 	         children.add(child.getBeanDefinition());
 	      }

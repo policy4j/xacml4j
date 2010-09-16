@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.google.common.base.Preconditions;
 
-public class PolicyDomainFactoryBean extends AbstractFactoryBean
+public class PolicyDomainFactoryBean extends AbstractFactoryBean<PolicyDomain>
 {
 	private String name;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;

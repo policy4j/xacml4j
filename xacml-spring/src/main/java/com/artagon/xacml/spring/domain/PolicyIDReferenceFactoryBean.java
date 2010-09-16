@@ -4,7 +4,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v3.PolicyIDReference;
 
-public class PolicyIDReferenceFactoryBean extends AbstractFactoryBean
+public class PolicyIDReferenceFactoryBean extends AbstractFactoryBean<PolicyIDReference>
 {
 	private String id;
 	private String version;
@@ -33,7 +33,7 @@ public class PolicyIDReferenceFactoryBean extends AbstractFactoryBean
 	}
 	
 	@Override
-	protected Object createInstance() throws Exception 
+	protected PolicyIDReference createInstance() throws Exception 
 	{
 		return PolicyIDReference.create(id, version, earliest, latest);
 	}

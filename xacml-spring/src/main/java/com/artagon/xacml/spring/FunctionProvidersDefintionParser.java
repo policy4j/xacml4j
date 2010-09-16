@@ -2,6 +2,7 @@ package com.artagon.xacml.spring;
 
 import java.util.List;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
@@ -18,8 +19,7 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(FunctionProvidersFactoryBean.class);
-		@SuppressWarnings("unchecked")
-		List<Element> childElements = (List<Element>)DomUtils.getChildElementsByTagName(
+		List<Element> childElements = DomUtils.getChildElementsByTagName(
 				element, "FunctionProvider");
 	      if (childElements != null && childElements.size() > 0) {
 	         parseChildComponents(childElements, factory);
@@ -41,10 +41,9 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	      return component;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) 
 	{
-	      ManagedList children = new ManagedList(childElements.size());
+	      ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	      for (int i = 0; i < childElements.size(); ++i) {
 	         Element childElement = (Element) childElements.get(i);
 	         BeanDefinitionBuilder child = parseComponent(childElement);

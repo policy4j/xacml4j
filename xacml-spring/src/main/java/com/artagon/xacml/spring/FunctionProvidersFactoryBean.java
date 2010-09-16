@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 
-public class FunctionProvidersFactoryBean extends AbstractFactoryBean
+public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionProvider>
 {
 	private Collection<FunctionProvider> providers;
 	
@@ -23,7 +23,7 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean
 	}
 
 	@Override
-	protected Object createInstance() throws Exception 
+	protected FunctionProvider createInstance() throws Exception 
 	{	
 		return new AggregatingFunctionProvider(
 				(providers == null)?Collections.<FunctionProvider>emptyList():providers);

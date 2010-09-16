@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
-public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean
+public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
 	private ResourceCollection resources;
 	private FunctionProvider extensionFunctions;
@@ -37,7 +37,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean
 	}
 	
 	@Override
-	protected Object createInstance() throws Exception 
+	protected PolicyRepository createInstance() throws Exception 
 	{
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		PolicyUnmarshaller unmarshaler = new Xacml30PolicyUnmarshaller(extensionFunctions, 

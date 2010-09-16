@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 
-public class PolicyInformationPointFactoryBean extends AbstractFactoryBean
+public class PolicyInformationPointFactoryBean extends AbstractFactoryBean<PolicyInformationPoint>
 {
 	private Collection<AttributeResolver> resolvers = Collections.emptyList();
 	
@@ -23,7 +23,7 @@ public class PolicyInformationPointFactoryBean extends AbstractFactoryBean
 	}
 
 	@Override
-	protected Object createInstance() throws Exception 
+	protected PolicyInformationPoint createInstance() throws Exception 
 	{
 		DefaultPolicyInformationPoint pip = new DefaultPolicyInformationPoint();
 		for(AttributeResolver r : resolvers){

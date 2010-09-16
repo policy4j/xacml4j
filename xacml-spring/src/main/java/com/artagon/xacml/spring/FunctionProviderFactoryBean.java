@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.google.common.base.Preconditions;
 
-public class FunctionProviderFactoryBean extends AbstractFactoryBean
+public class FunctionProviderFactoryBean extends AbstractFactoryBean<FunctionProvider>
 {
 	private Class<FunctionProvider> providerClass;
 	private Object providerInstance;
@@ -26,7 +26,7 @@ public class FunctionProviderFactoryBean extends AbstractFactoryBean
 	}
 
 	@Override
-	protected Object createInstance() throws Exception 
+	protected FunctionProvider createInstance() throws Exception 
 	{
 		Preconditions.checkState((providerClass == null ^ providerInstance == null), 
 				"Either fucnction provider class or " +
