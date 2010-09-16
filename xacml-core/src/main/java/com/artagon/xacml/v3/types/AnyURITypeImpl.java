@@ -13,8 +13,6 @@ final class AnyURITypeImpl extends BaseAttributeType<AnyURIType.AnyURIValue> imp
 	@Override
 	public AnyURIValue fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
-		// FIXME: spec does not say anything
-		// around URI normalization
 		return new AnyURIValue(this, URI.create(v).normalize());
 	}
 	

@@ -128,8 +128,7 @@ public enum XacmlDataTypes
 	 * @return {@link BagOfAttributeValues} a XACML bag
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bag(
-			AttributeValue... attributes) {
+	public <T extends AttributeValue> BagOfAttributeValues<T> bag(AttributeValue... attributes) {
 		return (BagOfAttributeValues<T>) type.bagOf().create(attributes);
 	}
 
@@ -143,11 +142,11 @@ public enum XacmlDataTypes
 		return (BagOfAttributeValues<T>) type.bagOf().createEmpty();
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public <V extends AttributeValue> V fromXacmlString(String v,
-//			Object... params) {
-//		return (V)type.fromXacmlString(v, params);
-//	}
+	@SuppressWarnings("unchecked")
+	public <V extends AttributeValue> V fromXacmlString(String v,
+			Object... params) {
+		return (V)type.fromXacmlString(v, params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends AttributeValueType> T getType() {
