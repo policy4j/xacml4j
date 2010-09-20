@@ -19,7 +19,6 @@ import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class BagFunctionsTest 
 {
@@ -100,7 +99,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.stringIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.stringIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
+		assertEquals(BooleanType.Factory.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
 	
 	@Test
@@ -113,7 +112,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.booleanBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.booleanIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.booleanIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
+		assertEquals(BooleanType.Factory.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
 	}
 	
 	@Test
@@ -126,7 +125,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.integerBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.integerIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.integerIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
+		assertEquals(IntegerType.Factory.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 	
 	@Test
@@ -139,7 +138,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.doubleBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.doubleIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.doubleIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
+		assertEquals(DoubleType.Factory.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
 	
 	@Test
@@ -153,7 +152,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
+		assertEquals(AnyURIType.Factory.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
 		
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));

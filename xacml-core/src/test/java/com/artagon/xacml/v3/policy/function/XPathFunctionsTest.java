@@ -29,11 +29,12 @@ import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
+import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class XPathFunctionsTest 
 {
@@ -98,7 +99,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategoryId.SUBJECT_ACCESS))
 		.andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(XacmlDataTypes.INTEGER.create(1), f.invoke(context, xpath));
+		assertEquals(IntegerType.Factory.create(1), f.invoke(context, xpath));
 		verify(context);
 	}
 	
@@ -111,7 +112,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet("./md:record//md:name", AttributeCategoryId.RESOURCE))
 		.andAnswer(new XPathAnswer(content1));
 		replay(context);
-		assertEquals(XacmlDataTypes.INTEGER.create(2), f.invoke(context, xpath));
+		assertEquals(IntegerType.Factory.create(2), f.invoke(context, xpath));
 		verify(context);
 	}
 	
@@ -122,7 +123,7 @@ public class XPathFunctionsTest
 				AttributeCategoryId.SUBJECT_ACCESS);
 		expect(context.evaluateToNodeSet("/test", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(XacmlDataTypes.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
+		assertEquals(IntegerType.Factory.create(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
 	}
 	
@@ -136,7 +137,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanType.Factory.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
 	}
 	
@@ -150,7 +151,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet(".", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		expect(context.evaluateToNodeSet("./md:record", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanType.Factory.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
 	}
 
@@ -171,6 +172,5 @@ public class XPathFunctionsTest
 					(String)args[0],
 					xml);
 		}
-		
 	}
 }
