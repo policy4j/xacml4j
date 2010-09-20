@@ -17,7 +17,7 @@ public class DayTimeDurationTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = XacmlDataTypes.DAYTIMEDURATION.getType();
+		this.t1 = DayTimeDurationType.Factory.getInstance();
 		this.f = DatatypeFactory.newInstance();
 	}
 	

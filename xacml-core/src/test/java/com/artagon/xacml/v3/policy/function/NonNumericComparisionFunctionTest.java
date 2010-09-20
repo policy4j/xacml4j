@@ -12,7 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -30,12 +32,12 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringValue a = XacmlDataTypes.STRING.create("ab");
-		StringValue b = XacmlDataTypes.STRING.create("aa");
+		StringValue a = StringType.Factory.create("ab");
+		StringValue b = StringType.Factory.create("aa");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
-		a = XacmlDataTypes.STRING.create("aaa");
-		b = XacmlDataTypes.STRING.create("aa");
+		a = StringType.Factory.create("aaa");
+		b = StringType.Factory.create("aa");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
 	}
@@ -43,12 +45,12 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeLessThan()
 	{
-		TimeValue t1 = XacmlDataTypes.TIME.create("08:23:47-05:00");
-		TimeValue t2 = XacmlDataTypes.TIME.create("08:23:48-05:00");
+		TimeValue t1 = TimeType.Factory.create("08:23:47-05:00");
+		TimeValue t2 = TimeType.Factory.create("08:23:48-05:00");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), NonNumericComparisionFunctions.lessThan(t1, t2));
-		t2 = XacmlDataTypes.TIME.create("08:23:47-05:00");
+		t2 = TimeType.Factory.create("08:23:47-05:00");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NonNumericComparisionFunctions.lessThan(t1, t2));
-		t2 = XacmlDataTypes.TIME.create("08:23:46-05:00");
+		t2 = TimeType.Factory.create("08:23:46-05:00");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NonNumericComparisionFunctions.lessThan(t1, t2));
 	}
 	
@@ -57,9 +59,9 @@ public class NonNumericComparisionFunctionTest
 	{
 		expect(context.getTimeZone()).andReturn(TimeZone.getDefault());
 		replay(context);
-		TimeValue a = XacmlDataTypes.TIME.create("09:30:10");
-		TimeValue b = XacmlDataTypes.TIME.create("08:30:10");
-		TimeValue c = XacmlDataTypes.TIME.create("09:30:11");
+		TimeValue a = TimeType.Factory.create("09:30:10");
+		TimeValue b = TimeType.Factory.create("08:30:10");
+		TimeValue c = TimeType.Factory.create("09:30:11");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);
@@ -68,9 +70,9 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeInRangeWithTimeZonesAndTimeIsInRange()
 	{
-		TimeValue a = XacmlDataTypes.TIME.create("09:30:10Z");
-		TimeValue b = XacmlDataTypes.TIME.create("08:30:10Z");
-		TimeValue c = XacmlDataTypes.TIME.create("09:30:11Z");
+		TimeValue a = TimeType.Factory.create("09:30:10Z");
+		TimeValue b = TimeType.Factory.create("08:30:10Z");
+		TimeValue c = TimeType.Factory.create("09:30:11Z");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 	}
@@ -80,9 +82,9 @@ public class NonNumericComparisionFunctionTest
 	{
 		expect(context.getTimeZone()).andReturn(TimeZone.getDefault());
 		replay(context);
-		TimeValue a = XacmlDataTypes.TIME.create("09:30:10");
-		TimeValue b = XacmlDataTypes.TIME.create("08:30:10");
-		TimeValue c = XacmlDataTypes.TIME.create("09:30:09");
+		TimeValue a = TimeType.Factory.create("09:30:10");
+		TimeValue b = TimeType.Factory.create("08:30:10");
+		TimeValue c = TimeType.Factory.create("09:30:09");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);
@@ -93,9 +95,9 @@ public class NonNumericComparisionFunctionTest
 	{
 		expect(context.getTimeZone()).andReturn(TimeZone.getDefault());
 		replay(context);
-		TimeValue a = XacmlDataTypes.TIME.create("09:30:10");
-		TimeValue b = XacmlDataTypes.TIME.create("08:30:10");
-		TimeValue c = XacmlDataTypes.TIME.create("09:30:10");
+		TimeValue a = TimeType.Factory.create("09:30:10");
+		TimeValue b = TimeType.Factory.create("08:30:10");
+		TimeValue c = TimeType.Factory.create("09:30:10");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);

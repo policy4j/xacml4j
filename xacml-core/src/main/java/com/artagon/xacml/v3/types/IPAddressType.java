@@ -1,8 +1,11 @@
 package com.artagon.xacml.v3.types;
 
 import java.net.InetAddress;
+import java.util.Collection;
 
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** 
@@ -44,6 +47,26 @@ public interface IPAddressType extends AttributeValueType
 		
 		public static IPAddressType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static IPAddressValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static IPAddressValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<IPAddressValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<IPAddressValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<IPAddressValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

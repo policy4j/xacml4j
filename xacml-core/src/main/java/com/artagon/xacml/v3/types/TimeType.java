@@ -1,9 +1,13 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 public interface TimeType extends AttributeValueType
@@ -38,6 +42,26 @@ public interface TimeType extends AttributeValueType
 		
 		public static TimeType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static TimeValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static TimeValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<TimeValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<TimeValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<TimeValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

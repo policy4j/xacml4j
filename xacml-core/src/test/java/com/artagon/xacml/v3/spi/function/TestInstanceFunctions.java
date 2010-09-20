@@ -4,6 +4,7 @@ package com.artagon.xacml.v3.spi.function;
 import org.junit.Ignore;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -18,7 +19,7 @@ public class TestInstanceFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.equals(b));
+		return BooleanType.Factory.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")
@@ -26,9 +27,7 @@ public class TestInstanceFunctions
 	public IntegerType.IntegerValue test2(
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
-		return XacmlDataTypes.INTEGER.create(bag.size());
+		return IntegerType.Factory.create(bag.size());
 	}
-	
-	
 }
 

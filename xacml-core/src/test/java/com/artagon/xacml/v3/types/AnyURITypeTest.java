@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.types;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class AnyURITypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataTypes.ANYURI.getType();
+		this.t1 = AnyURIType.Factory.getInstance();
 	}
 	
 	@Test
@@ -22,5 +23,7 @@ public class AnyURITypeTest
 		AttributeValue v0 = t1.create("http://www.test.org");
 		AttributeValue v1 = t1.create("http://www.test.org");
 		assertEquals(v0, v1);
+		assertEquals(XacmlDataTypes.ANYURI.getDataType(), t1);
+		assertSame(XacmlDataTypes.ANYURI.getDataType(), t1);
 	}
 }

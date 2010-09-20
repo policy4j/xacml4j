@@ -1,8 +1,12 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
 import javax.security.auth.x500.X500Principal;
 
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** 
@@ -43,6 +47,26 @@ public interface X500NameType extends AttributeValueType
 		
 		public static X500NameType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static X500NameValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static X500NameValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<X500NameValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<X500NameValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<X500NameValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

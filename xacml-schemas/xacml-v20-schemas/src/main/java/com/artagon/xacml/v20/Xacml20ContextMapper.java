@@ -154,7 +154,7 @@ class Xacml20ContextMapper
 			return Iterables.getOnlyElement(resourceId.getValues()).toXacmlString();
 		}
 		Collection<AttributeValue> values =  resource.getAttributeValues(
-				CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getType());
+				CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getDataType());
 		if(values.isEmpty() ||
 				values.size() > 1){
 			return null;
@@ -347,7 +347,7 @@ class Xacml20ContextMapper
 		if(log.isDebugEnabled()){
 			log.debug("Creating typeId=\"{}\" value=\"{}\"", dataType, o);
 		}
-		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getType())){
+		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getDataType())){
 			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
 			return dataType.create(xpath, categoryId);
 		}

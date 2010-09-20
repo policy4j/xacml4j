@@ -19,7 +19,9 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.DateTimeType;
+import com.artagon.xacml.v3.types.DateType;
+import com.artagon.xacml.v3.types.TimeType;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -91,9 +93,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		});
 		this.timezone = TimeZone.getTimeZone("UTC");
 		Calendar now = Calendar.getInstance(timezone);
-		this.currentDate = XacmlDataTypes.DATE.create(now);
-		this.currentDateTime = XacmlDataTypes.DATETIME.create(now);
-		this.currentTime = XacmlDataTypes.TIME.create(now);
+		this.currentDate = DateType.Factory.create(now);
+		this.currentDateTime = DateTimeType.Factory.create(now);
+		this.currentTime = TimeType.Factory.create(now);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 	}
 	

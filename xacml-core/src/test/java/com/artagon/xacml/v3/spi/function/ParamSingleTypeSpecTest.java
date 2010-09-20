@@ -16,7 +16,6 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class ParamSingleTypeSpecTest
 {
@@ -26,8 +25,8 @@ public class ParamSingleTypeSpecTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataTypes.DOUBLE.getType();
-		this.t2 = XacmlDataTypes.STRING.getType();
+		this.t1 = DoubleType.Factory.getInstance();
+		this.t2 = StringType.Factory.getInstance();
 		this.b1 = t1.bagOf();
 	}
 	

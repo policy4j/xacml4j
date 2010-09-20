@@ -13,7 +13,7 @@ public class XPathExpressionTypeTest
 	@Test
 	public void testCreateXPathAttribute() throws Exception
 	{
-		XPathExpressionValue v = XacmlDataTypes.XPATHEXPRESSION.create("/test", AttributeCategoryId.SUBJECT_RECIPIENT);
+		XPathExpressionValue v = XPathExpressionType.Factory.create("/test", AttributeCategoryId.SUBJECT_RECIPIENT);
 		assertEquals("/test", v.getValue());
 		assertEquals(AttributeCategoryId.SUBJECT_RECIPIENT, v.getCategory());
 	}
@@ -21,12 +21,12 @@ public class XPathExpressionTypeTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateXPathWithoutCategory()
 	{
-		XacmlDataTypes.XPATHEXPRESSION.create("/test");
+		XPathExpressionType.Factory.create("/test");
 	}
 	
 	@Test(expected=ClassCastException.class)
 	public void testCreateXPathWithCategoryAsString()
 	{
-		XacmlDataTypes.XPATHEXPRESSION.create("/test", "test");
+		XPathExpressionType.Factory.create("/test", "test");
 	}
 }

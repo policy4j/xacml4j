@@ -26,7 +26,7 @@ public class ConditionTest
 	public void testCreateWithExpWhichReturnsNonBooleanValue() 
 		throws Exception
 	{
-		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.INTEGER.getType()).times(1, 2);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.INTEGER.getDataType()).times(1, 2);
 		replay(exp);
 		new Condition(exp);
 		verify(exp);
@@ -35,7 +35,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionThrowsEvaluationException() throws Exception
 	{
-		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getDataType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
 				createStrictMock(FunctionSpec.class), new NullPointerException()));
 		context.setEvaluationStatus(StatusCode.createProcessingError());
@@ -48,7 +48,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionThrowsRuntimeException() throws Exception
 	{
-		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getDataType()).times(2);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
 		context.setEvaluationStatus(StatusCode.createProcessingError());
 		replay(exp, context);
@@ -60,7 +60,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionEvaluatesToFalse() throws Exception
 	{
-		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getDataType()).times(2);
 		expect(exp.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
 		replay(exp, context);
 		Condition c = new Condition(exp);
@@ -71,7 +71,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionEvaluatesToTrue() throws Exception
 	{
-		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getType()).times(2);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlDataTypes.BOOLEAN.getDataType()).times(2);
 		expect(exp.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
 		replay(exp, context);
 		Condition c = new Condition(exp);

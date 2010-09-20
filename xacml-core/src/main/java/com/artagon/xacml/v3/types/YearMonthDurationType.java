@@ -1,9 +1,13 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
@@ -31,6 +35,26 @@ public interface YearMonthDurationType extends AttributeValueType
 		
 		public static YearMonthDurationType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static YearMonthDurationValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static YearMonthDurationValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<YearMonthDurationValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<YearMonthDurationValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<YearMonthDurationValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

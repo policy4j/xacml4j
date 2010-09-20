@@ -1,6 +1,10 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** 
@@ -48,6 +52,26 @@ public interface DNSNameType extends AttributeValueType
 		
 		public static DNSNameType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static DNSNameValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static DNSNameValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<DNSNameValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<DNSNameValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<DNSNameValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

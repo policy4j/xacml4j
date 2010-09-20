@@ -31,7 +31,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 			return handleNext(request, pdp);
 		}
 		Collection<AttributeValue> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
-				XacmlDataTypes.XPATHEXPRESSION.getType());
+				XacmlDataTypes.XPATHEXPRESSION.getDataType());
 		if(resourceId.isEmpty()){
 			return handleNext(request, pdp);
 		}
@@ -41,7 +41,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 							request.getIncludeInResultAttributes(),
 							"Found more than AttributeId=\"%s\" " +
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
-							XacmlDataTypes.XPATHEXPRESSION.getTypeId()));
+							XacmlDataTypes.XPATHEXPRESSION.getDataType()));
 		}
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())

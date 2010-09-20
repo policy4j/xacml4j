@@ -22,7 +22,7 @@ public class AttributeDesignatorTest
 	
 	@Before
 	public void init(){
-		this.type = XacmlDataTypes.INTEGER.getType();	
+		this.type = IntegerType.Factory.getInstance();	
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
@@ -30,7 +30,7 @@ public class AttributeDesignatorTest
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getType(), true);
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getDataType(), true);
 		expect(context.resolve(desig)).andReturn(XacmlDataTypes.INTEGER.emptyBag());
 		replay(context);
 		try{
@@ -48,7 +48,8 @@ public class AttributeDesignatorTest
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getType(), true);
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", 
+				XacmlDataTypes.INTEGER.getDataType(), true);
 		expect(context.resolve(desig)).andReturn(null);
 		replay(context);
 		try{
@@ -67,14 +68,13 @@ public class AttributeDesignatorTest
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getType(), true);
-		BagOfAttributeValues<AttributeValue> bag = XacmlDataTypes.INTEGER.bag(XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2));
-		expect(context.resolve(desig)).andReturn(bag);
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getDataType(), true);
+		expect(context.resolve(desig)).andReturn(XacmlDataTypes.INTEGER.bagOf(
+				XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)));
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
-		assertEquals(XacmlDataTypes.INTEGER.bag(
-				XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)), v);
+		assertEquals(IntegerType.Factory.bagOf(IntegerType.Factory.create(1), IntegerType.Factory.create(2)), v);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
-		assertEquals(XacmlDataTypes.INTEGER.emptyBag(), v);
+		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -101,7 +101,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
-		assertEquals(XacmlDataTypes.INTEGER.emptyBag(), v);
+		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -126,7 +126,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
-		assertEquals(XacmlDataTypes.INTEGER.emptyBag(), v);
+		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -151,7 +151,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
-		assertEquals(XacmlDataTypes.INTEGER.emptyBag(), v);
+		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
 }

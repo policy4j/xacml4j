@@ -39,7 +39,7 @@ public class AnnotationBasedFunctionFactoryTest
 		
 		FunctionSpec spec2 = f1.getFunction("test2");
 		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, XacmlDataTypes.INTEGER.bag(
+				spec2.invoke(context, XacmlDataTypes.INTEGER.bagOf(
 						XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2))));
 		verify(context);
 		
@@ -57,7 +57,7 @@ public class AnnotationBasedFunctionFactoryTest
 		
 		FunctionSpec spec2 = f2.getFunction("test2");
 		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, XacmlDataTypes.INTEGER.bag(
+				spec2.invoke(context, XacmlDataTypes.INTEGER.bagOf(
 						XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2))));
 		verify(context);
 		

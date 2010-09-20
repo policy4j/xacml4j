@@ -12,7 +12,6 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class ParamTypeSequenceTest
 {
@@ -25,8 +24,8 @@ public class ParamTypeSequenceTest
 	@Before
 	public void setUp() throws Exception
 	{
-		this.t1 = XacmlDataTypes.STRING.getType();
-		this.t2 = XacmlDataTypes.DOUBLE.getType();
+		this.t1 = StringType.Factory.getInstance();
+		this.t2 = DoubleType.Factory.getInstance();
 		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
 		this.specAttrOneOrMore = new FunctionParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
 		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, t1);	

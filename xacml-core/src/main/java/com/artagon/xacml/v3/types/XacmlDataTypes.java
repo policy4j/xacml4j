@@ -73,21 +73,21 @@ public enum XacmlDataTypes
 
 	static {
 		for (XacmlDataTypes t : EnumSet.allOf(XacmlDataTypes.class)) {
-			BY_TYPE_ID.put(t.getTypeId(), t.getType());
+			BY_TYPE_ID.put(t.getDataType().getDataTypeId(), t.getDataType());
 		}
 		// legacy XACML 2.0 type mappings
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
-				XacmlDataTypes.XPATHEXPRESSION.getType());
+				XacmlDataTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression",
-				XacmlDataTypes.XPATHEXPRESSION.getType());
+				XacmlDataTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration",
-						XacmlDataTypes.DAYTIMEDURATION.getType());
+						XacmlDataTypes.DAYTIMEDURATION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration",
-						XacmlDataTypes.YEARMONTHDURATION.getType());
+						XacmlDataTypes.YEARMONTHDURATION.getDataType());
 	}
 
 	private AttributeValueType type;
@@ -95,64 +95,32 @@ public enum XacmlDataTypes
 	private XacmlDataTypes(AttributeValueType type) {
 		this.type = type;
 	}
-
-	/**
-	 * Gets type XACML identifier
-	 * 
-	 * @return XACML identifier for a type
-	 */
-	public String getTypeId() {
-		return type.getDataTypeId();
-	}
-
-	/**
-	 * Creates type instance value from a given {@link Object}
-	 * 
-	 * @param <V>
-	 *            an attribute value type
-	 * @param o
-	 *            an attribute value
-	 * @return an XACML data type value instance
-	 */
-	@SuppressWarnings("unchecked")
-	public <V extends AttributeValue> V create(Object o, Object... params) {
-		return ((V) type.create(o, params));
-	}
-
-	/**
-	 * Creates a XACML bag of given 
-	 * {@link AttributeValue} instances
-	 * 
-	 * @param <T>
-	 * @param attributes an attribute values
-	 * @return {@link BagOfAttributeValues} a XACML bag
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bag(AttributeValue... attributes) {
-		return (BagOfAttributeValues<T>) type.bagOf().create(attributes);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bag(Collection<AttributeValue> attributes) {
-		return (BagOfAttributeValues<T>) type.bagOf().create(attributes);
+	
+	public AttributeValueType getDataType() {
+		return type;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> emptyBag() {
-		return (BagOfAttributeValues<T>) type.bagOf().createEmpty();
+	public AttributeValue create(Object v, Object ...params){
+		return type.create(v, params);
 	}
-
-	@SuppressWarnings("unchecked")
-	public <V extends AttributeValue> V fromXacmlString(String v,
-			Object... params) {
-		return (V)type.fromXacmlString(v, params);
+	
+	public AttributeValue fromXacmlString(String v, Object ...params){
+		return type.fromXacmlString(v, params);
 	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValueType> T getType() {
-		return (T) type;
+	
+	public BagOfAttributeValues<AttributeValue> bagOf(AttributeValue ...values){
+		return type.bagOf(values);
 	}
-
+	
+	public BagOfAttributeValues<AttributeValue> bagOf(Collection<AttributeValue> values){
+		return type.bagOf(values);
+	}
+	
+	public  BagOfAttributeValues<AttributeValue> emptyBag(){
+		return type.emptyBag();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public static <T extends AttributeValueType> T getType(String typeId) 
 		throws XacmlSyntaxException

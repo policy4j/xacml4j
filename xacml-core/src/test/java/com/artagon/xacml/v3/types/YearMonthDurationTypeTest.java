@@ -7,6 +7,6 @@ public class YearMonthDurationTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		XacmlDataTypes.YEARMONTHDURATION.getType().fromXacmlString("-P1Y2M");
+		XacmlDataTypes.YEARMONTHDURATION.fromXacmlString("-P1Y2M");
 	}
 }

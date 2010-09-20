@@ -24,16 +24,16 @@ public class FunctionSpecBuilderTest
 	
 	@Before
 	public void init(){
-		this.type1 = XacmlDataTypes.INTEGER.getType();
-		this.type2 = XacmlDataTypes.STRING.getType();
+		this.type1 = IntegerType.Factory.getInstance();
+		this.type2 = StringType.Factory.getInstance();
 		this.impl =  createStrictMock(FunctionInvocation.class);
 		
 		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
 		
-		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypes.INTEGER.getType(), impl);
+		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypes.INTEGER.getDataType(), impl);
 		
 		b = new FunctionSpecBuilder("testFunc2"); 
-		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypes.INTEGER.getType(), impl);
+		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypes.INTEGER.getDataType(), impl);
 	}
 	
 	@Test

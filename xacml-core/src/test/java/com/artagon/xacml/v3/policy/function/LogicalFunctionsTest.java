@@ -79,14 +79,14 @@ public class LogicalFunctionsTest
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerType.IntegerValue n = XacmlDataTypes.INTEGER.create(0);
+		IntegerType.IntegerValue n = IntegerType.Factory.create(0);
 		replay(context);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlDataTypes.INTEGER.create(1);
+		n = IntegerType.Factory.create(1);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n, XacmlDataTypes.BOOLEAN.create(true)));
 		verify(context);
@@ -97,7 +97,7 @@ public class LogicalFunctionsTest
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlDataTypes.INTEGER.create(2);
+		n = IntegerType.Factory.create(2);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n, 
 						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true)));
@@ -110,7 +110,7 @@ public class LogicalFunctionsTest
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlDataTypes.INTEGER.create(2);
+		n = IntegerType.Factory.create(2);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n, 
 						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(true)));
@@ -120,7 +120,7 @@ public class LogicalFunctionsTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerType.IntegerValue n = XacmlDataTypes.INTEGER.create(4);
+		IntegerType.IntegerValue n = IntegerType.Factory.create(4);
 		replay(context); 
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, XacmlDataTypes.BOOLEAN.create(false)));

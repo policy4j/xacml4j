@@ -26,9 +26,9 @@ public class TestAnnotatedResolver
 	
 	@XacmlAttributeDescriptor(id="testId2", dataType=XacmlDataTypes.INTEGER)
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
-	public BagOfAttributeValues<? extends AttributeValue> getTestId2Attribute(
+	public BagOfAttributeValues<AttributeValue> getTestId2Attribute(
 			PolicyInformationPointContext context)
 	{
-		return XacmlDataTypes.INTEGER.bag(XacmlDataTypes.INTEGER.create(1));
+		return XacmlDataTypes.INTEGER.bagOf(XacmlDataTypes.INTEGER.create(1));
 	}
 }

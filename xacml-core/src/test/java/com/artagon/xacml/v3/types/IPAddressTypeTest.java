@@ -14,7 +14,7 @@ public class IPAddressTypeTest
 	
 	@Before
 	public void test(){
-		this.t = XacmlDataTypes.IPADDRESS.getType();
+		this.t = IPAddressType.Factory.getInstance();
 	}
 	
 	@Test

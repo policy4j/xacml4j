@@ -16,18 +16,18 @@ public class DoubleTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataTypes.DOUBLE.getType();
+		this.t1 = DoubleType.Factory.getInstance();
 	}
 	
 	@Test
 	public void testCreateDouble()
 	{
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Short.valueOf("1")));
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Byte.valueOf("1")));
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Integer.valueOf("1")));
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Long.valueOf("1")));
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Float.valueOf("1")));
-		assertEquals(XacmlDataTypes.DOUBLE.create(1), XacmlDataTypes.DOUBLE.create(Double.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Short.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Byte.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Integer.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Long.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Float.valueOf("1")));
+		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Double.valueOf("1")));
 	}
 	
 	@Test

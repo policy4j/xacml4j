@@ -8,6 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -18,7 +19,7 @@ public class Xacml20XPathTo30TransformerTest
 	@Test
 	public void testXacml20StringXPathToXPathExpression()
 	{
-		StringValue xpath = XacmlDataTypes.STRING.create("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
+		StringValue xpath = StringType.Factory.create("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
 		XPathExpressionValue xpathExp = fromXacml20String(xpath);
 		assertEquals(XacmlDataTypes.XPATHEXPRESSION.create("//md:record/md:patient/md:patient-number/text()", AttributeCategoryId.RESOURCE), xpathExp);
 	}

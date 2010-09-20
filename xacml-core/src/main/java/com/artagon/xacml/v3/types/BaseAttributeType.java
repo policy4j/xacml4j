@@ -1,10 +1,13 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Objects;
@@ -43,6 +46,30 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 		return bagType;
 	}
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public final BagOfAttributeValues<AttributeValue> bagOf(AttributeValue... values) 
+	{	
+		return (BagOfAttributeValues<AttributeValue>)bagOf().create(values);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public BagOfAttributeValues<AttributeValue> bagOf(
+			Collection<AttributeValue> values) {
+		// TODO Auto-generated method stub
+		return (BagOfAttributeValues<AttributeValue>)bagOf().create(values);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public BagOfAttributeValues<AttributeValue> emptyBag() {
+		// TODO Auto-generated method stub
+		return (BagOfAttributeValues<AttributeValue>)bagOf().createEmpty();
+	}
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("TypeId=", typeId).toString();

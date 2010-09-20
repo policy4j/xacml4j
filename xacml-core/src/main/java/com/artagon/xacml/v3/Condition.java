@@ -26,11 +26,11 @@ public class Condition extends XacmlObject implements PolicyElement
 		throws XacmlSyntaxException
 	{
 		checkNotNull(predicate, "Condition predicate can not be null");
-		checkArgument(predicate.getEvaluatesTo().equals(XacmlDataTypes.BOOLEAN.getType()),
+		checkArgument(predicate.getEvaluatesTo().equals(XacmlDataTypes.BOOLEAN.getDataType()),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"", 
-					XacmlDataTypes.BOOLEAN.getType(), predicate.getEvaluatesTo());
+					XacmlDataTypes.BOOLEAN, predicate.getEvaluatesTo());
 		this.predicate = predicate;
 	}
 	

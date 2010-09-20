@@ -1,6 +1,10 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
@@ -42,6 +46,26 @@ public interface RFC822NameType extends AttributeValueType
 		
 		public static RFC822NameType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static RFC822NameValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static RFC822NameValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<RFC822NameValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<RFC822NameValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<RFC822NameValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

@@ -35,7 +35,7 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpec() throws EvaluationException
 	{
 		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getType()).build(resolver, invocation);
+		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
 		expect(invocation.invoke(spec, context, params)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
 		replay(invocation);
 		replay(resolver);
@@ -46,7 +46,7 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
 		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getType()).build(resolver, invocation);
+		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
 		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(context, spec, "Fail"));
 		replay(invocation);
 		replay(resolver);
@@ -57,7 +57,7 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{
 		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getType()).build(resolver, invocation);
+		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
 		expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException("Fail"));
 		replay(invocation);
 		replay(resolver);

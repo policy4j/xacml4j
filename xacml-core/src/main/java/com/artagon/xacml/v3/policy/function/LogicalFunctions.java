@@ -10,6 +10,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -50,7 +51,7 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return XacmlDataTypes.BOOLEAN.create(r);
+		return BooleanType.Factory.create(r);
 	}
 
 	
@@ -59,7 +60,7 @@ public class LogicalFunctions
 	public static BooleanValue not(
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN)BooleanValue v)
 	{
-		return XacmlDataTypes.BOOLEAN.create(!v.getValue());
+		return BooleanType.Factory.create(!v.getValue());
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return XacmlDataTypes.BOOLEAN.create(r);
+		return BooleanType.Factory.create(r);
 	}
 	
 	
@@ -132,7 +133,7 @@ public class LogicalFunctions
 					"First parameter=\"%s\" is bigger than=\"%d\"", 
 					n, Integer.MAX_VALUE));
 		}
-		BooleanValue TRUE = XacmlDataTypes.BOOLEAN.create(true);
+		BooleanValue TRUE = BooleanType.Factory.create(true);
 		if(n.getValue() == 0){
 			return TRUE;
 		}
@@ -147,6 +148,6 @@ public class LogicalFunctions
 				 }
 			 }
 		}
-		return XacmlDataTypes.BOOLEAN.create(false);
+		return BooleanType.Factory.create(false);
 	}
 }

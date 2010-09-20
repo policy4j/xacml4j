@@ -4,7 +4,9 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -21,7 +23,7 @@ public class NumericConversionFunctions
 	public static IntegerValue doubleToInteger(
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
 	{
-		return XacmlDataTypes.INTEGER.create(v.getValue().intValue());
+		return IntegerType.Factory.create(v.getValue().intValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
@@ -29,6 +31,6 @@ public class NumericConversionFunctions
 	public static DoubleValue integerToDouble(
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue v)
 	{
-		return XacmlDataTypes.DOUBLE.create(v.getValue().doubleValue());
+		return DoubleType.Factory.create(v.getValue().doubleValue());
 	}
 }

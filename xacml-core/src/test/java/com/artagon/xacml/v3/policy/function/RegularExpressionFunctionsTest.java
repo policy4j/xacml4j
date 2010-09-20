@@ -8,10 +8,13 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class RegularExpressionFunctionsTest 
 {
@@ -38,45 +41,45 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testXacmlRegExpWithSpaceBugTrimming()
 	{
-		StringValue regexp1 = XacmlDataTypes.STRING.create("   This  is n*o*t* *IT!  ");
-		StringValue regexp2 = XacmlDataTypes.STRING.create("  *This .*is not IT! *");
-		StringValue input1 = XacmlDataTypes.STRING.create("   This  is not IT!  ");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp2, input1));
+		StringValue regexp1 = StringType.Factory.create("   This  is n*o*t* *IT!  ");
+		StringValue regexp2 = StringType.Factory.create("  *This .*is not IT! *");
+		StringValue input1 = StringType.Factory.create("   This  is not IT!  ");
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp2, input1));
 	}
 	
 	@Test
 	public void testRegExpMatchFromIIC168ConformanceTest()
 	{
-		StringValue regexp1 = XacmlDataTypes.STRING.create("   This  is n*o*t* *IT!  ");
-		StringValue input1 = XacmlDataTypes.STRING.create("   This  is IT!  ");
-		StringValue input2 = XacmlDataTypes.STRING.create("   This  is not IT!  ");  
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
+		StringValue regexp1 = StringType.Factory.create("   This  is n*o*t* *IT!  ");
+		StringValue input1 = StringType.Factory.create("   This  is IT!  ");
+		StringValue input2 = StringType.Factory.create("   This  is not IT!  ");  
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
 	}
 	
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException
 	{
-		StringValue regexp = XacmlDataTypes.STRING.create("G*,Trumpickas");
-		StringValue input = XacmlDataTypes.STRING.create("Giedrius,Trumpickas");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
+		StringValue regexp = StringType.Factory.create("G*,Trumpickas");
+		StringValue input = StringType.Factory.create("Giedrius,Trumpickas");
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
 	}
 	
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException
 	{
-		StringValue regexp = XacmlDataTypes.STRING.create("http://www.test.org/public/*");
-		AnyURIValue input = XacmlDataTypes.ANYURI.create("http://www.test.org/public/test/a");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
+		StringValue regexp = StringType.Factory.create("http://www.test.org/public/*");
+		AnyURIValue input = AnyURIType.Factory.create("http://www.test.org/public/test/a");
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
 	}
 	
 	@Test
 	public void testrfc822NameRegExpMatch() throws EvaluationException
 	{
-		StringValue regexp = XacmlDataTypes.STRING.create(".*@comcast.net");
-		RFC822NameValue input = XacmlDataTypes.RFC822NAME.create("trumpyla@comcast.net");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
+		StringValue regexp = StringType.Factory.create(".*@comcast.net");
+		RFC822NameValue input = RFC822NameType.Factory.create("trumpyla@comcast.net");
+		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}
 	
 	

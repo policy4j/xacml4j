@@ -7,22 +7,38 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.Base64BinaryType;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DNSNameType.DNSNameValue;
+import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
+import com.artagon.xacml.v3.types.DateType;
 import com.artagon.xacml.v3.types.DateType.DateValue;
+import com.artagon.xacml.v3.types.DayTimeDurationType;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.HexBinaryType;
 import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
+import com.artagon.xacml.v3.types.IPAddressType;
 import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
+import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.YearMonthDurationType;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 import com.google.common.base.Preconditions;
 
@@ -81,13 +97,13 @@ public class BagFunctions
 	}
 	
 	static IntegerValue typeBagSizeImpl(BagOfAttributeValues<? extends AttributeValue> bag) {
-		return XacmlDataTypes.INTEGER.create(bag.size());
+		return IntegerType.Factory.create(bag.size());
 	}
 	
 	static BooleanValue containsImpl(AttributeValue v,
 			BagOfAttributeValues<? extends AttributeValue> bag){
 
-		return XacmlDataTypes.BOOLEAN.create(bag.contains(v));
+		return BooleanType.Factory.create(bag.contains(v));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
@@ -120,7 +136,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<StringValue> stringBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.STRING)
 			StringValue ...values){
-		return XacmlDataTypes.STRING.bag(values);
+		return StringType.Factory.bagOf(values);
 	}
 	
 	// boolean
@@ -155,7 +171,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<BooleanValue> booleanBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.BOOLEAN)
 			BooleanValue ...values){
-		return XacmlDataTypes.BOOLEAN.bag(values);
+		return BooleanType.Factory.bagOf(values);
 	}
 	
 	// integer
@@ -190,7 +206,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<IntegerValue> integerBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.INTEGER)
 			IntegerValue ...values){
-		return XacmlDataTypes.INTEGER.bag(values);
+		return IntegerType.Factory.bagOf(values);
 	}
 	
 	// time
@@ -222,10 +238,10 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag")
 	@XacmlFuncReturnType(type=XacmlDataTypes.TIME, isBag=true)
-	public static BagOfAttributeValues<IntegerValue> timeBag(
+	public static BagOfAttributeValues<TimeValue> timeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.TIME)
 			TimeValue ...values){
-		return XacmlDataTypes.TIME.bag(values);
+		return TimeType.Factory.bagOf(values);
 	}
 	
 	// double
@@ -260,7 +276,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<DoubleValue> doubleBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.DOUBLE)
 			DoubleValue ...values){
-		return XacmlDataTypes.DOUBLE.bag(values);
+		return DoubleType.Factory.bagOf(values);
 	}
 	
 	// date
@@ -295,7 +311,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<DateValue> dateBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.DATE)
 			DateValue ...values){
-		return XacmlDataTypes.DATE.bag(values);
+		return DateType.Factory.bagOf(values);
 	}
 	
 	// dateTime
@@ -330,7 +346,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<DateTimeValue> dateTimeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.DATETIME)
 			DateTimeValue ...values){
-		return XacmlDataTypes.DATETIME.bag(values);
+		return DateTimeType.Factory.bagOf(values);
 	}
 	
 	// anyURI
@@ -365,7 +381,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<AnyURIValue> anyURIBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.ANYURI)
 			AnyURIValue ...values){
-		return XacmlDataTypes.ANYURI.bag(values);
+		return AnyURIType.Factory.bagOf(values);
 	}
 	
 	// hexBinary
@@ -400,7 +416,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<HexBinaryValue> hexBinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.HEXBINARY)
 			HexBinaryValue ...values){
-		return XacmlDataTypes.HEXBINARY.bag(values);
+		return HexBinaryType.Factory.bagOf(values);
 	}
 	
 	// base64Binary
@@ -435,7 +451,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<Base64BinaryValue> base64BinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.BASE64BINARY)
 			Base64BinaryValue ...values){
-		return XacmlDataTypes.BASE64BINARY.bag(values);
+		return Base64BinaryType.Factory.bagOf(values);
 	}
 	
 	// dayTimeDuration
@@ -470,7 +486,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<DayTimeDurationValue> dayTimeDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.DAYTIMEDURATION)
 			DayTimeDurationValue ...values){
-		return XacmlDataTypes.DAYTIMEDURATION.bag(values);
+		return DayTimeDurationType.Factory.bagOf(values);
 	}
 	
 	// yearMonthDuration
@@ -508,7 +524,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<YearMonthDurationValue> yearMonthDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.YEARMONTHDURATION)
 			YearMonthDurationValue ...values){
-		return XacmlDataTypes.YEARMONTHDURATION.bag(values);
+		return YearMonthDurationType.Factory.bagOf(values);
 	}
 	
 	// x500Name
@@ -546,7 +562,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<X500NameValue> x500NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.X500NAME)
 			X500NameValue ...values){
-		return XacmlDataTypes.X500NAME.bag(values);
+		return X500NameType.Factory.bagOf(values);
 	}
 	
 	// rfc822Name
@@ -584,7 +600,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<RFC822NameValue> rfc822NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.RFC822NAME)
 			RFC822NameValue ...values){
-		return XacmlDataTypes.RFC822NAME.bag(values);
+		return RFC822NameType.Factory.bagOf(values);
 	}
 	
 	// ipAddress
@@ -622,7 +638,7 @@ public class BagFunctions
 	public static BagOfAttributeValues<IPAddressValue> ipAddressBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.IPADDRESS)
 			IPAddressValue ...values){
-		return XacmlDataTypes.IPADDRESS.bag(values);
+		return IPAddressType.Factory.bagOf(values);
 	}
 	
 	// dnsName
@@ -660,6 +676,6 @@ public class BagFunctions
 	public static BagOfAttributeValues<DNSNameValue> dnsNameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, type=XacmlDataTypes.DNSNAME)
 			DNSNameValue ...values){
-		return XacmlDataTypes.DNSNAME.bag(values);
+		return DNSNameType.Factory.bagOf(values);
 	}
 }

@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import java.util.Collection;
+
 
 public interface AttributeValueType extends ValueType
 {
@@ -58,4 +60,8 @@ public interface AttributeValueType extends ValueType
 	 * @return {@link BagOfAttributeValuesType} instance
 	 */
 	BagOfAttributeValuesType<? extends AttributeValue> bagOf();
+	
+	BagOfAttributeValues<AttributeValue> bagOf(AttributeValue ...values);
+	BagOfAttributeValues<AttributeValue> bagOf(Collection<AttributeValue> values);
+	BagOfAttributeValues<AttributeValue> emptyBag();
 }

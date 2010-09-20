@@ -9,7 +9,6 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -47,12 +46,6 @@ public final class AttributeResolverDescriptorBuilder
 				"Given category=\"%s\" already has an attribute with id=\"%s\"", 
 				category, attributeId);
 		return this;
-	}
-	
-	public AttributeResolverDescriptorBuilder attribute(
-			AttributeCategoryId category,
-			String attributeId, XacmlDataTypes dataType){
-		return attribute(category, attributeId, dataType.getType());
 	}
 		
 	public AttributeResolverDescriptor build(){

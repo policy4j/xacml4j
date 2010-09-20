@@ -16,7 +16,7 @@ public class BooleanTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataTypes.BOOLEAN.getType();
+		this.t1 = BooleanType.Factory.getInstance();
 	}
 		
 	@Test

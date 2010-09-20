@@ -7,6 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;
@@ -49,7 +50,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-at-least-one-member-of")
@@ -58,7 +59,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-set-equals")
@@ -67,7 +68,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-intersection")
@@ -94,7 +95,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-at-least-one-member-of")
@@ -103,7 +104,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-set-equals")
@@ -112,7 +113,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN, isBag=true)BagOfAttributeValues<BooleanValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-intersection")
@@ -139,7 +140,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of")
@@ -148,7 +149,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-set-equals")
@@ -157,7 +158,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.STRING, isBag=true)BagOfAttributeValues<StringValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	
@@ -185,7 +186,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-at-least-one-member-of")
@@ -194,7 +195,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-set-equals")
@@ -203,7 +204,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE, isBag=true)BagOfAttributeValues<DoubleValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-intersection")
@@ -230,7 +231,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-at-least-one-member-of")
@@ -239,7 +240,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-set-equals")
@@ -248,7 +249,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATE, isBag=true)BagOfAttributeValues<DateValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-intersection")
@@ -275,7 +276,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-at-least-one-member-of")
@@ -284,7 +285,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-set-equals")
@@ -293,7 +294,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.TIME, isBag=true)BagOfAttributeValues<TimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-intersection")
@@ -320,7 +321,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-at-least-one-member-of")
@@ -329,7 +330,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-set-equals")
@@ -338,7 +339,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DATETIME, isBag=true)BagOfAttributeValues<DateTimeValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-intersection")
@@ -365,7 +366,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-at-least-one-member-of")
@@ -374,7 +375,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-set-equals")
@@ -383,7 +384,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.ANYURI, isBag=true)BagOfAttributeValues<AnyURIValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-intersection")
@@ -410,7 +411,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-at-least-one-member-of")
@@ -419,7 +420,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-set-equals")
@@ -428,7 +429,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.X500NAME, isBag=true)BagOfAttributeValues<X500NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-intersection")
@@ -455,7 +456,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-at-least-one-member-of")
@@ -464,7 +465,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-set-equals")
@@ -473,7 +474,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME, isBag=true)BagOfAttributeValues<RFC822NameValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-intersection")
@@ -500,7 +501,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-at-least-one-member-of")
@@ -509,7 +510,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-set-equals")
@@ -518,7 +519,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.HEXBINARY, isBag=true)BagOfAttributeValues<HexBinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-intersection")
@@ -545,7 +546,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-at-least-one-member-of")
@@ -554,7 +555,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-set-equals")
@@ -563,7 +564,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.BASE64BINARY, isBag=true)BagOfAttributeValues<Base64BinaryValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection")
@@ -590,7 +591,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of")
@@ -599,7 +600,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals")
@@ -608,7 +609,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION, isBag=true)BagOfAttributeValues<DayTimeDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection")
@@ -635,7 +636,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of")
@@ -644,7 +645,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals")
@@ -653,7 +654,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION, isBag=true)BagOfAttributeValues<YearMonthDurationValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	
@@ -681,7 +682,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAll(a));
+		return BooleanType.Factory.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-at-least-one-member-of")
@@ -690,7 +691,7 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(b.containsAtLeastOneOf(a));
+		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-set-equals")
@@ -699,6 +700,6 @@ public class SetFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> a,
 			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS, isBag=true)BagOfAttributeValues<IPAddressValue> b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
 	}
 }

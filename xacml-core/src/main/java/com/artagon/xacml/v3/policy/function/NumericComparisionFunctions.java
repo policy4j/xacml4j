@@ -4,6 +4,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
@@ -18,7 +19,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue() > b.getValue());
+		return BooleanType.Factory.create(a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
@@ -27,7 +28,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue() < b.getValue());
+		return BooleanType.Factory.create(a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
@@ -36,7 +37,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
@@ -45,7 +46,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
@@ -54,7 +55,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue() > b.getValue());
+		return BooleanType.Factory.create(a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
@@ -63,7 +64,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue() < b.getValue());
+		return BooleanType.Factory.create(a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
@@ -72,7 +73,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
@@ -81,6 +82,6 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 }

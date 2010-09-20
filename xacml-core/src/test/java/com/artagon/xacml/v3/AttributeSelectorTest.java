@@ -27,11 +27,11 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), true);
-		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bag(XacmlDataTypes.DATE.getType().fromXacmlString("1992-03-21")));
+				XacmlDataTypes.DATE.getDataType(), true);
+		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(XacmlDataTypes.DATE.bag(XacmlDataTypes.DATE.getType().fromXacmlString("1992-03-21")), v);
+		assertEquals(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	
@@ -41,11 +41,11 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), false);
-		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bag(XacmlDataTypes.DATE.getType().fromXacmlString("1992-03-21")));
+				XacmlDataTypes.DATE.getDataType(), false);
+		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(XacmlDataTypes.DATE.bag(XacmlDataTypes.DATE.getType().fromXacmlString("1992-03-21")), v);
+		assertEquals(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	
@@ -55,7 +55,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), true);
+				XacmlDataTypes.DATE.getDataType(), true);
 		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.emptyBag());
 		replay(context);
 		ref.evaluate(context);
@@ -68,7 +68,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), false);
+				XacmlDataTypes.DATE.getDataType(), false);
 		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.emptyBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -82,7 +82,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), false);
+				XacmlDataTypes.DATE.getDataType(), false);
 		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
 				StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
@@ -97,7 +97,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), false);
+				XacmlDataTypes.DATE.getDataType(), false);
 		expect(context.resolve(ref)).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -111,7 +111,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), true);
+				XacmlDataTypes.DATE.getDataType(), true);
 		expect(context.resolve(ref)).andThrow(new NullPointerException());
 		replay(context);
 		ref.evaluate(context);
@@ -124,7 +124,7 @@ public class AttributeSelectorTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
-				XacmlDataTypes.DATE.getType(), true);
+				XacmlDataTypes.DATE.getDataType(), true);
 		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
 				StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);

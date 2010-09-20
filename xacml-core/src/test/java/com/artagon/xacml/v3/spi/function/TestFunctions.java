@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -25,7 +26,7 @@ public class TestFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
 	{
-		return XacmlDataTypes.BOOLEAN.create(a.equals(b));
+		return BooleanType.Factory.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")
@@ -33,7 +34,7 @@ public class TestFunctions
 	public static IntegerType.IntegerValue test2(
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
-		return XacmlDataTypes.INTEGER.create(bag.size());
+		return IntegerType.Factory.create(bag.size());
 	}
 	
 	@XacmlFuncSpec(id="test3", evaluateArguments=false)
@@ -48,7 +49,7 @@ public class TestFunctions
 			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
 			
 		}
-		return XacmlDataTypes.INTEGER.create(v);
+		return IntegerType.Factory.create(v);
 	}
 	
 	@XacmlFuncSpec(id="test4", evaluateArguments=false)
@@ -63,7 +64,7 @@ public class TestFunctions
 			v += ((IntegerType.IntegerValue)e.evaluate(context)).getValue(); 
 			
 		}
-		return XacmlDataTypes.INTEGER.create(v);
+		return IntegerType.Factory.create(v);
 	}
 	
 	@XacmlFuncSpec(id="test5")
@@ -80,7 +81,7 @@ public class TestFunctions
 			attributes.add(v); 
 			
 		}
-		return XacmlDataTypes.INTEGER.bag(attributes);
+		return IntegerType.Factory.bagOf(attributes);
 	}
 	
 	@XacmlFuncSpec(id="test5VarArg")
@@ -90,7 +91,7 @@ public class TestFunctions
 			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
-		return XacmlDataTypes.BOOLEAN.create(false);
+		return BooleanType.Factory.create(false);
 	}
 	
 	@XacmlFuncSpec(id="test6VarArg")
@@ -101,6 +102,6 @@ public class TestFunctions
 			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
-		return XacmlDataTypes.BOOLEAN.create(false);
+		return BooleanType.Factory.create(false);
 	}
 }

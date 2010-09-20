@@ -10,8 +10,8 @@ import org.junit.Test;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class SetFunctionTest 
 {
@@ -113,41 +113,41 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributeValues<BooleanValue> a = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true));
-		BagOfAttributeValues<BooleanValue> b = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false));
+		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
 		BagOfAttributeValues<BooleanValue> c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
-		assertTrue(c.contains(XacmlDataTypes.BOOLEAN.create(true)));
-		assertTrue(c.contains(XacmlDataTypes.BOOLEAN.create(false)));
+		assertTrue(c.contains(BooleanType.Factory.create(true)));
+		assertTrue(c.contains(BooleanType.Factory.create(false)));
 	}
 	
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributeValues<BooleanValue> a = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false));
-		BagOfAttributeValues<BooleanValue> b = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(true));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), SetFunctions.booleanSetEquals(a, b));
+		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(true));
+		assertEquals(BooleanType.Factory.create(true), SetFunctions.booleanSetEquals(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributeValues<BooleanValue> a = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false));
-		BagOfAttributeValues<BooleanValue> b = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true));
-		assertEquals(XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true)), SetFunctions.booleanIntersection(a, b));
+		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		assertEquals(BooleanType.Factory.bagOf(BooleanType.Factory.create(true)), SetFunctions.booleanIntersection(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributeValues<BooleanValue> a = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true));
-		BagOfAttributeValues<BooleanValue> b = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(false));
+		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(false));
 		BagOfAttributeValues<BooleanValue> c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 		
-		b = XacmlDataTypes.BOOLEAN.bag(XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false));
+		b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
 		c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(1, c.size());
-		assertTrue(c.contains(XacmlDataTypes.BOOLEAN.create(true)));
+		assertTrue(c.contains(BooleanType.Factory.create(true)));
 	}
 }

@@ -11,6 +11,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType.DNSNameValue;
 import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
@@ -90,7 +91,7 @@ public class RegularExpressionFunctions
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", input, regexp);
 		}
-		 return XacmlDataTypes.BOOLEAN.create(Pattern.matches(
+		 return BooleanType.Factory.create(Pattern.matches(
 				 covertXacmlToJavaSyntax(regexp.getValue()), 
 				 input.toXacmlString()));
 	}
@@ -181,7 +182,10 @@ public class RegularExpressionFunctions
 	       }
 	       
 	       String regexp = buf.toString();
-	       log.debug("XACML regexp=\"{}\", Java regexp=\"{}\"", xpr, regexp);
+	       if(log.isDebugEnabled()){
+	    	   log.debug("XACML regexp=\"{}\", " +
+	    	   		"Java regexp=\"{}\"", xpr, regexp);
+	       }
 	       return regexp;
 	  }
 

@@ -77,7 +77,7 @@ class JavaMethodToFunctionSpecConverter {
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				AttributeValueType type = param.type().getType();
+				AttributeValueType type = param.type().getDataType();
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log
@@ -117,7 +117,7 @@ class JavaMethodToFunctionSpecConverter {
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				AttributeValueType type = param.type().getType();
+				AttributeValueType type = param.type().getDataType();
 				b.withParam(param.isBag() ? type.bagOf() : type, param.min(),
 						param.max());
 				continue;
@@ -146,7 +146,7 @@ class JavaMethodToFunctionSpecConverter {
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			AttributeValueType type = returnType.type().getType();
+			AttributeValueType type = returnType.type().getDataType();
 			return b.build(returnType.isBag() ? type.bagOf() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,

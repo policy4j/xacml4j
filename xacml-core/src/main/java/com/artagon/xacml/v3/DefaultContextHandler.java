@@ -165,7 +165,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 			Node contextNode = content;
 			Collection<AttributeValue> v = request.getAttributeValues(ref.getCategory(), 
 						ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId(), 
-								XacmlDataTypes.XPATHEXPRESSION.getType());
+								XacmlDataTypes.XPATHEXPRESSION.getDataType());
 			if(v.size() > 1){
 				throw new AttributeReferenceEvaluationException(context, ref, 
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());

@@ -28,8 +28,8 @@ public class MatchTest
 		this.context = createStrictMock(EvaluationContext.class);
 		this.builder = new FunctionSpecBuilder("testFunction");
 		this.invocation = createStrictMock(FunctionInvocation.class);
-		this.spec = builder.withParam(XacmlDataTypes.INTEGER.getType()).withParam(XacmlDataTypes.INTEGER.getType()).build(
-				XacmlDataTypes.BOOLEAN.getType(), invocation);
+		this.spec = builder.withParam(XacmlDataTypes.INTEGER.getDataType()).withParam(XacmlDataTypes.INTEGER.getDataType()).build(
+				XacmlDataTypes.BOOLEAN.getDataType(), invocation);
 	}
 	
 	@Test
@@ -37,9 +37,9 @@ public class MatchTest
 	{
 		AttributeValue int1 = XacmlDataTypes.INTEGER.create(1);
 		AttributeValue int2 = XacmlDataTypes.INTEGER.create(2);
-		BagOfAttributeValues<AttributeValue> v = XacmlDataTypes.INTEGER.bag(int2, int1);
+		BagOfAttributeValues<AttributeValue> v = XacmlDataTypes.INTEGER.bagOf(int2, int1);
 		
-		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getType());
+		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getDataType());
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, int1, int2)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
@@ -54,7 +54,7 @@ public class MatchTest
 	@Test
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
-		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getType());
+		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getDataType());
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttribute());
 		replay(invocation, ref, context);

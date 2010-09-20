@@ -9,10 +9,15 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -88,69 +93,69 @@ public class BagFunctionsTest
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
-		StringValue v0 = XacmlDataTypes.STRING.create("a");
-		StringValue v1 = XacmlDataTypes.STRING.create("b");
-		BagOfAttributeValues<StringValue> bag = XacmlDataTypes.STRING.bag(v0);
+		StringValue v0 = StringType.Factory.create("a");
+		StringValue v1 = StringType.Factory.create("b");
+		BagOfAttributeValues<StringValue> bag = StringType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
-		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.stringBagSize(bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.stringIsIn(v0, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.stringIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.STRING.bag(v0, v1), BagFunctions.stringBag(v0, v1));
+		assertEquals(IntegerType.Factory.create(1), BagFunctions.stringBagSize(bag));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.stringIsIn(v0, bag));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.stringIsIn(v1, bag));
+		assertEquals(XacmlDataTypes.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
 	
 	@Test
 	public void testBooleanBagFunctions() throws EvaluationException
 	{
-		BooleanValue v0 = XacmlDataTypes.BOOLEAN.create(true);
-		BooleanValue v1 = XacmlDataTypes.BOOLEAN.create(false);
-		BagOfAttributeValues<BooleanValue> bag = XacmlDataTypes.BOOLEAN.bag(v0);
+		BooleanValue v0 = BooleanType.Factory.create(true);
+		BooleanValue v1 = BooleanType.Factory.create(false);
+		BagOfAttributeValues<BooleanValue> bag = BooleanType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
-		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.booleanBagSize(bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.booleanIsIn(v0, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.booleanIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.bag(v0, v1), BagFunctions.booleanBag(v0, v1));
+		assertEquals(IntegerType.Factory.create(1), BagFunctions.booleanBagSize(bag));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.booleanIsIn(v0, bag));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.booleanIsIn(v1, bag));
+		assertEquals(XacmlDataTypes.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
 	}
 	
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
-		IntegerValue v0 = XacmlDataTypes.INTEGER.create(1);
-		IntegerValue v1 = XacmlDataTypes.INTEGER.create(2);
-		BagOfAttributeValues<IntegerValue> bag = XacmlDataTypes.INTEGER.bag(v0);
+		IntegerValue v0 = IntegerType.Factory.create(1);
+		IntegerValue v1 = IntegerType.Factory.create(2);
+		BagOfAttributeValues<IntegerValue> bag = IntegerType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
-		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.integerBagSize(bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.integerIsIn(v0, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.integerIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.INTEGER.bag(v0, v1), BagFunctions.integerBag(v0, v1));
+		assertEquals(IntegerType.Factory.create(1), BagFunctions.integerBagSize(bag));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.integerIsIn(v0, bag));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.integerIsIn(v1, bag));
+		assertEquals(XacmlDataTypes.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 	
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
-		DoubleValue v0 = XacmlDataTypes.DOUBLE.create(1);
-		DoubleValue v1 = XacmlDataTypes.DOUBLE.create(2);
-		BagOfAttributeValues<DoubleValue> bag = XacmlDataTypes.DOUBLE.bag(v0);
+		DoubleValue v0 = DoubleType.Factory.create(1);
+		DoubleValue v1 = DoubleType.Factory.create(2);
+		BagOfAttributeValues<DoubleValue> bag = DoubleType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
-		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.doubleBagSize(bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.doubleIsIn(v0, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.doubleIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.DOUBLE.bag(v0, v1), BagFunctions.doubleBag(v0, v1));
+		assertEquals(IntegerType.Factory.create(1), BagFunctions.doubleBagSize(bag));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.doubleIsIn(v0, bag));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.doubleIsIn(v1, bag));
+		assertEquals(XacmlDataTypes.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
 	
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIValue v0 = XacmlDataTypes.ANYURI.create("http://www.test0.org");
-		AnyURIValue v1 = XacmlDataTypes.ANYURI.create("http://www.test1.org");
-		AnyURIValue v2 = XacmlDataTypes.ANYURI.create("http://www.test2.org");
-		BagOfAttributeValues<AnyURIValue> bag = XacmlDataTypes.ANYURI.bag(v0);
+		AnyURIValue v0 = AnyURIType.Factory.create("http://www.test0.org");
+		AnyURIValue v1 = AnyURIType.Factory.create("http://www.test1.org");
+		AnyURIValue v2 = AnyURIType.Factory.create("http://www.test2.org");
+		BagOfAttributeValues<AnyURIValue> bag = AnyURIType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
-		assertEquals(XacmlDataTypes.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v1, bag));
-		assertEquals(XacmlDataTypes.ANYURI.bag(v0, v1), BagFunctions.anyURIBag(v0, v1));
+		assertEquals(IntegerType.Factory.create(1), BagFunctions.anyURIBagSize(bag));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, bag));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v1, bag));
+		assertEquals(XacmlDataTypes.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
 		
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
 	}
 }

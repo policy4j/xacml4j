@@ -13,7 +13,7 @@ public class DNSNameTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = XacmlDataTypes.DNSNAME.getType();
+		this.t1 = DNSNameType.Factory.getInstance();
 	}
 	
 	@Test

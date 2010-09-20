@@ -15,7 +15,7 @@ public class DateTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = XacmlDataTypes.DATE.getType();
+		this.t1 = DateType.Factory.getInstance();
 	}
 	
 	@Test
@@ -37,8 +37,8 @@ public class DateTypeTest
 	public void testCreateFromCalendar()
 	{
 		Calendar now = Calendar.getInstance();
-		DateType.DateValue d1 = XacmlDataTypes.DATE.create(now);
-		DateType.DateValue d2 = XacmlDataTypes.DATE.create(now);
+		DateType.DateValue d1 = DateType.Factory.create(now);
+		DateType.DateValue d2 = DateType.Factory.create(now);
 		System.out.println(d1.toXacmlString());
 		assertEquals(d1, d2);
 	}

@@ -8,9 +8,11 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class SpecialMatchFunctionsTest 
 {
@@ -31,12 +33,12 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testRFC822NameMatch()
 	{
-		StringValue p = XacmlDataTypes.STRING.create(".sun.com");
-		RFC822NameValue n = XacmlDataTypes.RFC822NAME.create("test@east.sun.com");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		StringValue p = StringType.Factory.create(".sun.com");
+		RFC822NameValue n = RFC822NameType.Factory.create("test@east.sun.com");
+		assertEquals(BooleanType.Factory.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 		
-		p = XacmlDataTypes.STRING.create("sun.com");
-		n = XacmlDataTypes.RFC822NAME.create("test@sun.com");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		p = StringType.Factory.create("sun.com");
+		n = RFC822NameType.Factory.create("test@sun.com");
+		assertEquals(BooleanType.Factory.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 }

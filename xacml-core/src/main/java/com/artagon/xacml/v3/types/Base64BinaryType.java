@@ -1,6 +1,10 @@
 package com.artagon.xacml.v3.types;
 
+import java.util.Collection;
+
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 public interface Base64BinaryType extends AttributeValueType
@@ -27,6 +31,26 @@ public interface Base64BinaryType extends AttributeValueType
 		
 		public static Base64BinaryType getInstance(){
 			return INSTANCE;
+		}
+		
+		public static Base64BinaryValue create(Object v, Object ...params){
+			return INSTANCE.create(v, params);
+		}
+		
+		public static Base64BinaryValue fromXacmlString(String v, Object ...params){
+			return INSTANCE.fromXacmlString(v, params);
+		}
+		
+		public static BagOfAttributeValues<Base64BinaryValue> bagOf(AttributeValue ...values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<Base64BinaryValue> bagOf(Collection<AttributeValue> values){
+			return INSTANCE.bagOf().create(values);
+		}
+		
+		public static BagOfAttributeValues<Base64BinaryValue> emptyBag(){
+			return INSTANCE.bagOf().createEmpty();
 		}
 	}
 }

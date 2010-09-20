@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class Xacml20XPathTo30Transformer 
 {
@@ -19,7 +19,7 @@ public class Xacml20XPathTo30Transformer
 	
 	public static XPathExpressionValue fromXacml20String(StringValue path)
 	{
-		XPathExpressionValue xpathExp = XacmlDataTypes.XPATHEXPRESSION.create(
+		XPathExpressionValue xpathExp = XPathExpressionType.Factory.create(
 				transform20PathTo30(path.getValue()), AttributeCategoryId.RESOURCE);
 		return xpathExp;
 	}

@@ -88,16 +88,16 @@ public class AttributesTest
 		attributes.add(new Attribute("testId10", XacmlDataTypes.STRING.create("value0")));
 		assertEquals(2, attributes.size());
 		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
-		assertEquals(2, test.getAttributeValues("testId10", XacmlDataTypes.STRING.getType()).size());
+		assertEquals(2, test.getAttributeValues("testId10", XacmlDataTypes.STRING.getDataType()).size());
 	}
 	
 	@Test
 	public void testGetAttributeValuesByIdAndIssuerAndType()
 	{
 		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
-		assertEquals(2, test.getAttributeValues("testId10", null, XacmlDataTypes.INTEGER.getType()).size());
-		assertEquals(1, test.getAttributeValues("testId10", null, XacmlDataTypes.STRING.getType()).size());
-		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypes.STRING.getType()).size());
-		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypes.INTEGER.getType()).size());
+		assertEquals(2, test.getAttributeValues("testId10", null, XacmlDataTypes.INTEGER.getDataType()).size());
+		assertEquals(1, test.getAttributeValues("testId10", null, XacmlDataTypes.STRING.getDataType()).size());
+		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypes.STRING.getDataType()).size());
+		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypes.INTEGER.getDataType()).size());
 	}
 }

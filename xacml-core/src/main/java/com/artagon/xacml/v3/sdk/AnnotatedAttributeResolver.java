@@ -98,7 +98,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			for(String cat : c.value())
 			{
 				AttributeCategoryId category = AttributeCategoryId.parse(cat);
-				builder.attribute(category, d.id(), d.dataType());
+				builder.attribute(category, d.id(), d.dataType().getDataType());
 				Map<String, Method> byId = methods.get(category);
 				if(byId == null){
 					byId = new HashMap<String, Method>();

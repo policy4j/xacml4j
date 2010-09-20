@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -26,7 +27,7 @@ public class BagOfAttributesTest
 	
 	@Before
 	public void init(){
-		this.stringType = XacmlDataTypes.STRING.getType();
+		this.stringType = StringType.Factory.getInstance();
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
@@ -59,15 +60,15 @@ public class BagOfAttributesTest
 		content.add(INTEGER.create(1));
 		content.add(INTEGER.create(2));
 		content.add(INTEGER.create(1));	
-		BagOfAttributeValues<?> bag = INTEGER.bag(content);
+		BagOfAttributeValues<?> bag = INTEGER.bagOf(content);
 		Collection<AttributeValue> test = new LinkedList<AttributeValue>();
 		test.add(INTEGER.create(1));
 		test.add(INTEGER.create(2));
-		assertTrue(bag.containsAll(INTEGER.bag(test)));		
+		assertTrue(bag.containsAll(INTEGER.bagOf(test)));		
 		test = new LinkedList<AttributeValue>();
 		test.add(INTEGER.create(1));
 		test.add(INTEGER.create(3));
-		assertFalse(bag.containsAll(INTEGER.bag(test)));
+		assertFalse(bag.containsAll(INTEGER.bagOf(test)));
 	}
 	
 	@Test
@@ -77,13 +78,13 @@ public class BagOfAttributesTest
 		content1.add(INTEGER.create(1));
 		content1.add(INTEGER.create(2));
 		content1.add(INTEGER.create(3));
-		BagOfAttributeValues<?> bag1 = INTEGER.bag(content1);
+		BagOfAttributeValues<?> bag1 = INTEGER.bagOf(content1);
 		
 		Collection<AttributeValue> content2 = new LinkedList<AttributeValue>();
 		content2.add(INTEGER.create(1));
 		content2.add(INTEGER.create(2));
 		content2.add(INTEGER.create(3));
-		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
+		BagOfAttributeValues<?> bag2 = INTEGER.bagOf(content2);
 		
 		assertEquals(bag1, bag2);
 		
@@ -91,7 +92,7 @@ public class BagOfAttributesTest
 		content3.add(INTEGER.create(1));
 		content3.add(INTEGER.create(3));
 		content3.add(INTEGER.create(2));
-		BagOfAttributeValues<?> bag3= INTEGER.bag(content3);
+		BagOfAttributeValues<?> bag3= INTEGER.bagOf(content3);
 		
 		assertTrue(bag1.equals(bag3));
 		assertTrue(bag2.equals(bag3));
@@ -105,7 +106,7 @@ public class BagOfAttributesTest
 		Collection<AttributeValue> attr = new LinkedList<AttributeValue>();
 		attr.add(INTEGER.create(1));
 		attr.add(stringType.create("aaa"));
-		INTEGER.bag(attr);
+		INTEGER.bagOf(attr);
 	}
 	
 	@Test
@@ -115,7 +116,7 @@ public class BagOfAttributesTest
 		content2.add(INTEGER.create(3));
 		content2.add(INTEGER.create(4));
 		content2.add(INTEGER.create(5));
-		BagOfAttributeValues<?> bag2 = INTEGER.bag(content2);
+		BagOfAttributeValues<AttributeValue> bag2 = INTEGER.bagOf(content2);
 		replay(context);
 		assertSame(bag2, bag2.evaluate(context));	
 		verify(context);
@@ -124,13 +125,13 @@ public class BagOfAttributesTest
 	@Test
 	public void testUnion()
 	{
-		BagOfAttributeValues<IntegerValue> bag0 = INTEGER.bag(
+		BagOfAttributeValues<IntegerValue> bag0 = IntegerType.Factory.bagOf(
 				INTEGER.create(1),
 				INTEGER.create(2),
 				INTEGER.create(3),
 				INTEGER.create(6));
 		
-		BagOfAttributeValues<IntegerValue> bag1 = INTEGER.bag(
+		BagOfAttributeValues<IntegerValue> bag1 = IntegerType.Factory.bagOf(
 				INTEGER.create(2),
 				INTEGER.create(2),
 				INTEGER.create(7),
@@ -150,20 +151,19 @@ public class BagOfAttributesTest
 	@Test
 	public void testIntersection()
 	{
-		BagOfAttributeValues<IntegerValue> bag0 = INTEGER.bag(
+		BagOfAttributeValues<IntegerValue> bag0 = IntegerType.Factory.bagOf(
 				XacmlDataTypes.INTEGER.create(1),
 				XacmlDataTypes.INTEGER.create(2),
 				XacmlDataTypes.INTEGER.create(3),
 				XacmlDataTypes.INTEGER.create(6));
 		
-		BagOfAttributeValues<IntegerValue> bag1 = INTEGER.bag(
+		BagOfAttributeValues<IntegerValue> bag1 = IntegerType.Factory.bagOf(
 				INTEGER.create(2),
 				INTEGER.create(2),
 				INTEGER.create(7),
 				INTEGER.create(6));
 		
 		BagOfAttributeValues<IntegerValue> bag3 = bag0.intersection(bag1);
-		System.out.println(bag3);
 		assertTrue(bag3.contains(INTEGER.create(2)));
 		assertTrue(bag3.contains(INTEGER.create(6)));
 		assertEquals(2, bag3.size());

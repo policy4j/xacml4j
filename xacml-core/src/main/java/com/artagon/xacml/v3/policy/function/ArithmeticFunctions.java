@@ -5,7 +5,9 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
@@ -42,7 +44,7 @@ public class ArithmeticFunctions
 		for(IntegerValue v : values){
 			sum += v.getValue();
 		}
-		return XacmlDataTypes.INTEGER.create(sum);
+		return IntegerType.Factory.create(sum);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
@@ -54,7 +56,7 @@ public class ArithmeticFunctions
 		for(IntegerValue v : values){
 			value *= v.getValue();
 		}
-		return XacmlDataTypes.INTEGER.create(value);
+		return IntegerType.Factory.create(value);
 	}	
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
@@ -66,7 +68,7 @@ public class ArithmeticFunctions
 		for(DoubleValue v : values){
 			sum += v.getValue();
 		}
-		return XacmlDataTypes.DOUBLE.create(sum);
+		return DoubleType.Factory.create(sum);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
@@ -78,7 +80,7 @@ public class ArithmeticFunctions
 		for(DoubleValue v : values){
 			value *= v.getValue();
 		}
-		return XacmlDataTypes.DOUBLE.create(value);
+		return DoubleType.Factory.create(value);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
@@ -86,7 +88,7 @@ public class ArithmeticFunctions
 	public static IntegerValue abs(
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue v)
 	{
-		return XacmlDataTypes.INTEGER.create(Math.abs(v.getValue()));
+		return IntegerType.Factory.create(Math.abs(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
@@ -94,7 +96,7 @@ public class ArithmeticFunctions
 	public static DoubleValue abs(
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
 	{
-		return XacmlDataTypes.DOUBLE.create(Math.abs(v.getValue()));
+		return DoubleType.Factory.create(Math.abs(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
@@ -102,7 +104,7 @@ public class ArithmeticFunctions
 	public static DoubleValue floor(
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
 	{
-		return XacmlDataTypes.DOUBLE.create(Math.floor(v.getValue()));
+		return DoubleType.Factory.create(Math.floor(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
@@ -110,7 +112,7 @@ public class ArithmeticFunctions
 	public static DoubleValue round(
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
 	{
-		return XacmlDataTypes.DOUBLE.create(Math.round(v.getValue()));
+		return DoubleType.Factory.create(Math.round(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")
@@ -119,7 +121,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a,
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
-		return XacmlDataTypes.DOUBLE.create(a.getValue() - b.getValue());
+		return DoubleType.Factory.create(a.getValue() - b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
@@ -129,7 +131,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return XacmlDataTypes.DOUBLE.create(a.getValue()/b.getValue());
+		return DoubleType.Factory.create(a.getValue()/b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
@@ -139,7 +141,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return XacmlDataTypes.DOUBLE.create(a.getValue()/b.getValue());
+		return DoubleType.Factory.create(a.getValue()/b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
@@ -149,7 +151,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return XacmlDataTypes.INTEGER.create(a.getValue() % b.getValue());
+		return IntegerType.Factory.create(a.getValue() % b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
@@ -158,6 +160,6 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a,
 			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
 	{
-		return XacmlDataTypes.INTEGER.create(a.getValue() - b.getValue());
+		return IntegerType.Factory.create(a.getValue() - b.getValue());
 	}
 }
