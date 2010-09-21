@@ -14,9 +14,16 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 
+/**
+ * An enumeration  of all XACML 2.0 & 3.0 data types
+ * 
+ * @author Giedrius Trumpickas
+ */
 public enum XacmlDataTypes
 {
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> */
+	/** 
+	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> 
+	 */
 	ANYURI(AnyURIType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#boolean</b> */

@@ -44,6 +44,7 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
@@ -154,7 +155,7 @@ class Xacml20ContextMapper
 			return Iterables.getOnlyElement(resourceId.getValues()).toXacmlString();
 		}
 		Collection<AttributeValue> values =  resource.getAttributeValues(
-				CONTENT_SELECTOR, XacmlDataTypes.XPATHEXPRESSION.getDataType());
+				CONTENT_SELECTOR, XPathExpressionType.Factory.getInstance());
 		if(values.isEmpty() ||
 				values.size() > 1){
 			return null;
@@ -347,7 +348,7 @@ class Xacml20ContextMapper
 		if(log.isDebugEnabled()){
 			log.debug("Creating typeId=\"{}\" value=\"{}\"", dataType, o);
 		}
-		if(dataType.equals(XacmlDataTypes.XPATHEXPRESSION.getDataType())){
+		if(dataType.equals(XPathExpressionType.Factory.getInstance())){
 			String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
 			return dataType.create(xpath, categoryId);
 		}

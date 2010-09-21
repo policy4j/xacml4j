@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.XPathExpressionType;
 
 public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestContextHandler
 {
@@ -31,7 +31,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 			return handleNext(request, pdp);
 		}
 		Collection<AttributeValue> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
-				XacmlDataTypes.XPATHEXPRESSION.getDataType());
+				XPathExpressionType.Factory.getInstance());
 		if(resourceId.isEmpty()){
 			return handleNext(request, pdp);
 		}
@@ -41,7 +41,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 							request.getIncludeInResultAttributes(),
 							"Found more than AttributeId=\"%s\" " +
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
-							XacmlDataTypes.XPATHEXPRESSION.getDataType()));
+							XPathExpressionType.Factory.getInstance()));
 		}
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())

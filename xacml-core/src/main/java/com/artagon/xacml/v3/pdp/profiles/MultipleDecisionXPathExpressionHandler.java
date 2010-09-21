@@ -47,7 +47,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		}
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR, 
-				XacmlDataTypes.XPATHEXPRESSION.getDataType())){
+				XPathExpressionType.Factory.getInstance())){
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler", 
@@ -87,7 +87,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
-				XacmlDataTypes.XPATHEXPRESSION.getDataType());
+				XPathExpressionType.Factory.getInstance());
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}

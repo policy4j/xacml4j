@@ -17,8 +17,8 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
@@ -165,7 +165,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 			Node contextNode = content;
 			Collection<AttributeValue> v = request.getAttributeValues(ref.getCategory(), 
 						ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId(), 
-								XacmlDataTypes.XPATHEXPRESSION.getDataType());
+								XPathExpressionType.Factory.getInstance());
 			if(v.size() > 1){
 				throw new AttributeReferenceEvaluationException(context, ref, 
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());

@@ -30,7 +30,8 @@ public class AttributeDesignatorTest
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getDataType(), true);
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer",
+				IntegerType.Factory.getInstance(), true);
 		expect(context.resolve(desig)).andReturn(XacmlDataTypes.INTEGER.emptyBag());
 		replay(context);
 		try{
@@ -49,7 +50,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", 
-				XacmlDataTypes.INTEGER.getDataType(), true);
+				IntegerType.Factory.getInstance(), true);
 		expect(context.resolve(desig)).andReturn(null);
 		replay(context);
 		try{
@@ -68,9 +69,11 @@ public class AttributeDesignatorTest
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
 		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", XacmlDataTypes.INTEGER.getDataType(), true);
-		expect(context.resolve(desig)).andReturn(XacmlDataTypes.INTEGER.bagOf(
-				XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)));
+				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", 
+				IntegerType.Factory.getInstance(), true);
+		expect(context.resolve(desig)).andReturn(
+				XacmlDataTypes.INTEGER.bagOf(XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)));
+				
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(type.bagOf(), v.getEvaluatesTo());
