@@ -99,7 +99,7 @@ public class BagFunctionsTest
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.stringIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.stringIsIn(v1, bag));
-		assertEquals(BooleanType.Factory.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
+		assertEquals(StringType.Factory.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
 	
 	@Test
