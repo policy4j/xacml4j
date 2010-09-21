@@ -23,19 +23,37 @@ public enum XacmlDataTypes
 {
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> 
+	 * 
+	 * @see {@link AnyURIType}
 	 */
 	ANYURI(AnyURIType.Factory.getInstance()),
 
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#boolean</b> */
+	/** 
+	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#boolean</b> 
+	 * 
+	 * @see {@link BooleanType}
+	 */
 	BOOLEAN(BooleanType.Factory.getInstance()),
 
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#base64Binary</b> */
+	/** 
+	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#base64Binary</b> 
+	 * 
+	 * @see {@link Base64BinaryType}
+	 */
 	BASE64BINARY(Base64BinaryType.Factory.getInstance()),
 
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#date</b> */
+	/** 
+	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#date</b> 
+	 * 
+	 * @see {@link DateType}
+	 */
 	DATE(DateType.Factory.getInstance()),
 
-	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dateTime</b> */
+	/** 
+	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dateTime</b> 
+	 * 
+	 * @see {@link DateTimeType}
+	 */
 	DATETIME(DateTimeType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dayTimeDuration</b> */
@@ -103,30 +121,67 @@ public enum XacmlDataTypes
 		this.type = type;
 	}
 	
+	
+	/**
+	 * Gets underlying XACML {@link AttributeValueType}
+	 * 
+	 * @return {@link AttributeValueType}
+	 */
 	public AttributeValueType getDataType() {
 		return type;
 	}
 	
+	/**
+	 * Delegates call to appropriate 
+	 * {@link AttributeValueType#create(Object, Object...)}
+	 * 
+	 * @param v a value
+	 * @param params an additional parameters
+	 * @return {@link AttributeValue} instance
+	 */
 	public AttributeValue create(Object v, Object ...params){
 		return type.create(v, params);
 	}
 	
-	public AttributeValue fromXacmlString(String v, Object ...params){
-		return type.fromXacmlString(v, params);
+	/**
+	 * Delegates call to appropriate 
+	 * {@link AttributeValueType#fromXacmlString(String, Object...)}
+	 * 
+	 * @param v a value
+	 * @param params an additional parameters
+	 * @return {@link AttributeValue} instance
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> T fromXacmlString(String v, Object ...params){
+		return (T)type.fromXacmlString(v, params);
 	}
 	
-	public BagOfAttributeValues<AttributeValue> bagOf(AttributeValue ...values){
-		return type.bagOf(values);
+	/**
+	 * Delegates call to appropriate 
+	 * {@link AttributeValueType#bagOf(AttributeValue...)}
+	 * 
+	 * @param v a values
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(AttributeValue ...v){
+		return (BagOfAttributeValues<T>)type.bagOf(v);
 	}
 	
-	public BagOfAttributeValues<AttributeValue> bagOf(Collection<AttributeValue> values){
-		return type.bagOf(values);
+	/**
+	 * Delegates call to appropriate 
+	 * {@link AttributeValueType#bagOf(Collection)}
+	 * 
+	 * @param v a collection of values
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(Collection<AttributeValue> values){
+		return (BagOfAttributeValues<T>)type.bagOf(values);
 	}
 	
-	public  BagOfAttributeValues<AttributeValue> emptyBag(){
-		return type.emptyBag();
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue>  BagOfAttributeValues<T> emptyBag(){
+		return (BagOfAttributeValues<T>)type.emptyBag();
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends AttributeValueType> T getType(String typeId) 
