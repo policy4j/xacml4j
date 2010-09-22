@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -98,7 +99,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			for(String cat : c.value())
 			{
 				AttributeCategoryId category = AttributeCategoryId.parse(cat);
-				builder.attribute(category, d.id(), d.dataType().getDataType());
+				builder.attribute(category, d.id(), XacmlDataTypes.getType(d.typeId()));
 				Map<String, Method> byId = methods.get(category);
 				if(byId == null){
 					byId = new HashMap<String, Method>();

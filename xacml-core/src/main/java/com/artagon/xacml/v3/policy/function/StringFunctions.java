@@ -20,17 +20,16 @@ import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.X500NameType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
 
 @XacmlFunctionProvider(description="XACML string functions")
 public class StringFunctions 
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:string-concatenate")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue concatenate(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		StringBuilder buf = new StringBuilder();
 		return StringType.Factory.create(buf.append(a).append(b).toString());
@@ -38,10 +37,10 @@ public class StringFunctions
 	
 	@Deprecated
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:uri-string-concatenate")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue uriStringconcatenate(
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		StringBuilder buf = new StringBuilder();
 		return StringType.Factory.create(buf.append(a.toXacmlString()).append(b).toString());
@@ -50,263 +49,263 @@ public class StringFunctions
 	
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-starts-with")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue startsWith(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		return BooleanType.Factory.create(a.getValue().startsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-starts-with")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue uriStartsWith(
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
 		return BooleanType.Factory.create(a.toXacmlString().startsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue endsWith(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		return BooleanType.Factory.create(a.getValue().endsWith(b.getValue()));
 	}
 		
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue uriEndsWith(
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
 		return BooleanType.Factory.create(a.toXacmlString().endsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue contains(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		return BooleanType.Factory.create(a.getValue().contains(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue uriContains(
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
 		return BooleanType.Factory.create(a.toXacmlString().contains(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromBoolean(
-			@XacmlFuncParam(type=XacmlDataTypes.BOOLEAN)BooleanType.BooleanValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanType.BooleanValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanType.BooleanValue booleanFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return BooleanType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromInteger(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:integer-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerType.IntegerValue integerFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return IntegerType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDouble(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleType.DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleType.DoubleValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:double-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleType.DoubleValue doubleFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return DoubleType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromTime(
-			@XacmlFuncParam(type=XacmlDataTypes.TIME)TimeType.TimeValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeType.TimeValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.TIME)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time")
 	public static TimeType.TimeValue timeFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return TimeType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDate(
-			@XacmlFuncParam(type=XacmlDataTypes.DATE)DateType.DateValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateType.DateValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DATE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
 	public static DateType.DateValue dateFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return DateType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dateTime")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDateTime(
-			@XacmlFuncParam(type=XacmlDataTypes.DATETIME)DateTimeType.DateTimeValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeType.DateTimeValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DATETIME)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 	public static DateTimeType.DateTimeValue dateTimeFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return DateTimeType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromAnyURI(
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIType.AnyURIValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIType.AnyURIValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.ANYURI)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#anyURI")
 	public static AnyURIType.AnyURIValue anyURIFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return AnyURIType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDayTimeDuration(
-			@XacmlFuncParam(type=XacmlDataTypes.DAYTIMEDURATION)DayTimeDurationType.DayTimeDurationValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationType.DayTimeDurationValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DAYTIMEDURATION)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
 	public static DayTimeDurationType.DayTimeDurationValue dayTimeDurationFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return DayTimeDurationType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromYearMonthDuration(
-			@XacmlFuncParam(type=XacmlDataTypes.YEARMONTHDURATION)YearMonthDurationType.YearMonthDurationValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationType.YearMonthDurationValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.YEARMONTHDURATION)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
 	public static YearMonthDurationType.YearMonthDurationValue yearMonthDurationFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return YearMonthDurationType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromX500Name(
-			@XacmlFuncParam(type=XacmlDataTypes.X500NAME)X500NameType.X500NameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameType.X500NameValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:x500Name-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.X500NAME)
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
 	public static X500NameType.X500NameValue x500NameFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return X500NameType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromRfc822Name(
-			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME)RFC822NameType.RFC822NameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameType.RFC822NameValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:rfc822Name-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.RFC822NAME)
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
 	public static RFC822NameType.RFC822NameValue rfc822NameFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return RFC822NameType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-ipAddress")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromIpAddress(
-			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS)IPAddressType.IPAddressValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressType.IPAddressValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:ipAddress-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.IPADDRESS)
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
 	public static IPAddressType.IPAddressValue ipAddressFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return IPAddressType.Factory.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")
-	@XacmlFuncReturnType(type=XacmlDataTypes.STRING)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDnsName(
-			@XacmlFuncParam(type=XacmlDataTypes.DNSNAME)DNSNameType.DNSNameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameType.DNSNameValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dnsName-from-string")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DNSNAME)
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
 	public static DNSNameType.DNSNameValue dnsNameFromString(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringType.StringValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
 		return DNSNameType.Factory.fromXacmlString(v.getValue());
 	}

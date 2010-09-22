@@ -90,7 +90,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 	
 	}
 		
-	public Xacml30ContextMapper(){
+	public Xacml30ContextMapper() throws Exception{
 		this.factory = new ObjectFactory();
 	}
 	

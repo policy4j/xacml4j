@@ -15,37 +15,37 @@ public class JavaMethodToFunctionSpecTest
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void missingXacmlFuncAnnotation()
+	public void missingXacmlFuncAnnotation() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("missingXacmlFuncAnnotation"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void missingReturnTypeDeclaration1()
+	public void missingReturnTypeDeclaration1() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("missingReturnTypeDeclaration1"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void returnsVoid()
+	public void returnsVoid() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnsVoid"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void returnsNonXacmlExpression()
+	public void returnsNonXacmlExpression() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnsNonXacmlExpression"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void returnTypeDeclarationExistButWrongMethodReturnType1()
+	public void returnTypeDeclarationExistButWrongMethodReturnType1() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void returnTypeDeclarationExistButWrongMethodReturnType2()
+	public void returnTypeDeclarationExistButWrongMethodReturnType2() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2"));
 	}

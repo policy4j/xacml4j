@@ -7,25 +7,24 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlFunctionProvider(description="TestInstanceFunctions")
 @Ignore
 public class TestInstanceFunctions 
 {
 	@XacmlFuncSpec(id="test1")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public BooleanValue test1(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue a, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue b) 
 	{
 		return BooleanType.Factory.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public IntegerType.IntegerValue test2(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
 		return IntegerType.Factory.create(bag.size());
 	}

@@ -87,12 +87,12 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
 	}
 
-	public Xacml30PolicyMapper() {
+	public Xacml30PolicyMapper() throws Exception {
 		super();
 	}
 	
 	public Xacml30PolicyMapper(FunctionProvider functions, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithms){
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
 	}
 

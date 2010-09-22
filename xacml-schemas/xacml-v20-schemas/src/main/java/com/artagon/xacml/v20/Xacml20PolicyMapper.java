@@ -100,11 +100,11 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 	}
 	
 	public Xacml20PolicyMapper(FunctionProvider functions, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithms){
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
 	}
 	
-	public Xacml20PolicyMapper(){
+	public Xacml20PolicyMapper() throws Exception{
 		super();
 	}
 	

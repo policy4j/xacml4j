@@ -6,13 +6,15 @@ import java.util.List;
 
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 {
 	private JavaMethodToFunctionSpecConverter converter;
 	
-	public AnnotiationBasedFunctionProvider(Class<?> factoryClass)
+	public AnnotiationBasedFunctionProvider(Class<?> factoryClass) 
+		throws Exception
 	{
 		Preconditions.checkNotNull(factoryClass);
 		this.converter = new JavaMethodToFunctionSpecConverter();
@@ -22,7 +24,8 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		}
 	}
 	
-	public AnnotiationBasedFunctionProvider(Object instance)
+	public AnnotiationBasedFunctionProvider(Object instance) 
+		throws Exception
 	{
 		Preconditions.checkNotNull(instance);
 		this.converter = new JavaMethodToFunctionSpecConverter();
@@ -32,7 +35,8 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		}
 	}
 		
-	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
+	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance) 
+		throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null, 
 				"Function provider=\"%s\" must have provider annotiation", clazz.getName());

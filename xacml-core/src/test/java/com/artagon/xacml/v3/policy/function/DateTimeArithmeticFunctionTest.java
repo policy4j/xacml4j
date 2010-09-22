@@ -20,7 +20,8 @@ public class DateTimeArithmeticFunctionTest
 	private FunctionProvider p;
 	
 	@Before
-	public void init(){
+	public void init() throws Exception
+	{
 		this.p = new AnnotiationBasedFunctionProvider(DateTimeArithmeticFunctions.class);
 	}
 	

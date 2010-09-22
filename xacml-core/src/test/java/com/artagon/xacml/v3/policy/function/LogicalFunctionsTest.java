@@ -29,7 +29,8 @@ public class LogicalFunctionsTest
 	private EvaluationContext context;
 	
 	@Before
-	public void init(){
+	public void init() throws Exception
+	{
 		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");

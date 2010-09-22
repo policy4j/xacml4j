@@ -5,12 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface XacmlFuncParam 
 {
-	XacmlDataTypes type();
+	String typeId();
 	boolean isBag() default false;
 }

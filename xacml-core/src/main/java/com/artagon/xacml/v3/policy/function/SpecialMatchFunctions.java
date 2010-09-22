@@ -11,27 +11,26 @@ import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlFunctionProvider(description="XACML special match functions")
 public class SpecialMatchFunctions 
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue rfc822NameMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue pattern, 
-			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME)RFC822NameValue rfc822Name)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue pattern, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue rfc822Name)
 	{
 		 return BooleanType.Factory.create(rfc822Name.getValue().matches(pattern.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue x500NameMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.X500NAME)X500NameValue a, 
-			@XacmlFuncParam(type=XacmlDataTypes.X500NAME)X500NameValue b)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue a, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue b)
 	{
 		 String n0 = a.getValue().getName(X500Principal.CANONICAL);
 		 String n1 = b.getValue().getName(X500Principal.CANONICAL);

@@ -26,7 +26,7 @@ public class PolicyUnmarshallerSupport
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider extendsionFunctions,
-			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) 
+			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) throws Exception
 	{
 		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(new DefaultFunctionProvider(), extendsionFunctions);
 		this.combingingAlgorithms = (extensionCombiningAlgorithms == null)? 
@@ -39,7 +39,7 @@ public class PolicyUnmarshallerSupport
 						extensionCombiningAlgorithms);
 	}
 	
-	protected PolicyUnmarshallerSupport()
+	protected PolicyUnmarshallerSupport() throws Exception
 	{
 		this(null, null);
 	}

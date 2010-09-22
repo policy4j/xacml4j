@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 @Ignore
 public class TestAnnotatedResolver 
 {
-	@XacmlAttributeDescriptor(id="testId1", dataType=XacmlDataTypes.STRING)
+	@XacmlAttributeDescriptor(id="testId1", typeId="http://www.w3.org/2001/XMLSchema#string")
 	@XacmlAttributeCategory({"urn:oasis:names:tc:xacml:3.0:attribute-category:resource", 
 		"urn:oasis:names:tc:xacml:3.0:attribute-category:action"})
 	public BagOfAttributeValues<? extends AttributeValue> getTestId1Attribute(
@@ -24,7 +24,7 @@ public class TestAnnotatedResolver
 		return XacmlDataTypes.STRING.emptyBag();
 	}
 	
-	@XacmlAttributeDescriptor(id="testId2", dataType=XacmlDataTypes.INTEGER)
+	@XacmlAttributeDescriptor(id="testId2", typeId="http://www.w3.org/2001/XMLSchema#integer")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
 	public BagOfAttributeValues<AttributeValue> getTestId2Attribute(
 			PolicyInformationPointContext context)

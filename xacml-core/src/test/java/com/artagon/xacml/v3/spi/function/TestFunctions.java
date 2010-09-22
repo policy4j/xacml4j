@@ -14,34 +14,33 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlFunctionProvider(description="TestFunctions")
 @Ignore
 public class TestFunctions 
 {
 	@XacmlFuncSpec(id="test1")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue test1(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a, 
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue a, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue b) 
 	{
 		return BooleanType.Factory.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerType.IntegerValue test2(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
 	{
 		return IntegerType.Factory.create(bag.size());
 	}
 	
 	@XacmlFuncSpec(id="test3", evaluateArguments=false)
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerType.IntegerValue and(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)IntegerType.IntegerValue ...values) 
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerType.IntegerValue ...values) 
 		throws EvaluationException
 	{
 		Long v = 0L;
@@ -53,10 +52,10 @@ public class TestFunctions
 	}
 	
 	@XacmlFuncSpec(id="test4", evaluateArguments=false)
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerType.IntegerValue and(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)Expression ...values) 
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)Expression ...values) 
 		throws EvaluationException
 	{
 		Long v = 0L;
@@ -68,11 +67,11 @@ public class TestFunctions
 	}
 	
 	@XacmlFuncSpec(id="test5")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER, isBag=true)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)
 	public static BagOfAttributeValues<IntegerType.IntegerValue> test5(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionSpec function,
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER, isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
 		throws EvaluationException
 	{
 		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
@@ -85,21 +84,21 @@ public class TestFunctions
 	}
 	
 	@XacmlFuncSpec(id="test5VarArg")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static BooleanValue test5VarArg(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue value,
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue value,
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
 		return BooleanType.Factory.create(false);
 	}
 	
 	@XacmlFuncSpec(id="test6VarArg")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static BooleanValue test6(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerType.IntegerValue b,
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.BOOLEAN, min=0)BooleanValue ...values) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue b,
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
 		return BooleanType.Factory.create(false);

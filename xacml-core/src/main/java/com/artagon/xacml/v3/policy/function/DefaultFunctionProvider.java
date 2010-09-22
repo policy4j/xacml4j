@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 
 public class DefaultFunctionProvider extends AggregatingFunctionProvider
 {
-	public DefaultFunctionProvider()
+	public DefaultFunctionProvider() throws Exception
 	{
 		add(new AnnotiationBasedFunctionProvider(ArithmeticFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(BagFunctions.class));

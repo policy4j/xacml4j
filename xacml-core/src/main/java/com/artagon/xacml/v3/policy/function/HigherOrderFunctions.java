@@ -28,14 +28,13 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML higher order functions")
 public class HigherOrderFunctions 
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue anyOf(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
@@ -53,7 +52,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue allOf(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
@@ -71,7 +70,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue anyOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
@@ -91,7 +90,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue allOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
@@ -110,7 +109,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue anyOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
@@ -129,7 +128,7 @@ public class HigherOrderFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue allOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 

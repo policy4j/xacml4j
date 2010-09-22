@@ -24,7 +24,7 @@ public class BagFunctionsTest
 {
 	
 	@Test
-	public void testFunctionIfImplemented()
+	public void testFunctionIfImplemented() throws Exception
 	{
 		FunctionProvider f = new AnnotiationBasedFunctionProvider(BagFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));

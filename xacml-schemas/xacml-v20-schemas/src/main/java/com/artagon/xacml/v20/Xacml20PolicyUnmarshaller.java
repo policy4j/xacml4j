@@ -19,21 +19,22 @@ public class Xacml20PolicyUnmarshaller extends
 {
 	private Xacml20PolicyMapper mapper;
 	
-	public Xacml20PolicyUnmarshaller(JAXBContext context)
+	public Xacml20PolicyUnmarshaller(JAXBContext context) 
+		throws Exception
 	{
 		super(context);
 		this.mapper = new Xacml20PolicyMapper();
 	}
 	
 	public Xacml20PolicyUnmarshaller() 
-		throws JAXBException
+		throws Exception
 	{
 		super(getInstance());
 		this.mapper = new Xacml20PolicyMapper();
 	}
 	
 	public Xacml20PolicyUnmarshaller(JAXBContext context, FunctionProvider functions, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithms)
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception
 	{
 		super(context);
 		this.mapper = new Xacml20PolicyMapper(functions, decisionAlgorithms);

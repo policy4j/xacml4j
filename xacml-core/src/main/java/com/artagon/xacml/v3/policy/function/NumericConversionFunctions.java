@@ -8,7 +8,6 @@ import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 /**
  * A.3.4 Numeric data-type conversion functions
@@ -19,17 +18,17 @@ import com.artagon.xacml.v3.types.XacmlDataTypes;
 public class NumericConversionFunctions 
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static IntegerValue doubleToInteger(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
 		return IntegerType.Factory.create(v.getValue().intValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static DoubleValue integerToDouble(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue v)
 	{
 		return DoubleType.Factory.create(v.getValue().doubleValue());
 	}

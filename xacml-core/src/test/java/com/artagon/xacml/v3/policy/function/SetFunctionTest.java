@@ -18,7 +18,8 @@ public class SetFunctionTest
 	private static FunctionProvider p;
 	
 	@BeforeClass
-	public static void init(){
+	public static void init() throws Exception
+	{
 		p = new AnnotiationBasedFunctionProvider(SetFunctions.class);
 	}
 	

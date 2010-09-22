@@ -18,7 +18,6 @@ import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
 public class RegularExpressionFunctions 
@@ -26,61 +25,61 @@ public class RegularExpressionFunctions
 	private final static Logger log = LoggerFactory.getLogger(RegularExpressionFunctions.class);
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue stringRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue anyURIRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.ANYURI)AnyURIValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue ipAddressRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.IPADDRESS)IPAddressValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressValue input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue dnsNameRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.DNSNAME)DNSNameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameValue input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue rfc822NameRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.RFC822NAME)RFC822NameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
-	@XacmlFuncReturnType(type=XacmlDataTypes.BOOLEAN)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
 			BooleanValue x500NameRegexpMatch(
-			@XacmlFuncParam(type=XacmlDataTypes.STRING)StringValue regexp, 
-			@XacmlFuncParam(type=XacmlDataTypes.X500NAME)X500NameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue input)
 	{
 		 return matches(regexp, input);
 	}

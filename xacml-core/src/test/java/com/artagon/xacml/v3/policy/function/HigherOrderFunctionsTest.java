@@ -47,7 +47,7 @@ public class HigherOrderFunctionsTest
 	private FunctionSpec allOfAll;
 	
 	@Before
-	public void init()
+	public void init() throws Exception
 	{
 		this.higherOrderFunctions = new AnnotiationBasedFunctionProvider(HigherOrderFunctions.class);
 		this.stringFunctions = new AnnotiationBasedFunctionProvider(StringFunctions.class);

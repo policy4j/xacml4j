@@ -19,7 +19,8 @@ public class SpecialMatchFunctionsTest
 	private FunctionProvider p;
 	
 	@Before
-	public void init(){
+	public void init() throws Exception
+	{
 		this.p = new AnnotiationBasedFunctionProvider(SpecialMatchFunctions.class);
 	}
 	

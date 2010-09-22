@@ -7,13 +7,12 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateType;
 import com.artagon.xacml.v3.types.TimeType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 @XacmlAttributeResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
 class DefaultEnviromentAttributeResolver 
 {	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-time", 
-				dataType=XacmlDataTypes.TIME)
+				typeId="http://www.w3.org/2001/XMLSchema#time")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
 	public BagOfAttributeValues<TimeType.TimeValue> getCurrentTime(
 			PolicyInformationPointContext context)
@@ -22,7 +21,7 @@ class DefaultEnviromentAttributeResolver
 	}
 	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-date", 
-				dataType=XacmlDataTypes.DATE)
+				typeId="http://www.w3.org/2001/XMLSchema#date")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
 	public BagOfAttributeValues<DateType.DateValue> getCurrentDate(
 			PolicyInformationPointContext context)
@@ -31,7 +30,7 @@ class DefaultEnviromentAttributeResolver
 	}
 	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
-			dataType=XacmlDataTypes.DATETIME)
+			typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
 	public BagOfAttributeValues<DateTimeType.DateTimeValue> getCurrentDateTime(
 			PolicyInformationPointContext context)

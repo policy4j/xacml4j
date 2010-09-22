@@ -9,7 +9,6 @@ import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 
@@ -36,9 +35,9 @@ public class ArithmeticFunctions
 	 * arithmetic sum of a given values
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-add")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue addInteger(
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)IntegerValue ...values) 
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerValue ...values) 
 	{
 		Long sum = 0L;
 		for(IntegerValue v : values){
@@ -48,9 +47,9 @@ public class ArithmeticFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue multiplyInteger(
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.INTEGER, min=2)IntegerValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerValue ...values)
 	{
 		Long value = 1L;
 		for(IntegerValue v : values){
@@ -60,9 +59,9 @@ public class ArithmeticFunctions
 	}	
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue addDouble(
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.DOUBLE, min=2)DoubleValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)DoubleValue ...values)
 	{
 		Double sum = 0.0;
 		for(DoubleValue v : values){
@@ -72,9 +71,9 @@ public class ArithmeticFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue multiplyDouble(
-			@XacmlFuncParamVarArg(type=XacmlDataTypes.DOUBLE, min=2)DoubleValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)DoubleValue ...values)
 	{
 		Double value = 1.0;
 		for(DoubleValue v : values){
@@ -84,81 +83,81 @@ public class ArithmeticFunctions
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue abs(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue v)
 	{
 		return IntegerType.Factory.create(Math.abs(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue abs(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
 		return DoubleType.Factory.create(Math.abs(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue floor(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
 		return DoubleType.Factory.create(Math.floor(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue round(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
 		return DoubleType.Factory.create(Math.round(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue subtract(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
 		return DoubleType.Factory.create(a.getValue() - b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue divideDouble(
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.DOUBLE)DoubleValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return DoubleType.Factory.create(a.getValue()/b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
-	@XacmlFuncReturnType(type=XacmlDataTypes.DOUBLE)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue divideInteger(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return DoubleType.Factory.create(a.getValue()/b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue modInteger(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return IntegerType.Factory.create(a.getValue() % b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
-	@XacmlFuncReturnType(type=XacmlDataTypes.INTEGER)
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue subtract(
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue a,
-			@XacmlFuncParam(type=XacmlDataTypes.INTEGER)IntegerValue b)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
 		return IntegerType.Factory.create(a.getValue() - b.getValue());
 	}

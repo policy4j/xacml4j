@@ -22,7 +22,8 @@ public class AnnotationBasedFunctionFactoryTest
 	private EvaluationContext context;
 	
 	@Before
-	public void init(){
+	public void init() throws Exception
+	{
 		this.f1 = new AnnotiationBasedFunctionProvider(TestFunctions.class);
 		this.f2 = new AnnotiationBasedFunctionProvider(new TestInstanceFunctions());
 		this.context = createStrictMock(EvaluationContext.class);

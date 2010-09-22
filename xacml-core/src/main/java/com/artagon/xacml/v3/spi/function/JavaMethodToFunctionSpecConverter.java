@@ -12,18 +12,20 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter {
 	private final static Logger log = LoggerFactory
 			.getLogger(JavaMethodToFunctionSpecConverter.class);
 
-	public FunctionSpec createFunctionSpec(Method m)
+	public FunctionSpec createFunctionSpec(Method m) throws XacmlSyntaxException
 	{
 		return createFunctionSpec(m, null);
 	}
 	
-	public FunctionSpec createFunctionSpec(Method m, Object instance) 
+	public FunctionSpec createFunctionSpec(Method m, Object instance) throws XacmlSyntaxException 
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		Preconditions.checkArgument(!m.getReturnType().equals(Void.TYPE),
@@ -77,7 +79,7 @@ class JavaMethodToFunctionSpecConverter {
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				AttributeValueType type = param.type().getDataType();
+				AttributeValueType type = XacmlDataTypes.getType(param.typeId());
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log
@@ -117,7 +119,7 @@ class JavaMethodToFunctionSpecConverter {
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				AttributeValueType type = param.type().getDataType();
+				AttributeValueType type = XacmlDataTypes.getType(param.typeId());
 				b.withParam(param.isBag() ? type.bagOf() : type, param.min(),
 						param.max());
 				continue;
@@ -146,7 +148,7 @@ class JavaMethodToFunctionSpecConverter {
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			AttributeValueType type = returnType.type().getDataType();
+			AttributeValueType type = XacmlDataTypes.getType(returnType.typeId());
 			return b.build(returnType.isBag() ? type.bagOf() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
@@ -182,14 +184,14 @@ class JavaMethodToFunctionSpecConverter {
 								.format(
 										"Method=\"%s\" return type declared XACML "
 												+ "bag of=\"%s\" but method returns type=\"%s\"",
-										m.getName(), returnType.type(), m
+										m.getName(), returnType.typeId(), m
 												.getReturnType()));
 			}
 		if(!returnType.isBag() && BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
 			throw new IllegalArgumentException(String.format(
 					"Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
-					returnType.type(), m.getReturnType()));
+					returnType.typeId(), m.getReturnType()));
 		}
 	}
 

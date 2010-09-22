@@ -20,7 +20,7 @@ public class RegularExpressionFunctionsTest
 {
 	
 	@Test
-	public void testFunctionIfImplemented()
+	public void testFunctionIfImplemented() throws Exception
 	{
 		FunctionProvider f = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"));
