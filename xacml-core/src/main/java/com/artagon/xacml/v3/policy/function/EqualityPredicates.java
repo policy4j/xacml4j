@@ -19,7 +19,7 @@ import com.artagon.xacml.v3.types.IntegerValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeValue;
-import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
+import com.artagon.xacml.v3.types.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationValue;
 
 /**

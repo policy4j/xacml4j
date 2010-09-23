@@ -81,7 +81,7 @@ public enum XacmlDataTypes
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#time</b> */
 	TIME(TimeType.TIME),
 
-	X500NAME(X500NameType.Factory.getInstance()),
+	X500NAME(X500NameType.X500NAME),
 
 	/**
 	 * XACML DataType:

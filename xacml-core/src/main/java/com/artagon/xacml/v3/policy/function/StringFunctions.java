@@ -28,6 +28,7 @@ import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
+import com.artagon.xacml.v3.types.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
 import com.artagon.xacml.v3.types.YearMonthDurationValue;
 
@@ -258,17 +259,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue stringFromX500Name(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameType.X500NameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue v)
 	{
 		return StringType.STRING.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:x500Name-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
-	public static X500NameType.X500NameValue x500NameFromString(
+	public static X500NameValue x500NameFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue v)
 	{
-		return X500NameType.Factory.fromXacmlString(v.getValue());
+		return X500NameType.X500NAME.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")

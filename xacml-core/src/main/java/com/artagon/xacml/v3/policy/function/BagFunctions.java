@@ -36,7 +36,7 @@ import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
-import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
+import com.artagon.xacml.v3.types.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
 import com.artagon.xacml.v3.types.YearMonthDurationValue;
 import com.google.common.base.Preconditions;
@@ -560,7 +560,7 @@ public class BagFunctions
 	public static BagOfAttributeValues x500NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
 			X500NameValue ...values){
-		return X500NameType.Factory.bagOf(values);
+		return X500NameType.X500NAME.bagOf(values);
 	}
 	
 	// rfc822Name

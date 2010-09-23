@@ -7,6 +7,8 @@ import javax.security.auth.x500.X500Principal;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
@@ -24,46 +26,67 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
  * <br>The distinguished name must be specified using the grammar defined 
  * in RFC 1779 or RFC 2253 (either format is acceptable). 
  */
-public interface X500NameType extends AttributeValueType
+public enum X500NameType implements AttributeValueType
 {
-	X500NameValue create(Object v, Object ...params);
-	X500NameValue fromXacmlString(String v, Object ...params);
+	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
 	
-	final class X500NameValue extends SimpleAttributeValue<X500Principal>
-	{
-		public X500NameValue(X500NameType type,
-				X500Principal value) {
-			super(type, value);
-		}
-		
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private X500NameType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static X500NameType INSTANCE = new X500NameTypeImpl("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
-		
-		public static X500NameType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return X500Principal.class.isInstance(any) || String.class.isInstance(any);
+	}
+	
+	@Override
+	public X500NameValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		return new X500NameValue(this, new X500Principal(v));
+	}
+	
+	@Override
+	public X500NameValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"x500Name\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static X500NameValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static X500NameValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return new X500NameValue(this, (X500Principal)any);
+	}
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }
