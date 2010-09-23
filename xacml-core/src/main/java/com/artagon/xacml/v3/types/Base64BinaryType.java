@@ -2,53 +2,79 @@ package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
 
+import com.artagon.xacml.util.Base64;
+import com.artagon.xacml.util.Base64DecoderException;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface Base64BinaryType extends AttributeValueType
+public enum Base64BinaryType implements AttributeValueType
 {	
-	Base64BinaryValue create(Object any, Object ...params);
-	Base64BinaryValue fromXacmlString(String v, Object ...params);
 	
-	final class Base64BinaryValue extends BaseAttributeValue<BinaryValue>
-	{
-		public Base64BinaryValue(Base64BinaryType type, BinaryValue value) {
-			super(type, value);
+	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary");
+	
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private Base64BinaryType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return byte[].class.isInstance(any) || String.class.isInstance(any);
+	}
+	
+	@Override
+	public Base64BinaryValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		@Override
-		public String toXacmlString() {
-			return getValue().toBase64();
+		if(byte[].class.isInstance(any)){
+			return new Base64BinaryValue(new BinaryValue((byte[])any));
+		}
+		return new Base64BinaryValue((BinaryValue)any);
+	}
+
+	@Override
+	public Base64BinaryValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		try{
+			return create(Base64.decode(v));
+		}catch(Base64DecoderException e){
+			throw new IllegalArgumentException(e);
 		}
 	}
 	
-	public final class Factory
-	{
-		private final static Base64BinaryType INSTANCE = new Base64BinaryTypeImpl("http://www.w3.org/2001/XMLSchema#base64Binary");
-		
-		public static Base64BinaryType getInstance(){
-			return INSTANCE;
-		}
-		
-		public static Base64BinaryValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static Base64BinaryValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }

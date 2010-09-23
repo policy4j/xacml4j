@@ -40,7 +40,7 @@ public enum XacmlDataTypes
 	 * 
 	 * @see {@link Base64BinaryType}
 	 */
-	BASE64BINARY(Base64BinaryType.Factory.getInstance()),
+	BASE64BINARY(Base64BinaryType.BASE64BINARY),
 
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#date</b> 

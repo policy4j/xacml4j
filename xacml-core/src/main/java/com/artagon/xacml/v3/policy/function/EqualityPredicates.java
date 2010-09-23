@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
 import com.artagon.xacml.v3.types.AnyURIValue;
-import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.v3.types.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;

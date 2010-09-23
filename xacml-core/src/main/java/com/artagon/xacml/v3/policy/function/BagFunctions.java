@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.types.AnyURIType;
 
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType;
-import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
+import com.artagon.xacml.v3.types.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
@@ -451,7 +451,7 @@ public class BagFunctions
 	public static BagOfAttributeValues base64BinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#base64Binary")
 			Base64BinaryValue ...values){
-		return Base64BinaryType.Factory.bagOf(values);
+		return Base64BinaryType.BASE64BINARY.bagOf(values);
 	}
 	
 	// dayTimeDuration
