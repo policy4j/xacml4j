@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.IntegerValue;
 
 /**
  * A.3.4 Numeric data-type conversion functions
@@ -22,7 +22,7 @@ public class NumericConversionFunctions
 	public static IntegerValue doubleToInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
-		return IntegerType.Factory.create(v.getValue().intValue());
+		return IntegerType.INTEGER.create(v.getValue().intValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")

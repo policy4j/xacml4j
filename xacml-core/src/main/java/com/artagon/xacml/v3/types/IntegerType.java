@@ -5,46 +5,87 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface IntegerType extends AttributeValueType
+public enum IntegerType implements AttributeValueType
 {
-	IntegerValue create(Object value, Object ...params);
-	IntegerValue fromXacmlString(String v, Object ...params);
+	INTEGER("http://www.w3.org/2001/XMLSchema#integer");
 	
-	final class IntegerValue extends SimpleAttributeValue<Long>
-	{
-		public IntegerValue(IntegerType type, Long value) {
-			super(type, value);
-		}
-		
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private IntegerType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static IntegerType INSTANCE = new IntegerTypeImpl("http://www.w3.org/2001/XMLSchema#integer");
-		
-		public static IntegerType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Long.class.isInstance(any) || Integer.class.isInstance(any) ||
+		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
+		String.class.isInstance(any);
+	}
+
+
+	@Override
+	public IntegerValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"integer\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static IntegerValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		if(Byte.class.isInstance(any)){
+			return new IntegerValue(this, ((Byte)any).longValue());
 		}
-		
-		public static IntegerValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
+		if(Short.class.isInstance(any)){
+			return new IntegerValue(this, ((Short)any).longValue());
 		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
+		if(Integer.class.isInstance(any)){
+			return new IntegerValue(this, ((Integer)any).longValue());
 		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
+		return new IntegerValue(this, (Long)any);
+	}
+
+	@Override
+	public IntegerValue fromXacmlString(String v, Object ...params) {
+        Preconditions.checkNotNull(v);
+		if ((v.length() >= 1) && 
+        		(v.charAt(0) == '+')){
+			v = v.substring(1);
 		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+        return new IntegerValue(this, Long.valueOf(v));
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

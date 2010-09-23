@@ -128,7 +128,7 @@ public class DefaultContextHandlerTest
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
-		assertEquals(v, IntegerType.Factory.bagOf(IntegerType.Factory.create(555555)));
+		assertEquals(v, IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(555555)));
 		verify(context, request, attributes, pip);
 	}
 	

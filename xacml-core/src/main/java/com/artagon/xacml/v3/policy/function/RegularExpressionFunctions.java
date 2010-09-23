@@ -14,9 +14,9 @@ import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameValue;
-import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
+import com.artagon.xacml.v3.types.IPAddressValue;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
-import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")

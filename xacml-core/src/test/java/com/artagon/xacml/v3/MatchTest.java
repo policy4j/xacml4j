@@ -13,7 +13,6 @@ import com.artagon.xacml.v3.spi.function.FunctionInvocation;
 import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MatchTest
 {
@@ -30,18 +29,18 @@ public class MatchTest
 		this.context = createStrictMock(EvaluationContext.class);
 		this.builder = new FunctionSpecBuilder("testFunction");
 		this.invocation = createStrictMock(FunctionInvocation.class);
-		this.spec = builder.withParam(IntegerType.Factory.getInstance()).withParam(IntegerType.Factory.getInstance()).build(
-				XacmlDataTypes.BOOLEAN.getDataType(), invocation);
+		this.spec = builder.withParam(IntegerType.INTEGER).withParam(IntegerType.INTEGER).build(
+				BooleanType.BOOLEAN, invocation);
 	}
 	
 	@Test
 	public void testMatchEvaluation() throws EvaluationException
 	{
-		AttributeValue int1 = IntegerType.Factory.create(1);
-		AttributeValue int2 = IntegerType.Factory.create(2);
-		BagOfAttributeValues v = IntegerType.Factory.bagOf(int2, int1);
+		AttributeValue int1 = IntegerType.INTEGER.create(1);
+		AttributeValue int2 = IntegerType.INTEGER.create(2);
+		BagOfAttributeValues v = IntegerType.INTEGER.bagOf(int2, int1);
 		
-		expect(ref.getDataType()).andReturn(IntegerType.Factory.getInstance());
+		expect(ref.getDataType()).andReturn(IntegerType.INTEGER);
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, int1, int2)).andReturn(BooleanType.BOOLEAN.create(false));
@@ -56,11 +55,11 @@ public class MatchTest
 	@Test
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
-		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getDataType());
+		expect(ref.getDataType()).andReturn(IntegerType.INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttribute());
 		replay(invocation, ref, context);
-		Match m = new Match(spec, XacmlDataTypes.INTEGER.create(1), ref);
+		Match m = new Match(spec, IntegerType.INTEGER.create(1), ref);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		verify(invocation, ref, context);
 	}

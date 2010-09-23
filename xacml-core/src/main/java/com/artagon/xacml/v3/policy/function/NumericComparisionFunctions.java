@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleValue;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.IntegerValue;
 
 @XacmlFunctionProvider(description="XACML numeric comparision functions")
 public class NumericComparisionFunctions 

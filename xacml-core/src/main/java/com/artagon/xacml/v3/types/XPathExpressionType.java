@@ -6,60 +6,81 @@ import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
-public interface XPathExpressionType extends AttributeValueType
+public enum XPathExpressionType implements AttributeValueType
 {
-	XPathExpressionValue create(Object v, Object ...params);
-	XPathExpressionValue create(String xpath, AttributeCategoryId category);
-	XPathExpressionValue fromXacmlString(String v, Object ...params);
+	XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
 	
-	public class XPathExpressionValue extends SimpleAttributeValue<String>
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private XPathExpressionType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+	}
+	
+	public boolean isConvertableFrom(Object any) {
+		return any instanceof String;
+	}
+	
+	public XPathExpressionValue create(String xpath, AttributeCategoryId category) 
 	{
-		private AttributeCategoryId categoryId;
-		
-		public XPathExpressionValue(XPathExpressionType type, 
-				String xpath, AttributeCategoryId categoryId){
-			super(type, xpath);
-			Preconditions.checkNotNull(categoryId);
-			this.categoryId = categoryId;
-		}
-		
-		public AttributeCategoryId getCategory(){
-			return categoryId;
+		return new XPathExpressionValue(this, xpath, category);
+	}
+	
+	@Override
+	public XPathExpressionValue create(Object v, Object ... params) 
+	{
+		Preconditions.checkArgument(isConvertableFrom(v), 
+				"Given instance=\"%s\" can not be converted to this type value", v);
+		Preconditions.checkArgument(params != null && params.length > 0, 
+				"XPath category must be specified");
+		return new XPathExpressionValue(this, (String)v, (AttributeCategoryId)params[0]);
+	}
+	
+	@Override
+	public XPathExpressionValue fromXacmlString(String v, Object ...params) 
+	{
+		Preconditions.checkArgument(params != null && params.length > 0, 
+				"XPath category must be specified");
+		try{
+			AttributeCategoryId categoryId = AttributeCategoryId.parse(String.valueOf(params[0]));
+			return new XPathExpressionValue(this, v, categoryId);
+		}catch(XacmlSyntaxException e){
+			throw new IllegalArgumentException(e);
 		}
 	}
 	
-	public final class Factory
-	{
-		private final static XPathExpressionType INSTANCE = new XPathExpressionTypeImpl("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
-		
-		public static XPathExpressionType getInstance(){
-			return INSTANCE;
-		}
-		
-		public static XPathExpressionValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static XPathExpressionValue create(String xpath, AttributeCategoryId categoryId){
-			return INSTANCE.create(xpath, categoryId);
-		}
-		
-		public static XPathExpressionValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

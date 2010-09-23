@@ -16,9 +16,9 @@ import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.StringValue;
 
 public class BagFunctionsTest 
 {
@@ -92,14 +92,14 @@ public class BagFunctionsTest
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
-		StringValue v0 = StringType.Factory.create("a");
-		StringValue v1 = StringType.Factory.create("b");
-		BagOfAttributeValues bag = StringType.Factory.bagOf(v0);
+		StringValue v0 = StringType.STRING.create("a");
+		StringValue v1 = StringType.STRING.create("b");
+		BagOfAttributeValues bag = StringType.STRING.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
-		assertEquals(IntegerType.Factory.create(1), BagFunctions.stringBagSize(bag));
+		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.stringIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.stringIsIn(v1, bag));
-		assertEquals(StringType.Factory.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
+		assertEquals(StringType.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
 	
 	@Test
@@ -109,7 +109,7 @@ public class BagFunctionsTest
 		BooleanValue v1 = BooleanType.BOOLEAN.create(false);
 		BagOfAttributeValues bag = BooleanType.BOOLEAN.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
-		assertEquals(IntegerType.Factory.create(1), BagFunctions.booleanBagSize(bag));
+		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.booleanBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.booleanIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(BooleanType.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
@@ -118,14 +118,14 @@ public class BagFunctionsTest
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
-		IntegerValue v0 = IntegerType.Factory.create(1);
-		IntegerValue v1 = IntegerType.Factory.create(2);
-		BagOfAttributeValues bag = IntegerType.Factory.bagOf(v0);
+		IntegerValue v0 = IntegerType.INTEGER.create(1);
+		IntegerValue v1 = IntegerType.INTEGER.create(2);
+		BagOfAttributeValues bag = IntegerType.INTEGER.bagOf(v0);
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
-		assertEquals(IntegerType.Factory.create(1), BagFunctions.integerBagSize(bag));
+		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.integerBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.integerIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.integerIsIn(v1, bag));
-		assertEquals(IntegerType.Factory.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
+		assertEquals(IntegerType.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 	
 	@Test
@@ -135,7 +135,7 @@ public class BagFunctionsTest
 		DoubleValue v1 = DoubleType.DOUBLE.create(2);
 		BagOfAttributeValues bag = DoubleType.DOUBLE.bagOf(v0);
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
-		assertEquals(IntegerType.Factory.create(1), BagFunctions.doubleBagSize(bag));
+		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.doubleBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.doubleIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.doubleIsIn(v1, bag));
 		assertEquals(DoubleType.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
@@ -149,7 +149,7 @@ public class BagFunctionsTest
 		AnyURIValue v2 = AnyURIType.ANYURI.create("http://www.test2.org");
 		BagOfAttributeValues bag = AnyURIType.ANYURI.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
-		assertEquals(IntegerType.Factory.create(1), BagFunctions.anyURIBagSize(bag));
+		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v1, bag));
 		assertEquals(AnyURIType.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));

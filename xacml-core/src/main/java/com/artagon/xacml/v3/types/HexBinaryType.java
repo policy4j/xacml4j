@@ -6,51 +6,120 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface HexBinaryType  extends AttributeValueType
+public enum HexBinaryType implements AttributeValueType
 {
-	HexBinaryValue create(Object any, Object ...params);
-	HexBinaryValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagType();
+	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary");
+
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
 	
-	final class HexBinaryValue extends SimpleAttributeValue<BinaryValue>
-	{
-		public HexBinaryValue(HexBinaryType type, BinaryValue value) {
-			super(type, value);
-		}
-	
-		@Override
-		public String toXacmlString() {
-			return getValue().toHex();
-		}
+	private HexBinaryType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static HexBinaryType INSTANCE = new HexBinaryTypeImpl("http://www.w3.org/2001/XMLSchema#hexBinary");
-		
-		public static HexBinaryType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return byte[].class.isInstance(any) || String.class.isInstance(any);
+	}
+	
+	@Override
+	public HexBinaryValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static HexBinaryValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		if(byte[].class.isInstance(any)){
+			return new HexBinaryValue(this, new BinaryValue((byte[])any));
 		}
-		
-		public static HexBinaryValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return new HexBinaryValue(this, (BinaryValue)any);
+	}
+
+	@Override
+	public HexBinaryValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		return create(hexToBin(v));
+	}
+	
+	/**
+     * Return the int value of a hex character. Return -1 if the
+     * character is not a valid hex character.
+     */
+    private static int hexToBinNibble(char c) {
+        int result = -1;
+
+        if ((c >= '0') && (c <= '9'))
+            result = (c - '0');
+        else {
+            if ((c >= 'a') && (c <= 'f'))
+                result = (c - 'a') + 10;
+            else {
+                if ((c >= 'A') && (c <= 'F'))
+                    result = (c - 'A') + 10;
+                // else pick up the -1 value set above
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Parse a hex string, returning a new byte array containing the
+     * value. Return null in case of a parsing error.
+     *
+     * @param hex the hex string
+     * @return a new byte array containing the value (or null)
+     */
+    private static byte [] hexToBin(String hex) {
+        int len = hex.length();
+        // Must have an even number of hex digits
+        if (len % 2 != 0)
+            return null;
+        int byteCount = len / 2;
+        byte [] bytes = new byte [byteCount];
+
+        int charIndex = 0;
+        for (int byteIndex = 0; byteIndex < byteCount; byteIndex++) {
+            int hiNibble = hexToBinNibble(hex.charAt(charIndex++));
+            int loNibble = hexToBinNibble(hex.charAt(charIndex++));
+            if ((hiNibble < 0) || (loNibble < 0))
+                return null;
+            bytes[byteIndex] = (byte) (hiNibble * 16 + loNibble);
+        }
+        return bytes;
+    }
+    
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

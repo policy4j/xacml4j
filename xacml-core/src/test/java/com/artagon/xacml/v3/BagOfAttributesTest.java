@@ -27,8 +27,8 @@ public class BagOfAttributesTest
 	
 	@Before
 	public void init(){
-		this.stringType = StringType.Factory.getInstance();
-		this.intType = IntegerType.Factory.getInstance();
+		this.stringType = StringType.STRING;
+		this.intType = IntegerType.INTEGER;
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	

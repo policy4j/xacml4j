@@ -14,7 +14,7 @@ public class StringTypeTest
 	
 	@Before
 	public void init(){
-		this.t = StringType.Factory.getInstance();
+		this.t = StringType.STRING;
 	}
 	
 	@Test

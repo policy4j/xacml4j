@@ -15,9 +15,9 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
-import com.artagon.xacml.v3.types.StringType.StringValue;
-import com.artagon.xacml.v3.types.XPathExpressionType.XPathExpressionValue;
+import com.artagon.xacml.v3.types.IntegerValue;
+import com.artagon.xacml.v3.types.StringValue;
+import com.artagon.xacml.v3.types.XPathExpressionValue;
 
 /**
  * This class implements functions that take XPath expressions for arguments. 
@@ -41,11 +41,11 @@ public class XPathFunctions
 		try{
 			NodeList nodes = context.evaluateToNodeSet(xpath.getValue(), xpath.getCategory());
 			if(nodes != null){
-				return IntegerType.Factory.create(nodes.getLength());
+				return IntegerType.INTEGER.create(nodes.getLength());
 			}
-			return IntegerType.Factory.create(0);
+			return IntegerType.INTEGER.create(0);
 		}catch(EvaluationException e){
-			return IntegerType.Factory.create(0);
+			return IntegerType.INTEGER.create(0);
 		}
 	}
 	

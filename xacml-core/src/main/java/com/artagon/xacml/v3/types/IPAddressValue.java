@@ -4,11 +4,9 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
-
-public class IPAddress extends XacmlObject
+public final class IPAddressValue extends BaseAttributeValue
 {
 	private InetAddress address;
 	private InetAddress mask;
@@ -22,9 +20,11 @@ public class IPAddress extends XacmlObject
 	 * @param mask an address mask
 	 * @param range an address port range
 	 */
-	public IPAddress(InetAddress address, 
+	public IPAddressValue(IPAddressType type, 
+			InetAddress address, 
 			InetAddress mask, PortRange range)
 	{
+		super(type);
 		Preconditions.checkNotNull(address);
 		Preconditions.checkNotNull(range);
 		Preconditions.checkArgument(
@@ -44,8 +44,8 @@ public class IPAddress extends XacmlObject
 	 * @param address an TCP/IP address
 	 * @param mask an address mask
 	 */
-	public IPAddress(InetAddress address, InetAddress mask){
-		this(address, mask, PortRange.getAnyPort());
+	public IPAddressValue(IPAddressType type, InetAddress address, InetAddress mask){
+		this(type, address, mask, PortRange.getAnyPort());
 	}
 	
 	/**
@@ -53,8 +53,8 @@ public class IPAddress extends XacmlObject
 	 * 
 	 * @param address an TCP/IP address
 	 */
-	public IPAddress(InetAddress address){
-		this(address, null, PortRange.getAnyPort());
+	public IPAddressValue(IPAddressType type, InetAddress address){
+		this(type, address, null, PortRange.getAnyPort());
 	}
 	
 	/**
@@ -64,8 +64,8 @@ public class IPAddress extends XacmlObject
 	 * @param address an TCP/IP address
 	 * @param range an address port range
 	 */
-	public IPAddress(InetAddress address, PortRange range){
-		this(address, null, range);
+	public IPAddressValue(IPAddressType type, InetAddress address, PortRange range){
+		this(type, address, null, range);
 	}
 	
 	/**
@@ -96,17 +96,13 @@ public class IPAddress extends XacmlObject
 	public PortRange getRange(){
 		return range;
 	}
-	
-	public static IPAddress valueOf(String v){
-		return null;
-	}
 		
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() 
+	public String toXacmlString() 
 	{
 		StringBuilder b = new StringBuilder(64);
 		if(getAddress() instanceof Inet6Address){
@@ -125,5 +121,5 @@ public class IPAddress extends XacmlObject
         	b.append(":").append(getRange());
         }
         return b.toString();
-    }
+	}
 }

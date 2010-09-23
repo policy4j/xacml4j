@@ -8,7 +8,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.IntegerValue;
 import com.google.common.base.Preconditions;
 
 
@@ -43,7 +43,7 @@ public class ArithmeticFunctions
 		for(IntegerValue v : values){
 			sum += v.getValue();
 		}
-		return IntegerType.Factory.create(sum);
+		return IntegerType.INTEGER.create(sum);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
@@ -55,7 +55,7 @@ public class ArithmeticFunctions
 		for(IntegerValue v : values){
 			value *= v.getValue();
 		}
-		return IntegerType.Factory.create(value);
+		return IntegerType.INTEGER.create(value);
 	}	
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
@@ -87,7 +87,7 @@ public class ArithmeticFunctions
 	public static IntegerValue abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue v)
 	{
-		return IntegerType.Factory.create(Math.abs(v.getValue()));
+		return IntegerType.INTEGER.create(Math.abs(v.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
@@ -150,7 +150,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b) 
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return IntegerType.Factory.create(a.getValue() % b.getValue());
+		return IntegerType.INTEGER.create(a.getValue() % b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
@@ -159,6 +159,6 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return IntegerType.Factory.create(a.getValue() - b.getValue());
+		return IntegerType.INTEGER.create(a.getValue() - b.getValue());
 	}
 }

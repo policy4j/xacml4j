@@ -3,10 +3,12 @@ package com.artagon.xacml.v3.types;
 import java.net.InetAddress;
 import java.util.Collection;
 
+import com.artagon.xacml.util.IPAddressUtils;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 
@@ -25,48 +27,154 @@ import com.artagon.xacml.v3.BagOfAttributeValuesType;
  * Addresses in URL's". (Note that an IPv6 address or mask, in this syntax, 
  * is enclosed in literal "[" "]" brackets.) 
  */
-public interface IPAddressType extends AttributeValueType
+public enum IPAddressType implements AttributeValueType
 {
-	IPAddressValue create(Object v, Object ...params);
-	IPAddressValue create(InetAddress address, PortRange portRange);
-	IPAddressValue create(InetAddress address, InetAddress mask);
-	IPAddressValue create(InetAddress address, InetAddress mask, PortRange portRange);
-	IPAddressValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagType();
+	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
 	
-	public final class IPAddressValue extends SimpleAttributeValue<IPAddress>
-	{
-		public IPAddressValue(IPAddressType type, IPAddress value) {
-			super(type, value);
-		}
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private IPAddressType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
+	public IPAddressValue create(InetAddress address, PortRange portRange) {
+		return new IPAddressValue(this, address, portRange);
+	}
+
+	public IPAddressValue create(InetAddress address, InetAddress mask) {
+		Preconditions.checkNotNull(address, "IP address can't be null");
+		Preconditions.checkNotNull(mask, "IP address mask can't be null");
+		return new IPAddressValue(this, address, mask, PortRange.getAnyPort());
+	}
+
+	public IPAddressValue create(InetAddress address, InetAddress mask,
+			PortRange portRange) {
+		Preconditions.checkNotNull(address, "IP address can't be null");
+		Preconditions.checkNotNull(mask, "IP address mask can't be null");
+		Preconditions.checkNotNull(portRange, "Port range can't be null");
+		return new IPAddressValue(this, address, mask, portRange);
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return String.class.isInstance(any) 
+		|| InetAddress.class.isInstance(any);
+	}
+
+	@Override
+	public IPAddressValue create(Object any, Object ...params) {
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne " +
+				"converted to XACML \"ipAddress\" type", 
+				any, any.getClass()));
+		if(any instanceof InetAddress){
+			return new IPAddressValue(this, (InetAddress)any);
+		}
+		if(any instanceof String){
+			return fromXacmlString((String)any);
+		}
+		return new IPAddressValue(this, (InetAddress)any);
+	}
+	
+	private IPAddressValue getV6Instance(String value)
+    {
+		 InetAddress address = null;
+		 InetAddress mask = null;
+		 PortRange range = null;
+		 int len = value.length();
+		 int endIndex = value.indexOf(']');
+		 address = IPAddressUtils.parseAddress(value.substring(1, endIndex));
+      
+      // see if there's anything left in the string
+      if (endIndex != (len - 1)) {
+          // if there's a mask, it's also an IPv6 address
+          if (value.charAt(endIndex + 1) == '/') {
+              int startIndex = endIndex + 3;
+              endIndex = value.indexOf(']', startIndex);
+              mask = IPAddressUtils.parseAddress(value.substring(startIndex,
+                                                           endIndex));
+          }
+          if ((endIndex != (len - 1)) && (value.charAt(endIndex + 1) == ':'))
+              range = PortRange.valueOf(value.substring(endIndex + 2, len));
+      }
+      return new IPAddressValue(this, address, mask, (range != null)?range:PortRange.getAnyPort());
+    }
+	
+    private IPAddressValue getV4Instance(String value)
+    {
+        InetAddress address = null;
+        InetAddress mask = null;
+        PortRange range = null;
+
+        // start out by seeing where the delimiters are
+        int maskPos = value.indexOf("/");
+        int rangePos = value.indexOf(":");
+
+        // now check to see which components we have
+        if (maskPos == rangePos) {
+            // the sting is just an address
+            address = IPAddressUtils.parseAddress(value);
+        } else if (maskPos != -1) {
+            // there is also a mask (and maybe a range)
+            address = IPAddressUtils.parseAddress(value.substring(0, maskPos));
+            if (rangePos != -1) {
+                // there's a range too, so get it and the mask
+                mask = IPAddressUtils.parseAddress(value.substring(maskPos + 1,
+                                                          rangePos));
+                range =
+                    PortRange.valueOf(value.substring(rangePos + 1,
+                                                          value.length()));
+            } else {
+                // there's no range, so just get the mask
+                mask = IPAddressUtils.parseAddress(value.substring(maskPos + 1,
+                                                             value.length()));
+            }
+        } else {
+            // there is a range, but no mask
+            address = IPAddressUtils.parseAddress(value.substring(0, rangePos));
+            range = PortRange.valueOf(value.substring(rangePos + 1,
+                                                          value.length()));
+        }
+        return new IPAddressValue(this, address, mask, range != null?range:PortRange.getAnyPort());
+    }
+
+	@Override
+	public IPAddressValue fromXacmlString(String v, Object ...params) 
 	{
-		private final static IPAddressType INSTANCE = new IPAddressTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
-		
-		public static IPAddressType getInstance(){
-			return INSTANCE;
-		}
-		
-		public static IPAddressValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static IPAddressValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		v = v.trim();
+		return (v.indexOf('[') == 0)?getV6Instance(v):getV4Instance(v);
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

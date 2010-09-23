@@ -51,15 +51,15 @@ public class AnnotatedAttributeResolverBuilderTest
 		
 		BagOfAttributeValues v1 = resolver.resolve(context, 
 				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
-		assertEquals(StringType.Factory.emptyBag(), v1);
+		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		v1 = resolver.resolve(context, 
 				AttributeCategoryId.ACTION, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
-		assertEquals(StringType.Factory.emptyBag(), v1);
+		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		BagOfAttributeValues v2 = resolver.resolve(context, 
 				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), "testIssuer");
-		assertEquals(IntegerType.Factory.bagOf(IntegerType.Factory.create(1)), v2);
+		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v2);
 	}
 	
 	@Test
@@ -69,11 +69,11 @@ public class AnnotatedAttributeResolverBuilderTest
 		
 		BagOfAttributeValues v1 = resolver.resolve(context, 
 				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), null);
-		assertEquals(StringType.Factory.emptyBag(), v1);
+		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		BagOfAttributeValues v2 = resolver.resolve(context, 
 				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), null);
-		assertEquals(IntegerType.Factory.bagOf(IntegerType.Factory.create(1)), v2);
+		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v2);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

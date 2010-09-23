@@ -5,50 +5,68 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
 
-public interface StringType extends AttributeValueType
+public enum StringType implements AttributeValueType
 {
-	StringValue create(Object v, Object ...params);
-	StringValue fromXacmlString(String v, Object ...params);
+	STRING("http://www.w3.org/2001/XMLSchema#string");
 	
-	final class StringValue extends SimpleAttributeValue<String>
-	{
-		public StringValue(StringType type, String value) {
-			super(type, value);
-		}
-		
-		public boolean equalsIgnoreCase(StringValue v){
-			return getValue().equalsIgnoreCase(v.getValue());
-		}
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private StringType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static StringType INSTANCE = new StringTypeImpl("http://www.w3.org/2001/XMLSchema#string");
-		
-		public static StringType getInstance(){
-			return INSTANCE;
-		}
-		
-		public static StringValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static StringValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return StringValue.class.isInstance(any) || String.class.isInstance(any);
+	}
+
+	@Override
+	public StringValue fromXacmlString(String v, Object ...params) {
+		return create(v);
+	}
+	
+	@Override
+	public StringValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"string\" type", 
+				any, any.getClass()));
+		return new StringValue(this, (String)any);
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

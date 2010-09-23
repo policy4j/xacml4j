@@ -15,8 +15,9 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.types.IntegerValue;
 
 public class LogicalFunctionsTest
 {
@@ -43,18 +44,18 @@ public class LogicalFunctionsTest
 	public void testAndFunction() throws EvaluationException
 	{
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
-				LogicalFunctions.and(context, XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
-				LogicalFunctions.and(context, XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
-				LogicalFunctions.and(context, XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true)));
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
 		verify(context);
 	}
 	
@@ -62,69 +63,69 @@ public class LogicalFunctionsTest
 	public void testBasicOrFunction() throws EvaluationException
 	{
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
-				LogicalFunctions.or(context, XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
-				LogicalFunctions.or(context, XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
-				LogicalFunctions.or(context, XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true)));
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
 		verify(context);
 	}
 	
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerType.IntegerValue n = IntegerType.Factory.create(0);
+		IntegerValue n = IntegerType.INTEGER.create(0);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
+		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.Factory.create(1);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
-				LogicalFunctions.nof(context, n, XacmlDataTypes.BOOLEAN.create(true)));
+		n = IntegerType.INTEGER.create(1);
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
-				LogicalFunctions.nof(context, n, XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.Factory.create(2);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
+		n = IntegerType.INTEGER.create(2);
+		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n, 
-						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(true)));
+						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
+		assertEquals(BooleanType.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, 
-						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false)));
+						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.Factory.create(2);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
+		n = IntegerType.INTEGER.create(2);
+		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n, 
-						XacmlDataTypes.BOOLEAN.create(true), XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(true)));
+						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
 		verify(context);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerType.IntegerValue n = IntegerType.Factory.create(4);
+		IntegerValue n = IntegerType.INTEGER.create(4);
 		replay(context); 
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), 
-				LogicalFunctions.nof(context, n, XacmlDataTypes.BOOLEAN.create(false)));
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(false)));
 		verify(context);
 	}
 }

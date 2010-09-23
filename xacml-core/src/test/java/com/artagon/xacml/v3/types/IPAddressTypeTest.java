@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.types;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class IPAddressTypeTest
 	
 	@Before
 	public void test(){
-		this.t = IPAddressType.Factory.getInstance();
+		this.t = IPAddressType.IPADDRESS;
 	}
 	
 	@Test
@@ -38,5 +39,15 @@ public class IPAddressTypeTest
 		AttributeValue a1 = t.create(IPAddressUtils.parseAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334"), 
 				IPAddressUtils.parseAddress("::0"));
 		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]/[0:0:0:0:0:0:0:0]", a1.toXacmlString());
+	}
+	
+	@Test
+	public void testParseIPV4()
+	{
+		IPAddressValue v = IPAddressType.IPADDRESS.fromXacmlString("127.0.0.1/127.0.0.1:80");
+		assertNotNull(v);
+		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getAddress());
+		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getMask());
+		assertEquals(PortRange.getSinglePort(80), v.getRange());
 	}
 }

@@ -21,7 +21,7 @@ public class AttributeDesignatorTest
 	
 	@Before
 	public void init(){
-		this.type = IntegerType.Factory.getInstance();	
+		this.type = IntegerType.INTEGER;	
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
@@ -30,8 +30,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer",
-				IntegerType.Factory.getInstance(), true);
-		expect(context.resolve(desig)).andReturn(IntegerType.Factory.emptyBag());
+				IntegerType.INTEGER, true);
+		expect(context.resolve(desig)).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
 		try{
 			desig.evaluate(context);
@@ -49,7 +49,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", 
-				IntegerType.Factory.getInstance(), true);
+				IntegerType.INTEGER, true);
 		expect(context.resolve(desig)).andReturn(null);
 		replay(context);
 		try{
@@ -69,16 +69,16 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategoryId.SUBJECT_RECIPIENT, "testId", "testIssuer", 
-				IntegerType.Factory.getInstance(), true);
+				IntegerType.INTEGER, true);
 		expect(context.resolve(desig)).andReturn(
-				IntegerType.Factory.bagOf(
-						IntegerType.Factory.create(1), IntegerType.Factory.create(2)));
+				IntegerType.INTEGER.bagOf(
+						IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)));
 				
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
-		assertEquals(IntegerType.Factory.bagOf(
-				IntegerType.Factory.create(1), IntegerType.Factory.create(2)), v);
+		assertEquals(IntegerType.INTEGER.bagOf(
+				IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)), v);
 	}
 	
 	@Test
@@ -86,12 +86,12 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategoryId.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(desig)).andReturn(IntegerType.Factory.emptyBag());
+		expect(context.resolve(desig)).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
-		assertEquals(IntegerType.Factory.emptyBag(), v);
+		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -105,7 +105,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
-		assertEquals(IntegerType.Factory.emptyBag(), v);
+		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -130,7 +130,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
-		assertEquals(IntegerType.Factory.emptyBag(), v);
+		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
 	
@@ -155,7 +155,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
-		assertEquals(IntegerType.Factory.emptyBag(), v);
+		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
 }

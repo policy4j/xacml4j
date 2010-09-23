@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateValue;
-import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.google.common.base.Preconditions;
 

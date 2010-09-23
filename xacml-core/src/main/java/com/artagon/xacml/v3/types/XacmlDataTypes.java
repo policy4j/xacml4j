@@ -65,18 +65,18 @@ public enum XacmlDataTypes
 	DOUBLE(DoubleType.DOUBLE),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#hexBinary</b> */
-	HEXBINARY(HexBinaryType.Factory.getInstance()),
+	HEXBINARY(HexBinaryType.HEXBINARY),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#integer</b> */
-	INTEGER(IntegerType.Factory.getInstance()),
+	INTEGER(IntegerType.INTEGER),
 
-	IPADDRESS(IPAddressType.Factory.getInstance()),
+	IPADDRESS(IPAddressType.IPADDRESS),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
 	RFC822NAME(RFC822NameType.Factory.getInstance()),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
-	STRING(StringType.Factory.getInstance()),
+	STRING(StringType.STRING),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#time</b> */
 	TIME(TimeType.Factory.getInstance()),
@@ -87,7 +87,7 @@ public enum XacmlDataTypes
 	 * XACML DataType:
 	 * <b>urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression</b>
 	 */
-	XPATHEXPRESSION(XPathExpressionType.Factory.getInstance()),
+	XPATHEXPRESSION(XPathExpressionType.XPATHEXPRESSION),
 
 	/**
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b>

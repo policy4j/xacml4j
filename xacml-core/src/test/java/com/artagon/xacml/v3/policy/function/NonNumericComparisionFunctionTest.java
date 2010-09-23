@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -32,12 +32,12 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringValue a = StringType.Factory.create("ab");
-		StringValue b = StringType.Factory.create("aa");
+		StringValue a = StringType.STRING.create("ab");
+		StringValue b = StringType.STRING.create("aa");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
-		a = StringType.Factory.create("aaa");
-		b = StringType.Factory.create("aa");
+		a = StringType.STRING.create("aaa");
+		b = StringType.STRING.create("aa");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), 
 				NonNumericComparisionFunctions.greatherThan(a, b));
 	}

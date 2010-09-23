@@ -24,6 +24,7 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.types.XPathExpressionType;
+import com.artagon.xacml.v3.types.XPathExpressionValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -47,7 +48,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		}
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR, 
-				XPathExpressionType.Factory.getInstance())){
+				XPathExpressionType.XPATHEXPRESSION)){
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler", 
@@ -87,11 +88,11 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 		throws RequestSyntaxException
 	{
 		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
-				XPathExpressionType.Factory.getInstance());
+				XPathExpressionType.XPATHEXPRESSION);
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
-		XPathExpressionType.XPathExpressionValue selector = (XPathExpressionType.XPathExpressionValue)Iterables.getOnlyElement(values, null);
+		XPathExpressionValue selector = (XPathExpressionValue)Iterables.getOnlyElement(values, null);
 		Node content = attribute.getContent();
 		// if there is no content
 		// specified ignore it and return
@@ -129,7 +130,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR, 
 						a.getIssuer(), 
 						a.isIncludeInResult(), 
-						XPathExpressionType.Factory.create(xpath, attributes.getCategory()));
+						XPathExpressionType.XPATHEXPRESSION.create(xpath, attributes.getCategory()));
 				newAttributes.add(selectorAttr);
 				continue;
 			}

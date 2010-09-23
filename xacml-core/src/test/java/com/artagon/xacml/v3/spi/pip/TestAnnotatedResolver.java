@@ -21,7 +21,7 @@ public class TestAnnotatedResolver
 	public BagOfAttributeValues getTestId1Attribute(
 			PolicyInformationPointContext context)
 	{
-		return StringType.Factory.emptyBag();
+		return StringType.STRING.emptyBag();
 	}
 	
 	@XacmlAttributeDescriptor(id="testId2", typeId="http://www.w3.org/2001/XMLSchema#integer")
@@ -29,6 +29,6 @@ public class TestAnnotatedResolver
 	public BagOfAttributeValues getTestId2Attribute(
 			PolicyInformationPointContext context)
 	{
-		return IntegerType.Factory.bagOf(IntegerType.Factory.create(1));
+		return IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1));
 	}
 }

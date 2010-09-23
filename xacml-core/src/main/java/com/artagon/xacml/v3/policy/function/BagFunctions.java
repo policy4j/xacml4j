@@ -24,15 +24,15 @@ import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.HexBinaryType;
-import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
+import com.artagon.xacml.v3.types.HexBinaryValue;
 import com.artagon.xacml.v3.types.IPAddressType;
-import com.artagon.xacml.v3.types.IPAddressType.IPAddressValue;
+import com.artagon.xacml.v3.types.IPAddressValue;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
+import com.artagon.xacml.v3.types.IntegerValue;
 import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.StringType.StringValue;
+import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
@@ -95,7 +95,7 @@ public class BagFunctions
 	}
 	
 	static IntegerValue typeBagSizeImpl(BagOfAttributeValues bag) {
-		return IntegerType.Factory.create(bag.size());
+		return IntegerType.INTEGER.create(bag.size());
 	}
 	
 	static BooleanValue containsImpl(AttributeValue v,
@@ -134,7 +134,7 @@ public class BagFunctions
 	public static BagOfAttributeValues stringBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#string")
 			StringValue ...values){
-		return StringType.Factory.bagOf(values);
+		return StringType.STRING.bagOf(values);
 	}
 	
 	// boolean
@@ -204,7 +204,7 @@ public class BagFunctions
 	public static BagOfAttributeValues integerBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#integer")
 			IntegerValue ...values){
-		return IntegerType.Factory.bagOf(values);
+		return IntegerType.INTEGER.bagOf(values);
 	}
 	
 	// time
@@ -414,7 +414,7 @@ public class BagFunctions
 	public static BagOfAttributeValues hexBinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#hexBinary")
 			HexBinaryValue ...values){
-		return HexBinaryType.Factory.bagOf(values);
+		return HexBinaryType.HEXBINARY.bagOf(values);
 	}
 	
 	// base64Binary
@@ -636,7 +636,7 @@ public class BagFunctions
 	public static BagOfAttributeValues ipAddressBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
 			IPAddressValue ...values){
-		return IPAddressType.Factory.bagOf(values);
+		return IPAddressType.IPADDRESS.bagOf(values);
 	}
 	
 	// dnsName

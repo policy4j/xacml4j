@@ -29,7 +29,7 @@ public class ApplyTest
 	@Test
 	public void testApplyEvaluationWithValidFunctionAndValidParameters() throws XacmlException
 	{
-		Expression[] params = {IntegerType.Factory.create(10L), IntegerType.Factory.create(11L)};
+		Expression[] params = {IntegerType.INTEGER.create(10L), IntegerType.INTEGER.create(11L)};
 		function.validateParametersAndThrow(params);
 		replay(function);
 		Apply apply = new Apply(function, params);
@@ -46,21 +46,21 @@ public class ApplyTest
 	@Test(expected=XacmlSyntaxException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.Factory.create(10L));
+		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
 		expectLastCall().andThrow(new XacmlSyntaxException("Bad"));
 		replay(function);
-		new Apply(function, IntegerType.Factory.create(10L));
+		new Apply(function, IntegerType.INTEGER.create(10L));
 		verify(function);
 	}
 	
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.Factory.create(10L));
-		expect(function.invoke(context, IntegerType.Factory.create(10L)))
+		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.Factory.create(10L));
+		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -68,11 +68,11 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionParamValidationFails() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.Factory.create(10L));
-		expect(function.invoke(context, IntegerType.Factory.create(10L)))
+		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.Factory.create(10L));
+		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -80,11 +80,11 @@ public class ApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.Factory.create(10L));
-		expect(function.invoke(context, IntegerType.Factory.create(10L))).
+		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.invoke(context, IntegerType.INTEGER.create(10L))).
 		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.Factory.create(10L));
+		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
 		apply.evaluate(context);
 		verify(function);
 	}

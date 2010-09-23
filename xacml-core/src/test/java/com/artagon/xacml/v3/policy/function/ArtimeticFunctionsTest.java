@@ -12,9 +12,9 @@ public class ArtimeticFunctionsTest
 	@Test
 	public void testAddIntegerFunction()
 	{
-		assertEquals(IntegerType.Factory.create(3), 
-				ArithmeticFunctions.addInteger(IntegerType.Factory.create(1), 
-				IntegerType.Factory.create(2)));
+		assertEquals(IntegerType.INTEGER.create(3), 
+				ArithmeticFunctions.addInteger(IntegerType.INTEGER.create(1), 
+				IntegerType.INTEGER.create(2)));
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ public class ArtimeticFunctionsTest
 	public void testDivideIntegerFunction()
 	{
 		assertEquals(DoubleType.DOUBLE.create(2), 
-				ArithmeticFunctions.divideInteger(IntegerType.Factory.create(4), 
-				IntegerType.Factory.create(2)));
+				ArithmeticFunctions.divideInteger(IntegerType.INTEGER.create(4), 
+				IntegerType.INTEGER.create(2)));
 	}
 }

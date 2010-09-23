@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
-
 
 public class HexTypeTest 
 {
@@ -14,7 +12,7 @@ public class HexTypeTest
 	
 	@Before
 	public void init(){
-		this.t = HexBinaryType.Factory.getInstance();
+		this.t = HexBinaryType.HEXBINARY;
 	}
 	
 

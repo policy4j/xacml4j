@@ -69,12 +69,6 @@ public abstract class AttributeReference extends XacmlObject
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public abstract BagOfAttributeValues evaluate(EvaluationContext context) 
 		throws EvaluationException;
 

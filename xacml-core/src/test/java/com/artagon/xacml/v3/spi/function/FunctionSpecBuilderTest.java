@@ -24,8 +24,8 @@ public class FunctionSpecBuilderTest
 	
 	@Before
 	public void init(){
-		this.type1 = IntegerType.Factory.getInstance();
-		this.type2 = StringType.Factory.getInstance();
+		this.type1 = IntegerType.INTEGER;
+		this.type2 = StringType.STRING;
 		this.impl =  createStrictMock(FunctionInvocation.class);
 		
 		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
