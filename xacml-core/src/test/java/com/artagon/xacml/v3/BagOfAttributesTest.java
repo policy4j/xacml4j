@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3;
 
 import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
+import static com.artagon.xacml.v3.types.StringType.STRING;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;
@@ -17,7 +18,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class BagOfAttributesTest
 {
@@ -27,8 +27,8 @@ public class BagOfAttributesTest
 	
 	@Before
 	public void init(){
-		this.stringType = StringType.STRING;
-		this.intType = IntegerType.INTEGER;
+		this.stringType = STRING;
+		this.intType = INTEGER;
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
@@ -50,8 +50,8 @@ public class BagOfAttributesTest
 	@Test
 	public void testEqualsEmptyBags()
 	{
-		assertEquals(XacmlDataTypes.STRING.emptyBag(), XacmlDataTypes.STRING.emptyBag());
-		assertEquals(XacmlDataTypes.STRING.emptyBag(), XacmlDataTypes.STRING.emptyBag());
+		assertEquals(STRING.emptyBag(), STRING.emptyBag());
+		assertEquals(STRING.emptyBag(), STRING.emptyBag());
 	}
 	
 	@Test

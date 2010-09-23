@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.types;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import javax.xml.namespace.QName;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 
 /**
@@ -129,20 +127,6 @@ public enum XacmlDataTypes
 	 */
 	public AttributeValueType getDataType() {
 		return type;
-	}
-	
-	/**
-	 * Delegates call to appropriate 
-	 * {@link AttributeValueType#bagOf(Collection)}
-	 * 
-	 * @param v a collection of values
-	 */
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-		return type.bagOf(values);
-	}
-	
-	public BagOfAttributeValues emptyBag(){
-		return type.emptyBag();
 	}
 	
 	@SuppressWarnings("unchecked")
