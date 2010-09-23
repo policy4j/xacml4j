@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
@@ -18,7 +18,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return BooleanType.Factory.create(a.getValue() > b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
@@ -27,7 +27,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return BooleanType.Factory.create(a.getValue() < b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
@@ -36,7 +36,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
@@ -45,7 +45,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
@@ -54,7 +54,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
-		return BooleanType.Factory.create(a.getValue() > b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
@@ -63,7 +63,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
-		return BooleanType.Factory.create(a.getValue() < b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue() < b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
@@ -72,7 +72,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
@@ -81,6 +81,6 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 }

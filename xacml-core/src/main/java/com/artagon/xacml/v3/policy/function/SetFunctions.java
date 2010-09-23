@@ -6,7 +6,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 
 @XacmlFunctionProvider(description="XACML Set Functions")
 public class SetFunctions 
@@ -35,7 +35,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-at-least-one-member-of")
@@ -44,7 +44,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-set-equals")
@@ -53,7 +53,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-intersection")
@@ -80,7 +80,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-at-least-one-member-of")
@@ -89,7 +89,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-set-equals")
@@ -98,7 +98,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-intersection")
@@ -125,7 +125,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of")
@@ -134,7 +134,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-set-equals")
@@ -143,7 +143,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	
@@ -171,7 +171,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-at-least-one-member-of")
@@ -180,7 +180,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-set-equals")
@@ -189,7 +189,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-intersection")
@@ -216,7 +216,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-at-least-one-member-of")
@@ -225,7 +225,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-set-equals")
@@ -234,7 +234,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-intersection")
@@ -261,7 +261,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-at-least-one-member-of")
@@ -270,7 +270,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-set-equals")
@@ -279,7 +279,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-intersection")
@@ -306,7 +306,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-at-least-one-member-of")
@@ -315,7 +315,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-set-equals")
@@ -324,7 +324,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-intersection")
@@ -351,7 +351,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-at-least-one-member-of")
@@ -360,7 +360,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-set-equals")
@@ -369,7 +369,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-intersection")
@@ -396,7 +396,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-at-least-one-member-of")
@@ -405,7 +405,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-set-equals")
@@ -414,7 +414,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-intersection")
@@ -441,7 +441,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-at-least-one-member-of")
@@ -450,7 +450,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-set-equals")
@@ -459,7 +459,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-intersection")
@@ -486,7 +486,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-at-least-one-member-of")
@@ -495,7 +495,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-set-equals")
@@ -504,7 +504,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-intersection")
@@ -531,7 +531,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-at-least-one-member-of")
@@ -540,7 +540,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-set-equals")
@@ -549,7 +549,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection")
@@ -576,7 +576,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of")
@@ -585,7 +585,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals")
@@ -594,7 +594,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection")
@@ -621,7 +621,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of")
@@ -630,7 +630,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals")
@@ -639,7 +639,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 	
 	
@@ -667,7 +667,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAll(a));
+		return BooleanType.BOOLEAN.create(b.containsAll(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-at-least-one-member-of")
@@ -676,7 +676,7 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(b.containsAtLeastOneOf(a));
+		return BooleanType.BOOLEAN.create(b.containsAtLeastOneOf(a));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-set-equals")
@@ -685,6 +685,6 @@ public class SetFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)BagOfAttributeValues b) 
 	{
-		return BooleanType.Factory.create(a.containsAll(b) && b.containsAll(a));
+		return BooleanType.BOOLEAN.create(a.containsAll(b) && b.containsAll(a));
 	}
 }

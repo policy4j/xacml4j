@@ -8,13 +8,11 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
-
-
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType;
 import com.artagon.xacml.v3.types.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DNSNameType.DNSNameValue;
 import com.artagon.xacml.v3.types.DateTimeType;
@@ -103,7 +101,7 @@ public class BagFunctions
 	static BooleanValue containsImpl(AttributeValue v,
 			BagOfAttributeValues bag){
 
-		return BooleanType.Factory.create(bag.contains(v));
+		return BooleanType.BOOLEAN.create(bag.contains(v));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
@@ -171,7 +169,7 @@ public class BagFunctions
 	public static BagOfAttributeValues booleanBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#boolean")
 			BooleanValue ...values){
-		return BooleanType.Factory.bagOf(values);
+		return BooleanType.BOOLEAN.bagOf(values);
 	}
 	
 	// integer

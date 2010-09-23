@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.google.common.base.Preconditions;
 
 public class Match extends XacmlObject implements PolicyElement, Matchable

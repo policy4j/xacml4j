@@ -113,41 +113,41 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
-		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeValues b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
 		BagOfAttributeValues c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
-		assertTrue(c.contains(BooleanType.Factory.create(true)));
-		assertTrue(c.contains(BooleanType.Factory.create(false)));
+		assertTrue(c.contains(BooleanType.BOOLEAN.create(true)));
+		assertTrue(c.contains(BooleanType.BOOLEAN.create(false)));
 	}
 	
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
-		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(true));
-		assertEquals(BooleanType.Factory.create(true), SetFunctions.booleanSetEquals(a, b));
+		BagOfAttributeValues a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeValues b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true));
+		assertEquals(BooleanType.BOOLEAN.create(true), SetFunctions.booleanSetEquals(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
-		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
-		assertEquals(BooleanType.Factory.bagOf(BooleanType.Factory.create(true)), SetFunctions.booleanIntersection(a, b));
+		BagOfAttributeValues a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeValues b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		assertEquals(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true)), SetFunctions.booleanIntersection(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
-		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(false));
+		BagOfAttributeValues a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeValues b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false));
 		BagOfAttributeValues c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 		
-		b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
 		c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(1, c.size());
-		assertTrue(c.contains(BooleanType.Factory.create(true)));
+		assertTrue(c.contains(BooleanType.BOOLEAN.create(true)));
 	}
 }

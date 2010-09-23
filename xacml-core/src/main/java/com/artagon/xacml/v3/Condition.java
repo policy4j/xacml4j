@@ -1,7 +1,8 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
+
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 /**
@@ -27,7 +28,7 @@ public class Condition extends XacmlObject implements PolicyElement
 		throws XacmlSyntaxException
 	{
 		checkNotNull(predicate, "Condition predicate can not be null");
-		checkArgument(predicate.getEvaluatesTo().equals(BooleanType.Factory.getInstance()),
+		checkArgument(predicate.getEvaluatesTo().equals(BOOLEAN),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"", 

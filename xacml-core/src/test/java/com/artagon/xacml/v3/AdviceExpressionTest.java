@@ -50,7 +50,7 @@ public class AdviceExpressionTest
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategoryId.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andReturn(BooleanType.Factory.create(false));
+		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
 		replay(attrExp0, attrExp1, context);
 		AdviceExpression exp = new AdviceExpression("test",Effect.DENY, Arrays.asList(attrExp0, attrExp1));
 		Advice advice = exp.evaluate(context);
@@ -64,7 +64,7 @@ public class AdviceExpressionTest
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(AttributeCategoryId.RESOURCE, a1.getCategory());
-		assertEquals(BooleanType.Factory.create(false), a1.getAttribute());
+		assertEquals(BooleanType.BOOLEAN.create(false), a1.getAttribute());
 		verify(attrExp0, attrExp1, context);
 	}
 }

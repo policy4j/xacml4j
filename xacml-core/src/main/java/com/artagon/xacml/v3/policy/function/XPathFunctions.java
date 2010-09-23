@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
@@ -71,18 +71,18 @@ public class XPathFunctions
 			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getValue(), xpath1.getCategory());
 			if(nodes0 == null || 
 					nodes0  == null){
-				return BooleanType.Factory.create(false);
+				return BooleanType.BOOLEAN.create(false);
 			}
 			for(int i = 0; i < nodes0.getLength(); i++){
 				for(int j = 0; j < nodes1.getLength(); j++){
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
-						return BooleanType.Factory.create(true);
+						return BooleanType.BOOLEAN.create(true);
 					}
 				}
 			}
-			return BooleanType.Factory.create(false);
+			return BooleanType.BOOLEAN.create(false);
 		}catch(EvaluationException e){
-			return BooleanType.Factory.create(false);
+			return BooleanType.BOOLEAN.create(false);
 		}
 	}
 	
@@ -112,14 +112,14 @@ public class XPathFunctions
 					xpath1.getCategory());
 			if(nodes0 == null || 
 					nodes0  == null){
-				return BooleanType.Factory.create(false);
+				return BooleanType.BOOLEAN.create(false);
 			}
 			for(int i = 0; i < nodes0.getLength(); i++)
 			{
 				for(int j = 0; j < nodes1.getLength(); j++)
 				{
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
-						return BooleanType.Factory.create(true);
+						return BooleanType.BOOLEAN.create(true);
 					}
 					NamedNodeMap a = nodes0.item(i).getAttributes();
 					NamedNodeMap b = nodes1.item(j).getAttributes();
@@ -127,19 +127,19 @@ public class XPathFunctions
 						for(int ii = 0; ii < a.getLength(); ii++){
 							for(int jj = 0; jj < b.getLength(); jj++){
 								if(a.item(ii).isSameNode(b.item(jj))){
-									return BooleanType.Factory.create(true);
+									return BooleanType.BOOLEAN.create(true);
 								}
 							}
 						}
 					}
 					if(compareChildNodes(nodes0.item(i), nodes1.item(j))){
-						return BooleanType.Factory.create(true);
+						return BooleanType.BOOLEAN.create(true);
 					}
 				}
 			}
-			return BooleanType.Factory.create(false);
+			return BooleanType.BOOLEAN.create(false);
 		}catch(EvaluationException e){
-			return BooleanType.Factory.create(false);
+			return BooleanType.BOOLEAN.create(false);
 		}
 	}
 	

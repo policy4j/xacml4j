@@ -36,10 +36,10 @@ public class SpecialMatchFunctionsTest
 	{
 		StringValue p = StringType.Factory.create(".sun.com");
 		RFC822NameValue n = RFC822NameType.Factory.create("test@east.sun.com");
-		assertEquals(BooleanType.Factory.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 		
 		p = StringType.Factory.create("sun.com");
 		n = RFC822NameType.Factory.create("test@sun.com");
-		assertEquals(BooleanType.Factory.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 }

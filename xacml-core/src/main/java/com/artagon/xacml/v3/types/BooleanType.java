@@ -5,48 +5,71 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface BooleanType extends AttributeValueType
+public enum BooleanType implements AttributeValueType
 {	
-	BooleanType BOOLEAN = new BooleanTypeImpl("http://www.w3.org/2001/XMLSchema#boolean");
+	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
+		
+	private BooleanValue FALSE;
+	private BooleanValue TRUE;
 	
-	BooleanValue create(Object value, Object ...params);
-	BooleanValue fromXacmlString(String v, Object ...params);
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
 	
-	
-	public final class BooleanValue extends BaseAttributeValue<Boolean>
-	{
-		public BooleanValue(BooleanType type, Boolean value) {
-			super(type, value);
-		}
+	private BooleanType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+		this.FALSE = new BooleanValue(this, Boolean.FALSE);
+		this.TRUE = new BooleanValue(this, Boolean.TRUE);
 	}
 	
-	public final class Factory
-	{
-		private final static BooleanType INSTANCE = new BooleanTypeImpl("http://www.w3.org/2001/XMLSchema#boolean");
-		
-		public static BooleanType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Boolean.class.isInstance(any) || String.class.isInstance(any);
+	}
+	
+	@Override
+	public BooleanValue create(Object any, Object ...parameters){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any),String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"boolean\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static BooleanValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static BooleanValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return ((Boolean)any)?TRUE:FALSE;
+	}
+
+	@Override
+	public BooleanValue fromXacmlString(String v, Object ...parameters) {
+		Preconditions.checkNotNull(v);
+		return Boolean.parseBoolean(v)?TRUE:FALSE;
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }

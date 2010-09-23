@@ -137,7 +137,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet("/md:record", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategoryId.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(BooleanType.Factory.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanType.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
 	}
 	
@@ -151,7 +151,7 @@ public class XPathFunctionsTest
 		expect(context.evaluateToNodeSet(".", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		expect(context.evaluateToNodeSet("./md:record", AttributeCategoryId.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		replay(context);
-		assertEquals(BooleanType.Factory.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanType.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
 		verify(context);	
 	}
 

@@ -44,9 +44,9 @@ public class MatchTest
 		expect(ref.getDataType()).andReturn(IntegerType.Factory.getInstance());
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int2)).andReturn(BooleanType.Factory.create(false));
+		expect(invocation.invoke(spec, context, int1, int2)).andReturn(BooleanType.BOOLEAN.create(false));
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int1)).andReturn(BooleanType.Factory.create(true));
+		expect(invocation.invoke(spec, context, int1, int1)).andReturn(BooleanType.BOOLEAN.create(true));
 		replay(invocation, ref, context);
 		Match m = new Match(spec, int1, ref);
 		assertEquals(MatchResult.MATCH, m.match(context));

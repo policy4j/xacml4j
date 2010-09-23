@@ -33,7 +33,7 @@ public enum XacmlDataTypes
 	 * 
 	 * @see {@link BooleanType}
 	 */
-	BOOLEAN(BooleanType.Factory.getInstance()),
+	BOOLEAN(BooleanType.BOOLEAN),
 
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#base64Binary</b> 

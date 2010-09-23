@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 
 @XacmlFunctionProvider(description="TestFunctions")
@@ -25,7 +25,7 @@ public class TestFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue b) 
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")
@@ -90,7 +90,7 @@ public class TestFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
-		return BooleanType.Factory.create(false);
+		return BooleanType.BOOLEAN.create(false);
 	}
 	
 	@XacmlFuncSpec(id="test6VarArg")
@@ -101,6 +101,6 @@ public class TestFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanValue ...values) 
 		throws EvaluationException
 	{	
-		return BooleanType.Factory.create(false);
+		return BooleanType.BOOLEAN.create(false);
 	}
 }

@@ -44,8 +44,8 @@ public class RegularExpressionFunctionsTest
 		StringValue regexp1 = StringType.Factory.create("   This  is n*o*t* *IT!  ");
 		StringValue regexp2 = StringType.Factory.create("  *This .*is not IT! *");
 		StringValue input1 = StringType.Factory.create("   This  is not IT!  ");
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp2, input1));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp2, input1));
 	}
 	
 	@Test
@@ -54,8 +54,8 @@ public class RegularExpressionFunctionsTest
 		StringValue regexp1 = StringType.Factory.create("   This  is n*o*t* *IT!  ");
 		StringValue input1 = StringType.Factory.create("   This  is IT!  ");
 		StringValue input2 = StringType.Factory.create("   This  is not IT!  ");  
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class RegularExpressionFunctionsTest
 	{
 		StringValue regexp = StringType.Factory.create("G*,Trumpickas");
 		StringValue input = StringType.Factory.create("Giedrius,Trumpickas");
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class RegularExpressionFunctionsTest
 	{
 		StringValue regexp = StringType.Factory.create("http://www.test.org/public/*");
 		AnyURIValue input = AnyURIType.ANYURI.create("http://www.test.org/public/test/a");
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class RegularExpressionFunctionsTest
 	{
 		StringValue regexp = StringType.Factory.create(".*@comcast.net");
 		RFC822NameValue input = RFC822NameType.Factory.create("trumpyla@comcast.net");
-		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
+		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}
 	
 	

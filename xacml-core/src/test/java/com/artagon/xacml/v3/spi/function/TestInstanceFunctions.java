@@ -5,7 +5,7 @@ import org.junit.Ignore;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;
 
 @XacmlFunctionProvider(description="TestInstanceFunctions")
@@ -18,7 +18,7 @@ public class TestInstanceFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerType.IntegerValue b) 
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="test2")

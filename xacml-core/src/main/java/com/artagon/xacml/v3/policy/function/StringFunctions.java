@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateType;
@@ -54,7 +54,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().startsWith(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.getValue().startsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-starts-with")
@@ -63,7 +63,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
-		return BooleanType.Factory.create(a.toXacmlString().startsWith(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.toXacmlString().startsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
@@ -72,7 +72,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().endsWith(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.getValue().endsWith(b.getValue()));
 	}
 		
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
@@ -81,7 +81,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
-		return BooleanType.Factory.create(a.toXacmlString().endsWith(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.toXacmlString().endsWith(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
@@ -90,7 +90,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().contains(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.getValue().contains(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
@@ -99,23 +99,23 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue b)
 	{
-		return BooleanType.Factory.create(a.toXacmlString().contains(b.getValue()));
+		return BooleanType.BOOLEAN.create(a.toXacmlString().contains(b.getValue()));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromBoolean(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanType.BooleanValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanType.BooleanValue booleanFromString(
+	public static BooleanValue booleanFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return BooleanType.Factory.fromXacmlString(v.getValue());
+		return BooleanType.BOOLEAN.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")

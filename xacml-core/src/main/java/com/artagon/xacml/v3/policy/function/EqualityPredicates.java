@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
@@ -37,7 +37,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
@@ -46,7 +46,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-equal")
@@ -55,7 +55,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
@@ -64,7 +64,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-equal")
@@ -74,7 +74,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue a, 
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-equal")
@@ -84,7 +84,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case")
@@ -94,7 +94,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.equalsIgnoreCase(b));
+		return BooleanType.BOOLEAN.create(a.equalsIgnoreCase(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
@@ -105,7 +105,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
@@ -116,7 +116,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-equal")
@@ -127,7 +127,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
@@ -138,7 +138,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
@@ -149,7 +149,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal")
@@ -159,7 +159,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue a, 
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal")
@@ -169,7 +169,7 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary")HexBinaryValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary")HexBinaryValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-equal")
@@ -179,6 +179,6 @@ public class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary")Base64BinaryValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary")Base64BinaryValue b)
 	{
-		return BooleanType.Factory.create(a.equals(b));
+		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 }

@@ -27,7 +27,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnTypeResolver;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML higher order functions")
@@ -45,10 +45,10 @@ public class HigherOrderFunctions
 		for(AttributeValue valueFromBag : bag.values()){
 			BooleanValue r = ref.invoke(context, value, valueFromBag);
 			if(r.getValue()){
-				return BooleanType.Factory.create(true);
+				return BooleanType.BOOLEAN.create(true);
 			}
 		}
-		return BooleanType.Factory.create(false);
+		return BooleanType.BOOLEAN.create(false);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
@@ -63,10 +63,10 @@ public class HigherOrderFunctions
 		for(AttributeValue valueFromBag : bag.values()){
 			BooleanValue r = ref.invoke(context, value, valueFromBag);
 			if(!r.getValue()){
-				return BooleanType.Factory.create(false);
+				return BooleanType.BOOLEAN.create(false);
 			}
 		}
-		return BooleanType.Factory.create(true);
+		return BooleanType.BOOLEAN.create(true);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
@@ -82,11 +82,11 @@ public class HigherOrderFunctions
 			for(AttributeValue bValue : b.values()){
 				BooleanValue r = ref.invoke(context, aValue, bValue);
 				if(r.getValue()){
-					return BooleanType.Factory.create(true);
+					return BooleanType.BOOLEAN.create(true);
 				}
 			}
 		}
-		return BooleanType.Factory.create(false);
+		return BooleanType.BOOLEAN.create(false);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
@@ -105,7 +105,7 @@ public class HigherOrderFunctions
 				break;
 			}
 		}
-		return BooleanType.Factory.create(result);
+		return BooleanType.BOOLEAN.create(result);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
@@ -121,10 +121,10 @@ public class HigherOrderFunctions
 		{
 			boolean result = allOf(context, ref, va, b).getValue();
 			if(result){
-				return BooleanType.Factory.create(true);
+				return BooleanType.BOOLEAN.create(true);
 			}
 		}
-		return BooleanType.Factory.create(false);
+		return BooleanType.BOOLEAN.create(false);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
@@ -141,11 +141,11 @@ public class HigherOrderFunctions
 			for(AttributeValue bValue : b.values()){
 				BooleanValue r = ref.invoke(context, aValue, bValue);
 				if(!r.getValue()){
-					return BooleanType.Factory.create(false);
+					return BooleanType.BOOLEAN.create(false);
 				}
 			}
 		}
-		return BooleanType.Factory.create(true);
+		return BooleanType.BOOLEAN.create(true);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")

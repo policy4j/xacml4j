@@ -35,11 +35,11 @@ public class ApplyTest
 		Apply apply = new Apply(function, params);
 		verify(function);
 		reset(function);
-		expect(function.invoke(context, params)).andReturn(BooleanType.Factory.create(Boolean.FALSE));
+		expect(function.invoke(context, params)).andReturn(BooleanType.BOOLEAN.create(false));
 		replay(function);
 		ValueExpression v = apply.evaluate(context);
 		assertNotNull(v);
-		assertEquals(BooleanType.Factory.create(Boolean.FALSE), v);
+		assertEquals(BooleanType.BOOLEAN.create(false), v);
 		verify(function);
 	}
 	

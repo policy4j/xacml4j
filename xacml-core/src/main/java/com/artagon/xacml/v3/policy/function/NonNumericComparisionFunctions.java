@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
+import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType.DateValue;
 import com.artagon.xacml.v3.types.StringType.StringValue;
@@ -26,7 +26,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
-		return BooleanType.Factory.create(a.getValue().compareTo(b.getValue()) > 0);
+		return BooleanType.BOOLEAN.create(a.getValue().compareTo(b.getValue()) > 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-greater-than-or-equal")
@@ -36,7 +36,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		int r = a.getValue().compareTo(b.getValue());
-		return BooleanType.Factory.create(r > 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r > 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-less-than")
@@ -46,7 +46,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		int r = a.getValue().compareTo(b.getValue());
-		return BooleanType.Factory.create(r < 0);
+		return BooleanType.BOOLEAN.create(r < 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-less-than-or-equal")
@@ -56,7 +56,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue b)
 	{
 		int r = a.getValue().compareTo(b.getValue());
-		return BooleanType.Factory.create(r < 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r < 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than")
@@ -65,7 +65,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) > 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than-or-equal")
@@ -75,7 +75,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  > 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  > 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than")
@@ -84,7 +84,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) < 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than-or-equal")
@@ -94,7 +94,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  < 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  < 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-in-range")
@@ -118,7 +118,7 @@ public class NonNumericComparisionFunctions
 			cc.setTimezone(ac.getTimezone());
 		}
 		Preconditions.checkArgument(b.compareTo(c) <= 0);
-		return BooleanType.Factory.create(ac.compare(bc) >= 0 && ac.compare(cc) <= 0);
+		return BooleanType.BOOLEAN.create(ac.compare(bc) >= 0 && ac.compare(cc) <= 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than")
@@ -127,7 +127,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) > 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than-or-equal")
@@ -137,7 +137,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  > 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  > 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than")
@@ -146,7 +146,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) < 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equal")
@@ -156,7 +156,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  < 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  < 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than")
@@ -165,7 +165,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) > 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) > 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal")
@@ -175,7 +175,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  > 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  > 0 || r == 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than")
@@ -184,7 +184,7 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue b)
 	{
-		return BooleanType.Factory.create(a.compareTo(b) < 0);
+		return BooleanType.BOOLEAN.create(a.compareTo(b) < 0);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal")
@@ -194,6 +194,6 @@ public class NonNumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue b)
 	{
 		int r = a.compareTo(b);
-		return BooleanType.Factory.create(r  < 0 || r == 0);
+		return BooleanType.BOOLEAN.create(r  < 0 || r == 0);
 	}
 }
