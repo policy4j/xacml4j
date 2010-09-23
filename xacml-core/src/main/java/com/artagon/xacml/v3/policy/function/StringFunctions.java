@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
 import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
+import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IPAddressType;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.RFC822NameType;
@@ -142,17 +143,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleType.DoubleValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:double-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
-	public static DoubleType.DoubleValue doubleFromString(
+	public static DoubleValue doubleFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return DoubleType.Factory.fromXacmlString(v.getValue());
+		return DoubleType.DOUBLE.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")

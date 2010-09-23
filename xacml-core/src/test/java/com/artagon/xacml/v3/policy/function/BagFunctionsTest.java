@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType;
-import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
@@ -131,14 +131,14 @@ public class BagFunctionsTest
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
-		DoubleValue v0 = DoubleType.Factory.create(1);
-		DoubleValue v1 = DoubleType.Factory.create(2);
-		BagOfAttributeValues bag = DoubleType.Factory.bagOf(v0);
+		DoubleValue v0 = DoubleType.DOUBLE.create(1);
+		DoubleValue v1 = DoubleType.DOUBLE.create(2);
+		BagOfAttributeValues bag = DoubleType.DOUBLE.bagOf(v0);
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.doubleBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.doubleIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.doubleIsIn(v1, bag));
-		assertEquals(DoubleType.Factory.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
+		assertEquals(DoubleType.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
 	
 	@Test

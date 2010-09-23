@@ -25,7 +25,7 @@ public class ParamTypeSequenceTest
 	public void setUp() throws Exception
 	{
 		this.t1 = StringType.Factory.getInstance();
-		this.t2 = DoubleType.Factory.getInstance();
+		this.t2 = DoubleType.DOUBLE;
 		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
 		this.specAttrOneOrMore = new FunctionParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
 		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, t1);	

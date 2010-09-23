@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.DoubleType;
-import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 
@@ -30,6 +30,6 @@ public class NumericConversionFunctions
 	public static DoubleValue integerToDouble(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValue v)
 	{
-		return DoubleType.Factory.create(v.getValue().doubleValue());
+		return DoubleType.DOUBLE.create(v.getValue().doubleValue());
 	}
 }

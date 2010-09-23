@@ -5,46 +5,94 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface DoubleType extends AttributeValueType
+public enum DoubleType implements AttributeValueType
 {
-	DoubleValue create(Object v, Object ...params);
-	DoubleValue fromXacmlString(String v, Object ...params);
+	DOUBLE("http://www.w3.org/2001/XMLSchema#double");
 	
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
 	
-	final class DoubleValue extends SimpleAttributeValue<Double>
-	{
-		public DoubleValue(DoubleType type, Double value) {
-			super(type, value);
-		}
+	private DoubleType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static DoubleType INSTANCE = new DoubleTypeImpl("http://www.w3.org/2001/XMLSchema#double");
-		
-		public static DoubleType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
+		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
+		Float.class.isInstance(any) || Long.class.isInstance(any) 
+		|| String.class.isInstance(any);
+	}
+	
+	
+	@Override
+	public DoubleValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"double\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static DoubleValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		if(Byte.class.isInstance(any)){
+			return new DoubleValue(this, ((Byte)any).doubleValue());
 		}
-		
-		public static DoubleValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
+		if(Short.class.isInstance(any)){
+			return new DoubleValue(this, ((Short)any).doubleValue());
 		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
+		if(Integer.class.isInstance(any)){
+			return new DoubleValue(this, ((Integer)any).doubleValue());
 		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
+		if(Float.class.isInstance(any)){
+			return new DoubleValue(this, ((Float)any).doubleValue());
 		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
+		if(Long.class.isInstance(any)){
+			return new DoubleValue(this, ((Long)any).doubleValue());
 		}
+		return new DoubleValue(this, (Double)any);
+	}
+	
+	@Override
+	public DoubleValue fromXacmlString(String v, Object ...params) {
+
+        if (v.endsWith("INF")) {
+            int infIndex = v.lastIndexOf("INF");
+            v = v.substring(0, infIndex) + "Infinity";
+        }
+        return new DoubleValue(this, Double.parseDouble(v));
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

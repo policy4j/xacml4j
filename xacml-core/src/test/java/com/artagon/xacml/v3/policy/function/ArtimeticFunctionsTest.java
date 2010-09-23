@@ -20,15 +20,15 @@ public class ArtimeticFunctionsTest
 	@Test
 	public void testAddDoubleFunction()
 	{
-		assertEquals(DoubleType.Factory.create(3.3 + 4.5), 
-				ArithmeticFunctions.addDouble(DoubleType.Factory.create(3.3), 
-				DoubleType.Factory.create(4.5)));
+		assertEquals(DoubleType.DOUBLE.create(3.3 + 4.5), 
+				ArithmeticFunctions.addDouble(DoubleType.DOUBLE.create(3.3), 
+				DoubleType.DOUBLE.create(4.5)));
 	}
 	
 	@Test
 	public void testDivideIntegerFunction()
 	{
-		assertEquals(DoubleType.Factory.create(2), 
+		assertEquals(DoubleType.DOUBLE.create(2), 
 				ArithmeticFunctions.divideInteger(IntegerType.Factory.create(4), 
 				IntegerType.Factory.create(2)));
 	}

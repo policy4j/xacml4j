@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 
 public class DoubleTypeTest 
 {
@@ -16,18 +15,18 @@ public class DoubleTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = DoubleType.Factory.getInstance();
+		this.t1 = DoubleType.DOUBLE;
 	}
 	
 	@Test
 	public void testCreateDouble()
 	{
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Short.valueOf("1")));
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Byte.valueOf("1")));
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Integer.valueOf("1")));
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Long.valueOf("1")));
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Float.valueOf("1")));
-		assertEquals(DoubleType.Factory.create(1), DoubleType.Factory.create(Double.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Short.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Byte.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Integer.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Long.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Float.valueOf("1")));
+		assertEquals(t1.create(1), t1.create(Double.valueOf("1")));
 	}
 	
 	@Test

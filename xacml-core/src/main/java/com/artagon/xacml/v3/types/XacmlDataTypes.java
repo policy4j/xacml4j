@@ -62,7 +62,7 @@ public enum XacmlDataTypes
 	DNSNAME(DNSNameType.DNSNAME),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#double</b> */
-	DOUBLE(DoubleType.Factory.getInstance()),
+	DOUBLE(DoubleType.DOUBLE),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#hexBinary</b> */
 	HEXBINARY(HexBinaryType.Factory.getInstance()),

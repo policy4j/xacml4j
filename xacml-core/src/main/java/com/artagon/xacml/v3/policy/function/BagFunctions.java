@@ -22,7 +22,7 @@ import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
 import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
-import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.HexBinaryType;
 import com.artagon.xacml.v3.types.HexBinaryType.HexBinaryValue;
 import com.artagon.xacml.v3.types.IPAddressType;
@@ -274,7 +274,7 @@ public class BagFunctions
 	public static BagOfAttributeValues doubleBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#double")
 			DoubleValue ...values){
-		return DoubleType.Factory.bagOf(values);
+		return DoubleType.DOUBLE.bagOf(values);
 	}
 	
 	// date

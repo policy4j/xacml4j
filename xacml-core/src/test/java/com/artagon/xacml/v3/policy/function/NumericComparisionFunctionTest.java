@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.types.DoubleType;
-import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
+import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
@@ -16,28 +16,28 @@ public class NumericComparisionFunctionTest
 	@Test
 	public void testGreatherThanDouble()
 	{
-		DoubleValue a = DoubleType.Factory.create(35.0);
-		DoubleValue b = DoubleType.Factory.create(35.0);
+		DoubleValue a = DoubleType.DOUBLE.create(35.0);
+		DoubleValue b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanDouble(a, b));
-		a = DoubleType.Factory.create(35.1);
-		b = DoubleType.Factory.create(35.0);
+		a = DoubleType.DOUBLE.create(35.1);
+		b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), NumericComparisionFunctions.greatherThanDouble(a, b));
-		a = DoubleType.Factory.create(35.1);
-		b = DoubleType.Factory.create(35.2);
+		a = DoubleType.DOUBLE.create(35.1);
+		b = DoubleType.DOUBLE.create(35.2);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanDouble(a, b));
 	}
 	
 	@Test
 	public void testGreatherThanOrEqualDouble()
 	{
-		DoubleValue a = DoubleType.Factory.create(35.0);
-		DoubleValue b = DoubleType.Factory.create(35.0);
+		DoubleValue a = DoubleType.DOUBLE.create(35.0);
+		DoubleValue b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), NumericComparisionFunctions.greatherThanOrEqualDouble(a, b));
-		a = DoubleType.Factory.create(35.1);
-		b = DoubleType.Factory.create(35.0);
+		a = DoubleType.DOUBLE.create(35.1);
+		b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(true), NumericComparisionFunctions.greatherThanOrEqualDouble(a, b));
-		a = DoubleType.Factory.create(35.1);
-		b = DoubleType.Factory.create(35.2);
+		a = DoubleType.DOUBLE.create(35.1);
+		b = DoubleType.DOUBLE.create(35.2);
 		assertEquals(XacmlDataTypes.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanOrEqualDouble(a, b));
 	}
 	
