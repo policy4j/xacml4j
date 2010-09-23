@@ -2,57 +2,94 @@ package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
 
-public interface DayTimeDurationType extends AttributeValueType
+public enum DayTimeDurationType implements AttributeValueType
 {
-	DayTimeDurationValue create(Object value, Object ...params);
-	DayTimeDurationValue fromXacmlString(String v, Object ...params);
+	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
 	
-	final class DayTimeDurationValue extends BaseDurationValue
+	private DatatypeFactory xmlDataTypesFactory;
+
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+
+	private DayTimeDurationType(String typeId) 
 	{
-		public DayTimeDurationValue(DayTimeDurationType type, 
-				Duration value) {
-			super(type, value);
-			Preconditions.checkArgument(!value.isSet(DatatypeConstants.YEARS) && 
-					!value.isSet(DatatypeConstants.MONTHS));
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+		try {
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace(System.err);
 		}
 	}
+		
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return Duration.class.isInstance(any) || String.class.isInstance(any);
+	}
+
+	@Override
+	public DayTimeDurationValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
+		return new DayTimeDurationValue(this, validate(dayTimeDuration));
+	}
 	
-	public final class Factory
-	{
-		private final static DayTimeDurationType INSTANCE = new DayTimeDurationTypeImpl("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
-		
-		public static DayTimeDurationType getInstance(){
-			return INSTANCE;
+	@Override
+	public DayTimeDurationValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" " +
+				"can't ne converted to XACML \"date\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static DayTimeDurationValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		return new DayTimeDurationValue(this, validate((Duration)any));
+	}
+	
+	private Duration validate(Duration duration){
+		if(!(duration.isSet(DatatypeConstants.YEARS) 
+				&& duration.isSet(DatatypeConstants.MONTHS))){
+			return duration;
 		}
-		
-		public static DayTimeDurationValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		throw new IllegalArgumentException();
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }
 

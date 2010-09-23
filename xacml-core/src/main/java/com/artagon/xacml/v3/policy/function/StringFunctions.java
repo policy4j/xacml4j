@@ -14,6 +14,7 @@ import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
 import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
+import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.IPAddressType;
 import com.artagon.xacml.v3.types.IntegerType;
@@ -220,17 +221,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDayTimeDuration(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationType.DayTimeDurationValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
-	public static DayTimeDurationType.DayTimeDurationValue dayTimeDurationFromString(
+	public static DayTimeDurationValue dayTimeDurationFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return DayTimeDurationType.Factory.fromXacmlString(v.getValue());
+		return DayTimeDurationType.DAYTIMEDURATION.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")

@@ -2,9 +2,6 @@ package com.artagon.xacml.v30;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-
-
 
 import com.artagon.xacml.v20.Xacml20PolicyMapper;
 import com.artagon.xacml.v3.CompositeDecisionRule;

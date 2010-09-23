@@ -57,7 +57,7 @@ public enum XacmlDataTypes
 	DATETIME(DateTimeType.DATETIME),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dayTimeDuration</b> */
-	DAYTIMEDURATION(DayTimeDurationType.Factory.getInstance()),
+	DAYTIMEDURATION(DayTimeDurationType.DAYTIMEDURATION),
 
 	DNSNAME(DNSNameType.Factory.getInstance()),
 

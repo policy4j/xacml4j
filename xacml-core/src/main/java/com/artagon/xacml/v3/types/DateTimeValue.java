@@ -4,8 +4,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
-
 public final class DateTimeValue extends
 		BaseAttributeValue<XMLGregorianCalendar> implements
 		Comparable<DateTimeValue> 

@@ -20,7 +20,7 @@ import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
 import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleType.DoubleValue;
 import com.artagon.xacml.v3.types.HexBinaryType;
@@ -484,7 +484,7 @@ public class BagFunctions
 	public static BagOfAttributeValues dayTimeDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
 			DayTimeDurationValue ...values){
-		return DayTimeDurationType.Factory.bagOf(values);
+		return DayTimeDurationType.DAYTIMEDURATION.bagOf(values);
 	}
 	
 	// yearMonthDuration

@@ -230,7 +230,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 		attr.setIssuer(a.getIssuer());
 		attr.setCategory(a.getCategory().toString());
 		AttributeValue v = a.getAttribute();
-		attr.setDataType(v.getDataType().getDataTypeId());
+		attr.setDataType(v.getType().getDataTypeId());
 		attr.getContent().add(v.toXacmlString());
 		return attr;
 	}

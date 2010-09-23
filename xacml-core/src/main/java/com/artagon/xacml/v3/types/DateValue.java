@@ -5,7 +5,8 @@ import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 public final class DateValue extends BaseAttributeValue<XMLGregorianCalendar>
-		implements Comparable<DateValue> {
+		implements Comparable<DateValue> 
+{
 	DateValue(DateType type, XMLGregorianCalendar value) {
 		super(type, value);
 	}

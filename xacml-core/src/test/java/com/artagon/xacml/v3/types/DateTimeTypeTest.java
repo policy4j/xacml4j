@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 
 public class DateTimeTypeTest 
 {
@@ -64,7 +63,7 @@ public class DateTimeTypeTest
 	{
 		DateTimeValue dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
 		DateTimeValue dateTime2 = t1.create("2002-03-27T10:23:47-05:00");
-		DayTimeDurationValue duration = DayTimeDurationType.Factory.create("P5DT2H0M0S");
+		DayTimeDurationValue duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 	

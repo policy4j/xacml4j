@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
+import com.artagon.xacml.v3.types.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
 import com.artagon.xacml.v3.types.YearMonthDurationValue;
 
@@ -50,7 +50,7 @@ public class DateTimeArithmeticFunctionTest
 	{
 		DateTimeValue dateTime1 = DateTimeType.DATETIME.create("2002-03-22T08:23:47-05:00");
 		DateTimeValue dateTime2 = DateTimeType.DATETIME.create("2002-03-27T10:23:47-05:00");
-		DayTimeDurationValue duration = DayTimeDurationType.Factory.create("P5DT2H0M0S");
+		DayTimeDurationValue duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 		
 	}
