@@ -86,7 +86,10 @@ public enum IPAddressType implements AttributeValueType
 		 PortRange range = null;
 		 int len = value.length();
 		 int endIndex = value.indexOf(']');
-		 address = IPAddressUtils.parseAddress(value.substring(1, endIndex));
+		 String addrr = value.substring(1, endIndex);
+		 Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr), 
+         		  "Expected IPV6 address, but found=\"%s\"", addrr);
+		 address = IPAddressUtils.parseAddress(addrr);
       
       // see if there's anything left in the string
       if (endIndex != (len - 1)) {
@@ -94,8 +97,10 @@ public enum IPAddressType implements AttributeValueType
           if (value.charAt(endIndex + 1) == '/') {
               int startIndex = endIndex + 3;
               endIndex = value.indexOf(']', startIndex);
-              mask = IPAddressUtils.parseAddress(value.substring(startIndex,
-                                                           endIndex));
+              addrr = value.substring(startIndex, endIndex);
+              Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr), 
+            		  "Expected IPV6 mask, but found=\"%s\"", addrr);
+              mask = IPAddressUtils.parseAddress(addrr);
           }
           if ((endIndex != (len - 1)) && (value.charAt(endIndex + 1) == ':'))
               range = PortRange.valueOf(value.substring(endIndex + 2, len));
@@ -108,17 +113,18 @@ public enum IPAddressType implements AttributeValueType
         InetAddress address = null;
         InetAddress mask = null;
         PortRange range = null;
-
-        // start out by seeing where the delimiters are
         int maskPos = value.indexOf("/");
         int rangePos = value.indexOf(":");
-
-        // now check to see which components we have
         if (maskPos == rangePos) {
             // the sting is just an address
+        	 Preconditions.checkArgument(IPAddressUtils.isIPv4LiteralAddress(value), 
+            		  "Expected IPV4 address, but found=\"%s\"", value);
             address = IPAddressUtils.parseAddress(value);
         } else if (maskPos != -1) {
             // there is also a mask (and maybe a range)
+        	String addrr = value.substring(0, maskPos);
+        	 Preconditions.checkArgument(IPAddressUtils.isIPv4LiteralAddress(addrr), 
+           		  "Expected IPV4 address, but found=\"%s\"", addrr);
             address = IPAddressUtils.parseAddress(value.substring(0, maskPos));
             if (rangePos != -1) {
                 // there's a range too, so get it and the mask
