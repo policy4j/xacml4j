@@ -74,15 +74,15 @@ public interface DateType extends AttributeValueType
 		}
 		
 		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagOf().createEmpty();
+			return INSTANCE.bagType().createEmpty();
 		}
 	}
 }

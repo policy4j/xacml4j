@@ -8,7 +8,9 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+
+
+import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType;
 import com.artagon.xacml.v3.types.Base64BinaryType.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
@@ -379,7 +381,7 @@ public class BagFunctions
 	public static BagOfAttributeValues anyURIBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#anyURI")
 			AnyURIValue ...values){
-		return AnyURIType.Factory.bagOf(values);
+		return AnyURIType.ANYURI.bagOf(values);
 	}
 	
 	// hexBinary

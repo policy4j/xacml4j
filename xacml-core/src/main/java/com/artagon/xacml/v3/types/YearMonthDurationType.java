@@ -17,7 +17,7 @@ public interface YearMonthDurationType extends AttributeValueType
 	YearMonthDurationValue create(Object value, Object ...params);
 	YearMonthDurationValue fromXacmlString(String v, Object ...params);
 	
-	BagOfAttributeValuesType bagOf();
+	BagOfAttributeValuesType bagType();
 	
 	final class YearMonthDurationValue extends BaseDurationValue
 	{
@@ -46,15 +46,15 @@ public interface YearMonthDurationType extends AttributeValueType
 		}
 		
 		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagOf().createEmpty();
+			return INSTANCE.bagType().createEmpty();
 		}
 	}
 }

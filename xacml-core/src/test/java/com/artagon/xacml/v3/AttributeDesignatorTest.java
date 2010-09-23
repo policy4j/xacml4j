@@ -76,7 +76,7 @@ public class AttributeDesignatorTest
 				
 		replay(context);
 		Expression v = desig.evaluate(context);
-		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.Factory.bagOf(
 				IntegerType.Factory.create(1), IntegerType.Factory.create(2)), v);
 	}
@@ -90,7 +90,7 @@ public class AttributeDesignatorTest
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
-		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
@@ -104,7 +104,7 @@ public class AttributeDesignatorTest
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
-		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
@@ -129,7 +129,7 @@ public class AttributeDesignatorTest
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
-		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}
@@ -154,7 +154,7 @@ public class AttributeDesignatorTest
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
-		assertEquals(type.bagOf(), v.getEvaluatesTo());
+		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.Factory.emptyBag(), v);
 		verify(context);
 	}

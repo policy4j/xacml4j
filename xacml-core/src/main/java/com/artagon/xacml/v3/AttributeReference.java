@@ -28,7 +28,7 @@ public abstract class AttributeReference extends XacmlObject
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
 		this.category = category;
-		this.evaluatesTo = dataType.bagOf();
+		this.evaluatesTo = dataType.bagType();
 		this.mustBePresent = mustBePresent;
 	}
 	

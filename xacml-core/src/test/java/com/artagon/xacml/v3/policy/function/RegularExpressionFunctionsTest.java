@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
@@ -70,7 +70,7 @@ public class RegularExpressionFunctionsTest
 	public void testAnyURIRegExpMatch() throws EvaluationException
 	{
 		StringValue regexp = StringType.Factory.create("http://www.test.org/public/*");
-		AnyURIValue input = AnyURIType.Factory.create("http://www.test.org/public/test/a");
+		AnyURIValue input = AnyURIType.ANYURI.create("http://www.test.org/public/test/a");
 		assertEquals(BooleanType.Factory.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
 	}
 	

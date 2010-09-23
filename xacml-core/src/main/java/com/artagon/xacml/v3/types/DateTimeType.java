@@ -17,7 +17,7 @@ public interface DateTimeType extends AttributeValueType
 {	
 	DateTimeValue create(Object value, Object ...params);
 	DateTimeValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagOf();
+	BagOfAttributeValuesType bagType();
 	
 	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar> 
 		implements Comparable<DateTimeValue>
@@ -84,15 +84,15 @@ public interface DateTimeType extends AttributeValueType
 		}
 		
 		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagOf().createEmpty();
+			return INSTANCE.bagType().createEmpty();
 		}
 	}
 }

@@ -42,7 +42,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	}
 	
 	@Override
-	public final BagOfAttributeValuesType bagOf(){
+	public final BagOfAttributeValuesType bagType(){
 		return bagType;
 	}
 	
@@ -51,20 +51,20 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	@Override
 	public final BagOfAttributeValues bagOf(AttributeValue... values) 
 	{	
-		return bagOf().create(values);
+		return bagType().create(values);
 	}
 
 	@Override
 	public final BagOfAttributeValues bagOf(
 			Collection<AttributeValue> values) {
 		// TODO Auto-generated method stub
-		return bagOf().create(values);
+		return bagType().create(values);
 	}
 
 	@Override
 	public BagOfAttributeValues emptyBag() {
 		// TODO Auto-generated method stub
-		return bagOf().createEmpty();
+		return bagType().createEmpty();
 	}
 
 	@Override

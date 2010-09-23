@@ -107,14 +107,14 @@ public class AttributeSelector extends
 			if(isMustBePresent()){
 				throw e;
 			}
-			return getDataType().bagOf().createEmpty();
+			return getDataType().bagType().createEmpty();
 		}catch(Exception e){
 			if(isMustBePresent()){
 				throw new AttributeReferenceEvaluationException(
 						context, this, 
 						StatusCode.createMissingAttribute(), e);
 			}
-			return getDataType().bagOf().createEmpty();
+			return getDataType().bagType().createEmpty();
 		}
 		if((v == null || 
 				v.isEmpty()) 
@@ -127,6 +127,6 @@ public class AttributeSelector extends
 				"Selector XPath expression=\"%s\" evaluated " +
 				"to empty node set and mustBePresents=\"true\"", getPath());
 		}
-		return ((v == null)?getDataType().bagOf().createEmpty():v);
+		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}
 }

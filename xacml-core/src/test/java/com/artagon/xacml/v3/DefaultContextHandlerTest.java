@@ -229,13 +229,13 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType())).
-		andReturn(Collections.singleton(XacmlDataTypes.ANYURI.create("testValue")));
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.ANYURI)).
+		andReturn(Collections.<AttributeValue>singleton(AnyURIType.ANYURI.create("testValue")));
 		
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
-		assertEquals(AnyURIType.Factory.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
+		assertEquals(AnyURIType.ANYURI.bagOf(AnyURIType.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	
@@ -247,15 +247,15 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.Factory.getInstance())).
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.ANYURI)).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
-		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(AnyURIType.Factory.bagOf(AnyURIType.Factory.create("testValue")));
+		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(AnyURIType.ANYURI.bagOf(AnyURIType.ANYURI.create("testValue")));
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
-		assertEquals(AnyURIType.Factory.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
+		assertEquals(AnyURIType.ANYURI.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	

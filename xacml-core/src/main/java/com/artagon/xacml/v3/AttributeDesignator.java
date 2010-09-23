@@ -118,7 +118,7 @@ public class AttributeDesignator extends AttributeReference
 				log.debug("Re-throwing error");
 				throw e;
 			}
-			return getDataType().bagOf().createEmpty();
+			return getDataType().bagType().createEmpty();
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
@@ -128,7 +128,7 @@ public class AttributeDesignator extends AttributeReference
 				throw new AttributeReferenceEvaluationException(context, this, 
 						StatusCode.createMissingAttribute(), e);
 			}
-			return getDataType().bagOf().createEmpty();
+			return getDataType().bagType().createEmpty();
 		}
 		if((v == null || v.isEmpty()) && 
 				isMustBePresent()){
@@ -140,7 +140,7 @@ public class AttributeDesignator extends AttributeReference
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}
-		return ((v == null)?getDataType().bagOf().createEmpty():v);
+		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}
 	
 	@Override

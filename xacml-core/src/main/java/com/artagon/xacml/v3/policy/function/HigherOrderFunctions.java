@@ -162,7 +162,7 @@ public class HigherOrderFunctions
 			values.add((AttributeValue)ref.invoke(context, v));
 		}
 		AttributeValueType type = (AttributeValueType)ref.getEvaluatesTo();
-		return type.bagOf().create(values);
+		return type.bagType().create(values);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class HigherOrderFunctions
 			Preconditions.checkArgument(arguments[0] instanceof FunctionReference, 
 					"First function argument must be function reference");
 			AttributeValueType type = (AttributeValueType)((FunctionReference)arguments[0]).getEvaluatesTo();
-			return type.bagOf();
+			return type.bagType();
 		}
 
 		@Override

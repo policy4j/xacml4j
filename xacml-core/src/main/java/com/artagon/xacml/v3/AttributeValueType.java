@@ -59,7 +59,7 @@ public interface AttributeValueType  extends ValueType
 	 * 
 	 * @return {@link BagOfAttributeValuesType} instance
 	 */
-	BagOfAttributeValuesType bagOf();
+	BagOfAttributeValuesType bagType();
 	
 	BagOfAttributeValues bagOf(AttributeValue ...values);
 	BagOfAttributeValues bagOf(Collection<AttributeValue> values);

@@ -26,7 +26,7 @@ public enum XacmlDataTypes
 	 * 
 	 * @see {@link AnyURIType}
 	 */
-	ANYURI(AnyURIType.Factory.getInstance()),
+	ANYURI(AnyURIType.ANYURI),
 
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#boolean</b> 
@@ -145,40 +145,14 @@ public enum XacmlDataTypes
 	
 	/**
 	 * Delegates call to appropriate 
-	 * {@link AttributeValueType#fromXacmlString(String, Object...)}
-	 * 
-	 * @param v a value
-	 * @param params an additional parameters
-	 * @return {@link AttributeValue} instance
-	 */
-//	@SuppressWarnings("unchecked")
-//	public <T extends AttributeValue> T fromXacmlString(String v, Object ...params){
-//		return (T)type.fromXacmlString(v, params);
-//	}
-	
-	/**
-	 * Delegates call to appropriate 
-	 * {@link AttributeValueType#bagOf(AttributeValue...)}
-	 * 
-	 * @param v a values
-	 */
-//	@SuppressWarnings("unchecked")
-//	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(AttributeValue ...v){
-//		return (BagOfAttributeValues<T>)type.bagOf(v);
-//	}
-	
-	/**
-	 * Delegates call to appropriate 
 	 * {@link AttributeValueType#bagOf(Collection)}
 	 * 
 	 * @param v a collection of values
 	 */
-	@SuppressWarnings("unchecked")
 	public BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 		return type.bagOf(values);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public BagOfAttributeValues emptyBag(){
 		return type.emptyBag();
 	}

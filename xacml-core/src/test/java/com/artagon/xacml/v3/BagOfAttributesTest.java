@@ -35,7 +35,7 @@ public class BagOfAttributesTest
 	@Test
 	public void testContains() throws Exception
 	{
-		BagOfAttributeValuesType bagType = stringType.bagOf();
+		BagOfAttributeValuesType bagType = stringType.bagType();
 		Collection<AttributeValue> content = new LinkedList<AttributeValue>();
 		content.add(stringType.create("1"));
 		content.add(stringType.create("2"));

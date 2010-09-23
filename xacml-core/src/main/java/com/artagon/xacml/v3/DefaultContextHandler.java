@@ -80,10 +80,10 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
 				ref.getAttributeId(), ref.getIssuer(), ref.getDataType());
 		if(!values.isEmpty()){
-			return ref.getDataType().bagOf().create(values);
+			return ref.getDataType().bagType().create(values);
 		}
 		if(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST){
-			return ref.getDataType().bagOf().createEmpty();
+			return ref.getDataType().bagType().createEmpty();
 		}
 		return doResolve(context, ref);
 	}
@@ -146,7 +146,6 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		return v;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private final BagOfAttributeValues doResolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
@@ -160,7 +159,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 				}
 			}
 			if(content == null){
-				return ref.getDataType().bagOf().createEmpty();
+				return ref.getDataType().bagType().createEmpty();
 			}
 			Node contextNode = content;
 			Collection<AttributeValue> v = request.getAttributeValues(ref.getCategory(), 
@@ -193,7 +192,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						ref.getPath(), ref.getCategory());
-				return (BagOfAttributeValues)ref.getDataType().bagOf().createEmpty();
+				return (BagOfAttributeValues)ref.getDataType().bagType().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
@@ -207,7 +206,6 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private BagOfAttributeValues toBag(EvaluationContext context,
 			AttributeSelector ref, NodeList nodeSet) 
 		throws EvaluationException
@@ -243,19 +241,17 @@ public class DefaultContextHandler implements EvaluationContextHandler
 						ref, StatusCode.createProcessingError(), e);
 			}
 		}
-	  	return (BagOfAttributeValues) ref.getDataType().bagOf().create(values);
+	  	return (BagOfAttributeValues) ref.getDataType().bagType().create(values);
 	}
 
 	class DefaultRequestAttributesCallback implements RequestContextAttributesCallback
 	{
-
-		@SuppressWarnings("unchecked")
 		@Override
 		public BagOfAttributeValues getAttributeValues(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
 			Collection<Attributes> attributes = request.getAttributes(category);
 			Attributes  found = Iterables.getOnlyElement(attributes);
-			return dataType.bagOf().create(found.getAttributeValues(attributeId, issuer, dataType));
+			return dataType.bagType().create(found.getAttributeValues(attributeId, issuer, dataType));
 		}
 
 		@Override

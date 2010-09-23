@@ -102,7 +102,7 @@ class JavaMethodToFunctionSpecConverter {
 													+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 											type, m.getName(), types[i]));
 				}
-				b.withParam(param.isBag() ? type.bagOf() : type);
+				b.withParam(param.isBag() ? type.bagType() : type);
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -120,7 +120,7 @@ class JavaMethodToFunctionSpecConverter {
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				AttributeValueType type = XacmlDataTypes.getType(param.typeId());
-				b.withParam(param.isBag() ? type.bagOf() : type, param.min(),
+				b.withParam(param.isBag() ? type.bagType() : type, param.min(),
 						param.max());
 				continue;
 			}
@@ -149,7 +149,7 @@ class JavaMethodToFunctionSpecConverter {
 		}
 		if (returnType != null) {
 			AttributeValueType type = XacmlDataTypes.getType(returnType.typeId());
-			return b.build(returnType.isBag() ? type.bagOf() : type,
+			return b.build(returnType.isBag() ? type.bagType() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(m, instance, evalContextParamFound));

@@ -27,7 +27,7 @@ public class ParamSingleTypeSpecTest
 	public void init(){
 		this.t1 = DoubleType.Factory.getInstance();
 		this.t2 = StringType.Factory.getInstance();
-		this.b1 = t1.bagOf();
+		this.b1 = t1.bagType();
 	}
 	
 	@Test

@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
@@ -201,17 +201,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromAnyURI(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIType.AnyURIValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#anyURI")
-	public static AnyURIType.AnyURIValue anyURIFromString(
+	public static AnyURIValue anyURIFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return AnyURIType.Factory.fromXacmlString(v.getValue());
+		return AnyURIType.ANYURI.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")

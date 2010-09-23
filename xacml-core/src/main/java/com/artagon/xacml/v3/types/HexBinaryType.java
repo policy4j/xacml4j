@@ -11,7 +11,7 @@ public interface HexBinaryType  extends AttributeValueType
 {
 	HexBinaryValue create(Object any, Object ...params);
 	HexBinaryValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagOf();
+	BagOfAttributeValuesType bagType();
 	
 	final class HexBinaryValue extends BaseAttributeValue<BinaryValue>
 	{
@@ -42,15 +42,15 @@ public interface HexBinaryType  extends AttributeValueType
 		}
 		
 		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagOf().create(values);
+			return INSTANCE.bagType().create(values);
 		}
 		
 		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagOf().createEmpty();
+			return INSTANCE.bagType().createEmpty();
 		}
 	}
 }

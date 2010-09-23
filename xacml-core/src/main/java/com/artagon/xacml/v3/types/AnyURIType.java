@@ -7,52 +7,65 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface AnyURIType extends AttributeValueType
+public enum AnyURIType implements AttributeValueType
 {	
-	AnyURIValue create(Object value, Object ...params);
+	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI");
 	
-	AnyURIValue fromXacmlString(String v, Object ...params);
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
 	
-	BagOfAttributeValuesType bagOf();
-	
-	final class AnyURIValue extends BaseAttributeValue<URI> 
-	{
-		public AnyURIValue(AnyURIType type, URI value) {
-			super(type, value);
-		}
+	private AnyURIType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	/**
-	 * A type safe factory to create instances
-	 * of {@link AnyURIValue}
-	 */
-	public final class Factory
-	{
-		private final static AnyURIType INSTANCE = new AnyURITypeImpl("http://www.w3.org/2001/XMLSchema#anyURI");
-		
-		public static AnyURIType getInstance(){
-			return INSTANCE;
+	@Override
+	public AnyURIValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		return new AnyURIValue(URI.create(v).normalize());
+	}
+	
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return URI.class.isInstance(any) || String.class.isInstance(any);
+	}
+
+	@Override
+	public AnyURIValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"AnyURI\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static AnyURIValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static AnyURIValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagOf().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagOf().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagOf().createEmpty();
-		}
+		return new AnyURIValue((URI)any);
+	}
+
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }

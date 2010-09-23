@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.AnyURIType.AnyURIValue;
+import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.DoubleType;
@@ -144,15 +144,15 @@ public class BagFunctionsTest
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIValue v0 = AnyURIType.Factory.create("http://www.test0.org");
-		AnyURIValue v1 = AnyURIType.Factory.create("http://www.test1.org");
-		AnyURIValue v2 = AnyURIType.Factory.create("http://www.test2.org");
-		BagOfAttributeValues bag = AnyURIType.Factory.bagOf(v0);
+		AnyURIValue v0 = AnyURIType.ANYURI.create("http://www.test0.org");
+		AnyURIValue v1 = AnyURIType.ANYURI.create("http://www.test1.org");
+		AnyURIValue v2 = AnyURIType.ANYURI.create("http://www.test2.org");
+		BagOfAttributeValues bag = AnyURIType.ANYURI.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, bag));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v1, bag));
-		assertEquals(AnyURIType.Factory.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
+		assertEquals(AnyURIType.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
 		
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
 		assertEquals(BooleanType.Factory.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
