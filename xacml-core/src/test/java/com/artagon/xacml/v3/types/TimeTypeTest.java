@@ -6,8 +6,6 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.TimeValue;
-
 public class TimeTypeTest 
 {
 	@Test

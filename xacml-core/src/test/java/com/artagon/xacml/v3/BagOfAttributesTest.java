@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-import static com.artagon.xacml.v3.types.XacmlDataTypes.INTEGER;
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;

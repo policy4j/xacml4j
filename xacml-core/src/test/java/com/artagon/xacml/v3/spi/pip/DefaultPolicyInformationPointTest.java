@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.eq;
@@ -21,8 +23,6 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.sdk.AttributeResolverDescriptorBuilder;
-import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyInformationPointTest 
 {
@@ -44,9 +44,9 @@ public class DefaultPolicyInformationPointTest
 		AttributeResolver r2 = createStrictMock(AttributeResolver.class);
 	
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("TestResolver").
-		attribute(AttributeCategoryId.ACTION, "test1", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ACTION, "test1", BOOLEAN).build();
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create("TestResolver", "TestIssuer").
-		attribute(AttributeCategoryId.ACTION, "test1", XacmlDataTypes.INTEGER.getDataType()).build();
+		attribute(AttributeCategoryId.ACTION, "test1", INTEGER).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -67,9 +67,9 @@ public class DefaultPolicyInformationPointTest
 	
 		
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("TestResolver", "TestIssuer")
-		.attribute(AttributeCategoryId.ACTION, "test1", BooleanType.BOOLEAN).build();
+		.attribute(AttributeCategoryId.ACTION, "test1", BOOLEAN).build();
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create("Test Resolver").
-		attribute(AttributeCategoryId.ACTION, "test1", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ACTION, "test1", BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -89,9 +89,9 @@ public class DefaultPolicyInformationPointTest
 		AttributeResolver r2 = createStrictMock(AttributeResolver.class);
 	
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("TestResolver", "test").
-		attribute(AttributeCategoryId.ACTION, "test1", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ACTION, "test1", BOOLEAN).build();
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder.create("TestResolver").
-		attribute(AttributeCategoryId.ENVIRONMENT, "test1", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ENVIRONMENT, "test1", BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(r2.getDescriptor()).andReturn(d2).times(2);
@@ -115,7 +115,7 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
 	
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("TestResolver", "test").
-		attribute(AttributeCategoryId.ACTION, "testAttributeId", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ACTION, "testAttributeId", BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(context.getCurrentPolicy()).andReturn(p);
@@ -126,7 +126,7 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
-		expect(ref.getDataType()).andReturn(BooleanType.BOOLEAN);
+		expect(ref.getDataType()).andReturn(BOOLEAN);
 		expect(ref.getIssuer()).andReturn(null);
 		
 		expect(r1.getDescriptor()).andReturn(d1);
@@ -134,21 +134,21 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
-		expect(ref.getDataType()).andReturn(BooleanType.BOOLEAN);
+		expect(ref.getDataType()).andReturn(BOOLEAN);
 		expect(ref.getIssuer()).andReturn(null);
 		
 		Capture<PolicyInformationPointContext> pipContext = new Capture<PolicyInformationPointContext>();
 		
-		BagOfAttributeValues v = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true));
+		BagOfAttributeValues v = BOOLEAN.bagOf(BOOLEAN.create(true));
 		expect(r1.resolve(capture(pipContext), 
 				eq(AttributeCategoryId.ACTION), 
 				eq("testAttributeId"), 
-				eq(BooleanType.BOOLEAN), eq((String)null))).andReturn(v);
+				eq(BOOLEAN), eq((String)null))).andReturn(v);
 		replay(r1, context, callback, ref, p);
 		
 		
 		pip.addResolver(r1);
-		assertEquals(BooleanType.BOOLEAN.bagOf(XacmlDataTypes.BOOLEAN.create(true)), pip.resolve(context, ref, callback));
+		assertEquals(BOOLEAN.bagOf(BOOLEAN.create(true)), pip.resolve(context, ref, callback));
 		
 		verify(r1, context, callback, ref, p);
 	}
@@ -170,7 +170,7 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
 	
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder.create("TestResolver", "test").
-		attribute(AttributeCategoryId.ACTION, "testAttributeId", BooleanType.BOOLEAN).build();
+		attribute(AttributeCategoryId.ACTION, "testAttributeId", BOOLEAN).build();
 		
 		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		expect(context.getCurrentPolicy()).andReturn(p);
@@ -188,13 +188,13 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
-		expect(ref.getDataType()).andReturn(BooleanType.BOOLEAN);
+		expect(ref.getDataType()).andReturn(BOOLEAN);
 		expect(ref.getIssuer()).andReturn(null);
 		
 		
 		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
-		expect(ref.getDataType()).andReturn(BooleanType.BOOLEAN);
+		expect(ref.getDataType()).andReturn(BOOLEAN);
 		expect(ref.getIssuer()).andReturn(null);
 		
 		Capture<PolicyInformationPointContext> pipContext = new Capture<PolicyInformationPointContext>();
@@ -202,13 +202,13 @@ public class DefaultPolicyInformationPointTest
 		expect(r1.resolve(capture(pipContext), 
 				eq(AttributeCategoryId.ACTION), 
 				eq("testAttributeId"), 
-				eq(BooleanType.BOOLEAN), eq((String)null))).andReturn(
-					BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true)));
+				eq(BOOLEAN), eq((String)null))).andReturn(
+					BOOLEAN.bagOf(BOOLEAN.create(true)));
 		replay(r1, context, callback, ref, p, ps1, ps2, parentContext1, parentContext2);
 		
 		
 		pip.addResolver("testPolicySetId2", r1);
-		assertEquals(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true)), pip.resolve(context, ref, callback));
+		assertEquals(BOOLEAN.bagOf(BOOLEAN.create(true)), pip.resolve(context, ref, callback));
 		
 		verify(r1, context, callback, ref, p, ps1, ps2, parentContext1, parentContext2);
 	}

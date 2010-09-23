@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -14,8 +16,6 @@ import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class ObligationExpressionTest 
 {
@@ -45,11 +45,11 @@ public class ObligationExpressionTest
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
 		expect(attrExp0.getCategory()).andReturn(AttributeCategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(XacmlDataTypes.INTEGER.create(1));
+		expect(attrExp0.evaluate(context)).andReturn(INTEGER.create(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategoryId.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
+		expect(attrExp1.evaluate(context)).andReturn(BOOLEAN.create(false));
 		replay(attrExp0, attrExp1, context);
 		ObligationExpression exp = new ObligationExpression("test", Effect.DENY, Arrays.asList(attrExp0, attrExp1));
 		Obligation obligation = exp.evaluate(context);
@@ -58,12 +58,12 @@ public class ObligationExpressionTest
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(AttributeCategoryId.SUBJECT_ACCESS, a0.getCategory());
-		assertEquals(XacmlDataTypes.INTEGER.create(1), a0.getAttribute());
+		assertEquals(INTEGER.create(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(AttributeCategoryId.RESOURCE, a1.getCategory());
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), a1.getAttribute());
+		assertEquals(BOOLEAN.create(false), a1.getAttribute());
 		verify(attrExp0, attrExp1, context);
 	}
 }

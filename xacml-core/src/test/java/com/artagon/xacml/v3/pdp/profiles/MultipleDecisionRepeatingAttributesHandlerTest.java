@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.pdp.profiles;
 
+import static com.artagon.xacml.v3.types.StringType.STRING;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -28,7 +29,6 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MultipleDecisionRepeatingAttributesHandlerTest 
 {
@@ -45,18 +45,18 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
+		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
+		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
+		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
 		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
+		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		RequestContext context = new RequestContext(false, 
@@ -95,14 +95,14 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
+		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
+		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
 		
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
+		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
+		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
 		
 		RequestContext context = new RequestContext(false, 

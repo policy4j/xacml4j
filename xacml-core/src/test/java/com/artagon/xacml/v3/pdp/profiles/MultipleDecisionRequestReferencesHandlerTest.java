@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.pdp.profiles;
 
+import static com.artagon.xacml.v3.types.StringType.STRING;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
@@ -31,7 +32,6 @@ import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestProfileHandler;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 
 public class MultipleDecisionRequestReferencesHandlerTest 
@@ -50,28 +50,28 @@ public class MultipleDecisionRequestReferencesHandlerTest
 	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId1", XacmlDataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId2", XacmlDataTypes.STRING.create("value1")));
+		attributes0.add(new Attribute("testId1", STRING.create("value0")));
+		attributes0.add(new Attribute("testId2", STRING.create("value1")));
 		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
+		attributes1.add(new Attribute("testId3", STRING.create("value0")));
+		attributes1.add(new Attribute("testId4", STRING.create("value1")));
 		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
-		attributes2.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
+		attributes2.add(new Attribute("testId3", STRING.create("value0")));
+		attributes2.add(new Attribute("testId4", STRING.create("value1")));
 		Attributes attr2 = new Attributes("actionAttr1",  AttributeCategoryId.ACTION, attributes1);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
-		attributes3.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
+		attributes3.add(new Attribute("testId5", STRING.create("value0")));
+		attributes3.add(new Attribute("testId6", STRING.create("value1")));
 		Attributes attr3 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
 		
 		Collection<Attribute> attributes4 = new LinkedList<Attribute>();
-		attributes4.add(new Attribute("testId7", XacmlDataTypes.STRING.create("value0")));
-		attributes4.add(new Attribute("testId8", XacmlDataTypes.STRING.create("value1")));
+		attributes4.add(new Attribute("testId7", STRING.create("value0")));
+		attributes4.add(new Attribute("testId8", STRING.create("value1")));
 		Attributes attr4 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
 		
 		
@@ -130,13 +130,13 @@ public class MultipleDecisionRequestReferencesHandlerTest
 	public void testWithNoReferences()
 	{
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId3", XacmlDataTypes.STRING.create("value0")));
-		attributes0.add(new Attribute("testId4", XacmlDataTypes.STRING.create("value1")));
+		attributes0.add(new Attribute("testId3", STRING.create("value0")));
+		attributes0.add(new Attribute("testId4", STRING.create("value1")));
 		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId5", XacmlDataTypes.STRING.create("value0")));
-		attributes1.add(new Attribute("testId6", XacmlDataTypes.STRING.create("value1")));
+		attributes1.add(new Attribute("testId5", STRING.create("value0")));
+		attributes1.add(new Attribute("testId6", STRING.create("value1")));
 		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
 		
 		RequestContext request = new RequestContext(false, 

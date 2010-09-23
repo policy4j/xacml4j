@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -11,8 +12,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
-
 public class AttributeTest 
 {
 	private Collection<AttributeValue> values;
@@ -21,10 +20,10 @@ public class AttributeTest
 	public void init()
 	{
 		this.values = new LinkedList<AttributeValue>();
-		values.add(XacmlDataTypes.INTEGER.create(1));
-		values.add(XacmlDataTypes.INTEGER.create(2));
-		values.add(XacmlDataTypes.INTEGER.create(3));
-		values.add(XacmlDataTypes.INTEGER.create(2));
+		values.add(INTEGER.create(1));
+		values.add(INTEGER.create(2));
+		values.add(INTEGER.create(3));
+		values.add(INTEGER.create(2));
 	}
 	
 	@Test
@@ -43,8 +42,8 @@ public class AttributeTest
 	public void testCreateWithTheSameValues()
 	{
 		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
-		values.add(XacmlDataTypes.INTEGER.create(1));
-		values.add(XacmlDataTypes.INTEGER.create(1));
+		values.add(INTEGER.create(1));
+		values.add(INTEGER.create(1));
 		Attribute attr = new Attribute("testId", "testIssuer", true, values);
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
@@ -70,10 +69,10 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = new Attribute("testId", 
-				XacmlDataTypes.INTEGER.create(1), 
-				XacmlDataTypes.INTEGER.create(2),
-				XacmlDataTypes.INTEGER.create(3),
-				XacmlDataTypes.INTEGER.create(2));
+				INTEGER.create(1), 
+				INTEGER.create(2),
+				INTEGER.create(3),
+				INTEGER.create(2));
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());

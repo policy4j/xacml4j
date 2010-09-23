@@ -133,18 +133,6 @@ public enum XacmlDataTypes
 	
 	/**
 	 * Delegates call to appropriate 
-	 * {@link AttributeValueType#create(Object, Object...)}
-	 * 
-	 * @param v a value
-	 * @param params an additional parameters
-	 * @return {@link AttributeValue} instance
-	 */
-	public AttributeValue create(Object v, Object ...params){
-		return type.create(v, params);
-	}
-	
-	/**
-	 * Delegates call to appropriate 
 	 * {@link AttributeValueType#bagOf(Collection)}
 	 * 
 	 * @param v a collection of values

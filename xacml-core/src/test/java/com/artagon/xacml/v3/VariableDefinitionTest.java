@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -8,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 
 public class VariableDefinitionTest
@@ -30,19 +29,19 @@ public class VariableDefinitionTest
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
 		expect(context.getVariableEvaluationResult("testId")).andReturn(null);
-		expect(expression.evaluate(context)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
-		context.setVariableEvaluationResult("testId", XacmlDataTypes.BOOLEAN.create(true));
+		expect(expression.evaluate(context)).andReturn(BOOLEAN.create(true));
+		context.setVariableEvaluationResult("testId", BOOLEAN.create(true));
 		replay(context, expression);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), varDef.evaluate(context));
+		assertEquals(BOOLEAN.create(true), varDef.evaluate(context));
 		verify(context, expression);
 	}
 	
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(XacmlDataTypes.BOOLEAN.create(false));
+		expect(context.getVariableEvaluationResult("testId")).andReturn(BOOLEAN.create(false));
 		replay(context, expression);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(false), varDef.evaluate(context));
+		assertEquals(BOOLEAN.create(false), varDef.evaluate(context));
 		verify(context, expression);
 	}
 }

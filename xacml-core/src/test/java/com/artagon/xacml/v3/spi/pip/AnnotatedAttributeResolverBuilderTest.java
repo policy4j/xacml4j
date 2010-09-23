@@ -13,7 +13,6 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AnnotatedAttributeResolverBuilderTest 
 {
@@ -37,11 +36,11 @@ public class AnnotatedAttributeResolverBuilderTest
 		AttributeDescriptor attr1 = d.getAttributeDescriptor(AttributeCategoryId.RESOURCE, "testId1");
 		assertNotNull(attr1);
 		assertEquals("testId1", attr1.getAttributeId());
-		assertEquals(XacmlDataTypes.STRING.getDataType(), attr1.getDataType());
+		assertEquals(StringType.STRING, attr1.getDataType());
 		AttributeDescriptor attr2 = d.getAttributeDescriptor(AttributeCategoryId.SUBJECT_ACCESS, "testId2");
 		assertNotNull(attr2);
 		assertEquals("testId2", attr2.getAttributeId());
-		assertEquals(XacmlDataTypes.INTEGER.getDataType(), attr2.getDataType());
+		assertEquals(IntegerType.INTEGER, attr2.getDataType());
 	}
 	
 	@Test
@@ -50,15 +49,15 @@ public class AnnotatedAttributeResolverBuilderTest
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		BagOfAttributeValues v1 = resolver.resolve(context, 
-				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
+				AttributeCategoryId.RESOURCE, "testId1", StringType.STRING, "testIssuer");
 		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		v1 = resolver.resolve(context, 
-				AttributeCategoryId.ACTION, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
+				AttributeCategoryId.ACTION, "testId1", StringType.STRING, "testIssuer");
 		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		BagOfAttributeValues v2 = resolver.resolve(context, 
-				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), "testIssuer");
+				AttributeCategoryId.SUBJECT_ACCESS, "testId2", IntegerType.INTEGER, "testIssuer");
 		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v2);
 	}
 	
@@ -68,11 +67,11 @@ public class AnnotatedAttributeResolverBuilderTest
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		BagOfAttributeValues v1 = resolver.resolve(context, 
-				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), null);
+				AttributeCategoryId.RESOURCE, "testId1", StringType.STRING, null);
 		assertEquals(StringType.STRING.emptyBag(), v1);
 		
 		BagOfAttributeValues v2 = resolver.resolve(context, 
-				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), null);
+				AttributeCategoryId.SUBJECT_ACCESS, "testId2", IntegerType.INTEGER, null);
 		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v2);
 	}
 	
@@ -82,7 +81,7 @@ public class AnnotatedAttributeResolverBuilderTest
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		resolver.resolve(context, 
-				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), "TestWrongIssuer");
+				AttributeCategoryId.RESOURCE, "testId1", StringType.STRING, "TestWrongIssuer");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -91,7 +90,7 @@ public class AnnotatedAttributeResolverBuilderTest
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		resolver.resolve(context, 
-				AttributeCategoryId.ACTION, "testId1", XacmlDataTypes.STRING.getDataType(), "TestIssuer");
+				AttributeCategoryId.ACTION, "testId1", StringType.STRING, "TestIssuer");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -99,7 +98,7 @@ public class AnnotatedAttributeResolverBuilderTest
 	{
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);	
 		resolver.resolve(context, 
-				AttributeCategoryId.RESOURCE, "testId1Wrong", XacmlDataTypes.STRING.getDataType(), "TestIssuer");
+				AttributeCategoryId.RESOURCE, "testId1Wrong", StringType.STRING, "TestIssuer");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -108,6 +107,6 @@ public class AnnotatedAttributeResolverBuilderTest
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		resolver.resolve(context, 
-				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.INTEGER.getDataType(), "TestIssuer");
+				AttributeCategoryId.RESOURCE, "testId1", IntegerType.INTEGER, "TestIssuer");
 	}
 }

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.function;
 
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -13,7 +14,7 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+
 
 
 public class DefaultFunctionSpecTest
@@ -34,19 +35,19 @@ public class DefaultFunctionSpecTest
 	@Test
 	public void testInvokeSpec() throws EvaluationException
 	{
-		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
-		expect(invocation.invoke(spec, context, params)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
+		Expression[] params = {BOOLEAN.create(false)};
+		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
+		expect(invocation.invoke(spec, context, params)).andReturn(BOOLEAN.create(true));
 		replay(invocation);
 		replay(resolver);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(true), spec.invoke(context, params));
+		assertEquals(BOOLEAN.create(true), spec.invoke(context, params));
 	}
 	
 	@Test(expected=FunctionInvocationException.class)
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
-		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
+		Expression[] params = {BOOLEAN.create(false)};
+		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
 		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(context, spec, "Fail"));
 		replay(invocation);
 		replay(resolver);
@@ -56,8 +57,8 @@ public class DefaultFunctionSpecTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{
-		Expression[] params = {XacmlDataTypes.BOOLEAN.create(false)};
-		FunctionSpec spec = b.withParam(XacmlDataTypes.BOOLEAN.getDataType()).build(resolver, invocation);
+		Expression[] params = {BOOLEAN.create(false)};
+		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
 		expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException("Fail"));
 		replay(invocation);
 		replay(resolver);

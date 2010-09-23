@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.function;
 
+import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -13,8 +15,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
-import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+
 
 public class AnnotationBasedFunctionFactoryTest
 {
@@ -36,13 +37,13 @@ public class AnnotationBasedFunctionFactoryTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		replay(context);
 		FunctionSpec spec1 = f1.getFunction("test1");
-		assertEquals(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE),  
-				spec1.invoke(context, IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)));
+		assertEquals(BOOLEAN.create(Boolean.FALSE),  
+				spec1.invoke(context, INTEGER.create(1), INTEGER.create(2)));
 		
 		FunctionSpec spec2 = f1.getFunction("test2");
-		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, IntegerType.INTEGER.bagOf(
-						IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2))));
+		assertEquals(INTEGER.create(2),  
+				spec2.invoke(context, INTEGER.bagOf(
+						INTEGER.create(1), INTEGER.create(2))));
 		verify(context);
 		
 	}
@@ -54,13 +55,13 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec1 = f2.getFunction("test1");
 		assertNotNull(spec1);
-		assertEquals(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE),  
-				spec1.invoke(context, XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)));
+		assertEquals(BOOLEAN.create(Boolean.FALSE),  
+				spec1.invoke(context, INTEGER.create(1), INTEGER.create(2)));
 		
 		FunctionSpec spec2 = f2.getFunction("test2");
-		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, IntegerType.INTEGER.bagOf(
-						IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2))));
+		assertEquals(INTEGER.create(2),  
+				spec2.invoke(context, INTEGER.bagOf(
+						INTEGER.create(1), INTEGER.create(2))));
 		verify(context);
 		
 	}
@@ -72,9 +73,9 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec3 = f1.getFunction("test3");
 		FunctionSpec spec4 = f1.getFunction("test4");
-		spec3.invoke(context, XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.INTEGER.create(10));
-		spec3.invoke(context, XacmlDataTypes.INTEGER.create(10));
-		spec4.invoke(context, XacmlDataTypes.INTEGER.create(10));
+		spec3.invoke(context, INTEGER.create(10), INTEGER.create(10));
+		spec3.invoke(context, INTEGER.create(10));
+		spec4.invoke(context, INTEGER.create(10));
 		verify(context);
 		
 	}
@@ -87,12 +88,12 @@ public class AnnotationBasedFunctionFactoryTest
 		FunctionSpec spec5 = f1.getFunction("test5VarArg");
 		FunctionSpec spec6 = f1.getFunction("test6VarArg");
 		
-		spec5.invoke(context, XacmlDataTypes.INTEGER.create(10));
-		spec5.invoke(context, XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.BOOLEAN.create(false));
-		spec5.invoke(context, XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.BOOLEAN.create(false), XacmlDataTypes.BOOLEAN.create(false));
+		spec5.invoke(context, INTEGER.create(10));
+		spec5.invoke(context, INTEGER.create(10), BOOLEAN.create(false));
+		spec5.invoke(context, INTEGER.create(10), BOOLEAN.create(false), BOOLEAN.create(false));
 		
-		spec6.invoke(context, XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.INTEGER.create(10));
-		spec6.invoke(context, XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.INTEGER.create(10), XacmlDataTypes.BOOLEAN.create(false));
+		spec6.invoke(context, INTEGER.create(10), INTEGER.create(10));
+		spec6.invoke(context, INTEGER.create(10), INTEGER.create(10), BOOLEAN.create(false));
 		verify(context);
 		
 	}

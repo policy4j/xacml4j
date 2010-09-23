@@ -1,5 +1,9 @@
 package com.artagon.xacml.v3;
 
+import static com.artagon.xacml.v3.types.AnyURIType.ANYURI;
+import static com.artagon.xacml.v3.types.DateType.DATE;
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
+import static com.artagon.xacml.v3.types.XPathExpressionType.XPATHEXPRESSION;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.eq;
@@ -26,9 +30,6 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
-import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultContextHandlerTest
 {
@@ -115,20 +116,20 @@ public class DefaultContextHandlerTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				XacmlDataTypes.INTEGER.getDataType(), true);
+				INTEGER, true);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getDataType())).
+				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
-		assertEquals(v, IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(555555)));
+		assertEquals(v, INTEGER.bagOf(INTEGER.create(555555)));
 		verify(context, request, attributes, pip);
 	}
 	
@@ -138,14 +139,14 @@ public class DefaultContextHandlerTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient", 
-				XacmlDataTypes.INTEGER.getDataType(), true);
+				INTEGER, true);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getDataType())).
+				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
@@ -160,14 +161,14 @@ public class DefaultContextHandlerTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				XacmlDataTypes.DATE.getDataType(), false);
+				DATE, false);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getDataType())).
+				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
@@ -182,14 +183,14 @@ public class DefaultContextHandlerTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				XacmlDataTypes.DATE.getDataType(), false);
+				DATE, false);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getDataType())).
+				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
@@ -204,20 +205,20 @@ public class DefaultContextHandlerTest
 		AttributeSelector ref = new AttributeSelector(
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/test", 
-				XacmlDataTypes.INTEGER.getDataType(), true);
+				INTEGER, true);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getOnlyAttributes(AttributeCategoryId.SUBJECT_RECIPIENT)).andReturn(attributes);
 		expect(attributes.getContent()).andReturn(content).times(2);
 		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XacmlDataTypes.XPATHEXPRESSION.getDataType())).
+				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
 				andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
-		assertEquals(v, XacmlDataTypes.INTEGER.emptyBag());
+		assertEquals(v, INTEGER.emptyBag());
 		verify(context, request, attributes, pip);
 	}		
 	
@@ -225,17 +226,17 @@ public class DefaultContextHandlerTest
 	public void testDesignatorResolutionAttributeInRequest() throws EvaluationException
 	{
 		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType(), false);
+				AttributeCategoryId.RESOURCE, "testId", null, ANYURI, false);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.ANYURI)).
-		andReturn(Collections.<AttributeValue>singleton(AnyURIType.ANYURI.create("testValue")));
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
+		andReturn(Collections.<AttributeValue>singleton(ANYURI.create("testValue")));
 		
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
-		assertEquals(AnyURIType.ANYURI.bagOf(AnyURIType.ANYURI.create("testValue")), v);
+		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	
@@ -243,19 +244,19 @@ public class DefaultContextHandlerTest
 	public void testDesignatorResolutionAttributeIsNotInRequestAndScopeIsRequestAndExternal() throws EvaluationException
 	{
 		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType(), false);
+				AttributeCategoryId.RESOURCE, "testId", null, ANYURI, false);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.ANYURI)).
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
-		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(AnyURIType.ANYURI.bagOf(AnyURIType.ANYURI.create("testValue")));
+		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
-		assertEquals(AnyURIType.ANYURI.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
+		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	
@@ -263,17 +264,17 @@ public class DefaultContextHandlerTest
 	public void testDesignatorResolutionAttributeIsNotInRequestAndScopeIsRequest() throws EvaluationException
 	{
 		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType(), false);
+				AttributeCategoryId.RESOURCE, "testId", null, ANYURI, false);
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType())).
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
-		assertEquals(XacmlDataTypes.ANYURI.emptyBag(), v);
+		assertEquals(ANYURI.emptyBag(), v);
 		verify(context, request, attributes, pip);
 	}
 }
