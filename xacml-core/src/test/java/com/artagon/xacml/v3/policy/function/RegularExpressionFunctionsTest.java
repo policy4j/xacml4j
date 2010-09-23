@@ -12,7 +12,7 @@ import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.RFC822NameType;
-import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 
@@ -78,7 +78,7 @@ public class RegularExpressionFunctionsTest
 	public void testrfc822NameRegExpMatch() throws EvaluationException
 	{
 		StringValue regexp = StringType.STRING.create(".*@comcast.net");
-		RFC822NameValue input = RFC822NameType.Factory.create("trumpyla@comcast.net");
+		RFC822NameValue input = RFC822NameType.RFC822NAME.create("trumpyla@comcast.net");
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}
 	

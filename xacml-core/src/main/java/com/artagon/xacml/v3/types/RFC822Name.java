@@ -135,7 +135,7 @@ public final class RFC822Name
 		try {
 			VALID_PATTERN = Pattern.compile(PATTERN_STRING);
 		} catch(PatternSyntaxException e) {
-			LoggerFactory.getLogger(RFC822NameTypeImpl.class).error("Can not parse Email address pattern", e);
+			LoggerFactory.getLogger(RFC822NameType.class).error("Can not parse Email address pattern", e);
 			e.printStackTrace();
 			throw e;
 		}

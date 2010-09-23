@@ -8,7 +8,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
-import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.X500NameValue;
 

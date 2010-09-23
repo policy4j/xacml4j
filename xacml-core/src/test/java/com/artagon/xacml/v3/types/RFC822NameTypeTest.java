@@ -15,7 +15,7 @@ public class RFC822NameTypeTest
 	
 	@Before
 	public void init(){
-		this.t = RFC822NameType.Factory.getInstance();
+		this.t = RFC822NameType.RFC822NAME;
 	}
 	
 	@Test

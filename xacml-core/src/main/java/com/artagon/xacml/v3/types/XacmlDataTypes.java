@@ -73,7 +73,7 @@ public enum XacmlDataTypes
 	IPADDRESS(IPAddressType.IPADDRESS),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
-	RFC822NAME(RFC822NameType.Factory.getInstance()),
+	RFC822NAME(RFC822NameType.RFC822NAME),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#string</b> */
 	STRING(StringType.STRING),

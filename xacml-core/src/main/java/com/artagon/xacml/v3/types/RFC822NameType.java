@@ -6,8 +6,10 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-/** XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
+/** 
+ * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
  * <br>The “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” primitive type 
  * represents an electronic mail address. The valid syntax for such a 
  * name is described in IETF RFC 2821, Section 4.1.2, Command Argument 
@@ -27,45 +29,70 @@ import com.artagon.xacml.v3.BagOfAttributeValuesType;
  *   String = Atom / Quoted-string
  * </pre>
  * */
-public interface RFC822NameType extends AttributeValueType
+public enum RFC822NameType implements AttributeValueType
 {	
-	RFC822NameValue create(Object value, Object ...params);
-	RFC822NameValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagType();
+	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
 	
-	final class RFC822NameValue extends SimpleAttributeValue<RFC822Name>
-	{
-		public RFC822NameValue(RFC822NameType type, RFC822Name value) {
-			super(type, value);
-		}
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+	
+	private RFC822NameType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return String.class.isInstance(any) || RFC822Name.class.isInstance(any);
+	}
+	
+	@Override
+	public RFC822NameValue fromXacmlString(String v, Object ...params)
 	{
-		private final static RFC822NameType INSTANCE = new RFC822NameTypeImpl("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
-		
-		public static RFC822NameType getInstance(){
-			return INSTANCE;
+		Preconditions.checkNotNull(v);
+        return new RFC822NameValue(this, RFC822Name.parse(v));
+	}
+	
+	@Override
+	public RFC822NameValue create(Object any, Object ...params)
+	{
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any),String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"rfc822Name\" type", 
+				any, any.getClass()));
+		if(any instanceof String){
+			return fromXacmlString((String)any);
 		}
-		
-		public static RFC822NameValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static RFC822NameValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return new RFC822NameValue(this, (RFC822Name)any);
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

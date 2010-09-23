@@ -30,7 +30,7 @@ import com.artagon.xacml.v3.types.IPAddressValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerValue;
 import com.artagon.xacml.v3.types.RFC822NameType;
-import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
@@ -598,7 +598,7 @@ public class BagFunctions
 	public static BagOfAttributeValues rfc822NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
 			RFC822NameValue ...values){
-		return RFC822NameType.Factory.bagOf(values);
+		return RFC822NameType.RFC822NAME.bagOf(values);
 	}
 	
 	// ipAddress

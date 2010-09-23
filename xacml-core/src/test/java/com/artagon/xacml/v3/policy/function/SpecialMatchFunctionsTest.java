@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.RFC822NameType;
-import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
+import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 
@@ -35,11 +35,11 @@ public class SpecialMatchFunctionsTest
 	public void testRFC822NameMatch()
 	{
 		StringValue p = StringType.STRING.create(".sun.com");
-		RFC822NameValue n = RFC822NameType.Factory.create("test@east.sun.com");
+		RFC822NameValue n = RFC822NameType.RFC822NAME.create("test@east.sun.com");
 		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 		
 		p = StringType.STRING.create("sun.com");
-		n = RFC822NameType.Factory.create("test@sun.com");
+		n = RFC822NameType.RFC822NAME.create("test@sun.com");
 		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 }

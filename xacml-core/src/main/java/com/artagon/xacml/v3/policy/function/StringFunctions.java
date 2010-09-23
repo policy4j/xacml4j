@@ -4,6 +4,7 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+
 import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
@@ -23,6 +24,7 @@ import com.artagon.xacml.v3.types.IPAddressValue;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.IntegerValue;
 import com.artagon.xacml.v3.types.RFC822NameType;
+import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
@@ -275,17 +277,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue stringFromRfc822Name(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameType.RFC822NameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue v)
 	{
 		return StringType.STRING.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:rfc822Name-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
-	public static RFC822NameType.RFC822NameValue rfc822NameFromString(
+	public static RFC822NameValue rfc822NameFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue v)
 	{
-		return RFC822NameType.Factory.fromXacmlString(v.getValue());
+		return RFC822NameType.RFC822NAME.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-ipAddress")
