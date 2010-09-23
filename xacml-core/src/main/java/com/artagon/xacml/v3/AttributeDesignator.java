@@ -103,13 +103,12 @@ public class AttributeDesignator extends AttributeReference
 	 * @exception EvaluationIndeterminateException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
-	@SuppressWarnings("unchecked")
-	public ValueExpression evaluate(EvaluationContext context)
+	public BagOfAttributeValues evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues<?> v = null;
+		BagOfAttributeValues v = null;
 		try{
-			v = (BagOfAttributeValues<?>)context.resolve(this);
+			v = context.resolve(this);
 		}catch(AttributeReferenceEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
@@ -119,7 +118,7 @@ public class AttributeDesignator extends AttributeReference
 				log.debug("Re-throwing error");
 				throw e;
 			}
-			return (BagOfAttributeValues<AttributeValue>)getDataType().bagOf().createEmpty();
+			return getDataType().bagOf().createEmpty();
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
@@ -129,7 +128,7 @@ public class AttributeDesignator extends AttributeReference
 				throw new AttributeReferenceEvaluationException(context, this, 
 						StatusCode.createMissingAttribute(), e);
 			}
-			return (BagOfAttributeValues<AttributeValue>)getDataType().bagOf().createEmpty();
+			return getDataType().bagOf().createEmpty();
 		}
 		if((v == null || v.isEmpty()) && 
 				isMustBePresent()){
@@ -141,7 +140,7 @@ public class AttributeDesignator extends AttributeReference
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}
-		return (BagOfAttributeValues<AttributeValue>)((v == null)?getDataType().bagOf().createEmpty():v);
+		return ((v == null)?getDataType().bagOf().createEmpty():v);
 	}
 	
 	@Override

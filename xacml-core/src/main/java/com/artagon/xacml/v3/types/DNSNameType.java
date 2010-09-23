@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:dnsName</b>. 
@@ -36,7 +35,6 @@ public interface DNSNameType extends AttributeValueType
 	DNSNameValue create(Object o, Object ...params);
 	DNSNameValue fromXacmlString(String v, Object ...params);
 	
-	BagOfAttributeValuesType<DNSNameValue> bagOf();
 	
 	final class DNSNameValue extends BaseAttributeValue<DNSName>
 	{
@@ -62,15 +60,15 @@ public interface DNSNameType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<DNSNameValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DNSNameValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DNSNameValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

@@ -7,7 +7,6 @@ import javax.security.auth.x500.X500Principal;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
@@ -29,8 +28,6 @@ public interface X500NameType extends AttributeValueType
 {
 	X500NameValue create(Object v, Object ...params);
 	X500NameValue fromXacmlString(String v, Object ...params);
-	
-	BagOfAttributeValuesType<X500NameValue> bagOf();
 	
 	final class X500NameValue extends BaseAttributeValue<X500Principal>
 	{
@@ -57,15 +54,15 @@ public interface X500NameType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<X500NameValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<X500NameValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<X500NameValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

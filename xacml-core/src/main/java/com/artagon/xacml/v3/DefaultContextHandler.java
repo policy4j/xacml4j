@@ -33,10 +33,10 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	private PolicyInformationPoint pip;
 	
 	/* Request scope attribute designator resolution cache */
-	private Map<AttributeDesignator, ValueExpression> attributeDesignatorCache;
+	private Map<AttributeDesignator, BagOfAttributeValues> attributeDesignatorCache;
 	
 	/* Request scope attribute selector resolution cache */
-	private Map<AttributeSelector, ValueExpression> attributeSelectorCache;
+	private Map<AttributeSelector, BagOfAttributeValues> attributeSelectorCache;
 	
 	/* Request scope attribute selector resolution cache */
 	private Map<AttributeCategoryId, Node> contentCache;
@@ -51,8 +51,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		this.request = request;
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
-		this.attributeDesignatorCache = new HashMap<AttributeDesignator, ValueExpression>();
-		this.attributeSelectorCache = new HashMap<AttributeSelector, ValueExpression>();
+		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues>();
+		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues>();
 		this.contentCache = new HashMap<AttributeCategoryId, Node>();
 	}
 	
@@ -74,7 +74,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 
 	@Override
-	public ValueExpression resolve(EvaluationContext context, AttributeDesignator ref) 
+	public BagOfAttributeValues resolve(EvaluationContext context, AttributeDesignator ref) 
 		throws EvaluationException 
 	{
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
@@ -90,11 +90,11 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 
 	@Override
-	public ValueExpression resolve(
+	public BagOfAttributeValues resolve(
 			EvaluationContext context, AttributeSelector ref)
 			throws EvaluationException {
 		
-		ValueExpression v = attributeSelectorCache.get(ref);
+		BagOfAttributeValues v = attributeSelectorCache.get(ref);
 		if(v == null){
 			v = doResolve(context, ref);
 			if(v != null){
@@ -134,11 +134,11 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	 * @throws EvaluationException if an error occurs
 	 * while resolving reference
 	 */
-	private final ValueExpression doResolve(
+	private final BagOfAttributeValues doResolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		ValueExpression v = attributeDesignatorCache.get(ref);
+		BagOfAttributeValues v = attributeDesignatorCache.get(ref);
 		if(v == null){
 			v = pip.resolve(context, ref, new DefaultRequestAttributesCallback());
 			attributeDesignatorCache.put(ref, v);
@@ -147,7 +147,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	}
 	
 	@SuppressWarnings("unchecked")
-	private final ValueExpression doResolve(
+	private final BagOfAttributeValues doResolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
 		try
@@ -160,7 +160,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 				}
 			}
 			if(content == null){
-				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
+				return ref.getDataType().bagOf().createEmpty();
 			}
 			Node contextNode = content;
 			Collection<AttributeValue> v = request.getAttributeValues(ref.getCategory(), 
@@ -193,7 +193,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						ref.getPath(), ref.getCategory());
-				return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().createEmpty();
+				return (BagOfAttributeValues)ref.getDataType().bagOf().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
@@ -208,7 +208,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	}
 	
 	@SuppressWarnings("unchecked")
-	private BagOfAttributeValues<AttributeValue> toBag(EvaluationContext context,
+	private BagOfAttributeValues toBag(EvaluationContext context,
 			AttributeSelector ref, NodeList nodeSet) 
 		throws EvaluationException
 	{
@@ -243,7 +243,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 						ref, StatusCode.createProcessingError(), e);
 			}
 		}
-	  	return (BagOfAttributeValues<AttributeValue>) ref.getDataType().bagOf().create(values);
+	  	return (BagOfAttributeValues) ref.getDataType().bagOf().create(values);
 	}
 
 	class DefaultRequestAttributesCallback implements RequestContextAttributesCallback
@@ -251,15 +251,15 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+		public BagOfAttributeValues getAttributeValues(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
 			Collection<Attributes> attributes = request.getAttributes(category);
 			Attributes  found = Iterables.getOnlyElement(attributes);
-			return (BagOfAttributeValues<AV>)dataType.bagOf().create(found.getAttributeValues(attributeId, issuer, dataType));
+			return dataType.bagOf().create(found.getAttributeValues(attributeId, issuer, dataType));
 		}
 
 		@Override
-		public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+		public BagOfAttributeValues getAttributeValues(
 				AttributeCategoryId category, String attributeId, AttributeValueType dataType) {
 			return getAttributeValues(category, attributeId, dataType, null);
 		}
@@ -268,8 +268,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		public <AV extends AttributeValue> AV getAttributeValue(
 				AttributeCategoryId categoryId, String attributeId,
 				AttributeValueType dataType, String issuer) {
-			BagOfAttributeValues<AV> bag = getAttributeValues(categoryId, attributeId, dataType, issuer);
-			return bag.isEmpty()?null:bag.value();
+			BagOfAttributeValues bag = getAttributeValues(categoryId, attributeId, dataType, issuer);
+			return bag.isEmpty()?null:bag.<AV>value();
 		}
 
 		@Override
@@ -277,8 +277,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 				AttributeCategoryId categoryId, 
 				String attributeId,
 				AttributeValueType dataType) {
-			BagOfAttributeValues<AV> bag = getAttributeValues(categoryId, attributeId, dataType);
-			return bag.isEmpty()?null:bag.value();
+			BagOfAttributeValues bag = getAttributeValues(categoryId, attributeId, dataType);
+			return bag.isEmpty()?null:bag.<AV>value();
 		}	
 	}
 }

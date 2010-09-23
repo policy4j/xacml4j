@@ -32,7 +32,7 @@ public interface IPAddressType extends AttributeValueType
 	IPAddressValue create(InetAddress address, InetAddress mask);
 	IPAddressValue create(InetAddress address, InetAddress mask, PortRange portRange);
 	IPAddressValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<IPAddressValue> bagOf();
+	BagOfAttributeValuesType bagOf();
 	
 	public final class IPAddressValue extends BaseAttributeValue<IPAddress>
 	{
@@ -57,15 +57,15 @@ public interface IPAddressType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<IPAddressValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<IPAddressValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<IPAddressValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

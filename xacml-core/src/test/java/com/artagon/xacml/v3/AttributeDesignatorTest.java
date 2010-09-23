@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AttributeDesignatorTest
 {

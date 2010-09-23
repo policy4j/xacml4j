@@ -31,7 +31,7 @@ public interface RFC822NameType extends AttributeValueType
 {	
 	RFC822NameValue create(Object value, Object ...params);
 	RFC822NameValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<RFC822NameValue> bagOf();
+	BagOfAttributeValuesType bagOf();
 	
 	final class RFC822NameValue extends BaseAttributeValue<RFC822Name>
 	{
@@ -56,15 +56,15 @@ public interface RFC822NameType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<RFC822NameValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<RFC822NameValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<RFC822NameValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

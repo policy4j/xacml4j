@@ -8,7 +8,6 @@ import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
-import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 
 public interface PolicyInformationPoint 
@@ -23,7 +22,7 @@ public interface PolicyInformationPoint
 	 * @return 
 	 * @throws AttributeReferenceEvaluationException
 	 */
-	ValueExpression resolve(
+	BagOfAttributeValues resolve(
 			EvaluationContext context, 
 			AttributeDesignator ref, 
 			RequestContextAttributesCallback callback) 

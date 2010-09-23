@@ -8,7 +8,6 @@ import javax.xml.datatype.Duration;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
 
@@ -16,7 +15,6 @@ public interface DayTimeDurationType extends AttributeValueType
 {
 	DayTimeDurationValue create(Object value, Object ...params);
 	DayTimeDurationValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<DayTimeDurationValue> bagOf();
 	
 	final class DayTimeDurationValue extends BaseDurationValue
 	{
@@ -44,15 +42,15 @@ public interface DayTimeDurationType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<DayTimeDurationValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DayTimeDurationValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DayTimeDurationValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

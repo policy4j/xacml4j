@@ -12,7 +12,7 @@ final class FunctionParamAnyBagSpec implements FunctionParamSpec
 {
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return (type instanceof BagOfAttributeValuesType<?>);
+		return (type instanceof BagOfAttributeValuesType);
 	}
 
 	@Override

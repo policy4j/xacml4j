@@ -11,12 +11,12 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.collect.HashMultimap;
@@ -49,7 +49,7 @@ public class DefaultPolicyInformationPoint
 	}
 
 	@Override
-	public ValueExpression resolve(
+	public BagOfAttributeValues resolve(
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestContextAttributesCallback callback) 

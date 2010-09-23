@@ -13,7 +13,7 @@ public abstract class AttributeReference extends XacmlObject
 {
 	private boolean mustBePresent;
 	private AttributeCategoryId category;
-	protected BagOfAttributeValuesType<?> evaluatesTo;
+	protected BagOfAttributeValuesType evaluatesTo;
 	
 	/**
 	 * Constructs attribute reference with a given
@@ -67,5 +67,15 @@ public abstract class AttributeReference extends XacmlObject
 	public boolean isMustBePresent(){
 		return mustBePresent;
 	}
+
+	@Override
+	public void accept(PolicyVisitor v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public abstract BagOfAttributeValues evaluate(EvaluationContext context) 
+		throws EvaluationException;
 
 }

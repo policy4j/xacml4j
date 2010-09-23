@@ -60,7 +60,7 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 	{
 		try
 		{
-			BagOfAttributeValues<?> attributes = (BagOfAttributeValues<?>)attributeRef.evaluate(context);
+			BagOfAttributeValues attributes = attributeRef.evaluate(context);
 			if(log.isDebugEnabled()){
 				log.debug("Evaluated attribute reference=\"{}\" to " +
 						"bag=\"{}\"", attributeRef, attributes);

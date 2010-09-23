@@ -32,7 +32,7 @@ public class JavaMethodToFunctionSpecTestFunctions
 	
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BagOfAttributeValues<BooleanValue> returnTypeDeclarationExistButWrongMethodReturnType2(){
+	public static BagOfAttributeValues returnTypeDeclarationExistButWrongMethodReturnType2(){
 		return null;
 	}
 	

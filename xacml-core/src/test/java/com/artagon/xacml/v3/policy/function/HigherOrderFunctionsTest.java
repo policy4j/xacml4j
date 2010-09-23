@@ -23,7 +23,6 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
-import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class HigherOrderFunctionsTest 
@@ -96,7 +95,7 @@ public class HigherOrderFunctionsTest
 		
 		
 		replay(context);
-		BagOfAttributeValues<StringValue> bag =  map.invoke(context, new FunctionReference(intToString), XacmlDataTypes.INTEGER.bagOf(v));
+		BagOfAttributeValues bag =  map.invoke(context, new FunctionReference(intToString), XacmlDataTypes.INTEGER.bagOf(v));
 		verify(context);	
 		assertTrue(bag.contains(XacmlDataTypes.STRING.create("10")));
 		assertTrue(bag.contains(XacmlDataTypes.STRING.create("20")));

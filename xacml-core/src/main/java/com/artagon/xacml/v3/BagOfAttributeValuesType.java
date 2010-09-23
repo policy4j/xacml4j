@@ -13,7 +13,7 @@ import com.google.common.base.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributeValuesType<VT extends AttributeValue> extends XacmlObject 
+public final class BagOfAttributeValuesType extends XacmlObject 
 	implements ValueType
 {
 	private AttributeValueType type;
@@ -44,9 +44,9 @@ public final class BagOfAttributeValuesType<VT extends AttributeValue> extends X
 	 * @param attr a collection of attributes
 	 * @return {@link BagOfAttributeValues} containing given attributes
 	 */
-	public BagOfAttributeValues<VT> create(
+	public BagOfAttributeValues create(
 			Collection<AttributeValue> attr){
-		return new BagOfAttributeValues<VT>(this, attr);
+		return new BagOfAttributeValues(this, attr);
 	}
 	
 	/**
@@ -55,8 +55,8 @@ public final class BagOfAttributeValuesType<VT extends AttributeValue> extends X
 	 * @return instance of {@link BagOfAttributeValues} with
 	 * no {@link BaseAttribute} instances
 	 */
-	public  BagOfAttributeValues<VT> createEmpty(){
-		return new BagOfAttributeValues<VT>(this, Collections.<AttributeValue>emptyList());
+	public  BagOfAttributeValues createEmpty(){
+		return new BagOfAttributeValues(this, Collections.<AttributeValue>emptyList());
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public final class BagOfAttributeValuesType<VT extends AttributeValue> extends X
 	 * @param attr an array of attributes
 	 * @return {@link BagOfAttributeValues} containing given attributes
 	 */
-	public BagOfAttributeValues<VT> create(AttributeValue ...attr){
-		return new BagOfAttributeValues<VT>(this, attr);
+	public BagOfAttributeValues create(AttributeValue ...attr){
+		return new BagOfAttributeValues(this, attr);
 	}
 	
 	@Override

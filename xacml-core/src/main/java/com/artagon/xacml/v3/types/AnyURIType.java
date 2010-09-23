@@ -14,7 +14,7 @@ public interface AnyURIType extends AttributeValueType
 	
 	AnyURIValue fromXacmlString(String v, Object ...params);
 	
-	BagOfAttributeValuesType<AnyURIValue> bagOf();
+	BagOfAttributeValuesType bagOf();
 	
 	final class AnyURIValue extends BaseAttributeValue<URI> 
 	{
@@ -43,15 +43,15 @@ public interface AnyURIType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<AnyURIValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<AnyURIValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<AnyURIValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

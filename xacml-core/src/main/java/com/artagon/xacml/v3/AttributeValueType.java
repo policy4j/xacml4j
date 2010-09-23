@@ -59,9 +59,9 @@ public interface AttributeValueType  extends ValueType
 	 * 
 	 * @return {@link BagOfAttributeValuesType} instance
 	 */
-	BagOfAttributeValuesType<? extends AttributeValue> bagOf();
+	BagOfAttributeValuesType bagOf();
 	
-	BagOfAttributeValues<AttributeValue> bagOf(AttributeValue ...values);
-	BagOfAttributeValues<AttributeValue> bagOf(Collection<AttributeValue> values);
-	BagOfAttributeValues<AttributeValue> emptyBag();
+	BagOfAttributeValues bagOf(AttributeValue ...values);
+	BagOfAttributeValues bagOf(Collection<AttributeValue> values);
+	BagOfAttributeValues emptyBag();
 }

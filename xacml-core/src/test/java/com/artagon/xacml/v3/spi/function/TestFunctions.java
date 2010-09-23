@@ -31,7 +31,7 @@ public class TestFunctions
 	@XacmlFuncSpec(id="test2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerType.IntegerValue test2(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues bag)
 	{
 		return IntegerType.Factory.create(bag.size());
 	}
@@ -68,10 +68,10 @@ public class TestFunctions
 	
 	@XacmlFuncSpec(id="test5")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)
-	public static BagOfAttributeValues<IntegerType.IntegerValue> test5(
+	public static BagOfAttributeValues test5(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionSpec function,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues bag) 
 		throws EvaluationException
 	{
 		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();

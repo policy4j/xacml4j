@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.sdk.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.types.IntegerType;
@@ -50,7 +49,7 @@ public class AnnotatedAttributeResolverBuilderTest
 	{
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
-		BagOfAttributeValues<AttributeValue> v1 = resolver.resolve(context, 
+		BagOfAttributeValues v1 = resolver.resolve(context, 
 				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
 		assertEquals(StringType.Factory.emptyBag(), v1);
 		
@@ -58,7 +57,7 @@ public class AnnotatedAttributeResolverBuilderTest
 				AttributeCategoryId.ACTION, "testId1", XacmlDataTypes.STRING.getDataType(), "testIssuer");
 		assertEquals(StringType.Factory.emptyBag(), v1);
 		
-		BagOfAttributeValues<AttributeValue> v2 = resolver.resolve(context, 
+		BagOfAttributeValues v2 = resolver.resolve(context, 
 				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), "testIssuer");
 		assertEquals(IntegerType.Factory.bagOf(IntegerType.Factory.create(1)), v2);
 	}
@@ -68,11 +67,11 @@ public class AnnotatedAttributeResolverBuilderTest
 	{
 		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
-		BagOfAttributeValues<AttributeValue> v1 = resolver.resolve(context, 
+		BagOfAttributeValues v1 = resolver.resolve(context, 
 				AttributeCategoryId.RESOURCE, "testId1", XacmlDataTypes.STRING.getDataType(), null);
 		assertEquals(StringType.Factory.emptyBag(), v1);
 		
-		BagOfAttributeValues<AttributeValue> v2 = resolver.resolve(context, 
+		BagOfAttributeValues v2 = resolver.resolve(context, 
 				AttributeCategoryId.SUBJECT_ACCESS, "testId2", XacmlDataTypes.INTEGER.getDataType(), null);
 		assertEquals(IntegerType.Factory.bagOf(IntegerType.Factory.create(1)), v2);
 	}

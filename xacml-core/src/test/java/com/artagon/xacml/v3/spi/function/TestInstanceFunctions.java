@@ -24,7 +24,7 @@ public class TestInstanceFunctions
 	@XacmlFuncSpec(id="test2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public IntegerType.IntegerValue test2(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues<IntegerType.IntegerValue> bag)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeValues bag)
 	{
 		return IntegerType.Factory.create(bag.size());
 	}

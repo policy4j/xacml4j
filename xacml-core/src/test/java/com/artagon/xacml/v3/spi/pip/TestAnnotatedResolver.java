@@ -8,9 +8,7 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
 import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.StringType.StringValue;
 
 @XacmlAttributeResolverDescriptor(name="Test Resolver")
 @XacmlAttributeIssuer("testIssuer")
@@ -20,7 +18,7 @@ public class TestAnnotatedResolver
 	@XacmlAttributeDescriptor(id="testId1", typeId="http://www.w3.org/2001/XMLSchema#string")
 	@XacmlAttributeCategory({"urn:oasis:names:tc:xacml:3.0:attribute-category:resource", 
 		"urn:oasis:names:tc:xacml:3.0:attribute-category:action"})
-	public BagOfAttributeValues<StringValue> getTestId1Attribute(
+	public BagOfAttributeValues getTestId1Attribute(
 			PolicyInformationPointContext context)
 	{
 		return StringType.Factory.emptyBag();
@@ -28,7 +26,7 @@ public class TestAnnotatedResolver
 	
 	@XacmlAttributeDescriptor(id="testId2", typeId="http://www.w3.org/2001/XMLSchema#integer")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
-	public BagOfAttributeValues<IntegerValue> getTestId2Attribute(
+	public BagOfAttributeValues getTestId2Attribute(
 			PolicyInformationPointContext context)
 	{
 		return IntegerType.Factory.bagOf(IntegerType.Factory.create(1));

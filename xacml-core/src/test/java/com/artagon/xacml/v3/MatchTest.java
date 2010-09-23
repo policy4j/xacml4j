@@ -13,7 +13,6 @@ import com.artagon.xacml.v3.spi.function.FunctionInvocation;
 import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MatchTest
@@ -40,7 +39,7 @@ public class MatchTest
 	{
 		AttributeValue int1 = IntegerType.Factory.create(1);
 		AttributeValue int2 = IntegerType.Factory.create(2);
-		BagOfAttributeValues<IntegerValue> v = IntegerType.Factory.bagOf(int2, int1);
+		BagOfAttributeValues v = IntegerType.Factory.bagOf(int2, int1);
 		
 		expect(ref.getDataType()).andReturn(IntegerType.Factory.getInstance());
 		expect(ref.evaluate(context)).andReturn(v);

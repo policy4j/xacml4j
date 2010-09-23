@@ -12,7 +12,7 @@ public interface RequestContextAttributesCallback
 	 * @return {@link BagOfAttributeValues} or empty bag
 	 * if no matching attribute exist in the request context
 	 */
-	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+	BagOfAttributeValues getAttributeValues(
 			AttributeCategoryId category, 
 			String attributeId, 
 			AttributeValueType dataType,
@@ -24,7 +24,7 @@ public interface RequestContextAttributesCallback
 	 * 
 	 * @see {{@link #getAttribute(AttributeCategoryId, String, String)}
 	 */
-	<AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+	BagOfAttributeValues getAttributeValues(
 			AttributeCategoryId category, 
 			String attributeId, 
 			AttributeValueType dataType);

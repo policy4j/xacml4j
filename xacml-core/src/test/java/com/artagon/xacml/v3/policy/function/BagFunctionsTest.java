@@ -94,7 +94,7 @@ public class BagFunctionsTest
 	{
 		StringValue v0 = StringType.Factory.create("a");
 		StringValue v1 = StringType.Factory.create("b");
-		BagOfAttributeValues<StringValue> bag = StringType.Factory.bagOf(v0);
+		BagOfAttributeValues bag = StringType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.stringIsIn(v0, bag));
@@ -107,7 +107,7 @@ public class BagFunctionsTest
 	{
 		BooleanValue v0 = BooleanType.Factory.create(true);
 		BooleanValue v1 = BooleanType.Factory.create(false);
-		BagOfAttributeValues<BooleanValue> bag = BooleanType.Factory.bagOf(v0);
+		BagOfAttributeValues bag = BooleanType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.booleanBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.booleanIsIn(v0, bag));
@@ -120,7 +120,7 @@ public class BagFunctionsTest
 	{
 		IntegerValue v0 = IntegerType.Factory.create(1);
 		IntegerValue v1 = IntegerType.Factory.create(2);
-		BagOfAttributeValues<IntegerValue> bag = IntegerType.Factory.bagOf(v0);
+		BagOfAttributeValues bag = IntegerType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.integerBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.integerIsIn(v0, bag));
@@ -133,7 +133,7 @@ public class BagFunctionsTest
 	{
 		DoubleValue v0 = DoubleType.Factory.create(1);
 		DoubleValue v1 = DoubleType.Factory.create(2);
-		BagOfAttributeValues<DoubleValue> bag = DoubleType.Factory.bagOf(v0);
+		BagOfAttributeValues bag = DoubleType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.doubleBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.doubleIsIn(v0, bag));
@@ -147,7 +147,7 @@ public class BagFunctionsTest
 		AnyURIValue v0 = AnyURIType.Factory.create("http://www.test0.org");
 		AnyURIValue v1 = AnyURIType.Factory.create("http://www.test1.org");
 		AnyURIValue v2 = AnyURIType.Factory.create("http://www.test2.org");
-		BagOfAttributeValues<AnyURIValue> bag = AnyURIType.Factory.bagOf(v0);
+		BagOfAttributeValues bag = AnyURIType.Factory.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
 		assertEquals(IntegerType.Factory.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(BooleanType.Factory.create(true), BagFunctions.anyURIIsIn(v0, bag));

@@ -14,7 +14,7 @@ class DefaultEnviromentAttributeResolver
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-time", 
 				typeId="http://www.w3.org/2001/XMLSchema#time")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues<TimeType.TimeValue> getCurrentTime(
+	public BagOfAttributeValues getCurrentTime(
 			PolicyInformationPointContext context)
 	{
 		return TimeType.Factory.bagOf(context.getCurrentTime());
@@ -23,7 +23,7 @@ class DefaultEnviromentAttributeResolver
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-date", 
 				typeId="http://www.w3.org/2001/XMLSchema#date")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues<DateType.DateValue> getCurrentDate(
+	public BagOfAttributeValues getCurrentDate(
 			PolicyInformationPointContext context)
 	{
 		return DateType.Factory.bagOf(context.getCurrentDate());
@@ -32,7 +32,7 @@ class DefaultEnviromentAttributeResolver
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
 			typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues<DateTimeType.DateTimeValue> getCurrentDateTime(
+	public BagOfAttributeValues getCurrentDateTime(
 			PolicyInformationPointContext context)
 	{
 		return DateTimeType.Factory.bagOf(context.getCurrentDateTime());

@@ -51,17 +51,17 @@ class DefaultPolicyInformationPointContext implements PolicyInformationPointCont
 		return context.setValue(ref.getCategory(), key, v);
 	}	
 	
-	public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+	public BagOfAttributeValues getAttributeValues(
 			AttributeCategoryId category, String attributeId,
 			AttributeValueType dataType, String issuer) {
-		return callback.<AV>getAttributeValues(category, attributeId, dataType,
+		return callback.getAttributeValues(category, attributeId, dataType,
 				issuer);
 	}
 
-	public <AV extends AttributeValue> BagOfAttributeValues<AV> getAttributeValues(
+	public BagOfAttributeValues getAttributeValues(
 			AttributeCategoryId category, String attributeId,
 			AttributeValueType dataType) {
-		return callback.<AV>getAttributeValues(category, attributeId, dataType);
+		return callback.getAttributeValues(category, attributeId, dataType);
 	}
 
 	public <AV extends AttributeValue> AV getAttributeValue(

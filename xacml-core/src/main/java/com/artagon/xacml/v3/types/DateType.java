@@ -10,14 +10,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
 public interface DateType extends AttributeValueType
 {
 	DateValue create(Object value, Object ...params);
 	DateValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<DateValue> bagOf();
 	
 	final class DateValue extends BaseAttributeValue<XMLGregorianCalendar> 
 		implements Comparable<DateValue>
@@ -75,15 +73,15 @@ public interface DateType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<DateValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DateValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<DateValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

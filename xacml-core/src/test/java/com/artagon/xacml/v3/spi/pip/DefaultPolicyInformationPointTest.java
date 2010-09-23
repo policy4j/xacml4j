@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
-import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
@@ -23,7 +22,6 @@ import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.sdk.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyInformationPointTest 
@@ -141,7 +139,7 @@ public class DefaultPolicyInformationPointTest
 		
 		Capture<PolicyInformationPointContext> pipContext = new Capture<PolicyInformationPointContext>();
 		
-		BagOfAttributeValues<? super AttributeValue> v = BooleanType.Factory.bagOf(BooleanType.Factory.create(true));
+		BagOfAttributeValues v = BooleanType.Factory.bagOf(BooleanType.Factory.create(true));
 		expect(r1.resolve(capture(pipContext), 
 				eq(AttributeCategoryId.ACTION), 
 				eq("testAttributeId"), 
@@ -150,7 +148,7 @@ public class DefaultPolicyInformationPointTest
 		
 		
 		pip.addResolver(r1);
-		assertEquals(XacmlDataTypes.BOOLEAN.bagOf(XacmlDataTypes.BOOLEAN.create(true)), pip.resolve(context, ref, callback));
+		assertEquals(BooleanType.Factory.bagOf(XacmlDataTypes.BOOLEAN.create(true)), pip.resolve(context, ref, callback));
 		
 		verify(r1, context, callback, ref, p);
 	}
@@ -196,7 +194,7 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(ref.getCategory()).andReturn(AttributeCategoryId.ACTION);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
-		expect(ref.getDataType()).andReturn(XacmlDataTypes.BOOLEAN.getDataType());
+		expect(ref.getDataType()).andReturn(BooleanType.Factory.getInstance());
 		expect(ref.getIssuer()).andReturn(null);
 		
 		Capture<PolicyInformationPointContext> pipContext = new Capture<PolicyInformationPointContext>();
@@ -205,12 +203,12 @@ public class DefaultPolicyInformationPointTest
 				eq(AttributeCategoryId.ACTION), 
 				eq("testAttributeId"), 
 				eq(XacmlDataTypes.BOOLEAN.getDataType()), eq((String)null))).andReturn(
-						XacmlDataTypes.BOOLEAN.bagOf(XacmlDataTypes.BOOLEAN.create(true)));
+					BooleanType.Factory.bagOf(BooleanType.Factory.create(true)));
 		replay(r1, context, callback, ref, p, ps1, ps2, parentContext1, parentContext2);
 		
 		
 		pip.addResolver("testPolicySetId2", r1);
-		assertEquals(XacmlDataTypes.BOOLEAN.bagOf(XacmlDataTypes.BOOLEAN.create(true)), pip.resolve(context, ref, callback));
+		assertEquals(BooleanType.Factory.bagOf(BooleanType.Factory.create(true)), pip.resolve(context, ref, callback));
 		
 		verify(r1, context, callback, ref, p, ps1, ps2, parentContext1, parentContext2);
 	}

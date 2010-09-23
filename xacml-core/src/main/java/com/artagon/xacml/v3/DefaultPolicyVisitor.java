@@ -46,7 +46,7 @@ public class DefaultPolicyVisitor implements PolicyVisitor
 	}
 
 	@Override
-	public void visitEnter(BagOfAttributeValues<?> bag) {
+	public void visitEnter(BagOfAttributeValues bag) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -227,7 +227,7 @@ public class DefaultPolicyVisitor implements PolicyVisitor
 	}
 
 	@Override
-	public void visitLeave(BagOfAttributeValues<?> bag) {
+	public void visitLeave(BagOfAttributeValues bag) {
 		// TODO Auto-generated method stub
 		
 	}

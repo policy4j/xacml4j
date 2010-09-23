@@ -21,7 +21,7 @@ public class ParamSingleTypeSpecTest
 {
 	private DoubleType t1;
 	private StringType t2;
-	private BagOfAttributeValuesType<?> b1;
+	private BagOfAttributeValuesType b1;
 	
 	@Before
 	public void init(){
@@ -45,7 +45,7 @@ public class ParamSingleTypeSpecTest
 	{		
 		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1);
 		AttributeValue v = t1.create(new Double(0.1));
-		BagOfAttributeValues<?> bag = b1.create(Collections.<AttributeValue>singletonList(v));
+		BagOfAttributeValues bag = b1.create(Collections.<AttributeValue>singletonList(v));
 		List<Expression> good = Collections.<Expression>singletonList(bag);
 		List<Expression> bad = Collections.<Expression>singletonList(t2.create("AAAA"));
 		assertFalse(spec.validate(good.listIterator()));		

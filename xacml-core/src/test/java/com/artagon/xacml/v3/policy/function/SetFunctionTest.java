@@ -11,7 +11,6 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 
 public class SetFunctionTest 
 {
@@ -114,9 +113,9 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
-		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
-		BagOfAttributeValues<BooleanValue> c = SetFunctions.booleanUnion(a, b);
+		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
 		assertTrue(c.contains(BooleanType.Factory.create(true)));
 		assertTrue(c.contains(BooleanType.Factory.create(false)));
@@ -125,25 +124,25 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
-		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(true));
+		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(true));
 		assertEquals(BooleanType.Factory.create(true), SetFunctions.booleanSetEquals(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
-		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));
+		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
 		assertEquals(BooleanType.Factory.bagOf(BooleanType.Factory.create(true)), SetFunctions.booleanIntersection(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributeValues<BooleanValue> a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
-		BagOfAttributeValues<BooleanValue> b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(false));
-		BagOfAttributeValues<BooleanValue> c = SetFunctions.booleanIntersection(a, b);
+		BagOfAttributeValues a = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(true));
+		BagOfAttributeValues b = BooleanType.Factory.bagOf(BooleanType.Factory.create(false), BooleanType.Factory.create(false));
+		BagOfAttributeValues c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 		
 		b = BooleanType.Factory.bagOf(BooleanType.Factory.create(true), BooleanType.Factory.create(false));

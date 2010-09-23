@@ -174,13 +174,13 @@ public enum XacmlDataTypes
 	 * @param v a collection of values
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(Collection<AttributeValue> values){
-		return (BagOfAttributeValues<T>)type.bagOf(values);
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values){
+		return type.bagOf(values);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue>  BagOfAttributeValues<T> emptyBag(){
-		return (BagOfAttributeValues<T>)type.emptyBag();
+	public BagOfAttributeValues emptyBag(){
+		return type.emptyBag();
 	}
 	
 	@SuppressWarnings("unchecked")

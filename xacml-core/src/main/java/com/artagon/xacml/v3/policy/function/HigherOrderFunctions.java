@@ -39,7 +39,7 @@ public class HigherOrderFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
 			@XacmlFuncParamAnyAttribute AttributeValue value,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues bag) 
 		throws EvaluationException
 	{
 		for(AttributeValue valueFromBag : bag.values()){
@@ -57,7 +57,7 @@ public class HigherOrderFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
 			@XacmlFuncParamAnyAttribute AttributeValue value,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues bag) 
 		throws EvaluationException
 	{
 		for(AttributeValue valueFromBag : bag.values()){
@@ -74,8 +74,8 @@ public class HigherOrderFunctions
 	public static BooleanValue anyOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> a,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues a,
+			@XacmlFuncParamAnyBag BagOfAttributeValues b) 
 		throws EvaluationException
 	{
 		for(AttributeValue aValue : a.values()){
@@ -94,8 +94,8 @@ public class HigherOrderFunctions
 	public static BooleanValue allOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> a,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues a,
+			@XacmlFuncParamAnyBag BagOfAttributeValues b) 
 		throws EvaluationException
 	{
 		boolean result = true;
@@ -113,8 +113,8 @@ public class HigherOrderFunctions
 	public static BooleanValue anyOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> a,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues a,
+			@XacmlFuncParamAnyBag BagOfAttributeValues b) 
 		throws EvaluationException
 	{
 		for(AttributeValue va : a.values())
@@ -132,8 +132,8 @@ public class HigherOrderFunctions
 	public static BooleanValue allOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> a,
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> b) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues a,
+			@XacmlFuncParamAnyBag BagOfAttributeValues b) 
 		throws EvaluationException
 	{
 		for(AttributeValue aValue : a.values())
@@ -151,10 +151,10 @@ public class HigherOrderFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)
-	public static  BagOfAttributeValues<? extends AttributeValue> map(
+	public static  BagOfAttributeValues map(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeValues<AttributeValue> bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeValues bag) 
 		throws EvaluationException
 	{
 		Collection<AttributeValue> values = new ArrayList<AttributeValue>(bag.size());

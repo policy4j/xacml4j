@@ -22,7 +22,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	implements AttributeValueType
 {
 	private String typeId;
-	private BagOfAttributeValuesType<V> bagType;
+	private BagOfAttributeValuesType bagType;
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	/**
@@ -34,7 +34,7 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	{
 		Preconditions.checkNotNull(typeId);
 		this.typeId = typeId;		
-		this.bagType = new BagOfAttributeValuesType<V>(this);
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
 	public final String getDataTypeId(){
@@ -42,32 +42,29 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 	}
 	
 	@Override
-	public final BagOfAttributeValuesType<V> bagOf(){
+	public final BagOfAttributeValuesType bagOf(){
 		return bagType;
 	}
 	
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public final BagOfAttributeValues<AttributeValue> bagOf(AttributeValue... values) 
+	public final BagOfAttributeValues bagOf(AttributeValue... values) 
 	{	
-		return (BagOfAttributeValues<AttributeValue>)bagOf().create(values);
+		return bagOf().create(values);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> bagOf(
+	public final BagOfAttributeValues bagOf(
 			Collection<AttributeValue> values) {
 		// TODO Auto-generated method stub
-		return (BagOfAttributeValues<AttributeValue>)bagOf().create(values);
+		return bagOf().create(values);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> emptyBag() {
+	public BagOfAttributeValues emptyBag() {
 		// TODO Auto-generated method stub
-		return (BagOfAttributeValues<AttributeValue>)bagOf().createEmpty();
+		return bagOf().createEmpty();
 	}
 
 	@Override

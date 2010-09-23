@@ -96,26 +96,25 @@ public class AttributeSelector extends
 		v.visitLeave(this);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public ValueExpression evaluate(EvaluationContext context)
+	public BagOfAttributeValues evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		BagOfAttributeValues<?> v = null;
+		BagOfAttributeValues v = null;
 		try{
-			v =  (BagOfAttributeValues<?>)context.resolve(this);
+			v =  context.resolve(this);
 		}catch(AttributeReferenceEvaluationException e){
 			if(isMustBePresent()){
 				throw e;
 			}
-			return (BagOfAttributeValues<AttributeValue>) getDataType().bagOf().createEmpty();
+			return getDataType().bagOf().createEmpty();
 		}catch(Exception e){
 			if(isMustBePresent()){
 				throw new AttributeReferenceEvaluationException(
 						context, this, 
 						StatusCode.createMissingAttribute(), e);
 			}
-			return (BagOfAttributeValues<AttributeValue>) getDataType().bagOf().createEmpty();
+			return getDataType().bagOf().createEmpty();
 		}
 		if((v == null || 
 				v.isEmpty()) 
@@ -128,6 +127,6 @@ public class AttributeSelector extends
 				"Selector XPath expression=\"%s\" evaluated " +
 				"to empty node set and mustBePresents=\"true\"", getPath());
 		}
-		return (BagOfAttributeValues<AttributeValue>)((v == null)?getDataType().bagOf().createEmpty():v);
+		return ((v == null)?getDataType().bagOf().createEmpty():v);
 	}
 }

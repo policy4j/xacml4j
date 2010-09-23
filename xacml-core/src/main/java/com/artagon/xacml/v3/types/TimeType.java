@@ -8,13 +8,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 public interface TimeType extends AttributeValueType
 {	
 	TimeValue create(Object value, Object ...params);
 	TimeValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<TimeValue> bagOf();
 	
 	final class TimeValue extends BaseAttributeValue<XMLGregorianCalendar> 
 		implements Comparable<TimeValue>
@@ -52,15 +50,15 @@ public interface TimeType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<TimeValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<TimeValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<TimeValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

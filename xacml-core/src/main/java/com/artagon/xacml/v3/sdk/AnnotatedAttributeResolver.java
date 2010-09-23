@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.AttributeCategoryId;
-import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -49,9 +48,8 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	protected BagOfAttributeValues<AttributeValue> doResolve(
+	protected BagOfAttributeValues doResolve(
 			PolicyInformationPointContext context, 
 			AttributeCategoryId category,
 			String attributeId,
@@ -68,7 +66,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 					getDescriptor().getName(), m.getName());
 		}
 		try{
-			return (BagOfAttributeValues<AttributeValue>)m.invoke(instance, new Object[]{context});
+			return (BagOfAttributeValues)m.invoke(instance, new Object[]{context});
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);

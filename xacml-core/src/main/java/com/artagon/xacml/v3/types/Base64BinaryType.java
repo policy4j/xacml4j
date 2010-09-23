@@ -5,13 +5,11 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.BagOfAttributeValuesType;
 
 public interface Base64BinaryType extends AttributeValueType
 {	
 	Base64BinaryValue create(Object any, Object ...params);
 	Base64BinaryValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType<Base64BinaryValue> bagOf();
 	
 	final class Base64BinaryValue extends BaseAttributeValue<BinaryValue>
 	{
@@ -41,15 +39,15 @@ public interface Base64BinaryType extends AttributeValueType
 			return INSTANCE.fromXacmlString(v, params);
 		}
 		
-		public static BagOfAttributeValues<Base64BinaryValue> bagOf(AttributeValue ...values){
+		public static BagOfAttributeValues bagOf(AttributeValue ...values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<Base64BinaryValue> bagOf(Collection<AttributeValue> values){
+		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
 			return INSTANCE.bagOf().create(values);
 		}
 		
-		public static BagOfAttributeValues<Base64BinaryValue> emptyBag(){
+		public static BagOfAttributeValues emptyBag(){
 			return INSTANCE.bagOf().createEmpty();
 		}
 	}

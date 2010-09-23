@@ -22,8 +22,8 @@ public interface PolicyVisitor
 	void visitEnter(FunctionReference function);
 	void visitLeave(FunctionReference function);
 	
-	void visitEnter(BagOfAttributeValues<?> bag);
-	void visitLeave(BagOfAttributeValues<?> bag);
+	void visitEnter(BagOfAttributeValues bag);
+	void visitLeave(BagOfAttributeValues bag);
 	
 	void visitEnter(VariableReference var);
 	void visitLeave(VariableReference var);

@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.types;
 
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.PolicyVisitor;
@@ -13,9 +14,9 @@ public abstract class BaseAttributeValue<T> extends XacmlObject
 	implements AttributeValue
 {
 	private T value;
-	private ValueType type;
+	private AttributeValueType type;
 	
-	protected BaseAttributeValue(ValueType type, T value) {
+	protected BaseAttributeValue(AttributeValueType type, T value) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkNotNull(value);
 		this.type = type;
@@ -32,7 +33,7 @@ public abstract class BaseAttributeValue<T> extends XacmlObject
 	}
 	
 	@Override
-	public final ValueType getType(){
+	public final AttributeValueType getType(){
 		return type;
 	}
 	

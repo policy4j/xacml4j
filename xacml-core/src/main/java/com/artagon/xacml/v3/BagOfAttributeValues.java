@@ -24,11 +24,11 @@ import com.google.common.collect.Multiset;
  * 
  * @author Giedrius Trumpickas
  */
-public class BagOfAttributeValues<T extends AttributeValue> 
+public final class BagOfAttributeValues 
 	extends XacmlObject implements ValueExpression
 {
-	private BagOfAttributeValuesType<T> type;
-	private Multiset<T> values;
+	private BagOfAttributeValuesType type;
+	private Multiset<AttributeValue> values;
 	
 	/**
 	 * Constructs bag of attributes.
@@ -36,8 +36,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * @param type a bag attribute type
 	 * @param attributes a collection of attributes
 	 */
-	@SuppressWarnings("unchecked")
-	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
+	BagOfAttributeValues(BagOfAttributeValuesType type, 
 			Collection<AttributeValue> attributes){		
 		this.values = LinkedHashMultiset.create(attributes.size());
 		for(AttributeValue attr: attributes){	
@@ -46,7 +45,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 					String.format("Only attributes of type=\"%s\" " +
 							"are allowed in this bag, given type=\"%s\"", 
 					type.getDataType(), attr.getType()));
-			values.add((T)attr);
+			values.add(attr);
 		}	
 		this.type = type;
 	}
@@ -56,13 +55,14 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * 
 	 * @param type a bag attribute type
 	 */
-	BagOfAttributeValues(BagOfAttributeValuesType<T> type, 
+	BagOfAttributeValues(BagOfAttributeValuesType type, 
 			AttributeValue ...attributes){
 		this(type, Arrays.asList(attributes));				
 	}
 	
-	public Iterable<T> values() {		
-		return values;
+	@SuppressWarnings("unchecked")
+	public <T extends AttributeValue> Iterable<T> values() {		
+		return (Iterable<T>)values;
 	}
 	
 	/**
@@ -87,8 +87,8 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * instance in this bag
 	 * @exception NoSuchElementException if bag is empty
 	 */
-	public T value(){
-		return values().iterator().next();
+	public <T extends AttributeValue> T value(){
+		return this.<T>values().iterator().next();
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * @return union of this and given bag without duplicate
 	 * elements
 	 */ 
-	public BagOfAttributeValues<T> union(BagOfAttributeValues<? extends AttributeValue> bag)
+	public BagOfAttributeValues union(BagOfAttributeValues bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> union = new HashSet<AttributeValue>();
@@ -158,7 +158,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * @return bag which contains common
 	 * elements between this and given bag
 	 */
-	public BagOfAttributeValues<T> intersection(BagOfAttributeValues<? extends AttributeValue> bag)
+	public BagOfAttributeValues intersection(BagOfAttributeValues bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeValue> intersection = new HashSet<AttributeValue>();
@@ -178,7 +178,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * @return <code>true</code> if this bag contains
 	 * at least one value from the given bag
 	 */
-	public boolean containsAtLeastOneOf(BagOfAttributeValues<? extends AttributeValue> bag)
+	public boolean containsAtLeastOneOf(BagOfAttributeValues bag)
 	{
 		for(AttributeValue v : bag.values){
 			if(values.contains(v)){
@@ -189,7 +189,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	}
 	
 	@Override
-	public BagOfAttributeValues<T> evaluate(EvaluationContext context)
+	public BagOfAttributeValues evaluate(EvaluationContext context)
 			throws EvaluationException {
 		return this;
 	}
@@ -206,7 +206,7 @@ public class BagOfAttributeValues<T extends AttributeValue>
 	 * @return <code>true</code> if given bag 
 	 * is subset if this bag
 	 */
-	public boolean containsAll(BagOfAttributeValues<? extends AttributeValue> bag){		
+	public boolean containsAll(BagOfAttributeValues bag){		
 		Preconditions.checkArgument(type.equals(bag.type));
 		return values.containsAll(bag.values);
 	}
@@ -216,11 +216,10 @@ public class BagOfAttributeValues<T extends AttributeValue>
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof BagOfAttributeValues<?>)){
+		if(!(o instanceof BagOfAttributeValues)){
 			return false;
 		}
-		@SuppressWarnings("unchecked")
-		BagOfAttributeValues<? extends AttributeValue> bag = (BagOfAttributeValues<? extends AttributeValue>)o;
+		BagOfAttributeValues bag = (BagOfAttributeValues)o;
 		return type.equals(bag.type) && 
 		values.equals(bag.values);
 	}
