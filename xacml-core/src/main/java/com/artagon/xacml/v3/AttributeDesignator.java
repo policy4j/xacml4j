@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.google.common.base.Preconditions;
 
 /**
@@ -59,7 +59,7 @@ public class AttributeDesignator extends AttributeReference
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType type = XacmlDataTypes.getType(dataTypeId);
+		AttributeValueType type = XacmlDataTypesRegistry.getType(dataTypeId);
 		return new AttributeDesignator(category, attributeId, 
 				issuer, type, mustBePresent);
 	}

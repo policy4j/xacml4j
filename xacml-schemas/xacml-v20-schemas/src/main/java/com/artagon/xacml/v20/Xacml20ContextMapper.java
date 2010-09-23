@@ -44,8 +44,8 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.types.XPathExpressionType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -338,7 +338,7 @@ class Xacml20ContextMapper
 				content.isEmpty()){
 			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypes.getType(dataTypeId);
+		com.artagon.xacml.v3.AttributeValueType dataType = XacmlDataTypesRegistry.getType(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be " +

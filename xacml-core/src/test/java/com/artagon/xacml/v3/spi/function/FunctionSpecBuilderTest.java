@@ -9,9 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.FunctionSpec;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class FunctionSpecBuilderTest
 {
@@ -30,10 +30,10 @@ public class FunctionSpecBuilderTest
 		
 		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
 		
-		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypes.INTEGER.getDataType(), impl);
+		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypesRegistry.INTEGER.getDataType(), impl);
 		
 		b = new FunctionSpecBuilder("testFunc2"); 
-		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypes.INTEGER.getDataType(), impl);
+		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypesRegistry.INTEGER.getDataType(), impl);
 	}
 	
 	@Test

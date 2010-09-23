@@ -20,12 +20,12 @@ import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -53,7 +53,7 @@ final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContex
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler", 
 						MULTIPLE_CONTENT_SELECTOR, 
-						XacmlDataTypes.XPATHEXPRESSION);
+						XacmlDataTypesRegistry.XPATHEXPRESSION);
 			}
 			return handleNext(request, pdp);
 		}

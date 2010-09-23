@@ -67,9 +67,9 @@ import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 import com.google.common.base.Preconditions;
 
 public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
@@ -483,7 +483,7 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		return XacmlDataTypes.createAttributeValue(dataType, 
+		return XacmlDataTypesRegistry.createAttributeValue(dataType, 
 				content.iterator().next(), otherAttributes);
 	}
 

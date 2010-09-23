@@ -53,7 +53,7 @@ import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.StatusDetail;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.google.common.base.Preconditions;
 
 public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
@@ -287,7 +287,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 					"Attribute does not have content");
 		}
 		
-		return XacmlDataTypes.createAttributeValue(value.getDataType(), 
+		return XacmlDataTypesRegistry.createAttributeValue(value.getDataType(), 
 				content.iterator().next(), value.getOtherAttributes());
 	}
 }

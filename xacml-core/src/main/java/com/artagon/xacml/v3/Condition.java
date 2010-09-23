@@ -2,8 +2,8 @@ package com.artagon.xacml.v3;
 
 import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
 
+import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.types.BooleanValue;
-import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 /**
  * Condition represents a Boolean expression that refines the applicability 
@@ -32,7 +32,7 @@ public class Condition extends XacmlObject implements PolicyElement
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"", 
-					XacmlDataTypes.BOOLEAN, predicate.getEvaluatesTo());
+					XacmlDataTypesRegistry.BOOLEAN, predicate.getEvaluatesTo());
 		this.predicate = predicate;
 	}
 	
