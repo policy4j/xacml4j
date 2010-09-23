@@ -93,8 +93,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		});
 		this.timezone = TimeZone.getTimeZone("UTC");
 		Calendar now = Calendar.getInstance(timezone);
-		this.currentDate = DateType.Factory.create(now);
-		this.currentDateTime = DateTimeType.Factory.create(now);
+		this.currentDate = DateType.DATE.create(now);
+		this.currentDateTime = DateTimeType.DATETIME.create(now);
 		this.currentTime = TimeType.Factory.create(now);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 	}

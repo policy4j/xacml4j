@@ -1,98 +1,112 @@
 package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.Duration;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
-import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
-import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
+import com.google.common.base.Preconditions;
 
-public interface DateTimeType extends AttributeValueType
-{	
-	DateTimeValue create(Object value, Object ...params);
-	DateTimeValue fromXacmlString(String v, Object ...params);
-	BagOfAttributeValuesType bagType();
-	
-	final class DateTimeValue extends BaseAttributeValue<XMLGregorianCalendar> 
-		implements Comparable<DateTimeValue>
-	{
-		public DateTimeValue(DateTimeType type, XMLGregorianCalendar value) {
-			super(type, value);
-		}
-		
-		public DateTimeValue add(DayTimeDurationValue duration){
-			return add(duration.getValue());
-		}
-		
-		public DateTimeValue add(YearMonthDurationValue duration){
-			return add(duration.getValue());
-		}
-		
-		public DateTimeValue subtract(YearMonthDurationValue duration){
-			return subtract(duration.getValue());
-		}
-		
-		public DateTimeValue subtract(DayTimeDurationValue duration){
-			return subtract(duration.getValue());
-		}
-		
-		private DateTimeValue add(Duration duration)
-		{
-			XMLGregorianCalendar dateTime = getValue();
-			XMLGregorianCalendar copy = (XMLGregorianCalendar)dateTime.clone();
-			copy.add(duration);
-			return new DateTimeValue((DateTimeType)getType(), copy);
-		}
-		
-		private DateTimeValue subtract(Duration duration){
-			return add(duration.negate());
-		}
+public enum DateTimeType implements AttributeValueType 
+{
+	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime");
 
-		@Override
-		public int compareTo(DateTimeValue v) {
-			int r = getValue().compare(v.getValue());
-			if(r == DatatypeConstants.INDETERMINATE){
-				throw new IllegalArgumentException(
-						String.format("Can't compare a=\"%s\" with b=\"%s\", " +
-								"result is INDETERMINATE", getValue(), v.getValue()));
-			}
-			return r == DatatypeConstants.EQUAL?0:(
-					(r == DatatypeConstants.GREATER)?1:-1);
+	private DatatypeFactory xmlDataTypesFactory;
+
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+
+	private DateTimeType(String typeId) {
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+		try {
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace(System.err);
 		}
 	}
-	
-	public final class Factory
-	{
-		private final static DateTimeType INSTANCE = new DateTimeTypeImpl("http://www.w3.org/2001/XMLSchema#dateTime");
-		
-		public static DateTimeType getInstance(){
-			return INSTANCE;
+
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return XMLGregorianCalendar.class.isInstance(any)
+				|| String.class.isInstance(any)
+				|| GregorianCalendar.class.isInstance(any);
+	}
+
+	@Override
+	public DateTimeValue fromXacmlString(String v, Object... params) {
+		Preconditions.checkNotNull(v);
+		XMLGregorianCalendar dateTime = xmlDataTypesFactory
+				.newXMLGregorianCalendar(v);
+		// XACML default time zone is UTC
+		if (dateTime.getTimezone() == DatatypeConstants.FIELD_UNDEFINED) {
+			dateTime.setTimezone(0);
 		}
-		
-		public static DateTimeValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		return new DateTimeValue(this, validateXmlDateTime(dateTime));
+	}
+
+	@Override
+	public DateTimeValue create(Object any, Object... params) {
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" "
+						+ "can't ne converted to XACML \"dateTime\" type", any,
+				any.getClass()));
+		if (String.class.isInstance(any)) {
+			return fromXacmlString((String) any);
 		}
-		
-		public static DateTimeValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
+		if (any instanceof GregorianCalendar) {
+			XMLGregorianCalendar dateTime = xmlDataTypesFactory
+					.newXMLGregorianCalendar((GregorianCalendar) any);
+			return new DateTimeValue(this, dateTime);
 		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
+		XMLGregorianCalendar dateTime = validateXmlDateTime((XMLGregorianCalendar) any);
+		// XACML default time zone is UTC
+		if (dateTime.getTimezone() == DatatypeConstants.FIELD_UNDEFINED) {
+			dateTime.setTimezone(0);
 		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
+		return new DateTimeValue(this, dateTime);
+	}
+
+	private XMLGregorianCalendar validateXmlDateTime(
+			XMLGregorianCalendar dateTime) {
+		if (!dateTime.getXMLSchemaType().equals(DatatypeConstants.DATETIME)) {
+			throw new IllegalArgumentException(String.format(
+					"Given value=\"%s\" does " + "not represent type=\"%s\"",
+					dateTime.toXMLFormat(), DatatypeConstants.DATETIME));
 		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return dateTime;
+	}
+
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }

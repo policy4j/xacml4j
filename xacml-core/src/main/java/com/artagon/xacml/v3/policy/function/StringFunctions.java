@@ -10,7 +10,9 @@ import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DateTimeType;
+import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
+import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.IPAddressType;
@@ -21,6 +23,7 @@ import com.artagon.xacml.v3.types.StringType.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
 import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
+import com.artagon.xacml.v3.types.YearMonthDurationValue;
 
 @XacmlFunctionProvider(description="XACML string functions")
 public class StringFunctions 
@@ -169,33 +172,33 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDate(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateType.DateValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
-	public static DateType.DateValue dateFromString(
+	public static DateValue dateFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return DateType.Factory.fromXacmlString(v.getValue());
+		return DateType.DATE.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dateTime")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDateTime(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeType.DateTimeValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeType.DateTimeValue dateTimeFromString(
+	public static DateTimeValue dateTimeFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return DateTimeType.Factory.fromXacmlString(v.getValue());
+		return DateTimeType.DATETIME.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
@@ -233,17 +236,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromYearMonthDuration(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationType.YearMonthDurationValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
-	public static YearMonthDurationType.YearMonthDurationValue yearMonthDurationFromString(
+	public static YearMonthDurationValue yearMonthDurationFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return YearMonthDurationType.Factory.fromXacmlString(v.getValue());
+		return YearMonthDurationType.YEARMONTHDURATION.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")

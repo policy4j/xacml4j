@@ -2,7 +2,9 @@ package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
 import com.artagon.xacml.v3.AttributeValue;
@@ -11,51 +13,86 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
-
-public interface YearMonthDurationType extends AttributeValueType
+public enum YearMonthDurationType implements AttributeValueType
 {
-	YearMonthDurationValue create(Object value, Object ...params);
-	YearMonthDurationValue fromXacmlString(String v, Object ...params);
+	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration");
+
+	private DatatypeFactory xmlDataTypesFactory;
 	
-	BagOfAttributeValuesType bagType();
-	
-	final class YearMonthDurationValue extends BaseDurationValue
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+
+	private YearMonthDurationType(String typeId) 
 	{
-		public YearMonthDurationValue(YearMonthDurationType type, 
-				Duration value) {
-			super(type, value);
-			Preconditions.checkArgument(
-					value.getXMLSchemaType() == DatatypeConstants.DURATION_YEARMONTH);
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+		try {
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace(System.err);
 		}
 	}
 	
-	public final class Factory
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return any instanceof Duration || any instanceof String;
+	}
+
+	@Override
+	public YearMonthDurationValue fromXacmlString(String v, Object ...params) 
 	{
-		private final static YearMonthDurationType INSTANCE = new YearMonthDurationTypeImpl("http://www.w3.org/2001/XMLSchema#yearMonthDuration");
-		
-		public static YearMonthDurationType getInstance(){
-			return INSTANCE;
+		Preconditions.checkNotNull(v);
+		Duration yearMonthDuration = xmlDataTypesFactory.newDurationYearMonth(v);
+		return new YearMonthDurationValue(this, validate(yearMonthDuration));
+	}
+	
+	@Override
+	public YearMonthDurationValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" " +
+				"can't ne converted to XACML \"date\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static YearMonthDurationValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		return new YearMonthDurationValue(this, validate((Duration)any));
+	}
+	
+	private Duration validate(Duration duration)
+	{
+		if(!(duration.isSet(DatatypeConstants.DAYS) 
+				|| duration.isSet(DatatypeConstants.HOURS) 
+				|| duration.isSet(DatatypeConstants.MINUTES) 
+				|| duration.isSet(DatatypeConstants.SECONDS))){
+			return duration;
 		}
-		
-		public static YearMonthDurationValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		throw new IllegalArgumentException("Invalid duration");
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }
 

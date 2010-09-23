@@ -47,14 +47,14 @@ public enum XacmlDataTypes
 	 * 
 	 * @see {@link DateType}
 	 */
-	DATE(DateType.Factory.getInstance()),
+	DATE(DateType.DATE),
 
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dateTime</b> 
 	 * 
 	 * @see {@link DateTimeType}
 	 */
-	DATETIME(DateTimeType.Factory.getInstance()),
+	DATETIME(DateTimeType.DATETIME),
 
 	/** XACML DataType: <b>http://www.w3.org/2001/XMLSchema#dayTimeDuration</b> */
 	DAYTIMEDURATION(DayTimeDurationType.Factory.getInstance()),
@@ -92,7 +92,7 @@ public enum XacmlDataTypes
 	/**
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b>
 	 */
-	YEARMONTHDURATION(YearMonthDurationType.Factory.getInstance());
+	YEARMONTHDURATION(YearMonthDurationType.YEARMONTHDURATION);
 
 	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 

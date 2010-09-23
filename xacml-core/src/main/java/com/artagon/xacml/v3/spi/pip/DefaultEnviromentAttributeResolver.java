@@ -26,7 +26,7 @@ class DefaultEnviromentAttributeResolver
 	public BagOfAttributeValues getCurrentDate(
 			PolicyInformationPointContext context)
 	{
-		return DateType.Factory.bagOf(context.getCurrentDate());
+		return DateType.DATE.bagOf(context.getCurrentDate());
 	}
 	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
@@ -35,6 +35,6 @@ class DefaultEnviromentAttributeResolver
 	public BagOfAttributeValues getCurrentDateTime(
 			PolicyInformationPointContext context)
 	{
-		return DateTimeType.Factory.bagOf(context.getCurrentDateTime());
+		return DateTimeType.DATETIME.bagOf(context.getCurrentDateTime());
 	}
 }

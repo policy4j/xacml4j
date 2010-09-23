@@ -8,9 +8,7 @@ import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
-import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
 
 public class DateTimeTypeTest 
 {
@@ -18,7 +16,7 @@ public class DateTimeTypeTest
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = DateTimeType.Factory.getInstance();
+		this.t1 = DateTimeType.DATETIME;
 	}
 	
 	@Test
@@ -64,8 +62,8 @@ public class DateTimeTypeTest
 	@Test
 	public void addDayTimeDurationTest()
 	{
-		DateTimeValue dateTime1 = DateTimeType.Factory.create("2002-03-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = DateTimeType.Factory.create("2002-03-27T10:23:47-05:00");
+		DateTimeValue dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = t1.create("2002-03-27T10:23:47-05:00");
 		DayTimeDurationValue duration = DayTimeDurationType.Factory.create("P5DT2H0M0S");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
@@ -73,21 +71,21 @@ public class DateTimeTypeTest
 	@Test
 	public void compareTest()
 	{
-		DateTimeValue dateTime1 = DateTimeType.Factory.create("2002-03-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = DateTimeType.Factory.create("2002-03-22T10:23:47-05:00");
+		DateTimeValue dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = t1.create("2002-03-22T10:23:47-05:00");
 		assertEquals(-1, dateTime1.compareTo(dateTime2));
-		dateTime2 = DateTimeType.Factory.create("2002-03-22T08:23:47-05:00");
+		dateTime2 = t1.create("2002-03-22T08:23:47-05:00");
 		assertEquals(0, dateTime1.compareTo(dateTime2));
-		dateTime2 = DateTimeType.Factory.create("2002-03-22T08:22:47-05:00");
+		dateTime2 = t1.create("2002-03-22T08:22:47-05:00");
 		assertEquals(1, dateTime1.compareTo(dateTime2));
 	}
 	
 	@Test
 	public void addYearMonthDuration()
 	{
-		DateTimeValue dateTime1 = DateTimeType.Factory.create("2002-03-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = DateTimeType.Factory.create("2001-01-22T08:23:47-05:00");
-		YearMonthDurationValue duration = YearMonthDurationType.Factory.create("-P1Y2M");
+		DateTimeValue dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = t1.create("2001-01-22T08:23:47-05:00");
+		YearMonthDurationValue duration = YearMonthDurationType.YEARMONTHDURATION.create("-P1Y2M");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 	
@@ -95,9 +93,9 @@ public class DateTimeTypeTest
 	public void substractYearMonthDuration()
 	{
 		
-		DateTimeValue dateTime1 = DateTimeType.Factory.create("2002-07-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = DateTimeType.Factory.create("2006-08-22T08:23:47-05:00");
-		YearMonthDurationValue duration = YearMonthDurationType.Factory.create("-P4Y1M");
+		DateTimeValue dateTime1 = t1.create("2002-07-22T08:23:47-05:00");
+		DateTimeValue dateTime2 = t1.create("2006-08-22T08:23:47-05:00");
+		YearMonthDurationValue duration = YearMonthDurationType.YEARMONTHDURATION.create("-P4Y1M");
 		assertEquals(dateTime2, dateTime1.subtract(duration));
 	}
 	

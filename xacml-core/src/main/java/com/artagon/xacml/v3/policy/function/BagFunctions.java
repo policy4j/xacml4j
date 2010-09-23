@@ -16,9 +16,9 @@ import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
 import com.artagon.xacml.v3.types.DNSNameType.DNSNameValue;
 import com.artagon.xacml.v3.types.DateTimeType;
-import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
+import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
-import com.artagon.xacml.v3.types.DateType.DateValue;
+import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
 import com.artagon.xacml.v3.types.DoubleType;
@@ -38,7 +38,7 @@ import com.artagon.xacml.v3.types.TimeType.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
-import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
+import com.artagon.xacml.v3.types.YearMonthDurationValue;
 import com.google.common.base.Preconditions;
 
 /**
@@ -309,7 +309,7 @@ public class BagFunctions
 	public static BagOfAttributeValues dateBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#date")
 			DateValue ...values){
-		return DateType.Factory.bagOf(values);
+		return DateType.DATE.bagOf(values);
 	}
 	
 	// dateTime
@@ -344,7 +344,7 @@ public class BagFunctions
 	public static BagOfAttributeValues dateTimeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 			DateTimeValue ...values){
-		return DateTimeType.Factory.bagOf(values);
+		return DateTimeType.DATETIME.bagOf(values);
 	}
 	
 	// anyURI
@@ -522,7 +522,7 @@ public class BagFunctions
 	public static BagOfAttributeValues yearMonthDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
 			YearMonthDurationValue ...values){
-		return YearMonthDurationType.Factory.bagOf(values);
+		return YearMonthDurationType.YEARMONTHDURATION.bagOf(values);
 	}
 	
 	// x500Name

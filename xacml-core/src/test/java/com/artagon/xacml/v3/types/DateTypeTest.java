@@ -7,15 +7,13 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.DateType.DateValue;
-
 public class DateTypeTest 
 {
 	private DateType t1;
 	
 	@Before
 	public void init() throws Exception{
-		this.t1 = DateType.Factory.getInstance();
+		this.t1 = DateType.DATE;
 	}
 	
 	@Test
@@ -37,8 +35,8 @@ public class DateTypeTest
 	public void testCreateFromCalendar()
 	{
 		Calendar now = Calendar.getInstance();
-		DateType.DateValue d1 = DateType.Factory.create(now);
-		DateType.DateValue d2 = DateType.Factory.create(now);
+		DateValue d1 = t1.create(now);
+		DateValue d2 = t1.create(now);
 		System.out.println(d1.toXacmlString());
 		assertEquals(d1, d2);
 	}

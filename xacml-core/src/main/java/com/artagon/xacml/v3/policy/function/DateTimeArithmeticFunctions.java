@@ -5,10 +5,10 @@ import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.spi.function.XacmlLegacyFunc;
-import com.artagon.xacml.v3.types.DateTimeType.DateTimeValue;
-import com.artagon.xacml.v3.types.DateType.DateValue;
+import com.artagon.xacml.v3.types.DateTimeValue;
+import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.DayTimeDurationType.DayTimeDurationValue;
-import com.artagon.xacml.v3.types.YearMonthDurationType.YearMonthDurationValue;
+import com.artagon.xacml.v3.types.YearMonthDurationValue;
 
 @XacmlFunctionProvider(description="XACML date time arithmetic functions")
 public class DateTimeArithmeticFunctions 

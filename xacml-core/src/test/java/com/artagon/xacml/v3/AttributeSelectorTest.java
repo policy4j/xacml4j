@@ -29,10 +29,10 @@ public class AttributeSelectorTest
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				XacmlDataTypes.DATE.getDataType(), true);
-		expect(context.resolve(ref)).andReturn(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")));
+		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	
@@ -43,10 +43,10 @@ public class AttributeSelectorTest
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				XacmlDataTypes.DATE.getDataType(), false);
-		expect(context.resolve(ref)).andReturn(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")));
+		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	
