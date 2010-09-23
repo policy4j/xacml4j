@@ -95,7 +95,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		Calendar now = Calendar.getInstance(timezone);
 		this.currentDate = DateType.DATE.create(now);
 		this.currentDateTime = DateTimeType.DATETIME.create(now);
-		this.currentTime = TimeType.Factory.create(now);
+		this.currentTime = TimeType.TIME.create(now);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 	}
 	

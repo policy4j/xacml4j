@@ -26,6 +26,7 @@ import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
+import com.artagon.xacml.v3.types.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
 import com.artagon.xacml.v3.types.YearMonthDurationValue;
@@ -161,17 +162,17 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue stringFromTime(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeType.TimeValue v)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValue v)
 	{
 		return StringType.STRING.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time")
-	public static TimeType.TimeValue timeFromString(
+	public static TimeValue timeFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue v)
 	{
-		return TimeType.Factory.fromXacmlString(v.getValue());
+		return TimeType.TIME.fromXacmlString(v.getValue());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")

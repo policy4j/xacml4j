@@ -12,7 +12,6 @@ import com.google.common.base.Preconditions;
 
 public enum Base64BinaryType implements AttributeValueType
 {	
-	
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary");
 	
 	private String typeId;

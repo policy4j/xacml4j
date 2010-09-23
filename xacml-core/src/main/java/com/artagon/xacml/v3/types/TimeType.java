@@ -1,66 +1,108 @@
 package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
-public interface TimeType extends AttributeValueType
+public enum TimeType implements AttributeValueType
 {	
-	TimeValue create(Object value, Object ...params);
-	TimeValue fromXacmlString(String v, Object ...params);
+	TIME("http://www.w3.org/2001/XMLSchema#time");
 	
-	final class TimeValue extends SimpleAttributeValue<XMLGregorianCalendar> 
-		implements Comparable<TimeValue>
+	private DatatypeFactory xmlDataTypesFactory;
+
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
+
+	private TimeType(String typeId) 
 	{
-		public TimeValue(TimeType type, XMLGregorianCalendar value) {
-			super(type, value);
-		}
-				
-		@Override
-		public int compareTo(TimeValue v) {
-			int r = getValue().compare(v.getValue());
-			if(r == DatatypeConstants.INDETERMINATE){
-				throw new IllegalArgumentException(
-						String.format("Can't compare a=\"%s\" with b=\"%s\", " +
-								"result is INDETERMINATE", getValue(), v.getValue()));
-			}
-			return r == DatatypeConstants.EQUAL?0:(
-					(r == DatatypeConstants.GREATER)?1:-1);
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
+		try {
+			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace(System.err);
 		}
 	}
 	
-	public final class Factory
-	{
-		private final static TimeType INSTANCE = new TimeTypeImpl("http://www.w3.org/2001/XMLSchema#time");
-		
-		public static TimeType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any) ||
+		GregorianCalendar.class.isInstance(any);
+	}
+	
+	@Override
+	public TimeValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		XMLGregorianCalendar dateTime = xmlDataTypesFactory.newXMLGregorianCalendar(v);
+		return new TimeValue(this, validateXmlTime(dateTime));
+	}
+	
+	@Override
+	public TimeValue create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertableFrom(any), String.format(
+				"Value=\"%s\" of class=\"%s\" " +
+				"can't ne converted to XACML \"dateTime\" type", 
+				any, any.getClass()));
+		if(String.class.isInstance(any)){
+			return fromXacmlString((String)any);
 		}
-		
-		public static TimeValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
+		if(GregorianCalendar.class.isInstance(any)){
+			XMLGregorianCalendar dt = xmlDataTypesFactory.newXMLGregorianCalendar((GregorianCalendar)any);
+			return new TimeValue(this, xmlDataTypesFactory.newXMLGregorianCalendarTime(
+					dt.getHour(), dt.getMinute(), 
+					dt.getSecond(), dt.getMillisecond(), 
+					dt.getTimezone()));
 		}
-		
-		public static TimeValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
+		return new TimeValue(this, validateXmlTime(((XMLGregorianCalendar)any)));
+	}
+	
+	private XMLGregorianCalendar validateXmlTime(XMLGregorianCalendar time){
+		if(!time.getXMLSchemaType().equals(DatatypeConstants.TIME)){
+			throw new IllegalArgumentException(String.format("Given value=\"%s\" does " +
+					"not represent type=\"%s\"", time.toXMLFormat(), DatatypeConstants.TIME));
 		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		return time;
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }
 

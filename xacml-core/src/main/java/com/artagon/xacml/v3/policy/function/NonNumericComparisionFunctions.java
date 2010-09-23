@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateValue;
 import com.artagon.xacml.v3.types.StringValue;
-import com.artagon.xacml.v3.types.TimeType.TimeValue;
+import com.artagon.xacml.v3.types.TimeValue;
 import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML non-numeric comparision functions")

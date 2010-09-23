@@ -34,7 +34,7 @@ import com.artagon.xacml.v3.types.RFC822NameType.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.TimeType;
-import com.artagon.xacml.v3.types.TimeType.TimeValue;
+import com.artagon.xacml.v3.types.TimeValue;
 import com.artagon.xacml.v3.types.X500NameType;
 import com.artagon.xacml.v3.types.X500NameType.X500NameValue;
 import com.artagon.xacml.v3.types.YearMonthDurationType;
@@ -239,7 +239,7 @@ public class BagFunctions
 	public static BagOfAttributeValues timeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#time")
 			TimeValue ...values){
-		return TimeType.Factory.bagOf(values);
+		return TimeType.TIME.bagOf(values);
 	}
 	
 	// double
