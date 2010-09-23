@@ -24,12 +24,11 @@ public interface AttributeResolver
 	 * @return
 	 * @exception {@link AttributeReferenceEvaluationException}
 	 */
-	BagOfAttributeValues<AttributeValue> resolve(
+	 BagOfAttributeValues<AttributeValue> resolve(
 			PolicyInformationPointContext context,
 			AttributeCategoryId category,
 			String attributeId,
 			AttributeValueType dataType,
-			String issuer) 
-				throws Exception;
+			String issuer) throws Exception;
 
 }

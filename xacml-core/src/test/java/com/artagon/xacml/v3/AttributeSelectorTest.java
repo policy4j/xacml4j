@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.types.DateType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AttributeSelectorTest
@@ -28,10 +29,10 @@ public class AttributeSelectorTest
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				XacmlDataTypes.DATE.getDataType(), true);
-		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")));
+		expect(context.resolve(ref)).andReturn(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	
@@ -42,10 +43,10 @@ public class AttributeSelectorTest
 				AttributeCategoryId.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				XacmlDataTypes.DATE.getDataType(), false);
-		expect(context.resolve(ref)).andReturn(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")));
+		expect(context.resolve(ref)).andReturn(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(XacmlDataTypes.DATE.bagOf(XacmlDataTypes.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.Factory.bagOf(DateType.Factory.fromXacmlString("1992-03-21")), v);
 		verify(context);
 	}
 	

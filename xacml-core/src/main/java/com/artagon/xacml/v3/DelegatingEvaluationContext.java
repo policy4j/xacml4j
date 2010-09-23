@@ -218,14 +218,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	public ValueExpression resolve(
 			AttributeDesignator ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
 	
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	public ValueExpression resolve(
 			AttributeSelector ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);

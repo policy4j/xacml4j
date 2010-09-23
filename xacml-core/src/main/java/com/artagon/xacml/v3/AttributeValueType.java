@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Collection;
 
 
-public interface AttributeValueType extends ValueType
+public interface AttributeValueType  extends ValueType
 {
 	/**
 	 * Gets data type identifier

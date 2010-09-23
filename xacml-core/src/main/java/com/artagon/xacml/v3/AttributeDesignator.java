@@ -104,12 +104,12 @@ public class AttributeDesignator extends AttributeReference
 	 * and {@link this#mustBePresent} is true
 	 */
 	@SuppressWarnings("unchecked")
-	public BagOfAttributeValues<AttributeValue> evaluate(EvaluationContext context)
+	public ValueExpression evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues<AttributeValue> v = null;
+		BagOfAttributeValues<?> v = null;
 		try{
-			v = context.resolve(this);
+			v = (BagOfAttributeValues<?>)context.resolve(this);
 		}catch(AttributeReferenceEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 

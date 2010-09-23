@@ -5,15 +5,25 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 
 public interface PolicyInformationPoint 
 {
-	BagOfAttributeValues<AttributeValue> resolve(
+	/**
+	 * Resolves a given {@link AttributeDesignator} to
+	 * a instance of {@link BagOfAttributeValues}
+	 * 
+	 * @param context an evaluation context
+	 * @param ref an attribute designator
+	 * @param callback an attributes callback
+	 * @return 
+	 * @throws AttributeReferenceEvaluationException
+	 */
+	ValueExpression resolve(
 			EvaluationContext context, 
 			AttributeDesignator ref, 
 			RequestContextAttributesCallback callback) 

@@ -11,6 +11,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.spi.function.FunctionInvocation;
 import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
+import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.IntegerType;
+import com.artagon.xacml.v3.types.IntegerType.IntegerValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class MatchTest
@@ -28,23 +31,23 @@ public class MatchTest
 		this.context = createStrictMock(EvaluationContext.class);
 		this.builder = new FunctionSpecBuilder("testFunction");
 		this.invocation = createStrictMock(FunctionInvocation.class);
-		this.spec = builder.withParam(XacmlDataTypes.INTEGER.getDataType()).withParam(XacmlDataTypes.INTEGER.getDataType()).build(
+		this.spec = builder.withParam(IntegerType.Factory.getInstance()).withParam(IntegerType.Factory.getInstance()).build(
 				XacmlDataTypes.BOOLEAN.getDataType(), invocation);
 	}
 	
 	@Test
 	public void testMatchEvaluation() throws EvaluationException
 	{
-		AttributeValue int1 = XacmlDataTypes.INTEGER.create(1);
-		AttributeValue int2 = XacmlDataTypes.INTEGER.create(2);
-		BagOfAttributeValues<AttributeValue> v = XacmlDataTypes.INTEGER.bagOf(int2, int1);
+		AttributeValue int1 = IntegerType.Factory.create(1);
+		AttributeValue int2 = IntegerType.Factory.create(2);
+		BagOfAttributeValues<IntegerValue> v = IntegerType.Factory.bagOf(int2, int1);
 		
-		expect(ref.getDataType()).andReturn(XacmlDataTypes.INTEGER.getDataType());
+		expect(ref.getDataType()).andReturn(IntegerType.Factory.getInstance());
 		expect(ref.evaluate(context)).andReturn(v);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int2)).andReturn(XacmlDataTypes.BOOLEAN.create(false));
+		expect(invocation.invoke(spec, context, int1, int2)).andReturn(BooleanType.Factory.create(false));
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int1)).andReturn(XacmlDataTypes.BOOLEAN.create(true));
+		expect(invocation.invoke(spec, context, int1, int1)).andReturn(BooleanType.Factory.create(true));
 		replay(invocation, ref, context);
 		Match m = new Match(spec, int1, ref);
 		assertEquals(MatchResult.MATCH, m.match(context));

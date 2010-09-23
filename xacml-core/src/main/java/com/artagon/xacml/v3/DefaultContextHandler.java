@@ -33,10 +33,10 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	private PolicyInformationPoint pip;
 	
 	/* Request scope attribute designator resolution cache */
-	private Map<AttributeDesignator, BagOfAttributeValues<? extends AttributeValue>> attributeDesignatorCache;
+	private Map<AttributeDesignator, ValueExpression> attributeDesignatorCache;
 	
 	/* Request scope attribute selector resolution cache */
-	private Map<AttributeSelector, BagOfAttributeValues<AttributeValue>> attributeSelectorCache;
+	private Map<AttributeSelector, ValueExpression> attributeSelectorCache;
 	
 	/* Request scope attribute selector resolution cache */
 	private Map<AttributeCategoryId, Node> contentCache;
@@ -51,8 +51,8 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		this.request = request;
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
-		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues<? extends AttributeValue>>();
-		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues<AttributeValue>>();
+		this.attributeDesignatorCache = new HashMap<AttributeDesignator, ValueExpression>();
+		this.attributeSelectorCache = new HashMap<AttributeSelector, ValueExpression>();
 		this.contentCache = new HashMap<AttributeCategoryId, Node>();
 	}
 	
@@ -74,7 +74,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 
 	@Override
-	public BagOfAttributeValues<? extends AttributeValue> resolve(EvaluationContext context, AttributeDesignator ref) 
+	public ValueExpression resolve(EvaluationContext context, AttributeDesignator ref) 
 		throws EvaluationException 
 	{
 		Collection<AttributeValue> values = request.getAttributeValues(ref.getCategory(), 
@@ -90,11 +90,11 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 
 	@Override
-	public BagOfAttributeValues<AttributeValue> resolve(
+	public ValueExpression resolve(
 			EvaluationContext context, AttributeSelector ref)
 			throws EvaluationException {
 		
-		BagOfAttributeValues<AttributeValue> v = attributeSelectorCache.get(ref);
+		ValueExpression v = attributeSelectorCache.get(ref);
 		if(v == null){
 			v = doResolve(context, ref);
 			if(v != null){
@@ -134,11 +134,11 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	 * @throws EvaluationException if an error occurs
 	 * while resolving reference
 	 */
-	private final BagOfAttributeValues<? extends AttributeValue> doResolve(
+	private final ValueExpression doResolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException 
 	{
-		BagOfAttributeValues<? extends AttributeValue> v = attributeDesignatorCache.get(ref);
+		ValueExpression v = attributeDesignatorCache.get(ref);
 		if(v == null){
 			v = pip.resolve(context, ref, new DefaultRequestAttributesCallback());
 			attributeDesignatorCache.put(ref, v);
@@ -147,7 +147,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	}
 	
 	@SuppressWarnings("unchecked")
-	private final BagOfAttributeValues<AttributeValue> doResolve(
+	private final ValueExpression doResolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
 		try

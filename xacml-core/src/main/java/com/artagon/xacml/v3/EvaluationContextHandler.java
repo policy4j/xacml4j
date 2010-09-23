@@ -26,11 +26,11 @@ public interface EvaluationContextHandler
 	 * @throws EvaluationException if an evaluation 
 	 * error occurs
 	 */
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	ValueExpression resolve(
 			EvaluationContext context,
 			AttributeDesignator ref) throws EvaluationException;
 	
-	BagOfAttributeValues<? extends AttributeValue> resolve(
+	ValueExpression resolve(
 			EvaluationContext context,
 			AttributeSelector selector) throws EvaluationException;
 }

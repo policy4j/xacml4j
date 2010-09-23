@@ -181,10 +181,10 @@ public interface EvaluationContext
 	void setVariableEvaluationResult(String variableId, ValueExpression value);
 	
 	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeDesignator ref) 
+	ValueExpression resolve(AttributeDesignator ref) 
 		throws EvaluationException;
 	
-	BagOfAttributeValues<AttributeValue> resolve(AttributeSelector ref) 
+	ValueExpression resolve(AttributeSelector ref) 
 		throws EvaluationException;
 	
 

@@ -26,6 +26,7 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
+import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
@@ -127,7 +128,7 @@ public class DefaultContextHandlerTest
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
 		Expression v = handler.resolve(context, ref);
-		assertEquals(v, XacmlDataTypes.INTEGER.bagOf(IntegerType.Factory.create(555555)));
+		assertEquals(v, IntegerType.Factory.bagOf(IntegerType.Factory.create(555555)));
 		verify(context, request, attributes, pip);
 	}
 	
@@ -233,8 +234,8 @@ public class DefaultContextHandlerTest
 		
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
-		assertEquals(XacmlDataTypes.ANYURI.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
+		ValueExpression v = h.resolve(context, ref);
+		assertEquals(AnyURIType.Factory.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	
@@ -246,15 +247,15 @@ public class DefaultContextHandlerTest
 		
 		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, XacmlDataTypes.ANYURI.getDataType())).
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, AnyURIType.Factory.getInstance())).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
-		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(XacmlDataTypes.ANYURI.bagOf(XacmlDataTypes.ANYURI.create("testValue")));
+		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(AnyURIType.Factory.bagOf(AnyURIType.Factory.create("testValue")));
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
-		assertEquals(XacmlDataTypes.ANYURI.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
+		ValueExpression v = h.resolve(context, ref);
+		assertEquals(AnyURIType.Factory.bagOf(XacmlDataTypes.ANYURI.create("testValue")), v);
 		verify(context, request, attributes, pip);
 	}
 	
@@ -271,7 +272,7 @@ public class DefaultContextHandlerTest
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
 		replay(context, request, attributes, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
-		BagOfAttributeValues<? extends AttributeValue> v = h.resolve(context, ref);
+		ValueExpression v = h.resolve(context, ref);
 		assertEquals(XacmlDataTypes.ANYURI.emptyBag(), v);
 		verify(context, request, attributes, pip);
 	}

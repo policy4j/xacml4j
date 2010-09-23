@@ -15,11 +15,15 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
 import com.artagon.xacml.v3.sdk.AttributeResolverDescriptorBuilder;
+import com.artagon.xacml.v3.types.BooleanType;
+import com.artagon.xacml.v3.types.BooleanType.BooleanValue;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class DefaultPolicyInformationPointTest 
@@ -137,11 +141,11 @@ public class DefaultPolicyInformationPointTest
 		
 		Capture<PolicyInformationPointContext> pipContext = new Capture<PolicyInformationPointContext>();
 		
+		BagOfAttributeValues<? super AttributeValue> v = BooleanType.Factory.bagOf(BooleanType.Factory.create(true));
 		expect(r1.resolve(capture(pipContext), 
 				eq(AttributeCategoryId.ACTION), 
 				eq("testAttributeId"), 
-				eq(XacmlDataTypes.BOOLEAN.getDataType()), eq((String)null))).andReturn(
-						XacmlDataTypes.BOOLEAN.bagOf(XacmlDataTypes.BOOLEAN.create(true)));
+				eq(BooleanType.Factory.getInstance()), eq((String)null))).andReturn(v);
 		replay(r1, context, callback, ref, p);
 		
 		

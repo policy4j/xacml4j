@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.XacmlDataTypes;
 
 public class AnnotationBasedFunctionFactoryTest
@@ -36,12 +37,12 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec1 = f1.getFunction("test1");
 		assertEquals(XacmlDataTypes.BOOLEAN.create(Boolean.FALSE),  
-				spec1.invoke(context, XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2)));
+				spec1.invoke(context, IntegerType.Factory.create(1), IntegerType.Factory.create(2)));
 		
 		FunctionSpec spec2 = f1.getFunction("test2");
 		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, XacmlDataTypes.INTEGER.bagOf(
-						XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2))));
+				spec2.invoke(context, IntegerType.Factory.bagOf(
+						IntegerType.Factory.create(1), IntegerType.Factory.create(2))));
 		verify(context);
 		
 	}
@@ -58,8 +59,8 @@ public class AnnotationBasedFunctionFactoryTest
 		
 		FunctionSpec spec2 = f2.getFunction("test2");
 		assertEquals(XacmlDataTypes.INTEGER.create(2),  
-				spec2.invoke(context, XacmlDataTypes.INTEGER.bagOf(
-						XacmlDataTypes.INTEGER.create(1), XacmlDataTypes.INTEGER.create(2))));
+				spec2.invoke(context, IntegerType.Factory.bagOf(
+						IntegerType.Factory.create(1), IntegerType.Factory.create(2))));
 		verify(context);
 		
 	}

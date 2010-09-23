@@ -98,12 +98,12 @@ public class AttributeSelector extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public BagOfAttributeValues<AttributeValue> evaluate(EvaluationContext context)
+	public ValueExpression evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		BagOfAttributeValues<AttributeValue> v = null;
+		BagOfAttributeValues<?> v = null;
 		try{
-			v =  context.resolve(this);
+			v =  (BagOfAttributeValues<?>)context.resolve(this);
 		}catch(AttributeReferenceEvaluationException e){
 			if(isMustBePresent()){
 				throw e;

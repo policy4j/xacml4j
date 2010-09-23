@@ -151,10 +151,10 @@ public enum XacmlDataTypes
 	 * @param params an additional parameters
 	 * @return {@link AttributeValue} instance
 	 */
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> T fromXacmlString(String v, Object ...params){
-		return (T)type.fromXacmlString(v, params);
-	}
+//	@SuppressWarnings("unchecked")
+//	public <T extends AttributeValue> T fromXacmlString(String v, Object ...params){
+//		return (T)type.fromXacmlString(v, params);
+//	}
 	
 	/**
 	 * Delegates call to appropriate 
@@ -162,10 +162,10 @@ public enum XacmlDataTypes
 	 * 
 	 * @param v a values
 	 */
-	@SuppressWarnings("unchecked")
-	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(AttributeValue ...v){
-		return (BagOfAttributeValues<T>)type.bagOf(v);
-	}
+//	@SuppressWarnings("unchecked")
+//	public <T extends AttributeValue> BagOfAttributeValues<T> bagOf(AttributeValue ...v){
+//		return (BagOfAttributeValues<T>)type.bagOf(v);
+//	}
 	
 	/**
 	 * Delegates call to appropriate 
