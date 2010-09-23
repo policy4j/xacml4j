@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.types.Base64BinaryValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
-import com.artagon.xacml.v3.types.DNSNameType.DNSNameValue;
+import com.artagon.xacml.v3.types.DNSNameValue;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
@@ -674,6 +674,6 @@ public class BagFunctions
 	public static BagOfAttributeValues dnsNameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
 			DNSNameValue ...values){
-		return DNSNameType.Factory.bagOf(values);
+		return DNSNameType.DNSNAME.bagOf(values);
 	}
 }

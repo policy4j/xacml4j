@@ -4,7 +4,7 @@ import javax.xml.datatype.Duration;
 
 import com.artagon.xacml.v3.AttributeValueType;
 
-class BaseDurationValue  extends BaseAttributeValue<Duration>
+class BaseDurationValue  extends SimpleAttributeValue<Duration>
 {
 	protected BaseDurationValue(AttributeValueType type, Duration value){
 		super(type, value);

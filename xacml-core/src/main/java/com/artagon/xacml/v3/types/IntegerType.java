@@ -11,7 +11,7 @@ public interface IntegerType extends AttributeValueType
 	IntegerValue create(Object value, Object ...params);
 	IntegerValue fromXacmlString(String v, Object ...params);
 	
-	final class IntegerValue extends BaseAttributeValue<Long>
+	final class IntegerValue extends SimpleAttributeValue<Long>
 	{
 		public IntegerValue(IntegerType type, Long value) {
 			super(type, value);

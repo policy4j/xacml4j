@@ -13,7 +13,7 @@ public interface HexBinaryType  extends AttributeValueType
 	HexBinaryValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType bagType();
 	
-	final class HexBinaryValue extends BaseAttributeValue<BinaryValue>
+	final class HexBinaryValue extends SimpleAttributeValue<BinaryValue>
 	{
 		public HexBinaryValue(HexBinaryType type, BinaryValue value) {
 			super(type, value);

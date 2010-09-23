@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class DNSNameTypeTest 
@@ -13,43 +12,42 @@ public class DNSNameTypeTest
 	
 	@Before
 	public void init(){
-		this.t1 = DNSNameType.Factory.getInstance();
+		this.t1 = DNSNameType.DNSNAME;
 	}
 	
 	@Test
-	@Ignore
 	public void testFromXacmlString()
 	{
-		DNSNameType.DNSNameValue v = t1.fromXacmlString("test.org:10-20");
-		assertEquals("test.org", v.getValue().getName());
-		assertEquals(10, v.getValue().getPortRange().getLowerBound());
-		assertEquals(20, v.getValue().getPortRange().getUpperBound());
+		DNSNameValue v = t1.fromXacmlString("test.org:10-20");
+		assertEquals("test.org", v.getName());
+		assertEquals(10, v.getPortRange().getLowerBound());
+		assertEquals(20, v.getPortRange().getUpperBound());
 		
 		v = t1.fromXacmlString("test.org:-20");
-		assertEquals("test.org", v.getValue().getName());
-		assertFalse(v.getValue().getPortRange().isLowerBounded());
-		assertEquals(20, v.getValue().getPortRange().getUpperBound());
+		assertEquals("test.org", v.getName());
+		assertFalse(v.getPortRange().isLowerBounded());
+		assertEquals(20, v.getPortRange().getUpperBound());
 		
 		v = t1.fromXacmlString("test.org");
-		assertEquals("test.org", v.getValue().getName());
-		assertFalse(v.getValue().getPortRange().isLowerBounded());
-		assertFalse(v.getValue().getPortRange().isUpperBounded());
+		assertEquals("test.org", v.getName());
+		assertFalse(v.getPortRange().isLowerBounded());
+		assertFalse(v.getPortRange().isUpperBounded());
 	}
 	
 	@Test
 	public void testEquals()
 	{
-		DNSNameType.DNSNameValue v1 = t1.fromXacmlString("test.org:10-20");
-		DNSNameType.DNSNameValue v2 = t1.fromXacmlString("test.org:10-20");
+		DNSNameValue v1 = t1.fromXacmlString("test.org:10-20");
+		DNSNameValue v2 = t1.fromXacmlString("test.org:10-20");
 		assertEquals(v1, v2);
 	}
 	
 	@Test
 	public void testToXacmlString()
 	{
-		DNSNameType.DNSNameValue v1 = t1.fromXacmlString("test.org:10-20");
+		DNSNameValue v1 = t1.fromXacmlString("test.org:10-20");
 		assertEquals("test.org:10-20", v1.toXacmlString());
-		DNSNameType.DNSNameValue v2 = t1.fromXacmlString("test.org");
+		DNSNameValue v2 = t1.fromXacmlString("test.org");
 		assertEquals("test.org", v2.toXacmlString());
 	}
 }

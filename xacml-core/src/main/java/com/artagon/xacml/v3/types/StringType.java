@@ -12,7 +12,7 @@ public interface StringType extends AttributeValueType
 	StringValue create(Object v, Object ...params);
 	StringValue fromXacmlString(String v, Object ...params);
 	
-	final class StringValue extends BaseAttributeValue<String>
+	final class StringValue extends SimpleAttributeValue<String>
 	{
 		public StringValue(StringType type, String value) {
 			super(type, value);

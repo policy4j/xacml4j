@@ -9,6 +9,7 @@ import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DNSNameType;
+import com.artagon.xacml.v3.types.DNSNameValue;
 import com.artagon.xacml.v3.types.DateTimeType;
 import com.artagon.xacml.v3.types.DateTimeValue;
 import com.artagon.xacml.v3.types.DateType;
@@ -301,16 +302,16 @@ public class StringFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringType.StringValue stringFromDnsName(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameType.DNSNameValue v)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameValue v)
 	{
 		return StringType.Factory.create(v.toXacmlString());
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dnsName-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
-	public static DNSNameType.DNSNameValue dnsNameFromString(
+	public static DNSNameValue dnsNameFromString(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringType.StringValue v)
 	{
-		return DNSNameType.Factory.fromXacmlString(v.getValue());
+		return DNSNameType.DNSNAME.fromXacmlString(v.getValue());
 	}
 }

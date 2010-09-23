@@ -5,6 +5,8 @@ import java.util.Collection;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.BagOfAttributeValuesType;
+import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:dnsName</b>. 
@@ -30,46 +32,65 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
  * all ports numbered "x" and above. 
  * <br>[This syntax is taken from the Java SocketPermission.]
  */
-public interface DNSNameType extends AttributeValueType
+public enum DNSNameType implements AttributeValueType
 {
-	DNSNameValue create(Object o, Object ...params);
-	DNSNameValue fromXacmlString(String v, Object ...params);
+	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
 	
+	private String typeId;
+	private BagOfAttributeValuesType bagType;
 	
-	final class DNSNameValue extends BaseAttributeValue<DNSName>
-	{
-		public DNSNameValue(DNSNameType type, DNSName value) {
-			super(type, value);
-		}
-		
+	private DNSNameType(String typeId){
+		this.typeId = typeId;
+		this.bagType = new BagOfAttributeValuesType(this);
 	}
 	
-	public final class Factory
-	{
-		private final static DNSNameType INSTANCE = new DNSNameTypeImpl("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
-		
-		public static DNSNameType getInstance(){
-			return INSTANCE;
+	@Override
+	public boolean isConvertableFrom(Object any) {
+		return String.class.isInstance(any);
+	}
+	
+	@Override
+	public DNSNameValue create(Object o, Object ...params) {
+		Preconditions.checkNotNull(o);
+		Preconditions.checkArgument(isConvertableFrom(o), String.format(
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"DNSName\" type", 
+				o, o.getClass()));
+		return fromXacmlString((String)o);
+	}
+
+	@Override
+	public DNSNameValue fromXacmlString(String v, Object ...params) {
+		Preconditions.checkNotNull(v);
+		int pos = v.indexOf(':');
+		if(pos == -1){
+			return new DNSNameValue(this, v, PortRange.getAnyPort());
 		}
-		
-		public static DNSNameValue create(Object v, Object ...params){
-			return INSTANCE.create(v, params);
-		}
-		
-		public static DNSNameValue fromXacmlString(String v, Object ...params){
-			return INSTANCE.fromXacmlString(v, params);
-		}
-		
-		public static BagOfAttributeValues bagOf(AttributeValue ...values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues bagOf(Collection<AttributeValue> values){
-			return INSTANCE.bagType().create(values);
-		}
-		
-		public static BagOfAttributeValues emptyBag(){
-			return INSTANCE.bagType().createEmpty();
-		}
+		String name = v.substring(0, pos);
+		return new DNSNameValue(this, name, PortRange.valueOf(pos + 1, v));
+	}
+	
+	@Override
+	public String getDataTypeId() {
+		return typeId;
+	}
+
+	@Override
+	public BagOfAttributeValuesType bagType() {
+		return bagType;
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(AttributeValue... values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+		return bagType.create(values);
+	}
+
+	@Override
+	public BagOfAttributeValues emptyBag() {
+		return bagType.createEmpty();
 	}
 }

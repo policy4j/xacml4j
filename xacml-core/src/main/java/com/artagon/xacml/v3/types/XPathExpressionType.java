@@ -14,7 +14,7 @@ public interface XPathExpressionType extends AttributeValueType
 	XPathExpressionValue create(String xpath, AttributeCategoryId category);
 	XPathExpressionValue fromXacmlString(String v, Object ...params);
 	
-	public class XPathExpressionValue extends BaseAttributeValue<String>
+	public class XPathExpressionValue extends SimpleAttributeValue<String>
 	{
 		private AttributeCategoryId categoryId;
 		

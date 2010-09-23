@@ -12,7 +12,7 @@ public interface DoubleType extends AttributeValueType
 	DoubleValue fromXacmlString(String v, Object ...params);
 	
 	
-	final class DoubleValue extends BaseAttributeValue<Double>
+	final class DoubleValue extends SimpleAttributeValue<Double>
 	{
 		public DoubleValue(DoubleType type, Double value) {
 			super(type, value);

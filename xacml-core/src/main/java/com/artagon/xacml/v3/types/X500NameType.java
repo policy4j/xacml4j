@@ -29,7 +29,7 @@ public interface X500NameType extends AttributeValueType
 	X500NameValue create(Object v, Object ...params);
 	X500NameValue fromXacmlString(String v, Object ...params);
 	
-	final class X500NameValue extends BaseAttributeValue<X500Principal>
+	final class X500NameValue extends SimpleAttributeValue<X500Principal>
 	{
 		public X500NameValue(X500NameType type,
 				X500Principal value) {

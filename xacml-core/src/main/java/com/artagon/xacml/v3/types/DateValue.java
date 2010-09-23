@@ -4,7 +4,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-public final class DateValue extends BaseAttributeValue<XMLGregorianCalendar>
+public final class DateValue extends SimpleAttributeValue<XMLGregorianCalendar>
 		implements Comparable<DateValue> 
 {
 	DateValue(DateType type, XMLGregorianCalendar value) {

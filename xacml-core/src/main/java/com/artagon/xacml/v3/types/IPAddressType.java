@@ -34,7 +34,7 @@ public interface IPAddressType extends AttributeValueType
 	IPAddressValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType bagType();
 	
-	public final class IPAddressValue extends BaseAttributeValue<IPAddress>
+	public final class IPAddressValue extends SimpleAttributeValue<IPAddress>
 	{
 		public IPAddressValue(IPAddressType type, IPAddress value) {
 			super(type, value);

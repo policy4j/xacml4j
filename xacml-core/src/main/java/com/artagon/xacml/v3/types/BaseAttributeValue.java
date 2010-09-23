@@ -7,47 +7,26 @@ import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public abstract class BaseAttributeValue<T> extends XacmlObject
+public abstract class BaseAttributeValue extends XacmlObject
 	implements AttributeValue
 {
-	private T value;
 	private AttributeValueType type;
 	
-	protected BaseAttributeValue(AttributeValueType type, T value) {
+	protected BaseAttributeValue(AttributeValueType type) {
 		Preconditions.checkNotNull(type);
-		Preconditions.checkNotNull(value);
 		this.type = type;
-		this.value = value;
 	}
-	
-	public final T getValue(){
-		return value;
-	}
-	
+
 	@Override
-	public ValueType getEvaluatesTo(){
+	public final ValueType getEvaluatesTo(){
 		return type;
 	}
 	
 	@Override
 	public final AttributeValueType getType(){
 		return type;
-	}
-	
-	
-	@Override
-	public String toXacmlString() {
-		return value.toString();
-	}
-		
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).
-		add("Value", value).
-		add("Type", type).toString();
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public interface RFC822NameType extends AttributeValueType
 	RFC822NameValue fromXacmlString(String v, Object ...params);
 	BagOfAttributeValuesType bagType();
 	
-	final class RFC822NameValue extends BaseAttributeValue<RFC822Name>
+	final class RFC822NameValue extends SimpleAttributeValue<RFC822Name>
 	{
 		public RFC822NameValue(RFC822NameType type, RFC822Name value) {
 			super(type, value);

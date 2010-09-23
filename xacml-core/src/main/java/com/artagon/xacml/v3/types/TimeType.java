@@ -14,7 +14,7 @@ public interface TimeType extends AttributeValueType
 	TimeValue create(Object value, Object ...params);
 	TimeValue fromXacmlString(String v, Object ...params);
 	
-	final class TimeValue extends BaseAttributeValue<XMLGregorianCalendar> 
+	final class TimeValue extends SimpleAttributeValue<XMLGregorianCalendar> 
 		implements Comparable<TimeValue>
 	{
 		public TimeValue(TimeType type, XMLGregorianCalendar value) {
