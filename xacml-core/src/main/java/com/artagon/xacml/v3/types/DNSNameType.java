@@ -49,6 +49,18 @@ public enum DNSNameType implements AttributeValueType
 		return String.class.isInstance(any);
 	}
 	
+	public DNSNameValue create(String name){
+		return create(name, PortRange.getAnyPort());
+	}
+	
+	public DNSNameValue create(String name, PortRange range){
+		return new DNSNameValue(this, name, range);
+	}
+	
+	public DNSNameValue create(String name, Integer lowerBound, Integer upperBound ){
+		return create(name, PortRange.getRange(lowerBound, upperBound));
+	}
+	
 	@Override
 	public DNSNameValue create(Object o, Object ...params) {
 		Preconditions.checkNotNull(o);
@@ -92,5 +104,10 @@ public enum DNSNameType implements AttributeValueType
 	@Override
 	public BagOfAttributeValues emptyBag() {
 		return bagType.createEmpty();
+	}
+	
+	@Override
+	public String toString(){
+		return typeId;
 	}
 }

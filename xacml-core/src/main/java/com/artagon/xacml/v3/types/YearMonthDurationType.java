@@ -94,6 +94,11 @@ public enum YearMonthDurationType implements AttributeValueType
 	public BagOfAttributeValues emptyBag() {
 		return bagType.createEmpty();
 	}
+	
+	@Override
+	public String toString(){
+		return typeId;
+	}
 }
 
 
