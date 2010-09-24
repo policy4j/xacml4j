@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.TimeZone;
 
@@ -162,20 +163,11 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.getTimeZone();
 	}
 	
-	
-	
-	public AttributeValue getCurrentDate() {
-		return delegate.getCurrentDate();
-	}
-
-	public AttributeValue getCurrentDateTime() {
+	@Override
+	public Calendar getCurrentDateTime() {
 		return delegate.getCurrentDateTime();
 	}
-
-	public AttributeValue getCurrentTime() {
-		return delegate.getCurrentTime();
-	}
-
+	
 	@Override
 	public XPathVersion getXPathVersion() {
 		return delegate.getXPathVersion();

@@ -1,12 +1,13 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import static com.artagon.xacml.v3.types.DateTimeType.DATETIME;
+import static com.artagon.xacml.v3.types.DateType.DATE;
+import static com.artagon.xacml.v3.types.TimeType.TIME;
+
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
-import com.artagon.xacml.v3.types.DateTimeType;
-import com.artagon.xacml.v3.types.DateType;
-import com.artagon.xacml.v3.types.TimeType;
 
 @XacmlAttributeResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
 class DefaultEnviromentAttributeResolver 
@@ -17,7 +18,7 @@ class DefaultEnviromentAttributeResolver
 	public BagOfAttributeValues getCurrentTime(
 			PolicyInformationPointContext context)
 	{
-		return TimeType.TIME.bagOf(context.getCurrentTime());
+		return TIME.bagOf(TIME.create(context.getCurrentDateTime()));
 	}
 	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-date", 
@@ -26,7 +27,7 @@ class DefaultEnviromentAttributeResolver
 	public BagOfAttributeValues getCurrentDate(
 			PolicyInformationPointContext context)
 	{
-		return DateType.DATE.bagOf(context.getCurrentDate());
+		return DATE.bagOf(DATE.create(context.getCurrentDateTime()));
 	}
 	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
@@ -35,6 +36,6 @@ class DefaultEnviromentAttributeResolver
 	public BagOfAttributeValues getCurrentDateTime(
 			PolicyInformationPointContext context)
 	{
-		return DateTimeType.DATETIME.bagOf(context.getCurrentDateTime());
+		return DATETIME.bagOf(DATETIME.create(context.getCurrentDateTime()));
 	}
 }

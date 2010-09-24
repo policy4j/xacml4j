@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.Calendar;
+
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeReference;
 import com.artagon.xacml.v3.AttributeValue;
@@ -27,20 +29,10 @@ class DefaultPolicyInformationPointContext implements PolicyInformationPointCont
 	}
 	
 	@Override
-	public AttributeValue getCurrentDate() {
-		return context.getCurrentDate();
-	}
-
-	@Override
-	public AttributeValue getCurrentDateTime() {
+	public Calendar getCurrentDateTime() {
 		return context.getCurrentDateTime();
 	}
-
-	@Override
-	public AttributeValue getCurrentTime() {
-		return context.getCurrentTime();
-	}
-
+	
 	@Override
 	public Object getValue(Object key) {
 		return context.getValue(ref.getCategory(), key);

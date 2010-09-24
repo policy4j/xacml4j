@@ -28,7 +28,11 @@ public class AnyURITypeTest
 		assertEquals(v0, v1);
 		assertEquals(XacmlDataTypesRegistry.ANYURI.getDataType(), AnyURIType.ANYURI);
 		assertSame(XacmlDataTypesRegistry.ANYURI.getDataType(), t1);
-		
 		assertEquals(AnyURIType.ANYURI, new AnyURIValue(URI.create("test")).getType());
+	}
+	
+	@Test
+	public void toStringTest(){
+		assertEquals("http://www.w3.org/2001/XMLSchema#anyURI", t1.toString());
 	}
 }

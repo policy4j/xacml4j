@@ -19,9 +19,6 @@ import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
-import com.artagon.xacml.v3.types.DateTimeType;
-import com.artagon.xacml.v3.types.DateType;
-import com.artagon.xacml.v3.types.TimeType;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -50,9 +47,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private StatusCode evaluationStatus;
 			
-	private AttributeValue currentTime;
-	private AttributeValue currentDateTime;
-	private AttributeValue currentDate;
+	private Calendar currentDateTime;
 	
 	private Map<AttributeCategoryId, Map<Object, Object>> contextValues;
 	
@@ -92,10 +87,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			}
 		});
 		this.timezone = TimeZone.getTimeZone("UTC");
-		Calendar now = Calendar.getInstance(timezone);
-		this.currentDate = DateType.DATE.create(now);
-		this.currentDateTime = DateTimeType.DATETIME.create(now);
-		this.currentTime = TimeType.TIME.create(now);
+		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 	}
 	
@@ -116,18 +108,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public AttributeValue getCurrentDate() {
-		return currentDate;
-	}
-
-	@Override
-	public AttributeValue getCurrentDateTime() {
+	public final Calendar getCurrentDateTime() {
 		return currentDateTime;
-	}
-
-	@Override
-	public AttributeValue getCurrentTime() {
-		return currentTime;
 	}
 
 	@Override

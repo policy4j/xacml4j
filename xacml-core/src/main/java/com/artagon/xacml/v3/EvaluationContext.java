@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.TimeZone;
 
@@ -17,10 +18,8 @@ public interface EvaluationContext
 	 */
 	TimeZone getTimeZone();
 	
-	AttributeValue getCurrentTime();
-	AttributeValue getCurrentDate();
-	AttributeValue getCurrentDateTime();
-	
+	Calendar getCurrentDateTime();
+
 	/**
 	 * Tests if function parameters
 	 * need to be validate at runtime
