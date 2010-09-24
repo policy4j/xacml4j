@@ -1,6 +1,8 @@
 package com.artagon.xacml.v3.spi.function;
 
 
+import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
+import static com.artagon.xacml.v3.types.StringType.STRING;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 
@@ -24,16 +25,16 @@ public class FunctionSpecBuilderTest
 	
 	@Before
 	public void init(){
-		this.type1 = IntegerType.INTEGER;
-		this.type2 = StringType.STRING;
+		this.type1 = INTEGER;
+		this.type2 = STRING;
 		this.impl =  createStrictMock(FunctionInvocation.class);
 		
 		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
 		
-		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(XacmlDataTypesRegistry.INTEGER.getDataType(), impl);
+		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(INTEGER, impl);
 		
 		b = new FunctionSpecBuilder("testFunc2"); 
-		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(XacmlDataTypesRegistry.INTEGER.getDataType(), impl);
+		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(INTEGER, impl);
 	}
 	
 	@Test
