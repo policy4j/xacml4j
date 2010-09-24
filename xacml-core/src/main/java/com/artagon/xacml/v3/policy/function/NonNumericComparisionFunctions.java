@@ -4,11 +4,11 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
-import com.artagon.xacml.v3.spi.function.XacmlFuncParamEvaluationContext;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.sdk.XacmlFuncParam;
+import com.artagon.xacml.v3.sdk.XacmlFuncParamEvaluationContext;
+import com.artagon.xacml.v3.sdk.XacmlFuncReturnType;
+import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DateTimeValue;

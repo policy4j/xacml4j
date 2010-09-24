@@ -4,6 +4,10 @@ package com.artagon.xacml.v3.spi.function;
 import org.junit.Ignore;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.sdk.XacmlFuncParam;
+import com.artagon.xacml.v3.sdk.XacmlFuncReturnType;
+import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.IntegerType;

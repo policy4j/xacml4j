@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.policy.function;
 
-import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
-import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.sdk.XacmlFuncParam;
+import com.artagon.xacml.v3.sdk.XacmlFuncParamVarArg;
+import com.artagon.xacml.v3.sdk.XacmlFuncReturnType;
+import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.DoubleValue;
 import com.artagon.xacml.v3.types.IntegerType;

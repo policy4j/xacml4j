@@ -2,11 +2,11 @@ package com.artagon.xacml.v3.policy.function;
 
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
-import com.artagon.xacml.v3.spi.function.XacmlFuncParamVarArg;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.sdk.XacmlFuncParam;
+import com.artagon.xacml.v3.sdk.XacmlFuncParamVarArg;
+import com.artagon.xacml.v3.sdk.XacmlFuncReturnType;
+import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIType;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.Base64BinaryType;

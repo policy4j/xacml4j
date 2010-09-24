@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.sdk;
+package com.artagon.xacml.v3.spi.pip;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,9 +14,10 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.artagon.xacml.v3.spi.pip.AttributeResolver;
-import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
-import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
+import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
+import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
+import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
+import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 

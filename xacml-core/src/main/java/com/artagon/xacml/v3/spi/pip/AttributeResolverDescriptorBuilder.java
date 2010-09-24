@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.sdk;
+package com.artagon.xacml.v3.spi.pip;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,8 +7,6 @@ import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategoryId;
 import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
-import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 

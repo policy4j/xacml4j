@@ -7,6 +7,8 @@ import java.util.List;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.XacmlFunctionProvider;
 import com.google.common.base.Preconditions;
 
 public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider

@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.function;
+package com.artagon.xacml.v3.sdk;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFuncSpec 
+public @interface XacmlFuncReturnType 
 {
-	String id();
-	boolean evaluateArguments() default true;
+	String typeId();
+	boolean isBag() default false;
 }

@@ -22,7 +22,6 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextAttributesCallback;
-import com.artagon.xacml.v3.sdk.AttributeResolverDescriptorBuilder;
 
 public class DefaultPolicyInformationPointTest 
 {
