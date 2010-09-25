@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -21,9 +25,12 @@ import com.google.common.base.Preconditions;
 public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint, 
 	PolicyDecisionCallback
 {
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
+	
 	private EvaluationContextFactory factory;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
+	private DecisionCache requestCache = new NullDecisionCache();
 	
 	public DefaultPolicyDecisionPoint(
 			List<RequestProfileHandler> handlers,
@@ -43,7 +50,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	{
 		this(Collections.<RequestProfileHandler>emptyList(), factory, policyRepostory);
 	}
-
+	
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
@@ -54,9 +61,24 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	@Override
 	public Result requestDecision(RequestContext request) 
 	{
+		Result r = requestCache.getDecision(request);
+		if(r != null){
+			if(log.isDebugEnabled()){
+				log.debug("Found result=\"{}\" " +
+						"for request=\"{}\" in the cache");
+			}
+			return r;
+		}
 		EvaluationContext context = factory.createContext(request);
-		Collection<Attributes> includeInResult = request.getIncludeInResultAttributes();
 		Decision decision = policyDomain.evaluate(context);
+		Result result = createResult(context, decision, request.getIncludeInResultAttributes());
+		requestCache.putDecision(request, result);
+		return result;
+	}
+	
+	private Result createResult(EvaluationContext context, 
+			Decision decision, Collection<Attributes> includeInResult)
+	{
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					new Status(StatusCode.createOk()), includeInResult);
@@ -79,4 +101,16 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	public XPathProvider getXPathProvider() {
 		return factory.getXPathProvider();
 	}	
+	
+	private class NullDecisionCache implements DecisionCache
+	{
+		@Override
+		public Result getDecision(RequestContext req) {
+			return null;
+		}
+
+		@Override
+		public void putDecision(RequestContext req, Result res) {
+		}
+	}
 }
