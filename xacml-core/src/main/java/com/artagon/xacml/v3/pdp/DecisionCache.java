@@ -15,5 +15,12 @@ public interface DecisionCache
 	 */
 	Result getDecision(RequestContext req);
 	
+	/**
+	 * Puts a decision result for a given
+	 * request to the cache
+	 * 
+	 * @param req a request
+	 * @param result a decision result
+	 */
 	void putDecision(RequestContext req, Result result);
 }

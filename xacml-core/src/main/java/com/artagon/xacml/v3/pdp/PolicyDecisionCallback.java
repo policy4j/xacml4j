@@ -16,7 +16,7 @@ public interface PolicyDecisionCallback
 	Result requestDecision(RequestContext request);
 	
 	/**
-	 * Gets an xpath provider
+	 * Gets an {@link XPathProvider} an xpath provider
 	 * 
 	 * @return {@link XPathProvider}
 	 */
