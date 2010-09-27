@@ -1,5 +1,5 @@
 
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.pdp;
 
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,10 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyIDReference;
+import com.artagon.xacml.v3.PolicyReferenceResolver;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.spi.AbstractPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;
-
 
 public class DefaultPolicyReferenceResolver 
 	implements PolicyReferenceResolver

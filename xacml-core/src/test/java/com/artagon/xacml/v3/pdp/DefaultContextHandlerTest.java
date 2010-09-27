@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.pdp;
 
 import static com.artagon.xacml.v3.types.AnyURIType.ANYURI;
 import static com.artagon.xacml.v3.types.DateType.DATE;
@@ -23,10 +23,27 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.easymock.Capture;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.AttributeResolutionScope;
+import com.artagon.xacml.v3.AttributeSelector;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContextHandler;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.ValueExpression;
+import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.pdp.DefaultContextHandler;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
@@ -246,18 +263,17 @@ public class DefaultContextHandlerTest
 		AttributeDesignator ref = new AttributeDesignator(
 				AttributeCategoryId.RESOURCE, "testId", null, ANYURI, false);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
 		expect(request.hasRepeatingCategories()).andReturn(false);
 		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
 		andReturn(Collections.<AttributeValue>emptyList());
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
 		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
-		replay(context, request, attributes, pip);
+		replay(context, request, pip);
 		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
-		verify(context, request, attributes, pip);
+		verify(context, request, pip);
 	}
 	
 	@Test
@@ -276,5 +292,35 @@ public class DefaultContextHandlerTest
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.emptyBag(), v);
 		verify(context, request, attributes, pip);
+	}
+	
+	@Test
+	@Ignore
+	public void testAttributeReferenceResolutionCache() throws Exception
+	{
+		AttributeDesignator ref = new AttributeDesignator(
+				AttributeCategoryId.RESOURCE, "testId", null, ANYURI, false);
+		
+		expect(request.hasRepeatingCategories()).andReturn(false);
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
+		andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		
+		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
+		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
+		
+		expect(request.hasRepeatingCategories()).andReturn(false);
+		expect(request.getAttributeValues(AttributeCategoryId.RESOURCE, "testId", null, ANYURI)).
+		andReturn(Collections.<AttributeValue>emptyList());
+		//expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		
+		replay(context, request, pip);
+		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		ValueExpression v = h.resolve(context, ref);
+		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
+		v = h.resolve(context, ref);
+		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
+		verify(context, request, pip);
+
 	}
 }

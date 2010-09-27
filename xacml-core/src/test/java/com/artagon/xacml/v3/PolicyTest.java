@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;

@@ -17,6 +17,7 @@ class DefaultPolicyInformationPointContext implements PolicyInformationPointCont
 	private EvaluationContext context;
 	private RequestContextAttributesCallback callback;
 	
+	
 	public DefaultPolicyInformationPointContext(EvaluationContext context, 
 			RequestContextAttributesCallback callback,
 			AttributeReference ref){

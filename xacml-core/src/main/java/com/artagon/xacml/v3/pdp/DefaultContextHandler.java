@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.pdp;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +14,21 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.AttributeResolutionScope;
+import com.artagon.xacml.v3.AttributeSelector;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContextHandler;
+import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
