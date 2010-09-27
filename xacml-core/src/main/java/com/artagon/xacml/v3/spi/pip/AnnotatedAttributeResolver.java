@@ -115,7 +115,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 	private static boolean validateResolverMethod(Method m)
 	{
 		Class<?>[] p = m.getParameterTypes();
-		if(p == null || p.length != 1){
+		if(p == null){
 			return false;
 		}
 		return m.getReturnType().isAssignableFrom(BagOfAttributeValues.class) && 

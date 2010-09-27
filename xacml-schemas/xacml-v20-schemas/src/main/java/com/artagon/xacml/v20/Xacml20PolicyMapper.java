@@ -46,6 +46,7 @@ import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
@@ -382,7 +383,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 					createFunction(f.getFunctionId()));
 		}
 		if (exp instanceof AttributeDesignatorType) {
-			AttributeCategories categoryId = getDesignatorCategory(expression);
+			AttributeCategory categoryId = getDesignatorCategory(expression);
 			return createDesignator(categoryId, (AttributeDesignatorType) exp);
 		}
 		if (exp instanceof AttributeSelectorType) {
@@ -492,7 +493,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 			return new FunctionReference(createFunction(f.getFunctionId()));
 		}
 		if (exp instanceof AttributeDesignatorType) {
-			AttributeCategories categoryId = getDesignatorCategory(expression);
+			AttributeCategory categoryId = getDesignatorCategory(expression);
 			return createDesignator(categoryId, (AttributeDesignatorType) exp);
 		}
 		if (exp instanceof AttributeSelectorType) {
@@ -519,7 +520,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 			SubjectAttributeDesignatorType desig = match
 					.getSubjectAttributeDesignator();
 			if (desig != null) {
-				AttributeCategories categoryId = AttributeCategories.parse(desig.getSubjectCategory());
+				AttributeCategory categoryId = AttributeCategories.parse(desig.getSubjectCategory());
 				return new Match(createFunction(match.getMatchId()),
 						createValue(match.getAttributeValue()),
 						createDesignator(categoryId, desig));
@@ -657,7 +658,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 	 * @return {@link AttributeDesignator} instance
 	 * @throws XacmlSyntaxException
 	 */
-	private AttributeDesignator createDesignator(AttributeCategories categoryId,
+	private AttributeDesignator createDesignator(AttributeCategory categoryId,
 			AttributeDesignatorType ref) throws XacmlSyntaxException {
 	
 		return AttributeDesignator.create(categoryId, 
@@ -675,13 +676,13 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 	 * @return {@link AttributeCategories} instance
 	 * @throws XacmlSyntaxException if error occurs
 	 */
-	private AttributeCategories getDesignatorCategory(JAXBElement<?> element)
+	private AttributeCategory getDesignatorCategory(JAXBElement<?> element)
 			throws XacmlSyntaxException 
 	{
 		Object ref = element.getValue();
 		if (ref instanceof SubjectAttributeDesignatorType) {
 			SubjectAttributeDesignatorType subjectRef = (SubjectAttributeDesignatorType) ref;
-			AttributeCategories categoryId = AttributeCategories
+			AttributeCategory categoryId = AttributeCategories
 					.parse(subjectRef.getSubjectCategory());
 			if (categoryId == null) {
 				throw new XacmlSyntaxException("Unknown subject "
