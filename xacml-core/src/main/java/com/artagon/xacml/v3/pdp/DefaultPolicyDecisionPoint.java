@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextFactory;
@@ -74,7 +75,8 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		}
 		EvaluationContext context = factory.createContext(request);
 		Decision decision = policyDomain.evaluate(context);
-		Result result = createResult(context, decision, request.getIncludeInResultAttributes());
+		Result result = createResult(context, decision, 
+				request.getIncludeInResultAttributes(), request.isReturnPolicyIdList());
 		if(log.isDebugEnabled()){
 			log.debug("Decision request=\"{}\" " +
 					"result=\"{}\"", request,  result);
@@ -84,7 +86,8 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	}
 	
 	private Result createResult(EvaluationContext context, 
-			Decision decision, Collection<Attributes> includeInResult)
+			Decision decision, Collection<Attributes> includeInResult, 
+			boolean returnPolicyIdList)
 	{
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
@@ -101,7 +104,9 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 				context.getAdvices(), 
 				context.getObligations(), 
 				includeInResult, 
-				context.getEvaluatedPolicies());
+				(returnPolicyIdList?
+						context.getEvaluatedPolicies():
+							Collections.<CompositeDecisionRuleIDReference>emptyList()));
 	}
 
 	@Override
