@@ -52,6 +52,10 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Processing decision " +
+					"request=\"{}\"", request);
+		}
 		Collection<Result> results = requestProcessingPipeline.handle(request, this);
 		return new ResponseContext(results);			
 	}
@@ -62,14 +66,19 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		Result r = requestCache.getDecision(request);
 		if(r != null){
 			if(log.isDebugEnabled()){
-				log.debug("Found result=\"{}\" " +
-						"for request=\"{}\" in the cache");
+				log.debug("Found decision result in the decision cache");
+				log.debug("Decision request=\"{}\" " +
+						"result=\"{}\"", request,  r);
 			}
 			return r;
 		}
 		EvaluationContext context = factory.createContext(request);
 		Decision decision = policyDomain.evaluate(context);
 		Result result = createResult(context, decision, request.getIncludeInResultAttributes());
+		if(log.isDebugEnabled()){
+			log.debug("Decision request=\"{}\" " +
+					"result=\"{}\"", request,  result);
+		}
 		requestCache.putDecision(request, result);
 		return result;
 	}

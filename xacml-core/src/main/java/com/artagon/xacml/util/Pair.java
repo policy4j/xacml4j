@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
  * @param <A> a type of first object
  * @param <B> a type of second object
  */
-public class Pair <A, B>
+public final class Pair <A, B>
 {
 	private A first;
 	private B second;
