@@ -20,6 +20,7 @@ import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;

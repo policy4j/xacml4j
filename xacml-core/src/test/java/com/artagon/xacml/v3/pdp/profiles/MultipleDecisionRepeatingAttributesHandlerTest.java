@@ -28,12 +28,12 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.RequestContextHandler;
 
 public class MultipleDecisionRepeatingAttributesHandlerTest 
 {
 	private PolicyDecisionCallback pdp;
-	private RequestProfileHandler profile;
+	private RequestContextHandler profile;
 	
 	@Before
 	public void init(){

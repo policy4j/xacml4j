@@ -16,7 +16,6 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.pdp.profiles.RequestContextHandlerChain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
@@ -29,10 +28,10 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	private EvaluationContextFactory factory;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
-	private DecisionCache requestCache = new NullDecisionCache();
+	private PolicyDecisionCache requestCache = new NullDecisionCache();
 	
 	public DefaultPolicyDecisionPoint(
-			List<RequestProfileHandler> handlers,
+			List<RequestContextHandler> handlers,
 			EvaluationContextFactory factory,  
 			PolicyDomain policyRepository)
 	{
@@ -47,7 +46,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 			EvaluationContextFactory factory,  
 			PolicyDomain policyRepostory)
 	{
-		this(Collections.<RequestProfileHandler>emptyList(), factory, policyRepostory);
+		this(Collections.<RequestContextHandler>emptyList(), factory, policyRepostory);
 	}
 	
 	@Override
@@ -101,7 +100,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		return factory.getXPathProvider();
 	}	
 	
-	private class NullDecisionCache implements DecisionCache
+	private class NullDecisionCache implements PolicyDecisionCache
 	{
 		@Override
 		public Result getDecision(RequestContext req) {

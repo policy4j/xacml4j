@@ -10,6 +10,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 

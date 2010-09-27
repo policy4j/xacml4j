@@ -9,7 +9,7 @@ import com.artagon.xacml.v3.EvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionProfileHandler;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
@@ -24,11 +24,11 @@ public class PolicyDecisionPointFactoryBean extends
 	private PolicyInformationPoint pip;
 	private PolicyDomain policyDomain;
 	private PolicyRepository policyRepository;
-	private List<RequestProfileHandler> handlers;
+	private List<RequestContextHandler> handlers;
 	private XPathProvider xpathProvider;
 	
 	public PolicyDecisionPointFactoryBean(){
-		this.handlers = new LinkedList<RequestProfileHandler>();
+		this.handlers = new LinkedList<RequestContextHandler>();
 		this.handlers.add(new MultipleDecisionProfileHandler());
 		this.xpathProvider = new DefaultXPathProvider();
 	}
@@ -55,7 +55,7 @@ public class PolicyDecisionPointFactoryBean extends
 		this.policyRepository = policyRepository;
 	}
 	
-	public void setHandlers(List<RequestProfileHandler> handlers){
+	public void setHandlers(List<RequestContextHandler> handlers){
 		this.handlers.addAll(handlers);
 	}
 	

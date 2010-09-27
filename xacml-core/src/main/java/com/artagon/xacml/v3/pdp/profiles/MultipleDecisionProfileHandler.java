@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.pdp.profiles;
 
+import com.artagon.xacml.v3.pdp.RequestContextHandlerChain;
+
 
 public class MultipleDecisionProfileHandler extends RequestContextHandlerChain
 {

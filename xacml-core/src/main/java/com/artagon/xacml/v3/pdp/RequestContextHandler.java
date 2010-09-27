@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 
-public interface RequestProfileHandler 
+public interface RequestContextHandler 
 {
 	/**
 	 * Handles given request
@@ -22,5 +22,5 @@ public interface RequestProfileHandler
 	 * 
 	 * @param handler a request handler
 	 */
-	void setNext(RequestProfileHandler handler);
+	void setNext(RequestContextHandler handler);
 }

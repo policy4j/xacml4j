@@ -6,13 +6,20 @@ import com.artagon.xacml.v3.spi.XPathProvider;
 
 /**
  * An interface to the {@link PolicyDecisionPoint} used
- * by {@link RequestProfileHandler} to request decision
+ * by {@link RequestContextHandler} to request decision
  * for particular request
  * 
  * @author Giedrius Trumpickas
  */
 public interface PolicyDecisionCallback 
 {
+	/**
+	 * Requests a decision for a given request
+	 * from PDP a policy decision point
+	 * 
+	 * @param request a decision request
+	 * @return {@link Result} a decision result
+	 */
 	Result requestDecision(RequestContext request);
 	
 	/**

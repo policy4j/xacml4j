@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.pdp.profiles;
+package com.artagon.xacml.v3.pdp;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,27 +8,25 @@ import java.util.List;
 
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.pdp.RequestProfileHandler;
 import com.google.common.collect.Iterables;
 
 /**
- * A chain of {@link RequestProfileHandler}
- * implementations implemented as {@link RequestProfileHandler}
+ * A chain of {@link RequestContextHandler}
+ * implementations implemented as {@link RequestContextHandler}
  * 
  * @author Giedrius Trumopickas
  */
-public class RequestContextHandlerChain implements RequestProfileHandler
+public class RequestContextHandlerChain implements RequestContextHandler
 {
-	private List<RequestProfileHandler> handlers;
+	private List<RequestContextHandler> handlers;
 	
 	public RequestContextHandlerChain(
-			Iterable<RequestProfileHandler> handlers)
+			Iterable<RequestContextHandler> handlers)
 	{
-		this.handlers = new LinkedList<RequestProfileHandler>();
+		this.handlers = new LinkedList<RequestContextHandler>();
 		Iterables.addAll(this.handlers, handlers);
-		RequestProfileHandler prev = null;
-		for(RequestProfileHandler h : handlers){
+		RequestContextHandler prev = null;
+		for(RequestContextHandler h : handlers){
 			if(prev == null){
 				prev = h;
 				continue;
@@ -39,7 +37,7 @@ public class RequestContextHandlerChain implements RequestProfileHandler
 	}
 	
 	public RequestContextHandlerChain(
-			RequestProfileHandler ...handlers){
+			RequestContextHandler ...handlers){
 		this(Arrays.asList(handlers));
 	}
 	
@@ -53,7 +51,7 @@ public class RequestContextHandlerChain implements RequestProfileHandler
 	}
 
 	@Override
-	public final void setNext(RequestProfileHandler handler) 
+	public final void setNext(RequestContextHandler handler) 
 	{
 		if(handlers.isEmpty()){
 			throw new IllegalArgumentException("Can't set next handler, " +

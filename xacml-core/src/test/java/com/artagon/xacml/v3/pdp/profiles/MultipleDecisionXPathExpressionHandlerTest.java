@@ -36,7 +36,7 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
-import com.artagon.xacml.v3.pdp.RequestProfileHandler;
+import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.collect.Iterables;
@@ -57,7 +57,7 @@ public class MultipleDecisionXPathExpressionHandlerTest
 	"</md:record>";
 	
 	private PolicyDecisionCallback pdp;
-	private RequestProfileHandler profile;
+	private RequestContextHandler profile;
 	private Node content;
 	
 	private XPathProvider xpathProvider;
