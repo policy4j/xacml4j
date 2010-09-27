@@ -9,7 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -25,17 +26,17 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(AnnotatedAttributeResolver.class);
 	private Object instance;
-	private Map<AttributeCategoryId, Map<String, Method>> resolvers;
+	private Map<AttributeCategory, Map<String, Method>> resolvers;
 	
 	AnnotatedAttributeResolver(
 			AttributeResolverDescriptor descriptor, 
-			Map<AttributeCategoryId, Map<String, Method>> methods, Object instance) 
+			Map<AttributeCategory, Map<String, Method>> methods, Object instance) 
 	{
 		super(descriptor);
 		Preconditions.checkArgument(instance != null);
 		this.instance = instance;
-		this.resolvers = new HashMap<AttributeCategoryId, Map<String,Method>>();
-		for(AttributeCategoryId c : methods.keySet()){
+		this.resolvers = new HashMap<AttributeCategory, Map<String,Method>>();
+		for(AttributeCategory c : methods.keySet()){
 			resolvers.put(c, ImmutableMap.copyOf(methods.get(c)));
 		}
 	}
@@ -52,7 +53,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 	@Override
 	protected BagOfAttributeValues doResolve(
 			PolicyInformationPointContext context, 
-			AttributeCategoryId category,
+			AttributeCategory category,
 			String attributeId,
 			AttributeValueType dataType,
 			String issuer) 
@@ -86,7 +87,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 		List<Method> resolvers = Reflections.getAnnotatedMethods(instance.getClass(), XacmlAttributeDescriptor.class);
 		AttributeResolverDescriptorBuilder builder = AttributeResolverDescriptorBuilder.create(descriptor.name(), 
 				(issuer == null)?null:issuer.value());
-		Map<AttributeCategoryId, Map<String, Method>> methods = new HashMap<AttributeCategoryId, Map<String,Method>>();
+		Map<AttributeCategory, Map<String, Method>> methods = new HashMap<AttributeCategory, Map<String,Method>>();
 		for(Method r : resolvers)
 		{
 			XacmlAttributeDescriptor d = r.getAnnotation(XacmlAttributeDescriptor.class);
@@ -97,7 +98,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			Preconditions.checkState(validateResolverMethod(r));
 			for(String cat : c.value())
 			{
-				AttributeCategoryId category = AttributeCategoryId.parse(cat);
+				AttributeCategory category = AttributeCategories.parse(cat);
 				builder.attribute(category, d.id(), XacmlDataTypesRegistry.getType(d.typeId()));
 				Map<String, Method> byId = methods.get(category);
 				if(byId == null){

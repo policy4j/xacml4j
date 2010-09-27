@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -13,13 +13,13 @@ import com.google.common.collect.ImmutableMap;
 public final class AttributeResolverDescriptorBuilder 
 {
 	private String name;
-	private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
+	private Map<AttributeCategory, Map<String, AttributeDescriptor>> attributes;
 	private String issuer;
 	
 	private AttributeResolverDescriptorBuilder(String name, String issuer){
 		this.name = name;
 		this.issuer = issuer;
-		this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
+		this.attributes = new HashMap<AttributeCategory, Map<String,AttributeDescriptor>>();
 	}
 	
 	public static AttributeResolverDescriptorBuilder create(String name){
@@ -31,7 +31,7 @@ public final class AttributeResolverDescriptorBuilder
 	}
 		
 	public AttributeResolverDescriptorBuilder attribute(
-			AttributeCategoryId category,
+			AttributeCategory category,
 			String attributeId, 
 			AttributeValueType dataType){
 		Map<String, AttributeDescriptor> byId = attributes.get(category);
@@ -55,15 +55,15 @@ public final class AttributeResolverDescriptorBuilder
 	{
 		private String name;
 		private String issuer;
-		private Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes;
+		private Map<AttributeCategory, Map<String, AttributeDescriptor>> attributes;
 		
 		AttributeResolverDescriptorImpl(
 				String name,
 				String issuer,
-				Map<AttributeCategoryId, Map<String, AttributeDescriptor>> attributes) {
+				Map<AttributeCategory, Map<String, AttributeDescriptor>> attributes) {
 			Preconditions.checkArgument(name != null);
-			this.attributes = new HashMap<AttributeCategoryId, Map<String,AttributeDescriptor>>();
-			for(AttributeCategoryId c : attributes.keySet()){
+			this.attributes = new HashMap<AttributeCategory, Map<String,AttributeDescriptor>>();
+			for(AttributeCategory c : attributes.keySet()){
 				this.attributes.put(c, ImmutableMap.copyOf(attributes.get(c)));
 			}
 			this.name = name;
@@ -81,43 +81,43 @@ public final class AttributeResolverDescriptorBuilder
 		}
 
 		@Override
-		public boolean isCategorySupported(AttributeCategoryId category) {
+		public boolean isCategorySupported(AttributeCategory category) {
 			return attributes.containsKey(category);
 		}
 
 		@Override
-		public Set<AttributeCategoryId> getSupportedCategores() {
+		public Set<AttributeCategory> getSupportedCategores() {
 			return attributes.keySet();
 		}
 		
-		public Set<String> getProvidedAttributeIds(AttributeCategoryId category){
+		public Set<String> getProvidedAttributeIds(AttributeCategory category){
 			Map<String, AttributeDescriptor> byId = attributes.get(category);
 			return (byId == null)?Collections.<String>emptySet():byId.keySet();
 		}
 
 		@Override
 		public Map<String, AttributeDescriptor> getAttributes(
-				AttributeCategoryId category) {
+				AttributeCategory category) {
 			Map<String, AttributeDescriptor> byId = attributes.get(category);
 			return (byId == null)?Collections.<String, AttributeDescriptor>emptyMap():byId;
 		}
 
 
 		@Override
-		public AttributeDescriptor getAttributeDescriptor(AttributeCategoryId category, 
+		public AttributeDescriptor getAttributeDescriptor(AttributeCategory category, 
 				String attributeId) {
 			Map<String, AttributeDescriptor> byId = attributes.get(category);
 			return (byId == null)?null:byId.get(attributeId);
 		}
 
 		@Override
-		public boolean isAttributeProvided(AttributeCategoryId category, String attributeId) {
+		public boolean isAttributeProvided(AttributeCategory category, String attributeId) {
 			Map<String, AttributeDescriptor> byId = attributes.get(category);
 			return (byId == null)?false:byId.containsKey(attributeId);
 		}
 		
 		@Override
-		public boolean canResolve(AttributeCategoryId category, 
+		public boolean canResolve(AttributeCategory category, 
 				String attributeId, AttributeValueType dataType, String issuer)
 		{
 			if(isCategorySupported(category) && 

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
@@ -22,7 +22,7 @@ final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestCo
 			return handleNext(request, pdp);
 		}
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
-		for(AttributeCategoryId categoryId : request.getCategories()){
+		for(AttributeCategory categoryId : request.getCategories()){
 			Collection<Attributes> attributes = request.getAttributes(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()){

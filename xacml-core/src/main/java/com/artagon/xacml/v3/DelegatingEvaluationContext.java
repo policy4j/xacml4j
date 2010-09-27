@@ -177,7 +177,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Node evaluateToNode(String path, AttributeCategoryId categoryId)
+	public Node evaluateToNode(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNode(path, categoryId);
 	}
@@ -186,7 +186,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public NodeList evaluateToNodeSet(String path, AttributeCategoryId categoryId)
+	public NodeList evaluateToNodeSet(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNodeSet(path, categoryId);
 	}
@@ -195,7 +195,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Number evaluateToNumber(String path, AttributeCategoryId categoryId)
+	public Number evaluateToNumber(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNumber(path, categoryId);
 	}
@@ -204,7 +204,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public String evaluateToString(String path, AttributeCategoryId categoryId)
+	public String evaluateToString(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToString(path, categoryId);
 	}
@@ -234,12 +234,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Object getValue(AttributeCategoryId categoryId, Object key) {
+	public Object getValue(AttributeCategory categoryId, Object key) {
 		return delegate.getValue(categoryId, key);
 	}
 
 	@Override
-	public Object setValue(AttributeCategoryId categoryId, Object key, Object v) {
+	public Object setValue(AttributeCategory categoryId, Object key, Object v) {
 		return delegate.setValue(categoryId, key, v);
 	}	
 	

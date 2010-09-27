@@ -3,7 +3,7 @@ package com.artagon.xacml.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.types.StringValue;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionValue;
@@ -20,7 +20,7 @@ public class Xacml20XPathTo30Transformer
 	public static XPathExpressionValue fromXacml20String(StringValue path)
 	{
 		XPathExpressionValue xpathExp = XPathExpressionType.XPATHEXPRESSION.create(
-				transform20PathTo30(path.getValue()), AttributeCategoryId.RESOURCE);
+				transform20PathTo30(path.getValue()), AttributeCategories.RESOURCE);
 		return xpathExp;
 	}
 	

@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 public class AttributeAssignmentExpression extends XacmlObject 
 	implements PolicyElement
 {
-	private AttributeCategoryId category;
+	private AttributeCategories category;
 	private String attributeId;
 	private String issuer;
 	private Expression expression;
@@ -22,7 +22,7 @@ public class AttributeAssignmentExpression extends XacmlObject
 	public AttributeAssignmentExpression(
 			String attributeId, 
 			Expression expression, 
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String issuer)
 	{
 		Preconditions.checkNotNull(attributeId);
@@ -53,7 +53,7 @@ public class AttributeAssignmentExpression extends XacmlObject
 	 * 
 	 * @return category identifier or <code>null</code>
 	 */
-	public AttributeCategoryId getCategory(){
+	public AttributeCategories getCategory(){
 		return category;
 	}
 	

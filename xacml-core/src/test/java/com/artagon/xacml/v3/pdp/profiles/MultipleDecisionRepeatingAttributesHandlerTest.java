@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Attribute;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.RequestContext;
@@ -47,17 +47,17 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
 		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
 		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		Attributes resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
 		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
 		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
 		
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource0, resource1));
@@ -79,14 +79,14 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
-		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributes(AttributeCategories.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(r1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
+		assertTrue(r1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAttributes(AttributeCategoryId.RESOURCE).size());
-		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getAttributes(AttributeCategories.RESOURCE).size());
+		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 	
@@ -97,13 +97,13 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
 		
 		
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
 		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
 		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subjectAttr);
+		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
 		
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource0));
@@ -120,8 +120,8 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 	

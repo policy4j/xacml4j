@@ -32,7 +32,8 @@ import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
@@ -145,7 +146,7 @@ class Xacml20ContextMapper
 		if(log.isDebugEnabled()){
 			log.debug("Mapping result=\"{}\" to resourceId", result);
 		}
-		Attributes resource = result.getAttribute(AttributeCategoryId.RESOURCE);
+		Attributes resource = result.getAttribute(AttributeCategories.RESOURCE);
 		if(resource == null){
 			return null;
 		}
@@ -207,7 +208,7 @@ class Xacml20ContextMapper
 		}
 		if(!req.getSubject().isEmpty())
 		{
-			Multimap<AttributeCategoryId, Attributes> map = LinkedHashMultimap.create();
+			Multimap<AttributeCategory, Attributes> map = LinkedHashMultimap.create();
 			for(SubjectType subject : req.getSubject()){
 				Attributes attr =  createSubject(subject);
 				map.put(attr.getCategory(), attr);
@@ -225,10 +226,10 @@ class Xacml20ContextMapper
 		return new RequestContext(false, attributes);
 	}
 	
-	public Collection<Attributes> normalize(Multimap<AttributeCategoryId, Attributes> attributes)
+	public Collection<Attributes> normalize(Multimap<AttributeCategory, Attributes> attributes)
 	{
 		Collection<Attributes> normalized = new LinkedList<Attributes>();
-		for(AttributeCategoryId categoryId : attributes.keySet()){
+		for(AttributeCategory categoryId : attributes.keySet()){
 			Collection<Attributes> byCategory = attributes.get(categoryId);
 			Collection<Attribute> categoryAttr = new LinkedList<Attribute>();
 			for(Attributes a : byCategory){
@@ -242,17 +243,17 @@ class Xacml20ContextMapper
 	private Attributes createSubject(SubjectType subject) 
 		throws XacmlSyntaxException
 	{
-		AttributeCategoryId category = getCategoryId(subject.getSubjectCategory());
+		AttributeCategory category = getCategoryId(subject.getSubjectCategory());
 		if(log.isDebugEnabled()){
 			log.debug("Processing subject category=\"{}\"", category);
 		}
 		return new Attributes(category, create(subject.getAttribute(), category, false));
 	}
 	
-	private AttributeCategoryId getCategoryId(String id) 
+	private AttributeCategory getCategoryId(String id) 
 		throws XacmlSyntaxException
 	{
-		AttributeCategoryId category = AttributeCategoryId.parse(id);
+		AttributeCategory category = AttributeCategories.parse(id);
 		if(category == null){
 			throw new RequestSyntaxException("Unknown attribute category=\"%s\"", id);
 		}
@@ -262,14 +263,14 @@ class Xacml20ContextMapper
 	private Attributes createEnviroment(EnvironmentType subject) 
 		throws XacmlSyntaxException
 	{
-		return new Attributes(AttributeCategoryId.ENVIRONMENT, 
-				null, create(subject.getAttribute(), AttributeCategoryId.ENVIRONMENT, false));
+		return new Attributes(AttributeCategories.ENVIRONMENT, 
+				null, create(subject.getAttribute(), AttributeCategories.ENVIRONMENT, false));
 	}
 	
 	private Attributes createAction(ActionType subject) throws XacmlSyntaxException
 	{
-		return new Attributes(AttributeCategoryId.ACTION, 
-				null, create(subject.getAttribute(), AttributeCategoryId.ACTION, false));
+		return new Attributes(AttributeCategories.ACTION, 
+				null, create(subject.getAttribute(), AttributeCategories.ACTION, false));
 	}
 	
 	private Attributes createResource(ResourceType resource, 
@@ -279,10 +280,10 @@ class Xacml20ContextMapper
 		if(content != null){
 			content = DOMUtil.copyNode(content);
 		}
-		return new Attributes(AttributeCategoryId.RESOURCE, 
+		return new Attributes(AttributeCategories.RESOURCE, 
 				content, 
 				create(resource.getAttribute(), 
-						AttributeCategoryId.RESOURCE, multipleResources));
+						AttributeCategories.RESOURCE, multipleResources));
 	}
 	
 	private Node getResourceContent(ResourceType resource)
@@ -302,7 +303,7 @@ class Xacml20ContextMapper
 	}
 	
 	private Collection<Attribute> create(Collection<AttributeType> contextAttributes, 
-			AttributeCategoryId category, boolean includeInResult) 
+			AttributeCategory category, boolean includeInResult) 
 		throws XacmlSyntaxException
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
@@ -312,7 +313,7 @@ class Xacml20ContextMapper
 		return attributes;
 	}
 	
-	private Attribute createAttribute(AttributeType a, AttributeCategoryId category, 
+	private Attribute createAttribute(AttributeType a, AttributeCategory category, 
 				boolean incudeInResultResourceId) 
 		throws XacmlSyntaxException
 	{
@@ -330,7 +331,7 @@ class Xacml20ContextMapper
 	
 	private AttributeValue createValue(String dataTypeId, 
 			AttributeValueType value, 
-			AttributeCategoryId categoryId) 
+			AttributeCategory categoryId) 
 		throws XacmlSyntaxException
 	{
 		List<Object> content = value.getContent();

@@ -189,23 +189,23 @@ public interface EvaluationContext
 
 	NodeList evaluateToNodeSet(
 			String xpath, 
-			AttributeCategoryId categoryId) 
+			AttributeCategories categoryId) 
 		throws EvaluationException;
 	
 	
 	String evaluateToString(
 			String path, 
-			AttributeCategoryId categoryId) 
+			AttributeCategories categoryId) 
 		throws EvaluationException;
 	
 	Node evaluateToNode(
 			String path, 
-			AttributeCategoryId categoryId) 
+			AttributeCategories categoryId) 
 		throws EvaluationException;
 	
 	Number evaluateToNumber(
 			String path, 
-			AttributeCategoryId categoryId) 
+			AttributeCategories categoryId) 
 		throws EvaluationException;
 	
 	/**
@@ -240,9 +240,9 @@ public interface EvaluationContext
 	 * @return {@link Object} an value or <code>null</code>
 	 * if no value exist for given category and key
 	 */
-	Object getValue(AttributeCategoryId categoryId, 
+	Object getValue(AttributeCategory categoryId, 
 			Object key);
 	
-	Object setValue(AttributeCategoryId categoryId, 
+	Object setValue(AttributeCategory categoryId, 
 			Object key, Object v);
 }

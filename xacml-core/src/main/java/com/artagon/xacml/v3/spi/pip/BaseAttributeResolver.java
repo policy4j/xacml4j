@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
@@ -22,7 +22,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	@Override
 	public final BagOfAttributeValues resolve(
 			PolicyInformationPointContext context, 
-			AttributeCategoryId category,
+			AttributeCategory category,
 			String attributeId,
 			AttributeValueType dataType,
 			String issuer) throws Exception 
@@ -33,7 +33,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	
 	protected abstract BagOfAttributeValues doResolve(
 			PolicyInformationPointContext context, 
-			AttributeCategoryId category,
+			AttributeCategory category,
 			String attributeId,
 			AttributeValueType dataType,
 			String issuer) throws Exception;

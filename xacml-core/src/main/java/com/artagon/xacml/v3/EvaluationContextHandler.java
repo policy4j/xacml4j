@@ -12,7 +12,7 @@ public interface EvaluationContextHandler
 	 * <code>null</code> if content is not available
 	 * for a given category 
 	 */
-	Node getContent(EvaluationContext context, AttributeCategoryId categoryId);
+	Node getContent(EvaluationContext context, AttributeCategory categoryId);
 	
 	/**
 	 * Resolves given {@link AttributeDesignator} to a

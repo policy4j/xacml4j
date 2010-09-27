@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum AttributeCategoryId
+public enum AttributeCategories implements AttributeCategory
 { 
 	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
 	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
@@ -19,34 +19,34 @@ public enum AttributeCategoryId
 	
 	private String id;
 	
-	private static final Map<String, AttributeCategoryId> BY_ID = new ConcurrentHashMap<String, AttributeCategoryId>();
+	private static final Map<String, AttributeCategories> BY_ID = new ConcurrentHashMap<String, AttributeCategories>();
 
 	static {
-		for(AttributeCategoryId t : EnumSet.allOf(AttributeCategoryId.class)){
+		for(AttributeCategories t : EnumSet.allOf(AttributeCategories.class)){
 			BY_ID.put(t.id, t);
 		}
 	}
 	
-	private AttributeCategoryId(String id){
+	private AttributeCategories(String id){
 		this.id = id;
 	}
 	
 	/**
-	 * Parses given value to the {@link AttributeCategoryId}
+	 * Parses given value to the {@link AttributeCategories}
 	 * 
 	 * @param v a value
-	 * @return {@link AttributeCategoryId}
+	 * @return {@link AttributeCategories}
 	 * @throws XacmlSyntaxException if given
 	 * value can not be converted to the
-	 * {@link AttributeCategoryId} value
+	 * {@link AttributeCategories} value
 	 */
-	public static AttributeCategoryId parse(String v) 
+	public static AttributeCategories parse(String v) 
 		throws XacmlSyntaxException
 	{
 		if(v == null){
 			return null;
 		}
-		AttributeCategoryId c = BY_ID.get(v);
+		AttributeCategories c = BY_ID.get(v);
 		if(c == null){
 			throw new XacmlSyntaxException(
 					"Unknown c=attribute category=\"%s\"", v);

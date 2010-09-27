@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
+import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
@@ -51,7 +51,8 @@ public class RSA2008InteropTest
 		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
 		pip = new DefaultPolicyInformationPoint();
-		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), domain);
+		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(
+				repository, pip), domain);
 		
 	}
 	

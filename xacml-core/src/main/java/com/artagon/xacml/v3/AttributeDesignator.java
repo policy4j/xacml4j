@@ -43,7 +43,7 @@ public class AttributeDesignator extends AttributeReference
 	 * that attribute must be present in the context
 	 */
 	public AttributeDesignator(
-			AttributeCategoryId  category,
+			AttributeCategory  category,
 			String attributeId, 
 			String issuer,
 			AttributeValueType dataType, 
@@ -55,7 +55,7 @@ public class AttributeDesignator extends AttributeReference
 	}
 	
 	
-	public static AttributeDesignator create(AttributeCategoryId category, 
+	public static AttributeDesignator create(AttributeCategory category, 
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
@@ -75,7 +75,7 @@ public class AttributeDesignator extends AttributeReference
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		AttributeCategory category = AttributeCategories.parse(categoryId);
 		return create(category, attributeId, issuer, dataTypeId, mustBePresent);
 	}
 	

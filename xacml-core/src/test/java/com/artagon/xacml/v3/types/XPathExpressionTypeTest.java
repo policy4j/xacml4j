@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 
 public class XPathExpressionTypeTest
 {
@@ -12,9 +12,9 @@ public class XPathExpressionTypeTest
 	@Test
 	public void testCreateXPathAttribute() throws Exception
 	{
-		XPathExpressionValue v = XPathExpressionType.XPATHEXPRESSION.create("/test", AttributeCategoryId.SUBJECT_RECIPIENT);
+		XPathExpressionValue v = XPathExpressionType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
 		assertEquals("/test", v.getValue());
-		assertEquals(AttributeCategoryId.SUBJECT_RECIPIENT, v.getCategory());
+		assertEquals(AttributeCategories.SUBJECT_RECIPIENT, v.getCategory());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

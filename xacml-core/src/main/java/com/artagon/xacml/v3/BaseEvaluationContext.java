@@ -49,7 +49,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			
 	private Calendar currentDateTime;
 	
-	private Map<AttributeCategoryId, Map<Object, Object>> contextValues;
+	private Map<AttributeCategory, Map<Object, Object>> contextValues;
 	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -89,6 +89,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
+		this.contextValues = new HashMap<AttributeCategory, Map<Object,Object>>();
 	}
 	
 	@Override
@@ -228,7 +229,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	
 	@Override
-	public final Node evaluateToNode(String path, AttributeCategoryId categoryId)
+	public final Node evaluateToNode(String path, AttributeCategories categoryId)
 			throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
@@ -250,7 +251,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final NodeList evaluateToNodeSet(String path, 
-			AttributeCategoryId categoryId)
+			AttributeCategories categoryId)
 			throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
@@ -269,7 +270,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final Number evaluateToNumber(String path, AttributeCategoryId categoryId)
+	public final Number evaluateToNumber(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
@@ -287,7 +288,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final String evaluateToString(String path, AttributeCategoryId categoryId)
+	public final String evaluateToString(String path, AttributeCategories categoryId)
 			throws EvaluationException {
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
@@ -341,13 +342,13 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}	
 	
 	@Override
-	public final Object getValue(AttributeCategoryId categoryId, Object key) {
+	public final Object getValue(AttributeCategory categoryId, Object key) {
 		Map<Object, Object> byCategory = contextValues.get(categoryId);
 		return (byCategory != null)?byCategory.get(key):null;
 	}
 
 	@Override
-	public final Object setValue(AttributeCategoryId categoryId, Object key, Object v) {
+	public final Object setValue(AttributeCategory categoryId, Object key, Object v) {
 		Map<Object, Object> byCategory = contextValues.get(categoryId);
 		if(byCategory == null){
 			byCategory = new HashMap<Object, Object>();

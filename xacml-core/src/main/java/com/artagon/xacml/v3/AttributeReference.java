@@ -12,7 +12,7 @@ public abstract class AttributeReference extends XacmlObject
 	implements Expression, PolicyElement
 {
 	private boolean mustBePresent;
-	private AttributeCategoryId category;
+	private AttributeCategory category;
 	protected BagOfAttributeValuesType evaluatesTo;
 	
 	/**
@@ -23,7 +23,7 @@ public abstract class AttributeReference extends XacmlObject
 	 * @param dataType attribute reference bag XACML
 	 * data type
 	 */
-	protected AttributeReference(AttributeCategoryId category, 
+	protected AttributeReference(AttributeCategory category, 
 			AttributeValueType dataType, boolean mustBePresent){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
@@ -52,7 +52,7 @@ public abstract class AttributeReference extends XacmlObject
 	 * 
 	 * @return attribute category
 	 */
-	public AttributeCategoryId getCategory(){
+	public AttributeCategory getCategory(){
 		return category;
 	}
 	

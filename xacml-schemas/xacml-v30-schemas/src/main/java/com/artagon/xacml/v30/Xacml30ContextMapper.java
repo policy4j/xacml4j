@@ -34,7 +34,7 @@ import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
@@ -241,7 +241,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 		for(AttributeType a : attributes.getAttribute()){
 			attr.add(create(a));
 		}
-		return new Attributes(AttributeCategoryId.parse(attributes.getCategory()), 
+		return new Attributes(AttributeCategories.parse(attributes.getCategory()), 
 				getContent(attributes.getContent()), attr);
 	}
 	

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -34,7 +34,7 @@ public class DefaultPolicyInformationPoint
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategoryId, Map<String, AttributeResolver>> resolvers;
+	private Map<AttributeCategory, Map<String, AttributeResolver>> resolvers;
 	
 	/**
 	 * Resolvers index by policy identifier
@@ -42,7 +42,7 @@ public class DefaultPolicyInformationPoint
 	private Multimap<String, AttributeResolver> resolversByPolicyId;
 	
 	public DefaultPolicyInformationPoint(){
-		this.resolvers = new ConcurrentHashMap<AttributeCategoryId, Map<String,AttributeResolver>>();
+		this.resolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
 		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
 	}
@@ -75,15 +75,15 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public Node resolve(EvaluationContext context,
-			AttributeCategoryId categoryId, RequestContextAttributesCallback callback) {
+			AttributeCategory categoryId, RequestContextAttributesCallback callback) {
 		return null;
 	} 
 	
 	
-	private void addResolverForCategory(AttributeCategoryId category, AttributeResolver resolver)
+	private void addResolverForCategory(AttributeCategory category, AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		for(AttributeCategoryId c : d.getSupportedCategores())
+		for(AttributeCategory c : d.getSupportedCategores())
 		{
 			Map<String, AttributeResolver> byCategory = resolvers.get(category);
 			if(byCategory == null){
@@ -114,7 +114,7 @@ public class DefaultPolicyInformationPoint
 	public void addResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		for(AttributeCategoryId category : d.getSupportedCategores()){
+		for(AttributeCategory category : d.getSupportedCategores()){
 			addResolverForCategory(category, resolver);
 		}
 	}

@@ -5,7 +5,7 @@ package com.artagon.xacml.v3;
 public class AttributeAssignment extends XacmlObject implements PolicyElement
 {
 	private AttributeValue attribute;
-	private AttributeCategoryId category;
+	private AttributeCategories category;
 	private String attributeId;
 	private String issuer;
 	
@@ -22,7 +22,7 @@ public class AttributeAssignment extends XacmlObject implements PolicyElement
 	 */
 	public AttributeAssignment(
 			String attributeId, 
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String issuer, 
 			AttributeValue value)
 		throws XacmlSyntaxException
@@ -58,7 +58,7 @@ public class AttributeAssignment extends XacmlObject implements PolicyElement
 	 * 
 	 * @return attribute category
 	 */
-	public AttributeCategoryId getCategory(){
+	public AttributeCategories getCategory(){
 		return category;
 	}
 	

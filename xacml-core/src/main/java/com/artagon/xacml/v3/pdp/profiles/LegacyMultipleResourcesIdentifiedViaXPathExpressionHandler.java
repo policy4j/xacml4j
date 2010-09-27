@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v3.Attribute;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
@@ -26,7 +26,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 							request.getIncludeInResultAttributes(),
 							"Found repeating categories in the request"));
 		}
-		Attributes resource = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);
+		Attributes resource = request.getOnlyAttributes(AttributeCategories.RESOURCE);
 		if(resource == null){
 			return handleNext(request, pdp);
 		}
@@ -46,7 +46,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())
 		{
-			if(attrs.getCategory().equals(AttributeCategoryId.RESOURCE)){
+			if(attrs.getCategory().equals(AttributeCategories.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				for(Attribute attr : attrs.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))

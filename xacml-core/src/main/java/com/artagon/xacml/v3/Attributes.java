@@ -17,7 +17,7 @@ import com.google.common.collect.Multimap;
 public class Attributes extends XacmlObject
 {
 	private String id;
-	private AttributeCategoryId categoryId;
+	private AttributeCategory categoryId;
 	private Node content;
 	private Multimap<String, Attribute> attributes;
 	
@@ -32,7 +32,7 @@ public class Attributes extends XacmlObject
 	 */
 	public Attributes(
 			String id, 
-			AttributeCategoryId categoryId, 
+			AttributeCategory categoryId, 
 			Node content, 
 			Iterable<Attribute> attrs){
 		Preconditions.checkNotNull(categoryId);
@@ -47,48 +47,48 @@ public class Attributes extends XacmlObject
 	}
 	
 	/** 
-	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
 	 */
-	public Attributes(String id, AttributeCategoryId categoryId, 
+	public Attributes(String id, AttributeCategory categoryId, 
 			Node content, Attribute ...attributes){
 		this(id, categoryId, content, Arrays.asList(attributes));
 	}
 	
 	/** 
-	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
 	 */
-	public Attributes(AttributeCategoryId categoryId, 
+	public Attributes(AttributeCategory categoryId, 
 			Iterable<Attribute> attributes){
 		this(null, categoryId, null, attributes);
 	}
 	
-	public Attributes(AttributeCategoryId categoryId, 
+	public Attributes(AttributeCategory categoryId, 
 			Node content,
 			Iterable<Attribute> attributes){
 		this(null, categoryId, content, attributes);
 	}
 	
 	/** 
-	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
 	 */
 	public Attributes(String id, 
-			AttributeCategoryId categoryId, 
+			AttributeCategory categoryId, 
 			Iterable<Attribute> attributes){
 		this(id, categoryId, null, attributes);
 	}
 	
 	/** 
-	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
 	 */
-	public Attributes(String id, AttributeCategoryId categoryId, 
+	public Attributes(String id, AttributeCategory categoryId, 
 			Attribute ...attributes){
 		this(id, categoryId, null, Arrays.asList(attributes));
 	}
 	
 	/** 
-	 * @see {@link #Attributes(String, AttributeCategoryId, Node, Collection)
+	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
 	 */
-	public Attributes(AttributeCategoryId categoryId, 
+	public Attributes(AttributeCategory categoryId, 
 			Attribute ...attributes){
 		this(null, categoryId, null, Arrays.asList(attributes));
 	}
@@ -120,7 +120,7 @@ public class Attributes extends XacmlObject
 	 * 
 	 * @return attribute category
 	 */
-	public AttributeCategoryId getCategory(){
+	public AttributeCategory getCategory(){
 		return categoryId;
 	}
 

@@ -44,11 +44,11 @@ public class AdviceExpressionTest
 		AttributeAssignmentExpression attrExp0 = createStrictMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = createStrictMock(AttributeAssignmentExpression.class);
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(AttributeCategoryId.SUBJECT_ACCESS);
+		expect(attrExp0.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
 		expect(attrExp0.evaluate(context)).andReturn(IntegerType.INTEGER.create(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(AttributeCategoryId.RESOURCE);
+		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
 		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
 		replay(attrExp0, attrExp1, context);
@@ -58,12 +58,12 @@ public class AdviceExpressionTest
 		AttributeAssignment a0 = it.next();
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
-		assertEquals(AttributeCategoryId.SUBJECT_ACCESS, a0.getCategory());
+		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
 		assertEquals(IntegerType.INTEGER.create(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
-		assertEquals(AttributeCategoryId.RESOURCE, a1.getCategory());
+		assertEquals(AttributeCategories.RESOURCE, a1.getCategory());
 		assertEquals(BooleanType.BOOLEAN.create(false), a1.getAttribute());
 		verify(attrExp0, attrExp1, context);
 	}

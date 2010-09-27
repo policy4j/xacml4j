@@ -40,7 +40,7 @@ import com.artagon.xacml.util.VariableManager;
 import com.artagon.xacml.v3.AdviceExpression;
 import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.AttributeAssignmentExpression;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReference;
 import com.artagon.xacml.v3.AttributeSelector;
@@ -503,7 +503,7 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		return new AttributeAssignmentExpression(
 				exp.getAttributeId(),
 				parseExpression(exp.getExpression(), m), 
-				AttributeCategoryId.parse(exp.getCategory()),
+				AttributeCategories.parse(exp.getCategory()),
 				exp.getIssuer());
 	}
 

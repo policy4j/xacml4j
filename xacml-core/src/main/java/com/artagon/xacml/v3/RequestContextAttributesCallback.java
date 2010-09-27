@@ -13,7 +13,7 @@ public interface RequestContextAttributesCallback
 	 * if no matching attribute exist in the request context
 	 */
 	BagOfAttributeValues getAttributeValues(
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String attributeId, 
 			AttributeValueType dataType,
 			String issuer);
@@ -22,10 +22,10 @@ public interface RequestContextAttributesCallback
 	 * Method assumes that issuer is not specified for an
 	 * attribute in the request context
 	 * 
-	 * @see {{@link #getAttribute(AttributeCategoryId, String, String)}
+	 * @see {{@link #getAttribute(AttributeCategories, String, String)}
 	 */
 	BagOfAttributeValues getAttributeValues(
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String attributeId, 
 			AttributeValueType dataType);
 	
@@ -39,7 +39,7 @@ public interface RequestContextAttributesCallback
 	 * @return {@link AV} instance or <code>null</code> if attribute
 	 * with a given constraints can not be located in the request
 	 */
-	<AV extends AttributeValue> AV getAttributeValue(AttributeCategoryId categoryId, 
+	<AV extends AttributeValue> AV getAttributeValue(AttributeCategories categoryId, 
 			String attributeId, AttributeValueType dataType);
 	
 	/**
@@ -53,6 +53,6 @@ public interface RequestContextAttributesCallback
 	 * @return {@link AV} instance or <code>null</code> if attribute
 	 * with a given constraints can not be located in the request
 	 */
-	<AV extends AttributeValue> AV getAttributeValue(AttributeCategoryId categoryId, 
+	<AV extends AttributeValue> AV getAttributeValue(AttributeCategories categoryId, 
 			String attributeId, AttributeValueType dataType, String issuer);
 }

@@ -14,7 +14,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeResolutionScope;
@@ -54,7 +55,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	private Map<AttributeSelector, BagOfAttributeValues> attributeSelectorCache;
 	
 	/* Request scope attribute selector resolution cache */
-	private Map<AttributeCategoryId, Node> contentCache;
+	private Map<AttributeCategory, Node> contentCache;
 	
 	public DefaultContextHandler(XPathProvider xpathProvider, 
 			RequestContext request, PolicyInformationPoint pip)
@@ -68,13 +69,13 @@ public class DefaultContextHandler implements EvaluationContextHandler
 		this.pip = pip;
 		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues>();
 		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues>();
-		this.contentCache = new HashMap<AttributeCategoryId, Node>();
+		this.contentCache = new HashMap<AttributeCategory, Node>();
 	}
 	
 	
 	@Override
 	public Node getContent(EvaluationContext context,
-			AttributeCategoryId categoryId) 
+			AttributeCategory categoryId) 
 	{
 		Node content = contentCache.get(categoryId);
 		if(content == null)
@@ -128,7 +129,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	 * @throws EvaluationException if an error occurs
 	 * while resolving reference
 	 */
-	private final Node doGetContent(EvaluationContext context, AttributeCategoryId category) 
+	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
 	{
 		Attributes attr = request.getOnlyAttributes(category);
 		if(attr == null || 
@@ -263,7 +264,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 	{
 		@Override
 		public BagOfAttributeValues getAttributeValues(
-				AttributeCategoryId category, String attributeId, AttributeValueType dataType, String issuer) {
+				AttributeCategories category, String attributeId, AttributeValueType dataType, String issuer) {
 			Collection<Attributes> attributes = request.getAttributes(category);
 			Attributes  found = Iterables.getOnlyElement(attributes);
 			return dataType.bagType().create(found.getAttributeValues(attributeId, issuer, dataType));
@@ -271,13 +272,13 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 		@Override
 		public BagOfAttributeValues getAttributeValues(
-				AttributeCategoryId category, String attributeId, AttributeValueType dataType) {
+				AttributeCategories category, String attributeId, AttributeValueType dataType) {
 			return getAttributeValues(category, attributeId, dataType, null);
 		}
 
 		@Override
 		public <AV extends AttributeValue> AV getAttributeValue(
-				AttributeCategoryId categoryId, String attributeId,
+				AttributeCategories categoryId, String attributeId,
 				AttributeValueType dataType, String issuer) {
 			BagOfAttributeValues bag = getAttributeValues(categoryId, attributeId, dataType, issuer);
 			return bag.isEmpty()?null:bag.<AV>value();
@@ -285,7 +286,7 @@ public class DefaultContextHandler implements EvaluationContextHandler
 
 		@Override
 		public <AV extends AttributeValue> AV getAttributeValue(
-				AttributeCategoryId categoryId, 
+				AttributeCategories categoryId, 
 				String attributeId,
 				AttributeValueType dataType) {
 			BagOfAttributeValues bag = getAttributeValues(categoryId, attributeId, dataType);

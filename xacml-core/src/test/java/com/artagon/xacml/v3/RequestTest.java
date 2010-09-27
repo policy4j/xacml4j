@@ -26,25 +26,25 @@ public class RequestTest
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new Attribute("testId10", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId11", STRING.create("value1")));
-		this.resource0 = new Attributes(AttributeCategoryId.RESOURCE, resource0Attr);
+		this.resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
 		
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
 		resource1Attr.add(new Attribute("testId11", STRING.create("value0")));
 		resource1Attr.add(new Attribute("testId22", STRING.create("value1")));
 		resource1Attr.add(new Attribute("testId23", null, true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
 		resource1Attr.add(new Attribute("testId24","testIssuer", true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
-		this.resource1 = new Attributes(AttributeCategoryId.RESOURCE, resource1Attr);
+		this.resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subject0Attr = new LinkedList<Attribute>();
 		subject0Attr.add(new Attribute("testId31", STRING.create("value0")));
 		subject0Attr.add(new Attribute("testId32", STRING.create("value1")));
-		this.subject0 =  new Attributes(AttributeCategoryId.SUBJECT_ACCESS, subject0Attr);
+		this.subject0 =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subject0Attr);
 		
 		Collection<Attribute> subject1Attr = new LinkedList<Attribute>();
 		subject1Attr.add(new Attribute("testId41", STRING.create("value0")));
 		subject1Attr.add(new Attribute("testId42", STRING.create("value1")));
 		subject1Attr.add(new Attribute("testId43","testIssuer", true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
-		this.subject1 =  new Attributes(AttributeCategoryId.SUBJECT_CODEBASE, subject1Attr);
+		this.subject1 =  new Attributes(AttributeCategories.SUBJECT_CODEBASE, subject1Attr);
 	}
 	
 	@Test
@@ -67,17 +67,17 @@ public class RequestTest
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
-		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject0));
 		
 		RequestContext request2 = new RequestContext(true, 
 				Arrays.asList(subject0, resource0, resource1));
 		
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(AttributeCategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject0));
 	}
 	
 	@Test
@@ -86,11 +86,11 @@ public class RequestTest
 
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
-		Collection<Attributes> attr = request.getAttributes(AttributeCategoryId.RESOURCE);
+		Collection<Attributes> attr = request.getAttributes(AttributeCategories.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
 		assertTrue(attr.contains(resource1));
-		attr = request.getAttributes(AttributeCategoryId.ENVIRONMENT);
+		attr = request.getAttributes(AttributeCategories.ENVIRONMENT);
 		assertEquals(0, attr.size());		
 	}
 	
@@ -100,7 +100,7 @@ public class RequestTest
 
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
-		Collection<Attributes> attr = request.getAttributes(AttributeCategoryId.ACTION);
+		Collection<Attributes> attr = request.getAttributes(AttributeCategories.ACTION);
 		assertNotNull(attr);		
 	}
 	
@@ -109,7 +109,7 @@ public class RequestTest
 	{
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
-		request.getOnlyAttributes(AttributeCategoryId.RESOURCE);		
+		request.getOnlyAttributes(AttributeCategories.RESOURCE);		
 	}
 	
 	@Test
@@ -117,7 +117,7 @@ public class RequestTest
 	{
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
-		Attributes attr = request.getOnlyAttributes(AttributeCategoryId.RESOURCE);		
+		Attributes attr = request.getOnlyAttributes(AttributeCategories.RESOURCE);		
 		assertEquals(resource0, attr);
 	}
 	

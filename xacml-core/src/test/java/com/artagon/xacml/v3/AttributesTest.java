@@ -39,30 +39,30 @@ public class AttributesTest
 	public void testCreate1()
 	{
 		
-		Attributes test = new Attributes("id", AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes("id", AttributeCategories.RESOURCE,  content, attributes);
 		assertTrue(attributes.containsAll(test.getAttributes()));
 		assertTrue(test.getAttributes().containsAll(attributes));
 		assertEquals("id", test.getId());
 		assertSame(content, test.getContent());
-		assertEquals(AttributeCategoryId.RESOURCE, test.getCategory());
+		assertEquals(AttributeCategories.RESOURCE, test.getCategory());
 	}
 	
 	@Test
 	public void testCreate2()
 	{
 		
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertTrue(attributes.containsAll(test.getAttributes()));
 		assertTrue(test.getAttributes().containsAll(attributes));
 		assertNull(test.getId());
 		assertSame(content, test.getContent());
-		assertEquals(AttributeCategoryId.RESOURCE, test.getCategory());
+		assertEquals(AttributeCategories.RESOURCE, test.getCategory());
 	}
 	
 	@Test
 	public void testGetAttributesById()
 	{
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertEquals(2, test.getAttributes("testId10").size());
 		assertEquals(3, test.getAttributes("testId11").size());
 		assertEquals(5, test.getAttributes().size());
@@ -71,7 +71,7 @@ public class AttributesTest
 	@Test
 	public void testGetAttributesByIdAndIssuerAndType()
 	{
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertEquals(2, test.getAttributes("testId11", "testIssuer").size());
 		assertEquals(0, test.getAttributes("testId10", "testIssuer").size());
 	}
@@ -79,7 +79,7 @@ public class AttributesTest
 	@Test
 	public void testGetIncludeInResultAttributes()
 	{
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertEquals(2, test.getIncludeInResultAttributes().size());
 	}
 	
@@ -90,14 +90,14 @@ public class AttributesTest
 		attributes.add(new Attribute("testId10", STRING.create("value0")));
 		attributes.add(new Attribute("testId10", STRING.create("value0")));
 		assertEquals(2, attributes.size());
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertEquals(2, test.getAttributeValues("testId10", STRING).size());
 	}
 	
 	@Test
 	public void testGetAttributeValuesByIdAndIssuerAndType()
 	{
-		Attributes test = new Attributes(AttributeCategoryId.RESOURCE,  content, attributes);
+		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content, attributes);
 		assertEquals(2, test.getAttributeValues("testId10", null, INTEGER).size());
 		assertEquals(1, test.getAttributeValues("testId10", null, STRING).size());
 		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypesRegistry.STRING.getDataType()).size());

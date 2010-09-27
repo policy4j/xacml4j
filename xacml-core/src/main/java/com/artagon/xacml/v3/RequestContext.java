@@ -18,7 +18,7 @@ import com.google.common.collect.Multimap;
 public class RequestContext extends XacmlObject
 {	
 	private boolean returnPolicyIdList;
-	private Multimap<AttributeCategoryId, Attributes> attributes;
+	private Multimap<AttributeCategory, Attributes> attributes;
 	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> requestReferences;
 	private RequestDefaults requestDefaults;
@@ -133,7 +133,7 @@ public class RequestContext extends XacmlObject
 	 * @return a non-negative number indicating attributes of given 
 	 * category occurrence in this request
 	 */
-	public int getCategoryOccuriences(AttributeCategoryId category){
+	public int getCategoryOccuriences(AttributeCategory category){
 		Collection<Attributes> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
@@ -178,7 +178,7 @@ public class RequestContext extends XacmlObject
 	 * @return a set of all attribute categories in 
 	 * this request
 	 */
-	public Set<AttributeCategoryId> getCategories(){
+	public Set<AttributeCategory> getCategories(){
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 	
@@ -203,7 +203,7 @@ public class RequestContext extends XacmlObject
 	 * a request does not have attributes of a specified
 	 * category an empty collection is returned
 	 */
-	public Collection<Attributes> getAttributes(AttributeCategoryId categoryId){
+	public Collection<Attributes> getAttributes(AttributeCategory categoryId){
 		Preconditions.checkNotNull(categoryId);
 		return Collections.unmodifiableCollection(attributes.get(categoryId));
 	}
@@ -218,7 +218,7 @@ public class RequestContext extends XacmlObject
 	 * has more than one instance of {@link Attributes}
 	 * of the requested category
 	 */
-	public Attributes getOnlyAttributes(AttributeCategoryId category){
+	public Attributes getOnlyAttributes(AttributeCategory category){
 		Collection<Attributes> attributes = getAttributes(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
@@ -236,7 +236,7 @@ public class RequestContext extends XacmlObject
 	 * has more than one instance of {@link Attributes}
 	 * of the requested category
 	 */
-	public Node getOnlyContent(AttributeCategoryId categoryId) 
+	public Node getOnlyContent(AttributeCategory categoryId) 
 	{
 		Attributes attributes = getOnlyAttributes(categoryId);
 		return (attributes == null)?null:attributes.getContent();
@@ -251,7 +251,7 @@ public class RequestContext extends XacmlObject
 	 * has multiple attributes of same category
 	 */
 	public boolean hasRepeatingCategories(){
-		for(AttributeCategoryId category : getCategories()){
+		for(AttributeCategory category : getCategories()){
 			if(getCategoryOccuriences(category) > 1){
 				return true;
 			}
@@ -280,7 +280,7 @@ public class RequestContext extends XacmlObject
 	 * @param dataType an attribute data type
 	 * @return a collection of {@link AttributeValue} instances
 	 */
-	public Collection<AttributeValue> getAttributeValues(AttributeCategoryId categoryId, 
+	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
 			String attributeId, String issuer, AttributeValueType dataType)
 	{
 		Collection<AttributeValue> found = new LinkedList<AttributeValue>();
@@ -290,7 +290,7 @@ public class RequestContext extends XacmlObject
 		return found;
 	}
 	
-	public Collection<AttributeValue> getAttributeValues(AttributeCategoryId categoryId, 
+	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
 			String attributeId, AttributeValueType dataType)
 	{
 		return getAttributeValues(categoryId, attributeId, null, dataType);

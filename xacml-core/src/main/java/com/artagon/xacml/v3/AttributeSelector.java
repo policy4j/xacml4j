@@ -15,7 +15,7 @@ public class AttributeSelector extends
 	private String contextAttributeId;
 	
 	public AttributeSelector(
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String xpath, 
 			String contextAttributeId,
 			AttributeValueType dataType, 
@@ -27,7 +27,7 @@ public class AttributeSelector extends
 	}
 	
 	public AttributeSelector(
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String xpath, 
 			AttributeValueType dataType, 
 			boolean mustBePresent){
@@ -38,12 +38,12 @@ public class AttributeSelector extends
 			String contextAttributeId, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeCategoryId category = AttributeCategoryId.parse(categoryId);
+		AttributeCategories category = AttributeCategories.parse(categoryId);
 		return create(category, xpath, contextAttributeId, dataTypeId, mustBePresent);
 	}
 	
 	public static AttributeSelector create(
-			AttributeCategoryId category, 
+			AttributeCategories category, 
 			String xpath, 
 			String contextAttributeId, 
 			String dataTypeId, boolean mustBePresent) 

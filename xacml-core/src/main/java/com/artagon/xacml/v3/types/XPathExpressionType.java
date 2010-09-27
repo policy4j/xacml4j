@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -26,7 +26,7 @@ public enum XPathExpressionType implements AttributeValueType
 		return any instanceof String;
 	}
 	
-	public XPathExpressionValue create(String xpath, AttributeCategoryId category) 
+	public XPathExpressionValue create(String xpath, AttributeCategories category) 
 	{
 		return new XPathExpressionValue(this, xpath, category);
 	}
@@ -38,7 +38,7 @@ public enum XPathExpressionType implements AttributeValueType
 				"Given instance=\"%s\" can not be converted to this type value", v);
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
-		return new XPathExpressionValue(this, (String)v, (AttributeCategoryId)params[0]);
+		return new XPathExpressionValue(this, (String)v, (AttributeCategories)params[0]);
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public enum XPathExpressionType implements AttributeValueType
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
 		try{
-			AttributeCategoryId categoryId = AttributeCategoryId.parse(String.valueOf(params[0]));
+			AttributeCategories categoryId = AttributeCategories.parse(String.valueOf(params[0]));
 			return new XPathExpressionValue(this, v, categoryId);
 		}catch(XacmlSyntaxException e){
 			throw new IllegalArgumentException(e);

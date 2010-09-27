@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -25,7 +25,7 @@ public interface AttributeResolver
 	 */
 	 BagOfAttributeValues resolve(
 			PolicyInformationPointContext context,
-			AttributeCategoryId category,
+			AttributeCategory category,
 			String attributeId,
 			AttributeValueType dataType,
 			String issuer) throws Exception;

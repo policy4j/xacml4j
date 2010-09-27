@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Attribute;
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Decision;
@@ -52,27 +52,27 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId1", STRING.create("value0")));
 		attributes0.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategoryId.RESOURCE, attributes0);
+		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategories.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
 		attributes1.add(new Attribute("testId3", STRING.create("value0")));
 		attributes1.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes1);
+		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategories.RESOURCE, attributes1);
 		
 		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
 		attributes2.add(new Attribute("testId3", STRING.create("value0")));
 		attributes2.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr2 = new Attributes("actionAttr1",  AttributeCategoryId.ACTION, attributes1);
+		Attributes attr2 = new Attributes("actionAttr1",  AttributeCategories.ACTION, attributes1);
 		
 		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
 		attributes3.add(new Attribute("testId5", STRING.create("value0")));
 		attributes3.add(new Attribute("testId6", STRING.create("value1")));
-		Attributes attr3 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes2);
+		Attributes attr3 = new Attributes("subjectAttr0",  AttributeCategories.SUBJECT_ACCESS, attributes2);
 		
 		Collection<Attribute> attributes4 = new LinkedList<Attribute>();
 		attributes4.add(new Attribute("testId7", STRING.create("value0")));
 		attributes4.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes attr4 = new Attributes("subjectAttr1",  AttributeCategoryId.SUBJECT_ACCESS, attributes3);
+		Attributes attr4 = new Attributes("subjectAttr1",  AttributeCategories.SUBJECT_ACCESS, attributes3);
 		
 		
 		Collection<AttributesReference> ref0 = new LinkedList<AttributesReference>();
@@ -107,22 +107,22 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		RequestContext context0 = c0.getValue();
 		RequestContext context1 = c0.getValue();
 		
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId5"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId6"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId1"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId2"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId5"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId6"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId1"));
+		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId2"));
 		
 		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertEquals(1, context0.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributes(AttributeCategories.RESOURCE).size());
 		
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId7"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS)).getAttributes("testId8"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId3"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategoryId.RESOURCE)).getAttributes("testId4"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId7"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId8"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId3"));
+		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId4"));
 		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAttributes(AttributeCategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributes(AttributeCategoryId.RESOURCE).size());
+		assertEquals(1, context1.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributes(AttributeCategories.RESOURCE).size());
 		verify(pdp);
 	}
 	
@@ -132,12 +132,12 @@ public class MultipleDecisionRequestReferencesHandlerTest
 		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
 		attributes0.add(new Attribute("testId3", STRING.create("value0")));
 		attributes0.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategoryId.RESOURCE, attributes0);
+		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategories.RESOURCE, attributes0);
 		
 		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
 		attributes1.add(new Attribute("testId5", STRING.create("value0")));
 		attributes1.add(new Attribute("testId6", STRING.create("value1")));
-		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategoryId.SUBJECT_ACCESS, attributes1);
+		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategories.SUBJECT_ACCESS, attributes1);
 		
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(attr0, attr1));

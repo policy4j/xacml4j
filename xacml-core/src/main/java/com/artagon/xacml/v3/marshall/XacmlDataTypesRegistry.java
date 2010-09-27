@@ -7,7 +7,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -196,12 +197,12 @@ public enum XacmlDataTypesRegistry
 		}
 	}
 
-	private static AttributeCategoryId getXPathCategory(Map<QName, String> attr) 
+	private static AttributeCategory getXPathCategory(Map<QName, String> attr) 
 		throws XacmlSyntaxException
 	{
 		for (QName n : attr.keySet()) {
 			if (n.getLocalPart().equals("XPathCategory")) {
-				return AttributeCategoryId.parse(attr.get(n));
+				return AttributeCategories.parse(attr.get(n));
 			}
 		}
 		return null;

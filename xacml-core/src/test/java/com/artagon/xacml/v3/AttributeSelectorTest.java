@@ -26,7 +26,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenTrueAndReturnsNonEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
 		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
@@ -40,7 +40,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
 		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
@@ -54,7 +54,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
 		expect(context.resolve(ref)).andReturn(DATE.emptyBag());
@@ -67,7 +67,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
 		expect(context.resolve(ref)).andReturn(DATE.emptyBag());
@@ -81,7 +81,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
 		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
@@ -96,7 +96,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
 		expect(context.resolve(ref)).andThrow(new NullPointerException());
@@ -110,7 +110,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
 		expect(context.resolve(ref)).andThrow(new NullPointerException());
@@ -123,7 +123,7 @@ public class AttributeSelectorTest
 	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 		AttributeSelector ref = new AttributeSelector(
-				AttributeCategoryId.SUBJECT_RECIPIENT, 
+				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
 		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 

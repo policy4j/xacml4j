@@ -16,7 +16,7 @@ public class Result extends XacmlObject
 	private Decision decision;
 	private Map<String, Obligation> obligations;
 	private Map<String, Advice> associatedAdvice;
-	private Map<AttributeCategoryId, Attributes> attributes;
+	private Map<AttributeCategory, Attributes> attributes;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;
 	
 	/**
@@ -78,7 +78,7 @@ public class Result extends XacmlObject
 		this.status = status;
 		this.associatedAdvice = new LinkedHashMap<String, Advice>();
 		this.obligations = new LinkedHashMap<String, Obligation>();
-		this.attributes = new HashMap<AttributeCategoryId, Attributes>();
+		this.attributes = new HashMap<AttributeCategory, Attributes>();
 		this.policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
 		Iterables.addAll(this.policyReferences, policyIdentifiers);
 		for(Attributes attribute : attributes){
@@ -142,7 +142,7 @@ public class Result extends XacmlObject
 		return Collections.unmodifiableCollection(attributes.values());
 	}
 	
-	public Attributes getAttribute(AttributeCategoryId categoryId){
+	public Attributes getAttribute(AttributeCategory categoryId){
 		return attributes.get(categoryId);
 	}
 	

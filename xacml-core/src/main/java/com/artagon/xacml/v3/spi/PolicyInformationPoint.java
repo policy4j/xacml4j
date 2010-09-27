@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.spi;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategoryId;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -30,7 +30,7 @@ public interface PolicyInformationPoint
 	
 	Node resolve(
 			EvaluationContext context, 
-			AttributeCategoryId categoryId, 
+			AttributeCategory categoryId, 
 			RequestContextAttributesCallback callback);
 	
 	/**
