@@ -1,12 +1,15 @@
 package com.artagon.xacml.v3.pdp;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Attributes;

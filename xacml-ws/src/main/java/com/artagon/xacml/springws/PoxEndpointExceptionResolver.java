@@ -23,7 +23,6 @@ public class PoxEndpointExceptionResolver extends AbstractEndpointExceptionResol
 		try{
 			connection.setFault(true);
 		}catch(IOException e){
-			
 		}
 		return true;
 	}

@@ -29,25 +29,43 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	private EvaluationContextFactory factory;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
-	private PolicyDecisionCache requestCache = new NullDecisionCache();
+	private PolicyDecisionCache requestCache;
+	private PolicyDecisionPointAuditor decisionAuditor;
 	
 	public DefaultPolicyDecisionPoint(
 			List<RequestContextHandler> handlers,
 			EvaluationContextFactory factory,  
-			PolicyDomain policyRepository)
+			PolicyDomain policyRepository, 
+			PolicyDecisionCache cache, 
+			PolicyDecisionPointAuditor auditor)
 	{
 		Preconditions.checkNotNull(factory);
 		Preconditions.checkNotNull(policyRepository);
+		Preconditions.checkNotNull(cache);
+		Preconditions.checkNotNull(auditor);
 		this.factory = factory;
 		this.policyDomain = policyRepository;
 		this.requestProcessingPipeline = new RequestContextHandlerChain(handlers);
+		this.requestCache = cache;
+		this.decisionAuditor = auditor;
 	}
 	
 	public DefaultPolicyDecisionPoint(
 			EvaluationContextFactory factory,  
 			PolicyDomain policyRepostory)
 	{
-		this(Collections.<RequestContextHandler>emptyList(), factory, policyRepostory);
+		this(Collections.<RequestContextHandler>emptyList(), 
+				factory, policyRepostory);
+	}
+	
+	public DefaultPolicyDecisionPoint(
+			List<RequestContextHandler> handlers,
+			EvaluationContextFactory factory,  
+			PolicyDomain policyRepostory)
+	{
+		this(handlers, factory, policyRepostory, 
+				new NoCachePolicyDecisionCache(), 
+				new LoggerBasedPolicyDecisionPointAuditor());
 	}
 	
 	@Override
@@ -71,18 +89,20 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 				log.debug("Decision request=\"{}\" " +
 						"result=\"{}\"", request,  r);
 			}
+			decisionAuditor.audit(r, request);
 			return r;
 		}
 		EvaluationContext context = factory.createContext(request);
 		Decision decision = policyDomain.evaluate(context);
-		Result result = createResult(context, decision, 
+		r = createResult(context, decision, 
 				request.getIncludeInResultAttributes(), request.isReturnPolicyIdList());
 		if(log.isDebugEnabled()){
 			log.debug("Decision request=\"{}\" " +
-					"result=\"{}\"", request,  result);
+					"result=\"{}\"", request,  r);
 		}
-		requestCache.putDecision(request, result);
-		return result;
+		decisionAuditor.audit(r, request);
+		requestCache.putDecision(request, r);
+		return r;
 	}
 	
 	private Result createResult(EvaluationContext context, 
@@ -113,16 +133,4 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	public XPathProvider getXPathProvider() {
 		return factory.getXPathProvider();
 	}	
-	
-	private class NullDecisionCache implements PolicyDecisionCache
-	{
-		@Override
-		public Result getDecision(RequestContext req) {
-			return null;
-		}
-
-		@Override
-		public void putDecision(RequestContext req, Result res) {
-		}
-	}
 }
