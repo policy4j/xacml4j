@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.XacmlSyntaxException;

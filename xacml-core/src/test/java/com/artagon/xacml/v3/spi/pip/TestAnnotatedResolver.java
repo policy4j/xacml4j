@@ -31,4 +31,15 @@ public class TestAnnotatedResolver
 	{
 		return IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1));
 	}
+	
+	
+//	@XacmlAttributeDescriptor(id="testId3", typeId="http://www.w3.org/2001/XMLSchema#integer")
+//	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
+//	public BagOfAttributeValues getTestId3Attribute(
+//			PolicyInformationPointContext context, 
+//			@XacmlAttributeKey(id="username", 
+//					type="http://www.w3.org/2001/XMLSchema#integer")StringValue username)
+//	{
+//		return IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1));
+//	}
 }

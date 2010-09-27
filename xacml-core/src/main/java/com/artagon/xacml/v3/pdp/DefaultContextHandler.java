@@ -14,8 +14,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeResolutionScope;

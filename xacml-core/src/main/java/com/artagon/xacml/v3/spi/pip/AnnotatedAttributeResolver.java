@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
