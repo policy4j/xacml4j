@@ -229,7 +229,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	
 	@Override
-	public final Node evaluateToNode(String path, AttributeCategories categoryId)
+	public final Node evaluateToNode(String path, AttributeCategory categoryId)
 			throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
@@ -251,7 +251,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final NodeList evaluateToNodeSet(String path, 
-			AttributeCategories categoryId)
+			AttributeCategory categoryId)
 			throws EvaluationException 
 	{
 		if(log.isDebugEnabled()){
@@ -270,7 +270,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final Number evaluateToNumber(String path, AttributeCategories categoryId)
+	public final Number evaluateToNumber(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
@@ -288,7 +288,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final String evaluateToString(String path, AttributeCategories categoryId)
+	public final String evaluateToString(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);

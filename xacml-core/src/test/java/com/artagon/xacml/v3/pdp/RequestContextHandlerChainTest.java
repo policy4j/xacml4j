@@ -7,9 +7,6 @@ import static org.easymock.EasyMock.verify;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.pdp.RequestContextHandler;
-import com.artagon.xacml.v3.pdp.RequestContextHandlerChain;
-
 public class RequestContextHandlerChainTest 
 {		
 	@Test

@@ -177,7 +177,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Node evaluateToNode(String path, AttributeCategories categoryId)
+	public Node evaluateToNode(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNode(path, categoryId);
 	}
@@ -186,7 +186,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public NodeList evaluateToNodeSet(String path, AttributeCategories categoryId)
+	public NodeList evaluateToNodeSet(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNodeSet(path, categoryId);
 	}
@@ -195,7 +195,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Number evaluateToNumber(String path, AttributeCategories categoryId)
+	public Number evaluateToNumber(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToNumber(path, categoryId);
 	}
@@ -204,7 +204,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public String evaluateToString(String path, AttributeCategories categoryId)
+	public String evaluateToString(String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		return delegate.evaluateToString(path, categoryId);
 	}

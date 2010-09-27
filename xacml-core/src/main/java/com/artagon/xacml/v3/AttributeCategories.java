@@ -31,6 +31,16 @@ public enum AttributeCategories implements AttributeCategory
 		this.id = id;
 	}
 	
+	@Override
+	public String getId(){
+		return id;
+	}
+	
+	@Override
+	public String toString(){
+		return id;
+	}
+	
 	/**
 	 * Parses given value to the {@link AttributeCategories}
 	 * 
@@ -40,22 +50,53 @@ public enum AttributeCategories implements AttributeCategory
 	 * value can not be converted to the
 	 * {@link AttributeCategories} value
 	 */
-	public static AttributeCategories parse(String v) 
+	public static AttributeCategory parse(String v) 
 		throws XacmlSyntaxException
 	{
 		if(v == null){
 			return null;
 		}
-		AttributeCategories c = BY_ID.get(v);
+		AttributeCategory c = BY_ID.get(v);
 		if(c == null){
-			throw new XacmlSyntaxException(
-					"Unknown c=attribute category=\"%s\"", v);
+			c = new CustomAttributeCategory(v);
 		}
 		return c;
 	}
+
 	
-	@Override
-	public String toString(){
-		return id;
+	private static class CustomAttributeCategory 
+		implements AttributeCategory{
+		private String categoryId;
+		
+		private CustomAttributeCategory(String categoryId){
+			this.categoryId = categoryId;
+		}
+		
+		@Override
+		public String getId(){
+			return categoryId;
+		}
+		
+		@Override
+		public int hashCode() {
+			return categoryId.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if(this == obj){
+				return true;
+			}
+			if(!(obj instanceof AttributeCategory)){
+				return false;
+			}
+			AttributeCategory c = (AttributeCategory)obj;
+			return c.getId().equals(categoryId);
+		}
+		
+		@Override
+		public String toString() {
+			return categoryId;
+		}		
 	}
 }

@@ -189,23 +189,23 @@ public interface EvaluationContext
 
 	NodeList evaluateToNodeSet(
 			String xpath, 
-			AttributeCategories categoryId) 
+			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
 	
 	String evaluateToString(
 			String path, 
-			AttributeCategories categoryId) 
+			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
 	Node evaluateToNode(
 			String path, 
-			AttributeCategories categoryId) 
+			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
 	Number evaluateToNumber(
 			String path, 
-			AttributeCategories categoryId) 
+			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
 	/**

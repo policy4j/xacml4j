@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.types;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
@@ -47,7 +48,7 @@ public enum XPathExpressionType implements AttributeValueType
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
 		try{
-			AttributeCategories categoryId = AttributeCategories.parse(String.valueOf(params[0]));
+			AttributeCategory categoryId = AttributeCategories.parse(String.valueOf(params[0]));
 			return new XPathExpressionValue(this, v, categoryId);
 		}catch(XacmlSyntaxException e){
 			throw new IllegalArgumentException(e);
