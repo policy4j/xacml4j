@@ -30,14 +30,14 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
 	private PolicyDecisionCache requestCache;
-	private PolicyDecisionPointAuditor decisionAuditor;
+	private PolicyDecisionAuditor decisionAuditor;
 	
 	public DefaultPolicyDecisionPoint(
 			List<RequestContextHandler> handlers,
 			EvaluationContextFactory factory,  
 			PolicyDomain policyRepository, 
 			PolicyDecisionCache cache, 
-			PolicyDecisionPointAuditor auditor)
+			PolicyDecisionAuditor auditor)
 	{
 		Preconditions.checkNotNull(factory);
 		Preconditions.checkNotNull(policyRepository);

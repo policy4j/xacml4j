@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 
-public class LoggerBasedPolicyDecisionPointAuditor implements PolicyDecisionPointAuditor
+public class LoggerBasedPolicyDecisionPointAuditor implements PolicyDecisionAuditor
 {
 	private final static Logger log = LoggerFactory.getLogger(LoggerBasedPolicyDecisionPointAuditor.class);
 	
