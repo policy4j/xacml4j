@@ -41,6 +41,11 @@ public class VariableDefinition extends XacmlObject implements Expression
 		return expression.getEvaluatesTo();
 	}
 	
+	/**
+	 * Gets variable expression
+	 * 
+	 * @return a variable expression
+	 */
 	public Expression getExpression(){
 		return expression;
 	}
