@@ -106,7 +106,8 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 				multiRequests.add(create(m));
 			}
 		}
-		return new RequestContext(req.isReturnPolicyIdList(), attributes, multiRequests, null);
+		return new RequestContext(req.isReturnPolicyIdList(), 
+				req.isCombinedDecision(), attributes, multiRequests, null);
 	}
 	
 	public ResponseType create(ResponseContext res) throws XacmlSyntaxException
