@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
-import com.artagon.xacml.v3.pdp.profiles.MultipleDecisionProfileHandler;
+import com.artagon.xacml.v3.pdp.profiles.MultipleResourcesHandler;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
@@ -29,7 +29,7 @@ public class PolicyDecisionPointFactoryBean extends
 	
 	public PolicyDecisionPointFactoryBean(){
 		this.handlers = new LinkedList<RequestContextHandler>();
-		this.handlers.add(new MultipleDecisionProfileHandler());
+		this.handlers.add(new MultipleResourcesHandler());
 		this.xpathProvider = new DefaultXPathProvider();
 	}
 	
