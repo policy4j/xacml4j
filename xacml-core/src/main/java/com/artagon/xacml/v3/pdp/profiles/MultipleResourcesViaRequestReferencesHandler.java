@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 
-final class MultipleDecisionRequestReferencesHandler extends AbstractRequestContextHandler
+final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	
 	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 

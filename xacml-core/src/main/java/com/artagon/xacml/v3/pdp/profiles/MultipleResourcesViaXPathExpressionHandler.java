@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-final class MultipleDecisionXPathExpressionHandler extends AbstractRequestContextHandler
+final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestContextHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(MultipleDecisionXPathExpressionHandler.class);
+	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesViaXPathExpressionHandler.class);
 	
 	final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	

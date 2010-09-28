@@ -14,7 +14,7 @@ import com.google.common.collect.Iterables;
  * A chain of {@link RequestContextHandler}
  * implementations implemented as {@link RequestContextHandler}
  * 
- * @author Giedrius Trumopickas
+ * @author Giedrius Trumpickas
  */
 public class RequestContextHandlerChain implements RequestContextHandler
 {
@@ -47,7 +47,7 @@ public class RequestContextHandlerChain implements RequestContextHandler
 		if(handlers.isEmpty()){
 			return Collections.singleton(pdp.requestDecision(request));
 		}
-		return handlers.get(0).handle(request, pdp);
+		return postProcessResults(request, handlers.get(0).handle(request, pdp));
 	}
 
 	@Override
@@ -58,5 +58,17 @@ public class RequestContextHandlerChain implements RequestContextHandler
 					"this handler does not have any handlers");
 		}
 		handlers.get(handlers.size() - 1).setNext(handler);
+	}
+	
+	/**
+	 * A hooh to post-process decision results
+	 * 
+	 * @param req a decision request
+	 * @param results a collection of decision results
+	 * @return a collection of decision results
+	 */
+	protected Collection<Result> postProcessResults(RequestContext req, 
+			Collection<Result> results){
+		return results;
 	}
 }

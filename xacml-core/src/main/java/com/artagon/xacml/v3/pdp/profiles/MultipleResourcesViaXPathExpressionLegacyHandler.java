@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 
-public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends AbstractRequestContextHandler
+public class MultipleResourcesViaXPathExpressionLegacyHandler extends AbstractRequestContextHandler
 {
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
@@ -53,7 +53,7 @@ public class LegacyMultipleResourcesIdentifiedViaXPathExpressionHandler extends 
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
 						Attribute selector = new Attribute(
-								MultipleDecisionXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
+								MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
 								attr.getIssuer(), true, attr.getValues());
 						resourceAttr.add(selector);
 						continue;

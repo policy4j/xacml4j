@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.google.common.collect.Sets;
 
-final class MultipleDecisionRepeatingAttributesHandler extends AbstractRequestContextHandler
+final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
 	@Override
 	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 

@@ -37,7 +37,7 @@ public enum SubjectAttributes
 	
 	/**
 	 * This identifier indicates the time at which the subject initiated the 
-	 * 	access request, according to the PEP.
+	 * access request, according to the PEP.
 	 */
 	REQUEST_TIME("urn:oasis:names:tc:xacml:1.0:subject:request-time"),
 	

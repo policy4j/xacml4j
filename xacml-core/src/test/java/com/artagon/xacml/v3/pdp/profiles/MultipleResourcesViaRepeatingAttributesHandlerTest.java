@@ -30,7 +30,7 @@ import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 
-public class MultipleDecisionRepeatingAttributesHandlerTest 
+public class MultipleResourcesViaRepeatingAttributesHandlerTest 
 {
 	private PolicyDecisionCallback pdp;
 	private RequestContextHandler profile;
@@ -38,7 +38,7 @@ public class MultipleDecisionRepeatingAttributesHandlerTest
 	@Before
 	public void init(){
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleDecisionRepeatingAttributesHandler();
+		this.profile = new MultipleResourcesViaRepeatingAttributesHandler();
 	}
 	
 	@Test

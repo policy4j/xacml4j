@@ -18,6 +18,7 @@ import com.google.common.collect.Multimap;
 public class RequestContext extends XacmlObject
 {	
 	private boolean returnPolicyIdList;
+	private boolean combinedDecision;
 	private Multimap<AttributeCategory, Attributes> attributes;
 	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> requestReferences;
@@ -34,7 +35,9 @@ public class RequestContext extends XacmlObject
 	 * @param requestReferences a request references
 	 * @param requestDefaults a request defaults
 	 */
-	public RequestContext(boolean returnPolicyIdList, 
+	public RequestContext(
+			boolean returnPolicyIdList, 
+			boolean combinedDecision,
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences, 
 			RequestDefaults requestDefaults)
@@ -47,6 +50,7 @@ public class RequestContext extends XacmlObject
 		this.requestReferences = new ArrayList<RequestReference>(requestReferences);
 		this.attributesByXmlId = new HashMap<String, Attributes>();
 		this.requestDefaults = requestDefaults;
+		this.combinedDecision = combinedDecision;
 		for(Attributes attr : attributes)
 		{
 			// index attributes by category
@@ -69,7 +73,7 @@ public class RequestContext extends XacmlObject
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
-		this(returnPolicyIdList, attributes, 
+		this(returnPolicyIdList, false, attributes, 
 				requestReferences, new RequestDefaults());
 	}
 	
@@ -96,7 +100,7 @@ public class RequestContext extends XacmlObject
 			Collection<Attributes> attributes, 
 			RequestDefaults requestDefaults)
 	{
-		this(returnPolicyIdList, attributes, 
+		this(returnPolicyIdList, false, attributes, 
 				Collections.<RequestReference>emptyList(), requestDefaults);
 	}
 	
@@ -114,6 +118,21 @@ public class RequestContext extends XacmlObject
 	 */
 	public boolean isReturnPolicyIdList(){
 		return returnPolicyIdList;
+	}
+	
+	/**
+	 * Gets a flag used to request that the PDP combines multiple 
+	 * decisions into a single decision. The use of this attribute 
+	 * is specified in [Multi]. If the PDP does not implement the relevant 
+	 * functionality in [Multi], then the PDP must return an Indeterminate 
+	 * with a status code "Processing Error @{link {@link StatusCode#isProcessingError()} returns 
+	 * <code>true</code> if it receives a request with this attribute 
+	 * set to <code>true</code>
+	 * 
+	 * @return
+	 */
+	public boolean isCombinedDecision(){
+		return combinedDecision;
 	}
 	
 	/**

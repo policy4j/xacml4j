@@ -52,6 +52,16 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	
 	public DefaultPolicyDecisionPoint(
 			EvaluationContextFactory factory,  
+			PolicyDomain policyRepostory, 
+			PolicyDecisionCache cache, 
+			PolicyDecisionAuditor auditor)
+	{
+		this(Collections.<RequestContextHandler>emptyList(), 
+				factory, policyRepostory, cache, auditor);
+	}
+	
+	public DefaultPolicyDecisionPoint(
+			EvaluationContextFactory factory,  
 			PolicyDomain policyRepostory)
 	{
 		this(Collections.<RequestContextHandler>emptyList(), 

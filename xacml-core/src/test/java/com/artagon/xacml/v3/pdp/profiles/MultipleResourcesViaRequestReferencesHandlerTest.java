@@ -34,7 +34,7 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.google.common.collect.Iterables;
 
-public class MultipleDecisionRequestReferencesHandlerTest 
+public class MultipleResourcesViaRequestReferencesHandlerTest 
 {
 	private PolicyDecisionCallback pdp;
 	private RequestContextHandler profile;
@@ -43,7 +43,7 @@ public class MultipleDecisionRequestReferencesHandlerTest
 	public void init()
 	{
 		this.pdp = createStrictMock(PolicyDecisionCallback.class);
-		this.profile = new MultipleDecisionRequestReferencesHandler();
+		this.profile = new MultipleResourcesViaRequestReferencesHandler();
 	}
 	
 	@Test
