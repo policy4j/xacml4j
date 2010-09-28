@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -18,6 +20,7 @@ import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
+import com.artagon.xacml.v3.sdk.XacmlAttributeKey;
 import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -95,7 +98,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			Preconditions.checkState(c != null, 
 					"Class=\"%s\" method=\"%s\" does not have attribute category specified", 
 					instance.getClass().getName(), r.getName());
-			Preconditions.checkState(validateResolverMethod(r));
+			validateResolverMethod(r);
 			for(String cat : c.value())
 			{
 				AttributeCategory category = AttributeCategories.parse(cat);
@@ -112,13 +115,55 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 		return new AnnotatedAttributeResolver(builder.build(), methods, instance);
 	} 
 	
-	private static boolean validateResolverMethod(Method m)
+	private static void validateResolverMethod(Method m)
 	{
-		Class<?>[] p = m.getParameterTypes();
-		if(p == null){
-			return false;
+		if(log.isDebugEnabled()){
+			log.debug("Validating resolver method=\"{}\" with=\"{}\" parameters" , m.getName(),  
+					(m.getParameterTypes() == null)?0:m.getParameterTypes().length);
 		}
-		return m.getReturnType().isAssignableFrom(BagOfAttributeValues.class) && 
-		PolicyInformationPointContext.class.isAssignableFrom(p[0]);
+		Class<?>[] p = m.getParameterTypes();
+		Preconditions.checkArgument(!(p == null || p.length == 0), 
+				"Attribute resolver method should have at least on parameter");
+		Preconditions.checkArgument(PolicyInformationPointContext.class.isAssignableFrom(p[0]),
+				"First attribute resolver method parameter must be of type=\"%s", 
+				PolicyInformationPointContext.class.getName());
+		
+		Preconditions.checkArgument(m.getReturnType().isAssignableFrom(BagOfAttributeValues.class), 
+				"Attribute resolver method should return value of type=\"%s\"", BagOfAttributeValues.class.getName());
+		if(p.length == 1){
+			return;
+		}
+		Annotation[][] params = m.getParameterAnnotations();
+		for(int i = 1; i < p.length; i++)
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Validating resolver method=\"{}\" parameter of type=\"{}\"" , m.getName(),  
+						p[i].getName());
+			}
+			
+			if(params[i] == null || 
+					params[i].length == 0 || 
+					!(params[i][0] instanceof XacmlAttributeKey)){
+				throw new IllegalArgumentException(String.format(
+						"Additional attribute resolver method=\"%s\" parameter at index=\"%d\" must be " +
+						"annotiated via=\"%s\" annotation", 
+						m.getName(), i, XacmlAttributeKey.class.getName()));
+			}
+			XacmlAttributeKey key = (XacmlAttributeKey)params[i][0];
+			if(key.isBag() && 
+					!p[i].isAssignableFrom(BagOfAttributeValues.class)){
+				throw new IllegalArgumentException(String.format(
+						"Attribuite resolver method=\"%s\" annotation=\"%s\" " +
+						"defines XACML bag but parameter at index=\"%d\" is of type=\"%s\"", 
+						m.getName(), XacmlAttributeKey.class.getName(),i, p[i].getName()));
+			}
+			if(!(!key.isBag() && 
+					AttributeValue.class.isAssignableFrom(p[i]))){
+				throw new IllegalArgumentException(String.format(
+						"Attribuite resolver method=\"%s\" annotation=\"%s\" " +
+						"defines XACML scalar type but  parameter at index=\"%d\" is of type=\"%s\"", 
+						m.getName(), XacmlAttributeKey.class.getName(), i, p[i].getName()));
+			}
+		}
 	}
 }
