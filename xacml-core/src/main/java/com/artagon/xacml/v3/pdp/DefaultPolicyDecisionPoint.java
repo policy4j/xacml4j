@@ -75,7 +75,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	{
 		this(handlers, factory, policyRepostory, 
 				new NoCachePolicyDecisionCache(), 
-				new LoggerBasedPolicyDecisionPointAuditor());
+				new NoAuditPolicyDecisionPointAuditor());
 	}
 	
 	@Override
