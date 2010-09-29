@@ -51,8 +51,8 @@ public class RSA2008InteropTest
 		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
 		pip = new DefaultPolicyInformationPoint();
-		pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(
-				repository, pip), domain);
+		pdp = new DefaultPolicyDecisionPoint(
+				new DefaultEvaluationContextFactory(repository, pip), domain);
 		
 	}
 	
@@ -194,13 +194,17 @@ public class RSA2008InteropTest
 	{
 		RequestContext request = getRequest(name);
 		ResponseContext response = null;
-		for(int i = 0; i < 1; i++){
-			long start = System.currentTimeMillis();
+		int n = 10;
+		long time = 0;
+		for(int i = 0; i < n; i++){
+			long start = System.nanoTime();
 			response = pdp.decide(request);
-			long end = System.currentTimeMillis();
-			System.out.printf("Test=\"%s\" execution took=\"%d\" miliseconds\n", name, (end - start));
+			long end = System.nanoTime();
+			time += (end - start);
 		}
-		
-		return Iterables.getOnlyElement(response.getResults());
+		System.out.printf("Test=\"%s\" avg execution took=\"%d\" nano s and took=\"%d\" iterations\n", name, time/n, n);
+		Result r = Iterables.getOnlyElement(response.getResults());
+		//System.out.printf("Request result=\"%s\"\n", r.toString());
+		return r;
 	}
 }
