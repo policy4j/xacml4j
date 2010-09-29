@@ -170,13 +170,13 @@ public class Attributes extends XacmlObject
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
 		Collection<Attribute> v = attributes.get(attributeId);
-		return  Collections2.filter(v, new Predicate<Attribute>() {
-			@Override
-			public boolean apply(Attribute attr) {
-				return issuer == null || 
-				issuer.equals(attr.getIssuer());
-			}
-		});	
+		return Collections.unmodifiableCollection(
+				Collections2.filter(v, new Predicate<Attribute>() {
+					@Override
+					public boolean apply(Attribute attr) {
+						return issuer == null || 
+						issuer.equals(attr.getIssuer());
+					}}));	
 	}
 	
 	/**
@@ -199,12 +199,13 @@ public class Attributes extends XacmlObject
 	 * instances
 	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
-		return  Collections2.filter(attributes.values(), new Predicate<Attribute>() {
-			@Override
-			public boolean apply(Attribute attr) {
-				return attr.isIncludeInResult();
-			}
-		});	
+		return Collections.unmodifiableCollection(
+				Collections2.filter(attributes.values(), new Predicate<Attribute>() {
+				@Override
+				public boolean apply(Attribute attr) {
+					return attr.isIncludeInResult();
+				}
+			}));	
 	}
 	
 	/**

@@ -70,11 +70,20 @@ public class RequestContext extends XacmlObject
 	 * instances
 	 */
 	public RequestContext(boolean returnPolicyIdList, 
+			boolean combinedDecision,
 			Collection<Attributes> attributes, 
 			Collection<RequestReference> requestReferences)
 	{
-		this(returnPolicyIdList, false, attributes, 
+		this(returnPolicyIdList, combinedDecision, attributes, 
 				requestReferences, new RequestDefaults());
+	}
+	
+	public RequestContext(boolean returnPolicyIdList, 
+			boolean combinedDecision,
+			Collection<Attributes> attributes)
+	{
+		this(returnPolicyIdList, combinedDecision, attributes, 
+				Collections.<RequestReference>emptyList());
 	}
 	
 	/**
@@ -83,10 +92,10 @@ public class RequestContext extends XacmlObject
 	 * @param attributes a collection of {@link Attributes}
 	 * instances
 	 */
-	public RequestContext(boolean returnPolicyIdList, 
+	public RequestContext(boolean returnPolicyIdList,
 			Collection<Attributes> attributes)
 	{
-		this(returnPolicyIdList, attributes, 
+		this(returnPolicyIdList, false, attributes, 
 				Collections.<RequestReference>emptyList());
 	}
 	

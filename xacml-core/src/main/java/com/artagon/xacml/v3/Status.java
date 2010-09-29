@@ -47,6 +47,10 @@ public final class Status extends XacmlObject
 				(format == null)?null:String.format(format, params), null);
 	}
 	
+	public static Status createProcessingError(){
+		return createProcessingError(null);
+	}
+	
 	public static Status createMissingAttribute(String format, Object ...params){
 		return new Status(StatusCode.createMissingAttribute(), 
 				(format == null)?null:String.format(format, params), null);

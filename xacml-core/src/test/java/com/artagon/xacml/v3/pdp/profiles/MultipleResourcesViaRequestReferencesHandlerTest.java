@@ -87,7 +87,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestReference reference1 = new RequestReference(ref1);
 		
 			
-		RequestContext context = new RequestContext(false, 
+		RequestContext context = new RequestContext(false, false,
 				Arrays.asList(attr0, attr1, attr2, attr3, attr4), 
 				Arrays.asList(reference0, reference1));
 		

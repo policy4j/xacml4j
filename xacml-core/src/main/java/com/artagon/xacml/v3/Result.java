@@ -49,8 +49,15 @@ public class Result extends XacmlObject
 				Collections.<Obligation>emptyList(),
 				attributes, 
 				Collections.<CompositeDecisionRuleIDReference>emptyList());
-		Preconditions.checkArgument(decision == Decision.NOT_APPLICABLE 
-				|| decision.isIndeterminate());
+	}
+	
+	public Result(Decision decision, 
+			Status status){
+		this(decision, status, 
+				Collections.<Advice>emptyList(),
+				Collections.<Obligation>emptyList(),
+				Collections.<Attributes>emptyList(),
+				Collections.<CompositeDecisionRuleIDReference>emptyList());
 	}
 	
 	/**
@@ -95,6 +102,10 @@ public class Result extends XacmlObject
 	
 	public static Result createIndeterminate(Status status, Collection<Attributes> attributes){
 		return new Result(Decision.INDETERMINATE, status, attributes);
+	}
+	
+	public static Result createIndeterminate(Status status){
+		return new Result(Decision.INDETERMINATE, status, Collections.<Attributes>emptyList());
 	}
 	
 	public static Result createIndeterminateSyntaxError(Collection<Attributes> attributes, 

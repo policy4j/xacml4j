@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.pdp.audit;
 
+import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.PolicyDecisionAuditor;
@@ -13,6 +14,13 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 		}
 	}
 	
+	/**
+	 * Invokes appropriate audit hook based
+	 * on decision result
+	 * 
+	 * @param req a decision request
+	 * @param result a decision result
+	 */
 	private void doAudit(RequestContext req, Result result)
 	{
 		switch(result.getDecision()){
@@ -44,14 +52,35 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 		return false;
 	}
 	
+	/**
+	 * Invokes in case {@link Result#getDecision()} returns
+	 * {@link Decision#PERMIT}
+	 * 
+	 * @param req a decision request
+	 * @param result a decision result
+	 */
 	protected void doPermitAudit(RequestContext req, Result result){
 		
 	}
 	
+	/**
+	 * Invokes in case {@link Result#getDecision()} returns
+	 * {@link Decision#DENY}
+	 * 
+	 * @param req a decision request
+	 * @param result a decision result
+	 */
 	protected void doDenyAudit(RequestContext req, Result result){
 		
 	}
 	
+	/**
+	 * Invokes in case {@link Result#getDecision()} returns
+	 * {@link Decision#DENY}
+	 * 
+	 * @param req a decision request
+	 * @param result a decision result
+	 */
 	protected void doNotApplicableAudit(RequestContext req, Result result){
 		
 	}
