@@ -81,6 +81,8 @@ public class Result extends XacmlObject
 		Preconditions.checkNotNull(obligations);
 		Preconditions.checkNotNull(associatedAdvice);
 		Preconditions.checkNotNull(attributes);
+		Preconditions.checkArgument(!(decision.isIndeterminate() ^ 
+				status.isFailure()));
 		this.decision = decision;
 		this.status = status;
 		this.associatedAdvice = new LinkedHashMap<String, Advice>();
@@ -100,24 +102,28 @@ public class Result extends XacmlObject
 	}
 	
 	
-	public static Result createIndeterminate(Status status, Collection<Attributes> attributes){
+	public static Result createIndeterminate(Status status, 
+			Collection<Attributes> attributes){
 		return new Result(Decision.INDETERMINATE, status, attributes);
 	}
 	
 	public static Result createIndeterminate(Status status){
-		return new Result(Decision.INDETERMINATE, status, Collections.<Attributes>emptyList());
+		return new Result(Decision.INDETERMINATE, status, 
+				Collections.<Attributes>emptyList());
 	}
 	
-	public static Result createIndeterminateSyntaxError(Collection<Attributes> attributes, 
+	public static Result createIndeterminateSyntaxError(
+			Collection<Attributes> attributes, 
 			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
 				Status.createSyntaxError(format, params), attributes);
 	}
 	
-	public static Result createIndeterminateProcessingError(Collection<Attributes> attributes,
+	public static Result createIndeterminateProcessingError(
+			Collection<Attributes> attributes,
 			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
-				Status.createSyntaxError(format, params), attributes);
+				Status.createProcessingError(format, params), attributes);
 	}
 	
 	

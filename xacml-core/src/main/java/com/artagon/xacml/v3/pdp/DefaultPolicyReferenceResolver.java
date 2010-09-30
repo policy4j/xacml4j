@@ -19,7 +19,7 @@ import com.artagon.xacml.v3.spi.AbstractPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;
 
-public class DefaultPolicyReferenceResolver 
+class DefaultPolicyReferenceResolver 
 	implements PolicyReferenceResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);

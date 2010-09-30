@@ -69,7 +69,7 @@ public class MultipleResourcesHandlerTest
 	}
 	
 	@Test
-	public void testRequestWithTwoAttributesOfTheCategory()
+	public void testAllResultsAreDeny()
 	{
 		
 		
@@ -82,23 +82,148 @@ public class MultipleResourcesHandlerTest
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.DENY, 
-						new Status(StatusCode.createProcessingError()), 
+					new Result(Decision.DENY, Status.createSuccess(), 
 						Collections.<Attributes>emptyList()));
 		
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.DENY, 
-						new Status(StatusCode.createProcessingError()), 
+				new Result(Decision.DENY, Status.createSuccess(), 
 						Collections.<Attributes>emptyList()));
 		
 		expect(pdp.requestDecision(capture(c2))).andReturn(
-				new Result(Decision.DENY, 
-						new Status(StatusCode.createOk()),
+				new Result(Decision.DENY, Status.createSuccess(),
 				Collections.<Attributes>emptyList()));
 		
 		expect(pdp.requestDecision(capture(c3))).andReturn(
-				new Result(Decision.DENY, 
-						new Status(StatusCode.createProcessingError()),
+				new Result(Decision.DENY, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(1, results.size());
+		Result r = results.iterator().next();
+	
+		assertEquals(Decision.DENY, r.getDecision());
+		assertEquals(Status.createSuccess(), r.getStatus());
+		
+		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getObligations().size());
+		assertEquals(0, r.getAssociatedAdvice().size());
+		verify(pdp);
+	}
+	
+	@Test
+	public void testAllResultsArePermit()
+	{
+		
+		
+		RequestContext context = new RequestContext(false, true,
+				Arrays.asList(subject0, subject1, resource0, resource1));
+		
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c2 = new Capture<RequestContext>();
+		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+					new Result(Decision.PERMIT, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c1))).andReturn(
+				new Result(Decision.PERMIT, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c2))).andReturn(
+				new Result(Decision.PERMIT, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c3))).andReturn(
+				new Result(Decision.PERMIT, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(1, results.size());
+		Result r = results.iterator().next();
+	
+		assertEquals(Decision.PERMIT, r.getDecision());
+		assertEquals(Status.createSuccess(), r.getStatus());
+		
+		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getObligations().size());
+		assertEquals(0, r.getAssociatedAdvice().size());
+		verify(pdp);
+	}
+	
+	@Test
+	public void testAllResultsAreNotApplicable()
+	{
+		
+		
+		RequestContext context = new RequestContext(false, true,
+				Arrays.asList(subject0, subject1, resource0, resource1));
+		
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c2 = new Capture<RequestContext>();
+		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c1))).andReturn(
+				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c2))).andReturn(
+				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c3))).andReturn(
+				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		replay(pdp);
+		Collection<Result> results = profile.handle(context, pdp);
+		assertEquals(1, results.size());
+		Result r = results.iterator().next();
+	
+		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
+		assertEquals(Status.createSuccess(), r.getStatus());
+		
+		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getObligations().size());
+		assertEquals(0, r.getAssociatedAdvice().size());
+		verify(pdp);
+	}
+	
+	@Test
+	public void testVariousResults()
+	{
+		
+		
+		RequestContext context = new RequestContext(false, true,
+				Arrays.asList(subject0, subject1, resource0, resource1));
+		
+		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c2 = new Capture<RequestContext>();
+		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		
+		expect(pdp.requestDecision(capture(c0))).andReturn(
+					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c1))).andReturn(
+				new Result(Decision.DENY, Status.createSuccess(), 
+						Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c2))).andReturn(
+				new Result(Decision.PERMIT, Status.createSuccess(),
+				Collections.<Attributes>emptyList()));
+		
+		expect(pdp.requestDecision(capture(c3))).andReturn(
+				new Result(Decision.PERMIT, Status.createSuccess(),
 				Collections.<Attributes>emptyList()));
 		
 		replay(pdp);
@@ -114,7 +239,6 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(pdp);
 	}
-	
 	
 	@Test
 	public void testRequestWithSingleResultCombine()

@@ -44,13 +44,12 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 								Status.createProcessingError()));
 			}
 			if(prev != null){
-				// can not compare when decision
-				// is indeterminate
-				if(!(r.getDecision().isIndeterminate() ^ 
-						prev.getDecision().isIndeterminate())){
-					return Collections.singleton(
-							Result.createIndeterminate(
-									Status.createProcessingError()));
+				if(r.getDecision().isIndeterminate()){
+					if(!prev.getDecision().isIndeterminate()){
+						return Collections.singleton(
+								Result.createIndeterminate(
+										Status.createProcessingError()));
+					}
 				}
 				if(!r.getDecision().equals(prev.getDecision())){
 					return Collections.singleton(
