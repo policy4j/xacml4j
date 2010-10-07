@@ -16,12 +16,6 @@ public class DefaultPolicyVisitor implements PolicyVisitor
 	}
 
 	@Override
-	public void visitEnter(AttributeAssignment attr) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void visitEnter(AttributeAssignmentExpression attribute) {
 		// TODO Auto-generated method stub
 		
@@ -192,12 +186,6 @@ public class DefaultPolicyVisitor implements PolicyVisitor
 
 	@Override
 	public void visitLeave(Apply apply) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(AttributeAssignment attr) {
 		// TODO Auto-generated method stub
 		
 	}

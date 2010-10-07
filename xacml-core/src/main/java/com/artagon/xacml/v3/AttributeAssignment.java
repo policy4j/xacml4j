@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3;
 
 
-
-public class AttributeAssignment extends XacmlObject implements PolicyElement
+public class AttributeAssignment 
+	extends XacmlObject
 {
 	private AttributeValue attribute;
 	private AttributeCategory category;
@@ -70,13 +70,5 @@ public class AttributeAssignment extends XacmlObject implements PolicyElement
 	 */
 	public String getIssuer(){
 		return issuer;
-	}
-
-
-	@Override
-	public void accept(PolicyVisitor v) {
-		v.visitEnter(this);
-		attribute.accept(v);
-		v.visitLeave(this);
 	}
 }

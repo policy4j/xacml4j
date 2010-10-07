@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.pdp;
 
-import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.Result;
 
 public class BaseDecisionCache implements PolicyDecisionCache
 {

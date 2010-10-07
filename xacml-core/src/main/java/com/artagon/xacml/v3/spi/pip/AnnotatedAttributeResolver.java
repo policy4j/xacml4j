@@ -15,6 +15,8 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
@@ -164,6 +166,29 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 						"defines XACML scalar type but  parameter at index=\"%d\" is of type=\"%s\"", 
 						m.getName(), XacmlAttributeKey.class.getName(), i, p[i].getName()));
 			}
+		}
+	}
+	
+	class AttributeKeyInfo
+	{
+		private String attributeId;
+		private AttributeValueType dataType;
+		private boolean singleValue;
+		
+		public AttributeKeyInfo(String attributeId, 
+				AttributeValueType dataType, boolean singleValue){
+			this.attributeId = attributeId;
+			this.dataType = dataType;
+			this.singleValue = singleValue;
+		}
+		
+		public ValueExpression getKey(AttributeCategory category, 
+				RequestContextAttributesCallback callback){
+			BagOfAttributeValues bag = callback.getAttributeValues(category, attributeId, dataType);
+			if(bag == null || bag.isEmpty()){
+				return bag;
+			}
+			return singleValue?bag.value():bag;
 		}
 	}
 }

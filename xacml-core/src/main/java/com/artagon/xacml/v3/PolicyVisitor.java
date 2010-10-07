@@ -7,9 +7,6 @@ public interface PolicyVisitor
 	void visitEnter(AttributeValue attr);
 	void visitLeave(AttributeValue attr);
 	
-	void visitEnter(AttributeAssignment attr);
-	void visitLeave(AttributeAssignment attr);
-	
 	void visitEnter(AttributeDesignator designator);
 	void visitLeave(AttributeDesignator designator);
 	

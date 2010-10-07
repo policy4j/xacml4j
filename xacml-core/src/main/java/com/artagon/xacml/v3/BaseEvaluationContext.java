@@ -17,8 +17,6 @@ import org.w3c.dom.NodeList;
 import com.artagon.xacml.util.MapMaker;
 import com.artagon.xacml.util.TwoKeyIndex;
 import com.artagon.xacml.util.TwoKeyMapIndex;
-import com.artagon.xacml.v3.spi.XPathEvaluationException;
-import com.artagon.xacml.v3.spi.XPathProvider;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -42,42 +40,43 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private TimeZone timezone;
 	
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
-	
-	private XPathProvider xpathProvider;
-	
+		
 	private StatusCode evaluationStatus;
 			
 	private Calendar currentDateTime;
 	
 	private Map<AttributeCategory, Map<Object, Object>> contextValues;
 	
+	private RequestContextAttributesCallback requestContextCallback;
+	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
 	 * @param attributeService
 	 * @param policyResolver
-	 * @param xpathFactory
 	 */
 	protected BaseEvaluationContext(
+			RequestContext requestContext,
 			EvaluationContextHandler attributeService, 
-			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
-		this(false, attributeService, xpathProvider, policyResolver);
+		this(false, requestContext, attributeService,  policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
+			RequestContext requestContext,
 			EvaluationContextHandler attributeService,
-			XPathProvider xpathProvider,
 			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
-		Preconditions.checkNotNull(xpathProvider);
+		Preconditions.checkNotNull(requestContext);
+		Preconditions.checkArgument(!requestContext.hasRepeatingCategories(), 
+				"RequestContext has repeating attributes categories");
 		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();
+		this.requestContextCallback = new DefaultRequestAtributesCallback(requestContext);
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = attributeService;
-		this.xpathProvider = xpathProvider;
 		this.policyResolver = policyResolver;
 		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, ValueExpression>(
 				new MapMaker() {
@@ -232,21 +231,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public final Node evaluateToNode(String path, AttributeCategory categoryId)
 			throws EvaluationException 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		Node content = contextHandler.getContent(this, categoryId);
-		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
-			return null;
-		}
-		try{
-			return xpathProvider.evaluateToNode(
-					getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			log.debug("Received exception while evaluating xpath", e);
-			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
-		}
+		return contextHandler.evaluateToNode(this, path, categoryId);
 	}
 
 	@Override
@@ -254,56 +239,20 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeCategory categoryId)
 			throws EvaluationException 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		Node content = contextHandler.getContent(this, categoryId);
-		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
-			return null;
-		}
-		try{
-			return xpathProvider.evaluateToNodeSet(getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
-		}
+		return contextHandler.evaluateToNodeSet(this, path, categoryId);
 	}
 
 	@Override
 	public final Number evaluateToNumber(String path, AttributeCategory categoryId)
 			throws EvaluationException {
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		Node content = contextHandler.getContent(this, categoryId);
-		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
-			return null;
-		}
-		try{
-			return xpathProvider.evaluateToNumber(getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
-		}
+		return contextHandler.evaluateToNumber(this, path, categoryId);
 	}
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategory categoryId)
-			throws EvaluationException {
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		Node content = contextHandler.getContent(this, categoryId);
-		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
-			return null;
-		}
-		try{
-			return xpathProvider.evaluateToString(
-					getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			throw new com.artagon.xacml.v3.XPathEvaluationException(path, this, e);
-		}
+			throws EvaluationException 
+	{
+		return contextHandler.evaluateToString(this, path, categoryId);
 	}
 	
 	@Override
@@ -356,4 +305,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		}
 		return byCategory.put(key, v);
 	}
+
+	@Override
+	public final RequestContextAttributesCallback getRequestContextCallback() {
+		return requestContextCallback;
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import org.w3c.dom.Node;
+
 public interface RequestContextAttributesCallback 
 {
 	/**
@@ -13,7 +15,7 @@ public interface RequestContextAttributesCallback
 	 * if no matching attribute exist in the request context
 	 */
 	BagOfAttributeValues getAttributeValues(
-			AttributeCategories category, 
+			AttributeCategory category, 
 			String attributeId, 
 			AttributeValueType dataType,
 			String issuer);
@@ -25,7 +27,7 @@ public interface RequestContextAttributesCallback
 	 * @see {{@link #getAttribute(AttributeCategories, String, String)}
 	 */
 	BagOfAttributeValues getAttributeValues(
-			AttributeCategories category, 
+			AttributeCategory category, 
 			String attributeId, 
 			AttributeValueType dataType);
 	
@@ -39,7 +41,7 @@ public interface RequestContextAttributesCallback
 	 * @return {@link AV} instance or <code>null</code> if attribute
 	 * with a given constraints can not be located in the request
 	 */
-	<AV extends AttributeValue> AV getAttributeValue(AttributeCategories categoryId, 
+	<AV extends AttributeValue> AV getAttributeValue(AttributeCategory categoryId, 
 			String attributeId, AttributeValueType dataType);
 	
 	/**
@@ -53,6 +55,14 @@ public interface RequestContextAttributesCallback
 	 * @return {@link AV} instance or <code>null</code> if attribute
 	 * with a given constraints can not be located in the request
 	 */
-	<AV extends AttributeValue> AV getAttributeValue(AttributeCategories categoryId, 
+	<AV extends AttributeValue> AV getAttributeValue(AttributeCategory categoryId, 
 			String attributeId, AttributeValueType dataType, String issuer);
+	
+	/**
+	 * Gets {@link Attributes#getContent()} for a given category
+	 * 
+	 * @param category an attributes category
+	 * @return {@link Node} or <code>null</code>
+	 */
+	Node getContent(AttributeCategory category);
 }

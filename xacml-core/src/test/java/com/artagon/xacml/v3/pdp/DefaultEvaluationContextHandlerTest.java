@@ -47,7 +47,7 @@ import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 
-public class DefaultContextHandlerTest
+public class DefaultEvaluationContextHandlerTest
 {
 	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 	"xmlns:md=\"urn:example:med:schemas:record\">" +
@@ -64,6 +64,7 @@ public class DefaultContextHandlerTest
 	
 	private PolicyInformationPoint pip;
 	private XPathProvider xpathProvider;
+	private RequestContextAttributesCallback requestContextCallback;
 	
 	@Before
 	public void init() throws Exception
@@ -73,6 +74,7 @@ public class DefaultContextHandlerTest
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = createStrictMock(EvaluationContext.class);
 		this.request = createStrictMock(RequestContext.class);
+		this.requestContextCallback = createStrictMock(RequestContextAttributesCallback.class);
 		this.pip = createStrictMock(PolicyInformationPoint.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));
 		this.xpathProvider = new DefaultXPathProvider();
@@ -83,46 +85,44 @@ public class DefaultContextHandlerTest
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
 		Node content1 = createStrictMock(Node.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.RESOURCE)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content1).times(2);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.RESOURCE)).andReturn(content1);
+		replay(context, request, attributes, pip, requestContextCallback);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		Node content2 = handler.getContent(context, AttributeCategories.RESOURCE);
 		assertSame(content1, content2);
-		verify(context, request, attributes, pip);
+		verify(context, request, attributes, pip, requestContextCallback);
 	}
 	
 	@Test
 	public void testGetContentWithCategoryContentIsNotInRequestResolutionScopeRequest()
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.RESOURCE)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(null).times(2);
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.RESOURCE)).andReturn(null);
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, attributes, pip, requestContextCallback);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		Node content2 = handler.getContent(context, AttributeCategories.RESOURCE);
 		assertNull(content2);
-		verify(context, request, attributes, pip);
+		verify(context, request, attributes, pip, requestContextCallback);
 	}
 	
 	@Test
 	public void testGetContentWithCategoryContentIsNotInRequestResolutionScopeRequestExternal()
 	{
 		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.RESOURCE)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(null);
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.RESOURCE)).andReturn(null);
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
 		expect(pip.resolve(eq(context), eq(AttributeCategories.RESOURCE), capture(c))).andReturn(null);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, attributes, pip, requestContextCallback);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		Node content2 = handler.getContent(context, AttributeCategories.RESOURCE);
 		assertNull(content2);
-		verify(context, request, attributes, pip);
+		verify(context, request, attributes, pip, requestContextCallback);
 	}
 	
 	
@@ -134,19 +134,21 @@ public class DefaultContextHandlerTest
 				"/md:record/md:patient/md:patient-number/text()", 
 				INTEGER, true);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content).times(2);
-		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
-				andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		
+		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
+				DefaultEvaluationContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
+				andReturn(XPATHEXPRESSION.emptyBag());
+		
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, INTEGER.bagOf(INTEGER.create(555555)));
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}
 	
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -157,18 +159,19 @@ public class DefaultContextHandlerTest
 				"/md:record/md:patient", 
 				INTEGER, true);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content).times(2);
-		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
-				andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		
+		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
+				DefaultEvaluationContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
+				andReturn(XPATHEXPRESSION.emptyBag());
+		
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		handler.resolve(context, ref);
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}
 	
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -179,18 +182,20 @@ public class DefaultContextHandlerTest
 				"/md:record/md:patient/md:patient-number/text()", 
 				DATE, false);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content).times(2);
-		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
-				andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		
+		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
+				DefaultEvaluationContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
+				andReturn(XPATHEXPRESSION.emptyBag());
+		
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		handler.resolve(context, ref);
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}
 	
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -201,18 +206,20 @@ public class DefaultContextHandlerTest
 				"/md:record/md:patient/md:patient-number/text()", 
 				DATE, false);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content).times(2);
-		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
-				andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		
+		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
+				DefaultEvaluationContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
+				andReturn(XPATHEXPRESSION.emptyBag());
+		
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		handler.resolve(context, ref);
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}
 	
 	@Test
@@ -223,19 +230,21 @@ public class DefaultContextHandlerTest
 				"/test", 
 				INTEGER, true);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getOnlyAttributes(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(attributes);
-		expect(attributes.getContent()).andReturn(content).times(2);
-		expect(request.getAttributeValues(ref.getCategory(), 
-				DefaultContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
-				andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		
+		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
+				DefaultEvaluationContextHandler.CONTENT_SELECTOR , XPATHEXPRESSION)).
+				andReturn(XPATHEXPRESSION.emptyBag());
+		
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler handler = new DefaultContextHandler(xpathProvider, request, pip);
+		
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, INTEGER.emptyBag());
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}		
 	
 	@Test
@@ -244,16 +253,16 @@ public class DefaultContextHandlerTest
 		AttributeDesignator ref = new AttributeDesignator(
 				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategories.RESOURCE, "testId", null, ANYURI)).
-		andReturn(Collections.<AttributeValue>singleton(ANYURI.create("testValue")));
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getAttributeValues(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
+				andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
 		
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, pip, requestContextCallback);
+		EvaluationContextHandler h = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
-		verify(context, request, attributes, pip);
+		verify(context, request, pip, requestContextCallback);
 	}
 	
 	@Test
@@ -262,17 +271,19 @@ public class DefaultContextHandlerTest
 		AttributeDesignator ref = new AttributeDesignator(
 				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
 		
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategories.RESOURCE, "testId", null, ANYURI)).
-		andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getAttributeValues(AttributeCategories.RESOURCE, "testId", ANYURI, null)).
+				andReturn(ANYURI.emptyBag());
+		
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
 		Capture<RequestContextAttributesCallback> c = new Capture<RequestContextAttributesCallback>();
 		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
-		replay(context, request, pip);
-		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		replay(context, request, pip, requestContextCallback);
+		EvaluationContextHandler h = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
-		verify(context, request, pip);
+		verify(context, request, pip, requestContextCallback);
 	}
 	
 	@Test
@@ -281,16 +292,18 @@ public class DefaultContextHandlerTest
 		AttributeDesignator ref = new AttributeDesignator(
 				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
 		
-		Attributes attributes = createStrictMock(Attributes.class);
-		expect(request.hasRepeatingCategories()).andReturn(false);
-		expect(request.getAttributeValues(AttributeCategories.RESOURCE, "testId", null, ANYURI)).
-		andReturn(Collections.<AttributeValue>emptyList());
+		expect(context.getRequestContextCallback()).andReturn(requestContextCallback);
+		expect(requestContextCallback.getAttributeValues(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
+				andReturn(ANYURI.emptyBag());
+		
 		expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST);
-		replay(context, request, attributes, pip);
-		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		
+		replay(context, request, requestContextCallback, pip);
+		EvaluationContextHandler h = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.emptyBag(), v);
-		verify(context, request, attributes, pip);
+		verify(context, request, requestContextCallback, pip);
 	}
 	
 	@Test
@@ -314,7 +327,7 @@ public class DefaultContextHandlerTest
 		//expect(context.getAttributeResolutionScope()).andReturn(AttributeResolutionScope.REQUEST_EXTERNAL);
 		
 		replay(context, request, pip);
-		EvaluationContextHandler h = new DefaultContextHandler(xpathProvider, request, pip);
+		EvaluationContextHandler h = new DefaultEvaluationContextHandler(xpathProvider, pip);
 		ValueExpression v = h.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
 		v = h.resolve(context, ref);

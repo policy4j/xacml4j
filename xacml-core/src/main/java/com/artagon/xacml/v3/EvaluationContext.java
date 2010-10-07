@@ -155,10 +155,10 @@ public interface EvaluationContext
 	void addObligations(Collection<Obligation> obligations);
 	
 	/**
-	 * Adds evaluated advice instances to this context
+	 * Adds evaluated {@link Advice} instances to this context
 	 * from decision evaluated in this context
 	 * 
-	 * @param advices
+	 * @param advices a collection of advices
 	 */
 	void addAdvices(Collection<Advice> advices);
 	
@@ -186,7 +186,16 @@ public interface EvaluationContext
 	BagOfAttributeValues resolve(AttributeSelector ref) 
 		throws EvaluationException;
 	
-
+	/**
+	 * Evaluates a given XPath expression
+	 * to a {@link NodeList}
+	 * 
+	 * @param xpath an XPath expression
+	 * @param categoryId an attribute category
+	 * @return {@link NodeList} representing an evaluation
+	 * result
+	 * @throws EvaluationException
+	 */
 	NodeList evaluateToNodeSet(
 			String xpath, 
 			AttributeCategory categoryId) 
@@ -207,6 +216,8 @@ public interface EvaluationContext
 			String path, 
 			AttributeCategory categoryId) 
 		throws EvaluationException;
+	
+	RequestContextAttributesCallback getRequestContextCallback();
 	
 	/**
 	 * Resolves given {@link PolicyIDReference}
@@ -243,6 +254,15 @@ public interface EvaluationContext
 	Object getValue(AttributeCategory categoryId, 
 			Object key);
 	
+	/**
+	 * Sets value for a given category and key
+	 * to this evaluation context
+	 * 
+	 * @param categoryId an attribute category
+	 * @param key a key
+	 * @param v a value
+	 * @return old value or <code>null</code>
+	 */
 	Object setValue(AttributeCategory categoryId, 
 			Object key, Object v);
 }
