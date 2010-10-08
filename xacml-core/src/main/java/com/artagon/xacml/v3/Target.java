@@ -78,8 +78,8 @@ public class Target extends XacmlObject implements PolicyElement
 		}
 		
 		@Override
-		public AttributeResolutionScope getAttributeResolutionScope() {		
-			return AttributeResolutionScope.REQUEST;
+		public ResolutionScope getResolutionScope() {		
+			return ResolutionScope.REQUEST;
 		}
 	}
 		

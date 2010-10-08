@@ -47,8 +47,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private Map<AttributeCategory, Map<Object, Object>> contextValues;
 	
-	private RequestContextAttributesCallback requestContextCallback;
-	
+		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -56,24 +55,19 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 * @param policyResolver
 	 */
 	protected BaseEvaluationContext(
-			RequestContext requestContext,
 			EvaluationContextHandler attributeService, 
 			PolicyReferenceResolver policyResolver){
-		this(false, requestContext, attributeService,  policyResolver);
+		this(false, attributeService,  policyResolver);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			RequestContext requestContext,
 			EvaluationContextHandler attributeService,
 			PolicyReferenceResolver policyResolver){
 		Preconditions.checkNotNull(attributeService);
-		Preconditions.checkNotNull(requestContext);
-		Preconditions.checkArgument(!requestContext.hasRepeatingCategories(), 
-				"RequestContext has repeating attributes categories");
+
 		Preconditions.checkNotNull(policyResolver);
 		this.advices = new LinkedList<Advice>();
-		this.requestContextCallback = new DefaultRequestAtributesCallback(requestContext);
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = attributeService;
@@ -260,10 +254,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeDesignator ref) 
 		throws EvaluationException
 	{
-		BagOfAttributeValues v =  contextHandler.resolve(this, ref);
+		BagOfAttributeValues v = contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
-				log.debug("Resolved attribute " +
-						"designator=\"{}\" to value=\"{}\"", ref, v);
+			log.debug("Resolved designator=\"{}\" to value=\"{}\"", ref, v);
 		}
 		return v;
 	}
@@ -272,10 +265,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public final BagOfAttributeValues resolve(AttributeSelector ref)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues v =  contextHandler.resolve(this, ref);
+		BagOfAttributeValues v = contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
-			log.debug("Resolved attribute " +
-					"selector=\"{}\" to value=\"{}\"", ref, v);
+			log.debug("Resolved selector=\"{}\" to value=\"{}\"", ref, v);
 		}
 		return v;
 	}
@@ -286,8 +278,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public AttributeResolutionScope getAttributeResolutionScope() {
-		return AttributeResolutionScope.REQUEST_EXTERNAL;
+	public ResolutionScope getResolutionScope() {
+		return ResolutionScope.REQUEST_EXTERNAL;
 	}	
 	
 	@Override
@@ -305,11 +297,5 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		}
 		return byCategory.put(key, v);
 	}
-
-	@Override
-	public final RequestContextAttributesCallback getRequestContextCallback() {
-		return requestContextCallback;
-	}
-	
 	
 }

@@ -38,8 +38,8 @@ public class TargetTest
 		replay(m1, m2, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.MATCH, t.match(context));
-		assertEquals(AttributeResolutionScope.REQUEST, c1.getValue().getAttributeResolutionScope());
-		assertEquals(AttributeResolutionScope.REQUEST, c2.getValue().getAttributeResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c1.getValue().getResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c2.getValue().getResolutionScope());
 		verify(m1, m2, context);
 	}
 	
@@ -70,8 +70,8 @@ public class TargetTest
 		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		assertEquals(AttributeResolutionScope.REQUEST, c1.getValue().getAttributeResolutionScope());
-		assertEquals(AttributeResolutionScope.REQUEST, c2.getValue().getAttributeResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c1.getValue().getResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c2.getValue().getResolutionScope());
 		verify(m1, m2, m3, context);
 	}
 	
@@ -91,8 +91,8 @@ public class TargetTest
 		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		assertEquals(AttributeResolutionScope.REQUEST, c1.getValue().getAttributeResolutionScope());
-		assertEquals(AttributeResolutionScope.REQUEST, c2.getValue().getAttributeResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c1.getValue().getResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c2.getValue().getResolutionScope());
 		verify(m1, m2, m3, context);
 	}
 	
@@ -110,7 +110,7 @@ public class TargetTest
 		replay(m1, m2, m3, context);
 		Target t = new Target(matches);
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		assertEquals(AttributeResolutionScope.REQUEST, c1.getValue().getAttributeResolutionScope());
+		assertEquals(ResolutionScope.REQUEST, c1.getValue().getResolutionScope());
 		verify(m1, m2, m3, context);
 	}
 	

@@ -50,13 +50,13 @@ public interface EvaluationContext
 	/**
 	 * Gets current attribute reference resolution 
 	 * scope. For example scope while evaluating
-	 * {@link Match} is {@link AttributeResolutionScope#REQUEST}
-	 * and {@link AttributeResolutionScope#REQUEST_EXTERNAL} while
+	 * {@link Match} is {@link ResolutionScope#REQUEST}
+	 * and {@link ResolutionScope#REQUEST_EXTERNAL} while
 	 * evaluating policy rules
 	 * 
-	 * @return {@link AttributeResolutionScope}
+	 * @return {@link ResolutionScope}
 	 */
-	AttributeResolutionScope getAttributeResolutionScope();
+	ResolutionScope getResolutionScope();
 	
 	/**
 	 * Gets parent evaluation context
@@ -216,8 +216,6 @@ public interface EvaluationContext
 			String path, 
 			AttributeCategory categoryId) 
 		throws EvaluationException;
-	
-	RequestContextAttributesCallback getRequestContextCallback();
 	
 	/**
 	 * Resolves given {@link PolicyIDReference}

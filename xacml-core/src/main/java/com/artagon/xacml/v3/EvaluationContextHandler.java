@@ -5,16 +5,6 @@ import org.w3c.dom.NodeList;
 
 public interface EvaluationContextHandler 
 {
-	/**
-	 * Gets content for a given attribute category
-	 * 
-	 * @param categoryId an attribute category
-	 * @return an instance of {@link Node} or
-	 * <code>null</code> if content is not available
-	 * for a given category 
-	 */
-	Node getContent(EvaluationContext context, AttributeCategory categoryId);
-	
 	NodeList evaluateToNodeSet(
 			EvaluationContext context,
 			String xpath, 

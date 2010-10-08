@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public enum AttributeResolutionScope 
+public enum ResolutionScope 
 {
 	REQUEST,
 	REQUEST_EXTERNAL;

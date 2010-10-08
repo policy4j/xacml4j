@@ -17,13 +17,14 @@ import org.w3c.dom.Text;
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.AttributeResolutionScope;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.ResolutionScope;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
@@ -36,75 +37,77 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 	
-	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
+	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 	
-	/* Request scope attribute designator resolution cache */
+	private RequestContextAttributesCallback requestContextCallback;
+	
 	private Map<AttributeDesignator, BagOfAttributeValues> attributeDesignatorCache;
-	
-	/* Request scope attribute selector resolution cache */
 	private Map<AttributeSelector, BagOfAttributeValues> attributeSelectorCache;
-	
-	/* Request scope attribute selector resolution cache */
 	private Map<AttributeCategory, Node> contentCache;
 	
-	public DefaultEvaluationContextHandler(XPathProvider xpathProvider, PolicyInformationPoint pip)
+	public DefaultEvaluationContextHandler(
+			RequestContextAttributesCallback requestContextCallback,
+			XPathProvider xpathProvider, 
+			PolicyInformationPoint pip)
 	{
 		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(pip);
+		Preconditions.checkNotNull(requestContextCallback);
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
+		this.requestContextCallback = requestContextCallback;
 		this.attributeDesignatorCache = new HashMap<AttributeDesignator, BagOfAttributeValues>();
 		this.attributeSelectorCache = new HashMap<AttributeSelector, BagOfAttributeValues>();
 		this.contentCache = new HashMap<AttributeCategory, Node>();
 	}
 	
-	
-	@Override
-	public Node getContent(EvaluationContext context,
-			AttributeCategory categoryId) 
-	{
-		Node content = contentCache.get(categoryId);
-		if(content == null)
-		{
-			content = doGetContent(context, categoryId);
-			if(content != null){
-				contentCache.put(categoryId, content);
-			}
-		}
-		return content;
-	}
-
 
 	@Override
 	public BagOfAttributeValues resolve(EvaluationContext context, AttributeDesignator ref) 
 		throws EvaluationException 
 	{
-		BagOfAttributeValues values = context.getRequestContextCallback().getAttributeValues(
-				ref.getCategory(), ref.getAttributeId(), ref.getDataType(), ref.getIssuer());
-		if(!values.isEmpty() || 
-				(context.getAttributeResolutionScope() 
-						== AttributeResolutionScope.REQUEST)){
-			return values;
+		BagOfAttributeValues v = requestContextCallback.getAttributeValues(
+				ref.getCategory(), 
+				ref.getAttributeId(), 
+				ref.getDataType(), 
+				ref.getIssuer());
+		if(!v.isEmpty() || 
+				(context.getResolutionScope() 
+						== ResolutionScope.REQUEST)){
+			return v;
 		}
-		return doResolve(context, ref);
+		v = attributeDesignatorCache.get(ref);
+		if(v != null){
+			if(log.isDebugEnabled()){
+				log.debug("Resolved " +
+						"designator=\"{}\" from the cache=\"{}\"", ref, v);
+			}
+			return v;
+		}
+		v =  pip.resolve(context, ref, requestContextCallback);
+		attributeDesignatorCache.put(ref, v);
+		return v;
 	}
 
 
 	@Override
 	public BagOfAttributeValues resolve(
 			EvaluationContext context, AttributeSelector ref)
-			throws EvaluationException {
-		
+			throws EvaluationException 
+	{
 		BagOfAttributeValues v = attributeSelectorCache.get(ref);
-		if(v == null){
-			v = doResolve(context, ref);
-			if(v != null){
-				attributeSelectorCache.put(ref, v);
+		if(v != null){
+			if(log.isDebugEnabled()){
+				log.debug("Resolved " +
+						"selector=\"{}\" from the cache=\"{}\"", ref, v);
 			}
+			return v;
 		}
+		v =  doResolve(context, ref);
+		attributeSelectorCache.put(ref, v);
 		return v;
 	}
 	
@@ -116,7 +119,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = getContent(context, categoryId);
+		Node content = doGetContent(context, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -140,7 +143,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = getContent(context, categoryId);
+		Node content = doGetContent(context, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -159,7 +162,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = getContent(context, categoryId);
+		Node content = doGetContent(context, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -178,7 +181,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
 		}
-		Node content = getContent(context, categoryId);
+		Node content = doGetContent(context, categoryId);
 		if(content == null){
 			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
@@ -202,54 +205,34 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	 */
 	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
 	{
-		Node content = context.getRequestContextCallback().getContent(category);
-		if(content == null){
-			if(context.getAttributeResolutionScope() == 
-				AttributeResolutionScope.REQUEST_EXTERNAL){				
-				return pip.resolve(context, category, context.getRequestContextCallback());
-			}
+		Node content = requestContextCallback.getContent(category);
+		if(context.getResolutionScope() == 
+				ResolutionScope.REQUEST){
+			return content;
+		}
+		content = contentCache.get(category);
+		if(content != null){
+			return content;
+		}
+		content = pip.resolve(context, category, requestContextCallback);
+		if(content != null){
+			contentCache.put(category, content);
 		}
 		return content;
 	}
 
-	/**
-	 * Resolves attribute via {@link PolicyInformationPoint}
-	 * 
-	 * @param context an evaluation context
-	 * @param ref an attribute reference
-	 * @return {@link BagOfAttributeValues}
-	 * @throws EvaluationException if an error occurs
-	 * while resolving reference
-	 */
-	private final BagOfAttributeValues doResolve(
-			EvaluationContext context,
-			AttributeDesignator ref) throws EvaluationException 
-	{
-		BagOfAttributeValues v = attributeDesignatorCache.get(ref);
-		if(v == null){
-			v = pip.resolve(context, ref, context.getRequestContextCallback());
-			attributeDesignatorCache.put(ref, v);
-		}
-		return v;
-	}
 	
 	private final BagOfAttributeValues doResolve(
 			EvaluationContext context,
 			AttributeSelector ref) throws EvaluationException {
 		try
 		{
-			Node content = getContent(context, ref.getCategory());
-			if(content == null){
-				if(context.getAttributeResolutionScope() == AttributeResolutionScope.REQUEST_EXTERNAL){
-					content = pip.resolve(context, ref.getCategory(), 
-							context.getRequestContextCallback());
-				}
-			}
+			Node content = doGetContent(context, ref.getCategory());
 			if(content == null){
 				return ref.getDataType().bagType().createEmpty();
 			}
 			Node contextNode = content;
-			BagOfAttributeValues v = context.getRequestContextCallback().getAttributeValues(ref.getCategory(), 
+			BagOfAttributeValues v = requestContextCallback.getAttributeValues(ref.getCategory(), 
 						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()), 
 								XPathExpressionType.XPATHEXPRESSION);
 			if(v.size() > 1){
@@ -292,8 +275,6 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 					StatusCode.createProcessingError(), e);
 		}
 	}
-	
-	
 	
 	/**
 	 * Converts a given node list to the {@link BagOfAttributeValues}

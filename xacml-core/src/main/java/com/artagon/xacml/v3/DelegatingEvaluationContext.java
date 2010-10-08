@@ -229,8 +229,8 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public AttributeResolutionScope getAttributeResolutionScope() {
-		return delegate.getAttributeResolutionScope();
+	public ResolutionScope getResolutionScope() {
+		return delegate.getResolutionScope();
 	}
 
 	@Override
@@ -241,9 +241,5 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public Object setValue(AttributeCategory categoryId, Object key, Object v) {
 		return delegate.setValue(categoryId, key, v);
-	}
-
-	public RequestContextAttributesCallback getRequestContextCallback() {
-		return delegate.getRequestContextCallback();
 	}
 }
