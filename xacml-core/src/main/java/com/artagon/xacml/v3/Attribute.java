@@ -22,7 +22,6 @@ public class Attribute extends XacmlObject
 	private Multiset<AttributeValue> values;
 	private boolean includeInResult;
 	private String issuer;
-	private int hash;
 	
 	/**
 	 * Constructs attribute with given
@@ -48,7 +47,6 @@ public class Attribute extends XacmlObject
 		this.values = LinkedHashMultiset.create(values.size());
 		this.values.addAll(values);
 		this.includeInResult = includeInResult;
-		this.hash = Objects.hashCode(attributeId, issuer, includeInResult, values);
 	}
 	
 	public Attribute(String attributeId,
@@ -140,7 +138,8 @@ public class Attribute extends XacmlObject
 	
 	@Override
 	public final int hashCode(){
-		return hash;
+		return Objects.hashCode(
+				attributeId, issuer, includeInResult, values);
 	}
 	
 	@Override

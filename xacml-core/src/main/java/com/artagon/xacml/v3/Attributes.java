@@ -264,6 +264,11 @@ public class Attributes extends XacmlObject
 	}
 	
 	@Override
+	public int hashCode(){
+		return Objects.hashCode(categoryId, id, content, attributes);
+	}
+	
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;

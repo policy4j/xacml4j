@@ -360,4 +360,29 @@ public class RequestContext extends XacmlObject
 		.add("RequestReferences", requestReferences)
 		.add("RequestDefaults", requestDefaults).toString();
 	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(returnPolicyIdList, 
+				combinedDecision, 
+				attributes, 
+				requestReferences, 
+				requestDefaults);
+	}
+	@Override
+	public boolean equals(Object o){
+		if(this == o){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof RequestContext)){
+			return false;
+		}
+		RequestContext r = (RequestContext)o;
+		return !(returnPolicyIdList ^ r.returnPolicyIdList) &&
+			!(combinedDecision ^ r.combinedDecision) && attributes.equals(attributes) &&
+			requestReferences.equals(r.requestReferences) && Objects.equal(requestDefaults, r.requestDefaults);
+	}
 }
