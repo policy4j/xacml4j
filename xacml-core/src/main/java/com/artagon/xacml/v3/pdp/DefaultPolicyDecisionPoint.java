@@ -29,7 +29,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	private EvaluationContextFactory factory;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestProcessingPipeline;
-	private PolicyDecisionCache requestCache;
+	private PolicyDecisionCache decisionCache;
 	private PolicyDecisionAuditor decisionAuditor;
 	
 	public DefaultPolicyDecisionPoint(
@@ -46,7 +46,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		this.factory = factory;
 		this.policyDomain = policyRepository;
 		this.requestProcessingPipeline = new RequestContextHandlerChain(handlers);
-		this.requestCache = cache;
+		this.decisionCache = cache;
 		this.decisionAuditor = auditor;
 	}
 	
@@ -92,7 +92,7 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	@Override
 	public Result requestDecision(RequestContext request) 
 	{
-		Result r = requestCache.getDecision(request);
+		Result r = decisionCache.getDecision(request);
 		if(r != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found decision result in the decision cache");
@@ -111,11 +111,12 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 					"result=\"{}\"", request,  r);
 		}
 		decisionAuditor.audit(r, request);
-		requestCache.putDecision(request, r);
+		decisionCache.putDecision(request, r);
 		return r;
 	}
 	
-	private Result createResult(EvaluationContext context, 
+	private Result createResult(
+			EvaluationContext context, 
 			Decision decision, Collection<Attributes> includeInResult, 
 			boolean returnPolicyIdList)
 	{
