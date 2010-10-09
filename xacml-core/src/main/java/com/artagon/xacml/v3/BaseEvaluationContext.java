@@ -14,9 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.util.MapMaker;
-import com.artagon.xacml.util.TwoKeyIndex;
-import com.artagon.xacml.util.TwoKeyMapIndex;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -31,12 +28,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
-	// TODO: remove cache from root context and move
-	// it to the policy or policy set level
-	// optimization for case when context
-	// is re-used ti evaluate large number of policies or policy sets
-	private TwoKeyIndex<String, String, ValueExpression> variableEvaluationCache;
-
+	
 	private TimeZone timezone;
 	
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
@@ -72,13 +64,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = attributeService;
 		this.policyResolver = policyResolver;
-		this.variableEvaluationCache = new TwoKeyMapIndex<String, String, ValueExpression>(
-				new MapMaker() {
-			@Override
-			public <K, V> Map<K, V> make() {
-				return new HashMap<K, V>();
-			}
-		});
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
@@ -196,17 +181,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final ValueExpression getVariableEvaluationResult(String variableId) 
 	{
-		Policy p = getCurrentPolicy();
-		Preconditions.checkState(p != null);
-		return variableEvaluationCache.get(p.getId(), variableId);
+		return null;
 	}
 	
 	@Override
-	public final void setVariableEvaluationResult(String variableId, ValueExpression value) 
-	{
-		Policy p = getCurrentPolicy();
-		Preconditions.checkState(p != null);
-		variableEvaluationCache.put(p.getId(), variableId, value);
+	public final void setVariableEvaluationResult(String variableId, ValueExpression value) {
 	}
 
 	@Override

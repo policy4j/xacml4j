@@ -104,8 +104,10 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 		}
 		EvaluationContext context = factory.createContext(request);
 		Decision decision = policyDomain.evaluate(context);
-		r = createResult(context, decision, 
-				request.getIncludeInResultAttributes(), request.isReturnPolicyIdList());
+		r = createResult(context, 
+				decision, 
+				request.getIncludeInResultAttributes(), 
+				request.isReturnPolicyIdList());
 		if(log.isDebugEnabled()){
 			log.debug("Decision request=\"{}\" " +
 					"result=\"{}\"", request,  r);

@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -269,6 +270,8 @@ public class Policy extends BaseCompositeDecisionRule
 	
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{			
+		private Map<String, ValueExpression> varEvalCache;
+		
 		/**
 		 * Creates policy evaluation context with a given parent context
 		 * 
@@ -276,8 +279,22 @@ public class Policy extends BaseCompositeDecisionRule
 		 */
 		PolicyDelegatingEvaluationContext(EvaluationContext context){
 			super(context);
+			this.varEvalCache = new HashMap<String, ValueExpression>();
+		}
+		
+		
+
+		@Override
+		public ValueExpression getVariableEvaluationResult(String variableId) {
+			return varEvalCache.get(variableId);
 		}
 
+		@Override
+		public void setVariableEvaluationResult(String variableId,
+				ValueExpression value) {
+			varEvalCache.put(variableId, value);
+		}
+		
 		@Override
 		public Policy getCurrentPolicy() {
 			return Policy.this;

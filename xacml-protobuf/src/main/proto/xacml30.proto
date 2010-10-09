@@ -25,17 +25,6 @@ enum AttributeDataTypeId
 	XPATHEXPRESSION = 17;
 }
 
-enum AttributeCategory 
-{	
-	ACTION = 1;
-	ENVIROMENT = 2;
-	STATUSDETAIL = 3;
-	RESOURCE = 4;
-	SUBJECT_ACCESS = 5;
-	SUBJECT_REQUESTING_MACHINE = 6;
-	SUBJECT_CODEBASE = 7;
-	SUBJECT_INTERMEDIARY = 8;
-}
 
 message AttributeValue
 {
@@ -66,17 +55,12 @@ message Attribute
 
 message Attributes
 {
-	required AttributeCategory category = 1;
+	required string category = 1;
     optional string id = 2;
     optional string content = 3;
     repeated Attribute attributes = 4;
 }
     
-message Response
-{
-    optional bool ReturnPolicyIdList = 1 [ default=false];
-    repeated Attributes attributes = 2;
-}
 
 message Request
 {

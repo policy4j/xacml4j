@@ -65,6 +65,7 @@ public class DOMUtilTest
 		assertEquals("patient", copy.getDocumentElement().getChildNodes().item(1).getLocalName());
 		assertEquals("urn:example:med:schemas:record", copy.getDocumentElement().getChildNodes().item(1).getNamespaceURI());
 		assertTrue(copy.isEqualNode(content));
+		
 	}
 	
 	@Test
