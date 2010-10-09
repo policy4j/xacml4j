@@ -7,9 +7,14 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.RequestContextCallback;
-import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 
+/**
+ * A XACML Policy Information Point interface
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface PolicyInformationPoint 
 {
 	/**
@@ -26,27 +31,21 @@ public interface PolicyInformationPoint
 			EvaluationContext context, 
 			AttributeDesignator ref, 
 			RequestContextCallback callback) 
-				throws AttributeReferenceEvaluationException;
+				throws EvaluationException;
 	
+	/**
+	 * Resolves content for a given attribute category
+	 * from an external source
+	 * 
+	 * @param context an evaluation context
+	 * @param category an attribute category
+	 * @param callback a request callback
+	 * @return {@link Node} or <code>null</code>
+	 */
 	Node resolve(
 			EvaluationContext context, 
 			AttributeCategory categoryId, 
-			RequestContextCallback callback);
+			RequestContextCallback callback) 
+		throws EvaluationException;
 	
-	/**
-	 * Adds attribute resolver
-	 * 
-	 * @param resolver an attribute resolver
-	 */
-	void addResolver(AttributeResolver resolver);
-	
-	/**
-	 * Adds attribute resolver with the scope
-	 * of a given policy or policy set and
-	 * down bellow evaluation tree
-	 * 
-	 * @param policyId a policy or policy set identifier
-	 * @param resolver an attribute resolver
-	 */
-	void addResolver(String policyId, AttributeResolver resober);
 }

@@ -203,6 +203,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	 * while resolving reference
 	 */
 	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
+		throws EvaluationException 
 	{
 		
 		Node content = requestContextCallback.getContent(category);
@@ -298,9 +299,9 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	 * Converts a given node list to the {@link BagOfAttributeValues}
 	 * 
 	 * @param context an evaluation context
-	 * @param ref
-	 * @param nodeSet
-	 * @return
+	 * @param ref an attribute selector
+	 * @param nodeSet a node set
+	 * @return {@link BagOfAttributeValues}
 	 * @throws EvaluationException
 	 */
 	private BagOfAttributeValues toBag(EvaluationContext context,
