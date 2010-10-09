@@ -40,6 +40,7 @@ public class TestAnnotatedResolver
 	public BagOfAttributeValues getTestId3Attribute(
 			PolicyInformationPointContext context, 
 			@XacmlAttributeKey(id="username", 
+					category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
 					type="http://www.w3.org/2001/XMLSchema#integer")StringValue username)
 	{
 		return IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1));

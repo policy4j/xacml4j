@@ -11,5 +11,6 @@ public @interface XacmlAttributeKey
 {
 	String id();
 	String type();
+	String category();
 	boolean isBag() default false;
 }

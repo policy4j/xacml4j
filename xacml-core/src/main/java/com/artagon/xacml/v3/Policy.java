@@ -270,7 +270,7 @@ public class Policy extends BaseCompositeDecisionRule
 	
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{			
-		private Map<String, ValueExpression> varEvalCache;
+		private Map<String, ValueExpression> varDefEvalResults;
 		
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -279,20 +279,18 @@ public class Policy extends BaseCompositeDecisionRule
 		 */
 		PolicyDelegatingEvaluationContext(EvaluationContext context){
 			super(context);
-			this.varEvalCache = new HashMap<String, ValueExpression>();
+			this.varDefEvalResults = new HashMap<String, ValueExpression>();
 		}
 		
-		
-
 		@Override
 		public ValueExpression getVariableEvaluationResult(String variableId) {
-			return varEvalCache.get(variableId);
+			return varDefEvalResults.get(variableId);
 		}
 
 		@Override
 		public void setVariableEvaluationResult(String variableId,
 				ValueExpression value) {
-			varEvalCache.put(variableId, value);
+			varDefEvalResults.put(variableId, value);
 		}
 		
 		@Override
