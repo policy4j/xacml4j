@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.spi.pip;
 
 import java.util.Calendar;
 
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 
 public interface PolicyInformationPointContext 
-	extends RequestContextAttributesCallback
+	extends RequestContextCallback
 {
 	
 	Calendar getCurrentDateTime();

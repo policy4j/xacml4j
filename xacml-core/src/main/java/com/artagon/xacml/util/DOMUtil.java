@@ -78,8 +78,8 @@ public class DOMUtil
 		Node rootNode = (source.getNodeType() == Node.DOCUMENT_NODE)?sourceDoc.getDocumentElement():source;
 		Preconditions.checkState(sourceDoc != null);
 		DOMImplementation domImpl = sourceDoc.getImplementation();
-		Document doc = domImpl.createDocument(
-				null, null, null); 
+		Document doc = domImpl.createDocument(sourceDoc.getNamespaceURI(),
+				null, sourceDoc.getDoctype()); 
 		Node copy =  doc.importNode(rootNode, true);
 		doc.appendChild(copy);
 		return doc;

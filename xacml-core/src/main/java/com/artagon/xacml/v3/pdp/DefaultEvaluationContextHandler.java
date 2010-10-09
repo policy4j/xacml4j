@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.ResolutionScope;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
@@ -42,14 +42,14 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 	
-	private RequestContextAttributesCallback requestContextCallback;
+	private RequestContextCallback requestContextCallback;
 	
 	private Map<AttributeDesignator, BagOfAttributeValues> attributeDesignatorCache;
 	private Map<AttributeSelector, BagOfAttributeValues> attributeSelectorCache;
 	private Map<AttributeCategory, Node> contentCache;
 	
 	public DefaultEvaluationContextHandler(
-			RequestContextAttributesCallback requestContextCallback,
+			RequestContextCallback requestContextCallback,
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip)
 	{
@@ -164,7 +164,6 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 		}
 		Node content = doGetContent(context, categoryId);
 		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
@@ -179,11 +178,11 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 			String path, AttributeCategory categoryId)
 			throws EvaluationException {
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
+			log.debug("Evaluating xpath=\"{}\" " +
+					"for category=\"{}\"", path, categoryId);
 		}
 		Node content = doGetContent(context, categoryId);
 		if(content == null){
-			log.debug("Content is not available for category=\"{}\"", categoryId);
 			return null;
 		}
 		try{
@@ -205,19 +204,37 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	 */
 	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
 	{
+		
 		Node content = requestContextCallback.getContent(category);
-		if(context.getResolutionScope() == 
-				ResolutionScope.REQUEST){
+		if(content != null){
+			if(log.isDebugEnabled()){
+				log.debug("Resolved content=\"{}\" from a request", 
+						content);
+			}
 			return content;
 		}
-		content = contentCache.get(category);
-		if(content != null){
+		ResolutionScope scope = context.getResolutionScope();
+		if(log.isDebugEnabled()){
+			log.debug("Request to get content, scope=\"{}\" " +
+					"category=\"{}\"", scope, category);
+		}
+		if(scope == ResolutionScope.REQUEST){
+			return null;
+		}
+		if(contentCache.containsKey(category)){
+			content = contentCache.get(category);
+			if(log.isDebugEnabled()){
+				log.debug("Resolved content=\"{}\" " +
+						"from cache", content);
+			}
 			return content;
 		}
 		content = pip.resolve(context, category, requestContextCallback);
-		if(content != null){
-			contentCache.put(category, content);
+		if(log.isDebugEnabled()){
+			log.debug("Resolved content=\"{}\" " +
+					"from PIP", content);
 		}
+		contentCache.put(category, content);
 		return content;
 	}
 
@@ -254,7 +271,8 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 					log.debug("Evaluating " +
 							"contextSelector xpath=\"{}\"", xpath.getValue());
 				}
-				contextNode = xpathProvider.evaluateToNode(context.getXPathVersion(), xpath.getValue(), content);
+				contextNode = xpathProvider.evaluateToNode(
+						context.getXPathVersion(), xpath.getValue(), content);
 			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
 					context.getXPathVersion(), ref.getPath(), contextNode);

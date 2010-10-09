@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.collect.HashMultimap;
@@ -51,7 +51,7 @@ public class DefaultPolicyInformationPoint
 	public BagOfAttributeValues resolve(
 			EvaluationContext context,
 			AttributeDesignator ref, 
-			RequestContextAttributesCallback callback) 
+			RequestContextCallback callback) 
 				throws AttributeReferenceEvaluationException 
 	{
 	 	AttributeResolver r = findResolver(context, ref);
@@ -75,7 +75,7 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public Node resolve(EvaluationContext context,
-			AttributeCategory categoryId, RequestContextAttributesCallback callback) {
+			AttributeCategory categoryId, RequestContextCallback callback) {
 		return null;
 	} 
 	

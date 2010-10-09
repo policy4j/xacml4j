@@ -15,7 +15,7 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
@@ -183,7 +183,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 		}
 		
 		public ValueExpression getKey(AttributeCategory category, 
-				RequestContextAttributesCallback callback){
+				RequestContextCallback callback){
 			BagOfAttributeValues bag = callback.getAttributeValues(category, attributeId, dataType);
 			if(bag == null || bag.isEmpty()){
 				return bag;

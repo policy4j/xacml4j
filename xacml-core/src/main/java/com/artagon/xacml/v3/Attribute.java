@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -21,6 +22,7 @@ public class Attribute extends XacmlObject
 	private Multiset<AttributeValue> values;
 	private boolean includeInResult;
 	private String issuer;
+	private int hash;
 	
 	/**
 	 * Constructs attribute with given
@@ -46,6 +48,7 @@ public class Attribute extends XacmlObject
 		this.values = LinkedHashMultiset.create(values.size());
 		this.values.addAll(values);
 		this.includeInResult = includeInResult;
+		this.hash = Objects.hashCode(attributeId, issuer, includeInResult, values);
 	}
 	
 	public Attribute(String attributeId,
@@ -124,5 +127,37 @@ public class Attribute extends XacmlObject
 	 */
 	public boolean isIncludeInResult(){
 		return includeInResult;
+	}
+	
+	@Override
+	public final String toString(){
+		return Objects.toStringHelper(this)
+		.add("AttributeId", attributeId)
+		.add("Issuer", issuer)
+		.add("IncludeInResult", includeInResult)
+		.add("Values", values).toString();
+	}
+	
+	@Override
+	public final int hashCode(){
+		return hash;
+	}
+	
+	@Override
+	public final boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Attribute)){
+			return false;
+		}
+		Attribute a = (Attribute)o;
+		return Objects.equal(attributeId, a.attributeId) &&
+			(!(includeInResult ^ a.includeInResult)) &&
+			Objects.equal(issuer, a.issuer) && values.equals(a.values);
+			
 	}
 }

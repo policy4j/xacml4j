@@ -7,11 +7,11 @@ import org.w3c.dom.Node;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class DefaultRequestAtributesCallback implements RequestContextAttributesCallback
+public class DefaultRequestContextCallback implements RequestContextCallback
 {
 	private RequestContext request;
 	
-	public DefaultRequestAtributesCallback(RequestContext req){
+	public DefaultRequestContextCallback(RequestContext req){
 		Preconditions.checkArgument(req != null);
 		Preconditions.checkArgument(!req.hasRepeatingCategories(), 
 				"RequestContext has repeating attributes categories");
@@ -52,8 +52,6 @@ public class DefaultRequestAtributesCallback implements RequestContextAttributes
 	@Override
 	public Node getContent(AttributeCategory category) {
 		return request.getOnlyContent(category);
-	}	
-	
-	
+	}		
 }
 

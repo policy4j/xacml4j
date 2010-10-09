@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 import org.w3c.dom.Node;
 
-public interface RequestContextAttributesCallback 
+public interface RequestContextCallback 
 {
 	/**
 	 * Gets {@link BagOfAttributeValues} from request context

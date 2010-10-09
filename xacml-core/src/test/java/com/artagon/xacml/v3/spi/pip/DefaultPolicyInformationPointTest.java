@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 
 public class DefaultPolicyInformationPointTest 
 {
@@ -108,7 +108,7 @@ public class DefaultPolicyInformationPointTest
 	{
 		AttributeResolver r1 = createStrictMock(AttributeResolver.class);
 		EvaluationContext context = createStrictMock(EvaluationContext.class);
-		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
+		RequestContextCallback callback = createStrictMock(RequestContextCallback.class);
 		Policy p = createStrictMock(Policy.class);
 		
 		AttributeDesignator ref = createStrictMock(AttributeDesignator.class);
@@ -161,7 +161,7 @@ public class DefaultPolicyInformationPointTest
 		EvaluationContext parentContext1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext parentContext2 = createStrictMock(EvaluationContext.class);
 		
-		RequestContextAttributesCallback callback = createStrictMock(RequestContextAttributesCallback.class);
+		RequestContextCallback callback = createStrictMock(RequestContextCallback.class);
 		Policy p = createStrictMock(Policy.class);
 		PolicySet ps1 = createStrictMock(PolicySet.class);
 		PolicySet ps2 = createStrictMock(PolicySet.class);

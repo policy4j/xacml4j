@@ -45,12 +45,18 @@ public class AttributeTest
 		values.add(INTEGER.create(1));
 		values.add(INTEGER.create(1));
 		Attribute attr = new Attribute("testId", "testIssuer", true, values);
+		Attribute attr1 = new Attribute("testId", null, true, values);
+		Attribute attr2 = new Attribute("testId", "testIssuer", false, values);
+		Attribute attr3 = new Attribute("testId", "testIssuer", true, values);
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
 		assertEquals(values.size(), attr.getValues().size());
 		assertTrue(attr.getValues().containsAll(values));
 		assertTrue(values.containsAll(attr.getValues()));
+		assertFalse(attr.equals(attr1));
+		assertFalse(attr.equals(attr2));
+		assertTrue(attr.equals(attr3));
 	}
 	
 	@Test

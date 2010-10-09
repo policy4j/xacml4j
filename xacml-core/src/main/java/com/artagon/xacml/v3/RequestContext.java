@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
@@ -348,5 +349,15 @@ public class RequestContext extends XacmlObject
 			}
 		}
 		return resultAttr;
-	}		
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("ReturnPolicyIDList", returnPolicyIdList)
+		.add("CombineDecision", combinedDecision)
+		.addValue(attributes.values())
+		.add("RequestReferences", requestReferences)
+		.add("RequestDefaults", requestDefaults).toString();
+	}
 }

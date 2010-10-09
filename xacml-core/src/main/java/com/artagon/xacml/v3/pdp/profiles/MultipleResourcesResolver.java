@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 
 public interface MultipleResourcesResolver 
 {
@@ -26,8 +26,8 @@ public interface MultipleResourcesResolver
 	 * @return a collection of immediate children of the given resource
 	 */
 	Collection<AttributeValue> resolveChildrenResources(AttributeValue resource, 
-			RequestContextAttributesCallback callback);
+			RequestContextCallback callback);
 	
 	Collection<AttributeValue> resolveDescendantResources(AttributeValue resource, 
-			RequestContextAttributesCallback callback);
+			RequestContextCallback callback);
 }

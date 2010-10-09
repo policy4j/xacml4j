@@ -145,6 +145,12 @@ public class Xacml20ConformanceTest
 		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);	
 	}
 	
+	@Test
+	public void testExecuteIIIG006() throws Exception
+	{
+		executeTestCase("IIIG", 6);
+	}
+	
 
 				
 	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
@@ -167,6 +173,7 @@ public class Xacml20ConformanceTest
 		PolicyDomain store = new DefaultPolicyDomain("Test");
 		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
+		System.out.println(request);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), store);
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);

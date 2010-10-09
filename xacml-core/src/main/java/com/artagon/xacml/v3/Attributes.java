@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import org.w3c.dom.Node;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -23,7 +24,9 @@ public class Attributes extends XacmlObject
 	
 	/**
 	 * Constructs an attributes with a given identifier,
-	 * category, attributes and XML content
+	 * category, attributes and XML content.
+	 * XML content is deep copied from a given
+	 * content node
 	 * 
 	 * @param id an optional unique identifier
 	 * @param categoryId an attribute category
@@ -250,5 +253,31 @@ public class Attributes extends XacmlObject
 			values.addAll(a.getValuesByType(type));
 		}
 		return values;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this).add("Category", categoryId)
+		.add("ID", id)
+		.add("Content", content)
+		.addValue(attributes.values()).toString();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Attributes)){
+			return false;
+		}
+		Attributes a = (Attributes)o;
+		return Objects.equal(categoryId, a.categoryId) &&
+		Objects.equal(id, a.id) && 
+		(content != null?content.isEqualNode(a.content):(a.content == null)) &&
+		Objects.equal(attributes, a.attributes);
 	}
 }

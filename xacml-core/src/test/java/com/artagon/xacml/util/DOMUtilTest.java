@@ -1,6 +1,8 @@
 package com.artagon.xacml.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 
@@ -12,6 +14,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -45,6 +48,23 @@ public class DOMUtilTest
 		this.xpath = xpf.newXPath();
 		xpath.setNamespaceContext(new NodeNamespaceContext(content));
 	
+	}
+	
+	@Test
+	public void testCopyNode()
+	{
+		Document copy = DOMUtil.copyNode(content);
+		assertNotNull(copy);
+		assertEquals(1, copy.getChildNodes().getLength());
+		assertNotNull(copy.getDocumentElement());
+		assertEquals("record", copy.getDocumentElement().getLocalName());
+		assertEquals("urn:example:med:schemas:record", copy.getDocumentElement().getNamespaceURI());
+		assertEquals(2, copy.getDocumentElement().getChildNodes().getLength());
+		assertEquals("patient", copy.getDocumentElement().getChildNodes().item(0).getLocalName());
+		assertEquals("urn:example:med:schemas:record", copy.getDocumentElement().getChildNodes().item(0).getNamespaceURI());
+		assertEquals("patient", copy.getDocumentElement().getChildNodes().item(1).getLocalName());
+		assertEquals("urn:example:med:schemas:record", copy.getDocumentElement().getChildNodes().item(1).getNamespaceURI());
+		assertTrue(copy.isEqualNode(content));
 	}
 	
 	@Test

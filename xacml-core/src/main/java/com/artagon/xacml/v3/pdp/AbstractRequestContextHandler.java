@@ -16,7 +16,8 @@ public abstract class AbstractRequestContextHandler implements RequestContextHan
 		this.next = new AtomicReference<RequestContextHandler>();
 	}
 	
-	protected final Collection<Result> handleNext(RequestContext request, 
+	protected final Collection<Result> handleNext(
+			RequestContext request, 
 			PolicyDecisionCallback pdp)
 	{
 		RequestContextHandler h = next.get();
@@ -29,7 +30,7 @@ public abstract class AbstractRequestContextHandler implements RequestContextHan
 	public final void setNext(RequestContextHandler handler) {
 		Preconditions.checkNotNull(handler);
 		Preconditions.checkState(next.get() == null, 
-				"Handler is already included in the chain");
+				"Handler is already has next handler");
 		this.next.set(handler);
 	}
 }

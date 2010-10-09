@@ -7,7 +7,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 
 public interface PolicyInformationPoint 
@@ -25,13 +25,13 @@ public interface PolicyInformationPoint
 	BagOfAttributeValues resolve(
 			EvaluationContext context, 
 			AttributeDesignator ref, 
-			RequestContextAttributesCallback callback) 
+			RequestContextCallback callback) 
 				throws AttributeReferenceEvaluationException;
 	
 	Node resolve(
 			EvaluationContext context, 
 			AttributeCategory categoryId, 
-			RequestContextAttributesCallback callback);
+			RequestContextCallback callback);
 	
 	/**
 	 * Adds attribute resolver

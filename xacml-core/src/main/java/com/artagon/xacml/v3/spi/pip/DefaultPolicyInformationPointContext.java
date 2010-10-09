@@ -10,17 +10,17 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.RequestContextAttributesCallback;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.google.common.base.Preconditions;
 
 class DefaultPolicyInformationPointContext implements PolicyInformationPointContext
 {
 	private AttributeReference ref;
 	private EvaluationContext context;
-	private RequestContextAttributesCallback callback;
+	private RequestContextCallback callback;
 	
 	public DefaultPolicyInformationPointContext(EvaluationContext context, 
-			RequestContextAttributesCallback callback,
+			RequestContextCallback callback,
 			AttributeReference ref){
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(callback);
