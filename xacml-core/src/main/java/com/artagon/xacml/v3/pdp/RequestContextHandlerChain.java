@@ -23,7 +23,6 @@ public class RequestContextHandlerChain implements RequestContextHandler
 	public RequestContextHandlerChain(
 			Iterable<RequestContextHandler> handlers)
 	{
-		Concu
 		this.handlers = new LinkedList<RequestContextHandler>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
