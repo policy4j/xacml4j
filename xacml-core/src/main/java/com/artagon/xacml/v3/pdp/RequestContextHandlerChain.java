@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
 /**
@@ -42,7 +43,8 @@ public class RequestContextHandlerChain implements RequestContextHandler
 	}
 	
 	@Override
-	public final Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
+	public final Collection<Result> handle(RequestContext request, 
+			PolicyDecisionCallback pdp) 
 	{
 		if(handlers.isEmpty()){
 			return Collections.singleton(pdp.requestDecision(request));
@@ -50,18 +52,21 @@ public class RequestContextHandlerChain implements RequestContextHandler
 		return postProcessResults(request, handlers.get(0).handle(request, pdp));
 	}
 
+	/**
+	 * @exception IllegalStateException if this handler
+	 * has no handlers in the internal list or handler
+	 * was already set for last handler in the list
+	 */
 	@Override
 	public final void setNext(RequestContextHandler handler) 
 	{
-		if(handlers.isEmpty()){
-			throw new IllegalArgumentException("Can't set next handler, " +
-					"this handler does not have any handlers");
-		}
+		Preconditions.checkState(!handlers.isEmpty());
 		handlers.get(handlers.size() - 1).setNext(handler);
 	}
 	
 	/**
-	 * A hooh to post-process decision results
+	 * A hook to perform post-processing of 
+	 * decision results
 	 * 
 	 * @param req a decision request
 	 * @param results a collection of decision results
