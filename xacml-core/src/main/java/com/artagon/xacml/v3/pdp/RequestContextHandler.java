@@ -20,7 +20,7 @@ public interface RequestContextHandler
 	/**
 	 * Sets next handler in a chain
 	 * 
-	 * @param handler a request handler
+	 * @param handler a next in chain request handler
 	 */
 	void setNext(RequestContextHandler handler);
 }

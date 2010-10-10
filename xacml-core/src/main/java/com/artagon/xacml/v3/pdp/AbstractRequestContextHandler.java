@@ -8,7 +8,8 @@ import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.google.common.base.Preconditions;
 
-public abstract class AbstractRequestContextHandler implements RequestContextHandler
+public abstract class AbstractRequestContextHandler 
+	implements RequestContextHandler
 {
 	private AtomicReference<RequestContextHandler> next;
 		
@@ -16,6 +17,14 @@ public abstract class AbstractRequestContextHandler implements RequestContextHan
 		this.next = new AtomicReference<RequestContextHandler>();
 	}
 	
+	/**
+	 * A helper method to be used by implementations
+	 * to invoke a next handler in the chain
+	 * 
+	 * @param request a decision request
+	 * @param pdp a policy decision point callback
+	 * @return collection of  {@link Result} instances
+	 */
 	protected final Collection<Result> handleNext(
 			RequestContext request, 
 			PolicyDecisionCallback pdp)
@@ -26,6 +35,10 @@ public abstract class AbstractRequestContextHandler implements RequestContextHan
 					h.handle(request, pdp);
 	}
 
+	/**
+	 * @exception IllegalStateException if this handler
+	 * already has handler set
+	 */
 	@Override
 	public final void setNext(RequestContextHandler handler) {
 		Preconditions.checkNotNull(handler);
