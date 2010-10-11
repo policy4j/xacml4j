@@ -41,9 +41,14 @@ public class DefaultPolicyInformationPoint
 	 */
 	private Multimap<String, AttributeResolver> resolversByPolicyId;
 	
+	
+	private Multimap<String, ContentResolver> contentResolversByPolicyId;
+	
+	
 	public DefaultPolicyInformationPoint(){
 		this.resolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
 		this.resolversByPolicyId = HashMultimap.create();
+		this.contentResolversByPolicyId = HashMultimap.create();
 		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
 	}
 

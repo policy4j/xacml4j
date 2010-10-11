@@ -33,7 +33,7 @@ import com.artagon.xacml.v3.types.XPathExpressionType;
 import com.artagon.xacml.v3.types.XPathExpressionValue;
 import com.google.common.base.Preconditions;
 
-public class DefaultEvaluationContextHandler implements EvaluationContextHandler
+class DefaultEvaluationContextHandler implements EvaluationContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 	
@@ -48,7 +48,7 @@ public class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	private Map<AttributeSelector, BagOfAttributeValues> attributeSelectorCache;
 	private Map<AttributeCategory, Node> contentCache;
 	
-	public DefaultEvaluationContextHandler(
+	DefaultEvaluationContextHandler(
 			RequestContextCallback requestContextCallback,
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip)

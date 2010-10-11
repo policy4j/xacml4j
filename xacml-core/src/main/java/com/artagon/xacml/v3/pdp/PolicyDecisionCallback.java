@@ -15,7 +15,7 @@ public interface PolicyDecisionCallback
 {
 	/**
 	 * Requests a decision for a given request
-	 * from PDP a policy decision point
+	 * from a policy decision point
 	 * 
 	 * @param request a decision request
 	 * @return {@link Result} a decision result
@@ -23,7 +23,7 @@ public interface PolicyDecisionCallback
 	Result requestDecision(RequestContext request);
 	
 	/**
-	 * Gets an {@link XPathProvider} an xpath provider
+	 * Gets an {@link XPathProvider} an XPath provider
 	 * 
 	 * @return {@link XPathProvider}
 	 */

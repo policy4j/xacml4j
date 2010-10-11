@@ -5,7 +5,6 @@ import java.util.Calendar;
 import com.artagon.xacml.v3.RequestContextCallback;
 
 public interface PolicyInformationPointContext 
-	extends RequestContextCallback
 {
 	
 	Calendar getCurrentDateTime();
@@ -29,5 +28,7 @@ public interface PolicyInformationPointContext
 	 * value exist in the context for a given key
 	 */
 	Object setValue(Object key, Object v);
+	
+	RequestContextCallback getRequestContextCallback();
 
 }
