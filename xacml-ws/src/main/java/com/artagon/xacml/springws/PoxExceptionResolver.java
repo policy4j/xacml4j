@@ -9,7 +9,7 @@ import org.springframework.ws.transport.context.TransportContext;
 import org.springframework.ws.transport.context.TransportContextHolder;
 import org.springframework.ws.transport.http.HttpServletConnection;
 
-public class PoxEndpointExceptionResolver extends AbstractEndpointExceptionResolver
+public class PoxExceptionResolver extends AbstractEndpointExceptionResolver
 {
 	@Override
 	protected boolean resolveExceptionInternal(MessageContext context,
