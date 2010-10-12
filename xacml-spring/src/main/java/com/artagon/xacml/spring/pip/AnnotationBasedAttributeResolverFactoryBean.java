@@ -2,7 +2,7 @@ package com.artagon.xacml.spring.pip;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.spi.pip.AnnotatedAttributeResolver;
+import com.artagon.xacml.v3.spi.pip.impl.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.google.common.base.Preconditions;
 
