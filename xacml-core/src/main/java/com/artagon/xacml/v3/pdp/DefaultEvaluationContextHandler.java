@@ -66,7 +66,8 @@ class DefaultEvaluationContextHandler implements EvaluationContextHandler
 	
 
 	@Override
-	public BagOfAttributeValues resolve(EvaluationContext context, AttributeDesignator ref) 
+	public BagOfAttributeValues resolve(EvaluationContext context, 
+			AttributeDesignator ref) 
 		throws EvaluationException 
 	{
 		BagOfAttributeValues v = requestContextCallback.getAttributeValues(

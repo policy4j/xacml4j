@@ -15,15 +15,23 @@ public final class FunctionSpecBuilder
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
 	
-	public FunctionSpecBuilder(String functionId){
+	private FunctionSpecBuilder(String functionId){
 		this(functionId, null);
 	}
 	
-	public FunctionSpecBuilder(String functionId, String legacyId){
+	private FunctionSpecBuilder(String functionId, String legacyId){
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
+	}
+	
+	public static FunctionSpecBuilder  create(String functionId, String legacyId){
+		return new FunctionSpecBuilder(functionId, legacyId);
+	}
+	
+	public static FunctionSpecBuilder  create(String functionId){
+		return create(functionId, null);
 	}
 	
 	public FunctionSpecBuilder withParamFunctionReference()

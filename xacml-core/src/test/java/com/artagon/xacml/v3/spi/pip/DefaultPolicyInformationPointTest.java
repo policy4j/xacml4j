@@ -131,7 +131,7 @@ public class DefaultPolicyInformationPointTest
 		expect(r1.getDescriptor()).andReturn(d1);
 		
 		
-		expect(ref.getCategory()).andReturn(AttributeCategories.ACTION);
+		expect(ref.getCategory()).andReturn(AttributeCategories.ACTION).times(2);
 		expect(ref.getAttributeId()).andReturn("testAttributeId");
 		expect(ref.getDataType()).andReturn(BOOLEAN);
 		expect(ref.getIssuer()).andReturn(null);

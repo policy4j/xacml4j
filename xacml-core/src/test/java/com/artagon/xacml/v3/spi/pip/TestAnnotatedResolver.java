@@ -7,12 +7,12 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
 import com.artagon.xacml.v3.sdk.XacmlAttributeKey;
-import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v3.sdk.XacmlAttributesResolverDescriptor;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
 
-@XacmlAttributeResolverDescriptor(name="Test Resolver")
+@XacmlAttributesResolverDescriptor(name="Test Resolver")
 @XacmlAttributeIssuer("testIssuer")
 @Ignore
 public class TestAnnotatedResolver 

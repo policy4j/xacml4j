@@ -27,7 +27,7 @@ public class MatchTest
 	{	
 		this.ref = createStrictMock(AttributeDesignator.class);
 		this.context = createStrictMock(EvaluationContext.class);
-		this.builder = new FunctionSpecBuilder("testFunction");
+		this.builder = FunctionSpecBuilder.create("testFunction");
 		this.invocation = createStrictMock(FunctionInvocation.class);
 		this.spec = builder.withParam(IntegerType.INTEGER).withParam(IntegerType.INTEGER).build(
 				BooleanType.BOOLEAN, invocation);

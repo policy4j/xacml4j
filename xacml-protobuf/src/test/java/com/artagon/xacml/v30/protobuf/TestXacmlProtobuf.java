@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.protobuf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -23,8 +22,7 @@ public class TestXacmlProtobuf
 		values.add(AttributeValue.newBuilder().setType(AttributeDataTypeId.INTEGER).setIntVal(IntegerType.INTEGER.create(11).getValue()).build());
 		values.add(AttributeValue.newBuilder().setType(AttributeDataTypeId.INTEGER).setIntVal(IntegerType.INTEGER.create(12).getValue()).build());
 		Attribute a0 = Attribute.newBuilder().setId("test").setIssuer("test").addAllValues(values).build();
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		a0.writeTo(out);
-		System.out.println(out.toByteArray().length);
+		
+		System.out.println(a0.getSerializedSize());
 	}
 }

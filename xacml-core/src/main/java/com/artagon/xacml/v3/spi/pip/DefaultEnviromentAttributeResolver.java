@@ -7,9 +7,9 @@ import static com.artagon.xacml.v3.types.TimeType.TIME;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
-import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v3.sdk.XacmlAttributesResolverDescriptor;
 
-@XacmlAttributeResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
+@XacmlAttributesResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
 class DefaultEnviromentAttributeResolver 
 {	
 	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-time", 

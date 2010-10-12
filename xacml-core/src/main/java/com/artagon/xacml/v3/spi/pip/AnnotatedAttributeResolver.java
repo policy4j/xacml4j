@@ -23,7 +23,7 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
 import com.artagon.xacml.v3.sdk.XacmlAttributeKey;
-import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v3.sdk.XacmlAttributesResolverDescriptor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -86,7 +86,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 	private static AttributeResolver build(Object instance) throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(instance != null);
-		XacmlAttributeResolverDescriptor descriptor = instance.getClass().getAnnotation(XacmlAttributeResolverDescriptor.class);
+		XacmlAttributesResolverDescriptor descriptor = instance.getClass().getAnnotation(XacmlAttributesResolverDescriptor.class);
 		Preconditions.checkState(descriptor != null);
 		XacmlAttributeIssuer issuer = instance.getClass().getAnnotation(XacmlAttributeIssuer.class);
 		List<Method> resolvers = Reflections.getAnnotatedMethods(instance.getClass(), XacmlAttributeDescriptor.class);
@@ -155,7 +155,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			if(key.isBag() && 
 					!p[i].isAssignableFrom(BagOfAttributeValues.class)){
 				throw new IllegalArgumentException(String.format(
-						"Attribuite resolver method=\"%s\" annotation=\"%s\" " +
+						"Attribute resolver method=\"%s\" annotation=\"%s\" " +
 						"defines XACML bag but parameter at index=\"%d\" is of type=\"%s\"", 
 						m.getName(), XacmlAttributeKey.class.getName(),i, p[i].getName()));
 			}

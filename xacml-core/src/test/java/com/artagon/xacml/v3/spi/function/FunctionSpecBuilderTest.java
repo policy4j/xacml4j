@@ -29,11 +29,11 @@ public class FunctionSpecBuilderTest
 		this.type2 = STRING;
 		this.impl =  createStrictMock(FunctionInvocation.class);
 		
-		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc1"); 
+		FunctionSpecBuilder b = FunctionSpecBuilder.create("testFunc1"); 
 		
 		this.specSameTypeArgs = b.withParam(type1).withParam(type1).build(INTEGER, impl);
 		
-		b = new FunctionSpecBuilder("testFunc2"); 
+		b = FunctionSpecBuilder.create("testFunc2"); 
 		this.specDiffTypeArgs = b.withParam(type1).withParam(type2).build(INTEGER, impl);
 	}
 	
@@ -61,14 +61,14 @@ public class FunctionSpecBuilderTest
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
-		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.create("testFunc");
 		b.withParam(type1, 1, 10).withParam(type1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
-		FunctionSpecBuilder b = new FunctionSpecBuilder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.create("testFunc");
 		b.withParam(type1, 3, 3).withParam(type1);
 	}
 }

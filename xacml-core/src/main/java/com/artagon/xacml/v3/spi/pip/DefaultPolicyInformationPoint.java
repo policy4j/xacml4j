@@ -13,6 +13,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextCallback;
@@ -34,21 +35,23 @@ public class DefaultPolicyInformationPoint
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategory, Map<String, AttributeResolver>> resolvers;
+	private Map<AttributeCategory, Map<String, AttributeResolver>> attributeResolvers;
 	
 	/**
 	 * Resolvers index by policy identifier
 	 */
-	private Multimap<String, AttributeResolver> resolversByPolicyId;
+	private Multimap<String, AttributeResolver> attributeResolversByPolicyId;
 	
 	
-	private Multimap<String, ContentResolver> contentResolversByPolicyId;
+	private Map<AttributeCategory, ContentResolver> contentResolvers;
+	private Multimap<String, ContentResolver> contentResolversByPolicy;
 	
 	
 	public DefaultPolicyInformationPoint(){
-		this.resolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
-		this.resolversByPolicyId = HashMultimap.create();
-		this.contentResolversByPolicyId = HashMultimap.create();
+		this.attributeResolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
+		this.attributeResolversByPolicyId = HashMultimap.create();
+		this.contentResolversByPolicy = HashMultimap.create();
+		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
 		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
 	}
 
@@ -57,7 +60,7 @@ public class DefaultPolicyInformationPoint
 			EvaluationContext context,
 			AttributeDesignator ref, 
 			RequestContextCallback callback) 
-				throws AttributeReferenceEvaluationException 
+				throws EvaluationException 
 	{
 	 	AttributeResolver r = findResolver(context, ref);
 	 	try{
@@ -65,7 +68,8 @@ public class DefaultPolicyInformationPoint
 	 			throw new AttributeReferenceEvaluationException(context, ref, 
 	 					"No resolver is found, to resolve given reference");
 	 		}
-	 		return r.resolve(new DefaultPolicyInformationPointContext(context, callback, ref), 
+	 		return r.resolve(new DefaultPolicyInformationPointContext(context, 
+	 				callback, ref.getCategory()), 
 		 						ref.getCategory(), 
 		 			 			ref.getAttributeId(), 
 		 			 			ref.getDataType(),
@@ -80,8 +84,11 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public Node resolve(EvaluationContext context,
-			AttributeCategory categoryId, RequestContextCallback callback) {
-		return null;
+			AttributeCategory category, RequestContextCallback callback) throws EvaluationException
+	{
+		ContentResolver r = findContentResolver(context, category);
+		return r != null?r.getContent(category, 
+				new DefaultPolicyInformationPointContext(context, callback, category)):null;
 	} 
 	
 	
@@ -90,10 +97,10 @@ public class DefaultPolicyInformationPoint
 		AttributeResolverDescriptor d = resolver.getDescriptor();
 		for(AttributeCategory c : d.getSupportedCategores())
 		{
-			Map<String, AttributeResolver> byCategory = resolvers.get(category);
+			Map<String, AttributeResolver> byCategory = attributeResolvers.get(category);
 			if(byCategory == null){
 				byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-				resolvers.put(c, byCategory);
+				attributeResolvers.put(c, byCategory);
 			}
 			for(String attributeId : d.getProvidedAttributeIds(c))
 			{
@@ -132,7 +139,7 @@ public class DefaultPolicyInformationPoint
 	 * @param resolver an attribute resolver
 	 */
 	public void addResolver(String policyId, AttributeResolver resolver){
-		this.resolversByPolicyId.put(policyId, resolver);
+		this.attributeResolversByPolicyId.put(policyId, resolver);
 	}
 	
 	/**
@@ -151,7 +158,7 @@ public class DefaultPolicyInformationPoint
 		// context is null
 		if(context == null)
 		{
-			Map<String, AttributeResolver> byCategory = resolvers.get(ref.getCategory());
+			Map<String, AttributeResolver> byCategory = attributeResolvers.get(ref.getCategory());
 		 	if(byCategory == null){
 		 		return null;
 		 	}
@@ -163,7 +170,7 @@ public class DefaultPolicyInformationPoint
 		 			ref.getIssuer()))?resolver:null;
 		}
 		String policyId = getCurrentIdentifier(context);
-		Collection<AttributeResolver> found = resolversByPolicyId.get(policyId);
+		Collection<AttributeResolver> found = attributeResolversByPolicyId.get(policyId);
 		if(log.isDebugEnabled()){
 			log.debug("Found \"{}\" resolver " +
 					"scoped for a PolicyId=\"{}\"", 
@@ -183,6 +190,34 @@ public class DefaultPolicyInformationPoint
 			}
 		}
 		return findResolver(context.getParentContext(), ref);
+	}
+	
+	private ContentResolver findContentResolver(EvaluationContext context, 
+			AttributeCategory category)
+	{
+		// stop recursive call if 
+		// context is null
+		if(context == null){
+			return contentResolvers.get(category);
+		}
+		String policyId = getCurrentIdentifier(context);
+		Collection<ContentResolver> found = contentResolversByPolicy.get(policyId);
+		if(log.isDebugEnabled()){
+			log.debug("Found \"{}\" resolver " +
+					"scoped for a PolicyId=\"{}\"", 
+					found.size(), policyId);
+		}
+		for(ContentResolver r : found)
+		{
+			ContentResolverDescriptor d = r.getDescriptor();
+			if(d.canResolve(category)){
+				if(log.isDebugEnabled()){
+					log.debug("Found PolicyId=\"{}\" scoped resolver", policyId);
+				}
+				return r;
+			}
+		}
+		return findContentResolver(context.getParentContext(), category);
 	}
 	
 	private String getCurrentIdentifier(EvaluationContext context)

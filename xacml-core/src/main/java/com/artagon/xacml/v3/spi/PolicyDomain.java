@@ -58,9 +58,9 @@ public interface PolicyDomain
 	void remove(CompositeDecisionRule p);
 	
 	/**
-	 * Gets domain policies
+	 * Gets domain root domain policies
 	 * 
-	 * @return a collection of policies 
+	 * @return a collection of  policies 
 	 * in this domain
 	 */
 	Collection<CompositeDecisionRule> getDomainPolicies();

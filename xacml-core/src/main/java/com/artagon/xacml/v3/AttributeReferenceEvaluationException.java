@@ -29,7 +29,8 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 		this.ref = ref;
 	}
 	
-	public AttributeReferenceEvaluationException(EvaluationContext context, 
+	public AttributeReferenceEvaluationException(
+			EvaluationContext context, 
 			AttributeReference ref,
 			StatusCode code,
 			Throwable cause){

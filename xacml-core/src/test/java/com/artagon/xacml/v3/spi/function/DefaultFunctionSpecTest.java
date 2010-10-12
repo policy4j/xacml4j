@@ -28,7 +28,7 @@ public class DefaultFunctionSpecTest
 	public void init(){
 		this.invocation = createStrictMock(FunctionInvocation.class);
 		this.resolver = createStrictMock(FunctionReturnTypeResolver.class);
-		this.b = new FunctionSpecBuilder("testId");
+		this.b = FunctionSpecBuilder.create("testId");
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	

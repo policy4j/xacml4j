@@ -6,5 +6,6 @@ import java.util.Set;
 
 public interface ContentResolverDescriptor
 {
+	boolean canResolve(AttributeCategory category);
 	Set<AttributeCategory> getSupportedCategories();
 }
