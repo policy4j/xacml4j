@@ -63,7 +63,8 @@ public class DefaultEvaluationContextFactory implements EvaluationContextFactory
 	public EvaluationContext createContext(RequestContext request) 
 	{
 		RequestContextCallback callback = new DefaultRequestContextCallback(request);
-		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(callback, xpathProvider, pip);
+		EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
+				callback, xpathProvider, pip);
 		return new RootEvaluationContext(handler);
 	}
 	
