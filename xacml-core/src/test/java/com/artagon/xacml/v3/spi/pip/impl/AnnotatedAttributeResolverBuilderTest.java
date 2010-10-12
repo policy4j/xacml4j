@@ -1,6 +1,8 @@
-package com.artagon.xacml.v3.spi.pip;
+package com.artagon.xacml.v3.spi.pip.impl;
 
 import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -10,16 +12,23 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
+import com.artagon.xacml.v3.spi.pip.AttributeResolver;
+import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
+import com.artagon.xacml.v3.spi.pip.impl.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 
 public class AnnotatedAttributeResolverBuilderTest 
 {
+	private PolicyInformationPointContext context;
 	private AttributeResolver resolver;
 	
 	@Before
 	public void init(){
 		this.resolver = AnnotatedAttributeResolver.create(new TestAnnotatedResolver());
+		this.context = createStrictMock(PolicyInformationPointContext.class);
 	}
 	
 	@Test
@@ -45,7 +54,6 @@ public class AnnotatedAttributeResolverBuilderTest
 	@Test
 	public void testInvokeResolverWithValidParameters() throws Exception
 	{
-		PolicyInformationPointContext context = createStrictMock(PolicyInformationPointContext.class);
 		
 		BagOfAttributeValues v1 = resolver.resolve(context, 
 				AttributeCategories.RESOURCE, "testId1", StringType.STRING, "testIssuer");
@@ -58,6 +66,16 @@ public class AnnotatedAttributeResolverBuilderTest
 		BagOfAttributeValues v2 = resolver.resolve(context, 
 				AttributeCategories.SUBJECT_ACCESS, "testId2", IntegerType.INTEGER, "testIssuer");
 		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v2);
+	}
+	
+	@Test
+	public void testInvokeResolverWithValidParametersWithRequestKeys() throws Exception
+	{
+		replay(context);
+		BagOfAttributeValues v = resolver.resolve(context, 
+				AttributeCategories.SUBJECT_ACCESS, "testId3", IntegerType.INTEGER, "testIssuer");
+		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v);
+		verify(context);
 	}
 	
 	@Test

@@ -2,12 +2,15 @@ package com.artagon.xacml.v3.spi.pip;
 
 import java.util.Calendar;
 
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.RequestContextCallback;
 
 public interface PolicyInformationPointContext 
 {
 	
 	Calendar getCurrentDateTime();
+	
+	AttributeCategory getCategory();
 	
 	/**
 	 * Gets value from this context via 

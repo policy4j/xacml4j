@@ -26,6 +26,10 @@ class DefaultPolicyInformationPointContext
 		this.callback = callback;
 	}
 	
+	public AttributeCategory getCategory(){
+		return category;
+	}
+	
 	@Override
 	public Calendar getCurrentDateTime() {
 		return context.getCurrentDateTime();

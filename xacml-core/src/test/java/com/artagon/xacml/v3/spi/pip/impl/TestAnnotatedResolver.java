@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi.pip;
+package com.artagon.xacml.v3.spi.pip.impl;
 
 import org.junit.Ignore;
 
@@ -8,6 +8,7 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeIssuer;
 import com.artagon.xacml.v3.sdk.XacmlAttributeKey;
 import com.artagon.xacml.v3.sdk.XacmlAttributesResolverDescriptor;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;

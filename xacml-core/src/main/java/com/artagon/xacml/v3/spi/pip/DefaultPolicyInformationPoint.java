@@ -19,6 +19,7 @@ import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.impl.AnnotatedAttributeResolver;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
