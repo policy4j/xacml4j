@@ -32,7 +32,7 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 	private final static Logger log = LoggerFactory.getLogger(AnnotatedAttributeResolver.class);
 	private Map<AttributeCategory, Map<String, ResolverMethodInfo>> resolvers;
 	
-	AnnotatedAttributeResolver(
+	private AnnotatedAttributeResolver(
 			AttributeResolverDescriptor descriptor, 
 			Map<AttributeCategory, Map<String, ResolverMethodInfo>> methods, Object instance) 
 	{

@@ -26,22 +26,30 @@ public class RequestContextKeyInfo extends XacmlObject
 	
 	private String attributeId;
 	private AttributeValueType dataType;
+	private String issuer;
 	private boolean singleValue;
 	
-	public RequestContextKeyInfo(String attributeId, 
-			AttributeValueType dataType, boolean singleValue){
+	public RequestContextKeyInfo(
+			String attributeId, 
+			AttributeValueType dataType, 
+			String issuer,
+			boolean singleValue){
+		Preconditions.checkArgument(attributeId != null);
+		Preconditions.checkArgument(dataType != null);
 		this.attributeId = attributeId;
 		this.dataType = dataType;
 		this.singleValue = singleValue;
+		this.issuer = (issuer != null && issuer.length() == 0)?null:issuer;
 	}
 	
 	public ValueExpression getKey(PolicyInformationPointContext context)
 	{
 		RequestContextCallback callback = context.getRequestContextCallback();
-		BagOfAttributeValues bag = callback.getAttributeValues(context.getCategory(), attributeId, dataType);
+		BagOfAttributeValues bag = callback.getAttributeValues(
+				context.getCategory(), attributeId, dataType, issuer);
 		if(bag == null || 
 				bag.isEmpty()){
-			return dataType.emptyBag();
+			return singleValue?null:dataType.emptyBag();
 		}
 		return singleValue?bag.value():bag;
 	}
@@ -110,7 +118,7 @@ public class RequestContextKeyInfo extends XacmlObject
 						new Object[]{ key.id(), key.category(), key.type()});
 			}
 			keyInfo.add(new RequestContextKeyInfo(key.id(), 
-					XacmlDataTypesRegistry.getType(key.type()), !key.isBag()));
+					XacmlDataTypesRegistry.getType(key.type()), key.issuer(), !key.isBag()));
 		}
 		return keyInfo;
 	}

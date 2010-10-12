@@ -76,14 +76,14 @@ public class AnnotatedAttributeResolverBuilderTest
 	{
 		expect(context.getRequestContextCallback()).andReturn(callback);
 		expect(callback.getAttributeValues(AttributeCategories.SUBJECT_ACCESS, "username", 
-				StringType.STRING, "testIssuer")).
+				StringType.STRING, null)).
 				andReturn(StringType.STRING.bagOf(StringType.STRING.create("test")));
 		expect(context.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
-		replay(context);
+		replay(context, callback);
 		BagOfAttributeValues v = resolver.resolve(context, 
 				AttributeCategories.SUBJECT_ACCESS, "testId3", StringType.STRING, "testIssuer");
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("test")), v);
-		verify(context);
+		verify(context, callback);
 	}
 	
 	@Test

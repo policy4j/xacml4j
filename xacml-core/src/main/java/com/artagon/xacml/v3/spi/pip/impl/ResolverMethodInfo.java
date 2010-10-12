@@ -40,6 +40,11 @@ public class ResolverMethodInfo
 			}
 			params[i + 1] = keyInfo.get(i).getKey(context);
 		}
-		return m.invoke(instance, params);
+		try{
+			return m.invoke(instance, params);
+		}catch(Exception e){
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }
