@@ -94,8 +94,8 @@ public class AnnotatedAttributeResolver extends BaseAttributeResolver
 			Preconditions.checkState(c != null, 
 					"Class=\"%s\" method=\"%s\" does not have attribute category specified", 
 					instance.getClass().getName(), r.getName());
-			List<RequestContextKeyInfo> keyInfo = RequestContextKeyInfo.getRequestKeyInfo(r);
-			ResolverMethodInfo resolverMethod = new ResolverMethodInfo(instance, r, keyInfo);
+			ResolverMethodInfo resolverMethod = new ResolverMethodInfo(instance, r, 
+					RequestContextKeyInfo.getRequestKeyInfo(r));
 			for(String cat : c.value())
 			{
 				AttributeCategory category = AttributeCategories.parse(cat);

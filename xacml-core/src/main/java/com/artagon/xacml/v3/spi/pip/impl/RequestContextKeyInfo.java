@@ -12,13 +12,15 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.RequestContextCallback;
+import com.artagon.xacml.v3.ValueExpression;
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.artagon.xacml.v3.sdk.XacmlAttributeKey;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
 import com.google.common.base.Preconditions;
 
-public class RequestContextKeyInfo
+public class RequestContextKeyInfo extends XacmlObject
 {
 	private final static Logger log = LoggerFactory.getLogger(RequestContextKeyInfo.class);
 	
@@ -33,17 +35,13 @@ public class RequestContextKeyInfo
 		this.singleValue = singleValue;
 	}
 	
-	public Object getKey(PolicyInformationPointContext context){
+	public ValueExpression getKey(PolicyInformationPointContext context)
+	{
 		RequestContextCallback callback = context.getRequestContextCallback();
 		BagOfAttributeValues bag = callback.getAttributeValues(context.getCategory(), attributeId, dataType);
-		if(log.isDebugEnabled()){
-			log.debug("Resolve value=\"{}\" " +
-					"category=\"{}\" attributeId=\"{}\" from request context", 
-					new Object[]{bag, context.getCategory(), attributeId});
-		}
 		if(bag == null || 
 				bag.isEmpty()){
-			return bag;
+			return dataType.emptyBag();
 		}
 		return singleValue?bag.value():bag;
 	}
@@ -65,13 +63,18 @@ public class RequestContextKeyInfo
 		Preconditions.checkArgument(m.getReturnType().isAssignableFrom(BagOfAttributeValues.class), 
 				"Attribute resolver method should return value of type=\"%s\"", BagOfAttributeValues.class.getName());
 		if(p.length == 1){
+			if(log.isDebugEnabled()){
+				log.debug("No request keys " +
+						"found in method=\"{}\" signature", m.getName());
+			}
 			return keyInfo;
 		}
 		Annotation[][] params = m.getParameterAnnotations();
-		for(int i = 1; i < p.length; i++)
+		for(int i = 1; i < params.length; i++)
 		{
 			if(log.isDebugEnabled()){
-				log.debug("Validating resolver method=\"{}\" parameter of type=\"{}\"" , m.getName(),  
+				log.debug("Validating resolver method=\"{}\" " +
+						"parameter of type=\"{}\"" , m.getName(),  
 						p[i].getName());
 			}
 			
@@ -97,6 +100,14 @@ public class RequestContextKeyInfo
 						"Attribuite resolver method=\"%s\" annotation=\"%s\" " +
 						"defines XACML scalar type but  parameter at index=\"%d\" is of type=\"%s\"", 
 						m.getName(), XacmlAttributeKey.class.getName(), i, p[i].getName()));
+			}
+			if(log.isDebugEnabled()){
+				
+			}
+			if(log.isDebugEnabled()){
+				log.debug("Adding request key id=\"{}\", " +
+						"category=\"{}\" type=\"{}\"", 
+						new Object[]{ key.id(), key.category(), key.type()});
 			}
 			keyInfo.add(new RequestContextKeyInfo(key.id(), 
 					XacmlDataTypesRegistry.getType(key.type()), !key.isBag()));

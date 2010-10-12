@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
@@ -24,11 +25,13 @@ public class AnnotatedAttributeResolverBuilderTest
 {
 	private PolicyInformationPointContext context;
 	private AttributeResolver resolver;
+	private RequestContextCallback callback;
 	
 	@Before
 	public void init(){
 		this.resolver = AnnotatedAttributeResolver.create(new TestAnnotatedResolver());
 		this.context = createStrictMock(PolicyInformationPointContext.class);
+		this.callback = createStrictMock(RequestContextCallback.class);
 	}
 	
 	@Test
@@ -71,10 +74,15 @@ public class AnnotatedAttributeResolverBuilderTest
 	@Test
 	public void testInvokeResolverWithValidParametersWithRequestKeys() throws Exception
 	{
+		expect(context.getRequestContextCallback()).andReturn(callback);
+		expect(callback.getAttributeValues(AttributeCategories.SUBJECT_ACCESS, "username", 
+				StringType.STRING, "testIssuer")).
+				andReturn(StringType.STRING.bagOf(StringType.STRING.create("test")));
+		expect(context.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
 		replay(context);
 		BagOfAttributeValues v = resolver.resolve(context, 
-				AttributeCategories.SUBJECT_ACCESS, "testId3", IntegerType.INTEGER, "testIssuer");
-		assertEquals(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)), v);
+				AttributeCategories.SUBJECT_ACCESS, "testId3", StringType.STRING, "testIssuer");
+		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("test")), v);
 		verify(context);
 	}
 	

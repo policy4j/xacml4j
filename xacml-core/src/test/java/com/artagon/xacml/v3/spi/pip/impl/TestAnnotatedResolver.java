@@ -12,6 +12,7 @@ import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
+import com.google.common.base.Preconditions;
 
 @XacmlAttributesResolverDescriptor(name="Test Resolver")
 @XacmlAttributeIssuer("testIssuer")
@@ -36,14 +37,16 @@ public class TestAnnotatedResolver
 	}
 	
 	
-	@XacmlAttributeDescriptor(id="testId3", typeId="http://www.w3.org/2001/XMLSchema#integer")
+	@XacmlAttributeDescriptor(id="testId3", typeId="http://www.w3.org/2001/XMLSchema#string")
 	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
 	public BagOfAttributeValues getTestId3Attribute(
 			PolicyInformationPointContext context, 
 			@XacmlAttributeKey(id="username", 
 					category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
-					type="http://www.w3.org/2001/XMLSchema#integer")StringValue username)
+					type="http://www.w3.org/2001/XMLSchema#string")StringValue username)
 	{
-		return IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1));
+		Preconditions.checkNotNull(context);
+		Preconditions.checkNotNull(username);
+		return StringType.STRING.bagOf(username);
 	}
 }
