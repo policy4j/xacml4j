@@ -186,6 +186,11 @@
 					</excludes>
 				</configuration>
 			</plugin>
+            
+        </plugins>
+	</build>
+    <reporting>
+        <plugins>
             <plugin>
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -195,7 +200,7 @@
                 </configuration>
             </plugin>
         </plugins>
-	</build>
+    </reporting>
 	<repositories>
 		<repository>
 			<id>jboss-release</id>
