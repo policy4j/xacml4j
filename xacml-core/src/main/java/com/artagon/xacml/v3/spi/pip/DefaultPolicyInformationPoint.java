@@ -19,6 +19,7 @@ import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -40,7 +41,7 @@ public class DefaultPolicyInformationPoint
 	/**
 	 * Resolvers index by policy identifier
 	 */
-	private Multimap<String, AttributeResolver> attributeResolversByPolicyId;
+	private Multimap<String, AttributeResolver> attributeResolversByPolicy;
 	
 	
 	private Map<AttributeCategory, ContentResolver> contentResolvers;
@@ -49,7 +50,7 @@ public class DefaultPolicyInformationPoint
 	
 	public DefaultPolicyInformationPoint(){
 		this.attributeResolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
-		this.attributeResolversByPolicyId = HashMultimap.create();
+		this.attributeResolversByPolicy = HashMultimap.create();
 		this.contentResolversByPolicy = HashMultimap.create();
 		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
 		addResolver(AnnotatedAttributeResolver.create(new DefaultEnviromentAttributeResolver()));
@@ -131,6 +132,20 @@ public class DefaultPolicyInformationPoint
 		}
 	}
 	
+	public void addResolver(ContentResolver r)
+	{
+		Preconditions.checkArgument(r != null);
+		ContentResolverDescriptor d = r.getDescriptor();
+		for(AttributeCategory category : d.getSupportedCategories()){
+			contentResolvers.put(category, r);
+		}
+	}
+	
+	public void addResolver(String policyId, ContentResolver r){
+		Preconditions.checkArgument(r != null);
+		this.contentResolversByPolicy.put(policyId, r);
+	}
+	
 	/**
 	 * Adds resolver for specific policy or policy set
 	 * and policies down the evaluation tree
@@ -139,7 +154,7 @@ public class DefaultPolicyInformationPoint
 	 * @param resolver an attribute resolver
 	 */
 	public void addResolver(String policyId, AttributeResolver resolver){
-		this.attributeResolversByPolicyId.put(policyId, resolver);
+		this.attributeResolversByPolicy.put(policyId, resolver);
 	}
 	
 	/**
@@ -170,7 +185,7 @@ public class DefaultPolicyInformationPoint
 		 			ref.getIssuer()))?resolver:null;
 		}
 		String policyId = getCurrentIdentifier(context);
-		Collection<AttributeResolver> found = attributeResolversByPolicyId.get(policyId);
+		Collection<AttributeResolver> found = attributeResolversByPolicy.get(policyId);
 		if(log.isDebugEnabled()){
 			log.debug("Found \"{}\" resolver " +
 					"scoped for a PolicyId=\"{}\"", 
