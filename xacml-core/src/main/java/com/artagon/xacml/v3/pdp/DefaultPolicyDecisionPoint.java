@@ -146,4 +146,8 @@ public final class DefaultPolicyDecisionPoint implements PolicyDecisionPoint,
 	public XPathProvider getXPathProvider() {
 		return factory.getXPathProvider();
 	}	
+	
+	public PolicyDecisionCallback getPolicyDecisionCallback(){
+		return this;
+	}
 }
