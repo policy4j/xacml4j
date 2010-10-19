@@ -14,6 +14,7 @@ import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultPolicyDecisionPointContextFactory 
@@ -23,7 +24,6 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
-	private PolicyRepository policyRepository;
 	private PolicyReferenceResolver policyReferenceResolver;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestHandlers;
@@ -33,7 +33,9 @@ public class DefaultPolicyDecisionPointContextFactory
 	
 	public DefaultPolicyDecisionPointContextFactory(
 			PolicyDomain policyDomain, 
-			PolicyRepository repository, 
+			PolicyRepository repository,
+			PolicyDecisionAuditor auditor,
+			PolicyDecisionCache cache,
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip,
 			List<RequestContextHandler> handlers)
@@ -42,12 +44,32 @@ public class DefaultPolicyDecisionPointContextFactory
 		Preconditions.checkArgument(repository != null);
 		Preconditions.checkArgument(xpathProvider != null);
 		Preconditions.checkArgument(pip != null);
+		Preconditions.checkArgument(auditor != null);
+		Preconditions.checkArgument(cache != null);
 		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
 		this.policyDomain = policyDomain;
-		this.policyRepository = repository;
+		this.decisionAuditor = auditor;
+		this.decisionCache = cache;
 		this.requestHandlers = new RequestContextHandlerChain(handlers);
+	}
+	
+	public DefaultPolicyDecisionPointContextFactory(
+			PolicyDomain policyDomain, 
+			PolicyRepository repository, 
+			PolicyInformationPoint pip,
+			List<RequestContextHandler> handlers)
+	{
+		this(policyDomain, repository, 
+				new NoAuditPolicyDecisionPointAuditor(), 
+				new NoCachePolicyDecisionCache(), 
+				new DefaultXPathProvider(),  
+				pip, handlers);
+	}
+	
+	public void setValidaFunctionParametersAtRuntime(boolean validate){
+		this.validateFuncParamsAtRuntime = validate;
 	}
 
 	@Override
@@ -94,6 +116,4 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 		};
 	}
-	
-
 }
