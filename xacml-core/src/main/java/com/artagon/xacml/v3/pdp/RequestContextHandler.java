@@ -14,8 +14,9 @@ public interface RequestContextHandler
 	 * @param pdp a policy decision point callback
 	 * @return collection of {@link Result} instances
 	 */
-	Collection<Result> handle(RequestContext request, 
-			PolicyDecisionCallback pdp);
+	Collection<Result> handle(
+			RequestContext request, 
+			PolicyDecisionPointContext context);
 	
 	/**
 	 * Sets next handler in a chain

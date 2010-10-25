@@ -11,22 +11,22 @@ import com.artagon.xacml.v3.RequestReference;
 import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	
-	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		Collection<RequestReference> references = request.getRequestReferences();
 		if(references.isEmpty()){
-			return handleNext(request, pdp);
+			return handleNext(request, context);
 		}
 		for(RequestReference ref : references){
 			try{
 				RequestContext resolvedRequest = resolveAttributes(request, ref);
-				results.addAll(handleNext(resolvedRequest, pdp));
+				results.addAll(handleNext(resolvedRequest, context));
 			}catch(RequestSyntaxException e){
 				results.add(new Result(Decision.INDETERMINATE, e.getStatus(), 
 						request.getIncludeInResultAttributes()));

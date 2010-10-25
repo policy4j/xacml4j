@@ -13,7 +13,7 @@ public class DefaultRequestContextCallback implements RequestContextCallback
 	
 	public DefaultRequestContextCallback(RequestContext req){
 		Preconditions.checkArgument(req != null);
-		Preconditions.checkArgument(!req.hasRepeatingCategories(), 
+		Preconditions.checkArgument(!req.containsRepeatingCategories(), 
 				"RequestContext has repeating attributes categories");
 		this.request = req;
 	}

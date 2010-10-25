@@ -1,8 +1,9 @@
 package com.artagon.xacml.v3.spi.pip.impl;
 
 import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.*;
-
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +18,6 @@ import com.artagon.xacml.v3.spi.pip.AttributeDescriptor;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPointContext;
-import com.artagon.xacml.v3.spi.pip.impl.AnnotatedAttributeResolver;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 

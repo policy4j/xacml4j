@@ -27,12 +27,12 @@ public abstract class AbstractRequestContextHandler
 	 */
 	protected final Collection<Result> handleNext(
 			RequestContext request, 
-			PolicyDecisionCallback pdp)
+			PolicyDecisionPointContext context)
 	{
 		RequestContextHandler h = next.get();
 		return (h == null)?
-				Collections.singleton(pdp.requestDecision(request)):
-					h.handle(request, pdp);
+				Collections.singleton(context.requestDecision(request)):
+					h.handle(request, context);
 	}
 
 	/**

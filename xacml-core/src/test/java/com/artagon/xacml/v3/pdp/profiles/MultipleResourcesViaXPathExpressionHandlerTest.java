@@ -35,7 +35,7 @@ import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
@@ -56,7 +56,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	"</md:patient>" +
 	"</md:record>";
 	
-	private PolicyDecisionCallback pdp;
+	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
 	private Node content;
 	
@@ -65,7 +65,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	@Before
 	public void init() throws Exception
 	{
-		this.pdp = createStrictMock(PolicyDecisionCallback.class);
+		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaXPathExpressionHandler();
 		this.xpathProvider = new DefaultXPathProvider();
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
@@ -96,7 +96,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
-		assertFalse(context.hasRepeatingCategories());
+		assertFalse(context.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		
@@ -156,7 +156,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext context = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
-		assertFalse(context.hasRepeatingCategories());
+		assertFalse(context.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
@@ -244,7 +244,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
-		assertFalse(request.hasRepeatingCategories());
+		assertFalse(request.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		
 		expect(pdp.requestDecision(capture(c0))).andReturn(
@@ -284,7 +284,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject, resource));
 		
-		assertFalse(request.hasRepeatingCategories());
+		assertFalse(request.containsRepeatingCategories());
 		
 		replay(pdp);
 		

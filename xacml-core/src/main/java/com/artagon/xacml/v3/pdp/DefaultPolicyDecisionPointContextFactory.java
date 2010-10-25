@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.pdp;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v3.DefaultRequestContextCallback;
@@ -8,6 +9,7 @@ import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.RequestContextCallback;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.spi.PolicyDomain;
@@ -57,6 +59,17 @@ public class DefaultPolicyDecisionPointContextFactory
 	
 	public DefaultPolicyDecisionPointContextFactory(
 			PolicyDomain policyDomain, 
+			PolicyRepository repository,
+			PolicyDecisionAuditor auditor,
+			PolicyDecisionCache cache,
+			XPathProvider xpathProvider, 
+			PolicyInformationPoint pip){
+		this(policyDomain, repository, auditor, cache, xpathProvider, pip, 
+				Collections.<RequestContextHandler>emptyList());
+	}
+	
+	public DefaultPolicyDecisionPointContextFactory(
+			PolicyDomain policyDomain, 
 			PolicyRepository repository, 
 			PolicyInformationPoint pip,
 			List<RequestContextHandler> handlers)
@@ -66,6 +79,19 @@ public class DefaultPolicyDecisionPointContextFactory
 				new NoCachePolicyDecisionCache(), 
 				new DefaultXPathProvider(),  
 				pip, handlers);
+	}
+	
+	public DefaultPolicyDecisionPointContextFactory(
+			PolicyDomain policyDomain, 
+			PolicyRepository repository, 
+			PolicyInformationPoint pip)
+	{
+		this(policyDomain, repository, 
+				new NoAuditPolicyDecisionPointAuditor(), 
+				new NoCachePolicyDecisionCache(), 
+				new DefaultXPathProvider(),  
+				pip, 
+				Collections.<RequestContextHandler>emptyList());
 	}
 	
 	public void setValidaFunctionParametersAtRuntime(boolean validate){
@@ -93,21 +119,26 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 			
 			@Override
-			public PolicyDecisionAuditor getAuditor() {
+			public PolicyDecisionAuditor getDecisionAuditor() {
 				return decisionAuditor;
 			}
 			
-			public PolicyDecisionCallback getPolicyDecisionCallback(){
-				return pdp;
+			@Override
+			public Result requestDecision(RequestContext req) {
+
+				return pdp.requestDecision(this, req);
 			}
-			
+
 			@Override
 			public RequestContextHandlerChain getRequestHandlers() {
 				return requestHandlers;
 			}
 
 			@Override
-			public EvaluationContext createEvaluationContext(RequestContext request) {
+			public EvaluationContext createEvaluationContext(RequestContext request) 
+			{
+				Preconditions.checkArgument(!request.containsRepeatingCategories());
+				Preconditions.checkArgument(!request.containsRequestReferences());
 				RequestContextCallback callback = new DefaultRequestContextCallback(request);
 				EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
 						callback, xpathProvider, pip);

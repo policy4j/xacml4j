@@ -16,10 +16,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.XPathProvider;
 
 public class PolicyTest 
 {
@@ -39,12 +36,10 @@ public class PolicyTest
 	
 	private DecisionCombiningAlgorithm<Rule> combingingAlg;
 	
-	private RequestContext request;
-	
 	private List<Rule> rules;
 	
-	private PolicyRepository repository;
-	private XPathProvider xpathProvider;
+	private PolicyReferenceResolver referenceResolver;
+	private EvaluationContextHandler handler;
 	private PolicyInformationPoint pip;
 	
 	@SuppressWarnings("unchecked")
@@ -81,12 +76,10 @@ public class PolicyTest
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
-		this.repository = createStrictMock(PolicyRepository.class);
-		this.xpathProvider = createStrictMock(XPathProvider.class);
+		this.referenceResolver = createStrictMock(PolicyReferenceResolver.class);
+		this.handler = createStrictMock(EvaluationContextHandler.class);
 		this.pip = createStrictMock(PolicyInformationPoint.class);
-		this.request = createStrictMock(RequestContext.class);
-		this.context = new DefaultEvaluationContextFactory(
-				repository, xpathProvider, pip).createContext(request);
+		this.context = new RootEvaluationContext(true, referenceResolver, handler);
 	}
 	
 	@Test
@@ -111,9 +104,9 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, denyAdviceExp, denyObligationExp);
 		assertEquals(MatchResult.MATCH, policy.isApplicable(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -121,9 +114,9 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.NOMATCH);
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 		assertEquals(MatchResult.NOMATCH, policy.isApplicable(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -131,9 +124,9 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 		assertEquals(MatchResult.INDETERMINATE, policy.isApplicable(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -159,9 +152,9 @@ public class PolicyTest
 		context.addAdvices(Collections.singletonList(advice));
 		context.addObligations(Collections.singletonList(obligation));
 		
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -186,9 +179,9 @@ public class PolicyTest
 		context.addAdvices(Collections.singletonList(advice));
 		context.addObligations(Collections.singletonList(obligation));
 		
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 	}
 	
 	@Test
@@ -196,9 +189,9 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.INDETERMINATE);
-		replay(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		replay(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
-		verify(target, pip, xpathProvider, repository, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
+		verify(target, pip, referenceResolver, handler, combingingAlg, rule1, rule2, permitAdviceExp, permitObligationExp, denyAdviceExp, denyObligationExp);
 	}
 	
 	

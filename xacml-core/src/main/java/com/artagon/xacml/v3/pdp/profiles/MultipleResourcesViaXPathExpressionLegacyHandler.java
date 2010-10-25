@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.types.XPathExpressionType;
 
 public class MultipleResourcesViaXPathExpressionLegacyHandler extends AbstractRequestContextHandler
@@ -19,9 +19,9 @@ public class MultipleResourcesViaXPathExpressionLegacyHandler extends AbstractRe
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 	
 	@Override
-	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
 	{
-		if(request.hasRepeatingCategories()){
+		if(request.containsRepeatingCategories()){
 			return Collections.singleton(
 					Result.createIndeterminateSyntaxError(
 							request.getIncludeInResultAttributes(),
@@ -29,12 +29,12 @@ public class MultipleResourcesViaXPathExpressionLegacyHandler extends AbstractRe
 		}
 		Attributes resource = request.getOnlyAttributes(AttributeCategories.RESOURCE);
 		if(resource == null){
-			return handleNext(request, pdp);
+			return handleNext(request, context);
 		}
 		Collection<AttributeValue> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
 				XPathExpressionType.XPATHEXPRESSION);
 		if(resourceId.isEmpty()){
-			return handleNext(request, pdp);
+			return handleNext(request, context);
 		}
 		if(resourceId.size() > 1){
 			return Collections.singleton(
@@ -65,7 +65,8 @@ public class MultipleResourcesViaXPathExpressionLegacyHandler extends AbstractRe
 			}
 			attributes.add(attrs);
 		}
-		return handleNext(new RequestContext(request.isReturnPolicyIdList(), attributes), pdp);
+		return handleNext(new RequestContext(
+				request.isReturnPolicyIdList(), attributes), context);
 	}
 
 }

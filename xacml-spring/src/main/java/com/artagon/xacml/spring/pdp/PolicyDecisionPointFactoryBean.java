@@ -5,17 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.EvaluationContextFactory;
-import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
+import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleResourcesHandler;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.XPathProvider;
-import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
 public class PolicyDecisionPointFactoryBean extends 
@@ -25,12 +23,11 @@ public class PolicyDecisionPointFactoryBean extends
 	private PolicyDomain policyDomain;
 	private PolicyRepository policyRepository;
 	private List<RequestContextHandler> handlers;
-	private XPathProvider xpathProvider;
+	
 	
 	public PolicyDecisionPointFactoryBean(){
 		this.handlers = new LinkedList<RequestContextHandler>();
 		this.handlers.add(new MultipleResourcesHandler());
-		this.xpathProvider = new DefaultXPathProvider();
 	}
 	
 	@Override
@@ -41,11 +38,7 @@ public class PolicyDecisionPointFactoryBean extends
 	public void setPolicyInformationPoint(PolicyInformationPoint pip){
 		this.pip = pip;
 	}
-	
-	public void setXPathProvider(XPathProvider xpathProvider){
-		this.xpathProvider = xpathProvider;
-	}
-	
+		
 	public void setPolicyDomain(PolicyDomain policyStore){
 		this.policyDomain = policyStore;
 	}
@@ -65,8 +58,8 @@ public class PolicyDecisionPointFactoryBean extends
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(policyDomain != null);
 		Preconditions.checkState(policyRepository != null);
-		EvaluationContextFactory evalCtxFactory = new DefaultEvaluationContextFactory(
-				policyRepository, xpathProvider, pip);
-		return new DefaultPolicyDecisionPoint(handlers, evalCtxFactory, policyDomain);
+		PolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
+				policyDomain, policyRepository, pip, handlers);
+		return new DefaultPolicyDecisionPoint(factory);
 	}
 }

@@ -12,8 +12,8 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
+import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
@@ -52,7 +52,7 @@ public class RSA2008InteropTest
 		
 		pip = new DefaultPolicyInformationPoint();
 		pdp = new DefaultPolicyDecisionPoint(
-				new DefaultEvaluationContextFactory(repository, pip), domain);
+				new DefaultPolicyDecisionPointContextFactory(domain, repository, pip));
 		
 	}
 	

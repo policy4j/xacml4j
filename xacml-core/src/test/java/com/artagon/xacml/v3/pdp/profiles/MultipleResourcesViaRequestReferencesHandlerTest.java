@@ -30,19 +30,19 @@ import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.google.common.collect.Iterables;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest 
 {
-	private PolicyDecisionCallback pdp;
+	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
 	
 	@Before
 	public void init()
 	{
-		this.pdp = createStrictMock(PolicyDecisionCallback.class);
+		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaRequestReferencesHandler();
 	}
 	

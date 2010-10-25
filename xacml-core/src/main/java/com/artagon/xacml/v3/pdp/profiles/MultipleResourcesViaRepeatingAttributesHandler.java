@@ -11,16 +11,17 @@ import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.google.common.collect.Sets;
 
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
 	@Override
-	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, 
+			PolicyDecisionPointContext context) 
 	{
-		if(!request.hasRepeatingCategories()){
-			return handleNext(request, pdp);
+		if(!request.containsRepeatingCategories()){
+			return handleNext(request, context);
 		}
 		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
 		for(AttributeCategory categoryId : request.getCategories()){
@@ -36,7 +37,7 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		for(List<Attributes> requestAttr : cartesian)
 		{	
 			RequestContext req = new RequestContext(request.isReturnPolicyIdList(), requestAttr);
-			results.addAll(handleNext(req, pdp));
+			results.addAll(handleNext(req, context));
 		}
 		return results;
 	}

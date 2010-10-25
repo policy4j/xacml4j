@@ -37,8 +37,23 @@ public interface AttributeResolverDescriptor
 	 */
 	String getIssuer();
 	
+	/**
+	 * Tests if a given  attribute category is supported
+	 * by the resolver
+	 * 
+	 * @param category an attribute category
+	 * @return <code>true</code> if category is supported
+	 */
 	boolean isCategorySupported(AttributeCategory category);
 	
+	/**
+	 * Gets a set of supported attribute 
+	 * {@link AttributeCategory} categories
+	 * 
+	 * @return {@link Set} an immutable set containing
+	 * supported attribute {@link AttributeCategory} 
+	 * categories
+	 */
 	Set<AttributeCategory> getSupportedCategores();
 	
 	/**
@@ -65,7 +80,7 @@ public interface AttributeResolverDescriptor
 	 * an attribute with a given identifier
 	 * 
 	 * @param attributeId
-	 * @return
+	 * @return <code>true</code>
 	 */
 	boolean isAttributeProvided(AttributeCategory category, String attributeId);
 }

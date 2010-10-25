@@ -27,17 +27,17 @@ import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 
 public class MultipleResourcesViaRepeatingAttributesHandlerTest 
 {
-	private PolicyDecisionCallback pdp;
+	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
 	
 	@Before
 	public void init(){
-		this.pdp = createStrictMock(PolicyDecisionCallback.class);
+		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaRepeatingAttributesHandler();
 	}
 	

@@ -279,7 +279,7 @@ public class RequestContext extends XacmlObject
 	 * @return <code>true</code> if this request
 	 * has multiple attributes of same category
 	 */
-	public boolean hasRepeatingCategories(){
+	public boolean containsRepeatingCategories(){
 		for(AttributeCategory category : getCategories()){
 			if(getCategoryOccuriences(category) > 1){
 				return true;

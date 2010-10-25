@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.RequestSyntaxException;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
-import com.artagon.xacml.v3.pdp.PolicyDecisionCallback;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;
 import com.artagon.xacml.v3.types.XPathExpressionType;
@@ -41,10 +41,10 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	
 	
 	@Override
-	public Collection<Result> handle(RequestContext request, PolicyDecisionCallback pdp) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
 	{
-		if(request.hasRepeatingCategories()){
-			return handleNext(request, pdp); 
+		if(request.containsRepeatingCategories()){
+			return handleNext(request, context); 
 		}
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR, 
@@ -55,11 +55,11 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 						MULTIPLE_CONTENT_SELECTOR, 
 						XPathExpressionType.XPATHEXPRESSION);
 			}
-			return handleNext(request, pdp);
+			return handleNext(request, context);
 		}
 		try
 		{
-			XPathProvider xpathProvider = pdp.getXPathProvider();
+			XPathProvider xpathProvider = context.getXPathProvider();
 			List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
 			for(Attributes attribute : request.getAttributes()){
 				all.add(getAttributes(request, attribute, xpathProvider));
@@ -73,7 +73,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 				if(log.isDebugEnabled()){
 					log.debug("Created request=\"{}\"", req);
 				}
-				results.addAll(handleNext(req, pdp));
+				results.addAll(handleNext(req, context));
 			}
 			return results;
 		}catch(RequestSyntaxException e){

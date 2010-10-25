@@ -43,13 +43,14 @@ public class RequestContextHandlerChain implements RequestContextHandler
 	}
 	
 	@Override
-	public final Collection<Result> handle(RequestContext request, 
-			PolicyDecisionCallback pdp) 
+	public final Collection<Result> handle(RequestContext req, 
+			PolicyDecisionPointContext context) 
 	{
 		if(handlers.isEmpty()){
-			return Collections.singleton(pdp.requestDecision(request));
+			return Collections.singleton(context.requestDecision(req));
 		}
-		return postProcessResults(request, handlers.get(0).handle(request, pdp));
+		return postProcessResults(req, 
+				handlers.get(0).handle(req, context));
 	}
 
 	/**

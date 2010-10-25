@@ -20,8 +20,8 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
-import com.artagon.xacml.v3.pdp.DefaultEvaluationContextFactory;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
+import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
@@ -36,8 +36,8 @@ public class Xacml20ConformanceTest
 	private static RequestUnmarshaller requestUnmarshaller;
 	private static ResponseMarshaller responseMarshaller;
 	private static PolicyRepository repository;
-	
 	private PolicyDecisionPoint pdp;
+	
 	private static PolicyInformationPoint pip;
 	
 	
@@ -167,14 +167,14 @@ public class Xacml20ConformanceTest
 	@SuppressWarnings("unchecked")
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
-		String name = new StringBuilder(testPrefix)
-		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
-		.toString();
+		String name = new StringBuilder(testPrefix).
+		append(StringUtils.leftPad(
+				Integer.toString(testCaseNum), 3, '0')).toString();
 		PolicyDomain store = new DefaultPolicyDomain("Test");
 		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		System.out.println(request);
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultEvaluationContextFactory(repository, pip), store);
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(store, repository, pip));
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
 		long end = System.currentTimeMillis();

@@ -20,6 +20,9 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	public final Policy getPolicy(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest){
 		Collection<Policy> found = getPolicies(id, version, earliest, latest);
+		if(found.isEmpty()){
+			return null;
+		}
 		return Collections.<Policy>max(found, new Comparator<Policy>() {
 			@Override
 			public int compare(Policy a, Policy b) {
@@ -34,6 +37,9 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 			VersionMatch earliest, VersionMatch latest)
 	{
 		Collection<PolicySet> found = getPolicySets(id, version, earliest, latest);
+		if(found.isEmpty()){
+			return null;
+		}
 		return Collections.<PolicySet>max(found, new Comparator<PolicySet>() {
 			@Override
 			public int compare(PolicySet a, PolicySet b) {

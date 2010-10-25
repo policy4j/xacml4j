@@ -52,10 +52,10 @@ public class RequestTest
 	{	
 		RequestContext request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0));
-		assertFalse(request.hasRepeatingCategories());
+		assertFalse(request.containsRepeatingCategories());
 		request = new RequestContext(false, 
 				Arrays.asList(subject0, resource0, resource1));
-		assertTrue(request.hasRepeatingCategories());
+		assertTrue(request.containsRepeatingCategories());
 	}
 	
 	
