@@ -27,12 +27,10 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	protected Map<String, BagOfAttributeValues> doResolve(
 			PolicyInformationPointContext context, BagOfAttributeValues... keys) {
 		Calendar currentDateTime = context.getCurrentDateTime();
-		return result(
-				"urn:oasis:names:tc:xacml:1.0:environment:current-time", 
-				TIME.bagOf(TIME.create(currentDateTime)),
-				"urn:oasis:names:tc:xacml:1.0:environment:current-date", 
-				DATE.bagOf(DATE.create(currentDateTime)),
-				"urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
-				DATETIME.bagOf(DATETIME.create(currentDateTime)));
+		return newResult()
+			.value("urn:oasis:names:tc:xacml:1.0:environment:current-time", TIME.bagOf(TIME.create(currentDateTime)))
+			.value("urn:oasis:names:tc:xacml:1.0:environment:current-date", DATE.bagOf(DATE.create(currentDateTime)))
+			.value("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", DATETIME.bagOf(DATETIME.create(currentDateTime)))
+			.build();
 	}
 }

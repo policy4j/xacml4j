@@ -9,6 +9,7 @@ import java.util.Set;
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.AttributeReferenceKey;
+import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -45,6 +46,22 @@ public final class AttributeResolverDescriptorBuilder
 	public static AttributeResolverDescriptorBuilder create(String id, 
 			String name, String issuer, AttributeCategory category){
 		return new AttributeResolverDescriptorBuilder(id, name, issuer, category);
+	}
+	
+	public AttributeResolverDescriptorBuilder designatorRef(AttributeCategory category, 
+			String attributeId, AttributeValueType dataType, String issuer)
+	{
+		this.keys.add(new AttributeDesignatorKey(category, attributeId, dataType, issuer));
+		return this;
+	}
+	
+	public AttributeResolverDescriptorBuilder selectorRef(
+			AttributeCategory category, 
+			String xpath, AttributeValueType dataType, 
+			String contextAttributeId)
+	{
+		this.keys.add(new AttributeSelectorKey(category, xpath, dataType, contextAttributeId));
+		return this;
 	}
 	
 	public AttributeResolverDescriptorBuilder noCache(){

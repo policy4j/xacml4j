@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 
 public abstract class BaseAttributeResolver implements AttributeResolver
 {	
@@ -68,63 +67,28 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		return result;
 	}
 	
-	protected final Map<String, BagOfAttributeValues> result(
-			String a1, BagOfAttributeValues v1)
-	{
-		checkAttribute(a1, v1);
-		return ImmutableMap.of(a1, v1);
+	protected final ResultBuilder newResult(){
+		return new ResultBuilder();
 	}
 	
-	protected final Map<String, BagOfAttributeValues> result(
-			String a1, BagOfAttributeValues v1, String a2, BagOfAttributeValues v2)
+	public class ResultBuilder
 	{
-		checkAttribute(a1, v1);
-		checkAttribute(a2, v2);
-		return ImmutableMap.of(a1, v1, a2, v2);
-	}
-	
-	protected final Map<String, BagOfAttributeValues> result(
-			String a1, BagOfAttributeValues v1, 
-			String a2, BagOfAttributeValues v2,
-			String a3, BagOfAttributeValues v3)
-	{
-		checkAttribute(a1, v1);
-		checkAttribute(a2, v2);
-		checkAttribute(a3, v3);
-		return ImmutableMap.of(a1, v1, a2, v2, a3, v3);
-	}
-	
-	protected final Map<String, BagOfAttributeValues> result(
-			String a1, BagOfAttributeValues v1, 
-			String a2, BagOfAttributeValues v2,
-			String a3, BagOfAttributeValues v3,
-			String a4, BagOfAttributeValues v4)
-	{
-		checkAttribute(a1, v1);
-		checkAttribute(a2, v2);
-		checkAttribute(a3, v3);
-		checkAttribute(a4, v4);
-		return ImmutableMap.of(a1, v1, a2, v2, a3, v3, a4, v4);
-	}
-	
-	protected final Map<String, BagOfAttributeValues> result(
-			String a1, BagOfAttributeValues v1, 
-			String a2, BagOfAttributeValues v2,
-			String a3, BagOfAttributeValues v3,
-			String a4, BagOfAttributeValues v4,
-			String a5, BagOfAttributeValues v5)
-	{
-		checkAttribute(a1, v1);
-		checkAttribute(a2, v2);
-		checkAttribute(a3, v3);
-		checkAttribute(a4, v4);
-		checkAttribute(a5, v5);
-		return ImmutableMap.of(a1, v1, a2, v2, a3, v3, a4, v4, a5, v5);
-	}
-	
-	private void checkAttribute(String n, BagOfAttributeValues v)
-	{
-		Preconditions.checkArgument(descriptor.isAttributeProvided(n));
-		Preconditions.checkArgument(descriptor.getAttribute(n).getDataType().equals(v.getDataType()));
+		private Map<String, BagOfAttributeValues> values;
+		
+		private ResultBuilder(){
+			this.values = new HashMap<String, BagOfAttributeValues>();
+		}
+		
+		public ResultBuilder value(String attributeId, BagOfAttributeValues v)
+		{
+			Preconditions.checkArgument(descriptor.isAttributeProvided(attributeId));
+			Preconditions.checkArgument(descriptor.getAttribute(attributeId).getDataType().equals(v.getDataType()));
+			values.put(attributeId, v);
+			return this;
+		}
+		
+		public Map<String, BagOfAttributeValues> build(){
+			return values;
+		}
 	}
 }
