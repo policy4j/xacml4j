@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.RequestContextCallback;
+import com.artagon.xacml.v3.pdp.RequestContextCallback;
 
 public interface MultipleResourcesResolver 
 {

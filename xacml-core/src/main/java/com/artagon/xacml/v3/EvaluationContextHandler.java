@@ -30,23 +30,11 @@ public interface EvaluationContextHandler
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
-	/**
-	 * Resolves given {@link AttributeDesignator} to a
-	 * {@link BagOfAttributeValues} instance
-	 * 
-	 * @param context an evaluation context
-	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributeValues} instance, 
-	 * never returns <code>null</code>. If designator
-	 * can not be resolved returns an empty bag
-	 * @throws EvaluationException if an evaluation 
-	 * error occurs
-	 */
 	BagOfAttributeValues resolve(
 			EvaluationContext context,
-			AttributeDesignator ref) throws EvaluationException;
+			AttributeDesignatorKey key) throws EvaluationException;
 	
 	BagOfAttributeValues resolve(
 			EvaluationContext context,
-			AttributeSelector selector) throws EvaluationException;
+			AttributeSelectorKey key) throws EvaluationException;
 }

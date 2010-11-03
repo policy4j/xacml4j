@@ -12,6 +12,8 @@ import com.google.common.base.Preconditions;
 public abstract class BaseAttributeValue extends XacmlObject
 	implements AttributeValue
 {
+	private static final long serialVersionUID = 4131180767511036271L;
+	
 	private AttributeValueType type;
 	
 	protected BaseAttributeValue(AttributeValueType type) {

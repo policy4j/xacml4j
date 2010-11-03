@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.google.common.base.Preconditions;
 
 /**
  * A base class for XACML attribute references
@@ -12,8 +11,6 @@ public abstract class AttributeReference extends XacmlObject
 	implements Expression, PolicyElement
 {
 	private boolean mustBePresent;
-	private AttributeCategory category;
-	protected BagOfAttributeValuesType evaluatesTo;
 	
 	/**
 	 * Constructs attribute reference with a given
@@ -23,19 +20,16 @@ public abstract class AttributeReference extends XacmlObject
 	 * @param dataType attribute reference bag XACML
 	 * data type
 	 */
-	protected AttributeReference(AttributeCategory category, 
-			AttributeValueType dataType, boolean mustBePresent){
-		Preconditions.checkNotNull(category);
-		Preconditions.checkNotNull(dataType);
-		this.category = category;
-		this.evaluatesTo = dataType.bagType();
+	protected AttributeReference(boolean mustBePresent){
 		this.mustBePresent = mustBePresent;
 	}
 	
 	@Override
 	public ValueType getEvaluatesTo(){
-		return evaluatesTo;
+		return getReferenceKey().getDataType().bagType();
 	}
+	
+	public abstract AttributeReferenceKey getReferenceKey();
 	
 	/**
 	 * Gets bag returned by this reference
@@ -44,7 +38,7 @@ public abstract class AttributeReference extends XacmlObject
 	 * @return {@link AttributeValueType}
 	 */
 	public AttributeValueType getDataType(){
-		return evaluatesTo.getDataType();
+		return getReferenceKey().getDataType();
 	}
 	
 	/**
@@ -53,7 +47,7 @@ public abstract class AttributeReference extends XacmlObject
 	 * @return attribute category
 	 */
 	public AttributeCategory getCategory(){
-		return category;
+		return getReferenceKey().getCategory();
 	}
 	
 	/**

@@ -42,10 +42,9 @@ public class Target extends XacmlObject implements PolicyElement
 	 */
 	public MatchResult match(EvaluationContext context) 
 	{
-		EvaluationContext targetContext = new TargetEvaluationContext(context);
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
-			MatchResult r = m.match(targetContext);
+			MatchResult r = m.match(context);
 			if(r == MatchResult.NOMATCH){
 				state = r;
 				log.debug("Found AnyOf with match result=\"{}\", " +
@@ -70,17 +69,4 @@ public class Target extends XacmlObject implements PolicyElement
 		}
 		v.visitLeave(this);
 	}
-	
-	class TargetEvaluationContext extends DelegatingEvaluationContext
-	{
-		public TargetEvaluationContext(EvaluationContext context) {
-			super(context);
-		}
-		
-		@Override
-		public ResolutionScope getResolutionScope() {		
-			return ResolutionScope.REQUEST;
-		}
-	}
-		
 }

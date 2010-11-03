@@ -1,33 +1,20 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeDesignator;
-import com.artagon.xacml.v3.AttributeValueType;
+import java.util.Map;
+
 import com.artagon.xacml.v3.BagOfAttributeValues;
 
 public interface AttributeResolver 
 {
 	/**
-	 * Gets attribute resolver descriptor
+	 * Gets a descriptor {@link AttributeResolverDescriptor}
+	 * for this resolver
 	 * 
 	 * @return {@link AttributeResolverDescriptor}
 	 */
 	AttributeResolverDescriptor getDescriptor();
 	
-	/**
-	 * Resolves given {@link AttributeDesignator} to
-	 * a 
-	 * @param context
-	 * @param ref
-	 * @param callback
-	 * @return
-	 * @exception {@link AttributeReferenceEvaluationException}
-	 */
-	 BagOfAttributeValues resolve(
-			PolicyInformationPointContext context,
-			AttributeCategory category,
-			String attributeId,
-			AttributeValueType dataType,
-			String issuer) throws Exception;
-
+	
+	Map<String, BagOfAttributeValues> resolve(
+			PolicyInformationPointContext context, BagOfAttributeValues ...keys) throws Exception;
 }

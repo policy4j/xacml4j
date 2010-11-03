@@ -3,7 +3,6 @@ package com.artagon.xacml.v3;
 import java.util.Collection;
 
 
-
 /**
  * The class denotes application of a function to its arguments, 
  * thus encoding a {@link FunctionReference} call. The {@link Apply} can be 

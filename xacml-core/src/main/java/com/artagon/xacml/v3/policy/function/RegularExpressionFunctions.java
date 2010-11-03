@@ -188,7 +188,8 @@ public class RegularExpressionFunctions
 	       return regexp;
 	  }
 
-	private static int calculateNestLevel(StringBuffer buf, int idx) {
+	private static int calculateNestLevel(
+			StringBuffer buf, int idx) {
 		int level = 0;
 		while(idx >= 0) {
 			char ch = buf.charAt(idx--);

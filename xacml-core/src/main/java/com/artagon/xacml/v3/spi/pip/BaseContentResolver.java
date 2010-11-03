@@ -1,8 +1,10 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
 
 /**
@@ -12,6 +14,8 @@ import com.google.common.base.Preconditions;
  */
 public abstract class BaseContentResolver implements ContentResolver
 {
+	private final static Logger log = LoggerFactory.getLogger(BaseContentResolver.class);
+	
 	private ContentResolverDescriptor descriptor;
 
 	protected BaseContentResolver(ContentResolverDescriptor descriptor){
@@ -25,15 +29,17 @@ public abstract class BaseContentResolver implements ContentResolver
 	}
 
 	@Override
-	public final Node getContent(AttributeCategory category, 
-			PolicyInformationPointContext context)
+	public final Node resolve(
+			PolicyInformationPointContext context, BagOfAttributeValues ...keys) throws Exception 
 	{
-		Preconditions.checkArgument(descriptor.canResolve(category));
-		return doResolve(category, context);
+		if(log.isDebugEnabled()){
+			log.debug("Retrieving content via resolver " +
+					"id=\"{}\" name=\"{}\"", descriptor.getId(), descriptor.getName());
+		}
+		return doResolve(context, keys);	
 	}
 	
-	
-	protected abstract Node doResolve(AttributeCategory category, 
-			PolicyInformationPointContext context);
-
+	protected abstract Node doResolve(
+			PolicyInformationPointContext context, BagOfAttributeValues ...keys) 
+		throws Exception;
 }

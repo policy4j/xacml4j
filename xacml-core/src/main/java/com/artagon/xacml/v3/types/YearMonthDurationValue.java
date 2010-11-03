@@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
 
 public final class YearMonthDurationValue extends BaseDurationValue
 {
+	private static final long serialVersionUID = 6510264772808336009L;
+
 	YearMonthDurationValue(YearMonthDurationType type, 
 			Duration value) {
 		super(type, value);

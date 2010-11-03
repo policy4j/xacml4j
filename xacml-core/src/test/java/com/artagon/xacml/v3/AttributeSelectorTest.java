@@ -1,12 +1,14 @@
 package com.artagon.xacml.v3;
 
 import static com.artagon.xacml.v3.types.DateType.DATE;
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,10 +31,12 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
-		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 	
@@ -43,10 +47,13 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
-		expect(context.resolve(ref)).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andReturn(
+				DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 	
@@ -57,7 +64,8 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
-		expect(context.resolve(ref)).andReturn(DATE.emptyBag());
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
 		replay(context);
 		ref.evaluate(context);
 		verify(context);
@@ -70,10 +78,12 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
-		expect(context.resolve(ref)).andReturn(DATE.emptyBag());
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, DATE.emptyBag());
+		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 	
@@ -84,11 +94,16 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
-		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
+				new AttributeSelectorKey(AttributeCategories.SUBJECT_RECIPIENT, 
+						"/md:record/md:patient/md:patientDoB/text()", 
+						DATE, null), 
 				StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, DATE.emptyBag());
+		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 	
@@ -99,10 +114,12 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, false);
-		expect(context.resolve(ref)).andThrow(new NullPointerException());
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, DATE.emptyBag());
+		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 	
@@ -113,7 +130,8 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
-		expect(context.resolve(ref)).andThrow(new NullPointerException());
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		ref.evaluate(context);
 		verify(context);
@@ -126,7 +144,12 @@ public class AttributeSelectorTest
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patientDoB/text()", 
 				DATE, true);
-		expect(context.resolve(ref)).andThrow(new AttributeReferenceEvaluationException(context, ref, 
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
+				new AttributeSelectorKey(
+				AttributeCategories.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patientDoB/text()", 
+				DATE, null), 
 				StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		ref.evaluate(context);

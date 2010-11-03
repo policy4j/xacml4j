@@ -16,6 +16,8 @@ import com.google.common.base.Preconditions;
 public final class BagOfAttributeValuesType extends XacmlObject 
 	implements ValueType
 {
+	private static final long serialVersionUID = 1317103379388105997L;
+	
 	private AttributeValueType type;
 	
 	/**

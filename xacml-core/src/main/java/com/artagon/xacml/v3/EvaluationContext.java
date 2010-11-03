@@ -18,6 +18,13 @@ public interface EvaluationContext
 	 */
 	TimeZone getTimeZone();
 	
+	/**
+	 * Gets evaluation context current date/time
+	 * in the evaluation time-zone
+	 * 
+	 * @return {@link Calendar} instance
+	 * in the evaluation context time-zone
+	 */
 	Calendar getCurrentDateTime();
 
 	/**
@@ -39,24 +46,26 @@ public interface EvaluationContext
 	void setValidateFuncParamsAtRuntime(boolean validate);
 		
 	/**
-	 * Gets XACML policy evaluation failure 
-	 * status
+	 * Gets extended evaluation failure
+	 * status information to be included
+	 * in the response as {@link StatusCode}
+	 * instance
 	 * 
-	 * @return a failure {@link Status}
+	 * @return {@link StatusCode} or 
+	 * <code>null</code> if status
+	 * information is unavailable
 	 */
 	StatusCode getEvaluationStatus();
-	void setEvaluationStatus(StatusCode code);
 	
 	/**
-	 * Gets current attribute reference resolution 
-	 * scope. For example scope while evaluating
-	 * {@link Match} is {@link ResolutionScope#REQUEST}
-	 * and {@link ResolutionScope#REQUEST_EXTERNAL} while
-	 * evaluating policy rules
+	 * Sets extended evaluation failure
+	 * status information to be included
+	 * in the response
 	 * 
-	 * @return {@link ResolutionScope}
+	 * @param code a status code indicating
+	 * evaluation failure status
 	 */
-	ResolutionScope getResolutionScope();
+	void setEvaluationStatus(StatusCode code);
 	
 	/**
 	 * Gets parent evaluation context
@@ -93,7 +102,12 @@ public interface EvaluationContext
 	void addEvaluatedPolicySet(PolicySet policySet, Decision result);
 	
 	/**
-	 * Gets currently evaluated policy
+	 * Gets currently evaluated policy.
+	 * If invocation returns 
+	 * <code>null</code> {@link #getCurrentPolicySet()}
+	 * will return NOT <code>null</code> reference
+	 * to the currently evaluated policy set
+	 *
 	 * 
 	 * @return {@link Policy} or <code>null</code>
 	 */
@@ -180,10 +194,28 @@ public interface EvaluationContext
 	void setVariableEvaluationResult(String variableId, ValueExpression value);
 	
 	
-	BagOfAttributeValues resolve(AttributeDesignator ref) 
+	/**
+	 * Resolves a given {@link AttributeDesignatorKey}
+	 * to the {@link BagOfAttributeValues}
+	 * 
+	 * @param ref an attribute designator
+	 * @return {@link BagOfAttributeValues}
+	 * @throws EvaluationException if an error
+	 * occurs while resolving given designator
+	 */
+	BagOfAttributeValues resolve(AttributeDesignatorKey ref) 
 		throws EvaluationException;
 	
-	BagOfAttributeValues resolve(AttributeSelector ref) 
+	/**
+	 * Resolves a given {@link AttributeSelectorKey}
+	 * to the {@link BagOfAttributeValues}
+	 * 
+	 * @param ref an attribute selector
+	 * @return {@link BagOfAttributeValues}
+	 * @throws EvaluationException if an error
+	 * occurs while resolving given selector
+	 */
+	BagOfAttributeValues resolve(AttributeSelectorKey ref) 
 		throws EvaluationException;
 	
 	/**
@@ -194,24 +226,61 @@ public interface EvaluationContext
 	 * @param categoryId an attribute category
 	 * @return {@link NodeList} representing an evaluation
 	 * result
-	 * @throws EvaluationException
+	 * @throws EvaluationException if an error
+	 * occurs while evaluating given xpath
+	 * expression
 	 */
 	NodeList evaluateToNodeSet(
 			String xpath, 
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
-	
+	/**
+	 * Evaluates a given XPath expression
+	 * to a {@link String}
+	 * 
+	 * @param xpath an XPath expression
+	 * @param categoryId an attribute category
+	 * @return {@link String} representing an evaluation
+	 * result
+	 * @throws EvaluationException if an error
+	 * occurs while evaluating given xpath
+	 * expression
+	 */
 	String evaluateToString(
 			String path, 
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
+	/**
+	 * Evaluates a given XPath expression
+	 * to a {@link Node}
+	 * 
+	 * @param xpath an XPath expression
+	 * @param categoryId an attribute category
+	 * @return {@link Node} representing an evaluation
+	 * result
+	 * @throws EvaluationException if an error
+	 * occurs while evaluating given xpath
+	 * expression
+	 */
 	Node evaluateToNode(
 			String path, 
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
+	/**
+	 * Evaluates a given XPath expression
+	 * to a {@link Number}
+	 * 
+	 * @param xpath an XPath expression
+	 * @param categoryId an attribute category
+	 * @return {@link Number} representing an evaluation
+	 * result
+	 * @throws EvaluationException if an error
+	 * occurs while evaluating given xpath
+	 * expression
+	 */
 	Number evaluateToNumber(
 			String path, 
 			AttributeCategory categoryId) 
@@ -240,27 +309,4 @@ public interface EvaluationContext
 	 */
 	PolicySet resolve(PolicySetIDReference ref) 
 		throws PolicyResolutionException;
-	
-	/**
-	 * Gets value of a given category from this context
-	 * 
-	 * @param categoryId an attribute category
-	 * @param key an key used to identify value
-	 * @return {@link Object} an value or <code>null</code>
-	 * if no value exist for given category and key
-	 */
-	Object getValue(AttributeCategory categoryId, 
-			Object key);
-	
-	/**
-	 * Sets value for a given category and key
-	 * to this evaluation context
-	 * 
-	 * @param categoryId an attribute category
-	 * @param key a key
-	 * @param v a value
-	 * @return old value or <code>null</code>
-	 */
-	Object setValue(AttributeCategory categoryId, 
-			Object key, Object v);
 }

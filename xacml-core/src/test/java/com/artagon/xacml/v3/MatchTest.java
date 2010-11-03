@@ -56,7 +56,8 @@ public class MatchTest
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
 		expect(ref.getDataType()).andReturn(IntegerType.INTEGER);
-		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, ref, "Failed"));
+		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, 
+				new AttributeDesignatorKey(AttributeCategories.RESOURCE, "testId", IntegerType.INTEGER, null), "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttribute());
 		replay(invocation, ref, context);
 		Match m = new Match(spec, IntegerType.INTEGER.create(1), ref);

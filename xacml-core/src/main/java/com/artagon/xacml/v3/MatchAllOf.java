@@ -16,7 +16,16 @@ public class MatchAllOf extends XacmlObject
 	
 	private Collection<Match> matches;
 	
-	public MatchAllOf(Collection<Match> match){
+	/**
+	 * Constructs a {@link MatchAllOf} with
+	 * a given collection of {@link Match}
+	 * elements
+	 * 
+	 * @param match a collection of {@link Match}
+	 * instances
+	 */
+	public MatchAllOf(Collection<Match> match)
+	{
 		Preconditions.checkNotNull(match);
 		Preconditions.checkArgument(match.size() >= 1);
 		this.matches = new LinkedList<Match>(match);
@@ -31,19 +40,28 @@ public class MatchAllOf extends XacmlObject
 	{
 		MatchResult state = MatchResult.MATCH;
 		Preconditions.checkState(matches.size() >= 1);
-		log.debug("Trying to match=\"{}\" matchables", matches.size());
+		if(log.isDebugEnabled()){
+			log.debug("Trying to match=\"{}\"" +
+					" matchables", matches.size());
+		}
 		for(Matchable m : matches)
 		{
 			MatchResult r = m.match(context);
 			if(r == MatchResult.INDETERMINATE && 
 					state == MatchResult.MATCH){
-				log.debug("Match result=\"{}\" continue to match", r);
+				if(log.isDebugEnabled()){
+					log.debug("Match result=\"{}\" " +
+							"continue to match", r);
+				}
 				state = r;
 				continue;
 			}
 			if(r == MatchResult.NOMATCH){
 				state = r;
-				log.debug("Match result=\"{}\" stop match", r);
+				if(log.isDebugEnabled()){
+					log.debug("Match result=\"{}\" " +
+							"stop match", r);
+				}
 				break;
 			}
 		}

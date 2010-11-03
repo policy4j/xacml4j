@@ -7,6 +7,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public final class DateValue extends SimpleAttributeValue<XMLGregorianCalendar>
 		implements Comparable<DateValue> 
 {
+
+	private static final long serialVersionUID = -79539790774966290L;
+
 	DateValue(DateType type, XMLGregorianCalendar value) {
 		super(type, value);
 	}

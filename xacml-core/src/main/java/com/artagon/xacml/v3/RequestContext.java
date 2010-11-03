@@ -305,12 +305,12 @@ public class RequestContext extends XacmlObject
 	 * 
 	 * @param categoryId an category
 	 * @param attributeId an attribute identifier
-	 * @param issuer an attribute issuer
 	 * @param dataType an attribute data type
+	 * @param issuer an attribute issuer
 	 * @return a collection of {@link AttributeValue} instances
 	 */
 	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
-			String attributeId, String issuer, AttributeValueType dataType)
+			String attributeId, AttributeValueType dataType, String issuer)
 	{
 		Collection<AttributeValue> found = new LinkedList<AttributeValue>();
 		for(Attributes a : attributes.get(categoryId)){
@@ -322,7 +322,7 @@ public class RequestContext extends XacmlObject
 	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
 			String attributeId, AttributeValueType dataType)
 	{
-		return getAttributeValues(categoryId, attributeId, null, dataType);
+		return getAttributeValues(categoryId, attributeId, dataType, null);
 	}
 	
 	public boolean containsAttributeValues(String attributeId, AttributeValueType type)

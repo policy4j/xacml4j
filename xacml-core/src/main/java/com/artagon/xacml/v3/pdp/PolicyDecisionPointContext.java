@@ -9,9 +9,20 @@ import com.artagon.xacml.v3.spi.XPathProvider;
 
 public interface PolicyDecisionPointContext
 {
-		
+	/**
+	 * Creates {@link EvaluationContext} to evaluate
+	 * given {@link RequestContext} access decision request
+	 * 
+	 * @param req an access decision request
+	 * @return {@link EvaluationContext}
+	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
 	
+	/**
+	 * Gets {@link PolicyDomain}
+	 * 
+	 * @return
+	 */
 	PolicyDomain getPolicyDomain();
 	
 	XPathProvider getXPathProvider();

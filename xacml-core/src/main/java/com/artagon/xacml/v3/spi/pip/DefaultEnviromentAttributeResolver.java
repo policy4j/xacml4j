@@ -1,41 +1,38 @@
 package com.artagon.xacml.v3.spi.pip;
 
+
 import static com.artagon.xacml.v3.types.DateTimeType.DATETIME;
 import static com.artagon.xacml.v3.types.DateType.DATE;
 import static com.artagon.xacml.v3.types.TimeType.TIME;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.sdk.XacmlAttributeCategory;
-import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
-import com.artagon.xacml.v3.sdk.XacmlAttributesResolverDescriptor;
+import java.util.Calendar;
+import java.util.Map;
 
-@XacmlAttributesResolverDescriptor(name="A Default XACML 2.0 & 3.0 Enviroment Attributes Resolver")
-class DefaultEnviromentAttributeResolver 
+import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+
+class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
-	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-time", 
-				typeId="http://www.w3.org/2001/XMLSchema#time")
-	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues getCurrentTime(
-			PolicyInformationPointContext context)
-	{
-		return TIME.bagOf(TIME.create(context.getCurrentDateTime()));
+	public DefaultEnviromentAttributeResolver() {
+		super(AttributeResolverDescriptorBuilder.create(
+				"urn:oasis:names:tc:xacml:1.0:environment:resolver", 
+				"XACML Enviroment Attributes Resolver", AttributeCategories.ENVIRONMENT)
+				.noCache()
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time",TIME)
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date",DATE)
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",DATETIME).build());
 	}
 	
-	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-date", 
-				typeId="http://www.w3.org/2001/XMLSchema#date")
-	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues getCurrentDate(
-			PolicyInformationPointContext context)
-	{
-		return DATE.bagOf(DATE.create(context.getCurrentDateTime()));
-	}
-	
-	@XacmlAttributeDescriptor(id="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
-			typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	@XacmlAttributeCategory("urn:oasis:names:tc:xacml:3.0:attribute-category:environment")
-	public BagOfAttributeValues getCurrentDateTime(
-			PolicyInformationPointContext context)
-	{
-		return DATETIME.bagOf(DATETIME.create(context.getCurrentDateTime()));
+	@Override
+	protected Map<String, BagOfAttributeValues> doResolve(
+			PolicyInformationPointContext context, BagOfAttributeValues... keys) {
+		Calendar currentDateTime = context.getCurrentDateTime();
+		return result(
+				"urn:oasis:names:tc:xacml:1.0:environment:current-time", 
+				TIME.bagOf(TIME.create(currentDateTime)),
+				"urn:oasis:names:tc:xacml:1.0:environment:current-date", 
+				DATE.bagOf(DATE.create(currentDateTime)),
+				"urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
+				DATETIME.bagOf(DATETIME.create(currentDateTime)));
 	}
 }

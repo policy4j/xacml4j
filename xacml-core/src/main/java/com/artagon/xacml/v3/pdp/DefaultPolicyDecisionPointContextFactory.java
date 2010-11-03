@@ -3,12 +3,10 @@ package com.artagon.xacml.v3.pdp;
 import java.util.Collections;
 import java.util.List;
 
-import com.artagon.xacml.v3.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestContextCallback;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;

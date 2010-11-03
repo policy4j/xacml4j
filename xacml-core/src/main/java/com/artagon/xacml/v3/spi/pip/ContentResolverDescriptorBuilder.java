@@ -1,49 +1,51 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
 
 public final class ContentResolverDescriptorBuilder 
 {
-	private Set<AttributeCategory> categories;
+	private String id;
+	private String name;
+	private AttributeCategory category;
+	private List<AttributeReferenceKey> requestContextKeys;
 	
-	private ContentResolverDescriptorBuilder(){
-		this.categories = new HashSet<AttributeCategory>();
-	}
-	
-	public static ContentResolverDescriptorBuilder create(){
-		return new ContentResolverDescriptorBuilder();
-	}
-	
-	public ContentResolverDescriptorBuilder category(AttributeCategory category)
+	private ContentResolverDescriptorBuilder(String id, String name, AttributeCategory category)
 	{
-		Preconditions.checkArgument(category != null);
-		this.categories.add(category);
-		return this;
+		Preconditions.checkNotNull(id);
+		Preconditions.checkNotNull(name);
+		Preconditions.checkNotNull(category);
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.requestContextKeys = new LinkedList<AttributeReferenceKey>();
+	}
+	
+	public static ContentResolverDescriptorBuilder create(String id, String name, AttributeCategory category){
+		return new ContentResolverDescriptorBuilder(id, name, category);
 	}
 	
 	public ContentResolverDescriptor build(){
-		return new ContentResolverDescriptor() {
-			
-			private Set<AttributeCategory> categories;
-			
-			{
-				this.categories = ImmutableSet.copyOf(ContentResolverDescriptorBuilder.this.categories);
-			}
-			
-			@Override
-			public Set<AttributeCategory> getSupportedCategories() {
-				return categories;
-			}
-			
-			@Override
-			public boolean canResolve(AttributeCategory category) {
-				return categories.contains(category);
-			}
-		};
+		return new ContentResolverDescriptorImpl(id, name, category, requestContextKeys);
+	}
+	
+	public class ContentResolverDescriptorImpl 
+		extends BaseResolverDescriptor implements ContentResolverDescriptor
+	{
+
+		public ContentResolverDescriptorImpl(String id, String name,
+				AttributeCategory category,
+				List<AttributeReferenceKey> keys) {
+			super(id, name, category, keys);
+		}
+
+		@Override
+		public boolean canResolve(AttributeCategory category) {
+			return getCategory().equals(category);
+		}
 	}
 }

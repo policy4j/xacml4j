@@ -3,17 +3,10 @@ package com.artagon.xacml.v3.spi.pip;
 import java.util.Map;
 import java.util.Set;
 
-import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 
-public interface AttributeResolverDescriptor 
+public interface AttributeResolverDescriptor extends ResolverDescriptor
 {
-	/**
-	 * Gets resolver name
-	 * 
-	 * @return resolver name
-	 */
-	String getName();
 	
 	/**
 	 * Tests if resolver is capable of resolving
@@ -26,10 +19,8 @@ public interface AttributeResolverDescriptor
 	 * @return <code>true</code> if resolver
 	 * is capable of resolving given attribute
 	 */
-	boolean canResolve(AttributeCategory category,
-			String attributeId,
-			AttributeValueType dataType,
-			String issuer);
+	boolean canResolve(AttributeDesignatorKey key);
+	
 	/**
 	 * Gets resolver identifier
 	 * 
@@ -38,42 +29,27 @@ public interface AttributeResolverDescriptor
 	String getIssuer();
 	
 	/**
-	 * Tests if a given  attribute category is supported
-	 * by the resolver
-	 * 
-	 * @param category an attribute category
-	 * @return <code>true</code> if category is supported
-	 */
-	boolean isCategorySupported(AttributeCategory category);
-	
-	/**
-	 * Gets a set of supported attribute 
-	 * {@link AttributeCategory} categories
-	 * 
-	 * @return {@link Set} an immutable set containing
-	 * supported attribute {@link AttributeCategory} 
-	 * categories
-	 */
-	Set<AttributeCategory> getSupportedCategores();
-	
-	/**
 	 * Gets attribute of the given category
 	 * with a given identifier descriptor
 	 * 
 	 * @param attributeId an attribute identifier
 	 * @return {@link AttributeDescriptor}
 	 */
-	AttributeDescriptor getAttributeDescriptor(AttributeCategory categoryId, String attributeId);
-	
-	Set<String> getProvidedAttributeIds(AttributeCategory category);
+	AttributeDescriptor getAttribute(String attributeId);
 	
 	/**
-	 * Gets attributes of the given category
+	 * Gets a provided attribute identifiers
 	 * 
-	 * @param category an attribute category
+	 * @return an immutable {@link Set} of attribute identifiers
+	 */
+	Set<String> getProvidedAttributeIds();
+	
+	/**
+	 * Gets supported attributes
+	 *  
 	 * @return a map by the attribute id
 	 */
-	Map<String, AttributeDescriptor> getAttributes(AttributeCategory category);
+	Map<String, AttributeDescriptor> getAttributes();
 	
 	/**
 	 * Tests if an attribute resolver can resolve
@@ -82,5 +58,7 @@ public interface AttributeResolverDescriptor
 	 * @param attributeId
 	 * @return <code>true</code>
 	 */
-	boolean isAttributeProvided(AttributeCategory category, String attributeId);
+	boolean isAttributeProvided(String attributeId);
+	
+
 }

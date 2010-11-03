@@ -3,10 +3,8 @@ package com.artagon.xacml.v3;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.slf4j.Logger;
@@ -37,9 +35,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			
 	private Calendar currentDateTime;
 	
-	private Map<AttributeCategory, Map<Object, Object>> contextValues;
-	
-		
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -67,7 +62,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.contextValues = new HashMap<AttributeCategory, Map<Object,Object>>();
 	}
 	
 	@Override
@@ -179,8 +173,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final ValueExpression getVariableEvaluationResult(String variableId) 
-	{
+	public final ValueExpression getVariableEvaluationResult(
+			String variableId){
 		return null;
 	}
 	
@@ -230,7 +224,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public final BagOfAttributeValues resolve(
-			AttributeDesignator ref) 
+			AttributeDesignatorKey ref) 
 		throws EvaluationException
 	{
 		BagOfAttributeValues v = contextHandler.resolve(this, ref);
@@ -241,7 +235,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributeValues resolve(AttributeSelector ref)
+	public final BagOfAttributeValues resolve(
+			AttributeSelectorKey ref)
 			throws EvaluationException 
 	{
 		BagOfAttributeValues v = contextHandler.resolve(this, ref);
@@ -255,26 +250,4 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
-	
-	@Override
-	public ResolutionScope getResolutionScope() {
-		return ResolutionScope.REQUEST_EXTERNAL;
-	}	
-	
-	@Override
-	public final Object getValue(AttributeCategory categoryId, Object key) {
-		Map<Object, Object> byCategory = contextValues.get(categoryId);
-		return (byCategory != null)?byCategory.get(key):null;
-	}
-
-	@Override
-	public final Object setValue(AttributeCategory categoryId, Object key, Object v) {
-		Map<Object, Object> byCategory = contextValues.get(categoryId);
-		if(byCategory == null){
-			byCategory = new HashMap<Object, Object>();
-			contextValues.put(categoryId, byCategory);
-		}
-		return byCategory.put(key, v);
-	}
-	
 }

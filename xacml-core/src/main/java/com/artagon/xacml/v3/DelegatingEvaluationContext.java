@@ -211,14 +211,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 
 	@Override
 	public BagOfAttributeValues resolve(
-			AttributeDesignator ref)
+			AttributeDesignatorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
 	
 	@Override
 	public BagOfAttributeValues resolve(
-			AttributeSelector ref)
+			AttributeSelectorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
@@ -226,20 +226,5 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return delegate.getEvaluatedPolicies();
-	}
-	
-	@Override
-	public ResolutionScope getResolutionScope() {
-		return delegate.getResolutionScope();
-	}
-
-	@Override
-	public Object getValue(AttributeCategory categoryId, Object key) {
-		return delegate.getValue(categoryId, key);
-	}
-
-	@Override
-	public Object setValue(AttributeCategory categoryId, Object key, Object v) {
-		return delegate.setValue(categoryId, key, v);
 	}
 }

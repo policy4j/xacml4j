@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,8 +26,10 @@ import com.google.common.collect.Multiset;
  * @author Giedrius Trumpickas
  */
 public final class BagOfAttributeValues 
-	extends XacmlObject implements ValueExpression
+	extends XacmlObject implements ValueExpression, Serializable
 {
+	private static final long serialVersionUID = -8197446176793438616L;
+	
 	private BagOfAttributeValuesType type;
 	private Multiset<AttributeValue> values;
 	
@@ -227,7 +230,7 @@ public final class BagOfAttributeValues
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).
-		add("Type", type.getDataType()).
+		add("DataType", type.getDataType()).
 		add("Values", values).toString();
 	}
 

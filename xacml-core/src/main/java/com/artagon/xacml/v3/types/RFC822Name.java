@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.types;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -7,8 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
-public final class RFC822Name 
+public final class RFC822Name implements Serializable
 {
+	private static final long serialVersionUID = -5984520030703446283L;
+	
 	/*
 	 * Copyright 2008 Les Hazlewood
 	 *

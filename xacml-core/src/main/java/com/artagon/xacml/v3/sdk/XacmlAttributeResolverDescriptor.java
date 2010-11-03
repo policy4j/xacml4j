@@ -6,8 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface XacmlAttributeCategory 
+@Target(ElementType.TYPE)
+public @interface XacmlAttributeResolverDescriptor 
 {
-	String[] value();
+	String id();
+	String name();
+	String issuer() default "";
+	String category();
+	XacmlAttributeDescriptor[] attributes();
 }

@@ -21,6 +21,8 @@ import com.google.common.base.Preconditions;
 public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlObject 
 	implements AttributeValueType
 {
+	private static final long serialVersionUID = -8812998715997567246L;
+	
 	private String typeId;
 	private BagOfAttributeValuesType bagType;
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());

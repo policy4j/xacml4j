@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.google.common.base.Preconditions;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a 
@@ -29,8 +28,7 @@ public class AttributeDesignator extends AttributeReference
 {
 	private final static Logger log = LoggerFactory.getLogger(AttributeDesignator.class);
 	
-	private String attributeId;
-	private String issuer;
+	private AttributeDesignatorKey designatorKey;
 	
 	/**
 	 * Creates attribute designator
@@ -48,10 +46,8 @@ public class AttributeDesignator extends AttributeReference
 			String issuer,
 			AttributeValueType dataType, 
 			boolean mustBePresent){
-		super(category, dataType, mustBePresent);
-		Preconditions.checkNotNull(attributeId);
-		this.issuer = issuer;
-		this.attributeId = attributeId;
+		super(mustBePresent);
+		this.designatorKey = new AttributeDesignatorKey(category, attributeId, dataType, issuer);
 	}
 	
 	
@@ -79,6 +75,11 @@ public class AttributeDesignator extends AttributeReference
 		return create(category, attributeId, issuer, dataTypeId, mustBePresent);
 	}
 	
+	@Override
+	public AttributeDesignatorKey getReferenceKey() {
+		return designatorKey;
+	}
+	
 	/**
 	 * Gets attribute identifier
 	 * in the request context
@@ -87,11 +88,11 @@ public class AttributeDesignator extends AttributeReference
 	 * in the request context
 	 */
 	public String getAttributeId(){
-		return attributeId;
+		return designatorKey.getAttributeId();
 	}
 	
 	public String getIssuer(){
-		return issuer;
+		return designatorKey.getIssuer();
 	}
 		
 	/**
@@ -108,7 +109,7 @@ public class AttributeDesignator extends AttributeReference
 	{
 		BagOfAttributeValues v = null;
 		try{
-			v = context.resolve(this);
+			v = designatorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"", 
@@ -125,7 +126,8 @@ public class AttributeDesignator extends AttributeReference
 						toString(), e.getMessage());
 			}
 			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(context, this, 
+				throw new AttributeReferenceEvaluationException(context, 
+						designatorKey, 
 						StatusCode.createMissingAttribute(), e);
 			}
 			return getDataType().bagType().createEmpty();
@@ -136,7 +138,8 @@ public class AttributeDesignator extends AttributeReference
 				log.debug("Failed to resolved attributeId=\"{}\", category=\"{}\"", 
 						getAttributeId(), getCategory());
 			}
-			throw new AttributeReferenceEvaluationException(context, this,
+			throw new AttributeReferenceEvaluationException(context, 
+					designatorKey,
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					getCategory(), getAttributeId(), getIssuer());
 		}

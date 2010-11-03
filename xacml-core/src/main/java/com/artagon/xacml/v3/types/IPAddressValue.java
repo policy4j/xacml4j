@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 
 public final class IPAddressValue extends BaseAttributeValue
 {
+	private static final long serialVersionUID = 8391410414891430400L;
 	private InetAddress address;
 	private InetAddress mask;
 	private PortRange range;

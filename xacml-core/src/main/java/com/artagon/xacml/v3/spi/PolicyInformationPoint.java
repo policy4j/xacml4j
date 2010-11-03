@@ -1,51 +1,45 @@
 package com.artagon.xacml.v3.spi;
 
+
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeDesignator;
-import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.RequestContextCallback;
 
 /**
- * A XACML Policy Information Point interface
+ * A XACML Policy Information Point
  * 
  * @author Giedrius Trumpickas
  */
 public interface PolicyInformationPoint 
 {
 	/**
-	 * Resolves a given {@link AttributeDesignator} to
-	 * a instance of {@link BagOfAttributeValues}
+	 * Resolves a given {@link AttributeDesignatorKey}
 	 * 
 	 * @param context an evaluation context
 	 * @param ref an attribute designator
-	 * @param callback an attributes callback
-	 * @return 
-	 * @throws AttributeReferenceEvaluationException
+	 * @return {@link BagOfAttributeValues}
+	 * @throws Exception if an error occurs
 	 */
 	BagOfAttributeValues resolve(
-			EvaluationContext context, 
-			AttributeDesignator ref, 
-			RequestContextCallback callback) 
-				throws EvaluationException;
+			EvaluationContext context,
+			AttributeDesignatorKey ref) 
+		throws Exception;
+	
 	
 	/**
-	 * Resolves content for a given attribute category
-	 * from an external source
+	 * Resolves a content for a given
+	 * attribute category
 	 * 
 	 * @param context an evaluation context
 	 * @param category an attribute category
-	 * @param callback a request callback
 	 * @return {@link Node} or <code>null</code>
+	 * @throws Exception if an error occurs
 	 */
 	Node resolve(
-			EvaluationContext context, 
-			AttributeCategory categoryId, 
-			RequestContextCallback callback) 
-				throws EvaluationException;
-	
+			EvaluationContext context,
+			AttributeCategory category) 
+		throws Exception;
 }

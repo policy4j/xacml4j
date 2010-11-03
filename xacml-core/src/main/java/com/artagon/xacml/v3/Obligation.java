@@ -26,7 +26,8 @@ public class Obligation extends BaseDecisionRuleResponse
 
 	
 	public Obligation(String id, 
-			Collection<AttributeAssignment> attributes, Effect effect) 
+			Collection<AttributeAssignment> attributes, 
+			Effect effect) 
 	{
 		super(id, attributes);
 		this.effect = effect;

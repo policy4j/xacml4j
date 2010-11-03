@@ -6,6 +6,8 @@ import com.artagon.xacml.v3.AttributeValueType;
 
 class BaseDurationValue  extends SimpleAttributeValue<Duration>
 {
+	private static final long serialVersionUID = 6573551346951236604L;
+
 	protected BaseDurationValue(AttributeValueType type, Duration value){
 		super(type, value);
 	}

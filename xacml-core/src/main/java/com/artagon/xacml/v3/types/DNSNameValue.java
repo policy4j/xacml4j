@@ -7,6 +7,8 @@ import com.google.common.net.InternetDomainName;
 
 public final class DNSNameValue extends BaseAttributeValue
 {
+	private static final long serialVersionUID = -1729624624549215684L;
+	
 	private InternetDomainName name;
 	private PortRange portRange;
 	

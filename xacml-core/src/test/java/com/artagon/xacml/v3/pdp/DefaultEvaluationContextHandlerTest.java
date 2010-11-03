@@ -4,11 +4,9 @@ import static com.artagon.xacml.v3.types.AnyURIType.ANYURI;
 import static com.artagon.xacml.v3.types.DateType.DATE;
 import static com.artagon.xacml.v3.types.IntegerType.INTEGER;
 import static com.artagon.xacml.v3.types.XPathExpressionType.XPATHEXPRESSION;
-import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
@@ -17,23 +15,20 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.AttributeCategories;
-import com.artagon.xacml.v3.AttributeDesignator;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.AttributeSelector;
+import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestContextCallback;
-import com.artagon.xacml.v3.ResolutionScope;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
@@ -77,17 +72,18 @@ public class DefaultEvaluationContextHandlerTest
 
 	
 	@Test
-	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest() throws EvaluationException
+	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest() 
+		throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, true);
+				INTEGER, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -101,16 +97,16 @@ public class DefaultEvaluationContextHandlerTest
 	}
 	
 	@Test
-	public void testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptySetResolutionScopeRequest() throws EvaluationException
+	public void testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptySetResolutionScopeRequest() 
+		throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, true);
+				INTEGER, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
-		expect(context.getResolutionScope()).andReturn(ResolutionScope.REQUEST);
 		replay(context, request, requestContextCallback, pip);
 		
 		Expression v = handler.resolve(context, ref);
@@ -122,22 +118,21 @@ public class DefaultEvaluationContextHandlerTest
 	
 	@Test
 	public void testSelectorResolveContentIsInNotRequestXPathReturnsNonEmptySetResolutionScopeRequestExternal() 
-		throws EvaluationException
+		throws Exception
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, true);
+				INTEGER, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
-		expect(context.getResolutionScope()).andReturn(ResolutionScope.REQUEST_EXTERNAL);
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT, requestContextCallback)).andReturn(content);
+		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		replay(context, request, requestContextCallback, pip);
 		
 		Expression v = handler.resolve(context, ref);
@@ -150,15 +145,14 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient", 
-				INTEGER, true);
+				"/md:record/md:patient", INTEGER, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -171,15 +165,14 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				DATE, false);
+				"/md:record/md:patient/md:patient-number/text()", DATE, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -192,15 +185,15 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/md:record/md:patient/md:patient-number/text()", 
-				DATE, false);
+				DATE, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -213,15 +206,15 @@ public class DefaultEvaluationContextHandlerTest
 	@Test
 	public void testSelectorResolveContentInRequestExistXPathReturnsEmptySet() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
+		AttributeSelectorKey ref = new AttributeSelectorKey(
 				AttributeCategories.SUBJECT_RECIPIENT, 
 				"/test", 
-				INTEGER, true);
+				INTEGER, null);
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
-		expect(requestContextCallback.getAttributeValues(ref.getCategory(), 
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION)).
+		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
+				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -233,12 +226,12 @@ public class DefaultEvaluationContextHandlerTest
 	}		
 	
 	@Test
-	public void testDesignatorResolveAttributeIsInRequest() throws EvaluationException
+	public void testDesignatorResolveAttributeIsInRequest() throws Exception
 	{
-		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
+		AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null);
 		
-		expect(requestContextCallback.getAttributeValues(
+		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
 				andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
 		
@@ -249,23 +242,20 @@ public class DefaultEvaluationContextHandlerTest
 	}
 	
 	@Test
-	public void testDesignatorResolveAttributeIsNotInRequestAndScopeIsRequestAndExternal() throws EvaluationException
+	public void testDesignatorResolveAttributeIsNotInRequestAndScopeIsRequestAndExternal() 
+		throws Exception
 	{
-		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
+		AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null);
 		
 	
-		expect(requestContextCallback.getAttributeValues(
+		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
 		
-		expect(context.getResolutionScope()).andReturn(ResolutionScope.REQUEST_EXTERNAL);
-	
-		Capture<RequestContextCallback> c = new Capture<RequestContextCallback>();
-		expect(pip.resolve(same(context), same(ref), capture(c))).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
-		expect(requestContextCallback.getAttributeValues(
+
+		expect(pip.resolve(context, ref)).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
+		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
-		
-		expect(context.getResolutionScope()).andReturn(ResolutionScope.REQUEST_EXTERNAL);
 		
 		replay(context, request, pip, requestContextCallback);
 		ValueExpression v = handler.resolve(context, ref);
@@ -278,15 +268,12 @@ public class DefaultEvaluationContextHandlerTest
 	@Test
 	public void testDesignatorResolveAttributeIsNotInRequestAndScopeIsRequest() throws EvaluationException
 	{
-		AttributeDesignator ref = new AttributeDesignator(
-				AttributeCategories.RESOURCE, "testId", null, ANYURI, false);
+		AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null);
 		
-
-		expect(requestContextCallback.getAttributeValues(
+		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
 				andReturn(ANYURI.emptyBag());
-		
-		expect(context.getResolutionScope()).andReturn(ResolutionScope.REQUEST);
 		
 		replay(context, request, requestContextCallback, pip);
 

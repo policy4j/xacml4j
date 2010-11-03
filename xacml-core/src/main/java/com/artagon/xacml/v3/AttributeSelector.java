@@ -4,15 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.google.common.base.Preconditions;
 
 public class AttributeSelector extends 
 	AttributeReference
 {
 	private final static Logger log = LoggerFactory.getLogger(AttributeSelector.class);
 	
-	private String xpath;
-	private String contextAttributeId;
+	private AttributeSelectorKey selectorKey;
 	
 	public AttributeSelector(
 			AttributeCategory category, 
@@ -20,10 +18,8 @@ public class AttributeSelector extends
 			String contextAttributeId,
 			AttributeValueType dataType, 
 					boolean mustBePresent){
-		super(category, dataType, mustBePresent);
-		Preconditions.checkNotNull(xpath);
-		this.xpath = xpath;
-		this.contextAttributeId = contextAttributeId;
+		super(mustBePresent);
+		this.selectorKey = new AttributeSelectorKey(category, xpath, dataType, contextAttributeId);
 	}
 	
 	public AttributeSelector(
@@ -61,6 +57,12 @@ public class AttributeSelector extends
 		return create(categoryId, xpath, null, dataTypeId, mustBePresent);
 	}
 	
+	
+	@Override
+	public AttributeSelectorKey getReferenceKey() {
+		return selectorKey;
+	}
+
 	/**
 	 * An XPath expression whose context node is the Content 
 	 * element of the attribute category indicated by the Category 
@@ -71,7 +73,7 @@ public class AttributeSelector extends
 	 * @return an XPath expression
 	 */
 	public String getPath(){
-		return xpath;
+		return selectorKey.getPath();
 	}
 	
 	/**
@@ -87,7 +89,7 @@ public class AttributeSelector extends
 	 */
 	public String getContextSelectorId()
 	{
-		return contextAttributeId;
+		return selectorKey.getContextSelectorId();
 	}
 	
 	@Override
@@ -102,7 +104,7 @@ public class AttributeSelector extends
 	{ 
 		BagOfAttributeValues v = null;
 		try{
-			v =  context.resolve(this);
+			v =  selectorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){
 			if(isMustBePresent()){
 				throw e;
@@ -111,7 +113,7 @@ public class AttributeSelector extends
 		}catch(Exception e){
 			if(isMustBePresent()){
 				throw new AttributeReferenceEvaluationException(
-						context, this, 
+						context, selectorKey, 
 						StatusCode.createMissingAttribute(), e);
 			}
 			return getDataType().bagType().createEmpty();
@@ -123,7 +125,8 @@ public class AttributeSelector extends
 				log.debug("Failed to resolved xpath=\"{}\", category=\"{}\"", 
 						getPath(), getCategory());
 			}
-			throw new AttributeReferenceEvaluationException(context, this, 
+			throw new AttributeReferenceEvaluationException(
+					context, selectorKey, 
 				"Selector XPath expression=\"%s\" evaluated " +
 				"to empty node set and mustBePresents=\"true\"", getPath());
 		}

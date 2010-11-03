@@ -37,7 +37,8 @@ public class ArithmeticFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-add")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue addInteger(
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerValue ...values) 
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
+			IntegerValue ...values) 
 	{
 		Long sum = 0L;
 		for(IntegerValue v : values){
@@ -49,7 +50,8 @@ public class ArithmeticFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue multiplyInteger(
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
+			IntegerValue ...values)
 	{
 		Long value = 1L;
 		for(IntegerValue v : values){
@@ -61,7 +63,8 @@ public class ArithmeticFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue addDouble(
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)DoubleValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)
+			DoubleValue ...values)
 	{
 		Double sum = 0.0;
 		for(DoubleValue v : values){
@@ -73,7 +76,8 @@ public class ArithmeticFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue multiplyDouble(
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)DoubleValue ...values)
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)
+			DoubleValue ...values)
 	{
 		Double value = 1.0;
 		for(DoubleValue v : values){

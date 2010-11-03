@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3;
 
-public interface AttributeValue extends ValueExpression
+import java.io.Serializable;
+
+public interface AttributeValue 
+	extends ValueExpression, Serializable
 {
 	/**
 	 * Gets attribute type

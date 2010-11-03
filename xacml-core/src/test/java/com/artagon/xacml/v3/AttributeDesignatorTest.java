@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -9,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +33,13 @@ public class AttributeDesignatorTest
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer",
 				IntegerType.INTEGER, true);
-		expect(context.resolve(desig)).andReturn(IntegerType.INTEGER.emptyBag());
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
-			assertSame(desig, e.getReference());
+			assertSame(c.getValue(), e.getReference());
 			assertSame(context, e.getEvaluationContext());
 			assertTrue(e.getStatusCode().isFailure());
 			throw e;
@@ -50,12 +53,13 @@ public class AttributeDesignatorTest
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer", 
 				IntegerType.INTEGER, true);
-		expect(context.resolve(desig)).andReturn(null);
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
-			assertSame(desig, e.getReference());
+			assertSame(c.getValue(), e.getReference());
 			assertSame(context, e.getEvaluationContext());
 			assertTrue(e.getStatusCode().isFailure());
 			throw e;
@@ -70,7 +74,8 @@ public class AttributeDesignatorTest
 		AttributeDesignator desig = new AttributeDesignator(
 				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer", 
 				IntegerType.INTEGER, true);
-		expect(context.resolve(desig)).andReturn(
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andReturn(
 				IntegerType.INTEGER.bagOf(
 						IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)));
 				
@@ -86,7 +91,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(desig)).andReturn(IntegerType.INTEGER.emptyBag());
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
@@ -100,7 +106,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(desig)).andReturn(null);
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
@@ -114,7 +121,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, true);
-		expect(context.resolve(desig)).andThrow(new AttributeReferenceEvaluationException(context, desig, "Errror"));
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, desig.getReferenceKey(), "Errror"));
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -125,7 +133,9 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(desig)).andThrow(new AttributeReferenceEvaluationException(context, desig, "Errror"));
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
+				desig.getReferenceKey(), "Errror"));
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
@@ -139,7 +149,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, true);
-		expect(context.resolve(desig)).andThrow(new NullPointerException("Null"));
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		desig.evaluate(context);
 		verify(context);
@@ -150,7 +161,8 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
 				"testId", "testIssuer",  type, false);
-		expect(context.resolve(desig)).andThrow(new NullPointerException("Null"));
+		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
