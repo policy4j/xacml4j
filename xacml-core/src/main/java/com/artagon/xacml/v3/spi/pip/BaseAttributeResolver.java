@@ -28,14 +28,14 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final Map<String, BagOfAttributeValues> resolve(
-			PolicyInformationPointContext context, BagOfAttributeValues ...keys) throws Exception 
+			PolicyInformationPointContext context) throws Exception 
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving attributes via resolver " +
 					"id=\"{}\" name=\"{}\"", 
 					descriptor.getId(), descriptor.getName());
 		}
-		Map<String, BagOfAttributeValues> v =  validateResult(doResolve(context, keys));
+		Map<String, BagOfAttributeValues> v =  validateResult(doResolve(context));
 		if(log.isDebugEnabled()){
 			log.debug("Retrieved values=\"{}\"", v);
 		}
@@ -43,8 +43,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 	
 	protected abstract Map<String, BagOfAttributeValues> doResolve(
-			PolicyInformationPointContext context,
-			BagOfAttributeValues ...keys);
+			PolicyInformationPointContext context);
 	
 	
 	private Map<String, BagOfAttributeValues> validateResult(

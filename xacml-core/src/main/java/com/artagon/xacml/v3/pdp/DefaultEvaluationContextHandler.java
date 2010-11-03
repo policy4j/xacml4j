@@ -120,12 +120,21 @@ class DefaultEvaluationContextHandler
 			throws EvaluationException 
 	{
 		if(selectorCache.containsKey(ref)){
-			return selectorCache.get(ref);
+			BagOfAttributeValues v = selectorCache.get(ref);
+			if(log.isDebugEnabled()){
+				log.debug("Selector=\"{}\" resolution " +
+						"result=\"{}\" found in the cache, not re-evaluating", ref, v);
+			}
+			return v;
 		}
 		try
 		{
 			selectorResolutionStack.push(ref);
 			BagOfAttributeValues v =  doResolve(context, ref);
+			if(log.isDebugEnabled()){
+				log.debug("Resolved " +
+						"selector=\"{}\" to bag=\"{}\"", ref, v);
+			}
 			selectorCache.put(ref, v);
 			return v;
 		}finally{
@@ -372,8 +381,14 @@ class DefaultEvaluationContextHandler
 							context, ref, 
 							"Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
-			try{
-				values.add(ref.getDataType().fromXacmlString(v));
+			try
+			{
+				AttributeValue value = ref.getDataType().fromXacmlString(v);
+				if(log.isDebugEnabled()){
+					log.debug("Node of type=\"{}\" " +
+							"converted attribute=\"{}\"", n.getNodeType(), value);
+				}
+				values.add(value);
 			}catch(Exception e){
 				throw new AttributeReferenceEvaluationException(
 						context, 

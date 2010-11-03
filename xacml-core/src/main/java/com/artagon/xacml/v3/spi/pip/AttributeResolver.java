@@ -16,5 +16,5 @@ public interface AttributeResolver
 	
 	
 	Map<String, BagOfAttributeValues> resolve(
-			PolicyInformationPointContext context, BagOfAttributeValues ...keys) throws Exception;
+			PolicyInformationPointContext context) throws Exception;
 }

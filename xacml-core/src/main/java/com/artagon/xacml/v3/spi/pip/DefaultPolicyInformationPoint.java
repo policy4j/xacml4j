@@ -3,9 +3,7 @@ package com.artagon.xacml.v3.spi.pip;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +11,13 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
+import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.spi.CacheProvider;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
@@ -34,73 +29,57 @@ public class DefaultPolicyInformationPoint
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
-	/**
-	 * Resolvers index by category and attribute identifier
-	 */
-	private Map<AttributeCategory, Map<String, AttributeResolver>> attributeResolvers;
-	
-	/**
-	 * Resolvers index by policy identifier
-	 */
-	private Multimap<String, AttributeResolver> attributeResolversByPolicy;
-	
 	private CacheProvider attributeCache;
 	private CacheProvider contentCache;
+	private ResolverRegistry resolvers;
 	
-	private Map<AttributeCategory, ContentResolver> contentResolvers;
-	private Multimap<String, ContentResolver> contentResolversByPolicy;
-	
-	private Map<String, AttributeResolver> attributeResolversById;
-	private Map<String, AttributeResolver> contentResolversById;
-	
-	public DefaultPolicyInformationPoint(CacheProvider attributesCache, CacheProvider contentCache)
+	public DefaultPolicyInformationPoint(ResolverRegistry resolvers, 
+			CacheProvider attributesCache, CacheProvider contentCache)
 	{
 		Preconditions.checkNotNull(attributesCache);
 		Preconditions.checkNotNull(contentCache);
+		Preconditions.checkNotNull(resolvers);
 		this.attributeCache = attributesCache;
 		this.contentCache = contentCache;
-		this.attributeResolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
-		this.attributeResolversByPolicy = HashMultimap.create();
-		this.contentResolversByPolicy = HashMultimap.create();
-		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
-		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
-		this.contentResolversById = new ConcurrentHashMap<String, AttributeResolver>();
-		addResolver(new DefaultEnviromentAttributeResolver());
+		this.resolvers = resolvers;
 	}
 
 	@Override
 	public BagOfAttributeValues resolve(final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{
-		AttributeResolver r = getAttributeResolver(context, ref);
+		AttributeResolver r = resolvers.getAttributeResolver(context, ref);
 		if(r == null){
 			return ref.getDataType().emptyBag();
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
+		Preconditions.checkState(d.canResolve(ref));
 		BagOfAttributeValues[] keys = d.resolveKeys(context);
 		CacheKey key = new CacheKey(d.getId(), keys);
-		Map<String, BagOfAttributeValues> v = null;
+		Map<String, BagOfAttributeValues> attributes = null;
 		if(d.isCachingEnabled()){
-			v = attributeCache.get(key);
-		}
-		if(v != null){
-			return v.get(ref.getAttributeId());
-		}
-		v = r.resolve(new PolicyInformationPointContext() {		
-			@Override
-			public Calendar getCurrentDateTime() {
-				return context.getCurrentDateTime();
+			attributes = attributeCache.get(key);
+			if(attributes != null && 
+					log.isDebugEnabled()){
+				log.debug("Attributes " +
+						"cache hit for key=\"{}\" values=\"{}\"", 
+						key, attributes);
 			}
-		}, keys);
+		}
+		if(attributes != null){
+			return attributes.get(ref.getAttributeId());
+		}
+		attributes = r.resolve(
+				new DefaultPolicyInformationPointContext(context, d, keys));
 		if(d.isCachingEnabled()){
 			if(log.isDebugEnabled()){
 				log.debug("Caching attributes " +
 						"resolver id=\"{}\", ttl=\"{}\"", 
 						d.getId(), d.getPreferreredCacheTTL());
 			}
-			attributeCache.put(key, v, d.getPreferreredCacheTTL());
+			attributeCache.put(key, attributes, d.getPreferreredCacheTTL());
 		}
-		return v.get(ref.getAttributeId());
+		return attributes.get(ref.getAttributeId());
 	}
 
 	@Override
@@ -108,7 +87,7 @@ public class DefaultPolicyInformationPoint
 			AttributeCategory category)
 			throws Exception 
 	{
-		ContentResolver r = getContentResolver(context, category);
+		ContentResolver r = resolvers.getContentResolver(context, category);
 		if(r == null){
 			return null;
 		}
@@ -122,12 +101,8 @@ public class DefaultPolicyInformationPoint
 				return v;
 			}
 		}
-		v = r.resolve(new PolicyInformationPointContext() {
-			@Override
-			public Calendar getCurrentDateTime() {
-				return context.getCurrentDateTime();
-			}
-		}, keys);
+		v = r.resolve(
+				new DefaultPolicyInformationPointContext(context, d, keys));
 		if(d.isCachingEnabled()){
 			contentCache.put(cacheKey, 
 					v, d.getPreferreredCacheTTL());
@@ -136,150 +111,42 @@ public class DefaultPolicyInformationPoint
 		return v;
 	}
 	
-	public void addResolver(AttributeResolver resolver)
+	private final class DefaultPolicyInformationPointContext 
+		implements PolicyInformationPointContext
 	{
-		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
-		Map<String, AttributeResolver> byCategory = attributeResolvers.get(d.getCategory());
-		if(byCategory == null){
-			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-			attributeResolvers.put(d.getCategory(), byCategory);
+		private EvaluationContext context;
+		private BagOfAttributeValues[] keys;
+		private ResolverDescriptor desciptor;
+		
+		private DefaultPolicyInformationPointContext(
+				EvaluationContext context, 
+				ResolverDescriptor descriptor,
+				BagOfAttributeValues[] keys){
+			this.context = context;
+			this.keys = keys;
+			this.desciptor = descriptor;
 		}
-		for(String attributeId : d.getProvidedAttributeIds())
-		{
-			if(log.isDebugEnabled()){
-					log.debug("Adding resolver for category=\"{}\", " +
-							"attributeId=\"{}\"", d.getCategory(), attributeId);
-			}
-			AttributeResolver oldResolver = byCategory.get(attributeId);
-				if(oldResolver != null){
-					throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
-								"category=\"%s\" already provided via other resolver", 
-								attributeId, d.getCategory()));
-				}
-			byCategory.put(attributeId, resolver);
+		
+		@Override
+		public Calendar getCurrentDateTime() {
+			return context.getCurrentDateTime();
 		}
-	}
-	
-	
-	public void addResolver(ContentResolver r)
-	{
-		Preconditions.checkArgument(r != null);
-		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
-		ContentResolverDescriptor d = r.getDescriptor();
-		contentResolvers.put(d.getCategory(), r);
-	}
-	
-	public void addResolver(String policyId, ContentResolver r)
-	{
-		Preconditions.checkArgument(r != null);
-		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
-		this.contentResolversByPolicy.put(policyId, r);
-	}
-	
-	public void addResolver(String policyId, AttributeResolver r)
-	{
-		AttributeResolverDescriptor d = r.getDescriptor();
-		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
-		this.attributeResolversByPolicy.put(policyId, r);
-		this.attributeResolversById.put(d.getId(), r);
-	}
-	
-	/**
-	 * Finds {@link AttributeResolver} for given evaluation context and
-	 * {@link AttributeResolver} instance
-	 * 
-	 * @param context an evaluation context
-	 * @param ref an attribute reference
-	 * @return {@link AttributeResolver} or <code>null</code> if 
-	 * no matching resolver found
-	 */
-	public AttributeResolver getAttributeResolver(
-			EvaluationContext context, 
-			AttributeDesignatorKey ref)
-	{
-		// stop recursive call if 
-		// context is null
-		if(context == null)
-		{
-			Map<String, AttributeResolver> byCategory = attributeResolvers.get(ref.getCategory());
-		 	if(byCategory == null){
-		 		return null;
-		 	}
-		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
-		 	AttributeResolverDescriptor d = resolver.getDescriptor();
-		 	return (resolver != null && d.canResolve(ref))?resolver:null;
+		
+		@Override
+		public BagOfAttributeValues getKeyValues(int index){
+			return (keys == null)?null:keys[index];
 		}
-		String policyId = getCurrentIdentifier(context);
-		Collection<AttributeResolver> found = attributeResolversByPolicy.get(policyId);
-		if(log.isDebugEnabled()){
-			log.debug("Found \"{}\" resolver " +
-					"scoped for a PolicyId=\"{}\"", 
-					found.size(), policyId);
-		}
-		for(AttributeResolver r : found){
-			AttributeResolverDescriptor d = r.getDescriptor();
-			if(d.canResolve(ref)){
-				if(log.isDebugEnabled()){
-					log.debug("Found PolicyId=\"{}\" scoped resolver", policyId);
-				}
-				return r;
-			}
-		}
-		return getAttributeResolver(
-				context.getParentContext(), ref);
-	}
-	
-	/**
-	 * Gets matching content resolver for a given
-	 * evaluation context and attribute category
-	 * 
-	 * @param context an evaluation context
-	 * @param category an attribute category
-	 * @return {@link ContentResolver} or <code>null</code>
-	 * 
-	 */
-	public ContentResolver getContentResolver(EvaluationContext context, 
-			AttributeCategory category)
-	{
-		// stop recursive call if 
-		// context is null
-		if(context == null){
-			return contentResolvers.get(category);
-		}
-		String policyId = getCurrentIdentifier(context);
-		Collection<ContentResolver> found = contentResolversByPolicy.get(policyId);
-		if(log.isDebugEnabled()){
-			log.debug("Found \"{}\" resolver " +
-					"scoped for a PolicyId=\"{}\"", 
-					found.size(), policyId);
-		}
-		for(ContentResolver r : found)
-		{
-			ContentResolverDescriptor d = r.getDescriptor();
-			if(d.canResolve(category)){
-				if(log.isDebugEnabled()){
-					log.debug("Found PolicyId=\"{}\" scoped resolver", policyId);
-				}
-				return r;
-			}
-		}
-		return getContentResolver(context.getParentContext(), category);
-	}
-	
-	private String getCurrentIdentifier(EvaluationContext context)
-	{
-		Policy currentPolicy = context.getCurrentPolicy();
-		if(currentPolicy == null){
-			PolicySet currentPolicySet = context.getCurrentPolicySet();
-			return currentPolicySet != null?currentPolicySet.getId():null;
-		}
-		return (currentPolicy != null)?currentPolicy.getId():null;		
-	}
-	
 
-
-	private final class CacheKey implements Serializable
+		@SuppressWarnings("unchecked")
+		@Override
+		public <V extends AttributeValue> V getKeyValue(int index) {
+			BagOfAttributeValues v = getKeyValues(index);
+			return (V)((v == null)?null:v.value());
+		}
+		
+	}
+	
+	public final class CacheKey implements Serializable
 	{
 		private static final long serialVersionUID = -6895205924708410228L;
 		
@@ -319,7 +186,7 @@ public class DefaultPolicyInformationPoint
 		public String toString(){
 			return Objects.toStringHelper(this)
 			.add("id", resolverId)
-			.add("keys", keys)
+			.add("keys", Arrays.toString(keys))
 			.toString();
 		}
 	}

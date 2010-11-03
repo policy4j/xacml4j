@@ -25,7 +25,7 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	
 	@Override
 	protected Map<String, BagOfAttributeValues> doResolve(
-			PolicyInformationPointContext context, BagOfAttributeValues... keys) {
+			PolicyInformationPointContext context) {
 		Calendar currentDateTime = context.getCurrentDateTime();
 		return newResult()
 			.value("urn:oasis:names:tc:xacml:1.0:environment:current-time", TIME.bagOf(TIME.create(currentDateTime)))

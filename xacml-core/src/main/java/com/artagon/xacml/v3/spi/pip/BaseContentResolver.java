@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
 
 /**
@@ -30,16 +29,16 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	@Override
 	public final Node resolve(
-			PolicyInformationPointContext context, BagOfAttributeValues ...keys) throws Exception 
+			PolicyInformationPointContext context) throws Exception 
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving content via resolver " +
 					"id=\"{}\" name=\"{}\"", descriptor.getId(), descriptor.getName());
 		}
-		return doResolve(context, keys);	
+		return doResolve(context);	
 	}
 	
 	protected abstract Node doResolve(
-			PolicyInformationPointContext context, BagOfAttributeValues ...keys) 
+			PolicyInformationPointContext context) 
 		throws Exception;
 }

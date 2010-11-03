@@ -33,7 +33,7 @@ public class DefaultEnviromentAttributesResolverTest
 		Calendar now = Calendar.getInstance();
 		expect(context.getCurrentDateTime()).andReturn(now);
 		replay(context);
-		Map<String, BagOfAttributeValues> a = r.resolve(context, (BagOfAttributeValues[])null);
+		Map<String, BagOfAttributeValues> a = r.resolve(context);
 		assertNotNull(a);
 		assertEquals(3, a.size());
 		assertTrue(a.containsKey("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
