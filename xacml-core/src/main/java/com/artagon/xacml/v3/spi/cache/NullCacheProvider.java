@@ -11,12 +11,12 @@ public class NullCacheProvider implements CacheProvider
 	}
 
 	@Override
-	public void put(Object k, Object v, long ttl) {
+	public void put(Object k, Object v, int ttl) {
 		
 	}
 
 	@Override
-	public void putIfAbsent(Object k, Object v, long ttl) {
+	public <T> T putIfAbsent(Object k, T v, int ttl) {
+		return null;
 	}
-	
 }

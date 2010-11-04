@@ -5,7 +5,7 @@ public interface CacheProvider
 {
 	<T> T get(Object v);
 	
-	void put(Object key, Object v, long ttl);
+	void put(Object key, Object v, int ttl);
 	
-	void putIfAbsent(Object key, Object v, long ttl);
+	<T> T putIfAbsent(Object key, T v, int ttl);
 }
