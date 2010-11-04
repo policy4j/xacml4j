@@ -38,13 +38,13 @@ public class DefaultResolverRegistry implements ResolverRegistry
 	
 	public DefaultResolverRegistry()
 	{
-		addResolver(new DefaultEnviromentAttributeResolver());
 		this.attributeResolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
 		this.attributeResolversByPolicy = HashMultimap.create();
 		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
 		this.contentResolversByPolicy = HashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
 		this.contentResolversById = new ConcurrentHashMap<String, AttributeResolver>();
+		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 	
 	public void addResolver(AttributeResolver resolver)

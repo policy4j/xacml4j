@@ -116,21 +116,31 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		Decision result = doEvaluate(context);
 		if(result.isIndeterminate() || 
 				result == Decision.NOT_APPLICABLE){
-			log.debug("Not evaluating advices and " +
-					"obligations for decision rule id=\"{}\" " +
-					"evaluation result=\"{}\"", getId(), result);
+			if(log.isDebugEnabled()){
+				log.debug("Not evaluating advices and " +
+						"obligations for decision rule id=\"{}\" " +
+						"evaluation result=\"{}\"", getId(), result);
+			}
 			return result;
 		}
 		try
 		{
-			log.debug("Evaluating advice for decision with id=\"{}\"", getId());
+			if(log.isDebugEnabled()){
+				log.debug("Evaluating advice " +
+						"for decision with id=\"{}\"", getId());
+			}
 			context.addAdvices(evaluateAdvices(context, result));
-			log.debug("Evaluating obligations for decision with id=\"{}\"", getId());
+			if(log.isDebugEnabled()){
+				log.debug("Evaluating obligations " +
+						"for decision with id=\"{}\"", getId());
+			}
 			context.addObligations(evaluateObligations(context, result));
 			return result;
 		}catch(EvaluationException e){
-			log.debug("Failed to evaluate decision id=\"{}\" " +
-					"obligation or advice expressions", getId());
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate decision id=\"{}\" " +
+						"obligation or advice expressions", getId());
+			}
 			return Decision.INDETERMINATE;
 		}
 	}

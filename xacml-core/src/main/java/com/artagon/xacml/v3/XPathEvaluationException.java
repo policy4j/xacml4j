@@ -35,5 +35,4 @@ public class XPathEvaluationException extends EvaluationException
 	public String getXPathExpression(){
 		return xpathExpression;
 	}
-	
 }

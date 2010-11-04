@@ -335,7 +335,10 @@ class DefaultEvaluationContextHandler
 		}
 		catch(XPathEvaluationException e){
 			throw new AttributeReferenceEvaluationException(context, ref, 
-					StatusCode.createSyntaxError(), e);
+					StatusCode.createProcessingError(), e);
+		}
+		catch(EvaluationException e){
+			throw e;
 		}
 		catch(Exception e){
 			throw new AttributeReferenceEvaluationException(
