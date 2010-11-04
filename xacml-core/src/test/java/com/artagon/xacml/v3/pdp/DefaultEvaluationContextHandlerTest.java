@@ -207,6 +207,25 @@ public class DefaultEvaluationContextHandlerTest
 		verify(context, request, requestContextCallback, pip);
 	}		
 	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testSelectorResolveContentIsNotInRequestPIPThrowsRuntimeException() 
+		throws Exception
+	{
+		AttributeSelectorKey ref = new AttributeSelectorKey(
+				AttributeCategories.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patient-number/text()", 
+				INTEGER, null);
+		
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		
+		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new NullPointerException());
+		
+		replay(context, request, requestContextCallback, pip);
+		handler.resolve(context, ref);
+		verify(context, request, requestContextCallback, pip);
+	}
+	
+	
 	@Test
 	public void testDesignatorResolveAttributeIsInRequest() throws Exception
 	{
@@ -244,6 +263,26 @@ public class DefaultEvaluationContextHandlerTest
 		// test if designator resolution result is cached
 		v = handler.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
+		verify(context, request, pip, requestContextCallback);
+	}
+	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testDesignatorResolveAttributeIsNotInRequestPIPThrowsRuntimeException() 
+		throws Exception
+	{
+		AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null);
+		
+	
+		expect(requestContextCallback.getAttributeValue(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		
+
+		expect(pip.resolve(context, ref)).andThrow(new NullPointerException());
+		
+		replay(context, request, pip, requestContextCallback);
+		ValueExpression v = handler.resolve(context, ref);
+		
 		verify(context, request, pip, requestContextCallback);
 	}
 }
