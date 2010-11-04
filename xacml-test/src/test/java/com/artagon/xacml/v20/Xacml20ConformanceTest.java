@@ -29,6 +29,7 @@ import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
 
 public class Xacml20ConformanceTest 
 {
@@ -48,7 +49,7 @@ public class Xacml20ConformanceTest
 		policyReader = new Xacml20PolicyUnmarshaller();
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		pip = new DefaultPolicyInformationPoint();
+		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);

@@ -21,6 +21,7 @@ import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 
@@ -50,7 +51,7 @@ public class RSA2008InteropTest
 		repository.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
 		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
-		pip = new DefaultPolicyInformationPoint();
+		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
 		pdp = new DefaultPolicyDecisionPoint(
 				new DefaultPolicyDecisionPointContextFactory(domain, repository, pip));
 		
