@@ -80,7 +80,7 @@ public class Xacml20RequestUnmarshallerTest
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIA013Request.xml"));
 		assertNotNull(request);	
 		assertEquals(2, request.getAttributeValues(AttributeCategories.SUBJECT_ACCESS, 
-				"urn:oasis:names:tc:xacml:2.0:conformance-test:age", null, INTEGER).size());
+				"urn:oasis:names:tc:xacml:2.0:conformance-test:age", INTEGER, null).size());
 	}
 	
 	@Test

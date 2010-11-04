@@ -58,29 +58,24 @@ public class DefaultPolicyInformationPoint
 		AttributeResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkState(d.canResolve(ref));
 		BagOfAttributeValues[] keys = d.resolveKeys(context);
-		CacheKey key = new CacheKey(d.getId(), keys);
+		CacheKey cacheKey = new CacheKey(d.getId(), keys);
 		Map<String, BagOfAttributeValues> attributes = null;
 		if(d.isCachable()){
-			attributes = attributeCache.get(key);
-			if(attributes != null && 
-					log.isDebugEnabled()){
-				log.debug("Attributes " +
-						"cache hit for key=\"{}\" values=\"{}\"", 
-						key, attributes);
+			attributes = attributeCache.get(cacheKey);
+			if(attributes != null){
+				return attributes.get(ref.getAttributeId());
 			}
-		}
-		if(attributes != null){
-			return attributes.get(ref.getAttributeId());
 		}
 		attributes = r.resolve(
 				new DefaultPolicyInformationPointContext(context, d, keys));
 		if(d.isCachable()){
 			if(log.isDebugEnabled()){
-				log.debug("Caching attributes " +
-						"resolver id=\"{}\", ttl=\"{}\"", 
-						d.getId(), d.getPreferreredCacheTTL());
+				log.debug("Caching attribute " +
+						"resolver id=\"{}\", resolved " +
+						"attributes=\"{}\" for TTL=\"{}\" seconds", 
+						new Object[]{d.getId(), attributes, d.getPreferreredCacheTTL()});
 			}
-			attributeCache.put(key, attributes, d.getPreferreredCacheTTL());
+			attributeCache.put(cacheKey, attributes, d.getPreferreredCacheTTL());
 		}
 		return attributes.get(ref.getAttributeId());
 	}
@@ -107,6 +102,13 @@ public class DefaultPolicyInformationPoint
 		v = r.resolve(
 				new DefaultPolicyInformationPointContext(context, d, keys));
 		if(d.isCachable()){
+			if(log.isDebugEnabled()){
+				log.debug("Caching content " +
+						"resolver id=\"{}\", resolved " +
+						"content=\"{}\" for TTL=\"{}\" seconds", 
+						new Object[]{d.getId(), 
+						v.getLocalName(), d.getPreferreredCacheTTL()});
+			}
 			contentCache.put(cacheKey, 
 					v, d.getPreferreredCacheTTL());
 		}
@@ -127,6 +129,14 @@ public class DefaultPolicyInformationPoint
 			Preconditions.checkNotNull(resolverId);
 			this.resolverId = resolverId;
 			this.keys = keys;
+		}
+		
+		public String getResolvedId(){
+			return resolverId;
+		}
+		
+		public BagOfAttributeValues[] getKeys(){
+			return keys;
 		}
 		
 		@Override

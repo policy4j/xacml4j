@@ -65,9 +65,12 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey ref = new AttributeDesignatorKey(
 				AttributeCategories.SUBJECT_ACCESS,"testAttributeId1", StringType.STRING, null);
 		
+		// attribute resolver found
 		expect(registry.getAttributeResolver(context, ref)).andReturn(attributeResolver);
 		expect(attributeResolver.getDescriptor()).andReturn(descriptor);
 		
+		
+		// key resolved
 		expect(context.resolve(
 				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
@@ -81,26 +84,13 @@ public class DefaultPolicyInformationPointTest
 		Capture<DefaultPolicyInformationPoint.CacheKey> cacheKey2 = new Capture<DefaultPolicyInformationPoint.CacheKey>();
 		attributeCache.put(capture(cacheKey2), same(values), eq(descriptor.getPreferreredCacheTTL()));
 		
-		expect(registry.getAttributeResolver(context, ref)).andReturn(attributeResolver);
-		expect(attributeResolver.getDescriptor()).andReturn(descriptor);
-		
-		expect(context.resolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
-				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
-		
-		Capture<DefaultPolicyInformationPoint.CacheKey> cacheKey3 = new Capture<DefaultPolicyInformationPoint.CacheKey>();
-		expect(attributeCache.get(capture(cacheKey3))).andReturn(values);
 		
 		replay(registry, attributeResolver, attributeCache, context);
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
 		
-		v = pip.resolve(context, ref);
-		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
-		
-		assertEquals(cacheKey1.getValue(), cacheKey2.getValue());
-		assertEquals(cacheKey2.getValue(), cacheKey3.getValue());
+
 		verify(registry, attributeResolver, attributeCache, context);
 	}
 }

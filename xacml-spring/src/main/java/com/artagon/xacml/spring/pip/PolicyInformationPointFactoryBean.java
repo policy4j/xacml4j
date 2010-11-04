@@ -1,17 +1,22 @@
 package com.artagon.xacml.spring.pip;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
 
 public class PolicyInformationPointFactoryBean extends AbstractFactoryBean<PolicyInformationPoint>
 {
-	private Collection<AttributeResolver> resolvers = Collections.emptyList();
+	private ResolverRegistry registry;
+	
+	public PolicyInformationPointFactoryBean(){
+		this.registry = new DefaultResolverRegistry();
+	}
 	
 	@Override
 	public Class<PolicyInformationPoint> getObjectType() {
@@ -19,16 +24,14 @@ public class PolicyInformationPointFactoryBean extends AbstractFactoryBean<Polic
 	}
 	
 	public void setAttributeResolvers(Collection<AttributeResolver> resolvers){
-		this.resolvers = resolvers;
+		for(AttributeResolver r : resolvers){
+			registry.addResolver(r);
+		}
 	}
 
 	@Override
 	protected PolicyInformationPoint createInstance() throws Exception 
 	{
-		DefaultPolicyInformationPoint pip = new DefaultPolicyInformationPoint();
-		for(AttributeResolver r : resolvers){
-			pip.addResolver(r);
-		}
-		return pip;
+		return new DefaultPolicyInformationPoint(registry);
 	}
 }
