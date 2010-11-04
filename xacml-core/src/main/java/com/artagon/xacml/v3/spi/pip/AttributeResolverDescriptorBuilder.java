@@ -22,7 +22,7 @@ public final class AttributeResolverDescriptorBuilder
 	private Map<String, AttributeDescriptor> attributes;
 	private String issuer;
 	private List<AttributeReferenceKey> keys;
-	private long preferredCacheTTL = 0;
+	private int preferredCacheTTL = 0;
 	
 	private AttributeResolverDescriptorBuilder(
 			String id, String name, 
@@ -69,7 +69,7 @@ public final class AttributeResolverDescriptorBuilder
 		return this;
 	}
 	
-	public AttributeResolverDescriptorBuilder cache(long ttl){
+	public AttributeResolverDescriptorBuilder cache(int ttl){
 		this.preferredCacheTTL = ttl;
 		return this;
 	}

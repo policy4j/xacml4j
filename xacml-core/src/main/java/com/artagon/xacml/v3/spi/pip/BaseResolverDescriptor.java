@@ -18,7 +18,7 @@ public abstract class BaseResolverDescriptor
 
 	private AttributeCategory category;
 	private List<AttributeReferenceKey> requestContextKeys;
-	private long preferredCacheTTL;
+	private int preferredCacheTTL;
 	
 	protected BaseResolverDescriptor(String id,
 			String name,
@@ -32,7 +32,7 @@ public abstract class BaseResolverDescriptor
 			String name,
 			AttributeCategory category,
 			List<AttributeReferenceKey> keys, 
-			long preferredCacheTTL) {
+			int preferredCacheTTL) {
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(category);
@@ -40,7 +40,7 @@ public abstract class BaseResolverDescriptor
 		this.name = name;
 		this.category = category;
 		this.requestContextKeys = Collections.unmodifiableList(keys);
-		this.preferredCacheTTL = preferredCacheTTL;
+		this.preferredCacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
 	}
 	
 	@Override
@@ -55,12 +55,12 @@ public abstract class BaseResolverDescriptor
 	
 	
 	@Override
-	public boolean isCachingEnabled() {
+	public boolean isCachable() {
 		return preferredCacheTTL > 0;
 	}
 
 	@Override
-	public long getPreferreredCacheTTL() {
+	public int getPreferreredCacheTTL() {
 		return preferredCacheTTL;
 	}
 
@@ -81,4 +81,16 @@ public abstract class BaseResolverDescriptor
 		}
 		return keys;
 	}
+
+	@Override
+	public AttributeReferenceKey getKeyAt(int index) {
+		return requestContextKeys.get(index);
+	}
+
+	@Override
+	public int getKeysCount() {
+		return requestContextKeys.size();
+	}
+	
+	
 }

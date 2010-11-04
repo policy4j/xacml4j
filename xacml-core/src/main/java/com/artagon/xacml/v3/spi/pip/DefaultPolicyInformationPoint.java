@@ -2,7 +2,6 @@ package com.artagon.xacml.v3.spi.pip;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
-import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.spi.CacheProvider;
@@ -57,7 +55,7 @@ public class DefaultPolicyInformationPoint
 		BagOfAttributeValues[] keys = d.resolveKeys(context);
 		CacheKey key = new CacheKey(d.getId(), keys);
 		Map<String, BagOfAttributeValues> attributes = null;
-		if(d.isCachingEnabled()){
+		if(d.isCachable()){
 			attributes = attributeCache.get(key);
 			if(attributes != null && 
 					log.isDebugEnabled()){
@@ -71,7 +69,7 @@ public class DefaultPolicyInformationPoint
 		}
 		attributes = r.resolve(
 				new DefaultPolicyInformationPointContext(context, d, keys));
-		if(d.isCachingEnabled()){
+		if(d.isCachable()){
 			if(log.isDebugEnabled()){
 				log.debug("Caching attributes " +
 						"resolver id=\"{}\", ttl=\"{}\"", 
@@ -95,7 +93,7 @@ public class DefaultPolicyInformationPoint
 		BagOfAttributeValues[] keys = d.resolveKeys(context);
 		CacheKey cacheKey = new CacheKey(d.getId(), keys);
 		Node v = null;
-		if(d.isCachingEnabled()){
+		if(d.isCachable()){
 			v = contentCache.get(cacheKey);
 			if(v != null){
 				return v;
@@ -103,7 +101,7 @@ public class DefaultPolicyInformationPoint
 		}
 		v = r.resolve(
 				new DefaultPolicyInformationPointContext(context, d, keys));
-		if(d.isCachingEnabled()){
+		if(d.isCachable()){
 			contentCache.put(cacheKey, 
 					v, d.getPreferreredCacheTTL());
 		}
@@ -111,41 +109,7 @@ public class DefaultPolicyInformationPoint
 		return v;
 	}
 	
-	private final class DefaultPolicyInformationPointContext 
-		implements PolicyInformationPointContext
-	{
-		private EvaluationContext context;
-		private BagOfAttributeValues[] keys;
-		private ResolverDescriptor desciptor;
-		
-		private DefaultPolicyInformationPointContext(
-				EvaluationContext context, 
-				ResolverDescriptor descriptor,
-				BagOfAttributeValues[] keys){
-			this.context = context;
-			this.keys = keys;
-			this.desciptor = descriptor;
-		}
-		
-		@Override
-		public Calendar getCurrentDateTime() {
-			return context.getCurrentDateTime();
-		}
-		
-		@Override
-		public BagOfAttributeValues getKeyValues(int index){
-			return (keys == null)?null:keys[index];
-		}
 
-		@SuppressWarnings("unchecked")
-		@Override
-		public <V extends AttributeValue> V getKeyValue(int index) {
-			BagOfAttributeValues v = getKeyValues(index);
-			return (V)((v == null)?null:v.value());
-		}
-		
-	}
-	
 	public final class CacheKey implements Serializable
 	{
 		private static final long serialVersionUID = -6895205924708410228L;

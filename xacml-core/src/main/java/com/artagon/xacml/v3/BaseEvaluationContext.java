@@ -231,7 +231,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Resolved designator=\"{}\" to value=\"{}\"", ref, v);
 		}
-		return v;
+		return (v == null)?ref.getDataType().emptyBag():v;
 	}
 	
 	@Override
@@ -243,7 +243,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		if(log.isDebugEnabled()){
 			log.debug("Resolved selector=\"{}\" to value=\"{}\"", ref, v);
 		}
-		return v;
+		return (v == null)?ref.getDataType().emptyBag():v;
 	}
 	
 	@Override

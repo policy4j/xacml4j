@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeReferenceKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
@@ -22,11 +23,15 @@ public interface ResolverDescriptor
 	 */
 	String getName();
 	
-	
+	/**
+	 * Gets resolver category
+	 * 
+	 * @return {@link AttributeCategory}
+	 */
 	AttributeCategory getCategory();
 	
 	/**
-	 * Resolves resolver keys via given evaluation context
+	 * Resolves keys via given evaluation context
 	 * 
 	 * @param context an evaluation context
 	 * @return an array of resolved keys
@@ -35,6 +40,9 @@ public interface ResolverDescriptor
 	BagOfAttributeValues[] resolveKeys(EvaluationContext context) 
 		throws EvaluationException;
 	
+	AttributeReferenceKey getKeyAt(int index);
+	
+	int getKeysCount();
 	
 	/**
 	 * Test if attributes resolved by resolver
@@ -42,14 +50,13 @@ public interface ResolverDescriptor
 	 * 
 	 * @return <code>true</code> if attributes can be cached
 	 */
-	boolean isCachingEnabled();
-	
-	
+	boolean isCachable();
+
 	/**
 	 * Gets preferred cache TTL for an attributes resolved
 	 * via this resolver
 	 * 
-	 * @return a TTL in milliseconds or <code>-1</code>
+	 * @return a TTL in seconds or <code>0</code>
 	 */
-	long getPreferreredCacheTTL();
+	int getPreferreredCacheTTL();
 }
