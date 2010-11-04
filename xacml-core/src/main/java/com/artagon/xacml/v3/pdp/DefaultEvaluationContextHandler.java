@@ -82,33 +82,31 @@ class DefaultEvaluationContextHandler
 		
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
+	
+		BagOfAttributeValues v  = requestCallback.getAttributeValue(
+				key.getCategory(), key.getAttributeId(), 
+				key.getDataType(), key.getIssuer());
+		if(!v.isEmpty()){
+			return v;
+		}
+		if(desginatorCache.containsKey(key)){
+			return desginatorCache.get(key);
+		}
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key), 
 				"Cyclic designator=\"%s\" resolution detected", key);
 		try
 		{
-			
 			designatorResolutionStack.push(key);
-			BagOfAttributeValues v  = requestCallback.getAttributeValue(key.getCategory(), key.getAttributeId(), 
-					key.getDataType(), key.getIssuer());
-			if(!v.isEmpty()){
-				return v;
-			}
-			if(desginatorCache.containsKey(key)){
-				return desginatorCache.get(key);
-			}
-			try
-			{
-				v = pip.resolve(context, key);
-				desginatorCache.put(key, v);
-				return v;
-			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(
-						context, key, 
-						StatusCode.createMissingAttribute(), e);
-			}
+			v = pip.resolve(context, key);
+			desginatorCache.put(key, v);
+			return v;
+		}catch(Exception e){
+			throw new AttributeReferenceEvaluationException(
+					context, key, 
+					StatusCode.createMissingAttribute(), e);
 		}finally{
-			designatorResolutionStack.pop();
+			designatorResolutionStack.pop();	
 		}
 	}
 
@@ -127,6 +125,9 @@ class DefaultEvaluationContextHandler
 			}
 			return v;
 		}
+		Preconditions.checkState(
+				!selectorResolutionStack.contains(ref), 
+				"Cyclic designator=\"%s\" resolution detected", ref);
 		try
 		{
 			selectorResolutionStack.push(ref);

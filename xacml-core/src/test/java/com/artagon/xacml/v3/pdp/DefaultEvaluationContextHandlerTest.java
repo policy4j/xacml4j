@@ -15,6 +15,7 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
@@ -24,6 +25,7 @@ import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v3.AttributeSelectorKey;
+import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
@@ -113,6 +115,35 @@ public class DefaultEvaluationContextHandlerTest
 				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
+		
+		replay(context, request, requestContextCallback, pip);
+		
+		Expression v = handler.resolve(context, ref);
+		// test cache 
+		v = handler.resolve(context, ref);
+		assertEquals(INTEGER.bagOf(INTEGER.create(555555)), v);
+		verify(context, request, requestContextCallback, pip);
+	}
+	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute() 
+		throws Exception
+	{
+		final AttributeSelectorKey ref = new AttributeSelectorKey(
+				AttributeCategories.SUBJECT_RECIPIENT, 
+				"/md:record/md:patient/md:patient-number/text()", 
+				INTEGER, null);
+		
+		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		
+		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andStubAnswer(new IAnswer<Node>() 
+		{
+			@Override
+			public Node answer() throws Throwable {
+				 handler.resolve(context, ref);
+				 return content;
+			}
+		});
 		
 		replay(context, request, requestContextCallback, pip);
 		
@@ -266,6 +297,7 @@ public class DefaultEvaluationContextHandlerTest
 		verify(context, request, pip, requestContextCallback);
 	}
 	
+	
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testDesignatorResolveAttributeIsNotInRequestPIPThrowsRuntimeException() 
 		throws Exception
@@ -281,8 +313,34 @@ public class DefaultEvaluationContextHandlerTest
 		expect(pip.resolve(context, ref)).andThrow(new NullPointerException());
 		
 		replay(context, request, pip, requestContextCallback);
-		ValueExpression v = handler.resolve(context, ref);
+		handler.resolve(context, ref);
+		verify(context, request, pip, requestContextCallback);
+	}
+	
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testDesignatorResolveAttributeIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute() 
+		throws Exception
+	{
+		final AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null);
 		
+	
+		expect(requestContextCallback.getAttributeValue(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		
+
+		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeValues>() {
+			public BagOfAttributeValues answer() throws Throwable{
+				handler.resolve(context, ref);
+				return ANYURI.emptyBag();
+			}
+		});
+		
+		expect(requestContextCallback.getAttributeValue(
+				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		
+		replay(context, request, pip, requestContextCallback);
+		handler.resolve(context, ref);
 		verify(context, request, pip, requestContextCallback);
 	}
 }
