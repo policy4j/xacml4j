@@ -22,7 +22,7 @@ public interface PolicyInformationPointContext
 	 * @return {@link BagOfAttributeValues} or <code>null</code>
 	 * if key is is not available for a given index
 	 */
-	BagOfAttributeValues getKeyValues(int index);
+	BagOfAttributeValues getKey(int index);
 	
 	/**
 	 * Gets a single value from a bag
@@ -33,5 +33,5 @@ public interface PolicyInformationPointContext
 	 * @param index an index
 	 * @return a key value or <code>null</code>
 	 */
-	<V extends AttributeValue> V getKeyValue(int index);
+	<V extends AttributeValue> V getKeySingleValue(int index);
 }

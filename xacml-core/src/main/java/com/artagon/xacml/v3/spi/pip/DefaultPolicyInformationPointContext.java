@@ -31,15 +31,15 @@ public final class DefaultPolicyInformationPointContext implements
 	}
 
 	@Override
-	public BagOfAttributeValues getKeyValues(int index) {
+	public BagOfAttributeValues getKey(int index) {
 		AttributeReferenceKey ref = desciptor.getKeyAt(index);
 		return (keys[index] == null) ? ref.getDataType().emptyBag()
 				: keys[index];
 	}
 
 	@Override
-	public <V extends AttributeValue> V getKeyValue(int index) {
-		BagOfAttributeValues v = getKeyValues(index);
+	public <V extends AttributeValue> V getKeySingleValue(int index) {
+		BagOfAttributeValues v = getKey(index);
 		
 		return v.isEmpty()?null:v.<V>value();
 	}

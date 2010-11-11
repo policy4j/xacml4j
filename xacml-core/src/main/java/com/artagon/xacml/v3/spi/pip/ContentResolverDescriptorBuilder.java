@@ -9,6 +9,8 @@ import com.artagon.xacml.v3.AttributeReferenceKey;
 import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 
 public final class ContentResolverDescriptorBuilder 
 {
@@ -35,7 +37,8 @@ public final class ContentResolverDescriptorBuilder
 	public ContentResolverDescriptorBuilder designatorRef(AttributeCategory category, 
 			String attributeId, AttributeValueType dataType, String issuer)
 	{
-		this.keys.add(new AttributeDesignatorKey(category, attributeId, dataType, issuer));
+		this.keys.add(new AttributeDesignatorKey(
+				category, attributeId, dataType, Strings.emptyToNull(issuer)));
 		return this;
 	}
 	
@@ -44,7 +47,13 @@ public final class ContentResolverDescriptorBuilder
 			String xpath, AttributeValueType dataType, 
 			String contextAttributeId)
 	{
-		this.keys.add(new AttributeSelectorKey(category, xpath, dataType, contextAttributeId));
+		this.keys.add(new AttributeSelectorKey(
+				category, xpath, dataType, Strings.emptyToNull(contextAttributeId)));
+		return this;
+	}
+	
+	public ContentResolverDescriptorBuilder keys(Iterable<AttributeReferenceKey> keys){
+		Iterables.addAll(this.keys, keys);
 		return this;
 	}
 	
