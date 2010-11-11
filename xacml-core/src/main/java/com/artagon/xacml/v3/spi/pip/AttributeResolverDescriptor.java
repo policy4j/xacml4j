@@ -37,6 +37,8 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	 */
 	AttributeDescriptor getAttribute(String attributeId);
 	
+	int getAttributesCount();
+	
 	/**
 	 * Gets a provided attribute identifiers
 	 * 

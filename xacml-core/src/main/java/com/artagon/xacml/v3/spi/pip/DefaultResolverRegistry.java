@@ -187,5 +187,19 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		}
 		return (currentPolicy != null)?currentPolicy.getId():null;		
 	}
+
+	@Override
+	public AttributeResolver getAttributeResolver(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ContentResolver getContentResolver(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 }

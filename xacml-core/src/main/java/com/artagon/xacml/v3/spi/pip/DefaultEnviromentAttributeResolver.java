@@ -6,6 +6,7 @@ import static com.artagon.xacml.v3.types.DateType.DATE;
 import static com.artagon.xacml.v3.types.TimeType.TIME;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.artagon.xacml.v3.AttributeCategories;
@@ -27,10 +28,13 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	protected Map<String, BagOfAttributeValues> doResolve(
 			PolicyInformationPointContext context) {
 		Calendar currentDateTime = context.getCurrentDateTime();
-		return newResult()
-			.value("urn:oasis:names:tc:xacml:1.0:environment:current-time", TIME.bagOf(TIME.create(currentDateTime)))
-			.value("urn:oasis:names:tc:xacml:1.0:environment:current-date", DATE.bagOf(DATE.create(currentDateTime)))
-			.value("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", DATETIME.bagOf(DATETIME.create(currentDateTime)))
-			.build();
+		Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>();	
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time", 
+					TIME.bagOf(TIME.create(currentDateTime)));
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date", 
+					DATE.bagOf(DATE.create(currentDateTime)));
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
+					DATETIME.bagOf(DATETIME.create(currentDateTime)));
+		return v;
 	}
 }

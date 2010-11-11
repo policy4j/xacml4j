@@ -8,6 +8,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Map;
 
@@ -19,7 +20,6 @@ import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.spi.CacheProvider;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
@@ -31,21 +31,20 @@ public class DefaultPolicyInformationPointTest
 	
 	private ResolverRegistry registry;
 	private AttributeResolver attributeResolver;
-	private CacheProvider attributeCache;
-	private CacheProvider contentCache;
+	private ResolverResultCacheProvider cache;
 	private EvaluationContext context;
 	
 	private AttributeResolverDescriptor descriptor;
+	private AttributeResolverDescriptor descriptorNoCache;
 	
 	@Before
 	public void init()
 	{
-		this.attributeCache = createStrictMock(CacheProvider.class);
-		this.contentCache = createStrictMock(CacheProvider.class);
+		this.cache = createStrictMock(ResolverResultCacheProvider.class);
 		this.registry = createStrictMock(ResolverRegistry.class);
 		this.attributeResolver = createStrictMock(AttributeResolver.class);
 		this.context = createStrictMock(EvaluationContext.class);
-		this.pip = new DefaultPolicyInformationPoint(registry, attributeCache, contentCache);
+		this.pip = new DefaultPolicyInformationPoint(registry, cache);
 		this.descriptor = AttributeResolverDescriptorBuilder
 		.create("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
 		.cache(30)
@@ -53,11 +52,19 @@ public class DefaultPolicyInformationPointTest
 		.attribute("testAttributeId2", IntegerType.INTEGER)
 		.designatorRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
 		.build();
+		
+		this.descriptorNoCache = AttributeResolverDescriptorBuilder
+		.create("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
+		.noCache()
+		.attribute("testAttributeId3", StringType.STRING)
+		.attribute("testAttributeId4", IntegerType.INTEGER)
+		.designatorRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
+		.build();
 	}
 	
 	
 	@Test
-	public void testAttributeResolutionWhenMatchingAttributeResolverFound() throws Exception
+	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsCachable() throws Exception
 	{
 		Map<String, BagOfAttributeValues> values = ImmutableMap.of(
 				"testAttributeId1", StringType.STRING.bagOf(StringType.STRING.create("v1")));
@@ -75,22 +82,58 @@ public class DefaultPolicyInformationPointTest
 				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
 		
-		Capture<DefaultPolicyInformationPoint.CacheKey> cacheKey1 = new Capture<DefaultPolicyInformationPoint.CacheKey>();
-		expect(attributeCache.get(capture(cacheKey1))).andReturn(null);
+		Capture<BagOfAttributeValues[]> keys1 = new Capture<BagOfAttributeValues[]>();
+		expect(cache.get(same(descriptor), capture(keys1))).andReturn(null); 
 		
 		Capture<PolicyInformationPointContext> ctx = new Capture<PolicyInformationPointContext>();
-		expect(attributeResolver.resolve(capture(ctx))).andReturn(values);
 		
-		Capture<DefaultPolicyInformationPoint.CacheKey> cacheKey2 = new Capture<DefaultPolicyInformationPoint.CacheKey>();
-		attributeCache.put(capture(cacheKey2), same(values), eq(descriptor.getPreferreredCacheTTL()));
+		AttributeSet result = new AttributeSet(descriptor, values);
+		
+		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
+		
+		Capture<BagOfAttributeValues[]> keys2 = new Capture<BagOfAttributeValues[]>();
+
+		cache.put(same(descriptor), capture(keys2), eq(result));
 		
 		
-		replay(registry, attributeResolver, attributeCache, context);
+		replay(registry, attributeResolver, cache, context);
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
-		
+		assertArrayEquals(keys1.getValue(), keys2.getValue());
 
-		verify(registry, attributeResolver, attributeCache, context);
+		verify(registry, attributeResolver, cache, context);
+	}
+	
+	@Test
+	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable() throws Exception
+	{
+		Map<String, BagOfAttributeValues> values = ImmutableMap.of(
+				"testAttributeId3", StringType.STRING.bagOf(StringType.STRING.create("v1")));
+		
+		AttributeDesignatorKey ref = new AttributeDesignatorKey(
+				AttributeCategories.SUBJECT_ACCESS,"testAttributeId3", StringType.STRING, null);
+		
+		// attribute resolver found
+		expect(registry.getAttributeResolver(context, ref)).andReturn(attributeResolver);
+		expect(attributeResolver.getDescriptor()).andReturn(descriptorNoCache);
+				
+		// key resolved
+		expect(context.resolve(
+				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
+				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
+		
+		Capture<PolicyInformationPointContext> ctx = new Capture<PolicyInformationPointContext>();
+		
+		AttributeSet result = new AttributeSet(descriptorNoCache, values);
+		
+		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
+				
+		replay(registry, attributeResolver, cache, context);
+		
+		BagOfAttributeValues v = pip.resolve(context, ref);
+		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
+
+		verify(registry, attributeResolver, cache, context);
 	}
 }

@@ -1,8 +1,5 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.Map;
-
-import com.artagon.xacml.v3.BagOfAttributeValues;
 
 public interface AttributeResolver 
 {
@@ -15,6 +12,6 @@ public interface AttributeResolver
 	AttributeResolverDescriptor getDescriptor();
 	
 	
-	Map<String, BagOfAttributeValues> resolve(
+	AttributeSet resolve(
 			PolicyInformationPointContext context) throws Exception;
 }

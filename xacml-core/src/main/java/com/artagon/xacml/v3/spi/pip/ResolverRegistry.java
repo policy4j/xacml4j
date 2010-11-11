@@ -18,4 +18,7 @@ public interface ResolverRegistry
 	
 	void addResolver(String policyId, AttributeResolver r);
 	void addResolver(String policyId, ContentResolver r);
+	
+	AttributeResolver getAttributeResolver(String id);
+	ContentResolver getContentResolver(String id);
 }

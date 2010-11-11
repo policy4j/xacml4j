@@ -6,15 +6,11 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.artagon.xacml.v3.BagOfAttributeValues;
 
 public class DefaultEnviromentAttributesResolverTest 
 {
@@ -33,12 +29,12 @@ public class DefaultEnviromentAttributesResolverTest
 		Calendar now = Calendar.getInstance();
 		expect(context.getCurrentDateTime()).andReturn(now);
 		replay(context);
-		Map<String, BagOfAttributeValues> a = r.resolve(context);
+		AttributeSet a = r.resolve(context);
 		assertNotNull(a);
 		assertEquals(3, a.size());
-		assertTrue(a.containsKey("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
-		assertTrue(a.containsKey("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
-		assertTrue(a.containsKey("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));
+		assertNotNull(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
+		assertNotNull(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
+		assertNotNull(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));
 		verify(context);
 	}
 }

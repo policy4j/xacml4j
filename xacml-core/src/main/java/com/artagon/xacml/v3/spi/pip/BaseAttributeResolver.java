@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -27,7 +25,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 
 	@Override
-	public final Map<String, BagOfAttributeValues> resolve(
+	public final AttributeSet resolve(
 			PolicyInformationPointContext context) throws Exception 
 	{
 		if(log.isDebugEnabled()){
@@ -35,59 +33,10 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 					"id=\"{}\" name=\"{}\"", 
 					descriptor.getId(), descriptor.getName());
 		}
-		Map<String, BagOfAttributeValues> v =  validateResult(doResolve(context));
-		if(log.isDebugEnabled()){
-			log.debug("Retrieved values=\"{}\"", v);
-		}
-		return Collections.unmodifiableMap(v);
+		return new AttributeSet(descriptor, doResolve(context));
 	}
 	
 	protected abstract Map<String, BagOfAttributeValues> doResolve(
 			PolicyInformationPointContext context);
 	
-	
-	private Map<String, BagOfAttributeValues> validateResult(
-			Map<String, BagOfAttributeValues> r)
-	{
-		Map<String, BagOfAttributeValues> result = new HashMap<String, BagOfAttributeValues>(r);
-		for(String attributeId : descriptor.getProvidedAttributeIds())
-		{
-			BagOfAttributeValues v = r.get(attributeId);
-			AttributeDescriptor d = descriptor.getAttribute(attributeId);
-			Preconditions.checkState(d != null);
-			if(v == null){
-				result.put(attributeId, d.getDataType().emptyBag());
-				continue;
-			}
-			Preconditions.checkState(d.getDataType().equals(v.getDataType()), 
-					"Attribute id=\"%s\" dataType=\"%s\" in result does not match dataType=\"%s\" in descriptor", 
-					attributeId, v.getDataType(), d.getDataType());
-		}
-		return result;
-	}
-	
-	protected final ResultBuilder newResult(){
-		return new ResultBuilder();
-	}
-	
-	public class ResultBuilder
-	{
-		private Map<String, BagOfAttributeValues> values;
-		
-		private ResultBuilder(){
-			this.values = new HashMap<String, BagOfAttributeValues>();
-		}
-		
-		public ResultBuilder value(String attributeId, BagOfAttributeValues v)
-		{
-			Preconditions.checkArgument(descriptor.isAttributeProvided(attributeId));
-			Preconditions.checkArgument(descriptor.getAttribute(attributeId).getDataType().equals(v.getDataType()));
-			values.put(attributeId, v);
-			return this;
-		}
-		
-		public Map<String, BagOfAttributeValues> build(){
-			return values;
-		}
-	}
 }

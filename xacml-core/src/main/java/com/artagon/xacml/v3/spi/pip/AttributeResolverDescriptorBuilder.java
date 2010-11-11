@@ -97,12 +97,15 @@ public final class AttributeResolverDescriptorBuilder
 			this.attributes = ImmutableMap.copyOf(AttributeResolverDescriptorBuilder.this.attributes);
 		}
 		
-		
 		@Override
 		public String getIssuer() {
 			return issuer;
 		}
 		
+		@Override
+		public int getAttributesCount(){
+			return attributes.size();
+		}
 		
 		public Set<String> getProvidedAttributeIds(){
 			return attributes.keySet();
