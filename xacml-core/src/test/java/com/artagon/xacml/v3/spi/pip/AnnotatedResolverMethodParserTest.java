@@ -1,11 +1,13 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.BagOfAttributeValues;

@@ -7,6 +7,7 @@ import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.pip.cache.NullCacheProvider;
 import com.google.common.base.Preconditions;
 
 /**

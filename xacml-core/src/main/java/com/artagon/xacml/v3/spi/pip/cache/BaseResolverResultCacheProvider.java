@@ -1,8 +1,12 @@
-package com.artagon.xacml.v3.spi.pip;
+package com.artagon.xacml.v3.spi.pip.cache;
 
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
+import com.artagon.xacml.v3.spi.pip.AttributeSet;
+import com.artagon.xacml.v3.spi.pip.ContentResolverDescriptor;
+import com.artagon.xacml.v3.spi.pip.ResolverResultCacheProvider;
 
 public class BaseResolverResultCacheProvider implements ResolverResultCacheProvider
 {

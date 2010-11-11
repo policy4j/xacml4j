@@ -233,6 +233,24 @@ public final class BagOfAttributeValues
 		add("DataType", type.getDataType()).
 		add("Values", values).toString();
 	}
+	
+	/**
+	 * A static helper method to retrieve a single
+	 * value from a given bag
+	 * 
+	 * @param <T>
+	 * @param v a bag og values
+	 * @return a single value or <code>null</code> 
+	 * if a given bag is <code>null</code> or empty
+	 */
+	public static <T extends AttributeValue> T value(BagOfAttributeValues v)
+	{
+		if(v == null || 
+				v.isEmpty()){
+			return null;
+		}
+		return v.value();
+	}
 
 	@Override
 	public void accept(PolicyVisitor v) {

@@ -39,8 +39,6 @@ public final class DefaultPolicyInformationPointContext implements
 
 	@Override
 	public <V extends AttributeValue> V getKeySingleValue(int index) {
-		BagOfAttributeValues v = getKey(index);
-		
-		return v.isEmpty()?null:v.<V>value();
+		return BagOfAttributeValues.value(getKey(index));
 	}
 }
