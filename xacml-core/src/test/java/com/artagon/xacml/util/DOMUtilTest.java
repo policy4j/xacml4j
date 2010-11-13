@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -94,5 +95,13 @@ public class DOMUtilTest
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB", content, XPathConstants.NODESET);
 		assertEquals("//md:record[1]/md:patient[1]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record[1]/md:patient[2]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(1)));
+	}
+	
+	@Test
+	public void testWriteNodeToStream() throws Exception
+	{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		DOMUtil.writeNodeToStream(content, out);
+		System.out.println(new String(out.toByteArray()));
 	}
 }

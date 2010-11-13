@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategory;
@@ -18,6 +20,8 @@ import com.google.common.base.Preconditions;
 public class DefaultPolicyInformationPoint 
 	implements PolicyInformationPoint
 {	
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
+	
 	private ResolverResultCacheProvider cache;
 	private ResolverRegistry registry;
 	
@@ -38,8 +42,16 @@ public class DefaultPolicyInformationPoint
 	public BagOfAttributeValues resolve(final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Trying to resolve " +
+					"designator=\"{}\"", ref);
+		}
 		AttributeResolver r = registry.getAttributeResolver(context, ref);
 		if(r == null){
+			if(log.isDebugEnabled()){
+				log.debug("No matching resolver " +
+						"found for designator=\"{}\"", ref);
+			}
 			return ref.getDataType().emptyBag();
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();

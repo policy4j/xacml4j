@@ -1,6 +1,13 @@
 package com.artagon.xacml.util;
 
+import java.io.OutputStream;
 import java.util.Stack;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -12,6 +19,7 @@ import com.google.common.base.Preconditions;
 
 public class DOMUtil 
 {	
+	
 	/**
 	 * Creates XPath expression for a 
 	 * given DOM node
@@ -117,5 +125,19 @@ public class DOMUtil
 			prev_sibling = prev_sibling.getPreviousSibling();
 		}
 		return prev_siblings;
+	}
+	
+	public static void writeNodeToStream(Node node, OutputStream out) 
+		throws Exception
+	{
+		Preconditions.checkNotNull(node);
+		Preconditions.checkNotNull(out);
+		
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty("omit-xml-declaration","yes");
+		DOMSource source = new DOMSource(node);
+		Result result = new StreamResult(out);
+		transformer.transform (source, result);
+
 	}
 }
