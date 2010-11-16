@@ -1,10 +1,9 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.List;
+
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeReferenceKey;
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
 
 public interface ResolverDescriptor 
 {	
@@ -31,18 +30,11 @@ public interface ResolverDescriptor
 	AttributeCategory getCategory();
 	
 	/**
-	 * Resolves keys via given evaluation context
+	 * Gets key references for a resolver
 	 * 
-	 * @param context an evaluation context
-	 * @return an array of resolved keys
-	 * @throws EvaluationException if an error occurs
+	 * @return list of {@link AttributeReferenceKey}
 	 */
-	BagOfAttributeValues[] resolveKeys(EvaluationContext context) 
-		throws EvaluationException;
-	
-	AttributeReferenceKey getKeyAt(int index);
-	
-	int getKeysCount();
+	List<AttributeReferenceKey> getKeyRefs();
 	
 	/**
 	 * Test if attributes resolved by resolver

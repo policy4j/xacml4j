@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -56,7 +58,8 @@ public class DefaultPolicyInformationPoint
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkState(d.canResolve(ref));
-		BagOfAttributeValues[] keys = d.resolveKeys(context);
+		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		List<BagOfAttributeValues> keys = pipContext.getKeys();
 		AttributeSet attributes = null;
 		if(d.isCachable()){
 			attributes = cache.get(d, keys);
@@ -64,8 +67,7 @@ public class DefaultPolicyInformationPoint
 				return attributes.get(ref.getAttributeId());
 			}
 		}
-		attributes = r.resolve(
-				new DefaultPolicyInformationPointContext(context, d, keys));
+		attributes = r.resolve(pipContext);
 		if(d.isCachable()){
 			cache.put(d, keys, attributes);
 		}
@@ -82,7 +84,8 @@ public class DefaultPolicyInformationPoint
 			return null;
 		}
 		ContentResolverDescriptor d = r.getDescriptor();
-		BagOfAttributeValues[] keys = d.resolveKeys(context);
+		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		List<BagOfAttributeValues> keys = pipContext.getKeys();
 		Node v = null;
 		if(d.isCachable()){
 			v = cache.get(d, keys);
@@ -90,8 +93,7 @@ public class DefaultPolicyInformationPoint
 				return v;
 			}
 		}
-		v = r.resolve(
-				new DefaultPolicyInformationPointContext(context, d, keys));
+		v = r.resolve(pipContext);
 		if(d.isCachable()){
 			cache.put(d, keys, v);
 		}

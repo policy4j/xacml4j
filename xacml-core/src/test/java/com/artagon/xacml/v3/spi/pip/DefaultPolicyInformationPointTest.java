@@ -8,8 +8,8 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
 
+import java.util.List;
 import java.util.Map;
 
 import org.easymock.Capture;
@@ -82,7 +82,7 @@ public class DefaultPolicyInformationPointTest
 				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
 		
-		Capture<BagOfAttributeValues[]> keys1 = new Capture<BagOfAttributeValues[]>();
+		Capture<List<BagOfAttributeValues>> keys1 = new Capture<List<BagOfAttributeValues>>();
 		expect(cache.get(same(descriptor), capture(keys1))).andReturn(null); 
 		
 		Capture<PolicyInformationPointContext> ctx = new Capture<PolicyInformationPointContext>();
@@ -91,7 +91,7 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
 		
-		Capture<BagOfAttributeValues[]> keys2 = new Capture<BagOfAttributeValues[]>();
+		Capture<List<BagOfAttributeValues>> keys2 = new Capture<List<BagOfAttributeValues>>();
 
 		cache.put(same(descriptor), capture(keys2), eq(result));
 		
@@ -100,7 +100,7 @@ public class DefaultPolicyInformationPointTest
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
-		assertArrayEquals(keys1.getValue(), keys2.getValue());
+		assertEquals(keys1.getValue(), keys2.getValue());
 
 		verify(registry, attributeResolver, cache, context);
 	}

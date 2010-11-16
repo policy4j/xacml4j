@@ -1,13 +1,10 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeReferenceKey;
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseResolverDescriptor 
@@ -17,8 +14,8 @@ public abstract class BaseResolverDescriptor
 	private String name;
 
 	private AttributeCategory category;
-	private List<AttributeReferenceKey> requestContextKeys;
-	private int preferredCacheTTL;
+	private List<AttributeReferenceKey> keyRefs;
+	private int cacheTTL;
 	
 	protected BaseResolverDescriptor(String id,
 			String name,
@@ -39,8 +36,8 @@ public abstract class BaseResolverDescriptor
 		this.id = id;
 		this.name = name;
 		this.category = category;
-		this.requestContextKeys = Collections.unmodifiableList(keys);
-		this.preferredCacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
+		this.keyRefs = new ArrayList<AttributeReferenceKey>(keys);
+		this.cacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
 	}
 	
 	@Override
@@ -56,12 +53,12 @@ public abstract class BaseResolverDescriptor
 	
 	@Override
 	public boolean isCachable() {
-		return preferredCacheTTL > 0;
+		return cacheTTL > 0;
 	}
 
 	@Override
 	public int getPreferreredCacheTTL() {
-		return preferredCacheTTL;
+		return cacheTTL;
 	}
 
 	@Override
@@ -70,27 +67,7 @@ public abstract class BaseResolverDescriptor
 	}
 
 	@Override
-	public final BagOfAttributeValues[] resolveKeys(EvaluationContext context)
-			throws EvaluationException 
-	{
-		BagOfAttributeValues[] keys = new BagOfAttributeValues[requestContextKeys.size()];
-		int i  = 0;
-		for(AttributeReferenceKey ref : requestContextKeys){
-			BagOfAttributeValues k = ref.resolve(context);
-			keys[i++] = k;
-		}
-		return keys;
+	public List<AttributeReferenceKey> getKeyRefs() {
+		return keyRefs;
 	}
-
-	@Override
-	public AttributeReferenceKey getKeyAt(int index) {
-		return requestContextKeys.get(index);
-	}
-
-	@Override
-	public int getKeysCount() {
-		return requestContextKeys.size();
-	}
-	
-	
 }

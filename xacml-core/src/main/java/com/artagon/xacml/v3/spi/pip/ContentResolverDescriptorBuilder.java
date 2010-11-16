@@ -18,6 +18,7 @@ public final class ContentResolverDescriptorBuilder
 	private String name;
 	private AttributeCategory category;
 	private List<AttributeReferenceKey> keys;
+	private int cacheTTL;
 	
 	private ContentResolverDescriptorBuilder(String id, String name, AttributeCategory category)
 	{
@@ -57,6 +58,16 @@ public final class ContentResolverDescriptorBuilder
 		return this;
 	}
 	
+	public ContentResolverDescriptorBuilder noCache(){
+		this.cacheTTL = -1;
+		return this;
+	}
+	
+	public ContentResolverDescriptorBuilder cache(int ttl){
+		this.cacheTTL = ttl;
+		return this;
+	}
+	
 	public ContentResolverDescriptor build(){
 		return new ContentResolverDescriptorImpl();
 	}
@@ -66,7 +77,7 @@ public final class ContentResolverDescriptorBuilder
 	{
 
 		public ContentResolverDescriptorImpl() {
-			super(id, name, category, keys);
+			super(id, name, category, keys, cacheTTL);
 		}
 
 		@Override

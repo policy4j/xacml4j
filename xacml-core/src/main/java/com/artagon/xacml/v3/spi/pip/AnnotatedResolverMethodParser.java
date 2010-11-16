@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.w3c.dom.Node;
+
+import com.artagon.xacml.util.Pair;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.AttributeReferenceKey;
@@ -17,14 +20,19 @@ import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeDesignator;
 import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
 import com.artagon.xacml.v3.sdk.XacmlAttributeSelector;
+import com.artagon.xacml.v3.sdk.XacmlContentResolverDescriptor;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 public class AnnotatedResolverMethodParser 
 {
 	
-	public AttributeResolverDescriptor parse(Method m) 
+	public AttributeResolver parseAttributeResolver(Object instance, Method m) 
 		throws XacmlSyntaxException
 	{
+		Preconditions.checkNotNull(instance);
+		Preconditions.checkNotNull(m);
+		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
 		XacmlAttributeResolverDescriptor d = m.getAnnotation(XacmlAttributeResolverDescriptor.class);
 		AttributeResolverDescriptorBuilder b = AttributeResolverDescriptorBuilder.create(
 				d.id(), d.name(), 
@@ -41,25 +49,55 @@ public class AnnotatedResolverMethodParser
 			b.attribute(attr.id(), 
 					XacmlDataTypesRegistry.getType(attr.dataType()));
 		}
-		b.keys(parseRequestKeyReferences(m));
+		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
+		b.keys(info.getSecond());
 		if(!m.getReturnType().isAssignableFrom(Map.class)){
 			throw new XacmlSyntaxException(
 					"Attribute resolver method=\"%s\" " +
 					"must return=\"%s\"", m.getName(), 
 					Map.class.getName());
 		}
-		return b.build();
+		AttributeResolverDescriptor descriptor = b.build();
+		return new AnnotatedAttributeResolver(descriptor, 
+				new Invocation<Map<String,BagOfAttributeValues>>(instance, m, info.getFirst()));
 	}
 	
-	private List<AttributeReferenceKey> parseRequestKeyReferences(Method m) 
+	public ContentResolver parseContentResolver(Object instance, Method m) 
 		throws XacmlSyntaxException
 	{
+		Preconditions.checkNotNull(instance);
+		Preconditions.checkNotNull(m);
+		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
+		XacmlContentResolverDescriptor d = m.getAnnotation(XacmlContentResolverDescriptor.class);
+		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.create(
+				d.id(), d.name(), 
+				AttributeCategories.parse(d.category()));
+		b.cache(d.cacheTTL());
+		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
+		b.keys(info.getSecond());
+		if(!m.getReturnType().isAssignableFrom(Map.class)){
+			throw new XacmlSyntaxException(
+					"Attribute resolver method=\"%s\" " +
+					"must return=\"%s\"", m.getName(), 
+					Map.class.getName());
+		}
+		ContentResolverDescriptor descriptor = b.build();
+		return new AnnotatedContentResolver(descriptor, 
+				new Invocation<Node>(instance, m, info.getFirst()));
+	}
+	
+	
+	
+	private Pair<Boolean, List<AttributeReferenceKey>> parseResolverMethodParams(Method m) 
+		throws XacmlSyntaxException
+	{		
 		List<AttributeReferenceKey> keys = new LinkedList<AttributeReferenceKey>();
 		Class<?>[] types = m.getParameterTypes();
 		if(types.length == 0){
 			throw new XacmlSyntaxException("Resolver method=\"%s\" " +
 					"must have at least one parameter", m.getName());
 		}
+		boolean needPipContext = false;
 		int  i = 0;
 		for(Annotation[] p : m.getParameterAnnotations())
 		{
@@ -74,6 +112,7 @@ public class AnnotatedResolverMethodParser
 							"Resolver parameter without annotiation at index=\"%d\" must be of type=\"%s\"", 
 							i, PolicyInformationPointContext.class);
 				}
+				needPipContext = true;
 				continue;
 			}
 			if(p.length > 0 && 
@@ -93,7 +132,8 @@ public class AnnotatedResolverMethodParser
 							Strings.emptyToNull(ref.issuer())));
 				continue;
 			}
-			if(p.length > 0 && p[0] instanceof XacmlAttributeSelector)
+			if(p.length > 0 && 
+					p[0] instanceof XacmlAttributeSelector)
 			{
 				if(!(types[i].equals(BagOfAttributeValues.class))){
 					throw new XacmlSyntaxException(
@@ -115,6 +155,74 @@ public class AnnotatedResolverMethodParser
 						"Unknown annotation of type=\"%s\" found", 
 						types[0].getClass());
 		}
-		return keys;
+		return new Pair<Boolean, List<AttributeReferenceKey>>(needPipContext, keys);
+	}
+	
+	
+	public final class Invocation <T>
+	{
+		private Method m;
+		private Object instance;
+		private boolean requiresContext;
+		
+		public Invocation(
+				Object instance,
+				Method m, 
+				boolean requiresContext){
+			this.instance = instance;
+			this.m = m;
+			this.requiresContext = requiresContext;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public T invoke(PolicyInformationPointContext context) throws Exception
+		{
+			List<BagOfAttributeValues> keys = context.getKeys();
+			if(requiresContext){
+				Object[] params = new Object[keys.size() + 1];
+				params[0] = context;
+				System.arraycopy(keys.toArray(), 0, params, 1, keys.size());
+				return (T)m.invoke(instance, params);
+			}
+			return (T)m.invoke(instance, keys.toArray());
+		}
+	}
+	
+	private final class AnnotatedAttributeResolver 
+		extends BaseAttributeResolver
+	{
+		private Invocation<Map<String, BagOfAttributeValues>> invocation;
+		
+		public AnnotatedAttributeResolver(
+				AttributeResolverDescriptor descriptor, 
+				Invocation<Map<String, BagOfAttributeValues>> invocation) {
+			super(descriptor);
+			this.invocation = invocation;
+		}
+
+		@Override
+		protected Map<String, BagOfAttributeValues> doResolve(
+				PolicyInformationPointContext context) throws Exception {
+			return invocation.invoke(context);
+		}
+	}
+	
+	private final class AnnotatedContentResolver 
+		extends BaseContentResolver
+	{
+		private Invocation<Node> invocation;
+		
+		public AnnotatedContentResolver(
+				ContentResolverDescriptor descriptor, 
+				Invocation<Node> invocation) {
+			super(descriptor);
+			this.invocation = invocation;
+		}
+		
+		@Override
+		protected Node doResolve(PolicyInformationPointContext context)
+				throws Exception {
+			return invocation.invoke(context);
+		}
 	}
 }
