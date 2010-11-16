@@ -2,6 +2,7 @@ package com.artagon.xacml.v3.spi.pip;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Pair;
+import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.AttributeReferenceKey;
@@ -26,6 +28,27 @@ import com.google.common.base.Strings;
 
 public class AnnotatedResolverMethodParser 
 {
+	public Collection<ContentResolver> getContentResolvers(Object instance) 
+		throws XacmlSyntaxException
+	{
+		Collection<ContentResolver> resolvers = new LinkedList<ContentResolver>();
+		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), XacmlContentResolverDescriptor.class);
+		for(Method m : methods){
+			resolvers.add(parseContentResolver(instance, m));
+		}
+		return resolvers;
+	}
+	
+	public Collection<AttributeResolver> getAttributeResolvers(Object instance) 
+		throws XacmlSyntaxException
+	{
+		Collection<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
+		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), XacmlAttributeResolverDescriptor.class);
+		for(Method m : methods){
+			resolvers.add(parseAttributeResolver(instance, m));
+		}
+		return resolvers;
+	}
 	
 	public AttributeResolver parseAttributeResolver(Object instance, Method m) 
 		throws XacmlSyntaxException
