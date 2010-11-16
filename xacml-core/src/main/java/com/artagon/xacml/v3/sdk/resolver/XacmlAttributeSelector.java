@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.sdk;
+package com.artagon.xacml.v3.sdk.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,9 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface XacmlAttributeDescriptor 
+@Target(ElementType.PARAMETER)
+public @interface XacmlAttributeSelector 
 {
-	String id();
+	String xpath();
+	String category();
 	String dataType();
+	String contextAttributeId() default "";
 }

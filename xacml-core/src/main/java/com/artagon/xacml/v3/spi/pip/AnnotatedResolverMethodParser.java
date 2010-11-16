@@ -16,11 +16,11 @@ import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
-import com.artagon.xacml.v3.sdk.XacmlAttributeDesignator;
-import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
-import com.artagon.xacml.v3.sdk.XacmlAttributeSelector;
-import com.artagon.xacml.v3.sdk.XacmlContentResolverDescriptor;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeDescriptor;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeDesignator;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeSelector;
+import com.artagon.xacml.v3.sdk.resolver.XacmlContentResolverDescriptor;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 

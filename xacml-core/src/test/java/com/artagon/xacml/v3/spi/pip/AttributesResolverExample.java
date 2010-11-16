@@ -3,9 +3,9 @@ package com.artagon.xacml.v3.spi.pip;
 import java.util.Map;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.sdk.XacmlAttributeDescriptor;
-import com.artagon.xacml.v3.sdk.XacmlAttributeDesignator;
-import com.artagon.xacml.v3.sdk.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeDescriptor;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeDesignator;
+import com.artagon.xacml.v3.sdk.resolver.XacmlAttributeResolverDescriptor;
 
 public class AttributesResolverExample 
 {
