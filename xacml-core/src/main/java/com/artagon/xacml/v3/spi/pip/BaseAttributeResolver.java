@@ -41,7 +41,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		}
 		Map<String, BagOfAttributeValues> v = doResolve(context);
 		return new AttributeSet(descriptor, 
-				(v != null)?null:Collections.<String, BagOfAttributeValues>emptyMap());
+				(v != null)?v:Collections.<String, BagOfAttributeValues>emptyMap());
 	}
 	
 	/**

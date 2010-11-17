@@ -6,8 +6,13 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,6 +140,14 @@ public class AnnotatedResolverMethodParserTest
 		p.parseAttributeResolver(this, m);		
 	}
 	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testParseAttributeResolverWrongReturnType() throws Exception
+	{
+		Method m = getMethod(this.getClass(), "resolve5");
+		assertNotNull(m);
+		p.parseAttributeResolver(this, m);		
+	}
+	
 	
 	@XacmlAttributeResolverDescriptor(id="testId", name="Test", category="subject", issuer="issuer", cacheTTL=30,
 			attributes={
@@ -184,6 +197,19 @@ public class AnnotatedResolverMethodParserTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
 	public Map<String, BagOfAttributeValues> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, PolicyInformationPointContext context)
+	{
+		return null;
+	}
+	
+	@XacmlAttributeResolverDescriptor(id="testId", name="Test", category="subject", issuer="issuer", cacheTTL=30,
+			attributes={
+				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId1"),
+				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId2"),
+				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
+				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
+	})
+	public Collection<String> resolve5(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
 			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, PolicyInformationPointContext context)
 	{
 		return null;

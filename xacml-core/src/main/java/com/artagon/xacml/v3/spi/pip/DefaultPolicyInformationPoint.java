@@ -58,7 +58,7 @@ public class DefaultPolicyInformationPoint
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkState(d.canResolve(ref));
-		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		PolicyInformationPointContext pipContext = createContext(context, d);
 		List<BagOfAttributeValues> keys = pipContext.getKeys();
 		AttributeSet attributes = null;
 		if(d.isCachable()){
@@ -84,7 +84,7 @@ public class DefaultPolicyInformationPoint
 			return null;
 		}
 		ContentResolverDescriptor d = r.getDescriptor();
-		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		PolicyInformationPointContext pipContext = createContext(context, d);		
 		List<BagOfAttributeValues> keys = pipContext.getKeys();
 		Node v = null;
 		if(d.isCachable()){
@@ -98,5 +98,10 @@ public class DefaultPolicyInformationPoint
 			cache.put(d, keys, v);
 		}
 		return v;
+	}
+	
+	private PolicyInformationPointContext createContext(EvaluationContext context, ResolverDescriptor d)
+	{
+		return new DefaultPolicyInformationPointContext(context, d);
 	}
 }
