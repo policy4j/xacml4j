@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.invocation.DefaultInvocationFactory;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -19,7 +20,7 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		throws Exception
 	{
 		Preconditions.checkNotNull(factoryClass);
-		this.converter = new JavaMethodToFunctionSpecConverter();
+		this.converter = new JavaMethodToFunctionSpecConverter(new DefaultInvocationFactory());
 		List<FunctionSpec> functions = findFunctions(factoryClass, null);
 		for(FunctionSpec spec : functions){
 			add(spec);
@@ -30,7 +31,7 @@ public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		throws Exception
 	{
 		Preconditions.checkNotNull(instance);
-		this.converter = new JavaMethodToFunctionSpecConverter();
+		this.converter = new JavaMethodToFunctionSpecConverter(new DefaultInvocationFactory());
 		List<FunctionSpec> functions = findFunctions(instance.getClass(), instance);
 		for(FunctionSpec spec : functions){
 			add(spec);

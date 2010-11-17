@@ -1,48 +1,67 @@
 package com.artagon.xacml.v3.spi.function;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Array;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.artagon.xacml.invocation.Invocation;
+import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.ValueExpression;
 import com.google.common.base.Preconditions;
 
-public class DefaultFunctionInvocation extends BaseReflectionFunctionInvocation
+public class DefaultFunctionInvocation implements FunctionInvocation
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionInvocation.class);
+	private boolean evalContextRequired;
+	private Invocation<?> invocation;
 	
-	private Method functionMethod;
-	private Object instance;
-	
-	public DefaultFunctionInvocation(
-			Method m, 
-			Object instance,
+	/**
+	 * Constructs XACML function invoker
+	 * 
+	 * @param factoryInstance a method library instance
+	 * @param m a XACML function implementation
+	 * @param evalContextRequired a flag indicating if method
+	 * requires an {@link EvaluationContext} reference
+	 */
+	DefaultFunctionInvocation(
+			Invocation<?> invocation,
 			boolean evalContextRequired)
-	{
-		super(evalContextRequired);
-		Preconditions.checkNotNull(m);
-		this.instance = instance;
-		this.functionMethod = m;
+	{		
+		Preconditions.checkNotNull(invocation);
+		this.invocation = invocation;
+		this.evalContextRequired = evalContextRequired;
 	}
 	
-	@Override
 	@SuppressWarnings("unchecked")
-	protected <T extends ValueExpression> T invoke(Object ...params) throws Exception
+	@Override
+	public final <T extends ValueExpression> T invoke(FunctionSpec spec,
+			EvaluationContext context, Expression... arguments)
+			throws FunctionInvocationException 
 	{
-		try{
-			if(log.isDebugEnabled()){
-				log.debug("Invoking method=\"{}\" " +
-						"on instace=\"{}\"", functionMethod.getName(), instance);
+		try
+		{
+			Object[] params = new Object[spec.getNumberOfParams() + (evalContextRequired?1:0)];
+			int startIndex = 0;
+			if(evalContextRequired){
+				params[0] = context;
+				startIndex++;
 			}
-			return (T)functionMethod.invoke(instance, params);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to invoke methd=\"{}\" with error message=\"{}\"", 
-						functionMethod.getName(), e.getMessage());
-				log.debug("Stack trace", e);
+			System.arraycopy(arguments, 0, params, startIndex, 
+					spec.isVariadic()?spec.getNumberOfParams() - 1:spec.getNumberOfParams());
+			if(spec.isVariadic()){ 
+				Object varArgArray = null;
+				if(spec.getNumberOfParams() <= arguments.length){
+					int size = arguments.length - (spec.getNumberOfParams() - 1);
+					varArgArray = Array.newInstance(arguments[spec.getNumberOfParams() - 1].getClass(), size);
+					System.arraycopy(arguments, spec.getNumberOfParams() - 1, varArgArray, 0, size);
+				}
+				params[params.length - 1] = varArgArray;
 			}
-			throw e;
+			return (T)invocation.invoke(params);
+		}
+		catch(Exception e){
+			throw new FunctionInvocationException(context, spec, 
+					e, "Failed to invoke function=\"%s\"", spec.getId());
 		}
 	}
 }

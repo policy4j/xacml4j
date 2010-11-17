@@ -5,13 +5,15 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.invocation.DefaultInvocationFactory;
+
 public class JavaMethodToFunctionSpecTest 
 {
 	private JavaMethodToFunctionSpecConverter builder;
 	
 	@Before
 	public void init(){
-		this.builder = new JavaMethodToFunctionSpecConverter();
+		this.builder = new JavaMethodToFunctionSpecConverter(new DefaultInvocationFactory());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

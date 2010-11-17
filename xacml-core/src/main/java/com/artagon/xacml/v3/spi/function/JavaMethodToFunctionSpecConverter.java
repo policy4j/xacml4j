@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.invocation.InvocationFactory;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -27,10 +28,20 @@ import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
 import com.artagon.xacml.v3.sdk.XacmlLegacyFunc;
 import com.google.common.base.Preconditions;
 
-class JavaMethodToFunctionSpecConverter {
+public class JavaMethodToFunctionSpecConverter 
+{
 	private final static Logger log = LoggerFactory
 			.getLogger(JavaMethodToFunctionSpecConverter.class);
 
+	private InvocationFactory invocationFactory;
+	
+	public JavaMethodToFunctionSpecConverter(
+			InvocationFactory invocationFactory)
+	{
+		Preconditions.checkNotNull(invocationFactory);
+		this.invocationFactory = invocationFactory;
+	}
+	
 	public FunctionSpec createFunctionSpec(Method m) throws XacmlSyntaxException
 	{
 		return createFunctionSpec(m, null);
@@ -163,13 +174,13 @@ class JavaMethodToFunctionSpecConverter {
 			return b.build(returnType.isBag() ? type.bagType() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(m, instance, evalContextParamFound));
+					new DefaultFunctionInvocation(invocationFactory.create(instance, m), evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(returnTypeResolver.resolverClass()),
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(m, instance, evalContextParamFound));
+					new DefaultFunctionInvocation(invocationFactory.create(instance, m), evalContextParamFound));
 		}
 		throw new IllegalArgumentException(
 				"Either static return type or return type resolver must be specified");
