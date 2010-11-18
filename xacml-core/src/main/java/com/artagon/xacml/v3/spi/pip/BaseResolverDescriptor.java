@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeReferenceKey;

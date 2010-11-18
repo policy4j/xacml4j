@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.ValueType;
 import com.google.common.base.Preconditions;
 
-public final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver
+final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {
 	private ValueType returnType;
 	

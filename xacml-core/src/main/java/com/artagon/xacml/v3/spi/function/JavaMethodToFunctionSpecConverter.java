@@ -15,20 +15,20 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.artagon.xacml.v3.sdk.XacmlFuncParam;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamAnyAttribute;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamAnyBag;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamEvaluationContext;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamFunctionReference;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamValidator;
-import com.artagon.xacml.v3.sdk.XacmlFuncParamVarArg;
-import com.artagon.xacml.v3.sdk.XacmlFuncReturnType;
-import com.artagon.xacml.v3.sdk.XacmlFuncReturnTypeResolver;
-import com.artagon.xacml.v3.sdk.XacmlFuncSpec;
-import com.artagon.xacml.v3.sdk.XacmlLegacyFunc;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParam;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamAnyAttribute;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamAnyBag;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamEvaluationContext;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamFunctionReference;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamValidator;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncParamVarArg;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncReturnTypeResolver;
+import com.artagon.xacml.v3.sdk.function.XacmlFuncSpec;
+import com.artagon.xacml.v3.sdk.function.XacmlLegacyFunc;
 import com.google.common.base.Preconditions;
 
-public class JavaMethodToFunctionSpecConverter 
+class JavaMethodToFunctionSpecConverter 
 {
 	private final static Logger log = LoggerFactory
 			.getLogger(JavaMethodToFunctionSpecConverter.class);

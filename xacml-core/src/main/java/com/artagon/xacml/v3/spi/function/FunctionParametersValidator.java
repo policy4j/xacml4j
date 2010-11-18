@@ -4,7 +4,6 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 
 
-
 public interface FunctionParametersValidator 
 {
 	/**

@@ -1,8 +1,9 @@
 package com.artagon.xacml.invocation;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class DefaultInvocationFactoryTest
 {

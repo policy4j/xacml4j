@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.sdk;
+package com.artagon.xacml.v3.sdk.function;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlFuncParam 
+public @interface XacmlFuncParamFunctionReference 
 {
-	String typeId();
-	boolean isBag() default false;
 }

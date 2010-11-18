@@ -1,5 +1,8 @@
 package com.artagon.xacml.invocation;
 
+import org.junit.Ignore;
+
+@Ignore
 public class TestObject 
 {
 	public String test(String v)

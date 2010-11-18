@@ -249,7 +249,7 @@ public final class BagOfAttributeValues
 				v.isEmpty()){
 			return null;
 		}
-		return v.value();
+		return v.<T>value();
 	}
 
 	@Override
