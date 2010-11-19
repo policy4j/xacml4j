@@ -34,7 +34,7 @@ public class DefaultResolverRegistry implements ResolverRegistry
 	private Multimap<String, ContentResolver> contentResolversByPolicy;
 	
 	private Map<String, AttributeResolver> attributeResolversById;
-	private Map<String, AttributeResolver> contentResolversById;
+	private Map<String, ContentResolver> contentResolversById;
 	
 	public DefaultResolverRegistry()
 	{
@@ -43,7 +43,7 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
 		this.contentResolversByPolicy = HashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
-		this.contentResolversById = new ConcurrentHashMap<String, AttributeResolver>();
+		this.contentResolversById = new ConcurrentHashMap<String, ContentResolver>();
 		addResolver(new DefaultEnviromentAttributeResolver());
 	}
 	
@@ -72,7 +72,6 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		}
 	}
 	
-	
 	public void addResolver(ContentResolver r)
 	{
 		Preconditions.checkArgument(r != null);
@@ -86,6 +85,7 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		Preconditions.checkArgument(r != null);
 		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
 		this.contentResolversByPolicy.put(policyId, r);
+		this.contentResolversById.put(policyId, r);
 	}
 	
 	public void addResolver(String policyId, AttributeResolver r)
@@ -190,16 +190,11 @@ public class DefaultResolverRegistry implements ResolverRegistry
 
 	@Override
 	public AttributeResolver getAttributeResolver(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return attributeResolversById.get(id);
 	}
 
 	@Override
 	public ContentResolver getContentResolver(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return contentResolversById.get(id);
 	}
-	
-	
-	
 }

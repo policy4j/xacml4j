@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.pip.cache.NullCacheProvider;
+import com.artagon.xacml.v3.spi.pip.cache.NoCacheResolverResultCacheProvider;
 import com.google.common.base.Preconditions;
 
 /**
@@ -37,7 +37,7 @@ public class DefaultPolicyInformationPoint
 	}
 	
 	public DefaultPolicyInformationPoint(ResolverRegistry resolvers){
-		this(resolvers, new NullCacheProvider());
+		this(resolvers, new NoCacheResolverResultCacheProvider());
 	}
 
 	@Override
