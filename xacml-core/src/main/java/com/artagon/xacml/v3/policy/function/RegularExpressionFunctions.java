@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParam;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.sdk.function.XacmlFunctionProvider;
+import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
+import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
+import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v3.types.AnyURIValue;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.BooleanValue;

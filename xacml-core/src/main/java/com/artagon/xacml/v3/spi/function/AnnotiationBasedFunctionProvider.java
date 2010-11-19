@@ -9,11 +9,9 @@ import com.artagon.xacml.invocation.InvocationFactory;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.sdk.function.XacmlFunctionProvider;
 import com.google.common.base.Preconditions;
 
-public class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
+public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 {
 	private JavaMethodToFunctionSpecConverter converter;
 	

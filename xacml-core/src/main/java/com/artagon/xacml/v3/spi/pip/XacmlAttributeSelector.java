@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.sdk.function;
+package com.artagon.xacml.v3.spi.pip;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlFuncParamAnyAttribute {
-
+public @interface XacmlAttributeSelector 
+{
+	String xpath();
+	String category();
+	String dataType();
+	String contextAttributeId() default "";
 }

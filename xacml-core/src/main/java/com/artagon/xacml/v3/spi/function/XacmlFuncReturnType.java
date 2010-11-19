@@ -1,17 +1,14 @@
-package com.artagon.xacml.v3.sdk.resolver;
+package com.artagon.xacml.v3.spi.function;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlContentResolverDescriptor 
+public @interface XacmlFuncReturnType 
 {
-	String id();
-	String name();
-	String category();
-	int cacheTTL() default 0;
+	String typeId();
+	boolean isBag() default false;
 }

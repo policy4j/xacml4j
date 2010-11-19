@@ -16,6 +16,7 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 
 public class InMemoryPolicyRepositoryTest 
 {

@@ -15,17 +15,6 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParam;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamAnyAttribute;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamAnyBag;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamEvaluationContext;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamFunctionReference;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamValidator;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncParamVarArg;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncReturnTypeResolver;
-import com.artagon.xacml.v3.sdk.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.sdk.function.XacmlLegacyFunc;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter 

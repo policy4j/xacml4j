@@ -15,8 +15,8 @@ import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.Version;
-import com.artagon.xacml.v3.spi.AbstractPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.repository.AbstractPolicyRepository;
 import com.google.common.base.Preconditions;
 
 class DefaultPolicyReferenceResolver 
