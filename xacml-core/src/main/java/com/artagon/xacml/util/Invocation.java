@@ -1,4 +1,4 @@
-package com.artagon.xacml.invocation;
+package com.artagon.xacml.util;
 
 public interface Invocation <V>
 {

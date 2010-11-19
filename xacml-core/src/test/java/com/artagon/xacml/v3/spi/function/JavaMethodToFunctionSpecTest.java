@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.invocation.DefaultInvocationFactory;
+import com.artagon.xacml.util.DefaultInvocationFactory;
 
 public class JavaMethodToFunctionSpecTest 
 {

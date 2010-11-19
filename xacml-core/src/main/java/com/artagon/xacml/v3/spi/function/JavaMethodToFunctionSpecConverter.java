@@ -7,7 +7,7 @@ import java.lang.reflect.Modifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.invocation.InvocationFactory;
+import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;

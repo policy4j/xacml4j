@@ -1,18 +1,22 @@
-package com.artagon.xacml.invocation;
+package com.artagon.xacml.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class CglibInvocationFactoryTest
+import com.artagon.xacml.util.DefaultInvocationFactory;
+import com.artagon.xacml.util.Invocation;
+import com.artagon.xacml.util.InvocationFactory;
+
+public class DefaultInvocationFactoryTest
 {
 	private InvocationFactory f;
 	private TestObject instance;
 	
 	@Before
 	public void init(){
-		this.f = new CglibInvocationFactory();
+		this.f = new DefaultInvocationFactory();
 		this.instance = new TestObject();
 	}
 	

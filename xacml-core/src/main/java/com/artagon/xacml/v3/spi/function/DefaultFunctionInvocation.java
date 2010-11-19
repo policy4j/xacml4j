@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.spi.function;
 
 import java.lang.reflect.Array;
 
-import com.artagon.xacml.invocation.Invocation;
+import com.artagon.xacml.util.Invocation;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionInvocationException;

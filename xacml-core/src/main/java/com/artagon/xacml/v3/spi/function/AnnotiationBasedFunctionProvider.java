@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.invocation.DefaultInvocationFactory;
-import com.artagon.xacml.invocation.InvocationFactory;
+import com.artagon.xacml.util.DefaultInvocationFactory;
+import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.util.Reflections;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
