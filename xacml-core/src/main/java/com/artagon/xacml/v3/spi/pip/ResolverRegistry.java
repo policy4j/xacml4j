@@ -19,6 +19,19 @@ public interface ResolverRegistry
 	void addResolver(String policyId, AttributeResolver r);
 	void addResolver(String policyId, ContentResolver r);
 	
+	/**
+	 * Gets attribute resolve by identifier
+	 * @param id a resolver identifier
+	 * @return {@link AttributeResolver} or <code>null</code>
+	 * if not resolver found
+	 */
 	AttributeResolver getAttributeResolver(String id);
+	
+	/**
+	 * Gets content resolver by identifier
+	 * @param id a resolver identifier
+	 * @return {@link ContentResolver} or <code>null</code>
+	 * if not resolver found
+	 */
 	ContentResolver getContentResolver(String id);
 }
