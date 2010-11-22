@@ -13,6 +13,8 @@ import com.artagon.xacml.v3.types.RFC822NameType;
 import com.artagon.xacml.v3.types.RFC822NameValue;
 import com.artagon.xacml.v3.types.StringType;
 import com.artagon.xacml.v3.types.StringValue;
+import com.artagon.xacml.v3.types.X500NameType;
+import com.artagon.xacml.v3.types.X500NameValue;
 
 public class SpecialMatchFunctionsTest 
 {
@@ -41,5 +43,25 @@ public class SpecialMatchFunctionsTest
 		p = StringType.STRING.create("sun.com");
 		n = RFC822NameType.RFC822NAME.create("test@sun.com");
 		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+	}
+	
+	@Test
+	public void testX500NameMatch()
+	{
+		X500NameValue a = X500NameType.X500NAME.create("ou=org,o=com");
+		X500NameValue b = X500NameType.X500NAME.create("cn=test, ou=org,o=com");
+		
+		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.x500NameMatch(a, b));
+		
+		a = X500NameType.X500NAME.create("ou=org,o=com");
+		b = X500NameType.X500NAME.create("cn=test, ou=ORG,o=Com");
+		
+		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.x500NameMatch(a, b));
+		
+		a = X500NameType.X500NAME.create("ou=org1,o=com");
+		b = X500NameType.X500NAME.create("cn=test, ou=ORG,o=com");
+		
+		assertEquals(BooleanType.BOOLEAN.create(false), SpecialMatchFunctions.x500NameMatch(a, b));
+		
 	}
 }
