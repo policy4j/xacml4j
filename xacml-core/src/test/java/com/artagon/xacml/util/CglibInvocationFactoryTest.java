@@ -5,10 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.util.CglibInvocationFactory;
-import com.artagon.xacml.util.Invocation;
-import com.artagon.xacml.util.InvocationFactory;
-
 public class CglibInvocationFactoryTest
 {
 	private InvocationFactory f;

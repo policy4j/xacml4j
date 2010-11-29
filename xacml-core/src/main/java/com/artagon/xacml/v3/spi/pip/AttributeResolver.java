@@ -13,5 +13,5 @@ public interface AttributeResolver
 	
 	
 	AttributeSet resolve(
-			PolicyInformationPointContext context) throws Exception;
+			ResolverContext context) throws Exception;
 }

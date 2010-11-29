@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import org.w3c.dom.Node;
 
 public interface ContentResolver 
 {
@@ -15,8 +14,8 @@ public interface ContentResolver
 	 * Resolves a content
 	 * 
 	 * @param context a policy information point context
-	 * @return {@link Node} or <code>null</code>
+	 * @return {@link Content} or <code>null</code>
 	 * @throws Exception if an error occurs while resolving content
 	 */
-	Node resolve(PolicyInformationPointContext context) throws Exception;
+	Content resolve(ResolverContext context) throws Exception;
 }

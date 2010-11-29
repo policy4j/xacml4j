@@ -33,6 +33,10 @@ public final class AttributeSet
 		}
 	}
 	
+	public AttributeResolverDescriptor getDescriptor(){
+		return d;
+	}
+	
 	public BagOfAttributeValues get(String attributeId){
 		BagOfAttributeValues v = values.get(attributeId);
 		AttributeDescriptor ad = d.getAttribute(attributeId);

@@ -18,18 +18,19 @@ import com.artagon.xacml.v3.types.TimeType;
 public class DefaultEnviromentAttributesResolverTest 
 {
 	private AttributeResolver r;
-	private PolicyInformationPointContext context;
+	private ResolverContext context;
 	
 	@Before
 	public void init(){
 		this.r = new DefaultEnviromentAttributeResolver();
-		this.context = createStrictMock(PolicyInformationPointContext.class);
+		this.context = createStrictMock(ResolverContext.class);
 	}
 	
 	@Test
 	public void testResolve() throws Exception
 	{
 		Calendar now = Calendar.getInstance();
+		expect(context.getDescriptor()).andReturn(r.getDescriptor());
 		expect(context.getCurrentDateTime()).andReturn(now);
 		replay(context);
 		AttributeSet a = r.resolve(context);

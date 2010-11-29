@@ -11,40 +11,50 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.google.common.base.Preconditions;
 
-public final class DefaultPolicyInformationPointContext implements
-		PolicyInformationPointContext 
+public final class DefaultResolverContext implements
+		ResolverContext 
 {
 	private EvaluationContext context;
 	private List<BagOfAttributeValues> keys;
 	private ResolverDescriptor desciptor;
 
-	public DefaultPolicyInformationPointContext(
+	public DefaultResolverContext(
 			EvaluationContext context,
-			ResolverDescriptor descriptor) {
+			ResolverDescriptor descriptor) throws EvaluationException {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(descriptor);
 		this.context = context;
 		this.desciptor = descriptor;
+		this.keys = evaluateKeys(context, descriptor.getKeyRefs());
 	}
 
 	@Override
 	public Calendar getCurrentDateTime() {
 		return context.getCurrentDateTime();
 	}
-
+	
 	@Override
-	public List<BagOfAttributeValues> getKeys() throws EvaluationException
+	public ResolverDescriptor getDescriptor(){
+		return desciptor;
+	}
+	
+	@Override
+	public List<BagOfAttributeValues> getKeys()
 	{
-		if(keys != null){
-			return keys;
+		return keys;
+	}
+	
+	private static List<BagOfAttributeValues> evaluateKeys(EvaluationContext context, 
+			List<AttributeReferenceKey> keyRefs) throws EvaluationException
+	{
+		if(keyRefs == null){
+			return Collections.<BagOfAttributeValues>emptyList();
 		}
-		List<AttributeReferenceKey> keyRefs = desciptor.getKeyRefs();
-		this.keys = new ArrayList<BagOfAttributeValues>(keyRefs.size());
+		List<BagOfAttributeValues> keys = new ArrayList<BagOfAttributeValues>(keyRefs.size());
 		for(AttributeReferenceKey ref : keyRefs){
 			keys.add(ref.resolve(context));
 		}
-		this.keys = Collections.unmodifiableList(this.keys);
-		return keys;
+		return Collections.unmodifiableList(keys);
 	}
 	
 }

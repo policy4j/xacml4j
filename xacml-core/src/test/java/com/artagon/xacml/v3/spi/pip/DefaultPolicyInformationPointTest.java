@@ -5,11 +5,10 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
-import java.util.List;
 import java.util.Map;
 
 import org.easymock.Capture;
@@ -82,25 +81,25 @@ public class DefaultPolicyInformationPointTest
 				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
 		
-		Capture<List<BagOfAttributeValues>> keys1 = new Capture<List<BagOfAttributeValues>>();
-		expect(cache.get(same(descriptor), capture(keys1))).andReturn(null); 
+		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
+		expect(cache.getAttributes(capture(resolverContext1))).andReturn(null);
 		
-		Capture<PolicyInformationPointContext> ctx = new Capture<PolicyInformationPointContext>();
+		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
 		
 		AttributeSet result = new AttributeSet(descriptor, values);
 		
 		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
 		
-		Capture<List<BagOfAttributeValues>> keys2 = new Capture<List<BagOfAttributeValues>>();
+		Capture<ResolverContext> resolverContext2 = new Capture<ResolverContext>();
 
-		cache.put(same(descriptor), capture(keys2), eq(result));
+		cache.putAttributes(capture(resolverContext2), eq(result));
 		
 		
 		replay(registry, attributeResolver, cache, context);
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
-		assertEquals(keys1.getValue(), keys2.getValue());
+		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
 		verify(registry, attributeResolver, cache, context);
 	}
@@ -123,7 +122,7 @@ public class DefaultPolicyInformationPointTest
 				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
 		
-		Capture<PolicyInformationPointContext> ctx = new Capture<PolicyInformationPointContext>();
+		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
 		
 		AttributeSet result = new AttributeSet(descriptorNoCache, values);
 		

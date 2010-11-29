@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -10,8 +8,8 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.pip.cache.NoCacheResolverResultCacheProvider;
 import com.google.common.base.Preconditions;
 
 /**
@@ -58,18 +56,17 @@ public class DefaultPolicyInformationPoint
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkState(d.canResolve(ref));
-		PolicyInformationPointContext pipContext = createContext(context, d);
-		List<BagOfAttributeValues> keys = pipContext.getKeys();
+		ResolverContext pipContext = createContext(context, d);
 		AttributeSet attributes = null;
 		if(d.isCachable()){
-			attributes = cache.get(d, keys);
+			attributes = cache.getAttributes(pipContext);
 			if(attributes != null){
 				return attributes.get(ref.getAttributeId());
 			}
 		}
 		attributes = r.resolve(pipContext);
 		if(d.isCachable()){
-			cache.put(d, keys, attributes);
+			cache.putAttributes(pipContext, attributes);
 		}
 		return attributes.get(ref.getAttributeId());
 	}
@@ -84,24 +81,24 @@ public class DefaultPolicyInformationPoint
 			return null;
 		}
 		ContentResolverDescriptor d = r.getDescriptor();
-		PolicyInformationPointContext pipContext = createContext(context, d);		
-		List<BagOfAttributeValues> keys = pipContext.getKeys();
-		Node v = null;
+		ResolverContext pipContext = createContext(context, d);		
+		Content v = null;
 		if(d.isCachable()){
-			v = cache.get(d, keys);
+			v = cache.getContent(pipContext);
 			if(v != null){
-				return v;
+				return v.getContent();
 			}
 		}
 		v = r.resolve(pipContext);
 		if(d.isCachable()){
-			cache.put(d, keys, v);
+			cache.putContent(pipContext, v);
 		}
-		return v;
+		return v.getContent();
 	}
 	
-	private PolicyInformationPointContext createContext(EvaluationContext context, ResolverDescriptor d)
+	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d) 
+		throws EvaluationException
 	{
-		return new DefaultPolicyInformationPointContext(context, d);
+		return new DefaultResolverContext(context, d);
 	}
 }

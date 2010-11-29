@@ -1,7 +1,5 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import static org.easymock.EasyMock.*;
-
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;

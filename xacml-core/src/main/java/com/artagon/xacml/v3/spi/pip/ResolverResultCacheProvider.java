@@ -1,10 +1,6 @@
 package com.artagon.xacml.v3.spi.pip;
 
-import java.util.List;
-
 import org.w3c.dom.Node;
-
-import com.artagon.xacml.v3.BagOfAttributeValues;
 
 public interface ResolverResultCacheProvider 
 {
@@ -16,11 +12,11 @@ public interface ResolverResultCacheProvider
 	 * @param keys a request context keys
 	 * @return {@link Node} or <code>null</code>
 	 */
-	Node get(ContentResolverDescriptor d, List<BagOfAttributeValues> keys);
+	Content getContent(ResolverContext context);
 	
-	void put(ContentResolverDescriptor d, List<BagOfAttributeValues> keys, Node content);
+	void putContent(ResolverContext context, Content content);
 	
-	AttributeSet get(AttributeResolverDescriptor d, List<BagOfAttributeValues> keys);
+	AttributeSet getAttributes(ResolverContext context);
 	
-	void put(AttributeResolverDescriptor d, List<BagOfAttributeValues> keys, AttributeSet v);
+	void putAttributes(ResolverContext context, AttributeSet v);
 }

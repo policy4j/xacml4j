@@ -32,8 +32,9 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final AttributeSet resolve(
-			PolicyInformationPointContext context) throws Exception 
+			ResolverContext context) throws Exception 
 	{
+		Preconditions.checkArgument(context.getDescriptor() == descriptor);
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving attributes via resolver " +
 					"id=\"{}\" name=\"{}\"", 
@@ -53,6 +54,6 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	 * @throws Exception if an error occurs
 	 */
 	protected abstract Map<String, BagOfAttributeValues> doResolve(
-			PolicyInformationPointContext context) throws Exception;
+			ResolverContext context) throws Exception;
 	
 }

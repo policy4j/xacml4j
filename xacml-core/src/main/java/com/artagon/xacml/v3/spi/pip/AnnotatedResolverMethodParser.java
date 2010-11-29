@@ -125,10 +125,10 @@ public class AnnotatedResolverMethodParser
 						"can be without annotation", m.getName());
 			}
 			if(p.length == 0 && i == 0) {
-				if(!types[i].equals(PolicyInformationPointContext.class)){
+				if(!types[i].equals(ResolverContext.class)){
 					throw new XacmlSyntaxException(
 							"Resolver parameter without annotiation at index=\"%d\" must be of type=\"%s\"", 
-							i, PolicyInformationPointContext.class);
+							i, ResolverContext.class);
 				}
 				needPipContext = true;
 				continue;
@@ -193,7 +193,7 @@ public class AnnotatedResolverMethodParser
 		}
 		
 		@SuppressWarnings("unchecked")
-		public T invoke(PolicyInformationPointContext context) throws Exception
+		public T invoke(ResolverContext context) throws Exception
 		{
 			List<BagOfAttributeValues> keys = context.getKeys();
 			if(requiresContext){
@@ -220,7 +220,7 @@ public class AnnotatedResolverMethodParser
 
 		@Override
 		protected Map<String, BagOfAttributeValues> doResolve(
-				PolicyInformationPointContext context) throws Exception {
+				ResolverContext context) throws Exception {
 			return invocation.invoke(context);
 		}
 	}
@@ -238,7 +238,7 @@ public class AnnotatedResolverMethodParser
 		}
 		
 		@Override
-		protected Node doResolve(PolicyInformationPointContext context)
+		protected Node doResolve(ResolverContext context)
 				throws Exception {
 			return invocation.invoke(context);
 		}

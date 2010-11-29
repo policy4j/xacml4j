@@ -28,14 +28,15 @@ public abstract class BaseContentResolver implements ContentResolver
 	}
 
 	@Override
-	public final Node resolve(
-			PolicyInformationPointContext context) throws Exception 
+	public final Content resolve(
+			ResolverContext context) throws Exception 
 	{
+		Preconditions.checkArgument(context.getDescriptor() == descriptor);
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving content via resolver " +
 					"id=\"{}\" name=\"{}\"", descriptor.getId(), descriptor.getName());
 		}
-		return doResolve(context);	
+		return new Content(descriptor, doResolve(context));	
 	}
 	
 	/**
@@ -46,6 +47,6 @@ public abstract class BaseContentResolver implements ContentResolver
 	 * @throws Exception if an error occurs
 	 */
 	protected abstract Node doResolve(
-			PolicyInformationPointContext context) 
+			ResolverContext context) 
 		throws Exception;
 }

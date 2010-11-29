@@ -3,11 +3,6 @@ package com.artagon.xacml.util;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.util.CglibInvocationFactory;
-import com.artagon.xacml.util.DefaultInvocationFactory;
-import com.artagon.xacml.util.Invocation;
-import com.artagon.xacml.util.InvocationFactory;
-
 public class InvocatonBenchmark 
 {
 	private TestObject instance;

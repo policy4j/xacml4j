@@ -56,7 +56,7 @@ public class AnnotatedResolverMethodParserTest
 		AttributeResolver r = p.parseAttributeResolver(this, m);
 		AttributeResolverDescriptor d = r.getDescriptor();
 		
-		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		ResolverContext pipContext = new DefaultResolverContext(context, d);
 		
 		r.resolve(pipContext);
 		
@@ -106,7 +106,7 @@ public class AnnotatedResolverMethodParserTest
 		replay(context);
 		AttributeResolver r = p.parseAttributeResolver(this, m);
 		AttributeResolverDescriptor d = r.getDescriptor();
-		PolicyInformationPointContext pipContext = new DefaultPolicyInformationPointContext(context, d);
+		ResolverContext pipContext = new DefaultResolverContext(context, d);
 		r.resolve(pipContext);
 		
 		assertEquals("Test", d.getName());
@@ -165,7 +165,7 @@ public class AnnotatedResolverMethodParserTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributeValues> resolve2(PolicyInformationPointContext context)
+	public Map<String, BagOfAttributeValues> resolve2(ResolverContext context)
 	{
 		return null;
 	}
@@ -190,7 +190,7 @@ public class AnnotatedResolverMethodParserTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
 	public Map<String, BagOfAttributeValues> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, PolicyInformationPointContext context)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, ResolverContext context)
 	{
 		return null;
 	}
@@ -203,7 +203,7 @@ public class AnnotatedResolverMethodParserTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
 	public Collection<String> resolve5(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, PolicyInformationPointContext context)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, ResolverContext context)
 	{
 		return null;
 	}
