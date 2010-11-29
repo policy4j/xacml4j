@@ -7,8 +7,8 @@ import com.artagon.xacml.spring.ResourceCollection;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
-import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 

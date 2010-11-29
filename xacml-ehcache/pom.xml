@@ -13,12 +13,16 @@
 		<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-core</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 		    <groupId>net.sf.ehcache</groupId>
 		    <artifactId>ehcache-core</artifactId>
 		    <version>2.2.0</version>
    		</dependency>
+   		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -24,12 +24,12 @@ import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
-import com.artagon.xacml.v3.spi.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 
 public class Xacml20ConformanceTest 
 {

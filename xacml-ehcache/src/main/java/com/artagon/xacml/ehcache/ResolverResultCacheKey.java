@@ -1,7 +1,7 @@
 package com.artagon.xacml.ehcache;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.List;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.google.common.base.Objects;
@@ -18,23 +18,15 @@ final class ResolverResultCacheKey implements Serializable
 	private static final long serialVersionUID = -6895205924708410228L;
 	
 	private String resolverId;
-	private BagOfAttributeValues[] keys;
+	private List<BagOfAttributeValues> keys;
 	
 	public ResolverResultCacheKey(String resolverId, 
-			BagOfAttributeValues[] keys){
+			List<BagOfAttributeValues> keys){
 		Preconditions.checkNotNull(resolverId);
 		this.resolverId = resolverId;
 		this.keys = keys;
 	}
-	
-	public String getResolvedId(){
-		return resolverId;
-	}
-	
-	public BagOfAttributeValues[] getKeys(){
-		return keys;
-	}
-	
+		
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(resolverId, keys);
@@ -53,15 +45,14 @@ final class ResolverResultCacheKey implements Serializable
 			return false;
 		}
 		ResolverResultCacheKey k = (ResolverResultCacheKey)o;
-		return resolverId.equals(k.resolverId) && 
-		Arrays.equals(keys, k.keys);
+		return resolverId.equals(k.resolverId) && keys.equals(k.keys);
 	}
 	
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("id", resolverId)
-		.add("keys", Arrays.toString(keys))
+		.add("keys", keys.toString())
 		.toString();
 	}
 }

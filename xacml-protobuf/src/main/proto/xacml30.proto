@@ -4,7 +4,7 @@ package com.artagon.xacml.v30.protbuf;
 option java_package = "com.artagon.xacml.v30.protbuf";
 option optimize_for = CODE_SIZE;
 
-enum AttributeDataTypeId
+enum PAttributeDataTypeId
 {
 	ANYURI = 1;
 	BOOOLEAN = 2;
@@ -26,9 +26,9 @@ enum AttributeDataTypeId
 }
 
 
-message AttributeValue
+message PAttributeValue
 {
-	required AttributeDataTypeId type = 1;
+	required PAttributeDataTypeId type = 1;
 		
 	optional bool booleanValue = 2;
 	optional double doubleValue = 3;
@@ -45,25 +45,25 @@ message AttributeValue
 	optional string base64BinaryValue = 14;
 }
 
-message Attribute
+message PAttribute
 {
    required string id = 1;
    optional string issuer = 2;
    optional bool includeInResponse = 3 [default=false];
-   repeated AttributeValue values = 4;
+   repeated PAttributeValue values = 4;
 }
 
-message Attributes
+message PAttributes
 {
 	required string category = 1;
     optional string id = 2;
     optional string content = 3;
-    repeated Attribute attributes = 4;
+    repeated PAttribute attributes = 4;
 }
     
 
-message Request
+message PRequest
 {
     optional bool ReturnPolicyIdList = 1 [ default=false];
-    repeated Attributes attributes = 2;
+    repeated PAttributes attributes = 2;
 }

@@ -1,25 +1,24 @@
 package com.artagon.xacml.ehcache;
 
+import java.util.List;
 import java.util.Map;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
-import org.w3c.dom.Node;
-
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.AttributeSet;
+import com.artagon.xacml.v3.spi.pip.BaseResolverResultCacheProvider;
+import com.artagon.xacml.v3.spi.pip.Content;
 import com.artagon.xacml.v3.spi.pip.ContentResolverDescriptor;
 import com.artagon.xacml.v3.spi.pip.ResolverDescriptor;
-import com.artagon.xacml.v3.spi.pip.cache.BaseResolverResultCacheProvider;
 import com.google.common.base.Preconditions;
 
 public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvider
 {
 	private Cache attributesCache;
 	private Cache contentCache;
-	
 	
 	
 	public ResolverResultsEhcacheProvider(
@@ -33,8 +32,8 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected AttributeSet doGet(AttributeResolverDescriptor d,
-			BagOfAttributeValues[] keys) 
+	protected AttributeSet doGetAttributes(AttributeResolverDescriptor d,
+			List<BagOfAttributeValues> keys) 
 	{	
 		Object k = createKey(d, keys);
 		Element e = attributesCache.get(k);
@@ -46,7 +45,7 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	}
 
 	@Override
-	protected void doPut(AttributeResolverDescriptor d, BagOfAttributeValues[] keys,
+	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributeValues> keys,
 			AttributeSet v) {
 		Object k = createKey(d, keys);
 		Element e = new Element(k, v.toMap());
@@ -55,8 +54,8 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	}
 
 	@Override
-	protected Node doGetContent(ContentResolverDescriptor d,
-			BagOfAttributeValues[] keys) 
+	protected Content doGetContent(ContentResolverDescriptor d,
+			List<BagOfAttributeValues> keys) 
 	{
 		Object k = createKey(d, keys);
 		Element e = contentCache.get(k);
@@ -64,12 +63,12 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 				e.isExpired()){
 			return null;
 		}
-		return (Node)e.getObjectValue();
+		return (Content)e.getObjectValue();
 	}
 
 	@Override
-	protected void doPut(ContentResolverDescriptor d,
-			BagOfAttributeValues[] keys, Node content) 
+	protected void doPutContent(ContentResolverDescriptor d,
+			List<BagOfAttributeValues> keys, Content content) 
 	{
 		Object k = createKey(d, keys);
 		Element e = new Element(k, content);
@@ -77,8 +76,8 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 		contentCache.put(e);
 	}
 	
-	private Object createKey(ResolverDescriptor d, BagOfAttributeValues[] contextKeys)
+	private Object createKey(ResolverDescriptor d, List<BagOfAttributeValues> keys)
 	{
-		return new ResolverResultCacheKey(d.getId(), contextKeys);
+		return new ResolverResultCacheKey(d.getId(), keys);
 	}
 }
