@@ -1,10 +1,10 @@
-package com.artagon.xacml.spring.domain;
+package com.artagon.xacml.spring;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.PolicyIDReference;
 
-public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicySetIDReference>
+public class PolicyIDReferenceFactoryBean extends AbstractFactoryBean<PolicyIDReference>
 {
 	private String id;
 	private String version;
@@ -28,15 +28,16 @@ public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicyS
 	}
 	
 	@Override
-	public Class<PolicySetIDReference> getObjectType() {
-		return PolicySetIDReference.class;
+	public Class<PolicyIDReference> getObjectType() {
+		return PolicyIDReference.class;
 	}
 	
 	@Override
-	protected PolicySetIDReference createInstance() throws Exception 
+	protected PolicyIDReference createInstance() throws Exception 
 	{
-		return PolicySetIDReference.create(id, version, earliest, latest);
+		return PolicyIDReference.create(id, version, earliest, latest);
 	}
 	
 	
 }
+

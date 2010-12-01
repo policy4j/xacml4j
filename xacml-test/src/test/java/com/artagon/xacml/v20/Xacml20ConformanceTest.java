@@ -23,8 +23,10 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
 import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
+import com.artagon.xacml.v3.spi.PolicyDomain.Type;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
@@ -171,8 +173,7 @@ public class Xacml20ConformanceTest
 		String name = new StringBuilder(testPrefix).
 		append(StringUtils.leftPad(
 				Integer.toString(testCaseNum), 3, '0')).toString();
-		PolicyDomain store = new DefaultPolicyDomain("Test");
-		store.add(getPolicy(testPrefix, testCaseNum, "Policy.xml"));
+		PolicyDomain store = new DefaultPolicyDomain("Test", getPolicy(testPrefix, testCaseNum, "Policy.xml"));
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		System.out.println(request);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(store, repository, pip));

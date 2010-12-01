@@ -12,6 +12,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
+import com.artagon.xacml.spring.PolicyIDReferenceFactoryBean;
+import com.artagon.xacml.spring.PolicySetIDReferenceFactoryBean;
+
 public class PolicyDomainDefinitionParser extends AbstractBeanDefinitionParser
 {
 		

@@ -37,9 +37,11 @@ public class RSA2008InteropTest
 		policyReader = new Xacml20PolicyUnmarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		
-		PolicyDomain domain = new DefaultPolicyDomain("test");
+		
+		PolicyDomain domain = new DefaultPolicyDomain("Test", getPolicy("XacmlPolicySet-01-top-level.xml"));
+		
 		PolicyRepository repository = new InMemoryPolicyRepository();
-		domain.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
+
 		
 		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.add(getPolicy("XacmlPolicySet-02a-CDA.xml"));

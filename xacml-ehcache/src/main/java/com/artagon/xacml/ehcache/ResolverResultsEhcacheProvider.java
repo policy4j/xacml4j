@@ -20,7 +20,6 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	private Cache attributesCache;
 	private Cache contentCache;
 	
-	
 	public ResolverResultsEhcacheProvider(
 			Cache attributesCache,
 			Cache contentCache){
@@ -37,11 +36,14 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	{	
 		Object k = createKey(d, keys);
 		Element e = attributesCache.get(k);
-		if(e == null || 
-				e.isExpired()){
+		if(e == null){
 			return null;
 		}
-		return new AttributeSet(d, (Map<String, BagOfAttributeValues>)e.getObjectValue());
+		Object v = e.getObjectValue();
+		if(v == null){
+			return null;
+		}
+		return new AttributeSet(d, (Map<String, BagOfAttributeValues>)v);
 	}
 
 	@Override
@@ -59,11 +61,14 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	{
 		Object k = createKey(d, keys);
 		Element e = contentCache.get(k);
-		if(e == null || 
-				e.isExpired()){
+		if(e == null){
 			return null;
 		}
-		return (Content)e.getObjectValue();
+		Object v = e.getObjectValue();
+		if(v == null){
+			return null;
+		}
+		return (Content)v;
 	}
 
 	@Override

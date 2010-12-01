@@ -17,6 +17,7 @@ import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
 import com.google.common.base.Preconditions;
 
 /**
@@ -51,6 +52,20 @@ public final class DefaultPolicyDomain
 			CompositeDecisionRule ...domainPolicies){
 		this(name, mode, decisionAlgorithmProvider, 
 				Arrays.asList(domainPolicies));
+	}
+	
+	public DefaultPolicyDomain(String name, 
+			CompositeDecisionRule ...domainPolicies){
+		this(name, Type.FIRST_APPLICABLE, 
+				new DefaultDecisionCombiningAlgorithms(), 
+				Arrays.asList(domainPolicies));
+	}
+	
+	public DefaultPolicyDomain(String name, 
+			Collection<CompositeDecisionRule> domainPolicies){
+		this(name, Type.FIRST_APPLICABLE, 
+				new DefaultDecisionCombiningAlgorithms(), 
+				domainPolicies);
 	}
 	public DefaultPolicyDomain(String name, 
 			Type mode, 
