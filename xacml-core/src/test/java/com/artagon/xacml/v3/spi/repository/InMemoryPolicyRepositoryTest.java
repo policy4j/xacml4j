@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi;
+package com.artagon.xacml.v3.spi.repository;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
@@ -16,6 +16,7 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 
 public class InMemoryPolicyRepositoryTest 
@@ -38,9 +39,6 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
 		this.r = new InMemoryPolicyRepository();
-		
-	
-
 	}
 	
 	@Test
@@ -70,7 +68,6 @@ public class InMemoryPolicyRepositoryTest
 	@Test
 	public void testFindPolicies() throws Exception
 	{
-		
 		
 		replay(algorithm);
 		
