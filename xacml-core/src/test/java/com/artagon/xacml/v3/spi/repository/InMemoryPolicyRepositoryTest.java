@@ -42,7 +42,7 @@ public class InMemoryPolicyRepositoryTest
 	}
 	
 	@Test
-	public void testAddPolicies() throws Exception
+	public void testOnePolicyDifferentVersion() throws Exception
 	{
 		r.add(p1v2);
 		r.add(p1v1);
@@ -55,6 +55,7 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(3, found.size());
 		Iterator<Policy> it = found.iterator();
 		
+		// sorted by version
 		assertEquals(Version.parse("1"), it.next().getVersion());
 		assertEquals(Version.parse("1.1"), it.next().getVersion());
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
@@ -62,11 +63,17 @@ public class InMemoryPolicyRepositoryTest
 		found = r.getPolicies("id1", VersionMatch.parse("1.2.+"));
 		assertEquals(1, found.size());
 		
+		found = r.getPolicies("id1", VersionMatch.parse("1.+"), VersionMatch.parse("1.2.*"));
+		assertEquals(1, found.size());
+		
+		Policy p = r.getPolicy("id1", null, null, null);
+		assertEquals(Version.parse("2.0.1"), p.getVersion());
+		
 		verify(algorithm);
 	}
 	
 	@Test
-	public void testFindPolicies() throws Exception
+	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
 		
 		replay(algorithm);

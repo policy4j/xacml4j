@@ -17,7 +17,8 @@ public interface PolicyDomain
 	{
 		FIRST_APPLICABLE,
 		ONLY_ONE_APPLICABLE,
-		DENY_OVERRIDES;
+		DENY_OVERRIDES,
+		PERMIT_OVERRIDES;
 	}
 	
 	/**
