@@ -1,13 +1,16 @@
 package com.artagon.xacml.v3;
 
+import java.util.regex.Pattern;
+
 import com.google.common.base.Preconditions;
 
 public class VersionMatch extends XacmlObject
 {
-	private String javaRE;
+	private static final String PATTERN = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
+	  
 	private String pattern;
-    public static final String PATTERN = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
-
+    private Pattern compiledPattern;
+    
     /**
      * Constructs version match constraint
      * from a given string representation. 
@@ -20,13 +23,13 @@ public class VersionMatch extends XacmlObject
      * would all match the version string '1.2.3': 
      * '1.2.3', '1.*.3', '1.2.*' and Ô1.+'.
      * 
-     * @param pattern
+     * @param versionMatchPattern
      */
-    public VersionMatch(String pattern)
+    public VersionMatch(String versionMatchPattern)
     {
-        Preconditions.checkArgument(pattern.matches(PATTERN));
-        this.pattern = pattern;
-        this.javaRE = convertVersionMatchToJavaRE(pattern);
+        Preconditions.checkArgument(versionMatchPattern.matches(PATTERN));
+        this.pattern = versionMatchPattern;
+        this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
     }
 
     /**
@@ -38,7 +41,7 @@ public class VersionMatch extends XacmlObject
      * version matches this constraint
      */
     public boolean match(Version version) {
-        return version.getValue().matches(javaRE);
+    	return compiledPattern.matcher(version.getValue()).matches();
     }
     
     /**

@@ -32,10 +32,24 @@ public class VersionMatchTest
 	{
 		new VersionMatch("1.+.+");
 	}
+	
+	@Test
+	public void testCreateWithSubsquentialTwoTimes1() throws XacmlSyntaxException
+	{
+		VersionMatch m = new VersionMatch("1.*.*.1");
+		assertTrue(m.match(Version.parse("1.2.1.1")));
+		assertTrue(m.match(Version.parse("1.2.1.1")));
+		assertTrue(m.match(Version.parse("1.0.0.1")));
+		assertFalse(m.match(Version.parse("1.0.1")));
+	}
 
 	@Test
 	public void testCreateWithAnySingleDigitAndSubseq() throws XacmlSyntaxException
 	{
-		new VersionMatch("1.*.+");
+		VersionMatch m = new VersionMatch("1.*.+");
+		assertTrue(m.match(Version.parse("1.2.1")));
+		assertTrue(m.match(Version.parse("1.2.1.2")));
+		assertTrue(m.match(Version.parse("1.0.1")));
+		assertFalse(m.match(Version.parse("2.1.1")));
 	}
 }
