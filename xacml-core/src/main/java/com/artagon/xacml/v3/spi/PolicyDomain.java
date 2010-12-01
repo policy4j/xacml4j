@@ -43,21 +43,7 @@ public interface PolicyDomain
 	 * @return {@link Decision}
 	 */
 	Decision evaluate(EvaluationContext context);	
-	
-	/**
-	 * Adds top level policy to this domain
-	 * 
-	 * @param p a top level policy
-	 */
-	void add(CompositeDecisionRule p);
-	
-	/**
-	 * Removes top level policy from this domain
-	 * 
-	 * @param p a policy to be removed
-	 */
-	void remove(CompositeDecisionRule p);
-	
+		
 	/**
 	 * Gets domain root domain policies
 	 * 

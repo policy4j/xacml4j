@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
 import com.google.common.base.Preconditions;
 
 /**
@@ -44,13 +44,18 @@ public final class DefaultPolicyDomain
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combineDecision;
 	private Map<String, CompositeDecisionRule> policies;
 	
-	public DefaultPolicyDomain(String name){
-		this(name, Type.FIRST_APPLICABLE);
-	}
 	
 	public DefaultPolicyDomain(String name, 
 			Type mode, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider)
+			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider,
+			CompositeDecisionRule ...domainPolicies){
+		this(name, mode, decisionAlgorithmProvider, 
+				Arrays.asList(domainPolicies));
+	}
+	public DefaultPolicyDomain(String name, 
+			Type mode, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithmProvider,
+			Collection<CompositeDecisionRule> domainPolicies)
 	{
 		Preconditions.checkArgument(name != null);
 		Preconditions.checkArgument(mode != null);
@@ -62,20 +67,18 @@ public final class DefaultPolicyDomain
 		this.combineDecision = decisionAlgorithmProvider.getPolicyAlgorithm(algorithmId);
 		Preconditions.checkState(combineDecision != null);
 		this.policies = new ConcurrentHashMap<String, CompositeDecisionRule>();
+		for(CompositeDecisionRule r : domainPolicies){
+			add(r);
+		}
 	}
 	
-	public DefaultPolicyDomain(String name, Type mode)
-	{
-		this(name, mode, new DefaultDecisionCombiningAlgorithms());
-	}
 
 	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
-	public final void add(CompositeDecisionRule policy) {
+	private void add(CompositeDecisionRule policy) {
 		CompositeDecisionRuleIDReference r = policy.getReference();
 		if(log.isDebugEnabled()){
 			log.debug("Adding composite rule reference id=\"{}\" version=\"{}\", " +
@@ -91,11 +94,6 @@ public final class DefaultPolicyDomain
 		Preconditions.checkState(oldPolicy == null);
 	}
 		
-	@Override
-	public void remove(CompositeDecisionRule p) {
-		policies.remove(p.getId());
-	}
-
 	@Override
 	public Collection<CompositeDecisionRule> getDomainPolicies() {
 		return Collections.unmodifiableCollection(policies.values());
