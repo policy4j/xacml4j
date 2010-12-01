@@ -79,6 +79,8 @@ public class VersionMatch extends XacmlObject
      * 
      * @param pattern a version match constraint
      * @return {@link VersionMatch} instance
+     * @exception IllegalArgumentException if a given version
+     * match constraint can not be parsed
      */
     public static VersionMatch parse(String pattern) {
     	Preconditions.checkNotNull(pattern);

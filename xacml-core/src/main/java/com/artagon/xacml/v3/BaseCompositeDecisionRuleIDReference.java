@@ -41,8 +41,16 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 		return version;
 	}
 	
-	public boolean matches(String id,  Version v)
-	{
+	/**
+	 * Matches a given identifier and version
+	 * against this reference
+	 * 
+	 * @param id an identifier
+	 * @param v a version
+	 * @return <code>true</code> if given identifier
+	 * and version matches this reference version constraints
+	 */
+	protected boolean matches(String id,  Version v){
 		return this.id.equals(id) &&( (version == null || version.match(v)) &&
 		(earliest == null || earliest.match(v)) &&
 		(latest == null || latest.match(v)));

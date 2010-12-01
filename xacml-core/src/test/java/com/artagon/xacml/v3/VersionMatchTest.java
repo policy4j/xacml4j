@@ -2,6 +2,7 @@ package com.artagon.xacml.v3;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ public class VersionMatchTest
 	public void testMatchAnySubsequentialVersions() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.+");
+		assertEquals("1.+", m.getPattern());
 		assertTrue(m.match(Version.parse("1.2.1")));
 		assertTrue(m.match(Version.parse("1.1")));
 		assertFalse(m.match(Version.parse("2.1")));
@@ -22,6 +24,7 @@ public class VersionMatchTest
 	public void testMatchAnySingleNumber() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.1");
+		assertEquals("1.*.1", m.getPattern());
 		assertTrue(m.match(Version.parse("1.2.1")));
 		assertTrue(m.match(Version.parse("1.0.1")));
 		assertFalse(m.match(Version.parse("2.1.1")));
@@ -34,9 +37,10 @@ public class VersionMatchTest
 	}
 	
 	@Test
-	public void testCreateWithSubsquentialTwoTimes1() throws XacmlSyntaxException
+	public void testMatchAnySingleNumberTwoTimesInTheRow() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.*.1");
+		assertEquals("1.*.*.1", m.getPattern());
 		assertTrue(m.match(Version.parse("1.2.1.1")));
 		assertTrue(m.match(Version.parse("1.2.1.1")));
 		assertTrue(m.match(Version.parse("1.0.0.1")));
