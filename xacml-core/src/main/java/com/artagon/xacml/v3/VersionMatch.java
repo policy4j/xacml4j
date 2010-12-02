@@ -2,9 +2,10 @@ package com.artagon.xacml.v3;
 
 import java.util.regex.Pattern;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class VersionMatch extends XacmlObject
+public class VersionMatch
 {
 	private static final String PATTERN = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
 	  
@@ -85,5 +86,31 @@ public class VersionMatch extends XacmlObject
     public static VersionMatch parse(String pattern) {
     	Preconditions.checkNotNull(pattern);
         return new VersionMatch(pattern);
+    }
+    
+    @Override
+    public boolean equals(Object o){
+    	if(o == this){
+    		return true;
+    	}
+    	if(o == null){
+    		return false;
+    	}
+    	if(!(o instanceof VersionMatch)){
+    		return false;
+    	}
+    	VersionMatch vm = (VersionMatch)o;
+    	return pattern.equals(vm.pattern);
+    }
+    
+    @Override
+    public String toString(){
+    	return Objects.toStringHelper(this)
+    	.add("pattern", pattern).toString();
+    }
+    
+    @Override
+    public int hashCode(){
+    	return pattern.hashCode();
     }
 }

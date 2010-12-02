@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -19,7 +20,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private final static Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
 	
 	private EvaluationContextHandler contextHandler;
-	private PolicyReferenceResolver policyResolver;
+	private PolicyRepository repository;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -43,22 +44,22 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	protected BaseEvaluationContext(
 			EvaluationContextHandler attributeService, 
-			PolicyReferenceResolver policyResolver){
-		this(false, attributeService,  policyResolver);
+			PolicyRepository repository){
+		this(false, attributeService,  repository);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
 			EvaluationContextHandler attributeService,
-			PolicyReferenceResolver policyResolver){
+			PolicyRepository repository){
 		Preconditions.checkNotNull(attributeService);
 
-		Preconditions.checkNotNull(policyResolver);
+		Preconditions.checkNotNull(repository);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = attributeService;
-		this.policyResolver = policyResolver;
+		this.repository = repository;
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
@@ -183,14 +184,45 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final Policy resolve(PolicyIDReference ref) throws PolicyResolutionException {
-		return policyResolver.resolve(this, ref);
+	public final Policy resolve(PolicyIDReference ref) 
+		throws PolicyResolutionException {
+		Policy p =	repository.getPolicy(
+				ref.getId(), 
+				ref.getVersionMatch(), 
+				ref.getEarliestVersion(), 
+				ref.getLatestVersion());
+		if(p == null){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to resolve " +
+						"Policy reference=\"{}\"", ref);
+			}
+			throw new PolicyResolutionException(this, 
+					"Failed to resolve PolicySet reference, " +
+					"enclosing Policy id=\"%s\"", 
+					getCurrentPolicySet().getId());
+		}
+		return p;
 	}
 
 	@Override
 	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
-		return policyResolver.resolve(this, ref);
+		PolicySet p =	repository.getPolicySet(
+				ref.getId(), 
+				ref.getVersionMatch(), 
+				ref.getEarliestVersion(), 
+				ref.getLatestVersion());
+		if(p == null){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to resolve " +
+						"PolicySet reference=\"{}\"", ref);
+			}
+			throw new PolicyResolutionException(this, 
+					"Failed to resolve PolicySet reference, " +
+					"enclosing PolicySet id=\"%s\"", 
+					getCurrentPolicySet().getId());
+		}
+		return p;
 	}
 
 	

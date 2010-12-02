@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
-import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
@@ -24,7 +23,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
-	private PolicyReferenceResolver policyReferenceResolver;
+	private PolicyRepository policyReferenceResolver;
 	private PolicyDomain policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 	
@@ -46,7 +45,7 @@ public class DefaultPolicyDecisionPointContextFactory
 		Preconditions.checkArgument(pip != null);
 		Preconditions.checkArgument(auditor != null);
 		Preconditions.checkArgument(cache != null);
-		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
+		this.policyReferenceResolver = repository;
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
 		this.policyDomain = policyDomain;

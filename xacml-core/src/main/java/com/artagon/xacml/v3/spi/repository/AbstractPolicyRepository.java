@@ -29,7 +29,6 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 			public int compare(Policy a, Policy b) {
 				return a.getVersion().compareTo(b.getVersion());
 			}
-			
 		});
 	}
 	

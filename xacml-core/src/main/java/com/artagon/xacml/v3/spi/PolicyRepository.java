@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyReferenceResolver;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.VersionMatch;
 
@@ -17,7 +16,7 @@ import com.artagon.xacml.v3.VersionMatch;
  * 
  * @author Giedrius Trumpickas
  */
-public interface PolicyRepository
+public interface PolicyRepository 
 {
 	/**
 	 * Gets all versions of the policy with a given
@@ -106,5 +105,4 @@ public interface PolicyRepository
 	 * @param policy a new version of the policy
 	 */
 	void add(CompositeDecisionRule policy);
-	
 }
