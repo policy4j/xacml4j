@@ -1,17 +1,16 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.Map;
 
 import org.easymock.Capture;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,13 +35,16 @@ public class DefaultPolicyInformationPointTest
 	private AttributeResolverDescriptor descriptor;
 	private AttributeResolverDescriptor descriptorNoCache;
 	
+	private IMocksControl control;
+	
 	@Before
 	public void init()
 	{
-		this.cache = createStrictMock(ResolverResultCacheProvider.class);
-		this.registry = createStrictMock(ResolverRegistry.class);
-		this.attributeResolver = createStrictMock(AttributeResolver.class);
-		this.context = createStrictMock(EvaluationContext.class);
+		this.control = createControl();
+		this.cache = control.createMock(ResolverResultCacheProvider.class);
+		this.registry = control.createMock(ResolverRegistry.class);
+		this.attributeResolver = control.createMock(AttributeResolver.class);
+		this.context = control.createMock(EvaluationContext.class);
 		this.pip = new DefaultPolicyInformationPoint(registry, cache);
 		this.descriptor = AttributeResolverDescriptorBuilder
 		.create("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
@@ -95,13 +97,13 @@ public class DefaultPolicyInformationPointTest
 		cache.putAttributes(capture(resolverContext2), eq(result));
 		
 		
-		replay(registry, attributeResolver, cache, context);
+		control.replay();
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
-		verify(registry, attributeResolver, cache, context);
+		control.verify();
 	}
 	
 	@Test
@@ -128,11 +130,11 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
 				
-		replay(registry, attributeResolver, cache, context);
+		control.replay();
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
 
-		verify(registry, attributeResolver, cache, context);
+		control.verify();
 	}
 }

@@ -28,7 +28,9 @@ public class VersionMatch
      */
     public VersionMatch(String versionMatchPattern)
     {
-        Preconditions.checkArgument(versionMatchPattern.matches(PATTERN));
+        Preconditions.checkArgument(versionMatchPattern.matches(PATTERN), 
+        		"Given version match=\"%s\" should match regular expression=\"%s\"", 
+        		versionMatchPattern, PATTERN);
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
     }

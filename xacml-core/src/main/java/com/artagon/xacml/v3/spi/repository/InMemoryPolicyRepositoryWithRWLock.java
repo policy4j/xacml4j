@@ -21,9 +21,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-public class InMemoryPolicyRepository extends AbstractPolicyRepository
+public class InMemoryPolicyRepositoryWithRWLock extends AbstractPolicyRepository
 {
-	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
+	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepositoryWithRWLock.class);
 	
 	private Map<String, Map<Version, Policy>> policies;
 	private Map<String, Map<Version, PolicySet>> policySets;
@@ -31,7 +31,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	private ReadWriteLock policyLock;
 	private ReadWriteLock policySetLock;
 	
-	public InMemoryPolicyRepository(){
+	public InMemoryPolicyRepositoryWithRWLock(){
 		this.policies = new HashMap<String, Map<Version, Policy>>();
 		this.policySets = new HashMap<String, Map<Version, PolicySet>>();
 		this.policyLock = new ReentrantReadWriteLock();
@@ -109,7 +109,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 					"Repository already contains a " +
 					"policy with id=\"%s\" and version=\"%s\"", 
 								id, v);
-			versions.put(v, policy);
+			Preconditions.checkState(
+					versions.put(policy.getVersion(), policy) == null);
 		}finally{
 			policyLock.writeLock().unlock();
 		}
@@ -138,15 +139,19 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			Preconditions.checkArgument(!versions.containsKey(v), 
 					"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
 					id, v);
-			versions.put(policySet.getVersion(), policySet);
+			Preconditions.checkState(
+					versions.put(policySet.getVersion(), policySet) == null);
 		}finally{
 			policySetLock.writeLock().unlock();
 		}
 		
 	}
 
-	private <T extends Versionable> Collection<T> find(Collection<T> c, 
-			final VersionMatch version, final VersionMatch earliest, final VersionMatch latest)
+	private <T extends Versionable> Collection<T> find(
+			Collection<T> c, 
+			final VersionMatch version, 
+			final VersionMatch earliest, 
+			final VersionMatch latest)
 	{
 		if(c == null){
 			return Collections.<T>emptyList();

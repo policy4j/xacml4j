@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class PolicyIDReference extends 
@@ -55,6 +56,24 @@ public class PolicyIDReference extends
 		}catch(PolicyResolutionException e){
 			return refContext;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof PolicyIDReference)){
+			return false;
+		}
+		PolicyIDReference r = (PolicyIDReference)o;
+		return r.getId().equals(getId()) 
+		&& Objects.equal(getVersionMatch(), r.getVersionMatch()) 
+		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion()) 
+		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}
 
 	@Override

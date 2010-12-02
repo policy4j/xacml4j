@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,11 +31,13 @@ public class AnnotatedResolverMethodParserTest
 {
 	private AnnotatedResolverMethodParser p;
 	private EvaluationContext context;
+	private IMocksControl control;
 	
 	@Before
 	public void init(){
 		this.p = new AnnotatedResolverMethodParser();
-		this.context = createControl().createMock(EvaluationContext.class);
+		this.control = createControl();
+		this.context = control.createMock(EvaluationContext.class);
 	}
 	
 	@Test
@@ -51,7 +54,8 @@ public class AnnotatedResolverMethodParserTest
 		
 		expect(context.resolve(excpectedKey0)).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false)));
 		expect(context.resolve(excpectedKey1)).andReturn(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)));
-		replay(context);
+		
+		control.replay();
 		
 		AttributeResolver r = p.parseAttributeResolver(this, m);
 		AttributeResolverDescriptor d = r.getDescriptor();
@@ -92,10 +96,8 @@ public class AnnotatedResolverMethodParserTest
 		assertEquals(excpectedKey1, keys.get(1));
 		
 		
-		
-
-		
-		verify(context);
+	
+		control.verify();
 	}
 	
 	@Test

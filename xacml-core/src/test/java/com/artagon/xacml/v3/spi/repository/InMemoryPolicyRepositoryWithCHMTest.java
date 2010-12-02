@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.repository;
 
+
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -18,7 +19,7 @@ import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 
-public class InMemoryPolicyRepositoryTest 
+public class InMemoryPolicyRepositoryWithCHMTest
 {
 	private Policy p1v1;
 	private Policy p1v2;
@@ -37,7 +38,7 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
-		this.r = new InMemoryPolicyRepositoryWithRWLock();
+		this.r = new InMemoryPolicyRepositoryWithChm();
 	}
 	
 	@Test
@@ -96,3 +97,4 @@ public class InMemoryPolicyRepositoryTest
 		
 	}
 }
+

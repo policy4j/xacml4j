@@ -24,7 +24,8 @@ public class Version implements Comparable<Version>
      * @param v a version represented as string
      * @exception XacmlSyntaxException if version can not be parsed
      */
-    private Version(String version) throws XacmlSyntaxException
+    private Version(String version) 
+    	throws XacmlSyntaxException
     {
     	Preconditions.checkNotNull(version);
     	this.value = version;
@@ -98,7 +99,8 @@ public class Version implements Comparable<Version>
      * @param version a version string
      * @return an array of non-negative integers
      */
-	private static int[] parseVersion(String version) throws XacmlSyntaxException
+	private static int[] parseVersion(
+			String version) throws XacmlSyntaxException
     {
     	if(!version.matches(VERSION_PATTERN)){
     		throw new XacmlSyntaxException(

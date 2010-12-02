@@ -8,7 +8,7 @@ import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
 import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 
@@ -42,7 +42,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		PolicyUnmarshaller unmarshaler = new Xacml30PolicyUnmarshaller(extensionFunctions, 
 				extensionDecisionCombiningAlgorithms);
-		InMemoryPolicyRepository repository = new InMemoryPolicyRepository();
+		InMemoryPolicyRepositoryWithRWLock repository = new InMemoryPolicyRepositoryWithRWLock();
 		for(Resource r : resources.getResources()){
 			repository.add(unmarshaler.unmarshal(r.getInputStream()));
 		}

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject 
@@ -10,6 +11,8 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 	private VersionMatch earliest;
 	private VersionMatch latest;
 	
+	private int hashCode;
+	
 	protected BaseCompositeDecisionRuleIDReference(String id, 
 			VersionMatch version, 
 			VersionMatch earliest, 
@@ -19,6 +22,7 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 		this.version = version;
 		this.latest = latest;
 		this.earliest = earliest;
+		this.hashCode = Objects.hashCode(id, version, latest, earliest);
 	}
 	
 	@Override
@@ -39,6 +43,20 @@ abstract class BaseCompositeDecisionRuleIDReference extends XacmlObject
 	@Override
 	public final VersionMatch getVersionMatch() {
 		return version;
+	}
+	
+	@Override
+	public final String toString(){
+		return Objects.toStringHelper(this)
+		.add("id", id)
+		.add("version", version)
+		.add("earliest", earliest)
+		.add("latest", latest).toString();
+	}
+	
+	@Override
+	public final int hashCode(){
+		return hashCode;
 	}
 	
 	/**

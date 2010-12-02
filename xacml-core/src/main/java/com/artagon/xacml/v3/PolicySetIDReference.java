@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -55,6 +56,24 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 		return policySet != null && matches(policySet.getId(), policySet.getVersion());
 	}
 
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof PolicySetIDReference)){
+			return false;
+		}
+		PolicySetIDReference r = (PolicySetIDReference)o;
+		return r.getId().equals(getId()) 
+		&& Objects.equal(getVersionMatch(), r.getVersionMatch()) 
+		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion()) 
+		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
+	}
+	
 	/**
 	 * Creates an {@link EvaluationContext} to evaluate this reference.
 	 */

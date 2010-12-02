@@ -186,11 +186,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Policy resolve(PolicyIDReference ref) 
 		throws PolicyResolutionException {
-		Policy p =	repository.getPolicy(
-				ref.getId(), 
-				ref.getVersionMatch(), 
-				ref.getEarliestVersion(), 
-				ref.getLatestVersion());
+		Policy p =	repository.resolve(ref);
 		if(p == null){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve " +
@@ -207,11 +203,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
-		PolicySet p =	repository.getPolicySet(
-				ref.getId(), 
-				ref.getVersionMatch(), 
-				ref.getEarliestVersion(), 
-				ref.getLatestVersion());
+		PolicySet p =	repository.resolve(ref);
 		if(p == null){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve " +
