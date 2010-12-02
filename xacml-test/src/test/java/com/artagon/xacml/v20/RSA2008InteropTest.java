@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithChm;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 
@@ -40,7 +40,7 @@ public class RSA2008InteropTest
 		
 		PolicyDomain domain = new DefaultPolicyDomain("Test", getPolicy("XacmlPolicySet-01-top-level.xml"));
 		
-		PolicyRepository repository = new InMemoryPolicyRepositoryWithChm();
+		PolicyRepository repository = new InMemoryPolicyRepositoryWithRWLock();
 
 		
 		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
