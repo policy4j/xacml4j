@@ -193,9 +193,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 						"Policy reference=\"{}\"", ref);
 			}
 			throw new PolicyResolutionException(this, 
-					"Failed to resolve PolicySet reference, " +
-					"enclosing Policy id=\"%s\"", 
-					getCurrentPolicySet().getId());
+					"Failed to resolve PolicySet reference");
 		}
 		return p;
 	}
@@ -203,16 +201,14 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
-		PolicySet p =	repository.resolve(ref);
+		PolicySet p = repository.resolve(ref);
 		if(p == null){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve " +
 						"PolicySet reference=\"{}\"", ref);
 			}
 			throw new PolicyResolutionException(this, 
-					"Failed to resolve PolicySet reference, " +
-					"enclosing PolicySet id=\"%s\"", 
-					getCurrentPolicySet().getId());
+					"Failed to resolve PolicySet reference");
 		}
 		return p;
 	}

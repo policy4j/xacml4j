@@ -97,7 +97,7 @@ public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
 			}
 		}
 		Preconditions.checkState(
-				versions.put(policy.getVersion(), policy) == null, 
+				versions.put(v, policy) == null, 
 				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
 					id, v);
 	

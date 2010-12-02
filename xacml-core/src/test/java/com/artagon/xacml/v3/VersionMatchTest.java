@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 

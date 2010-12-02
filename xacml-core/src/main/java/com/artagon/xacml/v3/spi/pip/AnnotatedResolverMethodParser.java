@@ -27,7 +27,8 @@ public class AnnotatedResolverMethodParser
 		throws XacmlSyntaxException
 	{
 		Collection<ContentResolver> resolvers = new LinkedList<ContentResolver>();
-		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), XacmlContentResolverDescriptor.class);
+		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
+				XacmlContentResolverDescriptor.class);
 		for(Method m : methods){
 			resolvers.add(parseContentResolver(instance, m));
 		}
@@ -45,7 +46,7 @@ public class AnnotatedResolverMethodParser
 		return resolvers;
 	}
 	
-	public AttributeResolver parseAttributeResolver(Object instance, Method m) 
+	AttributeResolver parseAttributeResolver(Object instance, Method m) 
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);
@@ -80,7 +81,7 @@ public class AnnotatedResolverMethodParser
 				new Invocation<Map<String,BagOfAttributeValues>>(instance, m, info.getFirst()));
 	}
 	
-	public ContentResolver parseContentResolver(Object instance, Method m) 
+	ContentResolver parseContentResolver(Object instance, Method m) 
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);

@@ -1,6 +1,7 @@
 package com.artagon.xacml.v20;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,9 +28,12 @@ import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.pip.AnnotatedResolverMethodParser;
+import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithChm;
+import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
 
 public class Xacml20ConformanceTest 
 {
@@ -39,22 +43,33 @@ public class Xacml20ConformanceTest
 	private static PolicyRepository repository;
 	private PolicyDecisionPoint pdp;
 	
+	private static ResolverRegistry resolvers;
 	private static PolicyInformationPoint pip;
 	
 	
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		repository = new InMemoryPolicyRepositoryWithChm();
+		repository = new InMemoryPolicyRepositoryWithRWLock();
 		policyReader = new Xacml20PolicyUnmarshaller();
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
+		resolvers = new DefaultResolverRegistry();
+		
+		AnnotatedResolverMethodParser resolver = new AnnotatedResolverMethodParser();
+		Collection<AttributeResolver> all = resolver.getAttributeResolvers(new Xacml20ConformanceAttributeResolver());
+		
+		for(AttributeResolver r : all){
+			resolvers.addResolver(r);
+		}
+		pip = new DefaultPolicyInformationPoint(resolvers);
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
 		addAllPolicies(repository, "IIC", 233);
 		addAllPolicies(repository, "IID", 30);
+		
+		addAllPolicies(repository, "IIIA", 28);
 		addAllPolicies(repository, "IIIF", 7);
 		addAllPolicies(repository, "IIIG", 7);
 		
@@ -69,10 +84,22 @@ public class Xacml20ConformanceTest
 		addPolicy(repository, "IIE", "Policy.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId2.xml", 2);
+		
 	}
 	
 	@Test
 	public void testIIATests() throws Exception
+	{	
+		Set<Integer> skipTests = new HashSet<Integer>();
+		skipTests.add(2);
+		skipTests.add(3);
+		skipTests.add(4);
+		skipTests.add(5);
+		executeXacmlConformanceTestCase(skipTests, "IIA", 22);	
+	}
+	
+	@Test
+	public void testIIIATests() throws Exception
 	{	
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(1);
@@ -80,8 +107,7 @@ public class Xacml20ConformanceTest
 		skipTests.add(3);
 		skipTests.add(4);
 		skipTests.add(5);
-		skipTests.add(6);
-		executeXacmlConformanceTestCase(skipTests, "IIA", 22);	
+		executeXacmlConformanceTestCase(skipTests, "IIIA", 28);	
 	}
 	
 	@Test
