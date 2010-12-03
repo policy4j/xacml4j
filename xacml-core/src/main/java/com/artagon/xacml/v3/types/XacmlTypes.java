@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.marshall;
+package com.artagon.xacml.v3.types;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -12,30 +12,13 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.types.AnyURIType;
-import com.artagon.xacml.v3.types.Base64BinaryType;
-import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.DNSNameType;
-import com.artagon.xacml.v3.types.DateTimeType;
-import com.artagon.xacml.v3.types.DateType;
-import com.artagon.xacml.v3.types.DayTimeDurationType;
-import com.artagon.xacml.v3.types.DoubleType;
-import com.artagon.xacml.v3.types.HexBinaryType;
-import com.artagon.xacml.v3.types.IPAddressType;
-import com.artagon.xacml.v3.types.IntegerType;
-import com.artagon.xacml.v3.types.RFC822NameType;
-import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.TimeType;
-import com.artagon.xacml.v3.types.X500NameType;
-import com.artagon.xacml.v3.types.XPathExpressionType;
-import com.artagon.xacml.v3.types.YearMonthDurationType;
 
 /**
  * An enumeration  of all XACML 2.0 & 3.0 data types
  * 
  * @author Giedrius Trumpickas
  */
-public enum XacmlDataTypesRegistry
+public enum XacmlTypes
 {
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> 
@@ -113,27 +96,27 @@ public enum XacmlDataTypesRegistry
 	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 
 	static {
-		for (XacmlDataTypesRegistry t : EnumSet.allOf(XacmlDataTypesRegistry.class)) {
+		for (XacmlTypes t : EnumSet.allOf(XacmlTypes.class)) {
 			BY_TYPE_ID.put(t.getDataType().getDataTypeId(), t.getDataType());
 		}
 		// legacy XACML 2.0 type mappings
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
-				XacmlDataTypesRegistry.XPATHEXPRESSION.getDataType());
+				XacmlTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression",
-				XacmlDataTypesRegistry.XPATHEXPRESSION.getDataType());
+				XacmlTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration",
-						XacmlDataTypesRegistry.DAYTIMEDURATION.getDataType());
+						XacmlTypes.DAYTIMEDURATION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration",
-						XacmlDataTypesRegistry.YEARMONTHDURATION.getDataType());
+						XacmlTypes.YEARMONTHDURATION.getDataType());
 	}
 
 	private AttributeValueType type;
 
-	private XacmlDataTypesRegistry(AttributeValueType type) {
+	private XacmlTypes(AttributeValueType type) {
 		this.type = type;
 	}
 	
@@ -147,13 +130,23 @@ public enum XacmlDataTypesRegistry
 		return type;
 	}
 	
+	/**
+	 * Gets {@link AttributeValueType} instance
+	 * via type identifier
+	 * 
+	 * @param <T>
+	 * @param typeId a type identifier
+	 * @return {@link AttributeValueType}
+	 * @throws XacmlSyntaxException
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends AttributeValueType> T getType(String typeId) 
 		throws XacmlSyntaxException
 	{
 		AttributeValueType type = BY_TYPE_ID.get(typeId);
 		if(type == null){
-			throw new XacmlSyntaxException("Unknow XACML typeId=\"%s\"", typeId);
+			throw new XacmlSyntaxException(
+					"Unknow XACML typeId=\"%s\"", typeId);
 		}
 		return (T) type;
 	}

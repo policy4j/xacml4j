@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
+import com.artagon.xacml.v3.types.XacmlTypes;
 
 public class AttributesTest 
 {
@@ -158,7 +158,7 @@ public class AttributesTest
 		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content1, attributes);
 		assertEquals(2, test.getAttributeValues("testId10", null, INTEGER).size());
 		assertEquals(1, test.getAttributeValues("testId10", null, STRING).size());
-		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypesRegistry.STRING.getDataType()).size());
-		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", XacmlDataTypesRegistry.INTEGER.getDataType()).size());
+		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", XacmlTypes.STRING.getDataType()).size());
+		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", XacmlTypes.INTEGER.getDataType()).size());
 	}
 }
