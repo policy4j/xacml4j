@@ -196,9 +196,9 @@ public class RSA2008InteropTest
 		int n = 10;
 		long time = 0;
 		for(int i = 0; i < n; i++){
-			long start = System.nanoTime();
+			long start = System.currentTimeMillis();
 			response = pdp.decide(request);
-			long end = System.nanoTime();
+			long end = System.currentTimeMillis();
 			time += (end - start);
 		}
 		System.out.printf("Test=\"%s\" avg execution took=\"%d\" nano s and took=\"%d\" iterations\n", name, time/n, n);
