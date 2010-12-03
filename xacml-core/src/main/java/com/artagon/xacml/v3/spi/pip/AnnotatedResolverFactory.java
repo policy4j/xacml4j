@@ -21,7 +21,7 @@ import com.artagon.xacml.v3.marshall.XacmlDataTypesRegistry;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-public class AnnotatedResolverMethodParser 
+public class AnnotatedResolverFactory 
 {
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException
@@ -39,7 +39,8 @@ public class AnnotatedResolverMethodParser
 		throws XacmlSyntaxException
 	{
 		Collection<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
-		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), XacmlAttributeResolverDescriptor.class);
+		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
+				XacmlAttributeResolverDescriptor.class);
 		for(Method m : methods){
 			resolvers.add(parseAttributeResolver(instance, m));
 		}

@@ -108,9 +108,6 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	@Override
 	public  Decision evaluate(EvaluationContext context) 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating decision ruleId=\"{}\"", getId());
-		}
 		Preconditions.checkArgument(
 				isEvaluationContextValid(context));
 		Decision result = doEvaluate(context);
@@ -125,16 +122,10 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		}
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("Evaluating advice " +
-						"for decision with id=\"{}\"", getId());
-			}
-			context.addAdvices(evaluateAdvices(context, result));
-			if(log.isDebugEnabled()){
-				log.debug("Evaluating obligations " +
-						"for decision with id=\"{}\"", getId());
-			}
-			context.addObligations(evaluateObligations(context, result));
+			context.addAdvices(
+					evaluateAdvices(context, result));
+			context.addObligations(
+					evaluateObligations(context, result));
 			return result;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){

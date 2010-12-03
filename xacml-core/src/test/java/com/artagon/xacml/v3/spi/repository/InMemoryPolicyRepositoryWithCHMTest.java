@@ -73,6 +73,14 @@ public class InMemoryPolicyRepositoryWithCHMTest
 	}
 	
 	@Test
+	public void testAddPolicyWithTheSameIdAndSameVersion()
+	{
+		r.add(p1v2);
+		r.add(p1v2);
+	}
+
+	
+	@Test
 	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
 		

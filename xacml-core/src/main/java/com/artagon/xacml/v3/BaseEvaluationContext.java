@@ -249,7 +249,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		BagOfAttributeValues v = contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
-			log.debug("Resolved designator=\"{}\" to value=\"{}\"", ref, v);
+			log.debug("Resolved designator=\"{}\" " +
+					"to value=\"{}\"", ref, v);
 		}
 		return (v == null)?ref.getDataType().emptyBag():v;
 	}
@@ -261,7 +262,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		BagOfAttributeValues v = contextHandler.resolve(this, ref);
 		if(log.isDebugEnabled()){
-			log.debug("Resolved selector=\"{}\" to value=\"{}\"", ref, v);
+			log.debug("Resolved selector=\"{}\" " +
+					"to value=\"{}\"", ref, v);
 		}
 		return (v == null)?ref.getDataType().emptyBag():v;
 	}

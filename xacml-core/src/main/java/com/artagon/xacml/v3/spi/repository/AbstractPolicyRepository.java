@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyResolutionException;
@@ -20,6 +23,8 @@ import com.artagon.xacml.v3.spi.PolicyRepository;
  */
 public abstract class AbstractPolicyRepository implements PolicyRepository
 {
+	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
+	
 	private ConcurrentHashMap<PolicyIDReference, Policy> policyIDRefCache;
 	private ConcurrentHashMap<PolicySetIDReference, PolicySet> policySetIDRefCache;
 	
@@ -110,6 +115,11 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	{
 		Policy p =  policyIDRefCache.get(ref);
 		if(p != null){
+			if(log.isDebugEnabled()){
+				log.debug("Found Policy id=\"{}\" " +
+						"version=\"{}\" for reference=\"{}\"", 
+						new Object[]{p.getId(), p.getVersion(), ref});
+			}
 			return p;
 		}
 		p =  getPolicy(
@@ -130,9 +140,15 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	 */
 	@Override
 	public PolicySet resolve(PolicySetIDReference ref)
-			throws PolicyResolutionException {
+			throws PolicyResolutionException 
+	{
 		PolicySet p = policySetIDRefCache.get(ref);
 		if(p != null){
+			if(log.isDebugEnabled()){
+				log.debug("Found PolicySet id=\"{}\" " +
+						"version=\"{}\" for reference=\"{}\"", 
+						new Object[]{p.getId(), p.getVersion(), ref});
+			}
 			return p;
 		}
 		p =  getPolicySet(

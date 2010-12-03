@@ -27,15 +27,15 @@ import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 
-public class AnnotatedResolverMethodParserTest 
+public class AnnotatedResolverFactoryTest 
 {
-	private AnnotatedResolverMethodParser p;
+	private AnnotatedResolverFactory p;
 	private EvaluationContext context;
 	private IMocksControl control;
 	
 	@Before
 	public void init(){
-		this.p = new AnnotatedResolverMethodParser();
+		this.p = new AnnotatedResolverFactory();
 		this.control = createControl();
 		this.context = control.createMock(EvaluationContext.class);
 	}

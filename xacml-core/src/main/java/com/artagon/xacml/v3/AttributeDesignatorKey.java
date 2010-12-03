@@ -9,8 +9,11 @@ public final class AttributeDesignatorKey extends AttributeReferenceKey
 	private String issuer;
 	private int hashCode;
 	
-	public AttributeDesignatorKey(AttributeCategory category, 
-			String attributeId, AttributeValueType dataType, String issuer){
+	public AttributeDesignatorKey(
+			AttributeCategory category, 
+			String attributeId, 
+			AttributeValueType dataType, 
+			String issuer){
 		super(category, dataType);
 		Preconditions.checkNotNull(attributeId);
 		this.attributeId = attributeId;
@@ -30,7 +33,8 @@ public final class AttributeDesignatorKey extends AttributeReferenceKey
 	
 	@Override
 	public BagOfAttributeValues resolve(EvaluationContext context)
-			throws EvaluationException {
+			throws EvaluationException 
+	{
 		return context.resolve(this);
 	}
 	

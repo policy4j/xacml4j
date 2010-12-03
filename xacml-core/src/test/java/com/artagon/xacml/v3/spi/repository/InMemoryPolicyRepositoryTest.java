@@ -41,7 +41,7 @@ public class InMemoryPolicyRepositoryTest
 	}
 	
 	@Test
-	public void testOnePolicyDifferentVersion() throws Exception
+	public void testAddSamePolicyDifferentVersions() throws Exception
 	{
 		r.add(p1v2);
 		r.add(p1v1);
@@ -69,6 +69,13 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("2.0.1"), p.getVersion());
 		
 		verify(algorithm);
+	}
+	
+	@Test
+	public void testAddPolicyWithTheSameIdAndSameVersion()
+	{
+		r.add(p1v2);
+		r.add(p1v2);
 	}
 	
 	@Test

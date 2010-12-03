@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.expect;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
@@ -29,12 +30,14 @@ public class DefaultResolverRegistryTest
 		this.r1 = control.createMock(AttributeResolver.class);
 		this.r2 = control.createMock(AttributeResolver.class);
 		
-		this.d1 = AttributeResolverDescriptorBuilder.create("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+		this.d1 = AttributeResolverDescriptorBuilder.
+		create("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testAttr1", IntegerType.INTEGER).build();
 	
 	}
 	
 	@Test
+	@Ignore
 	public void testAddResolver()
 	{
 		expect(r1.getDescriptor()).andReturn(d1);

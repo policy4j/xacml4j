@@ -96,14 +96,8 @@ public final class DefaultPolicyDomain
 	private void add(CompositeDecisionRule policy) {
 		CompositeDecisionRuleIDReference r = policy.getReference();
 		if(log.isDebugEnabled()){
-			log.debug("Adding composite rule reference id=\"{}\" version=\"{}\", " +
-					"EarliestVersion=\"{}\", LatestVersion=\"{}\" to the policy domain=\"{}\"", 
-					new String[]{r.getId(), 
-					r.getVersionMatch() == null?"any":r.getVersionMatch().getPattern(),
-					r.getEarliestVersion() == null?"any":r.getEarliestVersion().getPattern(),
-					r.getLatestVersion() == null?"any":r.getLatestVersion().getPattern(), 
-					name
-				});
+			log.debug("Adding composite rule " +
+					"reference=\"{}\" domain=\"{}\"", r, name);
 		}
 		CompositeDecisionRule oldPolicy = policies.put(r.getId(), r);
 		Preconditions.checkState(oldPolicy == null);

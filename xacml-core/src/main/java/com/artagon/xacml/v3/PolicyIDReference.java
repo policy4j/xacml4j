@@ -70,7 +70,7 @@ public class PolicyIDReference extends
 			return false;
 		}
 		PolicyIDReference r = (PolicyIDReference)o;
-		return r.getId().equals(getId()) 
+		return getId().equals(r.getId()) 
 		&& Objects.equal(getVersionMatch(), r.getVersionMatch()) 
 		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion()) 
 		&& Objects.equal(getLatestVersion(), r.getLatestVersion());

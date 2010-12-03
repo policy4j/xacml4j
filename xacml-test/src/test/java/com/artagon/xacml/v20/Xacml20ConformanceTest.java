@@ -28,13 +28,12 @@ import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.pip.AnnotatedResolverMethodParser;
+import com.artagon.xacml.v3.spi.pip.AnnotatedResolverFactory;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithChm;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
 
 public class Xacml20ConformanceTest 
 {
@@ -51,13 +50,13 @@ public class Xacml20ConformanceTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		repository = new InMemoryPolicyRepositoryWithRWLock();
+		repository = new InMemoryPolicyRepositoryWithChm();
 		policyReader = new Xacml20PolicyUnmarshaller();
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		resolvers = new DefaultResolverRegistry();
 		
-		AnnotatedResolverMethodParser resolver = new AnnotatedResolverMethodParser();
+		AnnotatedResolverFactory resolver = new AnnotatedResolverFactory();
 		Collection<AttributeResolver> all = resolver.getAttributeResolvers(new Xacml20ConformanceAttributeResolver());
 		
 		for(AttributeResolver r : all){
@@ -178,8 +177,6 @@ public class Xacml20ConformanceTest
 	{
 		executeTestCase("IIIG", 6);
 	}
-	
-
 				
 	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
 	{
@@ -198,9 +195,9 @@ public class Xacml20ConformanceTest
 		String name = new StringBuilder(testPrefix).
 		append(StringUtils.leftPad(
 				Integer.toString(testCaseNum), 3, '0')).toString();
-		PolicyDomain store = new DefaultPolicyDomain("Test", getPolicy(testPrefix, testCaseNum, "Policy.xml"));
+		CompositeDecisionRule policy = getPolicy(testPrefix, testCaseNum, "Policy.xml");
+		PolicyDomain store = new DefaultPolicyDomain("Test", policy);
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		System.out.println(request);
 		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(store, repository, pip));
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
@@ -224,6 +221,7 @@ public class Xacml20ConformanceTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, sufix);
+		System.out.println("Loaing policy - " + path);
 		InputStream in = cl.getResourceAsStream(path);
 		if(in == null){
 			return null;

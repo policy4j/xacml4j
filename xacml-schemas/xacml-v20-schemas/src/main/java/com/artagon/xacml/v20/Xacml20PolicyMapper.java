@@ -434,8 +434,9 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 				v20ToV30EffectnMapping.get(r.getEffect()));
 	}
 
-	private Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)
-			throws XacmlSyntaxException {
+	private Condition create(ConditionType c, 
+			VariableManager<JAXBElement<?>> variables) 
+	throws XacmlSyntaxException {
 		if (c == null) {
 			return null;
 		}
@@ -684,7 +685,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 			SubjectAttributeDesignatorType subjectRef = (SubjectAttributeDesignatorType) ref;
 			AttributeCategory categoryId = AttributeCategories
 					.parse(subjectRef.getSubjectCategory());
-			if (categoryId == null) {
+			if(categoryId == null) {
 				throw new XacmlSyntaxException("Unknown subject "
 						+ "attribute designator category=\"%s\"", ref);
 			}

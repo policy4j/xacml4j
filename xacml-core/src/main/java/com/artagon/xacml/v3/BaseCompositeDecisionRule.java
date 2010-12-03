@@ -33,6 +33,7 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target,  adviceExpressions, obligationExpressions);
+		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(version);
 		this.id = id;
 		this.version = version;
@@ -66,18 +67,22 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	public  Decision evaluateIfApplicable(EvaluationContext context)
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Invoking decision rule id=\"{}\" evaluateIfApplicable", getId());
+			log.debug("Invoking decision rule " +
+					"id=\"{}\" evaluateIfApplicable", getId());
 		}
 		MatchResult r = isApplicable(context);
 		Preconditions.checkState(r != null);
 		if(r == MatchResult.MATCH){
 			if(log.isDebugEnabled()){
-				log.debug("Decision rule id=\"{}\" match result is=\"{}\", evaluating rule", getId(), r);
+				log.debug("Decision rule id=\"{}\" " +
+						"match result is=\"{}\", evaluating rule", 
+						getId(), r);
 			}
 			return evaluate(context);
 		}
 		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" match result is=\"{}\", not evaluating rule", getId(), r);
+			log.debug("Decision rule id=\"{}\" match " +
+					"result is=\"{}\", not evaluating rule", getId(), r);
 		}
 		return (r == MatchResult.INDETERMINATE)?
 				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;

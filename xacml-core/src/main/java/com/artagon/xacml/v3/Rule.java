@@ -102,18 +102,23 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 	@Override
 	protected Decision doEvaluate(EvaluationContext context)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating rule id=\"{}\" " +
+					"condition=\"{}\"", getId(), condition);
+		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
-		log.debug("Rule=\"{}\" condition evaluation result=\"{}\"", getId(), result);
+		if(log.isDebugEnabled()){
+			log.debug("Rule id=\"{}\" condition " +
+					"evaluation result=\"{}\"", getId(), result);
+		}
 		if(result == ConditionResult.INDETERMINATE){
-			if(log.isDebugEnabled()){
-				log.debug("Rule=\"{}\" condition " +
-						"evaluated to=\"{}\"", getId(), result);
-			}
 			return getExtendedIndeterminate();
 		}
 		Decision d = (result == ConditionResult.TRUE)?
 				getEffect().getResult():Decision.NOT_APPLICABLE;
-		log.debug("Rule=\"{}\" decision result=\"{}\"", getId(), d);
+		if(log.isDebugEnabled()){
+			log.debug("Rule id=\"{}\" decision result=\"{}\"", getId(), d);
+		}
 		return d;
 	}
 	

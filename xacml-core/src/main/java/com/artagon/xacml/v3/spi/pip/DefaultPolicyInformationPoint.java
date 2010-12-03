@@ -39,7 +39,8 @@ public class DefaultPolicyInformationPoint
 	}
 
 	@Override
-	public BagOfAttributeValues resolve(final EvaluationContext context,
+	public BagOfAttributeValues resolve(
+			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{
 		if(log.isDebugEnabled()){
