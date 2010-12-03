@@ -18,7 +18,7 @@ public interface PolicyDecisionPointContext
 	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
 	
-	CompositeDecisionRule getRootPolicy();
+	CompositeDecisionRule getDomainPolicy();
 	
 	XPathProvider getXPathProvider();
 	

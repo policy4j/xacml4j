@@ -42,9 +42,12 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		this.policyIDRefCache = new MapMaker()
 		.initialCapacity(size)
 		.softKeys()
+		.softValues()
 		.makeMap();
 		this.policySetIDRefCache = new MapMaker()
 		.initialCapacity(size)
+		.softKeys()
+		.softValues()
 		.makeMap();
 	}
 	

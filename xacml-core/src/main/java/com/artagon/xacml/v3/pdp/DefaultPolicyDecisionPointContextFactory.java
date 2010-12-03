@@ -107,7 +107,7 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 			
 			@Override
-			public CompositeDecisionRule getRootPolicy() {
+			public CompositeDecisionRule getDomainPolicy() {
 				return policyDomain;
 			}
 			

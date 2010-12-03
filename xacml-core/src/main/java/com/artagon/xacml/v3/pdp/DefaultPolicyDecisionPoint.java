@@ -68,7 +68,7 @@ public final class DefaultPolicyDecisionPoint
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
-		CompositeDecisionRule rootPolicy = context.getRootPolicy();
+		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
 		r = createResult(evalContext, 
 				decision, 
@@ -85,7 +85,8 @@ public final class DefaultPolicyDecisionPoint
 	
 	private Result createResult(
 			EvaluationContext context, 
-			Decision decision, Collection<Attributes> includeInResult, 
+			Decision decision, 
+			Collection<Attributes> includeInResult, 
 			boolean returnPolicyIdList)
 	{
 		if(decision == Decision.NOT_APPLICABLE){

@@ -9,6 +9,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.types.IntegerType;
 
@@ -36,14 +38,14 @@ public class DefaultResolverRegistryTest
 	
 	}
 	
-	@Test
-	@Ignore
-	public void testAddResolver()
+	@Test(expected=IllegalArgumentException.class)
+	public void testAddResolverWithTheSameAttributes()
 	{
 		expect(r1.getDescriptor()).andReturn(d1);
 		expect(r2.getDescriptor()).andReturn(d1);
 		control.replay();
 		r.addResolver(r1);
+		r.addResolver(r2);
 		control.verify();
 	}
 }
