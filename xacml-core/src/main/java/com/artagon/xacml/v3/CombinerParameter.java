@@ -18,7 +18,8 @@ public class CombinerParameter extends XacmlObject implements PolicyElement
 	 * @param name a parameter name
 	 * @param value a parameter value
 	 */
-	public CombinerParameter(String name, AttributeValue value)
+	public CombinerParameter(String name, 
+			AttributeValue value)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);

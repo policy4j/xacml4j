@@ -1,7 +1,8 @@
 package com.artagon.xacml.v3;
 
 
-public class PolicySetCombinerParameters extends BaseDecisionCombinerParameters 
+public class PolicySetCombinerParameters extends 
+	BaseDecisionCombinerParameters 
 {
 	private String policySetId; 
 	

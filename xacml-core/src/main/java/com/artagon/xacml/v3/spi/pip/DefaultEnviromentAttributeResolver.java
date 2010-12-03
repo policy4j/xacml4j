@@ -12,6 +12,11 @@ import java.util.Map;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 
+/**
+ * A default XACML enviroment attributes resolver
+ * 
+ * @author Giedrius Trumpickas
+ */
 class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
 	public DefaultEnviromentAttributeResolver() {

@@ -1,9 +1,12 @@
 package com.artagon.xacml.v3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Preconditions;
 
@@ -12,9 +15,9 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
-	private CombinerParameters combinerParameters;
-	private PolicySetCombinerParameters policySetCombinerParameters;
-	private PolicyCombinerParameters policyCombinerParameters;
+	private Collection<CombinerParameters> combinerParameters;
+	private	Map<String, PolicySetCombinerParameters> policySetCombinerParameters;
+	private Map<String, PolicyCombinerParameters> policyCombinerParameters;
 	private PolicySetIDReference reference;
 	
 	/**
@@ -38,9 +41,9 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 			String description,
 			PolicySetDefaults policySetDefaults,
 			Target target, 
-			CombinerParameters combinerParameters,
-			PolicyCombinerParameters policyCombinerParameters,
-			PolicySetCombinerParameters policySetCombinerParameters,
+			Collection<CombinerParameters> combinerParameters,
+			Collection<PolicyCombinerParameters> policyCombinerParameters,
+			Collection<PolicySetCombinerParameters> policySetCombinerParameters,
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
 			Collection<CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
@@ -52,9 +55,19 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
-		this.combinerParameters = combinerParameters;
-		this.policyCombinerParameters = policyCombinerParameters;
-		this.policySetCombinerParameters = policySetCombinerParameters;
+		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
+		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
+				policyCombinerParameters.size());
+		for(PolicyCombinerParameters p : policyCombinerParameters){
+			Preconditions.checkState(
+					this.policyCombinerParameters.put(p.getPolicyId(), p) == null);
+		}
+		this.policySetCombinerParameters = new HashMap<String, PolicySetCombinerParameters>(
+				this.policySetCombinerParameters.size());
+		for(PolicySetCombinerParameters p : policySetCombinerParameters){
+			Preconditions.checkState(
+					this.policySetCombinerParameters.put(p.getPolicySetId(), p) == null);
+		}
 	}
 	
 	public PolicySet(
@@ -68,9 +81,13 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		this(id, version, description, null, target, 
-				null, null, null, combine, policies, adviceExpressions, obligationExpressions);
+				Collections.<CombinerParameters>emptyList(), 
+				Collections.<PolicyCombinerParameters>emptyList(), 
+				Collections.<PolicySetCombinerParameters>emptyList(), 
+				combine, policies, adviceExpressions, obligationExpressions);
 	}
 	
+	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}
@@ -84,18 +101,18 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 		return policySetDefaults;
 	}
 	
-	public CombinerParameters getCombinerParameters() {
+	public Collection<CombinerParameters> getCombinerParameters() {
 		return combinerParameters;
 	}
 
-	public PolicyCombinerParameters getPolicyCombinerParameters() {
-		return policyCombinerParameters;
+	public Collection<PolicyCombinerParameters> getPolicyCombinerParameters() {
+		return policyCombinerParameters.values();
 	}
 
-	public PolicySetCombinerParameters getPolicySetCombinerParameters() {
-		return policySetCombinerParameters;
+	public Collection<PolicySetCombinerParameters> getPolicySetCombinerParameters() {
+		return policySetCombinerParameters.values();
 	}
-
+	
 	/**
 	 * Creates {@link EvaluationContext} to evaluate this policy
 	 * set to be used in {@link this#isApplicable(EvaluationContext)}
@@ -141,13 +158,19 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 			policySetDefaults.accept(v);
 		}
 		if(combinerParameters != null){
-			combinerParameters.accept(v);
+			for(CombinerParameters p :combinerParameters){
+				p.accept(v);
+			}
 		}
 		if(policyCombinerParameters != null){
-			policyCombinerParameters.accept(v);
+			for(PolicyCombinerParameters p : policyCombinerParameters.values()){
+				p.accept(v);
+			}
 		}
 		if(policySetCombinerParameters != null){
-			policySetCombinerParameters.accept(v);
+			for(PolicySetCombinerParameters p : policySetCombinerParameters.values()){
+				p.accept(v);
+			}
 		}
 		combine.accept(v);
 		for(DecisionRule decision : decisionRules){

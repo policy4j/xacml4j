@@ -26,6 +26,7 @@ public class AnnotatedResolverFactory
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException
 	{
+		Preconditions.checkNotNull(instance);
 		Collection<ContentResolver> resolvers = new LinkedList<ContentResolver>();
 		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
 				XacmlContentResolverDescriptor.class);
@@ -38,6 +39,7 @@ public class AnnotatedResolverFactory
 	public Collection<AttributeResolver> getAttributeResolvers(Object instance) 
 		throws XacmlSyntaxException
 	{
+		Preconditions.checkNotNull(instance);
 		Collection<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
 		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
 				XacmlAttributeResolverDescriptor.class);
