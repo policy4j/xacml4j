@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.types.XacmlTypes;
+import com.artagon.xacml.v3.types.AttributeValueTypes;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter 
@@ -90,7 +90,7 @@ class JavaMethodToFunctionSpecConverter
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				AttributeValueType type = XacmlTypes.getType(param.typeId());
+				AttributeValueType type = AttributeValueTypes.getType(param.typeId());
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log
@@ -130,7 +130,7 @@ class JavaMethodToFunctionSpecConverter
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				AttributeValueType type = XacmlTypes.getType(param.typeId());
+				AttributeValueType type = AttributeValueTypes.getType(param.typeId());
 				b.withParam(param.isBag() ? type.bagType() : type, param.min(),
 						param.max());
 				continue;
@@ -159,7 +159,7 @@ class JavaMethodToFunctionSpecConverter
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			AttributeValueType type = XacmlTypes.getType(returnType.typeId());
+			AttributeValueType type = AttributeValueTypes.getType(returnType.typeId());
 			return b.build(returnType.isBag() ? type.bagType() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,

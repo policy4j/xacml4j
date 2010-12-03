@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.types.BooleanValue;
-import com.artagon.xacml.v3.types.XacmlTypes;
+import com.artagon.xacml.v3.types.AttributeValueTypes;
 
 /**
  * Condition represents a Boolean expression that refines the applicability 
@@ -37,7 +37,7 @@ public class Condition extends XacmlObject implements PolicyElement
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"", 
-					XacmlTypes.BOOLEAN, predicate.getEvaluatesTo());
+					AttributeValueTypes.BOOLEAN, predicate.getEvaluatesTo());
 		this.predicate = predicate;
 	}
 	

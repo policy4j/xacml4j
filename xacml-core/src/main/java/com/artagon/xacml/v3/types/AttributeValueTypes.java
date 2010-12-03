@@ -18,7 +18,7 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
  * 
  * @author Giedrius Trumpickas
  */
-public enum XacmlTypes
+public enum AttributeValueTypes
 {
 	/** 
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#anyURI</b> 
@@ -96,27 +96,27 @@ public enum XacmlTypes
 	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
 
 	static {
-		for (XacmlTypes t : EnumSet.allOf(XacmlTypes.class)) {
+		for (AttributeValueTypes t : EnumSet.allOf(AttributeValueTypes.class)) {
 			BY_TYPE_ID.put(t.getDataType().getDataTypeId(), t.getDataType());
 		}
 		// legacy XACML 2.0 type mappings
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
-				XacmlTypes.XPATHEXPRESSION.getDataType());
+				AttributeValueTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID.put(
 				"urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression",
-				XacmlTypes.XPATHEXPRESSION.getDataType());
+				AttributeValueTypes.XPATHEXPRESSION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration",
-						XacmlTypes.DAYTIMEDURATION.getDataType());
+						AttributeValueTypes.DAYTIMEDURATION.getDataType());
 		BY_TYPE_ID
 				.put("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration",
-						XacmlTypes.YEARMONTHDURATION.getDataType());
+						AttributeValueTypes.YEARMONTHDURATION.getDataType());
 	}
 
 	private AttributeValueType type;
 
-	private XacmlTypes(AttributeValueType type) {
+	private AttributeValueTypes(AttributeValueType type) {
 		this.type = type;
 	}
 	

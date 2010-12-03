@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.types.XacmlTypes;
+import com.artagon.xacml.v3.types.AttributeValueTypes;
 
 public class AttributeSelector extends 
 	AttributeReference
@@ -45,7 +45,7 @@ public class AttributeSelector extends
 			String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType dataType = XacmlTypes.getType(dataTypeId);
+		AttributeValueType dataType = AttributeValueTypes.getType(dataTypeId);
 		return new AttributeSelector(category, xpath, 
 				contextAttributeId, dataType, mustBePresent);
 	}

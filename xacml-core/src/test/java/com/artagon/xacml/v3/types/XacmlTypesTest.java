@@ -11,9 +11,9 @@ public class XacmlTypesTest
 	@Test
 	public void testXACML20DeprecatedTypeMapping() throws XacmlSyntaxException
 	{
-		assertNotNull(XacmlTypes.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"));
-		assertNotNull(XacmlTypes.getType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression"));
-		assertNotNull(XacmlTypes.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"));
+		assertNotNull(AttributeValueTypes.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"));
+		assertNotNull(AttributeValueTypes.getType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression"));
+		assertNotNull(AttributeValueTypes.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"));
 	}
 	
 }
