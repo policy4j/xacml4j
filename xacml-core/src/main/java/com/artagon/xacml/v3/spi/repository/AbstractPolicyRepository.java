@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.spi.repository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,7 @@ import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.google.common.collect.MapMaker;
 
 /**
  * A base class for {@link PolicyRepository} implementations
@@ -25,8 +26,8 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
 	
-	private ConcurrentHashMap<PolicyIDReference, Policy> policyIDRefCache;
-	private ConcurrentHashMap<PolicySetIDReference, PolicySet> policySetIDRefCache;
+	private ConcurrentMap<PolicyIDReference, Policy> policyIDRefCache;
+	private ConcurrentMap<PolicySetIDReference, PolicySet> policySetIDRefCache;
 	
 	private boolean enableRefCache;
 	
@@ -35,11 +36,16 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	}
 	
 	protected AbstractPolicyRepository(boolean enabledRefCache, 
-			int initialCacheSize)
+			int size)
 	{
 		this.enableRefCache = enabledRefCache;
-		this.policyIDRefCache = new ConcurrentHashMap<PolicyIDReference, Policy>(initialCacheSize);
-		this.policySetIDRefCache = new ConcurrentHashMap<PolicySetIDReference, PolicySet>(initialCacheSize);
+		this.policyIDRefCache = new MapMaker()
+		.initialCapacity(size)
+		.softKeys()
+		.makeMap();
+		this.policySetIDRefCache = new MapMaker()
+		.initialCapacity(size)
+		.makeMap();
 	}
 	
 	/**
@@ -117,7 +123,7 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		if(p != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found Policy id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\"", 
+						"version=\"{}\" for reference=\"{}\" in the cache", 
 						new Object[]{p.getId(), p.getVersion(), ref});
 			}
 			return p;
@@ -146,7 +152,7 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		if(p != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found PolicySet id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\"", 
+						"version=\"{}\" for reference=\"{}\" in the cache", 
 						new Object[]{p.getId(), p.getVersion(), ref});
 			}
 			return p;
@@ -161,5 +167,10 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 			policySetIDRefCache.put(ref, p);
 		}
 		return p;
+	}
+	
+	protected final void clearRefCahce(){
+		policyIDRefCache.clear();
+		policySetIDRefCache.clear();
 	}
 }

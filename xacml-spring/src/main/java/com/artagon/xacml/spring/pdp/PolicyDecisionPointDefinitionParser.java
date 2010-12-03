@@ -15,7 +15,7 @@ public class PolicyDecisionPointDefinitionParser extends AbstractSingleBeanDefin
 	   {
 	      String pipRef = element.getAttribute("pip");
 	      bean.addPropertyReference("policyInformationPoint", pipRef);
-	      String domainRef = element.getAttribute("domain");
+	      String domainRef = element.getAttribute("policyDomain");
 	      bean.addPropertyReference("policyDomain", domainRef);
 	      String repositoryRef = element.getAttribute("repository");
 	      bean.addPropertyReference("policyRepository", repositoryRef);

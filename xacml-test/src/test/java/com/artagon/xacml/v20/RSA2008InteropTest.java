@@ -15,8 +15,6 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
-import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
@@ -38,8 +36,6 @@ public class RSA2008InteropTest
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		
 		
-		PolicyDomain domain = new DefaultPolicyDomain("Test", getPolicy("XacmlPolicySet-01-top-level.xml"));
-		
 		PolicyRepository repository = new InMemoryPolicyRepositoryWithRWLock();
 
 		
@@ -55,7 +51,7 @@ public class RSA2008InteropTest
 		
 		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
 		pdp = new DefaultPolicyDecisionPoint(
-				new DefaultPolicyDecisionPointContextFactory(domain, repository, pip));
+				new DefaultPolicyDecisionPointContextFactory(getPolicy("XacmlPolicySet-01-top-level.xml"), repository, pip));
 		
 	}
 	

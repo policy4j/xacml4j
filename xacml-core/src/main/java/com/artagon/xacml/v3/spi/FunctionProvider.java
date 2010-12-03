@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.FunctionSpec;
 public interface FunctionProvider 
 {
 	/**
-	 * Gets function spec instance for a given function
+	 * Gets function instance for a given function
 	 * identifier.
 	 * 
 	 * @param functionId a function identifier
@@ -29,7 +29,7 @@ public interface FunctionProvider
 	 * Gets all supported function by this factory
 	 * 
 	 * @return {@link Iterable} over all supported
-	 * function by this factory
+	 * function identifiers 
 	 */
 	Iterable<String> getProvidedFunctions();
 }

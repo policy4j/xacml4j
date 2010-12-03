@@ -32,14 +32,11 @@
 		</beans:property>
 	</bean>
 	
-	<xacml:PolicyDomain id="domain" name="TestDomain">
-		<xacml:PolicySetIdReference Version="1.+">aaaaaa</xacml:PolicySetIdReference>
-		<xacml:PolicySetIdReference Version="1.+">11111</xacml:PolicySetIdReference>
-	</xacml:PolicyDomain>	
+	<xacml:PolicySetIdReference id="policyDomain" Version="1.+">11111</xacml:PolicySetIdReference>
 	 
 	<xacml:PolicyDecisionPoint
 		id="pdp"
-		domain="domain" 
+		policyDomain="policyDomain" 
 		repository="repository" 
 		pip="pip"/>
 	

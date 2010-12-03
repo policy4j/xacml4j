@@ -3,13 +3,14 @@ package com.artagon.xacml.v3.pdp;
 import java.util.Collections;
 import java.util.List;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
@@ -24,14 +25,14 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
 	private PolicyRepository policyReferenceResolver;
-	private PolicyDomain policyDomain;
+	private CompositeDecisionRuleIDReference policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 	
 	private boolean validateFuncParamsAtRuntime = false;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			PolicyDomain policyDomain, 
+			CompositeDecisionRule policyDomain, 
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
@@ -48,14 +49,14 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.policyReferenceResolver = repository;
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
-		this.policyDomain = policyDomain;
+		this.policyDomain = policyDomain.getReference();
 		this.decisionAuditor = auditor;
 		this.decisionCache = cache;
 		this.requestHandlers = new RequestContextHandlerChain(handlers);
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			PolicyDomain policyDomain, 
+			CompositeDecisionRule policyDomain, 
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
@@ -66,7 +67,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			PolicyDomain policyDomain, 
+			CompositeDecisionRule policyDomain, 
 			PolicyRepository repository, 
 			PolicyInformationPoint pip,
 			List<RequestContextHandler> handlers)
@@ -79,7 +80,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			PolicyDomain policyDomain, 
+			CompositeDecisionRule policyDomain, 
 			PolicyRepository repository, 
 			PolicyInformationPoint pip)
 	{
@@ -106,7 +107,7 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 			
 			@Override
-			public PolicyDomain getPolicyDomain() {
+			public CompositeDecisionRule getRootPolicy() {
 				return policyDomain;
 			}
 			

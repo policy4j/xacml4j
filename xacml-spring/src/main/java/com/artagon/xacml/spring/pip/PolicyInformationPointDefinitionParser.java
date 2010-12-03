@@ -13,7 +13,6 @@ public class PolicyInformationPointDefinitionParser extends AbstractSingleBeanDe
 
 	   protected void doParse(Element element, BeanDefinitionBuilder bean) 
 	   {
-	     
 	      String attributeResolvers = element.getAttribute("attributeResolvers");
 	      if (StringUtils.hasText(attributeResolvers)) {
 	    	  bean.addPropertyReference("attributeResolvers", attributeResolvers);

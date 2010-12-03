@@ -15,11 +15,11 @@ import com.google.common.base.Preconditions;
 
 /**
  * An implementation of {@link DecisionCombiningAlgorithmProvider}
- * which aggregates other instance of {@link DecisionCombiningAlgorithmProvider}
+ * which aggregates other instances of {@link DecisionCombiningAlgorithmProvider}
  * 
  * @author Giedrius Trumpickas
  */
-public  class AggregatingDecisionCombiningAlgorithmProvider 
+public class AggregatingDecisionCombiningAlgorithmProvider 
 	implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithmProvider> ruleAlgorithms;

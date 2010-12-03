@@ -26,6 +26,16 @@ public class PolicyIDReference extends
 		return policy != null && matches(policy.getId(), policy.getVersion());
 	}
 	
+	/**
+	 * Creates a {@link PolicyIDReference} instance
+	 * 
+	 * @param policyId a policy identifier
+	 * @param version a policy version match
+	 * @param earliest a policy earliest version match
+	 * @param latest a policy latest version match
+	 * @return {@link PolicyIDReference} instance
+	 * @throws XacmlSyntaxException
+	 */
 	public static PolicyIDReference create(String policyId, String version, 
 			String earliest, String latest) throws XacmlSyntaxException
 	{
@@ -116,11 +126,13 @@ public class PolicyIDReference extends
 	}	
 	
 	
-	private static boolean isReferenceCyclic(PolicyIDReference ref, EvaluationContext context)
+	private static boolean isReferenceCyclic(PolicyIDReference ref, 
+			EvaluationContext context)
 	{
 		if(context.getCurrentPolicyIDReference() != null){
 			if(ref.equals(context.getCurrentPolicyIDReference())){
-				throw new IllegalStateException("Cyclic reference detected");
+				throw new IllegalStateException(
+						String.format("Reference=\"%s\" is cyclic", ref      ));
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
 		}
@@ -146,8 +158,7 @@ public class PolicyIDReference extends
 		 * <code>null</code> or given policy ID reference is
 		 * <code>null</code>
 		 */
-		PolicyIDReferenceEvaluationContext(EvaluationContext context) 
-		{
+		PolicyIDReferenceEvaluationContext(EvaluationContext context){
 			super(context);
 			Preconditions.checkArgument(context.getCurrentPolicy() == null);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicyIDReference.this, context));

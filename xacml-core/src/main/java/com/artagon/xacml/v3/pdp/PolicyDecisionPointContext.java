@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.pdp;
 
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.XPathProvider;
 
 public interface PolicyDecisionPointContext
@@ -18,12 +18,7 @@ public interface PolicyDecisionPointContext
 	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
 	
-	/**
-	 * Gets {@link PolicyDomain}
-	 * 
-	 * @return
-	 */
-	PolicyDomain getPolicyDomain();
+	CompositeDecisionRule getRootPolicy();
 	
 	XPathProvider getXPathProvider();
 	

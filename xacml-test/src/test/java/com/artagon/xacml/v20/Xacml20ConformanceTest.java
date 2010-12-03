@@ -24,8 +24,6 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.spi.DefaultPolicyDomain;
-import com.artagon.xacml.v3.spi.PolicyDomain;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.AnnotatedResolverFactory;
@@ -195,10 +193,9 @@ public class Xacml20ConformanceTest
 		String name = new StringBuilder(testPrefix).
 		append(StringUtils.leftPad(
 				Integer.toString(testCaseNum), 3, '0')).toString();
-		CompositeDecisionRule policy = getPolicy(testPrefix, testCaseNum, "Policy.xml");
-		PolicyDomain store = new DefaultPolicyDomain("Test", policy);
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(store, repository, pip));
+		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(
+				getPolicy(testPrefix, testCaseNum, "Policy.xml"), repository, pip));
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
 		long end = System.currentTimeMillis();
