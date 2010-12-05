@@ -10,7 +10,7 @@ import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.ValueExpression;
 import com.google.common.base.Preconditions;
 
-class DefaultFunctionInvocation implements FunctionInvocation
+final class DefaultFunctionInvocation implements FunctionInvocation
 {
 	private boolean evalContextRequired;
 	private Invocation<?> invocation;

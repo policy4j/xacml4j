@@ -51,13 +51,16 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 	{
 		super(id, version, description, target, adviceExpressions, obligationExpressions);
 		checkNotNull(combine, "Policy set combining algorithm must be specified");
+		Preconditions.checkNotNull(combinerParameters);
+		Preconditions.checkNotNull(policyCombinerParameters);
+		Preconditions.checkNotNull(policySetCombinerParameters);
 		this.reference = new PolicySetIDReference(id, version);
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
 		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
 		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
-				policyCombinerParameters.size());
+				 policyCombinerParameters.size());
 		for(PolicyCombinerParameters p : policyCombinerParameters){
 			Preconditions.checkState(
 					this.policyCombinerParameters.put(p.getPolicyId(), p) == null);
@@ -198,8 +201,10 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 		PolicySetDelegatingEvaluationContext(
 				EvaluationContext parentContext){
 			super(parentContext);
-			Preconditions.checkArgument(parentContext.getCurrentPolicySet() != PolicySet.this);
-			Preconditions.checkArgument(parentContext.getCurrentPolicy() == null);
+			Preconditions.checkArgument(
+					parentContext.getCurrentPolicySet() != PolicySet.this);
+			Preconditions.checkArgument(
+					parentContext.getCurrentPolicy() == null);
 		}
 
 		@Override

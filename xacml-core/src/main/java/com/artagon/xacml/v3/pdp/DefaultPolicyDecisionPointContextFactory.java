@@ -30,6 +30,9 @@ public class DefaultPolicyDecisionPointContextFactory
 	
 	private boolean validateFuncParamsAtRuntime = false;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
+	private boolean enabledPolicyIdRefCache = true;
+	private int intialPolicyRefIdCacheSize = 1024;
+	
 	
 	public DefaultPolicyDecisionPointContextFactory(
 			CompositeDecisionRule policyDomain, 
