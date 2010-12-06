@@ -33,7 +33,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 		
 	private StatusCode evaluationStatus;
-			
 	private Calendar currentDateTime;
 	
 	/**
@@ -57,7 +56,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		Preconditions.checkNotNull(repository);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
-		this.validateAtRuntime = validateFuncParams;
+		//this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = contextHandler;
 		this.resolver = repository;
 		this.timezone = TimeZone.getTimeZone("UTC");
@@ -187,11 +186,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public final Policy resolve(PolicyIDReference ref) 
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
-		if(p == null){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve " +
-						"Policy reference=\"{}\"", ref);
-			}
+		if(log.isDebugEnabled()){
+			log.debug("Trying to resolve " +
+					"Policy reference=\"{}\"", ref);
+		}
+		if(p == null){			
 			throw new PolicyResolutionException(this, 
 					"Failed to resolve PolicySet reference");
 		}
@@ -202,11 +201,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
+		if(log.isDebugEnabled()){
+			log.debug("Trying to resolve " +
+					"PolicySet reference=\"{}\"", ref);
+		}
 		if(p == null){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve " +
-						"PolicySet reference=\"{}\"", ref);
-			}
 			throw new PolicyResolutionException(this, 
 					"Failed to resolve PolicySet reference");
 		}

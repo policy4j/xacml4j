@@ -32,9 +32,6 @@ public class DefaultPolicyDecisionPointContextFactory
 	
 	private boolean validateFuncParamsAtRuntime = false;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
-	private boolean enabledPolicyIdRefCache = true;
-	private int intialPolicyRefIdCacheSize = 1024;
-	
 	
 	public DefaultPolicyDecisionPointContextFactory(
 			CompositeDecisionRule policyDomain, 
@@ -97,7 +94,8 @@ public class DefaultPolicyDecisionPointContextFactory
 				Collections.<RequestContextHandler>emptyList());
 	}
 	
-	public void setValidaFunctionParametersAtRuntime(boolean validate){
+	public void setValidaFunctionParametersAtRuntime(
+			boolean validate){
 		this.validateFuncParamsAtRuntime = validate;
 	}
 
@@ -145,8 +143,11 @@ public class DefaultPolicyDecisionPointContextFactory
 				RequestContextCallback callback = new DefaultRequestContextCallback(request);
 				EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
 						callback, xpathProvider, pip);
-				return new RootEvaluationContext(validateFuncParamsAtRuntime, 
-						defaultXPathVersion, policyReferenceResolver, handler);
+				return new RootEvaluationContext(
+						validateFuncParamsAtRuntime, 
+						defaultXPathVersion, 
+						policyReferenceResolver, 
+						handler);
 			}
 		};
 	}

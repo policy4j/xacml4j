@@ -68,8 +68,6 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.getCurrentPolicy();
 	}
 	
-	
-
 	@Override
 	public StatusCode getEvaluationStatus() {
 		return delegate.getEvaluationStatus();

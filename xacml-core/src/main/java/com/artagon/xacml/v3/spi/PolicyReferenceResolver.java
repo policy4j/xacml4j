@@ -21,6 +21,7 @@ public interface PolicyReferenceResolver
 	/**
 	 * Resolves a given {@link PolicySetIDReference}
 	 * 
+	 * 
 	 * @param ref a policy reference
 	 * @return {@link PolicySet} instance
 	 * @throws PolicyResolutionException

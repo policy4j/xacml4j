@@ -1,5 +1,8 @@
 package com.artagon.xacml.v3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -11,6 +14,8 @@ import com.google.common.base.Preconditions;
  */
 public class FunctionReference extends XacmlObject implements Expression
 {
+	private final static Logger log = LoggerFactory.getLogger(FunctionReference.class);
+	
 	private FunctionSpec spec;
 	private ValueType returnType;
 	
@@ -48,6 +53,10 @@ public class FunctionReference extends XacmlObject implements Expression
 		boolean validate = context.isValidateFuncParamsAtRuntime();
 		try{
 			context.setValidateFuncParamsAtRuntime(true);
+			if(log.isDebugEnabled()){
+				log.debug("Invoking function reference=\"{}\"", 
+						spec.getId());
+			}
 			return (T)spec.invoke(context, params);
 		}finally{
 			context.setValidateFuncParamsAtRuntime(validate);
