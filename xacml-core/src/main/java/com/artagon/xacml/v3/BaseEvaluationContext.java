@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
@@ -20,7 +20,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private final static Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
 	
 	private EvaluationContextHandler contextHandler;
-	private PolicyRepository repository;
+	private PolicyReferenceResolver resolver;
 	
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
@@ -44,22 +44,22 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	protected BaseEvaluationContext(
 			EvaluationContextHandler attributeService, 
-			PolicyRepository repository){
+			PolicyReferenceResolver repository){
 		this(false, attributeService,  repository);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
-			EvaluationContextHandler attributeService,
-			PolicyRepository repository){
-		Preconditions.checkNotNull(attributeService);
+			EvaluationContextHandler contextHandler,
+			PolicyReferenceResolver repository){
+		Preconditions.checkNotNull(contextHandler);
 
 		Preconditions.checkNotNull(repository);
 		this.advices = new LinkedList<Advice>();
 		this.obligations = new LinkedList<Obligation>();
 		this.validateAtRuntime = validateFuncParams;
-		this.contextHandler = attributeService;
-		this.repository = repository;
+		this.contextHandler = contextHandler;
+		this.resolver = repository;
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
@@ -186,7 +186,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final Policy resolve(PolicyIDReference ref) 
 		throws PolicyResolutionException {
-		Policy p =	repository.resolve(ref);
+		Policy p =	resolver.resolve(ref);
 		if(p == null){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve " +
@@ -201,7 +201,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
-		PolicySet p = repository.resolve(ref);
+		PolicySet p = resolver.resolve(ref);
 		if(p == null){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve " +

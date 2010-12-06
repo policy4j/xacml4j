@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 
 public final class RootEvaluationContext extends BaseEvaluationContext
 {
@@ -8,7 +8,7 @@ public final class RootEvaluationContext extends BaseEvaluationContext
 	
 	public RootEvaluationContext(boolean validateFuncParamsAtRuntime, 
 			XPathVersion defaultXPathVersion, 
-			PolicyRepository referenceResolver,
+			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler contextHandler) {
 		super(validateFuncParamsAtRuntime,
 				contextHandler,
@@ -17,7 +17,7 @@ public final class RootEvaluationContext extends BaseEvaluationContext
 	}
 	
 	public RootEvaluationContext(boolean validateFuncParamsAtRuntime, 
-			PolicyRepository referenceResolver, EvaluationContextHandler handler){
+			PolicyReferenceResolver referenceResolver, EvaluationContextHandler handler){
 		this(validateFuncParamsAtRuntime, 
 				XPathVersion.XPATH1, referenceResolver, handler);
 	}

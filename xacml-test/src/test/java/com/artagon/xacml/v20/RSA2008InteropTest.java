@@ -201,7 +201,8 @@ public class RSA2008InteropTest
 			long end = System.currentTimeMillis();
 			time += (end - start);
 		}
-		System.out.printf("Test=\"%s\" avg execution took=\"%d\" nano s and took=\"%d\" iterations\n", name, time/n, n);
+		System.out.printf("Test=\"%s\" avg execution took=\"%d\" " +
+				"nano s and took=\"%d\" iterations\n", name, time/n, n);
 		Result r = Iterables.getOnlyElement(response.getResults());
 		//System.out.printf("Request result=\"%s\"\n", r.toString());
 		return r;

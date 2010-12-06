@@ -5,10 +5,7 @@ import java.util.Collection;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyIDReference;
-import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.VersionMatch;
 
 /**
@@ -108,10 +105,4 @@ public interface PolicyRepository
 	 * @param policy a new version of the policy
 	 */
 	void add(CompositeDecisionRule policy);
-	
-	Policy resolve(PolicyIDReference ref) 
-		throws PolicyResolutionException;
-	
-	PolicySet resolve(PolicySetIDReference ref) 
-		throws PolicyResolutionException;
 }

@@ -65,8 +65,7 @@ public class PolicySet extends BaseCompositeDecisionRule implements PolicyElemen
 			Preconditions.checkState(
 					this.policyCombinerParameters.put(p.getPolicyId(), p) == null);
 		}
-		this.policySetCombinerParameters = new HashMap<String, PolicySetCombinerParameters>(
-				this.policySetCombinerParameters.size());
+		this.policySetCombinerParameters = new HashMap<String, PolicySetCombinerParameters>(policySetCombinerParameters.size());
 		for(PolicySetCombinerParameters p : policySetCombinerParameters){
 			Preconditions.checkState(
 					this.policySetCombinerParameters.put(p.getPolicySetId(), p) == null);

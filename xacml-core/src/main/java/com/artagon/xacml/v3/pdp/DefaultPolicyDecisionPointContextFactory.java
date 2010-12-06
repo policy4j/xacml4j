@@ -12,8 +12,10 @@ import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.repository.DefaultPolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
 import com.google.common.base.Preconditions;
 
@@ -24,7 +26,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
-	private PolicyRepository policyReferenceResolver;
+	private PolicyReferenceResolver policyReferenceResolver;
 	private CompositeDecisionRuleIDReference policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 	
@@ -49,7 +51,7 @@ public class DefaultPolicyDecisionPointContextFactory
 		Preconditions.checkArgument(pip != null);
 		Preconditions.checkArgument(auditor != null);
 		Preconditions.checkArgument(cache != null);
-		this.policyReferenceResolver = repository;
+		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
 		this.policyDomain = policyDomain.getReference();

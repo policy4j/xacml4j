@@ -50,6 +50,7 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.CombinerParameters;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
@@ -60,9 +61,11 @@ import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyCombinerParameters;
 import com.artagon.xacml.v3.PolicyDefaults;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetCombinerParameters;
 import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.Rule;
@@ -157,6 +160,9 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 			PolicySetDefaults policySetDefaults = createPolicySetDefaults(p
 					.getPolicySetDefaults());
 			Collection<CompositeDecisionRule> policies = getPolicies(p);
+			Collection<CombinerParameters> combinerParams = new LinkedList<CombinerParameters>();
+			Collection<PolicyCombinerParameters> policyCombinerParams = new LinkedList<PolicyCombinerParameters>();
+			Collection<PolicySetCombinerParameters> policySetCombinerParams = new LinkedList<PolicySetCombinerParameters>();
 			Target target = create(p.getTarget());
 			return new PolicySet(
 					p.getPolicySetId(), 
@@ -164,9 +170,9 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 					p.getDescription(), 
 					policySetDefaults, 
 					target,
-					null, 
-					null,
-					null,
+					combinerParams, 
+					policyCombinerParams,
+					policySetCombinerParams,
 					createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
 					policies, 
 					Collections.<AdviceExpression> emptyList(),

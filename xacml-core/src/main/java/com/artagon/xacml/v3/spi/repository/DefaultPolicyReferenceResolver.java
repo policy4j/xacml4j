@@ -31,12 +31,12 @@ public class DefaultPolicyReferenceResolver implements PolicyReferenceResolver
 	private PolicyRepository repository;
 	private boolean enableRefCache;
 	
-	protected DefaultPolicyReferenceResolver(
+	public DefaultPolicyReferenceResolver(
 			PolicyRepository repository){
-		this(repository, true, 32);
+		this(repository, true, 1014);
 	}
 	
-	protected DefaultPolicyReferenceResolver(
+	public DefaultPolicyReferenceResolver(
 			PolicyRepository policyRepository, 
 			boolean enabledRefCache, int size)
 	{

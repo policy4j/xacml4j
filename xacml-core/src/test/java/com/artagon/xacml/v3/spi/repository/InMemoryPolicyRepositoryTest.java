@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
@@ -92,12 +91,6 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
 		
-		PolicyIDReference ref = new PolicyIDReference("id1", VersionMatch.parse("1.+"));
-		Policy  p = r.resolve(ref);
-		r.resolve(ref);
-		r.resolve(ref);
-		assertEquals("id1", p.getId());
-		assertEquals(Version.parse("1.2.1"), p.getVersion());
 		
 		verify(algorithm);
 		

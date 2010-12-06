@@ -14,7 +14,7 @@
 	</appender>
 	
 	<category name="com.artagon.xacml">
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 	</category>
 	
 	

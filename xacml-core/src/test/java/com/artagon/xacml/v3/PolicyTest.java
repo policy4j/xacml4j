@@ -14,7 +14,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 
 public class PolicyTest 
 {
@@ -36,7 +36,7 @@ public class PolicyTest
 	
 	private List<Rule> rules;
 	
-	private PolicyRepository referenceResolver;
+	private PolicyReferenceResolver referenceResolver;
 	private EvaluationContextHandler handler;
 	
 	private IMocksControl control;
@@ -77,7 +77,7 @@ public class PolicyTest
 				target, 
 				Collections.<VariableDefinition>emptyList(), 
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
-		this.referenceResolver = control.createMock(PolicyRepository.class);
+		this.referenceResolver = control.createMock(PolicyReferenceResolver.class);
 		this.handler = control.createMock(EvaluationContextHandler.class);
 		this.context = new RootEvaluationContext(true, referenceResolver, handler);
 	}
