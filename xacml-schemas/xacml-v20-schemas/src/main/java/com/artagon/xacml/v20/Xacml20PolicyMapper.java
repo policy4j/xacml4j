@@ -103,7 +103,8 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 	}
 	
-	public Xacml20PolicyMapper(FunctionProvider functions, 
+	public Xacml20PolicyMapper(
+			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
 	}

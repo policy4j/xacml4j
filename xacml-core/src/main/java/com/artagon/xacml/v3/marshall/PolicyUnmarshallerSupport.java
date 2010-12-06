@@ -28,7 +28,8 @@ public class PolicyUnmarshallerSupport
 			FunctionProvider extendsionFunctions,
 			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) throws Exception
 	{
-		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(new DefaultFunctionProvider(), extendsionFunctions);
+		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(
+				new DefaultFunctionProvider(), extendsionFunctions);
 		this.combingingAlgorithms = (extensionCombiningAlgorithms == null)? 
 				new AggregatingDecisionCombiningAlgorithmProvider(
 						new DefaultDecisionCombiningAlgorithms(), 
