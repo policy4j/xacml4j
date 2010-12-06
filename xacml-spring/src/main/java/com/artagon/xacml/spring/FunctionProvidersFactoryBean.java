@@ -1,10 +1,11 @@
 package com.artagon.xacml.spring;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
+import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 
@@ -12,9 +13,14 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionPr
 {
 	private Collection<FunctionProvider> providers;
 	
-	public void setProviders(Collection<FunctionProvider> providers)
+	public FunctionProvidersFactoryBean() throws Exception
 	{
-		this.providers = providers;
+		this.providers = new LinkedList<FunctionProvider>();
+		this.providers.add(new DefaultFunctionProvider());
+	}
+	
+	public void setProviders(Collection<FunctionProvider> providers){
+		this.providers.addAll(providers);
 	}
 	
 	@Override
@@ -23,10 +29,7 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionPr
 	}
 
 	@Override
-	protected FunctionProvider createInstance() throws Exception 
-	{	
-		return new AggregatingFunctionProvider(
-				(providers == null)?Collections.<FunctionProvider>emptyList():providers);
-	}
-	
+	protected FunctionProvider createInstance() throws Exception {	
+		return new AggregatingFunctionProvider(providers);
+	}	
 }
