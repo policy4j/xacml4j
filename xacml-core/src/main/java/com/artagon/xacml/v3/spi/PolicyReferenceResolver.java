@@ -1,10 +1,10 @@
 package com.artagon.xacml.v3.spi;
 
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicyIDReference;
-import com.artagon.xacml.v3.policy.PolicyResolutionException;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.PolicySetIDReference;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyIDReference;
+import com.artagon.xacml.v3.PolicyResolutionException;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetIDReference;
 
 public interface PolicyReferenceResolver 
 {

@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 
 /**

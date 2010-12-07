@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.spi.pip;
 import java.util.List;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.policy.AttributeReferenceKey;
+import com.artagon.xacml.v3.AttributeReferenceKey;
 
 public interface ResolverDescriptor 
 {	

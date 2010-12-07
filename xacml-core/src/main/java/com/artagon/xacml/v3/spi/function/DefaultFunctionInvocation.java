@@ -5,9 +5,9 @@ import java.lang.reflect.Array;
 import com.artagon.xacml.util.Invocation;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.ValueExpression;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 final class DefaultFunctionInvocation implements FunctionInvocation

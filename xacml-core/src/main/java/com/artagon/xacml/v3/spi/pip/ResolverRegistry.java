@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.spi.pip;
 
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
 
 public interface ResolverRegistry 
 {

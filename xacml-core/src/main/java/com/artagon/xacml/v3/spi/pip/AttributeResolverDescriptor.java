@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.spi.pip;
 import java.util.Map;
 import java.util.Set;
 
-import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 
 public interface AttributeResolverDescriptor extends ResolverDescriptor
 {

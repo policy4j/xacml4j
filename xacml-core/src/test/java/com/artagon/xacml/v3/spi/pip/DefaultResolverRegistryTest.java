@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
 import com.artagon.xacml.v3.types.IntegerType;
 
 public class DefaultResolverRegistryTest 

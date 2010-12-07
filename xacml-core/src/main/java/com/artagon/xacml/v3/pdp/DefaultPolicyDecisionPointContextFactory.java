@@ -3,14 +3,14 @@ package com.artagon.xacml.v3.pdp;
 import java.util.Collections;
 import java.util.List;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.EvaluationContextHandler;
+import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.CompositeDecisionRuleIDReference;
-import com.artagon.xacml.v3.policy.EvaluationContextHandler;
-import com.artagon.xacml.v3.policy.RootEvaluationContext;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.PolicyRepository;

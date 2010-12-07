@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.policy.PolicyElement;
 
 /**
  * A XACML policy expression

@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.context.Attribute;
 import com.artagon.xacml.v3.context.Attributes;
@@ -31,7 +32,6 @@ import com.artagon.xacml.v3.context.Status;
 import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
-import com.artagon.xacml.v3.policy.AttributesReference;
 import com.google.common.collect.Iterables;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest 

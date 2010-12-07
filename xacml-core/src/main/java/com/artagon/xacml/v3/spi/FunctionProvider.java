@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.spi;
 
-import com.artagon.xacml.v3.policy.FunctionSpec;
+import com.artagon.xacml.v3.FunctionSpec;
 
 public interface FunctionProvider 
 {

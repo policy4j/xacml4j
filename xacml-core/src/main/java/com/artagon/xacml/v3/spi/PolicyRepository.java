@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.VersionMatch;
 
 /**
  * A repository for XACML policies, implements

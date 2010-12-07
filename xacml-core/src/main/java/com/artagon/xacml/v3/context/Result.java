@@ -9,10 +9,10 @@ import java.util.Map;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.CompositeDecisionRuleIDReference;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

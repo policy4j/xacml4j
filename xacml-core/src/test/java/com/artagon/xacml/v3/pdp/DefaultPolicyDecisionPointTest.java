@@ -14,13 +14,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.context.ResponseContext;
 import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;

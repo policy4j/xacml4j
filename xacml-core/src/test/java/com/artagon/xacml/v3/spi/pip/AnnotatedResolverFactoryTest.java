@@ -17,11 +17,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
+import com.artagon.xacml.v3.AttributeReferenceKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
-import com.artagon.xacml.v3.policy.AttributeReferenceKey;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.IntegerType;

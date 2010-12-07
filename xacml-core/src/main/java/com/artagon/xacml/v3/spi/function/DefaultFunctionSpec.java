@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionInvocationException;
+import com.artagon.xacml.v3.FunctionParamSpec;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.policy.FunctionInvocationException;
-import com.artagon.xacml.v3.policy.FunctionParamSpec;
-import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 /**

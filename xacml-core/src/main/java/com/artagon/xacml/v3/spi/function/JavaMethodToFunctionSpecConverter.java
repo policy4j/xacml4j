@@ -12,8 +12,8 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.Expression;
+import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.policy.FunctionSpec;
 import com.artagon.xacml.v3.types.AttributeValueTypes;
 import com.google.common.base.Preconditions;
 

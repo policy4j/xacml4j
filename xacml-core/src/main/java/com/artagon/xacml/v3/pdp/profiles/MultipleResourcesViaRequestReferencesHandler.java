@@ -3,6 +3,7 @@ package com.artagon.xacml.v3.pdp.profiles;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.context.RequestContext;
@@ -11,7 +12,6 @@ import com.artagon.xacml.v3.context.RequestSyntaxException;
 import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
-import com.artagon.xacml.v3.policy.AttributesReference;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {

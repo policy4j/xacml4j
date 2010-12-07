@@ -3,8 +3,8 @@ package com.artagon.xacml.v3.spi.function;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.ValueType;
-import com.artagon.xacml.v3.policy.FunctionParamSpec;
 import com.google.common.base.Preconditions;
 
 public final class FunctionSpecBuilder 

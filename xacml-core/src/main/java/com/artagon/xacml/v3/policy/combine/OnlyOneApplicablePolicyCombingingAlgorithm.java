@@ -2,10 +2,10 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.MatchResult;
+import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
 final class OnlyOneApplicablePolicyCombingingAlgorithm extends 

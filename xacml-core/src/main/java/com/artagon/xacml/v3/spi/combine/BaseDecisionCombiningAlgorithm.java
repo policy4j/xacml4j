@@ -1,11 +1,11 @@
 package com.artagon.xacml.v3.spi.combine;
 
 import com.artagon.xacml.v3.Decision;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.DecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.PolicyVisitor;
 import com.artagon.xacml.v3.XacmlObject;
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.DecisionRule;
-import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject

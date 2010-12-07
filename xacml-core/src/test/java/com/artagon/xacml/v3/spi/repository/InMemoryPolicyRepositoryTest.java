@@ -11,11 +11,11 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.policy.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Version;
-import com.artagon.xacml.v3.policy.VersionMatch;
+import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Version;
+import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 
 public class InMemoryPolicyRepositoryTest 

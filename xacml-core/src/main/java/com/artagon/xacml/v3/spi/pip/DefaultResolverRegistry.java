@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
