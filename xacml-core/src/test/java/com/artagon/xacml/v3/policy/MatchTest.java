@@ -14,7 +14,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.policy.AttributeDesignator;
 import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
 import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;

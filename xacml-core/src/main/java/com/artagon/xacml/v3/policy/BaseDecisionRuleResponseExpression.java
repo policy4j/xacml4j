@@ -5,14 +5,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.context.StatusCode;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;

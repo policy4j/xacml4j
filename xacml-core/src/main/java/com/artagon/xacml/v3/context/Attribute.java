@@ -1,9 +1,12 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.context;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;

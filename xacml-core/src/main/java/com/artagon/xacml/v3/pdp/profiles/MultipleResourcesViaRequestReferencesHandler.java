@@ -3,12 +3,12 @@ package com.artagon.xacml.v3.pdp.profiles;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.RequestReference;
-import com.artagon.xacml.v3.RequestSyntaxException;
-import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.context.Attributes;
+import com.artagon.xacml.v3.context.RequestContext;
+import com.artagon.xacml.v3.context.RequestReference;
+import com.artagon.xacml.v3.context.RequestSyntaxException;
+import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.policy.AttributesReference;

@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.context.Attribute;
+
 public class AttributeTest 
 {
 	private Collection<AttributeValue> values;

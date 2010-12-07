@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.Versionable;
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 

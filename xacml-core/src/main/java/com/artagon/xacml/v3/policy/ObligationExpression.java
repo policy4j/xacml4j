@@ -3,7 +3,6 @@ package com.artagon.xacml.v3.policy;
 import java.util.Collection;
 
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;

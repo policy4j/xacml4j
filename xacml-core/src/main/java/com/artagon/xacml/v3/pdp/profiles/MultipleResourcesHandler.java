@@ -5,9 +5,9 @@ import java.util.Collections;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.context.RequestContext;
+import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.context.Status;
 import com.artagon.xacml.v3.pdp.RequestContextHandlerChain;
 
 

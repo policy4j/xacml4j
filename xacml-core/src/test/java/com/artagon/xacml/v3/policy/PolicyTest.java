@@ -17,7 +17,6 @@ import org.junit.Test;
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.XPathVersion;

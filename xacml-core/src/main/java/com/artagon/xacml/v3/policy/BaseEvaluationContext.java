@@ -17,11 +17,10 @@ import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.ValueExpression;
+import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
 

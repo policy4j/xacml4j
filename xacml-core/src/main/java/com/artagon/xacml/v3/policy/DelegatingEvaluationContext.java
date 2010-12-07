@@ -14,9 +14,9 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.XPathVersion;
+import com.artagon.xacml.v3.context.StatusCode;
 import com.google.common.base.Preconditions;
 
 /**

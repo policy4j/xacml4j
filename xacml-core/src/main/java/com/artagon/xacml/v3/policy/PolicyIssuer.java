@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.context.Attribute;
 import com.google.common.base.Preconditions;
 
 public class PolicyIssuer extends XacmlObject

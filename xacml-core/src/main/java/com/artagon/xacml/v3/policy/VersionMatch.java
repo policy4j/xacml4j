@@ -42,6 +42,7 @@ public class VersionMatch
      * @param version a version
      * @return <code>true</code> if given
      * version matches this constraint
+     * TODO: implement more efficient matching
      */
     public boolean match(Version version) {
     	return compiledPattern.matcher(version.getValue()).matches();

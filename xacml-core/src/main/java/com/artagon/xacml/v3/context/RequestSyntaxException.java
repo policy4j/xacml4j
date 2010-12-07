@@ -1,4 +1,6 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.context;
+
+import com.artagon.xacml.v3.XacmlSyntaxException;
 
 
 public class RequestSyntaxException extends XacmlSyntaxException

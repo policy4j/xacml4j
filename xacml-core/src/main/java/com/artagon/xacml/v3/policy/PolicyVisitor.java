@@ -1,7 +1,6 @@
 
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 

@@ -1,10 +1,11 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.context;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v3.XacmlObject;
 import com.artagon.xacml.v3.policy.AttributesReference;
 import com.google.common.base.Preconditions;
 

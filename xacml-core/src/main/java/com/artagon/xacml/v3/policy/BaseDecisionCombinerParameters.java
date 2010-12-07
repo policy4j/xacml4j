@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.artagon.xacml.v3.XacmlObject;
 
-
 abstract class BaseDecisionCombinerParameters extends XacmlObject 
 	implements PolicyElement
 {

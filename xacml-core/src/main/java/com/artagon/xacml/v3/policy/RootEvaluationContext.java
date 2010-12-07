@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
 

@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import com.artagon.xacml.v3.context.Attribute;
+import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.types.AttributeValueTypes;
 
 public class AttributesTest 

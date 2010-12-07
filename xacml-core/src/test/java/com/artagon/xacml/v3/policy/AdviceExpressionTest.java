@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.Advice;
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeAssignmentExpression;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;

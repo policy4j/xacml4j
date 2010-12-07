@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class Version implements Comparable<Version> 
+public final class Version implements Comparable<Version> 
 {
 	private  static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
 	
@@ -85,6 +85,13 @@ public class Version implements Comparable<Version>
         return version.length - v.version.length;
     }
     
+    /**
+     * Checks if a given version vector starting at given
+     * pos is all <code>0</code>
+     * @param versions a version vector
+     * @param startIdx a start index
+     * @return <code>true</code> if all <code>0</code>
+     */
     private boolean checkAllZeros(int[] versions, int startIdx)
     {
 		for (int i = versions.length-1; i >= startIdx; i--) {

@@ -9,8 +9,8 @@ import com.artagon.xacml.v3.AttributeValueType;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.types.AttributeValueTypes;
 
 public class AttributeSelector extends 

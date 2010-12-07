@@ -1,6 +1,5 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.policy;
 
-import com.artagon.xacml.v3.policy.Version;
 
 /**
  * An interface for versionable XACML entities

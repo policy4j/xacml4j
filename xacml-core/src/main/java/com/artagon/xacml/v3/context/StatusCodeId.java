@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.context;
 
 import java.util.EnumSet;
 import java.util.Map;

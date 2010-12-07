@@ -28,5 +28,6 @@ public interface Expression extends PolicyElement
 	 * @throws EvaluationException if an evaluation error
 	 * occurs
 	 */
-	Expression evaluate(EvaluationContext context) throws EvaluationException;
+	Expression evaluate(
+			EvaluationContext context) throws EvaluationException;
 }
