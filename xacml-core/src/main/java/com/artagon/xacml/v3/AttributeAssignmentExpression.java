@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import com.artagon.xacml.v3.policy.PolicyElement;
+import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.google.common.base.Preconditions;
 
 public class AttributeAssignmentExpression extends XacmlObject 

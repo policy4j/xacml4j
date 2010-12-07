@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.google.common.base.Preconditions;
 

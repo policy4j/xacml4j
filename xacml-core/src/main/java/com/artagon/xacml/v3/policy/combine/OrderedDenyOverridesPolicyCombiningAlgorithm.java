@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.policy.combine;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 
 final class OrderedDenyOverridesPolicyCombiningAlgorithm extends DenyOverrides<CompositeDecisionRule>
 {

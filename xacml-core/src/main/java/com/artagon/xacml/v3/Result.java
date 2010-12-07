@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.artagon.xacml.v3.policy.CompositeDecisionRuleIDReference;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleResourcesHandler;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;

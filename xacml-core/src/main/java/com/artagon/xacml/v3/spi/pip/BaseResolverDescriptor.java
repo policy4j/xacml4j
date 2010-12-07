@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeReferenceKey;
+import com.artagon.xacml.v3.policy.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseResolverDescriptor 

@@ -1,7 +1,7 @@
 
 package com.artagon.xacml.v3.policy.combine;
 
-import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.policy.Rule;
 
 final class OrderedPermitOverridesRuleCombingingAlgorithm extends PermitOverrides<Rule> 
 {

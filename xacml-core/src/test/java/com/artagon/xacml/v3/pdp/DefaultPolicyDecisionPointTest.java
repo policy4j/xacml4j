@@ -11,15 +11,16 @@ import java.util.Collections;
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.XPathProvider;
@@ -59,6 +60,7 @@ public class DefaultPolicyDecisionPointTest
 	}
 	
 	@Test
+	@Ignore
 	public void testRequestEvaluationPolicyDomainEvaluatesToPermitAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
 		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());

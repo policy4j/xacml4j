@@ -2,9 +2,9 @@ package com.artagon.xacml.v3.policy.combine.legacy;
 
 import java.util.List;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class DenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>

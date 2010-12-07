@@ -10,6 +10,9 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v3.policy.AttributesReference;
+import com.artagon.xacml.v3.policy.Condition;
+import com.artagon.xacml.v3.policy.Target;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;

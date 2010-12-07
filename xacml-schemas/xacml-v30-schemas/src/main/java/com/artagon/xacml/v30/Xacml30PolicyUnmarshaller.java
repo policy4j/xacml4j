@@ -4,10 +4,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 
 import com.artagon.xacml.v20.Xacml20PolicyMapper;
-import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 

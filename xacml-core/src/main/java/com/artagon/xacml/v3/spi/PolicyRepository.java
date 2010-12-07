@@ -3,10 +3,10 @@ package com.artagon.xacml.v3.spi;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.Policy;
+import com.artagon.xacml.v3.policy.PolicySet;
+import com.artagon.xacml.v3.policy.VersionMatch;
 
 /**
  * A repository for XACML policies, implements
@@ -69,6 +69,15 @@ public interface PolicyRepository
 	Collection<PolicySet> getPolicySets(
 			String id, VersionMatch version);
 	
+	/**
+	 * Gets all matching policy sets
+	 * 
+	 * @param id a policy set identifier
+	 * @param version a  version match
+	 * @param earliest an earliest version match
+	 * @param latest a latest version match
+	 * @return a collection of matching {
+	 */
 	Collection<PolicySet> getPolicySets(
 			String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
@@ -86,6 +95,7 @@ public interface PolicyRepository
 	Policy getPolicy(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
 	
+	
 	/**
 	 * Gets latest policy set matching given version constraints
 	 * 
@@ -98,7 +108,7 @@ public interface PolicyRepository
 	 */
 	PolicySet getPolicySet(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
-	
+		
 	/**
 	 * Adds a new version of a given policy or policy set
 	 * 

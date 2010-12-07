@@ -16,15 +16,15 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeDesignatorKey;
-import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
+import com.artagon.xacml.v3.policy.AttributeReferenceEvaluationException;
+import com.artagon.xacml.v3.policy.AttributeSelectorKey;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.XPathProvider;

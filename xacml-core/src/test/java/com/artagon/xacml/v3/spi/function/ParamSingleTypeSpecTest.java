@@ -13,7 +13,7 @@ import com.artagon.xacml.v3.AttributeValue;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.BagOfAttributeValuesType;
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionParamSpec;
+import com.artagon.xacml.v3.policy.FunctionParamSpec;
 import com.artagon.xacml.v3.types.DoubleType;
 import com.artagon.xacml.v3.types.StringType;
 

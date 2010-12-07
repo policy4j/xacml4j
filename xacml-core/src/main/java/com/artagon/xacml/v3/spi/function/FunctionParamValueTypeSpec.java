@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionParamSpec;
 import com.artagon.xacml.v3.ValueType;
 import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.v3.policy.FunctionParamSpec;
 import com.google.common.base.Preconditions;
 
 final class FunctionParamValueTypeSpec extends XacmlObject implements FunctionParamSpec

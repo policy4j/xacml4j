@@ -3,6 +3,9 @@ package com.artagon.xacml.v3;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v3.policy.AttributeDesignatorKey;
+import com.artagon.xacml.v3.policy.AttributeSelectorKey;
+
 public interface EvaluationContextHandler 
 {
 	NodeList evaluateToNodeSet(

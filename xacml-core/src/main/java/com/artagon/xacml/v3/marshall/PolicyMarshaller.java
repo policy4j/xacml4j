@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.marshall;
 
 import java.io.IOException;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 
 public interface PolicyMarshaller 
 {

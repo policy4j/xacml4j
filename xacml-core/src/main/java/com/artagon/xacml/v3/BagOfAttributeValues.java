@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.artagon.xacml.v3.policy.PolicyVisitor;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultiset;
