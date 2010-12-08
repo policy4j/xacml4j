@@ -25,13 +25,13 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.context.Attribute;
 import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestContextHandler;
 import com.artagon.xacml.v3.context.RequestReference;
 import com.artagon.xacml.v3.context.RequestSyntaxException;
 import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.context.Status;
 import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
+import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.google.common.collect.Iterables;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest 

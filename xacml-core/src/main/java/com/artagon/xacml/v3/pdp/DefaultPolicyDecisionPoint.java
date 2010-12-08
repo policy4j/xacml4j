@@ -12,7 +12,6 @@ import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestContextHandler;
 import com.artagon.xacml.v3.context.ResponseContext;
 import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.context.Status;

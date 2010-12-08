@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.pdp;
+package com.artagon.xacml.v3.context;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -6,9 +6,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestContextHandler;
-import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
+import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

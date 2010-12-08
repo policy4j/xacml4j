@@ -11,7 +11,7 @@ import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.context.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestContextHandler;
+import com.artagon.xacml.v3.context.RequestContextHandlerChain;
 import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
