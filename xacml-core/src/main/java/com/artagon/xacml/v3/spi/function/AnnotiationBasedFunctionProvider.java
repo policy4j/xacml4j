@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.artagon.xacml.util.CglibInvocationFactory;
 import com.artagon.xacml.util.DefaultInvocationFactory;
 import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.util.Reflections;
@@ -30,7 +31,7 @@ public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 	
 	public AnnotiationBasedFunctionProvider(Class<?> clazz) 
 		throws Exception{
-		this(clazz, new DefaultInvocationFactory());
+		this(clazz, new CglibInvocationFactory());
 	}
 	
 	public AnnotiationBasedFunctionProvider(Object instance, InvocationFactory invocationFactory) 
