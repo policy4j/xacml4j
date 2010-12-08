@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.context.StatusCode;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a 
@@ -56,7 +56,7 @@ public class AttributeDesignator extends AttributeReference
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType type = AttributeValueTypes.getType(dataTypeId);
+		AttributeValueType type = DataTypes.getType(dataTypeId);
 		return new AttributeDesignator(category, attributeId, 
 				issuer, type, mustBePresent);
 	}

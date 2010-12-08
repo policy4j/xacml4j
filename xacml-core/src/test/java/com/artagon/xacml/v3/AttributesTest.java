@@ -21,7 +21,7 @@ import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.context.Attribute;
 import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 
 public class AttributesTest 
 {
@@ -160,7 +160,7 @@ public class AttributesTest
 		Attributes test = new Attributes(AttributeCategories.RESOURCE,  content1, attributes);
 		assertEquals(2, test.getAttributeValues("testId10", null, INTEGER).size());
 		assertEquals(1, test.getAttributeValues("testId10", null, STRING).size());
-		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", AttributeValueTypes.STRING.getDataType()).size());
-		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", AttributeValueTypes.INTEGER.getDataType()).size());
+		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", DataTypes.STRING.getDataType()).size());
+		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", DataTypes.INTEGER.getDataType()).size());
 	}
 }

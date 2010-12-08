@@ -17,7 +17,7 @@ import com.artagon.xacml.v3.AttributeReferenceKey;
 import com.artagon.xacml.v3.AttributeSelectorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
@@ -69,7 +69,7 @@ public class AnnotatedResolverFactory
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
 			b.attribute(attr.id(), 
-					AttributeValueTypes.getType(attr.dataType()));
+					DataTypes.getType(attr.dataType()));
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());
@@ -150,7 +150,7 @@ public class AnnotatedResolverFactory
 				keys.add(new AttributeDesignatorKey(
 							AttributeCategories.parse(ref.category()), 
 							ref.attributeId(), 
-							AttributeValueTypes.getType(ref.dataType()), 
+							DataTypes.getType(ref.dataType()), 
 							Strings.emptyToNull(ref.issuer())));
 				continue;
 			}
@@ -168,7 +168,7 @@ public class AnnotatedResolverFactory
 				keys.add(new AttributeSelectorKey(
 						AttributeCategories.parse(ref.category()), 
 						ref.xpath(), 
-						AttributeValueTypes.getType(ref.dataType()), 
+						DataTypes.getType(ref.dataType()), 
 						Strings.emptyToNull(ref.contextAttributeId())));
 				continue;
 			}
