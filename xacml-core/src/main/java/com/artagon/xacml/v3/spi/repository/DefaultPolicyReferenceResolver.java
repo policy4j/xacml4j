@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.repository;
 
+import java.lang.ref.SoftReference;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import com.google.common.collect.MapMaker;
 
 /**
  * A default implementation of {@link PolicyReferenceResolver}.
- * Maintains a cache of resolved policies by the reference
+ * Maintains a cache of resolved policies by the reference.
  * 
  * @author Giedrius Trumpickas
  */
@@ -32,7 +33,7 @@ final class DefaultPolicyReferenceResolver
 	
 	public DefaultPolicyReferenceResolver(
 			PolicyRepository repository){
-		this(repository, true, 1014);
+		this(repository, true, 1024);
 	}
 	
 	public DefaultPolicyReferenceResolver(
