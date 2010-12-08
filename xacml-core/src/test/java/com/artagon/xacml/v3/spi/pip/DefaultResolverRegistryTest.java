@@ -5,12 +5,9 @@ import static org.easymock.EasyMock.expect;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.AttributeCategories;
-import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.types.IntegerType;
 

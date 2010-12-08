@@ -9,17 +9,6 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.AttributeCategories;
-import com.artagon.xacml.v3.AttributeDesignator;
-import com.artagon.xacml.v3.AttributeDesignatorKey;
-import com.artagon.xacml.v3.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.Match;
-import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.spi.function.FunctionInvocation;
 import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;

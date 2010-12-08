@@ -31,6 +31,8 @@ public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
 	
 	public InMemoryPolicyRepositoryWithChm()
 	{
+		addCapability(PolicyRepositoryReferenceResolver.class, 
+				new DefaultPolicyReferenceResolver(this));
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
 	}

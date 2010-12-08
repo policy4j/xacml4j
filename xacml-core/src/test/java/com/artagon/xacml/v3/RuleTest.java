@@ -14,22 +14,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Advice;
-import com.artagon.xacml.v3.AdviceExpression;
-import com.artagon.xacml.v3.Condition;
-import com.artagon.xacml.v3.ConditionResult;
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.DecisionRule;
-import com.artagon.xacml.v3.Effect;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.MatchResult;
-import com.artagon.xacml.v3.Obligation;
-import com.artagon.xacml.v3.ObligationExpression;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.Target;
-
 public class RuleTest
 {
 	

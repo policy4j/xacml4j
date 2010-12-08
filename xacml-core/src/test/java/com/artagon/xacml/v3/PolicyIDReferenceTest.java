@@ -17,18 +17,6 @@ import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.MatchResult;
-import com.artagon.xacml.v3.Policy;
-import com.artagon.xacml.v3.PolicyIDReference;
-import com.artagon.xacml.v3.PolicyResolutionException;
-import com.artagon.xacml.v3.Version;
-import com.artagon.xacml.v3.VersionMatch;
-import com.artagon.xacml.v3.XacmlException;
-import com.artagon.xacml.v3.XacmlSyntaxException;
-
 public class PolicyIDReferenceTest
 {
 	private EvaluationContext context;

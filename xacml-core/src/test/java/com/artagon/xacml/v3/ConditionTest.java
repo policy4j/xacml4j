@@ -11,12 +11,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Condition;
-import com.artagon.xacml.v3.ConditionResult;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionInvocationException;
-import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.context.StatusCode;
 
 public class ConditionTest 

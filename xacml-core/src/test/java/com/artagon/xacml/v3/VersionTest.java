@@ -9,9 +9,6 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Version;
-import com.artagon.xacml.v3.XacmlSyntaxException;
-
 public class VersionTest 
 {
 	@Test

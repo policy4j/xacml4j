@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.context.StatusCode;
-import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.BooleanValue;
 
 /**
  * Condition represents a Boolean expression that refines the applicability 

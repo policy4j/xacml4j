@@ -12,15 +12,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.Apply;
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.Expression;
-import com.artagon.xacml.v3.FunctionInvocationException;
-import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.ValueExpression;
-import com.artagon.xacml.v3.XacmlException;
-import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.types.BooleanType;
 import com.artagon.xacml.v3.types.IntegerType;
 

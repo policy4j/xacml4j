@@ -14,11 +14,6 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.MatchAnyOf;
-import com.artagon.xacml.v3.MatchResult;
-import com.artagon.xacml.v3.Target;
-
 public class TargetTest
 {
 	private Collection<MatchAnyOf> matches;

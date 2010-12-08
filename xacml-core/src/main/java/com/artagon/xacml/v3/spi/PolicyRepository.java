@@ -95,7 +95,6 @@ public interface PolicyRepository
 	Policy getPolicy(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
 	
-	
 	/**
 	 * Gets latest policy set matching given version constraints
 	 * 
@@ -108,7 +107,16 @@ public interface PolicyRepository
 	 */
 	PolicySet getPolicySet(String id, VersionMatch version, 
 			VersionMatch earliest, VersionMatch latest);
-		
+	
+	/**
+	 * Gets capability for this repository
+	 * 
+	 * @param <C> a capability interface
+	 * @param c a capability
+	 * @return a capability
+	 */
+	<C extends PolicyRepositoryCapability> C getCapability(Class<C> c);
+	
 	/**
 	 * Adds a new version of a given policy or policy set
 	 * 

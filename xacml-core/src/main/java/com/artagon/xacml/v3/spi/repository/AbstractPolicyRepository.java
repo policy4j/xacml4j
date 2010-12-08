@@ -8,6 +8,10 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.PolicyRepositoryCapability;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
 
 /**
  * A base class for {@link PolicyRepository} implementations
@@ -16,6 +20,27 @@ import com.artagon.xacml.v3.spi.PolicyRepository;
  */
 public abstract class AbstractPolicyRepository implements PolicyRepository
 {	
+	private ClassToInstanceMap<PolicyRepositoryCapability> capabilities;
+	
+	
+	protected AbstractPolicyRepository(){
+		this.capabilities = MutableClassToInstanceMap.create();
+	}
+	
+	/**
+	 * Adds new capability to this repository
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @param capability
+	 */
+	protected <T extends PolicyRepositoryCapability> 
+		void addCapability(Class<T> c, T capability)
+	{
+		Preconditions.checkState(
+				this.capabilities.put(c, capability) != null);
+	}
+	
 	/**
 	 * Implementation assumes that 
 	 * {@link #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
@@ -77,5 +102,11 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 	@Override
 	public final Collection<PolicySet> getPolicySets(String id, VersionMatch version){
 		return getPolicySets(id, version, null, null);
+	}
+
+	@Override
+	public final <C extends PolicyRepositoryCapability> C getCapability(Class<C> c) {
+		Preconditions.checkNotNull(c);
+		return capabilities.getInstance(c);
 	}
 }

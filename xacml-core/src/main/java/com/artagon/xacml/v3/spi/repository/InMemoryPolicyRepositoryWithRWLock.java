@@ -32,6 +32,8 @@ public class InMemoryPolicyRepositoryWithRWLock extends AbstractPolicyRepository
 	private ReadWriteLock policySetLock;
 	
 	public InMemoryPolicyRepositoryWithRWLock(){
+		addCapability(PolicyRepositoryReferenceResolver.class, 
+				new DefaultPolicyReferenceResolver(this));
 		this.policies = new HashMap<String, Map<Version, Policy>>();
 		this.policySets = new HashMap<String, Map<Version, PolicySet>>();
 		this.policyLock = new ReentrantReadWriteLock();

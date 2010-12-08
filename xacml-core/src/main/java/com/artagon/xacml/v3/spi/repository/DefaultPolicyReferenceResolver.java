@@ -21,7 +21,7 @@ import com.google.common.collect.MapMaker;
  * 
  * @author Giedrius Trumpickas
  */
-public class DefaultPolicyReferenceResolver implements PolicyReferenceResolver
+final class DefaultPolicyReferenceResolver implements PolicyRepositoryReferenceResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
 	
