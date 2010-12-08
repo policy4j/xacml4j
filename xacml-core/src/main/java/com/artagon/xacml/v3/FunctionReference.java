@@ -50,17 +50,11 @@ public class FunctionReference extends XacmlObject implements Expression
 	public <T extends ValueExpression> T invoke(EvaluationContext context, 
 			Expression ...params) throws EvaluationException
 	{
-		boolean validate = context.isValidateFuncParamsAtRuntime();
-		try{
-			context.setValidateFuncParamsAtRuntime(true);
-			if(log.isDebugEnabled()){
+		if(log.isDebugEnabled()){
 				log.debug("Invoking function reference=\"{}\"", 
 						spec.getId());
-			}
-			return (T)spec.invoke(context, params);
-		}finally{
-			context.setValidateFuncParamsAtRuntime(validate);
 		}
+		return (T)spec.invoke(context, params);
 	}
 	
 	/**

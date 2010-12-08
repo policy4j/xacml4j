@@ -18,7 +18,8 @@ import com.google.common.collect.MutableClassToInstanceMap;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class AbstractPolicyRepository implements PolicyRepository
+public abstract class AbstractPolicyRepository 
+	implements PolicyRepository
 {	
 	private ClassToInstanceMap<PolicyRepositoryCapability> capabilities;
 	
@@ -38,7 +39,7 @@ public abstract class AbstractPolicyRepository implements PolicyRepository
 		void addCapability(Class<T> c, T capability)
 	{
 		Preconditions.checkState(
-				this.capabilities.put(c, capability) != null);
+				this.capabilities.put(c, capability) == null);
 	}
 	
 	/**

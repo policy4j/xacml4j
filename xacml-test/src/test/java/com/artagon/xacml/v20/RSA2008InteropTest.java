@@ -193,18 +193,17 @@ public class RSA2008InteropTest
 	{
 		RequestContext request = getRequest(name);
 		ResponseContext response = null;
-		int n = 10;
+		int n = 10000;
 		long time = 0;
 		for(int i = 0; i < n; i++){
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			response = pdp.decide(request);
-			long end = System.currentTimeMillis();
+			long end = System.nanoTime();
 			time += (end - start);
 		}
 		System.out.printf("Test=\"%s\" avg execution took=\"%d\" " +
-				"nano s and took=\"%d\" iterations\n", name, time/n, n);
+				"nano seconds and took=\"%d\" iterations\n", name, time/n, n);
 		Result r = Iterables.getOnlyElement(response.getResults());
-		//System.out.printf("Request result=\"%s\"\n", r.toString());
 		return r;
 	}
 }
