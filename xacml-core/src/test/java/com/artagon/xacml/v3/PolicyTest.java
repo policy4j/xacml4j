@@ -14,7 +14,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
+import com.artagon.xacml.v3.spi.repository.PolicyReferenceResolver;
 
 public class PolicyTest 
 {

@@ -12,8 +12,8 @@ import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 import com.artagon.xacml.v3.pdp.profiles.MultipleResourcesHandler;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public class PolicyDecisionPointFactoryBean extends 

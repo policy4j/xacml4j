@@ -24,14 +24,14 @@ import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.AnnotatedResolverFactory;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithChm;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 
 public class Xacml20ConformanceTest 
 {

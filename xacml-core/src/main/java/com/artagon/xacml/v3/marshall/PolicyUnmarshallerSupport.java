@@ -8,10 +8,10 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
 import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithms;
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
-import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 
 /**
  * A support class for dealing with XACML 

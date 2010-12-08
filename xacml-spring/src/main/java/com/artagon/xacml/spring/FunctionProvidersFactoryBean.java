@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
-import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 
 public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionProvider>
 {

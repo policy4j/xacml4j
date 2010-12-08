@@ -75,8 +75,8 @@ import com.artagon.xacml.v3.VariableReference;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
-import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 import com.artagon.xacml.v3.types.AttributeValueTypes;
 import com.google.common.base.Preconditions;
 

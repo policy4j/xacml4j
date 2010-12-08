@@ -7,8 +7,6 @@ import java.util.Comparator;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.VersionMatch;
-import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.PolicyRepositoryCapability;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;

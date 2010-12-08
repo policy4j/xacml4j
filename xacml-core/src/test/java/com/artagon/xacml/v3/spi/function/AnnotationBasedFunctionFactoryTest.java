@@ -14,7 +14,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.spi.FunctionProvider;
 
 
 public class AnnotationBasedFunctionFactoryTest

@@ -8,8 +8,8 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.FunctionProvider;
+import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 
 public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller

@@ -13,12 +13,12 @@ import com.artagon.xacml.v3.context.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.context.RequestContextHandlerChain;
 import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
-import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.repository.PolicyReferenceResolver;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 import com.artagon.xacml.v3.spi.repository.PolicyRepositoryReferenceResolver;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.XPathProvider;
 import com.google.common.base.Preconditions;
 
 public class DefaultPolicyDecisionPointContextFactory 

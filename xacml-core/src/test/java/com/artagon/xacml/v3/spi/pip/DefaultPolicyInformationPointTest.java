@@ -18,7 +18,6 @@ import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeDesignatorKey;
 import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
 import com.artagon.xacml.v3.types.IntegerType;
 import com.artagon.xacml.v3.types.StringType;
 import com.google.common.collect.ImmutableMap;

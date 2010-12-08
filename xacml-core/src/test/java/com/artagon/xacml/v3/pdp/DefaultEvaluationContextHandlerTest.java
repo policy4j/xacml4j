@@ -33,9 +33,9 @@ import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.ValueExpression;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.xpath.DefaultXPathProvider;
+import com.artagon.xacml.v3.spi.xpath.XPathProvider;
 
 public class DefaultEvaluationContextHandlerTest
 {

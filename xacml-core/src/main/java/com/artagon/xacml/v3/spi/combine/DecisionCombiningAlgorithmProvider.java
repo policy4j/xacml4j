@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.spi;
+package com.artagon.xacml.v3.spi.combine;
 
 import java.util.Set;
 

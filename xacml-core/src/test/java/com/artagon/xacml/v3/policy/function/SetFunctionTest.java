@@ -8,8 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 import com.artagon.xacml.v3.types.BooleanType;
 
 public class SetFunctionTest 

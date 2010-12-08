@@ -4,7 +4,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.artagon.xacml.v3.FunctionSpec;
-import com.artagon.xacml.v3.spi.FunctionProvider;
 import com.google.common.base.Preconditions;
 
 public class BaseFunctionProvider implements FunctionProvider

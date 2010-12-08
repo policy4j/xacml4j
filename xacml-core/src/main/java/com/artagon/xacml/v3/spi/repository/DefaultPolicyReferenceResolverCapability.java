@@ -10,8 +10,6 @@ import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
-import com.artagon.xacml.v3.spi.PolicyReferenceResolver;
-import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.MapMaker;
 
@@ -21,9 +19,9 @@ import com.google.common.collect.MapMaker;
  * 
  * @author Giedrius Trumpickas
  */
-final class DefaultPolicyReferenceResolver implements PolicyRepositoryReferenceResolver
+final class DefaultPolicyReferenceResolverCapability implements PolicyRepositoryReferenceResolver
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolverCapability.class);
 	
 	private ConcurrentMap<PolicyIDReference, Policy> policyIDRefCache;
 	private ConcurrentMap<PolicySetIDReference, PolicySet> policySetIDRefCache;
@@ -31,12 +29,12 @@ final class DefaultPolicyReferenceResolver implements PolicyRepositoryReferenceR
 	private PolicyRepository repository;
 	private boolean enableRefCache;
 	
-	public DefaultPolicyReferenceResolver(
+	public DefaultPolicyReferenceResolverCapability(
 			PolicyRepository repository){
 		this(repository, true, 1014);
 	}
 	
-	public DefaultPolicyReferenceResolver(
+	public DefaultPolicyReferenceResolverCapability(
 			PolicyRepository policyRepository, 
 			boolean enabledRefCache, int size)
 	{

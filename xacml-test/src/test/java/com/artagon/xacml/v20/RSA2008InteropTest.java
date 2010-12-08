@@ -15,11 +15,11 @@ import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyRepository;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 

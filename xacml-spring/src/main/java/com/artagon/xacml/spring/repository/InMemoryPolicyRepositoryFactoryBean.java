@@ -5,10 +5,10 @@ import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.spring.ResourceCollection;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.FunctionProvider;
-import com.artagon.xacml.v3.spi.PolicyRepository;
+import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
 import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
 import com.google.common.base.Preconditions;
 

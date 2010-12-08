@@ -21,9 +21,9 @@ import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.context.ResponseContext;
 import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.spi.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.PolicyRepository;
-import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v3.spi.repository.PolicyRepository;
+import com.artagon.xacml.v3.spi.xpath.XPathProvider;
 
 public class DefaultPolicyDecisionPointTest 
 {

@@ -5,7 +5,7 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.spi.XPathProvider;
+import com.artagon.xacml.v3.spi.xpath.XPathProvider;
 
 public interface PolicyDecisionPointContext
 {

@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
-import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.google.common.base.Preconditions;
 
 /**
