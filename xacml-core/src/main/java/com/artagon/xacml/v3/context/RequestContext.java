@@ -18,14 +18,13 @@ import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Target;
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
-public class RequestContext extends XacmlObject
+public class RequestContext
 {	
 	private boolean returnPolicyIdList;
 	private boolean combinedDecision;
@@ -33,6 +32,8 @@ public class RequestContext extends XacmlObject
 	private Map<String, Attributes> attributesByXmlId;
 	private Collection<RequestReference> requestReferences;
 	private RequestDefaults requestDefaults;
+	
+	private transient int cachedHashCode;
 	
 	/**
 	 * Constructs request with a given arguments
@@ -71,6 +72,11 @@ public class RequestContext extends XacmlObject
 				this.attributesByXmlId.put(attr.getId(), attr);
 			}
 		}
+		this.cachedHashCode = Objects.hashCode(returnPolicyIdList, 
+				combinedDecision, 
+				attributes, 
+				requestReferences, 
+				requestDefaults);
 	}
 	
 	/**
@@ -372,11 +378,7 @@ public class RequestContext extends XacmlObject
 	
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(returnPolicyIdList, 
-				combinedDecision, 
-				attributes, 
-				requestReferences, 
-				requestDefaults);
+		return cachedHashCode;
 	}
 	@Override
 	public boolean equals(Object o){

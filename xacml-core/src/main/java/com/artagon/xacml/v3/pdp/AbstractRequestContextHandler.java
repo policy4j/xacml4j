@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.artagon.xacml.v3.context.RequestContext;
+import com.artagon.xacml.v3.context.RequestContextHandler;
 import com.artagon.xacml.v3.context.Result;
 import com.google.common.base.Preconditions;
 
