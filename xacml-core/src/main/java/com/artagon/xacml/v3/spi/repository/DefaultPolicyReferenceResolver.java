@@ -19,9 +19,10 @@ import com.google.common.collect.MapMaker;
  * 
  * @author Giedrius Trumpickas
  */
-final class DefaultPolicyReferenceResolverCapability implements PolicyRepositoryReferenceResolver
+final class DefaultPolicyReferenceResolver 
+	implements PolicyReferenceResolver
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolverCapability.class);
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
 	
 	private ConcurrentMap<PolicyIDReference, Policy> policyIDRefCache;
 	private ConcurrentMap<PolicySetIDReference, PolicySet> policySetIDRefCache;
@@ -29,12 +30,12 @@ final class DefaultPolicyReferenceResolverCapability implements PolicyRepository
 	private PolicyRepository repository;
 	private boolean enableRefCache;
 	
-	public DefaultPolicyReferenceResolverCapability(
+	public DefaultPolicyReferenceResolver(
 			PolicyRepository repository){
 		this(repository, true, 1014);
 	}
 	
-	public DefaultPolicyReferenceResolverCapability(
+	public DefaultPolicyReferenceResolver(
 			PolicyRepository policyRepository, 
 			boolean enabledRefCache, int size)
 	{
