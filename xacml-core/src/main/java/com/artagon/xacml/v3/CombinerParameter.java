@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -7,7 +8,8 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class CombinerParameter extends XacmlObject implements PolicyElement
+public class CombinerParameter 
+	implements PolicyElement
 {
 	private String name;
 	private AttributeValue value;
@@ -33,6 +35,35 @@ public class CombinerParameter extends XacmlObject implements PolicyElement
 	
 	public final AttributeValue getValue(){
 		return value;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(name, value);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("name", name)
+		.add("value", value)
+		.toString();
+	}
+	
+	@Override
+	public boolean equals(Object  o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof CombinerParameter)){
+			return false;
+		}
+		CombinerParameter c = (CombinerParameter)o;
+		return name.equals(c.getName()) 
+		&& value.equals(c.value);
 	}
 
 	@Override

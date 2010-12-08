@@ -2,7 +2,8 @@ package com.artagon.xacml.v3;
 
 
 
-public class CombinerParameters extends BaseDecisionCombinerParameters 
+public class CombinerParameters 
+	extends BaseDecisionCombinerParameters 
 	implements PolicyElement
 {
 	public CombinerParameters(

@@ -1,6 +1,9 @@
 package com.artagon.xacml.v3;
 
+import java.util.Arrays;
 import java.util.Collection;
+
+import com.google.common.base.Objects;
 
 
 
@@ -34,10 +37,11 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 				"At least one argument must be specified");
 		spec.validateParametersAndThrow(arguments);
 		this.spec = spec;
-		this.arguments = arguments;
+		this.arguments = Arrays.copyOf(arguments, arguments.length);
 	}
 	
-	public Apply(FunctionSpec spec, Collection<Expression> arguments) 
+	public Apply(FunctionSpec spec, 
+			Collection<Expression> arguments) 
 		throws XacmlSyntaxException
 	{
 		this(spec, arguments.toArray(new Expression[0]));
@@ -77,6 +81,20 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 		}catch(Exception e){
 			throw new FunctionInvocationException(context, spec, e);
 		}
+	}
+	
+	@Override
+	public int hashCode(){
+		return 31 * spec.hashCode() +  
+		Arrays.hashCode(arguments);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("function", spec)
+		.add("arguments", Arrays.deepToString(arguments))
+		.toString();
 	}
 	
 	

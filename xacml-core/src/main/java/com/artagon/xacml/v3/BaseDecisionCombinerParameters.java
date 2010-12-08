@@ -3,6 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Objects;
 
 abstract class BaseDecisionCombinerParameters extends XacmlObject 
 	implements PolicyElement
@@ -16,6 +17,34 @@ abstract class BaseDecisionCombinerParameters extends XacmlObject
 			this.parameters.put(p.getName(), p);
 		}
 	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("parameters", parameters.values())
+		.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return parameters.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof CombinerParameters)){
+			return false;
+		}
+		CombinerParameters c = (CombinerParameters)o;
+		return parameters.equals(c.parameters);
+	}
+	
 	
 	/**
 	 * Gets parameter by name
