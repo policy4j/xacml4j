@@ -13,16 +13,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Effect;
+import com.artagon.xacml.v3.MatchAnyOf;
+import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.Rule;
+import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
-import com.artagon.xacml.v3.policy.MatchAnyOf;
-import com.artagon.xacml.v3.policy.Policy;
-import com.artagon.xacml.v3.policy.PolicySet;
-import com.artagon.xacml.v3.policy.Rule;
-import com.artagon.xacml.v3.policy.Target;
 
 public class Xacml20PolicyUnmarshallerTest 
 {

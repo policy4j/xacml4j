@@ -6,10 +6,10 @@ import javax.xml.bind.JAXBException;
 
 import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.policy.CompositeDecisionRule;
 import com.artagon.xacml.v3.spi.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.FunctionProvider;
 
