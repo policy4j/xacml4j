@@ -5,13 +5,9 @@ import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.policy.combine.DefaultDecisionCombiningAlgorithms;
-import com.artagon.xacml.v3.policy.combine.legacy.LegacyDecisionCombiningAlgorithms;
-import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
-import com.artagon.xacml.v3.spi.combine.AggregatingDecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
+import com.google.common.base.Preconditions;
 
 /**
  * A support class for dealing with XACML 
@@ -25,26 +21,17 @@ public class PolicyUnmarshallerSupport
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
 
 	protected PolicyUnmarshallerSupport(
-			FunctionProvider extendsionFunctions,
-			DecisionCombiningAlgorithmProvider extensionCombiningAlgorithms) throws Exception
+			FunctionProvider functions,
+			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
 	{
-		this.functions = (extendsionFunctions == null)?new DefaultFunctionProvider():new AggregatingFunctionProvider(
-				new DefaultFunctionProvider(), extendsionFunctions);
-		this.combingingAlgorithms = (extensionCombiningAlgorithms == null)? 
-				new AggregatingDecisionCombiningAlgorithmProvider(
-						new DefaultDecisionCombiningAlgorithms(), 
-						new LegacyDecisionCombiningAlgorithms()):
-				new AggregatingDecisionCombiningAlgorithmProvider(
-						new DefaultDecisionCombiningAlgorithms(), 
-						new LegacyDecisionCombiningAlgorithms(), 
-						extensionCombiningAlgorithms);
+		Preconditions.checkNotNull(functions, 
+				"Function provider can't be null");
+		Preconditions.checkNotNull(decisionCombiningAlgorithms, 
+				"Decision combingin algorithm provider can't be null");
+		this.functions = functions;
+		this.combingingAlgorithms = decisionCombiningAlgorithms;
 	}
 	
-	protected PolicyUnmarshallerSupport() throws Exception
-	{
-		this(null, null);
-	}
-
 	/**
 	 * Creates function from a given identifier
 	 * 

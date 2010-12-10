@@ -95,6 +95,10 @@ public class PolicySet extends
 		return reference;
 	}
 
+	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
+		return combine;
+	}
+	
 	/**
 	 * Gets policy set defaults
 	 * 

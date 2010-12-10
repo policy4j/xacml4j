@@ -32,6 +32,10 @@ public class FunctionReference extends XacmlObject implements Expression
 		Preconditions.checkState(returnType != null);
 	}
 	
+	public String getFunctionId(){
+		return spec.getId();
+	}
+	
 	@Override
 	public ValueType getEvaluatesTo(){
 		return returnType;

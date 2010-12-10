@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.repository;
 
+
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -17,7 +18,7 @@ import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
 
-public class InMemoryPolicyRepositoryTest 
+public class InMemoryPolicyRepositoryTest
 {
 	private Policy p1v1;
 	private Policy p1v2;
@@ -36,11 +37,11 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
-		this.r = new InMemoryPolicyRepositoryWithRWLock();
+		this.r = new InMemoryPolicyRepository();
 	}
 	
 	@Test
-	public void testAddSamePolicyDifferentVersions() throws Exception
+	public void testOnePolicyDifferentVersion() throws Exception
 	{
 		r.add(p1v2);
 		r.add(p1v1);
@@ -69,7 +70,29 @@ public class InMemoryPolicyRepositoryTest
 		
 		verify(algorithm);
 	}
+	
+	@Test
+	public void testAddRemove() throws Exception
+	{
+		r.add(p1v2);
+		r.remove(p1v2);
 		
+		replay(algorithm);
+		
+		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
+		assertEquals(0, found.size());
+		
+		verify(algorithm);
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void testAddPolicyWithTheSameIdAndSameVersion()
+	{
+		r.add(p1v2);
+		r.add(p1v2);
+	}
+
+	
 	@Test
 	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
@@ -90,9 +113,9 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
 		
-		
 		verify(algorithm);
 		
 		
 	}
 }
+

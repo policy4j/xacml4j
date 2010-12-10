@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3.spi.repository;
 
-import java.lang.ref.SoftReference;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ import com.google.common.collect.MapMaker;
  * 
  * @author Giedrius Trumpickas
  */
-final class DefaultPolicyReferenceResolver 
+public class DefaultPolicyReferenceResolver 
 	implements PolicyReferenceResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
@@ -42,6 +41,7 @@ final class DefaultPolicyReferenceResolver
 	{
 		Preconditions.checkNotNull(policyRepository);
 		this.repository = policyRepository;
+		Preconditions.checkState(repository != null);
 		this.enableRefCache = enabledRefCache;
 		this.policyIDRefCache = new MapMaker()
 		.initialCapacity(size)

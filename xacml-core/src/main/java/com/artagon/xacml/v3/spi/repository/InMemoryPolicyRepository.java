@@ -21,17 +21,22 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
+/**
+ * An implementation of {@link AbstractPolicyRepository} which keeps
+ * all policies and policy sets in memory indexed by identifier and version
+ * for fast search queries
+ * 
+ * @author Giedrius Trumpickas
+ */
+public class InMemoryPolicyRepository extends AbstractPolicyRepository
 {
-	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepositoryWithChm.class);
+	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
 	
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 	
-	public InMemoryPolicyRepositoryWithChm()
+	public InMemoryPolicyRepository()
 	{
-		addCapability(PolicyReferenceResolver.class, 
-				new DefaultPolicyReferenceResolver(this));
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
 	}
@@ -69,18 +74,17 @@ public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
 	}
 	
 	@Override
-	public void add(CompositeDecisionRule policy) {
-		if(policy instanceof Policy){
-			addInternal((Policy)policy);
-			return;
+	public CompositeDecisionRule get(String id, Version v) {
+		Map<Version, Policy> pv = policies.get(v);
+		if(pv != null){
+			return pv.get(v);
 		}
-		if(policy instanceof PolicySet){
-			addInternal((PolicySet)policy);
-			return;
-		}
+		Map<Version, PolicySet> psv = policySets.get(v);
+		return (psv != null)?psv.get(v):null;
 	}
 
-	private void addInternal(Policy policy) 
+	@Override
+	protected  void addPolicy(Policy policy) 
 	{
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();
@@ -104,7 +108,8 @@ public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
 	
 	}
 
-	private void addInternal(PolicySet policySet) 
+	@Override
+	protected void addPolicySet(PolicySet policySet) 
 	{
 		Preconditions.checkArgument(policySet != null);
 		String id = policySet.getId();
@@ -127,6 +132,40 @@ public class InMemoryPolicyRepositoryWithChm extends AbstractPolicyRepository
 					id, v);
 
 		
+	}
+	
+	@Override
+	protected boolean removePolicy(Policy p)
+	{
+		Preconditions.checkArgument(p != null);
+		String id = p.getId();
+		Version v = p.getVersion();
+		if(log.isDebugEnabled()){
+			log.debug("Removing Policy with " +
+					"id=\"{}\" version=\"{}\"", id, v);
+		}
+		ConcurrentNavigableMap<Version, Policy> versions = policies.get(id);
+		if(versions != null){
+			return versions.remove(v) != null;
+		}
+		return (versions == null)?false:(versions.remove(v) != null);
+	}
+	
+	@Override
+	protected boolean removePolicySet(PolicySet p)
+	{
+		Preconditions.checkArgument(p != null);
+		String id = p.getId();
+		Version v = p.getVersion();
+		if(log.isDebugEnabled()){
+			log.debug("Removing PolicySet with " +
+					"id=\"{}\" version=\"{}\"", id, v);
+		}
+		ConcurrentNavigableMap<Version, PolicySet> versions = policySets.get(id);
+		if(versions != null){
+			return versions.remove(v) != null;
+		}
+		return (versions == null)?false:(versions.remove(v) != null);
 	}
 	
 	private <T extends Versionable> Collection<T> find(

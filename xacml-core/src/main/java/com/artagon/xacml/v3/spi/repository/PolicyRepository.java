@@ -1,12 +1,14 @@
 package com.artagon.xacml.v3.spi.repository;
 
-
 import java.util.Collection;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
+
+
 
 /**
  * A repository for XACML policies, implements
@@ -18,6 +20,13 @@ import com.artagon.xacml.v3.VersionMatch;
  */
 public interface PolicyRepository 
 {
+	/**
+	 * Gets repository identifier
+	 * 
+	 * @return a unique repository identifier
+	 */
+	//String getId();
+	
 	/**
 	 * Gets all versions of the policy with a given
 	 * identifier matching given version constraints
@@ -109,18 +118,28 @@ public interface PolicyRepository
 			VersionMatch earliest, VersionMatch latest);
 	
 	/**
-	 * Gets capability for this repository
+	 * Gets {@link Policy} or {@link PolicySet} via
+	 * identifier and version
 	 * 
-	 * @param <C> a capability interface
-	 * @param c a capability
-	 * @return a capability
+	 * @param id an identifier
+	 * @param v a version
+	 * @return {@link CompositeDecisionRule}
 	 */
-	<C extends PolicyRepositoryCapability> C getCapability(Class<C> c);
+	CompositeDecisionRule get(String id, Version v);
 	
 	/**
-	 * Adds a new version of a given policy or policy set
+	 * Adds {@link Policy} or {@link PolicySet}
+	 * to this repository
 	 * 
-	 * @param policy a new version of the policy
+	 * @param r a policy or policy set
 	 */
-	void add(CompositeDecisionRule policy);
+	void add(CompositeDecisionRule r);
+	
+	/**
+	 * Removes {@link Policy} or {@link PolicySet}
+	 * from this repository
+	 * 
+	 * @param r a policy or policy set
+	 */
+	boolean remove(CompositeDecisionRule r);
 }

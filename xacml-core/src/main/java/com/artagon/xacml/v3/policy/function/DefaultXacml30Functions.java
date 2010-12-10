@@ -3,9 +3,9 @@ package com.artagon.xacml.v3.policy.function;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 
-public class DefaultFunctionProvider extends AggregatingFunctionProvider
+public class DefaultXacml30Functions extends AggregatingFunctionProvider
 {
-	public DefaultFunctionProvider() throws Exception
+	public DefaultXacml30Functions() throws Exception
 	{
 		add(new AnnotiationBasedFunctionProvider(ArithmeticFunctions.class));
 		add(new AnnotiationBasedFunctionProvider(BagFunctions.class));

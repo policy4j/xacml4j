@@ -6,8 +6,13 @@ import com.artagon.xacml.v3.PolicyResolutionException;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.PolicySetIDReference;
 
-public interface PolicyReferenceResolver extends 
-	PolicyRepositoryCapability
+/**
+ * A XACML {@link PolicyIDReference} or 
+ * {@link PolicySetIDReference} resolution capability
+ * 
+ * @author Giedrius Trumpickas
+ */
+public interface PolicyReferenceResolver
 {
 	/**
 	 * Resolves a given {@link PolicyIDReference}
