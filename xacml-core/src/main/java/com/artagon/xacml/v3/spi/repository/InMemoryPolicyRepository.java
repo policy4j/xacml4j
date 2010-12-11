@@ -75,11 +75,11 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	
 	@Override
 	public CompositeDecisionRule get(String id, Version v) {
-		Map<Version, Policy> pv = policies.get(v);
+		Map<Version, Policy> pv = policies.get(id);
 		if(pv != null){
 			return pv.get(v);
 		}
-		Map<Version, PolicySet> psv = policySets.get(v);
+		Map<Version, PolicySet> psv = policySets.get(id);
 		return (psv != null)?psv.get(v):null;
 	}
 
@@ -130,8 +130,6 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				versions.put(policySet.getVersion(), policySet) == null, 
 				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
 					id, v);
-
-		
 	}
 	
 	@Override
@@ -187,4 +185,5 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			
 		});
 	}
+	
 }

@@ -142,4 +142,7 @@ public interface PolicyRepository
 	 * @param r a policy or policy set
 	 */
 	boolean remove(CompositeDecisionRule r);
+	
+	void addPolicyRepositoryListener(PolicyRepositoryListener l);
+	void removePolicyRepositoryListener(PolicyRepositoryListener l);
 }

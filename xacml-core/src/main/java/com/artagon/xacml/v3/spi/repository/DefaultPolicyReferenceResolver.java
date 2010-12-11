@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3.spi.repository;
 
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import com.google.common.collect.MapMaker;
  * @author Giedrius Trumpickas
  */
 public class DefaultPolicyReferenceResolver 
-	implements PolicyReferenceResolver
+	implements PolicyReferenceResolver, PolicyRepositoryListener
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
 	
@@ -53,6 +54,7 @@ public class DefaultPolicyReferenceResolver
 		.softKeys()
 		.softValues()
 		.makeMap();
+		this.repository.addPolicyRepositoryListener(this);
 	}
 	
 	/**
@@ -116,5 +118,53 @@ public class DefaultPolicyReferenceResolver
 	protected final void clearRefCahce(){
 		policyIDRefCache.clear();
 		policySetIDRefCache.clear();
+	}
+
+	
+	private void removeCachedReferences(Policy p)
+	{
+		Iterator<PolicyIDReference> it = policyIDRefCache.keySet().iterator();
+		while(it.hasNext()){
+			PolicyIDReference ref = it.next();
+			if(ref.isReferenceTo(p)){
+				if(log.isDebugEnabled()){
+					log.debug("Removing=\"{}\" from cache", ref);
+				}
+				it.remove();
+			}
+		}
+	}
+	
+	private void removeCachedReferences(PolicySet p){
+		Iterator<PolicySetIDReference> it = policySetIDRefCache.keySet().iterator();
+		while(it.hasNext()){
+			PolicySetIDReference ref = it.next();
+			if(ref.isReferenceTo(p)){
+				if(log.isDebugEnabled()){
+					log.debug("Removing=\"{}\" from cache", ref);
+				}
+				it.remove();
+			}
+		}
+	}
+
+	@Override
+	public void policyAdded(Policy p) {
+		removeCachedReferences(p);
+	}
+
+	@Override
+	public void policyRemoved(Policy p) {
+		removeCachedReferences(p);
+	}
+
+	@Override
+	public void policySetAdded(PolicySet p) {
+		removeCachedReferences(p);
+	}
+
+	@Override
+	public void policySetRemoved(PolicySet p) {
+		removeCachedReferences(p);		
 	}
 }
