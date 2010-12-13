@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class PolicyIDReference extends 
+public final class PolicyIDReference extends 
 	BaseCompositeDecisionRuleIDReference implements PolicyElement
 {
 	public PolicyIDReference(
@@ -21,9 +21,17 @@ public class PolicyIDReference extends
 	public PolicyIDReference(String id, Version version) {
 		super(id, VersionMatch.parse(version.getValue()), null, null);
 	}
-
+	
+	/**
+	 * Test this reference points to a given policy
+	 * 
+	 * @param policy a policy
+	 * @return <code>true</code> if a this reference
+	 * points to a given policys
+	 */
 	public boolean isReferenceTo(Policy policy) {
-		return policy != null && matches(policy.getId(), policy.getVersion());
+		return policy != null && 
+		matches(policy.getId(), policy.getVersion());
 	}
 	
 	/**
@@ -126,6 +134,14 @@ public class PolicyIDReference extends
 	}	
 	
 	
+	/**
+	 * Validates if a given reference is cyclic 
+	 * in a given evaluation context
+	 * 
+	 * @param ref a reference
+	 * @param context an evaluation context
+	 * @return
+	 */
 	private static boolean isReferenceCyclic(PolicyIDReference ref, 
 			EvaluationContext context)
 	{

@@ -20,14 +20,14 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.context.Status;
-import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.pdp.RequestContextHandler;
 

@@ -6,16 +6,16 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.ResponseContext;
-import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.context.Status;
-import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.ResponseContext;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.StatusCode;
 import com.google.common.base.Preconditions;
 
 /**

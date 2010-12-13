@@ -1,6 +1,5 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.XacmlObject;
 import com.google.common.base.Preconditions;
 
 public class StatusCode extends XacmlObject

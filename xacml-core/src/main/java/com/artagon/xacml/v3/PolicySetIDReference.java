@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 
+public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 
 	implements PolicyElement
 {
 
@@ -53,7 +53,8 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 	 * references given policy set
 	 */
 	public boolean isReferenceTo(PolicySet policySet) {
-		return policySet != null && matches(policySet.getId(), policySet.getVersion());
+		return policySet != null && 
+		matches(policySet.getId(), policySet.getVersion());
 	}
 
 	@Override

@@ -19,8 +19,6 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
 import com.artagon.xacml.v3.types.DataTypes;
 
 public class AttributesTest 
@@ -62,9 +60,9 @@ public class AttributesTest
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
-		this.content1 = builder.parse(new InputSource(new StringReader(testXml1)));
-		this.content2 = builder.parse(new InputSource(new StringReader(testXml2)));
-		this.content3 = builder.parse(new InputSource(new StringReader(testXml1)));
+		this.content1 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
+		this.content3 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
 	}
 	
 	@Test
@@ -75,10 +73,11 @@ public class AttributesTest
 		assertTrue(attributes.containsAll(test.getAttributes()));
 		assertTrue(test.getAttributes().containsAll(attributes));
 		assertEquals("id", test.getId());
-		assertTrue(content1.isSameNode(test.getContent()));
+		assertFalse(content1.isSameNode(test.getContent()));
 		assertTrue(content1.isEqualNode(test.getContent()));
-		System.out.println(test);
 		assertEquals(AttributeCategories.RESOURCE, test.getCategory());
+		
+		System.out.println(test);
 	}
 	
 	@Test

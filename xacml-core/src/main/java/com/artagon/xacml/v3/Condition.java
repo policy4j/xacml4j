@@ -5,7 +5,6 @@ import static com.artagon.xacml.v3.types.BooleanType.BOOLEAN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.types.BooleanValue;
 import com.artagon.xacml.v3.types.DataTypes;
 

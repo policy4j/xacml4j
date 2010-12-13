@@ -4,21 +4,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v3.context.StatusCode;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 
 /**
  * A base class for XACML Obligation or Advice expressions
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements PolicyElement
+abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 {
-	private String id;
-	private Effect effect;
-	private Multimap<String, AttributeAssignmentExpression> attributeExpressions;
+	protected String id;
+	protected Effect effect;
+	protected Multimap<String, AttributeAssignmentExpression> attributeExpressions;
+	
+	private int hashCode;
 	
 	/**
 	 * Constructs expression with a given identifier,
@@ -34,9 +37,11 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 			Effect effect, 
 			Collection<AttributeAssignmentExpression> attributeExpressions) 
 	{
-		checkNotNull(id, "Decision rule expression id can not be null");
-		checkNotNull(effect, "Decision rule expression effect can not be null");
-		checkNotNull(attributeExpressions, 
+		Preconditions.checkNotNull(id, "" +
+				"Decision rule expression id can not be null");
+		Preconditions.checkNotNull(effect, 
+				"Decision rule expression effect can not be null");
+		Preconditions.checkNotNull(attributeExpressions, 
 				"Decision rule expression attribute expressions can not be null");
 		this.id = id;
 		this.effect = effect;
@@ -47,6 +52,8 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 					"attribute assignment expression can not be null", id);
 			this.attributeExpressions.put(exp.getAttributeId(), exp);
 		}
+		this.attributeExpressions = Multimaps.unmodifiableMultimap(this.attributeExpressions);
+		this.hashCode = Objects.hashCode(id, effect, attributeExpressions);
 	}
 	
 	/**
@@ -95,21 +102,30 @@ abstract class BaseDecisionRuleResponseExpression extends XacmlObject implements
 			EvaluationContext context) 
 		throws EvaluationException
 	{
-		try{
-			Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-			for(AttributeAssignmentExpression attrExp : attributeExpressions.values())
-			{
-				attr.add(new AttributeAssignment(
-						attrExp.getAttributeId(), 
-						attrExp.getCategory(), 
-						attrExp.getIssuer(), 
-						attrExp.evaluate(context)));
-			}
-			return attr;
-		}catch(XacmlSyntaxException e){
-			throw new EvaluationException(
-					StatusCode.createProcessingError(), context, e);
+	
+		Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
+		for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
+			attr.add(new AttributeAssignment(
+					attrExp.getAttributeId(), 
+					attrExp.getCategory(), 
+					attrExp.getIssuer(), 
+					attrExp.evaluate(context)));
 		}
-		
+		return attr;
+
+	}
+	
+	@Override
+	public int hashCode(){
+		return hashCode;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("id", id)
+		.add("effect", effect)
+		.add("expresions", attributeExpressions)
+		.toString();
 	}
 }

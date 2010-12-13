@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3;
 
+import com.google.common.base.Preconditions;
+
 
 public class AttributeAssignment 
 	extends XacmlObject
@@ -17,18 +19,15 @@ public class AttributeAssignment
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer
 	 * @param value an attribute value
-	 * @exception XacmlSyntaxException if attribute assignment can not
-	 * be created with a given values
 	 */
 	public AttributeAssignment(
 			String attributeId, 
 			AttributeCategory category, 
 			String issuer, 
 			AttributeValue value)
-		throws XacmlSyntaxException
 	{
-		checkNotNull(attributeId, "Attribute id can't be null");
-		checkNotNull(value, "Attribute value can't be null");
+		Preconditions.checkNotNull(attributeId, "Attribute id can't be null");
+		Preconditions.checkNotNull(value, "Attribute value can't be null");
 		this.attributeId = attributeId;
 		this.category = category;
 		this.issuer = issuer;

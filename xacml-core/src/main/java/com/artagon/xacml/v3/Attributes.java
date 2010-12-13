@@ -1,16 +1,14 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.XacmlObject;
+import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -18,12 +16,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 
-public class Attributes extends XacmlObject
+public class Attributes
 {
 	private String id;
 	private AttributeCategory categoryId;
-	private Node content;
+	private Element content;
 	private Multimap<String, Attribute> attributes;
 	
 	/**
@@ -46,11 +45,12 @@ public class Attributes extends XacmlObject
 		Preconditions.checkNotNull(attrs);
 		this.id = id;
 		this.categoryId = categoryId;
-		this.content = content;
+		this.content = DOMUtil.copyNode(content);
 		this.attributes = LinkedListMultimap.create();
 		for(Attribute attr : attrs){
 			this.attributes.put(attr.getAttributeId(), attr);
 		}
+		this.attributes = Multimaps.unmodifiableMultimap(this.attributes);
 	}
 	
 	/** 
@@ -261,10 +261,12 @@ public class Attributes extends XacmlObject
 	
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this).add("Category", categoryId)
-		.add("ID", id)
-		.add("Content", content)
-		.addValue(attributes.values()).toString();
+		return Objects.toStringHelper(this)
+		.add("category", categoryId)
+		.add("id", id)
+		.add("attributes", attributes)
+		.add("content", DOMUtil.toString(content))
+		.toString();
 	}
 	
 	@Override
@@ -286,7 +288,7 @@ public class Attributes extends XacmlObject
 		Attributes a = (Attributes)o;
 		return Objects.equal(categoryId, a.categoryId) &&
 		Objects.equal(id, a.id) && 
-		(content != null?content.isEqualNode(a.content):(a.content == null)) &&
+		DOMUtil.isEqual(content, a.content) &&
 		Objects.equal(attributes, a.attributes);
 	}
 }

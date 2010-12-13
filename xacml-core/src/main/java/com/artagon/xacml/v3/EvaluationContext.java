@@ -7,7 +7,6 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.context.StatusCode;
 
 
 public interface EvaluationContext 

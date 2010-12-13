@@ -1,9 +1,5 @@
 package com.artagon.xacml.v3;
 
-import java.util.Collection;
-
-
-
 
 
 /**
@@ -14,11 +10,27 @@ import java.util.Collection;
  * 
  * @author Giedrius Trumpickas
  */
-public class Advice extends BaseDecisionRuleResponse
+public final class Advice extends BaseDecisionRuleResponse
 {
+	
 	public Advice(String adviceId, 
-			Collection<AttributeAssignment> attributes) 
-	{
+			Iterable<AttributeAssignment> attributes){
 		super(adviceId, attributes);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Advice)){
+			return false;
+		}
+		Advice a = (Advice)o;
+		return id.equals(a.id) && 
+		attributes.equals(a.attributes);
 	}
 }

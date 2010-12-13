@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v3.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.RootEvaluationContext;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.DefaultRequestContextCallback;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.repository.DefaultPolicyReferenceResolver;
 import com.artagon.xacml.v3.spi.repository.PolicyReferenceResolver;

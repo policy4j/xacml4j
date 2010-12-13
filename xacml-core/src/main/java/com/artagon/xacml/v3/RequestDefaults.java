@@ -1,7 +1,5 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.XacmlObject;
 
 
 public class RequestDefaults extends XacmlObject

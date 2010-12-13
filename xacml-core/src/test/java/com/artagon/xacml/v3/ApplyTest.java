@@ -2,7 +2,6 @@ package com.artagon.xacml.v3;
 
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
@@ -30,7 +29,7 @@ public class ApplyTest
 	public void testApplyEvaluationWithValidFunctionAndValidParameters() throws XacmlException
 	{
 		Expression[] params = {IntegerType.INTEGER.create(10L), IntegerType.INTEGER.create(11L)};
-		function.validateParametersAndThrow(params);
+		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
 		Apply apply = new Apply(function, params);
 		verify(function);
@@ -43,11 +42,11 @@ public class ApplyTest
 		verify(function);
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
-		expectLastCall().andThrow(new XacmlSyntaxException("Bad"));
+		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(false);
+		expect(function.getId()).andReturn("testId");
 		replay(function);
 		new Apply(function, IntegerType.INTEGER.create(10L));
 		verify(function);
@@ -56,7 +55,7 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
 		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
@@ -68,7 +67,7 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionParamValidationFails() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
 		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
@@ -80,7 +79,7 @@ public class ApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{
-		function.validateParametersAndThrow(IntegerType.INTEGER.create(10L));
+		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
 		expect(function.invoke(context, IntegerType.INTEGER.create(10L))).
 		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);

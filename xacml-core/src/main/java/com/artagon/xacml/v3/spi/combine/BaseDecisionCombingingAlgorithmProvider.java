@@ -10,17 +10,22 @@ import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 
-public class DefaultDecisionCombingingAlgoritmProvider implements DecisionCombiningAlgorithmProvider
+/**
+ * A base implementation of {@link DecisionCombiningAlgorithmProvider}
+ * 
+ * @author Giedrius Trumpickas
+ */
+public class BaseDecisionCombingingAlgorithmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
 	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 	
-	protected DefaultDecisionCombingingAlgoritmProvider(){
+	protected BaseDecisionCombingingAlgorithmProvider(){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
 		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
 	}
 	
-	public DefaultDecisionCombingingAlgoritmProvider(
+	public BaseDecisionCombingingAlgorithmProvider(
 			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
 			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();

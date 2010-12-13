@@ -1,9 +1,8 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.v3.XacmlObject;
 
 public class StatusDetail extends XacmlObject
 {

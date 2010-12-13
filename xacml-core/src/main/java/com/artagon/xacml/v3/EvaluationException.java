@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.google.common.base.Preconditions;
 
 

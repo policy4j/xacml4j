@@ -24,7 +24,7 @@ public enum XPathExpressionType implements AttributeValueType
 	}
 	
 	public boolean isConvertableFrom(Object any) {
-		return any instanceof String;
+		return (any instanceof String);
 	}
 	
 	public XPathExpressionValue create(String xpath, AttributeCategories category) 

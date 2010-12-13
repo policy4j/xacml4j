@@ -36,7 +36,7 @@ public enum AnyURIType implements AttributeValueType
 	public AnyURIValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"AnyURI\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"anyURI\" type", 
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);

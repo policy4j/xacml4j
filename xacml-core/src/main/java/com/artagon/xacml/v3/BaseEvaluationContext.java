@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.spi.repository.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
 

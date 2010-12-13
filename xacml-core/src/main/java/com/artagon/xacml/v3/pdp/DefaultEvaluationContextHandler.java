@@ -24,7 +24,7 @@ import com.artagon.xacml.v3.BagOfAttributeValues;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.EvaluationException;
-import com.artagon.xacml.v3.context.StatusCode;
+import com.artagon.xacml.v3.StatusCode;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v3.spi.xpath.XPathProvider;

@@ -27,4 +27,18 @@ public class ObligationExpression extends BaseDecisionRuleResponseExpression
 		}
 		v.visitLeave(this);
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof ObligationExpression)){
+			return false;
+		}
+		ObligationExpression ox = (ObligationExpression)o;
+		return id.equals(ox.id) 
+			&& effect.equals(ox.effect) 
+			&& attributeExpressions.equals(ox.attributeExpressions);
+	}
 }

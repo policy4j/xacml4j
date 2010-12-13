@@ -62,7 +62,6 @@ public abstract class BaseAttributeType<V extends AttributeValue> extends XacmlO
 
 	@Override
 	public BagOfAttributeValues emptyBag() {
-		// TODO Auto-generated method stub
 		return bagType().createEmpty();
 	}
 

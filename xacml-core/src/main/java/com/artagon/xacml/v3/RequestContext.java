@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.context;
+package com.artagon.xacml.v3;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,14 +10,6 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.AttributeValue;
-import com.artagon.xacml.v3.AttributeValueType;
-import com.artagon.xacml.v3.AttributesReference;
-import com.artagon.xacml.v3.Condition;
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.Effect;
-import com.artagon.xacml.v3.Target;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;

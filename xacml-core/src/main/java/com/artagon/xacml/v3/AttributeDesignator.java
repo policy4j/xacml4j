@@ -3,7 +3,6 @@ package com.artagon.xacml.v3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.types.DataTypes;
 
 /**

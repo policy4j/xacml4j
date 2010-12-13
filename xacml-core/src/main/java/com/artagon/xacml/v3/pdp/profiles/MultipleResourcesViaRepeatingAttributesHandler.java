@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.artagon.xacml.v3.AttributeCategory;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.google.common.collect.Sets;

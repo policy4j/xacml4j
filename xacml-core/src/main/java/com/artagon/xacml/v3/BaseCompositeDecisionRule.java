@@ -7,13 +7,20 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * A base class for composite decision rule. A composite decision
+ * rule is a rule which contains other rules combined via decision
+ * combining algorithm
+ * 
+ * @author Giedrius Trumpickas
+ */
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
 	implements CompositeDecisionRule, Versionable
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 	
-	private String id;
-	private Version version;
+	protected String id;
+	protected Version version;
 	
 	/**
 	 * Constructs composite decision rule

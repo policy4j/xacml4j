@@ -18,13 +18,13 @@ import java.util.Collection;
  * @author Giedrius Trumpickas
 
  */
-public class Obligation extends BaseDecisionRuleResponse
+public final class Obligation extends BaseDecisionRuleResponse
 {
 	/**
 	 * For compatibility with XACML 2.0
+	 * response context
 	 */
 	private Effect effect;
-
 	
 	public Obligation(String id, 
 			Collection<AttributeAssignment> attributes, 
@@ -36,11 +36,29 @@ public class Obligation extends BaseDecisionRuleResponse
 	
 	/**
 	 * Gets {@link ObligationExpression} effect.
-	 * For compatibility with XACML 2.0
+	 * For compatibility with XACML 2.0 response
+	 * context
 	 * 
 	 * @return {@link Effect}
 	 */
 	public Effect getFullfillOn(){
 		return effect;
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Obligation)){
+			return false;
+		}
+		Obligation a = (Obligation)o;
+		return id.equals(a.id) && 
+		attributes.equals(a.attributes);
+	}
+	
 }

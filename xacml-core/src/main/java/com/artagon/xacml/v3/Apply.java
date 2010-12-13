@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 
 
@@ -15,10 +16,12 @@ import com.google.common.base.Objects;
  * @author Giedrius Trumpickas
  *
  */
-public class Apply extends XacmlObject implements Expression, PolicyElement
+public class Apply implements Expression, PolicyElement
 {	
 	private FunctionSpec spec;
 	private Expression[] arguments;
+	
+	private int hashCode;
 	
 	/**
 	 * Constructs XACML apply expression with given function and list
@@ -31,13 +34,20 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	public Apply(FunctionSpec spec, Expression ...arguments) 
 		throws XacmlSyntaxException
 	{
-		checkNotNull(spec != null, 
+		Preconditions.checkNotNull(spec != null, 
 				"Can't create Apply without function, function can't be null");
-		checkArgument((arguments == null || arguments.length > 0), 
+		Preconditions.checkArgument((arguments == null || arguments.length > 0), 
 				"At least one argument must be specified");
-		spec.validateParametersAndThrow(arguments);
+		if(!spec.validateParameters(arguments)){
+			throw new IllegalArgumentException(
+					String.format(
+							"Given arguments=\"%s\" are not valid for function=\"%s\"", 
+							Arrays.deepToString(arguments), 
+							spec.getId()));
+		}
 		this.spec = spec;
 		this.arguments = Arrays.copyOf(arguments, arguments.length);
+		this.hashCode = 31 * spec.hashCode() +  Arrays.hashCode(arguments);
 	}
 	
 	public Apply(FunctionSpec spec, 
@@ -85,8 +95,7 @@ public class Apply extends XacmlObject implements Expression, PolicyElement
 	
 	@Override
 	public int hashCode(){
-		return 31 * spec.hashCode() +  
-		Arrays.hashCode(arguments);
+		return hashCode;
 	}
 	
 	@Override

@@ -24,7 +24,7 @@ public abstract class AbstractPolicyRepository
 {	
 	private ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
 	
-	public AbstractPolicyRepository(){
+	protected AbstractPolicyRepository(){
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
 	}
 	
@@ -169,9 +169,6 @@ public abstract class AbstractPolicyRepository
 		}
 	}
 	
-	protected abstract void addPolicy(Policy p);
-	protected abstract void addPolicySet(PolicySet p);
-	
 	@Override
 	public boolean remove(CompositeDecisionRule r) {
 		if(r instanceof Policy){
@@ -191,6 +188,24 @@ public abstract class AbstractPolicyRepository
 		}
 		return false;
 	}
+	
+	/**
+	 * Implemented by subclass to add given
+	 * policy to this repository
+	 * 
+	 * @param p a policy
+	 */
+	protected abstract void addPolicy(Policy p);
+	
+	/**
+	 * Implemented by subclass to add policy set
+	 * to this repository
+	 * 
+	 * @param p a policy set
+	 */
+	protected abstract void addPolicySet(PolicySet p);
+	
+	
 	
 	protected abstract  boolean removePolicy(Policy p);
 	protected abstract boolean removePolicySet(PolicySet p);

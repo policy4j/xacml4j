@@ -13,13 +13,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.DOMUtil;
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.XPathVersion;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestSyntaxException;
-import com.artagon.xacml.v3.context.Result;
 import com.artagon.xacml.v3.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v3.spi.xpath.XPathEvaluationException;

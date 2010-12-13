@@ -9,7 +9,6 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.spi.function.FunctionInvocation;
 import com.artagon.xacml.v3.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v3.types.BooleanType;

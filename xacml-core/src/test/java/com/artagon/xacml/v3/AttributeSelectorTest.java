@@ -12,7 +12,6 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.context.StatusCode;
 import com.artagon.xacml.v3.types.DateType;
 
 public class AttributeSelectorTest

@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.Result;
 import com.google.common.base.Preconditions;
 
 public abstract class AbstractRequestContextHandler 

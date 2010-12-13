@@ -45,4 +45,18 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 		}
 		v.visitLeave(this);
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof AdviceExpression)){
+			return false;
+		}
+		AdviceExpression ox = (AdviceExpression)o;
+		return id.equals(ox.id) 
+			&& effect.equals(ox.effect) 
+			&& attributeExpressions.equals(ox.attributeExpressions);
+	}
 }
