@@ -10,7 +10,7 @@ package com.artagon.xacml.v3;
  * 
  * @author Giedrius Trumpickas
  */
-public final class Advice extends BaseDecisionRuleResponse
+public class Advice extends BaseDecisionRuleResponse
 {
 	
 	public Advice(String adviceId, 

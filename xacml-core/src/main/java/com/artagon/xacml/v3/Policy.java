@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.hamcrest.core.IsSame;
+
 import com.google.common.base.Preconditions;
 
 public class Policy extends BaseCompositeDecisionRule 

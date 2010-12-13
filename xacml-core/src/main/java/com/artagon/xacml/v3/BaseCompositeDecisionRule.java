@@ -21,6 +21,7 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	
 	protected String id;
 	protected Version version;
+	private PolicyIssuer policyIssuer;
 	
 	/**
 	 * Constructs composite decision rule
@@ -64,7 +65,15 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 	public  Version getVersion() {
 		return version;
 	}
-		
+	
+	public PolicyIssuer getPolicyIssuer(){
+		return policyIssuer;
+	}
+	
+	public boolean isTrusted(){
+		return (policyIssuer == null);
+	}
+	
 	/**
 	 * Combines {@link #isApplicable(EvaluationContext)} and 
 	 * {@link #evaluate(EvaluationContext)} calls to one single

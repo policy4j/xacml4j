@@ -18,7 +18,7 @@ import java.util.Collection;
  * @author Giedrius Trumpickas
 
  */
-public final class Obligation extends BaseDecisionRuleResponse
+public class Obligation extends BaseDecisionRuleResponse
 {
 	/**
 	 * For compatibility with XACML 2.0

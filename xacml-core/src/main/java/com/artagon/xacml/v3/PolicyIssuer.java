@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.w3c.dom.Element;
@@ -7,12 +8,9 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
-public class PolicyIssuer 
+public class PolicyIssuer extends BaseAttributeHolder
 {
 	private Element content;
 	private Multimap<String, Attribute> attributes;
@@ -20,13 +18,13 @@ public class PolicyIssuer
 	public PolicyIssuer(Node content, 
 			Collection<Attribute> attributes)
 	{
-		Preconditions.checkArgument(attributes != null);
+		super(attributes);
 		this.content = DOMUtil.copyNode(content);
-		this.attributes = LinkedListMultimap.create();
-		for(Attribute attr : attributes){
-			this.attributes.put(attr.getAttributeId(), attr);
-		}
-		this.attributes = Multimaps.unmodifiableMultimap(this.attributes);
+	}
+	
+	public PolicyIssuer(Node content, 
+			Attribute ...attributes){
+		this(content, Arrays.asList(attributes));
 	}
 	
 	/**
@@ -37,6 +35,10 @@ public class PolicyIssuer
 	 */
 	public Node getContent(){
 		return content;
+	}
+	
+	public Collection<Attribute> getAttributes(String attributeId){
+		return attributes.get(attributeId);
 	}
 	
 	/**

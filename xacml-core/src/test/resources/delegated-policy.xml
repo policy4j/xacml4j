@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet PolicySetId="PolicySet1" Version="1.0"
+	PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 xacml-core-v3-schema-wd-17.xsd">
+	<Target />
+	<Policy PolicyId="Policy1" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides">
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+							employee</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							AttributeId="group" MustBePresent="false"
+							DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">printer</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">print</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Carol</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="Rule1" Effect="Permit">
+			<Target />
+		</Rule>
+	</Policy>
+	<Policy PolicyId="Policy2" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit- overrides">
+		<PolicyIssuer>
+			<Attribute IncludeInResult="false"
+				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Carol</AttributeValue>
+			</Attribute>
+		</PolicyIssuer>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+							employee</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							AttributeId="group" MustBePresent="false"
+							DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">printer</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">print</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Bob</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute- category:delegate"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+						DataType="http://www.w3.org/2001/XMLSchema#string"/>
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="Rule1" Effect="Permit">
+			<Target />
+		</Rule>
+	</Policy>
+	<Policy PolicyId="Policy2" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides">
+		<PolicyIssuer>
+			<Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Carol</AttributeValue>
+			</Attribute>
+		</PolicyIssuer>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+							employee</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							AttributeId="group" MustBePresent="false"
+							DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">printer</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">print</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Bob</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute- category:delegate"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="Rule2" Effect="Permit">
+			<Target />
+		</Rule>
+	</Policy>
+	<Policy PolicyId="Policy3" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides">
+		<PolicyIssuer>
+			<Attribute IncludeInResult="false"
+				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Mallory</AttributeValue>
+			</Attribute>
+		</PolicyIssuer>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Alice</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">printer</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute- category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">print</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute- category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="Rule3" Effect="Permit">
+			<Target />
+		</Rule>
+	</Policy>
+	<Policy PolicyId="Policy4" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides">
+		<PolicyIssuer>
+			<Attribute IncludeInResult="false" 
+			AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Bob</AttributeValue>
+				<Attribute />
+			</Attribute>
+		</PolicyIssuer>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Alice</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">printer</AttributeValue>
+					<AttributeDesignator
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+						AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+						MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					<Match />
+				</AllOf>
+			</AnyOf>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">print</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+							MustBePresent="false" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="Rule4" Effect="Permit">
+			<Target />
+		</Rule>
+	</Policy>
+</PolicySet>
