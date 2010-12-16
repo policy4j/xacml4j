@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.spi.combine;
 
 import java.util.Set;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 
@@ -19,14 +19,14 @@ public interface DecisionCombiningAlgorithmProvider
 	DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId);
 	
 	/**
-	 * Gets {@link CompositeDecisionRule} combining algorithm via
+	 * Gets {@link ReferencableDecisionRule} combining algorithm via
 	 * given algorithm identifier
 	 * 
 	 * @param algorithmId an algorithm identifier
 	 * @return {@link DecisionCombiningAlgorithm} for combining
 	 * policy or policy set decision results
 	 */
-	DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
+	DecisionCombiningAlgorithm<ReferencableDecisionRule> getPolicyAlgorithm(String algorithmId);
 	
 	/**
 	 * Gets identifiers of all supported XACML 

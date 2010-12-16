@@ -3,7 +3,7 @@ package com.artagon.xacml.v3.pdp;
 import java.util.Collections;
 import java.util.List;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -35,7 +35,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
+			ReferencableDecisionRule policyDomain, 
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
@@ -59,7 +59,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
+			ReferencableDecisionRule policyDomain, 
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
@@ -70,7 +70,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
+			ReferencableDecisionRule policyDomain, 
 			PolicyRepository repository, 
 			PolicyInformationPoint pip,
 			List<RequestContextHandler> handlers)
@@ -83,7 +83,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
+			ReferencableDecisionRule policyDomain, 
 			PolicyRepository repository, 
 			PolicyInformationPoint pip)
 	{
@@ -111,7 +111,7 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 			
 			@Override
-			public CompositeDecisionRule getDomainPolicy() {
+			public ReferencableDecisionRule getDomainPolicy() {
 				return policyDomain;
 			}
 			

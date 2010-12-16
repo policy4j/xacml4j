@@ -2,14 +2,14 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.MatchResult;
 import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
 final class OnlyOneApplicablePolicyCombingingAlgorithm extends 
-	BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
+	BaseDecisionCombiningAlgorithm<ReferencableDecisionRule> 
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
 	
@@ -18,14 +18,14 @@ final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 	}
 
 	@Override
-	public Decision combine(List<CompositeDecisionRule> decisions,
+	public Decision combine(List<ReferencableDecisionRule> decisions,
 			EvaluationContext context) 
 	{
 		boolean atLeastOne = false;
-		CompositeDecisionRule found = null;
+		ReferencableDecisionRule found = null;
 		EvaluationContext foundEvalContext = null;
 		EvaluationContext policyContext = null;
-		for(CompositeDecisionRule d : decisions)
+		for(ReferencableDecisionRule d : decisions)
 		{
 			policyContext = d.createContext(context);
 			MatchResult r = d.isApplicable(policyContext);

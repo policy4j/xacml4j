@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 import com.google.common.base.Preconditions;
@@ -80,7 +80,7 @@ public class AggregatingDecisionCombiningAlgorithmProvider
 	}
 	
 	@Override
-	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
+	public final DecisionCombiningAlgorithm<ReferencableDecisionRule> getPolicyAlgorithm(
 			String algorithmId) 
 	{
 		DecisionCombiningAlgorithmProvider p = policyAlgorithms.get(algorithmId);

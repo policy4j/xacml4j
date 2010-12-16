@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
@@ -74,7 +74,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 	
 	@Override
-	public CompositeDecisionRule get(String id, Version v) {
+	public ReferencableDecisionRule get(String id, Version v) {
 		Map<Version, Policy> pv = policies.get(id);
 		if(pv != null){
 			return pv.get(v);

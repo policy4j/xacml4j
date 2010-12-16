@@ -1,15 +1,13 @@
 package com.artagon.xacml.v3;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.common.base.Objects;
 
 public enum AttributeCategories implements AttributeCategory
 { 
-	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
 	
+	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
 	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
 	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource"),
 	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation"),
@@ -20,60 +18,56 @@ public enum AttributeCategories implements AttributeCategory
 	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject"),
 	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine"),
 	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority"),
-	
-	ACTION_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:action", ACTION),
-	ENVIRONMENT_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:environment", ENVIRONMENT),
-	RESOURCE_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:resource", RESOURCE),
-	OBLIGATION_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:3.0:attribute-category:obligation"),
-	SUBJECT_ACCESS_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:access-subject", SUBJECT_ACCESS),
-	SUBJECT_CODEBASE_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:codebase", SUBJECT_CODEBASE),
-	SUBJECT_INTERMEDIARY_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject", SUBJECT_INTERMEDIARY),
-	SUBJECT_RECIPIENT_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject", SUBJECT_RECIPIENT),
-	SUBJECT_REQUESTING_MACHINE_DELEGATED("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine", SUBJECT_REQUESTING_MACHINE),
 	DELGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
 	DELGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
 	
-	private String id;
 	
-	private AttributeCategory delegatedCategory;
+	private String categoryURI;
+	
+	private AttributeCategory delegated;
+	
 	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
 	
-	private static final Map<String, AttributeCategories> BY_ID = new ConcurrentHashMap<String, AttributeCategories>();
-
-	static {
-		for(AttributeCategories t : EnumSet.allOf(AttributeCategories.class)){
-			BY_ID.put(t.id, t);
+	private static final Map<String, AttributeCategory> BY_ID = new HashMap<String, AttributeCategory>();
+	
+	static 
+	{
+		for(AttributeCategory category : EnumSet.allOf(AttributeCategories.class)){
+			BY_ID.put(category.getId(), category);
+			AttributeCategory delegate = category.toDelegatedCategory();
+			if(delegate != null){
+				BY_ID.put(delegate.getId(), delegate);
+			}
 		}
 	}
 	
-	private AttributeCategories(String id, 
-			AttributeCategory delegated){
-		this.id = id;
-		this.delegatedCategory = delegated;
-	}
-	
-	private AttributeCategories(String id){
-		this(id, null);
+	private AttributeCategories(
+			String categoryURI){
+		this.categoryURI = categoryURI;
+		if(!isDelegate(categoryURI)){
+			this.delegated = new CustomCategory(toDelegateURI(categoryURI));
+		}
 	}
 	
 	@Override
 	public String getId(){
-		return id;
+		return categoryURI;
 	}
 	
 	@Override
-	public boolean isDelegated() {
-		return delegatedCategory != null;
+	public boolean isDelegate() {
+		return delegated != null;
 	}
-
+	
+	
 	@Override
-	public AttributeCategory getDelegatedCategory() {
-		return delegatedCategory;
+	public AttributeCategory toDelegatedCategory() {
+		return delegated;
 	}
 
 	@Override
 	public String toString(){
-		return id;
+		return categoryURI;
 	}
 	
 	/**
@@ -92,55 +86,73 @@ public enum AttributeCategories implements AttributeCategory
 			return null;
 		}
 		AttributeCategory c = BY_ID.get(v);
-		if(c == null){
-			AttributeCategory delegated = null;
-			if(v.startsWith(DELEGATED_CATEGORY_PREFIX)){
-				String delegatedCategory = v.substring(DELEGATED_CATEGORY_PREFIX.length());
-				delegated = BY_ID.get(delegatedCategory);
-				if(delegated == null){
-					delegated = new InternalAttributeCategoryImpl(delegatedCategory);
-				}
-			}
-			c = new InternalAttributeCategoryImpl(v, delegated);
+		if(c != null){
+			return c;
 		}
-		return c;
+		return new CustomCategory(v);
+	}
+	
+	/**
+	 * Tests if a given category URI represents
+	 * a delegated category
+	 * 
+	 * @param categoryURI a category URI
+	 * @return <code>true</code> if a given category
+	 * URI represents a delegated category
+	 */
+	private static boolean isDelegate(String categoryURI){
+		return categoryURI.startsWith(DELEGATED_CATEGORY_PREFIX);
+	}
+	
+	/**
+	 * Creates a XACML 3.0 delegated category
+	 * from a given category URI
+	 * 
+	 * @param categoryURI a category URI
+	 * @return a delegated category URI
+	 */
+	private static String toDelegateURI(String categoryURI){
+		if(categoryURI.startsWith(DELEGATED_CATEGORY_PREFIX)){
+			return categoryURI;
+		}
+		return new StringBuilder(DELEGATED_CATEGORY_PREFIX.length() + categoryURI.length())
+				.append(DELEGATED_CATEGORY_PREFIX)
+				.append(categoryURI).toString();
 	}
 
-	
-	private static class InternalAttributeCategoryImpl 
+	private static class CustomCategory 
 		implements AttributeCategory
 	{
-		private String categoryId;
-		private AttributeCategory delegatedCategory;
+		private String categoryURI;
+		private AttributeCategory delegated;
 		
-		private InternalAttributeCategoryImpl(String categoryId, 
-				AttributeCategory delegatedCategory){
-			this.categoryId = categoryId;
-			this.delegatedCategory = delegatedCategory;
+		private CustomCategory(
+				String categoryURI)
+		{
+			this.categoryURI = categoryURI;
+			if(!AttributeCategories.isDelegate(categoryURI)){
+				this.delegated = new CustomCategory(toDelegateURI(categoryURI));
+			}
 		}
-		
-		private InternalAttributeCategoryImpl(String categoryId){
-			this(categoryId, null);
-		}
-		
-		public boolean isDelegated(){
-			return (delegatedCategory != null);
-		}
-		
-		public AttributeCategory getDelegatedCategory(){
-			return delegatedCategory;
-		}
-		
+			
 		@Override
 		public String getId(){
-			return categoryId;
+			return categoryURI;
 		}
 		
 		@Override
+		public boolean isDelegate() {
+			return delegated == null;
+		}
+
+		@Override
+		public AttributeCategory toDelegatedCategory() {
+			return delegated;
+		}
+
+		@Override
 		public int hashCode() {
-			return 31 * categoryId.hashCode() + 
-			((delegatedCategory != null)
-					?delegatedCategory.hashCode():0);
+			return categoryURI.hashCode();
 		}
 		
 		@Override
@@ -148,17 +160,16 @@ public enum AttributeCategories implements AttributeCategory
 			if(this == obj){
 				return true;
 			}
-			if(!(obj instanceof InternalAttributeCategoryImpl)){
+			if(!(obj instanceof AttributeCategory)){
 				return false;
 			}
-			InternalAttributeCategoryImpl c = (InternalAttributeCategoryImpl)obj;
-			return c.getId().equals(categoryId) && 
-			Objects.equal(delegatedCategory, c.delegatedCategory);
+			AttributeCategory c = (AttributeCategory)obj;
+			return c.getId().equals(categoryURI);
 		}
 		
 		@Override
 		public String toString() {
-			return categoryId;
+			return categoryURI;
 		}		
 	}
 }

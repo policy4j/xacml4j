@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.types.DataTypes;
+import com.google.common.base.Objects;
 
 public class AttributeSelector extends 
 	AttributeReference
@@ -87,9 +88,18 @@ public class AttributeSelector extends
 	 * 
 	 * @return
 	 */
-	public String getContextSelectorId()
-	{
+	public String getContextSelectorId(){
 		return selectorKey.getContextSelectorId();
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("path", selectorKey.getPath())
+		.add("category", selectorKey.getCategory())
+		.add("contextSelectorId", selectorKey.getContextSelectorId())
+		.add("mustBePresent", isMustBePresent())
+		.toString();
 	}
 	
 	@Override

@@ -1,16 +1,16 @@
 package com.artagon.xacml.v3;
 
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Collections;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 
 abstract class BaseDecisionRuleResponse

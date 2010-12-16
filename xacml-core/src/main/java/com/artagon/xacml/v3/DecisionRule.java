@@ -1,6 +1,5 @@
 package com.artagon.xacml.v3;
 
-
 /**
  * A XACML access decision rule, core interface
  * for all rules in the XACML specification

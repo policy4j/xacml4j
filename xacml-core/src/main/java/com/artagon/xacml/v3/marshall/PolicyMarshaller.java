@@ -2,13 +2,13 @@ package com.artagon.xacml.v3.marshall;
 
 import java.io.IOException;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 
 public interface PolicyMarshaller 
 {
-	Object marshal(CompositeDecisionRule policy) 
+	Object marshal(ReferencableDecisionRule policy) 
 		throws IOException;
 	
-	void marshal(CompositeDecisionRule policy, Object source) 
+	void marshal(ReferencableDecisionRule policy, Object source) 
 		throws IOException;
 }

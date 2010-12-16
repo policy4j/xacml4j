@@ -15,14 +15,7 @@ public interface AttributeCategory
 	 * @return <code>true</code> if this
 	 * category is delegated
 	 */
-	boolean isDelegated();
+	boolean isDelegate();
 	
-	/**
-	 * Gets delegated XACML category
-	 * 
-	 * @return {@link AttributeCategories} representing
-	 * a delegated category or <code>null</code> if this
-	 * category is not delegated
-	 */
-	AttributeCategory getDelegatedCategory();
+	AttributeCategory toDelegatedCategory();
 }

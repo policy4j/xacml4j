@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Rule;
 
@@ -18,29 +18,29 @@ import com.artagon.xacml.v3.Rule;
 public class BaseDecisionCombingingAlgorithmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
-	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
+	private Map<String, DecisionCombiningAlgorithm<ReferencableDecisionRule>> policyAlgo;
 	
 	protected BaseDecisionCombingingAlgorithmProvider(){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<ReferencableDecisionRule>>();
 	}
 	
 	public BaseDecisionCombingingAlgorithmProvider(
 			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
-			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
+			Collection<DecisionCombiningAlgorithm<ReferencableDecisionRule>> policyAlgorithms){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
 		for(DecisionCombiningAlgorithm<Rule> algo : ruleAlgorithms){
 			addRuleCombineAlgorithm(algo);
 		}
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
-		for(DecisionCombiningAlgorithm<CompositeDecisionRule> algo : policyAlgorithms){
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<ReferencableDecisionRule>>();
+		for(DecisionCombiningAlgorithm<ReferencableDecisionRule> algo : policyAlgorithms){
 			addCompositeRuleCombineAlgorithm(algo);
 		}
 	}
 	
 	
 	@Override
-	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
+	public final DecisionCombiningAlgorithm<ReferencableDecisionRule> getPolicyAlgorithm(
 			String algorithmId) {
 		return policyAlgo.get(algorithmId);
 	}
@@ -70,9 +70,9 @@ public class BaseDecisionCombingingAlgorithmProvider implements DecisionCombinin
 	}
 	
 	public final void addCompositeRuleCombineAlgorithm(
-			DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm)
+			DecisionCombiningAlgorithm<ReferencableDecisionRule> algorithm)
 	{
-		DecisionCombiningAlgorithm<CompositeDecisionRule> oldAlgo = policyAlgo.put(
+		DecisionCombiningAlgorithm<ReferencableDecisionRule> oldAlgo = policyAlgo.put(
 				algorithm.getId(), algorithm);
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(

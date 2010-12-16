@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.ReferencableDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
@@ -146,7 +146,7 @@ public abstract class AbstractPolicyRepository
 	 * @see #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
-	public CompositeDecisionRule get(String id, Version v)
+	public ReferencableDecisionRule get(String id, Version v)
 	{
 		VersionMatch m = new VersionMatch(v.getValue());
 		Policy p = getPolicy(id, m, null, null);
@@ -154,7 +154,7 @@ public abstract class AbstractPolicyRepository
 	}
 	
 	@Override
-	public final void add(CompositeDecisionRule r) {
+	public final void add(ReferencableDecisionRule r) {
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
 			addPolicy(p);
@@ -170,7 +170,7 @@ public abstract class AbstractPolicyRepository
 	}
 	
 	@Override
-	public boolean remove(CompositeDecisionRule r) {
+	public boolean remove(ReferencableDecisionRule r) {
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
 			if(removePolicy(p)){

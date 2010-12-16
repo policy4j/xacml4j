@@ -15,7 +15,7 @@ import com.google.common.base.Preconditions;
  * @author Giedrius Trumpickas
  */
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
-	implements CompositeDecisionRule, Versionable
+	implements ReferencableDecisionRule, Versionable
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 	
