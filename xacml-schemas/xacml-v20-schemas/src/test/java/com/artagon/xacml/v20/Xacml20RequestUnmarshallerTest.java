@@ -14,10 +14,10 @@ import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.w3c.dom.Document;
 
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeCategories;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
+import com.artagon.xacml.v3.Attributes;
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.types.XPathExpressionValue;
 import static com.artagon.xacml.v3.types.IntegerType.INTEGER;

@@ -45,6 +45,7 @@ import com.artagon.xacml.v3.AttributeDesignator;
 import com.artagon.xacml.v3.AttributeReference;
 import com.artagon.xacml.v3.AttributeSelector;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.CombinerParameters;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Condition;
 import com.artagon.xacml.v3.Effect;
@@ -55,9 +56,11 @@ import com.artagon.xacml.v3.MatchAllOf;
 import com.artagon.xacml.v3.MatchAnyOf;
 import com.artagon.xacml.v3.ObligationExpression;
 import com.artagon.xacml.v3.Policy;
+import com.artagon.xacml.v3.PolicyCombinerParameters;
 import com.artagon.xacml.v3.PolicyDefaults;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicySetCombinerParameters;
 import com.artagon.xacml.v3.PolicySetDefaults;
 import com.artagon.xacml.v3.PolicySetIDReference;
 import com.artagon.xacml.v3.Rule;
@@ -69,12 +72,12 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 import com.google.common.base.Preconditions;
 
-public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
+public class PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 {
-	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyMapper.class);
+	private final static Logger log = LoggerFactory.getLogger(PolicyFromJaxbToObjectModelMapper.class);
 	
 
 	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = new HashMap<Effect, EffectType>();
@@ -87,11 +90,7 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
 	}
 
-	public Xacml30PolicyMapper() throws Exception {
-		super();
-	}
-	
-	public Xacml30PolicyMapper(FunctionProvider functions, 
+	public PolicyFromJaxbToObjectModelMapper(FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
 	}
@@ -134,7 +133,8 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 	 * @return collection of {@link Rule} instances
 	 * @throws XacmlSyntaxException
 	 */
-	private Collection<Rule> createRules(PolicyType p, VariableManager<JAXBElement<?>> m) 
+	private Collection<Rule> createRules(PolicyType p, 
+			VariableManager<JAXBElement<?>> m) 
 		throws XacmlSyntaxException
 	{
 		Collection<Rule> rules = new LinkedList<Rule>();
@@ -185,15 +185,18 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		Collection<AdviceExpression> adviceExpressions = getExpressions(p.getAdviceExpressions(), variableDef);
 		Collection<ObligationExpression> obligationExpressions = getExpressions(p.getObligationExpressions(), variableDef);
 		Target target = create(p.getTarget());
+		Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
+		Collection<PolicyCombinerParameters> policyCombinerParameters = new LinkedList<PolicyCombinerParameters>();
+		Collection<PolicySetCombinerParameters> policySetCombinerParameters = new LinkedList<PolicySetCombinerParameters>();
 		return new PolicySet(
 				p.getPolicySetId(), 
 				Version.parse(p.getVersion()), 
 				p.getDescription(), 
 				createPolicySetDefaults(p.getPolicySetDefaults()), 
 				target,   
-				null,
-				null,
-				null,
+				combinerParameters,
+				policyCombinerParameters,
+				policySetCombinerParameters,
 				createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
 				createPolicies(p), 
 				adviceExpressions, obligationExpressions); 
@@ -483,7 +486,7 @@ public class Xacml30PolicyMapper extends PolicyUnmarshallerSupport
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		return AttributeValueTypes.createAttributeValue(dataType, 
+		return DataTypes.createAttributeValue(dataType, 
 				content.iterator().next(), otherAttributes);
 	}
 

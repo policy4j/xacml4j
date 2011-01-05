@@ -77,10 +77,10 @@ import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 import com.google.common.base.Preconditions;
 
-public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
+public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 {
 	private final static Map<String, AttributeCategories> designatorMappings = new HashMap<String, AttributeCategories>();
 
@@ -103,14 +103,10 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 	}
 	
-	public Xacml20PolicyMapper(
+	public Xacml20PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
-	}
-	
-	public Xacml20PolicyMapper() throws Exception{
-		super();
 	}
 	
 	public CompositeDecisionRule create(Object o) throws XacmlSyntaxException
@@ -637,7 +633,7 @@ public class Xacml20PolicyMapper extends PolicyUnmarshallerSupport
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
 		
-		return AttributeValueTypes.createAttributeValue(dataType, content.iterator().next());
+		return DataTypes.createAttributeValue(dataType, content.iterator().next());
 	}
 	
 	private AttributeSelector createSelector(AttributeCategories categoryId,

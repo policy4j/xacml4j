@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsd:schema xmlns="http://www.artagon.com/schema/xacml/spring"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
 	targetNamespace="http://www.artagon.com/schema/xacml/spring"
-	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
 
 	<xsd:import namespace="http://www.springframework.org/schema/beans"
 		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
-
+	
+	<xsd:import namespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+		schemaLocation="http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"/>
+	
 
 	<xsd:element name="FunctionProvider">
 		<xsd:complexType>
@@ -42,6 +48,7 @@
 	</xsd:complexType>
 	
 	<xsd:element name="AttributeResolvers" type="xacml-spring:AttributeResolversType"/>
+	
 	<xsd:complexType name="AttributeResolversType">
 		<xsd:sequence>
 			<xsd:element ref="xacml-spring:AttributeResolver" maxOccurs="unbounded"/>
@@ -58,38 +65,22 @@
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-
-	<xsd:complexType name="IdReferenceType">
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:anyURI">
-				<xsd:attribute name="Version" type="xacml-spring:VersionMatchType" use="optional"/>
-				<xsd:attribute name="EarliestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
-				<xsd:attribute name="LatestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
-
-	<xsd:simpleType name="VersionMatchType">
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
-		</xsd:restriction>
-	</xsd:simpleType>
 	
-	<xsd:element name="PolicySetIdReference" type="xacml-spring:IdReferenceType"/>
-	<xsd:element name="PolicyIdReference" type="xacml-spring:IdReferenceType"/>
+	<xsd:element name="PolicyIdReference" type="xacml:IdReferenceType"/>
+	<xsd:element name="PolicySetIdReference" type="xacml:IdReferenceType"/>
 	
 	<xsd:element name="PolicyDomain">
 		<xsd:complexType>
 			<xsd:complexContent>
-			<xsd:extension base="beans:identifiedType">
-				<xsd:sequence>
-					<xsd:choice minOccurs="1" maxOccurs="unbounded">
-						<xsd:element ref="xacml-spring:PolicySetIdReference"/>
-						<xsd:element ref="xacml-spring:PolicyIdReference"/>
-					</xsd:choice>
-				</xsd:sequence>
-				<xsd:attribute name="name" type="xsd:string" use="required"/>
-			</xsd:extension>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence>
+						<xsd:choice minOccurs="1">
+							<xsd:element ref="xacml-spring:PolicyIdReference"/>
+							<xsd:element ref="xacml-spring:PolicySetIdReference"/>
+						</xsd:choice>
+					</xsd:sequence>
+					<xsd:attribute name="name" type="xsd:string" use="required"/>
+				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
@@ -115,8 +106,13 @@
 	<xsd:complexType name="PolicyDecisionPointType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:choice minOccurs="1" maxOccurs="1">
+						<xsd:element ref="xacml-spring:PolicyIdReference"/>
+						<xsd:element ref="xacml-spring:PolicySetIdReference"/>
+					</xsd:choice>
+				</xsd:sequence>
 				<xsd:attribute name="repository" type="xsd:string" use="required"/>
-				<xsd:attribute name="domain" type="xsd:string" use="required"/>
 				<xsd:attribute name="handlers" type="xsd:string" use="optional"/>
 				<xsd:attribute name="pip" type="xsd:string" use="required"/>
 				<xsd:attribute name="xpathProvider" type="xsd:string" use="optional"/>

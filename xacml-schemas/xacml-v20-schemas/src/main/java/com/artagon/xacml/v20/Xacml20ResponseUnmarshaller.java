@@ -4,8 +4,8 @@ import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.context.ResponseContext;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseUnmarshaller;
 

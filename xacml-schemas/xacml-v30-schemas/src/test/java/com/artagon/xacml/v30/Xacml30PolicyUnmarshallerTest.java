@@ -19,6 +19,8 @@ import com.artagon.xacml.v3.Rule;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
+import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
 
 public class Xacml30PolicyUnmarshallerTest 
 {
@@ -27,7 +29,8 @@ public class Xacml30PolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml30PolicyUnmarshaller();
+		reader = new Xacml30PolicyUnmarshaller(new DefaultXacml30Functions(), 
+				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	@SuppressWarnings("unchecked")

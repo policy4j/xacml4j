@@ -17,7 +17,8 @@ abstract class BaseCompositeDecisionRuleIDReference
 			VersionMatch version, 
 			VersionMatch earliest, 
 			VersionMatch latest){
-		Preconditions.checkNotNull(id);
+		Preconditions.checkNotNull(id, 
+				"Decision rule identifier can not be null");
 		this.id = id;
 		this.version = version;
 		this.latest = latest;

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
-import com.artagon.xacml.v3.context.ResponseContext;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.marshall.BaseJAXBMarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 

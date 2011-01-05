@@ -30,23 +30,23 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
-import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeCategories;
+import com.artagon.xacml.v3.AttributeCategory;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Obligation;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.RequestSyntaxException;
+import com.artagon.xacml.v3.ResponseContext;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestSyntaxException;
-import com.artagon.xacml.v3.context.ResponseContext;
-import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.context.Status;
+import com.artagon.xacml.v3.types.DataTypes;
 import com.artagon.xacml.v3.types.XPathExpressionType;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -339,7 +339,7 @@ class Xacml20ContextMapper
 				content.isEmpty()){
 			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		com.artagon.xacml.v3.AttributeValueType dataType = AttributeValueTypes.getType(dataTypeId);
+		com.artagon.xacml.v3.AttributeValueType dataType = DataTypes.getType(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be " +

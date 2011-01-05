@@ -4,7 +4,8 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v3.PolicyIDReference;
 
-public class PolicyIDReferenceFactoryBean extends AbstractFactoryBean<PolicyIDReference>
+public class PolicyIDReferenceFactoryBean extends 
+	AbstractFactoryBean<PolicyIDReference>
 {
 	private String id;
 	private String version;

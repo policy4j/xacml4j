@@ -5,8 +5,8 @@ import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.jaxb.context.RequestType;
 
+import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.context.RequestContext;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.google.common.base.Preconditions;

@@ -11,8 +11,7 @@ public class FunctionProviderFactoryBean extends AbstractFactoryBean<FunctionPro
 	private Class<FunctionProvider> providerClass;
 	private Object providerInstance;
 		
-	public void setClass(Class<FunctionProvider> providerClazz)
-	{
+	public void setClass(Class<FunctionProvider> providerClazz){
 		this.providerClass = providerClazz;
 	}
 	

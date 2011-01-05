@@ -7,11 +7,8 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBContext;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oasis.xacml.v20.jaxb.policy.ObjectFactory;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Effect;
@@ -23,15 +20,20 @@ import com.artagon.xacml.v3.Target;
 import com.artagon.xacml.v3.XPathVersion;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
+import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
 
 public class Xacml20PolicyUnmarshallerTest 
 {
 	private static PolicyUnmarshaller reader; 
 	
+	
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new Xacml20PolicyUnmarshaller(JAXBContext.newInstance(ObjectFactory.class.getPackage().getName()));
+		reader = new Xacml20PolicyUnmarshaller(
+				new DefaultXacml30Functions(), 
+				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	@SuppressWarnings("unchecked")

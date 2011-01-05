@@ -7,18 +7,20 @@ import org.junit.Test;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.ResponseContext;
-import com.artagon.xacml.v3.context.Result;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.ResponseContext;
+import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithRWLock;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 import com.google.common.collect.Iterables;
 
@@ -32,11 +34,11 @@ public class RSA2008InteropTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		policyReader = new Xacml20PolicyUnmarshaller();
+		policyReader = new Xacml20PolicyUnmarshaller(new DefaultXacml30Functions(), new DefaultXacml30DecisionCombiningAlgorithms());
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		
 		
-		PolicyRepository repository = new InMemoryPolicyRepositoryWithRWLock();
+		PolicyRepository repository = new InMemoryPolicyRepository();
 
 		
 		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
@@ -193,7 +195,7 @@ public class RSA2008InteropTest
 	{
 		RequestContext request = getRequest(name);
 		ResponseContext response = null;
-		int n = 10000;
+		int n = 1;
 		long time = 0;
 		for(int i = 0; i < n; i++){
 			long start = System.nanoTime();

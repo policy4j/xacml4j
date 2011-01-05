@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:xacml="http://www.artagon.com/schema/xacml/spring"
+	xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
 						http://www.artagon.com/schema/xacml/spring http://www.artagon.com/schema/xacml/spring/xacml.xsd">
@@ -12,17 +12,20 @@
 	
 	<bean id="testProvider1" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
 	
-	<xacml:FunctionProviders id="extensionFunctions">
-		<xacml:FunctionProvider class="com.artagon.xacml.spring.TestStaticFunctions"/>
-		<xacml:FunctionProvider ref="testProvider1"/>
-	</xacml:FunctionProviders>
+	<xacml-spring:FunctionProviders id="extensionFunctions">
+		<xacml-spring:FunctionProvider class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml-spring:FunctionProvider ref="testProvider1"/>
+	</xacml-spring:FunctionProviders>
 	
-	<xacml:InMemoryPolicyRepository id="repository" resources="resources" extensionFunctions="extensionFunctions"/>
+	<xacml-spring:InMemoryPolicyRepository 
+		id="repository" 
+		resources="resources" 
+		extensionFunctions="extensionFunctions"/>
 	
 	<util:list id="attributeResolvers">
 	</util:list>
 	
-	<xacml:PolicyInformationPoint id="pip" attributeResolvers="attributeResolvers"/>
+	<xacml-spring:PolicyInformationPoint id="pip" attributeResolvers="attributeResolvers"/>
 	
 	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
 		<beans:property name="resources">
@@ -31,13 +34,12 @@
 			</util:list>
 		</beans:property>
 	</bean>
-	
-	<xacml:PolicySetIdReference id="policyDomain" Version="1.+">11111</xacml:PolicySetIdReference>
 	 
-	<xacml:PolicyDecisionPoint
-		id="pdp"
-		policyDomain="policyDomain" 
+	<xacml-spring:PolicyDecisionPoint
+		id="pdp" 
 		repository="repository" 
-		pip="pip"/>
+		pip="pip">
+		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
+	</xacml-spring:PolicyDecisionPoint>
 	
 </beans>

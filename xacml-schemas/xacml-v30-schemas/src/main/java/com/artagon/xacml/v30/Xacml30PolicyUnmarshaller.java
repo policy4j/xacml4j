@@ -3,7 +3,7 @@ package com.artagon.xacml.v30;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 
-import com.artagon.xacml.v20.Xacml20PolicyMapper;
+import com.artagon.xacml.v20.Xacml20PolicyFromJaxbToObjectModelMapper;
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.XacmlSyntaxException;
 import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
@@ -14,8 +14,8 @@ import com.artagon.xacml.v3.spi.function.FunctionProvider;
 public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller
 {
-	private Xacml30PolicyMapper v30mapper;
-	private Xacml20PolicyMapper v20mapper;
+	private PolicyFromJaxbToObjectModelMapper v30mapper;
+	private Xacml20PolicyFromJaxbToObjectModelMapper v20mapper;
 	
 	private boolean supportsXacml20Policies;
 	
@@ -27,8 +27,8 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 	{
 		super(context);
 		this.supportsXacml20Policies = supportsXacml20Policies;
-		this.v30mapper = new Xacml30PolicyMapper(functions, decisionAlgorithms);
-		this.v20mapper = new Xacml20PolicyMapper(functions, decisionAlgorithms);
+		this.v30mapper = new PolicyFromJaxbToObjectModelMapper(functions, decisionAlgorithms);
+		this.v20mapper = new Xacml20PolicyFromJaxbToObjectModelMapper(functions, decisionAlgorithms);
 	}
 	
 	public Xacml30PolicyUnmarshaller(FunctionProvider functions, 
@@ -38,19 +38,6 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 		this(JAXBContextUtil.getInstance(), 
 				functions, decisionAlgorithms, true);
 	}
-	
-	public Xacml30PolicyUnmarshaller(boolean supportsXacml20Policies) 
-		throws Exception
-	{
-		this(JAXBContextUtil.getInstance(), 
-				null, null, supportsXacml20Policies);
-	}
-	
-	public Xacml30PolicyUnmarshaller() throws Exception{
-		this(true);
-	}
-	
-	
 	
 	@Override
 	protected CompositeDecisionRule create(JAXBElement<?> jaxbInstance)

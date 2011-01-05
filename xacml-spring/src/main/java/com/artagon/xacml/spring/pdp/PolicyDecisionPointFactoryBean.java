@@ -39,7 +39,7 @@ public class PolicyDecisionPointFactoryBean extends
 		this.pip = pip;
 	}
 		
-	public void setPolicyDomain(CompositeDecisionRule policyStore){
+	public void setDomainPolicy(CompositeDecisionRule policyStore){
 		this.policyDomain = policyStore;
 	}
 	

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.policy.function.DefaultFunctionProvider;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
 
@@ -16,7 +16,7 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionPr
 	public FunctionProvidersFactoryBean() throws Exception
 	{
 		this.providers = new LinkedList<FunctionProvider>();
-		this.providers.add(new DefaultFunctionProvider());
+		this.providers.add(new DefaultXacml30Functions());
 	}
 	
 	public void setProviders(Collection<FunctionProvider> providers){

@@ -32,9 +32,11 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v3.Advice;
+import com.artagon.xacml.v3.Attribute;
 import com.artagon.xacml.v3.AttributeAssignment;
 import com.artagon.xacml.v3.AttributeCategories;
 import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.Attributes;
 import com.artagon.xacml.v3.AttributesReference;
 import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
@@ -42,21 +44,18 @@ import com.artagon.xacml.v3.Effect;
 import com.artagon.xacml.v3.Obligation;
 import com.artagon.xacml.v3.PolicyIDReference;
 import com.artagon.xacml.v3.PolicySetIDReference;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.RequestReference;
+import com.artagon.xacml.v3.ResponseContext;
+import com.artagon.xacml.v3.Result;
+import com.artagon.xacml.v3.Status;
+import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.StatusDetail;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-import com.artagon.xacml.v3.context.Attribute;
-import com.artagon.xacml.v3.context.Attributes;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.RequestReference;
-import com.artagon.xacml.v3.context.ResponseContext;
-import com.artagon.xacml.v3.context.Result;
-import com.artagon.xacml.v3.context.Status;
-import com.artagon.xacml.v3.context.StatusCode;
-import com.artagon.xacml.v3.context.StatusDetail;
-import com.artagon.xacml.v3.marshall.PolicyUnmarshallerSupport;
-import com.artagon.xacml.v3.types.AttributeValueTypes;
+import com.artagon.xacml.v3.types.DataTypes;
 import com.google.common.base.Preconditions;
 
-public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
+public class Xacml30ContextMapper
 {
 	private ObjectFactory factory;
 	
@@ -255,7 +254,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 		if(o.isEmpty()){
 			return null;
 		}
-		return DOMUtil.copyNode((Node)o.iterator().next());
+		return (Node)o.iterator().next();
 	}
 	
 	private RequestReference create(RequestReferenceType m) throws XacmlSyntaxException
@@ -288,7 +287,7 @@ public class Xacml30ContextMapper extends PolicyUnmarshallerSupport
 					"Attribute does not have content");
 		}
 		
-		return AttributeValueTypes.createAttributeValue(value.getDataType(), 
+		return DataTypes.createAttributeValue(value.getDataType(), 
 				content.iterator().next(), value.getOtherAttributes());
 	}
 }

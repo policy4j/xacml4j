@@ -1,5 +1,8 @@
 package com.artagon.xacml.v20;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -12,38 +15,42 @@ import com.artagon.xacml.v3.marshall.BaseJAXBUnmarshaller;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
+import com.google.common.base.Preconditions;
 
 public class Xacml20PolicyUnmarshaller extends 
 	BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller
 {
-	private Xacml20PolicyMapper mapper;
+	private Xacml20PolicyFromJaxbToObjectModelMapper mapper;
 	
-	public Xacml20PolicyUnmarshaller(JAXBContext context) 
-		throws Exception
-	{
-		super(context);
-		this.mapper = new Xacml20PolicyMapper();
-	}
-	
-	public Xacml20PolicyUnmarshaller() 
-		throws Exception
-	{
-		super(getInstance());
-		this.mapper = new Xacml20PolicyMapper();
-	}
-	
-	public Xacml20PolicyUnmarshaller(JAXBContext context, FunctionProvider functions, 
+	public Xacml20PolicyUnmarshaller(
+			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception
 	{
-		super(context);
-		this.mapper = new Xacml20PolicyMapper(functions, decisionAlgorithms);
+		this(Collections.EMPTY_MAP, 
+				functions, decisionAlgorithms);
 	}
 	
-	public static JAXBContext getInstance() throws JAXBException
+	public Xacml20PolicyUnmarshaller(
+			Map<String, ?> jaxbProperties, 
+			FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
+		throws Exception
 	{
-		return JAXBContext.newInstance(
-				ObjectFactory.class.getPackage().getName());
+		super(getInstance(jaxbProperties));
+		Preconditions.checkNotNull(functions);
+		Preconditions.checkNotNull(decisionAlgorithms);
+		this.mapper = new Xacml20PolicyFromJaxbToObjectModelMapper(functions, 
+				decisionAlgorithms);
+	}
+	
+	public static JAXBContext getInstance(
+			Map<String, ?> jaxbProperties) throws JAXBException
+	{
+		Preconditions.checkNotNull(jaxbProperties);
+		return JAXBContext.newInstance(ObjectFactory.class.getPackage().getName(), 
+				ObjectFactory.class.getClassLoader(), 
+				jaxbProperties);
 	}
 
 	@Override

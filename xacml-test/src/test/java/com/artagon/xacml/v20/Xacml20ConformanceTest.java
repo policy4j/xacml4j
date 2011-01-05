@@ -14,23 +14,26 @@ import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
-import com.artagon.xacml.v3.context.RequestContext;
-import com.artagon.xacml.v3.context.ResponseContext;
+import com.artagon.xacml.v3.RequestContext;
+import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v3.marshall.ResponseMarshaller;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v3.spi.pip.AnnotatedResolverFactory;
 import com.artagon.xacml.v3.spi.pip.AttributeResolver;
 import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepositoryWithChm;
+import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v3.spi.repository.PolicyRepository;
 
 public class Xacml20ConformanceTest 
@@ -48,8 +51,8 @@ public class Xacml20ConformanceTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		repository = new InMemoryPolicyRepositoryWithChm();
-		policyReader = new Xacml20PolicyUnmarshaller();
+		repository = new InMemoryPolicyRepository();
+		policyReader = new Xacml20PolicyUnmarshaller(new DefaultXacml30Functions(), new DefaultXacml30DecisionCombiningAlgorithms());
 		responseMarshaller = new Xacml20ResponseMarshaller();
 		requestUnmarshaller = new Xacml20RequestUnmarshaller();
 		resolvers = new DefaultResolverRegistry();

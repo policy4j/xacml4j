@@ -50,5 +50,5 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	         children.add(child.getBeanDefinition());
 	      }
 	      factory.addPropertyValue("providers", children);
-	   }
+	}
 }
