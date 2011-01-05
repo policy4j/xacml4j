@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.pdp;
+package com.artagon.xacml.v3.spi.dcache;
 
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
@@ -16,10 +16,10 @@ public interface PolicyDecisionCache
 	
 	/**
 	 * Puts a decision result {@link Result} for a given
-	 * request to the cache
+	 * request to this cache
 	 * 
-	 * @param req a request
-	 * @param result a decision result
+	 * @param req a decision request
+	 * @param result a decision result for a given request
 	 */
 	void putDecision(RequestContext req, Result result);
 }

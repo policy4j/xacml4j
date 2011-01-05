@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.pdp;
+package com.artagon.xacml.v3.spi.dcache;
 
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;

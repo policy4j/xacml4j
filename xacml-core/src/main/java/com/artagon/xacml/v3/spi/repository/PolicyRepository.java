@@ -123,7 +123,9 @@ public interface PolicyRepository
 	 * 
 	 * @param id an identifier
 	 * @param v a version
-	 * @return {@link CompositeDecisionRule}
+	 * @return {@link CompositeDecisionRule} or <code>null</code>
+	 * if no matching policy or policy set is found in
+	 * this repository
 	 */
 	CompositeDecisionRule get(String id, Version v);
 	
@@ -140,9 +142,23 @@ public interface PolicyRepository
 	 * from this repository
 	 * 
 	 * @param r a policy or policy set
+	 * @return <code>true</code> if given
+	 * policy or policy set was removed
+	 * from this repository
 	 */
 	boolean remove(CompositeDecisionRule r);
 	
+	/**
+	 * Adds {@link PolicyRepositoryListener} to this repository
+	 * 
+	 * @param l a listener
+	 */
 	void addPolicyRepositoryListener(PolicyRepositoryListener l);
+	
+	/**
+	 * Removes {@link PolicyRepositoryListener} from this repository
+	 * 
+	 * @param l a listener
+	 */
 	void removePolicyRepositoryListener(PolicyRepositoryListener l);
 }

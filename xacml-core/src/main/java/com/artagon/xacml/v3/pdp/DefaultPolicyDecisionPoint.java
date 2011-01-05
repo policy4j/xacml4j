@@ -16,6 +16,8 @@ import com.artagon.xacml.v3.ResponseContext;
 import com.artagon.xacml.v3.Result;
 import com.artagon.xacml.v3.Status;
 import com.artagon.xacml.v3.StatusCode;
+import com.artagon.xacml.v3.spi.audit.PolicyDecisionAuditor;
+import com.artagon.xacml.v3.spi.dcache.PolicyDecisionCache;
 import com.google.common.base.Preconditions;
 
 /**

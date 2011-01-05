@@ -75,7 +75,7 @@ public class PolicyIssuer extends BaseAttributeHolder
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("attributes", attributes)
-		.add("content", DOMUtil.toString(content.getDocumentElement()))
+		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
 		.toString();
 	}
 }

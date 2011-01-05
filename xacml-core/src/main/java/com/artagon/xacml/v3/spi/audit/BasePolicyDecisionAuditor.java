@@ -1,9 +1,8 @@
-package com.artagon.xacml.v3.pdp.audit;
+package com.artagon.xacml.v3.spi.audit;
 
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.pdp.PolicyDecisionAuditor;
 
 public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor 
 {

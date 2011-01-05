@@ -90,6 +90,21 @@ public class PolicySet extends
 				combine, policies, adviceExpressions, obligationExpressions);
 	}
 	
+	public PolicySet(
+			String id, 
+			Version version, 
+			DecisionCombiningAlgorithm<CompositeDecisionRule> combine) 
+	{
+		this(id, version, null, null, null, 
+				Collections.<CombinerParameters>emptyList(), 
+				Collections.<PolicyCombinerParameters>emptyList(), 
+				Collections.<PolicySetCombinerParameters>emptyList(), 
+				combine, 
+				Collections.<CompositeDecisionRule>emptyList(), 
+				Collections.<AdviceExpression>emptyList(), 
+				Collections.<ObligationExpression>emptyList());
+	}
+	
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
