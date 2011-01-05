@@ -1,8 +1,8 @@
 package com.artagon.xacml.v3.marshall;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 
-public interface PolicyUnmarshaller extends Unmarshaller<ReferencableDecisionRule>
+public interface PolicyUnmarshaller extends Unmarshaller<CompositeDecisionRule>
 {
 	
 }

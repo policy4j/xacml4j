@@ -79,22 +79,7 @@ public class HigherOrderFunctionsTest
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 		
 		
 		replay(context);
@@ -113,17 +98,7 @@ public class HigherOrderFunctionsTest
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
 		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
@@ -144,17 +119,7 @@ public class HigherOrderFunctionsTest
 		b.add(INTEGER.create(5));
 		b.add(INTEGER.create(19));
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
 		BooleanValue r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
@@ -175,15 +140,8 @@ public class HigherOrderFunctionsTest
 		b.add(INTEGER.create(2));
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(4));
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		for(int i = 0; i < 7; i++){
-			expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-			context.setValidateFuncParamsAtRuntime(true);
-			expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-			context.setValidateFuncParamsAtRuntime(false);
-		}
+			
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
 		
 		
 		replay(context);
@@ -206,18 +164,7 @@ public class HigherOrderFunctionsTest
 		b.add(STRING.create("   This  is not IT!  "));
 
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		context.setValidateFuncParamsAtRuntime(true);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		context.setValidateFuncParamsAtRuntime(false);
-		
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
@@ -239,14 +186,7 @@ public class HigherOrderFunctionsTest
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(4));
 		
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		
-		for(int i = 0; i < 8; i ++){
-			expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-			context.setValidateFuncParamsAtRuntime(true);
-			expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-			context.setValidateFuncParamsAtRuntime(false);
-		}
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 		
 		replay(context);
 		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 

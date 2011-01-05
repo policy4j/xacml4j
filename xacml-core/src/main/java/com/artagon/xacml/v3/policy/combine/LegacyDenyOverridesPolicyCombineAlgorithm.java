@@ -2,12 +2,12 @@ package com.artagon.xacml.v3.policy.combine;
 
 import java.util.List;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.spi.combine.BaseDecisionCombiningAlgorithm;
 
-class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<ReferencableDecisionRule>
+class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides";
 
@@ -20,10 +20,10 @@ class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlg
 	}
 	
 	@Override
-	public Decision combine(List<ReferencableDecisionRule> rules,
+	public Decision combine(List<CompositeDecisionRule> rules,
 			EvaluationContext context) {
 		boolean atLeastOnePermit = false;
-		for(ReferencableDecisionRule r : rules){
+		for(CompositeDecisionRule r : rules){
 			Decision d = evaluateIfApplicable(context, r);
 			if(d == Decision.DENY){
 				return d;

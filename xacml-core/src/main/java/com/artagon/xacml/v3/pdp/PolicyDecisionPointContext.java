@@ -1,7 +1,7 @@
 package com.artagon.xacml.v3.pdp;
 
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContext;
 import com.artagon.xacml.v3.Result;
@@ -18,7 +18,7 @@ public interface PolicyDecisionPointContext
 	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
 	
-	ReferencableDecisionRule getDomainPolicy();
+	CompositeDecisionRule getDomainPolicy();
 	
 	XPathProvider getXPathProvider();
 	

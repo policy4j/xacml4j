@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
@@ -68,7 +68,7 @@ public final class DefaultPolicyDecisionPoint
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
-		ReferencableDecisionRule rootPolicy = context.getDomainPolicy();
+		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
 		r = createResult(evalContext, 
 				decision, 

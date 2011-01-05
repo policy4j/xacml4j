@@ -124,8 +124,8 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attribute selector0 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector1 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
 		
 		verify(pdp);
 	}
@@ -196,27 +196,27 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attribute selector00 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector01 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
 		
 		Attribute selector10 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector11 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 		
 		Attribute selector20 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector21 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
 		
 		
 		Attribute selector30 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		Attribute selector31 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
 		
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector30.getValues()));
-		assertEquals(XPATHEXPRESSION.create("//md:record[1]/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector31.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector30.getValues()));
+		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector31.getValues()));
 		
 		verify(pdp);
 	}

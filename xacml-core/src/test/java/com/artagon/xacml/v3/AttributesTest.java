@@ -60,9 +60,9 @@ public class AttributesTest
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
-		this.content1 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
-		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
-		this.content3 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
+		this.content1 = builder.parse(new InputSource(new StringReader(testXml1)));
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2)));
+		this.content3 = builder.parse(new InputSource(new StringReader(testXml1)));
 	}
 	
 	@Test

@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3.marshall;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.Rule;
@@ -81,9 +81,9 @@ public class PolicyUnmarshallerSupport
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<ReferencableDecisionRule> createPolicyCombingingAlgorithm(
+	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombingingAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
-		DecisionCombiningAlgorithm<ReferencableDecisionRule> algorithm = combingingAlgorithms
+		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combingingAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(

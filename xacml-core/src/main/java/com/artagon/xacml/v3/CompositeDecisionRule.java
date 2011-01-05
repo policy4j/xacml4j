@@ -1,6 +1,6 @@
 package com.artagon.xacml.v3;
 
-public interface ReferencableDecisionRule extends DecisionRule
+public interface CompositeDecisionRule extends DecisionRule
 {
 	/**
 	 * Gets a {@link CompositeDecisionRuleIDReference} 

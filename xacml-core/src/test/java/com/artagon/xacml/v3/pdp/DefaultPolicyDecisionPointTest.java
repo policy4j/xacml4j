@@ -15,7 +15,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Attributes;
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.RequestContext;
@@ -31,7 +31,7 @@ public class DefaultPolicyDecisionPointTest
 	
 	private PolicyRepository repository;
 	private PolicyInformationPoint pip;
-	private ReferencableDecisionRule policyDomain;
+	private CompositeDecisionRule policyDomain;
 	private PolicyDecisionPointContextFactory factory;
 	private PolicyDecisionCache decisionCache;
 	private PolicyDecisionAuditor decisionAuditor;
@@ -45,7 +45,7 @@ public class DefaultPolicyDecisionPointTest
 		this.control = createControl();
 		this.pip = control.createMock(PolicyInformationPoint.class);
 		this.repository = control.createMock(PolicyRepository.class);
-		this.policyDomain = control.createMock(ReferencableDecisionRule.class);
+		this.policyDomain = control.createMock(CompositeDecisionRule.class);
 		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
 		this.decisionCache = control.createMock(PolicyDecisionCache.class);
 		this.xpathProvider = control.createMock(XPathProvider.class);

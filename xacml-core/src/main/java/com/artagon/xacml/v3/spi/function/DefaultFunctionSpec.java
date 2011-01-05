@@ -32,7 +32,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	private String functionId;
 	private String legacyId;
 	private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
-	private boolean lazyParamEval = false;
+	private boolean evaluateParameters = false;
 	
 	private FunctionInvocation invocation;
 	private FunctionReturnTypeResolver resolver;
@@ -47,7 +47,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 * @param params a function parameters spec
 	 * @param resolver a function return type resolver
 	 * @param invocation a function implementation
-	 * @param lazyParamEval a flag indicating
+	 * @param evaluateParameters a flag indicating
 	 * if function parameters needs to be evaluated
 	 * before passing them to the function
 	 */
@@ -58,7 +58,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
 			FunctionParametersValidator validator,
-			boolean lazyParamEval){
+			boolean evaluateParameters){
 		Preconditions.checkNotNull(functionId);
 		Preconditions.checkNotNull(params);
 		Preconditions.checkNotNull(invocation);
@@ -68,7 +68,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 		this.resolver = resolver;
 		this.validator = validator;
 		this.invocation = invocation;
-		this.lazyParamEval = lazyParamEval;
+		this.evaluateParameters = evaluateParameters;
 		this.legacyId = legacyId;
 	}
 	
@@ -78,8 +78,8 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 			List<FunctionParamSpec> params, 
 			FunctionReturnTypeResolver resolver,
 			FunctionInvocation invocation,
-			boolean lazyParamEval){
-		this(functionId, legacyId, params, resolver, invocation, null, lazyParamEval);
+			boolean evaluateParameters){
+		this(functionId, legacyId, params, resolver, invocation, null, evaluateParameters);
 	}
 	
 	public DefaultFunctionSpec(
@@ -110,7 +110,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	
 	@Override
 	public boolean isRequiresLazyParamEval() {
-		return lazyParamEval;
+		return evaluateParameters;
 	}
 
 	@Override

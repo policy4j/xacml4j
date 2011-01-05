@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
@@ -12,19 +12,26 @@ import com.google.common.collect.Multimap;
 
 public class PolicyIssuer extends BaseAttributeHolder
 {
-	private Element content;
+	private Document content;
 	private Multimap<String, Attribute> attributes;
 	
 	public PolicyIssuer(Node content, 
-			Collection<Attribute> attributes)
-	{
+			Collection<Attribute> attributes){
 		super(attributes);
 		this.content = DOMUtil.copyNode(content);
+	}
+	
+	public PolicyIssuer(Collection<Attribute> attributes){
+		this(null ,attributes);
 	}
 	
 	public PolicyIssuer(Node content, 
 			Attribute ...attributes){
 		this(content, Arrays.asList(attributes));
+	}
+	
+	public PolicyIssuer(Attribute ...attributes){
+		this(null, Arrays.asList(attributes));
 	}
 	
 	/**
@@ -68,7 +75,7 @@ public class PolicyIssuer extends BaseAttributeHolder
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("attributes", attributes)
-		.add("content", DOMUtil.toString(content))
+		.add("content", DOMUtil.toString(content.getDocumentElement()))
 		.toString();
 	}
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Decision;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
@@ -21,21 +21,21 @@ import com.artagon.xacml.v3.MatchResult;
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 {
 	private OnlyOneApplicablePolicyCombingingAlgorithm c;
-	private List<ReferencableDecisionRule> d;
+	private List<CompositeDecisionRule> d;
 	private EvaluationContext context;
 	
 	@Before
 	public void init(){
 		this.c = new OnlyOneApplicablePolicyCombingingAlgorithm();
-		this.d = new LinkedList<ReferencableDecisionRule>();
+		this.d = new LinkedList<CompositeDecisionRule>();
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 	
 	@Test
 	public void testDecisionIsNoMatchContinueEvaluation() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
@@ -52,8 +52,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	@Test
 	public void testDecisionIndeterminateStopsEvaluation() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
@@ -68,8 +68,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	@Test
 	public void testMoreThanOneIsApplicable() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
@@ -86,8 +86,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsPermit() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
@@ -105,8 +105,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsDeny() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);
@@ -124,8 +124,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsIndeterminate() throws EvaluationException
 	{
-		ReferencableDecisionRule d1 = createStrictMock(ReferencableDecisionRule.class);
-		ReferencableDecisionRule d2 = createStrictMock(ReferencableDecisionRule.class);
+		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
+		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
 		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
 		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
 		d.add(d1);

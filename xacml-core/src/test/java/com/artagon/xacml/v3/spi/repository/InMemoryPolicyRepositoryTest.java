@@ -12,7 +12,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.Rule;
@@ -63,7 +63,7 @@ public class InMemoryPolicyRepositoryTest
 		r.add(p1v3);
 		r.add(p1v4);
 		
-		ReferencableDecisionRule p = r.get("id1", Version.parse("1.0"));
+		CompositeDecisionRule p = r.get("id1", Version.parse("1.0"));
 		assertEquals(p1v1, p);
 		p = r.get("id1", Version.parse("1.1"));
 		assertEquals(p1v2, p);
@@ -102,7 +102,7 @@ public class InMemoryPolicyRepositoryTest
 		
 		r.add(p1v2);
 		
-		ReferencableDecisionRule p = r.get("id1", Version.parse("1.0"));
+		CompositeDecisionRule p = r.get("id1", Version.parse("1.0"));
 		assertNull(p);
 		p = r.get("id1", Version.parse("1.1"));
 		assertEquals(p1v2, p);

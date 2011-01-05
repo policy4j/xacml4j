@@ -2,7 +2,7 @@ package com.artagon.xacml.v3;
 
 
 public interface CompositeDecisionRuleIDReference 
-	extends ReferencableDecisionRule
+	extends CompositeDecisionRule
 {
 	VersionMatch getVersionMatch();	
 	VersionMatch getEarliestVersion();

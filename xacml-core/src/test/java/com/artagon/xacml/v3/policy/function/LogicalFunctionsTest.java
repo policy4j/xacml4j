@@ -1,17 +1,20 @@
 package com.artagon.xacml.v3.policy.function;
 
 
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationException;
+import com.artagon.xacml.v3.Expression;
 import com.artagon.xacml.v3.FunctionSpec;
 import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v3.spi.function.FunctionProvider;
@@ -27,36 +30,76 @@ public class LogicalFunctionsTest
 	FunctionSpec orFunc;
 	FunctionSpec notFunc;
 	
+	private IMocksControl control;
+	
 	private EvaluationContext context;
 	
 	@Before
 	public void init() throws Exception
 	{
+		this.control = createControl();
 		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = control.createMock(EvaluationContext.class);
 	}
 	
 	
 	@Test
 	public void testAndFunction() throws EvaluationException
 	{
-		replay(context);
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(false), 
 				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		control.verify();
+		
+		control.reset();
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(false), 
 				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		control.verify();
+		
+		control.reset();
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
-		verify(context);
+		control.verify();
+	}
+	
+	@Test
+	public void testLazyAndFunctionParamEvaluation() throws EvaluationException
+	{
+		Expression p1 = control.createMock(Expression.class);
+		Expression p2 = control.createMock(Expression.class);
+		Expression p3 = control.createMock(Expression.class);
+		
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, p1, p2, p3));
+		control.verify();
+		
+		control.reset();
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, p1, p2, p3));
+		control.verify();
+		
+		control.reset();
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		expect(p3.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, p1, p2, p3));
+		control.verify();
+
 	}
 	
 	@Test

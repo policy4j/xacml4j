@@ -3,7 +3,7 @@ package com.artagon.xacml.v3;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
@@ -14,7 +14,7 @@ public class Attributes extends BaseAttributeHolder
 {
 	private String id;
 	private AttributeCategory categoryId;
-	private Element content;
+	private Document content;
 	
 	/**
 	 * Constructs an attributes with a given identifier,
@@ -124,7 +124,7 @@ public class Attributes extends BaseAttributeHolder
 		.add("category", categoryId)
 		.add("id", id)
 		.add("attributes", attributes)
-		.add("content", DOMUtil.toString(content))
+		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
 		.toString();
 	}
 	

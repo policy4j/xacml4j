@@ -33,8 +33,8 @@ public class LogicalFunctions
 	 * 
 	 * @param context
 	 * @param values
-	 * @return
-	 * @throws EvaluationException
+	 * @return {@link BooleanValue} representing function evaluation result
+	 * @throws EvaluationException if an evaluation error occurs
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")

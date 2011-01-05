@@ -14,8 +14,8 @@ public class PolicySet extends
 	BaseCompositeDecisionRule implements PolicyElement
 {
 	private PolicySetDefaults policySetDefaults;
-	private DecisionCombiningAlgorithm<ReferencableDecisionRule> combine;
-	private List<ReferencableDecisionRule> decisionRules;
+	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
+	private List<CompositeDecisionRule> decisionRules;
 	private Collection<CombinerParameters> combinerParameters;
 	private	Map<String, PolicySetCombinerParameters> policySetCombinerParameters;
 	private Map<String, PolicyCombinerParameters> policyCombinerParameters;
@@ -45,8 +45,8 @@ public class PolicySet extends
 			Collection<CombinerParameters> combinerParameters,
 			Collection<PolicyCombinerParameters> policyCombinerParameters,
 			Collection<PolicySetCombinerParameters> policySetCombinerParameters,
-			DecisionCombiningAlgorithm<ReferencableDecisionRule> combine, 
-			Collection<ReferencableDecisionRule> policies, 
+			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
+			Collection<CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
@@ -57,7 +57,7 @@ public class PolicySet extends
 		Preconditions.checkNotNull(policySetCombinerParameters);
 		this.reference = new PolicySetIDReference(id, version);
 		this.combine = combine;
-		this.decisionRules = new LinkedList<ReferencableDecisionRule>(policies);
+		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
 		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
 		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
@@ -78,8 +78,8 @@ public class PolicySet extends
 			Version version,
 			String description,
 			Target target, 
-			DecisionCombiningAlgorithm<ReferencableDecisionRule> combine, 
-			Collection<ReferencableDecisionRule> policies, 
+			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
+			Collection<CompositeDecisionRule> policies, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
@@ -95,7 +95,7 @@ public class PolicySet extends
 		return reference;
 	}
 
-	public DecisionCombiningAlgorithm<ReferencableDecisionRule> getPolicyDecisionCombiningAlgorithm(){
+	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
 		return combine;
 	}
 	
@@ -150,7 +150,7 @@ public class PolicySet extends
 		return decision;
 	}
 	
-	public List<? extends ReferencableDecisionRule> getDecisions() {
+	public List<? extends CompositeDecisionRule> getDecisions() {
 		return Collections.unmodifiableList(decisionRules);
 	}
 

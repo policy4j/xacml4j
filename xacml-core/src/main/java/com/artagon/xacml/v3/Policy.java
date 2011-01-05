@@ -21,7 +21,6 @@ public class Policy extends BaseCompositeDecisionRule
 	
 //	private CombinerParameters combinerParameters;
 //	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
-//	private PolicyIssuer policyIssuer;
 	
 	/**
 	 * A reference to itself

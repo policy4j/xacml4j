@@ -2,7 +2,7 @@ package com.artagon.xacml.v3.spi.repository;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v3.ReferencableDecisionRule;
+import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
@@ -123,9 +123,9 @@ public interface PolicyRepository
 	 * 
 	 * @param id an identifier
 	 * @param v a version
-	 * @return {@link ReferencableDecisionRule}
+	 * @return {@link CompositeDecisionRule}
 	 */
-	ReferencableDecisionRule get(String id, Version v);
+	CompositeDecisionRule get(String id, Version v);
 	
 	/**
 	 * Adds {@link Policy} or {@link PolicySet}
@@ -133,7 +133,7 @@ public interface PolicyRepository
 	 * 
 	 * @param r a policy or policy set
 	 */
-	void add(ReferencableDecisionRule r);
+	void add(CompositeDecisionRule r);
 	
 	/**
 	 * Removes {@link Policy} or {@link PolicySet}
@@ -141,7 +141,7 @@ public interface PolicyRepository
 	 * 
 	 * @param r a policy or policy set
 	 */
-	boolean remove(ReferencableDecisionRule r);
+	boolean remove(CompositeDecisionRule r);
 	
 	void addPolicyRepositoryListener(PolicyRepositoryListener l);
 	void removePolicyRepositoryListener(PolicyRepositoryListener l);

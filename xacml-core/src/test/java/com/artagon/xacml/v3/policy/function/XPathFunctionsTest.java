@@ -45,7 +45,7 @@ public class XPathFunctionsTest
 	"<md:patient-number>555555</md:patient-number>" +
 	"</md:patient>" +
 	"</md:record>";
-
+	
 	private EvaluationContext context;
 	private Node content;
 	private XPathProvider xpathProvider;

@@ -108,7 +108,7 @@ public class DOMUtil
 	 * document with copy of the node as 
 	 * root element
 	 */
-	public static Element copyNode(Node source)
+	public static Document copyNode(Node source)
 	{
 		if(source == null){
 			return null;
@@ -121,7 +121,7 @@ public class DOMUtil
 				null, sourceDoc.getDoctype()); 
 		Node copy =  doc.importNode(rootNode, true);
 		doc.appendChild(copy);
-		return doc.getDocumentElement();
+		return doc;
 	}
 	
 	/**

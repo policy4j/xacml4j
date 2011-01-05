@@ -17,7 +17,9 @@ import javax.xml.xpath.XPathFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -75,18 +77,20 @@ public class DOMUtilTest
 	@Test
 	public void testCopyNode()
 	{
-		Element copy = DOMUtil.copyNode(content1);
+		Document copy = DOMUtil.copyNode(content1);
+		assertEquals(Node.DOCUMENT_NODE, copy.getNodeType());
 		assertNotNull(copy);
-		assertEquals(2, copy.getChildNodes().getLength());
+		Element c = copy.getDocumentElement();
+		assertEquals(2, c.getChildNodes().getLength());
 		assertNotNull(copy);
-		assertEquals("record", copy.getLocalName());
-		assertEquals("urn:example:med:schemas:record", copy.getNamespaceURI());
-		assertEquals(2, copy.getChildNodes().getLength());
-		assertEquals("patient", copy.getChildNodes().item(0).getLocalName());
+		assertEquals("record", c.getLocalName());
+		assertEquals("urn:example:med:schemas:record", c.getNamespaceURI());
+		assertEquals(2, c.getChildNodes().getLength());
+		assertEquals("patient", c.getChildNodes().item(0).getLocalName());
 		assertEquals("urn:example:med:schemas:record", copy.getChildNodes().item(0).getNamespaceURI());
-		assertEquals("patient", copy.getChildNodes().item(1).getLocalName());
-		assertEquals("urn:example:med:schemas:record", copy.getChildNodes().item(1).getNamespaceURI());
-		assertTrue(copy.isEqualNode(content1));
+		assertEquals("patient", c.getChildNodes().item(1).getLocalName());
+		assertEquals("urn:example:med:schemas:record", c.getChildNodes().item(1).getNamespaceURI());
+		assertTrue(c.isEqualNode(content1));
 		
 	}
 	
