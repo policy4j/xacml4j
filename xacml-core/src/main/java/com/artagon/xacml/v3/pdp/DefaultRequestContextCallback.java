@@ -1,10 +1,14 @@
-package com.artagon.xacml.v3;
+package com.artagon.xacml.v3.pdp;
 
 import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v3.pdp.RequestContextCallback;
+import com.artagon.xacml.v3.AttributeCategory;
+import com.artagon.xacml.v3.AttributeValue;
+import com.artagon.xacml.v3.AttributeValueType;
+import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v3.RequestContext;
 import com.google.common.base.Preconditions;
 
 public class DefaultRequestContextCallback 

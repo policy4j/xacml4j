@@ -13,6 +13,7 @@ import com.google.common.base.Preconditions;
 public class PolicySet extends 
 	BaseCompositeDecisionRule implements PolicyElement
 {
+	private PolicyIssuer issuer;
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
@@ -41,6 +42,7 @@ public class PolicySet extends
 			Version version,
 			String description,
 			PolicySetDefaults policySetDefaults,
+			PolicyIssuer issuer,
 			Target target, 
 			Collection<CombinerParameters> combinerParameters,
 			Collection<PolicyCombinerParameters> policyCombinerParameters,
@@ -59,6 +61,7 @@ public class PolicySet extends
 		this.combine = combine;
 		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
 		this.policySetDefaults = policySetDefaults;
+		this.issuer = issuer;
 		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
 		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
 				 policyCombinerParameters.size());
@@ -83,7 +86,10 @@ public class PolicySet extends
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		this(id, version, description, null, target, 
+		this(id, version, 
+				description, 
+				null, null,
+				target, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
 				Collections.<PolicySetCombinerParameters>emptyList(), 
@@ -95,7 +101,7 @@ public class PolicySet extends
 			Version version, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine) 
 	{
-		this(id, version, null, null, null, 
+		this(id, version, null, null, null, null, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
 				Collections.<PolicySetCombinerParameters>emptyList(), 
@@ -103,6 +109,10 @@ public class PolicySet extends
 				Collections.<CompositeDecisionRule>emptyList(), 
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	public PolicyIssuer getIssuer(){
+		return issuer;
 	}
 	
 	@Override

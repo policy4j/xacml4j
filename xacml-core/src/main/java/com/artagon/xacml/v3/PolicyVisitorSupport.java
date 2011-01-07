@@ -352,4 +352,18 @@ public class PolicyVisitorSupport implements PolicyVisitor
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void visitEnter(PolicyIssuer p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitLeave(PolicyIssuer p) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

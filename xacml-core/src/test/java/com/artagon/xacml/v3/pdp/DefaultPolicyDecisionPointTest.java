@@ -11,7 +11,6 @@ import java.util.Collections;
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v3.Attributes;
@@ -25,6 +24,7 @@ import com.artagon.xacml.v3.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v3.spi.dcache.PolicyDecisionCache;
 import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v3.spi.repository.PolicyRepository;
+import com.artagon.xacml.v3.spi.repository.PolicyRepositoryListener;
 import com.artagon.xacml.v3.spi.xpath.XPathProvider;
 
 public class DefaultPolicyDecisionPointTest 
@@ -34,7 +34,6 @@ public class DefaultPolicyDecisionPointTest
 	private PolicyRepository repository;
 	private PolicyInformationPoint pip;
 	private CompositeDecisionRule policyDomain;
-	private PolicyDecisionPointContextFactory factory;
 	private PolicyDecisionCache decisionCache;
 	private PolicyDecisionAuditor decisionAuditor;
 	private XPathProvider xpathProvider;
@@ -51,21 +50,16 @@ public class DefaultPolicyDecisionPointTest
 		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
 		this.decisionCache = control.createMock(PolicyDecisionCache.class);
 		this.xpathProvider = control.createMock(XPathProvider.class);
-		this.factory = new DefaultPolicyDecisionPointContextFactory(
-				policyDomain, 
-				repository, 
-				decisionAuditor, 
-				decisionCache, 
-				xpathProvider, 
-				pip);
-		this.pdp = new DefaultPolicyDecisionPoint(factory);
 	}
 	
 	@Test
-	@Ignore
 	public void testRequestEvaluationPolicyDomainEvaluatesToPermitAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
 		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
+		
+		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
+		repository.addPolicyRepositoryListener(capture(c));
+		
 		expect(decisionCache.getDecision(req)).andReturn(null);
 		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
@@ -75,7 +69,18 @@ public class DefaultPolicyDecisionPointTest
 		decisionAuditor.audit(capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
 		decisionCache.putDecision(eq(req), capture(result1));
+		
 		control.replay();
+		
+		PolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
+				policyDomain, 
+				repository, 
+				decisionAuditor, 
+				decisionCache, 
+				xpathProvider, 
+				pip);
+		this.pdp = new DefaultPolicyDecisionPoint(factory);
+		
 		ResponseContext res = pdp.decide(req);
 		assertEquals(1, res.getResults().size());
 		assertEquals(result0.getValue(), result1.getValue());

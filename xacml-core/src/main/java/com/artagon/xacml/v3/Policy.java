@@ -22,6 +22,8 @@ public class Policy extends BaseCompositeDecisionRule
 //	private CombinerParameters combinerParameters;
 //	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
 	
+	private PolicyIssuer issuer;
+	
 	/**
 	 * A reference to itself
 	 */
@@ -47,6 +49,7 @@ public class Policy extends BaseCompositeDecisionRule
 			Version version,
 			String description,
 			PolicyDefaults policyDefaults,
+			PolicyIssuer issuer,
 			Target target, 
 			Collection<VariableDefinition> variables,
 			Collection<CombinerParameters> combinerParameters,
@@ -61,6 +64,7 @@ public class Policy extends BaseCompositeDecisionRule
 		Preconditions.checkNotNull(variables);
 		Preconditions.checkNotNull(rules);
 		Preconditions.checkNotNull(combine);
+		this.issuer = issuer;
 		this.rules = new LinkedList<Rule>(rules);
 		this.combine = combine;
 		this.reference = new PolicyIDReference(policyId, version);
@@ -83,7 +87,8 @@ public class Policy extends BaseCompositeDecisionRule
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		this(policyId, version, description, policyDefaults, target, variables, 
+		this(policyId, version, description, policyDefaults, 
+				null, target, variables, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<RuleCombinerParameters>emptyList(),
 				combine, rules, adviceExpressions, obligationExpressions);
@@ -138,6 +143,10 @@ public class Policy extends BaseCompositeDecisionRule
 				Arrays.asList(rules),
 				Collections.<AdviceExpression>emptyList(),
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	public PolicyIssuer getIssuer(){
+		return issuer;
 	}
 	
 	/**
@@ -255,14 +264,14 @@ public class Policy extends BaseCompositeDecisionRule
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
 		}
-		for(DecisionRule rule : rules){
-			rule.accept(v);
-		}
 		for(ObligationExpression obligation : getObligationExpressions()){
 			obligation.accept(v);
 		}
 		for(AdviceExpression advice : getAdviceExpressions()){
 			advice.accept(v);
+		}
+		for(DecisionRule rule : rules){
+			rule.accept(v);
 		}
 		v.visitLeave(this);
 	}	

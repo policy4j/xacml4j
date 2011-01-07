@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.CompositeDecisionRuleIDReference;
-import com.artagon.xacml.v3.DefaultRequestContextCallback;
 import com.artagon.xacml.v3.EvaluationContext;
 import com.artagon.xacml.v3.EvaluationContextHandler;
 import com.artagon.xacml.v3.RequestContext;
@@ -32,7 +30,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
 	private PolicyReferenceResolver policyReferenceResolver;
-	private CompositeDecisionRuleIDReference policyDomain;
+	private CompositeDecisionRule policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 	
 	private boolean validateFuncParamsAtRuntime = false;
@@ -56,7 +54,7 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
-		this.policyDomain = policyDomain.getReference();
+		this.policyDomain = policyDomain;
 		this.decisionAuditor = auditor;
 		this.decisionCache = cache;
 		this.requestHandlers = new RequestContextHandlerChain(handlers);

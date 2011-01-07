@@ -8,12 +8,11 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
-import com.google.common.collect.Multimap;
 
-public class PolicyIssuer extends BaseAttributeHolder
+public class PolicyIssuer extends BaseAttributeHolder 
+	implements PolicyElement
 {
 	private Document content;
-	private Multimap<String, Attribute> attributes;
 	
 	public PolicyIssuer(Node content, 
 			Collection<Attribute> attributes){
@@ -43,20 +42,8 @@ public class PolicyIssuer extends BaseAttributeHolder
 	public Node getContent(){
 		return content;
 	}
-	
-	public Collection<Attribute> getAttributes(String attributeId){
-		return attributes.get(attributeId);
-	}
-	
-	/**
-	 * Gets additional issuer attributes
-	 * 
-	 * @return additional issuer attributes
-	 */
-	public Collection<Attribute> getAttributes(){
-		return attributes.values();
-	}
-	
+		
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
@@ -72,10 +59,19 @@ public class PolicyIssuer extends BaseAttributeHolder
 		attributes.equals(pi.attributes);
 	}
 	
+	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("attributes", attributes)
-		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
+		.add("content", 
+				(content != null)?DOMUtil.toString(
+						content.getDocumentElement()):content)
 		.toString();
+	}
+
+	@Override
+	public void accept(PolicyVisitor v) {
+		v.visitEnter(this);
+		v.visitLeave(this);
 	}
 }

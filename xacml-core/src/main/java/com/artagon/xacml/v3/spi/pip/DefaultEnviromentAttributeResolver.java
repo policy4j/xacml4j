@@ -22,7 +22,8 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	public DefaultEnviromentAttributeResolver() {
 		super(AttributeResolverDescriptorBuilder.create(
 				"urn:oasis:names:tc:xacml:1.0:environment:resolver", 
-				"XACML Enviroment Attributes Resolver", AttributeCategories.ENVIRONMENT)
+				"XACML Enviroment Attributes Resolver", 
+				AttributeCategories.ENVIRONMENT)
 				.noCache()
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time",TIME)
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date",DATE)

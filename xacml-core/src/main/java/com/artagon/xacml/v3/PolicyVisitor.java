@@ -105,4 +105,7 @@ public interface PolicyVisitor
 	
 	void visitEnter(PolicySetCombinerParameters p);
 	void visitLeave(PolicySetCombinerParameters p);
+	
+	void visitEnter(PolicyIssuer p);
+	void visitLeave(PolicyIssuer p);
 }
