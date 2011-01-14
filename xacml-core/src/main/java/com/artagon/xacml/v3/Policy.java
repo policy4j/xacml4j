@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class Policy extends BaseCompositeDecisionRule
 //	private CombinerParameters combinerParameters;
 //	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
 	
+	private BigInteger maxDelegationDepth;
 	private PolicyIssuer issuer;
 	
 	/**
@@ -143,6 +145,10 @@ public class Policy extends BaseCompositeDecisionRule
 				Arrays.asList(rules),
 				Collections.<AdviceExpression>emptyList(),
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	public BigInteger getMaxDelegationDepth(){
+		return maxDelegationDepth;
 	}
 	
 	public PolicyIssuer getIssuer(){

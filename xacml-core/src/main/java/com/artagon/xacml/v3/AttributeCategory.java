@@ -15,7 +15,7 @@ public interface AttributeCategory
 	 * @return <code>true</code> if this
 	 * category is delegated
 	 */
-	boolean isDelegate();
+	boolean isDelegated();
 	
 	AttributeCategory toDelegatedCategory();
 }

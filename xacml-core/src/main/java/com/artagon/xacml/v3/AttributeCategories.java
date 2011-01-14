@@ -55,7 +55,7 @@ public enum AttributeCategories implements AttributeCategory
 	}
 	
 	@Override
-	public boolean isDelegate() {
+	public boolean isDelegated() {
 		return delegated != null;
 	}
 	
@@ -141,7 +141,7 @@ public enum AttributeCategories implements AttributeCategory
 		}
 		
 		@Override
-		public boolean isDelegate() {
+		public boolean isDelegated() {
 			return delegated == null;
 		}
 

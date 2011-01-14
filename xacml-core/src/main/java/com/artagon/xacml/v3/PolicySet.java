@@ -1,5 +1,6 @@
 package com.artagon.xacml.v3;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import com.google.common.base.Preconditions;
 public class PolicySet extends 
 	BaseCompositeDecisionRule implements PolicyElement
 {
+	private BigInteger maxDelegationDepth;
 	private PolicyIssuer issuer;
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
@@ -109,6 +111,10 @@ public class PolicySet extends
 				Collections.<CompositeDecisionRule>emptyList(), 
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	public BigInteger getMaxDelegationDepth(){
+		return maxDelegationDepth;
 	}
 	
 	public PolicyIssuer getIssuer(){

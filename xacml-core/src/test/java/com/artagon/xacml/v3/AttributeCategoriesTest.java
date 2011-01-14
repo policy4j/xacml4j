@@ -17,15 +17,15 @@ public class AttributeCategoriesTest
 		AttributeCategory c2 = AttributeCategories.parse("test");
 		assertEquals(c1, c2);
 		assertEquals("test", c1.getId());
-		assertFalse(c1.isDelegate());
+		assertFalse(c1.isDelegated());
 		assertEquals("test", c1.toString());
 		AttributeCategory d1 = c1.toDelegatedCategory();
 		AttributeCategory d2 = c1.toDelegatedCategory();
 		assertEquals(d1, d2);
 		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d1.getId());
 		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d2.getId());
-		assertTrue(d1.isDelegate());
-		assertTrue(d2.isDelegate());
+		assertTrue(d1.isDelegated());
+		assertTrue(d2.isDelegated());
 		assertNull(d1.toDelegatedCategory());
 		assertNull(d2.toDelegatedCategory());
 		AttributeCategory c3 = AttributeCategories.parse(AttributeCategories.ENVIRONMENT.toDelegatedCategory().getId());
@@ -38,7 +38,7 @@ public class AttributeCategoriesTest
 	{
 		AttributeCategory c = AttributeCategories.parse("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory");
 		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory", c.getId());
-		assertTrue(c.isDelegate());
+		assertTrue(c.isDelegated());
 		assertNull(c.toDelegatedCategory());
 	
 	}
