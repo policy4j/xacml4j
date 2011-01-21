@@ -1,5 +1,7 @@
 package com.artagon.xacml.v3.spi.repository;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +13,14 @@ import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
+import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
+import com.artagon.xacml.v3.marshall.jaxb.Xacml30PolicyUnmarshaller;
+import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
+import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v3.spi.function.FunctionProvider;
+import com.google.common.base.Preconditions;
 
 /**
  * A base class for {@link PolicyRepository} implementations
@@ -24,8 +34,22 @@ public abstract class AbstractPolicyRepository
 {	
 	private ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
 	
-	protected AbstractPolicyRepository(){
+	private PolicyUnmarshaller unmarshaller;
+	
+	protected AbstractPolicyRepository(FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
+		throws Exception
+	{
+		Preconditions.checkNotNull(functions);
+		Preconditions.checkNotNull(decisionAlgorithms);
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
+		this.unmarshaller = new Xacml30PolicyUnmarshaller(functions, decisionAlgorithms);
+	}
+	
+	protected AbstractPolicyRepository() throws Exception
+	{
+		this(new DefaultXacml30Functions(), 
+				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	/**
@@ -154,19 +178,24 @@ public abstract class AbstractPolicyRepository
 	}
 	
 	@Override
-	public final void add(CompositeDecisionRule r) {
+	public final boolean add(CompositeDecisionRule r) {
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
-			addPolicy(p);
-			notifyPolicyAdded(p);
-			return;
+			if(addPolicy(p)){
+				notifyPolicyAdded(p);
+				return true;
+			}
+			return false;
 		}
 		if(r instanceof PolicySet){
 			PolicySet p = (PolicySet)r;
-			addPolicySet(p);
-			notifyPolicySetAdded(p);
-			return;
+			if(addPolicySet(p)){
+				notifyPolicySetAdded(p);
+				return true;
+			}
+			return false;
 		}
+		return false;
 	}
 	
 	@Override
@@ -195,7 +224,7 @@ public abstract class AbstractPolicyRepository
 	 * 
 	 * @param p a policy
 	 */
-	protected abstract void addPolicy(Policy p);
+	protected abstract boolean addPolicy(Policy p);
 	
 	/**
 	 * Implemented by subclass to add policy set
@@ -203,10 +232,18 @@ public abstract class AbstractPolicyRepository
 	 * 
 	 * @param p a policy set
 	 */
-	protected abstract void addPolicySet(PolicySet p);
+	protected abstract boolean addPolicySet(PolicySet p);
 	
 	
 	
 	protected abstract  boolean removePolicy(Policy p);
 	protected abstract boolean removePolicySet(PolicySet p);
+
+	@Override
+	public CompositeDecisionRule importPolicy(InputStream source)
+			throws XacmlSyntaxException, IOException {
+		CompositeDecisionRule r =  unmarshaller.unmarshal(source);
+		add(r);
+		return r;
+	}
 }

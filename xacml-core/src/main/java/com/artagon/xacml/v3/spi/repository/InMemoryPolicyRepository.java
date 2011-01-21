@@ -35,7 +35,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 	
-	public InMemoryPolicyRepository()
+	public InMemoryPolicyRepository() 
+		throws Exception
 	{
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
@@ -84,7 +85,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 
 	@Override
-	protected  void addPolicy(Policy policy) 
+	protected  boolean addPolicy(Policy policy) 
 	{
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();
@@ -101,15 +102,11 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				versions = existing;
 			}
 		}
-		Preconditions.checkState(
-				versions.put(v, policy) == null, 
-				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-					id, v);
-	
+		return (versions.put(v, policy) == null);
 	}
 
 	@Override
-	protected void addPolicySet(PolicySet policySet) 
+	protected boolean addPolicySet(PolicySet policySet) 
 	{
 		Preconditions.checkArgument(policySet != null);
 		String id = policySet.getId();
@@ -126,10 +123,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				versions = existing;
 			}
 		}
-		Preconditions.checkState(
-				versions.put(policySet.getVersion(), policySet) == null, 
-				"Repository already contains a policy with id=\"%s\" and version=\"%s\"", 
-					id, v);
+		return versions.put(v, policySet) == null;
 	}
 	
 	@Override

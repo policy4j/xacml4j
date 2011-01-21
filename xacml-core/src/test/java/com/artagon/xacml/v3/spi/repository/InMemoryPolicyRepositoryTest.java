@@ -4,6 +4,8 @@ package com.artagon.xacml.v3.spi.repository;
 import static org.easymock.EasyMock.createControl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -114,11 +116,10 @@ public class InMemoryPolicyRepositoryTest
 		c.verify();
 	}
 	
-	@Test(expected=IllegalStateException.class)
 	public void testAddPolicyWithTheSameIdAndSameVersion()
 	{
-		r.add(p1v2);
-		r.add(p1v2);
+		assertTrue(r.add(p1v2));
+		assertFalse(r.add(p1v2));
 	}
 
 	

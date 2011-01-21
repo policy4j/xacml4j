@@ -1,6 +1,7 @@
 package com.artagon.xacml.v3.spi.repository;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 import javax.xml.transform.Source;
@@ -11,7 +12,6 @@ import com.artagon.xacml.v3.PolicySet;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.XacmlSyntaxException;
-
 
 
 /**
@@ -139,7 +139,7 @@ public interface PolicyRepository
 	 * 
 	 * @param r a policy or policy set
 	 */
-	void add(CompositeDecisionRule r);
+	boolean add(CompositeDecisionRule r);
 	
 	/**
 	 * Removes {@link Policy} or {@link PolicySet}
@@ -160,8 +160,8 @@ public interface PolicyRepository
 	 * @exception XacmlSyntaxException
 	 * @exception IOException
 	 */
-//	CompositeDecisionRule importPolicy(Source source) 
-//		throws XacmlSyntaxException, IOException;
+	CompositeDecisionRule importPolicy(InputStream source) 
+		throws XacmlSyntaxException, IOException;
 	
 	/**
 	 * Adds {@link PolicyRepositoryListener} to this repository
