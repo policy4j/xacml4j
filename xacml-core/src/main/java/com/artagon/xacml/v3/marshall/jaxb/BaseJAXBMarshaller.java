@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.marshall;
+package com.artagon.xacml.v3.marshall.jaxb;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,6 +12,7 @@ import javax.xml.transform.Result;
 
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v3.marshall.Marshaller;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>

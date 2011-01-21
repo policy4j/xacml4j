@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy 
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+	xmlns:md="http://www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1"
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+	<PolicyDefaults>
+		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+	</PolicyDefaults>
+	<Target />
+	<VariableDefinition VariableId="VAR01">
+			<AttributeDesignator
+				AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number"
+				Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+				MustBePresent="true"
+				DataType="http://www.w3.org/2001/XMLSchema#string" />
+	</VariableDefinition>
+	<VariableDefinition VariableId="VAR02">
+			<AttributeSelector
+				Path="//md:record/md:patient/md:patient-number/text()"
+				MustBePresent="true"
+				Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+				DataType="http://www.w3.org/2001/XMLSchema#string" />
+	</VariableDefinition>
+	<VariableDefinition VariableId="VAR03">
+		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+			<VariableReference VariableId="VAR01"/>
+		</Apply>
+	</VariableDefinition>
+	<VariableDefinition VariableId="VAR04">
+		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+			<VariableReference VariableId="VAR02"/>
+		</Apply>
+	</VariableDefinition>
+	<VariableDefinition VariableId="VAR05">
+		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+			<VariableReference VariableId="VAR03"/>
+			<VariableReference VariableId="VAR04"/>
+		</Apply>
+	</VariableDefinition>
+	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:1"
+		Effect="Permit">
+		<Condition>
+			<VariableReference VariableId="VAR05" />
+		</Condition>
+	</Rule>
+</Policy>

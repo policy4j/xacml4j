@@ -26,4 +26,27 @@
 			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<schemaLanguage>XMLSCHEMA</schemaLanguage>
+					<bindingIncludes>
+						<value>xacml.xjb</value>
+					</bindingIncludes>
+					<schemaIncludes><value>*.xsd</value></schemaIncludes>
+					<schemaDirectory>${basedir}/src/main/xsd</schemaDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

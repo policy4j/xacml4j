@@ -1,4 +1,4 @@
-package com.artagon.xacml.v3.marshall;
+package com.artagon.xacml.v3.marshall.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v3.XacmlSyntaxException;
+import com.artagon.xacml.v3.marshall.Unmarshaller;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseJAXBUnmarshaller <T>

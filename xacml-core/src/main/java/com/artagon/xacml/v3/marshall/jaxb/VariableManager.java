@@ -1,4 +1,4 @@
-package com.artagon.xacml.util;
+package com.artagon.xacml.v3.marshall.jaxb;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -86,4 +86,40 @@ public class DefaultPolicyDecisionPointTest
 		assertEquals(result0.getValue(), result1.getValue());
 		control.verify();
 	}
+	
+	@Test
+	public void testRequestEvaluationPolicyDomainEvaluatesToDenyAndRequestReturnEvaluatedPolicyIdsFalse()
+	{
+		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
+		
+		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
+		repository.addPolicyRepositoryListener(capture(c));
+		
+		expect(decisionCache.getDecision(req)).andReturn(null);
+		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
+		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
+		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
+		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
+		Capture<Result> result0 = new Capture<Result>();
+		decisionAuditor.audit(capture(result0), eq(req));
+		Capture<Result> result1 = new Capture<Result>();
+		decisionCache.putDecision(eq(req), capture(result1));
+		
+		control.replay();
+		
+		PolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
+				policyDomain, 
+				repository, 
+				decisionAuditor, 
+				decisionCache, 
+				xpathProvider, 
+				pip);
+		this.pdp = new DefaultPolicyDecisionPoint(factory);
+		
+		ResponseContext res = pdp.decide(req);
+		assertEquals(1, res.getResults().size());
+		assertEquals(result0.getValue(), result1.getValue());
+		
+		control.verify();
+	}
 }
