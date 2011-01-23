@@ -8,9 +8,12 @@ import java.util.Comparator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.artagon.xacml.v3.Apply;
 import com.artagon.xacml.v3.CompositeDecisionRule;
+import com.artagon.xacml.v3.FunctionReference;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
+import com.artagon.xacml.v3.PolicyVisitorSupport;
 import com.artagon.xacml.v3.Version;
 import com.artagon.xacml.v3.VersionMatch;
 import com.artagon.xacml.v3.XacmlSyntaxException;
@@ -183,7 +186,10 @@ public abstract class AbstractPolicyRepository
 	}
 	
 	@Override
-	public final boolean add(CompositeDecisionRule r) {
+	public final boolean add(CompositeDecisionRule r) 
+	{
+//		r.accept(new DecisionAlgorithmValidatingVisitor());
+//		r.accept(new FunctionValidatingVisitor());
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
 			if(addPolicy(p)){
@@ -250,5 +256,40 @@ public abstract class AbstractPolicyRepository
 		CompositeDecisionRule r =  unmarshaller.unmarshal(source);
 		add(r);
 		return r;
+	}
+	
+	private class FunctionValidatingVisitor 
+		extends PolicyVisitorSupport
+	{
+		@Override
+		public void visitEnter(FunctionReference function) {
+			Preconditions.checkArgument(functions.isFunctionProvided(
+					function.getFunctionId()));
+		}
+
+		@Override
+		public void visitEnter(Apply apply) {
+			Preconditions.checkArgument(functions.isFunctionProvided(
+					apply.getFunctionId()));
+		}
+		
+	}
+	
+	private class DecisionAlgorithmValidatingVisitor 
+		extends PolicyVisitorSupport
+	{
+		@Override
+		public void visitEnter(Policy policy) {
+			Preconditions.checkArgument(
+					decisionAlgorithms.isRuleAgorithmProvided(
+							policy.getRuleCombiningAlgorithm().getId()));
+		}
+
+		@Override
+		public void visitEnter(PolicySet policySet) {
+			Preconditions.checkArgument(
+					decisionAlgorithms.isPolicyAgorithmProvided(
+							policySet.getPolicyDecisionCombiningAlgorithm().getId()));
+		}
 	}
 }
