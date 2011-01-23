@@ -36,12 +36,17 @@ public abstract class AbstractPolicyRepository
 	
 	private PolicyUnmarshaller unmarshaller;
 	
+	private FunctionProvider functions;
+	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
+	
 	protected AbstractPolicyRepository(FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws Exception
 	{
 		Preconditions.checkNotNull(functions);
 		Preconditions.checkNotNull(decisionAlgorithms);
+		this.functions = functions;
+		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
 		this.unmarshaller = new Xacml30PolicyUnmarshaller(functions, decisionAlgorithms);
 	}
@@ -240,7 +245,7 @@ public abstract class AbstractPolicyRepository
 	protected abstract boolean removePolicySet(PolicySet p);
 
 	@Override
-	public CompositeDecisionRule importPolicy(InputStream source)
+	public final CompositeDecisionRule importPolicy(InputStream source)
 			throws XacmlSyntaxException, IOException {
 		CompositeDecisionRule r =  unmarshaller.unmarshal(source);
 		add(r);

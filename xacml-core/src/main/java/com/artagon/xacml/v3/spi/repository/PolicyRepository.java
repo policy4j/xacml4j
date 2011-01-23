@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
-import javax.xml.transform.Source;
-
 import com.artagon.xacml.v3.CompositeDecisionRule;
 import com.artagon.xacml.v3.Policy;
 import com.artagon.xacml.v3.PolicySet;
@@ -138,6 +136,8 @@ public interface PolicyRepository
 	 * to this repository
 	 * 
 	 * @param r a policy or policy set
+	 * @return <code>true</code> if
+	 * policy was added successfully
 	 */
 	boolean add(CompositeDecisionRule r);
 	
@@ -153,12 +153,15 @@ public interface PolicyRepository
 	boolean remove(CompositeDecisionRule r);
 	
 	/**
-	 * Imports a given policy from a given {@link Source}
+	 * Imports a given XACML policy from a given 
+	 * {@link InputStream}
 	 * 
 	 * @param source a policy source
-	 * @return {@link CompositeDecisionRule}
-	 * @exception XacmlSyntaxException
-	 * @exception IOException
+	 * @return {@link CompositeDecisionRule} an imported
+	 * {@link Policy} or {@link PolicySet}
+	 * @exception XacmlSyntaxException if an syntax error
+	 * occurs while parsing XACML policy or policy set
+	 * @exception IOException if an IO error occurs
 	 */
 	CompositeDecisionRule importPolicy(InputStream source) 
 		throws XacmlSyntaxException, IOException;
