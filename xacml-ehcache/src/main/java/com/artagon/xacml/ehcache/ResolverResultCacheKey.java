@@ -3,7 +3,7 @@ package com.artagon.xacml.ehcache;
 import java.io.Serializable;
 import java.util.List;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

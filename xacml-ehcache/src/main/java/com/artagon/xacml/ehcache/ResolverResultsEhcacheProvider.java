@@ -6,13 +6,13 @@ import java.util.Map;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.pip.AttributeResolverDescriptor;
-import com.artagon.xacml.v3.spi.pip.AttributeSet;
-import com.artagon.xacml.v3.spi.pip.BaseResolverResultCacheProvider;
-import com.artagon.xacml.v3.spi.pip.Content;
-import com.artagon.xacml.v3.spi.pip.ContentResolverDescriptor;
-import com.artagon.xacml.v3.spi.pip.ResolverDescriptor;
+import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
+import com.artagon.xacml.v30.spi.pip.AttributeSet;
+import com.artagon.xacml.v30.spi.pip.BaseResolverResultCacheProvider;
+import com.artagon.xacml.v30.spi.pip.Content;
+import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptor;
+import com.artagon.xacml.v30.spi.pip.ResolverDescriptor;
 import com.google.common.base.Preconditions;
 
 public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvider
