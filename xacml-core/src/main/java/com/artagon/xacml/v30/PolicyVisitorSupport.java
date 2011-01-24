@@ -172,20 +172,6 @@ public class PolicyVisitorSupport implements PolicyVisitor
 	}
 
 	@Override
-	public void visitEnter(
-			DecisionCombiningAlgorithm<? extends DecisionRule> combine) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(
-			DecisionCombiningAlgorithm<? extends DecisionRule> combine) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void visitEnter(PolicyIDReference ref) {
 		// TODO Auto-generated method stub
 		

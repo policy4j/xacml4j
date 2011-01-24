@@ -17,6 +17,10 @@ import com.artagon.xacml.v30.PolicySet;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.Versionable;
+import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -35,11 +39,20 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 	
+	public InMemoryPolicyRepository(FunctionProvider functions, 
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
+		throws Exception
+	{
+		super(functions, decisionAlgorithms);
+		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
+		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
+	}
+	
 	public InMemoryPolicyRepository() 
 		throws Exception
 	{
-		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
-		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
+		this(new DefaultXacml30Functions(), 
+				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	@Override

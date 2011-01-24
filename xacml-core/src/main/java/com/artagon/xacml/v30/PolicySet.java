@@ -210,7 +210,6 @@ public class PolicySet extends
 				p.accept(v);
 			}
 		}
-		combine.accept(v);
 		for(DecisionRule decision : decisionRules){
 			decision.accept(v);
 		}

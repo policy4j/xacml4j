@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.spi.repository;
 
 
 import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
@@ -20,6 +21,8 @@ import com.artagon.xacml.v30.Policy;
 import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepositoryListener;
@@ -37,17 +40,22 @@ public class InMemoryPolicyRepositoryTest
 	private IMocksControl c;
 	private PolicyRepositoryListener l;
 	
+	private FunctionProvider functions;
+	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
+	
 	@SuppressWarnings("unchecked")
 	@Before
 	public void init() throws Exception
 	{
 		this.c = createControl();
 		this.algorithm = c.createMock(DecisionCombiningAlgorithm.class);
+		this.functions = c.createMock(FunctionProvider.class);
+		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
 		this.p1v1 = new Policy("id1", Version.parse("1"), algorithm);
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
-		this.r = new InMemoryPolicyRepository();
+		this.r = new InMemoryPolicyRepository(functions, decisionAlgorithms);
 		this.l = c.createMock(PolicyRepositoryListener.class);
 		this.r.addPolicyRepositoryListener(l);
 	}
@@ -56,9 +64,17 @@ public class InMemoryPolicyRepositoryTest
 	public void testOnePolicyDifferentVersion() throws Exception
 	{
 		
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v1);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v3);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v4);
 		
 		c.replay();
@@ -101,6 +117,8 @@ public class InMemoryPolicyRepositoryTest
 	@Test
 	public void testAddRemove() throws Exception
 	{
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
 		l.policyRemoved(p1v2);
 		c.replay();
@@ -121,18 +139,29 @@ public class InMemoryPolicyRepositoryTest
 	
 	public void testAddPolicyWithTheSameIdAndSameVersion()
 	{
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		c.replay();
 		assertTrue(r.add(p1v2));
 		assertFalse(r.add(p1v2));
+		c.verify();
 	}
 
 	
 	@Test
 	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
-		
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v1);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v3);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v4);
 		
 		c.replay();

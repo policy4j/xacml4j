@@ -19,8 +19,6 @@ import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30PolicyUnmarshaller;
-import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
-import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
@@ -52,12 +50,6 @@ public abstract class AbstractPolicyRepository
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
 		this.unmarshaller = new Xacml30PolicyUnmarshaller(functions, decisionAlgorithms);
-	}
-	
-	protected AbstractPolicyRepository() throws Exception
-	{
-		this(new DefaultXacml30Functions(), 
-				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	/**
@@ -188,8 +180,8 @@ public abstract class AbstractPolicyRepository
 	@Override
 	public final boolean add(CompositeDecisionRule r) 
 	{
-//		r.accept(new DecisionAlgorithmValidatingVisitor());
-//		r.accept(new FunctionValidatingVisitor());
+		r.accept(new DecisionAlgorithmValidatingVisitor());
+		r.accept(new FunctionValidatingVisitor());
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
 			if(addPolicy(p)){
@@ -280,16 +272,18 @@ public abstract class AbstractPolicyRepository
 	{
 		@Override
 		public void visitEnter(Policy policy) {
+			String id = policy.getRuleCombiningAlgorithm().getId();
 			Preconditions.checkArgument(
-					decisionAlgorithms.isRuleAgorithmProvided(
-							policy.getRuleCombiningAlgorithm().getId()));
+					decisionAlgorithms.isRuleAgorithmProvided(id),
+							"Rule combining algorithm=\"%s\" is not defined in this repository", id);
 		}
 
 		@Override
 		public void visitEnter(PolicySet policySet) {
+			String id = policySet.getPolicyDecisionCombiningAlgorithm().getId();
 			Preconditions.checkArgument(
-					decisionAlgorithms.isPolicyAgorithmProvided(
-							policySet.getPolicyDecisionCombiningAlgorithm().getId()));
+					decisionAlgorithms.isPolicyAgorithmProvided(id), 
+					"Policy combining algorithm=\"%s\" is not defined in this repository", id);
 		}
 	}
 }

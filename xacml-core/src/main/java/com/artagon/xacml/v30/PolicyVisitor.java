@@ -58,9 +58,6 @@ public interface PolicyVisitor
 	void visitEnter(Rule rule);
 	void visitLeave(Rule rule);
 	
-	void visitEnter(DecisionCombiningAlgorithm<? extends DecisionRule> combine);
-	void visitLeave(DecisionCombiningAlgorithm<? extends DecisionRule> combine);
-	
 	void visitEnter(PolicyIDReference ref);
 	void visitLeave(PolicyIDReference ref);
 	

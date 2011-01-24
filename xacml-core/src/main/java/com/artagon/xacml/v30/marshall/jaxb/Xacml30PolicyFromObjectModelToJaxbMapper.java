@@ -7,10 +7,6 @@ import java.util.Stack;
 
 import javax.xml.bind.JAXBElement;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;
 import org.oasis.xacml.v30.jaxb.AllOfType;
 import org.oasis.xacml.v30.jaxb.AnyOfType;
@@ -22,6 +18,8 @@ import org.oasis.xacml.v30.jaxb.ObligationExpressionsType;
 import org.oasis.xacml.v30.jaxb.PolicySetType;
 import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.oasis.xacml.v30.jaxb.TargetType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AdviceExpression;
 import com.artagon.xacml.v30.Apply;

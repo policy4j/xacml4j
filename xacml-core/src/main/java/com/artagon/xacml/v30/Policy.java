@@ -266,7 +266,6 @@ public class Policy extends BaseCompositeDecisionRule
 //		if(ruleCombinerParameters != null){
 //			ruleCombinerParameters.accept(v);
 //		}
-		combine.accept(v);
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
 		}
