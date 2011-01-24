@@ -2,31 +2,29 @@ package com.artagon.xacml.v20;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.InputStream;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.Decision;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.ResponseContext;
-import com.artagon.xacml.v3.Result;
-import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
-import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
-import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
-import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
-import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
-import com.artagon.xacml.v3.spi.repository.PolicyRepository;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPointContextFactory;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
+import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
+import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 
 {
-	private static PolicyUnmarshaller policyReader;
 	private static RequestUnmarshaller requestUnmarshaller;
 	private static PolicyDecisionPoint pdp;
 	private static PolicyInformationPoint pip;
@@ -34,26 +32,27 @@ public class RSA2008InteropTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		policyReader = new Xacml20PolicyUnmarshaller(new DefaultXacml30Functions(), new DefaultXacml30DecisionCombiningAlgorithms());
-		requestUnmarshaller = new Xacml20RequestUnmarshaller();
+		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 		
 		
 		PolicyRepository repository = new InMemoryPolicyRepository();
 
 		
-		repository.add(getPolicy("XacmlPolicySet-01-top-level.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02a-CDA.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02b-N.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02d-prog-note.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02e-MA.xml"));
-		repository.add(getPolicy("XacmlPolicySet-02f-emergency.xml"));
-		repository.add(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
-		repository.add(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02b-N.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02d-prog-note.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02e-MA.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-02f-emergency.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
+		repository.importPolicy(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
 		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
 		pdp = new DefaultPolicyDecisionPoint(
-				new DefaultPolicyDecisionPointContextFactory(getPolicy("XacmlPolicySet-01-top-level.xml"), repository, pip));
+				new DefaultPolicyDecisionPointContextFactory(
+						repository.importPolicy(
+								getPolicy("XacmlPolicySet-01-top-level.xml")), repository, pip));
 		
 	}
 	
@@ -177,11 +176,11 @@ public class RSA2008InteropTest
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
 	
-	private static CompositeDecisionRule getPolicy(String name) throws Exception
+	private static InputStream getPolicy(String name) throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		String path = "rsa2008-interop/" + name;
-		return policyReader.unmarshal(cl.getResourceAsStream(path));
+		return cl.getResourceAsStream(path);
 	}
 	
 	private RequestContext getRequest(String name) throws Exception

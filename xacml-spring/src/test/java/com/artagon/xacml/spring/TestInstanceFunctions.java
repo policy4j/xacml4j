@@ -3,13 +3,13 @@ package com.artagon.xacml.spring;
 
 import org.junit.Ignore;
 
-import com.artagon.xacml.v3.spi.function.XacmlFuncParam;
-import com.artagon.xacml.v3.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v3.spi.function.XacmlFuncSpec;
-import com.artagon.xacml.v3.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v3.types.BooleanType;
-import com.artagon.xacml.v3.types.BooleanValue;
-import com.artagon.xacml.v3.types.IntegerValue;
+import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
+import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
+import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
+import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
+import com.artagon.xacml.v30.types.BooleanType;
+import com.artagon.xacml.v30.types.BooleanValue;
+import com.artagon.xacml.v30.types.IntegerValue;
 
 @Ignore
 @XacmlFunctionProvider(description="Provider1")

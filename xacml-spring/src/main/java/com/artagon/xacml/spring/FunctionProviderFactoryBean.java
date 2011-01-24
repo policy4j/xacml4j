@@ -2,8 +2,8 @@ package com.artagon.xacml.spring;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.spi.function.AnnotiationBasedFunctionProvider;
-import com.artagon.xacml.v3.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
 
 public class FunctionProviderFactoryBean extends AbstractFactoryBean<FunctionProvider>

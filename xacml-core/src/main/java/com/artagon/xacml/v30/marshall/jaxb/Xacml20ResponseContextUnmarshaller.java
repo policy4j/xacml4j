@@ -8,13 +8,13 @@ import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 
-public class Xacml20ResponseUnmarshaller 
+public class Xacml20ResponseContextUnmarshaller 
 	extends BaseJAXBUnmarshaller<ResponseContext> 
 implements ResponseUnmarshaller
 {
 	private Xacml20RequestContextFromJaxbToObjectModelMapper mapper;
 	
-	public Xacml20ResponseUnmarshaller(){
+	public Xacml20ResponseContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml20RequestContextFromJaxbToObjectModelMapper();
 	}

@@ -3,12 +3,12 @@ package com.artagon.xacml.v20;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v3.BagOfAttributeValues;
-import com.artagon.xacml.v3.spi.pip.XacmlAttributeDescriptor;
-import com.artagon.xacml.v3.spi.pip.XacmlAttributeDesignator;
-import com.artagon.xacml.v3.spi.pip.XacmlAttributeResolverDescriptor;
-import com.artagon.xacml.v3.types.StringType;
-import com.artagon.xacml.v3.types.StringValue;
+import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.spi.pip.XacmlAttributeDescriptor;
+import com.artagon.xacml.v30.spi.pip.XacmlAttributeDesignator;
+import com.artagon.xacml.v30.spi.pip.XacmlAttributeResolverDescriptor;
+import com.artagon.xacml.v30.types.StringType;
+import com.artagon.xacml.v30.types.StringValue;
 
 public class Xacml20ConformanceAttributeResolver 
 {

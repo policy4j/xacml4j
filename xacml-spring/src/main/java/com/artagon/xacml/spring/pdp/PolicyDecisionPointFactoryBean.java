@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.CompositeDecisionRule;
-import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPoint;
-import com.artagon.xacml.v3.pdp.DefaultPolicyDecisionPointContextFactory;
-import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v3.pdp.PolicyDecisionPointContextFactory;
-import com.artagon.xacml.v3.pdp.RequestContextHandler;
-import com.artagon.xacml.v3.pdp.profiles.MultipleResourcesHandler;
-import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.repository.PolicyRepository;
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPointContextFactory;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPointContextFactory;
+import com.artagon.xacml.v30.pdp.RequestContextHandler;
+import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public class PolicyDecisionPointFactoryBean extends 

@@ -4,11 +4,11 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.spi.pip.AttributeResolver;
-import com.artagon.xacml.v3.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v3.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v3.spi.pip.PolicyInformationPoint;
-import com.artagon.xacml.v3.spi.pip.ResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.AttributeResolver;
+import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
+import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 
 public class PolicyInformationPointFactoryBean extends AbstractFactoryBean<PolicyInformationPoint>
 {

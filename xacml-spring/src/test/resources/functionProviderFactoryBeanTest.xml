@@ -17,6 +17,14 @@
 		<xacml-spring:FunctionProvider ref="testProvider1"/>
 	</xacml-spring:FunctionProviders>
 	
+	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
+		<beans:property name="resources">
+			<util:list>
+				<value>classpath:/Policy1.xml</value>
+			</util:list>
+		</beans:property>
+	</bean>
+	
 	<xacml-spring:InMemoryPolicyRepository 
 		id="repository" 
 		resources="resources" 
@@ -27,13 +35,6 @@
 	
 	<xacml-spring:PolicyInformationPoint id="pip" attributeResolvers="attributeResolvers"/>
 	
-	<bean id="resources" class="com.artagon.xacml.spring.ResourceCollection">
-		<beans:property name="resources">
-			<util:list>
-				<value>classpath:/Policy1.xml</value>
-			</util:list>
-		</beans:property>
-	</bean>
 	 
 	<xacml-spring:PolicyDecisionPoint
 		id="pdp" 

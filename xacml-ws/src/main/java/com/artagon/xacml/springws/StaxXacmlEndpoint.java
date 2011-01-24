@@ -5,13 +5,13 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.springframework.ws.server.endpoint.AbstractStaxStreamPayloadEndpoint;
 
-import com.artagon.xacml.v20.Xacml20RequestUnmarshaller;
-import com.artagon.xacml.v20.Xacml20ResponseMarshaller;
-import com.artagon.xacml.v3.RequestContext;
-import com.artagon.xacml.v3.ResponseContext;
-import com.artagon.xacml.v3.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v3.marshall.ResponseMarshaller;
-import com.artagon.xacml.v3.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
+import com.artagon.xacml.v30.marshall.ResponseMarshaller;
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
 public class StaxXacmlEndpoint extends AbstractStaxStreamPayloadEndpoint 
 {
@@ -22,8 +22,8 @@ public class StaxXacmlEndpoint extends AbstractStaxStreamPayloadEndpoint
 	public StaxXacmlEndpoint( 
 			PolicyDecisionPoint pdp) {
 		this.pdp = pdp;
-		this.requestUnmarshaller = new Xacml20RequestUnmarshaller();
-		this.responseMarshaller = new Xacml20ResponseMarshaller();		
+		this.requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.responseMarshaller = new Xacml20ResponseContextMarshaller();		
 	}
 	
 	@Override

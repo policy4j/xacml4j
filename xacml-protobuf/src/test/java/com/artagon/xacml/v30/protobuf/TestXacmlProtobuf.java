@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v3.types.IntegerType;
+import com.artagon.xacml.v30.types.IntegerType;
 
 import com.artagon.xacml.v30.protbuf.Xacml30.PAttribute;
 import com.artagon.xacml.v30.protbuf.Xacml30.PAttributeDataTypeId;

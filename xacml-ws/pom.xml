@@ -41,16 +41,6 @@
 			<artifactId>xacml-spring-support</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-v20-schema-jaxb</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-v30-schema-jaxb</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

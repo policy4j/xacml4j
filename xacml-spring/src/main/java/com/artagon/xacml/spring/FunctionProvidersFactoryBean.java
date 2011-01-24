@@ -5,9 +5,9 @@ import java.util.LinkedList;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v3.policy.function.DefaultXacml30Functions;
-import com.artagon.xacml.v3.spi.function.AggregatingFunctionProvider;
-import com.artagon.xacml.v3.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
+import com.artagon.xacml.v30.spi.function.AggregatingFunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
 
 public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionProvider>
 {

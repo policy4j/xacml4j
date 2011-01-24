@@ -4,13 +4,10 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.spring.ResourceCollection;
-import com.artagon.xacml.v3.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v3.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
-import com.artagon.xacml.v3.spi.combine.DecisionCombiningAlgorithmProvider;
-import com.artagon.xacml.v3.spi.function.FunctionProvider;
-import com.artagon.xacml.v3.spi.repository.InMemoryPolicyRepository;
-import com.artagon.xacml.v3.spi.repository.PolicyRepository;
-import com.artagon.xacml.v30.Xacml30PolicyUnmarshaller;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
+import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
@@ -41,11 +38,9 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	protected PolicyRepository createInstance() throws Exception 
 	{
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
-		PolicyUnmarshaller unmarshaler = new Xacml30PolicyUnmarshaller(extensionFunctions, 
-				new DefaultXacml30DecisionCombiningAlgorithms());
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository();
 		for(Resource r : resources.getResources()){
-			repository.add(unmarshaler.unmarshal(r.getInputStream()));
+			repository.importPolicy(r.getInputStream());
 		}
 		return repository;
 	}
