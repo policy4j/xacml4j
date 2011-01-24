@@ -12,7 +12,8 @@ abstract class SimpleAttributeValue<T> extends BaseAttributeValue
 	
 	private T value;
 	
-	protected SimpleAttributeValue(AttributeValueType type, T value) 
+	protected SimpleAttributeValue(AttributeValueType type, 
+			T value) 
 	{
 		super(type);
 		Preconditions.checkNotNull(value);
