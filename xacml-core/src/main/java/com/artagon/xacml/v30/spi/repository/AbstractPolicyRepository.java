@@ -18,7 +18,7 @@ import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v30.marshall.jaxb.Xacml30PolicyUnmarshaller;
+import com.artagon.xacml.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
@@ -49,7 +49,7 @@ public abstract class AbstractPolicyRepository
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
-		this.unmarshaller = new Xacml30PolicyUnmarshaller(functions, decisionAlgorithms);
+		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
 	}
 	
 	/**

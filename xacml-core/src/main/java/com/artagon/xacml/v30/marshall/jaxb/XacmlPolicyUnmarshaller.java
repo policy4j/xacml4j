@@ -9,7 +9,7 @@ import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 
-public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
+public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller
 {
 	private Xacml30PolicyFromJaxbToObjectModelMapper v30mapper;
@@ -17,7 +17,7 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 	
 	private boolean supportsXacml20Policies;
 	
-	public Xacml30PolicyUnmarshaller(
+	public XacmlPolicyUnmarshaller(
 			JAXBContext context, 
 			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms, 
@@ -29,7 +29,7 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 		this.v20mapper = new Xacml20PolicyFromJaxbToObjectModelMapper(functions, decisionAlgorithms);
 	}
 	
-	public Xacml30PolicyUnmarshaller(FunctionProvider functions, 
+	public XacmlPolicyUnmarshaller(FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws Exception
 	{

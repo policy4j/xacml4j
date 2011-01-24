@@ -1,5 +1,8 @@
 package com.artagon.xacml.v30.marshall.jaxb;
 
+import static com.artagon.xacml.v30.types.AnyURIType.ANYURI;
+import static com.artagon.xacml.v30.types.IntegerType.INTEGER;
+import static com.artagon.xacml.v30.types.StringType.STRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -7,11 +10,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBContext;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.w3c.dom.Document;
 
 import com.artagon.xacml.v30.Attribute;
@@ -19,26 +19,20 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v30.marshall.jaxb.RequestContextUnmarshaller;
 import com.artagon.xacml.v30.types.XPathExpressionValue;
-
-import static com.artagon.xacml.v30.types.AnyURIType.ANYURI;
-import static com.artagon.xacml.v30.types.IntegerType.INTEGER;
-import static com.artagon.xacml.v30.types.StringType.STRING;
-
 import com.google.common.collect.Iterables;
 
 
 
 
-public class Xacml20RequestUnmarshallerTest 
+public class Xacml20RequestContextUnmarshallerTest 
 {
 	private RequestUnmarshaller unmarshaller;
 		
 	@Before
 	public void init() throws Exception
 	{
-		this.unmarshaller = new RequestContextUnmarshaller(JAXBContext.newInstance(ObjectFactory.class.getPackage().getName()));
+		this.unmarshaller = new Xacml20RequestContextUnmarshaller();
 	}
 		
 	@Test
