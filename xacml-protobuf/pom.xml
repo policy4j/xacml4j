@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-protobuf</artifactId>
 	<packaging>jar</packaging>
-	<name>OASIS XACML Request/Response Google protobuf serialization</name>
+	<name>Artagon XACML 3.0 Request/Response protobuf marshaling/unmarhalling</name>
 	<dependencies>
 		<dependency>
 		<groupId>${project.groupId}</groupId>

@@ -6,7 +6,7 @@
 	<artifactId>xacml</artifactId>
 	<packaging>pom</packaging>
 	<version>1.2.2-SNAPSHOT</version>
-	<name>OASIS XACML Project</name>
+	<name>Artagon OASIS XACML 3.0 Project</name>
 	<url>http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml
 	</url>
 	<modules>

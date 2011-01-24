@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-core</artifactId>
 	<packaging>jar</packaging>
-	<name>OASIS XACML Core</name>
+	<name>Artagon XACML 3.0 Core Engine Implementation</name>
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>

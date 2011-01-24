@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-test</artifactId>
 	<packaging>jar</packaging>
-	<name>OASIS XACML Conformance Tests</name>
+	<name>Artagon XACML 3.0 conformance tests</name>
 	<dependencies>
 	<dependency>
 			<groupId>${project.groupId}</groupId>
