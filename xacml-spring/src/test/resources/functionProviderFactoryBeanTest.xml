@@ -55,7 +55,6 @@
 			</beans:bean>
 		</beans:constructor-arg>
 	</beans:bean>
-	
 	 
 	<xacml-spring:PolicyDecisionPoint
 		id="pdp" 
