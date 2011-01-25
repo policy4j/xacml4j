@@ -1,26 +1,26 @@
 package com.artagon.xacml.spring.pip;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 
 public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverRegistry>
 {
-	private Collection<AttributeResolverRegistration> attributeResolvers;
+	private Collection<AttributeResolverRegistration> attributeResolverReg;
+	private Collection<ContentResolverRegistration> contentResolverReg;
 	
-	
-	public ResolverRegistryFactoryBean(){
-		this.attributeResolvers = new LinkedList<AttributeResolverRegistration>();
-	}
 	
 	public void setAttributeResolvers(
 			Collection<AttributeResolverRegistration> resolvers){
-		this.attributeResolvers = resolvers;
+		this.attributeResolverReg = resolvers;
+	}
+	
+	public void setContentResolvers(
+			Collection<ContentResolverRegistration> resolvers){
+		this.contentResolverReg = resolvers;
 	}
 	
 	@Override
@@ -28,19 +28,11 @@ public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverReg
 		throws Exception 
 	{
 		ResolverRegistry r = new DefaultResolverRegistry();
-		for(AttributeResolverRegistration areg : attributeResolvers){
-			if(areg.getPolicyId() == null){
-				for(AttributeResolver ar : areg.getResolvers()){
-					r.addResolver(ar);
-				}
-				continue;
-			}
-			if(areg.getPolicyId() != null){
-				for(AttributeResolver ar : areg.getResolvers()){
-					r.addResolver(areg.getPolicyId(), ar);
-				}
-				continue;
-			}
+		for(AttributeResolverRegistration areg : attributeResolverReg){
+			r.addAttributeResolvers(areg.getPolicyId(), areg.getResolvers());
+		}
+		for(ContentResolverRegistration areg : contentResolverReg){
+			r.addContentResolvers(areg.getPolicyId(), areg.getResolvers());
 		}
 		return r;
 	}

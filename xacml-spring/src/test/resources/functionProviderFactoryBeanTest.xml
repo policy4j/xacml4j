@@ -40,8 +40,15 @@
 			<beans:bean class="com.artagon.xacml.spring.pip.ResolverRegistryFactoryBean">
 				<beans:property name="attributeResolvers">
 					<util:list>
-						<beans:bean class="com.artagon.xacml.spring.pip.AnnotatedAttributeResolversRegistration">
-							<beans:constructor-arg ref="testResolver"/>
+						<beans:bean class="com.artagon.xacml.spring.pip.AttributeResolverRegistrationFactoryBean">
+							<beans:property name="resolver" ref="testResolver"/>
+						</beans:bean>
+					</util:list>
+				</beans:property>
+				<beans:property name="contentResolvers">
+					<util:list>
+						<beans:bean class="com.artagon.xacml.spring.pip.ContentResolverRegistrationFactoryBean">
+							<beans:property name="resolver" ref="testResolver"/>
 						</beans:bean>
 					</util:list>
 				</beans:property>
