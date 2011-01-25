@@ -118,6 +118,9 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		 		return null;
 		 	}
 		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
+		 	if(resolver == null){
+		 		return null;
+		 	}
 		 	AttributeResolverDescriptor d = resolver.getDescriptor();
 		 	return (resolver != null && d.canResolve(ref))?resolver:null;
 		}

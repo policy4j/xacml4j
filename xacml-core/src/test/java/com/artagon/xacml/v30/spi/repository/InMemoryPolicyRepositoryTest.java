@@ -4,10 +4,12 @@ package com.artagon.xacml.v30.spi.repository;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -23,9 +25,6 @@ import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
-import com.artagon.xacml.v30.spi.repository.PolicyRepository;
-import com.artagon.xacml.v30.spi.repository.PolicyRepositoryListener;
 
 public class InMemoryPolicyRepositoryTest
 {
@@ -180,8 +179,15 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
 		
-		c.verify();
-		
+		c.verify();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static InputStream getPolicy(String name) throws Exception
+	{
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+		assertNotNull(stream);
+		return  stream;
 	}
 }
 

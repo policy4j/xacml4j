@@ -34,7 +34,8 @@ public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 		this(clazz, new CglibInvocationFactory());
 	}
 	
-	public AnnotiationBasedFunctionProvider(Object instance, InvocationFactory invocationFactory) 
+	public AnnotiationBasedFunctionProvider(Object instance, 
+			InvocationFactory invocationFactory) 
 		throws Exception
 	{
 		Preconditions.checkNotNull(instance);

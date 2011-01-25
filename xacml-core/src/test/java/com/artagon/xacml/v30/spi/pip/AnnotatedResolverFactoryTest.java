@@ -15,6 +15,7 @@ import java.util.Map;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
@@ -152,6 +153,13 @@ public class AnnotatedResolverFactoryTest
 		p.parseAttributeResolver(this, m);		
 	}
 	
+	@Test
+	public void testParseContentResolver() throws Exception
+	{
+		Method m = getMethod(this.getClass(), "resolveContent1");
+		ContentResolver r = p.parseContentResolver(this, m);
+	}
+	
 	
 	@XacmlAttributeResolverDescriptor(id="testId", name="Test", category="subject", issuer="issuer", cacheTTL=30,
 			attributes={
@@ -215,6 +223,13 @@ public class AnnotatedResolverFactoryTest
 	})
 	public Collection<String> resolve5(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
 			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, ResolverContext context)
+	{
+		return null;
+	}
+	
+	@XacmlContentResolverDescriptor(id="testId", name="Test", category="subject", cacheTTL=30)
+	public Node resolveContent1(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1)
 	{
 		return null;
 	}

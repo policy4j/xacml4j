@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Pair;
@@ -23,6 +25,8 @@ import com.google.common.base.Strings;
 
 public class AnnotatedResolverFactory 
 {
+	private  final static Logger log = LoggerFactory.getLogger(AnnotatedResolverFactory.class);
+	
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException
 	{
@@ -31,7 +35,12 @@ public class AnnotatedResolverFactory
 		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
 				XacmlContentResolverDescriptor.class);
 		for(Method m : methods){
-			resolvers.add(parseContentResolver(instance, m));
+			ContentResolver r = parseContentResolver(instance, m);
+			if(log.isDebugEnabled()){
+				log.debug("Parsing content resolver=\"{}\"", 
+						r.getDescriptor().getId());
+			}
+			resolvers.add(r);
 		}
 		return resolvers;
 	}
@@ -44,7 +53,12 @@ public class AnnotatedResolverFactory
 		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(), 
 				XacmlAttributeResolverDescriptor.class);
 		for(Method m : methods){
-			resolvers.add(parseAttributeResolver(instance, m));
+			AttributeResolver r = parseAttributeResolver(instance, m);
+			if(log.isDebugEnabled()){
+				log.debug("Parsing attribute resolver=\"{}\"", 
+						r.getDescriptor().getId());
+			}
+			resolvers.add(r);
 		}
 		return resolvers;
 	}
@@ -97,11 +111,11 @@ public class AnnotatedResolverFactory
 		b.cache(d.cacheTTL());
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());
-		if(!m.getReturnType().isAssignableFrom(Map.class)){
+		if(!m.getReturnType().isAssignableFrom(Node.class)){
 			throw new XacmlSyntaxException(
 					"Attribute resolver method=\"%s\" " +
 					"must return=\"%s\"", m.getName(), 
-					Map.class.getName());
+					Node.class.getName());
 		}
 		ContentResolverDescriptor descriptor = b.build();
 		return new AnnotatedContentResolver(descriptor, 

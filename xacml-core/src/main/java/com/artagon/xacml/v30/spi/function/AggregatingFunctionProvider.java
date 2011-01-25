@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.FunctionSpec;
 import com.google.common.base.Preconditions;
 
@@ -18,6 +21,8 @@ import com.google.common.base.Preconditions;
 public class AggregatingFunctionProvider 
 	implements FunctionProvider
 {
+	private final static Logger log = LoggerFactory.getLogger(AggregatingFunctionProvider.class);
+	
 	private Map<String, FunctionProvider> functions;
 	
 	public AggregatingFunctionProvider(){
@@ -51,13 +56,17 @@ public class AggregatingFunctionProvider
 	public final void add(FunctionProvider provider)
 	{
 		Preconditions.checkNotNull(provider);
-		for(String functionId : provider.getProvidedFunctions()){
+		for(String functionId : provider.getProvidedFunctions())
+		{
 			if(functions.containsKey(functionId)){
 				throw new IllegalArgumentException(String.format("Function provider " +
 						"already contains a function with functionId=\"%s\"", 
 						functionId));
 			}
 			FunctionSpec spec = provider.getFunction(functionId);
+			if(log.isDebugEnabled()){
+				log.debug("Adding function=\"{}\"", functionId);
+			}
 			Preconditions.checkArgument(spec != null);
 			this.functions.put(functionId, provider);
 		}
