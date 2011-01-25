@@ -28,11 +28,15 @@ public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverReg
 		throws Exception 
 	{
 		ResolverRegistry r = new DefaultResolverRegistry();
-		for(AttributeResolverRegistration areg : attributeResolverReg){
-			r.addAttributeResolvers(areg.getPolicyId(), areg.getResolvers());
+		if(attributeResolverReg != null){
+			for(AttributeResolverRegistration areg : attributeResolverReg){
+				r.addAttributeResolvers(areg.getPolicyId(), areg.getResolvers());
+			}
 		}
-		for(ContentResolverRegistration areg : contentResolverReg){
-			r.addContentResolvers(areg.getPolicyId(), areg.getResolvers());
+		if(contentResolverReg != null){
+			for(ContentResolverRegistration areg : contentResolverReg){
+				r.addContentResolvers(areg.getPolicyId(), areg.getResolvers());
+			}
 		}
 		return r;
 	}
