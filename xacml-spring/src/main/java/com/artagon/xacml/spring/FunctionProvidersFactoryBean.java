@@ -19,7 +19,8 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionPr
 		this.providers.add(new DefaultXacml30Functions());
 	}
 	
-	public void setProviders(Collection<FunctionProvider> providers){
+	public void setProviders(Collection<FunctionProvider> providers)
+	{
 		this.providers.addAll(providers);
 	}
 	

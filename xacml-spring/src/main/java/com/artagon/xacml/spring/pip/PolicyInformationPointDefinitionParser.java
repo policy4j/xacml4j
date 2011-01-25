@@ -10,7 +10,7 @@ public class PolicyInformationPointDefinitionParser extends AbstractSingleBeanDe
 	   protected Class<PolicyInformationPointFactoryBean> getBeanClass(Element element) {
 	      return PolicyInformationPointFactoryBean.class; 
 	   }
-
+	   
 	   protected void doParse(Element element, BeanDefinitionBuilder bean) 
 	   {
 	      String attributeResolvers = element.getAttribute("attributeResolvers");
