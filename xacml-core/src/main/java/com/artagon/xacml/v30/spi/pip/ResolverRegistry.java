@@ -34,15 +34,20 @@ public interface ResolverRegistry
 	 * 
 	 * @param r a top level attribute resolver
 	 */
-	void addResolver(AttributeResolver r);
+	void addAttributeResolver(AttributeResolver r);
 	
+	void addAttributeResolvers(Iterable<AttributeResolver> resolvers);
+	void addAttributeResolvers(String policyId, Iterable<AttributeResolver> resolvers);
+	
+	void addContentResolvers(Iterable<ContentResolver> resolvers);
+	void addContentResolvers(String policyId, Iterable<ContentResolver> resolvers);
 	
 	/**
 	 * Adds top level content resolver
 	 * 
 	 * @param r a top level content resolver
 	 */
-	void addResolver(ContentResolver r);
+	void addContentResolver(ContentResolver r);
 	
 	/**
 	 * Adds an attribute resolver bound to the specific
@@ -51,7 +56,7 @@ public interface ResolverRegistry
 	 * @param policyId a policy identifier
 	 * @param r an attribute resolver
 	 */
-	void addResolver(String policyId, AttributeResolver r);
+	void addAttributeResolver(String policyId, AttributeResolver r);
 	
 	/**
 	 * Adds a content resolver bound to the specific
@@ -60,7 +65,7 @@ public interface ResolverRegistry
 	 * @param policyId a policy identifier
 	 * @param r a content resolver
 	 */
-	void addResolver(String policyId, ContentResolver r);
+	void addContentResolver(String policyId, ContentResolver r);
 	
 	/**
 	 * Gets attribute resolve by identifier

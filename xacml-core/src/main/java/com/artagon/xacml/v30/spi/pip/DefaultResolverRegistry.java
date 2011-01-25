@@ -44,10 +44,10 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		this.contentResolversByPolicy = HashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
 		this.contentResolversById = new ConcurrentHashMap<String, ContentResolver>();
-		addResolver(new DefaultEnviromentAttributeResolver());
+		addAttributeResolver(new DefaultEnviromentAttributeResolver());
 	}
 	
-	public void addResolver(AttributeResolver resolver)
+	public void addAttributeResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
 		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
@@ -72,7 +72,7 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		}
 	}
 	
-	public void addResolver(ContentResolver r)
+	public void addContentResolver(ContentResolver r)
 	{
 		Preconditions.checkArgument(r != null);
 		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
@@ -80,22 +80,58 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		contentResolvers.put(d.getCategory(), r);
 	}
 	
-	public void addResolver(String policyId, ContentResolver r)
+	public void addContentResolver(String policyId, ContentResolver r)
 	{
+		if(policyId == null){
+			addContentResolver(r);
+			return;
+		}
 		Preconditions.checkArgument(r != null);
 		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
 		this.contentResolversByPolicy.put(policyId, r);
 		this.contentResolversById.put(policyId, r);
 	}
 	
-	public void addResolver(String policyId, AttributeResolver r)
+	public void addAttributeResolver(String policyId, AttributeResolver r)
 	{
+		if(policyId == null){
+			addAttributeResolver(r);
+			return;
+		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
 		this.attributeResolversByPolicy.put(policyId, r);
 		this.attributeResolversById.put(d.getId(), r);
 	}
 	
+	
+	
+	@Override
+	public void addAttributeResolvers(Iterable<AttributeResolver> resolvers) {
+		addAttributeResolvers(null, resolvers);
+	}
+
+	@Override
+	public void addAttributeResolvers(String policyId,
+			Iterable<AttributeResolver> resolvers) {
+		for(AttributeResolver r : resolvers){
+			addAttributeResolver(policyId, r);
+		}
+	}
+
+	@Override
+	public void addContentResolvers(Iterable<ContentResolver> resolvers) {
+		addContentResolvers(null, resolvers);
+	}
+
+	@Override
+	public void addContentResolvers(String policyId,
+			Iterable<ContentResolver> resolvers) {
+		for(ContentResolver r : resolvers){
+			addContentResolver(policyId, r);
+		}
+	}
+
 	/**
 	 * Finds {@link AttributeResolver} for given evaluation context and
 	 * {@link AttributeResolver} instance
