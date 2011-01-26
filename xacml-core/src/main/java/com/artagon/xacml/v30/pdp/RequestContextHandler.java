@@ -19,6 +19,13 @@ public interface RequestContextHandler
 			PolicyDecisionPointContext context);
 	
 	/**
+	 * Gets list of supported features by this handler
+	 * 
+	 * @return a list of supported features
+	 */
+	Collection<String> getFeatures();
+	
+	/**
 	 * Sets next handler in a chain
 	 * 
 	 * @param handler a next in chain request handler

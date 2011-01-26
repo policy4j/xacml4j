@@ -34,11 +34,14 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 {
 	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesViaXPathExpressionHandler.class);
 	
-	final static String ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
+	final static String FEATURE_ID= "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 	
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
+	MultipleResourcesViaXPathExpressionHandler(){
+		super(FEATURE_ID);
+	}
 	
 	@Override
 	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 

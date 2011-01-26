@@ -15,6 +15,11 @@ import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
+	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
+	
+	public MultipleResourcesViaRequestReferencesHandler() {
+		super(FEATURE_ID);
+	}
 	
 	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
 	{

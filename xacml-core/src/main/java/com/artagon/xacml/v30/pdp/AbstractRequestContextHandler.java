@@ -2,19 +2,29 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public abstract class AbstractRequestContextHandler 
 	implements RequestContextHandler
 {
 	private AtomicReference<RequestContextHandler> next;
-		
-	protected AbstractRequestContextHandler(){
+	private List<String> features;
+	
+	protected AbstractRequestContextHandler(String featureId)
+	{
+		Preconditions.checkNotNull(featureId);
+		this.features = ImmutableList.of(featureId);
 		this.next = new AtomicReference<RequestContextHandler>();
+	}
+	
+	public Collection<String> getFeatures(){
+		return features;
 	}
 	
 	/**

@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 /**
  * A chain of {@link RequestContextHandler}
@@ -17,7 +19,8 @@ import com.google.common.collect.Iterables;
  * 
  * @author Giedrius Trumpickas
  */
-public class RequestContextHandlerChain implements RequestContextHandler
+public class RequestContextHandlerChain 
+	implements RequestContextHandler
 {
 	private List<RequestContextHandler> handlers;
 	
@@ -41,7 +44,16 @@ public class RequestContextHandlerChain implements RequestContextHandler
 			RequestContextHandler ...handlers){
 		this(Arrays.asList(handlers));
 	}
-	
+	  
+	@Override
+	public Collection<String> getFeatures() {
+		Set<String> features = Sets.newLinkedHashSet();
+		for(RequestContextHandler h : handlers){
+			features.addAll(h.getFeatures());
+		}
+		return features;
+	}
+
 	@Override
 	public final Collection<Result> handle(RequestContext req, 
 			PolicyDecisionPointContext context) 

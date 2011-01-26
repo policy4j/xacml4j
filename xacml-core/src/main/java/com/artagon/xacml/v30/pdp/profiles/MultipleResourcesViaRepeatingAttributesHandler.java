@@ -16,6 +16,12 @@ import com.google.common.collect.Sets;
 
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
+	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories";
+	
+	MultipleResourcesViaRepeatingAttributesHandler(){
+		super(FEATURE_ID);
+	}
+	
 	@Override
 	public Collection<Result> handle(RequestContext request, 
 			PolicyDecisionPointContext context) 
