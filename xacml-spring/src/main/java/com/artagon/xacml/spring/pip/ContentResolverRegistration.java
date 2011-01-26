@@ -10,6 +10,15 @@ public class ContentResolverRegistration
 	private String policyId;
 	private Collection<ContentResolver> resolvers;
 	
+	/**
+	 * Creates content resolvers registration
+	 * bound to the specific policy id and all
+	 * child policies
+	 * 
+	 * @param policyId a policy identifier
+	 * @param resolvers a collection of 
+	 * bound content resolvers
+	 */
 	public ContentResolverRegistration(String policyId, 
 			Collection<ContentResolver> resolvers){
 		this.policyId = policyId;
@@ -33,16 +42,16 @@ public class ContentResolverRegistration
 	/**
 	 * Gets policy identifier
 	 * 
-	 * @return
+	 * @return a policy identifier
 	 */
 	public String getPolicyId(){
 		return policyId;
 	}
 	
 	/**
-	 * Gets resolvers
+	 * Gets registered content resolvers
 	 * 
-	 * @return
+	 * @return a collection of registered content resolvers
 	 */
 	public Collection<ContentResolver> getResolvers(){
 		return resolvers;

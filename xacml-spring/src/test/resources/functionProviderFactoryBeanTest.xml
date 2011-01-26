@@ -34,32 +34,21 @@
 	</util:list>
 	
 	<beans:bean id="testResolver" class="com.artagon.xacml.spring.pip.TestResolver"/>
-	
-	<beans:bean id="pip" class="com.artagon.xacml.spring.pip.PolicyInformationPointFactoryBean">
-		<beans:constructor-arg>
-			<beans:bean class="com.artagon.xacml.spring.pip.ResolverRegistryFactoryBean">
-				<beans:property name="attributeResolvers">
-					<util:list>
-						<beans:bean class="com.artagon.xacml.spring.pip.AttributeResolverRegistrationFactoryBean">
-							<beans:property name="resolver" ref="testResolver"/>
-						</beans:bean>
-					</util:list>
-				</beans:property>
-				<beans:property name="contentResolvers">
-					<util:list>
-						<beans:bean class="com.artagon.xacml.spring.pip.ContentResolverRegistrationFactoryBean">
-							<beans:property name="resolver" ref="testResolver"/>
-						</beans:bean>
-					</util:list>
-				</beans:property>
-			</beans:bean>
-		</beans:constructor-arg>
-	</beans:bean>
 	 
-	<xacml-spring:PolicyDecisionPoint
-		id="pdp" 
-		repository="repository" 
-		pip="pip">
+	<xacml-spring:ResolverRegistry id="resolvers">
+		<xacml-spring:AttributeResolvers>
+			<xacml-spring:AttributeResolver ref="testResolver"/>
+			<xacml-spring:AttributeResolver ref="testResolver" policyId="testId"/>
+		</xacml-spring:AttributeResolvers>
+		<xacml-spring:ContentResolvers>
+			<xacml-spring:ContentResolver ref="testResolver"/>
+			<xacml-spring:ContentResolver ref="testResolver" policyId="testId"/>
+		</xacml-spring:ContentResolvers>
+	</xacml-spring:ResolverRegistry>
+	
+	<xacml-spring:PolicyInformationPoint id="pip" resolvers="resolvers"/>
+	
+	<xacml-spring:PolicyDecisionPoint id="pdp" repository="repository" pip="pip">
 		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
 	</xacml-spring:PolicyDecisionPoint>
 	

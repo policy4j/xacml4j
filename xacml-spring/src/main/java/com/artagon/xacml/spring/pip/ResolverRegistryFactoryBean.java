@@ -12,7 +12,6 @@ public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverReg
 	private Collection<AttributeResolverRegistration> attributeResolverReg;
 	private Collection<ContentResolverRegistration> contentResolverReg;
 	
-	
 	public void setAttributeResolvers(
 			Collection<AttributeResolverRegistration> resolvers){
 		this.attributeResolverReg = resolvers;
@@ -30,12 +29,16 @@ public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverReg
 		ResolverRegistry r = new DefaultResolverRegistry();
 		if(attributeResolverReg != null){
 			for(AttributeResolverRegistration areg : attributeResolverReg){
-				r.addAttributeResolvers(areg.getPolicyId(), areg.getResolvers());
+				r.addAttributeResolvers(
+						areg.getPolicyId(), 
+						areg.getResolvers());
 			}
 		}
 		if(contentResolverReg != null){
 			for(ContentResolverRegistration areg : contentResolverReg){
-				r.addContentResolvers(areg.getPolicyId(), areg.getResolvers());
+				r.addContentResolvers(
+						areg.getPolicyId(), 
+						areg.getResolvers());
 			}
 		}
 		return r;

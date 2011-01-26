@@ -38,33 +38,63 @@
 	</xsd:complexType>
 	
 	
+	<!-- Attribute resolvers -->
+	
 	<xsd:element name="AttributeResolver" type="xacml-spring:AttributeResolverType"/>
 	<xsd:complexType name="AttributeResolverType">
-		<xsd:complexContent>
-			<xsd:extension base="beans:identifiedType">
-				<xsd:attribute name="ref" type="xsd:string" use="required" />
-			</xsd:extension>
-		</xsd:complexContent>
+		<xsd:attribute name="ref" type="xsd:string" use="required" />
+		<xsd:attribute name="policyId" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:element name="ContentResolver" type="xacml-spring:ContentResolverType"/>
+	<xsd:complexType name="ContentResolverType">
+		<xsd:attribute name="ref" type="xsd:string" use="required" />
+		<xsd:attribute name="policyId" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	
 	<xsd:element name="AttributeResolvers" type="xacml-spring:AttributeResolversType"/>
 	
 	<xsd:complexType name="AttributeResolversType">
 		<xsd:sequence>
-			<xsd:element ref="xacml-spring:AttributeResolver" maxOccurs="unbounded"/>
+			<xsd:element ref="xacml-spring:AttributeResolver" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	
-	<xsd:element name="PolicyInformationPoint">
+	<xsd:element name="ContentResolvers" type="xacml-spring:ContentResolversType"/>
+	
+	<xsd:complexType name="ContentResolversType">
+		<xsd:sequence>
+			<xsd:element ref="xacml-spring:ContentResolver" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="ResolverRegistry">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
-					<xsd:attribute name="attributeResolvers" type="xsd:string"/>
-					<xsd:attribute name="contentResolvers" type="xsd:string"/>
+					<xsd:sequence>
+						<xsd:choice minOccurs="0" maxOccurs="2">
+							<xsd:element ref="xacml-spring:AttributeResolvers"/>
+							<xsd:element ref="xacml-spring:ContentResolvers"/>
+						</xsd:choice>
+					</xsd:sequence>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
+	
+		
+	<xsd:element name="PolicyInformationPoint">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="resolvers" type="xsd:string" use="required" />
+				    <xsd:attribute name="cache" type="xsd:string" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
 	
 	<xsd:element name="PolicyIdReference" type="xacml:IdReferenceType"/>
 	<xsd:element name="PolicySetIdReference" type="xacml:IdReferenceType"/>

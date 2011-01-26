@@ -6,7 +6,8 @@ import com.artagon.xacml.v30.spi.pip.AnnotatedResolverFactory;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.google.common.base.Preconditions;
 
-public class AttributeResolverRegistrationFactoryBean extends AbstractFactoryBean<AttributeResolverRegistration>
+public class AttributeResolverRegistrationFactoryBean 
+extends AbstractFactoryBean<AttributeResolverRegistration>
 {
 	private String policyId;
 	private Object instance;
@@ -32,7 +33,8 @@ public class AttributeResolverRegistrationFactoryBean extends AbstractFactoryBea
 	@Override
 	protected AttributeResolverRegistration createInstance() throws Exception 
 	{
-		Preconditions.checkState(instance != null);
+		Preconditions.checkState(instance != null, 
+				"Resolver instance can not be null");
 		if(instance instanceof AttributeResolver){
 			return new AttributeResolverRegistration(policyId, (AttributeResolver)instance);
 		}

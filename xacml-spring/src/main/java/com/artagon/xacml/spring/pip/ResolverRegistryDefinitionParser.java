@@ -12,13 +12,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-public class PolicyInformationPointDefinitionParser extends AbstractBeanDefinitionParser
+public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionParser
 {
 		
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
-		BeanDefinitionBuilder pip = BeanDefinitionBuilder.rootBeanDefinition(PolicyInformationPointFactoryBean.class);
 		BeanDefinitionBuilder registry = BeanDefinitionBuilder.rootBeanDefinition(ResolverRegistryFactoryBean.class);
 		List<Element> attributeResolvers = DomUtils.getChildElementsByTagName(element, "AttributeResolvers");
 	    if(attributeResolvers != null && 
@@ -34,7 +33,7 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 	        		 DomUtils.getChildElementsByTagName(contentResolvers.get(0), 
 	        		 "ContentResolver"), registry);
 	    }
-	    return pip.getBeanDefinition();
+	    return registry.getBeanDefinition();
 	}
 	
 	private static BeanDefinitionBuilder parseAttributeResolvers(Element element) 
@@ -89,3 +88,4 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 	    factory.addPropertyValue("contentResolvers", children);
 	}
 }
+
