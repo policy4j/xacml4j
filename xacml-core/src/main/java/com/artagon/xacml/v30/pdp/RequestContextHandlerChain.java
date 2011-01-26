@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.google.common.base.Preconditions;
@@ -22,6 +25,8 @@ import com.google.common.collect.Sets;
 public class RequestContextHandlerChain 
 	implements RequestContextHandler
 {
+	private final static Logger log = LoggerFactory.getLogger(RequestContextHandlerChain.class);
+	
 	private List<RequestContextHandler> handlers;
 	
 	public RequestContextHandlerChain(
@@ -31,6 +36,10 @@ public class RequestContextHandlerChain
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
 		for(RequestContextHandler h : handlers){
+			if(log.isDebugEnabled()){
+				log.debug("Adding handler with fetures=\"{}\"", 
+						h.getFeatures());
+			}
 			if(prev == null){
 				prev = h;
 				continue;
