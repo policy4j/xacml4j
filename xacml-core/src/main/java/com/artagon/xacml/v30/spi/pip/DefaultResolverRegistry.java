@@ -169,9 +169,14 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		}
 		for(AttributeResolver r : found){
 			AttributeResolverDescriptor d = r.getDescriptor();
+			if(log.isDebugEnabled()){
+				log.debug("Trying resolver=\"{}\" " +
+						"to resolve key=\"{}\"", d.getId(), ref);
+			}
 			if(d.canResolve(ref)){
 				if(log.isDebugEnabled()){
-					log.debug("Found PolicyId=\"{}\" scoped resolver", policyId);
+					log.debug("Found PolicyId=\"{}\" " +
+							"scoped resolver", policyId);
 				}
 				return r;
 			}
@@ -204,8 +209,7 @@ public class DefaultResolverRegistry implements ResolverRegistry
 					"scoped for a PolicyId=\"{}\"", 
 					found.size(), policyId);
 		}
-		for(ContentResolver r : found)
-		{
+		for(ContentResolver r : found){
 			ContentResolverDescriptor d = r.getDescriptor();
 			if(d.canResolve(category)){
 				if(log.isDebugEnabled()){
@@ -217,6 +221,12 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		return getContentResolver(context.getParentContext(), category);
 	}
 	
+	/**
+	 * Gets current policy or policy set identifier
+	 * 
+	 * @param context an evaluation context
+	 * @return current policy or policy set identifier
+	 */
 	private String getCurrentIdentifier(EvaluationContext context)
 	{
 		Policy currentPolicy = context.getCurrentPolicy();

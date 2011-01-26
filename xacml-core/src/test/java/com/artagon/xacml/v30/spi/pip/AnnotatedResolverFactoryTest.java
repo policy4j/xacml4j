@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -158,6 +159,7 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolveContent1");
 		ContentResolver r = p.parseContentResolver(this, m);
+		assertTrue(r.getDescriptor().canResolve(AttributeCategories.parse("subject")));
 	}
 	
 	

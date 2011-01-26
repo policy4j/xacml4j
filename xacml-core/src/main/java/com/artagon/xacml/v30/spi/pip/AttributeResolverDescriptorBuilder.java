@@ -27,8 +27,10 @@ public final class AttributeResolverDescriptorBuilder
 	private int preferredCacheTTL = 0;
 	
 	private AttributeResolverDescriptorBuilder(
-			String id, String name, 
-			String issuer, AttributeCategory category){
+			String id, 
+			String name, 
+			String issuer, 
+			AttributeCategory category){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(category);

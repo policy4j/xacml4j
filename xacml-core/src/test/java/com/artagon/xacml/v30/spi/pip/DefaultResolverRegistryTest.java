@@ -6,9 +6,13 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.Policy;
+import com.artagon.xacml.v30.PolicySet;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
@@ -48,6 +52,48 @@ public class DefaultResolverRegistryTest
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
+		control.verify();
+	}
+	
+	@Test
+	public void testAddResolverForPolicyIdCurrentPolicyHasMatchingResolver()
+	{
+		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
+		assertTrue(d1.canResolve(key));
+		expect(r1.getDescriptor()).andReturn(d1);
+		Policy p = control.createMock(Policy.class);
+		expect(context.getCurrentPolicy()).andReturn(p);
+		expect(p.getId()).andReturn("testId");
+		expect(r1.getDescriptor()).andReturn(d1);
+		control.replay();
+		r.addAttributeResolver("testId", r1);
+		AttributeResolver resolver = r.getAttributeResolver(context, key);
+		assertNotNull(resolver);
+		assertSame(r1, resolver);
+		control.verify();
+	}
+	
+	@Test
+	public void testAddResolverForPolicyIdSecondLevelPolicyHasResolver()
+	{
+		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
+		assertTrue(d1.canResolve(key));
+		expect(r1.getDescriptor()).andReturn(d1);
+		Policy p1 = control.createMock(Policy.class);
+		expect(context.getCurrentPolicy()).andReturn(p1);
+		expect(p1.getId()).andReturn("testIdP1");
+		EvaluationContext context1 = control.createMock(EvaluationContext.class);
+		expect(context.getParentContext()).andReturn(context1);
+		PolicySet p2 = control.createMock(PolicySet.class);
+		expect(context1.getCurrentPolicy()).andReturn(null);
+		expect(context1.getCurrentPolicySet()).andReturn(p2);
+		expect(p2.getId()).andReturn("testIdP2");
+		expect(r1.getDescriptor()).andReturn(d1);
+		control.replay();
+		r.addAttributeResolver("testIdP2", r1);
+		AttributeResolver resolver = r.getAttributeResolver(context, key);
+		assertNotNull(resolver);
+		assertSame(r1, resolver);
 		control.verify();
 	}
 }

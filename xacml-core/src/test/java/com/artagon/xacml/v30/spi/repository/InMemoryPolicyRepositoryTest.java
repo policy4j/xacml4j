@@ -181,13 +181,5 @@ public class InMemoryPolicyRepositoryTest
 		
 		c.verify();	
 	}
-	
-	@SuppressWarnings("unchecked")
-	private static InputStream getPolicy(String name) throws Exception
-	{
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		assertNotNull(stream);
-		return  stream;
-	}
 }
 
