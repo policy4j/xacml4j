@@ -56,6 +56,46 @@ public class DefaultResolverRegistryTest
 	}
 	
 	@Test
+	public void testAddRootResolverAndTheSamePolicyBoundResolverAndResolveWithThePolicyScoped()
+	{
+		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
+		expect(r1.getDescriptor()).andReturn(d1);
+		expect(r1.getDescriptor()).andReturn(d1);
+		Policy p = control.createMock(Policy.class);
+		expect(context.getCurrentPolicy()).andReturn(p);
+		expect(p.getId()).andReturn("testId1");
+		expect(context.getParentContext()).andReturn(null);
+		expect(r1.getDescriptor()).andReturn(d1);
+		control.replay();
+		r.addAttributeResolver(r1);
+		r.addAttributeResolver("testId", r1);
+		AttributeResolver resolver = r.getAttributeResolver(context, key);
+		assertNotNull(resolver);
+		assertSame(r1, resolver);
+		control.verify();
+	}
+	
+	@Test
+	public void testAddRootResolverAndTheSamePolicyBoundResolverAndResolveWithTheRoot()
+	{
+		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
+		expect(r1.getDescriptor()).andReturn(d1);
+		expect(r1.getDescriptor()).andReturn(d1);
+		Policy p = control.createMock(Policy.class);
+		expect(context.getCurrentPolicy()).andReturn(p);
+		expect(p.getId()).andReturn("AAAAA");
+		expect(context.getParentContext()).andReturn(null);
+		expect(r1.getDescriptor()).andReturn(d1);
+		control.replay();
+		r.addAttributeResolver(r1);
+		r.addAttributeResolver("testId", r1);
+		AttributeResolver resolver = r.getAttributeResolver(context, key);
+		assertNotNull(resolver);
+		assertSame(r1, resolver);
+		control.verify();
+	}
+	
+	@Test
 	public void testAddResolverForPolicyIdCurrentPolicyHasMatchingResolver()
 	{
 		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);

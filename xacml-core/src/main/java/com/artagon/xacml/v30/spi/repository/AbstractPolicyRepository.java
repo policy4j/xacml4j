@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.artagon.xacml.v30.Apply;
 import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.FunctionReference;
 import com.artagon.xacml.v30.Policy;
 import com.artagon.xacml.v30.PolicySet;
@@ -250,6 +251,11 @@ public abstract class AbstractPolicyRepository
 		return r;
 	}
 	
+	/**
+	 * A {@Link PolicyVisitor} implementation
+	 * to validate function reference in a given
+	 * policy or policy set
+	 */
 	private class FunctionValidatingVisitor 
 		extends PolicyVisitorSupport
 	{
@@ -267,6 +273,11 @@ public abstract class AbstractPolicyRepository
 		
 	}
 	
+	/**
+	 * A {@Link PolicyVisitor} implementation
+	 * to validate {@link DecisionCombiningAlgorithm} instances 
+	 * in a given policy or policy set
+	 */
 	private class DecisionAlgorithmValidatingVisitor 
 		extends PolicyVisitorSupport
 	{

@@ -27,7 +27,6 @@ public class DefaultPolicyInformationPoint
 	public DefaultPolicyInformationPoint(ResolverRegistry resolvers, 
 			ResolverResultCacheProvider cache)
 	{
-		Preconditions.checkNotNull(cache);
 		Preconditions.checkNotNull(resolvers);
 		this.cache = cache;
 		this.registry = resolvers;

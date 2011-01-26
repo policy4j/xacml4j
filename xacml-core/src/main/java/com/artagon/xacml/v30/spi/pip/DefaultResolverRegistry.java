@@ -158,7 +158,16 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		 		return null;
 		 	}
 		 	AttributeResolverDescriptor d = resolver.getDescriptor();
-		 	return (resolver != null && d.canResolve(ref))?resolver:null;
+		 	if(resolver != null 
+		 			&& d.canResolve(ref))
+		 	{
+				if(log.isDebugEnabled()){
+					log.debug("Found root resolver=\"{}\" " +
+							"for a reference=\"{}\"", d.getId(), ref);
+				}
+		 		return resolver;
+		 	}
+		 	return null;
 		}
 		String policyId = getCurrentIdentifier(context);
 		Collection<AttributeResolver> found = attributeResolversByPolicy.get(policyId);
@@ -170,13 +179,14 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		for(AttributeResolver r : found){
 			AttributeResolverDescriptor d = r.getDescriptor();
 			if(log.isDebugEnabled()){
-				log.debug("Trying resolver=\"{}\" " +
-						"to resolve key=\"{}\"", d.getId(), ref);
+				log.debug("Trying to match resolver=\"{}\" " +
+						"to resolve reference=\"{}\"", d.getId(), ref);
 			}
 			if(d.canResolve(ref)){
 				if(log.isDebugEnabled()){
 					log.debug("Found PolicyId=\"{}\" " +
-							"scoped resolver", policyId);
+							"scoped resolver for reference=\"{}\"", 
+							policyId, ref);
 				}
 				return r;
 			}

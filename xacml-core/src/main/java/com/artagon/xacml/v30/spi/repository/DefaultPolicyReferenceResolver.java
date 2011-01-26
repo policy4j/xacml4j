@@ -120,7 +120,12 @@ public class DefaultPolicyReferenceResolver
 		policySetIDRefCache.clear();
 	}
 
-	
+	/**
+	 * Removes a cached references pointing
+	 * to the given policy
+	 * 
+	 * @param p a policy
+	 */
 	private void removeCachedReferences(Policy p)
 	{
 		Iterator<PolicyIDReference> it = policyIDRefCache.keySet().iterator();
@@ -135,6 +140,12 @@ public class DefaultPolicyReferenceResolver
 		}
 	}
 	
+	/**
+	 * Removes a cached references pointing
+	 * to the given policy set
+	 * 
+	 * @param p a policy set
+	 */
 	private void removeCachedReferences(PolicySet p){
 		Iterator<PolicySetIDReference> it = policySetIDRefCache.keySet().iterator();
 		while(it.hasNext()){
