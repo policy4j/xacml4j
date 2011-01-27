@@ -36,6 +36,7 @@ public class PolicyInformationPointFactoryBean
 	protected PolicyInformationPoint createInstance() 
 		throws Exception 
 	{
+		Preconditions.checkState(registry != null);
 		return new DefaultPolicyInformationPoint(registry, cache);
 	}
 }

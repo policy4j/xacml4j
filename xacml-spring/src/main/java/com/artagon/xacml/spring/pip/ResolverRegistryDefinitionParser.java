@@ -19,20 +19,14 @@ public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionPars
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
 		BeanDefinitionBuilder registry = BeanDefinitionBuilder.rootBeanDefinition(ResolverRegistryFactoryBean.class);
-		List<Element> attributeResolvers = DomUtils.getChildElementsByTagName(element, "AttributeResolvers");
-	    if(attributeResolvers != null && 
-	    		attributeResolvers.size() == 1) {
-	         parseAttributeResolvers(
-	        		 DomUtils.getChildElementsByTagName(attributeResolvers.get(0), 
+		
+		parseAttributeResolvers(
+	        		 DomUtils.getChildElementsByTagName(element, 
 	        		 "AttributeResolver"), registry);
-	    }
-	    List<Element> contentResolvers = DomUtils.getChildElementsByTagName(element, "ContentResolvers");
-	    if(contentResolvers != null && 
-	    		attributeResolvers.size() == 1) {
-	         parseContentResolvers(
-	        		 DomUtils.getChildElementsByTagName(contentResolvers.get(0), 
+		parseContentResolvers(
+	        		 DomUtils.getChildElementsByTagName(element, 
 	        		 "ContentResolver"), registry);
-	    }
+	   
 	    return registry.getBeanDefinition();
 	}
 	

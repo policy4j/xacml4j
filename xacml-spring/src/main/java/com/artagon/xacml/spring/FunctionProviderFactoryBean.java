@@ -30,6 +30,9 @@ public class FunctionProviderFactoryBean extends AbstractFactoryBean<FunctionPro
 		Preconditions.checkState((providerClass == null ^ providerInstance == null), 
 				"Either fucnction provider class or " +
 				"instance reference needs to be specified not both");
+		if(providerInstance instanceof FunctionProvider){
+			return (FunctionProvider)providerInstance;
+		}
 		return (providerClass != null)?
 				new AnnotiationBasedFunctionProvider(providerClass):
 					new AnnotiationBasedFunctionProvider(providerInstance);

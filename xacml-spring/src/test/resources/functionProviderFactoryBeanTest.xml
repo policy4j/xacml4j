@@ -30,20 +30,12 @@
 		resources="resources" 
 		extensionFunctions="extensionFunctions"/>
 	
-	<util:list id="attributeResolvers">
-	</util:list>
-	
 	<beans:bean id="testResolver" class="com.artagon.xacml.spring.pip.TestResolver"/>
 	 
 	<xacml-spring:ResolverRegistry id="resolvers">
-		<xacml-spring:AttributeResolvers>
-			<xacml-spring:AttributeResolver ref="testResolver"/>
-			<xacml-spring:AttributeResolver ref="testResolver" policyId="testId"/>
-		</xacml-spring:AttributeResolvers>
-		<xacml-spring:ContentResolvers>
-			<xacml-spring:ContentResolver ref="testResolver"/>
-			<xacml-spring:ContentResolver ref="testResolver" policyId="testId"/>
-		</xacml-spring:ContentResolvers>
+		<xacml-spring:AttributeResolver ref="testResolver"/>
+		<xacml-spring:AttributeResolver ref="testResolver" policyId="testId"/>
+		<xacml-spring:ContentResolver ref="testResolver"/>
 	</xacml-spring:ResolverRegistry>
 	
 	<xacml-spring:PolicyInformationPoint id="pip" resolvers="resolvers"/>
