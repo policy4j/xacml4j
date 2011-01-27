@@ -77,6 +77,10 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		Preconditions.checkArgument(r != null);
 		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
 		ContentResolverDescriptor d = r.getDescriptor();
+		if(log.isDebugEnabled()){
+			log.debug("Adding root content " +
+					"resolver=\"{}\" for category=\"{}\"", d.getId(), d.getCategory());
+		}
 		contentResolvers.put(d.getCategory(), r);
 	}
 	
@@ -86,8 +90,14 @@ public class DefaultResolverRegistry implements ResolverRegistry
 			addContentResolver(r);
 			return;
 		}
+		ContentResolverDescriptor d = r.getDescriptor();
 		Preconditions.checkArgument(r != null);
-		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
+		Preconditions.checkState(!contentResolversById.containsKey(d.getId()));
+		if(log.isDebugEnabled()){
+			log.debug("Adding policyId=\"{}\" content " +
+					"resolver=\"{}\" for category=\"{}\"", 
+					new Object[]{policyId, d.getId(), d.getCategory()});
+		}
 		this.contentResolversByPolicy.put(policyId, r);
 		this.contentResolversById.put(policyId, r);
 	}

@@ -25,7 +25,8 @@ public class FunctionReference extends XacmlObject implements Expression
 	 * @param spec a function specification
 	 * @param returnType a function return type
 	 */
-	public FunctionReference(FunctionSpec spec){
+	public FunctionReference(FunctionSpec spec)
+	{
 		Preconditions.checkNotNull(spec);
 		this.spec = spec;
 		this.returnType = spec.resolveReturnType();
