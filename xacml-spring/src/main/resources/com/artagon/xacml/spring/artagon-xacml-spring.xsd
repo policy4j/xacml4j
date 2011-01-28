@@ -17,15 +17,13 @@
 		schemaLocation="http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"/>
 	
 
-	<xsd:element name="FunctionProvider">
-		<xsd:complexType>
-			<xsd:attribute name="class" type="xsd:string" use="optional" />
-			<xsd:attribute name="ref" type="xsd:string" use="optional" />
-		</xsd:complexType>
-	</xsd:element>
+	<xsd:element name="FunctionProvider" type="xacml-spring:FunctionProviderType"/>
+	<xsd:complexType name="FunctionProviderType">
+		<xsd:attribute name="class" type="xsd:string" use="optional" />
+		<xsd:attribute name="ref" type="xsd:string" use="optional" />
+	</xsd:complexType>
 
 	<xsd:element name="FunctionProviders" type="xacml-spring:FunctionProvidersType"/>	
-
 	<xsd:complexType name="FunctionProvidersType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
@@ -37,9 +35,25 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	
+	<xsd:element name="DecisionCombingingAlgorithmProvider" type="xacml-spring:FunctionProviderType"/>
+	<xsd:complexType name="DecisionCombingingAlgorithmProviderType">
+		<xsd:attribute name="class" type="xsd:string" use="optional" />
+		<xsd:attribute name="ref" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+	<xsd:element name="DecisionCombingingAlgorithmProviders" type="xacml-spring:DecisionCombingingAlgorithmProvidersType"/>
+	<xsd:complexType name="DecisionCombingingAlgorithmProvidersType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:element ref="xacml-spring:DecisionCombingingAlgorithmProviders" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	
-	<!-- Attribute resolvers -->
 	
+	<!-- Attribute resolvers -->	
 	<xsd:element name="AttributeResolver" type="xacml-spring:AttributeResolverType"/>
 	<xsd:complexType name="AttributeResolverType">
 		<xsd:attribute name="ref" type="xsd:string" use="required" />
@@ -111,7 +125,7 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	
-	<xsd:element name="RequestContextHandlers">
+	<xsd:element name="RequestContextHandlerChain">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">

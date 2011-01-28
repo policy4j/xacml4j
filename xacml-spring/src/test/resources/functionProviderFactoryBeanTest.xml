@@ -40,7 +40,14 @@
 	
 	<xacml-spring:PolicyInformationPoint id="pip" resolvers="resolvers"/>
 	
-	<xacml-spring:PolicyDecisionPoint id="pdp" repository="repository" pip="pip">
+	<bean id="multipleResourcesHandler" class="com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler"/>
+	
+	<xacml-spring:RequestContextHandlerChain id="handlers">
+		<xacml-spring:RequestContextHandler ref="multipleResourcesHandler"/>
+	</xacml-spring:RequestContextHandlerChain>	
+	
+	
+	<xacml-spring:PolicyDecisionPoint id="pdp" repository="repository" pip="pip" handlers="handlers">
 		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
 	</xacml-spring:PolicyDecisionPoint>
 	

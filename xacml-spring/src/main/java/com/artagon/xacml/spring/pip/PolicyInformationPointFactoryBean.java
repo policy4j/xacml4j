@@ -6,19 +6,19 @@ import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
-import com.artagon.xacml.v30.spi.pip.ResolverResultCacheProvider;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPointCacheProvider;
 import com.google.common.base.Preconditions;
 
 public class PolicyInformationPointFactoryBean 
 	extends AbstractFactoryBean<PolicyInformationPoint>
 { 
 	private ResolverRegistry registry;
-	private ResolverResultCacheProvider cache;
+	private PolicyInformationPointCacheProvider cache;
 	
 	public PolicyInformationPointFactoryBean(){
 		this.registry = new DefaultResolverRegistry();
 	}
-	public void setCache(ResolverResultCacheProvider cache){
+	public void setCache(PolicyInformationPointCacheProvider cache){
 		this.cache = cache;
 	}
 	

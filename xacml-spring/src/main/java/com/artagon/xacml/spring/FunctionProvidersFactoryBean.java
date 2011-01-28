@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v30.spi.function.AggregatingFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.google.common.base.Preconditions;
 
 public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionProvider>
 {
@@ -19,8 +20,8 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionPr
 		this.providers.add(new DefaultXacml30Functions());
 	}
 	
-	public void setProviders(Collection<FunctionProvider> providers)
-	{
+	public void setProviders(Collection<FunctionProvider> providers){
+		Preconditions.checkNotNull(providers);
 		this.providers.addAll(providers);
 	}
 	
