@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.spi.pip;
 
 import org.w3c.dom.Node;
 
-public interface ResolverResultCacheProvider 
+public interface PolicyInformationPointCacheProvider 
 {
 	/**
 	 * Gets content from the cache for a give resolver

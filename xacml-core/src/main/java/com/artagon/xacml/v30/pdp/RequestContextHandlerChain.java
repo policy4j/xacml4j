@@ -37,9 +37,10 @@ public class RequestContextHandlerChain
 		RequestContextHandler prev = null;
 		for(RequestContextHandler h : handlers){
 			if(log.isDebugEnabled()){
-				log.debug("Adding handler with fetures=\"{}\"", 
+				log.debug("Adding handler " +
+						"with fetures=\"{}\"", 
 						h.getFeatures());
-			}
+			}	
 			if(prev == null){
 				prev = h;
 				continue;

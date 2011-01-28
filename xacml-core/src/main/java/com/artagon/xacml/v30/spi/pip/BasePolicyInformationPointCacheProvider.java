@@ -5,7 +5,7 @@ import java.util.List;
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
 
-public class BaseResolverResultCacheProvider implements ResolverResultCacheProvider
+public class BasePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider
 {
 
 	@Override

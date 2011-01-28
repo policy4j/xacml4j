@@ -21,11 +21,11 @@ public class DefaultPolicyInformationPoint
 {	
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
-	private ResolverResultCacheProvider cache;
+	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
 	
 	public DefaultPolicyInformationPoint(ResolverRegistry resolvers, 
-			ResolverResultCacheProvider cache)
+			PolicyInformationPointCacheProvider cache)
 	{
 		Preconditions.checkNotNull(resolvers);
 		this.cache = cache;
@@ -33,7 +33,7 @@ public class DefaultPolicyInformationPoint
 	}
 	
 	public DefaultPolicyInformationPoint(ResolverRegistry resolvers){
-		this(resolvers, new NoCacheResolverResultCacheProvider());
+		this(resolvers, new NoCachePolicyInformationPointCacheProvider());
 	}
 
 	@Override

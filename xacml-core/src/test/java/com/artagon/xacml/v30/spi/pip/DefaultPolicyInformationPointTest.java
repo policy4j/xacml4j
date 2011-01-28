@@ -26,7 +26,7 @@ import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.ResolverContext;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
-import com.artagon.xacml.v30.spi.pip.ResolverResultCacheProvider;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPointCacheProvider;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.ImmutableMap;
@@ -37,7 +37,7 @@ public class DefaultPolicyInformationPointTest
 	
 	private ResolverRegistry registry;
 	private AttributeResolver attributeResolver;
-	private ResolverResultCacheProvider cache;
+	private PolicyInformationPointCacheProvider cache;
 	private EvaluationContext context;
 	
 	private AttributeResolverDescriptor descriptor;
@@ -49,7 +49,7 @@ public class DefaultPolicyInformationPointTest
 	public void init()
 	{
 		this.control = createControl();
-		this.cache = control.createMock(ResolverResultCacheProvider.class);
+		this.cache = control.createMock(PolicyInformationPointCacheProvider.class);
 		this.registry = control.createMock(ResolverRegistry.class);
 		this.attributeResolver = control.createMock(AttributeResolver.class);
 		this.context = control.createMock(EvaluationContext.class);
