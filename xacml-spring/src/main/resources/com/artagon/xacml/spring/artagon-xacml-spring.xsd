@@ -5,7 +5,6 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
-	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
 	targetNamespace="http://www.artagon.com/schema/xacml/spring"
 	elementFormDefault="qualified" 
 	attributeFormDefault="unqualified">
@@ -88,7 +87,6 @@
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-	
 	
 	<xsd:complexType name="IdReferenceType">
 		<xsd:simpleContent>
