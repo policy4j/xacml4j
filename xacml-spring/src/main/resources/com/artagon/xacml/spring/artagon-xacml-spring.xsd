@@ -11,11 +11,7 @@
 	attributeFormDefault="unqualified">
 
 	<xsd:import namespace="http://www.springframework.org/schema/beans"
-		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
-	
-	<xsd:import namespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-		schemaLocation="http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"/>
-	
+		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />	
 
 	<xsd:element name="FunctionProvider" type="xacml-spring:FunctionProviderType"/>
 	<xsd:complexType name="FunctionProviderType">
@@ -94,8 +90,25 @@
 	</xsd:element>
 	
 	
-	<xsd:element name="PolicyIdReference" type="xacml:IdReferenceType"/>
-	<xsd:element name="PolicySetIdReference" type="xacml:IdReferenceType"/>
+	<xs:complexType name="IdReferenceType">
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI">
+				<xs:attribute name="Version" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xs:attribute name="EarliestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xs:attribute name="LatestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="VersionMatchType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+	<xsd:element name="PolicyIdReference" type="xacml-spring:IdReferenceType"/>
+	<xsd:element name="PolicySetIdReference" type="xacml-spring:IdReferenceType"/>
 	
 	<xsd:complexType name="PolicyRepositoryBaseType">
 		<xsd:complexContent>
