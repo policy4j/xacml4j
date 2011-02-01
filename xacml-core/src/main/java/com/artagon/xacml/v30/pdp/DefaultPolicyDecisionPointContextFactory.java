@@ -3,6 +3,10 @@ package com.artagon.xacml.v30.pdp;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
+
+import org.slf4j.Logger;
+
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationContextHandler;
@@ -25,6 +29,8 @@ import com.google.common.base.Preconditions;
 public class DefaultPolicyDecisionPointContextFactory 
 	implements PolicyDecisionPointContextFactory
 {
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPointContextFactory.class);
+	
 	private PolicyInformationPoint pip;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
@@ -57,6 +63,13 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.policyDomain = policyDomain;
 		this.decisionAuditor = auditor;
 		this.decisionCache = cache;
+		for(RequestContextHandler h : handlers){
+			if(log.isDebugEnabled()){
+				log.debug("Adding handler " +
+						"with fetures=\"{}\"", 
+						h.getFeatures());
+			}
+		}
 		this.requestHandlers = new RequestContextHandlerChain(handlers);
 	}
 	

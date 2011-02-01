@@ -25,8 +25,6 @@ import com.google.common.collect.Sets;
 public class RequestContextHandlerChain 
 	implements RequestContextHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(RequestContextHandlerChain.class);
-	
 	private List<RequestContextHandler> handlers;
 	
 	public RequestContextHandlerChain(
@@ -35,12 +33,7 @@ public class RequestContextHandlerChain
 		this.handlers = new LinkedList<RequestContextHandler>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
-		for(RequestContextHandler h : handlers){
-			if(log.isDebugEnabled()){
-				log.debug("Adding handler " +
-						"with fetures=\"{}\"", 
-						h.getFeatures());
-			}	
+		for(RequestContextHandler h : handlers){	
 			if(prev == null){
 				prev = h;
 				continue;
