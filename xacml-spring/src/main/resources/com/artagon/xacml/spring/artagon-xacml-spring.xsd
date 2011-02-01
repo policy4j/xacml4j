@@ -90,21 +90,21 @@
 	</xsd:element>
 	
 	
-	<xs:complexType name="IdReferenceType">
-		<xs:simpleContent>
-			<xs:extension base="xs:anyURI">
-				<xs:attribute name="Version" type="xacml-spring:VersionMatchType" use="optional"/>
-				<xs:attribute name="EarliestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
-				<xs:attribute name="LatestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
+	<xsd:complexType name="IdReferenceType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:anyURI">
+				<xsd:attribute name="Version" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xsd:attribute name="EarliestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+				<xsd:attribute name="LatestVersion" type="xacml-spring:VersionMatchType" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
 
-	<xs:simpleType name="VersionMatchType">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
-		</xs:restriction>
-	</xs:simpleType>
+	<xsd:simpleType name="VersionMatchType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	
 	
 	<xsd:element name="PolicyIdReference" type="xacml-spring:IdReferenceType"/>
