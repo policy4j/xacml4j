@@ -35,7 +35,6 @@ public class PolicyDecisionPointFactoryBean extends
 	
 	public PolicyDecisionPointFactoryBean(){
 		this.handlers = new LinkedList<RequestContextHandler>();
-		this.handlers.add(new MultipleResourcesHandler());
 		this.xpathProvider = new DefaultXPathProvider();
 		this.decisionAuditor = new NoAuditPolicyDecisionPointAuditor();
 		this.decisionCache = new NoCachePolicyDecisionCache();
