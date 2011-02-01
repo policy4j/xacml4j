@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.BagOfAttributeValues;
+
 public class BooleanTypeTest 
 {
 	
@@ -66,5 +68,17 @@ public class BooleanTypeTest
 		BooleanValue v4 = t1.create(Boolean.FALSE);
 		assertEquals(v1, v3);
 		assertEquals(v2, v4);
+	}
+	
+	@Test
+	public void testBagOf()
+	{
+		BagOfAttributeValues b1 = t1.bagOf("true", "false");
+		BagOfAttributeValues b2 = t1.bagOf(true, false);
+		assertEquals(2, b1.size());
+		assertEquals(b1, b2);
+		assertTrue(b1.contains(t1.create(true)));
+		assertTrue(b1.contains(t1.create(false)));
+		
 	}
 }
