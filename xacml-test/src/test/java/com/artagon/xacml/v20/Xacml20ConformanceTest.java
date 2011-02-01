@@ -55,7 +55,7 @@ public class Xacml20ConformanceTest
 		Collection<AttributeResolver> all = resolver.getAttributeResolvers(new Xacml20ConformanceAttributeResolver());
 		
 		for(AttributeResolver r : all){
-			resolvers.addResolver(r);
+			resolvers.addAttributeResolver(r);
 		}
 		pip = new DefaultPolicyInformationPoint(resolvers);
 		

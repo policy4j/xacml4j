@@ -4,6 +4,9 @@ import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.eva
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
@@ -11,6 +14,8 @@ import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
 class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
+	private final static Logger log = LoggerFactory.getLogger(FirstApplicable.class);
+	
 	protected FirstApplicable(String algorithmId) {
 		super(algorithmId);
 	}
@@ -21,6 +26,9 @@ class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgor
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfApplicable(context, d);
+			if(log.isDebugEnabled()){
+				log.debug("Decision=\"{}\" evaluation result=\"{}\"", d, decision);
+			}
 			if(decision == Decision.DENY){
 				return decision;
 			}

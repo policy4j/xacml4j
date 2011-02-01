@@ -9,18 +9,18 @@ import net.sf.ehcache.Element;
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;
-import com.artagon.xacml.v30.spi.pip.BaseResolverResultCacheProvider;
+import com.artagon.xacml.v30.spi.pip.BasePolicyInformationPointCacheProvider;
 import com.artagon.xacml.v30.spi.pip.Content;
 import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.ResolverDescriptor;
 import com.google.common.base.Preconditions;
 
-public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvider
+public class PolicyInformationPointEHcacheProvider extends BasePolicyInformationPointCacheProvider
 {
 	private Cache attributesCache;
 	private Cache contentCache;
 	
-	public ResolverResultsEhcacheProvider(
+	public PolicyInformationPointEHcacheProvider(
 			Cache attributesCache,
 			Cache contentCache){
 		Preconditions.checkNotNull(attributesCache);
@@ -83,6 +83,6 @@ public class ResolverResultsEhcacheProvider extends BaseResolverResultCacheProvi
 	
 	private Object createKey(ResolverDescriptor d, List<BagOfAttributeValues> keys)
 	{
-		return new ResolverResultCacheKey(d.getId(), keys);
+		return new CacheKey(d.getId(), keys);
 	}
 }

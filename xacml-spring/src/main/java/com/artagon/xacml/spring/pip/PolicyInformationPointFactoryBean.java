@@ -4,6 +4,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.NoCachePolicyInformationPointCacheProvider;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointCacheProvider;
@@ -17,8 +18,10 @@ public class PolicyInformationPointFactoryBean
 	
 	public PolicyInformationPointFactoryBean(){
 		this.registry = new DefaultResolverRegistry();
+		this.cache = new NoCachePolicyInformationPointCacheProvider();
 	}
 	public void setCache(PolicyInformationPointCacheProvider cache){
+		Preconditions.checkNotNull(cache);
 		this.cache = cache;
 	}
 	
