@@ -1,9 +1,8 @@
 package com.artagon.xacml.spring.pip;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.BagOfAttributeValues;
@@ -12,6 +11,7 @@ import com.artagon.xacml.v30.spi.pip.XacmlAttributeDesignator;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.XacmlContentResolverDescriptor;
 
+@Ignore
 public class TestResolver 
 {
 	@XacmlAttributeResolverDescriptor(id="testId", name="Test", category="subject", issuer="issuer", cacheTTL=30,
