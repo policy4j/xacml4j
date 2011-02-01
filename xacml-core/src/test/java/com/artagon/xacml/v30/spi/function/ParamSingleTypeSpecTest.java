@@ -14,7 +14,6 @@ import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.BagOfAttributeValuesType;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionParamSpec;
-import com.artagon.xacml.v30.spi.function.FunctionParamValueTypeSpec;
 import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.StringType;
 

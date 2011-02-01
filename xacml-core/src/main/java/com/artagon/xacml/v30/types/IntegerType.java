@@ -78,7 +78,12 @@ public enum IntegerType implements AttributeValueType
 	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
 		return bagType.create(values);
 	}
-
+	
+	@Override
+	public BagOfAttributeValues bagOf(Object... values) {
+		return bagType.bagOf(values);
+	}
+	
 	@Override
 	public BagOfAttributeValues emptyBag() {
 		return bagType.createEmpty();

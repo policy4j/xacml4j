@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.policy.function.ArithmeticFunctions;
 import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerType;
 

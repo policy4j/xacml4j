@@ -16,11 +16,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 
@@ -57,6 +52,16 @@ public class BagOfAttributesTest
 	{
 		assertEquals(STRING.emptyBag(), STRING.emptyBag());
 		assertEquals(STRING.emptyBag(), STRING.emptyBag());
+	}
+	
+	@Test
+	public void testCreateBagFromValues()
+	{
+		BagOfAttributeValues b = StringType.STRING.bagOf("1", "aaa", "BB");
+		assertTrue(b.contains(StringType.STRING.create("1")));
+		assertTrue(b.contains(StringType.STRING.create("aaa")));
+		assertTrue(b.contains(StringType.STRING.create("BB")));
+		assertFalse(b.contains(StringType.STRING.create("aaaa")));
 	}
 	
 	@Test
@@ -157,17 +162,9 @@ public class BagOfAttributesTest
 	@Test
 	public void testIntersection()
 	{
-		BagOfAttributeValues bag0 = intType.bagOf(
-				intType.create(1),
-				intType.create(2),
-				intType.create(3),
-				intType.create(6));
+		BagOfAttributeValues bag0 = intType.bagOf(1, 2, 3, 6);
 		
-		BagOfAttributeValues bag1 = intType.bagOf(
-				intType.create(2),
-				intType.create(2),
-				intType.create(7),
-				intType.create(6));
+		BagOfAttributeValues bag1 = intType.bagOf(2, 2, 7, 6);
 		
 		BagOfAttributeValues bag3 = bag0.intersection(bag1);
 		assertTrue(bag3.contains(INTEGER.create(2)));

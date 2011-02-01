@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.policy.function.SpecialMatchFunctions;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;

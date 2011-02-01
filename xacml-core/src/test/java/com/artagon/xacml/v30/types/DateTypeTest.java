@@ -7,9 +7,6 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.types.DateType;
-import com.artagon.xacml.v30.types.DateValue;
-
 public class DateTypeTest 
 {
 	private DateType t1;

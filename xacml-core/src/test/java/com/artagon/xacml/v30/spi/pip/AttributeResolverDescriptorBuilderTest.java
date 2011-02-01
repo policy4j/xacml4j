@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
-import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 

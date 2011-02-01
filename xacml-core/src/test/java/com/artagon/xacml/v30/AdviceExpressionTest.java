@@ -15,15 +15,6 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Advice;
-import com.artagon.xacml.v30.AdviceExpression;
-import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeAssignmentExpression;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.Effect;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.XacmlException;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 

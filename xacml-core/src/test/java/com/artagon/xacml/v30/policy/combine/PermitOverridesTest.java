@@ -17,7 +17,6 @@ import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.policy.combine.PermitOverrides;
 
 public class PermitOverridesTest
 {

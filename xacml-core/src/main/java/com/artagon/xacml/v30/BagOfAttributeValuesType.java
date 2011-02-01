@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -71,6 +72,24 @@ public final class BagOfAttributeValuesType extends XacmlObject
 		return new BagOfAttributeValues(this, attr);
 	}
 	
+	/**
+	 * Creates a bag from a given array
+	 * of attribute values
+	 * 
+	 * @param values an array of attribute values
+	 * @return {@link BagOfAttributeValues}
+	 */
+	public BagOfAttributeValues bagOf(Object ...values){
+		if(values == null || 
+				values.length == 0){
+			return createEmpty();
+		}
+		Collection<AttributeValue> attrs = new ArrayList<AttributeValue>(values.length);
+		for(int  i = 0; i < values.length; i++){
+			attrs.add(type.create(values[i]));
+		}
+		return create(attrs);
+	}
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this).add("TypeId", type.getDataTypeId()).toString();

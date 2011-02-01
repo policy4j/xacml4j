@@ -64,5 +64,6 @@ public interface AttributeValueType  extends ValueType
 	
 	BagOfAttributeValues bagOf(AttributeValue ...values);
 	BagOfAttributeValues bagOf(Collection<AttributeValue> values);
+	BagOfAttributeValues bagOf(Object ...values);
 	BagOfAttributeValues emptyBag();
 }

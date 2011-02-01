@@ -58,10 +58,15 @@ public enum AnyURIType implements AttributeValueType
 	public BagOfAttributeValues bagOf(AttributeValue... values) {
 		return bagType.create(values);
 	}
-
+	
 	@Override
 	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
 		return bagType.create(values);
+	}
+	
+	@Override
+	public BagOfAttributeValues bagOf(Object... values) {
+		return bagType.bagOf(values);
 	}
 
 	@Override

@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.types.HexBinaryType;
-import com.artagon.xacml.v30.types.HexBinaryValue;
-
 
 public class HexTypeTest 
 {

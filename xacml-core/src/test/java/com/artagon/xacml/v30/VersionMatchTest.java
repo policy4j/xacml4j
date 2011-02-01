@@ -6,10 +6,6 @@ import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Version;
-import com.artagon.xacml.v30.VersionMatch;
-import com.artagon.xacml.v30.XacmlSyntaxException;
-
 public class VersionMatchTest
 {
 	@Test

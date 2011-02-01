@@ -21,7 +21,6 @@ import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
 import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
 

@@ -13,13 +13,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.XPathVersion;
-
 
 public class RequestTest 
 {

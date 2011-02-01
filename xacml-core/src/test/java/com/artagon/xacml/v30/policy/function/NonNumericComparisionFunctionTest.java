@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.policy.function.NonNumericComparisionFunctions;
 import com.artagon.xacml.v30.types.StringValue;
 import com.artagon.xacml.v30.types.TimeType;
 import com.artagon.xacml.v30.types.TimeValue;

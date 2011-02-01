@@ -1,23 +1,20 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Policy;
 import com.artagon.xacml.v30.PolicySet;
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
-import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
-import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
-import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v30.types.IntegerType;
 
 public class DefaultResolverRegistryTest 

@@ -10,10 +10,6 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
-import com.artagon.xacml.v30.spi.pip.AttributeSet;
-import com.artagon.xacml.v30.spi.pip.DefaultEnviromentAttributeResolver;
-import com.artagon.xacml.v30.spi.pip.ResolverContext;
 import com.artagon.xacml.v30.types.DateTimeType;
 import com.artagon.xacml.v30.types.DateType;
 import com.artagon.xacml.v30.types.TimeType;

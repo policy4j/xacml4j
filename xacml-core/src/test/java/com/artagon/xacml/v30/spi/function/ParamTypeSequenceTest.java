@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.spi.function.FunctionParamValueTypeSequenceSpec;
 import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.StringType;
 

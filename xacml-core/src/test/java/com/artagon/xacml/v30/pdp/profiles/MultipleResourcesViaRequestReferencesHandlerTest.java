@@ -32,7 +32,6 @@ import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContextHandler;
-import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesViaRequestReferencesHandler;
 import com.google.common.collect.Iterables;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest 

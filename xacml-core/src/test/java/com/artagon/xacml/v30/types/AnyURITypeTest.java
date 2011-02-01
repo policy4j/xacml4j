@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.types.AnyURIType;
-import com.artagon.xacml.v30.types.AnyURIValue;
 
 public class AnyURITypeTest 
 {

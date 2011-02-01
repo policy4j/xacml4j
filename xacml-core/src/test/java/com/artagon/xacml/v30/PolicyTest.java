@@ -14,25 +14,6 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Advice;
-import com.artagon.xacml.v30.AdviceExpression;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationContextHandler;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.MatchResult;
-import com.artagon.xacml.v30.Obligation;
-import com.artagon.xacml.v30.ObligationExpression;
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicyDefaults;
-import com.artagon.xacml.v30.RootEvaluationContext;
-import com.artagon.xacml.v30.Rule;
-import com.artagon.xacml.v30.Target;
-import com.artagon.xacml.v30.VariableDefinition;
-import com.artagon.xacml.v30.Version;
-import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 
 public class PolicyTest 

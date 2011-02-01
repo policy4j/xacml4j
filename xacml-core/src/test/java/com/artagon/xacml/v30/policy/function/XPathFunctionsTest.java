@@ -25,7 +25,6 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.policy.function.XPathFunctions;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;

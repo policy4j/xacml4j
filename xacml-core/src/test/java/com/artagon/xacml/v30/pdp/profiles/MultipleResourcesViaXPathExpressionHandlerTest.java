@@ -37,7 +37,6 @@ import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContextHandler;
-import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesViaXPathExpressionHandler;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.google.common.collect.Iterables;

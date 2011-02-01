@@ -8,13 +8,6 @@ import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.types.DateTimeType;
-import com.artagon.xacml.v30.types.DateTimeValue;
-import com.artagon.xacml.v30.types.DayTimeDurationType;
-import com.artagon.xacml.v30.types.DayTimeDurationValue;
-import com.artagon.xacml.v30.types.YearMonthDurationType;
-import com.artagon.xacml.v30.types.YearMonthDurationValue;
-
 
 public class DateTimeTypeTest 
 {

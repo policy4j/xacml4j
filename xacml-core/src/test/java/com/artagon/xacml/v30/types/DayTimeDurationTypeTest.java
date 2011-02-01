@@ -8,9 +8,6 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.types.DayTimeDurationType;
-import com.artagon.xacml.v30.types.DayTimeDurationValue;
-
 
 public class DayTimeDurationTypeTest 
 {

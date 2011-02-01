@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptor;
-import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptorBuilder;
 
 public class ContentResolverDescriptorBuilderTest 
 {

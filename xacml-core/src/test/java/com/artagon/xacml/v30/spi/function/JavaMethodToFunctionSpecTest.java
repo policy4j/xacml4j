@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.util.DefaultInvocationFactory;
-import com.artagon.xacml.v30.spi.function.JavaMethodToFunctionSpecConverter;
 
 public class JavaMethodToFunctionSpecTest 
 {

@@ -87,6 +87,11 @@ public enum RFC822NameType implements AttributeValueType
 	}
 
 	@Override
+	public BagOfAttributeValues bagOf(Object... values) {
+		return bagType.bagOf(values);
+	}
+	
+	@Override
 	public BagOfAttributeValues emptyBag() {
 		return bagType.createEmpty();
 	}

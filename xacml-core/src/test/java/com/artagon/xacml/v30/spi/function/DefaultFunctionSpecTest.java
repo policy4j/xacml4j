@@ -14,9 +14,6 @@ import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionInvocationException;
 import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.spi.function.FunctionInvocation;
-import com.artagon.xacml.v30.spi.function.FunctionReturnTypeResolver;
-import com.artagon.xacml.v30.spi.function.FunctionSpecBuilder;
 
 
 

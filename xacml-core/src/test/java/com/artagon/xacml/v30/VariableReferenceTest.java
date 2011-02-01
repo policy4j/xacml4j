@@ -10,12 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.VariableDefinition;
-import com.artagon.xacml.v30.VariableReference;
-
 
 public class VariableReferenceTest
 {

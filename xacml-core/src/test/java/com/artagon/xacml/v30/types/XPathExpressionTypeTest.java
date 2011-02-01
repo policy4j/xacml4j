@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValue;
 
 public class XPathExpressionTypeTest
 {

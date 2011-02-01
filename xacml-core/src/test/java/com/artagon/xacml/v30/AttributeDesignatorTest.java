@@ -14,13 +14,6 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeDesignator;
-import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.types.IntegerType;
 
 public class AttributeDesignatorTest

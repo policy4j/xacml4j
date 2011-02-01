@@ -17,16 +17,6 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeAssignmentExpression;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.Effect;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Obligation;
-import com.artagon.xacml.v30.ObligationExpression;
-import com.artagon.xacml.v30.XacmlException;
-
 public class ObligationExpressionTest 
 {
 	private EvaluationContext context;

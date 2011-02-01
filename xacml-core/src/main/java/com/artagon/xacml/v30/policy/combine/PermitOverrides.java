@@ -1,6 +1,8 @@
 package com.artagon.xacml.v30.policy.combine;
 
 
+import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfApplicable;
+
 import java.util.List;
 
 import com.artagon.xacml.v30.Decision;

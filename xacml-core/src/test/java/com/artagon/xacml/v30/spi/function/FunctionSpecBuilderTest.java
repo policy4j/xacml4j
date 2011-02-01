@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.spi.function.FunctionInvocation;
-import com.artagon.xacml.v30.spi.function.FunctionSpecBuilder;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 

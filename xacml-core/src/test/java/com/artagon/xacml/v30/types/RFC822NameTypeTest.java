@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.types.RFC822NameType;
 
 public class RFC822NameTypeTest 
 {

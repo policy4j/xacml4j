@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
 import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.types.IPAddressType;
-import com.artagon.xacml.v30.types.IPAddressValue;
-import com.artagon.xacml.v30.types.PortRange;
 
 public class IPAddressTypeTest 
 {

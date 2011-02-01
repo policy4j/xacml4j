@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.policy.function.BagFunctions;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.AnyURIType;

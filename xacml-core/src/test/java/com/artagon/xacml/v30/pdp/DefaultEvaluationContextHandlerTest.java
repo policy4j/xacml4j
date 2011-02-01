@@ -33,8 +33,6 @@ import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.pdp.DefaultEvaluationContextHandler;
-import com.artagon.xacml.v30.pdp.RequestContextCallback;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;

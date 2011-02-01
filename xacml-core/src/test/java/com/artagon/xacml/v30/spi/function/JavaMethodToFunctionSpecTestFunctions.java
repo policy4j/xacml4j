@@ -1,8 +1,6 @@
 package com.artagon.xacml.v30.spi.function;
 
 import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
-import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.types.BooleanValue;
 
 public class JavaMethodToFunctionSpecTestFunctions 

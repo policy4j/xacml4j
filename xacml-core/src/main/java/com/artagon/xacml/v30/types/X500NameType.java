@@ -81,6 +81,11 @@ public enum X500NameType implements AttributeValueType
 	}
 
 	@Override
+	public BagOfAttributeValues bagOf(Object... values) {
+		return bagType.bagOf(values);
+	}
+	
+	@Override
 	public BagOfAttributeValues emptyBag() {
 		return bagType.createEmpty();
 	}

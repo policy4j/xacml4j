@@ -8,9 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-
 public class AttributeCategoriesTest 
 {
 	@Test
