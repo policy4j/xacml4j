@@ -281,6 +281,10 @@ public class Policy extends BaseCompositeDecisionRule
 		v.visitLeave(this);
 	}	
 	
+	/**
+	 * An {@link EvaluationContext} implementation for evaluating
+	 * {@link Policy} instances
+	 */
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{			
 		private Map<String, ValueExpression> varDefEvalResults;

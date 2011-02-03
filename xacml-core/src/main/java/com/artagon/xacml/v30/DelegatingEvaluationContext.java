@@ -19,7 +19,8 @@ class DelegatingEvaluationContext implements EvaluationContext
 {
 	private EvaluationContext delegate;
 	
-	public DelegatingEvaluationContext(EvaluationContext context){
+	protected DelegatingEvaluationContext(
+			EvaluationContext context){
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
 	}
