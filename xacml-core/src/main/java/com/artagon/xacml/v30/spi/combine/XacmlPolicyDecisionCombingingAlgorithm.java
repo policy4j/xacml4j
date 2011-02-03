@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface XacmlPolicyDecisionCombingingAlgorithm 
 {
-	String algorithmId();
+	String value();
 	boolean legacy() default false;
 }

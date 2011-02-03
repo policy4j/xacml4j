@@ -7,6 +7,7 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.MatchResult;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 
 final class OnlyOneApplicablePolicyCombingingAlgorithm extends 
 	BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
@@ -17,6 +18,7 @@ final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 		super(ID);
 	}
 
+	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
 	@Override
 	public Decision combine(List<CompositeDecisionRule> decisions,
 			EvaluationContext context) 

@@ -11,6 +11,8 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
@@ -20,6 +22,8 @@ class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgor
 		super(algorithmId);
 	}
 
+	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
+	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
 	@Override
 	public final Decision combine(List<D> decisions,
 			EvaluationContext context) 
