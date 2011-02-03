@@ -86,12 +86,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final void addEvaluatedPolicy(Policy policy, Decision result) {
+	public final void addEvaluatedApplicablePolicy(Policy policy, Decision result) {
 		this.evaluatedPolicies.add(policy.getReference());
 	}
 	
 	@Override
-	public final void addEvaluatedPolicySet(PolicySet policySet, Decision result) {
+	public final void addEvaluatedApplicablePolicySet(PolicySet policySet, Decision result) {
 		this.evaluatedPolicies.add(policySet.getReference());
 	}
 

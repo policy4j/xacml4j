@@ -250,7 +250,7 @@ public class Policy extends BaseCompositeDecisionRule
 	protected Decision doEvaluate(EvaluationContext context)
 	{
 		Decision decision = combine.combine(rules, context);
-		context.addEvaluatedPolicy(this, decision);
+		context.addEvaluatedApplicablePolicy(this, decision);
 		return decision;
 	}
 

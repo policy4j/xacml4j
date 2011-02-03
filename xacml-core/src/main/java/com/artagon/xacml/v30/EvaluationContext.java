@@ -91,7 +91,7 @@ public interface EvaluationContext
 	 * @param policy an evaluated policy
 	 * @param result a policy evaluaton result
 	 */
-	void addEvaluatedPolicy(Policy policy, Decision result);
+	void addEvaluatedApplicablePolicy(Policy policy, Decision result);
 	
 	/**
 	 * Adds evaluated policy set and policy set
@@ -100,7 +100,7 @@ public interface EvaluationContext
 	 * @param policy an evaluated policy set
 	 * @param result a policy set evaluation result
 	 */
-	void addEvaluatedPolicySet(PolicySet policySet, Decision result);
+	void addEvaluatedApplicablePolicySet(PolicySet policySet, Decision result);
 	
 	/**
 	 * Gets currently evaluated policy.

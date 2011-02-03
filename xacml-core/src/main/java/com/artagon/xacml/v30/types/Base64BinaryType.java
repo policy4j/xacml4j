@@ -31,7 +31,8 @@ public enum Base64BinaryType implements AttributeValueType
 	public Base64BinaryValue create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
+				"Value=\"%s\" of class=\"%s\" can not be" +
+				" converted to XACML \"base64binary\" type", 
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
@@ -48,7 +49,9 @@ public enum Base64BinaryType implements AttributeValueType
 		try{
 			return create(Base64.decode(v));
 		}catch(Base64DecoderException e){
-			throw new IllegalArgumentException(e);
+			throw new IllegalArgumentException(
+					String.format(
+							"Failed to base64 decode=\"%s\"", v), e);
 		}
 	}
 	

@@ -177,7 +177,7 @@ public class PolicySet extends
 	protected Decision doEvaluate(EvaluationContext context) 
 	{
 		Decision decision = combine.combine(decisionRules, context);
-		context.addEvaluatedPolicySet(this, decision);
+		context.addEvaluatedApplicablePolicySet(this, decision);
 		return decision;
 	}
 	
