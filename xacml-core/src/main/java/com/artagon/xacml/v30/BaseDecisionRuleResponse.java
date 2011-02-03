@@ -18,17 +18,26 @@ abstract class BaseDecisionRuleResponse
 	protected String id;
 	protected Multimap<String, AttributeAssignment> attributes;
 	
+	/**
+	 * For compatibility with XACML 2.0
+	 * response context
+	 */
+	private Effect effect;
+	
 	private transient int hashCode;
 	
 	protected BaseDecisionRuleResponse(
 			String id, 
+			Effect effect,
 			Iterable<AttributeAssignment> attributes) 
 	{
 		checkNotNull(id, "Decision rule response id can not be null");
 		checkNotNull(attributes, 
 				"Decision rule attribute assignments can not be null");
+		checkNotNull(effect);
 		this.id = id;
 		this.attributes = LinkedHashMultimap.create();
+		this.effect = effect;
 		for(AttributeAssignment a : attributes){
 			checkArgument(a != null, 
 					"Decision rule with id=\"%s\" " +
@@ -42,7 +51,17 @@ abstract class BaseDecisionRuleResponse
 	public final String getId(){
 		return id;
 	}
-		
+	
+	/**
+	 * For compatibility with XACML 2.0 response
+	 * context
+	 * 
+	 * @return {@link Effect}
+	 */
+	public Effect getFullfillOn(){
+		return effect;
+	}
+	
 	public final Collection<AttributeAssignment> getAttributes(){
 		return Collections.unmodifiableCollection(attributes.values());
 	}

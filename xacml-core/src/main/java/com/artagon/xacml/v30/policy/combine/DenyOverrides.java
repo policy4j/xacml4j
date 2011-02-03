@@ -8,6 +8,8 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 /**
  * The deny overrides combining algorithm is intended for those cases where a deny 
@@ -34,6 +36,8 @@ class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgori
 		super(id);
 	}
 	
+	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides")
+	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides")
 	@Override
 	public final Decision combine(List<D> decisions,
 			EvaluationContext context) 

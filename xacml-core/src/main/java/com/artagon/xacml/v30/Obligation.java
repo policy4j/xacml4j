@@ -20,29 +20,11 @@ import java.util.Collection;
  */
 public class Obligation extends BaseDecisionRuleResponse
 {
-	/**
-	 * For compatibility with XACML 2.0
-	 * response context
-	 */
-	private Effect effect;
-	
 	public Obligation(String id, 
-			Collection<AttributeAssignment> attributes, 
-			Effect effect) 
+			Effect effect,
+			Collection<AttributeAssignment> attributes) 
 	{
-		super(id, attributes);
-		this.effect = effect;
-	}
-	
-	/**
-	 * Gets {@link ObligationExpression} effect.
-	 * For compatibility with XACML 2.0 response
-	 * context
-	 * 
-	 * @return {@link Effect}
-	 */
-	public Effect getFullfillOn(){
-		return effect;
+		super(id, effect, attributes);
 	}
 	
 	@Override

@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
+import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategories;
@@ -167,17 +168,35 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 	public ObligationsType getObligations(Result result)
 	{
 		Collection<Obligation> obligations = result.getObligations();
-		if(obligations.isEmpty()){
+		Collection<Advice> advices = result.getAssociatedAdvice();
+		if(obligations.isEmpty() && 
+				advices.isEmpty()){
 			return null;
 		}
 		ObligationsType obligationsv2  = new ObligationsType();
 		for(Obligation o : obligations){
 			obligationsv2.getObligation().add(create(o));
 		}
+		// Map advice to XACML 2.0 obligations
+		for(Advice a : advices){
+			obligationsv2.getObligation().add(create(a));
+		}
 		return obligationsv2;
 	}
 	
-	private ObligationType create(Obligation o){
+	private ObligationType create(Advice advice)
+	{
+		ObligationType obligation = new ObligationType();
+		obligation.setObligationId(advice.getId());
+		obligation.setFulfillOn(v30ToV20EffectnMapping.get(advice.getFullfillOn()));
+		for(AttributeAssignment a : advice.getAttributes()){
+			obligation.getAttributeAssignment().add(create(a));
+		}
+		return obligation;
+	}
+	
+	private ObligationType create(Obligation o)
+	{
 		ObligationType obligation = new ObligationType();
 		obligation.setObligationId(o.getId());
 		obligation.setFulfillOn(v30ToV20EffectnMapping.get(o.getFullfillOn()));

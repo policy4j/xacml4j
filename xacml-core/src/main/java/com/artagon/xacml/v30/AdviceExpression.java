@@ -34,7 +34,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		return new Advice(getId(), attributes);
+		return new Advice(getId(), getEffect(), attributes);
 	}
 	
 	@Override

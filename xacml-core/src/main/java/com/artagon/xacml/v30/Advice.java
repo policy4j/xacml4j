@@ -12,10 +12,10 @@ package com.artagon.xacml.v30;
  */
 public class Advice extends BaseDecisionRuleResponse
 {
-	
 	public Advice(String adviceId, 
+			Effect effect,
 			Iterable<AttributeAssignment> attributes){
-		super(adviceId, attributes);
+		super(adviceId, effect, attributes);
 	}
 	
 	@Override
