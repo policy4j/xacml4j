@@ -9,7 +9,7 @@ package com.artagon.xacml.v30;
  * @author Giedrius Trumpickas
  */
 public abstract class AttributeReference extends XacmlObject 
-	implements Expression, PolicyElement
+	implements Expression
 {
 	private boolean mustBePresent;
 	

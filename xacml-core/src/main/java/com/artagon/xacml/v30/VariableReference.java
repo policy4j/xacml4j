@@ -25,6 +25,10 @@ public class VariableReference extends XacmlObject implements Expression
 		return varDef.getEvaluatesTo();
 	}
 
+	public VariableDefinition getDefinition(){
+		return varDef;
+	}
+	
 	/**
 	 * Evaluates appropriate variable definition.
 	 * 
@@ -38,9 +42,8 @@ public class VariableReference extends XacmlObject implements Expression
 		return varDef.evaluate(context);
 	}
 	
-	public void accept(PolicyVisitor v) {
+	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
-		varDef.accept(v);
 		v.visitLeave(this);
 	}	
 }

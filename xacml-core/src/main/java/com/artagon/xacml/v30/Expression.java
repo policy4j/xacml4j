@@ -1,12 +1,13 @@
 package com.artagon.xacml.v30;
 
 
+
 /**
  * A XACML policy expression
  * 
  * @author Giedrius Trumpickas
  */
-public interface Expression extends PolicyElement
+public interface Expression 
 {	
 	/**
 	 * Gets type to which this expression
@@ -29,4 +30,6 @@ public interface Expression extends PolicyElement
 	 */
 	Expression evaluate(
 			EvaluationContext context) throws EvaluationException;
+	
+	void accept(ExpressionVisitor v);
 }

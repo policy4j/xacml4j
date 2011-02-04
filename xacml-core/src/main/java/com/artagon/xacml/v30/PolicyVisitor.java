@@ -2,43 +2,11 @@
 package com.artagon.xacml.v30;
 
 
-public interface PolicyVisitor
+public interface PolicyVisitor extends ExpressionVisitor
 {
-	
-	/**
-	 * Visits {@link AttributeValue}
-	 * 
-	 * @param attr an attribute value
-	 */
-	void visitEnter(AttributeValue attr);
-	
-	/**
-	 * Leaves {@link AttributeValue}
-	 * 
-	 * @param attr an attribute value
-	 */
-	void visitLeave(AttributeValue attr);
-	
-	void visitEnter(AttributeDesignator designator);
-	void visitLeave(AttributeDesignator designator);
-	
-	void visitEnter(AttributeSelector selector);
-	void visitLeave(AttributeSelector selector);
-	
-	void visitEnter(FunctionReference function);
-	void visitLeave(FunctionReference function);
-	
-	void visitEnter(BagOfAttributeValues bag);
-	void visitLeave(BagOfAttributeValues bag);
-	
-	void visitEnter(VariableReference var);
-	void visitLeave(VariableReference var);
-	
 	void visitEnter(VariableDefinition var);
 	void visitLeave(VariableDefinition var);
 	
-	void visitEnter(Apply apply);
-	void visitLeave(Apply apply);
 	
 	void visitEnter(Condition condition);
 	void visitLeave(Condition condition);

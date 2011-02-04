@@ -31,7 +31,8 @@ class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgor
 		for(D d : decisions){
 			Decision decision = evaluateIfApplicable(context, d);
 			if(log.isDebugEnabled()){
-				log.debug("Decision=\"{}\" evaluation result=\"{}\"", d, decision);
+				log.debug("Decision=\"{}\" " +
+						"evaluation result=\"{}\"", d, decision);
 			}
 			if(decision == Decision.DENY){
 				return decision;

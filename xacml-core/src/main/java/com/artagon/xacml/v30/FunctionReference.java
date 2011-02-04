@@ -94,7 +94,7 @@ public class FunctionReference extends XacmlObject implements Expression
 	}
 	
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}

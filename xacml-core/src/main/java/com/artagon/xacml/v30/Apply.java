@@ -16,7 +16,7 @@ import com.google.common.base.Preconditions;
  * @author Giedrius Trumpickas
  *
  */
-public class Apply implements Expression, PolicyElement
+public class Apply implements Expression
 {	
 	private FunctionSpec spec;
 	private Expression[] arguments;
@@ -108,7 +108,7 @@ public class Apply implements Expression, PolicyElement
 	
 	
 	@Override
-	public void accept(PolicyVisitor v)
+	public void accept(ExpressionVisitor v)
 	{
 		v.visitEnter(this);
 		for(Expression expression : arguments){

@@ -4,7 +4,7 @@ import com.artagon.xacml.v30.AttributeValue;
 import com.artagon.xacml.v30.AttributeValueType;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.PolicyVisitor;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.ValueType;
 import com.artagon.xacml.v30.XacmlObject;
 import com.google.common.base.Preconditions;
@@ -37,7 +37,7 @@ public abstract class BaseAttributeValue extends XacmlObject
 	}
 	
 	@Override
-	public final void accept(PolicyVisitor v) {
+	public final void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}

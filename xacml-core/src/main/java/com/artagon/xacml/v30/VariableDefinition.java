@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public class VariableDefinition extends XacmlObject implements Expression
+public class VariableDefinition extends XacmlObject implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(VariableDefinition.class);
 	
@@ -36,7 +36,6 @@ public class VariableDefinition extends XacmlObject implements Expression
 		return variableId;
 	}
 	
-	@Override
 	public ValueType getEvaluatesTo() {
 		return expression.getEvaluatesTo();
 	}
@@ -55,7 +54,6 @@ public class VariableDefinition extends XacmlObject implements Expression
 	 * evaluation result in the current 
 	 * {@link EvaluationContext} evaluation context
 	 */
-	@Override
 	public ValueExpression evaluate(EvaluationContext context) throws EvaluationException
 	{
 		ValueExpression result = context.getVariableEvaluationResult(variableId);

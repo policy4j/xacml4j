@@ -147,7 +147,7 @@ public class AttributeDesignator extends AttributeReference
 	}
 	
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}

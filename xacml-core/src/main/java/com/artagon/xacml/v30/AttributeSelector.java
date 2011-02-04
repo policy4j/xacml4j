@@ -103,7 +103,7 @@ public class AttributeSelector extends
 	}
 	
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
