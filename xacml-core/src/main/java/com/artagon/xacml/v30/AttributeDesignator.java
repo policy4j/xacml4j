@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.types.DataTypes;
+import com.google.common.base.Objects;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a 
@@ -150,5 +151,37 @@ public class AttributeDesignator extends AttributeReference
 	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("attributeId", designatorKey.getAttributeId())
+		.add("category", designatorKey.getCategory())
+		.add("mustBePresent", isMustBePresent())
+		.toString();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof AttributeDesignator)){
+			return false;
+		}
+		AttributeDesignator d = (AttributeDesignator)o;
+		return designatorKey.equals(d.designatorKey) && 
+		(isMustBePresent() ^ d.isMustBePresent()); 
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(
+				designatorKey, 
+				isMustBePresent());
 	}
 }

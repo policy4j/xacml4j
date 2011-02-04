@@ -103,6 +103,27 @@ public class AttributeSelector extends
 	}
 	
 	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof AttributeSelector)){
+			return false;
+		}
+		AttributeSelector s = (AttributeSelector)o;
+		return selectorKey.equals(s.selectorKey) && 
+		(isMustBePresent() ^ s.isMustBePresent()); 
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(selectorKey, isMustBePresent());
+	}
+	
+	@Override
 	public void accept(ExpressionVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);

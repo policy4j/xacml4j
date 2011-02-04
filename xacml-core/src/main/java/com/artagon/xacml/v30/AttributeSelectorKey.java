@@ -34,6 +34,7 @@ public final class AttributeSelectorKey
 		return context.resolve(this);
 	}
 
+	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("Category", getCategory())
@@ -42,12 +43,13 @@ public final class AttributeSelectorKey
 		.add("ContextSelectorId", contextSelectorId).toString();
 	}
 	
+	@Override
 	public int hashCode(){
 		return hashCode;
 	}
 	
-	public boolean equals(Object o)
-	{
+	@Override
+	public boolean equals(Object o){
 		if(o == this){
 			return true;
 		}

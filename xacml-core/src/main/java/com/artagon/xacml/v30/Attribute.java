@@ -16,7 +16,7 @@ import com.google.common.collect.Multiset;
  * 
  * @author Giedrius Trumpickas
  */
-public class Attribute extends XacmlObject
+public class Attribute
 {
 	private String attributeId;
 	private Multiset<AttributeValue> values;

@@ -1,10 +1,10 @@
 package com.artagon.xacml.v30;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
 public class AttributeAssignment 
-	extends XacmlObject
 {
 	private AttributeValue attribute;
 	private AttributeCategory category;
@@ -69,5 +69,41 @@ public class AttributeAssignment
 	 */
 	public String getIssuer(){
 		return issuer;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(
+				attributeId, 
+				category, 
+				attribute, 
+				issuer);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("attributeId", attributeId)
+		.add("category", category)
+		.add("value", attribute)
+		.add("issuer", issuer).toString();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof AttributeAssignment)){
+			return false;
+		}
+		AttributeAssignment a = (AttributeAssignment)o;
+		return attributeId.equals(a.attributeId) &&
+			attribute.equals(a.attribute) && 
+			Objects.equal(category, a.category) &&
+			Objects.equal(issuer, a.issuer);
 	}
 }

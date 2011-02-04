@@ -26,7 +26,7 @@ import com.google.common.collect.Multiset;
  * @author Giedrius Trumpickas
  */
 public final class BagOfAttributeValues 
-	extends XacmlObject implements ValueExpression, Serializable
+	implements ValueExpression, Serializable
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 	
@@ -234,6 +234,13 @@ public final class BagOfAttributeValues
 		add("Values", values).toString();
 	}
 	
+	@Override
+	public int hashCode(){
+		 return Objects.hashCode(
+				type, 
+				values);
+	}
+	
 	/**
 	 * A static helper method to retrieve a single
 	 * value from a given bag
@@ -243,8 +250,7 @@ public final class BagOfAttributeValues
 	 * @return a single value or <code>null</code> 
 	 * if a given bag is <code>null</code> or empty
 	 */
-	public static <T extends AttributeValue> T value(BagOfAttributeValues v)
-	{
+	public static <T extends AttributeValue> T value(BagOfAttributeValues v){
 		if(v == null || 
 				v.isEmpty()){
 			return null;
