@@ -1,8 +1,7 @@
 package com.artagon.xacml.opensaml;
 
+import java.io.File;
 import java.io.OutputStream;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
@@ -14,30 +13,19 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.joda.time.DateTime;
+import org.opensaml.DefaultBootstrap;
 import org.opensaml.common.IdentifierGenerator;
 import org.opensaml.common.SAMLObject;
 import org.opensaml.common.SAMLObjectBuilder;
 import org.opensaml.common.SAMLVersion;
+import org.opensaml.common.binding.BasicEndpointSelector;
 import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
-import org.opensaml.common.xml.SAMLConstants;
-import org.opensaml.saml2.core.Action;
-import org.opensaml.saml2.core.Artifact;
-import org.opensaml.saml2.core.ArtifactResolve;
-import org.opensaml.saml2.core.ArtifactResponse;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
-import org.opensaml.saml2.core.AttributeStatement;
-import org.opensaml.saml2.core.AttributeValue;
 import org.opensaml.saml2.core.Audience;
 import org.opensaml.saml2.core.AudienceRestriction;
-import org.opensaml.saml2.core.AuthnContext;
-import org.opensaml.saml2.core.AuthnContextClassRef;
-import org.opensaml.saml2.core.AuthnRequest;
-import org.opensaml.saml2.core.AuthnStatement;
-import org.opensaml.saml2.core.AuthzDecisionQuery;
-import org.opensaml.saml2.core.AuthzDecisionStatement;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.NameID;
@@ -50,78 +38,33 @@ import org.opensaml.saml2.core.StatusCode;
 import org.opensaml.saml2.core.StatusMessage;
 import org.opensaml.saml2.core.StatusResponseType;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.saml2.core.impl.StatusCodeUnmarshaller;
-import org.opensaml.xacml.ctx.ActionType;
-import org.opensaml.xacml.ctx.DecisionType;
-import org.opensaml.xacml.ctx.EnvironmentType;
-import org.opensaml.xacml.ctx.MissingAttributeDetailType;
+import org.opensaml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
+import org.opensaml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.xacml.ctx.RequestType;
-import org.opensaml.xacml.ctx.ResourceContentType;
-import org.opensaml.xacml.ctx.ResourceType;
 import org.opensaml.xacml.ctx.ResponseType;
-import org.opensaml.xacml.ctx.ResultType;
-import org.opensaml.xacml.ctx.StatusCodeType;
-import org.opensaml.xacml.ctx.StatusDetailType;
-import org.opensaml.xacml.ctx.SubjectType;
-import org.opensaml.xacml.ctx.impl.ActionTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.ActionTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.ActionTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.AttributeTypeImpl;
-import org.opensaml.xacml.ctx.impl.AttributeTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.AttributeTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.AttributeTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.AttributeValueTypeImpl;
-import org.opensaml.xacml.ctx.impl.AttributeValueTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.AttributeValueTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.AttributeValueTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.DecisionTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.DecisionTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.DecisionTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.EnvironmentTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.EnvironmentTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.EnvironmentTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.MissingAttributeDetailTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.MissingAttributeDetailTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.MissingAttributeDetailTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.RequestTypeImplBuilder;
 import org.opensaml.xacml.ctx.impl.RequestTypeMarshaller;
 import org.opensaml.xacml.ctx.impl.RequestTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.ResourceContentTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.ResourceContentTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.ResourceContentTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.ResourceTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.ResourceTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.ResourceTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.ResponseTypeImplBuilder;
 import org.opensaml.xacml.ctx.impl.ResponseTypeMarshaller;
 import org.opensaml.xacml.ctx.impl.ResponseTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.ResultTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.ResultTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.ResultTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.StatusCodeTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.StatusCodeTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.StatusDetailTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.StatusDetailTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.StatusDetailTypeUnmarshaller;
-import org.opensaml.xacml.ctx.impl.SubjectTypeImplBuilder;
-import org.opensaml.xacml.ctx.impl.SubjectTypeMarshaller;
-import org.opensaml.xacml.ctx.impl.SubjectTypeUnmarshaller;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionStatementType;
-import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeImplBuilder;
 import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeMarshaller;
 import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionQueryTypeUnmarshaller;
-import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeImplBuilder;
-import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeMarshaller;
-import org.opensaml.xacml.profile.saml.impl.XACMLAuthzDecisionStatementTypeUnmarshaller;
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
+import org.opensaml.xml.parse.BasicParserPool;
+import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Preconditions;
@@ -130,7 +73,7 @@ public class OpenSamlObjectBuilder {
 
 	private static final SAMLObjectBuilder<Assertion> assertionBuilder;
 	private static final SAMLObjectBuilder<Attribute> attributeBuilder;
-	
+
 	private static final SAMLObjectBuilder<Audience> audienceBuilder;
 	private static final SAMLObjectBuilder<AudienceRestriction> audienceRestrictionBuilder;
 
@@ -143,10 +86,14 @@ public class OpenSamlObjectBuilder {
 	private static final SAMLObjectBuilder<StatusCode> statusCodeBuilder;
 	private static final SAMLObjectBuilder<StatusMessage> statusMessageBuilder;
 	private static final SAMLObjectBuilder<Subject> subjectBuilder;
+	private static final XMLObjectBuilder<Signature> signatureBuilder;
 	private static final SAMLObjectBuilder<XACMLAuthzDecisionQueryType> xacml20SamlAuthzQueryBuilder;
-	private static final XACMLAuthzDecisionQueryTypeMarshaller xacml20SamlAuthzQueryMarshaller;
-	private static final SAMLObjectBuilder<XACMLAuthzDecisionStatementType> xacml20SamlAuthzStatementBuilder;
 	
+
+	private static final XACMLAuthzDecisionQueryTypeMarshaller xacml20SamlAuthzQueryMarshaller;
+	private static final XACMLAuthzDecisionQueryTypeUnmarshaller xacml20SamlAuthzQueryUnmarshaller;
+	private static final SAMLObjectBuilder<XACMLAuthzDecisionStatementType> xacml20SamlAuthzStatementBuilder;
+
 	private static final RequestTypeUnmarshaller xacml20ReqUnmarshaller;
 	private static final ResponseTypeUnmarshaller xacml20ResUnmarshaller;
 	private static final RequestTypeMarshaller xacml20ReqMashaller;
@@ -157,91 +104,11 @@ public class OpenSamlObjectBuilder {
 	private static final MarshallerFactory marshallerFactory;
 
 	static {
-		Configuration.registerObjectProvider(
-				XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20,
-				new XACMLAuthzDecisionQueryTypeImplBuilder(),
-				new XACMLAuthzDecisionQueryTypeMarshaller(),
-				new XACMLAuthzDecisionQueryTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				XACMLAuthzDecisionStatementType.DEFAULT_ELEMENT_NAME_XACML20,
-				new XACMLAuthzDecisionStatementTypeImplBuilder(),
-				new XACMLAuthzDecisionStatementTypeMarshaller(),
-				new XACMLAuthzDecisionStatementTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(RequestType.DEFAULT_ELEMENT_NAME,
-				new RequestTypeImplBuilder(), new RequestTypeMarshaller(),
-				new RequestTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(ActionType.DEFAULT_ELEMENT_NAME,
-				new ActionTypeImplBuilder(), new ActionTypeMarshaller(),
-				new ActionTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				AttributeTypeImpl.DEFAULT_ELEMENT_NAME,
-				new AttributeTypeImplBuilder(), new AttributeTypeMarshaller(),
-				new AttributeTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				AttributeValueTypeImpl.DEFAULT_ELEMENT_NAME,
-				new AttributeValueTypeImplBuilder(),
-				new AttributeValueTypeMarshaller(),
-				new AttributeValueTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				AttributeValueTypeImpl.DEFAULT_ELEMENT_NAME,
-				new AttributeValueTypeImplBuilder(),
-				new AttributeValueTypeMarshaller(),
-				new AttributeValueTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(DecisionType.DEFAULT_ELEMENT_NAME,
-				new DecisionTypeImplBuilder(), new DecisionTypeMarshaller(),
-				new DecisionTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				EnvironmentType.DEFAULT_ELEMENT_NAME,
-				new EnvironmentTypeImplBuilder(),
-				new EnvironmentTypeMarshaller(),
-				new EnvironmentTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				MissingAttributeDetailType.DEFAULT_ELEMENT_NAME,
-				new MissingAttributeDetailTypeImplBuilder(),
-				new MissingAttributeDetailTypeMarshaller(),
-				new MissingAttributeDetailTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				ResourceContentType.DEFAULT_ELEMENT_NAME,
-				new ResourceContentTypeImplBuilder(),
-				new ResourceContentTypeMarshaller(),
-				new ResourceContentTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(ResourceType.DEFAULT_ELEMENT_NAME,
-				new ResourceTypeImplBuilder(), new ResourceTypeMarshaller(),
-				new ResourceTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(ResponseType.DEFAULT_ELEMENT_NAME,
-				new ResponseTypeImplBuilder(), new ResponseTypeMarshaller(),
-				new ResponseTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(ResultType.DEFAULT_ELEMENT_NAME,
-				new ResultTypeImplBuilder(), new ResultTypeMarshaller(),
-				new ResultTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				StatusCodeType.DEFAULT_ELEMENT_NAME,
-				new StatusCodeTypeImplBuilder(),
-				new StatusCodeTypeMarshaller(), new StatusCodeUnmarshaller());
-
-		Configuration.registerObjectProvider(
-				StatusDetailType.DEFAULT_ELEMENT_NAME,
-				new StatusDetailTypeImplBuilder(),
-				new StatusDetailTypeMarshaller(),
-				new StatusDetailTypeUnmarshaller());
-
-		Configuration.registerObjectProvider(SubjectType.DEFAULT_ELEMENT_NAME,
-				new SubjectTypeImplBuilder(), new SubjectTypeMarshaller(),
-				new SubjectTypeUnmarshaller());
+		try {
+			DefaultBootstrap.bootstrap();
+		} catch (ConfigurationException e) {
+			throw new IllegalStateException(e);
+		}
 
 		objectBuilderFactory = Configuration.getBuilderFactory();
 		unmarshallerFactory = Configuration.getUnmarshallerFactory();
@@ -249,10 +116,10 @@ public class OpenSamlObjectBuilder {
 
 		assertionBuilder = makeSamlObjectBuilder(Assertion.DEFAULT_ELEMENT_NAME);
 		attributeBuilder = makeSamlObjectBuilder(Attribute.DEFAULT_ELEMENT_NAME);
-	
+
 		audienceBuilder = makeSamlObjectBuilder(Audience.DEFAULT_ELEMENT_NAME);
 		audienceRestrictionBuilder = makeSamlObjectBuilder(AudienceRestriction.DEFAULT_ELEMENT_NAME);
-		
+
 		conditionsBuilder = makeSamlObjectBuilder(Conditions.DEFAULT_ELEMENT_NAME);
 		issuerBuilder = makeSamlObjectBuilder(Issuer.DEFAULT_ELEMENT_NAME);
 		nameIDBuilder = makeSamlObjectBuilder(NameID.DEFAULT_ELEMENT_NAME);
@@ -264,20 +131,21 @@ public class OpenSamlObjectBuilder {
 		subjectBuilder = makeSamlObjectBuilder(Subject.DEFAULT_ELEMENT_NAME);
 		xacml20SamlAuthzQueryBuilder = makeSamlObjectBuilder(XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20);
 		xacml20SamlAuthzQueryMarshaller = makeSamlObjectMarshaller(XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20);
+		xacml20SamlAuthzQueryUnmarshaller = makeSamlObjectUnmarshaller(XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20);
 		xacml20SamlAuthzStatementBuilder = makeSamlObjectBuilder(XACMLAuthzDecisionStatementType.DEFAULT_ELEMENT_NAME_XACML20);
-		
+		signatureBuilder = makeXmlObjectBuilder(Signature.DEFAULT_ELEMENT_NAME);
+
 		xacml20ReqMashaller = makeSamlObjectMarshaller(RequestType.DEFAULT_ELEMENT_NAME);
 		xacml20ResMashaller = makeSamlObjectMarshaller(ResponseType.DEFAULT_ELEMENT_NAME);
-		
+
 		xacml20ReqUnmarshaller = makeSamlObjectUnmarshaller(RequestType.DEFAULT_ELEMENT_NAME);
 		xacml20ResUnmarshaller = makeSamlObjectUnmarshaller(ResponseType.DEFAULT_ELEMENT_NAME);
 	}
 
 	private static final IdentifierGenerator idGenerator;
-	
+
 	private static final TransformerFactory transformerFactory;
-	
-	
+
 	static {
 		try {
 			transformerFactory = TransformerFactory.newInstance();
@@ -287,10 +155,8 @@ public class OpenSamlObjectBuilder {
 		}
 	}
 
-	private static void initializeResponse(
-			StatusResponseType response, 
-			Status status,
-			RequestAbstractType request) {
+	private static void initializeResponse(StatusResponseType response,
+			Status status, RequestAbstractType request) {
 		response.setID(generateIdentifier());
 		response.setVersion(SAMLVersion.VERSION_20);
 		response.setIssueInstant(new DateTime());
@@ -312,38 +178,53 @@ public class OpenSamlObjectBuilder {
 	@SuppressWarnings("unchecked")
 	private static <T extends SAMLObject> SAMLObjectBuilder<T> makeSamlObjectBuilder(
 			QName name) {
-		return (SAMLObjectBuilder<T>) objectBuilderFactory.getBuilder(name);
+		SAMLObjectBuilder<T> b = (SAMLObjectBuilder<T>) objectBuilderFactory
+				.getBuilder(name);
+		Preconditions.checkState(b != null);
+		return b;
 	}
 	
+
 	@SuppressWarnings("unchecked")
-	private static <M extends Marshaller> M makeSamlObjectMarshaller(
+	private static <T extends XMLObject> XMLObjectBuilder<T> makeXmlObjectBuilder(
 			QName name) {
-		return (M)marshallerFactory.getMarshaller(name);
+		XMLObjectBuilder<T> b = (XMLObjectBuilder<T>) objectBuilderFactory
+				.getBuilder(name);
+		Preconditions.checkState(b != null);
+		return b;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private static <M extends Marshaller> M makeSamlObjectMarshaller(QName name) {
+		M m = (M) marshallerFactory.getMarshaller(name);
+		Preconditions.checkState(m != null);
+		return m;
+	}
+
 	@SuppressWarnings("unchecked")
 	private static <M extends Unmarshaller> M makeSamlObjectUnmarshaller(
 			QName name) {
-		return (M)unmarshallerFactory.getUnmarshaller(name);
+		M u = (M) unmarshallerFactory.getUnmarshaller(name);
+		Preconditions.checkState(u != null);
+		return u;
+
 	}
 
-	public static void serialize(XMLObject xml, OutputStream out, boolean identOutput) 
-		throws Exception
-	{		
+	public static void serialize(XMLObject xml, OutputStream out,
+			boolean identOutput) throws Exception {
 		Marshaller m = Configuration.getMarshallerFactory().getMarshaller(xml);
 		Preconditions.checkState(m != null);
 		Transformer serializer = transformerFactory.newTransformer();
 		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		serializer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
-		serializer.setOutputProperty(OutputKeys.METHOD, "xml");		
-		serializer.setOutputProperty(OutputKeys.INDENT, identOutput?"yes":"no");
-		Source source = new DOMSource(m.marshall(xml));		
-		Result result = new StreamResult(out);		
-		serializer.transform(source, result);		
+		serializer.setOutputProperty(OutputKeys.METHOD, "xml");
+		serializer.setOutputProperty(OutputKeys.INDENT, identOutput ? "yes"
+				: "no");
+		Source source = new DOMSource(m.marshall(xml));
+		Result result = new StreamResult(out);
+		serializer.transform(source, result);
 	}
-	
-	
-	
+
 	/**
 	 * Static factory for OpenSAML message-context objects.
 	 * 
@@ -355,8 +236,7 @@ public class OpenSamlObjectBuilder {
 	 *            The type of the name identifier used for subjects.
 	 * @return A new message-context object.
 	 */
-	public static <TI extends SAMLObject, TO extends SAMLObject, TN extends SAMLObject> 
-		SAMLMessageContext<TI, TO, TN> makeSamlMessageContext() {
+	public static <TI extends SAMLObject, TO extends SAMLObject, TN extends SAMLObject> SAMLMessageContext<TI, TO, TN> makeSamlMessageContext() {
 		return new BasicSAMLMessageContext<TI, TO, TN>();
 	}
 
@@ -367,12 +247,12 @@ public class OpenSamlObjectBuilder {
 	 *            The entity issuing this assertion.
 	 * @return A new <code>Assertion</code> object.
 	 */
-	public static Assertion makeAssertion(Issuer issuer, Statement ...statements) {
+	public static Assertion makeAssertion(String issuer) {
 		Assertion assertion = assertionBuilder.buildObject();
 		assertion.setID(generateIdentifier());
 		assertion.setVersion(SAMLVersion.VERSION_20);
 		assertion.setIssueInstant(new DateTime());
-		assertion.setIssuer(issuer);
+		assertion.setIssuer(makeIssuer(issuer));
 		return assertion;
 	}
 
@@ -385,24 +265,32 @@ public class OpenSamlObjectBuilder {
 	 *            The subject of the assertion.
 	 * @return A new <code>Assertion</code> object.
 	 */
-	public static Assertion makeAssertion(Issuer issuer, Subject subject) {
+	public static Assertion makeAssertion(String issuer, Subject subject) {
 		Assertion assertion = makeAssertion(issuer);
 		assertion.setSubject(subject);
 		return assertion;
 	}
-	
-	public static RequestType unmarshallXacml20Request(Element request) 
-		throws UnmarshallingException
-	{
-		return (RequestType)xacml20ReqUnmarshaller.unmarshall(request);
+
+	public static RequestType unmarshallXacml20Request(Element request)
+			throws UnmarshallingException {
+		return (RequestType) xacml20ReqUnmarshaller.unmarshall(request);
 	}
 	
-	public static ResponseType unmarshallXacml20Response(Element request) 
-		throws UnmarshallingException
-	{
-		return (ResponseType)xacml20ResUnmarshaller.unmarshall(request);
+	public static XACMLAuthzDecisionQueryType unmarshallXacml20AuthzDecisionQuery(Element request)
+		throws UnmarshallingException {
+		return (XACMLAuthzDecisionQueryType) xacml20SamlAuthzQueryUnmarshaller.unmarshall(request);
+	}
+
+	public static ResponseType unmarshallXacml20Response(Element request)
+			throws UnmarshallingException {
+		return (ResponseType) xacml20ResUnmarshaller.unmarshall(request);
 	}
 	
+	public static Signature makeSiganture()
+	{
+		return signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
+	}
+
 	/**
 	 * Static factory for SAML <code>Audience</code> objects.
 	 * 
@@ -415,17 +303,15 @@ public class OpenSamlObjectBuilder {
 		audience.setAudienceURI(uri);
 		return audience;
 	}
-	
+
 	public static XACMLAuthzDecisionQueryType makeXacml20SamlAuthzDecisionQuery(
-			String issuer, 
-			String destination, 
-			boolean combinePolicies, 
-			RequestType xacml20Request)
-	{
-		XACMLAuthzDecisionQueryType xacmlQuery = xacml20SamlAuthzQueryBuilder.buildObject(
-				XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20);
+			String issuer, String destination, boolean combinePolicies,
+			RequestType xacml20Request) {
+		XACMLAuthzDecisionQueryType xacmlQuery = xacml20SamlAuthzQueryBuilder
+				.buildObject(XACMLAuthzDecisionQueryType.DEFAULT_ELEMENT_NAME_XACML20);
 		Preconditions.checkState(xacmlQuery != null);
 		xacmlQuery.setID(generateIdentifier());
+		xacmlQuery.setIssuer(makeIssuer(issuer));
 		xacmlQuery.setIssueInstant(new DateTime());
 		xacmlQuery.setVersion(SAMLVersion.VERSION_20);
 		xacmlQuery.setRequest(xacml20Request);
@@ -433,21 +319,29 @@ public class OpenSamlObjectBuilder {
 		xacmlQuery.setDestination(destination);
 		return xacmlQuery;
 	}
+
+	public static Response makeXacml20AuthzDecisionQueryResponse(String issuer,
+			XACMLAuthzDecisionQueryType request, Assertion assertion) {
+		Response response = responseBuilder.buildObject(Response.DEFAULT_ELEMENT_NAME);
+		initializeResponse(response, makeStatus(StatusCode.SUCCESS_URI),
+				request);
+		response.setIssuer(makeIssuer(issuer));
+		response.getAssertions().add(assertion);
+		return response;
+	}
 	
-	public static Response makeXacml20AuthzDecisionQueryResponse(
-			Issuer issuer,
-			XACMLAuthzDecisionQueryType request, 
-			RequestType xacml20Request, 
-			ResponseType xacml20Response)
-	{
-		Response response = responseBuilder.buildObject();
-		initializeResponse(response, makeStatus(StatusCode.SUCCESS_URI), request);
-		Assertion authzAssertion = makeAssertion(issuer);
-		XACMLAuthzDecisionStatementType authzStatement = xacml20SamlAuthzStatementBuilder.buildObject();
+	
+	public static Assertion makeXacml20AuthzDecisionAssertion(String issuer, 
+			RequestType xacml20Request, ResponseType xacml20Response)
+	{	
+		XACMLAuthzDecisionStatementType authzStatement = xacml20SamlAuthzStatementBuilder.buildObject(
+				Statement.DEFAULT_ELEMENT_NAME, 
+				XACMLAuthzDecisionStatementType.TYPE_NAME_XACML20);
 		authzStatement.setRequest(xacml20Request);
 		authzStatement.setResponse(xacml20Response);
-		authzAssertion.getStatements().add(authzStatement);
-		return response;
+		Assertion authzAssertion = makeAssertion(issuer);
+		authzAssertion.getStatements(XACMLAuthzDecisionStatementType.DEFAULT_ELEMENT_NAME_XACML20).add(authzStatement);
+		return authzAssertion;
 	}
 
 	/**
@@ -477,7 +371,8 @@ public class OpenSamlObjectBuilder {
 	 * @return A new <code>Issuer</code> object.
 	 */
 	public static Issuer makeIssuer(String name) {
-		Issuer issuer = issuerBuilder.buildObject();
+		Preconditions.checkState(issuerBuilder != null);
+		Issuer issuer = issuerBuilder.buildObject(Issuer.DEFAULT_ELEMENT_NAME);
 		issuer.setValue(name);
 		return issuer;
 	}
@@ -524,7 +419,7 @@ public class OpenSamlObjectBuilder {
 		initializeResponse(response, status, request);
 		return response;
 	}
-	
+
 	/**
 	 * Static factory for SAML <code>Status</code> objects.
 	 * 
@@ -649,4 +544,42 @@ public class OpenSamlObjectBuilder {
 		return makeSubject(makeNameId(name));
 	}
 
+	public static void initializeLocalEntity(
+			SAMLMessageContext<? extends SAMLObject, ? extends SAMLObject, ? extends SAMLObject> context,
+			EntityDescriptor entity, RoleDescriptor role, QName endpointType) 
+	{
+		context.setLocalEntityId(entity.getEntityID());
+		context.setLocalEntityMetadata(entity);
+		context.setLocalEntityRole(endpointType);
+		context.setLocalEntityRoleMetadata(role);
+		context.setOutboundMessageIssuer(entity.getEntityID());
+	}
+
+	public static void initializePeerEntity(
+			SAMLMessageContext<? extends SAMLObject, ? extends SAMLObject, ? extends SAMLObject> context,
+			EntityDescriptor entity, 
+			RoleDescriptor role, 
+			QName endpointType,
+			String binding) {
+		context.setPeerEntityId(entity.getEntityID());
+		context.setPeerEntityMetadata(entity);
+		context.setPeerEntityRole(endpointType);
+		context.setPeerEntityRoleMetadata(role);
+		{
+			BasicEndpointSelector selector = new BasicEndpointSelector();
+			selector.setEntityMetadata(entity);
+			selector.setEndpointType(endpointType);
+			selector.setEntityRoleMetadata(role);
+			selector.getSupportedIssuerBindings().add(binding);
+			context.setPeerEntityEndpoint(selector.selectEndpoint());
+		}
+	}
+	
+	public static MetadataProvider getMetadata(File input) throws MetadataProviderException
+	{
+		FilesystemMetadataProvider provider = new FilesystemMetadataProvider(input);
+		provider.setParserPool(new BasicParserPool());
+		provider.initialize();
+		return provider;
+	}
 }

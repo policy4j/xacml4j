@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntitiesDescriptor
+	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd">
+  <md:EntityDescriptor entityID="https://sso.comcast.net/Comcast/IdP/sso" ID="JneL1Y60uiUodD4Uhpt78l47ATW">
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICQTCCAaqgAwIBAgIGASWzKqr1MA0GCSqGSIb3DQEBBQUAMGQxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJQQTEVMBMGA1UEBxMMcGhpbGFkZWxwaGlhMRAwDgYDVQQKEwdjb21jYXN0MQwwCgYDVQQLEwNzc28xETAPBgNVBAMTCGljb250cm9sMB4XDTA5MTIyMTIxMzUzNVoXDTEyMTIyMDIxMzUzNVowZDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlBBMRUwEwYDVQQHEwxwaGlsYWRlbHBoaWExEDAOBgNVBAoTB2NvbWNhc3QxDDAKBgNVBAsTA3NzbzERMA8GA1UEAxMIaWNvbnRyb2wwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAIF4gy7KqbO417dJ4zmI5VJcSllUIdqpB4RVZ6uKlrjCzEmquZFhX5u+P7trMKkJEBKuY93z6fHq0EGrDPQwnDIlb7MtsTi7+vcN5OSXUp0JzZ97nz8Zi7l7/5qDbljiIQl9lG+Zyt1S27aVarUDVtL+3vA1guKQGtK6pmO0hAKTAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEASCurhr+mcWbwUwm7+3xCPV2ukCVnb8LBiA9ZaA0z7XmA4RL/TJfsDnGfvUu4HsSEy512giPJBbwi5EHyA0YKdt8suGWx9cbj5tZN2MeAkNzXn7Rt58SdXNMiiDgk6dgiaRb6/4W2cW7QiXcFegwaBLi9BOiTDjcPL1o/cJbSdt0=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Location="https://idp-qa4.comcast.net/idp/SLO.saml2" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" />
+    <md:SingleSignOnService Location="https://idp-qa4.comcast.net/idp/SSO.saml2" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"/>    
+  </md:IDPSSODescriptor>
+  <!--  
+  <md:PDPDescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+  	<md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICQTCCAaqgAwIBAgIGASWzKqr1MA0GCSqGSIb3DQEBBQUAMGQxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJQQTEVMBMGA1UEBxMMcGhpbGFkZWxwaGlhMRAwDgYDVQQKEwdjb21jYXN0MQwwCgYDVQQLEwNzc28xETAPBgNVBAMTCGljb250cm9sMB4XDTA5MTIyMTIxMzUzNVoXDTEyMTIyMDIxMzUzNVowZDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlBBMRUwEwYDVQQHEwxwaGlsYWRlbHBoaWExEDAOBgNVBAoTB2NvbWNhc3QxDDAKBgNVBAsTA3NzbzERMA8GA1UEAxMIaWNvbnRyb2wwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAIF4gy7KqbO417dJ4zmI5VJcSllUIdqpB4RVZ6uKlrjCzEmquZFhX5u+P7trMKkJEBKuY93z6fHq0EGrDPQwnDIlb7MtsTi7+vcN5OSXUp0JzZ97nz8Zi7l7/5qDbljiIQl9lG+Zyt1S27aVarUDVtL+3vA1guKQGtK6pmO0hAKTAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEASCurhr+mcWbwUwm7+3xCPV2ukCVnb8LBiA9ZaA0z7XmA4RL/TJfsDnGfvUu4HsSEy512giPJBbwi5EHyA0YKdt8suGWx9cbj5tZN2MeAkNzXn7Rt58SdXNMiiDgk6dgiaRb6/4W2cW7QiXcFegwaBLi9BOiTDjcPL1o/cJbSdt0=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:AuthzService Location="https://login-qa4.comcast.net/api/xacml/saml20" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"/>
+  </md:PDPDescriptor>
+  -->
+</md:EntityDescriptor>
+<!-- 
+<md:EntityDescriptor entityID="https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST">
+	<md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+		<md:KeyDescriptor use="encryption">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIDmTCCAwKgAwIBAgIJALqD5CGOBo62MA0GCSqGSIb3DQEBBQUAMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tMB4XDTEwMDgzMTE1MTUyNVoXDTIwMDgzMDE1MTUyNVowgZAxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazERMA8GA1UEBxMITmV3IFlvcmsxHjAcBgNVBAoTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEeMBwGA1UECxMVSG9tZSBCb3ggT2ZmaWNlLCBJbmMuMRswGQYDVQQDExJkZXYuc3AuaW5oYm9nby5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKtmpZ2CZ0d7iNaACHcSsrJMPgPlKc8q5cxIDhAUKFPJV910uyJ4nlwWUOSdv24Za5pIA8brSeuCuHfYXhKbUP4n/C4zdijZSNrya2CFt1RdGM4FvgfzSWR225OFD7lqRFuB3GMxHlP/x0K1rF5pDeoG5L6luwMyqNOmXnwdWmNjAgMBAAGjgfgwgfUwHQYDVR0OBBYEFLLZMlYnAQdpbdRJIrbVRVYKOwChMIHFBgNVHSMEgb0wgbqAFLLZMlYnAQdpbdRJIrbVRVYKOwChoYGWpIGTMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tggkAuoPkIY4GjrYwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQAl9eN9N/k66QvMkbNgzbnZrbs9zvqACHQLeCqDHfmFjESJIuQjqZMaZlnGZKRFRI331/zIOocPfAreFmJM0aAxboCVay4knoS+E3+4fe9+eLXCbtvAUgeTPlXvnEgsKYYOTPKjWnga+8JW2qS8cEzaCnXJ/u3l89x1mKQ5hn7Xiw==</ns1:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIDmTCCAwKgAwIBAgIJALqD5CGOBo62MA0GCSqGSIb3DQEBBQUAMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tMB4XDTEwMDgzMTE1MTUyNVoXDTIwMDgzMDE1MTUyNVowgZAxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazERMA8GA1UEBxMITmV3IFlvcmsxHjAcBgNVBAoTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEeMBwGA1UECxMVSG9tZSBCb3ggT2ZmaWNlLCBJbmMuMRswGQYDVQQDExJkZXYuc3AuaW5oYm9nby5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKtmpZ2CZ0d7iNaACHcSsrJMPgPlKc8q5cxIDhAUKFPJV910uyJ4nlwWUOSdv24Za5pIA8brSeuCuHfYXhKbUP4n/C4zdijZSNrya2CFt1RdGM4FvgfzSWR225OFD7lqRFuB3GMxHlP/x0K1rF5pDeoG5L6luwMyqNOmXnwdWmNjAgMBAAGjgfgwgfUwHQYDVR0OBBYEFLLZMlYnAQdpbdRJIrbVRVYKOwChMIHFBgNVHSMEgb0wgbqAFLLZMlYnAQdpbdRJIrbVRVYKOwChoYGWpIGTMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tggkAuoPkIY4GjrYwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQAl9eN9N/k66QvMkbNgzbnZrbs9zvqACHQLeCqDHfmFjESJIuQjqZMaZlnGZKRFRI331/zIOocPfAreFmJM0aAxboCVay4knoS+E3+4fe9+eLXCbtvAUgeTPlXvnEgsKYYOTPKjWnga+8JW2qS8cEzaCnXJ/u3l89x1mKQ5hn7Xiw==</ns1:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+		<md:AssertionConsumerService index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://qa.profile.hbogo.com/apps/profile/rest/profileService/ssologin/COMCAST?serviceCode=HBO"/>
+	</md:SPSSODescriptor>
+	<md:ContactPerson contactType="technical">
+		<md:Company>HBO</md:Company>
+		<md:GivenName>Jonathan</md:GivenName>
+		<md:SurName>Graf</md:SurName>
+		<md:EmailAddress>jonathan.graf@hbo.com</md:EmailAddress>
+	</md:ContactPerson>
+</md:EntityDescriptor>
+ -->
+</md:EntitiesDescriptor>
