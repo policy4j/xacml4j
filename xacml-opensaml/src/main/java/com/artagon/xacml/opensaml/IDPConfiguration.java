@@ -2,7 +2,6 @@ package com.artagon.xacml.opensaml;
 
 import org.opensaml.saml2.metadata.AuthzService;
 import org.opensaml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml2.metadata.PDPDescriptor;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.signature.SignatureTrustEngine;
 

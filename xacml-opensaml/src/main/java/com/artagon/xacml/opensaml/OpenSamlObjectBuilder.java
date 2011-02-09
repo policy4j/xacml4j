@@ -23,7 +23,6 @@ import org.opensaml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.common.binding.SAMLMessageContext;
 import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
 import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.Audience;
 import org.opensaml.saml2.core.AudienceRestriction;
 import org.opensaml.saml2.core.Conditions;
@@ -74,7 +73,6 @@ import com.google.common.base.Preconditions;
 public class OpenSamlObjectBuilder {
 
 	private static final SAMLObjectBuilder<Assertion> assertionBuilder;
-	private static final SAMLObjectBuilder<Attribute> attributeBuilder;
 
 	private static final SAMLObjectBuilder<Audience> audienceBuilder;
 	private static final SAMLObjectBuilder<AudienceRestriction> audienceRestrictionBuilder;
@@ -117,7 +115,7 @@ public class OpenSamlObjectBuilder {
 		marshallerFactory = Configuration.getMarshallerFactory();
 
 		assertionBuilder = makeSamlObjectBuilder(Assertion.DEFAULT_ELEMENT_NAME);
-		attributeBuilder = makeSamlObjectBuilder(Attribute.DEFAULT_ELEMENT_NAME);
+
 
 		audienceBuilder = makeSamlObjectBuilder(Audience.DEFAULT_ELEMENT_NAME);
 		audienceRestrictionBuilder = makeSamlObjectBuilder(AudienceRestriction.DEFAULT_ELEMENT_NAME);
