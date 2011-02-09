@@ -64,7 +64,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	
 	public void handle(Element req, Document responseDoc) throws Exception
 	{
-		RequestAbstractType request = OpenSamlObjectBuilder.unmarshall(req);
+		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(req);
 		Response res = handle(request);
 		OpenSamlObjectBuilder.marshall(res, responseDoc.getDocumentElement());
 	}
