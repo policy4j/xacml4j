@@ -386,10 +386,10 @@ public class OpenSamlObjectBuilder {
 		return (T)u.unmarshall(source);
 	}
 	
-	public static void marshall(SAMLObject o, Element target) throws Exception
+	public static Element marshall(SAMLObject o) throws Exception
 	{
 		Marshaller m = Configuration.getMarshallerFactory().getMarshaller(o);
-		m.marshall(o, target);
+		return m.marshall(o);
 	}
 	
 	/**

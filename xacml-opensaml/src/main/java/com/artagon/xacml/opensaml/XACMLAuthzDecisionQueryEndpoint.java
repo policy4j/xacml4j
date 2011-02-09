@@ -76,7 +76,8 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		Document xmlDoc = parserPool.parse(new ByteArrayInputStream(out.toByteArray()));
 		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(xmlDoc.getDocumentElement());
 		Response res = handle(request);
-		OpenSamlObjectBuilder.marshall(res, responseDoc.getDocumentElement());
+		Element e = OpenSamlObjectBuilder.marshall(res);
+		responseDoc.importNode(e, true);
 	}
 	
 	public Response handle(RequestAbstractType request)
