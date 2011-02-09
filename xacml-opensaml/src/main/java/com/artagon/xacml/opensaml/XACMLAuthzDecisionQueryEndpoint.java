@@ -30,6 +30,7 @@ import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
@@ -59,6 +60,13 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		dbf.setNamespaceAware(true);
 		this.xacmlRequest20Unmarshaller = new Xacml20RequestContextUnmarshaller();
 		this.xacmlResponse20Unmarshaller = new Xacml20ResponseContextMarshaller();
+	}
+	
+	public void handle(Element req, Document responseDoc) throws Exception
+	{
+		RequestAbstractType request = OpenSamlObjectBuilder.unmarshall(req);
+		Response res = handle(request);
+		OpenSamlObjectBuilder.marshall(res, responseDoc.getDocumentElement());
 	}
 	
 	public Response handle(RequestAbstractType request)
@@ -158,11 +166,20 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		
 	public Document performXacmlRequest(Document reqDom) throws Exception
 	{
-		RequestContext xacmlReq = xacmlRequest20Unmarshaller.unmarshal(reqDom);
-		ResponseContext xacmlRes = pdp.decide(xacmlReq);
-		Document resDom = dbf.newDocumentBuilder().newDocument();
-		xacmlResponse20Unmarshaller.marshal(xacmlRes, new DOMResult(resDom));
-		return resDom;
+		try
+		{
+			RequestContext xacmlReq = xacmlRequest20Unmarshaller.unmarshal(reqDom);
+			ResponseContext xacmlRes = pdp.decide(xacmlReq);
+			Document resDom = dbf.newDocumentBuilder().newDocument();
+			xacmlResponse20Unmarshaller.marshal(xacmlRes, new DOMResult(resDom));
+			return resDom;
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
+			throw e;
+		}
+		
 	}
 	
 	private void signResponse(Response response) throws Exception

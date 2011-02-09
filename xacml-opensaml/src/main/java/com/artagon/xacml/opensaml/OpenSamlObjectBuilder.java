@@ -366,7 +366,20 @@ public class OpenSamlObjectBuilder {
 	public static Conditions makeConditions() {
 		return conditionsBuilder.buildObject();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends SAMLObject> T unmarshall(Element source) throws Exception
+	{
+		Unmarshaller u = Configuration.getUnmarshallerFactory().getUnmarshaller(source);
+		return (T)u.unmarshall(source);
+	}
+	
+	public static void marshall(SAMLObject o, Element target) throws Exception
+	{
+		Marshaller m = Configuration.getMarshallerFactory().getMarshaller(o);
+		m.marshall(o, target);
+	}
+	
 	/**
 	 * Static factory for SAML <code>Issuer</code> objects.
 	 * 
