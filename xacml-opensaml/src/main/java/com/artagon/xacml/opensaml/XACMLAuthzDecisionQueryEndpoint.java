@@ -37,7 +37,7 @@ import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
-public class XACMLAuthzDecisionQueryEndpoint 
+public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 {
 	
 	private final static Logger log = LoggerFactory.getLogger(XACMLAuthzDecisionQueryEndpoint.class);
