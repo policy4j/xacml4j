@@ -1,9 +1,10 @@
 package com.artagon.xacml.saml;
 
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.security.KeyStore;
 
@@ -11,22 +12,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
 import org.easymock.IMocksControl;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensaml.DefaultBootstrap;
-import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
-import org.opensaml.saml2.core.Status;
-import org.opensaml.saml2.core.StatusCode;
-import org.opensaml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.xacml.ctx.RequestType;
-import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.SecurityHelper;
@@ -35,9 +27,11 @@ import org.opensaml.xml.security.x509.KeyStoreX509CredentialAdapter;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.Signer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.w3c.dom.Document;
 
-import com.artagon.xacml.opensaml.DefaultIDPConfiguration;
 import com.artagon.xacml.opensaml.IDPConfiguration;
 import com.artagon.xacml.opensaml.OpenSamlObjectBuilder;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQueryEndpoint;
@@ -47,10 +41,11 @@ import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
 
-public class OpenSamlXacmlTest
+@ContextConfiguration(locations={"classpath:testApplicationContext.xml"})
+public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 {
+	@Autowired
 	private IDPConfiguration idpConfiguration;
-	private Credential spSigningCredential;
 	private Credential idpSigningCredential;
 	private XACMLAuthzDecisionQueryEndpoint endpoint;
 	private PolicyDecisionPoint pdp;
@@ -67,11 +62,6 @@ public class OpenSamlXacmlTest
 		this.control = EasyMock.createControl();
 		this.pdp = control.createMock(PolicyDecisionPoint.class);
 		this.idpSigningCredential = new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
-		this.spSigningCredential = new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
-		
-
-		MetadataProvider md = OpenSamlObjectBuilder.getMetadata(new File("./src/test/resources/metadata.xml"));
-		this.idpConfiguration = new DefaultIDPConfiguration("https://sso.comcast.net/Comcast/IdP/sso", md, idpSigningCredential);
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
 		
 	}

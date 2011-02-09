@@ -7,6 +7,7 @@ import java.util.Timer;
 import org.joda.time.DateTime;
 import org.opensaml.util.resource.Resource;
 import org.opensaml.util.resource.ResourceException;
+import org.opensaml.xml.parse.BasicParserPool;
 
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
@@ -34,6 +35,7 @@ public class OpenSamlMetadataFactoryBean extends AbstractFactoryBean<MetadataPro
 		ResourceBackedMetadataProvider mdp = new ResourceBackedMetadataProvider(
  				new SpringResourceWrapper(metadata),
         		new Timer(true), Integer.MAX_VALUE);
+		mdp.setParserPool(new BasicParserPool());
 		mdp.initialize();
 		return mdp;
 	}

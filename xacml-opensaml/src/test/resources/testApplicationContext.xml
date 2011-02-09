@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+ 	
+	
+	<beans:bean id="idpMetadata" class="com.artagon.xacml.opensaml.OpenSamlMetadataFactoryBean">
+		<beans:property name="location" value="classpath:metadata.xml"/>
+	</beans:bean>
+	
+	<beans:bean id="idpConfig" class="com.artagon.xacml.opensaml.DefaultIDPConfiguration">
+		<beans:constructor-arg value="https://sso.comcast.net/Comcast/IdP/sso"/>
+		<beans:constructor-arg ref="idpMetadata"/>
+		<beans:constructor-arg>
+			<beans:bean  class="org.opensaml.xml.security.x509.KeyStoreX509CredentialAdapter">
+				<beans:constructor-arg>
+					<beans:bean class="com.artagon.xacml.opensaml.KeyStoreFactory">
+						<beans:property name="password" value="changeme"/>
+						<beans:property name="location" value="test-keystore.p12"/>
+						<beans:property name="type" value="PKCS12"/>
+					</beans:bean>
+				</beans:constructor-arg>
+				<beans:constructor-arg value="ping"/>
+				<beans:constructor-arg value="changeme"/>
+			</beans:bean>
+		</beans:constructor-arg>
+	</beans:bean>
+	
+</beans>
