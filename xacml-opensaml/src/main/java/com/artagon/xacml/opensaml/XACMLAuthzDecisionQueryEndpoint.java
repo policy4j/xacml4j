@@ -1,5 +1,8 @@
 package com.artagon.xacml.opensaml;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -17,6 +20,7 @@ import org.opensaml.xacml.ctx.RequestType;
 import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.Configuration;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.security.CriteriaSet;
 import org.opensaml.xml.security.SecurityException;
 import org.opensaml.xml.security.SecurityHelper;
@@ -50,6 +54,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	private Xacml20ResponseContextMarshaller xacmlResponse20Unmarshaller;
 	
 	private DocumentBuilderFactory dbf;
+	private BasicParserPool parserPool;
 	
 	public XACMLAuthzDecisionQueryEndpoint(
 			IDPConfiguration idpConfig, 
@@ -60,11 +65,16 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		dbf.setNamespaceAware(true);
 		this.xacmlRequest20Unmarshaller = new Xacml20RequestContextUnmarshaller();
 		this.xacmlResponse20Unmarshaller = new Xacml20ResponseContextMarshaller();
+		this.parserPool = new BasicParserPool();
+		parserPool.setNamespaceAware(true);
 	}
 	
 	public void handle(Element req, Document responseDoc) throws Exception
 	{
-		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(req);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		OpenSamlObjectBuilder.serialize(req, out);
+		Document xmlDoc = parserPool.parse(new ByteArrayInputStream(out.toByteArray()));
+		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(xmlDoc.getDocumentElement());
 		Response res = handle(request);
 		OpenSamlObjectBuilder.marshall(res, responseDoc.getDocumentElement());
 	}

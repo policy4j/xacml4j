@@ -79,7 +79,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
 		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
-		OpenSamlObjectBuilder.serialize(response, outResponse, false);
+		OpenSamlObjectBuilder.serialize(response, outResponse);
 		control.verify();
 		System.out.println("--------" + new String(outResponse.toByteArray()));
 		

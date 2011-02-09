@@ -67,6 +67,7 @@ import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.signature.Signature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.google.common.base.Preconditions;
 
@@ -210,19 +211,30 @@ public class OpenSamlObjectBuilder {
 
 	}
 
-	public static void serialize(XMLObject xml, OutputStream out,
-			boolean identOutput) throws Exception {
-		Marshaller m = Configuration.getMarshallerFactory().getMarshaller(xml);
-		Preconditions.checkState(m != null);
+	public static void serialize(Node e, OutputStream out,
+			boolean identOutput, boolean ommitXmlDecl) throws Exception {
+		
+		Preconditions.checkState(e != null);
 		Transformer serializer = transformerFactory.newTransformer();
-		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, ommitXmlDecl?"no":"yes");
 		serializer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
 		serializer.setOutputProperty(OutputKeys.METHOD, "xml");
-		serializer.setOutputProperty(OutputKeys.INDENT, identOutput ? "yes"
-				: "no");
-		Source source = new DOMSource(m.marshall(xml));
+		serializer.setOutputProperty(OutputKeys.INDENT, identOutput ? "yes": "no");
+		Source source = new DOMSource(e);
 		Result result = new StreamResult(out);
 		serializer.transform(source, result);
+	}
+	
+	public static void serialize(Node xml, OutputStream out) throws Exception 
+	{
+		serialize(xml, out, false, false);
+	}
+	
+	public static void serialize(XMLObject xml, OutputStream out) throws Exception 
+	{
+		Marshaller m = Configuration.getMarshallerFactory().getMarshaller(xml);
+		Preconditions.checkState(m != null);
+		serialize(m.marshall(xml), out, false, false);
 	}
 
 	/**
