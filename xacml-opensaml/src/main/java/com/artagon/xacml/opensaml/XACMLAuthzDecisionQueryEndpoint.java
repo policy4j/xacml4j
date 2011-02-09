@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
@@ -77,7 +78,8 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(xmlDoc.getDocumentElement());
 		Response res = handle(request);
 		Element e = OpenSamlObjectBuilder.marshall(res);
-		responseDoc.importNode(e, true);
+		Node n = responseDoc.importNode(e, true);
+		responseDoc.appendChild(n);
 	}
 	
 	public Response handle(RequestAbstractType request)
