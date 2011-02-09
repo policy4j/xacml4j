@@ -85,12 +85,6 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		
 	}
 	
-	@Test
-	public void testUnmarshall() throws Exception
-	{
-		Document doc = parse("XacmlSamlRequest.xml");
-		OpenSamlObjectBuilder.unmarshall(doc.getDocumentElement());
-	}
 	
 	private KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
 	{

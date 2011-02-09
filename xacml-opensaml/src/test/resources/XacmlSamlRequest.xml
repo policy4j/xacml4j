@@ -12,8 +12,7 @@
 			<xacml-context:Attribute
 				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
 				DataType="http://www.w3.org/2001/XMLSchema#string">
-				<xacml-context:AttributeValue>https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST
-				</xacml-context:AttributeValue>
+				<xacml-context:AttributeValue>https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST</xacml-context:AttributeValue>
 			</xacml-context:Attribute>
 		</xacml-context:Subject>
 		<xacml-context:Subject
@@ -21,16 +20,14 @@
 			<xacml-context:Attribute
 				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
 				DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
-				<xacml-context:AttributeValue>Primary_8462301@comcast.net
-				</xacml-context:AttributeValue>
+				<xacml-context:AttributeValue>Primary_8462301@comcast.net</xacml-context:AttributeValue>
 			</xacml-context:Attribute>
 		</xacml-context:Subject>
 		<xacml-context:Resource>
 			<xacml-context:Attribute
 				AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
 				DataType="http://www.w3.org/2001/XMLSchema#string">
-				<xacml-context:AttributeValue>http://www.fancast.com/tv-networks/HBO/56/main
-				</xacml-context:AttributeValue>
+				<xacml-context:AttributeValue>http://www.fancast.com/tv-networks/HBO/56/main</xacml-context:AttributeValue>
 			</xacml-context:Attribute>
 		</xacml-context:Resource>
 		<xacml-context:Environment />
