@@ -60,11 +60,13 @@ import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.XMLObjectBuilderFactory;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
+import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.signature.Signature;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Preconditions;
@@ -274,6 +276,11 @@ public class OpenSamlObjectBuilder {
 	public static RequestType unmarshallXacml20Request(Element request)
 			throws UnmarshallingException {
 		return (RequestType) xacml20ReqUnmarshaller.unmarshall(request);
+	}
+	
+	public static void marshallXacml20Request(RequestType request, Document doc)
+		throws MarshallingException {
+		xacml20ReqMashaller.marshall(request, doc);
 	}
 	
 	public static XACMLAuthzDecisionQueryType unmarshallXacml20AuthzDecisionQuery(Element request)
