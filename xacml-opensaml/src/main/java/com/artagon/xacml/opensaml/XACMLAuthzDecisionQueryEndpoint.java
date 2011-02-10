@@ -82,16 +82,14 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		parserPool.setNamespaceAware(true);
 	}
 	
-	public void handle(Element req, Document responseDoc) throws Exception
+	public Element handle(Element req) throws Exception
 	{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		OpenSamlObjectBuilder.serialize(req, out);
-		Document xmlDoc = parserPool.parse(new ByteArrayInputStream(out.toByteArray()));
-		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(xmlDoc.getDocumentElement());
+		Document reqDoc = dbf.newDocumentBuilder().newDocument();
+		Node n = reqDoc.importNode(req, true);
+		reqDoc.appendChild(n);
+		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(reqDoc.getDocumentElement());
 		Response res = handle(request);
-		Element e = OpenSamlObjectBuilder.marshall(res);
-		Node n = responseDoc.importNode(e, true);
-		responseDoc.appendChild(n);
+		return OpenSamlObjectBuilder.marshall(res);
 	}
 	
 	public Response handle(RequestAbstractType request)

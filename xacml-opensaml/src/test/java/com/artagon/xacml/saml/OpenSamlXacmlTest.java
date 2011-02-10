@@ -104,6 +104,22 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		control.verify();		
 	}
 	
+	@Test
+	public void testXACMLAuthzDecisionQuery1() throws Exception
+	{
+		Document query = parse("TestXacmlSamlRequest.xml");
+		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
+		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
+		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+		control.replay();
+		Response response = endpoint.handle(xacmlSamlQuery);
+		assertNotNull(response);
+		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
+		OpenSamlObjectBuilder.serialize(response, outResponse);
+		System.out.println("Response ----- " + new String(outResponse.toByteArray()));
+		control.verify();		
+	}
 	
 	private KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
 	{

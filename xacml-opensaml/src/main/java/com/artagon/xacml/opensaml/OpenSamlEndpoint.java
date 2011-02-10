@@ -7,6 +7,6 @@ import org.w3c.dom.Element;
 
 public interface OpenSamlEndpoint 
 {
-	void handle(Element request, Document responseDoc) throws Exception;
+	Element handle(Element request) throws Exception;
 	Response handle(RequestAbstractType req);
 }
