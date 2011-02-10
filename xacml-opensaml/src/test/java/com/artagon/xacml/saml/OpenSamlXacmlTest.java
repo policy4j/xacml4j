@@ -7,6 +7,10 @@ import static org.junit.Assert.assertNotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.KeyStore.ProtectionParameter;
+import java.security.cert.Certificate;
+import java.util.Enumeration;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -47,6 +51,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	@Autowired
 	private IDPConfiguration idpConfiguration;
 	private Credential idpSigningCredential;
+	private Credential hboSigningKey;
 	private XACMLAuthzDecisionQueryEndpoint endpoint;
 	private PolicyDecisionPoint pdp;
 	private IMocksControl control;
@@ -62,7 +67,28 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		this.control = EasyMock.createControl();
 		this.pdp = control.createMock(PolicyDecisionPoint.class);
 		this.idpSigningCredential = new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
+		
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
+		
+		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");
+		System.out.println("----------------------------- Keystore size - " + ks.size());
+		System.out.println("----------------------------- Keystore cert - " + ks.getCertificate("1"));
+		System.out.println("----------------------------- Keystore cert - " + ks.getKey("1", "hbo".toCharArray()));
+		Enumeration<String> n = ks.aliases();
+		while(n.hasMoreElements()){
+			String k = n.nextElement();
+			System.out.println("----------------------------- Name - " + k);
+		}
+		
+		KeyStore newKs = KeyStore.getInstance("PKCS12");
+		newKs.load(null, "hbo".toCharArray());
+		Certificate[] certs = new Certificate[]{ks.getCertificate("1")};
+		PrivateKey key = (PrivateKey)ks.getKey("1", "hbo".toCharArray());
+		assertNotNull(key);
+		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(key,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
+		
+		this.hboSigningKey = new KeyStoreX509CredentialAdapter( newKs, "hbo", "hbo".toCharArray());
+		
 		
 	}
 	
@@ -80,9 +106,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		assertNotNull(response);
 		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
 		OpenSamlObjectBuilder.serialize(response, outResponse);
-		control.verify();
-		System.out.println("--------" + new String(outResponse.toByteArray()));
-		
+		control.verify();		
 	}
 	
 	
@@ -109,11 +133,11 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
         .getBuilder(Signature.DEFAULT_ELEMENT_NAME)
         .buildObject(Signature.DEFAULT_ELEMENT_NAME);
 
-		dsig.setSigningCredential(idpConfiguration.getSigningCredential());
+		dsig.setSigningCredential(hboSigningKey);
 		dsig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
 		dsig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 		response.setSignature(dsig);
-		SecurityHelper.prepareSignatureParams(dsig, idpConfiguration.getSigningCredential(), null, null);
+		SecurityHelper.prepareSignatureParams(dsig, hboSigningKey, null, null);
 		
 		Configuration.getMarshallerFactory().getMarshaller(response).marshall(response);
 		Signer.signObject(dsig);

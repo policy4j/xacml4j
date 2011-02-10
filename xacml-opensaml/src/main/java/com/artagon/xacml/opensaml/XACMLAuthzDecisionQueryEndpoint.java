@@ -2,11 +2,15 @@ package com.artagon.xacml.opensaml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
 
+import org.apache.commons.collections.functors.PredicateTransformer;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.RequestAbstractType;
@@ -37,11 +41,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.SubjectAttributes;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.types.StringType;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 {
@@ -116,7 +128,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			}
 			Document reqDom = dbf.newDocumentBuilder().newDocument();
 			OpenSamlObjectBuilder.marshallXacml20Request(xacmlRequest, reqDom);
-			Document resDom = performXacmlRequest(reqDom);
+			Document resDom = performXacmlRequest(xacml20DecisionQuery.getIssuer().getValue(), reqDom);
 			ResponseType xacmlResponse = OpenSamlObjectBuilder.unmarshallXacml20Response(resDom.getDocumentElement());
 			Assertion assertion = OpenSamlObjectBuilder.makeXacml20AuthzDecisionAssertion(
 					idpConfig.getLocalEntity().getEntityID(), 
@@ -177,11 +189,15 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		return true;
 	}
 		
-	public Document performXacmlRequest(Document reqDom) throws Exception
+	public Document performXacmlRequest(String issuer, Document reqDom) throws Exception
 	{
 		try
 		{
 			RequestContext xacmlReq = xacmlRequest20Unmarshaller.unmarshal(reqDom);
+			xacmlReq = addIssuerToRequest(issuer, xacmlReq);
+			if(log.isDebugEnabled()){
+				log.debug("XACML request=\"{}\"", xacmlReq);
+			}
 			ResponseContext xacmlRes = pdp.decide(xacmlReq);
 			Document resDom = dbf.newDocumentBuilder().newDocument();
 			xacmlResponse20Unmarshaller.marshal(xacmlRes, new DOMResult(resDom));
@@ -209,5 +225,20 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		SecurityHelper.prepareSignatureParams(dsig, idpConfig.getSigningCredential(), null, null);
 		Configuration.getMarshallerFactory().getMarshaller(response).marshall(response);
 		Signer.signObject(dsig);
+	}
+	
+	private RequestContext addIssuerToRequest(String issuer, RequestContext req)
+	{
+		Attributes indermediarySubject = new Attributes(AttributeCategories.SUBJECT_INTERMEDIARY, 
+				new Attribute(SubjectAttributes.SUBJECT_ID.toString(), StringType.STRING.create(issuer))); 
+		Collection<Attributes> filtered = new LinkedList<Attributes>();
+		filtered.add(indermediarySubject);
+		for(Attributes a : req.getAttributes()){
+			if(!a.getCategory().equals(
+					AttributeCategories.SUBJECT_INTERMEDIARY)){
+				filtered.add(a);
+			}
+		}
+		return new RequestContext(req.isReturnPolicyIdList(), req.isCombinedDecision(), filtered);
 	}
 }

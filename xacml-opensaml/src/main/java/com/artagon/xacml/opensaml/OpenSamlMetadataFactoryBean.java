@@ -5,18 +5,17 @@ import java.io.InputStream;
 import java.util.Timer;
 
 import org.joda.time.DateTime;
-import org.opensaml.util.resource.Resource;
-import org.opensaml.util.resource.ResourceException;
-import org.opensaml.xml.Configuration;
-import org.opensaml.xml.parse.BasicParserPool;
-
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
+import org.opensaml.util.resource.Resource;
+import org.opensaml.util.resource.ResourceException;
+import org.opensaml.xml.parse.BasicParserPool;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.google.common.base.Preconditions;
 
-public class OpenSamlMetadataFactoryBean extends AbstractFactoryBean<MetadataProvider>
+public class OpenSamlMetadataFactoryBean 
+	extends AbstractFactoryBean<MetadataProvider>
 {
 	
 	private org.springframework.core.io.Resource metadata;

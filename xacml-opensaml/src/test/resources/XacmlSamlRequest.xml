@@ -4,7 +4,7 @@
 	CombinePolicies="false" Destination="https://login-qa4.comcast.net/api/xacml/soap/tve"
 	ID="_9f57bbf478779680b4ecb88c1592f68f" IssueInstant="2011-02-08T04:25:44.938Z"
 	Version="2.0">
-	<saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST</saml2:Issuer>
+	<saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">http://affiliateintegration.inhbogo.com:7001/dev.sp.inhbogo.com/COMCAST</saml2:Issuer>
 	<xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
 		<xacml-context:Subject
 			SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject">
