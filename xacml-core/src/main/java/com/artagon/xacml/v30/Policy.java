@@ -5,12 +5,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 
 public class Policy extends BaseCompositeDecisionRule 
 	implements PolicyElement
@@ -67,14 +68,16 @@ public class Policy extends BaseCompositeDecisionRule
 		Preconditions.checkNotNull(rules);
 		Preconditions.checkNotNull(combine);
 		this.issuer = issuer;
-		this.rules = new LinkedList<Rule>(rules);
+		this.rules = ImmutableList.copyOf(rules);
 		this.combine = combine;
 		this.reference = new PolicyIDReference(policyId, version);
 		this.policyDefaults = policyDefaults;
-		this.variableDefinitions = new ConcurrentHashMap<String, VariableDefinition>();
-		for(VariableDefinition varDef : variables){
-			this.variableDefinitions.put(varDef.getVariableId(), varDef);
-		}
+		this.variableDefinitions = Maps.uniqueIndex(variables, new Function<VariableDefinition, String>(){
+			@Override
+			public String apply(VariableDefinition from) {
+				return from.getVariableId();
+			}
+		});
 	}
 	
 	public Policy(
@@ -199,7 +202,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * @return a collection of {@link VariableDefinition} instances
 	 */
 	public Collection<VariableDefinition> getVariableDefinitions(){
-		return Collections.unmodifiableCollection(variableDefinitions.values());
+		return variableDefinitions.values();
 	}
 	
 	public CompositeDecisionRuleIDReference getReference() {
@@ -224,7 +227,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * instances
 	 */
 	public List<Rule> getRules(){
-		return Collections.unmodifiableList(rules);
+		return rules;
 	}
 	
 	/**
@@ -301,12 +304,19 @@ public class Policy extends BaseCompositeDecisionRule
 		
 		@Override
 		public ValueExpression getVariableEvaluationResult(String variableId) {
+			Preconditions.checkNotNull(variableId);
 			return varDefEvalResults.get(variableId);
 		}
 
 		@Override
 		public void setVariableEvaluationResult(String variableId,
 				ValueExpression value) {
+			Preconditions.checkNotNull(variableId);
+			Preconditions.checkNotNull(value);
+			Preconditions.checkArgument(
+					variableDefinitions.containsKey(variableId), 
+					"Given variable id=\"%s\" is not defined the policy id=\"%s\"", 
+					variableId, id);
 			varDefEvalResults.put(variableId, value);
 		}
 		

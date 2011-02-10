@@ -90,8 +90,6 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		value.accept(v);
-		attributeRef.accept(v);
 		v.visitLeave(this);
 	}
 }

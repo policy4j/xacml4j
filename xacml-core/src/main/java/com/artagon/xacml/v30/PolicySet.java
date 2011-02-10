@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public class PolicySet extends 
 	BaseCompositeDecisionRule implements PolicyElement
@@ -61,7 +61,7 @@ public class PolicySet extends
 		Preconditions.checkNotNull(policySetCombinerParameters);
 		this.reference = new PolicySetIDReference(id, version);
 		this.combine = combine;
-		this.decisionRules = new LinkedList<CompositeDecisionRule>(policies);
+		this.decisionRules = ImmutableList.copyOf(policies);
 		this.policySetDefaults = policySetDefaults;
 		this.issuer = issuer;
 		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
@@ -182,7 +182,7 @@ public class PolicySet extends
 	}
 	
 	public List<? extends CompositeDecisionRule> getDecisions() {
-		return Collections.unmodifiableList(decisionRules);
+		return decisionRules;
 	}
 
 	@Override

@@ -70,7 +70,6 @@ public class VariableDefinition extends XacmlObject implements PolicyElement
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		expression.accept(v);
 		v.visitLeave(this);
 	}
 }

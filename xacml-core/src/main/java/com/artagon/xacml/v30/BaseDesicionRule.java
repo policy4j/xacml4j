@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 {
@@ -31,22 +32,29 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 */
 	protected BaseDesicionRule( 
 			String description,
-			Target target, Collection<AdviceExpression> adviceExpressions,
+			Target target, 
+			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
+		Preconditions.checkNotNull(adviceExpressions);
+		Preconditions.checkNotNull(obligationExpressions);
 		this.description = description;
 		this.target = target;
-		this.adviceExpressions = (adviceExpressions == null)?
-				Collections.<AdviceExpression>emptyList():
-					new LinkedList<AdviceExpression>(adviceExpressions);
-		this.obligationExpressions = (obligationExpressions == null)?
-				Collections.<ObligationExpression>emptyList():
-					new LinkedList<ObligationExpression>(obligationExpressions);
+		this.adviceExpressions = ImmutableList.copyOf(adviceExpressions);
+		this.obligationExpressions = ImmutableList.copyOf(obligationExpressions);
 	}
 	
 	protected BaseDesicionRule(
-			Target target, Collection<AdviceExpression> adviceExpressions,
+			Target target, 
+			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		this(null, target, adviceExpressions, obligationExpressions);
+	}
+	
+	protected BaseDesicionRule(
+			Target target){
+		this(null, target, 
+				Collections.<AdviceExpression>emptyList(), 
+				Collections.<ObligationExpression>emptyList());
 	}
 	
 	/**
@@ -75,7 +83,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * @return a collection of {@link ObligationExpression}
 	 */
 	public Collection<ObligationExpression> getObligationExpressions(){
-		return Collections.unmodifiableCollection(obligationExpressions);
+		return obligationExpressions;
 	}
 	
 	/**
@@ -85,7 +93,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * @return a collection of {@link AdviceExpression}
 	 */
 	public Collection<AdviceExpression> getAdviceExpressions(){
-		return Collections.unmodifiableCollection(adviceExpressions);
+		return adviceExpressions;
 	}
 	
 	/**

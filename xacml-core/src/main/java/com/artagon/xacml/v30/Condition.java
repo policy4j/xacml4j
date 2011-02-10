@@ -72,9 +72,6 @@ public class Condition extends XacmlObject implements PolicyElement
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		if(predicate != null){
-			predicate.accept(v);
-		}
 		v.visitLeave(this);
 	}
 }

@@ -4,78 +4,6 @@ public class PolicyVisitorSupport implements PolicyVisitor
 {
 
 	@Override
-	public void visitEnter(AttributeValue attr) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(AttributeValue attr) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(AttributeDesignator designator) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(AttributeDesignator designator) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(AttributeSelector selector) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(AttributeSelector selector) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(FunctionReference function) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(FunctionReference function) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(BagOfAttributeValues bag) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(BagOfAttributeValues bag) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(VariableReference var) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(VariableReference var) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void visitEnter(VariableDefinition var) {
 		// TODO Auto-generated method stub
 		
@@ -83,18 +11,6 @@ public class PolicyVisitorSupport implements PolicyVisitor
 
 	@Override
 	public void visitLeave(VariableDefinition var) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(Apply apply) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(Apply apply) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -350,6 +266,5 @@ public class PolicyVisitorSupport implements PolicyVisitor
 		// TODO Auto-generated method stub
 		
 	}
-	
 	
 }

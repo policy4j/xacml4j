@@ -260,7 +260,6 @@ public final class BagOfAttributeValues
 
 	@Override
 	public void accept(ExpressionVisitor v) {
-		v.visitEnter(this);
-		v.visitLeave(this);
+		v.visit(this);
 	}
 }

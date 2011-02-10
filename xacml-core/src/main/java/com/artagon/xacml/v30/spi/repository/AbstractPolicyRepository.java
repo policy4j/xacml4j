@@ -182,7 +182,7 @@ public abstract class AbstractPolicyRepository
 	public final boolean add(CompositeDecisionRule r) 
 	{
 		r.accept(new DecisionAlgorithmValidatingVisitor());
-		r.accept(new FunctionValidatingVisitor());
+		//r.accept(new FunctionValidatingVisitor());
 		if(r instanceof Policy){
 			Policy p = (Policy)r;
 			if(addPolicy(p)){
@@ -257,15 +257,11 @@ public abstract class AbstractPolicyRepository
 	 * policy or policy set
 	 */
 	private class FunctionValidatingVisitor 
-		extends PolicyVisitorSupport
 	{
-		@Override
 		public void visitEnter(FunctionReference function) {
 			Preconditions.checkArgument(functions.isFunctionProvided(
 					function.getFunctionId()));
 		}
-
-		@Override
 		public void visitEnter(Apply apply) {
 			Preconditions.checkArgument(functions.isFunctionProvided(
 					apply.getFunctionId()));

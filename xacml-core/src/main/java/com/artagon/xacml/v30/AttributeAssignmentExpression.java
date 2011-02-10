@@ -78,10 +78,8 @@ public class AttributeAssignmentExpression extends XacmlObject
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) 
-	{
+	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		expression.accept(v);
 		v.visitLeave(this);
 	}
 }

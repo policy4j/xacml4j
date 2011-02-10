@@ -6,8 +6,6 @@ import java.util.Collection;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-
-
 /**
  * The class denotes application of a function to its arguments, 
  * thus encoding a {@link FunctionReference} call. The {@link Apply} can be 
@@ -31,7 +29,8 @@ public class Apply implements Expression
 	 * @param returnType a function return type
 	 * @param arguments a function invocation arguments
 	 */
-	public Apply(FunctionSpec spec, Expression ...arguments) 
+	public Apply(FunctionSpec spec, 
+			Expression ...arguments) 
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(spec != null, 
@@ -108,12 +107,7 @@ public class Apply implements Expression
 	
 	
 	@Override
-	public void accept(ExpressionVisitor v)
-	{
-		v.visitEnter(this);
-		for(Expression expression : arguments){
-			expression.accept(v);
-		}
-		v.visitLeave(this);
+	public void accept(ExpressionVisitor v){
+		v.visit(this);
 	}	
 }

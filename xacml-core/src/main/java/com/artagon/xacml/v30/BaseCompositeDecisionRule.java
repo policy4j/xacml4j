@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,10 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target,  adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(version);
+		Preconditions.checkNotNull(id, 
+				"Composite decision rule id can not be null");
+		Preconditions.checkNotNull(version, 
+				"Composite decisionrule version can not be null");
 		this.id = id;
 		this.version = version;
 	}
@@ -54,6 +57,15 @@ abstract class BaseCompositeDecisionRule extends BaseDesicionRule
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		this(id, version, null, target, adviceExpressions, obligationExpressions);
+	}
+	
+	protected BaseCompositeDecisionRule(
+			String id, 
+			Version version,
+			Target target){
+		this(id, version, null, target, 
+				Collections.<AdviceExpression>emptyList(), 
+				Collections.<ObligationExpression>emptyList());
 	}
 	
 	@Override

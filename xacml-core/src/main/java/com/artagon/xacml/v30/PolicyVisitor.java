@@ -2,11 +2,10 @@
 package com.artagon.xacml.v30;
 
 
-public interface PolicyVisitor extends ExpressionVisitor
+public interface PolicyVisitor 
 {
 	void visitEnter(VariableDefinition var);
 	void visitLeave(VariableDefinition var);
-	
 	
 	void visitEnter(Condition condition);
 	void visitLeave(Condition condition);
