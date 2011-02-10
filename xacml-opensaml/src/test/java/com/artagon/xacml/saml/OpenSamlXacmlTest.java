@@ -70,16 +70,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
 		
-		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");
-		System.out.println("----------------------------- Keystore size - " + ks.size());
-		System.out.println("----------------------------- Keystore cert - " + ks.getCertificate("1"));
-		System.out.println("----------------------------- Keystore cert - " + ks.getKey("1", "hbo".toCharArray()));
-		Enumeration<String> n = ks.aliases();
-		while(n.hasMoreElements()){
-			String k = n.nextElement();
-			System.out.println("----------------------------- Name - " + k);
-		}
-		
+		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
 		KeyStore newKs = KeyStore.getInstance("PKCS12");
 		newKs.load(null, "hbo".toCharArray());
 		Certificate[] certs = new Certificate[]{ks.getCertificate("1")};
@@ -98,14 +89,18 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		Document query = parse("XacmlSamlRequest.xml");
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		signRequest(xacmlSamlQuery);
+		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
+		OpenSamlObjectBuilder.serialize(xacmlSamlQuery, outResponse);
+		System.out.println(" Request ----- " + new String(outResponse.toByteArray()));
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
 				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
-		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
+		outResponse = new ByteArrayOutputStream();
 		OpenSamlObjectBuilder.serialize(response, outResponse);
+		System.out.println("Response ----- " + new String(outResponse.toByteArray()));
 		control.verify();		
 	}
 	

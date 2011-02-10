@@ -7,14 +7,6 @@
 	<saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">http://affiliateintegration.inhbogo.com:7001/dev.sp.inhbogo.com/COMCAST</saml2:Issuer>
 	<xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
 		<xacml-context:Subject
-			SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject">
-			<xacml-context:Attribute
-				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
-				DataType="http://www.w3.org/2001/XMLSchema#string">
-				<xacml-context:AttributeValue>https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST</xacml-context:AttributeValue>
-			</xacml-context:Attribute>
-		</xacml-context:Subject>
-		<xacml-context:Subject
 			SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
 			<xacml-context:Attribute
 				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
