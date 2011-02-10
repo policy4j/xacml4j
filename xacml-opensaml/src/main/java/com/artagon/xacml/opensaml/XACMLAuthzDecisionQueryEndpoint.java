@@ -1,16 +1,12 @@
 package com.artagon.xacml.opensaml;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
 
-import org.apache.commons.collections.functors.PredicateTransformer;
 import org.opensaml.common.xml.SAMLConstants;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.RequestAbstractType;
@@ -38,12 +34,9 @@ import org.opensaml.xml.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
@@ -52,8 +45,6 @@ import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.types.StringType;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 
 public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 {
@@ -80,16 +71,6 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		this.xacmlResponse20Unmarshaller = new Xacml20ResponseContextMarshaller();
 		this.parserPool = new BasicParserPool();
 		parserPool.setNamespaceAware(true);
-	}
-	
-	public Element handle(Element req) throws Exception
-	{
-		Document reqDoc = dbf.newDocumentBuilder().newDocument();
-		Node n = reqDoc.importNode(req, true);
-		reqDoc.appendChild(n);
-		XACMLAuthzDecisionQueryType request = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(reqDoc.getDocumentElement());
-		Response res = handle(request);
-		return OpenSamlObjectBuilder.marshall(res);
 	}
 	
 	public Response handle(RequestAbstractType request)

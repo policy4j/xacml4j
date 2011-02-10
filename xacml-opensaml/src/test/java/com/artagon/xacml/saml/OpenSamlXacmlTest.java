@@ -8,9 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.security.KeyStore.ProtectionParameter;
 import java.security.cert.Certificate;
-import java.util.Enumeration;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -50,8 +48,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 {
 	@Autowired
 	private IDPConfiguration idpConfiguration;
-	private Credential idpSigningCredential;
-	private Credential hboSigningKey;
+	private static Credential hboSigningKey;
 	private XACMLAuthzDecisionQueryEndpoint endpoint;
 	private PolicyDecisionPoint pdp;
 	private IMocksControl control;
@@ -59,6 +56,16 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	@BeforeClass
 	public static void init() throws Exception{
 		DefaultBootstrap.bootstrap();
+		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
+		Certificate[] certs = new Certificate[]{ks.getCertificate("1")};
+		PrivateKey key = (PrivateKey)ks.getKey("1", "hbo".toCharArray());
+		assertNotNull(key);
+
+		KeyStore newKs = KeyStore.getInstance("PKCS12");
+		newKs.load(null, "hbo".toCharArray());
+		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(key,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
+		
+		hboSigningKey = new KeyStoreX509CredentialAdapter(newKs, "hbo", "hbo".toCharArray());
 	}
 	
 	@Before
@@ -66,21 +73,9 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	{
 		this.control = EasyMock.createControl();
 		this.pdp = control.createMock(PolicyDecisionPoint.class);
-		this.idpSigningCredential = new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
+		new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
 		
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
-		
-		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
-		KeyStore newKs = KeyStore.getInstance("PKCS12");
-		newKs.load(null, "hbo".toCharArray());
-		Certificate[] certs = new Certificate[]{ks.getCertificate("1")};
-		PrivateKey key = (PrivateKey)ks.getKey("1", "hbo".toCharArray());
-		assertNotNull(key);
-		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(key,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
-		
-		this.hboSigningKey = new KeyStoreX509CredentialAdapter( newKs, "hbo", "hbo".toCharArray());
-		
-		
 	}
 	
 	@Test
@@ -121,10 +116,10 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		control.verify();		
 	}
 	
-	private KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
+	private static KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
 	{
 		KeyStore ks = KeyStore.getInstance(ksType);
-		ks.load(getClass().getResourceAsStream(resource), ksPwd.toCharArray());
+		ks.load(OpenSamlXacmlTest.class.getResourceAsStream(resource), ksPwd.toCharArray());
 		return ks;
 	}
 	
