@@ -175,6 +175,9 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	{ 
 		AuthzService authzService = idpConfig.getAuthzServiceByLocation(request.getDestination());
 		if(authzService == null){
+			if(log.isDebugEnabled()) {
+				log.debug("Failed to get authorization service by destination location");
+			}
 			return false;
 		}
 		return true;
