@@ -59,20 +59,28 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	
 	private DocumentBuilderFactory dbf;
 	private BasicParserPool parserPool;
+
+	private boolean requireSignatureValidation;
 	
 	public XACMLAuthzDecisionQueryEndpoint(
 			IDPConfiguration idpConfig, 
 			PolicyDecisionPoint pdp){
 		this.idpConfig = idpConfig;
 		this.pdp = pdp;
-		this.dbf = DocumentBuilderFactory.newInstance();
+
+		dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		this.xacmlRequest20Unmarshaller = new Xacml20RequestContextUnmarshaller();
-		this.xacmlResponse20Unmarshaller = new Xacml20ResponseContextMarshaller();
-		this.parserPool = new BasicParserPool();
+		xacmlRequest20Unmarshaller = new Xacml20RequestContextUnmarshaller();
+		xacmlResponse20Unmarshaller = new Xacml20ResponseContextMarshaller();
+		parserPool = new BasicParserPool();
 		parserPool.setNamespaceAware(true);
+		requireSignatureValidation = true;
 	}
-	
+
+	public void setRequireSignatureValidation(boolean flag) {
+		requireSignatureValidation = flag;
+	}
+
 	public Response handle(RequestAbstractType request)
 	{
 		if(log.isDebugEnabled()){
@@ -93,11 +101,15 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		}
 		try
 		{
-			if(!validateRequestSignature(request)){
-				if(log.isDebugEnabled()){
-					log.debug("Failed to validate signature");
+			if (requireSignatureValidation) {
+				if(!validateRequestSignature(request)){
+					if(log.isDebugEnabled()){
+						log.debug("Failed to validate signature");
+					}
+					return makeErrorResponse(request);
 				}
-				return makeErrorResponse(request);
+			} else {
+				log.info("Signature validation has been disabled");
 			}
 			if(!validateRequest(request)){
 				if(log.isDebugEnabled()){
@@ -132,7 +144,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		return response;
 	}
 	
-	public boolean validateRequestSignature(RequestAbstractType request) 
+	private boolean validateRequestSignature(RequestAbstractType request) 
 		throws ValidationException, SecurityException
 	{
 		SAMLSignatureProfileValidator validator = new SAMLSignatureProfileValidator();

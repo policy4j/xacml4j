@@ -2,6 +2,7 @@ package com.artagon.xacml.saml;
 
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import org.opensaml.DefaultBootstrap;
 import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
+import org.opensaml.saml2.core.StatusCode;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.security.SecurityHelper;
@@ -115,7 +117,28 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		System.out.println("Response ----- " + new String(outResponse.toByteArray()));
 		control.verify();		
 	}
-	
+
+	@Test
+	public void testXACMLAuthzDecisionQueryInvalidSignature() throws Exception
+	{
+		Document query = parse("TestXacmlSamlRequest-invalidSignature.xml");
+		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
+		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
+		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+		control.replay();
+		Response response1 = endpoint.handle(xacmlSamlQuery);
+
+		assertNotNull(response1);
+		assertEquals(StatusCode.REQUESTER_URI, response1.getStatus().getStatusCode().getValue());
+
+		endpoint.setRequireSignatureValidation(false);
+		Response response2 = endpoint.handle(xacmlSamlQuery);
+		assertNotNull(response2);
+		assertEquals(StatusCode.SUCCESS_URI, response2.getStatus().getStatusCode().getValue());
+		control.verify();		
+	}
+
 	private static KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
 	{
 		KeyStore ks = KeyStore.getInstance(ksType);
