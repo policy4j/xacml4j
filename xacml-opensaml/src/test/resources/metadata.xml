@@ -92,4 +92,18 @@ cJbSdt0=</ds:X509Certificate>
 		<md:AssertionConsumerService index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://affiliateintegration.inhbogo.com:7001/apps/profile/rest/profileService/ssologin/COMCAST?serviceCode=HBO"/>
 	</md:SPSSODescriptor>
 </md:EntityDescriptor>
+<md:EntityDescriptor entityID="https://qa.profile.hbogo.com/dev.sp.inhbogo.com/COMCAST">
+	<md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIDmTCCAwKgAwIBAgIJALqD5CGOBo62MA0GCSqGSIb3DQEBBQUAMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tMB4XDTEwMDgzMTE1MTUyNVoXDTIwMDgzMDE1MTUyNVowgZAxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazERMA8GA1UEBxMITmV3IFlvcmsxHjAcBgNVBAoTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEeMBwGA1UECxMVSG9tZSBCb3ggT2ZmaWNlLCBJbmMuMRswGQYDVQQDExJkZXYuc3AuaW5oYm9nby5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKtmpZ2CZ0d7iNaACHcSsrJMPgPlKc8q5cxIDhAUKFPJV910uyJ4nlwWUOSdv24Za5pIA8brSeuCuHfYXhKbUP4n/C4zdijZSNrya2CFt1RdGM4FvgfzSWR225OFD7lqRFuB3GMxHlP/x0K1rF5pDeoG5L6luwMyqNOmXnwdWmNjAgMBAAGjgfgwgfUwHQYDVR0OBBYEFLLZMlYnAQdpbdRJIrbVRVYKOwChMIHFBgNVHSMEgb0wgbqAFLLZMlYnAQdpbdRJIrbVRVYKOwChoYGWpIGTMIGQMQswCQYDVQQGEwJVUzERMA8GA1UECBMITmV3IFlvcmsxETAPBgNVBAcTCE5ldyBZb3JrMR4wHAYDVQQKExVIb21lIEJveCBPZmZpY2UsIEluYy4xHjAcBgNVBAsTFUhvbWUgQm94IE9mZmljZSwgSW5jLjEbMBkGA1UEAxMSZGV2LnNwLmluaGJvZ28uY29tggkAuoPkIY4GjrYwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQAl9eN9N/k66QvMkbNgzbnZrbs9zvqACHQLeCqDHfmFjESJIuQjqZMaZlnGZKRFRI331/zIOocPfAreFmJM0aAxboCVay4knoS+E3+4fe9+eLXCbtvAUgeTPlXvnEgsKYYOTPKjWnga+8JW2qS8cEzaCnXJ/u3l89x1mKQ5hn7Xiw==</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+		<md:AssertionConsumerService index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://qa.profile.hbogo.com/apps/profile/rest/profileService/ssologin/COMCAST?serviceCode=HBO"/>
+	</md:SPSSODescriptor>
+</md:EntityDescriptor>
 </md:EntitiesDescriptor>
