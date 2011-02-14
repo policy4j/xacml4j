@@ -1,10 +1,7 @@
 package com.artagon.xacml.saml;
 
-import java.io.ByteArrayOutputStream;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-
-
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -12,7 +9,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -37,11 +33,13 @@ public class ApacheXMLDsigGenerator
 		return (Element)found.item(0);
 	}
 	
-	public void signSamlRequest(Element req, PrivateKey privateKey, X509Certificate publicKey) throws Exception
+	public void signSamlRequest(Element req, 
+			PrivateKey privateKey, X509Certificate publicKey) throws Exception
 	{ 
 	   
 		Document doc = req.getOwnerDocument();
-		XMLSignature dsig = new XMLSignature(doc, null,  XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
+		XMLSignature dsig = new XMLSignature(doc, null,  
+				XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
 	          Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 		Element issuer = getIssuerElement(req);
 		req.insertBefore(dsig.getElement(), issuer.getNextSibling());
