@@ -129,9 +129,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			signResponse(samlResponse);
 			return samlResponse;
 		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
+			log.error(e.getMessage(), e);
 			return makeErrorResponse(request);
 		}
 	}
