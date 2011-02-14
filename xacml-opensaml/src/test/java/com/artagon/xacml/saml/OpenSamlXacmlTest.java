@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -55,17 +57,22 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	private PolicyDecisionPoint pdp;
 	private IMocksControl control;
 	
+	private static PrivateKey hboPrivate;
+	private static X509Certificate hboPublic;
+	
 	@BeforeClass
 	public static void init() throws Exception{
 		DefaultBootstrap.bootstrap();
 		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
-		Certificate[] certs = new Certificate[]{ks.getCertificate("1")};
-		PrivateKey key = (PrivateKey)ks.getKey("1", "hbo".toCharArray());
-		assertNotNull(key);
+		hboPublic = (X509Certificate)ks.getCertificate("1");
+		assertNotNull(hboPublic);
+		Certificate[] certs = new Certificate[]{hboPublic};
+		hboPrivate  = (PrivateKey)ks.getKey("1", "hbo".toCharArray());
+		assertNotNull(hboPrivate);
 
 		KeyStore newKs = KeyStore.getInstance("PKCS12");
 		newKs.load(null, "hbo".toCharArray());
-		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(key,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
+		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(hboPrivate,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
 		
 		hboSigningKey = new KeyStoreX509CredentialAdapter(newKs, "hbo", "hbo".toCharArray());
 	}
@@ -79,7 +86,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
 	}
-	
+
 	@Test
 	public void testXACMLAuthzDecisionQuery() throws Exception
 	{
@@ -137,6 +144,29 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		assertNotNull(response2);
 		assertEquals(StatusCode.SUCCESS_URI, response2.getStatus().getStatusCode().getValue());
 		control.verify();		
+	}
+	
+	@Test
+	public void testXACMLAuthzDecisionQueryNoSignatureSignWithOtherLibrary() throws Exception
+	{
+		Document query = parse("TestXacmlSamlRequest-nosignature.xml");
+		new ApacheXMLDsigGenerator().signSamlRequest(query.getDocumentElement(), hboPrivate, hboPublic);	
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		XMLUtils.outputDOMc14nWithComments(query, bos);
+		
+		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(
+				query.getDocumentElement());
+		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
+		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+		control.replay();
+		Response response1 = endpoint.handle(xacmlSamlQuery);
+
+		assertNotNull(response1);
+		assertEquals(StatusCode.SUCCESS_URI, response1.getStatus().getStatusCode().getValue());
+
+		control.verify();
 	}
 
 	private static KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
