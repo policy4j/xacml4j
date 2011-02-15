@@ -13,12 +13,10 @@ import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
-import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPoint;
-import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.collect.Iterables;
@@ -27,17 +25,14 @@ public class RSA2008InteropTest
 {
 	private static RequestUnmarshaller requestUnmarshaller;
 	private static PolicyDecisionPoint pdp;
-	private static PolicyInformationPoint pip;
 	
 	@BeforeClass
 	public static void init() throws Exception
 	{
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-		
-		
+				
 		PolicyRepository repository = new InMemoryPolicyRepository();
-
-		
+	
 		repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02b-N.xml"));
@@ -48,11 +43,14 @@ public class RSA2008InteropTest
 		repository.importPolicy(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
-		pip = new DefaultPolicyInformationPoint(new DefaultResolverRegistry());
-		pdp = new DefaultPolicyDecisionPoint(
-				new DefaultPolicyDecisionPointContextFactory(
-						repository.importPolicy(
-								getPolicy("XacmlPolicySet-01-top-level.xml")), repository, pip));
+		pdp = PolicyDecisionPointBuilder.builder()
+			.withPolicyRepository(repository)
+			.withPolicyInformationPoint(
+					PolicyInformationPointBuilder
+					.builder()
+					.withDefaultResolvers().build())
+			.withRootPolicy(repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml")))
+			.build();
 		
 	}
 	

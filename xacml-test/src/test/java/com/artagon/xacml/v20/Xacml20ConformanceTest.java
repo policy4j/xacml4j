@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
@@ -23,11 +24,13 @@ import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
 import com.artagon.xacml.v30.spi.pip.AnnotatedResolverFactory;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
@@ -42,6 +45,7 @@ public class Xacml20ConformanceTest
 	private static ResolverRegistry resolvers;
 	private static PolicyInformationPoint pip;
 	
+	private PolicyDecisionPointBuilder pdpBuilder;
 	
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -49,15 +53,11 @@ public class Xacml20ConformanceTest
 		repository = new InMemoryPolicyRepository();
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-		resolvers = new DefaultResolverRegistry();
 		
-		AnnotatedResolverFactory resolver = new AnnotatedResolverFactory();
-		Collection<AttributeResolver> all = resolver.getAttributeResolvers(new Xacml20ConformanceAttributeResolver());
-		
-		for(AttributeResolver r : all){
-			resolvers.addAttributeResolver(r);
-		}
-		pip = new DefaultPolicyInformationPoint(resolvers);
+		pip = PolicyInformationPointBuilder.builder()
+		.withDefaultResolvers()
+		.withAnnotatedResolvers(new Xacml20ConformanceAttributeResolver())
+		.build();
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
@@ -79,7 +79,13 @@ public class Xacml20ConformanceTest
 		addPolicy(repository, "IIE", "Policy.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId2.xml", 2);
-		
+	}
+	
+	@Before
+	public void init(){
+		this.pdpBuilder = PolicyDecisionPointBuilder.builder()
+		.withPolicyInformationPoint(pip)
+		.withPolicyRepository(repository);
 	}
 	
 	@Test
@@ -191,8 +197,11 @@ public class Xacml20ConformanceTest
 		append(StringUtils.leftPad(
 				Integer.toString(testCaseNum), 3, '0')).toString();
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		this.pdp = new DefaultPolicyDecisionPoint(new DefaultPolicyDecisionPointContextFactory(
-				repository.importPolicy(getPolicy(testPrefix, testCaseNum, "Policy.xml")), repository, pip));
+		this.pdp = pdpBuilder
+		.withRootPolicy(
+				repository.importPolicy(
+						getPolicy(testPrefix, testCaseNum, "Policy.xml")))
+						.build();
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
 		long end = System.currentTimeMillis();
