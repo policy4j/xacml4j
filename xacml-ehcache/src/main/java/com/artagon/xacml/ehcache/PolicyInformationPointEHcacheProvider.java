@@ -1,7 +1,10 @@
 package com.artagon.xacml.ehcache;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.transform.TransformerFactory;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -20,6 +23,8 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 	private Cache attributesCache;
 	private Cache contentCache;
 	
+	private TransformerFactory tf;
+	
 	public PolicyInformationPointEHcacheProvider(
 			Cache attributesCache,
 			Cache contentCache){
@@ -27,6 +32,7 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 		Preconditions.checkNotNull(contentCache);
 		this.attributesCache = attributesCache;
 		this.contentCache = contentCache;
+		this.tf = TransformerFactory.newInstance();
 	}
 
 	@Override
