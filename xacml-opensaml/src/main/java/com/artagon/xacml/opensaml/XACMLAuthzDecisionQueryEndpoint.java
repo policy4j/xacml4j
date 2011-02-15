@@ -89,7 +89,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 					n.getNamespaceURI(), n.getLocalPart());
 		}
 		if(!(request instanceof XACMLAuthzDecisionQueryType)){	
-			return makeErrorResponse(request);
+			return makeErrorResponse(request, "Invalid request");
 		}
 		XACMLAuthzDecisionQueryType xacml20DecisionQuery = (XACMLAuthzDecisionQueryType)request;
 		RequestType xacmlRequest = xacml20DecisionQuery.getRequest();
@@ -97,7 +97,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			if(log.isDebugEnabled()){
 				log.debug("No XACML request found in the given request");
 			}
-			return makeErrorResponse(request);
+			return makeErrorResponse(request, "Invalid request");
 		}
 		try
 		{
@@ -106,7 +106,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 					if(log.isDebugEnabled()){
 						log.debug("Failed to validate signature");
 					}
-					return makeErrorResponse(request);
+					return makeErrorResponse(request, "Failed to validate signature");
 				}
 			} else {
 				log.info("Signature validation has been disabled");
@@ -115,7 +115,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 				if(log.isDebugEnabled()){
 					log.debug("Failed to validate request");
 				}
-				return makeErrorResponse(request);
+				return makeErrorResponse(request, "Failed to validate request");
 			}
 			Document reqDom = dbf.newDocumentBuilder().newDocument();
 			OpenSamlObjectBuilder.marshallXacml20Request(xacmlRequest, reqDom);
@@ -130,14 +130,14 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			return samlResponse;
 		}catch(Exception e){
 			log.error(e.getMessage(), e);
-			return makeErrorResponse(request);
+			return makeErrorResponse(request, "Internal error");
 		}
 	}
 	
-	private Response makeErrorResponse(RequestAbstractType request)
+	private Response makeErrorResponse(RequestAbstractType request, String errorMessage)
 	{
 		Response response = OpenSamlObjectBuilder.makeResponse(request, 
-				OpenSamlObjectBuilder.makeStatus(StatusCode.REQUESTER_URI));
+				OpenSamlObjectBuilder.makeStatus(StatusCode.REQUESTER_URI, errorMessage));
 		response.setIssuer(OpenSamlObjectBuilder.makeIssuer(idpConfig.getLocalEntity().getEntityID()));
 		return response;
 	}
