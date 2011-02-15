@@ -29,6 +29,8 @@
 		<xml.resolver.version>1.2</xml.resolver.version>
 		<spring.version>3.0.4.RELEASE</spring.version>
 		<spring.ws.version>2.0.0.RELEASE</spring.ws.version>	
+		<!-- Default Source encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>	
 		<dependency>
@@ -197,8 +199,27 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
 					<skip>true</skip>
+				</configuration>
+				</plugin>
+			<!-- Coverage Report -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+					</formats>
+					<executions>
+						<execution>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
 				</configuration>
 			</plugin>
 		</plugins>
