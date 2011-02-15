@@ -40,6 +40,8 @@ public class DefaultPolicyDecisionPointTest
 	
 	private IMocksControl control;
 	
+	private PolicyDecisionPointBuilder pdpBuilder;
+	
 	@Before
 	public void init()
 	{
@@ -50,6 +52,14 @@ public class DefaultPolicyDecisionPointTest
 		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
 		this.decisionCache = control.createMock(PolicyDecisionCache.class);
 		this.xpathProvider = control.createMock(XPathProvider.class);
+		this.pdpBuilder = PolicyDecisionPointBuilder
+		.builder()
+			.withDecisionAuditor(decisionAuditor)
+			.withPolicyRepository(repository)
+			.withDecisionCache(decisionCache)
+			.withPolicyInformationPoint(pip)
+			.withRootPolicy(policyDomain)
+			.withXPathProvider(xpathProvider);
 	}
 	
 	@Test
@@ -72,14 +82,7 @@ public class DefaultPolicyDecisionPointTest
 		
 		control.replay();
 		
-		PolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				policyDomain, 
-				repository, 
-				decisionAuditor, 
-				decisionCache, 
-				xpathProvider, 
-				pip);
-		this.pdp = new DefaultPolicyDecisionPoint(factory);
+		this.pdp = pdpBuilder.build();
 		
 		ResponseContext res = pdp.decide(req);
 		assertEquals(1, res.getResults().size());
@@ -107,14 +110,7 @@ public class DefaultPolicyDecisionPointTest
 		
 		control.replay();
 		
-		PolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				policyDomain, 
-				repository, 
-				decisionAuditor, 
-				decisionCache, 
-				xpathProvider, 
-				pip);
-		this.pdp = new DefaultPolicyDecisionPoint(factory);
+		this.pdp = pdpBuilder.build();
 		
 		ResponseContext res = pdp.decide(req);
 		assertEquals(1, res.getResults().size());

@@ -44,7 +44,6 @@ public class DefaultResolverRegistry implements ResolverRegistry
 		this.contentResolversByPolicy = HashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
 		this.contentResolversById = new ConcurrentHashMap<String, ContentResolver>();
-		addAttributeResolver(new DefaultEnviromentAttributeResolver());
 	}
 	
 	public void addAttributeResolver(AttributeResolver resolver)

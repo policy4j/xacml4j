@@ -1,11 +1,9 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.LoggerFactory;
-
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
@@ -14,15 +12,12 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.RootEvaluationContext;
 import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
-import com.artagon.xacml.v30.spi.dcache.NoCachePolicyDecisionCache;
 import com.artagon.xacml.v30.spi.dcache.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.repository.DefaultPolicyReferenceResolver;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
-import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.google.common.base.Preconditions;
 
@@ -71,43 +66,6 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 		}
 		this.requestHandlers = new RequestContextHandlerChain(handlers);
-	}
-	
-	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
-			PolicyRepository repository,
-			PolicyDecisionAuditor auditor,
-			PolicyDecisionCache cache,
-			XPathProvider xpathProvider, 
-			PolicyInformationPoint pip){
-		this(policyDomain, repository, auditor, cache, xpathProvider, pip, 
-				Collections.<RequestContextHandler>emptyList());
-	}
-	
-	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
-			PolicyRepository repository, 
-			PolicyInformationPoint pip,
-			List<RequestContextHandler> handlers)
-	{
-		this(policyDomain, repository, 
-				new NoAuditPolicyDecisionPointAuditor(), 
-				new NoCachePolicyDecisionCache(), 
-				new DefaultXPathProvider(),  
-				pip, handlers);
-	}
-	
-	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
-			PolicyRepository repository, 
-			PolicyInformationPoint pip)
-	{
-		this(policyDomain, repository, 
-				new NoAuditPolicyDecisionPointAuditor(), 
-				new NoCachePolicyDecisionCache(), 
-				new DefaultXPathProvider(),  
-				pip, 
-				Collections.<RequestContextHandler>emptyList());
 	}
 	
 	public void setValidaFunctionParametersAtRuntime(
