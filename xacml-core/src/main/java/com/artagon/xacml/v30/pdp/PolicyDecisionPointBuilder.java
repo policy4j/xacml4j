@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler;
 import com.artagon.xacml.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.dcache.NoCachePolicyDecisionCache;
@@ -61,6 +62,10 @@ public class PolicyDecisionPointBuilder
 		Preconditions.checkNotNull(handler);
 		this.handlers.add(handler);
 		return this;
+	}
+	
+	public PolicyDecisionPointBuilder withDefaultRequestHandlers(){
+		return withRequestHandler(new MultipleResourcesHandler());
 	}
 	
 	public PolicyDecisionPointBuilder withPolicyInformationPoint(
