@@ -12,12 +12,12 @@ import org.w3c.dom.Node;
 
 import com.google.common.base.Preconditions;
 
-public class NodeNamespaceContext implements NamespaceContext
+public final class NodeNamespaceContext implements NamespaceContext
 {
 	private final static Logger log = LoggerFactory.getLogger(NodeNamespaceContext.class);
 	
 	private Node node;
-
+	
 	public NodeNamespaceContext(Node node){
 		Preconditions.checkNotNull(node);
 		this.node = node;
@@ -32,14 +32,20 @@ public class NodeNamespaceContext implements NamespaceContext
 	            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
 	    }
 		String namespaceURI = node.lookupNamespaceURI(prefix);
-		log.debug("NamespaceURI=\"{}\" for prefix=\"{}\"", namespaceURI, prefix);
+		if(log.isDebugEnabled()){
+			log.debug("NamespaceURI=\"{}\" " +
+					"for prefix=\"{}\"", namespaceURI, prefix);
+		}
 		return namespaceURI == null?XMLConstants.NULL_NS_URI:namespaceURI;
 	}
 
 	@Override
 	public String getPrefix(String namespaceURI) {
 		String prefix = node.lookupPrefix(namespaceURI);
-		log.debug("Namespace prefix=\"{}\" for namespaceURI=\"{}\"", prefix, namespaceURI);
+		if(log.isDebugEnabled()){
+			log.debug("Namespace prefix=\"{}\" " +
+					"for namespaceURI=\"{}\"", prefix, namespaceURI);
+		}
 		return prefix;
 	}
 
