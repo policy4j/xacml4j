@@ -48,7 +48,7 @@ public class DefaultPolicyInformationPointTest
 		.builder(registry)
 		.withCache(cache).build();
 		this.descriptor = AttributeResolverDescriptorBuilder
-		.create("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
+		.builder("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
 		.cache(30)
 		.attribute("testAttributeId1", StringType.STRING)
 		.attribute("testAttributeId2", IntegerType.INTEGER)
@@ -56,7 +56,7 @@ public class DefaultPolicyInformationPointTest
 		.build();
 		
 		this.descriptorNoCache = AttributeResolverDescriptorBuilder
-		.create("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
+		.builder("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
 		.noCache()
 		.attribute("testAttributeId3", StringType.STRING)
 		.attribute("testAttributeId4", IntegerType.INTEGER)

@@ -20,7 +20,7 @@ import com.artagon.xacml.v30.BagOfAttributeValues;
 class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {	
 	public DefaultEnviromentAttributeResolver() {
-		super(AttributeResolverDescriptorBuilder.create(
+		super(AttributeResolverDescriptorBuilder.builder(
 				"urn:oasis:names:tc:xacml:1.0:environment:resolver", 
 				"XACML Enviroment Attributes Resolver", 
 				AttributeCategories.ENVIRONMENT)

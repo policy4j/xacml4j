@@ -36,7 +36,7 @@ public class DefaultResolverRegistryTest
 		this.r2 = control.createMock(AttributeResolver.class);
 		
 		this.d1 = AttributeResolverDescriptorBuilder.
-		create("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+		builder("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testAttr1", IntegerType.INTEGER).build();
 	
 	}

@@ -42,12 +42,12 @@ public final class AttributeResolverDescriptorBuilder
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(String id, 
+	public static AttributeResolverDescriptorBuilder builder(String id, 
 			String name, AttributeCategory category){
-		return create(id, name, null, category);
+		return builder(id, name, null, category);
 	}
 	
-	public static AttributeResolverDescriptorBuilder create(String id, 
+	public static AttributeResolverDescriptorBuilder builder(String id, 
 			String name, String issuer, AttributeCategory category){
 		return new AttributeResolverDescriptorBuilder(id, name, Strings.emptyToNull(issuer), category);
 	}

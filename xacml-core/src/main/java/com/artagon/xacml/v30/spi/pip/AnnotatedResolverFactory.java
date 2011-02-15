@@ -70,7 +70,7 @@ public class AnnotatedResolverFactory
 		Preconditions.checkNotNull(m);
 		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
 		XacmlAttributeResolverDescriptor d = m.getAnnotation(XacmlAttributeResolverDescriptor.class);
-		AttributeResolverDescriptorBuilder b = AttributeResolverDescriptorBuilder.create(
+		AttributeResolverDescriptorBuilder b = AttributeResolverDescriptorBuilder.builder(
 				d.id(), d.name(), 
 				d.issuer(),
 				AttributeCategories.parse(d.category()));

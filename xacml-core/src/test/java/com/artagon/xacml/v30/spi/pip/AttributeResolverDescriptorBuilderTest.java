@@ -16,7 +16,7 @@ public class AttributeResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptor()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.create(
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
 				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testId1", IntegerType.INTEGER)
 		.attribute("testId2", StringType.STRING).build();
