@@ -1,7 +1,6 @@
 package com.artagon.xacml.v20;
 
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,17 +20,9 @@ import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
-import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPoint;
-import com.artagon.xacml.v30.pdp.DefaultPolicyDecisionPointContextFactory;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
-import com.artagon.xacml.v30.spi.pip.AnnotatedResolverFactory;
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
-import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
-import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 
@@ -42,9 +33,6 @@ public class Xacml20ConformanceTest
 	private static PolicyRepository repository;
 	private PolicyDecisionPoint pdp;
 	
-	private static ResolverRegistry resolvers;
-	private static PolicyInformationPoint pip;
-	
 	private PolicyDecisionPointBuilder pdpBuilder;
 	
 	@BeforeClass
@@ -53,11 +41,6 @@ public class Xacml20ConformanceTest
 		repository = new InMemoryPolicyRepository();
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-		
-		pip = PolicyInformationPointBuilder.builder()
-		.withDefaultResolvers()
-		.withAnnotatedResolvers(new Xacml20ConformanceAttributeResolver())
-		.build();
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
@@ -84,7 +67,10 @@ public class Xacml20ConformanceTest
 	@Before
 	public void init(){
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder()
-		.withPolicyInformationPoint(pip)
+		.withPolicyInformationPoint(PolicyInformationPointBuilder.builder()
+				.withDefaultResolvers()
+				.withAnnotatedResolvers(new Xacml20ConformanceAttributeResolver())
+				.build())
 		.withPolicyRepository(repository);
 	}
 	
