@@ -27,8 +27,8 @@ import com.google.common.collect.ImmutableList;
 
 public class DefaultFunctionInocationTest 
 {
-	private Invocation<AttributeValue> inv0;
-	private Invocation<AttributeValue> inv1;
+	private Invocation<ValueExpression> inv0;
+	private Invocation<ValueExpression> inv1;
 	private FunctionSpec spec;
 	private IMocksControl c;
 	private FunctionInvocation f0;

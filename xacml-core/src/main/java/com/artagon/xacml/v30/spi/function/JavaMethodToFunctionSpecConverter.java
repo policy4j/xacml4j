@@ -13,6 +13,7 @@ import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
@@ -163,13 +164,17 @@ class JavaMethodToFunctionSpecConverter
 			return b.build(returnType.isBag() ? type.bagType() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(invocationFactory.create(instance, m), evalContextParamFound));
+					new DefaultFunctionInvocation(invocationFactory
+							.<ValueExpression>create(instance, m), 
+							evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(returnTypeResolver.resolverClass()),
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(invocationFactory.create(instance, m), evalContextParamFound));
+					new DefaultFunctionInvocation(invocationFactory
+							.<ValueExpression>create(instance, m), 
+							evalContextParamFound));
 		}
 		throw new IllegalArgumentException(
 				"Either static return type or return type resolver must be specified");

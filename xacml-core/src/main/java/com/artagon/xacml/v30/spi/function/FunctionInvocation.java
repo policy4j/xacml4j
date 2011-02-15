@@ -26,7 +26,7 @@ public interface FunctionInvocation
 	 * @throws FunctionInvocationException if function invocation
 	 * fails 
 	 */
-	<T extends ValueExpression> T invoke(FunctionSpec spec, 
+	ValueExpression invoke(FunctionSpec spec, 
 			EvaluationContext context, Expression ...arguments) 
 		throws FunctionInvocationException;
 	
@@ -41,7 +41,7 @@ public interface FunctionInvocation
 	 * @throws FunctionInvocationException if a function
 	 * invocation fails
 	 */
-	<T extends ValueExpression> T invoke(FunctionSpec spec, 
+	ValueExpression invoke(FunctionSpec spec, 
 			EvaluationContext context, List<Expression> params) 
 		throws FunctionInvocationException;
 }

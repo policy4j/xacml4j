@@ -21,7 +21,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionInvocation.class);
 	
 	private boolean evalContextRequired;
-	private Invocation<?> invocation;
+	private Invocation<ValueExpression> invocation;
 	
 	/**
 	 * Constructs XACML function invoker
@@ -32,7 +32,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 	 * requires an {@link EvaluationContext} reference
 	 */
 	DefaultFunctionInvocation(
-			Invocation<?> invocation,
+			Invocation<ValueExpression> invocation,
 			boolean evalContextRequired)
 	{		
 		Preconditions.checkNotNull(invocation);
@@ -41,7 +41,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 	}
 	
 	@Override
-	public final <T extends ValueExpression> T invoke(FunctionSpec spec,
+	public final ValueExpression invoke(FunctionSpec spec,
 			EvaluationContext context, Expression ...params)
 			throws FunctionInvocationException{
 		return invoke(spec, context, (params == null)?
@@ -49,9 +49,8 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 					Arrays.asList(params));
 	}
 			
-	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends ValueExpression> T invoke(
+	public final ValueExpression invoke(
 			FunctionSpec spec,
 			EvaluationContext context, 
 			List<Expression> arguments)
@@ -86,7 +85,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 				}
 				params[params.length - 1] = varArgArray;
 			}
-			return (T)invocation.invoke(params);
+			return invocation.invoke(params);
 		}
 		catch(Exception e){
 			throw new FunctionInvocationException(context, spec, e);
