@@ -1,21 +1,18 @@
 
 package com.artagon.xacml.v30.spi.function;
 
-import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.util.Invocation;
-import com.artagon.xacml.v30.AttributeValue;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionInvocationException;

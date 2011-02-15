@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30.spi.function;
 
+import java.util.List;
+
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.ValueType;
@@ -20,5 +22,5 @@ public interface FunctionReturnTypeResolver
 	 * @param arguments a function invocation arguments
 	 * @return {@link ValueType} function return type
 	 */
-	ValueType resolve(FunctionSpec spec, Expression ...arguments);
+	ValueType resolve(FunctionSpec spec, List<Expression> arguments);
 }

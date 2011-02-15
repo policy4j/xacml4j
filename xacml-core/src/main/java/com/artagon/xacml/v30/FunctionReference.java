@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * A function reference expression, used
@@ -29,7 +30,7 @@ public class FunctionReference extends XacmlObject implements Expression
 	{
 		Preconditions.checkNotNull(spec);
 		this.spec = spec;
-		this.returnType = spec.resolveReturnType();
+		this.returnType = spec.resolveReturnType(ImmutableList.<Expression>of());
 		Preconditions.checkState(returnType != null);
 	}
 	

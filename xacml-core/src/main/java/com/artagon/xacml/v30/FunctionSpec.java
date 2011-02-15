@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30;
 
+import java.util.List;
+
 
 public interface FunctionSpec 
 {
@@ -62,7 +64,7 @@ public interface FunctionSpec
 	 * 
 	 * @param params an array of expressions
 	 */
-	boolean validateParameters(Expression ... params);
+	boolean validateParameters(List<Expression> arguments);
 	
 	/**
 	 * Validates given array of expressions
@@ -71,7 +73,7 @@ public interface FunctionSpec
 	 * @param params an array of expressions
 	 * @exception XacmlSyntaxException
 	 */
-	void validateParametersAndThrow(Expression ... params) 
+	void validateParametersAndThrow(List<Expression> arguments) 
 		throws XacmlSyntaxException;
 		
 	/**
@@ -81,7 +83,7 @@ public interface FunctionSpec
 	 * @param arguments a function invocation arguments
 	 * @return {@link ValueType} resolved function return type
 	 */
-	ValueType resolveReturnType(Expression ... arguments);
+	ValueType resolveReturnType(List<Expression> arguments);
 	
 	/**
 	 * Invokes this function with a given arguments
@@ -89,6 +91,15 @@ public interface FunctionSpec
 	 * @return {@link ValueExpression} instance representing
 	 * function invocation result
 	 */
-	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...expressions) 
+	<T extends ValueExpression> T invoke(EvaluationContext context, List<Expression> arguments) 
+		throws EvaluationException;
+	
+	/**
+	 * Invokes this function with a given arguments
+	 * 
+	 * @return {@link ValueExpression} instance representing
+	 * function invocation result
+	 */
+	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...arguments) 
 		throws EvaluationException;
 }

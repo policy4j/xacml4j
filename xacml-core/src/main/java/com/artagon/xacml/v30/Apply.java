@@ -1,10 +1,12 @@
 package com.artagon.xacml.v30;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * The class denotes application of a function to its arguments, 
@@ -17,7 +19,7 @@ import com.google.common.base.Preconditions;
 public class Apply implements Expression
 {	
 	private FunctionSpec spec;
-	private Expression[] arguments;
+	private List<Expression> arguments;
 	
 	private int hashCode;
 	
@@ -30,30 +32,30 @@ public class Apply implements Expression
 	 * @param arguments a function invocation arguments
 	 */
 	public Apply(FunctionSpec spec, 
-			Expression ...arguments) 
+			List<Expression> arguments) 
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(spec != null, 
 				"Can't create Apply without function, function can't be null");
-		Preconditions.checkArgument((arguments == null || arguments.length > 0), 
-				"At least one argument must be specified");
+		Preconditions.checkNotNull(arguments);
 		if(!spec.validateParameters(arguments)){
 			throw new IllegalArgumentException(
 					String.format(
 							"Given arguments=\"%s\" are not valid for function=\"%s\"", 
-							Arrays.deepToString(arguments), 
-							spec.getId()));
+							arguments, spec));
 		}
 		this.spec = spec;
-		this.arguments = Arrays.copyOf(arguments, arguments.length);
-		this.hashCode = 31 * spec.hashCode() +  Arrays.hashCode(arguments);
+		this.arguments = ImmutableList.copyOf(arguments);
+		this.hashCode = Objects.hashCode(spec, arguments);
 	}
 	
 	public Apply(FunctionSpec spec, 
-			Collection<Expression> arguments) 
+			Expression ...arguments) 
 		throws XacmlSyntaxException
 	{
-		this(spec, arguments.toArray(new Expression[0]));
+		this(spec, (arguments == null)?
+				Collections.<Expression>emptyList():
+					Arrays.asList(arguments));
 	}
 
 	
@@ -101,7 +103,7 @@ public class Apply implements Expression
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("function", spec)
-		.add("arguments", Arrays.deepToString(arguments))
+		.add("arguments", arguments)
 		.toString();
 	}
 	

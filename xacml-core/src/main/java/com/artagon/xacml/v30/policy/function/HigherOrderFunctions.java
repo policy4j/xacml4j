@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.policy.function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,34 +183,36 @@ public class HigherOrderFunctions
 		
 		@Override
 		public ValueType resolve(FunctionSpec spec, 
-				Expression... arguments) 
+				List<Expression> arguments) 
 		{
 			Preconditions.checkArgument(arguments != null, 
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, arguments must be specified", spec.getId());
-			Preconditions.checkArgument(arguments.length == spec.getNumberOfParams(), 
+			Preconditions.checkArgument(arguments.size() == spec.getNumberOfParams(), 
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, function requires 2 parameters to be specified", spec.getId());
-			Preconditions.checkArgument(arguments[0] instanceof FunctionReference, 
+			Expression ref = arguments.get(0);
+			Preconditions.checkArgument(ref instanceof FunctionReference, 
 					"First function argument must be function reference");
-			AttributeValueType type = (AttributeValueType)((FunctionReference)arguments[0]).getEvaluatesTo();
+			AttributeValueType type = (AttributeValueType)((FunctionReference)ref).getEvaluatesTo();
 			return type.bagType();
 		}
 
 		@Override
-		public boolean validate(FunctionSpec spec, Expression... arguments) 
+		public boolean validate(FunctionSpec spec, List<Expression> arguments) 
 		{
 			if(log.isDebugEnabled()){
 				log.debug("Validating function=\"{}\" parameters", spec.getId());
 			}
 			if(arguments == null || 
-					arguments.length != 2){
+					arguments.size() != 2){
 				return false;
 			}
-			if(!(arguments[0] instanceof FunctionReference)){
+			Expression exp = arguments.get(0);
+			if(!(exp instanceof FunctionReference)){
 				return false;
 			}
-			FunctionReference ref = (FunctionReference)arguments[0];
+			FunctionReference ref = (FunctionReference)exp;
 			if(ref.getNumberOfParams() != 1){
 				return false;
 			}

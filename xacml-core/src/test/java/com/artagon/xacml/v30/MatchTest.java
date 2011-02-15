@@ -1,18 +1,18 @@
 package com.artagon.xacml.v30;
 
+import static com.artagon.xacml.v30.types.BooleanType.BOOLEAN;
+import static com.artagon.xacml.v30.types.IntegerType.INTEGER;
 import static junit.framework.Assert.assertEquals;
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.spi.function.FunctionInvocation;
 import com.artagon.xacml.v30.spi.function.FunctionSpecBuilder;
-import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.google.common.collect.ImmutableList;
 
 public class MatchTest
 {
@@ -21,47 +21,48 @@ public class MatchTest
 	private EvaluationContext context;
 	private FunctionSpecBuilder builder;
 	private FunctionInvocation invocation;
+	private IMocksControl c;
 	
 	@Before
 	public void init()
 	{	
-		this.ref = createStrictMock(AttributeDesignator.class);
-		this.context = createStrictMock(EvaluationContext.class);
+		this.c = createControl();
+		this.ref = c.createMock(AttributeDesignator.class);
+		this.context = c.createMock(EvaluationContext.class);
 		this.builder = FunctionSpecBuilder.create("testFunction");
-		this.invocation = createStrictMock(FunctionInvocation.class);
-		this.spec = builder.withParam(IntegerType.INTEGER).withParam(IntegerType.INTEGER).build(
-				BooleanType.BOOLEAN, invocation);
+		this.invocation = c.createMock(FunctionInvocation.class);
+		this.spec = builder.withParam(INTEGER).withParam(INTEGER).build(
+				BOOLEAN, invocation);
 	}
 	
 	@Test
 	public void testMatchEvaluation() throws EvaluationException
 	{
-		AttributeValue int1 = IntegerType.INTEGER.create(1);
-		AttributeValue int2 = IntegerType.INTEGER.create(2);
-		BagOfAttributeValues v = IntegerType.INTEGER.bagOf(int2, int1);
-		
-		expect(ref.getDataType()).andReturn(IntegerType.INTEGER);
-		expect(ref.evaluate(context)).andReturn(v);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int2)).andReturn(BooleanType.BOOLEAN.create(false));
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, int1, int1)).andReturn(BooleanType.BOOLEAN.create(true));
-		replay(invocation, ref, context);
-		Match m = new Match(spec, int1, ref);
+		expect(ref.getDataType()).andReturn(INTEGER);
+		expect(ref.evaluate(context)).andReturn(INTEGER.bagOf(INTEGER.create(2), INTEGER.create(1)));
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
+		expect(invocation.invoke(spec, context, 
+				ImmutableList.<Expression>builder().add(INTEGER.create(1), INTEGER.create(2)).build()))
+				.andReturn(BOOLEAN.create(false));
+		expect(invocation.invoke(spec, context, 
+				ImmutableList.<Expression>builder().add(INTEGER.create(1), INTEGER.create(1)).build()))
+				.andReturn(BOOLEAN.create(true));
+		c.replay();
+		Match m = new Match(spec, INTEGER.create(1), ref);
 		assertEquals(MatchResult.MATCH, m.match(context));
-		verify(invocation, ref, context);
+		c.verify();
 	}
 	
 	@Test
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
-		expect(ref.getDataType()).andReturn(IntegerType.INTEGER);
+		expect(ref.getDataType()).andReturn(INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context, 
-				new AttributeDesignatorKey(AttributeCategories.RESOURCE, "testId", IntegerType.INTEGER, null), "Failed"));
+				new AttributeDesignatorKey(AttributeCategories.RESOURCE, "testId", INTEGER, null), "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttribute());
-		replay(invocation, ref, context);
-		Match m = new Match(spec, IntegerType.INTEGER.create(1), ref);
+		c.replay();
+		Match m = new Match(spec, INTEGER.create(1), ref);
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
-		verify(invocation, ref, context);
+		c.verify();
 	}
 }

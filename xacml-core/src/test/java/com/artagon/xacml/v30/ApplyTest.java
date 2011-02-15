@@ -8,11 +8,14 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
+import com.google.common.collect.ImmutableList;
 
 public class ApplyTest 
 {
@@ -28,7 +31,10 @@ public class ApplyTest
 	@Test
 	public void testApplyEvaluationWithValidFunctionAndValidParameters() throws XacmlException
 	{
-		Expression[] params = {IntegerType.INTEGER.create(10L), IntegerType.INTEGER.create(11L)};
+		List<Expression> params = ImmutableList.<Expression>builder()
+		.add(IntegerType.INTEGER.create(10L))
+		.add(IntegerType.INTEGER.create(11L))
+		.build();
 		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
 		Apply apply = new Apply(function, params);
@@ -45,7 +51,10 @@ public class ApplyTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
-		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(false);
+		List<Expression> params = ImmutableList.<Expression>builder()
+		.add(IntegerType.INTEGER.create(10L))
+		.build();
+		expect(function.validateParameters(params)).andReturn(false);
 		expect(function.getId()).andReturn("testId");
 		replay(function);
 		new Apply(function, IntegerType.INTEGER.create(10L));
@@ -55,8 +64,11 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
-		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
-		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
+		List<Expression> params = ImmutableList.<Expression>builder()
+		.add(IntegerType.INTEGER.create(10L))
+		.build();
+		expect(function.validateParameters(params)).andReturn(true);
+		expect(function.invoke(context, params))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
 		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
@@ -67,8 +79,11 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionParamValidationFails() throws XacmlException
 	{
-		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
-		expect(function.invoke(context, IntegerType.INTEGER.create(10L)))
+		List<Expression> params = ImmutableList.<Expression>builder()
+		.add(IntegerType.INTEGER.create(10L))
+		.build();
+		expect(function.validateParameters(params)).andReturn(true);
+		expect(function.invoke(context, params))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
 		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
@@ -79,8 +94,11 @@ public class ApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{
-		expect(function.validateParameters(IntegerType.INTEGER.create(10L))).andReturn(true);
-		expect(function.invoke(context, IntegerType.INTEGER.create(10L))).
+		List<Expression> params = ImmutableList.<Expression>builder()
+		.add(IntegerType.INTEGER.create(10L))
+		.build();
+		expect(function.validateParameters(params)).andReturn(true);
+		expect(function.invoke(context, params)).
 		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);
 		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));

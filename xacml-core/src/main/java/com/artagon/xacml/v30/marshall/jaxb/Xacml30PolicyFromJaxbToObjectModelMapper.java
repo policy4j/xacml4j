@@ -579,7 +579,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	 */
 	private Apply createApply(ApplyType apply, VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException 
 	{
-		Collection<Expression> arguments = new LinkedList<Expression>();
+		List<Expression> arguments = new LinkedList<Expression>();
 		for (JAXBElement<?> exp : apply.getExpression()) {
 			arguments.add(parseExpression(exp, m));
 		}

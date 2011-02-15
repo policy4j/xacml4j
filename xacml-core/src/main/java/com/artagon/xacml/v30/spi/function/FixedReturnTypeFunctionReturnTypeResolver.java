@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30.spi.function;
 
+import java.util.List;
+
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.ValueType;
@@ -16,7 +18,7 @@ final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnT
 	
 	@Override
 	public ValueType resolve(FunctionSpec spec, 
-			Expression... arguments) {
+			List<Expression> arguments) {
 		return returnType;
 	}
 }

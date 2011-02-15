@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30.spi.function;
 
+import java.util.List;
+
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
 
@@ -13,5 +15,5 @@ public interface FunctionParametersValidator
 	 * @return <code>true</code> if function
 	 * arguments are valid
 	 */
-	boolean validate(FunctionSpec spec, Expression ...arguments);
+	boolean validate(FunctionSpec spec, List<Expression> arguments);
 }

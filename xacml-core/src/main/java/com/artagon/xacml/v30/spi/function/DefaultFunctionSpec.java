@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30.spi.function;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -124,14 +125,19 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 	
 	@Override
-	public ValueType resolveReturnType(Expression... arguments) {
+	public ValueType resolveReturnType(List<Expression> arguments) {
 		return resolver.resolve(this, arguments);
 	}
-
+	
+	public <T extends ValueExpression> T invoke(EvaluationContext context,
+			Expression ...arguments) throws EvaluationException {
+		return this.<T>invoke(context, Arrays.asList(arguments));
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ValueExpression> T invoke(EvaluationContext context,
-			Expression... params) throws EvaluationException {
+			List<Expression> arguments) throws EvaluationException {
 		
 		try
 		{
@@ -140,10 +146,10 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 					log.debug("Validating " +
 							"function=\"{}\" parameters", functionId);
 				}
-				validateParameters(params);
+				validateParameters(arguments);
 			}
 			T result = (T)invocation.invoke(this, context, 
-					isRequiresLazyParamEval()?params:evaluate(context, params));
+					isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
 			if(log.isDebugEnabled()){
 				log.debug("Function=\"{}\" " +
 						"invocation result=\"{}\"", getId(), result);
@@ -160,10 +166,10 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	}
 
 	@Override
-	public void validateParametersAndThrow(Expression ... params) throws XacmlSyntaxException
+	public void validateParametersAndThrow(List<Expression> arguments) throws XacmlSyntaxException
 	{
 		ListIterator<FunctionParamSpec> it = parameters.listIterator();
-		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
+		ListIterator<Expression> expIt = arguments.listIterator();
 		while(it.hasNext())
 		{
 			FunctionParamSpec p = it.next();
@@ -181,16 +187,16 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 						expIt.nextIndex() - 1, functionId);
 			}
 		}
-		if(!validateAdditional(params)){
+		if(!validateAdditional(arguments)){
 			throw new XacmlSyntaxException("Failed addition validation");
 		}
 	}
 	
 	@Override
-	public boolean validateParameters(Expression ... params)
+	public boolean validateParameters(List<Expression> arguments)
 	{
 		ListIterator<FunctionParamSpec> it = parameters.listIterator();
-		ListIterator<Expression> expIt = Arrays.asList(params).listIterator();
+		ListIterator<Expression> expIt = arguments.listIterator();
 		while(it.hasNext())
 		{
 			FunctionParamSpec p = it.next();
@@ -202,7 +208,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 				return false;
 			}
 		}
-		return validateAdditional(params);
+		return validateAdditional(arguments);
 	}
 	
 	/**
@@ -215,12 +221,12 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 * @throws EvaluationException if an evaluation
 	 * error occurs
 	 */
-	private  Expression[] evaluate(EvaluationContext context, Expression ...params) 
+	private List<Expression> evaluate(EvaluationContext context, List<Expression> arguments) 
 		throws EvaluationException
 	{
-		Expression[] eval = new Expression[params.length];
-		for(int i =0; i < params.length; i++){
-			eval[i] = params[i].evaluate(context);
+		List<Expression> eval = new ArrayList<Expression>(arguments.size());
+		for(Expression exp : arguments){
+			eval.add(exp.evaluate(context));
 		}
 		return eval;
 	}
@@ -236,7 +242,7 @@ final class DefaultFunctionSpec extends XacmlObject implements FunctionSpec
 	 * @return <code>true</code> if a given parameter is valid
 	 * according specification
 	 */
-	private boolean validateAdditional(Expression ... params){
-		return (validator == null)?true:validator.validate(this, params);
+	private boolean validateAdditional(List<Expression> arguments){
+		return (validator == null)?true:validator.validate(this, arguments);
 	}	
 }
