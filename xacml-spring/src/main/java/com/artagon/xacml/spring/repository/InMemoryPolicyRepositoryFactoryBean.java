@@ -5,7 +5,9 @@ import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.spring.ResourceCollection;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
@@ -38,10 +40,25 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	@Override
 	protected PolicyRepository createInstance() throws Exception 
 	{
+		FunctionProviderBuilder functionProviderBuilder = 
+			FunctionProviderBuilder
+			.builder()
+			.withDefaultFunctions();
+		if(extensionFuctions != null){
+			functionProviderBuilder.withFunctions(extensionFuctions);
+		}
+		DecisionCombiningAlgorithmProviderBuilder decisionAlgorithmProviderBuilder = 
+			DecisionCombiningAlgorithmProviderBuilder
+			.builder()
+			.withDefaultAlgorithms();
+		if(extensionDecisionCombiningAlgorithms != null){
+			decisionAlgorithmProviderBuilder.withAlgorithmProvider(extensionDecisionCombiningAlgorithms);
+		}
+		
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				extensionFuctions, 
-				extensionDecisionCombiningAlgorithms);
+				functionProviderBuilder.build(), 
+				decisionAlgorithmProviderBuilder.build());
 		for(Resource r : resources.getResources()){
 			repository.importPolicy(r.getInputStream());
 		}
