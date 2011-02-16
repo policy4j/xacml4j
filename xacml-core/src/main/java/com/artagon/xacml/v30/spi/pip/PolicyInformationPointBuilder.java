@@ -1,30 +1,29 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public final class PolicyInformationPointBuilder 
 {
 	private PolicyInformationPointCacheProvider cache;
+	private ResolverRegistryBuilder registryBuilder;
 	private ResolverRegistry registry;
-	private AnnotatedResolverFactory annotatedResolverFactory;
 	
 	public PolicyInformationPointBuilder(){
-		this(new DefaultResolverRegistry());
+		this(null);
 	}
 	
 	public PolicyInformationPointBuilder(ResolverRegistry registry){
-		Preconditions.checkNotNull(registry);
-		this.cache = new NoCachePolicyInformationPointCacheProvider();
 		this.registry = registry;
-		this.annotatedResolverFactory = new AnnotatedResolverFactory();
+		this.cache = new NoCachePolicyInformationPointCacheProvider();
+		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
 	
 	public static PolicyInformationPointBuilder builder(){
 		return new PolicyInformationPointBuilder();
 	}
 	
-	public static PolicyInformationPointBuilder builder(ResolverRegistry registry){
+	public static PolicyInformationPointBuilder builder(
+			ResolverRegistry registry){
 		return new PolicyInformationPointBuilder(registry);
 	}
 	
@@ -39,52 +38,31 @@ public final class PolicyInformationPointBuilder
 	}
 	
 	public PolicyInformationPointBuilder withResolver(AttributeResolver resolver){
+		registryBuilder.withAttributeResolver(resolver);
+		return this;
+	}
+	
+	public PolicyInformationPointBuilder withResolver(ContentResolver resolver){
 		Preconditions.checkNotNull(resolver);
-		this.registry.addAttributeResolver(resolver);
+		registryBuilder.withContentResolver(resolver);
 		return this;
 	}
 	
 	public PolicyInformationPointBuilder withAnnotatedResolvers(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		try{
-			for(AttributeResolver r : 
-				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
-				registry.addAttributeResolver(r);
-			}
-			for(ContentResolver r : 
-				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
-				registry.addContentResolver(r);
-			}
-			return this;
-		}catch(XacmlSyntaxException e){
-			throw new IllegalArgumentException(e);
-		}
+		registryBuilder.withAnnotatedResolvers(annotatedResolver);
+		return this;
 	}
 	
 	public PolicyInformationPointBuilder withPolicyScopedAnnotatedResolvers(
 			String policyId, Object annotatedResolver){
-		Preconditions.checkNotNull(annotatedResolver);
-		Preconditions.checkNotNull(policyId);
-		try{
-			for(AttributeResolver r : 
-				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
-				registry.addAttributeResolver(policyId, r);
-			}
-			for(ContentResolver r : 
-				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
-				registry.addContentResolver(policyId, r);
-			}
-			return this;
-		}catch(XacmlSyntaxException e){
-			throw new IllegalArgumentException(e);
-		}
+		registryBuilder.withPolicyScopedAnnotatedResolvers(policyId, annotatedResolver);
+		return this;
 	}
 	
 	public PolicyInformationPointBuilder withPolicyScopedResolver(
 			String policyId, AttributeResolver resolver){
-		Preconditions.checkNotNull(policyId);
-		Preconditions.checkNotNull(resolver);
-		this.registry.addAttributeResolver(policyId, resolver);
+		registryBuilder.withPolicyScopedResolver(policyId, resolver);
 		return this;
 	}
 	
@@ -92,11 +70,12 @@ public final class PolicyInformationPointBuilder
 			String policyId, ContentResolver resolver){
 		Preconditions.checkNotNull(policyId);
 		Preconditions.checkNotNull(resolver);
-		this.registry.addContentResolver(policyId, resolver);
+		registryBuilder.withPolicyScopedResolver(policyId, resolver);
 		return this;
 	}
 	
 	public PolicyInformationPoint build(){
-		return new DefaultPolicyInformationPoint(registry, cache);
+		return new DefaultPolicyInformationPoint(
+				registryBuilder.build(registry), cache);
 	}
 }

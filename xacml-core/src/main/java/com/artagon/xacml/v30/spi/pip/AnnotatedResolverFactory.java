@@ -23,7 +23,7 @@ import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-public class AnnotatedResolverFactory 
+class AnnotatedResolverFactory 
 {
 	private  final static Logger log = LoggerFactory.getLogger(AnnotatedResolverFactory.class);
 	

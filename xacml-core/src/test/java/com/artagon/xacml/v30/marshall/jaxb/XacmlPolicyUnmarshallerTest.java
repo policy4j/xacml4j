@@ -22,7 +22,7 @@ import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
-import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 
 public class XacmlPolicyUnmarshallerTest 
 {
@@ -33,7 +33,7 @@ public class XacmlPolicyUnmarshallerTest
 	public static void init_static() throws Exception
 	{
 		reader = new XacmlPolicyUnmarshaller(
-				new DefaultXacml30Functions(), 
+				FunctionProviderBuilder.builder().withDefaultFunctions().build(), 
 				new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	

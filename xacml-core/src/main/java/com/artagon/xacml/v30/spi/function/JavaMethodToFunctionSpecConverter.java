@@ -61,7 +61,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
-		FunctionSpecBuilder b = FunctionSpecBuilder.create(funcId.id(),
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder(funcId.id(),
 				(legacyFuncId == null) ? null : legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();

@@ -16,7 +16,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class DefaultResolverRegistry implements ResolverRegistry
+class DefaultResolverRegistry implements ResolverRegistry
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultResolverRegistry.class);
 	

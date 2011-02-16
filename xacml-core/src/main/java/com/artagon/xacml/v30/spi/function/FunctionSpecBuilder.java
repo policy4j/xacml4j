@@ -26,12 +26,12 @@ public final class FunctionSpecBuilder
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
 	}
 	
-	public static FunctionSpecBuilder  create(String functionId, String legacyId){
+	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
 		return new FunctionSpecBuilder(functionId, legacyId);
 	}
 	
-	public static FunctionSpecBuilder  create(String functionId){
-		return create(functionId, null);
+	public static FunctionSpecBuilder  builder(String functionId){
+		return builder(functionId, null);
 	}
 	
 	public FunctionSpecBuilder withParamFunctionReference()

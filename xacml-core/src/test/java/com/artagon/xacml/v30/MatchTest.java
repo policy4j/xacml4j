@@ -29,7 +29,7 @@ public class MatchTest
 		this.c = createControl();
 		this.ref = c.createMock(AttributeDesignator.class);
 		this.context = c.createMock(EvaluationContext.class);
-		this.builder = FunctionSpecBuilder.create("testFunction");
+		this.builder = FunctionSpecBuilder.builder("testFunction");
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.spec = builder.withParam(INTEGER).withParam(INTEGER).build(
 				BOOLEAN, invocation);
