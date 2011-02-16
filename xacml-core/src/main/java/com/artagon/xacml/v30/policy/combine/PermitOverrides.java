@@ -12,7 +12,7 @@ import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
-class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	protected PermitOverrides(String id){
 		super(id);

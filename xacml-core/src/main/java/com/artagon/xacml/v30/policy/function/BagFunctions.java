@@ -107,7 +107,8 @@ public class BagFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue stringOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeValues bag) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
+			BagOfAttributeValues bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}

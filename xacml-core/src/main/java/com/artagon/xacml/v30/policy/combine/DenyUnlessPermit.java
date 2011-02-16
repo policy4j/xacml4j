@@ -11,7 +11,7 @@ import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
-class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	protected DenyUnlessPermit(String algorithmId){
 		super(algorithmId);

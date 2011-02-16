@@ -10,7 +10,8 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 
-class LegacyPermitOverridesPolicyCombineAlgorithm extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+public class LegacyPermitOverridesPolicyCombineAlgorithm 
+	extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides";
 

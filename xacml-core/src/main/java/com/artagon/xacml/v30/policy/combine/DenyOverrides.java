@@ -30,7 +30,7 @@ import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
  *
  * @param <D> a {@link DecisionRule} implementation type
  */
-class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	protected DenyOverrides(String id){
 		super(id);

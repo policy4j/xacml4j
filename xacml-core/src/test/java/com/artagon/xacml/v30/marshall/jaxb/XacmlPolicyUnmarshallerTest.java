@@ -21,7 +21,7 @@ import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 
 public class XacmlPolicyUnmarshallerTest 
@@ -33,8 +33,12 @@ public class XacmlPolicyUnmarshallerTest
 	public static void init_static() throws Exception
 	{
 		reader = new XacmlPolicyUnmarshaller(
-				FunctionProviderBuilder.builder().withDefaultFunctions().build(), 
-				new DefaultXacml30DecisionCombiningAlgorithms());
+				FunctionProviderBuilder
+				.builder()
+				.withDefaultFunctions().build(), 
+				DecisionCombiningAlgorithmProviderBuilder
+				.builder()
+				.withDefaultAlgorithms().build());
 	}
 	
 	@SuppressWarnings("unchecked")

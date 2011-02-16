@@ -1,8 +1,30 @@
-package com.artagon.xacml.v30.policy.combine;
+package com.artagon.xacml.v30.spi.combine;
 
-import com.artagon.xacml.v30.spi.combine.BaseDecisionCombingingAlgorithmProvider;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesPolicyCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesRuleCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyUnlessPermitPolicyCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyUnlessPermitRuleCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.FirstApplicablePolicyCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.FirstApplicableRuleCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LeagacyOrderedPermitOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyDenyOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyDenyOverridesRuleCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyOrderedDenyOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyOrderedDenyOverridesRuleCombineAlgorihm;
+import com.artagon.xacml.v30.policy.combine.LegacyOrderedPermitOverridesRuleCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesRuleCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.OnlyOneApplicablePolicyCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.OrderedDenyOverridesPolicyCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.OrderedDenyOverridesRuleCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.OrderedPermitOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.OrderedPermitOverridesRuleCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
 
-public class DefaultXacml30DecisionCombiningAlgorithms 
+class DefaultXacml30DecisionCombiningAlgorithms 
 	extends BaseDecisionCombingingAlgorithmProvider 
 {
 	public DefaultXacml30DecisionCombiningAlgorithms() 

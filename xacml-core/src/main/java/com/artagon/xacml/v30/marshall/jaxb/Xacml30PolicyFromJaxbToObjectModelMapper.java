@@ -95,7 +95,8 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
 	}
 
-	public Xacml30PolicyFromJaxbToObjectModelMapper(FunctionProvider functions, 
+	public Xacml30PolicyFromJaxbToObjectModelMapper(
+			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
 	}

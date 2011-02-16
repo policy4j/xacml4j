@@ -10,7 +10,7 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
-class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
+public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides";
 

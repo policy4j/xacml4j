@@ -14,7 +14,7 @@ import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
-class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
 	private final static Logger log = LoggerFactory.getLogger(FirstApplicable.class);
 	
