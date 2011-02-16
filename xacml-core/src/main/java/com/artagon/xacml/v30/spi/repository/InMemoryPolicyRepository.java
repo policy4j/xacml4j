@@ -34,6 +34,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
 	
+	private final static int INITIAL_POLICYSET_MAP_SIZE = 128;
+	private final static int INITIAL_POLICY_MAP_SIZE = 128;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 	
@@ -43,20 +45,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		throws Exception
 	{
 		super(functions, decisionAlgorithms);
-		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>();
-		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>();
-	}
-	
-	public InMemoryPolicyRepository() 
-		throws Exception
-	{
-		this(null, null);
-	}
-	
-	public InMemoryPolicyRepository(FunctionProvider extensionFunctions) 
-		throws Exception
-	{
-		this(extensionFunctions, null);
+		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>(INITIAL_POLICY_MAP_SIZE);
+		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>(INITIAL_POLICYSET_MAP_SIZE);
 	}
 	
 	@Override
