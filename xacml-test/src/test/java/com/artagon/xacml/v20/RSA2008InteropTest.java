@@ -15,7 +15,8 @@ import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
-import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
@@ -31,7 +32,13 @@ public class RSA2008InteropTest
 	{
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 				
-		PolicyRepository repository = new InMemoryPolicyRepository();
+		PolicyRepository repository = new InMemoryPolicyRepository(
+				FunctionProviderBuilder.builder()
+				.withDefaultFunctions()
+				.build(), 
+				DecisionCombiningAlgorithmProviderBuilder.builder()
+				.withDefaultAlgorithms()
+				.build());
 	
 		repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));

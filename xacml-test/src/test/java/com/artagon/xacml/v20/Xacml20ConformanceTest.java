@@ -22,6 +22,8 @@ import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
@@ -38,7 +40,13 @@ public class Xacml20ConformanceTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		repository = new InMemoryPolicyRepository();
+		repository = new InMemoryPolicyRepository(
+				FunctionProviderBuilder.builder()
+				.withDefaultFunctions()
+				.build(), 
+				DecisionCombiningAlgorithmProviderBuilder.builder()
+				.withDefaultAlgorithms()
+				.build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 		
