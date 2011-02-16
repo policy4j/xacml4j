@@ -63,9 +63,12 @@ class DefaultResolverRegistry implements ResolverRegistry
 			}
 			AttributeResolver oldResolver = byCategory.get(attributeId);
 				if(oldResolver != null){
-					throw new IllegalArgumentException(String.format("AttributeId=\"%s\" for " +
-								"category=\"%s\" already provided via other resolver", 
-								attributeId, d.getCategory()));
+					throw new IllegalArgumentException(String.format(
+							"Resolver id=\"%s\" attributeId=\"%s\" for " +
+								"category=\"%s\" already provided via other resolver id=\"%s\"", 
+								d.getId(),
+								attributeId, d.getCategory(),
+								oldResolver.getDescriptor().getId()));
 				}
 			byCategory.put(attributeId, resolver);
 		}

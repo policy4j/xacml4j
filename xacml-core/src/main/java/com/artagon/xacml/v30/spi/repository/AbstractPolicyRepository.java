@@ -22,6 +22,7 @@ import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.google.common.base.Preconditions;
 
 /**
@@ -41,16 +42,22 @@ public abstract class AbstractPolicyRepository
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
 	
-	protected AbstractPolicyRepository(FunctionProvider functions, 
+	protected AbstractPolicyRepository(
+			FunctionProvider extensionFunctions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws Exception
 	{
-		Preconditions.checkNotNull(functions);
+		Preconditions.checkNotNull(extensionFunctions);
 		Preconditions.checkNotNull(decisionAlgorithms);
-		this.functions = functions;
+		FunctionProviderBuilder functionProviderBuilder = FunctionProviderBuilder.builder()
+		.withDefaultFunctions();
+		if(extensionFunctions != null){
+			functionProviderBuilder.withFunctions(extensionFunctions);
+		}
+		this.functions = functionProviderBuilder.build();
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
-		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
+		this.unmarshaller = new XacmlPolicyUnmarshaller(extensionFunctions, decisionAlgorithms);
 	}
 	
 	/**

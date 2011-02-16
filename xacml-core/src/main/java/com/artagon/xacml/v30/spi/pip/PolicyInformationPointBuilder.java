@@ -6,14 +6,8 @@ public final class PolicyInformationPointBuilder
 {
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistryBuilder registryBuilder;
-	private ResolverRegistry registry;
 	
 	public PolicyInformationPointBuilder(){
-		this(null);
-	}
-	
-	public PolicyInformationPointBuilder(ResolverRegistry registry){
-		this.registry = registry;
 		this.cache = new NoCachePolicyInformationPointCacheProvider();
 		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
@@ -22,12 +16,7 @@ public final class PolicyInformationPointBuilder
 		return new PolicyInformationPointBuilder();
 	}
 	
-	public static PolicyInformationPointBuilder builder(
-			ResolverRegistry registry){
-		return new PolicyInformationPointBuilder(registry);
-	}
-	
-	public PolicyInformationPointBuilder withCache(PolicyInformationPointCacheProvider cache){
+	public PolicyInformationPointBuilder withCacheProvider(PolicyInformationPointCacheProvider cache){
 		Preconditions.checkNotNull(cache);
 		this.cache = cache;
 		return this;
@@ -50,19 +39,19 @@ public final class PolicyInformationPointBuilder
 	
 	public PolicyInformationPointBuilder withAnnotatedResolvers(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		registryBuilder.withAnnotatedResolvers(annotatedResolver);
+		registryBuilder.withResolver(annotatedResolver);
 		return this;
 	}
 	
 	public PolicyInformationPointBuilder withPolicyScopedAnnotatedResolvers(
 			String policyId, Object annotatedResolver){
-		registryBuilder.withPolicyScopedAnnotatedResolvers(policyId, annotatedResolver);
+		registryBuilder.withPolicyScopedResolver(policyId, annotatedResolver);
 		return this;
 	}
 	
 	public PolicyInformationPointBuilder withPolicyScopedResolver(
 			String policyId, AttributeResolver resolver){
-		registryBuilder.withPolicyScopedResolver(policyId, resolver);
+		registryBuilder.withPolicyScopedAttributeResolver(policyId, resolver);
 		return this;
 	}
 	
@@ -70,11 +59,16 @@ public final class PolicyInformationPointBuilder
 			String policyId, ContentResolver resolver){
 		Preconditions.checkNotNull(policyId);
 		Preconditions.checkNotNull(resolver);
-		registryBuilder.withPolicyScopedResolver(policyId, resolver);
+		registryBuilder.withPolicyScopedContentResolver(policyId, resolver);
 		return this;
 	}
 	
 	public PolicyInformationPoint build(){
+		return new DefaultPolicyInformationPoint(
+				registryBuilder.build(), cache);
+	}
+	
+	public PolicyInformationPoint build(ResolverRegistry registry){
 		return new DefaultPolicyInformationPoint(
 				registryBuilder.build(registry), cache);
 	}

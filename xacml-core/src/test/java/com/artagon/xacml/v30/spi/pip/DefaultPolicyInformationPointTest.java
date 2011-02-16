@@ -44,9 +44,7 @@ public class DefaultPolicyInformationPointTest
 		this.registry = control.createMock(ResolverRegistry.class);
 		this.attributeResolver = control.createMock(AttributeResolver.class);
 		this.context = control.createMock(EvaluationContext.class);
-		this.pip = PolicyInformationPointBuilder
-		.builder(registry)
-		.withCache(cache).build();
+		this.pip = PolicyInformationPointBuilder.builder().withCacheProvider(cache).build(registry);
 		this.descriptor = AttributeResolverDescriptorBuilder
 		.builder("testId", "Test Resolver", AttributeCategories.SUBJECT_ACCESS)
 		.cache(30)

@@ -51,8 +51,13 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	public InMemoryPolicyRepository() 
 		throws Exception
 	{
-		this(FunctionProviderBuilder.builder().withDefaultFunctions().build(), 
-				new DefaultXacml30DecisionCombiningAlgorithms());
+		this(null, new DefaultXacml30DecisionCombiningAlgorithms());
+	}
+	
+	public InMemoryPolicyRepository(FunctionProvider extensionFunctions) 
+		throws Exception
+	{
+		this(extensionFunctions, new DefaultXacml30DecisionCombiningAlgorithms());
 	}
 	
 	@Override

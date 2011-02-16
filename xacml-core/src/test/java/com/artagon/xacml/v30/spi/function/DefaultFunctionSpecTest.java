@@ -1,9 +1,8 @@
 package com.artagon.xacml.v30.spi.function;
 
 import static com.artagon.xacml.v30.types.BooleanType.BOOLEAN;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;

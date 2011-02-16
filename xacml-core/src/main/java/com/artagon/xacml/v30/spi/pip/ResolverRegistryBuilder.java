@@ -76,13 +76,20 @@ public final class ResolverRegistryBuilder
 		return this;
 	}
 	
-	public ResolverRegistryBuilder withAnnotatedResolvers(Object annotatedResolver){
+	public ResolverRegistryBuilder withResolver(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		if(annotatedResolver instanceof AttributeResolver){
-			return withAttributeResolver((AttributeResolver)annotatedResolver);
-		}
-		if(annotatedResolver instanceof ContentResolver){
-			return withContentResolver((ContentResolver)annotatedResolver);
+		
+		if((annotatedResolver instanceof AttributeResolver) ||
+				annotatedResolver instanceof ContentResolver){	
+			if(annotatedResolver instanceof AttributeResolver){
+				withAttributeResolver(
+						(AttributeResolver)annotatedResolver);
+			}
+			if(annotatedResolver instanceof ContentResolver){
+				withContentResolver(
+						(ContentResolver)annotatedResolver);
+			}
+			return this;
 		}
 		try{
 			for(AttributeResolver r : 
@@ -99,26 +106,31 @@ public final class ResolverRegistryBuilder
 		}
 	}
 	
-	public ResolverRegistryBuilder withPolicyScopedAnnotatedResolvers(
-			String policyId, Object annotatedResolver){
+	public ResolverRegistryBuilder withPolicyScopedResolver(
+			String policyId, 
+			Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		Preconditions.checkNotNull(policyId);
-		if(annotatedResolver instanceof AttributeResolver){
-			return withPolicyScopedResolver(
-					policyId, (AttributeResolver)annotatedResolver);
-		}
-		if(annotatedResolver instanceof ContentResolver){
-			return withPolicyScopedResolver(
-					policyId, (ContentResolver)annotatedResolver);
+		if((annotatedResolver instanceof AttributeResolver) ||
+				annotatedResolver instanceof ContentResolver){
+			
+			if(annotatedResolver instanceof AttributeResolver){
+				withPolicyScopedAttributeResolver(
+						policyId, (AttributeResolver)annotatedResolver);
+			}
+			if(annotatedResolver instanceof ContentResolver){
+				return withPolicyScopedContentResolver(
+						policyId, (ContentResolver)annotatedResolver);
+			}
+			return this;
 		}
 		try{
 			for(AttributeResolver r : 
 				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
-				withPolicyScopedResolver(policyId, r);
+				withPolicyScopedAttributeResolver(policyId, r);
 			}
 			for(ContentResolver r : 
 				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
-				withPolicyScopedResolver(policyId, r);
+				withPolicyScopedContentResolver(policyId, r);
 			}
 			return this;
 		}catch(XacmlSyntaxException e){
@@ -126,18 +138,24 @@ public final class ResolverRegistryBuilder
 		}
 	}
 	
-	public ResolverRegistryBuilder withPolicyScopedResolver(
+	public ResolverRegistryBuilder withPolicyScopedAttributeResolver(
 			String policyId, AttributeResolver resolver){
-		Preconditions.checkNotNull(policyId);
 		Preconditions.checkNotNull(resolver);
+		if(policyId == null){
+			withAttributeResolver(resolver);
+			return this;
+		}
 		this.policyScopedAttributeResolvers.put(policyId, resolver);
 		return this;
 	}
 	
-	public ResolverRegistryBuilder withPolicyScopedResolver(
+	public ResolverRegistryBuilder withPolicyScopedContentResolver(
 			String policyId, ContentResolver resolver){
-		Preconditions.checkNotNull(policyId);
 		Preconditions.checkNotNull(resolver);
+		if(policyId == null){
+			withContentResolver(resolver);
+			return this;
+		}
 		this.policyScopedContentResolvers.put(policyId, resolver);
 		return this;
 	}

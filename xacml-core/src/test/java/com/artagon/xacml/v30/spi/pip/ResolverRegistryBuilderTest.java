@@ -1,10 +1,11 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import org.easymock.IMocksControl;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
+import org.easymock.IMocksControl;
 import org.junit.Before;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class ResolverRegistryBuilderTest 
