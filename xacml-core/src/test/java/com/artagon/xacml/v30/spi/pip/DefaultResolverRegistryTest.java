@@ -46,6 +46,7 @@ public class DefaultResolverRegistryTest
 	{
 		expect(r1.getDescriptor()).andReturn(d1);
 		expect(r2.getDescriptor()).andReturn(d1);
+		expect(r1.getDescriptor()).andReturn(d1);
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
