@@ -4,44 +4,38 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
 import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.ResolverRegistryBuilder;
+import com.google.common.base.Preconditions;
 
 public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverRegistry>
 {
-	private Collection<AttributeResolverRegistration> attributeResolverReg;
-	private Collection<ContentResolverRegistration> contentResolverReg;
+	private ResolverRegistryBuilder registryBuilder;
 	
-	public void setAttributeResolvers(
-			Collection<AttributeResolverRegistration> resolvers){
-		this.attributeResolverReg = resolvers;
+	public ResolverRegistryFactoryBean(){
+		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
 	
-	public void setContentResolvers(
-			Collection<ContentResolverRegistration> resolvers){
-		this.contentResolverReg = resolvers;
+	public void setResolvers(
+			Collection<ResolverRegistration> resolvers){
+		Preconditions.checkNotNull(resolvers);
+		for(ResolverRegistration registration : resolvers){
+			if(registration.getPolicyId() == null){
+				registryBuilder.withResolver(
+						registration.getResolver());
+				continue;
+			}
+			registryBuilder.withPolicyScopedResolver(
+					registration.getPolicyId(), 
+					registration.getResolver());
+		}
 	}
 	
 	@Override
 	protected ResolverRegistry createInstance() 
 		throws Exception 
 	{
-		ResolverRegistry r = new DefaultResolverRegistry();
-		if(attributeResolverReg != null){
-			for(AttributeResolverRegistration areg : attributeResolverReg){
-				r.addAttributeResolvers(
-						areg.getPolicyId(), 
-						areg.getResolvers());
-			}
-		}
-		if(contentResolverReg != null){
-			for(ContentResolverRegistration areg : contentResolverReg){
-				r.addContentResolvers(
-						areg.getPolicyId(), 
-						areg.getResolvers());
-			}
-		}
-		return r;
+		return registryBuilder.build();
 	}
 	
 	@Override

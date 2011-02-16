@@ -14,8 +14,7 @@
 
 	<xsd:element name="FunctionProvider" type="xacml-spring:FunctionProviderType"/>
 	<xsd:complexType name="FunctionProviderType">
-		<xsd:attribute name="class" type="xsd:string" use="optional" />
-		<xsd:attribute name="ref" type="xsd:string" use="optional" />
+		<xsd:attribute name="class" type="xsd:string" use="required" />
 	</xsd:complexType>
 
 	<xsd:element name="FunctionProviders" type="xacml-spring:FunctionProvidersType"/>	
@@ -49,14 +48,8 @@
 	
 	
 	<!-- Attribute resolvers -->	
-	<xsd:element name="AttributeResolver" type="xacml-spring:AttributeResolverType"/>
-	<xsd:complexType name="AttributeResolverType">
-		<xsd:attribute name="ref" type="xsd:string" use="required" />
-		<xsd:attribute name="policyId" type="xsd:string" use="optional"/>
-	</xsd:complexType>
-	
-	<xsd:element name="ContentResolver" type="xacml-spring:ContentResolverType"/>
-	<xsd:complexType name="ContentResolverType">
+	<xsd:element name="Resolver" type="xacml-spring:ResolverType"/>
+	<xsd:complexType name="ResolverType">
 		<xsd:attribute name="ref" type="xsd:string" use="required" />
 		<xsd:attribute name="policyId" type="xsd:string" use="optional"/>
 	</xsd:complexType>
@@ -67,10 +60,7 @@
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
 					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-						<xsd:choice>
-							<xsd:element ref="xacml-spring:AttributeResolver"/>
-							<xsd:element ref="xacml-spring:ContentResolver"/>
-						</xsd:choice>
+							<xsd:element ref="xacml-spring:Resolver"/>
 					</xsd:sequence>
 				</xsd:extension>
 			</xsd:complexContent>
@@ -115,16 +105,6 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-	
-	<xsd:element name="InMemoryPolicyRepository" type="xacml-spring:InMemoryPolicyRepositoryType"/>
-	<xsd:complexType name="InMemoryPolicyRepositoryType">
-		<xsd:complexContent>
-			<xsd:extension base="xacml-spring:PolicyRepositoryBaseType">
-				<xsd:attribute name="resources" type="xsd:string" use="required" />
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
 	
 	<xsd:element name="RequestContextHandler" type="xacml-spring:RequestContextHandlerType"/>
 	

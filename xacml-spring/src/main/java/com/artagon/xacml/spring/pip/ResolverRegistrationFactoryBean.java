@@ -2,12 +2,10 @@ package com.artagon.xacml.spring.pip;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.spi.pip.AnnotatedResolverFactory;
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.google.common.base.Preconditions;
 
-public class AttributeResolverRegistrationFactoryBean 
-extends AbstractFactoryBean<AttributeResolverRegistration>
+public class ResolverRegistrationFactoryBean 
+extends AbstractFactoryBean<ResolverRegistration>
 {
 	private String policyId;
 	private Object instance;
@@ -31,20 +29,16 @@ extends AbstractFactoryBean<AttributeResolverRegistration>
 	}
 
 	@Override
-	protected AttributeResolverRegistration createInstance() throws Exception 
+	protected ResolverRegistration createInstance() throws Exception 
 	{
 		Preconditions.checkState(instance != null, 
 				"Resolver instance can not be null");
-		if(instance instanceof AttributeResolver){
-			return new AttributeResolverRegistration(policyId, (AttributeResolver)instance);
-		}
-		return new AttributeResolverRegistration(policyId, 
-				new AnnotatedResolverFactory().getAttributeResolvers(instance));
+		return new ResolverRegistration(policyId, instance);
 	}
 
 	@Override
-	public Class<AttributeResolverRegistration> getObjectType() {
-		return AttributeResolverRegistration.class;
+	public Class<ResolverRegistration> getObjectType() {
+		return ResolverRegistration.class;
 	}
 }
 

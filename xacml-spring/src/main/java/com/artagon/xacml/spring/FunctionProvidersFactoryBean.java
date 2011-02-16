@@ -1,37 +1,36 @@
 package com.artagon.xacml.spring;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
-import com.artagon.xacml.v30.spi.function.AggregatingFunctionProvider;
-import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.google.common.base.Preconditions;
 
-public class FunctionProvidersFactoryBean extends AbstractFactoryBean<FunctionProvider>
+public class FunctionProvidersFactoryBean extends AbstractFactoryBean<com.artagon.xacml.v30.spi.function.FunctionProvider>
 {
-	private Collection<FunctionProvider> providers;
+	private FunctionProviderBuilder builder;
 	
 	public FunctionProvidersFactoryBean() throws Exception
 	{
-		this.providers = new LinkedList<FunctionProvider>();
-		this.providers.add(new DefaultXacml30Functions());
+		this.builder = FunctionProviderBuilder.builder();
 	}
 	
 	public void setProviders(Collection<FunctionProvider> providers){
 		Preconditions.checkNotNull(providers);
-		this.providers.addAll(providers);
+		for(FunctionProvider p : providers){
+			Preconditions.checkState(p.getProviderClass() != null);
+			builder.withFunctions(p.getProviderClass());
+		}
 	}
 	
 	@Override
-	public Class<FunctionProvider> getObjectType() {
-		return FunctionProvider.class;
+	public Class<com.artagon.xacml.v30.spi.function.FunctionProvider> getObjectType() {
+		return com.artagon.xacml.v30.spi.function.FunctionProvider.class;
 	}
 
 	@Override
-	protected FunctionProvider createInstance() throws Exception {	
-		return new AggregatingFunctionProvider(providers);
+	protected com.artagon.xacml.v30.spi.function.FunctionProvider createInstance() throws Exception {	
+		return builder.build();
 	}	
 }

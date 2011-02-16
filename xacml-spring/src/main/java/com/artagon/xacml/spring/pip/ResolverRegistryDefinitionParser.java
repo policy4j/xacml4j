@@ -20,20 +20,17 @@ public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionPars
 			ParserContext parserContext) {
 		BeanDefinitionBuilder registry = BeanDefinitionBuilder.rootBeanDefinition(ResolverRegistryFactoryBean.class);
 		
-		parseAttributeResolvers(
+		parseResolvers(
 	        		 DomUtils.getChildElementsByTagName(element, 
-	        		 "AttributeResolver"), registry);
-		parseContentResolvers(
-	        		 DomUtils.getChildElementsByTagName(element, 
-	        		 "ContentResolver"), registry);
-	   
+	        		 "Resolver"), registry);
+		
 	    return registry.getBeanDefinition();
 	}
 	
-	private static BeanDefinitionBuilder parseAttributeResolvers(Element element) 
+	private static BeanDefinitionBuilder parseResolvers(Element element) 
 	{
 	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(
-	    		  AttributeResolverRegistrationFactoryBean.class);
+	    		  ResolverRegistrationFactoryBean.class);
 	      String policyId = element.getAttribute("policyId");
 	      if(StringUtils.hasText(policyId)){
 	    	  component.addPropertyValue("policyId", policyId);
@@ -45,41 +42,16 @@ public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionPars
 	      return component;
 	}
 	
-	private static BeanDefinitionBuilder parseContentResolvers(Element element) 
-	{
-	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(
-	    		  ContentResolverRegistrationFactoryBean.class);
-	      String policyId = element.getAttribute("policyId");
-	      if(StringUtils.hasText(policyId)){
-	    	  component.addPropertyValue("policyId", policyId);
-	      }
-	      String ref = element.getAttribute("ref");
-	      if(StringUtils.hasText(ref)){
-	    	  component.addPropertyReference("resolver", ref);
-	      }
-	      return component;
-	}
-	
-	private static void parseAttributeResolvers(List<Element> childElements, BeanDefinitionBuilder factory) 
+
+	private static void parseResolvers(List<Element> childElements, BeanDefinitionBuilder factory) 
 	{
 		ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	    for (int i = 0; i < childElements.size(); ++i) {
 	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder child = parseAttributeResolvers(childElement);
+	         BeanDefinitionBuilder child = parseResolvers(childElement);
 	         children.add(child.getBeanDefinition());
 	    }
-	    factory.addPropertyValue("attributeResolvers", children);
-	}
-	
-	private static void parseContentResolvers(List<Element> childElements, BeanDefinitionBuilder factory) 
-	{
-		ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
-	    for (int i = 0; i < childElements.size(); ++i) {
-	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder child = parseContentResolvers(childElement);
-	         children.add(child.getBeanDefinition());
-	    }
-	    factory.addPropertyValue("contentResolvers", children);
+	    factory.addPropertyValue("resolvers", children);
 	}
 }
 

@@ -29,14 +29,10 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	
 	private static BeanDefinitionBuilder parseComponent(Element element) 
 	{
-	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(FunctionProviderFactoryBean.class);
+	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(FunctionProvider.class);
 	      String clazz = element.getAttribute("class");
 	      if(StringUtils.hasText(clazz)){
-	    	  component.addPropertyValue("class", clazz);
-	      }
-	      String ref = element.getAttribute("ref");
-	      if(StringUtils.hasText(ref)){
-	    	  component.addPropertyReference("ref", ref);
+	    	  component.addPropertyValue("providerClass", clazz);
 	      }
 	      return component;
 	}

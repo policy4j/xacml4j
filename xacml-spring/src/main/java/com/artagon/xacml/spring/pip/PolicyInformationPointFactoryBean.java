@@ -2,27 +2,23 @@ package com.artagon.xacml.spring.pip;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.spi.pip.DefaultPolicyInformationPoint;
-import com.artagon.xacml.v30.spi.pip.DefaultResolverRegistry;
-import com.artagon.xacml.v30.spi.pip.NoCachePolicyInformationPointCacheProvider;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
-import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
+import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointCacheProvider;
+import com.artagon.xacml.v30.spi.pip.ResolverRegistry;
 import com.google.common.base.Preconditions;
 
 public class PolicyInformationPointFactoryBean 
 	extends AbstractFactoryBean<PolicyInformationPoint>
 { 
 	private ResolverRegistry registry;
-	private PolicyInformationPointCacheProvider cache;
+	private PolicyInformationPointBuilder pipBuilder;
 	
 	public PolicyInformationPointFactoryBean(){
-		this.registry = new DefaultResolverRegistry();
-		this.cache = new NoCachePolicyInformationPointCacheProvider();
+		this.pipBuilder = PolicyInformationPointBuilder.builder();
 	}
 	public void setCache(PolicyInformationPointCacheProvider cache){
-		Preconditions.checkNotNull(cache);
-		this.cache = cache;
+		pipBuilder.withCacheProvider(cache);
 	}
 	
 	public void setResolvers(ResolverRegistry registry){
@@ -40,6 +36,6 @@ public class PolicyInformationPointFactoryBean
 		throws Exception 
 	{
 		Preconditions.checkState(registry != null);
-		return new DefaultPolicyInformationPoint(registry, cache);
+		return pipBuilder.build(registry);
 	}
 }

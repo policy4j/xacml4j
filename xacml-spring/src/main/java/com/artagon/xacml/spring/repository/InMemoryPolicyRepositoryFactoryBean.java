@@ -5,9 +5,9 @@ import org.springframework.core.io.Resource;
 
 import com.artagon.xacml.spring.ResourceCollection;
 import com.artagon.xacml.v30.policy.combine.DefaultXacml30DecisionCombiningAlgorithms;
-import com.artagon.xacml.v30.policy.function.DefaultXacml30Functions;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
+import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
@@ -15,13 +15,13 @@ import com.google.common.base.Preconditions;
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
 	private ResourceCollection resources;
-	private FunctionProvider extensionFunctions;
+	private FunctionProviderBuilder functionProviderBuilder;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 	
 	public InMemoryPolicyRepositoryFactoryBean() throws Exception
 	{
 		this.extensionDecisionCombiningAlgorithms = new DefaultXacml30DecisionCombiningAlgorithms();
-		this.extensionFunctions = new DefaultXacml30Functions();
+		this.functionProviderBuilder = FunctionProviderBuilder.builder().withDefaultFunctions();
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	}
 	
 	public void setExtensionFunctions(FunctionProvider functions){
-		this.extensionFunctions = functions;
+		this.functionProviderBuilder.withFunctions(functions);
 	}
 	
 	public void setExtensionDecisionCombiningAlgorithms(
@@ -46,7 +46,8 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	protected PolicyRepository createInstance() throws Exception 
 	{
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
-		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(extensionFunctions, 
+		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
+				functionProviderBuilder.build(), 
 				extensionDecisionCombiningAlgorithms);
 		for(Resource r : resources.getResources()){
 			repository.importPolicy(r.getInputStream());
