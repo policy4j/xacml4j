@@ -48,7 +48,8 @@ public class RSA2008InteropTest
 			.withPolicyInformationPoint(
 					PolicyInformationPointBuilder
 					.builder()
-					.withDefaultResolvers().build())
+					.withDefaultResolvers()
+					.build())
 			.withRootPolicy(repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml")))
 			.build();
 		
