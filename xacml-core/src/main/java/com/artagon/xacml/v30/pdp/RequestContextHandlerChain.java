@@ -44,7 +44,7 @@ public class RequestContextHandlerChain
 			RequestContextHandler ...handlers){
 		this(Arrays.asList(handlers));
 	}
-	  
+	
 	@Override
 	public Collection<String> getFeatures() {
 		Set<String> features = Sets.newLinkedHashSet();

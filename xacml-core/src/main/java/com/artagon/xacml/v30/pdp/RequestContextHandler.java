@@ -21,7 +21,7 @@ public interface RequestContextHandler
 	/**
 	 * Gets list of supported features by this handler
 	 * 
-	 * @return a list of supported features
+	 * @return a list of supported feature identifiers
 	 */
 	Collection<String> getFeatures();
 	
