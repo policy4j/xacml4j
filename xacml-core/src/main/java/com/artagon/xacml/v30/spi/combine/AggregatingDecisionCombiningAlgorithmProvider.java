@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-final class AggregatingDecisionCombiningAlgorithmProvider 
+public final class AggregatingDecisionCombiningAlgorithmProvider 
 	implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithmProvider> ruleAlgorithms;
