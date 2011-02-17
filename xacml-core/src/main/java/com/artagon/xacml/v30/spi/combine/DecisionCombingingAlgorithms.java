@@ -4,6 +4,11 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 
+/**
+ * An utility class for evaluating {@link DecisionRule}
+ * 
+ * @author Giedrius Trumpickas
+ */
 public final class DecisionCombingingAlgorithms 
 {
 	private DecisionCombingingAlgorithms(){

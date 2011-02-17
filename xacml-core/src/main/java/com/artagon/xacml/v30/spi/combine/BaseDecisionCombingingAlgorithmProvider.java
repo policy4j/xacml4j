@@ -38,7 +38,6 @@ public class BaseDecisionCombingingAlgorithmProvider implements DecisionCombinin
 		}
 	}
 	
-	
 	@Override
 	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
 			String algorithmId) {
