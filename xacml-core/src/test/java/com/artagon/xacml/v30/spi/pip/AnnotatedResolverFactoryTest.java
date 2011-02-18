@@ -121,12 +121,13 @@ public class AnnotatedResolverFactoryTest
 		
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test
 	public void testParseAttributeResolverWithoutParameters() throws Exception
 	{
 		Method m = getMethod(this.getClass(), "resolve3");
 		assertNotNull(m);
-		p.parseAttributeResolver(this, m);		
+		AttributeResolver r = p.parseAttributeResolver(this, m);	
+		assertTrue(r.getDescriptor().getKeyRefs().isEmpty());
 	}
 	
 	@Test(expected=XacmlSyntaxException.class)
