@@ -12,12 +12,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-public class DecisionCombiningAlgorithmsProviderDefinitionParser extends AbstractBeanDefinitionParser
+public class DecisionCombiningAlgorithmProvidersDefinitionParser extends AbstractBeanDefinitionParser
 {
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(DecisionCombiningAlgorithmsProvider.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(DecisionCombiningAlgorithmProvidersFactoryBean.class);
 		List<Element> childElements = DomUtils.getChildElementsByTagName(
 				element, "DecisionCombingingAlgorithmProvider");
 	      if (childElements != null && childElements.size() > 0) {
@@ -28,7 +28,7 @@ public class DecisionCombiningAlgorithmsProviderDefinitionParser extends Abstrac
 	
 	private static BeanDefinitionBuilder parseComponent(Element element) 
 	{
-	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(DecisionCombingingAlgorithmProviderFactoryBean.class);
+	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(DecisionCombingingAlgorithmProviderBean.class);
 	      String clazz = element.getAttribute("class");
 	      if(StringUtils.hasText(clazz)){
 	    	  component.addPropertyValue("class", clazz);

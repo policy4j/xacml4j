@@ -15,7 +15,7 @@ public class NamespaceHandler extends NamespaceHandlerSupport
 	public void init() 
 	{
 		registerBeanDefinitionParser("FunctionProviders", new FunctionProvidersDefintionParser());
-		registerBeanDefinitionParser("DecisionCombingingAlgorithms", new DecisionCombiningAlgorithmsProviderDefinitionParser());
+		registerBeanDefinitionParser("DecisionCombingingAlgorithms", new DecisionCombiningAlgorithmProvidersDefinitionParser());
 		registerBeanDefinitionParser("PolicyInformationPoint",  new PolicyInformationPointDefinitionParser());
 		registerBeanDefinitionParser("RequestContextHandlerChain",  new RequestContextHandlerChainDefinitionParser());
 		registerBeanDefinitionParser("ResolverRegistry",  new ResolverRegistryDefinitionParser());
