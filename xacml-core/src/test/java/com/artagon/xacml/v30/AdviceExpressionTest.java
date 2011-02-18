@@ -37,6 +37,7 @@ public class AdviceExpressionTest
 	@Test
 	public void testCreateAdviceExpression() throws XacmlException
 	{
+		expect(attrExp0.getAttributeId()).andReturn("testId0");
 		c.replay();
 		AdviceExpression exp = new AdviceExpression("test",Effect.DENY, Collections.singletonList(attrExp0));
 		assertTrue(exp.isApplicable(Decision.DENY));
