@@ -69,12 +69,12 @@ public class AttributeAssignmentExpression extends XacmlObject
 		return issuer;
 	}
 	
-	public AttributeValue evaluate(EvaluationContext context) 
+	public ValueExpression evaluate(EvaluationContext context) 
 		throws EvaluationException
 	{
-		AttributeValue attribute = (AttributeValue)expression.evaluate(context);
-		Preconditions.checkState(attribute != null);
-		return attribute;
+		ValueExpression val =  (ValueExpression)expression.evaluate(context);
+		Preconditions.checkState(val != null);
+		return val;
 	}
 
 	@Override

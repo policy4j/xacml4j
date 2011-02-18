@@ -29,6 +29,14 @@ public class DecisionCombiningAlgorithmProviderBuilder
 		return this;
 	}
 	
+	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProviders(
+			Iterable<DecisionCombiningAlgorithmProvider> providers){
+		for(DecisionCombiningAlgorithmProvider p : providers){
+			withAlgorithmProvider(p);
+		}
+		return this;
+	}
+	
 	public DecisionCombiningAlgorithmProvider build(){
 		return new AggregatingDecisionCombiningAlgorithmProvider(providers);
 	}
