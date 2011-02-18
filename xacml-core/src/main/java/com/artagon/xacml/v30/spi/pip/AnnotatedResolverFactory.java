@@ -122,8 +122,6 @@ class AnnotatedResolverFactory
 				new Invocation<Node>(instance, m, info.getFirst()));
 	}
 	
-	
-	
 	private Pair<Boolean, List<AttributeReferenceKey>> parseResolverMethodParams(Method m) 
 		throws XacmlSyntaxException
 	{		
