@@ -1,7 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +42,7 @@ public class DefaultPolicyDecisionPointContextFactory
 			PolicyDecisionCache cache,
 			XPathProvider xpathProvider, 
 			PolicyInformationPoint pip,
-			List<RequestContextHandler> handlers)
+			RequestContextHandlerChain handlerChain)
 	{
 		Preconditions.checkArgument(policyDomain != null);
 		Preconditions.checkArgument(repository != null);
@@ -58,14 +56,7 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.policyDomain = policyDomain;
 		this.decisionAuditor = auditor;
 		this.decisionCache = cache;
-		for(RequestContextHandler h : handlers){
-			if(log.isDebugEnabled()){
-				log.debug("Adding handler " +
-						"with fetures=\"{}\"", 
-						h.getFeatures());
-			}
-		}
-		this.requestHandlers = new RequestContextHandlerChain(handlers);
+		this.requestHandlers = handlerChain;
 	}
 	
 	public void setValidaFunctionParametersAtRuntime(

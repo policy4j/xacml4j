@@ -93,8 +93,9 @@ public class PolicyDecisionPointBuilder
 		Preconditions.checkState(repository != null);
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(rootPolicy != null);
+		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				rootPolicy, repository, decisionAuditor,  decisionCache, xpathProvider, pip, handlers);
+				rootPolicy, repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
 		return new DefaultPolicyDecisionPoint(factory);
 	}
 }
