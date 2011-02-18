@@ -129,10 +129,6 @@ class AnnotatedResolverFactory
 	{		
 		List<AttributeReferenceKey> keys = new LinkedList<AttributeReferenceKey>();
 		Class<?>[] types = m.getParameterTypes();
-		if(types.length == 0){
-			throw new XacmlSyntaxException("Resolver method=\"%s\" " +
-					"must have at least one parameter", m.getName());
-		}
 		boolean needPipContext = false;
 		int  i = 0;
 		for(Annotation[] p : m.getParameterAnnotations())
