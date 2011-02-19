@@ -8,7 +8,23 @@
 		
 	<bean id="cacheManager"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:ehcache-test-config.xml"/>
+		<property name="configLocation" value="classpath:/ehcache-test-config.xml"/>
 	</bean>
 	
+	<bean id="attributeCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager"/>		
+		<property name="cacheName" value="com.artagon.xacml.pip.attributeCache"/>		
+	</bean>
+	
+	<bean id="contentCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager"/>		
+		<property name="cacheName" value="com.artagon.xacml.pip.contentCache"/>		
+	</bean>
+	
+	<bean id="pipCache" class="com.artagon.xacml.ehcache.PolicyInformationPointEHcacheProvider"> 
+		<constructor-arg ref="attributeCache"/>
+		<constructor-arg ref="contentCache"/>
+	</bean>
 </beans>

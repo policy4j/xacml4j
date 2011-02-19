@@ -1,6 +1,5 @@
 package com.artagon.xacml.ehcache;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
