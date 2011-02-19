@@ -25,9 +25,11 @@ public interface MultipleResourcesResolver
 	 * @param callback a request context attribute callback
 	 * @return a collection of immediate children of the given resource
 	 */
-	Collection<AttributeValue> resolveChildrenResources(AttributeValue resource, 
+	Collection<AttributeValue> resolveChildrenResources(
+			AttributeValue resource, 
 			RequestContextCallback callback);
 	
-	Collection<AttributeValue> resolveDescendantResources(AttributeValue resource, 
+	Collection<AttributeValue> resolveDescendantResources(
+			AttributeValue resource, 
 			RequestContextCallback callback);
 }

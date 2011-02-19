@@ -1,8 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationContextHandler;
@@ -21,9 +18,7 @@ import com.google.common.base.Preconditions;
 
 public class DefaultPolicyDecisionPointContextFactory 
 	implements PolicyDecisionPointContextFactory
-{
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPointContextFactory.class);
-	
+{	
 	private PolicyInformationPoint pip;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;

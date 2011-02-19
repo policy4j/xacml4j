@@ -14,7 +14,7 @@ import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.types.XPathExpressionType;
 
-public class MultipleResourcesViaXPathExpressionLegacyHandler 
+final class MultipleResourcesViaXPathExpressionLegacyHandler 
 	extends AbstractRequestContextHandler
 {
 	final static String FEATURE_ID = "urn:oasis:names:tc:xacml:2.0:profile:multiple:xpath-expression";

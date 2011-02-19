@@ -18,7 +18,7 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories";
 	
-	MultipleResourcesViaRepeatingAttributesHandler(){
+	public MultipleResourcesViaRepeatingAttributesHandler(){
 		super(FEATURE_ID);
 	}
 	

@@ -39,7 +39,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 	
-	MultipleResourcesViaXPathExpressionHandler(){
+	public MultipleResourcesViaXPathExpressionHandler(){
 		super(FEATURE_ID);
 	}
 	
