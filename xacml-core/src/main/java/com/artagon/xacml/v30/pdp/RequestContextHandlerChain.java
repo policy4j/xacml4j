@@ -30,7 +30,7 @@ public class RequestContextHandlerChain
 		this.handlers = new LinkedList<RequestContextHandler>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
-		for(RequestContextHandler h : handlers){	
+		for(RequestContextHandler h : handlers){
 			if(prev == null){
 				prev = h;
 				continue;
