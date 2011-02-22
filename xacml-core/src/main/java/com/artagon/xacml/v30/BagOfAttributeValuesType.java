@@ -14,8 +14,7 @@ import com.google.common.base.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributeValuesType extends XacmlObject 
-	implements ValueType
+public final class BagOfAttributeValuesType implements ValueType
 {
 	private static final long serialVersionUID = 1317103379388105997L;
 	
@@ -90,8 +89,31 @@ public final class BagOfAttributeValuesType extends XacmlObject
 		}
 		return create(attrs);
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof BagOfAttributeValuesType)){
+			return false;
+		}
+		BagOfAttributeValuesType bt = (BagOfAttributeValuesType)o;
+		return type.equals(bt.type);
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(type);
+	}
+	
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this).add("TypeId", type.getDataTypeId()).toString();
+		return Objects.toStringHelper(this)
+		.add("TypeId", type.getDataTypeId())
+		.toString();
 	}
 }

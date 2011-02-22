@@ -74,6 +74,15 @@ public class Apply implements Expression
 	}
 	
 	/**
+	 * Gets function invocation arguments
+	 * 
+	 * @return an immutable instance of {@link List}
+	 */
+	public List<Expression> getArguments(){
+		return arguments;
+	}
+	
+	/**
 	 * Evaluates given expression by invoking function
 	 * with a given parameters
 	 * 

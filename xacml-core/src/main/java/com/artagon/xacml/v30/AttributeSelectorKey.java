@@ -19,10 +19,21 @@ public final class AttributeSelectorKey
 				category, xpath, dataType, contextAttributeId);
 	}
 	
+	/**
+	 * Gets selector XPath expression
+	 * 
+	 * @return selector xpath expression
+	 */
 	public String getPath(){
 		return xpath;
 	}
 	
+	/**
+	 * Gets context selector attribute identifier
+	 * 
+	 * @return an attribute identifier or <code>null</code>
+	 * if no attribute is specified
+	 */
 	public String getContextSelectorId(){
 		return contextSelectorId;
 	}

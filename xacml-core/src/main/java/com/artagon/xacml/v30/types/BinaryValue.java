@@ -6,8 +6,8 @@ import com.artagon.xacml.util.Base64;
 
 /**
  * A base class for XACML binary values
- * @author trumpyla
- *
+ * 
+ * @author Giedrius Trumpickas
  */
 public class BinaryValue
 {

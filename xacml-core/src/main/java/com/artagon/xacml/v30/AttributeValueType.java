@@ -2,8 +2,6 @@ package com.artagon.xacml.v30;
 
 import java.util.Collection;
 
-
-
 public interface AttributeValueType  extends ValueType
 {
 	/**
@@ -62,7 +60,27 @@ public interface AttributeValueType  extends ValueType
 	 */
 	BagOfAttributeValuesType bagType();
 	
+	/**
+	 * Creates a bag from the given array of
+	 * {@link AttributeValue} instances
+	 * 
+	 * @param values an array of bag values
+	 * @return {@link BagOfAttributeValues}
+	 * @exception IllegalArgumentException if bag
+	 * can not be created from a given values
+	 */
 	BagOfAttributeValues bagOf(AttributeValue ...values);
+	
+	
+	/**
+	 * Creates a bag from the given collection of
+	 * {@link AttributeValue} instances
+	 * 
+	 * @param values a collection of values
+	 * @return {@link BagOfAttributeValues}
+	 * @exception IllegalArgumentException if bag
+	 * can not be created from a given values
+	 */
 	BagOfAttributeValues bagOf(Collection<AttributeValue> values);
 	BagOfAttributeValues bagOf(Object ...values);
 	BagOfAttributeValues emptyBag();
