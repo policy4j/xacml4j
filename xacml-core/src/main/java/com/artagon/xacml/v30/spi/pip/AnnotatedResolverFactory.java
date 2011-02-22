@@ -105,7 +105,7 @@ class AnnotatedResolverFactory
 		Preconditions.checkNotNull(m);
 		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
 		XacmlContentResolverDescriptor d = m.getAnnotation(XacmlContentResolverDescriptor.class);
-		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.create(
+		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.bulder(
 				d.id(), d.name(), 
 				AttributeCategories.parse(d.category()));
 		b.cache(d.cacheTTL());

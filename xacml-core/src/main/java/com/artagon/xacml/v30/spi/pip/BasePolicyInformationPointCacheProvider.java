@@ -32,7 +32,7 @@ public class BasePolicyInformationPointCacheProvider implements PolicyInformatio
 	@Override
 	public final void putAttributes(ResolverContext context, AttributeSet v) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
-		Preconditions.checkArgument(context.getDescriptor() == v.getDescriptor());
+		Preconditions.checkArgument(d.getId().equals(v.getDescriptor().getId()));
 		if(d.isCachable()){
 			doPutAttributes(d, context.getKeys(), v);
 		}

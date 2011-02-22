@@ -31,7 +31,7 @@ public final class ContentResolverDescriptorBuilder
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
 	
-	public static ContentResolverDescriptorBuilder create(String id, String name, AttributeCategory category){
+	public static ContentResolverDescriptorBuilder bulder(String id, String name, AttributeCategory category){
 		return new ContentResolverDescriptorBuilder(id, name, category);
 	}
 	

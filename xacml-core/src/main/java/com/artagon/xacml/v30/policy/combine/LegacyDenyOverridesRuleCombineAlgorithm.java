@@ -9,6 +9,7 @@ import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {
@@ -21,7 +22,8 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 	LegacyDenyOverridesRuleCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
-
+	
+	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
 	@Override
 	public Decision combine(List<Rule> rules, EvaluationContext context) 
 	{
