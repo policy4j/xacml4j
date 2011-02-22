@@ -63,7 +63,7 @@ public class PolicyInformationPointEHcacheProviderTest extends AbstractJUnit4Spr
 		pipCache.putAttributes(context, set1);
 		AttributeSet set2 = pipCache.getAttributes(context);
 		assertNotNull(set2);
-		assertEquals(set1, set2);
+		assertEquals(set1.getDescriptor().getId(), set2.getDescriptor().getId());
 		c.verify();
 	}
 }
