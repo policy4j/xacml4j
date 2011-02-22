@@ -187,9 +187,13 @@ public final class RFC822Name implements Serializable
 	}
 	
 	public static RFC822Name parse(String name){
+		Preconditions.checkNotNull(name);
+		String trimmedName = name.trim();
+		Preconditions.checkArgument(
+				trimmedName.endsWith(">") || trimmedName.indexOf('@') > 0,
+				"Given value=\"%s\" is invalid RFC822 name", name);
 		Preconditions.checkArgument(VALID_PATTERN.matcher(name).matches(),
 				"Given value=\"%s\" is invalid RFC822 name", name);
-		String trimmedName = name.trim();
 		if (trimmedName.endsWith(">")) {
 			trimmedName = trimmedName.substring(trimmedName.lastIndexOf('<')+1,
 					trimmedName.length()-1);
