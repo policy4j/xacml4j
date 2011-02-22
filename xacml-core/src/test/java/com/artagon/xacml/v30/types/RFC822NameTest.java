@@ -21,7 +21,12 @@ public class RFC822NameTest
 		assertEquals("tEst", n.getLocalPart());
 		assertEquals("test.org", n.getDomainPart());
 	}
-	
+
+	@Test(expected=IllegalArgumentException.class)
+	public void parseInvalidName() {
+		RFC822Name.parse("13b3f46cbea4d9388066e08cc58134381ec8a7d7");
+	}
+
 	@Test
 	public void testMatch()
 	{
