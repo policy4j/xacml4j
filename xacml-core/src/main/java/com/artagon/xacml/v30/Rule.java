@@ -93,6 +93,10 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		return context;
 	}
 	
+	/**
+	 * Implementation checks if this rule is 
+	 * enclosed by the parent policy in the evaluation context
+	 */
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicy() != null;
@@ -117,7 +121,8 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		Decision d = (result == ConditionResult.TRUE)?
 				getEffect().getResult():Decision.NOT_APPLICABLE;
 		if(log.isDebugEnabled()){
-			log.debug("Rule id=\"{}\" decision result=\"{}\"", getId(), d);
+			log.debug("Rule id=\"{}\" " +
+					"decision result=\"{}\"", getId(), d);
 		}
 		return d;
 	}
@@ -141,7 +146,8 @@ public class Rule extends BaseDesicionRule implements PolicyElement
 		}
 		if(log.isDebugEnabled()){
 			log.debug("Rule=\"{}\" " +
-					"match result is=\"{}\", not evaluating rule", getId(), r);
+					"match result is=\"{}\", " +
+					"not evaluating rule", getId(), r);
 		}
 		return (r == MatchResult.INDETERMINATE)?
 				getExtendedIndeterminate():Decision.NOT_APPLICABLE;

@@ -16,16 +16,28 @@ public final class PolicyInformationPointBuilder
 		return new PolicyInformationPointBuilder();
 	}
 	
-	public PolicyInformationPointBuilder withCacheProvider(PolicyInformationPointCacheProvider cache){
+	public PolicyInformationPointBuilder withCacheProvider(
+			PolicyInformationPointCacheProvider cache){
 		Preconditions.checkNotNull(cache);
 		this.cache = cache;
 		return this;
 	}
 	
+	/**
+	 * Adds default XACML 3.0 resolvers to this builder
+	 * 
+	 * @return {@link PolicyInformationPointBuilder}
+	 */
 	public PolicyInformationPointBuilder withDefaultResolvers(){
 		return withResolver(new DefaultEnviromentAttributeResolver());
 	}
 	
+	/**
+	 * Adds root resolver to this builder
+	 * 
+	 * @param resolver a resolver
+	 * @return {@link PolicyInformationPointBuilder}
+	 */
 	public PolicyInformationPointBuilder withResolver(AttributeResolver resolver){
 		registryBuilder.withAttributeResolver(resolver);
 		return this;

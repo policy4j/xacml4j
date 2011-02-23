@@ -18,6 +18,10 @@ public class RFC822NameTest
 		assertEquals("test.org", n.getDomainPart());
 	}
 
+	/**
+	 * Test case tests RegExp DoS attack vector
+	 * on email validation
+	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void parseInvalidName() {
 		RFC822Name.parse("13b3f46cbea4d9388066e08cc58134381ec8a7d7");
