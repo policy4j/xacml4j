@@ -59,7 +59,7 @@ public final class RFC822Name implements Serializable
 	 * <p>Its default value is <tt>true</tt> to remain RFC 2822 compliant, but
 	 * you should set it depending on what you need for your application.
 	 */
-	private static final boolean ALLOW_QUOTED_IDENTIFIERS = true;
+	private static final boolean ALLOW_QUOTED_IDENTIFIERS = false;
 
 	// RFC 2822 2.2.2 Structured Header Field Bodies
 	private static final String WSP = "[ \\t]"; //space or tab
@@ -189,15 +189,8 @@ public final class RFC822Name implements Serializable
 	public static RFC822Name parse(String name){
 		Preconditions.checkNotNull(name);
 		String trimmedName = name.trim();
-		Preconditions.checkArgument(
-				trimmedName.endsWith(">") || trimmedName.indexOf('@') > 0,
-				"Given value=\"%s\" is invalid RFC822 name", name);
 		Preconditions.checkArgument(VALID_PATTERN.matcher(name).matches(),
 				"Given value=\"%s\" is invalid RFC822 name", name);
-		if (trimmedName.endsWith(">")) {
-			trimmedName = trimmedName.substring(trimmedName.lastIndexOf('<')+1,
-					trimmedName.length()-1);
-		}
 		String [] parts = trimmedName.split("@");
 		return new RFC822Name(parts[0], parts[1]);
 	}
