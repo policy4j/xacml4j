@@ -9,6 +9,7 @@ import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {
@@ -22,10 +23,11 @@ public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombi
 	public LegacyPermitOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
-
-
+	
+	
+	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides")
 	@Override
-	public Decision combine(List<Rule> rules, EvaluationContext context) 
+	public Decision combine(EvaluationContext context, List<Rule> rules) 
 	{
 		boolean atLeastOneError = false;
 		boolean potentialPermit = false;

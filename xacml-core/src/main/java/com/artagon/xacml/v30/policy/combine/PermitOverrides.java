@@ -21,8 +21,7 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides")
 	@Override
-	public Decision combine(List<D> decisions,
-			EvaluationContext context) 
+	public Decision combine(EvaluationContext context, List<D> decisions) 
 	{
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;

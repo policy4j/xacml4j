@@ -12,6 +12,7 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.policy.combine.DenyOverrides;
 
 public class AnnotationBasedDecisionCombiningAlgorithmProviderTest 
 {
@@ -40,6 +41,12 @@ public class AnnotationBasedDecisionCombiningAlgorithmProviderTest
 		DecisionCombiningAlgorithm<CompositeDecisionRule> a = p.createPolicyDecisionCombineAlgorithm(getMethod(AnnotationBasedDecisionCombiningAlgorithmProviderTest.class, "test1"));
 		assertNotNull(a);
 		assertEquals("test1Algo", a.getId());
+	}
+	
+	@Test
+	public void testParse()
+	{
+		p.parse(DenyOverrides.class);
 	}
 	
 	private static Method getMethod(Class<?> clazz, String name)

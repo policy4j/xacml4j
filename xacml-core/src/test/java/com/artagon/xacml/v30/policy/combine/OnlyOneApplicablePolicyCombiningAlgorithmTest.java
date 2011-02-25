@@ -45,7 +45,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d2.createContext(context)).andReturn(c2);
 		expect(d2.isApplicable(c2)).andReturn(MatchResult.NOMATCH);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.NOT_APPLICABLE, c.combine(d, context));
+		assertEquals(Decision.NOT_APPLICABLE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
 	
@@ -61,7 +61,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d1.createContext(context)).andReturn(c1);
 		expect(d1.isApplicable(c1)).andReturn(MatchResult.INDETERMINATE);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		assertEquals(Decision.INDETERMINATE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
 	
@@ -79,7 +79,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d2.createContext(context)).andReturn(c2);
 		expect(d2.isApplicable(c2)).andReturn(MatchResult.MATCH);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		assertEquals(Decision.INDETERMINATE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
 	
@@ -98,7 +98,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d2.isApplicable(c2)).andReturn(MatchResult.NOMATCH);
 		expect(d1.evaluate(c1)).andReturn(Decision.PERMIT);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.PERMIT, c.combine(d, context));
+		assertEquals(Decision.PERMIT, c.combine(context, d));
 		verify(d1, d2, context, c2, c2);
 	}
 	
@@ -117,7 +117,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d2.isApplicable(c2)).andReturn(MatchResult.NOMATCH);
 		expect(d1.evaluate(c1)).andReturn(Decision.DENY);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.DENY, c.combine(d, context));
+		assertEquals(Decision.DENY, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
 	
@@ -136,7 +136,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		expect(d2.isApplicable(c2)).andReturn(MatchResult.NOMATCH);
 		expect(d1.evaluate(c1)).andReturn(Decision.INDETERMINATE);
 		replay(d1, d2, context, c1, c2);
-		assertEquals(Decision.INDETERMINATE, c.combine(d, context));
+		assertEquals(Decision.INDETERMINATE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
 }

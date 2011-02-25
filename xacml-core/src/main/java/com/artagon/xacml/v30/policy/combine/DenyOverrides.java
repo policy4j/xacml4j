@@ -39,8 +39,7 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides")
 	@Override
-	public final Decision combine(List<D> decisions,
-			EvaluationContext context) 
+	public final Decision combine(EvaluationContext context, List<D> decisions) 
 	{
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;

@@ -25,8 +25,7 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
 	@Override
-	public final Decision combine(List<D> decisions,
-			EvaluationContext context) 
+	public final Decision combine(EvaluationContext context, List<D> decisions) 
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfApplicable(context, d);

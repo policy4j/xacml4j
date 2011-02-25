@@ -37,20 +37,18 @@ public final class AttributeSet
 		return d;
 	}
 	
-	public BagOfAttributeValues get(String attributeId){
+	/**
+	 * Gets attribute values from this set
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @return {@link BagOfAttributeValues}
+	 */
+	public BagOfAttributeValues get(String attributeId)
+	{
 		BagOfAttributeValues v = values.get(attributeId);
 		AttributeDescriptor ad = d.getAttribute(attributeId);
 		Preconditions.checkState(ad != null);
 		return (v != null)?v:ad.getDataType().emptyBag();
-	}
-	
-	public void add(String attributeId, BagOfAttributeValues v){
-		Preconditions.checkNotNull(attributeId);
-		Preconditions.checkNotNull(v);
-		AttributeDescriptor ad = d.getAttribute(attributeId);
-		Preconditions.checkArgument(ad != null);
-		Preconditions.checkArgument(ad.getDataType().equals(v.getDataType()));
-		values.put(attributeId, v);
 	}
 	
 	public Iterable<String> getAttributeIds(){

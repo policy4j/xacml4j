@@ -17,6 +17,7 @@ package com.artagon.xacml.util;
  */
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -29,7 +30,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Eric Dalquist
  * @version $Revision$
  */
-public final class MultiKeyConcurrentMap<K1, K2, V> implements Serializable 
+public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable 
 {
 	private static final long serialVersionUID = -5305668694683812841L;
 	private final ConcurrentMap<K1, ConcurrentMap<K2, V>> map = new ConcurrentHashMap<K1, ConcurrentMap<K2,V>>();
@@ -67,6 +68,10 @@ public final class MultiKeyConcurrentMap<K1, K2, V> implements Serializable
     public V putIfAbsent(K1 key1, K2 key2, V value) {
         final ConcurrentMap<K2, V> subMap = this.getOrCreateSubMap(key1);
         return subMap.putIfAbsent(key2, value);
+    }
+    
+    public Map<K2, V> get(K1 k){
+    	return map.get(k);
     }
     
     /**

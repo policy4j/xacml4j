@@ -25,7 +25,7 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 	
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
 	@Override
-	public Decision combine(List<Rule> rules, EvaluationContext context) 
+	public Decision combine(EvaluationContext context, List<Rule> rules) 
 	{
 		boolean potentialDeny	= false;
 		boolean atLeastOnePermit = false;

@@ -87,7 +87,7 @@ public class AnnotatonBasedDecisionCombiningAlgorithmProvider
 		return new BaseDecisionCombiningAlgorithm<D>(algorithmId) 
 		{			
 			@Override
-			public Decision combine(List<D> decisions, EvaluationContext context) {
+			public Decision combine(EvaluationContext context, List<D> decisions) {
 				try{
 					return invocation.invoke(context, decisions);
 				}catch(Exception e){

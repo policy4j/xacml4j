@@ -176,7 +176,7 @@ public class PolicySet extends
 	@Override
 	protected Decision doEvaluate(EvaluationContext context) 
 	{
-		Decision decision = combine.combine(decisionRules, context);
+		Decision decision = combine.combine(context, decisionRules);
 		context.addEvaluatedApplicablePolicySet(this, decision);
 		return decision;
 	}

@@ -15,9 +15,9 @@ public interface DecisionCombiningAlgorithm <D extends DecisionRule>
 	/**
 	 * Combines multiple decisions to one {@link Decision} result
 	 * 
-	 * @param decisions a multiple decisions
 	 * @param context an evaluation context
+	 * @param decisions a multiple decisions
 	 * @return {@link Decision} context
 	 */
-	Decision combine(List<D> decisions, EvaluationContext context);
+	Decision combine(EvaluationContext context, List<D> decisions);
 }

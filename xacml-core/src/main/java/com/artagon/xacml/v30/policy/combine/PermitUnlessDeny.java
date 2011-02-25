@@ -21,8 +21,8 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny")
 	@Override
-	public Decision combine(List<DecisionType> decisions,
-			EvaluationContext context) 
+	public Decision combine(EvaluationContext context, 
+			List<DecisionType> decisions) 
 	{
 		for(DecisionType d : decisions){
 			Decision decision = evaluate(context, d);

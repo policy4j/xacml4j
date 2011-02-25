@@ -25,8 +25,8 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 	
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
 	@Override
-	public final Decision combine(List<CompositeDecisionRule> rules,
-			EvaluationContext context) 
+	public final Decision combine(EvaluationContext context, 
+			List<CompositeDecisionRule> rules) 
 	{
 		boolean atLeastOneError = false;
 		boolean atLeastOneDeny = false;

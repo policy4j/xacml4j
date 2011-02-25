@@ -252,7 +252,7 @@ public class Policy extends BaseCompositeDecisionRule
 	@Override
 	protected Decision doEvaluate(EvaluationContext context)
 	{
-		Decision decision = combine.combine(rules, context);
+		Decision decision = combine.combine(context, rules);
 		context.addEvaluatedApplicablePolicy(this, decision);
 		return decision;
 	}

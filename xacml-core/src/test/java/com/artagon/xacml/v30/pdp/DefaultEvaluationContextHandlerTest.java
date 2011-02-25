@@ -249,7 +249,7 @@ public class DefaultEvaluationContextHandlerTest
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
-		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new NullPointerException());
+		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new RuntimeException());
 		
 		replay(context, request, requestContextCallback, pip);
 		handler.resolve(context, ref);
@@ -310,7 +310,7 @@ public class DefaultEvaluationContextHandlerTest
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
 		
 
-		expect(pip.resolve(context, ref)).andThrow(new NullPointerException());
+		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
 		
 		replay(context, request, pip, requestContextCallback);
 		handler.resolve(context, ref);

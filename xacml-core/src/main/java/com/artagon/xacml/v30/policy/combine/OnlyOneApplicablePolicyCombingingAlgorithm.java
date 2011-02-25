@@ -20,8 +20,7 @@ public final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
 	@Override
-	public Decision combine(List<CompositeDecisionRule> decisions,
-			EvaluationContext context) 
+	public Decision combine(EvaluationContext context, List<CompositeDecisionRule> decisions) 
 	{
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;

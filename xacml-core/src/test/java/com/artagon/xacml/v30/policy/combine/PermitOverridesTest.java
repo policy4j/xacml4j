@@ -34,7 +34,7 @@ public class PermitOverridesTest
 	@Test
 	public void testCombineWithNoDecisions()
 	{
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class PermitOverridesTest
 		expect(r3.createContext(context)).andReturn(context);
 		expect(r3.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
 		replay(r1, r2, r3, context);
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		verify(r1, r2, r3, context);
 	}
 	
@@ -68,7 +68,7 @@ public class PermitOverridesTest
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
 		replay(r1, r2, context);
-		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
+		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
 	
@@ -85,7 +85,7 @@ public class PermitOverridesTest
 		expect(r2.createContext(context)).andReturn(context);
 		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
 		replay(r1, r2, context);
-		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
+		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
 	
@@ -101,7 +101,7 @@ public class PermitOverridesTest
 		expect(r2.createContext(context)).andReturn(context);
 		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
 		replay(r1, r2, context);
-		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
+		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
 	
@@ -117,7 +117,7 @@ public class PermitOverridesTest
 		expect(r2.createContext(context)).andReturn(context);
 		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
 		replay(r1, r2, context);
-		assertEquals(Decision.DENY, algorithm.combine(decisions, context));
+		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
 		
@@ -129,7 +129,7 @@ public class PermitOverridesTest
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_P);
 		replay(r1);
-		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(decisions, context));
+		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
 		verify(r1);
 	}
 		
@@ -141,7 +141,7 @@ public class PermitOverridesTest
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_D);
 		replay(r1);
-		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(decisions, context));
+		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
 		verify(r1);
 	}
 	
@@ -153,7 +153,7 @@ public class PermitOverridesTest
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
 		replay(r1);
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(decisions, context));
+		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		verify(r1);
 	}
 	
@@ -169,7 +169,7 @@ public class PermitOverridesTest
 		expect(r2.createContext(context)).andReturn(context);
 		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
 		replay(r1, r2);
-		assertEquals(Decision.PERMIT, algorithm.combine(decisions, context));
+		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
 

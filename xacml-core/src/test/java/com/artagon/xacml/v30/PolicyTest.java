@@ -133,7 +133,7 @@ public class PolicyTest
 	public void testPolicyEvaluationCombiningAlgorithmResultIsDeny() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.DENY);
+		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.DENY);
 		
 		Advice advice = control.createMock(Advice.class);
 		Obligation obligation = control.createMock(Obligation.class);
@@ -161,7 +161,7 @@ public class PolicyTest
 	public void testPolicyEvaluationCombiningAlgorithResultIsPermit() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.PERMIT);
+		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.PERMIT);
 		
 		Advice advice = control.createMock(Advice.class);
 		Obligation obligation = control.createMock(Obligation.class);
@@ -188,7 +188,7 @@ public class PolicyTest
 	public void testPolicyEvaluationCombiningAlgorithResultIsIndeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(combingingAlg.combine(rules, policyContext)).andReturn(Decision.INDETERMINATE);
+		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.INDETERMINATE);
 		control.replay();
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
 		control.verify();

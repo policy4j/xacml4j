@@ -27,11 +27,13 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 		Preconditions.checkNotNull(spec);
 		Preconditions.checkNotNull(value);
 		Preconditions.checkNotNull(attributeReference);
-		Preconditions.checkArgument(spec.getNumberOfParams() == 2);
+		Preconditions.checkArgument(spec.getNumberOfParams() == 2, "Excpeting function with 2 arguments");
 		Preconditions.checkArgument(spec.getParamSpecAt(0).
-				isValidParamType(value.getEvaluatesTo()));
+				isValidParamType(value.getEvaluatesTo()), 
+				"Given function argument at index=\"0\" type is not compatible with a given attribute value type");
 		Preconditions.checkArgument(spec.getParamSpecAt(1).
-				isValidParamType((attributeReference.getDataType())));
+				isValidParamType((attributeReference.getDataType())), 
+				"Given function argument at index=\"1\" type is not compatible with a given attribute reference type");
 		this.value = value;
 		this.predicate = spec;
 		this.attributeRef = attributeReference;	
