@@ -1,6 +1,8 @@
 package com.artagon.xacml.spring;
 
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,5 +27,8 @@ public class SpringTest extends AbstractJUnit4SpringContextTests
 	@Test
 	public void testProviders()
 	{
+		assertNotNull(pdp);
+		assertNotNull(resolverRegistry);
+		assertNotNull(pip);
 	}
 }

@@ -42,8 +42,10 @@
 		<xacml-spring:RequestContextHandler ref="multipleResourcesHandler"/>
 	</xacml-spring:RequestContextHandlerChain>	
 	
-	
-	<xacml-spring:PolicyDecisionPoint id="pdp" repository="repository" pip="pip" handlers="handlers">
+	<bean id="testAuditor" class="com.artagon.xacml.spring.MockAuditor">
+	</bean>
+
+	<xacml-spring:PolicyDecisionPoint id="pdp" repository="repository" pip="pip" handlers="handlers" auditor="testAuditor">
 		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
 	</xacml-spring:PolicyDecisionPoint>
 	

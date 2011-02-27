@@ -31,6 +31,10 @@ public class PolicyDecisionPointDefinitionParser extends
 		factory.addPropertyReference("policyInformationPoint", pipRef);
 		String repositoryRef = element.getAttribute("repository");
 		factory.addPropertyReference("policyRepository", repositoryRef);
+		String auditorRef = element.getAttribute("auditor");
+		if(StringUtils.hasText(auditorRef)) {
+			factory.addPropertyReference("decisionAuditor", auditorRef);
+		}
 		String handlers = element.getAttribute("handlers");
 		if (StringUtils.hasText(handlers)) {
 			factory.addPropertyReference("handlers", handlers);
