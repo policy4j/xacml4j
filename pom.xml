@@ -4,7 +4,7 @@
 	<groupId>com.artagon.xacml</groupId>
 	<artifactId>xacml</artifactId>
 	<packaging>pom</packaging>
-	<version>1.2.2</version>
+	<version>1.2.3-SNAPSHOT</version>
 	<name>Artagon OASIS XACML 3.0 Project</name>
 	<url>http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml
 	</url>
@@ -315,8 +315,8 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<scm>
-		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.2.2</connection>
-		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.2.2</developerConnection>
-		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/tags/xacml-1.2.2</url>
+		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</connection>
+		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</developerConnection>
+		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</url>
 	</scm>
 </project>
