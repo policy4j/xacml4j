@@ -14,8 +14,8 @@ public class PolicyInformationPointFactoryBean
 	private ResolverRegistry registry;
 	private PolicyInformationPointBuilder pipBuilder;
 	
-	public PolicyInformationPointFactoryBean(){
-		this.pipBuilder = PolicyInformationPointBuilder.builder();
+	public PolicyInformationPointFactoryBean(String id){
+		this.pipBuilder = PolicyInformationPointBuilder.builder(id);
 	}
 	public void setCache(PolicyInformationPointCacheProvider cache){
 		pipBuilder.withCacheProvider(cache);

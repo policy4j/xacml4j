@@ -16,6 +16,14 @@ import com.artagon.xacml.v30.EvaluationContext;
 public interface PolicyInformationPoint 
 {
 	/**
+	 * Gets identifier for this policy 
+	 * information point
+	 * 
+	 * @return a unique identifier
+	 */
+	String getId();
+	
+	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
 	 * 
 	 * @param context an evaluation context

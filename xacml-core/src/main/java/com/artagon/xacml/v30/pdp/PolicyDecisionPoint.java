@@ -7,6 +7,14 @@ import com.artagon.xacml.v30.Result;
 public interface PolicyDecisionPoint 
 {
 	/**
+	 * Gets policy decision point
+	 * unique identifier
+	 * 
+	 * @return unique identifier
+	 */
+	String getId();
+	
+	/**
 	 * Evaluates a given XACML {@link RequestContext}
 	 * and returns {@link Result}
 	 * 

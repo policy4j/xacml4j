@@ -50,11 +50,11 @@ public class RSA2008InteropTest
 		repository.importPolicy(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 		
-		pdp = PolicyDecisionPointBuilder.builder()
+		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.withPolicyRepository(repository)
 			.withPolicyInformationPoint(
 					PolicyInformationPointBuilder
-					.builder()
+					.builder("testPip")
 					.withDefaultResolvers()
 					.build())
 			.withRootPolicy(repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml")))

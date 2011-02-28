@@ -21,22 +21,30 @@ public class DefaultPolicyInformationPoint
 {	
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	
+	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
 	
-	public DefaultPolicyInformationPoint(ResolverRegistry resolvers, 
+	public DefaultPolicyInformationPoint(String id, 
+			ResolverRegistry resolvers, 
 			PolicyInformationPointCacheProvider cache)
 	{
+		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(resolvers);
 		Preconditions.checkNotNull(cache);
+		this.id = id;
 		this.cache = cache;
 		this.registry = resolvers;
 	}
 	
-	public DefaultPolicyInformationPoint(ResolverRegistry resolvers){
-		this(resolvers, new NoCachePolicyInformationPointCacheProvider());
+	public DefaultPolicyInformationPoint(String id, ResolverRegistry resolvers){
+		this(id, resolvers, new NoCachePolicyInformationPointCacheProvider());
 	}
 
+	public String getId(){
+		return id;
+	}
+	
 	@Override
 	public BagOfAttributeValues resolve(
 			final EvaluationContext context,

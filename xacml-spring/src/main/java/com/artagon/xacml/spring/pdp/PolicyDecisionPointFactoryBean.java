@@ -20,8 +20,8 @@ public class PolicyDecisionPointFactoryBean extends
 	
 	private PolicyDecisionPointBuilder pdpBuilder;
 	
-	public PolicyDecisionPointFactoryBean(){
-		this.pdpBuilder = PolicyDecisionPointBuilder.builder();
+	public PolicyDecisionPointFactoryBean(String id){
+		this.pdpBuilder = PolicyDecisionPointBuilder.builder(id);
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import com.google.common.base.Preconditions;
 
 public class PolicyDecisionPointBuilder 
 {
+	private String id;
 	private XPathProvider xpathProvider;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
@@ -25,15 +26,17 @@ public class PolicyDecisionPointBuilder
 	private CompositeDecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
 	
-	private PolicyDecisionPointBuilder(){
+	private PolicyDecisionPointBuilder(String id){
+		Preconditions.checkNotNull(id);
+		this.id = id;
 		this.xpathProvider = new DefaultXPathProvider();
 		this.decisionAuditor = new NoAuditPolicyDecisionPointAuditor();
 		this.decisionCache = new NoCachePolicyDecisionCache();
 		this.handlers = new LinkedList<RequestContextHandler>();
 	}
 	
-	public static PolicyDecisionPointBuilder builder(){
-		return new PolicyDecisionPointBuilder();
+	public static PolicyDecisionPointBuilder builder(String id){
+		return new PolicyDecisionPointBuilder(id);
 	}
 	
 	public PolicyDecisionPointBuilder withDecisionCache(
@@ -93,9 +96,10 @@ public class PolicyDecisionPointBuilder
 		Preconditions.checkState(repository != null);
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(rootPolicy != null);
+		Preconditions.checkState(id != null);
 		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
 				rootPolicy, repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
-		return new DefaultPolicyDecisionPoint(factory);
+		return new DefaultPolicyDecisionPoint(id, factory);
 	}
 }

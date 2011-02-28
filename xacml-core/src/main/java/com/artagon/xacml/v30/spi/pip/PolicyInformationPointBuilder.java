@@ -4,16 +4,19 @@ import com.google.common.base.Preconditions;
 
 public final class PolicyInformationPointBuilder 
 {
+	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistryBuilder registryBuilder;
 	
-	public PolicyInformationPointBuilder(){
+	public PolicyInformationPointBuilder(String id){
+		Preconditions.checkNotNull(id);
+		this.id = id;
 		this.cache = new NoCachePolicyInformationPointCacheProvider();
 		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
 	
-	public static PolicyInformationPointBuilder builder(){
-		return new PolicyInformationPointBuilder();
+	public static PolicyInformationPointBuilder builder(String id){
+		return new PolicyInformationPointBuilder(id);
 	}
 	
 	public PolicyInformationPointBuilder withCacheProvider(
@@ -76,12 +79,12 @@ public final class PolicyInformationPointBuilder
 	}
 	
 	public PolicyInformationPoint build(){
-		return new DefaultPolicyInformationPoint(
+		return new DefaultPolicyInformationPoint(id,
 				registryBuilder.build(), cache);
 	}
 	
 	public PolicyInformationPoint build(ResolverRegistry registry){
-		return new DefaultPolicyInformationPoint(
+		return new DefaultPolicyInformationPoint(id,
 				registryBuilder.build(registry), cache);
 	}
 }

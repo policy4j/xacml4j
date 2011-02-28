@@ -22,6 +22,7 @@ public class PolicyDecisionPointDefinitionParser extends
 			ParserContext parserContext) {
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder
 				.rootBeanDefinition(PolicyDecisionPointFactoryBean.class);
+		factory.addConstructorArgValue(element.getAttribute("id"));
 		List<Element> childElements = DomUtils.getChildElementsByTagName(
 				element, new String[]{"PolicyIdReference", "PolicySetIdReference"});
 		if (childElements != null && childElements.size() > 0) {

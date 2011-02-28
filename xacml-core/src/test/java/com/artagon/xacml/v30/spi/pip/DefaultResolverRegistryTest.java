@@ -42,7 +42,7 @@ public class DefaultResolverRegistryTest
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testAddResolverWithTheSameAttributes()
+	public void testAddRootResolverWithTheSameAttributes()
 	{
 		expect(r1.getDescriptor()).andReturn(d1);
 		expect(r2.getDescriptor()).andReturn(d1);

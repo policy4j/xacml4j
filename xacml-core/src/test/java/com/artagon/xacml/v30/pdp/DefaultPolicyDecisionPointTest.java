@@ -53,7 +53,7 @@ public class DefaultPolicyDecisionPointTest
 		this.decisionCache = control.createMock(PolicyDecisionCache.class);
 		this.xpathProvider = control.createMock(XPathProvider.class);
 		this.pdpBuilder = PolicyDecisionPointBuilder
-		.builder()
+		.builder("testPdp")
 			.withDecisionAuditor(decisionAuditor)
 			.withPolicyRepository(repository)
 			.withDecisionCache(decisionCache)

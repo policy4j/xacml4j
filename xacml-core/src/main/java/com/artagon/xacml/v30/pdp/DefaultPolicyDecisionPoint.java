@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.CompositeDecisionRule;
@@ -30,26 +31,42 @@ public final class DefaultPolicyDecisionPoint
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 	
+	private final static String MDC_PDP_KEY = "pdpId";
+	
+	private String id;
 	private PolicyDecisionPointContextFactory factory;
 	
 	public DefaultPolicyDecisionPoint(
+			String id,
 			PolicyDecisionPointContextFactory factory)
 	{
+		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(factory);
+		this.id = id;
 		this.factory = factory;
 	}
 	
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Processing decision " +
-					"request=\"{}\"", request);
+		MDC.put(MDC_PDP_KEY, id);
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Processing decision " +
+						"request=\"{}\"", request);
+			}
+			PolicyDecisionPointContext context = factory.createContext(this);
+			RequestContextHandler chain = context.getRequestHandlers();
+			Collection<Result> results = chain.handle(request, context);
+			return new ResponseContext(results);
+		}finally{
+			MDC.remove(MDC_PDP_KEY);
 		}
-		PolicyDecisionPointContext context = factory.createContext(this);
-		RequestContextHandler chain = context.getRequestHandlers();
-		Collection<Result> results = chain.handle(request, context);
-		return new ResponseContext(results);			
+	}
+	
+	public String getId(){
+		return id;
 	}
 	
 	@Override

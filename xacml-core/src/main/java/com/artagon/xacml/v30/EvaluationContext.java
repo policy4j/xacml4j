@@ -7,8 +7,6 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
-
 public interface EvaluationContext 
 {	
 	/**
@@ -193,7 +191,6 @@ public interface EvaluationContext
 	 * @param value a variable value
 	 */
 	void setVariableEvaluationResult(String variableId, ValueExpression value);
-	
 	
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
