@@ -5,13 +5,13 @@ import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.MDCSupport;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
@@ -30,9 +30,7 @@ public final class DefaultPolicyDecisionPoint
 	implements PolicyDecisionPoint, PolicyDecisionCallback
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
-	
-	private final static String MDC_PDP_KEY = "pdpId";
-	
+		
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
 	
@@ -49,7 +47,7 @@ public final class DefaultPolicyDecisionPoint
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
-		MDC.put(MDC_PDP_KEY, id);
+		MDCSupport.setPdpContext(this);
 		try
 		{
 			if(log.isDebugEnabled()){
@@ -61,7 +59,7 @@ public final class DefaultPolicyDecisionPoint
 			Collection<Result> results = chain.handle(request, context);
 			return new ResponseContext(results);
 		}finally{
-			MDC.remove(MDC_PDP_KEY);
+			MDCSupport.cleanPdpContext();
 		}
 	}
 	

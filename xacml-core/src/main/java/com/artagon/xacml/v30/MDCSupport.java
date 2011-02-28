@@ -33,15 +33,15 @@ public class MDCSupport
 		MDC.remove(PIP_ID_KEY);
 	}
 	
-	public void setPolicyContext(Policy p){
+	public static void setPolicyContext(Policy p){
 		MDC.put(POLICY_ID_KEY, p.getId());
 	}
 	
-	public static void cleanPolicyContext(){
+	public  static void cleanPolicyContext(){
 		MDC.remove(POLICY_ID_KEY);
 	}
 	
-	public void setPolicySetContext(PolicySet p){
+	public static void setPolicySetContext(PolicySet p){
 		MDC.put(POLICYSET_ID_KEY, p.getId());
 	}
 	
@@ -49,7 +49,7 @@ public class MDCSupport
 		MDC.remove(POLICYSET_ID_KEY);
 	}
 	
-	public void setRuleContext(Rule p){
+	public static void setRuleContext(Rule p){
 		MDC.put(RULE_ID_KEY, p.getId());
 	}
 	
@@ -57,7 +57,7 @@ public class MDCSupport
 		MDC.remove(RULE_ID_KEY);
 	}
 	
-	public void setAttributeResolverContext(AttributeResolver r){
+	public static void setAttributeResolverContext(AttributeResolver r){
 		MDC.put(ATTR_RESOLVER_ID_KEY, r.getDescriptor().getId());
 	}
 	
@@ -65,7 +65,7 @@ public class MDCSupport
 		MDC.remove(ATTR_RESOLVER_ID_KEY);
 	}
 	
-	public void setContentResolverContext(ContentResolver r){
+	public static void setContentResolverContext(ContentResolver r){
 		MDC.put(CONT_RESOLVER_ID_KEY, r.getDescriptor().getId());
 	}
 	

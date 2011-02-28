@@ -9,6 +9,7 @@ import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.MDCSupport;
 import com.google.common.base.Preconditions;
 
 /**
@@ -50,33 +51,48 @@ public class DefaultPolicyInformationPoint
 			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
-					"designator=\"{}\"", ref);
-		}
-		AttributeResolver r = registry.getAttributeResolver(context, ref);
-		if(r == null){
+		MDCSupport.setPipContext(this);
+		
+		try
+		{
 			if(log.isDebugEnabled()){
-				log.debug("No matching resolver " +
-						"found for designator=\"{}\"", ref);
+				log.debug("Trying to resolve " +
+						"designator=\"{}\"", ref);
 			}
-			return ref.getDataType().emptyBag();
-		}
-		AttributeResolverDescriptor d = r.getDescriptor();
-		Preconditions.checkState(d.canResolve(ref));
-		ResolverContext pipContext = createContext(context, d);
-		AttributeSet attributes = null;
-		if(d.isCachable()){
-			attributes = cache.getAttributes(pipContext);
-			if(attributes != null){
+			try
+			{
+				AttributeResolver r = registry.getAttributeResolver(context, ref);
+				if(r == null){
+					if(log.isDebugEnabled()){
+						log.debug("No matching resolver " +
+								"found for designator=\"{}\"", ref);
+					}
+					return ref.getDataType().emptyBag();
+				}
+				MDCSupport.setAttributeResolverContext(r);
+				AttributeResolverDescriptor d = r.getDescriptor();
+				Preconditions.checkState(d.canResolve(ref));
+				ResolverContext pipContext = createContext(context, d);
+				AttributeSet attributes = null;
+				if(d.isCachable()){
+					attributes = cache.getAttributes(pipContext);
+					if(attributes != null){
+						return attributes.get(ref.getAttributeId());
+					}
+				}
+				attributes = r.resolve(pipContext);
+				if(d.isCachable()){
+					cache.putAttributes(pipContext, attributes);
+				}
 				return attributes.get(ref.getAttributeId());
 			}
+			finally{
+				MDCSupport.cleanAttributeResolverContext();
+			}
+		}finally{
+			MDCSupport.cleanPipContext();
 		}
-		attributes = r.resolve(pipContext);
-		if(d.isCachable()){
-			cache.putAttributes(pipContext, attributes);
-		}
-		return attributes.get(ref.getAttributeId());
+		
 	}
 
 	@Override
