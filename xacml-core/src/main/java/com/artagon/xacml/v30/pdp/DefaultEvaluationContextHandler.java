@@ -294,10 +294,10 @@ class DefaultEvaluationContextHandler
 			}
 			return content;
 		}
+		Preconditions.checkState(
+				!contentResolutionStack.contains(category));
 		try
 		{
-			Preconditions.checkState(
-					!contentResolutionStack.contains(category));
 			contentResolutionStack.push(category);
 			content = pip.resolve(context, category);
 			if(log.isDebugEnabled()){
