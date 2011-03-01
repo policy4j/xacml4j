@@ -1,6 +1,8 @@
 package com.artagon.xacml.v30.spi.combine;
 
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -104,6 +106,9 @@ public class AnnotatonBasedDecisionCombiningAlgorithmProvider
 	
 	private void validateDecisionCombineMethod(Method m)
 	{
+		Preconditions.checkArgument(
+				Modifier.isStatic(m.getModifiers()), 
+				"Combine metho=\"%s\" must be static", m.getName());
 		Preconditions.checkArgument(m.getReturnType().equals(Decision.class),
 				"Decision combine method=\"%s\" return type must be=\"%s\"", 
 				m.getName(), Decision.class);
