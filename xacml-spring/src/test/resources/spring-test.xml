@@ -22,11 +22,16 @@
 		</beans:property>
 	</bean>
 	
+	<xacml-spring:InMemoryPolicyRepository 
+	id="repository" extensionFunctions="extensionFunctions" policies="resources"/>
+
+	<!-- 
 	<beans:bean id="repository" class="com.artagon.xacml.spring.repository.InMemoryPolicyRepositoryFactoryBean">
 		<beans:property name="extensionFunctions" ref="extensionFunctions"/>
 		<beans:property name="policies" ref="resources"/>
 	</beans:bean>
-	
+	 -->
+	 
 	<beans:bean id="testResolver" class="com.artagon.xacml.spring.pip.TestResolver"/>
 	 
 	<xacml-spring:ResolverRegistry id="resolvers">

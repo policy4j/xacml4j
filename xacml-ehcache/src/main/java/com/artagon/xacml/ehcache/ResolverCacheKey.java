@@ -13,14 +13,14 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-final class CacheKey implements Serializable
+final class ResolverCacheKey implements Serializable
 {
 	private static final long serialVersionUID = -6895205924708410228L;
 	
 	private String resolverId;
 	private List<BagOfAttributeValues> keys;
 	
-	public CacheKey(String resolverId, 
+	public ResolverCacheKey(String resolverId, 
 			List<BagOfAttributeValues> keys){
 		Preconditions.checkNotNull(resolverId);
 		this.resolverId = resolverId;
@@ -41,10 +41,10 @@ final class CacheKey implements Serializable
 		if(o == null){
 			return false;
 		}
-		if(!(o instanceof CacheKey)){
+		if(!(o instanceof ResolverCacheKey)){
 			return false;
 		}
-		CacheKey k = (CacheKey)o;
+		ResolverCacheKey k = (ResolverCacheKey)o;
 		return resolverId.equals(k.resolverId) && keys.equals(k.keys);
 	}
 	

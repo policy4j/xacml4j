@@ -52,7 +52,6 @@ public class DefaultPolicyInformationPoint
 			AttributeDesignatorKey ref) throws Exception 
 	{
 		MDCSupport.setPipContext(this);
-		
 		try
 		{
 			if(log.isDebugEnabled()){
@@ -69,8 +68,8 @@ public class DefaultPolicyInformationPoint
 					}
 					return ref.getDataType().emptyBag();
 				}
-				MDCSupport.setAttributeResolverContext(r);
 				AttributeResolverDescriptor d = r.getDescriptor();
+				MDCSupport.setAttributeResolverContext(d);
 				Preconditions.checkState(d.canResolve(ref));
 				ResolverContext pipContext = createContext(context, d);
 				AttributeSet attributes = null;

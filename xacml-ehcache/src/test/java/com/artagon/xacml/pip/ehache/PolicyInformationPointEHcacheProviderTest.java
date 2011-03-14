@@ -1,13 +1,15 @@
 package com.artagon.xacml.pip.ehache;
 
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.easymock.IMocksControl;
-import static org.easymock.EasyMock.*;
-
 import org.junit.Before;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,7 +20,6 @@ import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;
-import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointCacheProvider;
 import com.artagon.xacml.v30.spi.pip.ResolverContext;
 import com.artagon.xacml.v30.types.IntegerType;

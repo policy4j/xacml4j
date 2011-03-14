@@ -88,6 +88,6 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 	
 	private Object createKey(ResolverDescriptor d, List<BagOfAttributeValues> keys)
 	{
-		return new CacheKey(d.getId(), keys);
+		return new ResolverCacheKey(d.getId(), keys);
 	}
 }

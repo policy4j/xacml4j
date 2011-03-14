@@ -372,6 +372,7 @@ public class RequestContext
 	public int hashCode(){
 		return cachedHashCode;
 	}
+	
 	@Override
 	public boolean equals(Object o){
 		if(this == o){

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.pdp.RequestContextHandler;
-import com.artagon.xacml.v30.pdp.RequestContextHandlerChain;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 import com.google.common.base.Preconditions;
 
 public class RequestContextHandlerChainFactoryBean extends AbstractFactoryBean<RequestContextHandlerChain>

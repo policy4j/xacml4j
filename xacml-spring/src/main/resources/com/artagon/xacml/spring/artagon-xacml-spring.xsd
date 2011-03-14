@@ -102,9 +102,20 @@
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
 				<xsd:attribute name="extensionFunctions" type="xsd:string"/>
+				<xsd:attribute name="extensionCombiningAlgorithms" type="xsd:string"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	
+	<xsd:element name="InMemoryPolicyRepository">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="xacml-spring:PolicyRepositoryBaseType">
+					<xsd:attribute name="policies" type="xsd:string"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 	
 	<xsd:element name="RequestContextHandler" type="xacml-spring:RequestContextHandlerType"/>
 	

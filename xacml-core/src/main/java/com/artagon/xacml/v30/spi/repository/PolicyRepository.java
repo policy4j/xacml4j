@@ -27,7 +27,7 @@ public interface PolicyRepository
 	 * 
 	 * @return a unique repository identifier
 	 */
-	//String getId();
+	String getId();
 	
 	/**
 	 * Gets all versions of the policy with a given

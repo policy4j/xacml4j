@@ -8,7 +8,7 @@ import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
-import com.artagon.xacml.v30.pdp.RequestContextHandlerChain;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 
 
 public class MultipleResourcesHandler extends RequestContextHandlerChain

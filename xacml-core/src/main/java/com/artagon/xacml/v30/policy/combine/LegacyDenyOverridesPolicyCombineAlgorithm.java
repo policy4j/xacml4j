@@ -22,10 +22,13 @@ public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombi
 		super(algorithmId);
 	}
 	
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides")
-	@Override
 	public Decision combine(EvaluationContext context, 
 			List<CompositeDecisionRule> rules) {
+		return doCombine(context, rules);
+	}
+	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides")
+	public static <D extends CompositeDecisionRule> Decision doCombine(EvaluationContext context, 
+			List<D> rules) {
 		boolean atLeastOnePermit = false;
 		for(CompositeDecisionRule r : rules){
 			Decision d = evaluateIfApplicable(context, r);

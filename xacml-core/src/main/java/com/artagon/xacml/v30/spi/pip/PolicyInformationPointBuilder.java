@@ -1,9 +1,15 @@
 package com.artagon.xacml.v30.spi.pip;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 public final class PolicyInformationPointBuilder 
 {
+	private final static Logger log = LoggerFactory.getLogger(
+			PolicyInformationPointBuilder.class);
+	
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistryBuilder registryBuilder;
@@ -84,6 +90,9 @@ public final class PolicyInformationPointBuilder
 	}
 	
 	public PolicyInformationPoint build(ResolverRegistry registry){
+		if(log.isDebugEnabled()){
+			log.debug("Creating PIP id=\"{}\"", id);
+		}
 		return new DefaultPolicyInformationPoint(id,
 				registryBuilder.build(registry), cache);
 	}

@@ -14,10 +14,15 @@ import com.google.common.base.Preconditions;
 
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
+	private String id;
 	private ResourceCollection resources;
 	private FunctionProvider extensionFuctions;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 	
+	public InMemoryPolicyRepositoryFactoryBean(String id){
+		Preconditions.checkNotNull(id);
+		this.id = id;
+	}
 	
 	@Override
 	public Class<PolicyRepository> getObjectType() {
@@ -28,7 +33,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		this.extensionFuctions = functions;
 	}
 	
-	public void setExtensionDecisionCombiningAlgorithms(
+	public void setExtensionCombiningAlgorithms(
 			DecisionCombiningAlgorithmProvider algorithms){
 		this.extensionDecisionCombiningAlgorithms = algorithms;
 	}
@@ -54,11 +59,9 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		if(extensionDecisionCombiningAlgorithms != null){
 			decisionAlgorithmProviderBuilder.withAlgorithmProvider(extensionDecisionCombiningAlgorithms);
 		}
-		
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				functionProviderBuilder.build(), 
-				decisionAlgorithmProviderBuilder.build());
+				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.build());
 		for(Resource r : resources.getResources()){
 			repository.importPolicy(r.getInputStream());
 		}

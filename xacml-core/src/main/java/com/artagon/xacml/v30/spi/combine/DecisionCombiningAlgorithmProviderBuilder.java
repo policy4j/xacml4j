@@ -8,9 +8,11 @@ import com.google.common.base.Preconditions;
 public class DecisionCombiningAlgorithmProviderBuilder 
 {
 	private Collection<DecisionCombiningAlgorithmProvider> providers;
+	private AnnotatedDecisionCombiningAlgorithmProviderFactory factory;
 	
 	private DecisionCombiningAlgorithmProviderBuilder(){
 		this.providers = new LinkedList<DecisionCombiningAlgorithmProvider>();
+		this.factory = new AnnotatedDecisionCombiningAlgorithmProviderFactory();
 	}
 	
 	public static DecisionCombiningAlgorithmProviderBuilder builder(){
@@ -26,6 +28,13 @@ public class DecisionCombiningAlgorithmProviderBuilder
 			DecisionCombiningAlgorithmProvider p){
 		Preconditions.checkNotNull(p);
 		this.providers.add(p);
+		return this;
+	}
+	
+	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProvider(
+			Class<?> clazz){
+		Preconditions.checkNotNull(clazz);
+		this.providers.add(factory.create(clazz));
 		return this;
 	}
 	

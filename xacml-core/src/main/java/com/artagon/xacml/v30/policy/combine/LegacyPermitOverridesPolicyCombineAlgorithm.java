@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
@@ -23,9 +24,13 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 		super(ID);
 	}
 	
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
-	@Override
 	public final Decision combine(EvaluationContext context, 
+			List<CompositeDecisionRule> rules){
+		return doCombine(context, rules);
+	}
+	
+	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
+	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, 
 			List<CompositeDecisionRule> rules) 
 	{
 		boolean atLeastOneError = false;

@@ -25,7 +25,7 @@ import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgo
 import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
 
 class DefaultXacml30DecisionCombiningAlgorithms 
-	extends BaseDecisionCombingingAlgorithmProvider 
+	extends DecisionCombingingAlgorithmProviderImpl 
 {
 	public DefaultXacml30DecisionCombiningAlgorithms() 
 	{

@@ -41,6 +41,7 @@ public class Xacml20ConformanceTest
 	public static void init_static() throws Exception
 	{
 		repository = new InMemoryPolicyRepository(
+				"testRepositoryId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
 				.build(), 
@@ -212,7 +213,6 @@ public class Xacml20ConformanceTest
 		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(requestPath));
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static InputStream getPolicy(
 			String prefix, int number, String sufix) throws Exception
 	{

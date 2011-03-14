@@ -2,7 +2,7 @@ package com.artagon.xacml.spring.pdp;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.pdp.RequestContextHandler;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 
 public class RequestContexctHandlerFactoryBean extends AbstractFactoryBean<RequestContextHandler>

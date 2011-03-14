@@ -33,6 +33,7 @@ public class RSA2008InteropTest
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 				
 		PolicyRepository repository = new InMemoryPolicyRepository(
+				"testId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
 				.build(), 

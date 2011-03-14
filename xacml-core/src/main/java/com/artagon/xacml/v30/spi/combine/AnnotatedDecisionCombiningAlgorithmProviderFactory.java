@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.spi.combine;
 
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -23,32 +22,43 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Rule;
 import com.google.common.base.Preconditions;
 
-public class AnnotatonBasedDecisionCombiningAlgorithmProvider 
+class AnnotatedDecisionCombiningAlgorithmProviderFactory 
 {
-	private final static Logger log = LoggerFactory.getLogger(AnnotatonBasedDecisionCombiningAlgorithmProvider.class);
+	private final static Logger log = LoggerFactory.getLogger(AnnotatedDecisionCombiningAlgorithmProviderFactory.class);
 	
 	private InvocationFactory invocationFactory;
 	
-	public AnnotatonBasedDecisionCombiningAlgorithmProvider(InvocationFactory invocationFactory){
+	public AnnotatedDecisionCombiningAlgorithmProviderFactory(
+			InvocationFactory invocationFactory){
 		Preconditions.checkNotNull(invocationFactory);
 		this.invocationFactory = invocationFactory;
 	}
 	
-	public AnnotatonBasedDecisionCombiningAlgorithmProvider(){
+	public AnnotatedDecisionCombiningAlgorithmProviderFactory(){
 		this(new DefaultInvocationFactory());
 	}
 	
-	public DecisionCombiningAlgorithmProvider parse(Class<?> clazz)
+	/**
+	 * Creates {@link DecisionCombiningAlgorithmProvider} from a given
+	 * class
+	 * 
+	 * @param clazz a class providing decision 
+	 * combining algorithm implementations
+	 * @return {@link DecisionCombiningAlgorithmProvider}
+	 */
+	public DecisionCombiningAlgorithmProvider create(Class<?> clazz)
 	{
 		final List<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms = new LinkedList<DecisionCombiningAlgorithm<Rule>>();
-		for(Method m : Reflections.getAnnotatedMethods(clazz, XacmlRuleDecisionCombingingAlgorithm.class)){
+		for(Method m : Reflections.getAnnotatedMethods(clazz, 
+				XacmlRuleDecisionCombingingAlgorithm.class)){
 			ruleAlgorithms.add(createRuleDecisionCombineAlgorithm(m));
 		}
 		final List<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms = new LinkedList<DecisionCombiningAlgorithm<CompositeDecisionRule>>();
-		for(Method m : Reflections.getAnnotatedMethods(clazz, XacmlPolicyDecisionCombingingAlgorithm.class)){
+		for(Method m : Reflections.getAnnotatedMethods(clazz, 
+				XacmlPolicyDecisionCombingingAlgorithm.class)){
 			policyAlgorithms.add(createPolicyDecisionCombineAlgorithm(m));
 		}
-		return new BaseDecisionCombingingAlgorithmProvider(ruleAlgorithms, policyAlgorithms);
+		return new DecisionCombingingAlgorithmProviderImpl(ruleAlgorithms, policyAlgorithms);
 	}
 	
 	

@@ -34,6 +34,8 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractPolicyRepository 
 	implements PolicyRepository
 {	
+	
+	private String id;
 	private ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
 	
 	private PolicyUnmarshaller unmarshaller;
@@ -42,18 +44,26 @@ public abstract class AbstractPolicyRepository
 	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
 	
 	protected AbstractPolicyRepository(
+			String id,
 			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws Exception
 	{
+		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(functions);
 		Preconditions.checkNotNull(decisionAlgorithms);
+		this.id = id;
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
 		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
 	}
 	
+	@Override
+	public final String getId() {
+		return id;
+	}
+
 	/**
 	 * Implementation assumes that 
 	 * {@link #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}

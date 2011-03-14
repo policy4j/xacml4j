@@ -7,12 +7,13 @@ import com.artagon.xacml.v30.EvaluationContext;
 public interface ResolverRegistry 
 {
 	/**
-	 * Gets an {@link AttributeResolver} for a given
+	 * Gets a matching {@link AttributeResolver} for a given
 	 * evaluation context and given {@link AttributeDesignatorKey}
 	 * 
-	 * @param context
-	 * @param key
-	 * @return
+	 * @param context an evaluation context
+	 * @param key an attribute designator key
+	 * @return instance of {@link AttributeResolver}
+	 * or <ii>null</ii> if not matching resolver is found
 	 */
 	AttributeResolver getAttributeResolver(
 			EvaluationContext context, AttributeDesignatorKey key);

@@ -3,8 +3,8 @@ package com.artagon.xacml.v30;
 import org.apache.log4j.MDC;
 
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
-import com.artagon.xacml.v30.spi.pip.ContentResolver;
+import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
+import com.artagon.xacml.v30.spi.pip.ContentResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 
 public class MDCSupport 
@@ -57,16 +57,16 @@ public class MDCSupport
 		MDC.remove(RULE_ID_KEY);
 	}
 	
-	public static void setAttributeResolverContext(AttributeResolver r){
-		MDC.put(ATTR_RESOLVER_ID_KEY, r.getDescriptor().getId());
+	public static void setAttributeResolverContext(AttributeResolverDescriptor d){
+		MDC.put(ATTR_RESOLVER_ID_KEY, d.getId());
 	}
 	
 	public static void cleanAttributeResolverContext(){
 		MDC.remove(ATTR_RESOLVER_ID_KEY);
 	}
 	
-	public static void setContentResolverContext(ContentResolver r){
-		MDC.put(CONT_RESOLVER_ID_KEY, r.getDescriptor().getId());
+	public static void setContentResolverContext(ContentResolverDescriptor d){
+		MDC.put(CONT_RESOLVER_ID_KEY, d.getId());
 	}
 	
 	public static void cleanContentResolverContext(){

@@ -93,6 +93,16 @@ public final class AttributeResolverDescriptorBuilder
 				"Builder already has an attribute with id=\"%s\"", attributeId);
 		return this;
 	}
+	
+	public AttributeResolverDescriptorBuilder attribute(
+			String attributeId, 
+			AttributeValueType dataType, 
+			String[] defaultValue){
+		AttributeDescriptor old = attributes.put(attributeId, new AttributeDescriptor(attributeId, dataType));
+		Preconditions.checkState(old == null, 
+				"Builder already has an attribute with id=\"%s\"", attributeId);
+		return this;
+	}
 		
 	public AttributeResolverDescriptor build(){
 		return new AttributeResolverDescriptorImpl();

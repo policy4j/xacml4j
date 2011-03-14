@@ -6,7 +6,8 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
-import com.artagon.xacml.v30.spi.dcache.PolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 
 public interface PolicyDecisionPointContext

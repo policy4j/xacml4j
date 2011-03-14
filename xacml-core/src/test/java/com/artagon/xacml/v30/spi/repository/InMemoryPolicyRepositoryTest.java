@@ -52,7 +52,7 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
-		this.r = new InMemoryPolicyRepository(functions, decisionAlgorithms);
+		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
 		this.l = c.createMock(PolicyRepositoryListener.class);
 		this.r.addPolicyRepositoryListener(l);
 	}

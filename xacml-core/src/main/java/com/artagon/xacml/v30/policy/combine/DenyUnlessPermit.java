@@ -17,9 +17,14 @@ public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombin
 		super(algorithmId);
 	}
 	
+	public final Decision combine(EvaluationContext context, List<D> decisions)
+	{
+		return doCombine(context, decisions);
+	}
+	
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit")
-	public final Decision combine(EvaluationContext context, List<D> decisions)
+	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfApplicable(context, d);

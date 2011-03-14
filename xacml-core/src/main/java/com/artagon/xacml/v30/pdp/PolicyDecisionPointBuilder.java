@@ -3,20 +3,27 @@ package com.artagon.xacml.v30.pdp;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler;
 import com.artagon.xacml.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
-import com.artagon.xacml.v30.spi.dcache.NoCachePolicyDecisionCache;
-import com.artagon.xacml.v30.spi.dcache.PolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.NoCachePolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.google.common.base.Preconditions;
 
-public class PolicyDecisionPointBuilder 
+public final class PolicyDecisionPointBuilder 
 {
+	private final static Logger log = LoggerFactory.getLogger(PolicyDecisionPointBuilder.class);
+	
 	private String id;
 	private XPathProvider xpathProvider;
 	private PolicyDecisionAuditor decisionAuditor;
@@ -93,6 +100,9 @@ public class PolicyDecisionPointBuilder
 	}
 	
 	public PolicyDecisionPoint build(){
+		if(log.isDebugEnabled()){
+			log.debug("Creating PDP=\"{}\"", id);
+		}
 		Preconditions.checkState(repository != null);
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(rootPolicy != null);

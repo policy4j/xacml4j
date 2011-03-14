@@ -17,6 +17,7 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.AttributeSelectorKey;
+import com.artagon.xacml.v30.AttributeValueType;
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
@@ -82,8 +83,9 @@ class AnnotatedResolverFactory
 					"must be specified by the descriptor on method=\"{}\"", m.getName());
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
-			b.attribute(attr.id(), 
-					DataTypes.getType(attr.dataType()));
+			AttributeValueType type = DataTypes.getType(attr.dataType());
+			b.attribute(attr.id(), type);
+			
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());

@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30.spi.pdp;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.createStrictMock;
@@ -6,6 +6,9 @@ import static org.easymock.EasyMock.createStrictMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
+import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 
 
 

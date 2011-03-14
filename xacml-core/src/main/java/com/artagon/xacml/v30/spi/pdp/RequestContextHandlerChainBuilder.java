@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30.spi.pdp;
 
 import java.util.LinkedList;
 import java.util.List;

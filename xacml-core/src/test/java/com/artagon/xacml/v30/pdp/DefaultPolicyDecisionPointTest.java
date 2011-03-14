@@ -21,7 +21,7 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
-import com.artagon.xacml.v30.spi.dcache.PolicyDecisionCache;
+import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepositoryListener;

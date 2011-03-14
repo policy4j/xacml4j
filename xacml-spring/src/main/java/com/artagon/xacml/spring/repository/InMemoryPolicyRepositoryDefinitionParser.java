@@ -11,10 +11,17 @@ public class InMemoryPolicyRepositoryDefinitionParser extends AbstractSingleBean
 	      return InMemoryPolicyRepositoryFactoryBean.class;
 	}
 	
-	protected void doParse(Element element, BeanDefinitionBuilder bean) {
-	      bean.addPropertyReference("policies", element.getAttribute("resources"));
-	      if(StringUtils.hasText(element.getAttribute("extensionFunctions"))){
-	    	  bean.addPropertyReference("extensionFunctions", element.getAttribute("extensionFunctions"));
-	      }
+	protected void doParse(Element element, BeanDefinitionBuilder bean) 
+	{
+		bean.addConstructorArgValue(element.getAttribute("id"));	
+	    bean.addPropertyReference("policies", element.getAttribute("policies"));
+	    if(StringUtils.hasText(element.getAttribute("extensionFunctions"))){
+	    	bean.addPropertyReference("extensionFunctions", 
+	    			element.getAttribute("extensionFunctions"));
+	    }
+	    if(StringUtils.hasText(element.getAttribute("extensionCombiningAlgorithms"))){
+	    	bean.addPropertyReference("extensionCombiningAlgorithms", 
+	    			element.getAttribute("extensionCombiningAlgorithms"));
+	    }
 	}
 }

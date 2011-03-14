@@ -40,11 +40,12 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 	
 	public InMemoryPolicyRepository(
+			String id,
 			FunctionProvider functions, 
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
 		throws Exception
 	{
-		super(functions, decisionAlgorithms);
+		super(id, functions, decisionAlgorithms);
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>(INITIAL_POLICY_MAP_SIZE);
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>(INITIAL_POLICYSET_MAP_SIZE);
 	}
