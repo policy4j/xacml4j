@@ -81,10 +81,10 @@ public class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values) 
 		throws EvaluationException
 	{
-		Boolean r = Boolean.TRUE;
+		Boolean r = Boolean.FALSE;
 		for(Expression e : values){
 			Boolean v = ((BooleanValue)e.evaluate(context)).getValue();
-			r = r & v; 
+			r = r | v; 
 			if(r){
 				break;
 			}

@@ -119,6 +119,12 @@ public class LogicalFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
 		verify(context);
+		
+		reset(context);
+		replay(context);
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+		verify(context);
 	}
 	
 	@Test
