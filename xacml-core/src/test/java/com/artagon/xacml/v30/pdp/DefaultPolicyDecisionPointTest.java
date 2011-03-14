@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Collections;
 
@@ -65,6 +66,7 @@ public class DefaultPolicyDecisionPointTest
 	@Test
 	public void testRequestEvaluationPolicyDomainEvaluatesToPermitAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
+		
 		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
 		
 		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
@@ -76,7 +78,8 @@ public class DefaultPolicyDecisionPointTest
 		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
 		Capture<Result> result0 = new Capture<Result>();
-		decisionAuditor.audit(capture(result0), eq(req));
+		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
+		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
 		decisionCache.putDecision(eq(req), capture(result1));
 		
@@ -87,12 +90,14 @@ public class DefaultPolicyDecisionPointTest
 		ResponseContext res = pdp.decide(req);
 		assertEquals(1, res.getResults().size());
 		assertEquals(result0.getValue(), result1.getValue());
+		assertSame(pdp, pdp1.getValue());
 		control.verify();
 	}
 	
 	@Test
 	public void testRequestEvaluationPolicyDomainEvaluatesToDenyAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
+		
 		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
 		
 		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
@@ -103,18 +108,21 @@ public class DefaultPolicyDecisionPointTest
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
 		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
+		
 		Capture<Result> result0 = new Capture<Result>();
-		decisionAuditor.audit(capture(result0), eq(req));
+		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
+		
+		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
 		decisionCache.putDecision(eq(req), capture(result1));
 		
 		control.replay();
-		
 		this.pdp = pdpBuilder.build();
 		
 		ResponseContext res = pdp.decide(req);
 		assertEquals(1, res.getResults().size());
 		assertEquals(result0.getValue(), result1.getValue());
+		assertSame(pdp, pdp1.getValue());
 		
 		control.verify();
 	}

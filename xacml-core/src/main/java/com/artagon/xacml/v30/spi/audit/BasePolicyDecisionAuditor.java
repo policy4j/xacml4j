@@ -6,15 +6,16 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
 public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor 
 {
 	private final static Logger log = LoggerFactory.getLogger(BasePolicyDecisionAuditor.class);
 	
 	@Override
-	public final void audit(Result result, RequestContext req) {
-		if(isAuditable(req)){
-			doAudit(req, result);
+	public final void audit(PolicyDecisionPoint pdp, Result result, RequestContext req) {
+		if(isAuditable(pdp, req)){
+			doAudit(pdp, req, result);
 		}
 	}
 	
@@ -25,23 +26,23 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
-	private void doAudit(RequestContext req, Result result)
+	private void doAudit(PolicyDecisionPoint pdp, RequestContext req, Result result)
 	{
 		switch(result.getDecision()){
 			case DENY :
-					doDenyAudit(req, result);
+					doDenyAudit(pdp, req, result);
 					break;
 			case PERMIT:
-					doPermitAudit(req, result);
+					doPermitAudit(pdp, req, result);
 					break;
 			case NOT_APPLICABLE:
-					doNotApplicableAudit(req, result);
+					doNotApplicableAudit(pdp, req, result);
 					break;
 			case INDETERMINATE:
 			case INDETERMINATE_D:
 			case INDETERMINATE_P:
 			case INDETERMINATE_DP:
-					doIndeterminateAudit(req, result);
+					doIndeterminateAudit(pdp, req, result);
 					break;
 		}
 	}
@@ -52,7 +53,7 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	 * @param req a decision request
 	 * @return <code>true</code> if request needs to be audited
 	 */
-	protected boolean isAuditable(RequestContext req){
+	protected boolean isAuditable(PolicyDecisionPoint pdp, RequestContext req){
 		return false;
 	}
 	
@@ -63,7 +64,7 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
-	protected void doPermitAudit(RequestContext req, Result result){
+	protected void doPermitAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
 		
 	}
 	
@@ -74,7 +75,7 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
-	protected void doDenyAudit(RequestContext req, Result result){
+	protected void doDenyAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
 		
 	}
 	
@@ -85,11 +86,11 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
-	protected void doNotApplicableAudit(RequestContext req, Result result){
+	protected void doNotApplicableAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
 		
 	}
 	
-	protected void doIndeterminateAudit(RequestContext req, Result result){
+	protected void doIndeterminateAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
 		
 	}
 }

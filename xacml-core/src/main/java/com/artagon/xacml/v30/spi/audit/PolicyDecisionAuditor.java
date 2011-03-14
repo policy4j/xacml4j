@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.spi.audit;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
 public interface PolicyDecisionAuditor 
 {
@@ -12,5 +13,5 @@ public interface PolicyDecisionAuditor
 	 * @param result a decision result
 	 * @param req a decision request
 	 */
-	void audit(Result result, RequestContext req);
+	void audit(PolicyDecisionPoint pdp, Result result, RequestContext req);
 }

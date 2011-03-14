@@ -82,7 +82,7 @@ public final class DefaultPolicyDecisionPoint
 				log.debug("Decision request=\"{}\" " +
 						"result=\"{}\"", request,  r);
 			}
-			decisionAuditor.audit(r, request);
+			decisionAuditor.audit(this, r, request);
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
@@ -96,7 +96,7 @@ public final class DefaultPolicyDecisionPoint
 			log.debug("Decision request=\"{}\" " +
 					"result=\"{}\"", request,  r);
 		}
-		decisionAuditor.audit(r, request);
+		decisionAuditor.audit(this, r, request);
 		decisionCache.putDecision(request, r);
 		return r;
 	}
