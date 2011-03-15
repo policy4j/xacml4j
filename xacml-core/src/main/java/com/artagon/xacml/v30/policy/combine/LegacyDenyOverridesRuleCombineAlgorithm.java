@@ -23,7 +23,13 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		super(algorithmId);
 	}
 	
+	@Override
 	public Decision combine(EvaluationContext context, List<Rule> rules){
+		return doCombine(context, rules);
+	}
+	
+	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")
+	public static Decision doCombineOrdered(EvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
 	

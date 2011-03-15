@@ -15,10 +15,10 @@ import com.artagon.xacml.v30.policy.combine.LegacyOrderedPermitOverridesRuleComb
 import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesPolicyCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesRuleCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.OnlyOneApplicablePolicyCombingingAlgorithm;
-import com.artagon.xacml.v30.policy.combine.OrderedDenyOverridesPolicyCombiningAlgorithm;
-import com.artagon.xacml.v30.policy.combine.OrderedDenyOverridesRuleCombingingAlgorithm;
-import com.artagon.xacml.v30.policy.combine.OrderedPermitOverridesPolicyCombineAlgorithm;
-import com.artagon.xacml.v30.policy.combine.OrderedPermitOverridesRuleCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesPolicyOrderedCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesRuleOrderedCombingingAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyOrderedCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleOrderedCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgorithm;
@@ -33,19 +33,19 @@ class DefaultXacml30DecisionCombiningAlgorithms
 		addRuleCombineAlgorithm(new FirstApplicableRuleCombiningAlgorithm());
 		
 		addRuleCombineAlgorithm(new PermitOverridesRuleCombineAlgorithm());
-		addRuleCombineAlgorithm(new OrderedPermitOverridesRuleCombingingAlgorithm());
+		addRuleCombineAlgorithm(new PermitOverridesRuleOrderedCombingingAlgorithm());
 		
 		addRuleCombineAlgorithm(new DenyOverridesRuleCombiningAlgorithm());
-		addRuleCombineAlgorithm(new OrderedDenyOverridesRuleCombingingAlgorithm());
+		addRuleCombineAlgorithm(new DenyOverridesRuleOrderedCombingingAlgorithm());
 		
 		addRuleCombineAlgorithm(new PermitUnlessDenyRuleCombiningAlgorithm());
 		addRuleCombineAlgorithm(new DenyUnlessPermitRuleCombingingAlgorithm());
 		
 		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyCombiningAlgorithm());
-		addCompositeRuleCombineAlgorithm(new OrderedDenyOverridesPolicyCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyOrderedCombiningAlgorithm());
 			
 		addCompositeRuleCombineAlgorithm(new PermitOverridesPolicyCombineAlgorithm());
-		addCompositeRuleCombineAlgorithm(new OrderedPermitOverridesPolicyCombineAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PermitOverridesPolicyOrderedCombineAlgorithm());
 	
 		addCompositeRuleCombineAlgorithm(new FirstApplicablePolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new OnlyOneApplicablePolicyCombingingAlgorithm());

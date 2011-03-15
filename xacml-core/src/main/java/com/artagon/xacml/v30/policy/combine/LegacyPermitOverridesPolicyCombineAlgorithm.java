@@ -24,6 +24,7 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 		super(ID);
 	}
 	
+	@Override
 	public final Decision combine(EvaluationContext context, 
 			List<CompositeDecisionRule> rules){
 		return doCombine(context, rules);
