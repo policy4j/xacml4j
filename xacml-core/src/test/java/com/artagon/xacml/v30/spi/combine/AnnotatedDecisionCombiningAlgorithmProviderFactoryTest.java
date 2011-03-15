@@ -1,14 +1,15 @@
 package com.artagon.xacml.v30.spi.combine;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.DecisionRule;
@@ -26,19 +27,25 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 	}
 	
 	@XacmlPolicyDecisionCombingingAlgorithm("test1Algo")
-	public  Decision test1(EvaluationContext context, List<? super DecisionRule> rules)
+	public  Decision testNonStaticMethod(EvaluationContext context, List<? super DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 	
 	@XacmlRuleDecisionCombingingAlgorithm("test2Algo")
-	public static Decision test2(EvaluationContext context, List<DecisionRule> rules)
+	public static Decision testValidMethod(EvaluationContext context, List<DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 	
-	@XacmlRuleDecisionCombingingAlgorithm("test3Algo")
-	public static Decision test3(List<DecisionRule> rules)
+	@XacmlRuleDecisionCombingingAlgorithm("test2Algo")
+	public static Decision test2params1(List<DecisionRule> rules)
+	{
+		return Decision.DENY;
+	}
+	
+	@XacmlRuleDecisionCombingingAlgorithm("test2algo")
+	public static Decision test2params2(EvaluationContext context)
 	{
 		return Decision.DENY;
 	}
@@ -50,19 +57,35 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void test1()
+	public void doTest1()
 	{	
 		p.createPolicyDecisionCombineAlgorithm(
-				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test1"));
+				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "testNonStaticMethod"));
 	}
 	
 	@Test
-	public void test2()
+	public void doTestValidMethod()
 	{	
 		DecisionCombiningAlgorithm<Rule> a = p.createRuleDecisionCombineAlgorithm(
-				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2"));
+				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "testValidMethod"));
 		assertNotNull(a);
 		assertEquals("test2Algo", a.getId());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void doTest2Params1()
+	{	
+		p.createRuleDecisionCombineAlgorithm(
+				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2"));
+		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void doTest2Params2()
+	{	
+		p.createRuleDecisionCombineAlgorithm(
+				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2"));
+		
 	}
 	
 	@Test

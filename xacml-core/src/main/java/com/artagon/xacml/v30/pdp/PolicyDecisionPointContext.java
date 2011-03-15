@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.RequestContext;
@@ -32,4 +31,8 @@ public interface PolicyDecisionPointContext
 	Result requestDecision(RequestContext req);
 	
 	RequestContextHandler getRequestHandlers();
+	
+	boolean isDecisionCacheEnabled();
+	boolean isDecisionAuditEnabled();
+	boolean isValidateFuncParamsAtRuntime();
 }

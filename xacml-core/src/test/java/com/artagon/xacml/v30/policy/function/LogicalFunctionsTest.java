@@ -65,6 +65,12 @@ public class LogicalFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
 		control.verify();
+		
+		control.reset();
+		control.replay();
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+		control.verify();
 	}
 	
 	@Test
@@ -103,28 +109,61 @@ public class LogicalFunctionsTest
 	}
 	
 	@Test
-	public void testBasicOrFunction() throws EvaluationException
+	public void testOrFunction() throws EvaluationException
 	{
-		replay(context);
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(false), 
 				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		control.verify();
+		control.reset();
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		control.verify();
+		control.reset();
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
-		verify(context);
-		
-		reset(context);
-		replay(context);
+		control.verify();
+		control.reset();
+		control.replay();
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
 		verify(context);
+	}
+	
+	@Test
+	public void testLazyOrFunctionParamEvaluation() throws EvaluationException
+	{
+		Expression p1 = control.createMock(Expression.class);
+		Expression p2 = control.createMock(Expression.class);
+		Expression p3 = control.createMock(Expression.class);
+		
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.or(context, p1, p2, p3));
+		control.verify();
+		
+		control.reset();
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(true), 
+				LogicalFunctions.or(context, p1, p2, p3));
+		control.verify();
+		
+		control.reset();
+		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		control.replay();
+		
+		assertEquals(BooleanType.BOOLEAN.create(false), 
+				LogicalFunctions.or(context, p1, p2));
+		control.verify();
+
 	}
 	
 	@Test

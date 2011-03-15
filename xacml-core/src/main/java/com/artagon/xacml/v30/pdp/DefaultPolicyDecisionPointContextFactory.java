@@ -28,6 +28,8 @@ public class DefaultPolicyDecisionPointContextFactory
 	private CompositeDecisionRule policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 	
+	private boolean decisionCacheEnabled = true;
+	private boolean decisionAuditEnabled = true;
 	private boolean validateFuncParamsAtRuntime = false;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	
@@ -59,11 +61,26 @@ public class DefaultPolicyDecisionPointContextFactory
 			boolean validate){
 		this.validateFuncParamsAtRuntime = validate;
 	}
-
+	
 	@Override
 	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp) 
 	{
 		return new PolicyDecisionPointContext() {
+			
+			@Override
+			public boolean isDecisionCacheEnabled(){
+				return decisionCacheEnabled;
+			}
+			
+			@Override
+			public boolean isValidateFuncParamsAtRuntime(){
+				return validateFuncParamsAtRuntime;
+			}
+			
+			@Override
+			public boolean isDecisionAuditEnabled(){
+				return decisionAuditEnabled;
+			}
 			
 			@Override
 			public XPathProvider getXPathProvider() {
