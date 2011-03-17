@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.pdp;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 
-public interface PolicyDecisionCache 
+public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 {
 	/**
 	 * Gets a cached instance of {@link Result}

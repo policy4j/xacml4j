@@ -32,6 +32,7 @@ public final class DefaultPolicyDecisionPoint
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 		
+	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
 	
