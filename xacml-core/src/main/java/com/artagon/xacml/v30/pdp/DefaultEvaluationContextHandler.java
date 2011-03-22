@@ -45,7 +45,6 @@ class DefaultEvaluationContextHandler
 	private RequestContextCallback requestCallback;
 	
 	private Map<AttributeCategory, Node> contentCache;
-	
 	private Map<AttributeDesignatorKey, BagOfAttributeValues> desginatorCache;
 	private Map<AttributeSelectorKey, BagOfAttributeValues> selectorCache;
 	

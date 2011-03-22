@@ -302,18 +302,18 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>comcast-release-repo</id>
-			<url>scp://cim-trac.comcastonline.com/opt/csw/apache2/share/htdocs/http/godzilla/maven/repo/releases</url>
-			<layout>default</layout>
-		</repository>
-		<snapshotRepository>
-			<id>comcast-snapshot-repo</id>
-			<url>scp://cim-trac.comcastonline.com/opt/csw/apache2/share/htdocs/http/godzilla/maven/repo/snapshots</url>
-			<layout>default</layout>
-		</snapshotRepository>
-	</distributionManagement>
+            <repository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>cimrepo</id>
+                    <url>http://repo.dev.cim.comcast.net/nexus/content/repositories/releases</url>
+                    <layout>default</layout>
+            </repository>
+            <snapshotRepository>
+                    <id>cimrepo-snapshots</id>
+                    <url>http://repo.dev.cim.comcast.net/nexus/content/repositories/snapshots</url>
+                    <layout>default</layout>
+            </snapshotRepository>
+       </distributionManagement>
 	<scm>
 		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</connection>
 		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</developerConnection>

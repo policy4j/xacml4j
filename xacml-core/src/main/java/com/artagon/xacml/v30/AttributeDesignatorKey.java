@@ -3,7 +3,8 @@ package com.artagon.xacml.v30;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public final class AttributeDesignatorKey extends AttributeReferenceKey
+public final class AttributeDesignatorKey 
+	extends AttributeReferenceKey
 {
 	private String attributeId;
 	private String issuer;
@@ -38,6 +39,7 @@ public final class AttributeDesignatorKey extends AttributeReferenceKey
 		return context.resolve(this);
 	}
 	
+	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("Category", getCategory())
@@ -46,10 +48,12 @@ public final class AttributeDesignatorKey extends AttributeReferenceKey
 		.add("Issuer", issuer).toString();
 	}
 	
+	@Override
 	public int hashCode(){
 		return hashCode;
 	}
 	
+	@Override
 	public boolean equals(Object o)
 	{
 		if(o == this){

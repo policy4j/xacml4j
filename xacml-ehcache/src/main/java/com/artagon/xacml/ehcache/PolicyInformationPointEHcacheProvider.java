@@ -22,8 +22,6 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 	private Cache attributesCache;
 	private Cache contentCache;
 	
-	private TransformerFactory tf;
-	
 	public PolicyInformationPointEHcacheProvider(
 			Cache attributesCache,
 			Cache contentCache){
@@ -31,7 +29,6 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 		Preconditions.checkNotNull(contentCache);
 		this.attributesCache = attributesCache;
 		this.contentCache = contentCache;
-		this.tf = TransformerFactory.newInstance();
 	}
 
 	@Override

@@ -15,13 +15,13 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 			ParserContext parserContext) {
 		BeanDefinitionBuilder pip = BeanDefinitionBuilder.rootBeanDefinition(PolicyInformationPointFactoryBean.class);
 		pip.addConstructorArgValue(element.getAttribute("id"));
-		String handlers = element.getAttribute("resolvers");
-		if (StringUtils.hasText(handlers)) {
-			pip.addPropertyReference("resolvers", handlers);
+		String resolvers = element.getAttribute("resolvers");
+		if (StringUtils.hasText(resolvers)) {
+			pip.addPropertyReference("resolvers", resolvers);
 		}
-		String xpathProvider = element.getAttribute("cache");
-		if (StringUtils.hasText(xpathProvider)) {
-			pip.addPropertyReference("cache", xpathProvider);
+		String cache = element.getAttribute("cache");
+		if (StringUtils.hasText(cache)) {
+			pip.addPropertyReference("cache", cache);
 		}
 		return pip.getBeanDefinition();
 	}

@@ -83,6 +83,12 @@ public class DefaultPolicyReferenceResolver
 				enableRefCache){
 			policyIDRefCache.put(ref, p);
 		}
+		if(p != null && 
+				log.isDebugEnabled()){
+			log.debug("Resolved policy id=\"{}\" " +
+					"version=\"{}\" for reference=\"{}\" from repository", 
+					new Object[]{p.getId(), p.getVersion(), ref});
+		}
 		return p;
 	}
 	
@@ -111,6 +117,11 @@ public class DefaultPolicyReferenceResolver
 		if(p != null && 
 				enableRefCache){
 			policySetIDRefCache.put(ref, p);
+		}
+		if(p != null && log.isDebugEnabled()){
+			log.debug("Resolved policy set id=\"{}\" " +
+					"version=\"{}\" for reference=\"{}\" from repository", 
+					new Object[]{p.getId(), p.getVersion(), ref});
 		}
 		return p;
 	}
