@@ -216,6 +216,9 @@ public interface EvaluationContext
 	BagOfAttributeValues resolve(AttributeSelectorKey ref) 
 		throws EvaluationException;
 	
+	void setDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeValues v);
+	void setSelectorValue(AttributeSelectorKey ref, BagOfAttributeValues v);
+	
 	/**
 	 * Evaluates a given XPath expression
 	 * to a {@link NodeList}

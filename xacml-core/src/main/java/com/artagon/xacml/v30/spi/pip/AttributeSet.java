@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.google.common.base.Preconditions;
 
@@ -35,6 +36,15 @@ public final class AttributeSet
 	
 	public AttributeResolverDescriptor getDescriptor(){
 		return d;
+	}
+	
+	public BagOfAttributeValues get(AttributeDesignatorKey key)
+	{
+		Preconditions.checkState(d.canResolve(key));
+		AttributeDescriptor ad = d.getAttribute(key.getAttributeId());
+		Preconditions.checkState(ad != null);
+		BagOfAttributeValues v = values.get(key.getAttributeId());
+		return (v != null)?v:ad.getDataType().emptyBag();
 	}
 	
 	/**

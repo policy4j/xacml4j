@@ -51,7 +51,9 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	 *  
 	 * @return a map by the attribute id
 	 */
-	Map<String, AttributeDescriptor> getAttributes();
+	Map<String, AttributeDescriptor> getAttributesById();
+	
+	Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey();
 	
 	/**
 	 * Tests if an attribute resolver can resolve

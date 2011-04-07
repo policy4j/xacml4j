@@ -3,8 +3,10 @@ package com.artagon.xacml.v30;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.slf4j.Logger;
@@ -27,13 +29,15 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private boolean validateAtRuntime = false;
 	
-	
 	private TimeZone timezone;
 	
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 		
 	private StatusCode evaluationStatus;
 	private Calendar currentDateTime;
+	
+	private Map<AttributeDesignatorKey, BagOfAttributeValues> designCache;
+	private Map<AttributeSelectorKey, BagOfAttributeValues> selectCache;
 	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -62,6 +66,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
+		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>(128);
+		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>(128);
 	}
 	
 	@Override
@@ -246,12 +252,16 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeDesignatorKey ref) 
 		throws EvaluationException
 	{
-		BagOfAttributeValues v = contextHandler.resolve(this, ref);
-		if(log.isDebugEnabled()){
-			log.debug("Resolved designator=\"{}\" " +
-					"to value=\"{}\"", ref, v);
+		BagOfAttributeValues v = designCache.get(ref);
+		if(v != null){
+			return v;
 		}
-		return (v == null)?ref.getDataType().emptyBag():v;
+		v = contextHandler.resolve(this, ref);
+		v = (v == null)?ref.getDataType().emptyBag():v;
+		// cache resolved designator
+		// value internally
+		setDesignatorValue(ref, v);
+		return v;
 	}
 	
 	@Override
@@ -259,12 +269,30 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			AttributeSelectorKey ref)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues v = contextHandler.resolve(this, ref);
-		if(log.isDebugEnabled()){
-			log.debug("Resolved selector=\"{}\" " +
-					"to value=\"{}\"", ref, v);
+		BagOfAttributeValues v = selectCache.get(ref);
+		if(v != null){
+			return v;
 		}
-		return (v == null)?ref.getDataType().emptyBag():v;
+		v = contextHandler.resolve(this, ref);
+		v = (v == null)?ref.getDataType().emptyBag():v;
+		// cache resolved selector
+		// value internally
+		setSelectorValue(ref, v);
+		return v;
+	}
+	
+	public void setDesignatorValue(
+			AttributeDesignatorKey key, 
+			BagOfAttributeValues v){
+		Preconditions.checkNotNull(key);
+		this.designCache.put(key, (v == null)?key.getDataType().emptyBag():v);
+	}
+	
+	public void setSelectorValue(
+			AttributeSelectorKey key, 
+			BagOfAttributeValues v){
+		Preconditions.checkNotNull(key);
+		this.selectCache.put(key, (v == null)?key.getDataType().emptyBag():v);
 	}
 	
 	@Override

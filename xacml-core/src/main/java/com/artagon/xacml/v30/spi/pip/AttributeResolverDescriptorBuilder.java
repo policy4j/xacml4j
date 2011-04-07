@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.NoInitialContextException;
+
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
@@ -21,7 +23,8 @@ public final class AttributeResolverDescriptorBuilder
 	private String id;
 	private String name;
 	private AttributeCategory category;
-	private Map<String, AttributeDescriptor> attributes;
+	private Map<String, AttributeDescriptor> attributesById;
+	private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 	private String issuer;
 	private List<AttributeReferenceKey> keys;
 	private int preferredCacheTTL = 0;
@@ -38,7 +41,8 @@ public final class AttributeResolverDescriptorBuilder
 		this.issuer = issuer;
 		this.id = id;
 		this.category = category;
-		this.attributes = new HashMap<String, AttributeDescriptor>();
+		this.attributesById = new HashMap<String, AttributeDescriptor>();
+		this.attributesByKey = new HashMap<AttributeDesignatorKey, AttributeDescriptor>();
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
 	
@@ -88,19 +92,24 @@ public final class AttributeResolverDescriptorBuilder
 	public AttributeResolverDescriptorBuilder attribute(
 			String attributeId, 
 			AttributeValueType dataType){
-		AttributeDescriptor old = attributes.put(attributeId, new AttributeDescriptor(attributeId, dataType));
-		Preconditions.checkState(old == null, 
-				"Builder already has an attribute with id=\"%s\"", attributeId);
-		return this;
+		return attribute(attributeId, dataType, null);
 	}
 	
 	public AttributeResolverDescriptorBuilder attribute(
 			String attributeId, 
 			AttributeValueType dataType, 
 			String[] defaultValue){
-		AttributeDescriptor old = attributes.put(attributeId, new AttributeDescriptor(attributeId, dataType));
-		Preconditions.checkState(old == null, 
+		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType);
+		AttributeDesignatorKey key = new AttributeDesignatorKey(category, attributeId, dataType, issuer);
+		Preconditions.checkState(attributesById.put(attributeId, d) == null,
 				"Builder already has an attribute with id=\"%s\"", attributeId);
+		Preconditions.checkState( this.attributesByKey.put(key, d) == null, 
+				"Builder already has an attribute with id=\"%s\"", attributeId);
+		if(issuer != null){
+			AttributeDesignatorKey keyNoIssuer = new AttributeDesignatorKey(category, attributeId, dataType, null);
+			Preconditions.checkState(attributesByKey.put(keyNoIssuer, d) == null, 
+					"Builder already has an attribute with id=\"%s\"", attributeId);
+		}
 		return this;
 	}
 		
@@ -111,11 +120,15 @@ public final class AttributeResolverDescriptorBuilder
 	private class AttributeResolverDescriptorImpl extends BaseResolverDescriptor
 			implements AttributeResolverDescriptor 
 	{
-		private Map<String, AttributeDescriptor> attributes;
+		private Map<String, AttributeDescriptor> attributesById;
+		private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 		
 		AttributeResolverDescriptorImpl() {
 			super(id, name, category, keys, preferredCacheTTL);
-			this.attributes = ImmutableMap.copyOf(AttributeResolverDescriptorBuilder.this.attributes);
+			this.attributesById = ImmutableMap.copyOf(
+					AttributeResolverDescriptorBuilder.this.attributesById);
+			this.attributesByKey = ImmutableMap.copyOf(
+					AttributeResolverDescriptorBuilder.this.attributesByKey);
 		}
 		
 		@Override
@@ -125,26 +138,30 @@ public final class AttributeResolverDescriptorBuilder
 		
 		@Override
 		public int getAttributesCount(){
-			return attributes.size();
+			return attributesById.size();
 		}
 		
 		public Set<String> getProvidedAttributeIds(){
-			return attributes.keySet();
+			return attributesById.keySet();
 		}
 
 		@Override
-		public Map<String, AttributeDescriptor> getAttributes() {
-			return attributes;
+		public Map<String, AttributeDescriptor> getAttributesById() {
+			return attributesById;
 		}
 
 		@Override
 		public AttributeDescriptor getAttribute(String attributeId) {
-			return attributes.get(attributeId);
+			return attributesById.get(attributeId);
+		}
+		
+		public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey(){
+			return attributesByKey;
 		}
 
 		@Override
 		public boolean isAttributeProvided(String attributeId) {
-			return attributes.containsKey(attributeId);
+			return attributesById.containsKey(attributeId);
 		}
 		
 		@Override
