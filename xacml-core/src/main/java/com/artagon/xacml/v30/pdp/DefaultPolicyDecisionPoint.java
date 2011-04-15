@@ -40,7 +40,7 @@ public final class DefaultPolicyDecisionPoint
 	private AtomicBoolean auditEnabled;
 	private AtomicBoolean cacheEnabled;
 	private AtomicLong decisionCount;
-	private AtomicLong avgDecisionTime;
+	private AtomicLong decisionTime;
 	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
@@ -57,6 +57,8 @@ public final class DefaultPolicyDecisionPoint
 		this.factory = factory;
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
+		this.decisionCount = new AtomicLong(0);
+		this.decisionTime = new AtomicLong(0);
 	}
 	
 	@Override
@@ -98,6 +100,7 @@ public final class DefaultPolicyDecisionPoint
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
+			decisionTime.set(System.currentTimeMillis() - start);
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
@@ -113,7 +116,7 @@ public final class DefaultPolicyDecisionPoint
 		if(isDecisionCacheEnabled()){
 			decisionCache.putDecision(request, r);
 		}
-		avgDecisionTime.set(System.currentTimeMillis() - start);
+		decisionTime.set(System.currentTimeMillis() - start);
 		return r;
 	}
 	
@@ -171,7 +174,7 @@ public final class DefaultPolicyDecisionPoint
 	}
 
 	@Override
-	public long getDecisionAverageTime() {
-		return avgDecisionTime.get();
+	public long getDecisionTime() {
+		return decisionTime.get();
 	}
 }
