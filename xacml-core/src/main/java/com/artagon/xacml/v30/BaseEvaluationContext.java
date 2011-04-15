@@ -254,6 +254,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		BagOfAttributeValues v = designCache.get(ref);
 		if(v != null){
+			if(log.isDebugEnabled()){
+				log.debug("Found designator=\"{}\" " +
+						"value=\"{}\" in cache", ref, v);
+			}
 			return v;
 		}
 		v = contextHandler.resolve(this, ref);
@@ -271,6 +275,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	{
 		BagOfAttributeValues v = selectCache.get(ref);
 		if(v != null){
+			if(log.isDebugEnabled()){
+				log.debug("Found selector=\"{}\" " +
+						"value=\"{}\" in cache", ref, v);
+			}
 			return v;
 		}
 		v = contextHandler.resolve(this, ref);
