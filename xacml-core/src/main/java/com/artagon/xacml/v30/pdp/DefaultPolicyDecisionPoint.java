@@ -89,13 +89,12 @@ public final class DefaultPolicyDecisionPoint
 	{
 		PolicyDecisionCache decisionCache = context.getDecisionCache();
 		PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
-		Result r = decisionCache.getDecision(request);
+		long start = System.currentTimeMillis();
+		Result r =  null;
+		if(isDecisionCacheEnabled()){
+			r = decisionCache.getDecision(request);
+		}
 		if(r != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found decision result in the decision cache");
-				log.debug("Decision request=\"{}\" " +
-						"result=\"{}\"", request,  r);
-			}
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
@@ -103,23 +102,18 @@ public final class DefaultPolicyDecisionPoint
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
 		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
-		long start = System.currentTimeMillis();
 		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
-		avgDecisionTime.set(System.currentTimeMillis() - start);
 		r = createResult(evalContext, 
 				decision, 
 				request.getIncludeInResultAttributes(), 
 				request.isReturnPolicyIdList());
-		if(log.isDebugEnabled()){
-			log.debug("Decision request=\"{}\" " +
-					"result=\"{}\"", request,  r);
-		}
 		if(isDecisionAuditEnabled()){
 			decisionAuditor.audit(this, r, request);
 		}
 		if(isDecisionCacheEnabled()){
 			decisionCache.putDecision(request, r);
 		}
+		avgDecisionTime.set(System.currentTimeMillis() - start);
 		return r;
 	}
 	
