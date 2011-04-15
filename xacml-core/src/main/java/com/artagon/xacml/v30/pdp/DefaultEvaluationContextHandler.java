@@ -45,8 +45,8 @@ class DefaultEvaluationContextHandler
 	private RequestContextCallback requestCallback;
 	
 	private Map<AttributeCategory, Node> contentCache;
-	private Map<AttributeDesignatorKey, BagOfAttributeValues> desginatorCache;
-	private Map<AttributeSelectorKey, BagOfAttributeValues> selectorCache;
+//	private Map<AttributeDesignatorKey, BagOfAttributeValues> desginatorCache;
+//	private Map<AttributeSelectorKey, BagOfAttributeValues> selectorCache;
 	
 	private Stack<AttributeDesignatorKey> designatorResolutionStack;
 	private Stack<AttributeSelectorKey> selectorResolutionStack;
@@ -65,8 +65,6 @@ class DefaultEvaluationContextHandler
 		this.pip = pip;
 		this.requestCallback = requestCallback;
 		this.contentCache = new HashMap<AttributeCategory, Node>();
-		this.desginatorCache = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>();
-		this.selectorCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>();
 		this.selectorResolutionStack = new Stack<AttributeSelectorKey>();
 		this.designatorResolutionStack = new Stack<AttributeDesignatorKey>();
 		this.contentResolutionStack = new Stack<AttributeCategory>();
@@ -88,9 +86,6 @@ class DefaultEvaluationContextHandler
 		if(!v.isEmpty()){
 			return v;
 		}
-		if(desginatorCache.containsKey(key)){
-			return desginatorCache.get(key);
-		}
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key), 
 				"Cyclic designator=\"%s\" resolution detected", key);
@@ -98,7 +93,6 @@ class DefaultEvaluationContextHandler
 		{
 			designatorResolutionStack.push(key);
 			v = pip.resolve(context, key);
-			desginatorCache.put(key, v);
 			return v;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
@@ -119,14 +113,6 @@ class DefaultEvaluationContextHandler
 			AttributeSelectorKey ref)
 			throws EvaluationException 
 	{
-		if(selectorCache.containsKey(ref)){
-			BagOfAttributeValues v = selectorCache.get(ref);
-			if(log.isDebugEnabled()){
-				log.debug("Selector=\"{}\" resolution " +
-						"result=\"{}\" found in the cache, not re-evaluating", ref, v);
-			}
-			return v;
-		}
 		Preconditions.checkState(
 				!selectorResolutionStack.contains(ref), 
 				"Cyclic designator=\"%s\" resolution detected", ref);
@@ -138,7 +124,6 @@ class DefaultEvaluationContextHandler
 				log.debug("Resolved " +
 						"selector=\"{}\" to bag=\"{}\"", ref, v);
 			}
-			selectorCache.put(ref, v);
 			return v;
 		}finally{
 			selectorResolutionStack.pop();

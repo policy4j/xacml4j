@@ -92,8 +92,7 @@ public class DefaultEvaluationContextHandlerTest
 		replay(context, request, requestContextCallback, pip);
 		
 		Expression v = handler.resolve(context, ref);
-		// test cache 
-		v = handler.resolve(context, ref);
+		
 		assertEquals(v, INTEGER.bagOf(INTEGER.create(555555)));
 		verify(context, request, requestContextCallback, pip);
 	}
@@ -119,8 +118,6 @@ public class DefaultEvaluationContextHandlerTest
 		replay(context, request, requestContextCallback, pip);
 		
 		Expression v = handler.resolve(context, ref);
-		// test cache 
-		v = handler.resolve(context, ref);
 		assertEquals(INTEGER.bagOf(INTEGER.create(555555)), v);
 		verify(context, request, requestContextCallback, pip);
 	}
@@ -286,13 +283,10 @@ public class DefaultEvaluationContextHandlerTest
 		
 
 		expect(pip.resolve(context, ref)).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+	
 		
 		replay(context, request, pip, requestContextCallback);
 		ValueExpression v = handler.resolve(context, ref);
-		// test if designator resolution result is cached
-		v = handler.resolve(context, ref);
 		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
 		verify(context, request, pip, requestContextCallback);
 	}
