@@ -79,7 +79,6 @@ class DefaultEvaluationContextHandler
 		
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
-	
 		BagOfAttributeValues v  = requestCallback.getAttributeValue(
 				key.getCategory(), key.getAttributeId(), 
 				key.getDataType(), key.getIssuer());

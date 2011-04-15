@@ -4,7 +4,7 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
 
-public interface PolicyDecisionPoint
+public interface PolicyDecisionPoint extends PolicyDecisionPointMBean
 {
 	/**
 	 * Gets policy decision point

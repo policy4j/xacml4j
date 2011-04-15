@@ -2,6 +2,11 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.management.NotCompliantMBeanException;
+import javax.management.StandardMBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,22 +33,30 @@ import com.google.common.base.Preconditions;
  * @author Giedrius Trumpickas
  */
 public final class DefaultPolicyDecisionPoint 
-	implements PolicyDecisionPoint, PolicyDecisionCallback
+	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 		
+	private AtomicBoolean auditEnabled;
+	private AtomicBoolean cacheEnabled;
+	private AtomicLong decisionCount;
+	private AtomicLong avgDecisionTime;
 	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
 	
 	public DefaultPolicyDecisionPoint(
 			String id,
-			PolicyDecisionPointContextFactory factory)
+			PolicyDecisionPointContextFactory factory) 
+		throws NotCompliantMBeanException
 	{
+		super(PolicyDecisionPointMBean.class);
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(factory);
 		this.id = id;
 		this.factory = factory;
+		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
+		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
 	}
 	
 	@Override
@@ -83,12 +96,16 @@ public final class DefaultPolicyDecisionPoint
 				log.debug("Decision request=\"{}\" " +
 						"result=\"{}\"", request,  r);
 			}
-			decisionAuditor.audit(this, r, request);
+			if(isDecisionAuditEnabled()){
+				decisionAuditor.audit(this, r, request);
+			}
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
 		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
+		long start = System.currentTimeMillis();
 		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
+		avgDecisionTime.set(System.currentTimeMillis() - start);
 		r = createResult(evalContext, 
 				decision, 
 				request.getIncludeInResultAttributes(), 
@@ -97,8 +114,12 @@ public final class DefaultPolicyDecisionPoint
 			log.debug("Decision request=\"{}\" " +
 					"result=\"{}\"", request,  r);
 		}
-		decisionAuditor.audit(this, r, request);
-		decisionCache.putDecision(request, r);
+		if(isDecisionAuditEnabled()){
+			decisionAuditor.audit(this, r, request);
+		}
+		if(isDecisionCacheEnabled()){
+			decisionCache.putDecision(request, r);
+		}
 		return r;
 	}
 	
@@ -108,6 +129,7 @@ public final class DefaultPolicyDecisionPoint
 			Collection<Attributes> includeInResult, 
 			boolean returnPolicyIdList)
 	{
+		decisionCount.incrementAndGet();
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					Status.createSuccess(), 
@@ -127,5 +149,35 @@ public final class DefaultPolicyDecisionPoint
 				(returnPolicyIdList?
 						context.getEvaluatedPolicies():
 							Collections.<CompositeDecisionRuleIDReference>emptyList()));
+	}
+
+	@Override
+	public boolean isDecisionAuditEnabled() {
+		return auditEnabled.get();
+	}
+
+	@Override
+	public void setDecisionAuditEnabled(boolean enabled) {
+		this.auditEnabled.set(enabled);
+	}
+
+	@Override
+	public boolean isDecisionCacheEnabled() {
+		return cacheEnabled.get();
+	}
+
+	@Override
+	public void setDecisionCacheEnabled(boolean enabled) {
+		this.cacheEnabled.set(enabled);		
+	}
+
+	@Override
+	public long getDecisionCount() {
+		return decisionCount.get();
+	}
+
+	@Override
+	public long getDecisionAverageTime() {
+		return avgDecisionTime.get();
 	}
 }

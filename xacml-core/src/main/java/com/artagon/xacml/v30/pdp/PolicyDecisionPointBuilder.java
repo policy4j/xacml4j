@@ -3,6 +3,8 @@ package com.artagon.xacml.v30.pdp;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.management.NotCompliantMBeanException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,6 +112,10 @@ public final class PolicyDecisionPointBuilder
 		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
 				rootPolicy, repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
-		return new DefaultPolicyDecisionPoint(id, factory);
+		try{
+			return new DefaultPolicyDecisionPoint(id, factory);
+		}catch(NotCompliantMBeanException e){
+			throw new IllegalStateException(e);
+		}
 	}
 }

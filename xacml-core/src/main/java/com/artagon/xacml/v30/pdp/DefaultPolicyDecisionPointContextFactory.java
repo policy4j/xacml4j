@@ -63,6 +63,16 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 	
 	@Override
+	public boolean isDecisionAuditEnabled() {
+		return decisionAuditEnabled;
+	}
+
+	@Override
+	public boolean isDecisionCacheEnabled() {
+		return decisionCacheEnabled;
+	}
+
+	@Override
 	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp) 
 	{
 		return new PolicyDecisionPointContext() {
