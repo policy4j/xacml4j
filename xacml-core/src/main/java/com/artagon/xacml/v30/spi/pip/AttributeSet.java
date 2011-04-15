@@ -38,6 +38,10 @@ public final class AttributeSet
 		return d;
 	}
 	
+	public Iterable<AttributeDesignatorKey> getAttributeKeys(){
+		return d.getAttributesByKey().keySet();
+	}
+	
 	public BagOfAttributeValues get(AttributeDesignatorKey key)
 	{
 		Preconditions.checkState(d.canResolve(key));

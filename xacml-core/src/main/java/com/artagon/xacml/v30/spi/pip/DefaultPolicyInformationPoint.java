@@ -80,6 +80,10 @@ public class DefaultPolicyInformationPoint
 					}
 				}
 				attributes = r.resolve(pipContext);
+				// cache other set values to context
+				for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
+					context.setDesignatorValue(k, attributes.get(k));
+				}
 				if(d.isCachable()){
 					cache.putAttributes(pipContext, attributes);
 				}
