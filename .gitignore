@@ -1,0 +1,70 @@
+
+# /
+/.classpath
+/.project
+/.settings
+/target
+
+# /xacml-core/
+/xacml-core/.classpath
+/xacml-core/.project
+/xacml-core/.settings
+/xacml-core/target
+
+# /xacml-ehcache/
+/xacml-ehcache/.classpath
+/xacml-ehcache/.project
+/xacml-ehcache/target
+/xacml-ehcache/.settings
+
+# /xacml-opensaml/
+/xacml-opensaml/.classpath
+/xacml-opensaml/.project
+/xacml-opensaml/target
+/xacml-opensaml/.settings
+
+# /xacml-protobuf/
+/xacml-protobuf/.classpath
+/xacml-protobuf/.project
+/xacml-protobuf/target
+/xacml-protobuf/.settings
+/xacml-protobuf/.springBeans
+/xacml-protobuf/bin
+
+# /xacml-schemas/
+/xacml-schemas/.classpath
+/xacml-schemas/.project
+/xacml-schemas/.settings
+/xacml-schemas/target
+
+# /xacml-schemas/xacml-v20-schemas/
+/xacml-schemas/xacml-v20-schemas/.classpath
+/xacml-schemas/xacml-v20-schemas/.project
+/xacml-schemas/xacml-v20-schemas/.settings
+/xacml-schemas/xacml-v20-schemas/target
+
+# /xacml-schemas/xacml-v30-schemas/
+/xacml-schemas/xacml-v30-schemas/target
+/xacml-schemas/xacml-v30-schemas/.classpath
+/xacml-schemas/xacml-v30-schemas/.project
+/xacml-schemas/xacml-v30-schemas/.settings
+
+# /xacml-spring/
+/xacml-spring/target
+/xacml-spring/.classpath
+/xacml-spring/.project
+/xacml-spring/.settings
+/xacml-spring/.springBeans
+
+# /xacml-test/
+/xacml-test/.project
+/xacml-test/.classpath
+/xacml-test/.settings
+/xacml-test/target
+
+# /xacml-ws/
+/xacml-ws/.classpath
+/xacml-ws/.project
+/xacml-ws/target
+/xacml-ws/.settings
+/xacml-ws/.springBeans
