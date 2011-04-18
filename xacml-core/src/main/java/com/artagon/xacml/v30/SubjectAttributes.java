@@ -48,6 +48,12 @@ public enum SubjectAttributes
 	SESSION_START_TIME("urn:oasis:names:tc:xacml:1.0:subject:session-start-time"),
 	
 	/**
+	 * This identifier indicates an identifier for subject’s 
+	 * current session.
+	 */
+	SESSION_IDENTIFIER("urn:artagon:names:tc:xacml:1.0:subject:session-id"),
+	
+	/**
 	 * The following identifiers indicate the location where authentication 
 	 * credentials were activated. This identifier indicates that 
 	 * the location is expressed as an IP address.

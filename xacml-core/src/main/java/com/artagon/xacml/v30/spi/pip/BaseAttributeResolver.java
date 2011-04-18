@@ -118,4 +118,8 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	public final void setPreferredCacheTTL(int ttl) {
 		this.preferedCacheTTL.set(ttl);
 	}
+	
+	public void resetCount(){
+		
+	}
 }
