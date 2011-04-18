@@ -9,6 +9,13 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 {
 	
 	/**
+	 * Gets resolver identifier
+	 * 
+	 * @return a resolver identifier
+	 */
+	String getIssuer();
+	
+	/**
 	 * Tests if resolver is capable of resolving
 	 * given attribute
 	 * 
@@ -22,13 +29,6 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	boolean canResolve(AttributeDesignatorKey key);
 	
 	/**
-	 * Gets resolver identifier
-	 * 
-	 * @return a resolver identifier
-	 */
-	String getIssuer();
-	
-	/**
 	 * Gets attribute of the given category
 	 * with a given identifier descriptor
 	 * 
@@ -37,6 +37,13 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	 */
 	AttributeDescriptor getAttribute(String attributeId);
 	
+	/**
+	 * Gets number of attributes 
+	 * provided by this resolver
+	 * 
+	 * @return a number of attributes
+	 * provided by this resolver
+	 */
 	int getAttributesCount();
 	
 	/**
@@ -53,6 +60,13 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	 */
 	Map<String, AttributeDescriptor> getAttributesById();
 	
+	/**
+	 * Gets map of attribute descriptors {@link AttributeDescriptor}
+	 * mapped by the {@link AttributeDesignatorKey}
+	 * 
+	 * @return map of {@link AttributeDescriptor} instances mapped
+	 * by the {@Link AttributeDesignatorKey}
+	 */
 	Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey();
 	
 	/**
@@ -63,6 +77,4 @@ public interface AttributeResolverDescriptor extends ResolverDescriptor
 	 * @return <code>true</code>
 	 */
 	boolean isAttributeProvided(String attributeId);
-	
-
 }
