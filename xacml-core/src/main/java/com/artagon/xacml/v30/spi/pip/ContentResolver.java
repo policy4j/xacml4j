@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.pip;
 
 
-public interface ContentResolver 
+public interface ContentResolver extends ContentResolverMBean
 {
 	/**
 	 * Gets content resolver descriptor

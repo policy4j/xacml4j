@@ -38,6 +38,4 @@ class ResolverDescriptorDelegate implements ResolverDescriptor
 	public int getPreferreredCacheTTL() {
 		return d.getPreferreredCacheTTL();
 	}
-	
-	
 }

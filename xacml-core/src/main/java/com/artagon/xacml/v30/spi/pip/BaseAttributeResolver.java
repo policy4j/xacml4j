@@ -116,10 +116,9 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
-		this.preferedCacheTTL.set(ttl);
-	}
-	
-	public void resetCount(){
-		
+		if(descriptor.isCachable() 
+				&& ttl > 0){
+			this.preferedCacheTTL.set(ttl);
+		}
 	}
 }

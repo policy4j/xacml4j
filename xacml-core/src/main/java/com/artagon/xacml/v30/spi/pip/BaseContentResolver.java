@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30.spi.pip;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
@@ -22,10 +23,17 @@ public abstract class BaseContentResolver implements ContentResolver
 	private AtomicLong failuresCount;
 	private AtomicLong successCount;
 	private AtomicLong lastInvocationDuration;
+	private AtomicInteger preferedCacheTTL;
 
 	protected BaseContentResolver(ContentResolverDescriptor descriptor){
 		Preconditions.checkArgument(descriptor != null);
-		this.descriptor = descriptor;
+		this.descriptor = new ContentResolverDescriptorDelegate(descriptor){
+			@Override
+			public int getPreferreredCacheTTL() {
+				return (preferedCacheTTL == null)?
+						super.getPreferreredCacheTTL():preferedCacheTTL.get();
+			}
+		};
 		this.invocationCount = new AtomicLong();
 		this.failuresCount = new AtomicLong();
 		this.successCount = new AtomicLong();
@@ -71,4 +79,42 @@ public abstract class BaseContentResolver implements ContentResolver
 	abstract Node doResolve(
 			ResolverContext context) 
 		throws Exception;
+
+	@Override
+	public String getId() {
+		return descriptor.getId();
+	}
+
+	@Override
+	public long getInvocationCount() {
+		return invocationCount.get();
+	}
+
+	@Override
+	public long getFailuresCount() {
+		return failuresCount.get();
+	}
+
+	@Override
+	public long getSuccessCount() {
+		return successCount.get();
+	}
+
+	@Override
+	public long getLastInvocationDuration() {
+		return lastInvocationDuration.get();
+	}
+	
+	@Override
+	public final int getPreferredCacheTTL() {
+		return descriptor.getPreferreredCacheTTL();
+	}
+
+	@Override
+	public final void setPreferredCacheTTL(int ttl) {
+		if(descriptor.isCachable() 
+				&& ttl > 0){
+			this.preferedCacheTTL.set(ttl);
+		}
+	}
 }
