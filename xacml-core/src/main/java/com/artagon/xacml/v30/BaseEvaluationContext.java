@@ -323,4 +323,15 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
+	
+	/**
+	 * Clears context state
+	 */
+	public void clear()
+	{
+		this.decisionCacheTTL = null;
+		this.designCache.clear();
+		this.selectCache.clear();
+		this.evaluatedPolicies.clear();
+	}
 }
