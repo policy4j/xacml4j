@@ -13,7 +13,12 @@ public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor
 	private final static Logger log = LoggerFactory.getLogger(BasePolicyDecisionAuditor.class);
 	
 	@Override
-	public final void audit(PolicyDecisionPoint pdp, Result result, RequestContext req) {
+	public final void audit(PolicyDecisionPoint pdp, Result result, RequestContext req) 
+	{
+		if(log.isDebugEnabled()){
+			log.debug("Auditing access decision=\"{}\" " +
+					"for request=\"{}\"", result, req);
+		}
 		if(isAuditable(pdp, req)){
 			doAudit(pdp, req, result);
 		}

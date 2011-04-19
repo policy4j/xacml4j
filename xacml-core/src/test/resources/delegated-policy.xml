@@ -226,11 +226,9 @@
 	<Policy PolicyId="Policy4" Version="1.0"
 		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit- overrides">
 		<PolicyIssuer>
-			<AttributeIncludeInResult = false="false" "
-				AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Bob</AttributeValue>
-				<Attribute />
-			</AttributeIncludeInResult>
+			</Attribute>
 		</PolicyIssuer>
 		<Target>
 			<AnyOf>

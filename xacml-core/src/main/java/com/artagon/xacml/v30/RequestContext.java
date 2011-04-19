@@ -326,10 +326,27 @@ public class RequestContext
 		return found;
 	}
 	
-	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
-			String attributeId, AttributeValueType dataType)
+	public Collection<AttributeValue> getAttributeValues(
+			AttributeCategory categoryId, 
+			String attributeId, 
+			AttributeValueType dataType)
 	{
 		return getAttributeValues(categoryId, attributeId, dataType, null);
+	}
+	
+	/**
+	 * Gets a single {@link AttributeValue} from this request
+	 * 
+	 * @param categoryId an attribute category identifier
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute data type
+	 * @return {@link AttributeValue} or <code>null</code>
+	 */
+	public AttributeValue getAttributeValue(AttributeCategory categoryId, 
+			String attributeId, 
+			AttributeValueType dataType){
+		return Iterables.getOnlyElement(
+				getAttributeValues(categoryId, attributeId, dataType), null);
 	}
 	
 	public boolean containsAttributeValues(String attributeId, AttributeValueType type)
