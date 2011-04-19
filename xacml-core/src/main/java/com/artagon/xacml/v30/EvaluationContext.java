@@ -10,6 +10,24 @@ import org.w3c.dom.NodeList;
 public interface EvaluationContext 
 {	
 	/**
+	 * Gets an authorization decision cache TTL,
+	 * cache TTL is calculated based on
+	 * the attributes used in the authorization
+	 * decision TTL's
+	 * 
+	 * @return a decision cache TTL in seconds
+	 */
+	int getDecisionCacheTTL();
+	
+	/**
+	 * Sets a decision cache TTL
+	 * 
+	 * @param ttl a new time to cache
+	 * time for a decision
+	 */
+	void setDecisionCacheTTL(int ttl);
+	
+	/**
 	 * Gets time zone used in PDP time
 	 * calculations
 	 * 

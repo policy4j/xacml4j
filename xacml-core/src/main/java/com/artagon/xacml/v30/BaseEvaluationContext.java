@@ -39,6 +39,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private Map<AttributeDesignatorKey, BagOfAttributeValues> designCache;
 	private Map<AttributeSelectorKey, BagOfAttributeValues> selectCache;
 	
+	private Integer decisionCacheTTL = null;
+	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -78,6 +80,20 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public void setEvaluationStatus(StatusCode status){
 		this.evaluationStatus = status;
+	}
+	
+	@Override
+	public int getDecisionCacheTTL() {
+		return (decisionCacheTTL == null)?0:decisionCacheTTL;
+	}
+
+	@Override
+	public void setDecisionCacheTTL(int ttl) {
+		if(decisionCacheTTL == null){
+			this.decisionCacheTTL = ttl;
+			return;
+		}
+		this.decisionCacheTTL = (ttl > 0)?Math.min(this.decisionCacheTTL, ttl):0;
 	}
 
 	@Override

@@ -87,6 +87,7 @@ public class DefaultPolicyInformationPoint
 		if(d.isCachable()){
 			cache.putAttributes(pipContext, attributes);
 		}
+		context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
 		return attributes.get(ref.getAttributeId());		
 	}
 
@@ -116,6 +117,7 @@ public class DefaultPolicyInformationPoint
 		if(d.isCachable()){
 			cache.putContent(pipContext, v);
 		}
+		context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
 		return v.getContent();
 	}
 	

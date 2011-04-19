@@ -236,5 +236,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 			BagOfAttributeValues v) {
 		delegate.setSelectorValue(ref, v);
 	}
-	
+
+	@Override
+	public int getDecisionCacheTTL() {
+		return delegate.getDecisionCacheTTL();
+	}
+
+	@Override
+	public void setDecisionCacheTTL(int ttl) {
+		delegate.setDecisionCacheTTL(ttl);
+	}
 }

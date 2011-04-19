@@ -112,7 +112,7 @@ public class DefaultPolicyInformationPointTest
 
 		cache.putAttributes(capture(resolverContext2), eq(result));
 		
-		
+		context.setDecisionCacheTTL(descriptor.getPreferreredCacheTTL());
 		control.replay();
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
@@ -158,12 +158,14 @@ public class DefaultPolicyInformationPointTest
 						StringType.STRING.bagOf(StringType.STRING.create("v1")));
 			
 		
+		context.setDecisionCacheTTL(descriptorNoCache.getPreferreredCacheTTL());
+		
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
 		
 		AttributeSet result = new AttributeSet(descriptorNoCache, values);
 		
 		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
-				
+		
 		control.replay();
 		
 		BagOfAttributeValues v = pip.resolve(context, ref);
