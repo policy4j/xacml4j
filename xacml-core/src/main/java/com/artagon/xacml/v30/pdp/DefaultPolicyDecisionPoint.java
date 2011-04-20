@@ -114,7 +114,9 @@ public final class DefaultPolicyDecisionPoint
 			decisionAuditor.audit(this, r, request);
 		}
 		if(isDecisionCacheEnabled()){
-			decisionCache.putDecision(request, r);
+			decisionCache.putDecision(
+					request, r, 
+					evalContext.getDecisionCacheTTL());
 		}
 		decisionTime.set(System.currentTimeMillis() - start);
 		return r;

@@ -20,6 +20,7 @@ public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 	 * 
 	 * @param req a decision request
 	 * @param result a decision result for a given request
+	 * @param ttl a time in seconds
 	 */
-	void putDecision(RequestContext req, Result result);
+	void putDecision(RequestContext req, Result result, int ttl);
 }

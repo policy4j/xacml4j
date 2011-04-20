@@ -32,7 +32,7 @@ public abstract class BasePolicyDecisionCache
 	}
 
 	@Override
-	public final void putDecision(RequestContext req, Result result) {
+	public final void putDecision(RequestContext req, Result result, int ttl) {
 		
 	}
 

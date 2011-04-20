@@ -44,7 +44,6 @@ public class BaseEvaluationContextTest
 		c.verify();
 	}
 	
-	
 	@Test
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{

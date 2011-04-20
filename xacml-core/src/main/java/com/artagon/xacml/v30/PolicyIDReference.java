@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 
 public final class PolicyIDReference extends 
@@ -133,7 +134,6 @@ public final class PolicyIDReference extends
 		v.visitLeave(this);
 	}	
 	
-	
 	/**
 	 * Validates if a given reference is cyclic 
 	 * in a given evaluation context
@@ -148,7 +148,8 @@ public final class PolicyIDReference extends
 		if(context.getCurrentPolicyIDReference() != null){
 			if(ref.equals(context.getCurrentPolicyIDReference())){
 				throw new IllegalStateException(
-						String.format("Reference=\"%s\" is cyclic", ref      ));
+						String.format(
+								"Reference=\"%s\" is cyclic", ref      ));
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
 		}

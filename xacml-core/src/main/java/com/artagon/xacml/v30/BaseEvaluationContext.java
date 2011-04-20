@@ -27,19 +27,22 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private Collection<Advice> advices;
 	private Collection<Obligation> obligations;
 	
-	private boolean validateAtRuntime = false;
-	
-	private TimeZone timezone;
+	private boolean validateFuncParamsAtRuntime = false;
 	
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 		
 	private StatusCode evaluationStatus;
+	
+	private TimeZone timezone;
 	private Calendar currentDateTime;
 	
 	private Map<AttributeDesignatorKey, BagOfAttributeValues> designCache;
 	private Map<AttributeSelectorKey, BagOfAttributeValues> selectCache;
 	
-	private Integer decisionCacheTTL = null;
+	private Integer combinedDecisionCacheTTL = null;
+	
+	private Map<PolicyIDReference, Policy> cachedPolicyRefs;
+	private Map<PolicySetIDReference, PolicySet> cachedPolicySetRefs;
 	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -70,6 +73,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>(128);
 		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>(128);
+		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
+		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
 	}
 	
 	@Override
@@ -84,16 +89,16 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public int getDecisionCacheTTL() {
-		return (decisionCacheTTL == null)?0:decisionCacheTTL;
+		return (combinedDecisionCacheTTL == null)?0:combinedDecisionCacheTTL;
 	}
 
 	@Override
 	public void setDecisionCacheTTL(int ttl) {
-		if(decisionCacheTTL == null){
-			this.decisionCacheTTL = ttl;
+		if(combinedDecisionCacheTTL == null){
+			this.combinedDecisionCacheTTL = ttl;
 			return;
 		}
-		this.decisionCacheTTL = (ttl > 0)?Math.min(this.decisionCacheTTL, ttl):0;
+		this.combinedDecisionCacheTTL = (ttl > 0)?Math.min(this.combinedDecisionCacheTTL, ttl):0;
 	}
 
 	@Override
@@ -119,12 +124,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public boolean isValidateFuncParamsAtRuntime() {
-		return validateAtRuntime;
+		return validateFuncParamsAtRuntime;
 	}
 	
 	@Override
 	public void setValidateFuncParamsAtRuntime(boolean validate){
-		this.validateAtRuntime = validate;
+		this.validateFuncParamsAtRuntime = validate;
 	}
 
 	@Override
@@ -329,7 +334,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	public void clear()
 	{
-		this.decisionCacheTTL = null;
+		this.combinedDecisionCacheTTL = null;
 		this.designCache.clear();
 		this.selectCache.clear();
 		this.evaluatedPolicies.clear();

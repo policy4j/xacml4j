@@ -31,6 +31,6 @@ public class NoCachePolicyDecisionCache implements PolicyDecisionCache
 	}
 
 	@Override
-	public void putDecision(RequestContext req, Result res) {
+	public void putDecision(RequestContext req, Result res, int ttl) {
 	}
 }
