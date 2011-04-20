@@ -31,6 +31,7 @@ public class DefaultPolicyDecisionPointContextFactory
 	private boolean decisionCacheEnabled = true;
 	private boolean decisionAuditEnabled = true;
 	private boolean validateFuncParamsAtRuntime = false;
+	private int decisionCacheTTL = 30;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 	
 	public DefaultPolicyDecisionPointContextFactory(
@@ -132,7 +133,8 @@ public class DefaultPolicyDecisionPointContextFactory
 				EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
 						callback, xpathProvider, pip);
 				return new RootEvaluationContext(
-						validateFuncParamsAtRuntime, 
+						validateFuncParamsAtRuntime,
+						decisionCacheTTL,
 						defaultXPathVersion, 
 						policyReferenceResolver, 
 						handler);

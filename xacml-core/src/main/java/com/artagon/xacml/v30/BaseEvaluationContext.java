@@ -53,11 +53,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	protected BaseEvaluationContext(
 			EvaluationContextHandler attributeService, 
 			PolicyReferenceResolver repository){
-		this(false, attributeService,  repository);
+		this(false, 30, attributeService,  repository);
 	}
 	
 	protected BaseEvaluationContext(
 			boolean validateFuncParams, 
+			int defaultDecisionCacheTTL,
 			EvaluationContextHandler contextHandler,
 			PolicyReferenceResolver repository){
 		Preconditions.checkNotNull(contextHandler);
@@ -75,6 +76,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>(128);
 		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
 		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
+		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 	}
 	
 	@Override

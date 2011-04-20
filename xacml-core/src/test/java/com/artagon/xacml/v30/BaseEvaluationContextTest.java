@@ -23,20 +23,45 @@ public class BaseEvaluationContextTest
 		this.c = createControl();
 		this.handler = c.createMock(EvaluationContextHandler.class);
 		this.resolver = c.createMock(PolicyReferenceResolver.class);
-		this.context = createMockBuilder(BaseEvaluationContext.class)
-		.withConstructor(false, handler, resolver)
+		this.context = createMockBuilder(
+				BaseEvaluationContext.class)
+		.withConstructor(false, 0, handler, resolver)
 		.createMock();
 	}
 	
 	@Test
-	public void testSetAndGetDecisionCacheTTL()
+	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
+		EvaluationContext context = createMockBuilder(
+				BaseEvaluationContext.class)
+		.withConstructor(false, 0, handler, resolver)
+		.createMock();
 		c.replay();
 		assertEquals(0, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
 		assertEquals(20, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(10);
 		assertEquals(10, context.getDecisionCacheTTL());
+		context.setDecisionCacheTTL(-1);
+		assertEquals(0, context.getDecisionCacheTTL());
+		context.setDecisionCacheTTL(10);
+		assertEquals(0, context.getDecisionCacheTTL());
+		c.verify();
+	}
+	
+	@Test
+	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
+	{
+		EvaluationContext context = createMockBuilder(
+				BaseEvaluationContext.class)
+		.withConstructor(false, 10, handler, resolver)
+		.createMock();
+		c.replay();
+		assertEquals(10, context.getDecisionCacheTTL());
+		context.setDecisionCacheTTL(20);
+		assertEquals(10, context.getDecisionCacheTTL());
+		context.setDecisionCacheTTL(5);
+		assertEquals(5, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(-1);
 		assertEquals(0, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(10);

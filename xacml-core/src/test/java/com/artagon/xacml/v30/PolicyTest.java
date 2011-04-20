@@ -79,7 +79,7 @@ public class PolicyTest
 				combingingAlg, rules, adviceExpressions, obligationExpressions);
 		this.referenceResolver = control.createMock(PolicyReferenceResolver.class);
 		this.handler = control.createMock(EvaluationContextHandler.class);
-		this.context = new RootEvaluationContext(true, referenceResolver, handler);
+		this.context = new RootEvaluationContext(true, 0, referenceResolver, handler);
 	}
 	
 	@Test
