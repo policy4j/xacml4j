@@ -17,7 +17,6 @@ import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 public class PolicyDecisionPointFactoryBean extends 
 	AbstractFactoryBean<PolicyDecisionPoint>
 {
-	
 	private PolicyDecisionPointBuilder pdpBuilder;
 	
 	public PolicyDecisionPointFactoryBean(String id){
@@ -39,6 +38,10 @@ public class PolicyDecisionPointFactoryBean extends
 	
 	public void setDecisionCache(PolicyDecisionCache cache){
 		this.pdpBuilder.withDecisionCache(cache);
+	}
+	
+	public void setDecisionCacheTTL(int decisionCacheTTL){
+		this.pdpBuilder.withDecisionCacheTTL(decisionCacheTTL);
 	}
 	
 	public void setPolicyInformationPoint(PolicyInformationPoint pip){

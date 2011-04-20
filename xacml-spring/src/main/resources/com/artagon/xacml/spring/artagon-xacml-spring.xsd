@@ -154,7 +154,8 @@
 				<xsd:attribute name="pip" type="xsd:string" use="required"/>
 				<xsd:attribute name="handlers" type="xsd:string" use="optional"/>
 				<xsd:attribute name="auditor" type="xsd:string" use="optional"/>
-				<xsd:attribute name="cache" type="xsd:string" use="optional"/>
+				<xsd:attribute name="decisionCache" type="xsd:string" use="optional"/>
+				<xsd:attribute name="decisionCacheTTL" type="xsd:positiveInteger" use="optional"/>
 				<xsd:attribute name="xpathProvider" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:complexContent>

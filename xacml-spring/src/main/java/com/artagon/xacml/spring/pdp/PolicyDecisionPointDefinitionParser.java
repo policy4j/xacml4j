@@ -44,6 +44,14 @@ public class PolicyDecisionPointDefinitionParser extends
 		if (StringUtils.hasText(xpathProvider)) {
 			factory.addPropertyReference("xpathProvider", xpathProvider);
 		}
+		String decisionCache = element.getAttribute("decisionCache");
+		if (StringUtils.hasText(decisionCache)) {
+			factory.addPropertyReference("decisionCache", decisionCache);
+		}
+		String decisionCacheTTL = element.getAttribute("decisionCacheTTL");
+		if (StringUtils.hasText(decisionCache)) {
+			factory.addPropertyValue("decisionCacheTTL", decisionCacheTTL);
+		}
 		return factory.getBeanDefinition();
 	}
 
