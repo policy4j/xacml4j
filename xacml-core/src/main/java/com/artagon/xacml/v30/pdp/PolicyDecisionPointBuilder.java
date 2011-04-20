@@ -34,6 +34,7 @@ public final class PolicyDecisionPointBuilder
 	private PolicyInformationPoint pip;
 	private CompositeDecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
+	private int defaultDecisionCacheTTL;
 	
 	private PolicyDecisionPointBuilder(String id){
 		Preconditions.checkNotNull(id);
@@ -49,9 +50,10 @@ public final class PolicyDecisionPointBuilder
 	}
 	
 	public PolicyDecisionPointBuilder withDecisionCache(
-			PolicyDecisionCache cache){
+			PolicyDecisionCache cache, int defaultDecisionCacheTTL){
 		Preconditions.checkNotNull(cache);
 		this.decisionCache = cache;
+		this.defaultDecisionCacheTTL = defaultDecisionCacheTTL; 
 		return this;
 	}
 	
@@ -112,6 +114,7 @@ public final class PolicyDecisionPointBuilder
 		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
 				rootPolicy, repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
+		factory.setDefaultDecisionCacheTTL(defaultDecisionCacheTTL);
 		try{
 			return new DefaultPolicyDecisionPoint(id, factory);
 		}catch(NotCompliantMBeanException e){

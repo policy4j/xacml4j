@@ -57,7 +57,7 @@ public class DefaultPolicyDecisionPointTest
 		.builder("testPdp")
 			.withDecisionAuditor(decisionAuditor)
 			.withPolicyRepository(repository)
-			.withDecisionCache(decisionCache)
+			.withDecisionCache(decisionCache, 10)
 			.withPolicyInformationPoint(pip)
 			.withRootPolicy(policyDomain)
 			.withXPathProvider(xpathProvider);
@@ -81,7 +81,7 @@ public class DefaultPolicyDecisionPointTest
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(0));
+		decisionCache.putDecision(eq(req), capture(result1), eq(10));
 		
 		control.replay();
 		
@@ -114,7 +114,7 @@ public class DefaultPolicyDecisionPointTest
 		
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(0));
+		decisionCache.putDecision(eq(req), capture(result1), eq(10));
 		
 		control.replay();
 		this.pdp = pdpBuilder.build();

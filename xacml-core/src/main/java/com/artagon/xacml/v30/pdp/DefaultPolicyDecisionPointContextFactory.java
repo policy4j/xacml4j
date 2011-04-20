@@ -58,6 +58,15 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.requestHandlers = handlerChain;
 	}
 	
+	@Override
+	public int getDefaultDecisionCacheTTL(){
+		return decisionCacheTTL;
+	}
+	
+	public void setDefaultDecisionCacheTTL(int ttl){
+		this.decisionCacheTTL = (ttl > 0)?ttl:0;
+	}
+	
 	public void setValidaFunctionParametersAtRuntime(
 			boolean validate){
 		this.validateFuncParamsAtRuntime = validate;

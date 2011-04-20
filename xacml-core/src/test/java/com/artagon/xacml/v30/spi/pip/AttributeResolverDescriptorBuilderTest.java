@@ -28,11 +28,14 @@ public class AttributeResolverDescriptorBuilderTest
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, d.getCategory());
 		assertTrue(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null)));
+				new AttributeDesignatorKey(
+						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null)));
 		assertTrue(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer")));
+				new AttributeDesignatorKey(
+						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer")));
 		assertFalse(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", StringType.STRING, "issuer")));
+				new AttributeDesignatorKey(
+						AttributeCategories.SUBJECT_ACCESS, "testId1", StringType.STRING, "issuer")));
 		
 		Map<AttributeDesignatorKey, AttributeDescriptor> byKey = d.getAttributesByKey();
 		assertEquals(4, byKey.size());
