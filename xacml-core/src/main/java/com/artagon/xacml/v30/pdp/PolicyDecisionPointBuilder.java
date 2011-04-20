@@ -50,10 +50,15 @@ public final class PolicyDecisionPointBuilder
 	}
 	
 	public PolicyDecisionPointBuilder withDecisionCache(
-			PolicyDecisionCache cache, int defaultDecisionCacheTTL){
+			PolicyDecisionCache cache){
 		Preconditions.checkNotNull(cache);
-		this.decisionCache = cache;
-		this.defaultDecisionCacheTTL = defaultDecisionCacheTTL; 
+		this.decisionCache = cache; 
+		return this;
+	}
+	
+	public PolicyDecisionPointBuilder withDecisionCacheTTL(
+			int ttl){
+		this.defaultDecisionCacheTTL = ttl;
 		return this;
 	}
 	

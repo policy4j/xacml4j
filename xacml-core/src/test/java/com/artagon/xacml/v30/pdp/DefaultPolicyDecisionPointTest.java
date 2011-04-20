@@ -57,7 +57,8 @@ public class DefaultPolicyDecisionPointTest
 		.builder("testPdp")
 			.withDecisionAuditor(decisionAuditor)
 			.withPolicyRepository(repository)
-			.withDecisionCache(decisionCache, 10)
+			.withDecisionCache(decisionCache)
+			.withDecisionCacheTTL(10)
 			.withPolicyInformationPoint(pip)
 			.withRootPolicy(policyDomain)
 			.withXPathProvider(xpathProvider);
