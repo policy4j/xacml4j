@@ -149,7 +149,8 @@ public class AttributeDesignator extends AttributeReference
 	
 	@Override
 	public void accept(ExpressionVisitor v) {
-		v.visit(this);
+		v.visitEnter(this);
+		v.visitLeave(this);
 	}
 	
 	@Override

@@ -43,6 +43,7 @@ public class VariableReference extends XacmlObject implements Expression
 	}
 	
 	public void accept(ExpressionVisitor v) {
-		v.visit(this);
+		v.visitEnter(this);
+		v.visitLeave(this);
 	}	
 }

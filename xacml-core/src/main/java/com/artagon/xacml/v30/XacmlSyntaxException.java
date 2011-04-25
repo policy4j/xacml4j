@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30;
 
+import javax.xml.stream.Location;
+
 public class XacmlSyntaxException extends XacmlException
 {
 	private static final long serialVersionUID = 5208193385563540743L;
@@ -8,9 +10,21 @@ public class XacmlSyntaxException extends XacmlException
 		super(template, arguments);
 	}
 	
-	public XacmlSyntaxException(Throwable cause, String message,
+	public XacmlSyntaxException(
+			Throwable t,
+			String message,
 			Object... arguments) {
-		super(cause, message, arguments);
+		super(t, message, arguments);
+	}
+	
+	public XacmlSyntaxException(
+			Location location, 
+			String message,
+			Object... arguments) {
+		super(String.format("XACML syntax error at line=\"%s\" column=\"%s\", error: %s", 
+				location.getLineNumber(), 
+				location.getColumnNumber(), 
+				String.format(message, arguments)));
 	}
 	
 	public XacmlSyntaxException(Throwable cause) {

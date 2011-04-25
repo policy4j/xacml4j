@@ -119,6 +119,10 @@ public class Apply implements Expression
 	
 	@Override
 	public void accept(ExpressionVisitor v){
-		v.visit(this);
+		v.visitEnter(this);
+		for(Expression arg : arguments){
+			arg.accept(v);
+		}
+		v.visitLeave(this);
 	}	
 }

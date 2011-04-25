@@ -4,7 +4,9 @@ import java.io.IOException;
 
 public interface Marshaller <T> 
 {
-	Object marshal(T source) throws IOException;
+	Object marshal(T source) 
+		throws IOException;
 	
-	void marshal(T object, Object source) throws IOException;
+	void marshal(T object, Object source) 
+		throws IOException;
 }

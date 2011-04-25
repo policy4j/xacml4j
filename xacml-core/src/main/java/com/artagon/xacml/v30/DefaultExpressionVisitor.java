@@ -4,43 +4,85 @@ public class DefaultExpressionVisitor implements ExpressionVisitor
 {
 
 	@Override
-	public void visit(AttributeValue v) {
+	public void visitEnter(AttributeValue v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(BagOfAttributeValues v) {
+	public void visitLeave(AttributeValue v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(Apply v) {
+	public void visitEnter(BagOfAttributeValues v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(FunctionReference v) {
+	public void visitLeave(BagOfAttributeValues v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(AttributeDesignator v) {
+	public void visitEnter(Apply v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(AttributeSelector v) {
+	public void visitLeave(Apply v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visit(VariableReference var) {
+	public void visitEnter(FunctionReference v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitLeave(FunctionReference v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitEnter(AttributeDesignator v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitLeave(AttributeDesignator v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitEnter(AttributeSelector v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitLeave(AttributeSelector v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitEnter(VariableReference var) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitLeave(VariableReference var) {
 		// TODO Auto-generated method stub
 		
 	}

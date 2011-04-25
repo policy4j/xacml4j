@@ -38,6 +38,7 @@ public abstract class BaseAttributeValue extends XacmlObject
 	
 	@Override
 	public final void accept(ExpressionVisitor v) {
-		v.visit(this);
+		v.visitEnter(this);
+		v.visitLeave(this);
 	}
 }

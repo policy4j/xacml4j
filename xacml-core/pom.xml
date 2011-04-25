@@ -25,6 +25,11 @@
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
 		</dependency>
+		<dependency>
+		     <groupId>com.massfords</groupId>
+		     <artifactId>jaxb-visitor</artifactId>
+		     <version>1.5</version>
+   		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -45,6 +50,20 @@
 					</bindingIncludes>
 					<schemaIncludes><value>*.xsd</value></schemaIncludes>
 					<schemaDirectory>${basedir}/src/main/xsd</schemaDirectory>
+					<!-- 
+					<args>
+                     	<arg>-Xvisitor</arg>
+                    	<arg>-Xvisitor-package:org.oasis.xacml.jaxb</arg>
+                  	</args>
+
+	                 <plugins>
+	                      <plugin>
+	                         <groupId>com.massfords</groupId>
+	                         <artifactId>jaxb-visitor</artifactId>
+	                         <version>1.5</version>
+	                      </plugin>
+	                  </plugins>
+	                   -->
 				</configuration>
 			</plugin>
 		</plugins>
