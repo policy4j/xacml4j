@@ -81,7 +81,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	 *  {@link BagOfAttributeValues} mapped by an attribute identifier
 	 * @throws Exception if an error occurs
 	 */
-	abstract Map<String, BagOfAttributeValues> doResolve(
+	protected abstract Map<String, BagOfAttributeValues> doResolve(
 			ResolverContext context) throws Exception;
 
 	@Override

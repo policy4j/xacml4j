@@ -34,7 +34,6 @@ abstract class BaseDecisionRuleResponse
 		checkNotNull(id, "Decision rule response id can not be null");
 		checkNotNull(attributes, 
 				"Decision rule attribute assignments can not be null");
-		checkNotNull(effect);
 		this.id = id;
 		this.attributes = LinkedHashMultimap.create();
 		this.effect = effect;

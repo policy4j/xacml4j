@@ -47,7 +47,6 @@ public class RequestContext
 	{
 		Preconditions.checkNotNull(attributes);
 		Preconditions.checkNotNull(requestReferences);
-		Preconditions.checkNotNull(requestDefaults);
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = LinkedListMultimap.create();
 		this.requestReferences = new ArrayList<RequestReference>(requestReferences);

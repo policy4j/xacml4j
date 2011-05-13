@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicySetId="urn:cima:policy:compliance:cpni"
+      PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides"
+      Version="1.0">
+    <Description>CPNI Compliance PolicySet</Description>
+    <Target/>
+
+	<Policy
+	      PolicyId="urn:cima:policy:compliance:cpni:secret"
+	      RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides"
+	      Version="1.0">
+	    <Description>CPNI Secret Q/A Compliance Policy</Description>
+	   <Target/>
+	   <Rule Effect="Permit" RuleId="urn:cima:rule:compliance:cpni:secret-compliance">
+	   		<Condition>
+	   			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+	   				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+	   					<AttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#boolean" 
+	   						AttributeId="urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant"
+	   						MustBePresent="true"
+	   						Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/>
+	   				</Apply>
+	   				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+	   			</Apply>
+	   		</Condition>
+	   </Rule>
+	   <ObligationExpressions>
+	   		<ObligationExpression FulfillOn="Deny" ObligationId="urn:comcast:names:1.0:obligation:subscriber:cpni-secret-compliance-flow"/>
+	   </ObligationExpressions>
+	</Policy>
+</PolicySet>
