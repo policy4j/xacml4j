@@ -3,8 +3,6 @@ package com.artagon.xacml.ehcache;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.transform.TransformerFactory;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
