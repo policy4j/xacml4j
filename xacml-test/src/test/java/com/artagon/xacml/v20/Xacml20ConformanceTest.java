@@ -1,5 +1,7 @@
 package com.artagon.xacml.v20;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,9 +18,7 @@ import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
-import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
@@ -30,7 +30,6 @@ import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 
 public class Xacml20ConformanceTest 
 {
-	private static RequestUnmarshaller requestUnmarshaller;
 	private static ResponseMarshaller responseMarshaller;
 	private static PolicyRepository repository;
 	private PolicyDecisionPoint pdp;
@@ -49,7 +48,6 @@ public class Xacml20ConformanceTest
 				.withDefaultAlgorithms()
 				.build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
-		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 		
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
@@ -203,26 +201,15 @@ public class Xacml20ConformanceTest
 		System.out.printf("Executing test=\"%s\", " +
 				"execution took=\"%d\" miliseconds\n", name, (end - start));
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
-		Xacml20ConformanceUtility.assertResponse(Xacml20ConformanceUtility.getResponse(testPrefix, testCaseNum), actual);
-	}
-	
-	private RequestContext getRequest(String prefix, int number) throws Exception
-	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		String requestPath = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, "Request.xml");
-		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(requestPath));
+		Xacml20TestUtility.assertResponse(getResponse(testPrefix, testCaseNum), actual);
 	}
 	
 	private static InputStream getPolicy(
 			String prefix, int number, String sufix) throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		String path = "oasis-xacml20-compat-test/" + Xacml20ConformanceUtility.createTestAssetName(prefix, number, sufix);
-		System.out.println("Loaing policy - " + path);
-		InputStream in = cl.getResourceAsStream(path);
-		if(in == null){
-			return null;
-		}
+		String path = "oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, sufix);
+		System.out.println("Loading policy - " + path);
+		InputStream in = Xacml20TestUtility.getClasspathResource(path);
 		return in;
 	}
 	
@@ -245,5 +232,26 @@ public class Xacml20ConformanceTest
 		}catch(Exception e){
 			
 		}
+	}
+
+	private static String createTestAssetName(String prefix, int testCaseNum, String sufix)
+	{
+		return new StringBuilder(prefix)
+		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
+		.append(sufix).toString();
+	}
+	
+	private static ResponseType getResponse(String prefix, int num) throws Exception {
+		return Xacml20TestUtility.getResponse("oasis-xacml20-compat-test/" + createTestAssetName(prefix, num, "Response.xml"));
+	}
+
+	private static RequestContext getRequest(String prefix, int number) throws Exception {
+		return Xacml20TestUtility.getRequest("oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, "Request.xml"));
+	}
+
+	@Test
+	public void testName()
+	{
+		assertEquals("AA003B", createTestAssetName("AA", 3, "B"));
 	}
 }

@@ -13,8 +13,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.oasis.xacml.v20.jaxb.context.ResultType;
@@ -23,13 +21,17 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 
-public class Xacml20ConformanceUtility 
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+
+public class Xacml20TestUtility 
 {
 	private static JAXBContext context;
-	
+	private static Xacml20RequestContextUnmarshaller requestUnmarshaller;
 	static{
 		try{
 			context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
+			requestUnmarshaller = new Xacml20RequestContextUnmarshaller(context);
 		}catch(JAXBException e){
 			
 		}
@@ -122,25 +124,22 @@ public class Xacml20ConformanceUtility
 		return map;
 	}
 	
-	public static String createTestAssetName(String prefix, int testCaseNum, String sufix)
-	{
-		return new StringBuilder(prefix)
-		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
-		.append(sufix).toString();
-	}
-	
 	@SuppressWarnings("unchecked")
-	public static ResponseType getResponse(String prefix, int num) throws Exception
+	public static ResponseType getResponse(String resourcePath) throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		InputStream in = cl.getResourceAsStream("oasis-xacml20-compat-test/" + createTestAssetName(prefix, num, "Response.xml"));
+		InputStream in = getClasspathResource(resourcePath);
 		assertNotNull(in);
 		return ((JAXBElement<ResponseType>)context.createUnmarshaller().unmarshal(in)).getValue();
 	}
-	
-	@Test
-	public void testName()
-	{
-		assertEquals("AA003B", createTestAssetName("AA", 3, "B"));
+
+	public static RequestContext getRequest(String resourcePath) throws Exception {
+		return requestUnmarshaller.unmarshal(getClasspathResource(resourcePath));
 	}
+
+	public static InputStream getClasspathResource(String resourcePath) throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		return cl.getResourceAsStream(resourcePath);
+	}
+
 }

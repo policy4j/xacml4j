@@ -11,8 +11,6 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
-import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
@@ -24,14 +22,11 @@ import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest 
 {
-	private static RequestUnmarshaller requestUnmarshaller;
 	private static PolicyDecisionPoint pdp;
 	
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-				
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()
@@ -185,16 +180,12 @@ public class RSA2008InteropTest
 	
 	private static InputStream getPolicy(String name) throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		String path = "rsa2008-interop/" + name;
-		return cl.getResourceAsStream(path);
+		return Xacml20TestUtility.getClasspathResource("rsa2008-interop/" + name);
 	}
 	
 	private RequestContext getRequest(String name) throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		String path = "rsa2008-interop/" + name;
-		return requestUnmarshaller.unmarshal(cl.getResourceAsStream(path));
+		return Xacml20TestUtility.getRequest("rsa2008-interop/" + name);
 	}
 	
 	private Result executeTest(String name) throws Exception
