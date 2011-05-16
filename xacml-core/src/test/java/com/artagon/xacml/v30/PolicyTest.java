@@ -134,6 +134,7 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.DENY);
+		expect(combingingAlg.getId()).andReturn("test-combining-algorithm-id");
 		
 		Advice advice = control.createMock(Advice.class);
 		Obligation obligation = control.createMock(Obligation.class);
@@ -162,6 +163,7 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.PERMIT);
+		expect(combingingAlg.getId()).andReturn("test-combining-algorithm-id");
 		
 		Advice advice = control.createMock(Advice.class);
 		Obligation obligation = control.createMock(Obligation.class);
@@ -189,6 +191,7 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(combingingAlg.combine(policyContext, rules)).andReturn(Decision.INDETERMINATE);
+		expect(combingingAlg.getId()).andReturn("test-algorithm-id");
 		control.replay();
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
 		control.verify();

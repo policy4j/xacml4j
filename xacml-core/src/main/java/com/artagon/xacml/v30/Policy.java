@@ -15,7 +15,8 @@ import com.google.common.collect.Maps;
 
 public class Policy extends BaseCompositeDecisionRule 
 	implements PolicyElement
-{	
+{
+	
 	private PolicyDefaults policyDefaults;
 	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
@@ -253,6 +254,11 @@ public class Policy extends BaseCompositeDecisionRule
 	protected Decision doEvaluate(EvaluationContext context)
 	{
 		Decision decision = combine.combine(context, rules);
+		if(log.isDebugEnabled()) {
+			log.debug("Policy id=\"{}\" combining algorithm=\"{}\"" +
+					"decision result=\"{}\"", 
+					new Object[] { getId(), combine.getId(), decision });
+		}
 		context.addEvaluatedApplicablePolicy(this, decision);
 		return decision;
 	}
