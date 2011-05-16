@@ -44,6 +44,9 @@ public class XacmlPolicyTestSupport {
 		return buildPDP(getDefaultTestPolicies(), attributeResolvers, rootPolicyId, rootPolicyVersion);
 	}
 
+	protected PolicyDecisionPoint buildPDP(String rootPolicyId, Version rootPolicyVersion) throws Exception {
+		return buildPDP(getDefaultTestPolicies(), null, rootPolicyId, rootPolicyVersion);
+	}
 	protected PolicyDecisionPoint buildPDP(
 			String[] policyPaths,
 			AttributeResolver [] attributeResolvers,
@@ -52,9 +55,11 @@ public class XacmlPolicyTestSupport {
 		 PolicyInformationPointBuilder pipBuilder = PolicyInformationPointBuilder
 				.builder("testPIP")
 				.withDefaultResolvers();
-		for(AttributeResolver r: attributeResolvers) {
-			pipBuilder.withResolver(r);
-		}
+		 if(attributeResolvers != null) {
+			for(AttributeResolver r: attributeResolvers) {
+				pipBuilder.withResolver(r);
+			}
+		 }
 		PolicyInformationPoint pip = pipBuilder.build();
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
 				"testRepositoryId", FunctionProviderBuilder.builder()

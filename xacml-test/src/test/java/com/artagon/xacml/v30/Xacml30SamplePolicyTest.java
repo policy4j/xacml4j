@@ -11,9 +11,6 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 	@Test
 	public void testCPNICompliance() throws Exception {
 		PolicyDecisionPoint pdp = buildPDP(
-			new String [] {
-				"v30-policy-test/policyset.xml"
-			},
 			new AttributeResolver [] {
 				createAttributeResolverFor(
 						AttributeCategories.SUBJECT_ACCESS,
@@ -22,5 +19,20 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 			"urn:cima:policy:compliance:cpni", Version.parse("1.0"));
 
 		verifyResponse(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
+	}
+
+	
+	@Override
+	protected String[] getDefaultTestPolicies() {
+		return new String [] {
+				"v30-policy-test/policyset.xml"
+			};
+	}
+
+	@Test
+	public void testCPNIComplianceAttrsInRequest() throws Exception {
+		PolicyDecisionPoint pdp = buildPDP("urn:cima:policy:compliance:cpni", Version.parse("1.0"));
+
+		verifyResponse(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
 	}
 }
