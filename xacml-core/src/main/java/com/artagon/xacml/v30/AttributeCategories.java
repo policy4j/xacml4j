@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 public enum AttributeCategories implements AttributeCategory

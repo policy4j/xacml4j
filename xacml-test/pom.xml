@@ -9,11 +9,15 @@
 	<packaging>jar</packaging>
 	<name>Artagon XACML 3.0 conformance tests</name>
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-core</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>
