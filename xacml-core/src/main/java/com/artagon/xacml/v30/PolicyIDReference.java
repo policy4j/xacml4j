@@ -1,7 +1,6 @@
 package com.artagon.xacml.v30;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 
 public final class PolicyIDReference extends 

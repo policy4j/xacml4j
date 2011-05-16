@@ -52,7 +52,6 @@ import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.StatusCodeId;
 import com.artagon.xacml.v30.StatusDetail;
-import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
@@ -128,23 +127,25 @@ public class Xacml30RequestResponseContextFromJaxbToObjectModelMapper
 	}
 
 	private Collection<CompositeDecisionRuleIDReference> create(
-			PolicyIdentifierListType policyIdentifierList) {
+			PolicyIdentifierListType policyIdentifierList) throws XacmlSyntaxException {
 		if (policyIdentifierList == null) {
 			return Collections.emptyList();
 		}
  		Collection<CompositeDecisionRuleIDReference> list = new LinkedList<CompositeDecisionRuleIDReference>();
 		for(JAXBElement<IdReferenceType> o: policyIdentifierList.getPolicyIdReferenceOrPolicySetIdReference()) {
 			if (o.getName().getLocalPart().equals("PolicyIdReference")) {
-				PolicyIDReference ref = new PolicyIDReference(o.getValue().getValue(),
-						VersionMatch.parse(o.getValue().getVersion()),
-						VersionMatch.parse(o.getValue().getEarliestVersion()),
-						VersionMatch.parse(o.getValue().getLatestVersion()));
+				PolicyIDReference ref = PolicyIDReference.create(
+						o.getValue().getValue(),
+						o.getValue().getVersion(),
+						o.getValue().getEarliestVersion(),
+						o.getValue().getLatestVersion());
 				list.add(ref);
 			} else if(o.getName().getLocalPart().equals("PolicySetIdReference")) {
-				PolicySetIDReference ref = new PolicySetIDReference(o.getValue().getValue(),
-						VersionMatch.parse(o.getValue().getVersion()),
-						VersionMatch.parse(o.getValue().getEarliestVersion()),
-						VersionMatch.parse(o.getValue().getLatestVersion()));
+				PolicySetIDReference ref = PolicySetIDReference.create(
+						o.getValue().getValue(),
+						o.getValue().getVersion(),
+						o.getValue().getEarliestVersion(),
+						o.getValue().getLatestVersion());
 				list.add(ref);
 			}
 		}
