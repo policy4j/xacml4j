@@ -19,7 +19,7 @@ import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
  * <li>If any decision is "Deny", the result is "Deny"</li>
  * <li>Otherwise, if any decision is "Indeterminate{DP}", the result is "Indeterminate{DP}"</li>
  * <li>Otherwise, if any decision is "Indeterminate{D}" and another decision is 
- * ÒIndeterminate{P} or Permit, the result is "Indeterminate{DP}"</li>
+ * "Indeterminate{P} or Permit, the result is "Indeterminate{DP}"</li>
  * <li>Otherwise, if any decision is "Indeterminate{D}", the result is "Indeterminate{D}"</li>
  * <li>Otherwise, if any decision is "Permit", the result is "Permit"</li>
  * <li>Otherwise, if any decision is "Indeterminate{P}", the result is "Indeterminate{P}"<li>

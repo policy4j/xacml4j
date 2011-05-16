@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:dnsName</b>. 
- * <br>The “urn:oasis:names:tc:xacml:2.0:data-type:dnsName” primitive 
+ * <br>The "urn:oasis:names:tc:xacml:2.0:data-type:dnsName" primitive 
  * type represents a Domain Name Service (DNS) host name, with optional 
  * port or port range. The syntax SHALL be:
  * <pre>
@@ -21,8 +21,8 @@ import com.google.common.base.Preconditions;
  * except that a wildcard "*" may be used in the left-most component 
  * of the hostname to indicate "any subdomain" under the domain 
  * specified to its right.
- * <p>For both the “urn:oasis:names:tc:xacml:2.0:data-type:ipAddress” and 
- * “urn:oasis:names:tc:xacml:2.0:data-type:dnsName” data-types, the port 
+ * <p>For both the "urn:oasis:names:tc:xacml:2.0:data-type:ipAddress" and 
+ * "urn:oasis:names:tc:xacml:2.0:data-type:dnsName" data-types, the port 
  * or port range syntax SHALL be
  * <pre>     portrange = portnumber | "-"portnumber | portnumber"-"[portnumber]
  * </pre>where "portnumber" is a decimal port number. 

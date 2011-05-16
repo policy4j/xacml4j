@@ -15,12 +15,12 @@ import com.google.common.base.Preconditions;
 /**
  * All of the following functions SHALL take two arguments of the specified data-type, 
  * integer, or double, and SHALL return an element of integer or double data-type, 
- * respectively. However, the “add” functions MAY take more than two arguments. 
+ * respectively. However, the "add" functions MAY take more than two arguments. 
  * Each function evaluation operating on doubles SHALL proceed as specified by their 
  * logical counterparts in IEEE 754 [IEEE754]. For all of these functions, 
  * if any argument is "Indeterminate", then the function SHALL evaluate to 
  * "Indeterminate". In the case of the divide functions, if the divisor is zero,
- *  then the function SHALL evaluate to “Indeterminate”.
+ *  then the function SHALL evaluate to "Indeterminate".
  * 
  * @author Giedrius Trumpickas
  */

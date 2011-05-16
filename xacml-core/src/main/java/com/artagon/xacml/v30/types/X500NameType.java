@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:x500Name</b>.
- * <br>The “urn:oasis:names:tc:xacml:1.0:data-type:x500Name” 
+ * <br>The "urn:oasis:names:tc:xacml:1.0:data-type:x500Name" 
  * primitive type represents an ITU-T Rec. X.520 Distinguished 
  * Name. 
  * <br>The valid syntax for such a name is described in IETF 

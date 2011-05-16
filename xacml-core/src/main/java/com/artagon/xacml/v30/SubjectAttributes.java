@@ -21,7 +21,7 @@ public enum SubjectAttributes
 	SUBJECT_ID_QUALIFIER("urn:oasis:names:tc:xacml:1.0:subject:subject-id-qualifier"),
 	
 	/**
-	 * This identifier indicates a public key used to confirm the subject’s identity.
+	 * This identifier indicates a public key used to confirm the subject's identity.
 	 */
 	KEY_INFO("urn:oasis:names:tc:xacml:1.0:subject:key-info"),
 	
@@ -42,13 +42,13 @@ public enum SubjectAttributes
 	REQUEST_TIME("urn:oasis:names:tc:xacml:1.0:subject:request-time"),
 	
 	/**
-	 * This identifier indicates the time at which the subject’s 
+	 * This identifier indicates the time at which the subject's 
 	 * current session began, according to the PEP.
 	 */
 	SESSION_START_TIME("urn:oasis:names:tc:xacml:1.0:subject:session-start-time"),
 	
 	/**
-	 * This identifier indicates an identifier for subject’s 
+	 * This identifier indicates an identifier for subject's 
 	 * current session.
 	 */
 	SESSION_IDENTIFIER("urn:artagon:names:tc:xacml:1.0:subject:session-id"),

@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name</b>. 
- * <br>The “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” primitive type 
+ * <br>The "urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name" primitive type 
  * represents an electronic mail address. The valid syntax for such a 
  * name is described in IETF RFC 2821, Section 4.1.2, Command Argument 
  * Syntax, under the term "Mailbox". 

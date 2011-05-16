@@ -22,7 +22,7 @@ public class VersionMatch
      * and any subsequent numbers, are valid. 
      * In this manner, the following four patterns 
      * would all match the version string '1.2.3': 
-     * '1.2.3', '1.*.3', '1.2.*' and Ô1.+'.
+     * '1.2.3', '1.*.3', '1.2.*' and '1.+'.
      * 
      * @param versionMatchPattern
      */

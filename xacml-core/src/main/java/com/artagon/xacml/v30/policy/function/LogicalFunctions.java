@@ -16,7 +16,7 @@ import com.artagon.xacml.v30.types.IntegerValue;
 
 /**
  * This class contains the implementation for XACML logical functions 
- * that operate on arguments of data-type “http://www.w3.org/2001/XMLSchema#boolean”.
+ * that operate on arguments of data-type "http://www.w3.org/2001/XMLSchema#boolean".
  * 
  * @author Giedrius Trumpickas
  */
