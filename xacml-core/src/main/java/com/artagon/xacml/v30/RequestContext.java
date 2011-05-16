@@ -294,8 +294,8 @@ public class RequestContext
 		return false;
 	}
 	
-	public boolean containsAttributeValues(String attributeId, 
-			String issuer, AttributeValueType type)
+	public boolean containsAttributeValues(
+			String attributeId, String issuer, AttributeValueType type)
 	{
 		for(Attributes a : getAttributes()){
 			Collection<AttributeValue> values =  a.getAttributeValues(attributeId, issuer, type);
@@ -304,6 +304,21 @@ public class RequestContext
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Tests if a given request context contains attributes with a given
+	 * identifier of the given type for any category
+	 * 
+	 * @param attributeId an attribute identifier
+	 * @param type an attribute type
+	 * @return <code>true</code> if this request contains an at least
+	 * one attribute with a given identifier and the given type
+	 */
+	public boolean containsAttributeValues(String attributeId, 
+			AttributeValueType type)
+	{
+		return containsAttributeValues(attributeId, null, type);
 	}
 	
 	/**
@@ -325,6 +340,15 @@ public class RequestContext
 		return found;
 	}
 	
+	/**
+	 * Gets all attribute values of the given category with the
+	 * given identifier and data type
+	 * 
+	 * @param categoryId an attribute category
+	 * @param attributeId an attribute identifier
+	 * @param dataType an attribute data type
+	 * @return a collection of {@link AttributeValue} instances
+	 */
 	public Collection<AttributeValue> getAttributeValues(
 			AttributeCategory categoryId, 
 			String attributeId, 
@@ -346,11 +370,6 @@ public class RequestContext
 			AttributeValueType dataType){
 		return Iterables.getOnlyElement(
 				getAttributeValues(categoryId, attributeId, dataType), null);
-	}
-	
-	public boolean containsAttributeValues(String attributeId, AttributeValueType type)
-	{
-		return containsAttributeValues(attributeId, null, type);
 	}
 	
 	/**

@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+
 public enum AttributeCategories implements AttributeCategory
 { 
 	
@@ -82,14 +85,14 @@ public enum AttributeCategories implements AttributeCategory
 	public static AttributeCategory parse(String v) 
 		throws XacmlSyntaxException
 	{
-		if(v == null){
+		if(Strings.isNullOrEmpty(v)){
 			return null;
 		}
 		AttributeCategory c = BY_ID.get(v);
-		if(c != null){
-			return c;
+		if(c == null){
+			c = new CustomCategory(v);
 		}
-		return new CustomCategory(v);
+		return c; 
 	}
 	
 	/**

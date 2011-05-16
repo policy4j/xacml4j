@@ -2,6 +2,7 @@ package com.artagon.xacml.v30;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 /**
  * A XACML version  is expressed as a sequence of decimal numbers, 
@@ -25,9 +26,8 @@ public final class Version implements Comparable<Version>
      * @exception XacmlSyntaxException if version can not be parsed
      */
     private Version(String version) 
-    	throws XacmlSyntaxException
     {
-    	Preconditions.checkNotNull(version);
+
     	this.value = version;
     	this.version = parseVersion(version);
     	this.hashCode = value.hashCode();
@@ -107,22 +107,23 @@ public final class Version implements Comparable<Version>
      * @return an array of non-negative integers
      */
 	private static int[] parseVersion(
-			String version) throws XacmlSyntaxException
+			String version)
     {
     	if(!version.matches(VERSION_PATTERN)){
-    		throw new XacmlSyntaxException(
-    				"Invalid version=\"%s\", " +
+    		throw new IllegalArgumentException(
+    				String.format("Invalid version=\"%s\", " +
     				"does not match regular expression=\"%s\"", 
-    				version, VERSION_PATTERN);
+    				version, VERSION_PATTERN));
     	}
     	 String[] vc = version.split("\\.");
     	 int[] v = new int[vc.length];
     	 for(int i = 0; i < vc.length; i++){
     		 v[i] = Integer.parseInt(vc[i]);
     		 if(v[i] < 0){
-    			 throw new XacmlSyntaxException("Invalid version=\"%s\", " +
-    			 		"component=\"%s\" is negative number", version,
-    					 Integer.toString(v[i]));
+    			 throw new IllegalArgumentException(
+    					 String.format("Invalid version=\"%s\", " +
+    					 		"component=\"%s\", number is negative", version,
+    					 Integer.toString(v[i])));
     		 }
     	 }
     	 return v;
@@ -136,10 +137,9 @@ public final class Version implements Comparable<Version>
 	 * @param version a version
 	 * @return {@link Version} instance
 	 */
-    public static Version parse(String version) 
-    	throws XacmlSyntaxException 
+    public static Version parse(String version)  
     {
-        return (version == null)?new Version("1.0"):new Version(version);
+        return Strings.isNullOrEmpty(version)?new Version("1.0"):new Version(version);
     }
     
     /**
@@ -153,7 +153,8 @@ public final class Version implements Comparable<Version>
     public static Version valueOf(int version) 
     	throws XacmlSyntaxException
     {
-    	Preconditions.checkArgument(version > 0);
+    	Preconditions.checkArgument(version > 0, 
+    			"Version must be positive integer");
     	return parse(Integer.toString(version));
     }
 }

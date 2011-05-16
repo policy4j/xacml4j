@@ -12,11 +12,11 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
-class BaseAttributeHolder 
+public class AttributeContainer 
 {
 	protected Multimap<String, Attribute> attributes;
 	
-	protected BaseAttributeHolder(Iterable<Attribute> attributes){
+	protected AttributeContainer(Iterable<Attribute> attributes){
 		this.attributes = LinkedListMultimap.create();
 		for(Attribute attr : attributes){
 			this.attributes.put(attr.getAttributeId(), attr);
@@ -128,7 +128,8 @@ class BaseAttributeHolder
 	 * @exception IllegalArgumentException if more than one value is found
 	 * matching given criteria
 	 */
-	public AttributeValue getOnlyAttributeValue(String attributeId, AttributeValueType dataType){
+	public AttributeValue getOnlyAttributeValue(String attributeId, 
+			AttributeValueType dataType){
 		return Iterables.getOnlyElement(getAttributeValues(attributeId, dataType), null);
 	}
 	

@@ -10,7 +10,7 @@ import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class Attributes extends BaseAttributeHolder
+public class Attributes extends AttributeContainer
 {
 	private String id;
 	private AttributeCategory categoryId;

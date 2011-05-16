@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.marshall.jaxb;
+package com.artagon.xacml.v30.marshall;
 
 import com.artagon.xacml.v30.AttributeValueType;
 import com.artagon.xacml.v30.XacmlSyntaxException;

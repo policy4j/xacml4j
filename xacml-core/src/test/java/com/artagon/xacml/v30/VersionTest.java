@@ -46,13 +46,13 @@ public class VersionTest
 		assertEquals("1.0", v.getValue());
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testNegativeComponent() throws XacmlSyntaxException
 	{
 		Version.parse("-1.0");
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testUnparsableVersion() throws XacmlSyntaxException
 	{
 		Version.parse("1.a....");

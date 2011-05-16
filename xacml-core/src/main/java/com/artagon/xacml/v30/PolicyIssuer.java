@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
 
-public class PolicyIssuer extends BaseAttributeHolder 
+public class PolicyIssuer extends AttributeContainer 
 	implements PolicyElement
 {
 	private Document content;

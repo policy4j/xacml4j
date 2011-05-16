@@ -3,6 +3,7 @@ package com.artagon.xacml.v30.pdp;
 public interface PolicyDecisionPointContextFactory 
 {
 	int getDefaultDecisionCacheTTL();
+	
 	boolean isDecisionAuditEnabled();
 	boolean isDecisionCacheEnabled();
 	

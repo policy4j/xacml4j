@@ -9,12 +9,6 @@ import com.google.common.base.Strings;
 
 public class XMLStreamReaderUtil 
 {
-	public static Boolean getBooleanAttributeValue(String localName,
-			XMLStreamReader r) throws XMLStreamException {
-		String v = r.getAttributeValue(null, localName);
-		return Strings.isNullOrEmpty(v) ? null : Boolean.parseBoolean(v);
-	}
-
 	public static Integer getIntegerAttributeValue(String localName,
 			XMLStreamReader r) throws XMLStreamException {
 		String v = r.getAttributeValue(null, localName);

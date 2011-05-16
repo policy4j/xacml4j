@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.marshall.jaxb;
+package com.artagon.xacml.v30.marshall;
 
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createControl;
@@ -22,13 +22,14 @@ import com.artagon.xacml.v30.AttributeSelector;
 import com.artagon.xacml.v30.AttributeValue;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.marshall.XacmlExpressionNode;
+import com.artagon.xacml.v30.marshall.XacmlExpressionNodes;
+import com.artagon.xacml.v30.marshall.XacmlPolicyParsingContext;
 import com.artagon.xacml.v30.types.DayTimeDurationType;
 import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.XPathExpressionType;
 import com.artagon.xacml.v30.types.XPathExpressionValue;
 
-public class XacmlExpressionNodeTest 
+public class XacmlExpressionNodesTest 
 {
 	private XacmlPolicyParsingContext context;
 	private IMocksControl c;
@@ -48,7 +49,7 @@ public class XacmlExpressionNodeTest
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(data.getBytes()));
 		r.nextTag();
-		AttributeValue attr = (AttributeValue)XacmlExpressionNode.parse(r, context);
+		AttributeValue attr = (AttributeValue)XacmlExpressionNodes.parse(context, r);
 		assertEquals(DayTimeDurationType.DAYTIMEDURATION, attr.getType());
 		assertEquals("P5DT2H0M0S", attr.toXacmlString());
 		c.verify();	
@@ -59,11 +60,11 @@ public class XacmlExpressionNodeTest
 	{
 		expect(context.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration")).andReturn(DayTimeDurationType.DAYTIMEDURATION);
 		c.replay();
-		String data = "<AttributeValue xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema\" DataType=\"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration\">P5DT2H0M0S</AttributeValue>";
+		String data = "<AttributeValue xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:os\" DataType=\"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration\">P5DT2H0M0S</AttributeValue>";
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(data.getBytes()));
 		r.nextTag();
-		AttributeValue attr = (AttributeValue)XacmlExpressionNode.parse(r, context);
+		AttributeValue attr = (AttributeValue)XacmlExpressionNodes.parse(context, r);
 		assertEquals(DayTimeDurationType.DAYTIMEDURATION, attr.getType());
 		assertEquals("P5DT2H0M0S", attr.toXacmlString());
 		c.verify();	
@@ -74,11 +75,11 @@ public class XacmlExpressionNodeTest
 	{
 		expect(context.getType(XPathExpressionType.XPATHEXPRESSION.getDataTypeId())).andReturn(XPathExpressionType.XPATHEXPRESSION);
 		c.replay();
-		String data = "<AttributeValue xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema\" Category=\"test\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/test</AttributeValue>";
+		String data = "<AttributeValue xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:os\" Category=\"test\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/test</AttributeValue>";
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(data.getBytes()));
 		r.nextTag();
-		XPathExpressionValue attr = (XPathExpressionValue)XacmlExpressionNode.parse(r, context);
+		XPathExpressionValue attr = (XPathExpressionValue)XacmlExpressionNodes.parse(context, r);
 		assertEquals(XPathExpressionType.XPATHEXPRESSION, attr.getType());
 		assertEquals("/test", attr.toXacmlString());
 		assertEquals(AttributeCategories.parse("test"), attr.getCategory());
@@ -94,7 +95,7 @@ public class XacmlExpressionNodeTest
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(data.getBytes()));
 		r.nextTag();
-		XPathExpressionValue attr = (XPathExpressionValue)XacmlExpressionNode.parse(r, context);
+		XPathExpressionValue attr = (XPathExpressionValue)XacmlExpressionNodes.parse(context, r);
 		assertEquals(XPathExpressionType.XPATHEXPRESSION, attr.getType());
 		assertEquals("/test", attr.toXacmlString());
 		assertEquals(AttributeCategories.parse("test"), attr.getCategory());
@@ -104,16 +105,17 @@ public class XacmlExpressionNodeTest
 	@Test
 	public void testXacml20AttributeSelector() throws Exception
 	{
-		 String xml = "<AttributeSelector xmlns=\"urn:oasis:names:tc:xacml:2.0:policy:schema:os\" RequestContextPath=\"./xacml-context:Resource/xacml-context:ResourceContent/md:" +
+		 String xml = "<AttributeSelector xmlns=\"urn:oasis:names:tc:xacml:2.0:core:schema:os\" RequestContextPath=\"./xacml-context:Resource/xacml-context:ResourceContent/md:" +
 		 		"record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type\" " +
 		 		"MustBePresent=\"true\" " +
 		 		"DataType=\"http://www.w3.org/2001/XMLSchema#string\"/>";
+		expect(context.getPolicyId()).andReturn("testId");
 		expect(context.getType(StringType.STRING.getDataTypeId())).andReturn(StringType.STRING);
 		c.replay();
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
 		r.nextTag();
-		AttributeSelector exp = (AttributeSelector)XacmlExpressionNode.parse(r, context);
+		AttributeSelector exp = (AttributeSelector)XacmlExpressionNodes.parse(context, r);
 		assertEquals(AttributeCategories.RESOURCE, exp.getCategory());
 		assertEquals(true, exp.isMustBePresent());
 		assertEquals("./md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type", exp.getPath());
@@ -132,7 +134,7 @@ public class XacmlExpressionNodeTest
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
 		r.nextTag();
-		AttributeSelector exp = (AttributeSelector)XacmlExpressionNode.parse(r, context);
+		AttributeSelector exp = (AttributeSelector)XacmlExpressionNodes.parse(context, r);
 		assertEquals(AttributeCategories.RESOURCE, exp.getCategory());
 		assertEquals(false, exp.isMustBePresent());
 		assertEquals("test", exp.getContextSelectorId());
@@ -156,14 +158,15 @@ public class XacmlExpressionNodeTest
 		XMLInputFactory f = XMLInputFactory.newFactory();
 		XMLStreamReader r = f.createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
 		r.nextTag();
-		Apply exp = (Apply)XacmlExpressionNode.parse(r, context);
+		Apply exp = (Apply)XacmlExpressionNodes.parse(context, r);
 		assertEquals(exp.getArguments(), params.getValue());
+		c.verify();
 	}
 	
 	@Test
 	public void testXacml30Apply() throws Exception
 	{
-		String xml = "<Apply xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema\" FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only\">" +
+		String xml = "<Apply xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:os\" FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only\">" +
 				"<AttributeSelector MustBePresent=\"false\" " +
 				"Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" " +
 				"Path=\"md:record/md:primaryCarePhysician/md:registrationID/text()\" " +
@@ -178,7 +181,7 @@ public class XacmlExpressionNodeTest
 		XMLInputFactory fIn = XMLInputFactory.newFactory();
 		XMLStreamReader r = fIn.createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
 		r.nextTag();
-		Apply exp = (Apply)XacmlExpressionNode.parse(r, context);
+		Apply exp = (Apply)XacmlExpressionNodes.parse(context, r);
 		assertEquals(exp.getArguments(), params.getValue());		
 	}
 }
