@@ -34,15 +34,28 @@ public class XacmlPolicyTestSupport {
 		responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 	}
 
-	protected PolicyDecisionPoint buildPDP(String[] policyPaths,
-			String rootPolicyId, Version rootPolicyVersion,
-			AttributeResolver attributeResolver) throws Exception {
+	protected String[] getDefaultTestPolicies() {
+		return new String[0];
+	}
 
-		PolicyInformationPoint pip = PolicyInformationPointBuilder
+	protected PolicyDecisionPoint buildPDP(
+			AttributeResolver [] attributeResolvers,
+			String rootPolicyId, Version rootPolicyVersion) throws Exception {
+		return buildPDP(getDefaultTestPolicies(), attributeResolvers, rootPolicyId, rootPolicyVersion);
+	}
+
+	protected PolicyDecisionPoint buildPDP(
+			String[] policyPaths,
+			AttributeResolver [] attributeResolvers,
+			String rootPolicyId, Version rootPolicyVersion) throws Exception {
+
+		 PolicyInformationPointBuilder pipBuilder = PolicyInformationPointBuilder
 				.builder("testPIP")
-				.withDefaultResolvers()
-				.withResolver(attributeResolver)
-				.build();
+				.withDefaultResolvers();
+		for(AttributeResolver r: attributeResolvers) {
+			pipBuilder.withResolver(r);
+		}
+		PolicyInformationPoint pip = pipBuilder.build();
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
 				"testRepositoryId", FunctionProviderBuilder.builder()
 						.withDefaultFunctions().build(),
@@ -61,6 +74,14 @@ public class XacmlPolicyTestSupport {
 				.build();
 
 		return pdp;
+	}
+
+	protected void verifyResponse(PolicyDecisionPoint pdp, String xacmlRequestResource, String expectedXacmlResponseResource) throws Exception {
+		RequestContext req = getRequest(xacmlRequestResource);
+		ResponseContext expectedResponse = getResponse(expectedXacmlResponseResource);
+		ResponseContext resp = pdp.decide(req);
+
+		assertResponse(expectedResponse, resp);
 	}
 
 	protected InputStream getResource(String resourcePath, ClassLoader cl) {
