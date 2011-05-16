@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
+	protected final Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
 	
 	private EvaluationContextHandler contextHandler;
 	private PolicyReferenceResolver resolver;

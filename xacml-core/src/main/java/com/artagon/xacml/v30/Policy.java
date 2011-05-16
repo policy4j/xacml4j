@@ -255,7 +255,7 @@ public class Policy extends BaseCompositeDecisionRule
 	{
 		Decision decision = combine.combine(context, rules);
 		if(log.isDebugEnabled()) {
-			log.debug("Policy id=\"{}\" combining algorithm=\"{}\"" +
+			log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
 					"decision result=\"{}\"", 
 					new Object[] { getId(), combine.getId(), decision });
 		}

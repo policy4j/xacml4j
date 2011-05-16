@@ -178,7 +178,7 @@ public class PolicySet extends
 	{
 		Decision decision = combine.combine(context, decisionRules);
 		if(log.isDebugEnabled()) {
-			log.debug("PolicySet id=\"{}\" combining algorithm=\"{}\"" +
+			log.debug("PolicySet id=\"{}\" combining algorithm=\"{}\" " +
 					"decision result=\"{}\"", 
 					new Object[] { getId(), combine.getId(), decision });
 		}

@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableList;
 
 abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseDesicionRule.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private String description;
 	private Target target;

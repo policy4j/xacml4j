@@ -3,15 +3,10 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDesicionRule implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(Rule.class);
-	
 	private String ruleId;
 	private Effect effect;
 	private Condition condition;

@@ -3,9 +3,6 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 
 /**
@@ -18,8 +15,6 @@ import com.google.common.base.Preconditions;
 abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
 	implements CompositeDecisionRule, Versionable
 {
-	protected final Logger log = LoggerFactory.getLogger(getClass());
-	
 	protected String id;
 	protected Version version;
 	private PolicyIssuer policyIssuer;
