@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,7 +67,23 @@ public class Attribute
 			AttributeValue ...values){
 		this(attributeId, null, false, Arrays.asList(values));
 	}
-	
+
+	public static Attribute create(String attributeId,
+			AttributeValueType attributeType, Object ...values) {
+		return create(attributeId, null, false, attributeType, values);
+	}
+
+	public static Attribute create(String attributeId, String issuer, boolean includeInResult,
+			AttributeValueType attributeType, Object ...values) {
+		ArrayList<AttributeValue> attrValues = new ArrayList<AttributeValue>(values.length);
+		if(values != null) {
+			for(Object value: values) {
+				attrValues.add(attributeType.create(value));
+			}
+		}
+		return new Attribute(attributeId, issuer, includeInResult, attrValues);
+	}
+
 	/**
 	 * Gets attribute identifier.
 	 * 

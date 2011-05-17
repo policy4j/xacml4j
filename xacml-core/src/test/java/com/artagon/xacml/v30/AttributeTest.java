@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.types.StringType;
+
 
 public class AttributeTest 
 {
@@ -38,7 +40,19 @@ public class AttributeTest
 		assertTrue(attr.getValues().containsAll(values));
 		assertTrue(values.containsAll(attr.getValues()));
 	}
-	
+
+	@Test
+	public void testCreateMethod()
+	{
+		Attribute attr = Attribute.create("testId", StringType.STRING, "value1", "value2");
+		assertEquals("testId", attr.getAttributeId());
+		assertEquals(null, attr.getIssuer());
+		assertFalse(attr.isIncludeInResult());
+		assertEquals(2, attr.getValues().size());
+		assertTrue(attr.getValues().contains(StringType.STRING.create("value1")));
+		assertTrue(attr.getValues().contains(StringType.STRING.create("value2")));
+	}
+
 	@Test
 	public void testCreateWithTheSameValues()
 	{
