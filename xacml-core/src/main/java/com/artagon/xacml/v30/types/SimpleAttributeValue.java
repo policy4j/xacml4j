@@ -5,7 +5,7 @@ import com.artagon.xacml.v30.AttributeValueType;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-abstract class SimpleAttributeValue<T> extends BaseAttributeValue
+public abstract class SimpleAttributeValue<T> extends BaseAttributeValue
 	implements AttributeValue
 {
 	private static final long serialVersionUID = 5357712390633048894L;
