@@ -13,7 +13,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 
-abstract class BaseDecisionRuleResponse
+public abstract class BaseDecisionRuleResponse
 {
 	protected String id;
 	protected Multimap<String, AttributeAssignment> attributes;
