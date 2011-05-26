@@ -136,7 +136,7 @@ public class AttributeDesignator extends AttributeReference
 		if((v == null || v.isEmpty()) && 
 				isMustBePresent()){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to resolved attributeId=\"{}\", category=\"{}\"", 
+				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"", 
 						getAttributeId(), getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(context, 

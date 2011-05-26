@@ -153,7 +153,7 @@ public class AttributeSelector extends
 				v.isEmpty()) 
 				&& isMustBePresent()){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to resolved xpath=\"{}\", category=\"{}\"", 
+				log.debug("Failed to resolve xpath=\"{}\", category=\"{}\"", 
 						getPath(), getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(
