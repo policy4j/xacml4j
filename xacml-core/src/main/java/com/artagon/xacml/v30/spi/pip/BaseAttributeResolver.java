@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
  */
 public abstract class BaseAttributeResolver implements AttributeResolver
 {	
-	private final static Logger log = LoggerFactory.getLogger(BaseAttributeResolver.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private AttributeResolverDescriptorDelegate descriptor;
 	private AtomicLong invocationCount;
