@@ -1,6 +1,8 @@
 package com.artagon.xacml.v30;
 
 
+import java.io.InputStream;
+
 import org.junit.Test;
 
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
@@ -23,9 +25,9 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 
 	
 	@Override
-	protected String[] getDefaultTestPolicies() {
-		return new String [] {
-				"v30-policy-test/policyset.xml"
+	protected InputStream[] getDefaultTestPolicies() throws Exception {
+		return new InputStream [] {
+				getPolicy("v30-policy-test/policyset.xml")
 			};
 	}
 

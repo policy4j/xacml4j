@@ -34,8 +34,8 @@ public class XacmlPolicyTestSupport {
 		responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 	}
 
-	protected String[] getDefaultTestPolicies() {
-		return new String[0];
+	protected InputStream[] getDefaultTestPolicies() throws Exception {
+		return new InputStream[0];
 	}
 
 	protected PolicyDecisionPoint buildPDP(
@@ -48,7 +48,7 @@ public class XacmlPolicyTestSupport {
 		return buildPDP(getDefaultTestPolicies(), null, rootPolicyId, rootPolicyVersion);
 	}
 	protected PolicyDecisionPoint buildPDP(
-			String[] policyPaths,
+			InputStream[] policyResources,
 			AttributeResolver [] attributeResolvers,
 			String rootPolicyId, Version rootPolicyVersion) throws Exception {
 
@@ -66,8 +66,8 @@ public class XacmlPolicyTestSupport {
 						.withDefaultFunctions().build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 						.withDefaultAlgorithms().build());
-		for (String path : policyPaths) {
-			repository.importPolicy(getPolicy(path));
+		for (InputStream path : policyResources) {
+			repository.importPolicy(path);
 		}
 
 		PolicyDecisionPoint pdp = PolicyDecisionPointBuilder
@@ -99,7 +99,7 @@ public class XacmlPolicyTestSupport {
 				.getContextClassLoader());
 	}
 
-	private InputStream getPolicy(String path) throws Exception {
+	protected InputStream getPolicy(String path) throws Exception {
 		log.debug("Loading policy: {}", path);
 		return getResource(path);
 	}
