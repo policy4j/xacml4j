@@ -1,5 +1,8 @@
 package com.artagon.xacml.spring.repository;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
@@ -15,7 +18,7 @@ import com.google.common.base.Preconditions;
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
 	private String id;
-	private ResourceCollection resources;
+	private Collection<Resource> resources;
 	private FunctionProvider extensionFuctions;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 	
@@ -38,23 +41,25 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		this.extensionDecisionCombiningAlgorithms = algorithms;
 	}
 	
+	public void setPolicies(Resource[] policies){
+		this.resources = Arrays.asList(policies);
+	}
+	
 	public void setPolicies(ResourceCollection resources){
-		this.resources = resources;
+		this.resources = resources.getResources();
 	}
 	
 	@Override
 	protected PolicyRepository createInstance() throws Exception 
 	{
 		FunctionProviderBuilder functionProviderBuilder = 
-			FunctionProviderBuilder
-			.builder()
+			FunctionProviderBuilder.builder()
 			.withDefaultFunctions();
 		if(extensionFuctions != null){
 			functionProviderBuilder.withFunctions(extensionFuctions);
 		}
 		DecisionCombiningAlgorithmProviderBuilder decisionAlgorithmProviderBuilder = 
-			DecisionCombiningAlgorithmProviderBuilder
-			.builder()
+			DecisionCombiningAlgorithmProviderBuilder.builder()
 			.withDefaultAlgorithms();
 		if(extensionDecisionCombiningAlgorithms != null){
 			decisionAlgorithmProviderBuilder.withAlgorithmProvider(extensionDecisionCombiningAlgorithms);
@@ -62,7 +67,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
 				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.build());
-		for(Resource r : resources.getResources()){
+		for(Resource r : resources){
 			repository.importPolicy(r.getInputStream());
 		}
 		return repository;
