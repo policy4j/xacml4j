@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Policy;
@@ -26,6 +27,7 @@ public class DefaultResolverRegistryTest
 	private AttributeResolver r2;
 	
 	private AttributeResolverDescriptor d1;
+	private AttributeResolverDescriptor d2;
 	
 	@Before
 	public void init(){
@@ -37,6 +39,10 @@ public class DefaultResolverRegistryTest
 		
 		this.d1 = AttributeResolverDescriptorBuilder.
 		builder("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+		.attribute("testAttr1", IntegerType.INTEGER).build();
+		
+		this.d2 = AttributeResolverDescriptorBuilder.
+		builder("testId1", "Test1", "TestIssuer", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testAttr1", IntegerType.INTEGER).build();
 	
 	}
@@ -57,8 +63,7 @@ public class DefaultResolverRegistryTest
 	public void testAddRootResolverAndTheSamePolicyBoundResolverAndResolveWithThePolicyScoped()
 	{
 		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r1.getDescriptor()).andReturn(d1);
+		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		Policy p = control.createMock(Policy.class);
 		expect(context.getCurrentPolicy()).andReturn(p);
 		expect(p.getId()).andReturn("testId1");
@@ -74,11 +79,29 @@ public class DefaultResolverRegistryTest
 	}
 	
 	@Test
+	public void testAddRootResolverWithIssuerAndTheSamePolicyBoundResolverAndResolveWithThePolicyScoped()
+	{
+		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "TestIssuer");
+		expect(r1.getDescriptor()).andReturn(d2).times(2);
+		Policy p = control.createMock(Policy.class);
+		expect(context.getCurrentPolicy()).andReturn(p);
+		expect(p.getId()).andReturn("testId1");
+		expect(context.getParentContext()).andReturn(null);
+		expect(r1.getDescriptor()).andReturn(d2);
+		control.replay();
+		r.addAttributeResolver(r1);
+		r.addAttributeResolver("testId", r1);
+		AttributeResolver resolver = r.getAttributeResolver(context, key);
+		assertNotNull(resolver);
+		assertSame(r1, resolver);
+		control.verify();
+	}
+	
+	@Test
 	public void testAddRootResolverAndTheSamePolicyBoundResolverAndResolveWithTheRoot()
 	{
 		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r1.getDescriptor()).andReturn(d1);
+		expect(r1.getDescriptor()).andReturn(d1).times(2);
 		Policy p = control.createMock(Policy.class);
 		expect(context.getCurrentPolicy()).andReturn(p);
 		expect(p.getId()).andReturn("AAAAA");

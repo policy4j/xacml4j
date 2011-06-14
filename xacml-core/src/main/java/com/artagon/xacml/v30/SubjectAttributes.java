@@ -63,7 +63,9 @@ public enum SubjectAttributes
 	/**
 	 * This identifier indicates that the location is expressed as a DNS name.
 	 */
-	AUTHN_LOCALITY_DNS_NAME("urn:oasis:names:tc:xacml:1.0:subject:authn-locality:dns-name");
+	AUTHN_LOCALITY_DNS_NAME("urn:oasis:names:tc:xacml:1.0:subject:authn-locality:dns-name"),
+	
+	USER_PASSWORD("http://www.ietf.org/rfc/rfc2256.txt#userPassword");
 	
 		
 	private String id;

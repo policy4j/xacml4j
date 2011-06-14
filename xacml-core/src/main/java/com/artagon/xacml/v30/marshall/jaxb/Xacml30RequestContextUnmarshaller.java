@@ -11,11 +11,11 @@ public class Xacml30RequestContextUnmarshaller extends
 	BaseJAXBUnmarshaller<RequestContext> 
 implements RequestUnmarshaller 
 {
-	private Xacml30RequestResponseContextFromJaxbToObjectModelMapper mapper;
+	private Xacml30RequestContextFromJaxbToObjectModelMapper mapper;
 	
 	public Xacml30RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
-		this.mapper = new Xacml30RequestResponseContextFromJaxbToObjectModelMapper();
+		this.mapper = new Xacml30RequestContextFromJaxbToObjectModelMapper();
 	}
 
 	@Override

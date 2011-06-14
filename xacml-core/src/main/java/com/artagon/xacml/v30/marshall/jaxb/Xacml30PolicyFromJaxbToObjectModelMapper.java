@@ -80,7 +80,8 @@ import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 
-public class Xacml30PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
+public class Xacml30PolicyFromJaxbToObjectModelMapper 
+	extends PolicyUnmarshallerSupport
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
 	

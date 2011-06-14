@@ -56,7 +56,7 @@ import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 
-public class Xacml30RequestResponseContextFromJaxbToObjectModelMapper
+public class Xacml30RequestContextFromJaxbToObjectModelMapper
 {
 	private ObjectFactory factory;
 	
@@ -79,7 +79,7 @@ public class Xacml30RequestResponseContextFromJaxbToObjectModelMapper
 		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 	}
 		
-	public Xacml30RequestResponseContextFromJaxbToObjectModelMapper(){
+	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();
 	}
 	

@@ -108,7 +108,8 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		super(functions, decisionAlgorithms);
 	}
 	
-	public CompositeDecisionRule create(Object o) throws XacmlSyntaxException
+	public CompositeDecisionRule create(Object o) 
+		throws XacmlSyntaxException
 	{
 		if(o instanceof PolicyType){
 			return createPolicy((PolicyType)o);
