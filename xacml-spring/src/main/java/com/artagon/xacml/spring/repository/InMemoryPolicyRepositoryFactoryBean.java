@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
-import com.artagon.xacml.spring.ResourceCollection;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
@@ -18,7 +17,7 @@ import com.google.common.base.Preconditions;
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
 	private String id;
-	private Collection<Resource> resources;
+	private Resource[] resources;
 	private FunctionProvider extensionFuctions;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 	
@@ -42,11 +41,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	}
 	
 	public void setPolicies(Resource[] policies){
-		this.resources = Arrays.asList(policies);
-	}
-	
-	public void setPolicies(ResourceCollection resources){
-		this.resources = resources.getResources();
+		this.resources = policies;
 	}
 	
 	@Override
