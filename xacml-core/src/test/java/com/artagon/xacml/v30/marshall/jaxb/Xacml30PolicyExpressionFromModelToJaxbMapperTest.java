@@ -124,13 +124,17 @@ public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 		
 		ApplyType v2 = ((ApplyType)v1.getExpression().get(1).getValue());
 		assertEquals("TestFunc2", v2.getFunctionId());
-		AttributeDesignatorType jaxbExp0 = (AttributeDesignatorType)v2.getExpression().get(0).getValue(); 
 		
+		AttributeDesignatorType jaxbExp0 = (AttributeDesignatorType)v2.getExpression().get(0).getValue(); 
 		assertEquals("http://www.w3.org/2001/XMLSchema#string", jaxbExp0.getDataType());
 		assertEquals("TestId", jaxbExp0.getAttributeId());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS.getId(), jaxbExp0.getCategory());
 		
-		
+		AttributeValueType jaxbExp1 = (AttributeValueType)v2.getExpression().get(1).getValue();
+
+		assertEquals("http://www.w3.org/2001/XMLSchema#string", jaxbExp1.getDataType());
+		assertEquals("Test1", jaxbExp1.getContent().get(0));
+			
 		
 	}
 }
