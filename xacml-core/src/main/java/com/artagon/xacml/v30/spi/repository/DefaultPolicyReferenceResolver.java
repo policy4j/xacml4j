@@ -76,7 +76,7 @@ public class DefaultPolicyReferenceResolver
 		}
 		p =  repository.getPolicy(
 					ref.getId(), 
-					ref.getVersionMatch(), 
+					ref.getVersion(), 
 					ref.getEarliestVersion(), 
 					ref.getLatestVersion());
 		if(p != null && 
@@ -111,7 +111,7 @@ public class DefaultPolicyReferenceResolver
 		}
 		p =  repository.getPolicySet(
 					ref.getId(), 
-					ref.getVersionMatch(), 
+					ref.getVersion(), 
 					ref.getEarliestVersion(), 
 					ref.getLatestVersion());
 		if(p != null && 

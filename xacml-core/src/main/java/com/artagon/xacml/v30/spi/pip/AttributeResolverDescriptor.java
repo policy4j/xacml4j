@@ -7,7 +7,6 @@ import com.artagon.xacml.v30.AttributeDesignatorKey;
 
 public interface AttributeResolverDescriptor extends ResolverDescriptor
 {
-	
 	/**
 	 * Gets resolver identifier
 	 * 

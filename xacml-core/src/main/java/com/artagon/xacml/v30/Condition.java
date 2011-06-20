@@ -42,6 +42,15 @@ public class Condition extends XacmlObject implements PolicyElement
 	}
 	
 	/**
+	 * Gets condition expression predicate
+	 * 
+	 * @return {@link Expression} a condition 
+	 * expression predicate
+	 */
+	public Expression getExpression(){
+		return predicate;
+	}
+	/**
 	 * Evaluates this condition and returns instance of
 	 * {@link ConditionResult}
 	 * 

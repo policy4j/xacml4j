@@ -110,7 +110,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				versions = existing;
 			}
 		}
-		return (versions.put(v, policy) == null);
+		return versions.putIfAbsent(v, policy) == null;
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 				versions = existing;
 			}
 		}
-		return versions.put(v, policySet) == null;
+		return versions.putIfAbsent(v, policySet) == null;
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public final class AttributeSet 
@@ -80,5 +81,19 @@ public final class AttributeSet
 			v.put(attributeId, get(attributeId));
 		}
 		return v;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("id", d.getId())
+		.add("issuer", d.getIssuer())
+		.add("attributes", values)
+		.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(d, values);
 	}
 }

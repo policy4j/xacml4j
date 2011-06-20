@@ -1,8 +1,9 @@
 package com.artagon.xacml.v30;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class AttributesReference extends XacmlObject
+public class AttributesReference
 {
 	private String referenceId;
 	
@@ -26,4 +27,32 @@ public class AttributesReference extends XacmlObject
 	public String getReferenceId(){
 		return referenceId;
 	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("referenceId", referenceId)
+		.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return referenceId.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof AttributesReference)){
+			return false;
+		}
+		AttributesReference r = (AttributesReference)o;
+		return referenceId.equals(r.referenceId);
+	}
+	
 }

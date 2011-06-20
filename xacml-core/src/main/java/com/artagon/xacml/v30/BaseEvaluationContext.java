@@ -285,6 +285,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		}
 		v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
+		if(log.isDebugEnabled()){
+			log.debug("Resolver " +
+					"designator=\"{}\" to value=\"{}\"", v);
+		}
 		// cache resolved designator
 		// value internally
 		setDesignatorValue(ref, v);
@@ -306,6 +310,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		}
 		v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
+		if(log.isDebugEnabled()){
+			log.debug("Resolver " +
+					"selector=\"{}\" to value=\"{}\"", v);
+		}
 		// cache resolved selector
 		// value internally
 		setSelectorValue(ref, v);

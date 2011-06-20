@@ -31,18 +31,33 @@ abstract class BaseCompositeDecisionRuleIDReference
 		return id;
 	}
 	
+	/**
+	 * Gets earliest version match
+	 * 
+	 * @return {@link VersionMatch} or <code>null</code>
+	 */
 	@Override
 	public final VersionMatch getEarliestVersion() {
 		return earliest;
 	}
 	
+	/**
+	 * Gets latest version match
+	 * 
+	 * @return {@link VersionMatch} or <code>null</code>
+	 */
 	@Override
 	public final VersionMatch getLatestVersion() {
 		return latest;
 	}
 	
+	/**
+	 * Gets version match
+	 * 
+	 * @return {@link VersionMatch} or <code>null</code>
+	 */
 	@Override
-	public final VersionMatch getVersionMatch() {
+	public final VersionMatch getVersion() {
 		return version;
 	}
 	

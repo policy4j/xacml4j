@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNotSame;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,6 +30,7 @@ public class InMemoryPolicyRepositoryTest
 {
 	private Policy p1v1;
 	private Policy p1v2;
+	private Policy p1v2DiffInstance;
 	private Policy p1v3;
 	private Policy p1v4;
 	
@@ -50,6 +53,7 @@ public class InMemoryPolicyRepositoryTest
 		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
 		this.p1v1 = new Policy("id1", Version.parse("1"), algorithm);
 		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
+		this.p1v2DiffInstance = new Policy("id1", Version.parse("1.1"), algorithm);
 		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
 		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
 		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
@@ -134,13 +138,20 @@ public class InMemoryPolicyRepositoryTest
 		c.verify();
 	}
 	
+	@Test
 	public void testAddPolicyWithTheSameIdAndSameVersion()
 	{
 		expect(algorithm.getId()).andReturn("testId");
 		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		l.policyAdded(p1v2);
+		expect(algorithm.getId()).andReturn("testId");
+		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
 		c.replay();
 		assertTrue(r.add(p1v2));
-		assertFalse(r.add(p1v2));
+		assertFalse(r.add(p1v2DiffInstance));
+		Policy p = (Policy)r.get("id1", Version.parse("1.1"));
+		assertSame(p1v2, p);
+		assertNotSame(p1v2DiffInstance, p);
 		c.verify();
 	}
 

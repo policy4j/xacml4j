@@ -8,6 +8,9 @@ import java.util.Comparator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.Apply;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
@@ -34,6 +37,7 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractPolicyRepository 
 	implements PolicyRepository
 {	
+	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
 	
 	private String id;
 	private ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
@@ -200,7 +204,11 @@ public abstract class AbstractPolicyRepository
 				notifyPolicyAdded(p);
 				return true;
 			}
-			return false;
+			if(log.isWarnEnabled()){
+				log.warn("Policy with id=\"{}\" " +
+						"and version=\"{}\" already exist in this repository", 
+						p.getId(), p.getVersion());
+			}
 		}
 		if(r instanceof PolicySet){
 			PolicySet p = (PolicySet)r;
@@ -208,7 +216,11 @@ public abstract class AbstractPolicyRepository
 				notifyPolicySetAdded(p);
 				return true;
 			}
-			return false;
+			if(log.isWarnEnabled()){
+				log.warn("PolicySet with id=\"{}\" " +
+						"and version=\"{}\" already exist in this repository", 
+						p.getId(), p.getVersion());
+			}
 		}
 		return false;
 	}

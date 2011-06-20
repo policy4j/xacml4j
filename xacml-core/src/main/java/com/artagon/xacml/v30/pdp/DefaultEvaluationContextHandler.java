@@ -80,9 +80,15 @@ class DefaultEvaluationContextHandler
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
 		BagOfAttributeValues v  = requestCallback.getAttributeValue(
-				key.getCategory(), key.getAttributeId(), 
-				key.getDataType(), key.getIssuer());
+				key.getCategory(), 
+				key.getAttributeId(), 
+				key.getDataType(), 
+				key.getIssuer());
 		if(!v.isEmpty()){
+			if(log.isDebugEnabled()){
+				log.debug("Resolved designator=\"{}\" " +
+						"from request to value=\"{}\"", key, v);
+			}
 			return v;
 		}
 		Preconditions.checkState(
@@ -92,6 +98,10 @@ class DefaultEvaluationContextHandler
 		{
 			designatorResolutionStack.push(key);
 			v = pip.resolve(context, key);
+			if(log.isDebugEnabled()){
+				log.debug("Resolved designator=\"{}\" " +
+						"from PIP to value=\"{}\"", key, v);
+			}
 			return v;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){

@@ -75,6 +75,10 @@ public class DefaultPolicyInformationPoint
 		}
 		try{
 			attributes = r.resolve(pipContext);
+			if(log.isDebugEnabled()){
+				log.debug("Resolved attributes=\"{}\"", 
+						attributes);
+			}
 		}catch(Exception e){
 			return ref.getDataType().emptyBag();
 		}

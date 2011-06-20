@@ -89,7 +89,7 @@ public final class PolicyIDReference extends
 		}
 		PolicyIDReference r = (PolicyIDReference)o;
 		return getId().equals(r.getId()) 
-		&& Objects.equal(getVersionMatch(), r.getVersionMatch()) 
+		&& Objects.equal(getVersion(), r.getVersion()) 
 		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion()) 
 		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}

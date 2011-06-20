@@ -1,9 +1,9 @@
 package com.artagon.xacml.v30;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class AttributeAssignmentExpression extends XacmlObject 
-	implements PolicyElement
+public class AttributeAssignmentExpression  implements PolicyElement
 {
 	private AttributeCategory category;
 	private String attributeId;
@@ -57,7 +57,6 @@ public class AttributeAssignmentExpression extends XacmlObject
 		return category;
 	}
 	
-
 	/**
 	 * Gets an issuer of the attribute.
 	 * If issuer is not specified, the attribute
@@ -75,6 +74,44 @@ public class AttributeAssignmentExpression extends XacmlObject
 		ValueExpression val =  (ValueExpression)expression.evaluate(context);
 		Preconditions.checkState(val != null);
 		return val;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+		.add("attributeId", attributeId)
+		.add("category", category)
+		.add("issuer", issuer)
+		.add("expression", expression)
+		.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(
+				attributeId, 
+				category, 
+				issuer, 
+				expression);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof AttributeAssignmentExpression)){
+			return false;
+		}
+		AttributeAssignmentExpression e = (AttributeAssignmentExpression)o;
+		return attributeId.equals(e.attributeId) && 
+		Objects.equal(category, e.category) &&
+		Objects.equal(issuer, e.issuer) && 
+		expression.equals(e.expression);
+		
 	}
 
 	@Override
