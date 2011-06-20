@@ -84,6 +84,11 @@ public class DefaultPolicyInformationPoint
 						attributes);
 			}
 		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Received error=\"{}\" " +
+						"while resolving designator=\"{}\"", e.getMessage(), ref);
+				log.debug("Error stack trace", e);
+			}
 			return ref.getDataType().emptyBag();
 		}
 		// cache values to the context
@@ -120,6 +125,12 @@ public class DefaultPolicyInformationPoint
 		try{
 			v = r.resolve(pipContext);
 		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Received error=\"{}\" " +
+						"while resolving content for category=\"{}\"", 
+						e.getMessage(), category);
+				log.debug("Error stack trace", e);
+			}
 			return null;
 		}
 		if(d.isCachable()){
