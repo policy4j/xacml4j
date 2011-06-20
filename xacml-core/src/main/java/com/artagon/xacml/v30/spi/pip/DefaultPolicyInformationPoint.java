@@ -70,6 +70,10 @@ public class DefaultPolicyInformationPoint
 		if(d.isCachable()){
 			attributes = cache.getAttributes(pipContext);
 			if(attributes != null){
+				if(log.isDebugEnabled()){
+					log.debug("Found cached " +
+							"attribute values=\"{}\"", attributes);
+				}
 				return attributes.get(ref.getAttributeId());
 			}
 		}
