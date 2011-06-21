@@ -119,6 +119,10 @@ public class DefaultPolicyInformationPoint
 		if(d.isCachable()){
 			v = cache.getContent(pipContext);
 			if(v != null){
+				if(log.isDebugEnabled()){
+					log.debug("Found cached " +
+							"content=\"{}\"", v);
+				}
 				return v.getContent();
 			}
 		}
