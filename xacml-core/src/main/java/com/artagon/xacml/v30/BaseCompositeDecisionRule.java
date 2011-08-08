@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-abstract class BaseCompositeDecisionRule extends BaseDesicionRule 
+abstract class BaseCompositeDecisionRule extends BaseDecisionRule 
 	implements CompositeDecisionRule, Versionable
 {
 	protected String id;

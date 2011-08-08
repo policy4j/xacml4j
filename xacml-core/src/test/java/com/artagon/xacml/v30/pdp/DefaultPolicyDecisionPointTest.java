@@ -77,7 +77,7 @@ public class DefaultPolicyDecisionPointTest
 		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
 		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
+		expect(policyDomain.evaluateIfApplicable(capture(policyContext))).andReturn(Decision.PERMIT);
 		Capture<Result> result0 = new Capture<Result>();
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
@@ -108,7 +108,7 @@ public class DefaultPolicyDecisionPointTest
 		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
 		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
+		expect(policyDomain.evaluateIfApplicable(capture(policyContext))).andReturn(Decision.DENY);
 		
 		Capture<Result> result0 = new Capture<Result>();
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();

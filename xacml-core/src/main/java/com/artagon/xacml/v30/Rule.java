@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import com.google.common.base.Preconditions;
 
-public class Rule extends BaseDesicionRule implements PolicyElement
+public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private String ruleId;
 	private Effect effect;

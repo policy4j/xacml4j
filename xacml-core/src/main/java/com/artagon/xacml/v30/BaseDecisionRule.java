@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
+abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -30,7 +30,7 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 	 * @param obligationExpressions a decision 
 	 * obligation expressions
 	 */
-	protected BaseDesicionRule( 
+	protected BaseDecisionRule( 
 			String description,
 			Target target, 
 			Collection<AdviceExpression> adviceExpressions,
@@ -43,14 +43,14 @@ abstract class BaseDesicionRule extends XacmlObject implements DecisionRule
 		this.obligationExpressions = ImmutableList.copyOf(obligationExpressions);
 	}
 	
-	protected BaseDesicionRule(
+	protected BaseDecisionRule(
 			Target target, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		this(null, target, adviceExpressions, obligationExpressions);
 	}
 	
-	protected BaseDesicionRule(
+	protected BaseDecisionRule(
 			Target target){
 		this(null, target, 
 				Collections.<AdviceExpression>emptyList(), 

@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluate;
+import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfApplicable;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 			List<DecisionType> decisions) 
 	{
 		for(DecisionType d : decisions){
-			Decision decision = evaluate(context, d);
+			Decision decision = evaluateIfApplicable(context, d);
 			if(decision == Decision.DENY){
 				return decision;
 			}

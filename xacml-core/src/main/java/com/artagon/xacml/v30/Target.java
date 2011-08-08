@@ -59,6 +59,7 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
+		log.debug("Match result=\"{}\"", state);
 		return state;
 	}
 
