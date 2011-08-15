@@ -9,6 +9,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
@@ -40,13 +41,13 @@ public class Attribute
 			String attributeId,
 			String issuer, 
 			boolean includeInResult, 
-			Collection<AttributeValue> values){
+			Iterable<AttributeValue> values){
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(values);
 		this.attributeId = attributeId;
 		this.issuer = issuer;
-		this.values = LinkedHashMultiset.create(values.size());
-		this.values.addAll(values);
+		this.values = LinkedHashMultiset.create();
+		Iterables.addAll(this.values, values);
 		this.includeInResult = includeInResult;
 	}
 	

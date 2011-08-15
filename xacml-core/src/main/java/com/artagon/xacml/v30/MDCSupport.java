@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30;
 
-import org.apache.log4j.MDC;
+import org.slf4j.MDC;
 
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;

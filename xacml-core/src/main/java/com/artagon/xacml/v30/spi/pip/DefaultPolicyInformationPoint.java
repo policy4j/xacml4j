@@ -93,7 +93,7 @@ public class DefaultPolicyInformationPoint
 		}
 		// cache values to the context
 		for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
-			context.setDesignatorValue(k, attributes.get(k));
+			context.setResolvedDesignatorValue(k, attributes.get(k));
 		}
 		// check if resolver
 		// descriptor allows long term caching

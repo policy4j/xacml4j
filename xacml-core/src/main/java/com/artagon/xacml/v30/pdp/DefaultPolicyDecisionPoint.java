@@ -2,6 +2,8 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -11,7 +13,11 @@ import javax.management.StandardMBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.BagOfAttributeValues;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
@@ -26,6 +32,8 @@ import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * A default implementation of {@link PolicyDecisionPoint}
@@ -40,7 +48,7 @@ public final class DefaultPolicyDecisionPoint
 	private AtomicBoolean auditEnabled;
 	private AtomicBoolean cacheEnabled;
 	private AtomicLong decisionCount;
-	private AtomicLong decisionTime;
+	private AtomicLong avgDecisionTime;
 	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
@@ -58,7 +66,7 @@ public final class DefaultPolicyDecisionPoint
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
 		this.decisionCount = new AtomicLong(0);
-		this.decisionTime = new AtomicLong(0);
+		this.avgDecisionTime = new AtomicLong(0);
 	}
 	
 	@Override
@@ -100,7 +108,7 @@ public final class DefaultPolicyDecisionPoint
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
-			decisionTime.set(System.currentTimeMillis() - start);
+			avgDecisionTime.set(System.currentTimeMillis() - start);
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
@@ -109,6 +117,7 @@ public final class DefaultPolicyDecisionPoint
 		r = createResult(evalContext, 
 				decision, 
 				request.getIncludeInResultAttributes(), 
+				getResolvedAttributes(evalContext),
 				request.isReturnPolicyIdList());
 		if(isDecisionAuditEnabled()){
 			decisionAuditor.audit(this, r, request);
@@ -118,7 +127,7 @@ public final class DefaultPolicyDecisionPoint
 					request, r, 
 					evalContext.getDecisionCacheTTL());
 		}
-		decisionTime.set(System.currentTimeMillis() - start);
+		avgDecisionTime.set(System.currentTimeMillis() - start);
 		return r;
 	}
 	
@@ -126,18 +135,22 @@ public final class DefaultPolicyDecisionPoint
 			EvaluationContext context, 
 			Decision decision, 
 			Collection<Attributes> includeInResult, 
+			Collection<Attributes> resolvedAttributes,
 			boolean returnPolicyIdList)
 	{
 		decisionCount.incrementAndGet();
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					Status.createSuccess(), 
-					includeInResult);
+					includeInResult, 
+					resolvedAttributes);
 		}
 		if(decision.isIndeterminate()){
 			StatusCode status = (context.getEvaluationStatus() == null)?
 					StatusCode.createProcessingError():context.getEvaluationStatus();
-			return new Result(decision, new Status(status), includeInResult);
+			return new Result(decision, new Status(status), 
+					includeInResult, 
+					resolvedAttributes);
 		}
 		return new Result(
 				decision, 
@@ -145,9 +158,26 @@ public final class DefaultPolicyDecisionPoint
 				context.getAdvices(), 
 				context.getObligations(), 
 				includeInResult, 
+				resolvedAttributes,
 				(returnPolicyIdList?
 						context.getEvaluatedPolicies():
 							Collections.<CompositeDecisionRuleIDReference>emptyList()));
+	}
+	
+	private Collection<Attributes> getResolvedAttributes(EvaluationContext context){
+		Map<AttributeDesignatorKey, BagOfAttributeValues> desig = context.getResolvedDesignators();
+		Multimap<AttributeCategory, Attribute> attributes = HashMultimap.create();
+		for(AttributeDesignatorKey k : desig.keySet()){
+			BagOfAttributeValues v = desig.get(k);
+			Collection<Attribute> values = attributes.get(k.getCategory());
+			values.add(new Attribute(k.getAttributeId(), k.getIssuer(), false, v.values()));
+		}
+		Collection<Attributes> result = new LinkedList<Attributes>();
+		for(AttributeCategory c : attributes.keySet()){
+			
+			result.add(new Attributes(c, attributes.get(c)));
+		}
+		return result;
 	}
 
 	@Override
@@ -176,7 +206,7 @@ public final class DefaultPolicyDecisionPoint
 	}
 
 	@Override
-	public long getDecisionTime() {
-		return decisionTime.get();
+	public long getAverageDecisionTime() {
+		return avgDecisionTime.get();
 	}
 }

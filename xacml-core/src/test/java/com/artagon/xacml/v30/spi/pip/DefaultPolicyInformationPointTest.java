@@ -96,14 +96,14 @@ public class DefaultPolicyInformationPointTest
 		
 		expect(attributeResolver.resolve(capture(ctx))).andReturn(result);
 		
-		context.setDesignatorValue(
+		context.setResolvedDesignatorValue(
 				new AttributeDesignatorKey(
 						AttributeCategories.SUBJECT_ACCESS, "" +
 						"testAttributeId1", 
 						StringType.STRING, null), 
 						StringType.STRING.bagOf(StringType.STRING.create("v1")));
 		
-		context.setDesignatorValue(
+		context.setResolvedDesignatorValue(
 				new AttributeDesignatorKey(
 						AttributeCategories.SUBJECT_ACCESS, 
 						"testAttributeId2", IntegerType.INTEGER, null), 
@@ -143,14 +143,14 @@ public class DefaultPolicyInformationPointTest
 						AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)))
 				.andReturn(StringType.STRING.bagOf(StringType.STRING.create("testUser")));
 		
-		context.setDesignatorValue(
+		context.setResolvedDesignatorValue(
 				new AttributeDesignatorKey(
 						AttributeCategories.SUBJECT_ACCESS, 
 						"testAttributeId4", 
 						IntegerType.INTEGER, null), 
 						IntegerType.INTEGER.emptyBag());
 		
-		context.setDesignatorValue(
+		context.setResolvedDesignatorValue(
 				new AttributeDesignatorKey(
 						AttributeCategories.SUBJECT_ACCESS, 
 						"testAttributeId3", 

@@ -25,6 +25,7 @@ import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 
 import com.artagon.xacml.v30.Condition;
+import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.MatchAnyOf;
 import com.artagon.xacml.v30.Policy;
@@ -40,7 +41,6 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 {
 	private ObjectFactory objectFactory;
 	private Stack<JAXBElement<?>> policyNodes;
-	private Stack<JAXBElement<?>> policyNodeElements;
 	private Stack<PolicyNodeState> policyNodeState;
 	
 	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = new HashMap<Effect, EffectType>();
@@ -54,7 +54,6 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 	public Xacml30PolicyFromObjectModelToJaxbMapper(){
 		this.objectFactory = new ObjectFactory();
 		this.policyNodes = new Stack<JAXBElement<?>>();
-		this.policyNodeElements = new Stack<JAXBElement<?>>();
 	}
 	
 	@Override
@@ -72,6 +71,15 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 	}
 	
 	@Override
+	public void visitLeave(Policy policy) 
+	{
+		JAXBElement<?> jaxb = policyNodes.peek();
+		PolicyType p =  (PolicyType)jaxb.getValue(); 
+		PolicyNodeState s = policyNodeState.pop();
+		s.setStateTo(p);
+	}
+	
+	@Override
 	public void visitEnter(Rule policy) 
 	{
 		RuleType p = objectFactory.createRuleType();
@@ -86,14 +94,15 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 	}
 	
 	@Override
-	public void visitLeave(Policy policy) 
+	public void visitLeave(Rule rule)
 	{
 		JAXBElement<?> jaxb = policyNodes.peek();
-		PolicyType p =  (PolicyType)jaxb.getValue(); 
+		RuleType p =  (RuleType)jaxb.getValue(); 
 		PolicyNodeState s = policyNodeState.pop();
 		s.setStateTo(p);
 	}
 	
+
 	
 	
 	@Override
@@ -128,49 +137,6 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 		jaxbRef.setValue(ref.getId());
 		PolicyNodeState s = policyNodeState.peek();
 		s.addPolicySetIdRef(jaxbRef);
-	}
-	
-	@Override
-	public void visitEnter(VariableDefinition var) 
-	{
-		PolicyNodeState s = policyNodeState.peek();
-		VariableDefinitionType jaxbVar = objectFactory.createVariableDefinitionType();
-		Xacml30PolicyExpressionFromModelToJaxbMapper m = new Xacml30PolicyExpressionFromModelToJaxbMapper();
-		jaxbVar.setVariableId(var.getVariableId());
-		jaxbVar.setExpression(m.create(var.getExpression()));
-		s.add(jaxbVar);
-	}
-	
-	@Override
-	public void visitLeave(Condition condition) 
-	{
-		ConditionType jaxbCond = objectFactory.createConditionType();
-		Xacml30PolicyExpressionFromModelToJaxbMapper m = new Xacml30PolicyExpressionFromModelToJaxbMapper();
-		jaxbCond.setExpression(m.create(condition.getExpression()));
-		PolicyNodeState s = policyNodeState.peek();
-		s.setCondition(jaxbCond);
-	}
-	
-	@Override
-	public void visitEnter(Target target) 
-	{
-		TargetType t = objectFactory.createTargetType();
-		PolicyNodeState s = policyNodeState.peek();
-		s.setTarget(t);
-	}
-	
-	@Override
-	public void visitEnter(MatchAnyOf match) {
-		AnyOfType t = objectFactory.createAnyOfType();
-		JAXBElement<?> jaxb = objectFactory.createAnyOf(t);
-		policyNodes.push(jaxb);
-	}
-	
-	@Override
-	public void visitLeave(MatchAnyOf match) 
-	{
-		PolicyNodeState s = policyNodeState.peek();
-		s.target.getAnyOf().add((AnyOfType)policyNodes.pop().getValue());
 	}
 	
 	private class PolicyNodeState
@@ -250,5 +216,10 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSuppo
 		public void setCondition(ConditionType cond){
 			this.condition = cond;
 		}
+	}
+	
+	public interface PolicyTreeNodeState
+	{
+		void setState(DecisionRule rule);
 	}
 }

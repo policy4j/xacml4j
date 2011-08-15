@@ -53,7 +53,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertNotNull(r1.getAssociatedAdvice("urn:test:advice2"));
 
 		// test attributes
-		assertEquals(1, r1.getAttributes().size());
+		assertEquals(1, r1.getIncludeInResultAttributes().size());
 		Attributes attrs = r1.getAttribute(AttributeCategories.SUBJECT_ACCESS);
 		assertEquals(1, attrs.getAttributes().size());
 		Collection<Attribute> attr1 = attrs.getAttributes("urn:test:attribute1");

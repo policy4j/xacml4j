@@ -16,8 +16,9 @@ public class Result extends XacmlObject
 	private Decision decision;
 	private Map<String, Obligation> obligations;
 	private Map<String, Advice> associatedAdvice;
-	private Map<AttributeCategory, Attributes> attributes;
+	private Map<AttributeCategory, Attributes> includeInResultAttributes;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;
+	private Map<AttributeCategory, Attributes> resolvedAttributes;
 	
 	/**
 	 * Constructs result with a given
@@ -28,11 +29,14 @@ public class Result extends XacmlObject
 	public Result(Decision decision, 
 			Status status, 
 			Collection<Attributes> attributes, 
+			Collection<Attributes> resolvedAttributes,
 			Collection<CompositeDecisionRuleIDReference> evaluatedPolicies){
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
-				attributes, evaluatedPolicies);
+				attributes, 
+				resolvedAttributes, 
+				evaluatedPolicies);
 	}
 	
 	/**
@@ -43,11 +47,13 @@ public class Result extends XacmlObject
 	 * @param status an failure status
 	 */
 	public Result(Decision decision, 
-			Status status, Collection<Attributes> attributes){
+			Status status, Collection<Attributes> attributes, 
+			Collection<Attributes> resolvedAttributes){
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
 				attributes, 
+				resolvedAttributes,
 				Collections.<CompositeDecisionRuleIDReference>emptyList());
 	}
 	
@@ -56,6 +62,7 @@ public class Result extends XacmlObject
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
+				Collections.<Attributes>emptyList(),
 				Collections.<Attributes>emptyList(),
 				Collections.<CompositeDecisionRuleIDReference>emptyList());
 	}
@@ -66,7 +73,7 @@ public class Result extends XacmlObject
 	 * @param decision a decision
 	 * @param associatedAdvice an associated advice
 	 * @param obligations an associated obligations
-	 * @param attributes an attributes to be
+	 * @param includeInResultAttributes an attributes to be
 	 * included in response
 	 */
 	public Result(
@@ -74,24 +81,30 @@ public class Result extends XacmlObject
 			Status status,
 			Iterable<Advice> associatedAdvice, 
 			Iterable<Obligation> obligations,
-			Iterable<Attributes> attributes,
+			Iterable<Attributes> includeInResultAttributes,
+			Iterable<Attributes> resolvedAttributes,
 			Iterable<CompositeDecisionRuleIDReference> policyIdentifiers){
 		Preconditions.checkNotNull(decision);
 		Preconditions.checkNotNull(status);
 		Preconditions.checkNotNull(obligations);
 		Preconditions.checkNotNull(associatedAdvice);
-		Preconditions.checkNotNull(attributes);
+		Preconditions.checkNotNull(includeInResultAttributes);
+		Preconditions.checkNotNull(resolvedAttributes);
 		Preconditions.checkArgument(!(decision.isIndeterminate() ^ 
 				status.isFailure()));
 		this.decision = decision;
 		this.status = status;
 		this.associatedAdvice = new LinkedHashMap<String, Advice>();
 		this.obligations = new LinkedHashMap<String, Obligation>();
-		this.attributes = new HashMap<AttributeCategory, Attributes>();
+		this.includeInResultAttributes = new HashMap<AttributeCategory, Attributes>();
 		this.policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
+		this.resolvedAttributes = new HashMap<AttributeCategory, Attributes>();
 		Iterables.addAll(this.policyReferences, policyIdentifiers);
-		for(Attributes attribute : attributes){
-			this.attributes.put(attribute.getCategory(), attribute);
+		for(Attributes attribute : includeInResultAttributes){
+			this.includeInResultAttributes.put(attribute.getCategory(), attribute);
+		}
+		for(Attributes attribute : resolvedAttributes){
+			this.resolvedAttributes.put(attribute.getCategory(), attribute);
 		}
 		for(Obligation o : obligations){
 			this.obligations.put(o.getId(), o);
@@ -104,11 +117,14 @@ public class Result extends XacmlObject
 	
 	public static Result createIndeterminate(Status status, 
 			Collection<Attributes> attributes){
-		return new Result(Decision.INDETERMINATE, status, attributes);
+		return new Result(Decision.INDETERMINATE, status, 
+				attributes, 
+				Collections.<Attributes>emptyList());
 	}
 	
 	public static Result createIndeterminate(Status status){
 		return new Result(Decision.INDETERMINATE, status, 
+				Collections.<Attributes>emptyList(), 
 				Collections.<Attributes>emptyList());
 	}
 	
@@ -116,14 +132,17 @@ public class Result extends XacmlObject
 			Collection<Attributes> attributes, 
 			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
-				Status.createSyntaxError(format, params), attributes);
+				Status.createSyntaxError(format, params), attributes, 
+				Collections.<Attributes>emptyList());
 	}
 	
 	public static Result createIndeterminateProcessingError(
 			Collection<Attributes> attributes,
 			String format, Object ...params){
 		return new Result(Decision.INDETERMINATE, 
-				Status.createProcessingError(format, params), attributes);
+				Status.createProcessingError(format, params), 
+				attributes, 
+				Collections.<Attributes>emptyList());
 	}
 	
 	
@@ -155,12 +174,16 @@ public class Result extends XacmlObject
 	 * 
 	 * @return a collection of {@link Attributes} instances
 	 */
-	public Collection<Attributes> getAttributes(){
-		return Collections.unmodifiableCollection(attributes.values());
+	public Collection<Attributes> getIncludeInResultAttributes(){
+		return Collections.unmodifiableCollection(includeInResultAttributes.values());
+	}
+	
+	public Collection<Attributes> getResolvedAttributes(){
+		return Collections.unmodifiableCollection(resolvedAttributes.values());
 	}
 	
 	public Attributes getAttribute(AttributeCategory categoryId){
-		return attributes.get(categoryId);
+		return includeInResultAttributes.get(categoryId);
 	}
 	
 	/**

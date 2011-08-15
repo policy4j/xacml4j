@@ -144,7 +144,7 @@ public class XacmlPolicyTestSupport {
 		assertObligations(r1.getObligations(), r2.getObligations());
 		assertAssociatedAdvices(r1.getAssociatedAdvice(),
 				r2.getAssociatedAdvice());
-		assertAttributes(r1.getAttributes(), r2.getAttributes());
+		assertAttributes(r1.getIncludeInResultAttributes(), r2.getIncludeInResultAttributes());
 		assertPolicyIdentifiers(r1.getPolicyIdentifiers(),
 				r2.getPolicyIdentifiers());
 	}

@@ -38,6 +38,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private Map<AttributeDesignatorKey, BagOfAttributeValues> designCache;
 	private Map<AttributeSelectorKey, BagOfAttributeValues> selectCache;
+	private Map<AttributeDesignatorKey, BagOfAttributeValues> resolvedDesignators;
 	
 	private Integer combinedDecisionCacheTTL = null;
 	
@@ -74,6 +75,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
 		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>(128);
 		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>(128);
+		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>();
 		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
 		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
@@ -289,9 +291,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			log.debug("Resolver " +
 					"designator=\"{}\" to value=\"{}\"", v);
 		}
-		// cache resolved designator
-		// value internally
-		setDesignatorValue(ref, v);
+		this.designCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
 	}
 	
@@ -314,24 +314,16 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			log.debug("Resolver " +
 					"selector=\"{}\" to value=\"{}\"", v);
 		}
-		// cache resolved selector
-		// value internally
-		setSelectorValue(ref, v);
+		this.selectCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
 	}
 	
-	public void setDesignatorValue(
+	public void setResolvedDesignatorValue(
 			AttributeDesignatorKey key, 
 			BagOfAttributeValues v){
 		Preconditions.checkNotNull(key);
+		this.resolvedDesignators.put(key, (v == null)?key.getDataType().emptyBag():v);
 		this.designCache.put(key, (v == null)?key.getDataType().emptyBag():v);
-	}
-	
-	public void setSelectorValue(
-			AttributeSelectorKey key, 
-			BagOfAttributeValues v){
-		Preconditions.checkNotNull(key);
-		this.selectCache.put(key, (v == null)?key.getDataType().emptyBag():v);
 	}
 	
 	@Override
@@ -339,6 +331,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
 	
+	@Override
+	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
+		
+		return Collections.unmodifiableMap(resolvedDesignators);
+	}
+
 	/**
 	 * Clears context state
 	 */

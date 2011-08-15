@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30.pdp.profiles;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v30.Attributes;
@@ -34,7 +35,8 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 				results.addAll(handleNext(resolvedRequest, context));
 			}catch(RequestSyntaxException e){
 				results.add(new Result(Decision.INDETERMINATE, e.getStatus(), 
-						request.getIncludeInResultAttributes()));
+						request.getIncludeInResultAttributes(), 
+						Collections.<Attributes>emptyList()));
 			}
 		}
 		return results;

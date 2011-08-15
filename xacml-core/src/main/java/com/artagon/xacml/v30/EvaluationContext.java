@@ -2,6 +2,7 @@ package com.artagon.xacml.v30;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
@@ -234,8 +235,9 @@ public interface EvaluationContext
 	BagOfAttributeValues resolve(AttributeSelectorKey ref) 
 		throws EvaluationException;
 	
-	void setDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeValues v);
-	void setSelectorValue(AttributeSelectorKey ref, BagOfAttributeValues v);
+	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeValues v);
+	
+	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
 	
 	/**
 	 * Evaluates a given XPath expression

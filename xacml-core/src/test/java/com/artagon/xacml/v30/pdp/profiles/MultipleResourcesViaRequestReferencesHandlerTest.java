@@ -97,10 +97,12 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		replay(pdp);
 		profile.handle(context, pdp).iterator();
@@ -145,11 +147,13 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		expect(pdp.requestDecision(request)).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		replay(pdp);
 		Collection<Result> results = profile.handle(request, pdp);
 		assertEquals(new Result(Decision.INDETERMINATE, 
 				new Status(StatusCode.createProcessingError()), 
+				Collections.<Attributes>emptyList(), 
 				Collections.<Attributes>emptyList()), results.iterator().next());
 		verify(pdp);
 	}
@@ -165,6 +169,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);

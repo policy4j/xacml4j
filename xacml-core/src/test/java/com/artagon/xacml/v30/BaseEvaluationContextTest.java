@@ -75,7 +75,7 @@ public class BaseEvaluationContextTest
 		c.replay();
 		AttributeDesignatorKey k = new AttributeDesignatorKey(
 				AttributeCategories.SUBJECT_ACCESS, "testId", StringType.STRING, "test");
-		context.setDesignatorValue(k, StringType.STRING.bagOf("aaa"));
+		context.setResolvedDesignatorValue(k, StringType.STRING.bagOf("aaa"));
 		assertEquals(StringType.STRING.bagOf("aaa"), context.resolve(k));
 		c.verify();
 	}

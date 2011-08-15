@@ -68,10 +68,12 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()), 
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		expect(pdp.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+				Collections.<Attributes>emptyList(), 
 				Collections.<Attributes>emptyList()));
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
@@ -113,6 +115,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()), 
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);
@@ -136,6 +139,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		
 		replay(pdp);

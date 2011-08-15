@@ -7,5 +7,5 @@ public interface PolicyDecisionPointMBean
 	boolean isDecisionCacheEnabled();
 	void setDecisionCacheEnabled(boolean enabled);
 	long getDecisionCount();
-	long getDecisionTime();
+	long getAverageDecisionTime();
 }

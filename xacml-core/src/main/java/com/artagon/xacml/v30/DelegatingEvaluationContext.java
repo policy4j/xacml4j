@@ -2,6 +2,7 @@ package com.artagon.xacml.v30;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.w3c.dom.Node;
@@ -227,14 +228,10 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.getEvaluatedPolicies();
 	}
 
-	public void setDesignatorValue(AttributeDesignatorKey ref,
+	@Override
+	public void setResolvedDesignatorValue(AttributeDesignatorKey ref,
 			BagOfAttributeValues v) {
-		delegate.setDesignatorValue(ref, v);
-	}
-
-	public void setSelectorValue(AttributeSelectorKey ref,
-			BagOfAttributeValues v) {
-		delegate.setSelectorValue(ref, v);
+		delegate.setResolvedDesignatorValue(ref, v);
 	}
 
 	@Override
@@ -245,5 +242,10 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public void setDecisionCacheTTL(int ttl) {
 		delegate.setDecisionCacheTTL(ttl);
+	}
+	
+	@Override
+	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
+		return delegate.getResolvedDesignators();
 	}
 }

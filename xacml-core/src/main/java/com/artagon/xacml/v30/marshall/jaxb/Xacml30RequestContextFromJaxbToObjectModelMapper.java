@@ -123,6 +123,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				createAdvices(result.getAssociatedAdvice()),
 				createObligations(result.getObligations()),
 				create(result.getAttributes()),
+				Collections.<Attributes>emptyList(),
 				create(result.getPolicyIdentifierList()));
 	}
 
@@ -155,7 +156,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private ResultType create(Result r)
 	{
 		ResultType result = new ResultType();
-		for(Attributes a : r.getAttributes()){
+		for(Attributes a : r.getIncludeInResultAttributes()){
 			result.getAttributes().add(create(a));
 		}
 		AssociatedAdviceType advice = new AssociatedAdviceType();

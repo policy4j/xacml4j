@@ -82,19 +82,22 @@ public class MultipleResourcesHandlerTest
 		
 		expect(context.requestDecision(capture(c0))).andReturn(
 					new Result(Decision.DENY, Status.createSuccess(), 
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.DENY, Status.createSuccess(), 
+						Collections.<Attributes>emptyList(), 
 						Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c2))).andReturn(
 				new Result(Decision.DENY, Status.createSuccess(),
+				Collections.<Attributes>emptyList(), 
 				Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c3))).andReturn(
 				new Result(Decision.DENY, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -104,7 +107,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Decision.DENY, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
 		
-		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
@@ -125,19 +128,19 @@ public class MultipleResourcesHandlerTest
 		
 		expect(context.requestDecision(capture(c0))).andReturn(
 					new Result(Decision.PERMIT, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.PERMIT, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c2))).andReturn(
 				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c3))).andReturn(
 				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -147,7 +150,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Decision.PERMIT, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
 		
-		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
@@ -168,19 +171,19 @@ public class MultipleResourcesHandlerTest
 		
 		expect(context.requestDecision(capture(c0))).andReturn(
 					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c2))).andReturn(
 				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c3))).andReturn(
 				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -190,7 +193,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
 		
-		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
@@ -211,19 +214,19 @@ public class MultipleResourcesHandlerTest
 		
 		expect(context.requestDecision(capture(c0))).andReturn(
 					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c1))).andReturn(
 				new Result(Decision.DENY, Status.createSuccess(), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c2))).andReturn(
 				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		expect(context.requestDecision(capture(c3))).andReturn(
 				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList()));
+				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -233,7 +236,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Decision.INDETERMINATE, r.getDecision());
 		assertEquals(Status.createProcessingError(), r.getStatus());
 		
-		assertEquals(0, r.getAttributes().size());
+		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
@@ -250,7 +253,7 @@ public class MultipleResourcesHandlerTest
 		expect(context.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()), 
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -273,7 +276,7 @@ public class MultipleResourcesHandlerTest
 		expect(context.requestDecision(capture(c0))).andReturn(
 				new Result(Decision.INDETERMINATE, 
 						new Status(StatusCode.createProcessingError()),
-						Collections.<Attributes>emptyList()));
+						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);

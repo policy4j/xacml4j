@@ -4,11 +4,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 public class MatchAnyOf extends XacmlObject 
 	implements PolicyElement, Matchable
 {
+	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
+	
 	private Collection<MatchAllOf> matches;
 	
 	public MatchAnyOf(Collection<MatchAllOf> matches){
@@ -28,10 +33,16 @@ public class MatchAnyOf extends XacmlObject
 		for(Matchable m : matches){
 			MatchResult result = m.match(context);
 			if(result == MatchResult.INDETERMINATE){
+				if(log.isDebugEnabled()){
+					log.debug("AnyOf matchable match result=\"{}\"", result);
+				}
 				state = MatchResult.INDETERMINATE;
 				continue;
 			}
 			if(result == MatchResult.MATCH){
+				if(log.isDebugEnabled()){
+					log.debug("AnyOf matchable match result=\"{}\"", result);
+				}
 				state = MatchResult.MATCH;
 				break;
 			}
