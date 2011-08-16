@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.LinkedHashMultimap;
@@ -62,7 +61,7 @@ public abstract class BaseDecisionRuleResponse
 	}
 	
 	public final Collection<AttributeAssignment> getAttributes(){
-		return Collections.unmodifiableCollection(attributes.values());
+		return attributes.values();
 	}
 	
 	public final Collection<AttributeAssignment> getAttribute(String attributeId){
