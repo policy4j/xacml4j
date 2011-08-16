@@ -96,7 +96,7 @@ public class PolicyUnmarshallerSupport
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(
-					"Policy comnbining algorithm=\"%s\" can not be resolved",
+					"Policy combining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}
 		return algorithm;
