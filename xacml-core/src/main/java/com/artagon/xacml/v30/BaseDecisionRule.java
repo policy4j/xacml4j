@@ -135,18 +135,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 			context.addObligations(
 					evaluateObligations(context, result));
 			return result;
-		}catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate decision id=\"{}\" " +
-						"obligation or advice expressions", 
-						getId());
-			}
-			return Decision.INDETERMINATE;
 		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate decision " +
-						"obligation or advice expressions", e);
-			}
 			return Decision.INDETERMINATE;
 		}
 	}
@@ -168,15 +157,31 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 					"for descision rule id=\"{}\"", getId());
 		}
 		Collection<Advice> advices = new LinkedList<Advice>();
-		for(AdviceExpression adviceExp : adviceExpressions){
-			if(adviceExp.isApplicable(result)){
-				Advice a = adviceExp.evaluate(context);
-				if(log.isDebugEnabled()){
-					log.debug("Evaluated advice=\"{}\"", a);
+		try{
+			for(AdviceExpression adviceExp : adviceExpressions){
+				if(adviceExp.isApplicable(result)){
+					Advice a = adviceExp.evaluate(context);
+					if(log.isDebugEnabled()){
+						log.debug("Evaluated advice=\"{}\"", a);
+					}
+					Preconditions.checkState(a != null);
+					advices.add(a);
 				}
-				Preconditions.checkState(a != null);
-				advices.add(a);
 			}
+		}catch(EvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"decision rule advices", e);
+			}
+			throw e;
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"decision rule advices", e);
+			}
+			throw new EvaluationException(
+					StatusCode.createProcessingError(), 
+					context, e);
 		}
 		if(log.isDebugEnabled()){
 			log.debug("Evaluated=\"{}\" applicable advices", 
@@ -202,16 +207,33 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 					"for descision rule id=\"{}\"", getId());
 		}
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
-		for(ObligationExpression obligationExp : obligationExpressions){
-			if(obligationExp.isApplicable(result)){
-				Obligation o  = obligationExp.evaluate(context);
-				if(log.isDebugEnabled()){
-					log.debug("Evaluated obligation=\"{}\"", o);
+		try{
+			for(ObligationExpression obligationExp : obligationExpressions){
+				if(obligationExp.isApplicable(result)){
+					Obligation o  = obligationExp.evaluate(context);
+					if(log.isDebugEnabled()){
+						log.debug("Evaluated obligation=\"{}\"", o);
+					}
+					Preconditions.checkState(o != null);
+					obligations.add(o);
 				}
-				Preconditions.checkState(o != null);
-				obligations.add(o);
 			}
+		}catch(EvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"decision rule obligations", e);
+			}
+			throw e;
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"decision rule obligations", e);
+			}
+			throw new EvaluationException(
+					StatusCode.createProcessingError(), 
+					context, e);
 		}
+		
 		if(log.isDebugEnabled()){
 			log.debug("Evaluated=\"{}\" applicable obligations", 
 					obligations.size());
