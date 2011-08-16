@@ -138,7 +138,14 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision id=\"{}\" " +
-						"obligation or advice expressions", getId());
+						"obligation or advice expressions", 
+						getId());
+			}
+			return Decision.INDETERMINATE;
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate decision " +
+						"obligation or advice expressions", e);
 			}
 			return Decision.INDETERMINATE;
 		}
@@ -156,6 +163,10 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	private Collection<Advice> evaluateAdvices(EvaluationContext context, Decision result) 
 		throws EvaluationException
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating advices " +
+					"for descision rule id=\"{}\"", getId());
+		}
 		Collection<Advice> advices = new LinkedList<Advice>();
 		for(AdviceExpression adviceExp : adviceExpressions){
 			if(adviceExp.isApplicable(result)){
@@ -186,6 +197,10 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	private Collection<Obligation> evaluateObligations(EvaluationContext context, Decision result) 
 		throws EvaluationException
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Evaluating obligations " +
+					"for descision rule id=\"{}\"", getId());
+		}
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		for(ObligationExpression obligationExp : obligationExpressions){
 			if(obligationExp.isApplicable(result)){
