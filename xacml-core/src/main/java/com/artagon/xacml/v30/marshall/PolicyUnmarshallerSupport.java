@@ -75,7 +75,7 @@ public class PolicyUnmarshallerSupport
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(
-					"Rule comnbining algorithm=\"%s\" can not be resolved",
+					"Rule combining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}
 		return algorithm;
