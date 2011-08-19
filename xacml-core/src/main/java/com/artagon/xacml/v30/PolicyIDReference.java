@@ -1,11 +1,16 @@
 package com.artagon.xacml.v30;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public final class PolicyIDReference extends 
 	BaseCompositeDecisionRuleIDReference implements PolicyElement
 {
+	private final static Logger log = LoggerFactory.getLogger(PolicyIDReference.class);
+	
 	public PolicyIDReference(
 			String id, 
 			VersionMatch version,
@@ -61,6 +66,7 @@ public final class PolicyIDReference extends
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
+		Preconditions.checkNotNull(context);
 		if(context.getCurrentPolicyIDReference() ==  this){
 			return context;
 		}
@@ -68,10 +74,24 @@ public final class PolicyIDReference extends
 		try{
 			Policy resolvedPolicy = context.resolve(this);
 			if(resolvedPolicy == null){
+				if(log.isDebugEnabled()){
+					log.debug(String.format(
+							"Failed to resolve policy reference=\"%s\"", 
+							this));
+				}
 				return refContext;
+			}
+			if(log.isDebugEnabled()){
+				log.debug("Found matching policy " +
+						"to the policy reference\"{}\"", this);
 			}
 			return resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
+			if(log.isDebugEnabled()){
+				log.debug(String.format(
+						"Failed to resolve policy reference=\"%s\"", 
+						this), e);
+			}
 			return refContext;
 		}
 	}
@@ -96,6 +116,7 @@ public final class PolicyIDReference extends
 
 	@Override
 	public Decision evaluate(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
@@ -107,6 +128,7 @@ public final class PolicyIDReference extends
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
@@ -118,6 +140,7 @@ public final class PolicyIDReference extends
 
 	@Override
 	public MatchResult isApplicable(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return MatchResult.INDETERMINATE;
@@ -144,11 +167,14 @@ public final class PolicyIDReference extends
 	private static boolean isReferenceCyclic(PolicyIDReference ref, 
 			EvaluationContext context)
 	{
-		if(context.getCurrentPolicyIDReference() != null){
-			if(ref.equals(context.getCurrentPolicyIDReference())){
-				throw new IllegalStateException(
-						String.format(
-								"Reference=\"%s\" is cyclic", ref      ));
+		PolicyIDReference otherRef = context.getCurrentPolicyIDReference();
+		if(otherRef != null){
+			if(ref.equals(otherRef)){
+				if(log.isDebugEnabled()){
+					log.debug("Policv reference=\"{}\" " +
+							"cycle detected", ref);
+				}
+				return true;
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
 		}

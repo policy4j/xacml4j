@@ -40,7 +40,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		Preconditions.checkNotNull(id, 
 				"Composite decision rule id can not be null");
 		Preconditions.checkNotNull(version, 
-				"Composite decisionrule version can not be null");
+				"Composite decision rule version can not be null");
 		this.id = id;
 		this.version = version;
 	}

@@ -35,12 +35,12 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 			Target target, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		Preconditions.checkNotNull(adviceExpressions);
-		Preconditions.checkNotNull(obligationExpressions);
 		this.description = description;
 		this.target = target;
-		this.adviceExpressions = ImmutableList.copyOf(adviceExpressions);
-		this.obligationExpressions = ImmutableList.copyOf(obligationExpressions);
+		this.adviceExpressions = (adviceExpressions != null)?
+				ImmutableList.copyOf(adviceExpressions):ImmutableList.<AdviceExpression>of();
+		this.obligationExpressions = (obligationExpressions != null)?
+				ImmutableList.copyOf(obligationExpressions):ImmutableList.<ObligationExpression>of();
 	}
 	
 	protected BaseDecisionRule(
@@ -104,36 +104,37 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	 * @return {@link MatchResult} a match result
 	 */
 	public MatchResult isApplicable(EvaluationContext context){ 
-		Preconditions.checkArgument(isEvaluationContextValid(context));
+		Preconditions.checkArgument(
+				isEvaluationContextValid(context));
 		return (target == null)?MatchResult.MATCH:target.match(context);
 	}
 	
 	/**
-	 * Evaluates this decision, if decision is applicable to
-	 * the current request then appropriate decision
-	 * advice and obligations are evaluated
+	 * Evaluates all matching to the given
+	 * decision rule advice and obligations
+	 * 
+	 * @param context an evaluation context
+	 * @param result a rule evaluation result
+	 * @return a rule evaluation result or {@link Decision#INDETERMINATE}
+	 * if any of the advice or obligation evaluation fails
 	 */
-	@Override
-	public  Decision evaluate(EvaluationContext context) 
+	protected final Decision evaluateAdvicesAndObligations(
+			EvaluationContext context, Decision result)
 	{
-		Preconditions.checkArgument(
-				isEvaluationContextValid(context));
-		Decision result = doEvaluate(context);
-		if(result.isIndeterminate() || 
-				result == Decision.NOT_APPLICABLE){
-			if(log.isDebugEnabled()){
-				log.debug("Not evaluating advices and " +
-						"obligations for decision rule id=\"{}\" " +
-						"evaluation result=\"{}\"", getId(), result);
-			}
-			return result;
-		}
 		try
 		{
-			context.addAdvices(
-					evaluateAdvices(context, result));
-			context.addObligations(
-					evaluateObligations(context, result));
+			if(result.isIndeterminate() || 
+					result == Decision.NOT_APPLICABLE){
+				return result;
+			}
+			Collection<Advice> advices = evaluateAdvices(context, result);
+			Collection<Obligation> obligations = evaluateObligations(context, result);
+			if(!advices.isEmpty()){
+				context.addAdvices(advices);
+			}
+			if(!obligations.isEmpty()){
+				context.addObligations(obligations);
+			}
 			return result;
 		}catch(Exception e){
 			return Decision.INDETERMINATE;
@@ -160,14 +161,20 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		try{
 			for(AdviceExpression adviceExp : adviceExpressions){
 				if(adviceExp.isApplicable(result)){
-					Advice a = adviceExp.evaluate(context);
 					if(log.isDebugEnabled()){
-						log.debug("Evaluated advice=\"{}\"", a);
+						log.debug("Evaluating advice id=\"{}\"", 
+								adviceExp.getId());
 					}
+					Advice a = adviceExp.evaluate(context);
 					Preconditions.checkState(a != null);
 					advices.add(a);
 				}
 			}
+			if(log.isDebugEnabled()){
+				log.debug("Evaluated=\"{}\" applicable advices", 
+						advices.size());
+			}
+			return advices;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate " +
@@ -183,11 +190,6 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 					StatusCode.createProcessingError(), 
 					context, e);
 		}
-		if(log.isDebugEnabled()){
-			log.debug("Evaluated=\"{}\" applicable advices", 
-					advices.size());
-		}
-		return advices;
 	}
 	
 	/**
@@ -210,14 +212,20 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		try{
 			for(ObligationExpression obligationExp : obligationExpressions){
 				if(obligationExp.isApplicable(result)){
-					Obligation o  = obligationExp.evaluate(context);
 					if(log.isDebugEnabled()){
-						log.debug("Evaluated obligation=\"{}\"", o);
+						log.debug("Evaluating obligation id=\"{}\"", 
+								obligationExp.getId());
 					}
+					Obligation o  = obligationExp.evaluate(context);
 					Preconditions.checkState(o != null);
 					obligations.add(o);
 				}
 			}
+			if(log.isDebugEnabled()){
+				log.debug("Evaluated=\"{}\" applicable obligations", 
+						obligations.size());
+			}
+			return obligations;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate " +
@@ -233,29 +241,85 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 					StatusCode.createProcessingError(), 
 					context, e);
 		}
-		
-		if(log.isDebugEnabled()){
-			log.debug("Evaluated=\"{}\" applicable obligations", 
-					obligations.size());
-		}
-		return obligations;
 	}
 	
-	/**
-	 * Checks if given evaluation context can be used to
-	 * evaluate this decision
-	 * 
-	 * @param context an evaluation context
-	 * @return <code>true></code> if this evaluation context
-	 * can be used to evaluate this decision
-	 */
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 	
-	/**
-	 * Performs actual decision evaluation
-	 * 
-	 * @param context an evaluation context
-	 * @return {@link Decision}
-	 */
-	protected abstract Decision doEvaluate(EvaluationContext context);
+	
+	public abstract static class BaseBuilder<T extends BaseBuilder<?>>
+	{
+		protected String id;
+		protected String description;
+		protected Target target;	
+		protected Collection<AdviceExpression> adviceExpressions = new LinkedList<AdviceExpression>();
+		protected Collection<ObligationExpression> obligationExpressions = new LinkedList<ObligationExpression>();
+		
+		protected BaseBuilder(){
+		}
+		
+		public T withId(String id){
+			Preconditions.checkNotNull(id);
+			this.id = id;
+			return getThis();
+		}
+		
+		public T withDescription(String desc){
+			Preconditions.checkNotNull(desc);
+			this.description = desc;
+			return getThis();
+		}
+		
+		public T withTarget(Target target){
+			Preconditions.checkNotNull(target);
+			this.target = target;
+			return getThis();
+		}
+		
+		public T withTarget(Target.Builder b){
+			Preconditions.checkNotNull(b);
+			this.target = b.build();
+			return getThis();
+		}
+		
+		public T withoutTarget(){
+			this.target = null;
+			return getThis();
+		}
+		
+		public T withAdvice(AdviceExpression advice){
+			Preconditions.checkNotNull(advice);
+			this.adviceExpressions.add(advice);
+			return getThis();
+		}
+		
+		public T withoutAdvices(){
+			this.adviceExpressions.clear();
+			return getThis();
+		}
+		
+		public T withoutObligations(){
+			this.obligationExpressions.clear();
+			return getThis();
+		}
+		
+		public T withAdvice(AdviceExpression.Builder b){
+			Preconditions.checkNotNull(b);
+			this.adviceExpressions.add(b.build());
+			return getThis();
+		}
+		
+		public T withObligation(ObligationExpression advice){
+			Preconditions.checkNotNull(advice);
+			this.obligationExpressions.add(advice);
+			return getThis();
+		}
+		
+		public T withObligation(ObligationExpression.Builder b){
+			Preconditions.checkNotNull(b);
+			this.obligationExpressions.add(b.build());
+			return getThis();
+		}
+		
+		protected abstract T getThis();
+	}
 }

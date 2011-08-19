@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30;
 
 import java.util.Collection;
-
+import java.util.LinkedList;
 
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression
@@ -16,8 +16,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 */
 	public AdviceExpression(String id, 
 			Effect appliesTo,
-			Collection<AttributeAssignmentExpression> attributeExpressions) 
-		throws XacmlSyntaxException 
+			Collection<AttributeAssignmentExpression> attributeExpressions)  
 	{
 		super(id, appliesTo, attributeExpressions);
 	}	
@@ -35,6 +34,10 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
 		return new Advice(getId(), getEffect(), attributes);
+	}
+	
+	public static Builder builder(String id, Effect applieTo){
+		return new Builder(id, applieTo);
 	}
 	
 	@Override
@@ -58,5 +61,36 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 		return id.equals(ox.id) 
 			&& effect.equals(ox.effect) 
 			&& attributeExpressions.equals(ox.attributeExpressions);
+	}
+	
+	public static class Builder 
+	{
+		private String id;
+		private Effect appliesTo;
+		private Collection<AttributeAssignmentExpression> attributes = new LinkedList<AttributeAssignmentExpression>();
+	
+		private Builder(String id, Effect appliesTo){
+			this.id = id;
+			this.appliesTo = appliesTo;
+		}
+	
+		public Builder withAttributeAssigment(
+				String id, Expression expression)
+		{
+			attributes.add(new AttributeAssignmentExpression(id, expression));
+			return this;
+		}
+	
+		public Builder withAttributeAssigment(
+				String id, Expression expression, 
+				AttributeCategory category, String issuer)
+		{
+			attributes.add(new AttributeAssignmentExpression(id, expression, category, issuer));
+			return this;
+		}
+		
+		public AdviceExpression build(){
+			return new AdviceExpression(id, appliesTo, attributes);
+		}
 	}
 }

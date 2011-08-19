@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30;
 
-public class DefaultExpressionVisitor implements ExpressionVisitor
+public class DefaultExpressionVisitor 
+	implements ExpressionVisitor
 {
 
 	@Override

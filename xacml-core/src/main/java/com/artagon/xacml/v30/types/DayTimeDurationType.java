@@ -14,7 +14,8 @@ import com.artagon.xacml.v30.BagOfAttributeValuesType;
 import com.google.common.base.Preconditions;
 
 
-public enum DayTimeDurationType implements AttributeValueType
+public enum DayTimeDurationType 
+	implements AttributeValueType
 {
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
 	

@@ -27,10 +27,8 @@ public class Condition extends XacmlObject implements PolicyElement
 	 * 
 	 * @param predicate an expression which always evaluates
 	 * to {@link BooleanValue}
-	 * @exception {@link XacmlSyntaxException}
 	 */
 	public Condition(Expression predicate) 
-		throws XacmlSyntaxException
 	{
 		checkNotNull(predicate, "Condition predicate can not be null");
 		checkArgument(predicate.getEvaluatesTo().equals(BOOLEAN),

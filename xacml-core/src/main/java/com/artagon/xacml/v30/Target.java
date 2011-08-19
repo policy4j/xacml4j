@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
+
 
 public class Target extends XacmlObject implements PolicyElement
 {
@@ -30,6 +32,10 @@ public class Target extends XacmlObject implements PolicyElement
 	
 	public Collection<MatchAnyOf> getAnyOf(){
 		return Collections.unmodifiableCollection(matches);
+	}
+	
+	public static Builder builder(){
+		return new Builder();
 	}
 	
 	/**
@@ -59,7 +65,10 @@ public class Target extends XacmlObject implements PolicyElement
 				break;
 			}
 		}
-		log.debug("Match result=\"{}\"", state);
+		if(log.isDebugEnabled()){
+			log.debug("Target " +
+					"match state=\"{}\"", state);
+		}
 		return state;
 	}
 
@@ -70,5 +79,42 @@ public class Target extends XacmlObject implements PolicyElement
 			m.accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	
+	public static class Builder
+	{
+		private Collection<MatchAnyOf> allAnyOf = new LinkedList<MatchAnyOf>();
+		
+		private Builder(){
+		}
+		
+		public Builder withAnyOf(MatchAnyOf anyOf){
+			Preconditions.checkNotNull(anyOf);
+			allAnyOf.add(anyOf);
+			return this;
+		}
+		
+		public Builder withAnyOf(MatchAnyOf.Builder anyOf){
+			Preconditions.checkNotNull(anyOf);
+			allAnyOf.add(anyOf.build());
+			return this;
+		}
+		
+		/**
+		 * Adds {@link MatchAnyOf} created from a given
+		 * array of {@link MatchAllOf} instances
+		 * @param allOfs a matches
+		 */
+		public Builder withAnyOf(MatchAllOf ...allOfs){
+			Preconditions.checkNotNull(allOfs);
+			allAnyOf.add(new MatchAnyOf(allOfs));
+			return this;
+		}
+		
+		public Target build(){
+			return new Target(allAnyOf);
+		}
+		
 	}
 }

@@ -4,9 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.types.BooleanValue;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class Match extends XacmlObject implements PolicyElement, Matchable
+public class Match implements PolicyElement, Matchable
 {	
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 	
@@ -21,13 +22,16 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 	 * @param attrRef an attribute reference
 	 * @param function a match function
 	 */
-	public Match(FunctionSpec spec, 
-			AttributeValue value, AttributeReference attributeReference)
+	public Match(
+			FunctionSpec spec, 
+			AttributeValue value, 
+			AttributeReference attributeReference)
 	{
 		Preconditions.checkNotNull(spec);
 		Preconditions.checkNotNull(value);
 		Preconditions.checkNotNull(attributeReference);
-		Preconditions.checkArgument(spec.getNumberOfParams() == 2, "Excpeting function with 2 arguments");
+		Preconditions.checkArgument(spec.getNumberOfParams() == 2, 
+				"Excpeting function with 2 arguments");
 		Preconditions.checkArgument(spec.getParamSpecAt(0).
 				isValidParamType(value.getEvaluatesTo()), 
 				"Given function argument at index=\"0\" type is not compatible with a given attribute value type");
@@ -87,6 +91,40 @@ public class Match extends XacmlObject implements PolicyElement, Matchable
 			context.setEvaluationStatus(e.getStatusCode());
 			return MatchResult.INDETERMINATE;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Match)){
+			return false;
+		}
+		Match m = (Match)o;
+		return predicate.equals(m.predicate) && 
+				value.equals(m.value) && 
+				attributeRef.equals(m.attributeRef);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+				.add("MatchId", predicate.getId())
+				.add("Value", value)
+				.add("Reference", attributeRef)
+				.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(
+				predicate, 
+				value, 
+				attributeRef);
 	}
 
 	@Override

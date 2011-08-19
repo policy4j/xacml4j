@@ -137,7 +137,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		return Objects.toStringHelper(this)
 		.add("id", id)
 		.add("effect", effect)
-		.add("expresions", attributeExpressions)
+		.add("expressions", attributeExpressions)
 		.toString();
 	}
 }

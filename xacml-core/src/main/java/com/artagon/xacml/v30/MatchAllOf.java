@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -7,10 +8,10 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class MatchAllOf extends XacmlObject 
-	implements PolicyElement, Matchable
+public class MatchAllOf implements PolicyElement, Matchable
 {
 	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
 	
@@ -24,11 +25,18 @@ public class MatchAllOf extends XacmlObject
 	 * @param match a collection of {@link Match}
 	 * instances
 	 */
-	public MatchAllOf(Collection<Match> match)
-	{
+	public MatchAllOf(Collection<Match> match){
 		Preconditions.checkNotNull(match);
 		Preconditions.checkArgument(match.size() >= 1);
 		this.matches = new LinkedList<Match>(match);
+	}
+	
+	public MatchAllOf(Match ... matches){
+		this(Arrays.asList(matches));
+	}
+	
+	public static Builder builder(){
+		return new Builder();
 	}
 
 	public Collection<Match> getMatch(){
@@ -39,13 +47,7 @@ public class MatchAllOf extends XacmlObject
 	public MatchResult match(EvaluationContext context)
 	{
 		MatchResult state = MatchResult.MATCH;
-		Preconditions.checkState(matches.size() >= 1);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to match=\"{}\"" +
-					" matchables", matches.size());
-		}
-		for(Matchable m : matches)
-		{
+		for(Matchable m : matches){
 			MatchResult r = m.match(context);
 			if(r == MatchResult.INDETERMINATE && 
 					state == MatchResult.MATCH){
@@ -67,7 +69,34 @@ public class MatchAllOf extends XacmlObject
 		}
 		return state;
 	}
-
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+				.add("Matches", matches)
+				.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return matches.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof MatchAllOf)){
+			return false;
+		}
+		MatchAllOf m = (MatchAllOf)o;
+		return matches.equals(m.matches);
+	}
+	
 	@Override
 	public void accept(PolicyVisitor v) {		
 		v.visitEnter(this);
@@ -75,5 +104,29 @@ public class MatchAllOf extends XacmlObject
 			m.accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	public static class Builder
+	{
+		private Collection<Match> matches = new LinkedList<Match>();
+		
+		private Builder(){
+		}
+		
+		public Builder withMatch(Match match){
+			Preconditions.checkNotNull(match);
+			this.matches.add(match);
+			return this;
+		}
+		
+		public Builder withMatch(AttributeValue value, 
+				AttributeReference ref, FunctionSpec predicate)
+		{
+			return withMatch(new Match(predicate, value, ref));
+		}
+		
+		public MatchAllOf build(){
+			return new MatchAllOf(matches);
+		}
 	}
 }

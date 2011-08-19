@@ -32,7 +32,8 @@ public abstract class BaseAttributeValue extends XacmlObject
 	}
 
 	@Override
-	public final AttributeValue evaluate(EvaluationContext context) throws EvaluationException {
+	public final AttributeValue evaluate(
+			EvaluationContext context) throws EvaluationException {
 		return this;
 	}
 	

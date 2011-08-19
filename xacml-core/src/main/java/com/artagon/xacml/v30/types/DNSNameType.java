@@ -54,7 +54,7 @@ public enum DNSNameType implements AttributeValueType
 	}
 	
 	public DNSNameValue create(String name, PortRange range){
-		return new DNSNameValue(this, name, range);
+		return new DNSNameValue(this, new DNSName(name, range));
 	}
 	
 	public DNSNameValue create(String name, Integer lowerBound, Integer upperBound ){
@@ -75,10 +75,12 @@ public enum DNSNameType implements AttributeValueType
 		Preconditions.checkNotNull(v);
 		int pos = v.indexOf(':');
 		if(pos == -1){
-			return new DNSNameValue(this, v, PortRange.getAnyPort());
+			return new DNSNameValue(this, new 
+					DNSName(v, PortRange.getAnyPort()));
 		}
 		String name = v.substring(0, pos);
-		return new DNSNameValue(this, name, PortRange.valueOf(pos + 1, v));
+		return new DNSNameValue(this, 
+				new DNSName(name, PortRange.valueOf(pos + 1, v)));
 	}
 	
 	@Override

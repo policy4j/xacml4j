@@ -27,8 +27,10 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(ruleId);
-		Preconditions.checkNotNull(effect);
+		Preconditions.checkNotNull(ruleId, 
+				"Rule identifier can't be null");
+		Preconditions.checkNotNull(effect, 
+				"Rule effect can't be null");
 		this.ruleId = ruleId;
 		this.condition = condition;
 		this.effect = effect;
@@ -52,6 +54,10 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		this(ruleId, description, target, condition, effect, 
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
+	}
+	
+	public static Builder builder(){
+		return new Builder();
 	}
 	
 	@Override
@@ -99,8 +105,10 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	
 
 	@Override
-	protected Decision doEvaluate(EvaluationContext context)
+	public final Decision evaluate(EvaluationContext context)
 	{
+		Preconditions.checkArgument(
+				isEvaluationContextValid(context));
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating rule id=\"{}\" " +
 					"condition=\"{}\"", getId(), condition);
@@ -115,6 +123,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 		Decision d = (result == ConditionResult.TRUE)?
 				getEffect().getResult():Decision.NOT_APPLICABLE;
+		d = evaluateAdvicesAndObligations(context, d);		
 		if(log.isDebugEnabled()){
 			log.debug("Rule id=\"{}\" " +
 					"decision result=\"{}\"", getId(), d);
@@ -170,5 +179,51 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			condition.accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	public static class Builder extends BaseBuilder<Builder>
+	{
+		private Effect effect;
+		private Condition condition;
+		
+		
+		private Builder(){
+		}
+
+		public Builder withEffect(Effect effect){
+			Preconditions.checkNotNull(effect);
+			this.effect = effect;
+			return this;
+		}
+		
+		public Builder withCondition(Expression predicate){
+			this.condition = new Condition(predicate);
+			return this;
+		}
+		
+		public Builder withCondition(Condition condition){
+			this.condition = condition;
+			return this;
+		}
+		
+		public Builder withoutCondition(){
+			this.condition = null;
+			return this;
+		}
+		
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+
+
+		public Rule build(){
+			return new Rule(id, description, 
+					target, 
+					condition, 
+					effect,  
+					adviceExpressions, 
+					obligationExpressions);
+		}
 	}
 }

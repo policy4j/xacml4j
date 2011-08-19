@@ -8,7 +8,8 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 
-public class BasePolicyDecisionAuditor implements PolicyDecisionAuditor 
+public class BasePolicyDecisionAuditor 
+	implements PolicyDecisionAuditor 
 {
 	private final static Logger log = LoggerFactory.getLogger(BasePolicyDecisionAuditor.class);
 	

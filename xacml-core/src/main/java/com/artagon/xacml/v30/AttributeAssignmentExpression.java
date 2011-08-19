@@ -118,5 +118,5 @@ public class AttributeAssignmentExpression  implements PolicyElement
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
-	}
+	}	
 }

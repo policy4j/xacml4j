@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -151,6 +152,11 @@ public class Policy extends BaseCompositeDecisionRule
 				Collections.<ObligationExpression>emptyList());
 	}
 	
+	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
 	public BigInteger getMaxDelegationDepth(){
 		return maxDelegationDepth;
 	}
@@ -237,32 +243,31 @@ public class Policy extends BaseCompositeDecisionRule
 	@Override
 	public EvaluationContext createContext(EvaluationContext context) 
 	{
-		Preconditions.checkArgument(context.getCurrentPolicy() == this 
-				|| context.getCurrentPolicy() == null);
-		if(context.getCurrentPolicy() == this){
+		Preconditions.checkNotNull(context);
+		Policy p = context.getCurrentPolicy();
+		Preconditions.checkArgument(p == this 
+				|| p == null);
+		if(p == this){
 			return context;
 		}
 		return new PolicyDelegatingEvaluationContext(context);
 	}
-
+	
 	@Override
+	public Decision evaluate(EvaluationContext context)
+	{
+		Preconditions.checkNotNull(context);
+		Preconditions.checkArgument(isEvaluationContextValid(context));
+		Decision decision = combine.combine(context, rules);
+		decision = evaluateAdvicesAndObligations(context, decision);
+		context.addEvaluatedApplicablePolicy(this, decision);
+		return decision;
+	}
+	
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicy() == this;
 	}
 	
-	@Override
-	protected Decision doEvaluate(EvaluationContext context)
-	{
-		Decision decision = combine.combine(context, rules);
-		if(log.isDebugEnabled()) {
-			log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
-					"decision result=\"{}\"", 
-					new Object[] { getId(), combine.getId(), decision });
-		}
-		context.addEvaluatedApplicablePolicy(this, decision);
-		return decision;
-	}
-
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
@@ -339,6 +344,132 @@ public class Policy extends BaseCompositeDecisionRule
 				return defaults.getXPathVersion();
 			}
 			return super.getXPathVersion();
+		}
+	}
+	
+	public final static class Builder extends BaseBuilder<Builder>
+	{
+		private Version version;
+		private DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
+		private Collection<VariableDefinition> variables = new LinkedList<VariableDefinition>();
+		private PolicyDefaults policyDefaults;
+		private PolicyIssuer policyIssuer;
+		private Collection<Rule> rules = new LinkedList<Rule>();
+		private Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
+		private Collection<RuleCombinerParameters> ruleCombinerParameters = new LinkedList<RuleCombinerParameters>();
+		
+		private Builder(){
+		}
+		
+		public Builder withIssuer(PolicyIssuer issuer){
+			Preconditions.checkNotNull(issuer);
+			this.policyIssuer = issuer;
+			return this;
+		}
+		
+		public Builder withoutIssuer(){
+			this.policyIssuer = null;
+			return this;
+		}
+		
+		public Builder withVersion(Version v){
+			Preconditions.checkNotNull(v);
+			this.version = v;
+			return this;
+		}
+		
+		public Builder withVersion(String v){
+			return withVersion(Version.parse(v));
+		}
+				
+		public Builder withCombinerParameters(CombinerParameters p){
+			Preconditions.checkNotNull(p);
+			this.combinerParameters.add(p);
+			return this;
+		}
+		
+		public Builder withoutCombinerParameters(){
+			this.combinerParameters.clear();
+			return this;
+		}
+		
+		public Builder withRuleCombinerParameters(RuleCombinerParameters p){
+			Preconditions.checkNotNull(p);
+			this.ruleCombinerParameters.add(p);
+			return this;
+		}
+		
+		public Builder withoutRuleCombinerParameters(){
+			this.ruleCombinerParameters.clear();
+			return this;
+		}
+		
+		public Builder withDefaults(PolicyDefaults defaults){
+			Preconditions.checkNotNull(defaults);
+			this.policyDefaults = defaults;
+			return this;
+		}
+		
+		public Builder withoutDefaults(){
+			this.policyDefaults = null;
+			return this;
+		}
+		
+		public Builder withVariable(VariableDefinition var){
+			Preconditions.checkNotNull(var);
+			this.variables.add(var);
+			return this;
+		}
+		
+		public Builder withoutVariables(){
+			this.variables.clear();
+			return this;
+		}
+		
+		public Builder withRule(Rule rule){
+			Preconditions.checkNotNull(rule);
+			this.rules.add(rule);
+			return this;
+		}
+		
+		public Builder withRule(Rule.Builder b){
+			Preconditions.checkNotNull(b);
+			this.rules.add(b.build());
+			return this;
+		}
+		
+		public Builder withoutRules(){
+			this.rules.clear();
+			return this;
+		}
+		
+		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
+		{
+			Preconditions.checkNotNull(algo);
+			this.combiningAlgorithm = algo;
+			return this;
+		}
+
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+		
+		public Policy build(){
+			return new Policy(
+					id, 
+					version, 
+					description, 
+					policyDefaults, 
+					policyIssuer,
+					target, 
+					variables, 
+					combinerParameters,
+					ruleCombinerParameters,
+					combiningAlgorithm,
+					rules, 
+					adviceExpressions, 
+					obligationExpressions);
 		}
 	}
 }

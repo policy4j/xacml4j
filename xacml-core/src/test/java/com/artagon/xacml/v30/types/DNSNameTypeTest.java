@@ -18,17 +18,20 @@ public class DNSNameTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		DNSNameValue v = t1.fromXacmlString("test.org:10-20");
+		DNSNameValue a = t1.fromXacmlString("test.org:10-20");
+		DNSName v = a.getValue();
 		assertEquals("test.org", v.getName());
 		assertEquals(10, v.getPortRange().getLowerBound());
 		assertEquals(20, v.getPortRange().getUpperBound());
 		
-		v = t1.fromXacmlString("test.org:-20");
+		a = t1.fromXacmlString("test.org:-20");
+		v = a.getValue();
 		assertEquals("test.org", v.getName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertEquals(20, v.getPortRange().getUpperBound());
 		
-		v = t1.fromXacmlString("test.org");
+		a = t1.fromXacmlString("test.org");
+		v = a.getValue();
 		assertEquals("test.org", v.getName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertFalse(v.getPortRange().isUpperBounded());

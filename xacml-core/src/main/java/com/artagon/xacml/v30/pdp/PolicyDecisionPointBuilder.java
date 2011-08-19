@@ -37,8 +37,12 @@ public final class PolicyDecisionPointBuilder
 	private int defaultDecisionCacheTTL;
 	
 	private PolicyDecisionPointBuilder(String id){
+		this();
 		Preconditions.checkNotNull(id);
 		this.id = id;
+	}
+	
+	private PolicyDecisionPointBuilder(){
 		this.xpathProvider = new DefaultXPathProvider();
 		this.decisionAuditor = new NoAuditPolicyDecisionPointAuditor();
 		this.decisionCache = new NoCachePolicyDecisionCache();
@@ -47,6 +51,10 @@ public final class PolicyDecisionPointBuilder
 	
 	public static PolicyDecisionPointBuilder builder(String id){
 		return new PolicyDecisionPointBuilder(id);
+	}
+	
+	public static PolicyDecisionPointBuilder builder(){
+		return new PolicyDecisionPointBuilder();
 	}
 	
 	public PolicyDecisionPointBuilder withDecisionCache(
@@ -112,6 +120,7 @@ public final class PolicyDecisionPointBuilder
 		if(log.isDebugEnabled()){
 			log.debug("Creating PDP=\"{}\"", id);
 		}
+		Preconditions.checkState(id != null);
 		Preconditions.checkState(repository != null);
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(rootPolicy != null);

@@ -81,6 +81,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)
 	{
+		Preconditions.checkNotNull(context);
 		if(context.getCurrentPolicySetIDReference() ==  this){
 			return context;
 		}
@@ -98,6 +99,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	
 	@Override
 	public Decision evaluate(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
@@ -109,6 +111,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 
 	@Override
 	public Decision evaluateIfApplicable(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
@@ -120,6 +123,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 
 	@Override
 	public MatchResult isApplicable(EvaluationContext context) {
+		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return MatchResult.INDETERMINATE;

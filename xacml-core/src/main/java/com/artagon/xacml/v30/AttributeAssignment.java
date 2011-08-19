@@ -34,6 +34,13 @@ public class AttributeAssignment
 		this.attribute = value;
 	}
 	
+	public AttributeAssignment(
+			String attributeId, 
+			AttributeValue value)
+	{
+		this(attributeId, null, null, value);
+	}
+	
 	/**
 	 * Gets attribute identifier
 	 * 
