@@ -34,7 +34,8 @@ public class ApacheXMLDsigGenerator
 	}
 	
 	public void signSamlRequest(Element req, 
-			PrivateKey privateKey, X509Certificate publicKey) throws Exception
+			PrivateKey privateKey, 
+			X509Certificate publicKey) throws Exception
 	{ 
 	   
 		Document doc = req.getOwnerDocument();
