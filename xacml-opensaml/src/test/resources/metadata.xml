@@ -48,6 +48,8 @@ cJbSdt0=</ds:X509Certificate>
       </ds:KeyInfo>
     </md:KeyDescriptor>
     <md:AuthzService Location="https://login-qa4.comcast.net/api/xacml/soap/tve" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"/>
+    <md:AuthzService Location="https://login-qa4.comcast.net/api/xacml/soap/tve" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"/>
+    
   </md:PDPDescriptor>
 </md:EntityDescriptor>
 <md:EntityDescriptor entityID="http://dev.profile.inhbogo.com/dev.sp.inhbogo.com/COMCAST">
