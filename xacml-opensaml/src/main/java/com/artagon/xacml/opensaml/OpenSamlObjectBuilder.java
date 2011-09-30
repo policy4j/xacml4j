@@ -97,8 +97,8 @@ public class OpenSamlObjectBuilder {
 
 	private static final RequestTypeUnmarshaller xacml20ReqUnmarshaller;
 	private static final ResponseTypeUnmarshaller xacml20ResUnmarshaller;
-	private static final RequestTypeMarshaller xacml20ReqMashaller;
-	private static final ResponseTypeMarshaller xacml20ResMashaller;
+	private static final RequestTypeMarshaller xacml20ReqMarshaller;
+	private static final ResponseTypeMarshaller xacml20ResMarshaller;
 
 	private static final XMLObjectBuilderFactory objectBuilderFactory;
 	private static final UnmarshallerFactory unmarshallerFactory;
@@ -136,8 +136,8 @@ public class OpenSamlObjectBuilder {
 		xacml20SamlAuthzStatementBuilder = makeSamlObjectBuilder(XACMLAuthzDecisionStatementType.DEFAULT_ELEMENT_NAME_XACML20);
 		signatureBuilder = makeXmlObjectBuilder(Signature.DEFAULT_ELEMENT_NAME);
 
-		xacml20ReqMashaller = makeSamlObjectMarshaller(RequestType.DEFAULT_ELEMENT_NAME);
-		xacml20ResMashaller = makeSamlObjectMarshaller(ResponseType.DEFAULT_ELEMENT_NAME);
+		xacml20ReqMarshaller = makeSamlObjectMarshaller(RequestType.DEFAULT_ELEMENT_NAME);
+		xacml20ResMarshaller = makeSamlObjectMarshaller(ResponseType.DEFAULT_ELEMENT_NAME);
 
 		xacml20ReqUnmarshaller = makeSamlObjectUnmarshaller(RequestType.DEFAULT_ELEMENT_NAME);
 		xacml20ResUnmarshaller = makeSamlObjectUnmarshaller(ResponseType.DEFAULT_ELEMENT_NAME);
@@ -290,7 +290,7 @@ public class OpenSamlObjectBuilder {
 	
 	public static void marshallXacml20Request(RequestType request, Document doc)
 		throws MarshallingException {
-		xacml20ReqMashaller.marshall(request, doc);
+		xacml20ReqMarshaller.marshall(request, doc);
 	}
 	
 	public static XACMLAuthzDecisionQueryType unmarshallXacml20AuthzDecisionQuery(Element request)
