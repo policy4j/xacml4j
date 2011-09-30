@@ -22,17 +22,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensaml.DefaultBootstrap;
-import org.opensaml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.core.StatusCode;
 import org.opensaml.xacml.profile.saml.XACMLAuthzDecisionQueryType;
-import org.opensaml.xml.Configuration;
-import org.opensaml.xml.security.SecurityHelper;
-import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.KeyStoreX509CredentialAdapter;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureConstants;
-import org.opensaml.xml.signature.Signer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
@@ -53,7 +46,6 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 {
 	@Autowired
 	private IDPConfiguration idpConfiguration;
-	private static Credential hboSigningKey;
 	private XACMLAuthzDecisionQueryEndpoint endpoint;
 	private PolicyDecisionPoint pdp;
 	private IMocksControl control;
@@ -76,7 +68,6 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		newKs.load(null, "hbo".toCharArray());
 		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(hboPrivate,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
 		
-		hboSigningKey = new KeyStoreX509CredentialAdapter(newKs, "hbo", "hbo".toCharArray());
 		signer = new XACMLAuthzDecisionQuerySigner(newKs, "hbo", "hbo");
 	}
 	

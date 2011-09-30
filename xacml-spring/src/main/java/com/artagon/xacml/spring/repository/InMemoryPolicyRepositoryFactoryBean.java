@@ -1,8 +1,5 @@
 package com.artagon.xacml.spring.repository;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 
