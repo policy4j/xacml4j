@@ -45,6 +45,7 @@
 						<value>xacml.xjb</value>
 					</bindingIncludes>
 					<schemaIncludes><value>*.xsd</value></schemaIncludes>
+					<schemaExcludes><value>xml.xsd</value></schemaExcludes>
 					<schemaDirectory>${basedir}/src/main/xsd</schemaDirectory>
 					<!-- 
 					<args>
