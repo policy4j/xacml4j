@@ -11,11 +11,15 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.core.Version;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30ResponseContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
+import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
@@ -41,15 +45,18 @@ public class XacmlPolicyTestSupport {
 	protected PolicyDecisionPoint buildPDP(
 			AttributeResolver [] attributeResolvers,
 			String rootPolicyId, Version rootPolicyVersion) throws Exception {
-		return buildPDP(getDefaultTestPolicies(), attributeResolvers, rootPolicyId, rootPolicyVersion);
+		return buildPDP(getDefaultTestPolicies(), attributeResolvers, null, null, rootPolicyId, rootPolicyVersion);
 	}
 
 	protected PolicyDecisionPoint buildPDP(String rootPolicyId, Version rootPolicyVersion) throws Exception {
-		return buildPDP(getDefaultTestPolicies(), null, rootPolicyId, rootPolicyVersion);
+		return buildPDP(getDefaultTestPolicies(), null, null, null, rootPolicyId, rootPolicyVersion);
 	}
+	
 	protected PolicyDecisionPoint buildPDP(
 			InputStream[] policyResources,
 			AttributeResolver [] attributeResolvers,
+			FunctionProvider[] functionProviders,
+			DecisionCombiningAlgorithmProvider[] decisionAlgo,
 			String rootPolicyId, Version rootPolicyVersion) throws Exception {
 
 		 PolicyInformationPointBuilder pipBuilder = PolicyInformationPointBuilder
@@ -60,12 +67,27 @@ public class XacmlPolicyTestSupport {
 				pipBuilder.withResolver(r);
 			}
 		 }
+		
+		FunctionProviderBuilder functions = FunctionProviderBuilder
+				.builder()
+				.withDefaultFunctions();
+		if(functionProviders != null){
+			for(FunctionProvider f : functionProviders){
+				functions.withFunctions(f);
+			}
+		}
+		DecisionCombiningAlgorithmProviderBuilder algorithms = DecisionCombiningAlgorithmProviderBuilder
+				.builder()
+				.withDefaultAlgorithms();
+		if(decisionAlgo != null){
+			for(DecisionCombiningAlgorithmProvider algo : decisionAlgo){
+				algorithms.withAlgorithmProvider(algo);
+			}
+		}
 		PolicyInformationPoint pip = pipBuilder.build();
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				"testRepositoryId", FunctionProviderBuilder.builder()
-						.withDefaultFunctions().build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-						.withDefaultAlgorithms().build());
+				"testRepositoryId", functions.build(), 
+				algorithms.build());
 		for (InputStream path : policyResources) {
 			repository.importPolicy(path);
 		}
@@ -116,9 +138,9 @@ public class XacmlPolicyTestSupport {
 		return new ExpectedAttributeResolver(attrCategory, attributes);
 	}
 
-	protected <T extends AttributeValueType> Attribute createAttribute(
+	protected <T extends AttributeExpType> Attribute createAttribute(
 			String attributeId, T type, Object... values) {
-		Collection<AttributeValue> attrValues = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> attrValues = new LinkedList<AttributeExp>();
 		for(Object value : values) {
 			attrValues.add(type.create(value));
 		}
