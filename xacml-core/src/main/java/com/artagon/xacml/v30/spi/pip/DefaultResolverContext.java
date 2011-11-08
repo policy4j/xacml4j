@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v30.AttributeReferenceKey;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.google.common.base.Preconditions;
@@ -15,7 +15,7 @@ public final class DefaultResolverContext implements
 		ResolverContext 
 {
 	private EvaluationContext context;
-	private List<BagOfAttributeValues> keys;
+	private List<BagOfAttributesExp> keys;
 	private ResolverDescriptor desciptor;
 
 	public DefaultResolverContext(
@@ -39,18 +39,18 @@ public final class DefaultResolverContext implements
 	}
 	
 	@Override
-	public List<BagOfAttributeValues> getKeys()
+	public List<BagOfAttributesExp> getKeys()
 	{
 		return keys;
 	}
 	
-	private static List<BagOfAttributeValues> evaluateKeys(EvaluationContext context, 
+	private static List<BagOfAttributesExp> evaluateKeys(EvaluationContext context, 
 			List<AttributeReferenceKey> keyRefs) throws EvaluationException
 	{
 		if(keyRefs == null){
-			return Collections.<BagOfAttributeValues>emptyList();
+			return Collections.<BagOfAttributesExp>emptyList();
 		}
-		List<BagOfAttributeValues> keys = new ArrayList<BagOfAttributeValues>(keyRefs.size());
+		List<BagOfAttributesExp> keys = new ArrayList<BagOfAttributesExp>(keyRefs.size());
 		for(AttributeReferenceKey ref : keyRefs){
 			keys.add(ref.resolve(context));
 		}

@@ -1,15 +1,15 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.XacmlObject;
 import com.google.common.base.Preconditions;
 
 public final class AttributeDescriptor extends XacmlObject
 {
 	private String attributeId;
-	private AttributeValueType dataType;
-	private BagOfAttributeValues defaultValue;
+	private AttributeExpType dataType;
+	private BagOfAttributesExp defaultValue;
 	
 	/**
 	 * Constructs attribute descriptor
@@ -18,7 +18,7 @@ public final class AttributeDescriptor extends XacmlObject
 	 * @param dataType an attribute data type
 	 */
 	public AttributeDescriptor(String attributeId, 
-			AttributeValueType dataType)
+			AttributeExpType dataType)
 	{
 		Preconditions.checkArgument(attributeId != null);
 		Preconditions.checkArgument(dataType != null);
@@ -39,17 +39,17 @@ public final class AttributeDescriptor extends XacmlObject
 	 * Gets attribute defal
 	 * @return
 	 */
-	public BagOfAttributeValues getDefaultValue(){
+	public BagOfAttributesExp getDefaultValue(){
 		return defaultValue;
 	}
 	
 	/**
 	 * Gets expected attribute data type
 	 * 
-	 * @return {@link AttributeValueType} an
+	 * @return {@link AttributeExpType} an
 	 * attribute data type
 	 */
-	public AttributeValueType getDataType(){
+	public AttributeExpType getDataType(){
 		return dataType;
 	}
 }

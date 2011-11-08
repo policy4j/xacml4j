@@ -12,12 +12,12 @@ import org.junit.Test;
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.core.AttributeCategories;
 
 public class Xacml30ResponseContextUnmarshallerTest {
 

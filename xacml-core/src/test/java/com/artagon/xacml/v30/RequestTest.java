@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.XPathVersion;
+
 
 public class RequestTest 
 {
@@ -32,8 +35,8 @@ public class RequestTest
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
 		resource1Attr.add(new Attribute("testId11", STRING.create("value0")));
 		resource1Attr.add(new Attribute("testId22", STRING.create("value1")));
-		resource1Attr.add(new Attribute("testId23", null, true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
-		resource1Attr.add(new Attribute("testId24","testIssuer", true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
+		resource1Attr.add(new Attribute("testId23", null, true, Arrays.<AttributeExp>asList(STRING.create("value2"))));
+		resource1Attr.add(new Attribute("testId24","testIssuer", true, Arrays.<AttributeExp>asList(STRING.create("value2"))));
 		this.resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
 		
 		Collection<Attribute> subject0Attr = new LinkedList<Attribute>();
@@ -44,7 +47,7 @@ public class RequestTest
 		Collection<Attribute> subject1Attr = new LinkedList<Attribute>();
 		subject1Attr.add(new Attribute("testId41", STRING.create("value0")));
 		subject1Attr.add(new Attribute("testId42", STRING.create("value1")));
-		subject1Attr.add(new Attribute("testId43","testIssuer", true, Arrays.<AttributeValue>asList(STRING.create("value2"))));
+		subject1Attr.add(new Attribute("testId43","testIssuer", true, Arrays.<AttributeExp>asList(STRING.create("value2"))));
 		this.subject1 =  new Attributes(AttributeCategories.SUBJECT_CODEBASE, subject1Attr);
 	}
 	

@@ -1,9 +1,10 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class AttributeAssignmentExpression  implements PolicyElement
+public class AttributeAssignmentExpression implements PolicyElement
 {
 	private AttributeCategory category;
 	private String attributeId;

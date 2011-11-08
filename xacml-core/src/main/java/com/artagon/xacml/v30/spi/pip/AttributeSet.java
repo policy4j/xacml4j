@@ -6,28 +6,28 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public final class AttributeSet 
 {
-	private Map<String, BagOfAttributeValues> values;
+	private Map<String, BagOfAttributesExp> values;
 	private AttributeResolverDescriptor d;
 	
 	public AttributeSet(
 			AttributeResolverDescriptor d){
-		this(d, Collections.<String, BagOfAttributeValues>emptyMap());
+		this(d, Collections.<String, BagOfAttributesExp>emptyMap());
 	}
 	
 	public AttributeSet(
 			AttributeResolverDescriptor d, 
-			Map<String, BagOfAttributeValues> values){
+			Map<String, BagOfAttributesExp> values){
 		Preconditions.checkNotNull(d);
 		Preconditions.checkNotNull(values);
 		this.d = d;
-		this.values = new HashMap<String, BagOfAttributeValues>(values.size());
-		for(Entry<String, BagOfAttributeValues> e : values.entrySet()){
+		this.values = new HashMap<String, BagOfAttributesExp>(values.size());
+		for(Entry<String, BagOfAttributesExp> e : values.entrySet()){
 			AttributeDescriptor ad = d.getAttribute(e.getKey());
 			Preconditions.checkArgument(ad != null);
 			Preconditions.checkArgument(ad.getDataType().equals(e.getValue().getDataType()));
@@ -43,12 +43,12 @@ public final class AttributeSet
 		return d.getAttributesByKey().keySet();
 	}
 	
-	public BagOfAttributeValues get(AttributeDesignatorKey key)
+	public BagOfAttributesExp get(AttributeDesignatorKey key)
 	{
 		Preconditions.checkState(d.canResolve(key));
 		AttributeDescriptor ad = d.getAttribute(key.getAttributeId());
 		Preconditions.checkState(ad != null);
-		BagOfAttributeValues v = values.get(key.getAttributeId());
+		BagOfAttributesExp v = values.get(key.getAttributeId());
 		return (v != null)?v:ad.getDataType().emptyBag();
 	}
 	
@@ -56,11 +56,11 @@ public final class AttributeSet
 	 * Gets attribute values from this set
 	 * 
 	 * @param attributeId an attribute identifier
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 */
-	public BagOfAttributeValues get(String attributeId)
+	public BagOfAttributesExp get(String attributeId)
 	{
-		BagOfAttributeValues v = values.get(attributeId);
+		BagOfAttributesExp v = values.get(attributeId);
 		AttributeDescriptor ad = d.getAttribute(attributeId);
 		Preconditions.checkState(ad != null);
 		return (v != null)?v:ad.getDataType().emptyBag();
@@ -74,9 +74,9 @@ public final class AttributeSet
 		return d.getAttributesCount();
 	}
 	
-	public Map<String, BagOfAttributeValues> toMap()
+	public Map<String, BagOfAttributesExp> toMap()
 	{
-		Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>(size());
+		Map<String, BagOfAttributesExp> v = new HashMap<String, BagOfAttributesExp>(size());
 		for(String attributeId : getAttributeIds()){
 			v.put(attributeId, get(attributeId));
 		}

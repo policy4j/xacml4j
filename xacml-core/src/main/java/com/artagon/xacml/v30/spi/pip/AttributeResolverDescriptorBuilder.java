@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -55,7 +55,7 @@ public final class AttributeResolverDescriptorBuilder
 	}
 	
 	public AttributeResolverDescriptorBuilder designatorRef(AttributeCategory category, 
-			String attributeId, AttributeValueType dataType, String issuer)
+			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(new AttributeDesignatorKey(
 				category, attributeId, dataType, Strings.emptyToNull(issuer)));
@@ -64,7 +64,7 @@ public final class AttributeResolverDescriptorBuilder
 	
 	public AttributeResolverDescriptorBuilder selectorRef(
 			AttributeCategory category, 
-			String xpath, AttributeValueType dataType, 
+			String xpath, AttributeExpType dataType, 
 			String contextAttributeId)
 	{
 		this.keys.add(new AttributeSelectorKey(
@@ -89,13 +89,13 @@ public final class AttributeResolverDescriptorBuilder
 		
 	public AttributeResolverDescriptorBuilder attribute(
 			String attributeId, 
-			AttributeValueType dataType){
+			AttributeExpType dataType){
 		return attribute(attributeId, dataType, null);
 	}
 	
 	public AttributeResolverDescriptorBuilder attribute(
 			String attributeId, 
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			String[] defaultValue){
 		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType);
 		AttributeDesignatorKey key = new AttributeDesignatorKey(category, attributeId, dataType, issuer);

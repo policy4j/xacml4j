@@ -13,13 +13,13 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Pair;
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -83,7 +83,7 @@ class AnnotatedResolverFactory
 					"must be specified by the descriptor on method=\"{}\"", m.getName());
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
-			AttributeValueType type = DataTypes.getType(attr.dataType());
+			AttributeExpType type = DataTypes.getType(attr.dataType());
 			b.attribute(attr.id(), type);
 			
 		}
@@ -97,7 +97,7 @@ class AnnotatedResolverFactory
 		}
 		AttributeResolverDescriptor descriptor = b.build();
 		return new AnnotatedAttributeResolver(descriptor, 
-				new Invocation<Map<String,BagOfAttributeValues>>(instance, m, info.getFirst()));
+				new Invocation<Map<String,BagOfAttributesExp>>(instance, m, info.getFirst()));
 	}
 	
 	ContentResolver parseContentResolver(Object instance, Method m) 
@@ -150,11 +150,11 @@ class AnnotatedResolverFactory
 			if(p.length > 0 && 
 					p[0] instanceof XacmlAttributeDesignator)
 			{
-				if(!(types[i].equals(BagOfAttributeValues.class))){
+				if(!(types[i].equals(BagOfAttributesExp.class))){
 					throw new XacmlSyntaxException(
 							"Resolver method=\"%s\" " +
 							"parameter at index=\"%d\" must be of type=\"%s\"", 
-							m.getName(), i, BagOfAttributeValues.class.getName());
+							m.getName(), i, BagOfAttributesExp.class.getName());
 				}
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
 				keys.add(new AttributeDesignatorKey(
@@ -167,12 +167,12 @@ class AnnotatedResolverFactory
 			if(p.length > 0 && 
 					p[0] instanceof XacmlAttributeSelector)
 			{
-				if(!(types[i].equals(BagOfAttributeValues.class))){
+				if(!(types[i].equals(BagOfAttributesExp.class))){
 					throw new XacmlSyntaxException(
 							"Resolver method=\"%s\" " +
 							"request key parameter " +
 							"at index=\"%d\" must be of type=\"%s\"", 
-							m.getName(), i, BagOfAttributeValues.class.getName());
+							m.getName(), i, BagOfAttributesExp.class.getName());
 				}
 				XacmlAttributeSelector ref = (XacmlAttributeSelector)p[0];
 				keys.add(new AttributeSelectorKey(
@@ -209,7 +209,7 @@ class AnnotatedResolverFactory
 		@SuppressWarnings("unchecked")
 		public T invoke(ResolverContext context) throws Exception
 		{
-			List<BagOfAttributeValues> keys = context.getKeys();
+			List<BagOfAttributesExp> keys = context.getKeys();
 			if(requiresContext){
 				Object[] params = new Object[keys.size() + 1];
 				params[0] = context;
@@ -223,17 +223,17 @@ class AnnotatedResolverFactory
 	private final class AnnotatedAttributeResolver 
 		extends BaseAttributeResolver
 	{
-		private Invocation<Map<String, BagOfAttributeValues>> invocation;
+		private Invocation<Map<String, BagOfAttributesExp>> invocation;
 		
 		public AnnotatedAttributeResolver(
 				AttributeResolverDescriptor descriptor, 
-				Invocation<Map<String, BagOfAttributeValues>> invocation) {
+				Invocation<Map<String, BagOfAttributesExp>> invocation) {
 			super(descriptor);
 			this.invocation = invocation;
 		}
 
 		@Override
-		protected Map<String, BagOfAttributeValues> doResolve(
+		protected Map<String, BagOfAttributesExp> doResolve(
 				ResolverContext context) throws Exception {
 			return invocation.invoke(context);
 		}

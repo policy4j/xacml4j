@@ -2,73 +2,42 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
-import com.google.common.base.Preconditions;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.core.YearMonthDuration;
 
-public enum YearMonthDurationType implements AttributeValueType
+public enum YearMonthDurationType implements AttributeExpType
 {
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration");
-
-	private DatatypeFactory xmlDataTypesFactory;
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 
 	private YearMonthDurationType(String typeId) 
 	{
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
-		try {
-			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
-		} catch (DatatypeConfigurationException e) {
-			e.printStackTrace(System.err);
-		}
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
-		return any instanceof Duration || any instanceof String;
+		return any instanceof Duration || any instanceof String || any instanceof YearMonthDuration;
 	}
 
 	@Override
-	public YearMonthDurationValue fromXacmlString(String v, Object ...params) 
+	public YearMonthDurationValueExp fromXacmlString(String v, Object ...params) 
 	{
-		Preconditions.checkNotNull(v);
-		Duration yearMonthDuration = xmlDataTypesFactory.newDurationYearMonth(v);
-		return new YearMonthDurationValue(this, validate(yearMonthDuration));
+		return new YearMonthDurationValueExp(this, YearMonthDuration.create(v));
 	}
 	
 	@Override
-	public YearMonthDurationValue create(Object any, Object ...params){
-		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" " +
-				"can't ne converted to XACML \"date\" type", 
-				any, any.getClass()));
-		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
-		}
-		return new YearMonthDurationValue(this, validate((Duration)any));
+	public YearMonthDurationValueExp create(Object any, Object ...params){
+		return new YearMonthDurationValueExp(this, YearMonthDuration.create(any));
 	}
 	
-	private Duration validate(Duration duration)
-	{
-		if(!(duration.isSet(DatatypeConstants.DAYS) 
-				|| duration.isSet(DatatypeConstants.HOURS) 
-				|| duration.isSet(DatatypeConstants.MINUTES) 
-				|| duration.isSet(DatatypeConstants.SECONDS))){
-			return duration;
-		}
-		throw new IllegalArgumentException("Invalid duration");
-	}
 	
 	@Override
 	public String getDataTypeId() {
@@ -76,27 +45,27 @@ public enum YearMonthDurationType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

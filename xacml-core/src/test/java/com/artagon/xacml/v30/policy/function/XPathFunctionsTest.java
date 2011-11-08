@@ -20,11 +20,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
@@ -32,9 +32,9 @@ import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValue;
+import com.artagon.xacml.v30.types.StringValueExp;
 import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValue;
+import com.artagon.xacml.v30.types.XPathExpressionValueExp;
 
 public class XPathFunctionsTest 
 {
@@ -93,7 +93,7 @@ public class XPathFunctionsTest
 	public void testXPathCount() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count");
-		XPathExpressionValue xpath  = XPathExpressionType.XPATHEXPRESSION.create("/md:record/md:patient", 
+		XPathExpressionValueExp xpath  = XPathExpressionType.XPATHEXPRESSION.create("/md:record/md:patient", 
 				AttributeCategories.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategories.SUBJECT_ACCESS))
@@ -107,7 +107,7 @@ public class XPathFunctionsTest
 	public void testXPathCountXacml20() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count");
-		StringValue xpath  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
+		StringValueExp xpath  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("./md:record//md:name", AttributeCategories.RESOURCE))
 		.andAnswer(new XPathAnswer(content1));
@@ -119,7 +119,7 @@ public class XPathFunctionsTest
 	@Test
 	public void testXPathCountExpressionReturnsEmptyNodeSet() throws EvaluationException
 	{
-		XPathExpressionValue xpath  = XPathExpressionType.XPATHEXPRESSION.create("/test", 
+		XPathExpressionValueExp xpath  = XPathExpressionType.XPATHEXPRESSION.create("/test", 
 				AttributeCategories.SUBJECT_ACCESS);
 		expect(context.evaluateToNodeSet("/test", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
@@ -131,8 +131,8 @@ public class XPathFunctionsTest
 	public void testXPathNodeMatch() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match");
-		XPathExpressionValue xpath0  = XPathExpressionType.XPATHEXPRESSION.create("/md:record", AttributeCategories.SUBJECT_ACCESS);
-		XPathExpressionValue xpath1  = XPathExpressionType.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS);
+		XPathExpressionValueExp xpath0  = XPathExpressionType.XPATHEXPRESSION.create("/md:record", AttributeCategories.SUBJECT_ACCESS);
+		XPathExpressionValueExp xpath1  = XPathExpressionType.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
@@ -145,8 +145,8 @@ public class XPathFunctionsTest
 	public void testXPathNodeMatchXacml20() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match");
-		StringValue xpath0  = StringType.STRING.create(".");
-		StringValue xpath1  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
+		StringValueExp xpath0  = StringType.STRING.create(".");
+		StringValueExp xpath1  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet(".", AttributeCategories.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		expect(context.evaluateToNodeSet("./md:record", AttributeCategories.RESOURCE)).andAnswer(new XPathAnswer(content1));

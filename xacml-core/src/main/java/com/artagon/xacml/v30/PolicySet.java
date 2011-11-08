@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.artagon.xacml.v30.Policy.Builder;
+import com.artagon.xacml.v30.core.Version;
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 

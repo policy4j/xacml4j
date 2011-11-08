@@ -3,6 +3,7 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 
 
@@ -61,7 +62,7 @@ public class Advice extends BaseDecisionRuleResponse
 		}
 		
 		public Builder withAttribute(
-				String id, AttributeValue value)
+				String id, AttributeExp value)
 		{
 			this.attributes.add(new AttributeAssignment(id, value));
 			return this;
@@ -71,7 +72,7 @@ public class Advice extends BaseDecisionRuleResponse
 				String id,  
 				AttributeCategory category, 
 				String issuer, 
-				AttributeValue value)
+				AttributeExp value)
 		{
 			this.attributes.add(new AttributeAssignment(id, category, issuer, value));
 			return this;

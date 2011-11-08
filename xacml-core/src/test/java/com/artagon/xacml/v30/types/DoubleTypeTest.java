@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 
 public class DoubleTypeTest 
 {
@@ -32,8 +32,8 @@ public class DoubleTypeTest
 	@Test
 	public void testToXacmlString()
 	{
-		AttributeValue v0 = t1.create(1.0d);
-		AttributeValue v1 = t1.create(-2.0d);
+		AttributeExp v0 = t1.create(1.0d);
+		AttributeExp v1 = t1.create(-2.0d);
 		assertEquals("1.0", v0.toXacmlString());
 		assertEquals("-2.0", v1.toXacmlString());
 	}
@@ -42,7 +42,7 @@ public class DoubleTypeTest
 	public void testFromAnyObject()
 	{
 		Object o = 0.2d;
-		DoubleValue a = t1.create(o);
+		DoubleValueExp a = t1.create(o);
 		assertEquals(o, a.getValue());
 	}
 	
@@ -57,13 +57,13 @@ public class DoubleTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeValue v0 = t1.create(1.0d);
-		AttributeValue v1 = t1.create(2.0d);
-		AttributeValue v2 = t1.create(1.0d);
+		AttributeExp v0 = t1.create(1.0d);
+		AttributeExp v1 = t1.create(2.0d);
+		AttributeExp v2 = t1.create(1.0d);
 		assertFalse(v0.equals(v1));
 		assertTrue(v0.equals(v2));
-		AttributeValue v0Nan = t1.create(Double.NaN);
-		AttributeValue v1Nan = t1.create(Double.NaN);
+		AttributeExp v0Nan = t1.create(Double.NaN);
+		AttributeExp v1Nan = t1.create(Double.NaN);
 		assertFalse(v0.equals(v0Nan));
 		assertTrue(v0Nan.equals(v0Nan));
 		assertFalse(v1Nan.equals(v0));

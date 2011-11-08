@@ -15,11 +15,11 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 
 import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v30.types.XPathExpressionValue;
+import com.artagon.xacml.v30.types.XPathExpressionValueExp;
 import com.google.common.collect.Iterables;
 
 
@@ -218,9 +218,9 @@ public class Xacml20RequestContextUnmarshallerTest
 		
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		XPathExpressionValue xpath = (XPathExpressionValue)Iterables.getOnlyElement(resourceId.getValues());
+		XPathExpressionValueExp xpath = (XPathExpressionValueExp)Iterables.getOnlyElement(resourceId.getValues());
 		assertEquals(AttributeCategories.RESOURCE, xpath.getCategory());
-		assertEquals("//md:record/md:patient", xpath.getValue());
+		assertEquals("//md:record/md:patient", xpath.getValue().getPath());
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.artagon.xacml.v30;
 
 import java.util.regex.Pattern;
 
+import com.artagon.xacml.v30.core.Version;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

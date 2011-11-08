@@ -6,6 +6,8 @@ import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.Version;
+
 public class VersionMatchTest
 {
 	@Test

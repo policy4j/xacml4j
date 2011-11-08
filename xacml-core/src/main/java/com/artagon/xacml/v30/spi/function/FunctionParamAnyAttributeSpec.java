@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.spi.function;
 
 import java.util.ListIterator;
 
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionParamSpec;
 import com.artagon.xacml.v30.ValueType;
@@ -11,7 +11,7 @@ final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 {
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return (type instanceof AttributeValueType);
+		return (type instanceof AttributeExpType);
 	}
 
 	@Override

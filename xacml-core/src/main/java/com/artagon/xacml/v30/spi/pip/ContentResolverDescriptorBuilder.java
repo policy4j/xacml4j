@@ -3,11 +3,11 @@ package com.artagon.xacml.v30.spi.pip;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -36,7 +36,7 @@ public final class ContentResolverDescriptorBuilder
 	}
 	
 	public ContentResolverDescriptorBuilder designatorRef(AttributeCategory category, 
-			String attributeId, AttributeValueType dataType, String issuer)
+			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(new AttributeDesignatorKey(
 				category, attributeId, dataType, Strings.emptyToNull(issuer)));
@@ -45,7 +45,7 @@ public final class ContentResolverDescriptorBuilder
 	
 	public ContentResolverDescriptorBuilder selectorRef(
 			AttributeCategory category, 
-			String xpath, AttributeValueType dataType, 
+			String xpath, AttributeExpType dataType, 
 			String contextAttributeId)
 	{
 		this.keys.add(new AttributeSelectorKey(

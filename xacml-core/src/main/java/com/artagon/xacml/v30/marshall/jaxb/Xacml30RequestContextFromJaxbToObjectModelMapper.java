@@ -35,8 +35,7 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.AttributesReference;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
@@ -53,6 +52,7 @@ import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.StatusCodeId;
 import com.artagon.xacml.v30.StatusDetail;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 
@@ -335,14 +335,14 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
 		attr.setCategory(a.getCategory().toString());
-		AttributeValue v = a.getAttribute();
+		AttributeExp v = a.getAttribute();
 		attr.setDataType(v.getType().getDataTypeId());
 		attr.getContent().add(v.toXacmlString());
 		return attr;
 	}
 
 	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException {
-		AttributeValue value = create((AttributeValueType)a);
+		AttributeExp value = create((AttributeValueType)a);
 		
 		return new AttributeAssignment(
 				a.getAttributeId(),
@@ -392,7 +392,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(create(v));
 		}
@@ -400,7 +400,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				a.getIssuer(), a.isIncludeInResult(), values);
 	}
 		
-	private AttributeValue create(
+	private AttributeExp create(
 			AttributeValueType value) 
 		throws XacmlSyntaxException
 	{

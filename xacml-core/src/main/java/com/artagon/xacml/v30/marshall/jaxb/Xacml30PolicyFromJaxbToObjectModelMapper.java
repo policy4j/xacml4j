@@ -44,11 +44,10 @@ import com.artagon.xacml.v30.AdviceExpression;
 import com.artagon.xacml.v30.Apply;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeAssignmentExpression;
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignator;
 import com.artagon.xacml.v30.AttributeReference;
 import com.artagon.xacml.v30.AttributeSelector;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.CombinerParameters;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Condition;
@@ -72,8 +71,9 @@ import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.Target;
 import com.artagon.xacml.v30.VariableDefinition;
 import com.artagon.xacml.v30.VariableReference;
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.Version;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
@@ -323,7 +323,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(create(v));
 		}
@@ -331,7 +331,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				a.getIssuer(), a.isIncludeInResult(), values);
 	}
 	
-	private AttributeValue create(
+	private AttributeExp create(
 			AttributeValueType value) 
 		throws XacmlSyntaxException
 	{
@@ -540,7 +540,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	 * @return {@link AttributeValueExpression} instance
 	 * @throws XacmlSyntaxException
 	 */
-	private AttributeValue createValue(String dataType, List<Object> content, 
+	private AttributeExp createValue(String dataType, List<Object> content, 
 			Map<QName, String> otherAttributes)
 			throws XacmlSyntaxException {
 		if (content == null || content.isEmpty()) {

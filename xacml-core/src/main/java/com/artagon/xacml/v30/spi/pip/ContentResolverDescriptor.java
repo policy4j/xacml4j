@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.core.AttributeCategory;
 
 public interface ContentResolverDescriptor extends ResolverDescriptor
 {

@@ -8,6 +8,8 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.google.common.base.Preconditions;
 
 /**
@@ -210,14 +212,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public BagOfAttributeValues resolve(
+	public BagOfAttributesExp resolve(
 			AttributeDesignatorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
 	
 	@Override
-	public BagOfAttributeValues resolve(
+	public BagOfAttributesExp resolve(
 			AttributeSelectorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
@@ -230,7 +232,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 
 	@Override
 	public void setResolvedDesignatorValue(AttributeDesignatorKey ref,
-			BagOfAttributeValues v) {
+			BagOfAttributesExp v) {
 		delegate.setResolvedDesignatorValue(ref, v);
 	}
 
@@ -245,7 +247,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
+	public Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators() {
 		return delegate.getResolvedDesignators();
 	}
 }

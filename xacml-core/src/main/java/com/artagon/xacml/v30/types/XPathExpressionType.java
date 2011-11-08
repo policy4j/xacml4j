@@ -2,54 +2,54 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 
-public enum XPathExpressionType implements AttributeValueType
+public enum XPathExpressionType implements AttributeExpType
 {
 	XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private XPathExpressionType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
 		return (any instanceof String);
 	}
 	
-	public XPathExpressionValue create(String xpath, AttributeCategories category) 
+	public XPathExpressionValueExp create(String xpath, AttributeCategories category) 
 	{
-		return new XPathExpressionValue(this, xpath, category);
+		return new XPathExpressionValueExp(this, xpath, category);
 	}
 	
 	@Override
-	public XPathExpressionValue create(Object v, Object ... params) 
+	public XPathExpressionValueExp create(Object v, Object ... params) 
 	{
 		Preconditions.checkArgument(isConvertableFrom(v), 
 				"Given instance=\"%s\" can not be converted to this type value", v);
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
-		return new XPathExpressionValue(this, (String)v, (AttributeCategories)params[0]);
+		return new XPathExpressionValueExp(this, (String)v, (AttributeCategories)params[0]);
 	}
 	
 	@Override
-	public XPathExpressionValue fromXacmlString(String v, Object ...params) 
+	public XPathExpressionValueExp fromXacmlString(String v, Object ...params) 
 	{
 		Preconditions.checkArgument(params != null && params.length > 0, 
 				"XPath category must be specified");
 		try{
 			AttributeCategory categoryId = AttributeCategories.parse(String.valueOf(params[0]));
-			return new XPathExpressionValue(this, v, categoryId);
+			return new XPathExpressionValueExp(this, v, categoryId);
 		}catch(XacmlSyntaxException e){
 			throw new IllegalArgumentException(e);
 		}
@@ -61,27 +61,27 @@ public enum XPathExpressionType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

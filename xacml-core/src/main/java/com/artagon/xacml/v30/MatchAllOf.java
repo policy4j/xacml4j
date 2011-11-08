@@ -119,7 +119,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 			return this;
 		}
 		
-		public Builder withMatch(AttributeValue value, 
+		public Builder withMatch(AttributeExp value, 
 				AttributeReference ref, FunctionSpec predicate)
 		{
 			return withMatch(new Match(predicate, value, ref));

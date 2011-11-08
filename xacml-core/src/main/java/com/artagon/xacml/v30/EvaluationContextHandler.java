@@ -3,6 +3,8 @@ package com.artagon.xacml.v30;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+
 
 public interface EvaluationContextHandler 
 {
@@ -31,11 +33,11 @@ public interface EvaluationContextHandler
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
-	BagOfAttributeValues resolve(
+	BagOfAttributesExp resolve(
 			EvaluationContext context,
 			AttributeDesignatorKey key) throws EvaluationException;
 	
-	BagOfAttributeValues resolve(
+	BagOfAttributesExp resolve(
 			EvaluationContext context,
 			AttributeSelectorKey key) throws EvaluationException;
 }

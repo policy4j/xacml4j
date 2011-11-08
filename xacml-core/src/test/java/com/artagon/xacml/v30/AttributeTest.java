@@ -17,12 +17,12 @@ import com.artagon.xacml.v30.types.StringType;
 
 public class AttributeTest 
 {
-	private Collection<AttributeValue> values;
+	private Collection<AttributeExp> values;
 	
 	@Before
 	public void init()
 	{
-		this.values = new LinkedList<AttributeValue>();
+		this.values = new LinkedList<AttributeExp>();
 		values.add(INTEGER.create(1));
 		values.add(INTEGER.create(2));
 		values.add(INTEGER.create(3));
@@ -56,7 +56,7 @@ public class AttributeTest
 	@Test
 	public void testCreateWithTheSameValues()
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		values.add(INTEGER.create(1));
 		values.add(INTEGER.create(1));
 		Attribute attr = new Attribute("testId", "testIssuer", true, values);

@@ -4,15 +4,15 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.DataTypes;
@@ -106,20 +106,20 @@ public class PolicyUnmarshallerSupport
 	 * Gets data type via date type identifier
 	 * 
 	 * @param typeId a data type identifier
-	 * @return {@link AttributeValueType}
+	 * @return {@link AttributeExpType}
 	 * @throws XacmlSyntaxException
 	 */
-	protected AttributeValueType getDataType(String typeId) 
+	protected AttributeExpType getDataType(String typeId) 
 		throws XacmlSyntaxException
 	{
 		return DataTypes.getType(typeId);
 	}
 	
-	protected  AttributeValue createAttributeValue(
+	protected  AttributeExp createAttributeValue(
 			String typeId, 
 			Object value, Map<QName, String> values) throws XacmlSyntaxException 
 	{
-		AttributeValueType type = getDataType(typeId);
+		AttributeExpType type = getDataType(typeId);
 		try {
 			return type.create(value, getXPathCategory(values));
 		} catch (Exception e) {

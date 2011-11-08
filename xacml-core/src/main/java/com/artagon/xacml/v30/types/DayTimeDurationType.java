@@ -7,27 +7,27 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.google.common.base.Preconditions;
 
 
 public enum DayTimeDurationType 
-	implements AttributeValueType
+	implements AttributeExpType
 {
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
 	
 	private DatatypeFactory xmlDataTypesFactory;
 
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 
 	private DayTimeDurationType(String typeId) 
 	{
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 		try {
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		} catch (DatatypeConfigurationException e) {
@@ -35,20 +35,19 @@ public enum DayTimeDurationType
 		}
 	}
 		
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return Duration.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override
-	public DayTimeDurationValue fromXacmlString(String v, Object ...params) {
+	public DayTimeDurationValueExp fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
-		return new DayTimeDurationValue(this, validate(dayTimeDuration));
+		return new DayTimeDurationValueExp(this, validate(dayTimeDuration));
 	}
 	
 	@Override
-	public DayTimeDurationValue create(Object any, Object ...params){
+	public DayTimeDurationValueExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +
@@ -57,7 +56,7 @@ public enum DayTimeDurationType
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new DayTimeDurationValue(this, validate((Duration)any));
+		return new DayTimeDurationValueExp(this, validate((Duration)any));
 	}
 	
 	private Duration validate(Duration duration){
@@ -74,27 +73,27 @@ public enum DayTimeDurationType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

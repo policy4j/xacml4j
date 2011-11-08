@@ -2,42 +2,41 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.google.common.base.Preconditions;
 
 
-public enum StringType implements AttributeValueType
+public enum StringType implements AttributeExpType
 {
 	STRING("http://www.w3.org/2001/XMLSchema#string");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private StringType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
-		return StringValue.class.isInstance(any) || String.class.isInstance(any);
+		return StringValueExp.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override
-	public StringValue fromXacmlString(String v, Object ...params) {
+	public StringValueExp fromXacmlString(String v, Object ...params) {
 		return create(v);
 	}
 	
 	@Override
-	public StringValue create(Object any, Object ...params){
+	public StringValueExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"string\" type", 
 				any, any.getClass()));
-		return new StringValue(this, (String)any);
+		return new StringValueExp(this, (String)any);
 	}
 	
 	@Override
@@ -46,27 +45,27 @@ public enum StringType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

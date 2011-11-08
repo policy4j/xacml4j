@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExpType;
 
 public interface DataTypeRegistry 
 {
@@ -8,9 +8,9 @@ public interface DataTypeRegistry
 	 * Gets type by given type identifier
 	 * 
 	 * @param typeId a type identifier
-	 * @return {@link AttributeValueType} a data type instance
+	 * @return {@link AttributeExpType} a data type instance
 	 */
-	AttributeValueType getType(String typeId);
+	AttributeExpType getType(String typeId);
 	
 //	AttributeValue create(String typeId, Object value);
 //	AttributeValue create(String typeId,Object value, Object... params);

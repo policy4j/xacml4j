@@ -2,36 +2,35 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.google.common.base.Preconditions;
 
-public enum BooleanType implements AttributeValueType
+public enum BooleanType implements AttributeExpType
 {	
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
 		
-	private BooleanValue FALSE;
-	private BooleanValue TRUE;
+	private BooleanValueExp FALSE;
+	private BooleanValueExp TRUE;
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private BooleanType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
-		this.FALSE = new BooleanValue(this, Boolean.FALSE);
-		this.TRUE = new BooleanValue(this, Boolean.TRUE);
+		this.bagType = new BagOfAttributesExpType(this);
+		this.FALSE = new BooleanValueExp(this, Boolean.FALSE);
+		this.TRUE = new BooleanValueExp(this, Boolean.TRUE);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return Boolean.class.isInstance(any) || String.class.isInstance(any);
 	}
 	
 	@Override
-	public BooleanValue create(Object any, Object ...parameters){
+	public BooleanValueExp create(Object any, Object ...parameters){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"boolean\" type", 
@@ -43,7 +42,7 @@ public enum BooleanType implements AttributeValueType
 	}
 
 	@Override
-	public BooleanValue fromXacmlString(String v, Object ...parameters) {
+	public BooleanValueExp fromXacmlString(String v, Object ...parameters) {
 		Preconditions.checkNotNull(v);
 		return Boolean.parseBoolean(v)?TRUE:FALSE;
 	}
@@ -54,27 +53,27 @@ public enum BooleanType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

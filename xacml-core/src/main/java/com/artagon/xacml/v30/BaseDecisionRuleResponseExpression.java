@@ -107,16 +107,16 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		for(AttributeAssignmentExpression attrExp : attributeExpressions.values())
 		{
 			ValueExpression val = attrExp.evaluate(context);
-			if(val instanceof AttributeValue){
+			if(val instanceof AttributeExp){
 				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 
 						attrExp.getCategory(), 
 						attrExp.getIssuer(), 
-						(AttributeValue)val));
+						(AttributeExp)val));
 				continue;
 			}
-			BagOfAttributeValues bag = (BagOfAttributeValues)val;
-			for(AttributeValue v : bag.values()){
+			BagOfAttributesExp bag = (BagOfAttributesExp)val;
+			for(AttributeExp v : bag.values()){
 				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 
 						attrExp.getCategory(), 

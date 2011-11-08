@@ -2,10 +2,12 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.core.DNSName;
+import com.artagon.xacml.v30.core.PortRange;
 import com.google.common.base.Preconditions;
 
 /** 
@@ -32,37 +34,36 @@ import com.google.common.base.Preconditions;
  * all ports numbered "x" and above. 
  * <br>[This syntax is taken from the Java SocketPermission.]
  */
-public enum DNSNameType implements AttributeValueType
+public enum DNSNameType implements AttributeExpType
 {
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private DNSNameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return String.class.isInstance(any);
 	}
 	
-	public DNSNameValue create(String name){
+	public DNSNameValueExp create(String name){
 		return create(name, PortRange.getAnyPort());
 	}
 	
-	public DNSNameValue create(String name, PortRange range){
-		return new DNSNameValue(this, new DNSName(name, range));
+	public DNSNameValueExp create(String name, PortRange range){
+		return new DNSNameValueExp(this, new DNSName(name, range));
 	}
 	
-	public DNSNameValue create(String name, Integer lowerBound, Integer upperBound ){
+	public DNSNameValueExp create(String name, Integer lowerBound, Integer upperBound ){
 		return create(name, PortRange.getRange(lowerBound, upperBound));
 	}
 	
 	@Override
-	public DNSNameValue create(Object o, Object ...params) {
+	public DNSNameValueExp create(Object o, Object ...params) {
 		Preconditions.checkNotNull(o);
 		Preconditions.checkArgument(isConvertableFrom(o), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"DNSName\" type", 
@@ -71,16 +72,9 @@ public enum DNSNameType implements AttributeValueType
 	}
 
 	@Override
-	public DNSNameValue fromXacmlString(String v, Object ...params) {
-		Preconditions.checkNotNull(v);
-		int pos = v.indexOf(':');
-		if(pos == -1){
-			return new DNSNameValue(this, new 
-					DNSName(v, PortRange.getAnyPort()));
-		}
-		String name = v.substring(0, pos);
-		return new DNSNameValue(this, 
-				new DNSName(name, PortRange.valueOf(pos + 1, v)));
+	public DNSNameValueExp fromXacmlString(String v, Object ...params) {
+		return new DNSNameValueExp(this, 
+				DNSName.parse(v));
 	}
 	
 	@Override
@@ -89,27 +83,27 @@ public enum DNSNameType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

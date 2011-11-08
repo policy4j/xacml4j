@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+
 
 
 /**
@@ -35,9 +37,9 @@ public abstract class AttributeReference  implements Expression
 	 * Gets bag returned by this reference
 	 * attribute XACML primitive data type
 	 * 
-	 * @return {@link AttributeValueType}
+	 * @return {@link AttributeExpType}
 	 */
-	public AttributeValueType getDataType(){
+	public AttributeExpType getDataType(){
 		return getReferenceKey().getDataType();
 	}
 	
@@ -63,7 +65,7 @@ public abstract class AttributeReference  implements Expression
 	}
 
 	@Override
-	public abstract BagOfAttributeValues evaluate(EvaluationContext context) 
+	public abstract BagOfAttributesExp evaluate(EvaluationContext context) 
 		throws EvaluationException;
 
 }

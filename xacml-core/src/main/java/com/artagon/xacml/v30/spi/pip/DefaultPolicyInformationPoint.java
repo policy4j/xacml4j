@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 
 /**
@@ -46,7 +46,7 @@ public class DefaultPolicyInformationPoint
 	}
 	
 	@Override
-	public BagOfAttributeValues resolve(
+	public BagOfAttributesExp resolve(
 			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{

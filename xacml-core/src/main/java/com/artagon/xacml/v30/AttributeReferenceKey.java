@@ -1,15 +1,16 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 
 public abstract class AttributeReferenceKey 
 {
 	protected AttributeCategory category;
-	protected AttributeValueType dataType;
+	protected AttributeExpType dataType;
 	
 	protected AttributeReferenceKey(
 			AttributeCategory category, 
-			AttributeValueType dataType){
+			AttributeExpType dataType){
 		Preconditions.checkNotNull(category);
 		Preconditions.checkNotNull(dataType);
 		this.category = category;
@@ -20,10 +21,10 @@ public abstract class AttributeReferenceKey
 		return category;
 	}
 	
-	public final AttributeValueType getDataType(){
+	public final AttributeExpType getDataType(){
 		return dataType;
 	}
 	
-	public abstract BagOfAttributeValues resolve(
+	public abstract BagOfAttributesExp resolve(
 			EvaluationContext context) throws EvaluationException;
 }

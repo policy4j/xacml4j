@@ -3,6 +3,7 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.artagon.xacml.v30.core.Version;
 import com.google.common.base.Preconditions;
 
 /**

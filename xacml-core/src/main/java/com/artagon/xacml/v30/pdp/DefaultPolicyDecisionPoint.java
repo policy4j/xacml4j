@@ -14,10 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
@@ -28,6 +27,7 @@ import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
@@ -164,11 +164,18 @@ public final class DefaultPolicyDecisionPoint
 							Collections.<CompositeDecisionRuleIDReference>emptyList()));
 	}
 	
+	/**
+	 * Gets all attributes from an {@link EvaluationContext} which were resolved
+	 * and not present in the original access decision request
+	 * 
+	 * @param context an evaluation context
+	 * @return a collection of {@link Attribute} instances
+	 */
 	private Collection<Attributes> getResolvedAttributes(EvaluationContext context){
-		Map<AttributeDesignatorKey, BagOfAttributeValues> desig = context.getResolvedDesignators();
+		Map<AttributeDesignatorKey, BagOfAttributesExp> desig = context.getResolvedDesignators();
 		Multimap<AttributeCategory, Attribute> attributes = HashMultimap.create();
 		for(AttributeDesignatorKey k : desig.keySet()){
-			BagOfAttributeValues v = desig.get(k);
+			BagOfAttributesExp v = desig.get(k);
 			Collection<Attribute> values = attributes.get(k.getCategory());
 			values.add(new Attribute(k.getAttributeId(), k.getIssuer(), false, v.values()));
 		}

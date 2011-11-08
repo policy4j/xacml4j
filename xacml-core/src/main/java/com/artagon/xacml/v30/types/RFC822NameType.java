@@ -2,10 +2,11 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.core.RFC822Name;
 import com.google.common.base.Preconditions;
 
 /** 
@@ -29,32 +30,31 @@ import com.google.common.base.Preconditions;
  *   String = Atom / Quoted-string
  * </pre>
  * */
-public enum RFC822NameType implements AttributeValueType
+public enum RFC822NameType implements AttributeExpType
 {	
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private RFC822NameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return String.class.isInstance(any) || RFC822Name.class.isInstance(any);
 	}
 	
 	@Override
-	public RFC822NameValue fromXacmlString(String v, Object ...params)
+	public RFC822NameValueExp fromXacmlString(String v, Object ...params)
 	{
 		Preconditions.checkNotNull(v);
-        return new RFC822NameValue(this, RFC822Name.parse(v));
+        return new RFC822NameValueExp(this, RFC822Name.parse(v));
 	}
 	
 	@Override
-	public RFC822NameValue create(Object any, Object ...params)
+	public RFC822NameValueExp create(Object any, Object ...params)
 	{
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
@@ -63,7 +63,7 @@ public enum RFC822NameType implements AttributeValueType
 		if(any instanceof String){
 			return fromXacmlString((String)any);
 		}
-		return new RFC822NameValue(this, (RFC822Name)any);
+		return new RFC822NameValueExp(this, (RFC822Name)any);
 	}
 	
 	@Override
@@ -72,27 +72,27 @@ public enum RFC822NameType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

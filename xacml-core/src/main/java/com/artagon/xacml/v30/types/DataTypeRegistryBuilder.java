@@ -3,15 +3,15 @@ package com.artagon.xacml.v30.types;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.google.common.base.Preconditions;
 
 public final class DataTypeRegistryBuilder 
 {
-	private Map<String, AttributeValueType> types;
+	private Map<String, AttributeExpType> types;
 	
 	private DataTypeRegistryBuilder(){
-		this.types = new ConcurrentHashMap<String, AttributeValueType>();
+		this.types = new ConcurrentHashMap<String, AttributeExpType>();
 	}
 	
 	public DataTypeRegistryBuilder withDefaultTypes()
@@ -42,7 +42,7 @@ public final class DataTypeRegistryBuilder
 		return this;
 	}
 	
-	public DataTypeRegistryBuilder withType(AttributeValueType type){
+	public DataTypeRegistryBuilder withType(AttributeExpType type){
 		addType(type);
 		return this;
 	}
@@ -50,17 +50,17 @@ public final class DataTypeRegistryBuilder
 	public DataTypeRegistry build(){
 		return new DataTypeRegistry() {
 			@Override
-			public AttributeValueType getType(String typeId) {
+			public AttributeExpType getType(String typeId) {
 				return types.get(typeId);
 			}
 		};
 	}
 	
-	private void addType(AttributeValueType type){
+	private void addType(AttributeExpType type){
 		addType(type.getDataTypeId(), type);
 	}
 	
-	private void addType(String typeId, AttributeValueType type){
+	private void addType(String typeId, AttributeExpType type){
 		Preconditions.checkArgument(!types.containsKey(type.getDataTypeId()));
 		this.types.put(typeId, type);
 	}

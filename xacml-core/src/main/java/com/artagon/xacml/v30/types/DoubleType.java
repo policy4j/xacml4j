@@ -2,25 +2,24 @@ package com.artagon.xacml.v30.types;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.google.common.base.Preconditions;
 
-public enum DoubleType implements AttributeValueType
+public enum DoubleType implements AttributeExpType
 {
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private DoubleType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
@@ -30,7 +29,7 @@ public enum DoubleType implements AttributeValueType
 	
 	
 	@Override
-	public DoubleValue create(Object any, Object ...params){
+	public DoubleValueExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"double\" type", 
@@ -39,31 +38,31 @@ public enum DoubleType implements AttributeValueType
 			return fromXacmlString((String)any);
 		}
 		if(Byte.class.isInstance(any)){
-			return new DoubleValue(this, ((Byte)any).doubleValue());
+			return new DoubleValueExp(this, ((Byte)any).doubleValue());
 		}
 		if(Short.class.isInstance(any)){
-			return new DoubleValue(this, ((Short)any).doubleValue());
+			return new DoubleValueExp(this, ((Short)any).doubleValue());
 		}
 		if(Integer.class.isInstance(any)){
-			return new DoubleValue(this, ((Integer)any).doubleValue());
+			return new DoubleValueExp(this, ((Integer)any).doubleValue());
 		}
 		if(Float.class.isInstance(any)){
-			return new DoubleValue(this, ((Float)any).doubleValue());
+			return new DoubleValueExp(this, ((Float)any).doubleValue());
 		}
 		if(Long.class.isInstance(any)){
-			return new DoubleValue(this, ((Long)any).doubleValue());
+			return new DoubleValueExp(this, ((Long)any).doubleValue());
 		}
-		return new DoubleValue(this, (Double)any);
+		return new DoubleValueExp(this, (Double)any);
 	}
 	
 	@Override
-	public DoubleValue fromXacmlString(String v, Object ...params) {
+	public DoubleValueExp fromXacmlString(String v, Object ...params) {
 
         if (v.endsWith("INF")) {
             int infIndex = v.lastIndexOf("INF");
             v = v.substring(0, infIndex) + "Infinity";
         }
-        return new DoubleValue(this, Double.parseDouble(v));
+        return new DoubleValueExp(this, Double.parseDouble(v));
 	}
 	
 	@Override
@@ -72,27 +71,27 @@ public enum DoubleType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

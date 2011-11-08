@@ -2,16 +2,16 @@ package com.artagon.xacml.v30.pdp;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.core.AttributeCategory;
 
 public interface RequestContextCallback 
 {
-	BagOfAttributeValues getAttributeValue(
+	BagOfAttributesExp getAttributeValue(
 			AttributeCategory category, 
 			String attributeId, 
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			String issuer);
 	
 	Node getContent(AttributeCategory category);

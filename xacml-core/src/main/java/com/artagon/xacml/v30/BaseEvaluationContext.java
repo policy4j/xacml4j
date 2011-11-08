@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
 
@@ -36,9 +37,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private TimeZone timezone;
 	private Calendar currentDateTime;
 	
-	private Map<AttributeDesignatorKey, BagOfAttributeValues> designCache;
-	private Map<AttributeSelectorKey, BagOfAttributeValues> selectCache;
-	private Map<AttributeDesignatorKey, BagOfAttributeValues> resolvedDesignators;
+	private Map<AttributeDesignatorKey, BagOfAttributesExp> designCache;
+	private Map<AttributeSelectorKey, BagOfAttributesExp> selectCache;
+	private Map<AttributeDesignatorKey, BagOfAttributesExp> resolvedDesignators;
 	
 	private Integer combinedDecisionCacheTTL = null;
 	
@@ -73,9 +74,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>(128);
-		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeValues>(128);
-		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeValues>();
+		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributesExp>(128);
+		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributesExp>(128);
+		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributesExp>();
 		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
 		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
@@ -273,11 +274,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributeValues resolve(
+	public final BagOfAttributesExp resolve(
 			AttributeDesignatorKey ref) 
 		throws EvaluationException
 	{
-		BagOfAttributeValues v = designCache.get(ref);
+		BagOfAttributesExp v = designCache.get(ref);
 		if(v != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found designator=\"{}\" " +
@@ -296,11 +297,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributeValues resolve(
+	public final BagOfAttributesExp resolve(
 			AttributeSelectorKey ref)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues v = selectCache.get(ref);
+		BagOfAttributesExp v = selectCache.get(ref);
 		if(v != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found selector=\"{}\" " +
@@ -320,7 +321,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	public void setResolvedDesignatorValue(
 			AttributeDesignatorKey key, 
-			BagOfAttributeValues v){
+			BagOfAttributesExp v){
 		Preconditions.checkNotNull(key);
 		this.resolvedDesignators.put(key, (v == null)?key.getDataType().emptyBag():v);
 		this.designCache.put(key, (v == null)?key.getDataType().emptyBag():v);
@@ -332,7 +333,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
+	public Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators() {
 		
 		return Collections.unmodifiableMap(resolvedDesignators);
 	}

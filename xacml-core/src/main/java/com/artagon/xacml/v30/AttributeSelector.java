@@ -3,6 +3,8 @@ package com.artagon.xacml.v30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Objects;
 
@@ -17,7 +19,7 @@ public class AttributeSelector extends
 			AttributeCategory category, 
 			String xpath, 
 			String contextAttributeId,
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 					boolean mustBePresent){
 		super(mustBePresent);
 		this.selectorKey = new AttributeSelectorKey(category, xpath, dataType, contextAttributeId);
@@ -26,7 +28,7 @@ public class AttributeSelector extends
 	public AttributeSelector(
 			AttributeCategory category, 
 			String xpath, 
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			boolean mustBePresent){
 		this(category, xpath, null, dataType, mustBePresent);
 	}
@@ -46,7 +48,7 @@ public class AttributeSelector extends
 			String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType dataType = DataTypes.getType(dataTypeId);
+		AttributeExpType dataType = DataTypes.getType(dataTypeId);
 		return new AttributeSelector(category, xpath, 
 				contextAttributeId, dataType, mustBePresent);
 	}
@@ -130,10 +132,10 @@ public class AttributeSelector extends
 	}
 
 	@Override
-	public BagOfAttributeValues evaluate(EvaluationContext context)
+	public BagOfAttributesExp evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		BagOfAttributeValues v = null;
+		BagOfAttributesExp v = null;
 		try{
 			v =  selectorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){

@@ -21,7 +21,7 @@ import com.google.common.collect.Multiset;
 public class Attribute
 {
 	private String attributeId;
-	private Multiset<AttributeValue> values;
+	private Multiset<AttributeExp> values;
 	private boolean includeInResult;
 	private String issuer;
 	
@@ -35,13 +35,13 @@ public class Attribute
 	 * if attribute needs to be included in
 	 * the result
 	 * @param values a collection of 
-	 * {@link AttributeValue} instances
+	 * {@link AttributeExp} instances
 	 */
 	public Attribute(
 			String attributeId,
 			String issuer, 
 			boolean includeInResult, 
-			Iterable<AttributeValue> values){
+			Iterable<AttributeExp> values){
 		Preconditions.checkNotNull(attributeId);
 		Preconditions.checkNotNull(values);
 		this.attributeId = attributeId;
@@ -54,29 +54,29 @@ public class Attribute
 	public Attribute(String attributeId,
 			String issuer, 
 			boolean includeInResult, 
-			AttributeValue ...values){
+			AttributeExp ...values){
 		this(attributeId, issuer, 
 				includeInResult, Arrays.asList(values));
 	}
 	
 	public Attribute(String attributeId, 
-			Collection<AttributeValue> values){
+			Collection<AttributeExp> values){
 		this(attributeId, null, false, values);
 	}
 	
 	public Attribute(String attributeId, 
-			AttributeValue ...values){
+			AttributeExp ...values){
 		this(attributeId, null, false, Arrays.asList(values));
 	}
 
 	public static Attribute create(String attributeId,
-			AttributeValueType attributeType, Object ...values) {
+			AttributeExpType attributeType, Object ...values) {
 		return create(attributeId, null, false, attributeType, values);
 	}
 
 	public static Attribute create(String attributeId, String issuer, boolean includeInResult,
-			AttributeValueType attributeType, Object ...values) {
-		ArrayList<AttributeValue> attrValues = new ArrayList<AttributeValue>(values.length);
+			AttributeExpType attributeType, Object ...values) {
+		ArrayList<AttributeExp> attrValues = new ArrayList<AttributeExp>(values.length);
 		if(values != null) {
 			for(Object value: values) {
 				attrValues.add(attributeType.create(value));
@@ -96,26 +96,26 @@ public class Attribute
 	
 	/**
 	 * Gets attribute values as collection of
-	 * {@link AttributeValue} instances
+	 * {@link AttributeExp} instances
 	 * 
-	 * @return collection of {@link AttributeValue} 
+	 * @return collection of {@link AttributeExp} 
 	 * instances
 	 */
-	public Collection<AttributeValue> getValues(){
+	public Collection<AttributeExp> getValues(){
 		return Collections.unmodifiableCollection(values);
 	}
 	
 	/**
-	 * Gets all instances of {@link AttributeValue} by type
+	 * Gets all instances of {@link AttributeExp} by type
 	 * 
 	 * @param type an attribute type
-	 * @return a collection of {@link AttributeValue} of given type
+	 * @return a collection of {@link AttributeExp} of given type
 	 */
-	public Collection<AttributeValue> getValuesByType(final AttributeValueType type)
+	public Collection<AttributeExp> getValuesByType(final AttributeExpType type)
 	{
-		return Collections2.filter(values, new Predicate<AttributeValue>() {
+		return Collections2.filter(values, new Predicate<AttributeExp>() {
 			@Override
-			public boolean apply(AttributeValue a) {
+			public boolean apply(AttributeExp a) {
 				return a.getType().equals(type);
 			}
 			

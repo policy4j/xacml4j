@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.types.XPathExpressionType;
@@ -38,7 +38,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		if(resource == null){
 			return handleNext(request, context);
 		}
-		Collection<AttributeValue> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
+		Collection<AttributeExp> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
 				XPathExpressionType.XPATHEXPRESSION);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);

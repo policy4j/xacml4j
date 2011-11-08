@@ -20,11 +20,11 @@ import org.oasis.xacml.v30.jaxb.AttributeSelectorType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 
 import com.artagon.xacml.v30.Apply;
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignator;
 import com.artagon.xacml.v30.AttributeSelector;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.StringType;
 
 public class Xacml30PolicyExpressionFromModelToJaxbMapperTest 

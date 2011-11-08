@@ -109,44 +109,44 @@ public class AttributeContainer
 	}
 	
 	/**
-	 * @see {@link #getAttributeValues(String, String, AttributeValueType)
+	 * @see {@link #getAttributeValues(String, String, AttributeExpType)
 	 */
-	public Collection<AttributeValue> getAttributeValues(
+	public Collection<AttributeExp> getAttributeValues(
 			String attributeId, 
-			AttributeValueType dataType){
+			AttributeExpType dataType){
 		return getAttributeValues(attributeId, null, dataType);
 	}
 	
 	/**
-	 * Gets only one {@link AttributeValue} instance of the given type 
+	 * Gets only one {@link AttributeExp} instance of the given type 
 	 * from an attribute with a given identifier
 	 * 
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute value data type
-	 * @return {@link AttributeValue} of the given type or <code>null</code>
+	 * @return {@link AttributeExp} of the given type or <code>null</code>
 	 * if value matching given criteria does not exist
 	 * @exception IllegalArgumentException if more than one value is found
 	 * matching given criteria
 	 */
-	public AttributeValue getOnlyAttributeValue(String attributeId, 
-			AttributeValueType dataType){
+	public AttributeExp getOnlyAttributeValue(String attributeId, 
+			AttributeExpType dataType){
 		return Iterables.getOnlyElement(getAttributeValues(attributeId, dataType), null);
 	}
 	
 	/**
-	 * Gets all {@link AttributeValue} instances
+	 * Gets all {@link AttributeExp} instances
 	 * contained in this attributes instance
 	 * 
 	 * @param attributeId an attribute id
 	 * @param issuer an attribute issuer
 	 * @param type an attribute value data type
-	 * @return a collection of {@link AttributeValue} instances
+	 * @return a collection of {@link AttributeExp} instances
 	 */
-	public Collection<AttributeValue> getAttributeValues(
-			String attributeId, String issuer, final AttributeValueType type){
+	public Collection<AttributeExp> getAttributeValues(
+			String attributeId, String issuer, final AttributeExpType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = getAttributes(attributeId, issuer);
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(Attribute a : found){
 			values.addAll(a.getValuesByType(type));
 		}

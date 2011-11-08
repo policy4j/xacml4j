@@ -14,18 +14,18 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.RequestSyntaxException;
 import com.artagon.xacml.v30.Result;
-import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValue;
+import com.artagon.xacml.v30.types.XPathExpressionValueExp;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -90,12 +90,12 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			XPathProvider xpathProvider) 
 		throws RequestSyntaxException
 	{
-		Collection<AttributeValue> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
+		Collection<AttributeExp> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
 				XPathExpressionType.XPATHEXPRESSION);
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
-		XPathExpressionValue selector = (XPathExpressionValue)Iterables.getOnlyElement(values, null);
+		XPathExpressionValueExp selector = (XPathExpressionValueExp)Iterables.getOnlyElement(values, null);
 		Node content = attribute.getContent();
 		// if there is no content
 		// specified ignore it and return
@@ -107,7 +107,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		try 
 		{
 			XPathVersion version = request.getRequestDefaults().getXPathVersion();
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(version, selector.getValue(), content);
+			NodeList nodeSet = xpathProvider.evaluateToNodeSet(version, selector.getPath(), content);
 			Set<Attributes> attributes = new LinkedHashSet<Attributes>();
 			for(int i = 0; i < nodeSet.getLength(); i++){	
 				String xpath = DOMUtil.getXPath(nodeSet.item(i));

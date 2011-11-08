@@ -9,6 +9,8 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.Version;
+
 public class VersionTest 
 {
 	@Test

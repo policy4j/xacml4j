@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.google.common.collect.ImmutableList;
 

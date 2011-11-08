@@ -7,7 +7,7 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 
 public class AnyURITypeTest 
 {
@@ -21,10 +21,10 @@ public class AnyURITypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeValue v0 = t1.create("http://www.test.org");
-		AttributeValue v1 = t1.create("http://www.test.org");
+		AttributeExp v0 = t1.create("http://www.test.org");
+		AttributeExp v1 = t1.create("http://www.test.org");
 		assertEquals(v0, v1);
-		assertEquals(AnyURIType.ANYURI, new AnyURIValue(URI.create("test")).getType());
+		assertEquals(AnyURIType.ANYURI, new AnyURIValueExp(URI.create("test")).getType());
 	}
 	
 	@Test

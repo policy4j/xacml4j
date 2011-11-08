@@ -21,18 +21,18 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationContextHandler;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ValueExpression;
-import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
@@ -323,8 +323,8 @@ public class DefaultEvaluationContextHandlerTest
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
 		
 
-		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeValues>() {
-			public BagOfAttributeValues answer() throws Throwable{
+		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributesExp>() {
+			public BagOfAttributesExp answer() throws Throwable{
 				handler.resolve(context, ref);
 				return ANYURI.emptyBag();
 			}

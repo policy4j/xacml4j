@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 
 public final class RootEvaluationContext extends BaseEvaluationContext

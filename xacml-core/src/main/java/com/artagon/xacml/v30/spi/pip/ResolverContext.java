@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.pip;
 import java.util.Calendar;
 import java.util.List;
 
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationException;
 
 public interface ResolverContext 
@@ -26,10 +26,10 @@ public interface ResolverContext
 	/**
 	 * Gets request context keys
 	 * 
-	 * @return a list {@link List} of {@link BagOfAttributeValues}
+	 * @return a list {@link List} of {@link BagOfAttributesExp}
 	 * instances
 	 * @throws EvaluationException if an error
 	 * occurs
 	 */
-	List<BagOfAttributeValues> getKeys();
+	List<BagOfAttributesExp> getKeys();
 }

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.XPathVersion;
 import com.google.common.base.Preconditions;
 
 abstract class BaseCompositeDecisionRuleDefaults extends XacmlObject 

@@ -17,15 +17,15 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.FunctionReference;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.types.BooleanValue;
+import com.artagon.xacml.v30.types.BooleanValueExp;
 
 
 public class HigherOrderFunctionsTest 
@@ -74,7 +74,7 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testMapWithValidArguments() throws EvaluationException
 	{
-		Collection<AttributeValue> v = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
 		v.add(INTEGER.create(10));
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
@@ -83,7 +83,7 @@ public class HigherOrderFunctionsTest
 		
 		
 		replay(context);
-		BagOfAttributeValues bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
+		BagOfAttributesExp bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
 		verify(context);	
 		assertTrue(bag.contains(STRING.create("10")));
 		assertTrue(bag.contains(STRING.create("20")));
@@ -93,7 +93,7 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
-		Collection<AttributeValue> v = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
 		v.add(INTEGER.create(10));
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
@@ -101,7 +101,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
+		BooleanValueExp r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
@@ -109,11 +109,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAllOfAny() throws EvaluationException
 	{
-		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(10));
 		a.add(INTEGER.create(20));
 		
-		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(5));
@@ -122,7 +122,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValue r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanValueExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -131,11 +131,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAnyOfAll() throws EvaluationException
 	{
-		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(3));
 		a.add(INTEGER.create(5));
 		
-		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(2));
 		b.add(INTEGER.create(3));
@@ -145,7 +145,7 @@ public class HigherOrderFunctionsTest
 		
 		
 		replay(context);
-		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanValueExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -155,11 +155,11 @@ public class HigherOrderFunctionsTest
 	public void testAnyOfAllIIC168() throws EvaluationException
 	{
 				
-		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(STRING.create("   This  is n*o*t* *IT!  "));
 		a.add(STRING.create("   This is not a match to IT!  "));
 		
-		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(STRING.create("   This  is IT!  "));
 		b.add(STRING.create("   This  is not IT!  "));
 
@@ -167,7 +167,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
+		BooleanValueExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
 				STRING.bagOf(a), STRING.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -176,11 +176,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAllOfAll() throws EvaluationException
 	{
-		Collection<AttributeValue> a = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(5));
 		a.add(INTEGER.create(6));
 		
-		Collection<AttributeValue> b = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(2));
 		b.add(INTEGER.create(3));
@@ -189,7 +189,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 		
 		replay(context);
-		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanValueExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);

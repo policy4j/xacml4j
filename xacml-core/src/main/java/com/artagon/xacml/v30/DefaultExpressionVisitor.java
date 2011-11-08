@@ -5,25 +5,25 @@ public class DefaultExpressionVisitor
 {
 
 	@Override
-	public void visitEnter(AttributeValue v) {
+	public void visitEnter(AttributeExp v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visitLeave(AttributeValue v) {
+	public void visitLeave(AttributeExp v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visitEnter(BagOfAttributeValues v) {
+	public void visitEnter(BagOfAttributesExp v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visitLeave(BagOfAttributeValues v) {
+	public void visitLeave(BagOfAttributesExp v) {
 		// TODO Auto-generated method stub
 		
 	}

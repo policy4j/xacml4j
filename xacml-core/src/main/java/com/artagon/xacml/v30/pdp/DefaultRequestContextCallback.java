@@ -4,11 +4,11 @@ import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Preconditions;
 
 public class DefaultRequestContextCallback 
@@ -29,12 +29,12 @@ public class DefaultRequestContextCallback
 	}
 	
 	@Override
-	public BagOfAttributeValues getAttributeValue(
+	public BagOfAttributesExp getAttributeValue(
 			AttributeCategory category, 
 			String attributeId, 
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			String issuer) {
-		Collection<AttributeValue> values = request.getAttributeValues(
+		Collection<AttributeExp> values = request.getAttributeValues(
 				category, 
 				attributeId, 
 				dataType, 

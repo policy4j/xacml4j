@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -13,7 +14,7 @@ public final class AttributeDesignatorKey
 	public AttributeDesignatorKey(
 			AttributeCategory category, 
 			String attributeId, 
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			String issuer){
 		super(category, dataType);
 		Preconditions.checkNotNull(attributeId);
@@ -33,7 +34,7 @@ public final class AttributeDesignatorKey
 	}
 	
 	@Override
-	public BagOfAttributeValues resolve(EvaluationContext context)
+	public BagOfAttributesExp resolve(EvaluationContext context)
 			throws EvaluationException 
 	{
 		return context.resolve(this);

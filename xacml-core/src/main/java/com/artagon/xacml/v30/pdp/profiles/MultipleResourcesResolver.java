@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.Set;
 
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.pdp.RequestContextCallback;
 
 public interface MultipleResourcesResolver 
@@ -11,11 +11,11 @@ public interface MultipleResourcesResolver
 	/**
 	 * Gets supported resource identifiers
 	 * 
-	 * @return a {@link Set} of {@link AttributeValue}
+	 * @return a {@link Set} of {@link AttributeExp}
 	 * instances representing supported resource
 	 * identifiers
 	 */
-	Set<AttributeValue> getSupportedResourceIds();
+	Set<AttributeExp> getSupportedResourceIds();
 	
 	/**
 	 * Resolves immediate children resources of 
@@ -25,11 +25,11 @@ public interface MultipleResourcesResolver
 	 * @param callback a request context attribute callback
 	 * @return a collection of immediate children of the given resource
 	 */
-	Collection<AttributeValue> resolveChildrenResources(
-			AttributeValue resource, 
+	Collection<AttributeExp> resolveChildrenResources(
+			AttributeExp resource, 
 			RequestContextCallback callback);
 	
-	Collection<AttributeValue> resolveDescendantResources(
-			AttributeValue resource, 
+	Collection<AttributeExp> resolveDescendantResources(
+			AttributeExp resource, 
 			RequestContextCallback callback);
 }

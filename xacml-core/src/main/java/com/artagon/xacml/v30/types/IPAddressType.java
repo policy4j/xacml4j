@@ -3,12 +3,12 @@ package com.artagon.xacml.v30.types;
 import java.net.InetAddress;
 import java.util.Collection;
 
-import com.artagon.xacml.util.IPAddressUtils;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
-import com.google.common.base.Preconditions;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.core.IPAddress;
+import com.artagon.xacml.v30.core.PortRange;
 
 /** 
  * XACML DataType:  <b>urn:oasis:names:tc:xacml:2.0:data-type:ipAddress</b>. 
@@ -27,131 +27,45 @@ import com.google.common.base.Preconditions;
  * Addresses in URL's". (Note that an IPv6 address or mask, in this syntax, 
  * is enclosed in literal "[" "]" brackets.) 
  */
-public enum IPAddressType implements AttributeValueType
+public enum IPAddressType implements AttributeExpType
 {
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private IPAddressType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	public IPAddressValue create(InetAddress address, PortRange portRange) {
-		return new IPAddressValue(this, address, portRange);
+	public IPAddressValueExp create(InetAddress address, PortRange portRange) {
+		return new IPAddressValueExp(this, new IPAddress(address, portRange));
 	}
 
-	public IPAddressValue create(InetAddress address, InetAddress mask) {
-		Preconditions.checkNotNull(address, "IP address can't be null");
-		Preconditions.checkNotNull(mask, "IP address mask can't be null");
-		return new IPAddressValue(this, address, mask, PortRange.getAnyPort());
+	public IPAddressValueExp create(InetAddress address, InetAddress mask) {
+		return new IPAddressValueExp(this, new IPAddress(address, mask));
 	}
 
-	public IPAddressValue create(InetAddress address, InetAddress mask,
+	public IPAddressValueExp create(InetAddress address, InetAddress mask,
 			PortRange portRange) {
-		Preconditions.checkNotNull(address, "IP address can't be null");
-		Preconditions.checkNotNull(mask, "IP address mask can't be null");
-		Preconditions.checkNotNull(portRange, "Port range can't be null");
-		return new IPAddressValue(this, address, mask, portRange);
+		return new IPAddressValueExp(this, new IPAddress(address, mask, portRange));
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return String.class.isInstance(any) 
-		|| InetAddress.class.isInstance(any);
+		|| InetAddress.class.isInstance(any) || IPAddress.class.isInstance(any);
 	}
 
 	@Override
-	public IPAddressValue create(Object any, Object ...params) {
-		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne " +
-				"converted to XACML \"ipAddress\" type", 
-				any, any.getClass()));
-		if(any instanceof InetAddress){
-			return new IPAddressValue(this, (InetAddress)any);
-		}
-		if(any instanceof String){
-			return fromXacmlString((String)any);
-		}
-		return new IPAddressValue(this, (InetAddress)any);
+	public IPAddressValueExp create(Object any, Object ...params) {
+		return new IPAddressValueExp(this, IPAddress.parse(any));
 	}
 	
-	private IPAddressValue getV6Instance(String value)
-    {
-		 InetAddress address = null;
-		 InetAddress mask = null;
-		 PortRange range = null;
-		 int len = value.length();
-		 int endIndex = value.indexOf(']');
-		 String addrr = value.substring(1, endIndex);
-		 Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr), 
-         		  "Expected IPV6 address, but found=\"%s\"", addrr);
-		 address = IPAddressUtils.parseAddress(addrr);
-      
-      // see if there's anything left in the string
-      if (endIndex != (len - 1)) {
-          // if there's a mask, it's also an IPv6 address
-          if (value.charAt(endIndex + 1) == '/') {
-              int startIndex = endIndex + 3;
-              endIndex = value.indexOf(']', startIndex);
-              addrr = value.substring(startIndex, endIndex);
-              Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr), 
-            		  "Expected IPV6 mask, but found=\"%s\"", addrr);
-              mask = IPAddressUtils.parseAddress(addrr);
-          }
-          if ((endIndex != (len - 1)) && (value.charAt(endIndex + 1) == ':'))
-              range = PortRange.valueOf(value.substring(endIndex + 2, len));
-      }
-      return new IPAddressValue(this, address, mask, (range != null)?range:PortRange.getAnyPort());
-    }
-	
-    private IPAddressValue getV4Instance(String value)
-    {
-        InetAddress address = null;
-        InetAddress mask = null;
-        PortRange range = null;
-        int maskPos = value.indexOf("/");
-        int rangePos = value.indexOf(":");
-        if (maskPos == rangePos) {
-            // the sting is just an address
-        	 Preconditions.checkArgument(IPAddressUtils.isIPv4LiteralAddress(value), 
-            		  "Expected IPV4 address, but found=\"%s\"", value);
-            address = IPAddressUtils.parseAddress(value);
-        } else if (maskPos != -1) {
-            // there is also a mask (and maybe a range)
-        	String addrr = value.substring(0, maskPos);
-        	 Preconditions.checkArgument(IPAddressUtils.isIPv4LiteralAddress(addrr), 
-           		  "Expected IPV4 address, but found=\"%s\"", addrr);
-            address = IPAddressUtils.parseAddress(value.substring(0, maskPos));
-            if (rangePos != -1) {
-                // there's a range too, so get it and the mask
-                mask = IPAddressUtils.parseAddress(value.substring(maskPos + 1,
-                                                          rangePos));
-                range =
-                    PortRange.valueOf(value.substring(rangePos + 1,
-                                                          value.length()));
-            } else {
-                // there's no range, so just get the mask
-                mask = IPAddressUtils.parseAddress(value.substring(maskPos + 1,
-                                                             value.length()));
-            }
-        } else {
-            // there is a range, but no mask
-            address = IPAddressUtils.parseAddress(value.substring(0, rangePos));
-            range = PortRange.valueOf(value.substring(rangePos + 1,
-                                                          value.length()));
-        }
-        return new IPAddressValue(this, address, mask, range != null?range:PortRange.getAnyPort());
-    }
-
 	@Override
-	public IPAddressValue fromXacmlString(String v, Object ...params) 
+	public IPAddressValueExp fromXacmlString(String v, Object ...params) 
 	{
-		v = v.trim();
-		return (v.indexOf('[') == 0)?getV6Instance(v):getV4Instance(v);
+		return new IPAddressValueExp(this, IPAddress.parse(v));
 	}
 	
 	@Override
@@ -160,27 +74,27 @@ public enum IPAddressType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

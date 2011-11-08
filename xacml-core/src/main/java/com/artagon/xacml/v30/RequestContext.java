@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -295,10 +296,10 @@ public class RequestContext
 	}
 	
 	public boolean containsAttributeValues(
-			String attributeId, String issuer, AttributeValueType type)
+			String attributeId, String issuer, AttributeExpType type)
 	{
 		for(Attributes a : getAttributes()){
-			Collection<AttributeValue> values =  a.getAttributeValues(attributeId, issuer, type);
+			Collection<AttributeExp> values =  a.getAttributeValues(attributeId, issuer, type);
 			if(!values.isEmpty()){
 				return true;
 			}
@@ -316,7 +317,7 @@ public class RequestContext
 	 * one attribute with a given identifier and the given type
 	 */
 	public boolean containsAttributeValues(String attributeId, 
-			AttributeValueType type)
+			AttributeExpType type)
 	{
 		return containsAttributeValues(attributeId, null, type);
 	}
@@ -328,12 +329,12 @@ public class RequestContext
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
 	 * @param issuer an attribute issuer
-	 * @return a collection of {@link AttributeValue} instances
+	 * @return a collection of {@link AttributeExp} instances
 	 */
-	public Collection<AttributeValue> getAttributeValues(AttributeCategory categoryId, 
-			String attributeId, AttributeValueType dataType, String issuer)
+	public Collection<AttributeExp> getAttributeValues(AttributeCategory categoryId, 
+			String attributeId, AttributeExpType dataType, String issuer)
 	{
-		Collection<AttributeValue> found = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> found = new LinkedList<AttributeExp>();
 		for(Attributes a : attributes.get(categoryId)){
 			found.addAll(a.getAttributeValues(attributeId, issuer, dataType));
 		}
@@ -347,27 +348,27 @@ public class RequestContext
 	 * @param categoryId an attribute category
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
-	 * @return a collection of {@link AttributeValue} instances
+	 * @return a collection of {@link AttributeExp} instances
 	 */
-	public Collection<AttributeValue> getAttributeValues(
+	public Collection<AttributeExp> getAttributeValues(
 			AttributeCategory categoryId, 
 			String attributeId, 
-			AttributeValueType dataType)
+			AttributeExpType dataType)
 	{
 		return getAttributeValues(categoryId, attributeId, dataType, null);
 	}
 	
 	/**
-	 * Gets a single {@link AttributeValue} from this request
+	 * Gets a single {@link AttributeExp} from this request
 	 * 
 	 * @param categoryId an attribute category identifier
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
-	 * @return {@link AttributeValue} or <code>null</code>
+	 * @return {@link AttributeExp} or <code>null</code>
 	 */
-	public AttributeValue getAttributeValue(AttributeCategory categoryId, 
+	public AttributeExp getAttributeValue(AttributeCategory categoryId, 
 			String attributeId, 
-			AttributeValueType dataType){
+			AttributeExpType dataType){
 		return Iterables.getOnlyElement(
 				getAttributeValues(categoryId, attributeId, dataType), null);
 	}

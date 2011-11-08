@@ -15,21 +15,21 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationContextHandler;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValue;
+import com.artagon.xacml.v30.types.XPathExpressionValueExp;
 import com.google.common.base.Preconditions;
 
 class DefaultEvaluationContextHandler 
@@ -69,7 +69,7 @@ class DefaultEvaluationContextHandler
 	}
 	
 	@Override
-	public BagOfAttributeValues resolve(
+	public BagOfAttributesExp resolve(
 			EvaluationContext context, 
 			AttributeDesignatorKey key) 
 		throws EvaluationException 
@@ -77,7 +77,7 @@ class DefaultEvaluationContextHandler
 		
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
-		BagOfAttributeValues v  = requestCallback.getAttributeValue(
+		BagOfAttributesExp v  = requestCallback.getAttributeValue(
 				key.getCategory(), 
 				key.getAttributeId(), 
 				key.getDataType(), 
@@ -115,7 +115,7 @@ class DefaultEvaluationContextHandler
 
 
 	@Override
-	public BagOfAttributeValues resolve(
+	public BagOfAttributesExp resolve(
 			EvaluationContext context, 
 			AttributeSelectorKey ref)
 			throws EvaluationException 
@@ -126,7 +126,7 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			selectorResolutionStack.push(ref);
-			BagOfAttributeValues v =  doResolve(context, ref);
+			BagOfAttributesExp v =  doResolve(context, ref);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved " +
 						"selector=\"{}\" to bag=\"{}\"", ref, v);
@@ -262,7 +262,7 @@ class DefaultEvaluationContextHandler
 	 * 
 	 * @param context an evaluation context
 	 * @param ref an attribute reference
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 * @exception Exception
 	 */
 	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
@@ -302,7 +302,7 @@ class DefaultEvaluationContextHandler
 		}
 	}
 	
-	private final BagOfAttributeValues doResolve(
+	private final BagOfAttributesExp doResolve(
 			EvaluationContext context,
 			AttributeSelectorKey ref) throws EvaluationException 
 	{
@@ -313,7 +313,7 @@ class DefaultEvaluationContextHandler
 				return ref.getDataType().bagType().createEmpty();
 			}
 			Node contextNode = content;
-			BagOfAttributeValues v = requestCallback.getAttributeValue(
+			BagOfAttributesExp v = requestCallback.getAttributeValue(
 					ref.getCategory(), 
 						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()), 
 								XPathExpressionType.XPATHEXPRESSION, null);
@@ -322,7 +322,7 @@ class DefaultEvaluationContextHandler
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
 			}
 			if(v.size() == 1){
-				XPathExpressionValue xpath = v.value();
+				XPathExpressionValueExp xpath = v.value();
 				if(xpath.getCategory() != ref.getCategory()){
 					throw new AttributeReferenceEvaluationException(context, ref, 
 							"AttributeSelector category=\"%s\" and " +
@@ -335,7 +335,7 @@ class DefaultEvaluationContextHandler
 							"contextSelector xpath=\"{}\"", xpath.getValue());
 				}
 				contextNode = xpathProvider.evaluateToNode(
-						context.getXPathVersion(), xpath.getValue(), content);
+						context.getXPathVersion(), xpath.getPath(), content);
 			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
 					context.getXPathVersion(), ref.getPath(), contextNode);
@@ -343,7 +343,7 @@ class DefaultEvaluationContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
 						ref.getPath(), ref.getCategory());
-				return (BagOfAttributeValues)ref.getDataType().bagType().createEmpty();
+				return (BagOfAttributesExp)ref.getDataType().bagType().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
@@ -375,20 +375,20 @@ class DefaultEvaluationContextHandler
 	}
 	
 	/**
-	 * Converts a given node list to the {@link BagOfAttributeValues}
+	 * Converts a given node list to the {@link BagOfAttributesExp}
 	 * 
 	 * @param context an evaluation context
 	 * @param ref an attribute selector
 	 * @param nodeSet a node set
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 * @throws EvaluationException
 	 */
-	private BagOfAttributeValues toBag(
+	private BagOfAttributesExp toBag(
 			EvaluationContext context,
 			AttributeSelectorKey ref, NodeList nodeSet) 
 		throws EvaluationException
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(int i = 0; i< nodeSet.getLength(); i++)
 		{
 			Node n = nodeSet.item(i);
@@ -414,7 +414,7 @@ class DefaultEvaluationContextHandler
 			}
 			try
 			{
-				AttributeValue value = ref.getDataType().fromXacmlString(v);
+				AttributeExp value = ref.getDataType().fromXacmlString(v);
 				if(log.isDebugEnabled()){
 					log.debug("Node of type=\"{}\" " +
 							"converted attribute=\"{}\"", n.getNodeType(), value);
@@ -427,6 +427,6 @@ class DefaultEvaluationContextHandler
 						StatusCode.createSyntaxError(), e);
 			}
 		}
-	  	return (BagOfAttributeValues) ref.getDataType().bagType().create(values);
+	  	return (BagOfAttributesExp) ref.getDataType().bagType().create(values);
 	}
 }

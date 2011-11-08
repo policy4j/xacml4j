@@ -15,6 +15,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 

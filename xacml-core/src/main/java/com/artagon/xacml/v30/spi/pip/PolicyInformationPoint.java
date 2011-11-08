@@ -3,10 +3,10 @@ package com.artagon.xacml.v30.spi.pip;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.core.AttributeCategory;
 
 /**
  * A XACML Policy Information Point
@@ -28,10 +28,10 @@ public interface PolicyInformationPoint
 	 * 
 	 * @param context an evaluation context
 	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 * @throws Exception if an error occurs
 	 */
-	BagOfAttributeValues resolve(
+	BagOfAttributesExp resolve(
 			EvaluationContext context,
 			AttributeDesignatorKey ref) 
 		throws Exception;

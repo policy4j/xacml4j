@@ -18,7 +18,7 @@ public class DateTypeTest
 	
 	@Test
 	public void testFromXacmlString(){
-		DateValue value = t1.fromXacmlString("2002-09-24Z");
+		DateValueExp value = t1.fromXacmlString("2002-09-24Z");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(9, value.getValue().getMonth());
 		assertEquals(24, value.getValue().getDay());
@@ -35,8 +35,8 @@ public class DateTypeTest
 	public void testCreateFromCalendar()
 	{
 		Calendar now = Calendar.getInstance();
-		DateValue d1 = t1.create(now);
-		DateValue d2 = t1.create(now);
+		DateValueExp d1 = t1.create(now);
+		DateValueExp d2 = t1.create(now);
 		System.out.println(d1.toXacmlString());
 		assertEquals(d1, d2);
 	}

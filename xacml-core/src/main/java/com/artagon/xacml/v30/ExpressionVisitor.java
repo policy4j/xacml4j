@@ -7,10 +7,10 @@ package com.artagon.xacml.v30;
  */
 public interface ExpressionVisitor 
 {
-	void visitEnter(AttributeValue v);
-	void visitLeave(AttributeValue v);
-	void visitEnter(BagOfAttributeValues v);
-	void visitLeave(BagOfAttributeValues v);
+	void visitEnter(AttributeExp v);
+	void visitLeave(AttributeExp v);
+	void visitEnter(BagOfAttributesExp v);
+	void visitLeave(BagOfAttributesExp v);
 	void visitEnter(Apply v);
 	void visitLeave(Apply v);
 	void visitEnter(FunctionReference v);

@@ -14,6 +14,8 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.core.Version;
+
 public class PolicySetIDReferenceTest
 {
 	private EvaluationContext context;

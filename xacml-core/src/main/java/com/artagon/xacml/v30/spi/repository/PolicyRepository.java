@@ -7,9 +7,9 @@ import java.util.Collection;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Policy;
 import com.artagon.xacml.v30.PolicySet;
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.Version;
 
 
 /**

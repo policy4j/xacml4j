@@ -1,12 +1,13 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
 public class AttributeAssignment 
 {
-	private AttributeValue attribute;
+	private AttributeExp attribute;
 	private AttributeCategory category;
 	private String attributeId;
 	private String issuer;
@@ -24,7 +25,7 @@ public class AttributeAssignment
 			String attributeId, 
 			AttributeCategory category, 
 			String issuer, 
-			AttributeValue value)
+			AttributeExp value)
 	{
 		Preconditions.checkNotNull(attributeId, "Attribute id can't be null");
 		Preconditions.checkNotNull(value, "Attribute value can't be null");
@@ -36,7 +37,7 @@ public class AttributeAssignment
 	
 	public AttributeAssignment(
 			String attributeId, 
-			AttributeValue value)
+			AttributeExp value)
 	{
 		this(attributeId, null, null, value);
 	}
@@ -55,7 +56,7 @@ public class AttributeAssignment
 	 * 
 	 * @return attribute value
 	 */
-	public AttributeValue getAttribute(){
+	public AttributeExp getAttribute(){
 		return attribute;
 	}
 	

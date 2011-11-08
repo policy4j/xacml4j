@@ -17,7 +17,7 @@ import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 import com.artagon.xacml.v30.Apply;
 import com.artagon.xacml.v30.AttributeDesignator;
 import com.artagon.xacml.v30.AttributeSelector;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.DefaultExpressionVisitor;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionReference;
@@ -44,7 +44,7 @@ final class Xacml30PolicyExpressionFromModelToJaxbMapper
 	}
 	
 	@Override
-	public void visitEnter(AttributeValue v) 
+	public void visitEnter(AttributeExp v) 
 	{
 		AttributeValueType exp = objectFactory.createAttributeValueType();
 		exp.setDataType(v.getType().getDataTypeId());

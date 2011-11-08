@@ -1,0 +1,29 @@
+package com.artagon.xacml.v30;
+
+import java.io.Serializable;
+
+public interface AttributeExp 
+	extends ValueExpression, Serializable
+{
+	/**
+	 * Gets attribute type
+	 * 
+	 * @return {@Link AttributeValueType}
+	 */
+	AttributeExpType getType();
+	
+	/**
+	 * Gets attribute expression value
+	 * 
+	 * @return an attribute expression value
+	 */
+	Object getValue();
+	
+	/**
+	 * Converts this XACML attribute value
+	 * to {@link String}
+	 * 
+	 * @return this attribute value as {@link String}
+	 */
+	String toXacmlString();
+}

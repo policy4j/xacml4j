@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.InvocationFactory;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
@@ -91,7 +91,7 @@ class JavaMethodToFunctionSpecConverter
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				AttributeValueType type = DataTypes.getType(param.typeId());
+				AttributeExpType type = DataTypes.getType(param.typeId());
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log
@@ -131,7 +131,7 @@ class JavaMethodToFunctionSpecConverter
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				AttributeValueType type = DataTypes.getType(param.typeId());
+				AttributeExpType type = DataTypes.getType(param.typeId());
 				b.withParam(param.isBag() ? type.bagType() : type, param.min(),
 						param.max());
 				continue;
@@ -160,7 +160,7 @@ class JavaMethodToFunctionSpecConverter
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			AttributeValueType type = DataTypes.getType(returnType.typeId());
+			AttributeExpType type = DataTypes.getType(returnType.typeId());
 			return b.build(returnType.isBag() ? type.bagType() : type,
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
@@ -194,7 +194,7 @@ class JavaMethodToFunctionSpecConverter
 			return;
 		}
 			if (returnType.isBag() && 
-					!BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
+					!BagOfAttributesExp.class.isAssignableFrom(m.getReturnType())) {
 				throw new IllegalArgumentException(
 						String
 								.format(
@@ -203,7 +203,7 @@ class JavaMethodToFunctionSpecConverter
 										m.getName(), returnType.typeId(), m
 												.getReturnType()));
 			}
-		if(!returnType.isBag() && BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
+		if(!returnType.isBag() && BagOfAttributesExp.class.isAssignableFrom(m.getReturnType())) {
 			throw new IllegalArgumentException(String.format(
 					"Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),

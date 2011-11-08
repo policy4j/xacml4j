@@ -15,8 +15,8 @@ import com.artagon.xacml.v30.Policy;
 import com.artagon.xacml.v30.PolicyIDReference;
 import com.artagon.xacml.v30.PolicySet;
 import com.artagon.xacml.v30.PolicySetIDReference;
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.VersionMatch;
+import com.artagon.xacml.v30.core.Version;
 
 public class DefaultPolicyReferenceResolverTest
 {	

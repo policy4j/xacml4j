@@ -44,11 +44,9 @@ import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v30.AdviceExpression;
 import com.artagon.xacml.v30.Apply;
 import com.artagon.xacml.v30.AttributeAssignmentExpression;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeDesignator;
 import com.artagon.xacml.v30.AttributeSelector;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.CombinerParameters;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Condition;
@@ -71,8 +69,10 @@ import com.artagon.xacml.v30.Rule;
 import com.artagon.xacml.v30.Target;
 import com.artagon.xacml.v30.VariableDefinition;
 import com.artagon.xacml.v30.VariableReference;
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.core.Version;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
@@ -472,7 +472,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			throws XacmlSyntaxException {
 		Collection<AttributeAssignmentExpression> expressions = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentType attr : exp) {
-			AttributeValue value = createValue(attr.getDataType(), attr
+			AttributeExp value = createValue(attr.getDataType(), attr
 					.getContent());
 			expressions.add(new AttributeAssignmentExpression(attr.getAttributeId(), value));
 		}
@@ -615,20 +615,20 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	}
 
 	/**
-	 * Creates {@link AttributeValue} from a given {@link JAXBElement}
+	 * Creates {@link AttributeExp} from a given {@link JAXBElement}
 	 * 
 	 * @param element
 	 *            a JAXB element
-	 * @return {@link AttributeValue}
+	 * @return {@link AttributeExp}
 	 * @throws XacmlSyntaxException
 	 */
-	private AttributeValue createValue(
+	private AttributeExp createValue(
 			org.oasis.xacml.v20.jaxb.policy.AttributeValueType value)
 			throws XacmlSyntaxException {
 		return createValue(value.getDataType(), value.getContent());
 	}
 
-	private AttributeValue createValue(String dataType, List<Object> content)
+	private AttributeExp createValue(String dataType, List<Object> content)
 			throws XacmlSyntaxException {
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");

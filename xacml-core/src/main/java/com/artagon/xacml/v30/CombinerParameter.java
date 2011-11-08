@@ -12,7 +12,7 @@ public class CombinerParameter
 	implements PolicyElement
 {
 	private String name;
-	private AttributeValue value;
+	private AttributeExp value;
 	
 	/**
 	 * Constructs decision combining parameter
@@ -21,7 +21,7 @@ public class CombinerParameter
 	 * @param value a parameter value
 	 */
 	public CombinerParameter(String name, 
-			AttributeValue value)
+			AttributeExp value)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);
@@ -33,7 +33,7 @@ public class CombinerParameter
 		return name;
 	}
 	
-	public final AttributeValue getValue(){
+	public final AttributeExp getValue(){
 		return value;
 	}
 	

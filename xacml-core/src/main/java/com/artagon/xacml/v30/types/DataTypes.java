@@ -7,11 +7,11 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 
 /**
  * An enumeration  of all XACML 2.0 & 3.0 data types
@@ -93,7 +93,7 @@ public enum DataTypes
 	 */
 	YEARMONTHDURATION(YearMonthDurationType.YEARMONTHDURATION);
 
-	private static final Map<String, AttributeValueType> BY_TYPE_ID = new HashMap<String, AttributeValueType>();
+	private static final Map<String, AttributeExpType> BY_TYPE_ID = new HashMap<String, AttributeExpType>();
 
 	static {
 		for (DataTypes t : EnumSet.allOf(DataTypes.class)) {
@@ -114,36 +114,36 @@ public enum DataTypes
 						DataTypes.YEARMONTHDURATION.getDataType());
 	}
 
-	private AttributeValueType type;
+	private AttributeExpType type;
 
-	private DataTypes(AttributeValueType type) {
+	private DataTypes(AttributeExpType type) {
 		this.type = type;
 	}
 	
 	
 	/**
-	 * Gets underlying XACML {@link AttributeValueType}
+	 * Gets underlying XACML {@link AttributeExpType}
 	 * 
-	 * @return {@link AttributeValueType}
+	 * @return {@link AttributeExpType}
 	 */
-	public AttributeValueType getDataType() {
+	public AttributeExpType getDataType() {
 		return type;
 	}
 	
 	/**
-	 * Gets {@link AttributeValueType} instance
+	 * Gets {@link AttributeExpType} instance
 	 * via type identifier
 	 * 
 	 * @param <T>
 	 * @param typeId a type identifier
-	 * @return {@link AttributeValueType}
+	 * @return {@link AttributeExpType}
 	 * @throws XacmlSyntaxException
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends AttributeValueType> T getType(String typeId) 
+	public static <T extends AttributeExpType> T getType(String typeId) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType type = BY_TYPE_ID.get(typeId);
+		AttributeExpType type = BY_TYPE_ID.get(typeId);
 		if(type == null){
 			throw new XacmlSyntaxException(
 					"Unknow XACML typeId=\"%s\"", typeId);
@@ -156,22 +156,22 @@ public enum DataTypes
 	 * 
 	 * @param typeId a type identifier
 	 * @param value an attribute value
-	 * @return {@link AttributeValue} instance
+	 * @return {@link AttributeExp} instance
 	 * @throws XacmlSyntaxException if attribute can 
 	 * not be created from a given value or given type
 	 * identifier does not represent valid XACML data type
 	 */
-	public static AttributeValue createAttributeValue(String typeId, Object value)
+	public static AttributeExp createAttributeValue(String typeId, Object value)
 			throws XacmlSyntaxException 
 	{
 		return createAttributeValue(typeId, value, Collections.<QName, String> emptyMap());
 	}
 
-	public static AttributeValue createAttributeValue(
+	public static AttributeExp createAttributeValue(
 			String typeId,
 			Object value,
 			Object... values) throws XacmlSyntaxException {
-		AttributeValueType type = getType(typeId);
+		AttributeExpType type = getType(typeId);
 		try {
 			return type.create(value, values);
 		} catch (Exception e) {
@@ -179,10 +179,10 @@ public enum DataTypes
 		}
 	}
 
-	public static AttributeValue createAttributeValue(String typeId, 
+	public static AttributeExp createAttributeValue(String typeId, 
 			Object value, Map<QName, String> values) throws XacmlSyntaxException 
 	{
-		AttributeValueType type = getType(typeId);
+		AttributeExpType type = getType(typeId);
 		try {
 			return type.create(value, getXPathCategory(values));
 		} catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.google.common.base.Objects;
 
 public final class AttributeSelectorKey 
@@ -10,7 +11,7 @@ public final class AttributeSelectorKey
 	private int hashCode;
 	
 	public AttributeSelectorKey(AttributeCategory category, 
-			String xpath, AttributeValueType dataType, 
+			String xpath, AttributeExpType dataType, 
 			String contextAttributeId){
 		super(category, dataType);
 		this.xpath = xpath;
@@ -40,7 +41,7 @@ public final class AttributeSelectorKey
 	
 	
 	@Override
-	public BagOfAttributeValues resolve(EvaluationContext context)
+	public BagOfAttributesExp resolve(EvaluationContext context)
 			throws EvaluationException {
 		return context.resolve(this);
 	}

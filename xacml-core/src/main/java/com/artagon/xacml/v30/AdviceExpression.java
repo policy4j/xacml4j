@@ -3,6 +3,8 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression
 {

@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.artagon.xacml.v30.AttributeValue;
-import com.artagon.xacml.v30.AttributeValueType;
-import com.artagon.xacml.v30.BagOfAttributeValues;
-import com.artagon.xacml.v30.BagOfAttributeValuesType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributesExpType;
 import com.google.common.base.Preconditions;
 
 /** 
@@ -26,31 +26,30 @@ import com.google.common.base.Preconditions;
  * <br>The distinguished name must be specified using the grammar defined 
  * in RFC 1779 or RFC 2253 (either format is acceptable). 
  */
-public enum X500NameType implements AttributeValueType
+public enum X500NameType implements AttributeExpType
 {
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
 	
 	private String typeId;
-	private BagOfAttributeValuesType bagType;
+	private BagOfAttributesExpType bagType;
 	
 	private X500NameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfAttributesExpType(this);
 	}
 	
-	@Override
 	public boolean isConvertableFrom(Object any) {
 		return X500Principal.class.isInstance(any) || String.class.isInstance(any);
 	}
 	
 	@Override
-	public X500NameValue fromXacmlString(String v, Object ...params) {
+	public X500NameValueExp fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
-		return new X500NameValue(this, new X500Principal(v));
+		return new X500NameValueExp(this, new X500Principal(v));
 	}
 	
 	@Override
-	public X500NameValue create(Object any, Object ...params){
+	public X500NameValueExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"x500Name\" type", 
@@ -58,7 +57,7 @@ public enum X500NameType implements AttributeValueType
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new X500NameValue(this, (X500Principal)any);
+		return new X500NameValueExp(this, (X500Principal)any);
 	}
 	@Override
 	public String getDataTypeId() {
@@ -66,27 +65,27 @@ public enum X500NameType implements AttributeValueType
 	}
 
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfAttributesExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(AttributeValue... values) {
+	public BagOfAttributesExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Collection<AttributeValue> values) {
+	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributeValues bagOf(Object... values) {
+	public BagOfAttributesExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributeValues emptyBag() {
+	public BagOfAttributesExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

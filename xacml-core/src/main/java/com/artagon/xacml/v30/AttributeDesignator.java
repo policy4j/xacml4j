@@ -3,6 +3,8 @@ package com.artagon.xacml.v30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Objects;
 
@@ -45,7 +47,7 @@ public class AttributeDesignator extends AttributeReference
 			AttributeCategory  category,
 			String attributeId, 
 			String issuer,
-			AttributeValueType dataType, 
+			AttributeExpType dataType, 
 			boolean mustBePresent){
 		super(mustBePresent);
 		this.designatorKey = new AttributeDesignatorKey(category, attributeId, dataType, issuer);
@@ -56,7 +58,7 @@ public class AttributeDesignator extends AttributeReference
 			String attributeId, String issuer, String dataTypeId, boolean mustBePresent) 
 		throws XacmlSyntaxException
 	{
-		AttributeValueType type = DataTypes.getType(dataTypeId);
+		AttributeExpType type = DataTypes.getType(dataTypeId);
 		return new AttributeDesignator(category, attributeId, 
 				issuer, type, mustBePresent);
 	}
@@ -99,16 +101,16 @@ public class AttributeDesignator extends AttributeReference
 	/**
 	 * Evaluates this attribute designator by resolving
 	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String, 
-	 * String, AttributeValueType, String)
+	 * String, AttributeExpType, String)
 	 * 
-	 * @return {@link BagOfAttributeValues} instance 
+	 * @return {@link BagOfAttributesExp} instance 
 	 * @exception EvaluationIndeterminateException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
-	public BagOfAttributeValues evaluate(EvaluationContext context)
+	public BagOfAttributesExp evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributeValues v = null;
+		BagOfAttributesExp v = null;
 		try{
 			v = designatorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){

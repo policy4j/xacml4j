@@ -33,9 +33,7 @@ import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeValue;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Effect;
@@ -46,6 +44,8 @@ import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.core.AttributeCategory;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.artagon.xacml.v30.types.XPathExpressionType;
 import com.google.common.collect.Iterables;
@@ -156,7 +156,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 			Attribute resourceId = Iterables.getOnlyElement(attrs);
 			return Iterables.getOnlyElement(resourceId.getValues()).toXacmlString();
 		}
-		Collection<AttributeValue> values =  resource.getAttributeValues(
+		Collection<AttributeExp> values =  resource.getAttributeValues(
 				CONTENT_SELECTOR, XPathExpressionType.XPATHEXPRESSION);
 		if(values.isEmpty() ||
 				values.size() > 1){
@@ -209,7 +209,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 	private AttributeAssignmentType create(AttributeAssignment a)
 	{
 		AttributeAssignmentType attr = new AttributeAssignmentType();
-		com.artagon.xacml.v30.AttributeValueType t = (com.artagon.xacml.v30.AttributeValueType)(a.getAttribute().getType());
+		com.artagon.xacml.v30.AttributeExpType t = (com.artagon.xacml.v30.AttributeExpType)(a.getAttribute().getType());
 		attr.setDataType(t.getDataTypeId());
 		attr.setAttributeId(a.getAttributeId());
 		attr.getContent().add(a.getAttribute().toXacmlString());
@@ -336,9 +336,9 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 				boolean incudeInResultResourceId) 
 		throws XacmlSyntaxException
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(AttributeValueType v : a.getAttributeValue()){
-			AttributeValue value = createValue(a.getDataType(), v, category);
+			AttributeExp value = createValue(a.getDataType(), v, category);
 			if(log.isDebugEnabled()){
 				log.debug("Found attribute value=\"{}\" in request", value);
 			}
@@ -348,7 +348,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 				((a.getAttributeId().equals(RESOURCE_ID))?incudeInResultResourceId:false), values);
 	}
 	
-	private AttributeValue createValue(String dataTypeId, 
+	private AttributeExp createValue(String dataTypeId, 
 			AttributeValueType value, 
 			AttributeCategory categoryId) 
 		throws XacmlSyntaxException
@@ -358,7 +358,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 				content.isEmpty()){
 			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		com.artagon.xacml.v30.AttributeValueType dataType = DataTypes.getType(dataTypeId);
+		com.artagon.xacml.v30.AttributeExpType dataType = DataTypes.getType(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be " +

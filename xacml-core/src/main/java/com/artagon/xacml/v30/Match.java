@@ -3,7 +3,7 @@ package com.artagon.xacml.v30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.types.BooleanValue;
+import com.artagon.xacml.v30.types.BooleanValueExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -11,7 +11,7 @@ public class Match implements PolicyElement, Matchable
 {	
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 	
-	private AttributeValue value;
+	private AttributeExp value;
 	private AttributeReference attributeRef;
 	private FunctionSpec predicate;
 	
@@ -24,7 +24,7 @@ public class Match implements PolicyElement, Matchable
 	 */
 	public Match(
 			FunctionSpec spec, 
-			AttributeValue value, 
+			AttributeExp value, 
 			AttributeReference attributeReference)
 	{
 		Preconditions.checkNotNull(spec);
@@ -57,7 +57,7 @@ public class Match implements PolicyElement, Matchable
 	 * 
 	 * @return {@link Attribute<?>} instance
 	 */
-	public AttributeValue getAttributeValue(){
+	public AttributeExp getAttributeValue(){
 		return value;
 	}
 	
@@ -66,13 +66,13 @@ public class Match implements PolicyElement, Matchable
 	{
 		try
 		{
-			BagOfAttributeValues attributes = attributeRef.evaluate(context);
+			BagOfAttributesExp attributes = attributeRef.evaluate(context);
 			if(log.isDebugEnabled()){
 				log.debug("Evaluated attribute reference=\"{}\" to " +
 						"bag=\"{}\"", attributeRef, attributes);
 			}
-			for(AttributeValue v : attributes.values()){
-				BooleanValue match = predicate.invoke(context, value, v);
+			for(AttributeExp v : attributes.values()){
+				BooleanValueExp match = predicate.invoke(context, value, v);
 				if(match.getValue()){
 					if(log.isDebugEnabled()){
 						log.debug("Attribute value=\"{}\" " +

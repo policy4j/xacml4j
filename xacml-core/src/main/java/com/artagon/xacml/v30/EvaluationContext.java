@@ -8,6 +8,9 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.core.XPathVersion;
+
 public interface EvaluationContext 
 {	
 	/**
@@ -213,31 +216,31 @@ public interface EvaluationContext
 	
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
-	 * to the {@link BagOfAttributeValues}
+	 * to the {@link BagOfAttributesExp}
 	 * 
 	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given designator
 	 */
-	BagOfAttributeValues resolve(AttributeDesignatorKey ref) 
+	BagOfAttributesExp resolve(AttributeDesignatorKey ref) 
 		throws EvaluationException;
 	
 	/**
 	 * Resolves a given {@link AttributeSelectorKey}
-	 * to the {@link BagOfAttributeValues}
+	 * to the {@link BagOfAttributesExp}
 	 * 
 	 * @param ref an attribute selector
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfAttributesExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
 	 */
-	BagOfAttributeValues resolve(AttributeSelectorKey ref) 
+	BagOfAttributesExp resolve(AttributeSelectorKey ref) 
 		throws EvaluationException;
 	
-	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeValues v);
+	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributesExp v);
 	
-	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
+	Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators();
 	
 	/**
 	 * Evaluates a given XPath expression

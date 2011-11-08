@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributesExp;
 import com.google.common.base.Preconditions;
 
 /**
@@ -62,11 +62,11 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		{
 			invocationCount.incrementAndGet();
 			long start = System.currentTimeMillis();
-			Map<String, BagOfAttributeValues> v = doResolve(context);
+			Map<String, BagOfAttributesExp> v = doResolve(context);
 			lastInvocationDuration.set(System.currentTimeMillis() - start);
 			successCount.incrementAndGet();
 			return new AttributeSet(descriptor, 
-					(v != null)?v:Collections.<String, BagOfAttributeValues>emptyMap());
+					(v != null)?v:Collections.<String, BagOfAttributesExp>emptyMap());
 		}catch(Exception e){
 			failuresCount.incrementAndGet();
 			throw e;
@@ -78,10 +78,10 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	 * 
 	 * @param context a policy information context
 	 * @return a resolved map of attribute values as instances a
-	 *  {@link BagOfAttributeValues} mapped by an attribute identifier
+	 *  {@link BagOfAttributesExp} mapped by an attribute identifier
 	 * @throws Exception if an error occurs
 	 */
-	protected abstract Map<String, BagOfAttributeValues> doResolve(
+	protected abstract Map<String, BagOfAttributesExp> doResolve(
 			ResolverContext context) throws Exception;
 
 	@Override
