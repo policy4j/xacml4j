@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.google.common.base.Preconditions;
 
-public abstract class BaseCalendar <T extends BaseCalendar<?>>  
+abstract class BaseCalendar <T extends BaseCalendar<?>>  
 	implements Serializable, Comparable<T>
 {
 	private static final long serialVersionUID = -1896156800821765849L;
@@ -31,8 +31,13 @@ public abstract class BaseCalendar <T extends BaseCalendar<?>>
 		this.calendar =  calendar;
 	}
 	
-	private final static XMLGregorianCalendar parseXmlCalendar(Object v)
-	{
+	/**
+	 * Creates an {@link XMLGregorianCalendar} from given object
+	 * 
+	 * @param v a representation of {@link XMLGregorianCalendar}
+	 * @return {@link XMLGregorianCalendar}
+	 */
+	private final static XMLGregorianCalendar parseXmlCalendar(Object v){
 		XMLGregorianCalendar c = null;
 		if(String.class.isInstance(v)){
 			c = df.newXMLGregorianCalendar((String)v);

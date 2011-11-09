@@ -17,5 +17,11 @@ public interface AttributeCategory
 	 */
 	boolean isDelegated();
 	
+	/**
+	 * Converts this category to 
+	 * XACML delegated category.
+	 * 
+	 * @return {@link AttributeCategory}
+	 */
 	AttributeCategory toDelegatedCategory();
 }
