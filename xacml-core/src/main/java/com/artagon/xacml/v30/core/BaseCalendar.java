@@ -8,7 +8,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v30.types.TimeExp;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseCalendar <T extends BaseCalendar<?>>  
