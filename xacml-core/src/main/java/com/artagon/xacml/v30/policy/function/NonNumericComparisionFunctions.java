@@ -1,8 +1,5 @@
 package com.artagon.xacml.v30.policy.function;
 
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import com.artagon.xacml.v30.Time;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
@@ -10,10 +7,10 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.BooleanExp;
-import com.artagon.xacml.v30.types.DateTimeExp;
+import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.DateExp;
+import com.artagon.xacml.v30.types.DateTimeExp;
 import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.TimeExp;
 import com.google.common.base.Preconditions;
