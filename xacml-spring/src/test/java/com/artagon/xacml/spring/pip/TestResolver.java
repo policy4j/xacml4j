@@ -5,7 +5,7 @@ import java.util.Map;
 import org.junit.Ignore;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDescriptor;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDesignator;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeResolverDescriptor;
@@ -21,18 +21,18 @@ public class TestResolver
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#double", id="testId4")
 	})
-	public Map<String, BagOfAttributeValues> resolveAttributes1(
+	public Map<String, BagOfAttributeExp> resolveAttributes1(
 			@XacmlAttributeDesignator(category="test", attributeId="attr1", 
-					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, 
+					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, 
 			@XacmlAttributeDesignator(category="test", attributeId="attr2", 
-					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributeValues k2)
+					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributeExp k2)
 	{
 		return null;
 	}
 		
 	@XacmlContentResolverDescriptor(id="testId", name="Test", category="subject", cacheTTL=30)
 	public Node resolveContent1(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1)
 	{
 		return null;
 	}
