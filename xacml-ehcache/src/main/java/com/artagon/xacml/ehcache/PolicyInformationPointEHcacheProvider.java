@@ -6,7 +6,7 @@ import java.util.Map;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;
 import com.artagon.xacml.v30.spi.pip.BasePolicyInformationPointCacheProvider;
@@ -32,7 +32,7 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 	@Override
 	@SuppressWarnings("unchecked")
 	protected AttributeSet doGetAttributes(AttributeResolverDescriptor d,
-			List<BagOfAttributeValues> keys) 
+			List<BagOfAttributeExp> keys) 
 	{	
 		Object k = createKey(d, keys);
 		Element e = attributesCache.get(k);
@@ -43,11 +43,11 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 		if(v == null){
 			return null;
 		}
-		return new AttributeSet(d, (Map<String, BagOfAttributeValues>)v);
+		return new AttributeSet(d, (Map<String, BagOfAttributeExp>)v);
 	}
 
 	@Override
-	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributeValues> keys,
+	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributeExp> keys,
 			AttributeSet v) {
 		Object k = createKey(d, keys);
 		Element e = new Element(k, v.toMap());
@@ -57,7 +57,7 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 
 	@Override
 	protected Content doGetContent(ContentResolverDescriptor d,
-			List<BagOfAttributeValues> keys) 
+			List<BagOfAttributeExp> keys) 
 	{
 		Object k = createKey(d, keys);
 		Element e = contentCache.get(k);
@@ -73,7 +73,7 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 
 	@Override
 	protected void doPutContent(ContentResolverDescriptor d,
-			List<BagOfAttributeValues> keys, Content content) 
+			List<BagOfAttributeExp> keys, Content content) 
 	{
 		Object k = createKey(d, keys);
 		Element e = new Element(k, content);
@@ -81,7 +81,7 @@ public class PolicyInformationPointEHcacheProvider extends BasePolicyInformation
 		contentCache.put(e);
 	}
 	
-	private Object createKey(ResolverDescriptor d, List<BagOfAttributeValues> keys)
+	private Object createKey(ResolverDescriptor d, List<BagOfAttributeExp> keys)
 	{
 		return new ResolverCacheKey(d.getId(), keys);
 	}

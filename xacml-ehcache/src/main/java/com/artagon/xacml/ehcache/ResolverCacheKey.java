@@ -3,7 +3,7 @@ package com.artagon.xacml.ehcache;
 import java.io.Serializable;
 import java.util.List;
 
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -18,10 +18,10 @@ final class ResolverCacheKey implements Serializable
 	private static final long serialVersionUID = -6895205924708410228L;
 	
 	private String resolverId;
-	private List<BagOfAttributeValues> keys;
+	private List<BagOfAttributeExp> keys;
 	
 	public ResolverCacheKey(String resolverId, 
-			List<BagOfAttributeValues> keys){
+			List<BagOfAttributeExp> keys){
 		Preconditions.checkNotNull(resolverId);
 		this.resolverId = resolverId;
 		this.keys = keys;

@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.BagOfAttributeValues;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;
@@ -57,7 +57,7 @@ public class PolicyInformationPointEHcacheProviderTest extends AbstractJUnit4Spr
 		expect(context.getDescriptor()).andReturn(attrDesc);
 		expect(context.getKeys()).andReturn(ImmutableList.of(StringType.STRING.bagOf("v1")));
 		c.replay();
-		Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>();
+		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();
 		v.put("testAttr1", StringType.STRING.bagOf("v1"));
 		v.put("testAttr2", IntegerType.INTEGER.bagOf(1, 2, 3));
 		AttributeSet set1 = new AttributeSet(attrDesc, v);
