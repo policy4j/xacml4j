@@ -49,8 +49,7 @@ public abstract class BaseAttributeExpType<V extends AttributeExp> extends Xacml
 	}
 	
 	@Override
-	public final BagOfAttributeExp bagOf(AttributeExp... values) 
-	{	
+	public final BagOfAttributeExp bagOf(AttributeExp... values){	
 		return bagType().create(values);
 	}
 

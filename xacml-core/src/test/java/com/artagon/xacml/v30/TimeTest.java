@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.types;
+package com.artagon.xacml.v30;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
