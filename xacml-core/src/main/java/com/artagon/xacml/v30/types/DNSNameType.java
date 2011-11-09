@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.core.DNSName;
 import com.artagon.xacml.v30.core.PortRange;
 import com.google.common.base.Preconditions;
@@ -39,31 +39,31 @@ public enum DNSNameType implements AttributeExpType
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	
 	private DNSNameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
 		return String.class.isInstance(any);
 	}
 	
-	public DNSNameValueExp create(String name){
+	public DNSNameExp create(String name){
 		return create(name, PortRange.getAnyPort());
 	}
 	
-	public DNSNameValueExp create(String name, PortRange range){
-		return new DNSNameValueExp(this, new DNSName(name, range));
+	public DNSNameExp create(String name, PortRange range){
+		return new DNSNameExp(this, new DNSName(name, range));
 	}
 	
-	public DNSNameValueExp create(String name, Integer lowerBound, Integer upperBound ){
+	public DNSNameExp create(String name, Integer lowerBound, Integer upperBound ){
 		return create(name, PortRange.getRange(lowerBound, upperBound));
 	}
 	
 	@Override
-	public DNSNameValueExp create(Object o, Object ...params) {
+	public DNSNameExp create(Object o, Object ...params) {
 		Preconditions.checkNotNull(o);
 		Preconditions.checkArgument(isConvertableFrom(o), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"DNSName\" type", 
@@ -72,8 +72,8 @@ public enum DNSNameType implements AttributeExpType
 	}
 
 	@Override
-	public DNSNameValueExp fromXacmlString(String v, Object ...params) {
-		return new DNSNameValueExp(this, 
+	public DNSNameExp fromXacmlString(String v, Object ...params) {
+		return new DNSNameExp(this, 
 				DNSName.parse(v));
 	}
 	
@@ -83,27 +83,27 @@ public enum DNSNameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.XacmlObject;
 import com.google.common.base.Preconditions;
 
@@ -9,7 +9,7 @@ public final class AttributeDescriptor extends XacmlObject
 {
 	private String attributeId;
 	private AttributeExpType dataType;
-	private BagOfAttributesExp defaultValue;
+	private BagOfAttributeExp defaultValue;
 	
 	/**
 	 * Constructs attribute descriptor
@@ -39,7 +39,7 @@ public final class AttributeDescriptor extends XacmlObject
 	 * Gets attribute defal
 	 * @return
 	 */
-	public BagOfAttributesExp getDefaultValue(){
+	public BagOfAttributeExp getDefaultValue(){
 		return defaultValue;
 	}
 	

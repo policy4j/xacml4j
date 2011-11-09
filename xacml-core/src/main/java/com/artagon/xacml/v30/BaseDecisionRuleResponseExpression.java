@@ -115,7 +115,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 						(AttributeExp)val));
 				continue;
 			}
-			BagOfAttributesExp bag = (BagOfAttributesExp)val;
+			BagOfAttributeExp bag = (BagOfAttributeExp)val;
 			for(AttributeExp v : bag.values()){
 				attr.add(new AttributeAssignment(
 						attrExp.getAttributeId(), 

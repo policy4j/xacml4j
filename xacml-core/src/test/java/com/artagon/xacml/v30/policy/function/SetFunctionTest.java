@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
@@ -113,9 +113,9 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributesExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
-		BagOfAttributesExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
-		BagOfAttributesExp c = SetFunctions.booleanUnion(a, b);
+		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
 		assertTrue(c.contains(BooleanType.BOOLEAN.create(true)));
 		assertTrue(c.contains(BooleanType.BOOLEAN.create(false)));
@@ -124,25 +124,25 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributesExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
-		BagOfAttributesExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true));
 		assertEquals(BooleanType.BOOLEAN.create(true), SetFunctions.booleanSetEquals(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributesExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
-		BagOfAttributesExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
 		assertEquals(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true)), SetFunctions.booleanIntersection(a, b));
 	}
 	
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributesExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
-		BagOfAttributesExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false));
-		BagOfAttributesExp c = SetFunctions.booleanIntersection(a, b);
+		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
+		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 		
 		b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));

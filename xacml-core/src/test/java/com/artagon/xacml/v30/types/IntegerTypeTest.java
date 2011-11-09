@@ -32,9 +32,9 @@ public class IntegerTypeTest
 	@Test
 	public void testEquals()
 	{
-		IntegerValueExp v0 = t.create(3l);
-		IntegerValueExp v1 = t.create(2l);
-		IntegerValueExp v2 = t.create(3l);
+		IntegerExp v0 = t.create(3l);
+		IntegerExp v1 = t.create(2l);
+		IntegerExp v2 = t.create(3l);
 		assertEquals(v0, v2);
 		assertFalse(v1.equals(v2));
 	}

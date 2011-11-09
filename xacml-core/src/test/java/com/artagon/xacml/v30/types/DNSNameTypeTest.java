@@ -20,7 +20,7 @@ public class DNSNameTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		DNSNameValueExp a = t1.fromXacmlString("test.org:10-20");
+		DNSNameExp a = t1.fromXacmlString("test.org:10-20");
 		DNSName v = a.getValue();
 		assertEquals("test.org", v.getDomainName());
 		assertEquals(10, v.getPortRange().getLowerBound());
@@ -42,17 +42,17 @@ public class DNSNameTypeTest
 	@Test
 	public void testEquals()
 	{
-		DNSNameValueExp v1 = t1.fromXacmlString("test.org:10-20");
-		DNSNameValueExp v2 = t1.fromXacmlString("test.org:10-20");
+		DNSNameExp v1 = t1.fromXacmlString("test.org:10-20");
+		DNSNameExp v2 = t1.fromXacmlString("test.org:10-20");
 		assertEquals(v1, v2);
 	}
 	
 	@Test
 	public void testToXacmlString()
 	{
-		DNSNameValueExp v1 = t1.fromXacmlString("test.org:10-20");
+		DNSNameExp v1 = t1.fromXacmlString("test.org:10-20");
 		assertEquals("test.org:10-20", v1.toXacmlString());
-		DNSNameValueExp v2 = t1.fromXacmlString("test.org");
+		DNSNameExp v2 = t1.fromXacmlString("test.org");
 		assertEquals("test.org", v2.toXacmlString());
 	}
 }

@@ -212,14 +212,14 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public BagOfAttributesExp resolve(
+	public BagOfAttributeExp resolve(
 			AttributeDesignatorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
 	
 	@Override
-	public BagOfAttributesExp resolve(
+	public BagOfAttributeExp resolve(
 			AttributeSelectorKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
@@ -232,7 +232,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 
 	@Override
 	public void setResolvedDesignatorValue(AttributeDesignatorKey ref,
-			BagOfAttributesExp v) {
+			BagOfAttributeExp v) {
 		delegate.setResolvedDesignatorValue(ref, v);
 	}
 
@@ -247,7 +247,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators() {
+	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		return delegate.getResolvedDesignators();
 	}
 }

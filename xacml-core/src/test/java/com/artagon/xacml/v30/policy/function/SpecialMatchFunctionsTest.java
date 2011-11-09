@@ -10,11 +10,11 @@ import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.RFC822NameType;
-import com.artagon.xacml.v30.types.RFC822NameValueExp;
+import com.artagon.xacml.v30.types.RFC822NameExp;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValueExp;
+import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.X500NameType;
-import com.artagon.xacml.v30.types.X500NameValueExp;
+import com.artagon.xacml.v30.types.X500NameExp;
 
 public class SpecialMatchFunctionsTest 
 {
@@ -36,8 +36,8 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testRFC822NameMatch()
 	{
-		StringValueExp p = StringType.STRING.create(".sun.com");
-		RFC822NameValueExp n = RFC822NameType.RFC822NAME.create("test@east.sun.com");
+		StringExp p = StringType.STRING.create(".sun.com");
+		RFC822NameExp n = RFC822NameType.RFC822NAME.create("test@east.sun.com");
 		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 		
 		p = StringType.STRING.create("sun.com");
@@ -48,8 +48,8 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testX500NameMatch()
 	{
-		X500NameValueExp a = X500NameType.X500NAME.create("ou=org,o=com");
-		X500NameValueExp b = X500NameType.X500NAME.create("cn=test, ou=org,o=com");
+		X500NameExp a = X500NameType.X500NAME.create("ou=org,o=com");
+		X500NameExp b = X500NameType.X500NAME.create("cn=test, ou=org,o=com");
 		
 		assertEquals(BooleanType.BOOLEAN.create(true), SpecialMatchFunctions.x500NameMatch(a, b));
 		

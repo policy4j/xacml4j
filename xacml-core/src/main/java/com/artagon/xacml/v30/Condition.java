@@ -5,7 +5,7 @@ import static com.artagon.xacml.v30.types.BooleanType.BOOLEAN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.DataTypes;
 
 /**
@@ -26,7 +26,7 @@ public class Condition extends XacmlObject implements PolicyElement
 	 * expression
 	 * 
 	 * @param predicate an expression which always evaluates
-	 * to {@link BooleanValueExp}
+	 * to {@link BooleanExp}
 	 */
 	public Condition(Expression predicate) 
 	{
@@ -59,7 +59,7 @@ public class Condition extends XacmlObject implements PolicyElement
 	{
 		try
 		{
-			BooleanValueExp result = (BooleanValueExp)predicate.evaluate(context);
+			BooleanExp result = (BooleanExp)predicate.evaluate(context);
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){

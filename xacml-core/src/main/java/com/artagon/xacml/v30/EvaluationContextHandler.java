@@ -33,11 +33,11 @@ public interface EvaluationContextHandler
 			AttributeCategory categoryId) 
 		throws EvaluationException;
 	
-	BagOfAttributesExp resolve(
+	BagOfAttributeExp resolve(
 			EvaluationContext context,
 			AttributeDesignatorKey key) throws EvaluationException;
 	
-	BagOfAttributesExp resolve(
+	BagOfAttributeExp resolve(
 			EvaluationContext context,
 			AttributeSelectorKey key) throws EvaluationException;
 }

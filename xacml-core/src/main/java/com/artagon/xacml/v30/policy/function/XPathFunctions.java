@@ -13,11 +13,11 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.IntegerValueExp;
-import com.artagon.xacml.v30.types.StringValueExp;
-import com.artagon.xacml.v30.types.XPathExpressionValueExp;
+import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.XPathExp;
 
 /**
  * This class implements functions that take XPath expressions for arguments. 
@@ -34,9 +34,9 @@ public class XPathFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp xpathCount(
+	public static IntegerExp xpathCount(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExpressionValueExp xpath) 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath) 
 	{
 		try{
 			NodeList nodes = context.evaluateToNodeSet(xpath.getPath(), xpath.getCategory());
@@ -51,9 +51,9 @@ public class XPathFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp xpathCountXacml2(
+	public static IntegerExp xpathCountXacml2(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValueExp xpath) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath) 
 	{
 		return xpathCount(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
@@ -61,10 +61,10 @@ public class XPathFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp xpathNodeEqual(
+	public static BooleanExp xpathNodeEqual(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExpressionValueExp xpath0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExpressionValueExp xpath1) 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath0,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1) 
 	{		
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(), xpath0.getCategory());
@@ -88,10 +88,10 @@ public class XPathFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp xpathNodeEqualXacml20(
+	public static BooleanExp xpathNodeEqualXacml20(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValueExp xpath0,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValueExp xpath1)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath0,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1)
 	{
 		return xpathNodeEqual(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
@@ -100,10 +100,10 @@ public class XPathFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp xpathNodeMatch(
+	public static BooleanExp xpathNodeMatch(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExpressionValueExp xpath0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExpressionValueExp xpath1) 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath0,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1) 
 	{		
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(), 
@@ -145,10 +145,10 @@ public class XPathFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp xpathNodeMatchXacml20(
+	public static BooleanExp xpathNodeMatchXacml20(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValueExp xpath0,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValueExp xpath1) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath0,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1) 
 	{
 		return xpathNodeMatch(context, 
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),

@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.XacmlObject;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -18,13 +18,13 @@ import com.google.common.base.Preconditions;
  * 
  * @author Giedrius Trumpickas
  */
-public abstract class BaseAttributeType<V extends AttributeExp> extends XacmlObject 
+public abstract class BaseAttributeExpType<V extends AttributeExp> extends XacmlObject 
 	implements AttributeExpType
 {
 	private static final long serialVersionUID = -8812998715997567246L;
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	/**
@@ -32,11 +32,11 @@ public abstract class BaseAttributeType<V extends AttributeExp> extends XacmlObj
 	 * 
 	 * @param typeId an attribute type identifier
 	 */
-	protected BaseAttributeType(String typeId)
+	protected BaseAttributeExpType(String typeId)
 	{
 		Preconditions.checkNotNull(typeId);
 		this.typeId = typeId;		
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
 	public final String getDataTypeId(){
@@ -44,24 +44,24 @@ public abstract class BaseAttributeType<V extends AttributeExp> extends XacmlObj
 	}
 	
 	@Override
-	public final BagOfAttributesExpType bagType(){
+	public final BagOfAttributeExpType bagType(){
 		return bagType;
 	}
 	
 	@Override
-	public final BagOfAttributesExp bagOf(AttributeExp... values) 
+	public final BagOfAttributeExp bagOf(AttributeExp... values) 
 	{	
 		return bagType().create(values);
 	}
 
 	@Override
-	public final BagOfAttributesExp bagOf(
+	public final BagOfAttributeExp bagOf(
 			Collection<AttributeExp> values) {
 		return bagType().create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType().createEmpty();
 	}
 

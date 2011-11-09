@@ -216,31 +216,31 @@ public interface EvaluationContext
 	
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
-	 * to the {@link BagOfAttributesExp}
+	 * to the {@link BagOfAttributeExp}
 	 * 
 	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given designator
 	 */
-	BagOfAttributesExp resolve(AttributeDesignatorKey ref) 
+	BagOfAttributeExp resolve(AttributeDesignatorKey ref) 
 		throws EvaluationException;
 	
 	/**
 	 * Resolves a given {@link AttributeSelectorKey}
-	 * to the {@link BagOfAttributesExp}
+	 * to the {@link BagOfAttributeExp}
 	 * 
 	 * @param ref an attribute selector
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
 	 */
-	BagOfAttributesExp resolve(AttributeSelectorKey ref) 
+	BagOfAttributeExp resolve(AttributeSelectorKey ref) 
 		throws EvaluationException;
 	
-	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributesExp v);
+	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeExp v);
 	
-	Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators();
+	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();
 	
 	/**
 	 * Evaluates a given XPath expression

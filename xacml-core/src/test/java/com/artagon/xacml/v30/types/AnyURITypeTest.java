@@ -24,7 +24,7 @@ public class AnyURITypeTest
 		AttributeExp v0 = t1.create("http://www.test.org");
 		AttributeExp v1 = t1.create("http://www.test.org");
 		assertEquals(v0, v1);
-		assertEquals(AnyURIType.ANYURI, new AnyURIValueExp(URI.create("test")).getType());
+		assertEquals(AnyURIType.ANYURI, new AnyURIExp(URI.create("test")).getType());
 	}
 	
 	@Test

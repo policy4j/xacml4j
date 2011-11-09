@@ -86,7 +86,7 @@ public enum DataTypes
 	 * XACML DataType:
 	 * <b>urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression</b>
 	 */
-	XPATHEXPRESSION(XPathExpressionType.XPATHEXPRESSION),
+	XPATHEXPRESSION(XPathExpType.XPATHEXPRESSION),
 
 	/**
 	 * XACML DataType: <b>http://www.w3.org/2001/XMLSchema#yearMonthDuration</b>

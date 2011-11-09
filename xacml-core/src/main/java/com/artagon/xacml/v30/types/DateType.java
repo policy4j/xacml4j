@@ -8,8 +8,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.core.Date;
 
 public enum DateType implements AttributeExpType
@@ -17,12 +17,12 @@ public enum DateType implements AttributeExpType
 	DATE("http://www.w3.org/2001/XMLSchema#date");
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 
 	private DateType(String typeId) 
 	{
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
@@ -31,14 +31,14 @@ public enum DateType implements AttributeExpType
 	}
 
 	@Override
-	public DateValueExp fromXacmlString(String v, Object ...params) {
-		return new DateValueExp(this, Date.create(v));
+	public DateExp fromXacmlString(String v, Object ...params) {
+		return new DateExp(this, Date.create(v));
 	}
 	
 	@Override
-	public DateValueExp create(Object any, Object ...params){
+	public DateExp create(Object any, Object ...params){
 		
-		return new DateValueExp(this, Date.create(any));
+		return new DateExp(this, Date.create(any));
 	}
 	
 	@Override
@@ -47,27 +47,27 @@ public enum DateType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

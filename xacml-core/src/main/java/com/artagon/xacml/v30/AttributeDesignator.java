@@ -103,14 +103,14 @@ public class AttributeDesignator extends AttributeReference
 	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String, 
 	 * String, AttributeExpType, String)
 	 * 
-	 * @return {@link BagOfAttributesExp} instance 
+	 * @return {@link BagOfAttributeExp} instance 
 	 * @exception EvaluationIndeterminateException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
-	public BagOfAttributesExp evaluate(EvaluationContext context)
+	public BagOfAttributeExp evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{
-		BagOfAttributesExp v = null;
+		BagOfAttributeExp v = null;
 		try{
 			v = designatorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){

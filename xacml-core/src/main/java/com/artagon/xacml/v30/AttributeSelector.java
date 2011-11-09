@@ -132,10 +132,10 @@ public class AttributeSelector extends
 	}
 
 	@Override
-	public BagOfAttributesExp evaluate(EvaluationContext context)
+	public BagOfAttributeExp evaluate(EvaluationContext context)
 			throws EvaluationException 
 	{ 
-		BagOfAttributesExp v = null;
+		BagOfAttributeExp v = null;
 		try{
 			v =  selectorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){

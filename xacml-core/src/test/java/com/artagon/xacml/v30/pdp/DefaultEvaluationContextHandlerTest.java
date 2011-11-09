@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.pdp;
 import static com.artagon.xacml.v30.types.AnyURIType.ANYURI;
 import static com.artagon.xacml.v30.types.DateType.DATE;
 import static com.artagon.xacml.v30.types.IntegerType.INTEGER;
-import static com.artagon.xacml.v30.types.XPathExpressionType.XPATHEXPRESSION;
+import static com.artagon.xacml.v30.types.XPathExpType.XPATHEXPRESSION;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -24,7 +24,7 @@ import org.xml.sax.InputSource;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceEvaluationException;
 import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationContextHandler;
 import com.artagon.xacml.v30.EvaluationException;
@@ -323,8 +323,8 @@ public class DefaultEvaluationContextHandlerTest
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
 		
 
-		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributesExp>() {
-			public BagOfAttributesExp answer() throws Throwable{
+		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeExp>() {
+			public BagOfAttributeExp answer() throws Throwable{
 				handler.resolve(context, ref);
 				return ANYURI.emptyBag();
 			}

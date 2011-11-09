@@ -22,13 +22,13 @@ public class DateTimeTypeTest
 	public void testCreateFromCalendar()
 	{
 		Calendar c = new GregorianCalendar();
-		DateTimeValueExp v = t1.create(c);
+		DateTimeExp v = t1.create(c);
 		System.out.println(v.toXacmlString());
 	}
 	
 	@Test
 	public void testFromXacmlString(){
-		DateTimeValueExp value = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+		DateTimeExp value = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(5, value.getValue().getMonth());
 		assertEquals(30, value.getValue().getDay());
@@ -41,7 +41,7 @@ public class DateTimeTypeTest
 	
 	@Test
 	public void testFromXacmlStringNoTimeZone(){
-		DateTimeValueExp value = t1.fromXacmlString("2002-05-30T09:30:10");
+		DateTimeExp value = t1.fromXacmlString("2002-05-30T09:30:10");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(5, value.getValue().getMonth());
 		assertEquals(30, value.getValue().getDay());
@@ -61,17 +61,17 @@ public class DateTimeTypeTest
 	@Test
 	public void addDayTimeDurationTest()
 	{
-		DateTimeValueExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = t1.create("2002-03-27T10:23:47-05:00");
-		DayTimeDurationValueExp duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
+		DateTimeExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = t1.create("2002-03-27T10:23:47-05:00");
+		DayTimeDurationExp duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 	
 	@Test
 	public void compareTest()
 	{
-		DateTimeValueExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = t1.create("2002-03-22T10:23:47-05:00");
+		DateTimeExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = t1.create("2002-03-22T10:23:47-05:00");
 		assertEquals(-1, dateTime1.compareTo(dateTime2));
 		dateTime2 = t1.create("2002-03-22T08:23:47-05:00");
 		assertEquals(0, dateTime1.compareTo(dateTime2));
@@ -82,9 +82,9 @@ public class DateTimeTypeTest
 	@Test
 	public void addYearMonthDuration()
 	{
-		DateTimeValueExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = t1.create("2001-01-22T08:23:47-05:00");
-		YearMonthDurationValueExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P1Y2M");
+		DateTimeExp dateTime1 = t1.create("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = t1.create("2001-01-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P1Y2M");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 	
@@ -92,9 +92,9 @@ public class DateTimeTypeTest
 	public void substractYearMonthDuration()
 	{
 		
-		DateTimeValueExp dateTime1 = t1.create("2002-07-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = t1.create("2006-08-22T08:23:47-05:00");
-		YearMonthDurationValueExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P4Y1M");
+		DateTimeExp dateTime1 = t1.create("2002-07-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = t1.create("2006-08-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P4Y1M");
 		assertEquals(dateTime2, dateTime1.subtract(duration));
 	}
 	

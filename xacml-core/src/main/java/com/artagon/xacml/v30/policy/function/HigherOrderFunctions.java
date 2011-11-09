@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Expression;
@@ -28,7 +28,7 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncReturnTypeResolver;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML higher order functions")
@@ -36,15 +36,15 @@ public class HigherOrderFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp anyOf(
+	public static BooleanExp anyOf(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
 			@XacmlFuncParamAnyAttribute AttributeExp value,
-			@XacmlFuncParamAnyBag BagOfAttributesExp bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
 		throws EvaluationException
 	{
 		for(AttributeExp valueFromBag : bag.values()){
-			BooleanValueExp r = ref.invoke(context, value, valueFromBag);
+			BooleanExp r = ref.invoke(context, value, valueFromBag);
 			if(r.getValue()){
 				return BooleanType.BOOLEAN.create(true);
 			}
@@ -54,15 +54,15 @@ public class HigherOrderFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp allOf(
+	public static BooleanExp allOf(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
 			@XacmlFuncParamAnyAttribute AttributeExp value,
-			@XacmlFuncParamAnyBag BagOfAttributesExp bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
 		throws EvaluationException
 	{
 		for(AttributeExp valueFromBag : bag.values()){
-			BooleanValueExp r = ref.invoke(context, value, valueFromBag);
+			BooleanExp r = ref.invoke(context, value, valueFromBag);
 			if(!r.getValue()){
 				return BooleanType.BOOLEAN.create(false);
 			}
@@ -72,16 +72,16 @@ public class HigherOrderFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp anyOfAny(
+	public static BooleanExp anyOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributesExp a,
-			@XacmlFuncParamAnyBag BagOfAttributesExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp a,
+			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
 		throws EvaluationException
 	{
 		for(AttributeExp aValue : a.values()){
 			for(AttributeExp bValue : b.values()){
-				BooleanValueExp r = ref.invoke(context, aValue, bValue);
+				BooleanExp r = ref.invoke(context, aValue, bValue);
 				if(r.getValue()){
 					return BooleanType.BOOLEAN.create(true);
 				}
@@ -92,11 +92,11 @@ public class HigherOrderFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp allOfAny(
+	public static BooleanExp allOfAny(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributesExp a,
-			@XacmlFuncParamAnyBag BagOfAttributesExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp a,
+			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
 		throws EvaluationException
 	{
 		boolean result = true;
@@ -111,11 +111,11 @@ public class HigherOrderFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp anyOfAll(
+	public static BooleanExp anyOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributesExp a,
-			@XacmlFuncParamAnyBag BagOfAttributesExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp a,
+			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
 		throws EvaluationException
 	{
 		for(AttributeExp va : a.values())
@@ -130,17 +130,17 @@ public class HigherOrderFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp allOfAll(
+	public static BooleanExp allOfAll(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributesExp a,
-			@XacmlFuncParamAnyBag BagOfAttributesExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp a,
+			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
 		throws EvaluationException
 	{
 		for(AttributeExp aValue : a.values())
 		{
 			for(AttributeExp bValue : b.values()){
-				BooleanValueExp r = ref.invoke(context, aValue, bValue);
+				BooleanExp r = ref.invoke(context, aValue, bValue);
 				if(!r.getValue()){
 					return BooleanType.BOOLEAN.create(false);
 				}
@@ -152,10 +152,10 @@ public class HigherOrderFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)
-	public static  BagOfAttributesExp map(
+	public static  BagOfAttributeExp map(
 			@XacmlFuncParamEvaluationContext EvaluationContext context, 
 			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributesExp bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
 		throws EvaluationException
 	{
 		Collection<AttributeExp> values = new ArrayList<AttributeExp>(bag.size());

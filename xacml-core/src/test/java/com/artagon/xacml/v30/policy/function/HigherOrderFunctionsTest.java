@@ -18,14 +18,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.FunctionReference;
 import com.artagon.xacml.v30.FunctionSpec;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 
 
 public class HigherOrderFunctionsTest 
@@ -83,7 +83,7 @@ public class HigherOrderFunctionsTest
 		
 		
 		replay(context);
-		BagOfAttributesExp bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
+		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
 		verify(context);	
 		assertTrue(bag.contains(STRING.create("10")));
 		assertTrue(bag.contains(STRING.create("20")));
@@ -101,7 +101,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValueExp r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
+		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
@@ -122,7 +122,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValueExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -145,7 +145,7 @@ public class HigherOrderFunctionsTest
 		
 		
 		replay(context);
-		BooleanValueExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -167,7 +167,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		
 		replay(context);
-		BooleanValueExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
+		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
 				STRING.bagOf(a), STRING.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
@@ -189,7 +189,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 		
 		replay(context);
-		BooleanValueExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);

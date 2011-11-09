@@ -20,7 +20,7 @@ import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.IntegerValueExp;
+import com.artagon.xacml.v30.types.IntegerExp;
 
 public class LogicalFunctionsTest
 {
@@ -169,7 +169,7 @@ public class LogicalFunctionsTest
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerValueExp n = IntegerType.INTEGER.create(0);
+		IntegerExp n = IntegerType.INTEGER.create(0);
 		replay(context);
 		assertEquals(BooleanType.BOOLEAN.create(true), 
 				LogicalFunctions.nof(context, n));
@@ -210,7 +210,7 @@ public class LogicalFunctionsTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerValueExp n = IntegerType.INTEGER.create(4);
+		IntegerExp n = IntegerType.INTEGER.create(4);
 		replay(context); 
 		assertEquals(BooleanType.BOOLEAN.create(false), 
 				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(false)));

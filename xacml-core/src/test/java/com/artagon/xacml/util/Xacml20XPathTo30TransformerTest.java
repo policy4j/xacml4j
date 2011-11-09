@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValueExp;
-import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValueExp;
+import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.XPathExpType;
+import com.artagon.xacml.v30.types.XPathExp;
 
 public class Xacml20XPathTo30TransformerTest 
 {
@@ -19,9 +19,9 @@ public class Xacml20XPathTo30TransformerTest
 	@Test
 	public void testXacml20StringXPathToXPathExpression()
 	{
-		StringValueExp xpath = StringType.STRING.create("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
-		XPathExpressionValueExp xpathExp = fromXacml20String(xpath);
-		assertEquals(XPathExpressionType.XPATHEXPRESSION.create("//md:record/md:patient/md:patient-number/text()", AttributeCategories.RESOURCE), xpathExp);
+		StringExp xpath = StringType.STRING.create("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
+		XPathExp xpathExp = fromXacml20String(xpath);
+		assertEquals(XPathExpType.XPATHEXPRESSION.create("//md:record/md:patient/md:patient-number/text()", AttributeCategories.RESOURCE), xpathExp);
 	}
 	
 	// FIXME: Implement transformation

@@ -7,13 +7,13 @@ import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.core.YearMonthDuration;
 import com.google.common.base.Preconditions;
 
-public final class YearMonthDurationValueExp 
-	extends BaseAttributeExpression<YearMonthDuration> 
-	implements Comparable<YearMonthDurationValueExp>
+public final class YearMonthDurationExp 
+	extends BaseAttributeExp<YearMonthDuration> 
+	implements Comparable<YearMonthDurationExp>
 {
 	private static final long serialVersionUID = 6510264772808336009L;
 
-	YearMonthDurationValueExp(
+	YearMonthDurationExp(
 			AttributeExpType type, 
 			Duration value) {
 		this(type, new YearMonthDuration(value));
@@ -21,7 +21,7 @@ public final class YearMonthDurationValueExp
 				value.getXMLSchemaType() == DatatypeConstants.DURATION_YEARMONTH);
 	}
 	
-	YearMonthDurationValueExp(
+	YearMonthDurationExp(
 			AttributeExpType type, 
 			YearMonthDuration value) {
 		super(type, value);
@@ -30,18 +30,18 @@ public final class YearMonthDurationValueExp
 	}
 
 	@Override
-	public int compareTo(YearMonthDurationValueExp o) {
+	public int compareTo(YearMonthDurationExp o) {
 		return getValue().compareTo(o.getValue());
 	}
 	
-	public YearMonthDurationValueExp add(YearMonthDurationValueExp d){
-		return new YearMonthDurationValueExp(
+	public YearMonthDurationExp add(YearMonthDurationExp d){
+		return new YearMonthDurationExp(
 				getType(),
 				getValue().add(d.getValue()));
 	}
 	
-	public YearMonthDurationValueExp substract(YearMonthDurationValueExp d){
-		return new YearMonthDurationValueExp(
+	public YearMonthDurationExp substract(YearMonthDurationExp d){
+		return new YearMonthDurationExp(
 				getType(),
 				getValue().substract(d.getValue()));
 	}

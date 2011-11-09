@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import com.artagon.xacml.v30.core.IPAddress;
 import com.artagon.xacml.v30.core.PortRange;
 
-public final class IPAddressValueExp extends BaseAttributeExpression<IPAddress>
+public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 {
 	private static final long serialVersionUID = 8391410414891430400L;
 	
@@ -17,7 +17,7 @@ public final class IPAddressValueExp extends BaseAttributeExpression<IPAddress>
 	 * @param mask an address mask
 	 * @param range an address port range
 	 */
-	IPAddressValueExp(IPAddressType type, 
+	IPAddressExp(IPAddressType type, 
 			IPAddress address)
 	{
 		super(type, address);

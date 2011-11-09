@@ -65,7 +65,7 @@ public abstract class AttributeReference  implements Expression
 	}
 
 	@Override
-	public abstract BagOfAttributesExp evaluate(EvaluationContext context) 
+	public abstract BagOfAttributeExp evaluate(EvaluationContext context) 
 		throws EvaluationException;
 
 }

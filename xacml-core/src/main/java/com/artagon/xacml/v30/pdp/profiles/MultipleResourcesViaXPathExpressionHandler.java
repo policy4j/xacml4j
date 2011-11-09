@@ -24,8 +24,8 @@ import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
-import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValueExp;
+import com.artagon.xacml.v30.types.XPathExpType;
+import com.artagon.xacml.v30.types.XPathExp;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -51,12 +51,12 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR, 
-				XPathExpressionType.XPATHEXPRESSION)){
+				XPathExpType.XPATHEXPRESSION)){
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler", 
 						MULTIPLE_CONTENT_SELECTOR, 
-						XPathExpressionType.XPATHEXPRESSION);
+						XPathExpType.XPATHEXPRESSION);
 			}
 			return handleNext(request, context);
 		}
@@ -91,11 +91,11 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		throws RequestSyntaxException
 	{
 		Collection<AttributeExp> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR, 
-				XPathExpressionType.XPATHEXPRESSION);
+				XPathExpType.XPATHEXPRESSION);
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
-		XPathExpressionValueExp selector = (XPathExpressionValueExp)Iterables.getOnlyElement(values, null);
+		XPathExp selector = (XPathExp)Iterables.getOnlyElement(values, null);
 		Node content = attribute.getContent();
 		// if there is no content
 		// specified ignore it and return
@@ -133,7 +133,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR, 
 						a.getIssuer(), 
 						a.isIncludeInResult(), 
-						XPathExpressionType.XPATHEXPRESSION.create(xpath, attributes.getCategory()));
+						XPathExpType.XPATHEXPRESSION.create(xpath, attributes.getCategory()));
 				newAttributes.add(selectorAttr);
 				continue;
 			}

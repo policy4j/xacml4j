@@ -42,7 +42,7 @@ public class DoubleTypeTest
 	public void testFromAnyObject()
 	{
 		Object o = 0.2d;
-		DoubleValueExp a = t1.create(o);
+		DoubleExp a = t1.create(o);
 		assertEquals(o, a.getValue());
 	}
 	

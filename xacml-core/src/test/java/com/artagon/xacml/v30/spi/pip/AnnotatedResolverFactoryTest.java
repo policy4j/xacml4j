@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeReferenceKey;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.core.AttributeCategories;
@@ -162,11 +162,11 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#double", id="testId4")
 	})
-	public Map<String, BagOfAttributesExp> resolve1(
+	public Map<String, BagOfAttributeExp> resolve1(
 			@XacmlAttributeDesignator(category="test", attributeId="attr1", 
-					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributesExp k1, 
+					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, 
 			@XacmlAttributeDesignator(category="test", attributeId="attr2", 
-					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributesExp k2)
+					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributeExp k2)
 	{
 		return null;
 	}
@@ -178,7 +178,7 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributesExp> resolve2(ResolverContext context)
+	public Map<String, BagOfAttributeExp> resolve2(ResolverContext context)
 	{
 		return null;
 	}
@@ -190,7 +190,7 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributesExp> resolve3()
+	public Map<String, BagOfAttributeExp> resolve3()
 	{
 		return null;
 	}
@@ -202,8 +202,8 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributesExp> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributesExp k1, ResolverContext context)
+	public Map<String, BagOfAttributeExp> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, ResolverContext context)
 	{
 		return null;
 	}
@@ -216,14 +216,14 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
 	public Collection<String> resolve5(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributesExp k1, ResolverContext context)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, ResolverContext context)
 	{
 		return null;
 	}
 	
 	@XacmlContentResolverDescriptor(id="testId", name="Test", category="subject", cacheTTL=30)
 	public Node resolveContent1(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr", 
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributesExp k1)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1)
 	{
 		return null;
 	}

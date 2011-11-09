@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.core.IPAddress;
 import com.artagon.xacml.v30.core.PortRange;
 
@@ -32,24 +32,24 @@ public enum IPAddressType implements AttributeExpType
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	
 	private IPAddressType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
-	public IPAddressValueExp create(InetAddress address, PortRange portRange) {
-		return new IPAddressValueExp(this, new IPAddress(address, portRange));
+	public IPAddressExp create(InetAddress address, PortRange portRange) {
+		return new IPAddressExp(this, new IPAddress(address, portRange));
 	}
 
-	public IPAddressValueExp create(InetAddress address, InetAddress mask) {
-		return new IPAddressValueExp(this, new IPAddress(address, mask));
+	public IPAddressExp create(InetAddress address, InetAddress mask) {
+		return new IPAddressExp(this, new IPAddress(address, mask));
 	}
 
-	public IPAddressValueExp create(InetAddress address, InetAddress mask,
+	public IPAddressExp create(InetAddress address, InetAddress mask,
 			PortRange portRange) {
-		return new IPAddressValueExp(this, new IPAddress(address, mask, portRange));
+		return new IPAddressExp(this, new IPAddress(address, mask, portRange));
 	}
 	
 	public boolean isConvertableFrom(Object any) {
@@ -58,14 +58,14 @@ public enum IPAddressType implements AttributeExpType
 	}
 
 	@Override
-	public IPAddressValueExp create(Object any, Object ...params) {
-		return new IPAddressValueExp(this, IPAddress.parse(any));
+	public IPAddressExp create(Object any, Object ...params) {
+		return new IPAddressExp(this, IPAddress.parse(any));
 	}
 	
 	@Override
-	public IPAddressValueExp fromXacmlString(String v, Object ...params) 
+	public IPAddressExp fromXacmlString(String v, Object ...params) 
 	{
-		return new IPAddressValueExp(this, IPAddress.parse(v));
+		return new IPAddressExp(this, IPAddress.parse(v));
 	}
 	
 	@Override
@@ -74,27 +74,27 @@ public enum IPAddressType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

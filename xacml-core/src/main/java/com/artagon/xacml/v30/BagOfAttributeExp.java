@@ -25,12 +25,12 @@ import com.google.common.collect.Multiset;
  * 
  * @author Giedrius Trumpickas
  */
-public final class BagOfAttributesExp 
+public final class BagOfAttributeExp 
 	implements ValueExpression, Serializable
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 	
-	private BagOfAttributesExpType type;
+	private BagOfAttributeExpType type;
 	private Multiset<AttributeExp> values;
 	
 	/**
@@ -39,7 +39,7 @@ public final class BagOfAttributesExp
 	 * @param type a bag attribute type
 	 * @param attributes a collection of attributes
 	 */
-	BagOfAttributesExp(BagOfAttributesExpType type, 
+	BagOfAttributeExp(BagOfAttributeExpType type, 
 			Collection<AttributeExp> attributes){		
 		this.values = LinkedHashMultiset.create(attributes.size());
 		for(AttributeExp attr: attributes){	
@@ -58,7 +58,7 @@ public final class BagOfAttributesExp
 	 * 
 	 * @param type a bag attribute type
 	 */
-	BagOfAttributesExp(BagOfAttributesExpType type, 
+	BagOfAttributeExp(BagOfAttributeExpType type, 
 			AttributeExp ...attributes){
 		this(type, Arrays.asList(attributes));				
 	}
@@ -144,7 +144,7 @@ public final class BagOfAttributesExp
 	 * @return union of this and given bag without duplicate
 	 * elements
 	 */ 
-	public BagOfAttributesExp union(BagOfAttributesExp bag)
+	public BagOfAttributeExp union(BagOfAttributeExp bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeExp> union = new HashSet<AttributeExp>();
@@ -161,7 +161,7 @@ public final class BagOfAttributesExp
 	 * @return bag which contains common
 	 * elements between this and given bag
 	 */
-	public BagOfAttributesExp intersection(BagOfAttributesExp bag)
+	public BagOfAttributeExp intersection(BagOfAttributeExp bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		Set<AttributeExp> intersection = new HashSet<AttributeExp>();
@@ -181,7 +181,7 @@ public final class BagOfAttributesExp
 	 * @return <code>true</code> if this bag contains
 	 * at least one value from the given bag
 	 */
-	public boolean containsAtLeastOneOf(BagOfAttributesExp bag)
+	public boolean containsAtLeastOneOf(BagOfAttributeExp bag)
 	{
 		for(AttributeExp v : bag.values){
 			if(values.contains(v)){
@@ -192,7 +192,7 @@ public final class BagOfAttributesExp
 	}
 	
 	@Override
-	public BagOfAttributesExp evaluate(EvaluationContext context)
+	public BagOfAttributeExp evaluate(EvaluationContext context)
 			throws EvaluationException {
 		return this;
 	}
@@ -209,7 +209,7 @@ public final class BagOfAttributesExp
 	 * @return <code>true</code> if given bag 
 	 * is subset if this bag
 	 */
-	public boolean containsAll(BagOfAttributesExp bag){		
+	public boolean containsAll(BagOfAttributeExp bag){		
 		Preconditions.checkArgument(type.equals(bag.type));
 		return values.containsAll(bag.values);
 	}
@@ -219,10 +219,10 @@ public final class BagOfAttributesExp
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof BagOfAttributesExp)){
+		if(!(o instanceof BagOfAttributeExp)){
 			return false;
 		}
-		BagOfAttributesExp bag = (BagOfAttributesExp)o;
+		BagOfAttributeExp bag = (BagOfAttributeExp)o;
 		return type.equals(bag.type) && 
 		values.equals(bag.values);
 	}
@@ -250,7 +250,7 @@ public final class BagOfAttributesExp
 	 * @return a single value or <code>null</code> 
 	 * if a given bag is <code>null</code> or empty
 	 */
-	public static <T extends AttributeExp> T value(BagOfAttributesExp v){
+	public static <T extends AttributeExp> T value(BagOfAttributeExp v){
 		if(v == null || 
 				v.isEmpty()){
 			return null;

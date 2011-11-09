@@ -31,12 +31,12 @@ public final class DataTypeRegistryBuilder
 		addType(StringType.STRING);
 		addType(TimeType.TIME);
 		addType(X500NameType.X500NAME);
-		addType(XPathExpressionType.XPATHEXPRESSION);
+		addType(XPathExpType.XPATHEXPRESSION);
 		addType(YearMonthDurationType.YEARMONTHDURATION);
 		
 		// Legacy XACML 2.0 type mappings
-		addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpressionType.XPATHEXPRESSION);
-		addType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XPathExpressionType.XPATHEXPRESSION);
+		addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpType.XPATHEXPRESSION);
+		addType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XPathExpType.XPATHEXPRESSION);
 		addType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration", DayTimeDurationType.DAYTIMEDURATION);
 		addType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration", YearMonthDurationType.YEARMONTHDURATION);
 		return this;

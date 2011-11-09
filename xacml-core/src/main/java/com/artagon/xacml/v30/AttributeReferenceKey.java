@@ -25,6 +25,6 @@ public abstract class AttributeReferenceKey
 		return dataType;
 	}
 	
-	public abstract BagOfAttributesExp resolve(
+	public abstract BagOfAttributeExp resolve(
 			EvaluationContext context) throws EvaluationException;
 }

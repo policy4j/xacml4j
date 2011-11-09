@@ -9,8 +9,8 @@ import javax.xml.datatype.Duration;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.google.common.base.Preconditions;
 
 
@@ -22,12 +22,12 @@ public enum DayTimeDurationType
 	private DatatypeFactory xmlDataTypesFactory;
 
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 
 	private DayTimeDurationType(String typeId) 
 	{
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 		try {
 			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
 		} catch (DatatypeConfigurationException e) {
@@ -40,14 +40,14 @@ public enum DayTimeDurationType
 	}
 
 	@Override
-	public DayTimeDurationValueExp fromXacmlString(String v, Object ...params) {
+	public DayTimeDurationExp fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
-		return new DayTimeDurationValueExp(this, validate(dayTimeDuration));
+		return new DayTimeDurationExp(this, validate(dayTimeDuration));
 	}
 	
 	@Override
-	public DayTimeDurationValueExp create(Object any, Object ...params){
+	public DayTimeDurationExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" " +
@@ -56,7 +56,7 @@ public enum DayTimeDurationType
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new DayTimeDurationValueExp(this, validate((Duration)any));
+		return new DayTimeDurationExp(this, validate((Duration)any));
 	}
 	
 	private Duration validate(Duration duration){
@@ -73,27 +73,27 @@ public enum DayTimeDurationType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

@@ -9,8 +9,8 @@ public interface ExpressionVisitor
 {
 	void visitEnter(AttributeExp v);
 	void visitLeave(AttributeExp v);
-	void visitEnter(BagOfAttributesExp v);
-	void visitLeave(BagOfAttributesExp v);
+	void visitEnter(BagOfAttributeExp v);
+	void visitLeave(BagOfAttributeExp v);
 	void visitEnter(Apply v);
 	void visitLeave(Apply v);
 	void visitEnter(FunctionReference v);

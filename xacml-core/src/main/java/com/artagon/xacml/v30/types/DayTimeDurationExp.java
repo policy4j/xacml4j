@@ -6,12 +6,12 @@ import javax.xml.datatype.Duration;
 import com.artagon.xacml.v30.core.DayTimeDuration;
 import com.google.common.base.Preconditions;
 
-public final class DayTimeDurationValueExp extends BaseAttributeExpression<DayTimeDuration> 
-	implements Comparable<DayTimeDurationValueExp>
+public final class DayTimeDurationExp extends BaseAttributeExp<DayTimeDuration> 
+	implements Comparable<DayTimeDurationExp>
 {
 	private static final long serialVersionUID = -3264977978603429807L;
 
-	DayTimeDurationValueExp(DayTimeDurationType type, 
+	DayTimeDurationExp(DayTimeDurationType type, 
 			Duration value) {
 		super(type, new DayTimeDuration(value));
 		Preconditions.checkArgument(!value.isSet(DatatypeConstants.YEARS) && 
@@ -19,7 +19,7 @@ public final class DayTimeDurationValueExp extends BaseAttributeExpression<DayTi
 	}
 	
 	@Override
-	public int compareTo(DayTimeDurationValueExp o) {
+	public int compareTo(DayTimeDurationExp o) {
 		return getValue().compareTo(o.getValue());
 	}
 }

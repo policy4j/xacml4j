@@ -45,7 +45,7 @@ public class IPAddressTypeTest
 	@Test
 	public void testParseIPV4()
 	{
-		IPAddressValueExp v = IPAddressType.IPADDRESS.fromXacmlString("127.0.0.1/127.0.0.1:80");
+		IPAddressExp v = IPAddressType.IPADDRESS.fromXacmlString("127.0.0.1/127.0.0.1:80");
 		assertNotNull(v);
 		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getAddress());
 		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getMask());

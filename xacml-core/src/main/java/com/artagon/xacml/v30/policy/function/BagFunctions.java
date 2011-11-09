@@ -1,44 +1,44 @@
 package com.artagon.xacml.v30.policy.function;
 
 import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
 import com.artagon.xacml.v30.types.AnyURIType;
-import com.artagon.xacml.v30.types.AnyURIValueExp;
+import com.artagon.xacml.v30.types.AnyURIExp;
 import com.artagon.xacml.v30.types.Base64BinaryType;
-import com.artagon.xacml.v30.types.Base64BinaryValueExp;
+import com.artagon.xacml.v30.types.Base64BinaryExp;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.DNSNameType;
-import com.artagon.xacml.v30.types.DNSNameValueExp;
+import com.artagon.xacml.v30.types.DNSNameExp;
 import com.artagon.xacml.v30.types.DateTimeType;
-import com.artagon.xacml.v30.types.DateTimeValueExp;
+import com.artagon.xacml.v30.types.DateTimeExp;
 import com.artagon.xacml.v30.types.DateType;
-import com.artagon.xacml.v30.types.DateValueExp;
+import com.artagon.xacml.v30.types.DateExp;
 import com.artagon.xacml.v30.types.DayTimeDurationType;
-import com.artagon.xacml.v30.types.DayTimeDurationValueExp;
+import com.artagon.xacml.v30.types.DayTimeDurationExp;
 import com.artagon.xacml.v30.types.DoubleType;
-import com.artagon.xacml.v30.types.DoubleValueExp;
+import com.artagon.xacml.v30.types.DoubleExp;
 import com.artagon.xacml.v30.types.HexBinaryType;
-import com.artagon.xacml.v30.types.HexBinaryValueExp;
+import com.artagon.xacml.v30.types.HexBinaryExp;
 import com.artagon.xacml.v30.types.IPAddressType;
-import com.artagon.xacml.v30.types.IPAddressValueExp;
+import com.artagon.xacml.v30.types.IPAddressExp;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.IntegerValueExp;
+import com.artagon.xacml.v30.types.IntegerExp;
 import com.artagon.xacml.v30.types.RFC822NameType;
-import com.artagon.xacml.v30.types.RFC822NameValueExp;
+import com.artagon.xacml.v30.types.RFC822NameExp;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValueExp;
+import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.TimeType;
-import com.artagon.xacml.v30.types.TimeValueExp;
+import com.artagon.xacml.v30.types.TimeExp;
 import com.artagon.xacml.v30.types.X500NameType;
-import com.artagon.xacml.v30.types.X500NameValueExp;
+import com.artagon.xacml.v30.types.X500NameExp;
 import com.artagon.xacml.v30.types.YearMonthDurationType;
-import com.artagon.xacml.v30.types.YearMonthDurationValueExp;
+import com.artagon.xacml.v30.types.YearMonthDurationExp;
 import com.google.common.base.Preconditions;
 
 /**
@@ -88,53 +88,53 @@ public class BagFunctions
 	 * @return {@link AttributeExp} one and only one value
 	 */
 	static <T extends AttributeExp> T oneAndOnlyImpl(
-			BagOfAttributesExp bag){
+			BagOfAttributeExp bag){
 		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
 		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");
 		return bag.<T>value();
 	}
 	
-	static IntegerValueExp typeBagSizeImpl(BagOfAttributesExp bag) {
+	static IntegerExp typeBagSizeImpl(BagOfAttributeExp bag) {
 		return IntegerType.INTEGER.create(bag.size());
 	}
 	
-	static BooleanValueExp containsImpl(AttributeExp v,
-			BagOfAttributesExp bag){
+	static BooleanExp containsImpl(AttributeExp v,
+			BagOfAttributeExp bag){
 
 		return BooleanType.BOOLEAN.create(bag.contains(v));
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringValueExp stringOneAndOnly(
+	public static StringExp stringOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp stringBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp stringBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp stringIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp stringIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
-	public static BagOfAttributesExp stringBag(
+	public static BagOfAttributeExp stringBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#string")
-			StringValueExp ...values){
+			StringExp ...values){
 		return StringType.STRING.bagOf(values);
 	}
 	
@@ -142,34 +142,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp booleanOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp booleanOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp booleanBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp booleanBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp booleanIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp booleanIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)
-	public static BagOfAttributesExp booleanBag(
+	public static BagOfAttributeExp booleanBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#boolean")
-			BooleanValueExp ...values){
+			BooleanExp ...values){
 		return BooleanType.BOOLEAN.bagOf(values);
 	}
 	
@@ -177,34 +177,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp integerOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp integerOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp integerBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp integerBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp integerIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp integerIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)
-	public static BagOfAttributesExp integerBag(
+	public static BagOfAttributeExp integerBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#integer")
-			IntegerValueExp ...values){
+			IntegerExp ...values){
 		return IntegerType.INTEGER.bagOf(values);
 	}
 	
@@ -212,34 +212,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time")
-	public static TimeValueExp timeOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributesExp bag) 
+	public static TimeExp timeOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp timeBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp timeBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp timeIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp timeIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)
-	public static BagOfAttributesExp timeBag(
+	public static BagOfAttributeExp timeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#time")
-			TimeValueExp ...values){
+			TimeExp ...values){
 		return TimeType.TIME.bagOf(values);
 	}
 	
@@ -247,34 +247,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
-	public static DoubleValueExp doubleOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributesExp bag) 
+	public static DoubleExp doubleOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp doubleBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp doubleBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp doubleIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp doubleIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true)
-	public static BagOfAttributesExp doubleBag(
+	public static BagOfAttributeExp doubleBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#double")
-			DoubleValueExp ...values){
+			DoubleExp ...values){
 		return DoubleType.DOUBLE.bagOf(values);
 	}
 	
@@ -282,34 +282,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
-	public static DateValueExp dateOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributesExp bag) 
+	public static DateExp dateOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp dateBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp dateBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp dateIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp dateIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date", isBag=true)
-	public static BagOfAttributesExp dateBag(
+	public static BagOfAttributeExp dateBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#date")
-			DateValueExp ...values){
+			DateExp ...values){
 		return DateType.DATE.bagOf(values);
 	}
 	
@@ -317,34 +317,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeValueExp dateTimeOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributesExp bag) 
+	public static DateTimeExp dateTimeOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp dateTimeBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp dateTimeBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp dateTimeIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp dateTimeIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime", isBag=true)
-	public static BagOfAttributesExp dateTimeBag(
+	public static BagOfAttributeExp dateTimeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-			DateTimeValueExp ...values){
+			DateTimeExp ...values){
 		return DateTimeType.DATETIME.bagOf(values);
 	}
 	
@@ -352,34 +352,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#anyURI")
-	public static AnyURIValueExp anyURIOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributesExp bag) 
+	public static AnyURIExp anyURIOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp anyURIBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp anyURIBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp anyURIIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp anyURIIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#anyURI", isBag=true)
-	public static BagOfAttributesExp anyURIBag(
+	public static BagOfAttributeExp anyURIBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#anyURI")
-			AnyURIValueExp ...values){
+			AnyURIExp ...values){
 		return AnyURIType.ANYURI.bagOf(values);
 	}
 	
@@ -387,34 +387,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#hexBinary")
-	public static HexBinaryValueExp hexBinaryOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributesExp bag) 
+	public static HexBinaryExp hexBinaryOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp hexBinaryBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp hexBinaryBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp hexBinaryIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary")HexBinaryValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp hexBinaryIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary")HexBinaryExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#hexBinary", isBag=true)
-	public static BagOfAttributesExp hexBinaryBag(
+	public static BagOfAttributeExp hexBinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#hexBinary")
-			HexBinaryValueExp ...values){
+			HexBinaryExp ...values){
 		return HexBinaryType.HEXBINARY.bagOf(values);
 	}
 	
@@ -422,34 +422,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#base64Binary")
-	public static Base64BinaryValueExp base64BinaryOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributesExp bag) 
+	public static Base64BinaryExp base64BinaryOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp base64BinaryBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp base64BinaryBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp base64IsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary")Base64BinaryValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp base64IsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary")Base64BinaryExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#base64Binary", isBag=true)
-	public static BagOfAttributesExp base64BinaryBag(
+	public static BagOfAttributeExp base64BinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#base64Binary")
-			Base64BinaryValueExp ...values){
+			Base64BinaryExp ...values){
 		return Base64BinaryType.BASE64BINARY.bagOf(values);
 	}
 	
@@ -457,34 +457,34 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
-	public static DayTimeDurationValueExp dayTimeDurationOneAndOnly(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributesExp bag) 
+	public static DayTimeDurationExp dayTimeDurationOneAndOnly(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp dayTimeDurationBagSize(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributesExp bag) 
+	public static IntegerExp dayTimeDurationBagSize(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp dayTimeDurationIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationValueExp v,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributesExp bag) 
+	public static BooleanExp dayTimeDurationIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationExp v,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)
-	public static BagOfAttributesExp dayTimeDurationBag(
+	public static BagOfAttributeExp dayTimeDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
-			DayTimeDurationValueExp ...values){
+			DayTimeDurationExp ...values){
 		return DayTimeDurationType.DAYTIMEDURATION.bagOf(values);
 	}
 	
@@ -492,37 +492,37 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
-	public static YearMonthDurationValueExp yearMonthDurationOneAndOnly(
+	public static YearMonthDurationExp yearMonthDurationOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp yearMonthDurationBagSize(
+	public static IntegerExp yearMonthDurationBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp yearMonthDurationIsIn(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationValueExp v,
+	public static BooleanExp yearMonthDurationIsIn(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationExp v,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
-	public static BagOfAttributesExp yearMonthDurationBag(
+	public static BagOfAttributeExp yearMonthDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
-			YearMonthDurationValueExp ...values){
+			YearMonthDurationExp ...values){
 		return YearMonthDurationType.YEARMONTHDURATION.bagOf(values);
 	}
 	
@@ -530,37 +530,37 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-one-and-only")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
-	public static X500NameValueExp x500NameOneAndOnly(
+	public static X500NameExp x500NameOneAndOnly(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp x500NameBagSize(
+	public static IntegerExp x500NameBagSize(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp x500NameIsIn(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValueExp v,
+	public static BooleanExp x500NameIsIn(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp v,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-bag")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name", isBag=true)
-	public static BagOfAttributesExp x500NameBag(
+	public static BagOfAttributeExp x500NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
-			X500NameValueExp ...values){
+			X500NameExp ...values){
 		return X500NameType.X500NAME.bagOf(values);
 	}
 	
@@ -568,37 +568,37 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-one-and-only")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
-	public static RFC822NameValueExp rfc822NameOneAndOnly(
+	public static RFC822NameExp rfc822NameOneAndOnly(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp rfc822NamBagSize(
+	public static IntegerExp rfc822NamBagSize(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp rfc822NameIsIn(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValueExp v,
+	public static BooleanExp rfc822NameIsIn(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp v,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-bag")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", isBag=true)
-	public static BagOfAttributesExp rfc822NameBag(
+	public static BagOfAttributeExp rfc822NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
-			RFC822NameValueExp ...values){
+			RFC822NameExp ...values){
 		return RFC822NameType.RFC822NAME.bagOf(values);
 	}
 	
@@ -606,37 +606,37 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-one-and-only")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
-	public static IPAddressValueExp ipAddressOneAndOnly(
+	public static IPAddressExp ipAddressOneAndOnly(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp ipAddressBagSize(
+	public static IntegerExp ipAddressBagSize(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp ipAddressIsIn(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressValueExp v,
+	public static BooleanExp ipAddressIsIn(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp v,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-bag")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", isBag=true)
-	public static BagOfAttributesExp ipAddressBag(
+	public static BagOfAttributeExp ipAddressBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
-			IPAddressValueExp ...values){
+			IPAddressExp ...values){
 		return IPAddressType.IPADDRESS.bagOf(values);
 	}
 	
@@ -644,37 +644,37 @@ public class BagFunctions
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-one-and-only")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
-	public static DNSNameValueExp dnsNameOneAndOnly(
+	public static DNSNameExp dnsNameOneAndOnly(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return oneAndOnlyImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValueExp dnsNameBagSize(
+	public static IntegerExp dnsNameBagSize(
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return typeBagSizeImpl(bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValueExp dnsNameIsIn(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameValueExp v,
+	public static BooleanExp dnsNameIsIn(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp v,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName", isBag=true)
-			BagOfAttributesExp bag) 
+			BagOfAttributeExp bag) 
 	{
 		return containsImpl(v, bag);
 	}
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-bag")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName", isBag=true)
-	public static BagOfAttributesExp dnsNameBag(
+	public static BagOfAttributeExp dnsNameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
-			DNSNameValueExp ...values){
+			DNSNameExp ...values){
 		return DNSNameType.DNSNAME.bagOf(values);
 	}
 }

@@ -12,7 +12,7 @@ import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
-import com.artagon.xacml.v30.types.XPathExpressionType;
+import com.artagon.xacml.v30.types.XPathExpType;
 
 final class MultipleResourcesViaXPathExpressionLegacyHandler 
 	extends AbstractRequestContextHandler
@@ -39,7 +39,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			return handleNext(request, context);
 		}
 		Collection<AttributeExp> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
-				XPathExpressionType.XPATHEXPRESSION);
+				XPathExpType.XPATHEXPRESSION);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
 		}
@@ -49,7 +49,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							request.getIncludeInResultAttributes(),
 							"Found more than AttributeId=\"%s\" " +
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
-							XPathExpressionType.XPATHEXPRESSION));
+							XPathExpType.XPATHEXPRESSION));
 		}
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())

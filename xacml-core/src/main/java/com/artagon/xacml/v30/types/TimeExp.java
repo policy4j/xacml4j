@@ -4,21 +4,21 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.artagon.xacml.v30.core.Time;
 
-public final class TimeValueExp extends BaseAttributeExpression<Time>
-		implements Comparable<TimeValueExp> 
+public final class TimeExp extends BaseAttributeExp<Time>
+		implements Comparable<TimeExp> 
 {
 	private static final long serialVersionUID = -8244143626423796791L;
 
-	TimeValueExp(TimeType type, XMLGregorianCalendar value) {
+	TimeExp(TimeType type, XMLGregorianCalendar value) {
 		super(type, new Time(value));
 	}
 	
-	TimeValueExp(TimeType type, Time time) {
+	TimeExp(TimeType type, Time time) {
 		super(type, time);
 	}
 	
 	@Override
-	public int compareTo(TimeValueExp v) {
+	public int compareTo(TimeExp v) {
 		return getValue().compareTo(v.getValue());
 	}
 }

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.pdp.profiles;
 
 import static com.artagon.xacml.v30.types.StringType.STRING;
-import static com.artagon.xacml.v30.types.XPathExpressionType.XPATHEXPRESSION;
+import static com.artagon.xacml.v30.types.XPathExpType.XPATHEXPRESSION;
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;

@@ -3,7 +3,7 @@ package com.artagon.xacml.v30;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -66,13 +66,13 @@ public class Match implements PolicyElement, Matchable
 	{
 		try
 		{
-			BagOfAttributesExp attributes = attributeRef.evaluate(context);
+			BagOfAttributeExp attributes = attributeRef.evaluate(context);
 			if(log.isDebugEnabled()){
 				log.debug("Evaluated attribute reference=\"{}\" to " +
 						"bag=\"{}\"", attributeRef, attributes);
 			}
 			for(AttributeExp v : attributes.values()){
-				BooleanValueExp match = predicate.invoke(context, value, v);
+				BooleanExp match = predicate.invoke(context, value, v);
 				if(match.getValue()){
 					if(log.isDebugEnabled()){
 						log.debug("Attribute value=\"{}\" " +

@@ -4,25 +4,25 @@ import java.util.Collection;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.google.common.base.Preconditions;
 
 public enum BooleanType implements AttributeExpType
 {	
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
 		
-	private BooleanValueExp FALSE;
-	private BooleanValueExp TRUE;
+	private BooleanExp FALSE;
+	private BooleanExp TRUE;
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	
 	private BooleanType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
-		this.FALSE = new BooleanValueExp(this, Boolean.FALSE);
-		this.TRUE = new BooleanValueExp(this, Boolean.TRUE);
+		this.bagType = new BagOfAttributeExpType(this);
+		this.FALSE = new BooleanExp(this, Boolean.FALSE);
+		this.TRUE = new BooleanExp(this, Boolean.TRUE);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
@@ -30,7 +30,7 @@ public enum BooleanType implements AttributeExpType
 	}
 	
 	@Override
-	public BooleanValueExp create(Object any, Object ...parameters){
+	public BooleanExp create(Object any, Object ...parameters){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"boolean\" type", 
@@ -42,7 +42,7 @@ public enum BooleanType implements AttributeExpType
 	}
 
 	@Override
-	public BooleanValueExp fromXacmlString(String v, Object ...parameters) {
+	public BooleanExp fromXacmlString(String v, Object ...parameters) {
 		Preconditions.checkNotNull(v);
 		return Boolean.parseBoolean(v)?TRUE:FALSE;
 	}
@@ -53,27 +53,27 @@ public enum BooleanType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

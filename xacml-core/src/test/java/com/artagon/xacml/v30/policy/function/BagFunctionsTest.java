@@ -5,20 +5,20 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.AnyURIType;
-import com.artagon.xacml.v30.types.AnyURIValueExp;
+import com.artagon.xacml.v30.types.AnyURIExp;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.DoubleType;
-import com.artagon.xacml.v30.types.DoubleValueExp;
+import com.artagon.xacml.v30.types.DoubleExp;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.IntegerValueExp;
+import com.artagon.xacml.v30.types.IntegerExp;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValueExp;
+import com.artagon.xacml.v30.types.StringExp;
 
 public class BagFunctionsTest 
 {
@@ -92,9 +92,9 @@ public class BagFunctionsTest
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
-		StringValueExp v0 = StringType.STRING.create("a");
-		StringValueExp v1 = StringType.STRING.create("b");
-		BagOfAttributesExp bag = StringType.STRING.bagOf(v0);
+		StringExp v0 = StringType.STRING.create("a");
+		StringExp v1 = StringType.STRING.create("b");
+		BagOfAttributeExp bag = StringType.STRING.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.stringIsIn(v0, bag));
@@ -105,9 +105,9 @@ public class BagFunctionsTest
 	@Test
 	public void testBooleanBagFunctions() throws EvaluationException
 	{
-		BooleanValueExp v0 = BooleanType.BOOLEAN.create(true);
-		BooleanValueExp v1 = BooleanType.BOOLEAN.create(false);
-		BagOfAttributesExp bag = BooleanType.BOOLEAN.bagOf(v0);
+		BooleanExp v0 = BooleanType.BOOLEAN.create(true);
+		BooleanExp v1 = BooleanType.BOOLEAN.create(false);
+		BagOfAttributeExp bag = BooleanType.BOOLEAN.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.booleanBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.booleanIsIn(v0, bag));
@@ -118,9 +118,9 @@ public class BagFunctionsTest
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
-		IntegerValueExp v0 = IntegerType.INTEGER.create(1);
-		IntegerValueExp v1 = IntegerType.INTEGER.create(2);
-		BagOfAttributesExp bag = IntegerType.INTEGER.bagOf(v0);
+		IntegerExp v0 = IntegerType.INTEGER.create(1);
+		IntegerExp v1 = IntegerType.INTEGER.create(2);
+		BagOfAttributeExp bag = IntegerType.INTEGER.bagOf(v0);
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.integerBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.integerIsIn(v0, bag));
@@ -131,9 +131,9 @@ public class BagFunctionsTest
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
-		DoubleValueExp v0 = DoubleType.DOUBLE.create(1);
-		DoubleValueExp v1 = DoubleType.DOUBLE.create(2);
-		BagOfAttributesExp bag = DoubleType.DOUBLE.bagOf(v0);
+		DoubleExp v0 = DoubleType.DOUBLE.create(1);
+		DoubleExp v1 = DoubleType.DOUBLE.create(2);
+		BagOfAttributeExp bag = DoubleType.DOUBLE.bagOf(v0);
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.doubleBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.doubleIsIn(v0, bag));
@@ -144,10 +144,10 @@ public class BagFunctionsTest
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIValueExp v0 = AnyURIType.ANYURI.create("http://www.test0.org");
-		AnyURIValueExp v1 = AnyURIType.ANYURI.create("http://www.test1.org");
-		AnyURIValueExp v2 = AnyURIType.ANYURI.create("http://www.test2.org");
-		BagOfAttributesExp bag = AnyURIType.ANYURI.bagOf(v0);
+		AnyURIExp v0 = AnyURIType.ANYURI.create("http://www.test0.org");
+		AnyURIExp v1 = AnyURIType.ANYURI.create("http://www.test1.org");
+		AnyURIExp v2 = AnyURIType.ANYURI.create("http://www.test2.org");
+		BagOfAttributeExp bag = AnyURIType.ANYURI.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));

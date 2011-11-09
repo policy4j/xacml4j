@@ -9,12 +9,12 @@ import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.AnyURIType;
-import com.artagon.xacml.v30.types.AnyURIValueExp;
+import com.artagon.xacml.v30.types.AnyURIExp;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.RFC822NameType;
-import com.artagon.xacml.v30.types.RFC822NameValueExp;
+import com.artagon.xacml.v30.types.RFC822NameExp;
 import com.artagon.xacml.v30.types.StringType;
-import com.artagon.xacml.v30.types.StringValueExp;
+import com.artagon.xacml.v30.types.StringExp;
 
 public class RegularExpressionFunctionsTest 
 {
@@ -41,9 +41,9 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testXacmlRegExpWithSpaceBugTrimming()
 	{
-		StringValueExp regexp1 = StringType.STRING.create("   This  is n*o*t* *IT!  ");
-		StringValueExp regexp2 = StringType.STRING.create("  *This .*is not IT! *");
-		StringValueExp input1 = StringType.STRING.create("   This  is not IT!  ");
+		StringExp regexp1 = StringType.STRING.create("   This  is n*o*t* *IT!  ");
+		StringExp regexp2 = StringType.STRING.create("  *This .*is not IT! *");
+		StringExp input1 = StringType.STRING.create("   This  is not IT!  ");
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp2, input1));
 	}
@@ -51,9 +51,9 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testRegExpMatchFromIIC168ConformanceTest()
 	{
-		StringValueExp regexp1 = StringType.STRING.create("   This  is n*o*t* *IT!  ");
-		StringValueExp input1 = StringType.STRING.create("   This  is IT!  ");
-		StringValueExp input2 = StringType.STRING.create("   This  is not IT!  ");  
+		StringExp regexp1 = StringType.STRING.create("   This  is n*o*t* *IT!  ");
+		StringExp input1 = StringType.STRING.create("   This  is IT!  ");
+		StringExp input2 = StringType.STRING.create("   This  is not IT!  ");  
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input1));
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp1, input2));
 	}
@@ -61,24 +61,24 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException
 	{
-		StringValueExp regexp = StringType.STRING.create("G*,Trumpickas");
-		StringValueExp input = StringType.STRING.create("Giedrius,Trumpickas");
+		StringExp regexp = StringType.STRING.create("G*,Trumpickas");
+		StringExp input = StringType.STRING.create("Giedrius,Trumpickas");
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.stringRegexpMatch(regexp, input));     
 	}
 	
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException
 	{
-		StringValueExp regexp = StringType.STRING.create("http://www.test.org/public/*");
-		AnyURIValueExp input = AnyURIType.ANYURI.create("http://www.test.org/public/test/a");
+		StringExp regexp = StringType.STRING.create("http://www.test.org/public/*");
+		AnyURIExp input = AnyURIType.ANYURI.create("http://www.test.org/public/test/a");
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.anyURIRegexpMatch(regexp, input));
 	}
 	
 	@Test
 	public void testrfc822NameRegExpMatch() throws EvaluationException
 	{
-		StringValueExp regexp = StringType.STRING.create(".*@comcast.net");
-		RFC822NameValueExp input = RFC822NameType.RFC822NAME.create("trumpyla@comcast.net");
+		StringExp regexp = StringType.STRING.create(".*@comcast.net");
+		RFC822NameExp input = RFC822NameType.RFC822NAME.create("trumpyla@comcast.net");
 		assertEquals(BooleanType.BOOLEAN.create(true), RegularExpressionFunctions.rfc822NameRegexpMatch(regexp, input));
 	}
 	

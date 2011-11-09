@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.DoubleType;
-import com.artagon.xacml.v30.types.DoubleValueExp;
+import com.artagon.xacml.v30.types.DoubleExp;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.IntegerValueExp;
+import com.artagon.xacml.v30.types.IntegerExp;
 
 
 public class NumericComparisionFunctionTest
@@ -16,8 +16,8 @@ public class NumericComparisionFunctionTest
 	@Test
 	public void testGreatherThanDouble()
 	{
-		DoubleValueExp a = DoubleType.DOUBLE.create(35.0);
-		DoubleValueExp b = DoubleType.DOUBLE.create(35.0);
+		DoubleExp a = DoubleType.DOUBLE.create(35.0);
+		DoubleExp b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(BooleanType.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanDouble(a, b));
 		a = DoubleType.DOUBLE.create(35.1);
 		b = DoubleType.DOUBLE.create(35.0);
@@ -30,8 +30,8 @@ public class NumericComparisionFunctionTest
 	@Test
 	public void testGreatherThanOrEqualDouble()
 	{
-		DoubleValueExp a = DoubleType.DOUBLE.create(35.0);
-		DoubleValueExp b = DoubleType.DOUBLE.create(35.0);
+		DoubleExp a = DoubleType.DOUBLE.create(35.0);
+		DoubleExp b = DoubleType.DOUBLE.create(35.0);
 		assertEquals(BooleanType.BOOLEAN.create(true), NumericComparisionFunctions.greatherThanOrEqualDouble(a, b));
 		a = DoubleType.DOUBLE.create(35.1);
 		b = DoubleType.DOUBLE.create(35.0);
@@ -44,8 +44,8 @@ public class NumericComparisionFunctionTest
 	@Test
 	public void testGreatherThanInteger()
 	{
-		IntegerValueExp a = IntegerType.INTEGER.create(35);
-		IntegerValueExp b = IntegerType.INTEGER.create(35);
+		IntegerExp a = IntegerType.INTEGER.create(35);
+		IntegerExp b = IntegerType.INTEGER.create(35);
 		assertEquals(BooleanType.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanInteger(a, b));
 		a = IntegerType.INTEGER.create(36);
 		b = IntegerType.INTEGER.create(35);
@@ -58,8 +58,8 @@ public class NumericComparisionFunctionTest
 	@Test
 	public void testGreatherThanOrEqualsInteger()
 	{
-		IntegerValueExp a = IntegerType.INTEGER.create(35);
-		IntegerValueExp b = IntegerType.INTEGER.create(35);
+		IntegerExp a = IntegerType.INTEGER.create(35);
+		IntegerExp b = IntegerType.INTEGER.create(35);
 		assertEquals(BooleanType.BOOLEAN.create(true), NumericComparisionFunctions.greatherThanOrEqualInteger(a, b));
 		a = IntegerType.INTEGER.create(36);
 		b = IntegerType.INTEGER.create(35);

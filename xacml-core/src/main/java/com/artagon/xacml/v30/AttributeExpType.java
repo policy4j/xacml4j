@@ -2,7 +2,6 @@ package com.artagon.xacml.v30;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.core.AttributeValueType;
 
 public interface AttributeExpType  extends ValueType
 {
@@ -46,20 +45,20 @@ public interface AttributeExpType  extends ValueType
 	 * attribute values of this
 	 * data type
 	 * 
-	 * @return {@link BagOfAttributesExpType} instance
+	 * @return {@link BagOfAttributeExpType} instance
 	 */
-	BagOfAttributesExpType bagType();
+	BagOfAttributeExpType bagType();
 	
 	/**
 	 * Creates a bag from the given array of
 	 * {@link AttributeExp} instances
 	 * 
 	 * @param values an array of bag values
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributesExp bagOf(AttributeExp ...values);
+	BagOfAttributeExp bagOf(AttributeExp ...values);
 	
 	
 	/**
@@ -67,28 +66,28 @@ public interface AttributeExpType  extends ValueType
 	 * {@link AttributeExp} instances
 	 * 
 	 * @param values a collection of values
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributesExp bagOf(Collection<AttributeExp> values);
+	BagOfAttributeExp bagOf(Collection<AttributeExp> values);
 	
 	/**
 	 * Creates a bag from the given array of
 	 * {@link AttributeExp} instances
 	 * 
 	 * @param values an array of attribute values
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributesExp bagOf(Object ...values);
+	BagOfAttributeExp bagOf(Object ...values);
 	
 	/**
 	 * Creates an empty bag
 	 * 
-	 * @return {@link BagOfAttributesExp} an empty
+	 * @return {@link BagOfAttributeExp} an empty
 	 * bag
 	 */
-	BagOfAttributesExp emptyBag();
+	BagOfAttributeExp emptyBag();
 }

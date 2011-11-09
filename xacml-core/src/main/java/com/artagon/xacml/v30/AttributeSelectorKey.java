@@ -41,7 +41,7 @@ public final class AttributeSelectorKey
 	
 	
 	@Override
-	public BagOfAttributesExp resolve(EvaluationContext context)
+	public BagOfAttributeExp resolve(EvaluationContext context)
 			throws EvaluationException {
 		return context.resolve(this);
 	}

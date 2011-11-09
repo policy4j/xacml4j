@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.types.StringValueExp;
-import com.artagon.xacml.v30.types.XPathExpressionType;
-import com.artagon.xacml.v30.types.XPathExpressionValueExp;
+import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.XPathExpType;
+import com.artagon.xacml.v30.types.XPathExp;
 
 public class Xacml20XPathTo30Transformer 
 {
@@ -17,9 +17,9 @@ public class Xacml20XPathTo30Transformer
 	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
 	
 	
-	public static XPathExpressionValueExp fromXacml20String(StringValueExp path)
+	public static XPathExp fromXacml20String(StringExp path)
 	{
-		XPathExpressionValueExp xpathExp = XPathExpressionType.XPATHEXPRESSION.create(
+		XPathExp xpathExp = XPathExpType.XPATHEXPRESSION.create(
 				transform20PathTo30(path.getValue()), AttributeCategories.RESOURCE);
 		return xpathExp;
 	}

@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
  *
  * @param <ContentType>
  */
-public final class BagOfAttributesExpType implements ValueType
+public final class BagOfAttributeExpType implements ValueType
 {
 	private static final long serialVersionUID = 1317103379388105997L;
 	
@@ -26,7 +26,7 @@ public final class BagOfAttributesExpType implements ValueType
 	 * 
 	 * @param type an attribute type
 	 */
-	public BagOfAttributesExpType(AttributeExpType type){
+	public BagOfAttributeExpType(AttributeExpType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
 	}
@@ -44,31 +44,31 @@ public final class BagOfAttributesExpType implements ValueType
 	 * Creates bag from given collection of attributes.
 	 * 
 	 * @param attr a collection of attributes
-	 * @return {@link BagOfAttributesExp} containing given attributes
+	 * @return {@link BagOfAttributeExp} containing given attributes
 	 */
-	public BagOfAttributesExp create(
+	public BagOfAttributeExp create(
 			Collection<AttributeExp> attr){
-		return new BagOfAttributesExp(this, attr);
+		return new BagOfAttributeExp(this, attr);
 	}
 	
 	/**
 	 * Creates an empty bag.
 	 * 
-	 * @return instance of {@link BagOfAttributesExp} with
+	 * @return instance of {@link BagOfAttributeExp} with
 	 * no {@link BaseAttribute} instances
 	 */
-	public  BagOfAttributesExp createEmpty(){
-		return new BagOfAttributesExp(this, Collections.<AttributeExp>emptyList());
+	public  BagOfAttributeExp createEmpty(){
+		return new BagOfAttributeExp(this, Collections.<AttributeExp>emptyList());
 	}
 	
 	/**
 	 * Creates bag from given array of attributes.
 	 * 
 	 * @param attr an array of attributes
-	 * @return {@link BagOfAttributesExp} containing given attributes
+	 * @return {@link BagOfAttributeExp} containing given attributes
 	 */
-	public BagOfAttributesExp create(AttributeExp ...attr){
-		return new BagOfAttributesExp(this, attr);
+	public BagOfAttributeExp create(AttributeExp ...attr){
+		return new BagOfAttributeExp(this, attr);
 	}
 	
 	/**
@@ -76,9 +76,9 @@ public final class BagOfAttributesExpType implements ValueType
 	 * of attribute values
 	 * 
 	 * @param values an array of attribute values
-	 * @return {@link BagOfAttributesExp}
+	 * @return {@link BagOfAttributeExp}
 	 */
-	public BagOfAttributesExp bagOf(Object ...values){
+	public BagOfAttributeExp bagOf(Object ...values){
 		if(values == null || 
 				values.length == 0){
 			return createEmpty();
@@ -98,10 +98,10 @@ public final class BagOfAttributesExpType implements ValueType
 		if(o == null){
 			return false;
 		}
-		if(!(o instanceof BagOfAttributesExpType)){
+		if(!(o instanceof BagOfAttributeExpType)){
 			return false;
 		}
-		BagOfAttributesExpType bt = (BagOfAttributesExpType)o;
+		BagOfAttributeExpType bt = (BagOfAttributeExpType)o;
 		return type.equals(bt.type);
 	}
 	

@@ -12,7 +12,7 @@ public class XPathExpressionTypeTest
 	@Test
 	public void testCreateXPathAttribute() throws Exception
 	{
-		XPathExpressionValueExp v = XPathExpressionType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
+		XPathExp v = XPathExpType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
 		assertEquals("/test", v.toXacmlString());
 		assertEquals(AttributeCategories.SUBJECT_RECIPIENT, v.getCategory());
 	}
@@ -20,12 +20,12 @@ public class XPathExpressionTypeTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateXPathWithoutCategory()
 	{
-		XPathExpressionType.XPATHEXPRESSION.create("/test");
+		XPathExpType.XPATHEXPRESSION.create("/test");
 	}
 	
 	@Test(expected=ClassCastException.class)
 	public void testCreateXPathWithCategoryAsString()
 	{
-		XPathExpressionType.XPATHEXPRESSION.create("/test", "test");
+		XPathExpType.XPATHEXPRESSION.create("/test", "test");
 	}
 }

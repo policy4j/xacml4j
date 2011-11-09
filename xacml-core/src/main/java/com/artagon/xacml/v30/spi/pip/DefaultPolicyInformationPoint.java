@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.core.AttributeCategory;
@@ -46,7 +46,7 @@ public class DefaultPolicyInformationPoint
 	}
 	
 	@Override
-	public BagOfAttributesExp resolve(
+	public BagOfAttributeExp resolve(
 			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception 
 	{

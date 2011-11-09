@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionSpec;
@@ -194,7 +194,7 @@ class JavaMethodToFunctionSpecConverter
 			return;
 		}
 			if (returnType.isBag() && 
-					!BagOfAttributesExp.class.isAssignableFrom(m.getReturnType())) {
+					!BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
 				throw new IllegalArgumentException(
 						String
 								.format(
@@ -203,7 +203,7 @@ class JavaMethodToFunctionSpecConverter
 										m.getName(), returnType.typeId(), m
 												.getReturnType()));
 			}
-		if(!returnType.isBag() && BagOfAttributesExp.class.isAssignableFrom(m.getReturnType())) {
+		if(!returnType.isBag() && BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
 			throw new IllegalArgumentException(String.format(
 					"Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),

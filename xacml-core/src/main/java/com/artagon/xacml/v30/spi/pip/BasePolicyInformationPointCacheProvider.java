@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.spi.pip;
 
 import java.util.List;
 
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.google.common.base.Preconditions;
 
 public class BasePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider
@@ -38,20 +38,20 @@ public class BasePolicyInformationPointCacheProvider implements PolicyInformatio
 		}
 	}
 	
-	protected Content doGetContent(ContentResolverDescriptor d, List<BagOfAttributesExp> keys){
+	protected Content doGetContent(ContentResolverDescriptor d, List<BagOfAttributeExp> keys){
 		return null;
 	}
 	
 	protected AttributeSet doGetAttributes(AttributeResolverDescriptor d,
-			List<BagOfAttributesExp> keys) {
+			List<BagOfAttributeExp> keys) {
 		return null;
 	}
 	
-	protected void doPutContent(ContentResolverDescriptor d, List<BagOfAttributesExp> keys,
+	protected void doPutContent(ContentResolverDescriptor d, List<BagOfAttributeExp> keys,
 			Content content) {	
 	}
 	
-	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributesExp> keys,
+	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributeExp> keys,
 			AttributeSet v) {
 		
 	}

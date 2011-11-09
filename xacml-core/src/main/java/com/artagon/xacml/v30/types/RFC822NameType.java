@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.core.RFC822Name;
 import com.google.common.base.Preconditions;
 
@@ -35,11 +35,11 @@ public enum RFC822NameType implements AttributeExpType
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	
 	private RFC822NameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
@@ -47,14 +47,14 @@ public enum RFC822NameType implements AttributeExpType
 	}
 	
 	@Override
-	public RFC822NameValueExp fromXacmlString(String v, Object ...params)
+	public RFC822NameExp fromXacmlString(String v, Object ...params)
 	{
 		Preconditions.checkNotNull(v);
-        return new RFC822NameValueExp(this, RFC822Name.parse(v));
+        return new RFC822NameExp(this, RFC822Name.parse(v));
 	}
 	
 	@Override
-	public RFC822NameValueExp create(Object any, Object ...params)
+	public RFC822NameExp create(Object any, Object ...params)
 	{
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any),String.format(
@@ -63,7 +63,7 @@ public enum RFC822NameType implements AttributeExpType
 		if(any instanceof String){
 			return fromXacmlString((String)any);
 		}
-		return new RFC822NameValueExp(this, (RFC822Name)any);
+		return new RFC822NameExp(this, (RFC822Name)any);
 	}
 	
 	@Override
@@ -72,27 +72,27 @@ public enum RFC822NameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

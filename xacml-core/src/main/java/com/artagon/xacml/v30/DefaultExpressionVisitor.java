@@ -17,13 +17,13 @@ public class DefaultExpressionVisitor
 	}
 
 	@Override
-	public void visitEnter(BagOfAttributesExp v) {
+	public void visitEnter(BagOfAttributeExp v) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void visitLeave(BagOfAttributesExp v) {
+	public void visitLeave(BagOfAttributeExp v) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.function;
 
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.types.BooleanValueExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.types.BooleanExp;
 
 public class JavaMethodToFunctionSpecTestFunctions 
 {
@@ -15,24 +15,24 @@ public class JavaMethodToFunctionSpecTestFunctions
 		return null;
 	}
 	
-	public BooleanValueExp missingXacmlFuncAnnotation(){
+	public BooleanExp missingXacmlFuncAnnotation(){
 		return null;
 	}
 	
 	@XacmlFuncSpec(id="missingReturnTypeDeclaration1")
-	public static BooleanValueExp missingReturnTypeDeclaration1(){
+	public static BooleanExp missingReturnTypeDeclaration1(){
 		return null;
 	}
 	
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)
-	public static BooleanValueExp returnTypeDeclarationExistButWrongMethodReturnType1(){
+	public static BooleanExp returnTypeDeclarationExistButWrongMethodReturnType1(){
 		return null;
 	}
 	
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BagOfAttributesExp returnTypeDeclarationExistButWrongMethodReturnType2(){
+	public static BagOfAttributeExp returnTypeDeclarationExistButWrongMethodReturnType2(){
 		return null;
 	}
 	

@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.core.AttributeCategories;
 import com.artagon.xacml.v30.types.IntegerType;
@@ -69,7 +69,7 @@ public class DefaultPolicyInformationPointTest
 	@Test
 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsCachable() throws Exception
 	{
-		Map<String, BagOfAttributesExp> values = ImmutableMap.of(
+		Map<String, BagOfAttributeExp> values = ImmutableMap.of(
 				"testAttributeId1", 
 				StringType.STRING.bagOf(StringType.STRING.create("v1")));
 		
@@ -115,7 +115,7 @@ public class DefaultPolicyInformationPointTest
 		context.setDecisionCacheTTL(descriptor.getPreferreredCacheTTL());
 		control.replay();
 		
-		BagOfAttributesExp v = pip.resolve(context, ref);
+		BagOfAttributeExp v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
@@ -126,7 +126,7 @@ public class DefaultPolicyInformationPointTest
 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable() 
 		throws Exception
 	{
-		Map<String, BagOfAttributesExp> values = ImmutableMap.of(
+		Map<String, BagOfAttributeExp> values = ImmutableMap.of(
 				"testAttributeId3", 
 				StringType.STRING.bagOf(StringType.STRING.create("v1")));
 		
@@ -168,7 +168,7 @@ public class DefaultPolicyInformationPointTest
 		
 		control.replay();
 		
-		BagOfAttributesExp v = pip.resolve(context, ref);
+		BagOfAttributeExp v = pip.resolve(context, ref);
 		assertEquals(StringType.STRING.bagOf(StringType.STRING.create("v1")), v);
 
 		control.verify();

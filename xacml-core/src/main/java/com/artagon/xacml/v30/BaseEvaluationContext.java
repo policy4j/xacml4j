@@ -37,9 +37,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private TimeZone timezone;
 	private Calendar currentDateTime;
 	
-	private Map<AttributeDesignatorKey, BagOfAttributesExp> designCache;
-	private Map<AttributeSelectorKey, BagOfAttributesExp> selectCache;
-	private Map<AttributeDesignatorKey, BagOfAttributesExp> resolvedDesignators;
+	private Map<AttributeDesignatorKey, BagOfAttributeExp> designCache;
+	private Map<AttributeSelectorKey, BagOfAttributeExp> selectCache;
+	private Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
 	
 	private Integer combinedDecisionCacheTTL = null;
 	
@@ -74,9 +74,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributesExp>(128);
-		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributesExp>(128);
-		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributesExp>();
+		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
+		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
+		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
 		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
 		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
@@ -274,11 +274,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributesExp resolve(
+	public final BagOfAttributeExp resolve(
 			AttributeDesignatorKey ref) 
 		throws EvaluationException
 	{
-		BagOfAttributesExp v = designCache.get(ref);
+		BagOfAttributeExp v = designCache.get(ref);
 		if(v != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found designator=\"{}\" " +
@@ -297,11 +297,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public final BagOfAttributesExp resolve(
+	public final BagOfAttributeExp resolve(
 			AttributeSelectorKey ref)
 			throws EvaluationException 
 	{
-		BagOfAttributesExp v = selectCache.get(ref);
+		BagOfAttributeExp v = selectCache.get(ref);
 		if(v != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found selector=\"{}\" " +
@@ -321,7 +321,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	public void setResolvedDesignatorValue(
 			AttributeDesignatorKey key, 
-			BagOfAttributesExp v){
+			BagOfAttributeExp v){
 		Preconditions.checkNotNull(key);
 		this.resolvedDesignators.put(key, (v == null)?key.getDataType().emptyBag():v);
 		this.designCache.put(key, (v == null)?key.getDataType().emptyBag():v);
@@ -333,7 +333,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributesExp> getResolvedDesignators() {
+	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		
 		return Collections.unmodifiableMap(resolvedDesignators);
 	}

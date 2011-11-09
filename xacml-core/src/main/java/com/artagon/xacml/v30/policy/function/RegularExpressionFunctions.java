@@ -10,14 +10,14 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.AnyURIValueExp;
+import com.artagon.xacml.v30.types.AnyURIExp;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.BooleanValueExp;
-import com.artagon.xacml.v30.types.DNSNameValueExp;
-import com.artagon.xacml.v30.types.IPAddressValueExp;
-import com.artagon.xacml.v30.types.RFC822NameValueExp;
-import com.artagon.xacml.v30.types.StringValueExp;
-import com.artagon.xacml.v30.types.X500NameValueExp;
+import com.artagon.xacml.v30.types.BooleanExp;
+import com.artagon.xacml.v30.types.DNSNameExp;
+import com.artagon.xacml.v30.types.IPAddressExp;
+import com.artagon.xacml.v30.types.RFC822NameExp;
+import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.X500NameExp;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
 public class RegularExpressionFunctions 
@@ -27,9 +27,9 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp stringRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp input)
+			BooleanExp stringRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp input)
 	{
 		 return matches(regexp, input);
 	}
@@ -37,9 +37,9 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp anyURIRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIValueExp input)
+			BooleanExp anyURIRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp input)
 	{
 		 return matches(regexp, input);
 	}
@@ -47,9 +47,9 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp ipAddressRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressValueExp input)
+			BooleanExp ipAddressRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp input)
 	{
 		 return matches(regexp, input);
 	}
@@ -57,9 +57,9 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp dnsNameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameValueExp input)
+			BooleanExp dnsNameRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp input)
 	{
 		 return matches(regexp, input);
 	}
@@ -67,9 +67,9 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp rfc822NameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValueExp input)
+			BooleanExp rfc822NameRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp input)
 	{
 		 return matches(regexp, input);
 	}
@@ -77,16 +77,16 @@ public class RegularExpressionFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static 
-			BooleanValueExp x500NameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValueExp regexp, 
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValueExp input)
+			BooleanExp x500NameRegexpMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp input)
 	{
 		 return matches(regexp, input);
 	}
 	
 	
 	
-	private static BooleanValueExp matches(StringValueExp regexp, AttributeExp input){
+	private static BooleanExp matches(StringExp regexp, AttributeExp input){
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", input, regexp);
 		}

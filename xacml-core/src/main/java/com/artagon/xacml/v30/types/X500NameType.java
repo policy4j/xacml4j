@@ -6,8 +6,8 @@ import javax.security.auth.x500.X500Principal;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.google.common.base.Preconditions;
 
 /** 
@@ -31,11 +31,11 @@ public enum X500NameType implements AttributeExpType
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
 	
 	private String typeId;
-	private BagOfAttributesExpType bagType;
+	private BagOfAttributeExpType bagType;
 	
 	private X500NameType(String typeId){
 		this.typeId = typeId;
-		this.bagType = new BagOfAttributesExpType(this);
+		this.bagType = new BagOfAttributeExpType(this);
 	}
 	
 	public boolean isConvertableFrom(Object any) {
@@ -43,13 +43,13 @@ public enum X500NameType implements AttributeExpType
 	}
 	
 	@Override
-	public X500NameValueExp fromXacmlString(String v, Object ...params) {
+	public X500NameExp fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
-		return new X500NameValueExp(this, new X500Principal(v));
+		return new X500NameExp(this, new X500Principal(v));
 	}
 	
 	@Override
-	public X500NameValueExp create(Object any, Object ...params){
+	public X500NameExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
 				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"x500Name\" type", 
@@ -57,7 +57,7 @@ public enum X500NameType implements AttributeExpType
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}
-		return new X500NameValueExp(this, (X500Principal)any);
+		return new X500NameExp(this, (X500Principal)any);
 	}
 	@Override
 	public String getDataTypeId() {
@@ -65,27 +65,27 @@ public enum X500NameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributesExpType bagType() {
+	public BagOfAttributeExpType bagType() {
 		return bagType;
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(AttributeExp... values) {
+	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
 
 	@Override
-	public BagOfAttributesExp bagOf(Object... values) {
+	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
 	
 	@Override
-	public BagOfAttributesExp emptyBag() {
+	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
 	

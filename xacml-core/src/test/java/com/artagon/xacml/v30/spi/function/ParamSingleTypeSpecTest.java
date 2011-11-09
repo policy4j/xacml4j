@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributesExp;
-import com.artagon.xacml.v30.BagOfAttributesExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.FunctionParamSpec;
 import com.artagon.xacml.v30.types.DoubleType;
@@ -21,7 +21,7 @@ public class ParamSingleTypeSpecTest
 {
 	private DoubleType t1;
 	private StringType t2;
-	private BagOfAttributesExpType b1;
+	private BagOfAttributeExpType b1;
 	
 	@Before
 	public void init(){
@@ -45,7 +45,7 @@ public class ParamSingleTypeSpecTest
 	{		
 		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1);
 		AttributeExp v = t1.create(new Double(0.1));
-		BagOfAttributesExp bag = b1.create(Collections.<AttributeExp>singletonList(v));
+		BagOfAttributeExp bag = b1.create(Collections.<AttributeExp>singletonList(v));
 		List<Expression> good = Collections.<Expression>singletonList(bag);
 		List<Expression> bad = Collections.<Expression>singletonList(t2.create("AAAA"));
 		assertFalse(spec.validate(good.listIterator()));		

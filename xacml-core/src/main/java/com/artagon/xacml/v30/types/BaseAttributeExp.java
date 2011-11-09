@@ -9,7 +9,7 @@ import com.artagon.xacml.v30.ValueType;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public abstract class BaseAttributeExpression<T>
+public abstract class BaseAttributeExp<T>
 	implements AttributeExp
 {
 	private static final long serialVersionUID = 4131180767511036271L;
@@ -17,7 +17,7 @@ public abstract class BaseAttributeExpression<T>
 	private T value;
 	private AttributeExpType type;
 	
-	protected BaseAttributeExpression(AttributeExpType type, 
+	protected BaseAttributeExp(AttributeExpType type, 
 			T value) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkNotNull(value);

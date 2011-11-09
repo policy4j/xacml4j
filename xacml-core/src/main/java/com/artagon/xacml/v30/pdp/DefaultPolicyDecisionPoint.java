@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
@@ -172,10 +172,10 @@ public final class DefaultPolicyDecisionPoint
 	 * @return a collection of {@link Attribute} instances
 	 */
 	private Collection<Attributes> getResolvedAttributes(EvaluationContext context){
-		Map<AttributeDesignatorKey, BagOfAttributesExp> desig = context.getResolvedDesignators();
+		Map<AttributeDesignatorKey, BagOfAttributeExp> desig = context.getResolvedDesignators();
 		Multimap<AttributeCategory, Attribute> attributes = HashMultimap.create();
 		for(AttributeDesignatorKey k : desig.keySet()){
-			BagOfAttributesExp v = desig.get(k);
+			BagOfAttributeExp v = desig.get(k);
 			Collection<Attribute> values = attributes.get(k.getCategory());
 			values.add(new Attribute(k.getAttributeId(), k.getIssuer(), false, v.values()));
 		}

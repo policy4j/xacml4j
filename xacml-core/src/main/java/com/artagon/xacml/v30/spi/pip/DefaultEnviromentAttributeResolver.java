@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v30.BagOfAttributesExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.core.AttributeCategories;
 
 /**
@@ -31,10 +31,10 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 	}
 	
 	@Override
-	protected Map<String, BagOfAttributesExp> doResolve(
+	protected Map<String, BagOfAttributeExp> doResolve(
 			ResolverContext context) throws Exception {
 		Calendar currentDateTime = context.getCurrentDateTime();
-		Map<String, BagOfAttributesExp> v = new HashMap<String, BagOfAttributesExp>();	
+		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();	
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time", 
 					TIME.bagOf(TIME.create(currentDateTime)));
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date", 

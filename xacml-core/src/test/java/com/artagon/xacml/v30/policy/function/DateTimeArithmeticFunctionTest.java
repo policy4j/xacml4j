@@ -9,11 +9,11 @@ import org.junit.Test;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.DateTimeType;
-import com.artagon.xacml.v30.types.DateTimeValueExp;
+import com.artagon.xacml.v30.types.DateTimeExp;
 import com.artagon.xacml.v30.types.DayTimeDurationType;
-import com.artagon.xacml.v30.types.DayTimeDurationValueExp;
+import com.artagon.xacml.v30.types.DayTimeDurationExp;
 import com.artagon.xacml.v30.types.YearMonthDurationType;
-import com.artagon.xacml.v30.types.YearMonthDurationValueExp;
+import com.artagon.xacml.v30.types.YearMonthDurationExp;
 
 public class DateTimeArithmeticFunctionTest 
 {
@@ -48,9 +48,9 @@ public class DateTimeArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddDayTimeDuration()
 	{
-		DateTimeValueExp dateTime1 = DateTimeType.DATETIME.create("2002-03-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = DateTimeType.DATETIME.create("2002-03-27T10:23:47-05:00");
-		DayTimeDurationValueExp duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
+		DateTimeExp dateTime1 = DateTimeType.DATETIME.create("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeType.DATETIME.create("2002-03-27T10:23:47-05:00");
+		DayTimeDurationExp duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 		
 	}
@@ -58,9 +58,9 @@ public class DateTimeArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddYearMonthDuration()
 	{
-		DateTimeValueExp dateTime1 = DateTimeType.DATETIME.create("2002-03-22T08:23:47-05:00");
-		DateTimeValueExp dateTime2 = DateTimeType.DATETIME.create("2001-01-22T08:23:47-05:00");
-		YearMonthDurationValueExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P1Y2M");
+		DateTimeExp dateTime1 = DateTimeType.DATETIME.create("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeType.DATETIME.create("2001-01-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationType.YEARMONTHDURATION.create("-P1Y2M");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 
 	}
