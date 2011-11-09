@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.Attribute;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExpType;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.spi.pip.BaseAttributeResolver;
@@ -40,8 +43,7 @@ public class ExpectedAttributeResolver extends BaseAttributeResolver {
 			ResolverContext context) throws Exception {
 		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();
 		for(Attribute attr: expectedAttributes) {
-			BagOfAttributeExp values = new BagOfAttributeExp(
-					new BagOfAttributeExpType(attr.getValues().iterator().next().getType()), attr.getValues());
+			BagOfAttributeExp values = attr.getValues().iterator().next().getType().bagOf(attr.getValues());
 			v.put(attr.getAttributeId(), values);
 		}
 		return v;

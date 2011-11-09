@@ -7,12 +7,12 @@ import java.io.InputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;

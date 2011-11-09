@@ -2,7 +2,7 @@ package com.artagon.xacml.spring;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.PolicySetIDReference;
+import com.artagon.xacml.v30.pdp.PolicySetIDReference;
 
 public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicySetIDReference>
 {

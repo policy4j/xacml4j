@@ -15,13 +15,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;

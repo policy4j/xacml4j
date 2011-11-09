@@ -21,8 +21,8 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 
-import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+import com.artagon.xacml.v30.pdp.RequestContext;
 
 public class Xacml20TestUtility 
 {

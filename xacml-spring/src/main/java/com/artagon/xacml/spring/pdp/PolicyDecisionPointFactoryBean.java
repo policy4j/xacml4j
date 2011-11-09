@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;

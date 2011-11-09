@@ -5,13 +5,13 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.springframework.ws.server.endpoint.AbstractStaxStreamPayloadEndpoint;
 
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.ResponseContext;
 
 public class StaxXacmlEndpoint extends AbstractStaxStreamPayloadEndpoint 
 {

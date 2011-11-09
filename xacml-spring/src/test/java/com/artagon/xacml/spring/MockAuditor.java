@@ -3,9 +3,9 @@ package com.artagon.xacml.spring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 
 public class MockAuditor implements PolicyDecisionAuditor {

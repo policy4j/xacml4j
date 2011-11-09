@@ -5,8 +5,8 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.core.Version;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.types.BooleanType;

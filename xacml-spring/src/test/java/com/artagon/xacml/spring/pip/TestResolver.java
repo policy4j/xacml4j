@@ -5,7 +5,7 @@ import java.util.Map;
 import org.junit.Ignore;
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDescriptor;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDesignator;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeResolverDescriptor;

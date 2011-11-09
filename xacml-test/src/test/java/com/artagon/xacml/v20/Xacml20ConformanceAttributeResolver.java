@@ -3,7 +3,7 @@ package com.artagon.xacml.v20;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDescriptor;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeDesignator;
 import com.artagon.xacml.v30.spi.pip.XacmlAttributeResolverDescriptor;
