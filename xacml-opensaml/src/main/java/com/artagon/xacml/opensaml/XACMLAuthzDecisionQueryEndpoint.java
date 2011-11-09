@@ -35,15 +35,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
-import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.SubjectAttributes;
+
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
+import com.artagon.xacml.v30.pdp.Attribute;
+import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.types.StringType;
 
 public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint

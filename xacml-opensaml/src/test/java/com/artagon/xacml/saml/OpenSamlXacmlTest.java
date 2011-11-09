@@ -35,10 +35,10 @@ import com.artagon.xacml.opensaml.IDPConfiguration;
 import com.artagon.xacml.opensaml.OpenSamlObjectBuilder;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQueryEndpoint;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQuerySigner;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.pdp.Result;
 
 
 @ContextConfiguration(locations={"classpath:testApplicationContext.xml"})
@@ -92,7 +92,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		System.out.println(" Request ----- " + new String(outResponse.toByteArray()));
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
@@ -109,7 +109,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
@@ -126,7 +126,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
@@ -153,7 +153,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 				query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
