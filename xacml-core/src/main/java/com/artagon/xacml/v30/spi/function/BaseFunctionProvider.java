@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.function;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 public class BaseFunctionProvider implements FunctionProvider

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 
 public class XacmlTypesTest
 {

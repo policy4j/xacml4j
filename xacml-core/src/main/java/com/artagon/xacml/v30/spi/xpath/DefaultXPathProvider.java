@@ -11,7 +11,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.NodeNamespaceContext;
-import com.artagon.xacml.v30.core.XPathVersion;
+import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
 
 public class DefaultXPathProvider implements XPathProvider

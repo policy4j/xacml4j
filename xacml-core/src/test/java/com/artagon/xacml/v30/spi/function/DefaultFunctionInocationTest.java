@@ -13,11 +13,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.util.Invocation;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionInvocationException;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.ValueExpression;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionInvocationException;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.pdp.ValueExpression;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.ImmutableList;

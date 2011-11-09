@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.core.DNSName;
+import com.artagon.xacml.v30.DNSName;
 
 
 public final class DNSNameExp extends BaseAttributeExp<DNSName>

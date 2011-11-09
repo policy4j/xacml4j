@@ -15,16 +15,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
-import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v30.AttributeSelectorKey;
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationContextHandler;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
@@ -160,12 +151,12 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}
 	}
 
@@ -190,12 +181,12 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}
 	}
 
@@ -218,12 +209,12 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}
 	}
 	
@@ -248,12 +239,12 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new com.artagon.xacml.v30.XPathEvaluationException(path, context, e);
+			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}
 	}
 

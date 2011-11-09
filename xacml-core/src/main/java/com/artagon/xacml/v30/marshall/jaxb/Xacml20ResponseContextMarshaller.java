@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
-import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
+import com.artagon.xacml.v30.pdp.ResponseContext;
 
 /**
  * Marshals XACML 3.0 {@link ResponseContext} to the XACML 2.0 response

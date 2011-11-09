@@ -9,16 +9,16 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionInvocationException;
-import com.artagon.xacml.v30.FunctionParamSpec;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.ValueExpression;
-import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.XacmlObject;
-import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionInvocationException;
+import com.artagon.xacml.v30.pdp.FunctionParamSpec;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.pdp.ValueExpression;
+import com.artagon.xacml.v30.pdp.ValueType;
+import com.artagon.xacml.v30.pdp.XacmlObject;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 /**

@@ -10,11 +10,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.DecisionRule;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Rule;
+import com.artagon.xacml.v30.pdp.Decision;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.DecisionRule;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.Rule;
 import com.artagon.xacml.v30.policy.combine.DenyOverrides;
 
 public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest 

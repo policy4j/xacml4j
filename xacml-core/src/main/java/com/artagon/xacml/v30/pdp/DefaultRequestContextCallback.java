@@ -4,11 +4,7 @@ import java.util.Collection;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategory;
 import com.google.common.base.Preconditions;
 
 public class DefaultRequestContextCallback 

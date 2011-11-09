@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import com.artagon.xacml.v30.VariableDefinition;
+import com.artagon.xacml.v30.pdp.VariableDefinition;
 import com.google.common.base.Preconditions;
 
 public class VariableManager <VExpression>

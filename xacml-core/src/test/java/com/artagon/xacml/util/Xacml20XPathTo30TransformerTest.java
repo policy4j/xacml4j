@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.XPathExpType;

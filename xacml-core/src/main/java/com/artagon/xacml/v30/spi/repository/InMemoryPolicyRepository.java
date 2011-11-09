@@ -11,12 +11,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicySet;
-import com.artagon.xacml.v30.VersionMatch;
-import com.artagon.xacml.v30.Versionable;
-import com.artagon.xacml.v30.core.Version;
+import com.artagon.xacml.v30.Version;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicySet;
+import com.artagon.xacml.v30.pdp.VersionMatch;
+import com.artagon.xacml.v30.pdp.Versionable;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;

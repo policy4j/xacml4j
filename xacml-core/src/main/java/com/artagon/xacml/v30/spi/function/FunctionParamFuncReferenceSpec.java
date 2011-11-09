@@ -2,11 +2,11 @@ package com.artagon.xacml.v30.spi.function;
 
 import java.util.ListIterator;
 
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionParamSpec;
-import com.artagon.xacml.v30.FunctionReference;
-import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.XacmlObject;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionParamSpec;
+import com.artagon.xacml.v30.pdp.FunctionReference;
+import com.artagon.xacml.v30.pdp.ValueType;
+import com.artagon.xacml.v30.pdp.XacmlObject;
 
 final class FunctionParamFuncReferenceSpec extends XacmlObject implements FunctionParamSpec
 {		

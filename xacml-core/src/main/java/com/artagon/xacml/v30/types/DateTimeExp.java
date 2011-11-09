@@ -2,8 +2,8 @@ package com.artagon.xacml.v30.types;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.core.DateTime;
+import com.artagon.xacml.v30.DateTime;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.google.common.base.Preconditions;
 
 public final class DateTimeExp 

@@ -11,8 +11,8 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.google.common.collect.ImmutableList;
 
 public class FunctionSpecBuilderTest

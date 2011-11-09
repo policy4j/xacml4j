@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.repository;
 
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicySet;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicySet;
 
 public interface PolicyRepositoryListener 
 {

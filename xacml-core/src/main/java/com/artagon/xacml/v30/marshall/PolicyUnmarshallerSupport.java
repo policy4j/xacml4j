@@ -4,15 +4,15 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.Rule;
-import com.artagon.xacml.v30.XacmlSyntaxException;
-import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.pdp.Rule;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.DataTypes;

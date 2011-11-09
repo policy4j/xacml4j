@@ -24,17 +24,17 @@ import org.oasis.xacml.v30.jaxb.RuleType;
 import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 
-import com.artagon.xacml.v30.Condition;
-import com.artagon.xacml.v30.DecisionRule;
-import com.artagon.xacml.v30.Effect;
-import com.artagon.xacml.v30.MatchAnyOf;
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicyIDReference;
-import com.artagon.xacml.v30.PolicySetIDReference;
-import com.artagon.xacml.v30.PolicyVisitorSupport;
-import com.artagon.xacml.v30.Rule;
-import com.artagon.xacml.v30.Target;
-import com.artagon.xacml.v30.VariableDefinition;
+import com.artagon.xacml.v30.pdp.Condition;
+import com.artagon.xacml.v30.pdp.DecisionRule;
+import com.artagon.xacml.v30.pdp.Effect;
+import com.artagon.xacml.v30.pdp.MatchAnyOf;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicyIDReference;
+import com.artagon.xacml.v30.pdp.PolicySetIDReference;
+import com.artagon.xacml.v30.pdp.PolicyVisitorSupport;
+import com.artagon.xacml.v30.pdp.Rule;
+import com.artagon.xacml.v30.pdp.Target;
+import com.artagon.xacml.v30.pdp.VariableDefinition;
 import com.google.common.base.Preconditions;
 
 public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSupport

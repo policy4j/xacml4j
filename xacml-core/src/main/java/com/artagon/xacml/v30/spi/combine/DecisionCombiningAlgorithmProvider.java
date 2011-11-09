@@ -2,9 +2,9 @@ package com.artagon.xacml.v30.spi.combine;
 
 import java.util.Set;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.Rule;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.Rule;
 
 public interface DecisionCombiningAlgorithmProvider 
 {

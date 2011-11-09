@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
 
 public final class IntegerExp 
 	extends BaseAttributeExp<Long>

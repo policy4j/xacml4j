@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.core.AttributeCategory;
-import com.artagon.xacml.v30.core.XPathExpression;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.XPathExpression;
 
 public final class XPathExp extends BaseAttributeExp<XPathExpression>
 {

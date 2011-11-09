@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.Rule;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.Rule;
 
 /**
  * A base implementation of {@link DecisionCombiningAlgorithmProvider}

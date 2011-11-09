@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.xpath;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v30.core.XPathVersion;
+import com.artagon.xacml.v30.XPathVersion;
 
 /**
  * An XPath provider for executing XPath expressions

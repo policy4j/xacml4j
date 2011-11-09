@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicySet;
-import com.artagon.xacml.v30.VersionMatch;
-import com.artagon.xacml.v30.XacmlSyntaxException;
-import com.artagon.xacml.v30.core.Version;
+import com.artagon.xacml.v30.Version;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicySet;
+import com.artagon.xacml.v30.pdp.VersionMatch;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 
 
 /**

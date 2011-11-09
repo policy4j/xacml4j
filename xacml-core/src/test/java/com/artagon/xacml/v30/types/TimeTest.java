@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.types;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.artagon.xacml.v30.core.Time;
+import com.artagon.xacml.v30.Time;
 
 public class TimeTest 
 {

@@ -2,9 +2,7 @@ package com.artagon.xacml.v30.pdp;
 
 import org.w3c.dom.Node;
 
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategory;
 
 public interface RequestContextCallback 
 {

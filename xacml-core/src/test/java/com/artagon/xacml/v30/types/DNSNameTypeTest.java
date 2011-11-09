@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.core.DNSName;
+import com.artagon.xacml.v30.DNSName;
 
 public class DNSNameTypeTest 
 {

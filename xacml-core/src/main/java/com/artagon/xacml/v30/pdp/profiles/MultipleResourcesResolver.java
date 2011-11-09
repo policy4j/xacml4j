@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.Set;
 
-import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.RequestContextCallback;
 
 public interface MultipleResourcesResolver 

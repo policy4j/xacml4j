@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.types;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.google.common.base.Preconditions;
 
 public final class DataTypeRegistryBuilder 

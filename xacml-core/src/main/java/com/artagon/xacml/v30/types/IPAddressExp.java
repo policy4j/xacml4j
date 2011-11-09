@@ -2,8 +2,8 @@ package com.artagon.xacml.v30.types;
 
 import java.net.InetAddress;
 
-import com.artagon.xacml.v30.core.IPAddress;
-import com.artagon.xacml.v30.core.PortRange;
+import com.artagon.xacml.v30.IPAddress;
+import com.artagon.xacml.v30.PortRange;
 
 public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 {

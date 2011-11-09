@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.AttributesReference;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.RequestReference;
-import com.artagon.xacml.v30.RequestSyntaxException;
-import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
+import com.artagon.xacml.v30.pdp.Attributes;
+import com.artagon.xacml.v30.pdp.AttributesReference;
+import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.RequestReference;
+import com.artagon.xacml.v30.pdp.RequestSyntaxException;
+import com.artagon.xacml.v30.pdp.Result;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {

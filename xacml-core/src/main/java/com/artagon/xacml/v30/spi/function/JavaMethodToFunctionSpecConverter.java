@@ -8,13 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.InvocationFactory;
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.ValueExpression;
-import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.pdp.ValueExpression;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategories;
 
 public class ContentResolverDescriptorBuilderTest 
 {

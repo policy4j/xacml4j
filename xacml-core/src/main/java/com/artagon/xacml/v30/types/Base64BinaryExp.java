@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.core.BinaryValue;
+import com.artagon.xacml.v30.BinaryValue;
 
 public final class Base64BinaryExp extends BaseAttributeExp<BinaryValue>
 {

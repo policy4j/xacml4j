@@ -14,14 +14,14 @@ import org.oasis.xacml.v30.jaxb.FunctionType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 
-import com.artagon.xacml.v30.Apply;
-import com.artagon.xacml.v30.AttributeDesignator;
-import com.artagon.xacml.v30.AttributeSelector;
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.DefaultExpressionVisitor;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionReference;
-import com.artagon.xacml.v30.VariableReference;
+import com.artagon.xacml.v30.pdp.Apply;
+import com.artagon.xacml.v30.pdp.AttributeDesignator;
+import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.AttributeSelector;
+import com.artagon.xacml.v30.pdp.DefaultExpressionVisitor;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionReference;
+import com.artagon.xacml.v30.pdp.VariableReference;
 
 final class Xacml30PolicyExpressionFromModelToJaxbMapper 
 	extends DefaultExpressionVisitor

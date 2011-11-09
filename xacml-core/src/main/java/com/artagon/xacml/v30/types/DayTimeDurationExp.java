@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.types;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.v30.core.DayTimeDuration;
+import com.artagon.xacml.v30.DayTimeDuration;
 import com.google.common.base.Preconditions;
 
 public final class DayTimeDurationExp extends BaseAttributeExp<DayTimeDuration> 

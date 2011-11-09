@@ -20,11 +20,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.core.XPathVersion;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;

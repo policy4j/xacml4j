@@ -3,7 +3,7 @@ package com.artagon.xacml.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.artagon.xacml.v30.types.XPathExp;

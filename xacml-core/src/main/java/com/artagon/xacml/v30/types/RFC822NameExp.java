@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.core.RFC822Name;
+import com.artagon.xacml.v30.RFC822Name;
 
 public final class RFC822NameExp extends BaseAttributeExp<RFC822Name>
 {

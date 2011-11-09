@@ -30,22 +30,22 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
-import com.artagon.xacml.v30.Advice;
-import com.artagon.xacml.v30.Attribute;
-import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.Effect;
-import com.artagon.xacml.v30.Obligation;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.RequestSyntaxException;
-import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.Result;
-import com.artagon.xacml.v30.Status;
-import com.artagon.xacml.v30.XacmlSyntaxException;
-import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.Advice;
+import com.artagon.xacml.v30.pdp.Attribute;
+import com.artagon.xacml.v30.pdp.AttributeAssignment;
+import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.Attributes;
+import com.artagon.xacml.v30.pdp.Decision;
+import com.artagon.xacml.v30.pdp.Effect;
+import com.artagon.xacml.v30.pdp.Obligation;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.RequestSyntaxException;
+import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.pdp.Status;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.collect.Iterables;
@@ -209,7 +209,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 	private AttributeAssignmentType create(AttributeAssignment a)
 	{
 		AttributeAssignmentType attr = new AttributeAssignmentType();
-		com.artagon.xacml.v30.AttributeExpType t = (com.artagon.xacml.v30.AttributeExpType)(a.getAttribute().getType());
+		com.artagon.xacml.v30.pdp.AttributeExpType t = (com.artagon.xacml.v30.pdp.AttributeExpType)(a.getAttribute().getType());
 		attr.setDataType(t.getDataTypeId());
 		attr.setAttributeId(a.getAttributeId());
 		attr.getContent().add(a.getAttribute().toXacmlString());
@@ -358,7 +358,7 @@ class Xacml20RequestContextFromJaxbToObjectModelMapper
 				content.isEmpty()){
 			throw new RequestSyntaxException("Attribute does not have content");
 		}
-		com.artagon.xacml.v30.AttributeExpType dataType = DataTypes.getType(dataTypeId);
+		com.artagon.xacml.v30.pdp.AttributeExpType dataType = DataTypes.getType(dataTypeId);
 		if(dataType == null){
 			throw new RequestSyntaxException(
 					"DataTypeId=\"%s\" can be be " +

@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 import org.junit.Ignore;
 
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.IntegerType;

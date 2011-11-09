@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.types;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.artagon.xacml.v30.core.Date;
+import com.artagon.xacml.v30.Date;
 
 public final class DateExp extends BaseAttributeExp<Date> 
 	implements Comparable<DateExp>

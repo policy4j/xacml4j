@@ -14,10 +14,10 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.ImmutableMap;

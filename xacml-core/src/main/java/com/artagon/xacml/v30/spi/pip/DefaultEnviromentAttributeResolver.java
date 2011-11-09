@@ -9,8 +9,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.core.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 
 /**
  * A default XACML enviroment attributes resolver

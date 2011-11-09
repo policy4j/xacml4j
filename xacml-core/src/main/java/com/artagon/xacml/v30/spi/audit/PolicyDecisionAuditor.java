@@ -1,8 +1,8 @@
 package com.artagon.xacml.v30.spi.audit;
 
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.Result;
 
 public interface PolicyDecisionAuditor 
 {

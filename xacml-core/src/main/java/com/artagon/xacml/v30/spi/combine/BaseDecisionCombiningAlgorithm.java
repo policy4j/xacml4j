@@ -1,8 +1,8 @@
 package com.artagon.xacml.v30.spi.combine;
 
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.DecisionRule;
-import com.artagon.xacml.v30.XacmlObject;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.DecisionRule;
+import com.artagon.xacml.v30.pdp.XacmlObject;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule> extends XacmlObject

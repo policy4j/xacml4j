@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.types;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
-import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.core.YearMonthDuration;
+import com.artagon.xacml.v30.YearMonthDuration;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.google.common.base.Preconditions;
 
 public final class YearMonthDurationExp 

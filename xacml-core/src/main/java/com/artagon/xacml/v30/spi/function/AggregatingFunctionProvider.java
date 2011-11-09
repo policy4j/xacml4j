@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.FunctionSpec;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.google.common.base.Preconditions;
 
 /**

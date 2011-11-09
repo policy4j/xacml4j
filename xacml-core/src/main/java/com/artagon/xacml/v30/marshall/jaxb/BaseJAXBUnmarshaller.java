@@ -13,8 +13,8 @@ import javax.xml.transform.Source;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.Unmarshaller;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseJAXBUnmarshaller <T>

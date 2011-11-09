@@ -6,7 +6,7 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.core.YearMonthDuration;
+import com.artagon.xacml.v30.YearMonthDuration;
 
 import static org.junit.Assert.*;
 

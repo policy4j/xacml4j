@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.spi.pip;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.artagon.xacml.v30.AttributeReferenceKey;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseResolverDescriptor 

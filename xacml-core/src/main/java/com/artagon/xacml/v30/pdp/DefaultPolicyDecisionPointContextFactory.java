@@ -1,12 +1,6 @@
 package com.artagon.xacml.v30.pdp;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationContextHandler;
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.Result;
-import com.artagon.xacml.v30.RootEvaluationContext;
-import com.artagon.xacml.v30.core.XPathVersion;
+import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;

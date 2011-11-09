@@ -14,12 +14,12 @@ import com.artagon.xacml.util.DefaultInvocationFactory;
 import com.artagon.xacml.util.Invocation;
 import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v30.CompositeDecisionRule;
-import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.DecisionRule;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Rule;
+import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.pdp.Decision;
+import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
+import com.artagon.xacml.v30.pdp.DecisionRule;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.Rule;
 import com.google.common.base.Preconditions;
 
 class AnnotatedDecisionCombiningAlgorithmProviderFactory 

@@ -10,12 +10,12 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeDesignatorKey;
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.Policy;
-import com.artagon.xacml.v30.PolicySet;
-import com.artagon.xacml.v30.core.AttributeCategories;
-import com.artagon.xacml.v30.core.AttributeCategory;
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
+import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.types.IntegerType;
 
 public class DefaultResolverRegistryTest 

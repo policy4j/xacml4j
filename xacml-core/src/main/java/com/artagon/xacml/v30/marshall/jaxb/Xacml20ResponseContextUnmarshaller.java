@@ -4,9 +4,9 @@ import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
-import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
+import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 
 public class Xacml20ResponseContextUnmarshaller 
 	extends BaseJAXBUnmarshaller<ResponseContext> 

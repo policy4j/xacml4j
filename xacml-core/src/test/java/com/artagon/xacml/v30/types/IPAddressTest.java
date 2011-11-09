@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.types;
 import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
-import com.artagon.xacml.v30.core.IPAddress;
-import com.artagon.xacml.v30.core.PortRange;
+import com.artagon.xacml.v30.IPAddress;
+import com.artagon.xacml.v30.PortRange;
 
 import static org.junit.Assert.*;
 

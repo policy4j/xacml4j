@@ -5,10 +5,10 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionParamSpec;
-import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.XacmlObject;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionParamSpec;
+import com.artagon.xacml.v30.pdp.ValueType;
+import com.artagon.xacml.v30.pdp.XacmlObject;
 
 
 

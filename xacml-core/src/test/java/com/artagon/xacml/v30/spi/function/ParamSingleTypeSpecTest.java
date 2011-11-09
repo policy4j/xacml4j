@@ -9,11 +9,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.AttributeExp;
-import com.artagon.xacml.v30.BagOfAttributeExp;
-import com.artagon.xacml.v30.BagOfAttributeExpType;
-import com.artagon.xacml.v30.Expression;
-import com.artagon.xacml.v30.FunctionParamSpec;
+import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExpType;
+import com.artagon.xacml.v30.pdp.Expression;
+import com.artagon.xacml.v30.pdp.FunctionParamSpec;
 import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.StringType;
 

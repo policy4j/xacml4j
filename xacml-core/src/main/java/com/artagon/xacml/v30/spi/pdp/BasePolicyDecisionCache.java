@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
-import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.pdp.Result;
 
 
 public abstract class BasePolicyDecisionCache 

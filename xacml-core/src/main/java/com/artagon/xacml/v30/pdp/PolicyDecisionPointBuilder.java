@@ -8,7 +8,6 @@ import javax.management.NotCompliantMBeanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler;
 import com.artagon.xacml.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;

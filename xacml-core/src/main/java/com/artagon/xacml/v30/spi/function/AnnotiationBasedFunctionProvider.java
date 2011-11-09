@@ -8,8 +8,8 @@ import com.artagon.xacml.util.CglibInvocationFactory;
 import com.artagon.xacml.util.DefaultInvocationFactory;
 import com.artagon.xacml.util.InvocationFactory;
 import com.artagon.xacml.util.Reflections;
-import com.artagon.xacml.v30.FunctionSpec;
-import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
