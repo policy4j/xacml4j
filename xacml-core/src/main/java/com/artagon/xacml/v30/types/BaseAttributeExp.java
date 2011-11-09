@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.types;
 
 import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.artagon.xacml.v30.pdp.ExpressionVisitor;
@@ -61,6 +62,10 @@ public abstract class BaseAttributeExp<T>
 	public int hashCode(){
 		return Objects.hashCode(
 				getType(), value);
+	}
+	
+	public BagOfAttributeExp toBag(){
+		return type.bagOf(this);
 	}
 	
 	@Override
