@@ -36,12 +36,12 @@ public class ExpectedAttributeResolver extends BaseAttributeResolver {
 	}
 
 	@Override
-	protected Map<String, BagOfAttributesExp> doResolve(
+	protected Map<String, BagOfAttributeExp> doResolve(
 			ResolverContext context) throws Exception {
-		Map<String, BagOfAttributesExp> v = new HashMap<String, BagOfAttributesExp>();
+		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();
 		for(Attribute attr: expectedAttributes) {
-			BagOfAttributesExp values = new BagOfAttributesExp(
-					new BagOfAttributesExpType(attr.getValues().iterator().next().getType()), attr.getValues());
+			BagOfAttributeExp values = new BagOfAttributeExp(
+					new BagOfAttributeExpType(attr.getValues().iterator().next().getType()), attr.getValues());
 			v.put(attr.getAttributeId(), values);
 		}
 		return v;

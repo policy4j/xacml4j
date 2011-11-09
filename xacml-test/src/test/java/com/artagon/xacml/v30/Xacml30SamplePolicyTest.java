@@ -20,7 +20,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 						AttributeCategories.SUBJECT_ACCESS,
 						createAttribute("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanType.BOOLEAN, true))
 			},
-			"urn:cima:policy:compliance:cpni", Version.parse("1.0"));
+			"urn:cima:policy:compliance:cpni", "1.0");
 
 		verifyResponse(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
 	}
@@ -35,7 +35,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 
 	@Test
 	public void testCPNIComplianceAttrsInRequest() throws Exception {
-		PolicyDecisionPoint pdp = buildPDP("urn:cima:policy:compliance:cpni", Version.parse("1.0"));
+		PolicyDecisionPoint pdp = buildPDP("urn:cima:policy:compliance:cpni", "1.0");
 
 		verifyResponse(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
 	}
