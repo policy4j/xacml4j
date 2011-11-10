@@ -8,10 +8,10 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.Policy;
@@ -23,11 +23,14 @@ public class DefaultResolverRegistryTest
 	private ResolverRegistry r;
 	private IMocksControl control;
 	private EvaluationContext context;
+	
 	private AttributeResolver r1;
 	private AttributeResolver r2;
+	private AttributeResolver r3;
 	
 	private AttributeResolverDescriptor d1;
 	private AttributeResolverDescriptor d2;
+	private AttributeResolverDescriptor d3;
 	
 	@Before
 	public void init(){
@@ -36,6 +39,7 @@ public class DefaultResolverRegistryTest
 		this.context = control.createMock(EvaluationContext.class);
 		this.r1 = control.createMock(AttributeResolver.class);
 		this.r2 = control.createMock(AttributeResolver.class);
+		this.r3 = control.createMock(AttributeResolver.class);
 		
 		this.d1 = AttributeResolverDescriptorBuilder.
 		builder("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
@@ -44,6 +48,10 @@ public class DefaultResolverRegistryTest
 		this.d2 = AttributeResolverDescriptorBuilder.
 		builder("testId1", "Test1", "TestIssuer", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testAttr1", IntegerType.INTEGER).build();
+		
+		this.d3 = AttributeResolverDescriptorBuilder.
+				builder("testId1", "Test1", "TestIssuer1", AttributeCategories.SUBJECT_ACCESS)
+				.attribute("testAttr1", IntegerType.INTEGER).build();
 	
 	}
 	
@@ -51,11 +59,25 @@ public class DefaultResolverRegistryTest
 	public void testAddRootResolverWithTheSameAttributes()
 	{
 		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d1);
+		expect(r2.getDescriptor()).andReturn(d2);
 		expect(r1.getDescriptor()).andReturn(d1);
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
+		control.verify();
+	}
+	
+	// TODO: Implement support for adding resolvers
+	// resolving the same attributes but different issuer
+	@Test
+	@Ignore
+	public void testAddResolversSameAttributesDifferentIssuer()
+	{
+		expect(r2.getDescriptor()).andReturn(d2);
+		expect(r3.getDescriptor()).andReturn(d3);
+		control.replay();
+		r.addAttributeResolver(r2);
+		r.addAttributeResolver(r3);
 		control.verify();
 	}
 	

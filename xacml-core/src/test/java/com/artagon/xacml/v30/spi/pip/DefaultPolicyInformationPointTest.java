@@ -65,7 +65,6 @@ public class DefaultPolicyInformationPointTest
 		.build();
 	}
 	
-	
 	@Test
 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsCachable() throws Exception
 	{

@@ -16,6 +16,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * TODO: Implement support for resolver with the same attributes but different issuer
+ * 
+ * @author Giedrius Trumpickas
+ */
 class DefaultResolverRegistry implements ResolverRegistry
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultResolverRegistry.class);
@@ -24,13 +29,12 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * Resolvers index by category and attribute identifier
 	 */
 	private Map<AttributeCategory, Map<String, AttributeResolver>> attributeResolvers;
+	private Map<AttributeCategory, ContentResolver> contentResolvers;
 	
 	/**
 	 * Resolvers index by policy identifier
 	 */
 	private Multimap<String, AttributeResolver> attributeResolversByPolicy;
-	
-	private Map<AttributeCategory, ContentResolver> contentResolvers;
 	private Multimap<String, ContentResolver> contentResolversByPolicy;
 	
 	private Map<String, AttributeResolver> attributeResolversById;
@@ -49,7 +53,8 @@ class DefaultResolverRegistry implements ResolverRegistry
 	public void addAttributeResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
+		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()), 
+				"Registry already contans resolver with id=\"%s\"", d.getId());
 		Map<String, AttributeResolver> byCategory = attributeResolvers.get(d.getCategory());
 		if(byCategory == null){
 			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
