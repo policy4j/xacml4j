@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.core;
 
-import com.artagon.xacml.v30.XacmlSyntaxException;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
