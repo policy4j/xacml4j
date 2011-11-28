@@ -15,7 +15,7 @@ public interface ResolverRegistry
 	 * @return instance of {@link AttributeResolver}
 	 * or <ii>null</ii> if not matching resolver is found
 	 */
-	AttributeResolver getAttributeResolver(
+	Iterable<AttributeResolver> getMatchingAttributeResolvers(
 			EvaluationContext context, AttributeDesignatorKey key);
 	
 	
@@ -27,13 +27,13 @@ public interface ResolverRegistry
 	 * @param key
 	 * @return
 	 */
-	ContentResolver getContentResolver(
+	ContentResolver getMatchingContentResolver(
 			EvaluationContext contetx, AttributeCategory category);
 	
 	/**
 	 * Adds top level attribute resolver
 	 * 
-	 * @param r a top level attribute resolver
+	 * @param r a top level attribute resolver 
 	 */
 	void addAttributeResolver(AttributeResolver r);
 	

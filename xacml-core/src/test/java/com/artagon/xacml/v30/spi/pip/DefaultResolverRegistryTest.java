@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -17,6 +17,7 @@ import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.types.IntegerType;
+import com.google.common.collect.Iterables;
 
 public class DefaultResolverRegistryTest 
 {
@@ -94,9 +95,9 @@ public class DefaultResolverRegistryTest
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver("testId", r1);
-		AttributeResolver resolver = r.getAttributeResolver(context, key);
-		assertNotNull(resolver);
-		assertSame(r1, resolver);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		assertFalse(Iterables.isEmpty(resolvers));
+		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 	
@@ -113,9 +114,9 @@ public class DefaultResolverRegistryTest
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver("testId", r1);
-		AttributeResolver resolver = r.getAttributeResolver(context, key);
-		assertNotNull(resolver);
-		assertSame(r1, resolver);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		assertFalse(Iterables.isEmpty(resolvers));
+		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 	
@@ -132,9 +133,9 @@ public class DefaultResolverRegistryTest
 		control.replay();
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver("testId", r1);
-		AttributeResolver resolver = r.getAttributeResolver(context, key);
-		assertNotNull(resolver);
-		assertSame(r1, resolver);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		assertFalse(Iterables.isEmpty(resolvers));
+		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 	
@@ -150,9 +151,9 @@ public class DefaultResolverRegistryTest
 		expect(r1.getDescriptor()).andReturn(d1);
 		control.replay();
 		r.addAttributeResolver("testId", r1);
-		AttributeResolver resolver = r.getAttributeResolver(context, key);
-		assertNotNull(resolver);
-		assertSame(r1, resolver);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		assertFalse(Iterables.isEmpty(resolvers));
+		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 	
@@ -174,9 +175,9 @@ public class DefaultResolverRegistryTest
 		expect(r1.getDescriptor()).andReturn(d1);
 		control.replay();
 		r.addAttributeResolver("testIdP2", r1);
-		AttributeResolver resolver = r.getAttributeResolver(context, key);
-		assertNotNull(resolver);
-		assertSame(r1, resolver);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		assertFalse(Iterables.isEmpty(resolvers));
+		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 }

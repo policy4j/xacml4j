@@ -10,6 +10,7 @@ import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
@@ -55,61 +56,71 @@ public class DefaultPolicyInformationPoint
 			log.debug("Trying to resolve " +
 					"designator=\"{}\"", ref);
 		}
-		AttributeResolver r = registry.getAttributeResolver(context, ref);
-		if(r == null){
+		Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
+		if(Iterables.isEmpty(resolvers)){
 			if(log.isDebugEnabled()){
 				log.debug("No matching resolver " +
 						"found for designator=\"{}\"", ref);
 			}
 			return ref.getDataType().emptyBag();
 		}
-		AttributeResolverDescriptor d = r.getDescriptor();
-		Preconditions.checkState(d.canResolve(ref));
-		ResolverContext pipContext = createContext(context, d);
-		AttributeSet attributes = null;
-		if(d.isCachable()){
-			attributes = cache.getAttributes(pipContext);
-			if(attributes != null){
-				if(log.isDebugEnabled()){
-					log.debug("Found cached " +
-							"attribute values=\"{}\"", attributes);
+		for(AttributeResolver r : resolvers)
+		{
+			AttributeResolverDescriptor d = r.getDescriptor();
+			Preconditions.checkState(d.canResolve(ref));
+			ResolverContext pipContext = createContext(context, d);
+			AttributeSet attributes = null;
+			if(d.isCachable()){
+				attributes = cache.getAttributes(pipContext);
+				if(attributes != null){
+					if(log.isDebugEnabled()){
+						log.debug("Found cached " +
+								"attribute values=\"{}\"", attributes);
+					}
+					return attributes.get(ref.getAttributeId());
 				}
-				return attributes.get(ref.getAttributeId());
 			}
-		}
-		try{
-			attributes = r.resolve(pipContext);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved attributes=\"{}\"", 
-						attributes);
+			try{
+				attributes = r.resolve(pipContext);
+				Preconditions.checkState(attributes != null, 
+						"Attribute set can't be null");
+				if(attributes.isEmpty()){
+					continue;
+				}
+				if(log.isDebugEnabled()){
+					log.debug("Resolved attributes=\"{}\"", 
+							attributes);
+				}
+			}catch(Exception e){
+				if(log.isDebugEnabled()){
+					log.debug("Received error=\"{}\" " +
+							"while resolving designator=\"{}\"", e.getMessage(), ref);
+					log.debug("Error stack trace", e);
+				}
+				return ref.getDataType().emptyBag();
 			}
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Received error=\"{}\" " +
-						"while resolving designator=\"{}\"", e.getMessage(), ref);
-				log.debug("Error stack trace", e);
+			Preconditions.checkState(!attributes.isEmpty());
+			// cache values to the context
+			for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
+				context.setResolvedDesignatorValue(k, attributes.get(k));
 			}
-			return ref.getDataType().emptyBag();
-		}
-		// cache values to the context
-		for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
-			context.setResolvedDesignatorValue(k, attributes.get(k));
-		}
-		// check if resolver
-		// descriptor allows long term caching
-		if(d.isCachable()){
-			cache.putAttributes(pipContext, attributes);
-		}
-		context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
-		return attributes.get(ref.getAttributeId());		
+			// check if resolver
+			// descriptor allows long term caching
+			if(d.isCachable()){
+				cache.putAttributes(pipContext, attributes);
+			}
+			context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
+			return attributes.get(ref.getAttributeId());
+		}		
+		return ref.getDataType().emptyBag();
 	}
-
+	
 	@Override
 	public Node resolve(final EvaluationContext context, 
 			AttributeCategory category)
 			throws Exception 
 	{
-		ContentResolver r = registry.getContentResolver(context, category);
+		ContentResolver r = registry.getMatchingContentResolver(context, category);
 		if(r == null){
 			return null;
 		}

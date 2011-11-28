@@ -5,12 +5,14 @@ import java.util.Set;
 
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 
-public interface AttributeResolverDescriptor extends ResolverDescriptor
+public interface AttributeResolverDescriptor 
+	extends ResolverDescriptor
 {
 	/**
-	 * Gets resolver identifier
+	 * Gets an issuer identifier
+	 * for this resolver attributes
 	 * 
-	 * @return a resolver identifier
+	 * @return an issuer identifier
 	 */
 	String getIssuer();
 	

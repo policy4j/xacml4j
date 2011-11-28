@@ -36,11 +36,11 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 		Calendar currentDateTime = context.getCurrentDateTime();
 		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();	
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time", 
-					TIME.bagOf(TIME.create(currentDateTime)));
+					TIME.create(currentDateTime).toBag());
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date", 
-					DATE.bagOf(DATE.create(currentDateTime)));
+					DATE.create(currentDateTime).toBag());
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
-					DATETIME.bagOf(DATETIME.create(currentDateTime)));
+					DATETIME.create(currentDateTime).toBag());
 		return v;
 	}
 }

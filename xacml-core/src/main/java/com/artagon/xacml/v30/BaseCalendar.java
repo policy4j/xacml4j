@@ -10,7 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.google.common.base.Preconditions;
 
-abstract class BaseCalendar <T extends BaseCalendar<?>>  
+public abstract class BaseCalendar <T extends BaseCalendar<?>>  
 	implements Serializable, Comparable<T>
 {
 	private static final long serialVersionUID = -1896156800821765849L;

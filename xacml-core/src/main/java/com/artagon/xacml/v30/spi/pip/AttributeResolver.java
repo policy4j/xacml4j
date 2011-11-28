@@ -1,7 +1,8 @@
 package com.artagon.xacml.v30.spi.pip;
 
 
-public interface AttributeResolver extends AttributeResolverMBean
+public interface AttributeResolver 
+	extends AttributeResolverMBean
 {
 	/**
 	 * Gets a descriptor {@link AttributeResolverDescriptor}

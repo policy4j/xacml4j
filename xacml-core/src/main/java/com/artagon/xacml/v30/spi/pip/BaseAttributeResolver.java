@@ -69,6 +69,9 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 					(v != null)?v:Collections.<String, BagOfAttributeExp>emptyMap());
 		}catch(Exception e){
 			failuresCount.incrementAndGet();
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
 			throw e;
 		}
 	}
@@ -105,7 +108,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 
 	@Override
-	public final long getLastInvocationDuration() {
+	public final long getLastInvocationTime() {
 		return lastInvocationDuration.get();
 	}
 

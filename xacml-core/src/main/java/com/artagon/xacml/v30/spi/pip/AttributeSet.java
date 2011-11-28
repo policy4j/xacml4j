@@ -53,7 +53,8 @@ public final class AttributeSet
 	}
 	
 	/**
-	 * Gets attribute values from this set
+	 * Gets attribute values from this set by the
+	 * attribute identifier
 	 * 
 	 * @param attributeId an attribute identifier
 	 * @return {@link BagOfAttributeExp}
@@ -68,6 +69,16 @@ public final class AttributeSet
 	
 	public Iterable<String> getAttributeIds(){
 		return d.getProvidedAttributeIds();
+	}
+	
+	public boolean isEmpty(){
+		for(BagOfAttributeExp v : values.values()){
+			if(v.isEmpty()){
+				continue;
+			}
+			return false;
+		}
+		return true;
 	}
 	
 	public int size(){

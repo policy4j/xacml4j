@@ -101,7 +101,7 @@ public abstract class BaseContentResolver implements ContentResolver
 	}
 
 	@Override
-	public long getLastInvocationDuration() {
+	public long getLastInvocationTime() {
 		return lastInvocationDuration.get();
 	}
 	

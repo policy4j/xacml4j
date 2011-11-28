@@ -42,7 +42,7 @@ public class BaseAttributeResolverTest
 		assertEquals(0, r.getInvocationCount());
 		assertEquals(0, r.getFailuresCount());
 		assertEquals(0, r.getSuccessCount());
-		assertEquals(0, r.getLastInvocationDuration());
+		assertEquals(0, r.getLastInvocationTime());
 		c.replay();
 		r.resolve(context);
 		assertEquals(1, r.getInvocationCount());

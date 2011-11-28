@@ -3,6 +3,11 @@ package com.artagon.xacml.v30.pdp;
 import com.artagon.xacml.v30.AttributeCategory;
 import com.google.common.base.Preconditions;
 
+/**
+ * A base class for attribute references
+ * 
+ * @author Giedrius Trumpickas
+ */
 public abstract class AttributeReferenceKey 
 {
 	protected AttributeCategory category;

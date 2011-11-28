@@ -64,4 +64,10 @@ public class AttributeSetTest
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
 	}
 	
+	@Test
+	public void testIsEmpty(){
+		AttributeSet v = new AttributeSet(noIssuer);
+		assertTrue(v.isEmpty());
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -158,7 +159,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @return {@link AttributeResolver} or <code>null</code> if 
 	 * no matching resolver found
 	 */
-	public AttributeResolver getAttributeResolver(
+	public Iterable<AttributeResolver> getMatchingAttributeResolvers(
 			EvaluationContext context, 
 			AttributeDesignatorKey ref)
 	{
@@ -168,11 +169,11 @@ class DefaultResolverRegistry implements ResolverRegistry
 		{
 			Map<String, AttributeResolver> byCategory = attributeResolvers.get(ref.getCategory());
 		 	if(byCategory == null){
-		 		return null;
+		 		return Collections.emptyList();
 		 	}
 		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
 		 	if(resolver == null){
-		 		return null;
+		 		return Collections.emptyList();
 		 	}
 		 	AttributeResolverDescriptor d = resolver.getDescriptor();
 		 	if(resolver != null 
@@ -182,9 +183,9 @@ class DefaultResolverRegistry implements ResolverRegistry
 					log.debug("Found root resolver=\"{}\" " +
 							"for a reference=\"{}\"", d.getId(), ref);
 				}
-		 		return resolver;
+		 		return Collections.singleton(resolver);
 		 	}
-		 	return null;
+		 	return Collections.emptyList();
 		}
 		String policyId = getCurrentIdentifier(context);
 		Collection<AttributeResolver> found = attributeResolversByPolicy.get(policyId);
@@ -205,10 +206,10 @@ class DefaultResolverRegistry implements ResolverRegistry
 							"scoped resolver for reference=\"{}\"", 
 							policyId, ref);
 				}
-				return r;
+				return  Collections.singleton(r);
 			}
 		}
-		return getAttributeResolver(
+		return getMatchingAttributeResolvers(
 				context.getParentContext(), ref);
 	}
 	
@@ -221,7 +222,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @return {@link ContentResolver} or <code>null</code>
 	 * 
 	 */
-	public ContentResolver getContentResolver(EvaluationContext context, 
+	public ContentResolver getMatchingContentResolver(EvaluationContext context, 
 			AttributeCategory category)
 	{
 		// stop recursive call if 
@@ -245,7 +246,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 				return r;
 			}
 		}
-		return getContentResolver(context.getParentContext(), category);
+		return getMatchingContentResolver(context.getParentContext(), category);
 	}
 	
 	/**
