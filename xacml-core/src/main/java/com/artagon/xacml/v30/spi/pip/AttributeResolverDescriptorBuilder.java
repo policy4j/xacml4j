@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +36,11 @@ public final class AttributeResolverDescriptorBuilder
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(category);
 		this.name = name;
-		this.issuer = issuer;
+		this.issuer = Strings.emptyToNull(issuer);
 		this.id = id;
 		this.category = category;
-		this.attributesById = new HashMap<String, AttributeDescriptor>();
-		this.attributesByKey = new HashMap<AttributeDesignatorKey, AttributeDescriptor>();
+		this.attributesById = new LinkedHashMap<String, AttributeDescriptor>();
+		this.attributesByKey = new LinkedHashMap<AttributeDesignatorKey, AttributeDescriptor>();
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
 	
@@ -51,7 +51,7 @@ public final class AttributeResolverDescriptorBuilder
 	
 	public static AttributeResolverDescriptorBuilder builder(String id, 
 			String name, String issuer, AttributeCategory category){
-		return new AttributeResolverDescriptorBuilder(id, name, Strings.emptyToNull(issuer), category);
+		return new AttributeResolverDescriptorBuilder(id, name, issuer, category);
 	}
 	
 	public AttributeResolverDescriptorBuilder designatorRef(AttributeCategory category, 
@@ -103,11 +103,6 @@ public final class AttributeResolverDescriptorBuilder
 				"Builder already has an attribute with id=\"%s\"", attributeId);
 		Preconditions.checkState( this.attributesByKey.put(key, d) == null, 
 				"Builder already has an attribute with id=\"%s\"", attributeId);
-		if(issuer != null){
-			AttributeDesignatorKey keyNoIssuer = new AttributeDesignatorKey(category, attributeId, dataType, null);
-			Preconditions.checkState(attributesByKey.put(keyNoIssuer, d) == null, 
-					"Builder already has an attribute with id=\"%s\"", attributeId);
-		}
 		return this;
 	}
 		

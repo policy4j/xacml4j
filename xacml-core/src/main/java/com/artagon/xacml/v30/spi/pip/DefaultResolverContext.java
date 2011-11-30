@@ -11,7 +11,7 @@ import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.google.common.base.Preconditions;
 
-public final class DefaultResolverContext implements
+final class DefaultResolverContext implements
 		ResolverContext 
 {
 	private EvaluationContext context;

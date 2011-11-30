@@ -68,23 +68,33 @@ public class DefaultPolicyInformationPoint
 		{
 			AttributeResolverDescriptor d = r.getDescriptor();
 			Preconditions.checkState(d.canResolve(ref));
-			ResolverContext pipContext = createContext(context, d);
+			ResolverContext rContext = createContext(context, d);
 			AttributeSet attributes = null;
 			if(d.isCachable()){
-				attributes = cache.getAttributes(pipContext);
+				if(log.isDebugEnabled()){
+					log.debug("Trying to find resolver id=\"{}\" " +
+							"values in cache", d.getId());
+				}
+				attributes = cache.getAttributes(rContext);
 				if(attributes != null){
 					if(log.isDebugEnabled()){
-						log.debug("Found cached " +
-								"attribute values=\"{}\"", attributes);
+						log.debug("Found cached resolver id=\"{}\"" +
+								" values=\"{}\"", d.getId(), attributes);
 					}
 					return attributes.get(ref.getAttributeId());
 				}
 			}
 			try{
-				attributes = r.resolve(pipContext);
-				Preconditions.checkState(attributes != null, 
-						"Attribute set can't be null");
+				if(log.isDebugEnabled()){
+					log.debug("Trying to resolve values with " +
+							"resolver id=\"{}\"", d.getId());
+				}
+				attributes = r.resolve(rContext);
 				if(attributes.isEmpty()){
+					if(log.isDebugEnabled()){
+						log.debug("Resolver id=\"{}\" failed " +
+								"to resolve attributes", d.getId());
+					}
 					continue;
 				}
 				if(log.isDebugEnabled()){
@@ -93,21 +103,25 @@ public class DefaultPolicyInformationPoint
 				}
 			}catch(Exception e){
 				if(log.isDebugEnabled()){
-					log.debug("Received error=\"{}\" " +
-							"while resolving designator=\"{}\"", e.getMessage(), ref);
-					log.debug("Error stack trace", e);
+					log.debug("Resolver id=\"{}\" failed " +
+								"to resolve attributes", d.getId());
+					log.debug("Resolver threw an exception", e);
 				}
-				return ref.getDataType().emptyBag();
+				continue;
 			}
-			Preconditions.checkState(!attributes.isEmpty());
 			// cache values to the context
 			for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
-				context.setResolvedDesignatorValue(k, attributes.get(k));
+				BagOfAttributeExp v = attributes.get(k);
+				if(log.isDebugEnabled()){
+					log.debug("Caching desginator=\"{}\" " +
+							"value=\"{}\" to context", k, v);
+				}
+				context.setResolvedDesignatorValue(k, v);
 			}
 			// check if resolver
 			// descriptor allows long term caching
 			if(d.isCachable()){
-				cache.putAttributes(pipContext, attributes);
+				cache.putAttributes(rContext, attributes);
 			}
 			context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
 			return attributes.get(ref.getAttributeId());

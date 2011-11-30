@@ -24,6 +24,11 @@ public final class AttributeDesignatorKey
 				category, attributeId, dataType, issuer);
 	}
 	
+	public AttributeDesignatorKey createWithIssuer(String issuer){
+		return new AttributeDesignatorKey(getCategory(), 
+				getAttributeId(), getDataType(), issuer);
+	}
+	
 	public String getAttributeId(){
 		return attributeId;
 	}

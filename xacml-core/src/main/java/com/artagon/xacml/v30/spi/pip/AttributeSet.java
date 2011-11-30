@@ -29,7 +29,9 @@ public final class AttributeSet
 		this.values = new HashMap<String, BagOfAttributeExp>(values.size());
 		for(Entry<String, BagOfAttributeExp> e : values.entrySet()){
 			AttributeDescriptor ad = d.getAttribute(e.getKey());
-			Preconditions.checkArgument(ad != null);
+			Preconditions.checkArgument(ad != null, 
+					"Attribute descriptior with id=\"%s\" does not contain attribute with id=\"%s\"", 
+					d.getId(), e.getKey());
 			Preconditions.checkArgument(ad.getDataType().equals(e.getValue().getDataType()));
 			this.values.put(e.getKey(), e.getValue());
 		}
@@ -37,6 +39,10 @@ public final class AttributeSet
 	
 	public AttributeResolverDescriptor getDescriptor(){
 		return d;
+	}
+	
+	public String getIssuer(){
+		return d.getIssuer();
 	}
 	
 	public Iterable<AttributeDesignatorKey> getAttributeKeys(){
@@ -99,7 +105,7 @@ public final class AttributeSet
 		return Objects.toStringHelper(this)
 		.add("id", d.getId())
 		.add("issuer", d.getIssuer())
-		.add("attributes", values)
+		.add("values", values)
 		.toString();
 	}
 	

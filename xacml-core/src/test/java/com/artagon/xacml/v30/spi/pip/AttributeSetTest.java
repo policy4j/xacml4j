@@ -9,6 +9,7 @@ import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
+import com.google.common.collect.Iterables;
 
 public class AttributeSetTest 
 {
@@ -27,6 +28,7 @@ public class AttributeSetTest
 				.attribute("testId1", IntegerType.INTEGER)
 				.attribute("testId2", StringType.STRING)
 				.build();
+		assertEquals("issuer", withIssuer.getIssuer());
 	}
 	
 	@Test
@@ -48,6 +50,16 @@ public class AttributeSetTest
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
+		
+		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
+		assertEquals(
+				new AttributeDesignatorKey(
+				AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, withIssuer.getIssuer()), 
+				Iterables.get(keys, 0));
+		assertEquals(
+				new AttributeDesignatorKey(
+				AttributeCategories.SUBJECT_ACCESS, "testId2", StringType.STRING, withIssuer.getIssuer()), 
+				Iterables.get(keys, 1));
 	}
 	
 	@Test
