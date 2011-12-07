@@ -1,9 +1,17 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +22,7 @@ import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 /**
@@ -29,54 +37,111 @@ class DefaultResolverRegistry implements ResolverRegistry
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategory, Map<String, AttributeResolver>> attributeResolvers;
+	private Map<AttributeCategory, Map<String, Map<String, AttributeResolver>>> attributeResolvers;
+	private ConcurrentMap<String, AttributeResolver> attributeResolversById;
+	
+	private Multimap<String, AttributeResolver> scopedAttributeResolvers;
+	
+
 	private Map<AttributeCategory, ContentResolver> contentResolvers;
+	
+	private ReadWriteLock attributeResolverRWLock;
+	private ReadWriteLock scopedAttributeResolverRWLock;
+	
+	private long maxWriteLockWait = 100;
+	private long maxReadLockWait = 50;
+	
+	private TimeUnit timeToWaitUnits = TimeUnit.MILLISECONDS;
 	
 	/**
 	 * Resolvers index by policy identifier
 	 */
-	private Multimap<String, AttributeResolver> attributeResolversByPolicy;
-	private Multimap<String, ContentResolver> contentResolversByPolicy;
 	
-	private Map<String, AttributeResolver> attributeResolversById;
-	private Map<String, ContentResolver> contentResolversById;
+	private Multimap<String, ContentResolver> policyScopedContentResolvers;
+	
+	private ConcurrentMap<String, ContentResolver> contentResolversById;
 	
 	public DefaultResolverRegistry()
 	{
-		this.attributeResolvers = new ConcurrentHashMap<AttributeCategory, Map<String,AttributeResolver>>();
-		this.attributeResolversByPolicy = HashMultimap.create();
+		this.attributeResolvers = new LinkedHashMap<AttributeCategory, Map<String, Map<String, AttributeResolver>>>();
+		this.scopedAttributeResolvers = LinkedHashMultimap.create();
 		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
-		this.contentResolversByPolicy = HashMultimap.create();
+		this.policyScopedContentResolvers = LinkedHashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
 		this.contentResolversById = new ConcurrentHashMap<String, ContentResolver>();
+		this.attributeResolverRWLock = new ReentrantReadWriteLock();
+		this.scopedAttributeResolverRWLock = new ReentrantReadWriteLock();
 	}
 	
 	public void addAttributeResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
-		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()), 
-				"Registry already contans resolver with id=\"%s\"", d.getId());
-		Map<String, AttributeResolver> byCategory = attributeResolvers.get(d.getCategory());
-		if(byCategory == null){
-			byCategory = new ConcurrentHashMap<String, AttributeResolver>();
-			attributeResolvers.put(d.getCategory(), byCategory);
-		}
-		for(String attributeId : d.getProvidedAttributeIds())
+		Lock lock =  attributeResolverRWLock.writeLock();
+		try
 		{
-			if(log.isDebugEnabled()){
-					log.debug("Adding resolver for category=\"{}\", " +
-							"attributeId=\"{}\"", d.getCategory(), attributeId);
-			}
-			AttributeResolver oldResolver = byCategory.get(attributeId);
-				if(oldResolver != null){
-					throw new IllegalArgumentException(String.format(
-							"Resolver id=\"%s\" attributeId=\"%s\" for " +
-								"category=\"%s\" already provided via other resolver id=\"%s\"", 
-								d.getId(),
-								attributeId, d.getCategory(),
-								oldResolver.getDescriptor().getId()));
+			if(!lock.tryLock(maxWriteLockWait, timeToWaitUnits)){
+				if(log.isWarnEnabled()){
+					log.warn("Failed to accuire write lock in=\"{}\" {}", 
+							maxWriteLockWait, timeToWaitUnits.toString());
 				}
-			byCategory.put(attributeId, resolver);
+				return;
+			}
+			Map<String, Map<String, AttributeResolver>> byCategory = attributeResolvers.get(d.getCategory());
+			if(byCategory == null){
+				byCategory = new LinkedHashMap<String, Map<String, AttributeResolver>>();
+				attributeResolvers.put(d.getCategory(), byCategory);
+			}	
+			Map<String, AttributeResolver> byIssuer = byCategory.get(d.getIssuer());
+			if(byIssuer == null){
+				byIssuer = new LinkedHashMap<String, AttributeResolver>();
+				byCategory.put(d.getIssuer(), byIssuer);
+			}
+			if(log.isDebugEnabled()){
+				log.debug("Adding resolver id=\"{}\" category=\"{}\", issuer=\"{}\"", 
+						new Object[]{d.getId(), d.getCategory(), d.getIssuer()});
+			}
+			for(String attributeId : d.getProvidedAttributeIds()){
+				if(log.isDebugEnabled()){
+						log.debug("Indexing resolver id=\"{}\" attributeId=\"{}\"", 
+								d.getId(), attributeId);
+				}
+				AttributeResolver oldResolver = byIssuer.get(attributeId);
+				if(oldResolver != null){
+					cleanUpRegistration(d, byIssuer);
+					throw new IllegalArgumentException(String.format(
+									"Resolver id=\"%s\" attributeId=\"%s\" for " +
+										"category=\"%s\" already provided via other resolver id=\"%s\"", 
+										d.getId(),
+										attributeId, 
+										d.getCategory(),
+										oldResolver.getDescriptor().getId()));
+				}
+				byIssuer.put(attributeId, resolver);
+			}
+		}catch(InterruptedException e){
+			if(log.isWarnEnabled()){
+				log.warn("Interrupted while " +
+						"waiting to accuire a write lock", e);
+			}
+		}
+		finally{
+			lock.unlock();
+		}
+	}
+	
+	/**
+	 * Cleans internal state if attribute resolver registration fails
+	 * 
+	 * @param d an attribute resolver descriptor
+	 * @param byIssuer an index of resolver attribute identifiers
+	 */
+	private void cleanUpRegistration(AttributeResolverDescriptor d,  Map<String, AttributeResolver> byIssuer){
+		if(log.isDebugEnabled()){
+			log.debug("Removing indexed attributes " +
+					"for a resolver=\"{}\"", d.getId());
+		}
+		for(String attrId : d.getProvidedAttributeIds()){
+			byIssuer.remove(attrId);
 		}
 	}
 	
@@ -106,7 +171,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 					"resolver=\"{}\" for category=\"{}\"", 
 					new Object[]{policyId, d.getId(), d.getCategory()});
 		}
-		this.contentResolversByPolicy.put(policyId, r);
+		this.policyScopedContentResolvers.put(policyId, r);
 		this.contentResolversById.put(policyId, r);
 	}
 	
@@ -117,8 +182,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 			return;
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
-		Preconditions.checkState(!attributeResolversById.containsKey(d.getId()));
-		this.attributeResolversByPolicy.put(policyId, r);
+		this.scopedAttributeResolvers.put(policyId, r);
 		this.attributeResolversById.put(d.getId(), r);
 	}
 	
@@ -150,6 +214,13 @@ class DefaultResolverRegistry implements ResolverRegistry
 		}
 	}
 
+	public Iterable<AttributeResolver> getMatchingAttributeResolvers(
+			EvaluationContext context, 
+			AttributeDesignatorKey ref){
+		List<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
+		findMatchingAttributeResolvers(context, ref, resolvers);
+		return resolvers;
+	}
 	/**
 	 * Finds {@link AttributeResolver} for given evaluation context and
 	 * {@link AttributeResolver} instance
@@ -159,59 +230,91 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @return {@link AttributeResolver} or <code>null</code> if 
 	 * no matching resolver found
 	 */
-	public Iterable<AttributeResolver> getMatchingAttributeResolvers(
+	private void findMatchingAttributeResolvers(
 			EvaluationContext context, 
-			AttributeDesignatorKey ref)
+			AttributeDesignatorKey ref, List<AttributeResolver> found)
 	{
-		// stop recursive call if 
-		// context is null
-		if(context == null)
-		{
-			Map<String, AttributeResolver> byCategory = attributeResolvers.get(ref.getCategory());
-		 	if(byCategory == null){
-		 		return Collections.emptyList();
-		 	}
-		 	AttributeResolver resolver = byCategory.get(ref.getAttributeId());
-		 	if(resolver == null){
-		 		return Collections.emptyList();
-		 	}
-		 	AttributeResolverDescriptor d = resolver.getDescriptor();
-		 	if(resolver != null 
-		 			&& d.canResolve(ref))
-		 	{
-				if(log.isDebugEnabled()){
-					log.debug("Found root resolver=\"{}\" " +
-							"for a reference=\"{}\"", d.getId(), ref);
+			// stop recursive call if 
+			// context is null
+			if(context == null)
+			{
+				Lock lock = attributeResolverRWLock.readLock();
+				try
+				{
+					if(!lock.tryLock(maxReadLockWait, timeToWaitUnits)){
+						if(log.isWarnEnabled()){
+							log.warn("Failed to accuire read lock in=\"{}\" {}", 
+									maxReadLockWait, timeToWaitUnits.toString());
+						}
+						return;
+					}
+					Map<String, Map<String, AttributeResolver>> byIssuer = attributeResolvers.get(ref.getCategory());
+				 	if(byIssuer == null || 
+				 			byIssuer.isEmpty()){
+				 		return;
+				 	}
+				 	if(log.isDebugEnabled()){
+				 		log.debug("Found=\"{}\" resolvers for category=\"{}\"", 
+				 				byIssuer.size(), ref.getCategory());
+				 	}
+				 	for(Entry<String, Map<String, AttributeResolver>> e : byIssuer.entrySet()){
+				 		AttributeResolver resolver = e.getValue().get(ref.getAttributeId());
+				 		if(resolver == null){
+				 			continue;
+				 		}
+				 		AttributeResolverDescriptor d = resolver.getDescriptor();
+					 	if(d.canResolve(ref)){
+							if(log.isDebugEnabled()){
+								log.debug("Found root resolver=\"{}\" " +
+										"for a reference=\"{}\"", d.getId(), ref);
+							}
+							found.add(resolver);
+					 	}
+				 	}	;
+				}catch(InterruptedException e){
+					if(log.isWarnEnabled()){
+						log.warn("Interrupted while " +
+								"waiting to accuire a read lock", e);
+					}
 				}
-		 		return Collections.singleton(resolver);
-		 	}
-		 	return Collections.emptyList();
-		}
-		String policyId = getCurrentIdentifier(context);
-		Collection<AttributeResolver> found = attributeResolversByPolicy.get(policyId);
-		if(log.isDebugEnabled()){
-			log.debug("Found \"{}\" resolver " +
-					"scoped for a PolicyId=\"{}\"", 
-					found.size(), policyId);
-		}
-		for(AttributeResolver r : found){
-			AttributeResolverDescriptor d = r.getDescriptor();
-			if(log.isDebugEnabled()){
-				log.debug("Trying to match resolver=\"{}\" " +
-						"to resolve reference=\"{}\"", d.getId(), ref);
-			}
-			if(d.canResolve(ref)){
-				if(log.isDebugEnabled()){
-					log.debug("Found PolicyId=\"{}\" " +
-							"scoped resolver for reference=\"{}\"", 
-							policyId, ref);
+				finally{
+					lock.unlock();
 				}
-				return  Collections.singleton(r);
+				return;
 			}
-		}
-		return getMatchingAttributeResolvers(
-				context.getParentContext(), ref);
+			String policyId = getCurrentIdentifier(context);
+			if(policyId  == null){
+				Preconditions.checkState(context.getParentContext() == null);
+				findMatchingAttributeResolvers(null, ref, found);
+				return;
+			}
+			Lock lock  = scopedAttributeResolverRWLock.readLock();
+			try
+			{
+				lock.lock();
+				Collection<AttributeResolver> byPolicyId = scopedAttributeResolvers.get(policyId);
+				if(log.isDebugEnabled()){
+					log.debug("Found \"{}\" resolver " +
+							"scoped for a PolicyId=\"{}\"", 
+							byPolicyId.size(), policyId);
+				}
+				for(AttributeResolver r : byPolicyId){
+					AttributeResolverDescriptor d = r.getDescriptor();
+					if(d.canResolve(ref)){
+						if(log.isDebugEnabled()){
+							log.debug("Found PolicyId=\"{}\" " +
+									"scoped resolver for reference=\"{}\"", 
+									policyId, ref);
+						}
+						found.add(r);
+					}
+				}
+				findMatchingAttributeResolvers(context.getParentContext(), ref, found);
+			}finally{
+				lock.unlock();
+			}
 	}
+	
 	
 	/**
 	 * Gets matching content resolver for a given
@@ -231,7 +334,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 			return contentResolvers.get(category);
 		}
 		String policyId = getCurrentIdentifier(context);
-		Collection<ContentResolver> found = contentResolversByPolicy.get(policyId);
+		Collection<ContentResolver> found = policyScopedContentResolvers.get(policyId);
 		if(log.isDebugEnabled()){
 			log.debug("Found \"{}\" resolver " +
 					"scoped for a PolicyId=\"{}\"", 
