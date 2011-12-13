@@ -36,6 +36,13 @@ public class BaseFunctionProvider implements FunctionProvider
 					spec, spec.getId());
 		}
 	}
+	
+	
+
+	@Override
+	public FunctionSpec remove(String functionId) {
+		return functions.remove(functionId);
+	}
 
 	@Override
 	public final FunctionSpec getFunction(String functionId) {

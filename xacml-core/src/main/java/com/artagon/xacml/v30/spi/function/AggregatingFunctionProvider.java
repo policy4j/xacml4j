@@ -41,7 +41,7 @@ public class AggregatingFunctionProvider
 	public AggregatingFunctionProvider(Collection<FunctionProvider> providers){
 		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 		for(FunctionProvider p : providers){
-			add(p);
+				add(p);
 		}
 	}
 	
@@ -73,6 +73,12 @@ public class AggregatingFunctionProvider
 	}
 	
 	@Override
+	public final FunctionSpec remove(String functionId) {
+		FunctionProvider p = functions.remove(functionId);
+		return (p != null)?p.getFunction(functionId):null;
+	}
+
+	@Override
 	public final FunctionSpec getFunction(String functionId) {
 		FunctionProvider provider = functions.get(functionId);
 		return (provider != null)?provider.getFunction(functionId):null;
@@ -86,6 +92,5 @@ public class AggregatingFunctionProvider
 	@Override
 	public final boolean isFunctionProvided(String functionId) {
 		return functions.containsKey(functionId);
-	}
-	
+	}	
 }

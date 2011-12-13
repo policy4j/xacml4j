@@ -37,7 +37,7 @@ public interface ResolverMBean
 	 * 
 	 * @return last invocation duration
 	 */
-	long getLastInvocationTime();
+	long getSuccessInvocationTimeCMA();
 	
 	/**
 	 * Gets preferred attributes 

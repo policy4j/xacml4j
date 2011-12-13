@@ -19,11 +19,10 @@ public abstract class BaseContentResolver implements ContentResolver
 	private final static Logger log = LoggerFactory.getLogger(BaseContentResolver.class);
 	
 	private ContentResolverDescriptor descriptor;
-	private AtomicLong invocationCount;
 	private AtomicLong failuresCount;
 	private AtomicLong successCount;
-	private AtomicLong lastInvocationDuration;
 	private AtomicInteger preferedCacheTTL;
+	private AtomicLong successInvocationTimeCMA;
 
 	protected BaseContentResolver(ContentResolverDescriptor descriptor){
 		Preconditions.checkArgument(descriptor != null);
@@ -34,10 +33,9 @@ public abstract class BaseContentResolver implements ContentResolver
 						super.getPreferreredCacheTTL():preferedCacheTTL.get();
 			}
 		};
-		this.invocationCount = new AtomicLong();
 		this.failuresCount = new AtomicLong();
 		this.successCount = new AtomicLong();
-		this.lastInvocationDuration = new AtomicLong();
+		this.successInvocationTimeCMA = new AtomicLong();
 	}
 	
 	@Override
@@ -57,11 +55,16 @@ public abstract class BaseContentResolver implements ContentResolver
 					descriptor.getName());
 		}
 		try{
-			invocationCount.incrementAndGet();
+			
 			long start = System.currentTimeMillis();
 			Node node = doResolve(context);
-			lastInvocationDuration.set(System.currentTimeMillis() - start);
-			successCount.incrementAndGet();
+			long time = (System.currentTimeMillis() - start);
+			long n = successCount.incrementAndGet();
+			successInvocationTimeCMA.set((time  + (n - 1) * successCount.incrementAndGet()) / n);
+			if(log.isDebugEnabled()){
+				log.debug("Content resolver id=\"{}\" " +
+						"invocation took=\"{}\" miliseconds", getId(), time);
+			}
 			return new Content(descriptor, node);
 		}catch(Exception e){
 			failuresCount.incrementAndGet();
@@ -87,7 +90,7 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	@Override
 	public long getInvocationCount() {
-		return invocationCount.get();
+		return successCount.get() + failuresCount.get();
 	}
 
 	@Override
@@ -101,8 +104,8 @@ public abstract class BaseContentResolver implements ContentResolver
 	}
 
 	@Override
-	public long getLastInvocationTime() {
-		return lastInvocationDuration.get();
+	public long getSuccessInvocationTimeCMA() {
+		return successInvocationTimeCMA.get();
 	}
 	
 	@Override

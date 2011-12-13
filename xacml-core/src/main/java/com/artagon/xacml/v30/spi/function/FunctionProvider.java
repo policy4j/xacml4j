@@ -26,6 +26,15 @@ public interface FunctionProvider
 	boolean isFunctionProvided(String functionId);
 	
 	/**
+	 * Removes a function with a given identifier
+	 * 
+	 * @param functionId a function identifier
+	 * @return {@link FunctionSpec} a reference
+	 * to removed function or <code>null</code>
+	 */
+	FunctionSpec remove(String functionId);
+	
+	/**
 	 * Gets all supported function by this factory
 	 * 
 	 * @return {@link Iterable} over all supported

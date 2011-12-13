@@ -21,13 +21,13 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private AttributeResolverDescriptorDelegate descriptor;
-	private AtomicLong invocationCount;
 	private AtomicLong failuresCount;
 	private AtomicLong successCount;
-	private AtomicLong lastInvocationDuration;
 	private AtomicInteger preferedCacheTTL;
+	private AtomicLong successInvocationTimeCMA;
 	
-	protected BaseAttributeResolver(AttributeResolverDescriptor descriptor){
+	protected BaseAttributeResolver(
+			AttributeResolverDescriptor descriptor){
 		Preconditions.checkNotNull(descriptor);
 		this.descriptor = new AttributeResolverDescriptorDelegate(descriptor){
 			@Override
@@ -36,10 +36,9 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 						super.getPreferreredCacheTTL():preferedCacheTTL.get();
 			}
 		};
-		this.invocationCount = new AtomicLong(0);
 		this.failuresCount = new AtomicLong(0);
 		this.successCount = new AtomicLong(0);
-		this.lastInvocationDuration = new AtomicLong(0);
+		this.successInvocationTimeCMA = new AtomicLong(0);
 	}
 	
 	@Override
@@ -60,11 +59,15 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		}
 		try
 		{
-			invocationCount.incrementAndGet();
 			long start = System.currentTimeMillis();
 			Map<String, BagOfAttributeExp> v = doResolve(context);
-			lastInvocationDuration.set(System.currentTimeMillis() - start);
-			successCount.incrementAndGet();
+			long n = successCount.incrementAndGet();
+			long time = (System.currentTimeMillis() - start);
+			successInvocationTimeCMA.set((time  + (n - 1) * successCount.incrementAndGet()) / n);
+			if(log.isDebugEnabled()){
+				log.debug("Attribute resolver id=\"{}\" " +
+						"invocation took=\"{}\" miliseconds", getId(), time);
+			}
 			return new AttributeSet(descriptor, 
 					(v != null)?v:Collections.<String, BagOfAttributeExp>emptyMap());
 		}catch(Exception e){
@@ -94,7 +97,8 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final long getInvocationCount() {
-		return invocationCount.get();
+		return successCount.get() + 
+				failuresCount.get();
 	}
 
 	@Override
@@ -108,15 +112,20 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 
 	@Override
-	public final long getLastInvocationTime() {
-		return lastInvocationDuration.get();
+	public final long getSuccessInvocationTimeCMA() {
+		return successInvocationTimeCMA.get();
 	}
 
 	@Override
 	public final int getPreferredCacheTTL() {
 		return descriptor.getPreferreredCacheTTL();
 	}
-
+	
+	public void reset(){
+		successCount.set(0);
+		failuresCount.set(0);
+		successInvocationTimeCMA.set(0);
+	}
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
 		if(descriptor.isCachable() 
