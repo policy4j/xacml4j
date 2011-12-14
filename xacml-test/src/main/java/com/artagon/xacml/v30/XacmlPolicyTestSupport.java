@@ -39,6 +39,7 @@ import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 public class XacmlPolicyTestSupport {
 	protected final Logger log = LoggerFactory
 			.getLogger(XacmlPolicyTestSupport.class);
+	
 	private Xacml30RequestContextUnmarshaller requestUnmarshaller;
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
 

@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExpType;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.spi.pip.BaseAttributeResolver;
