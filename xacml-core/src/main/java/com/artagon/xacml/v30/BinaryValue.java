@@ -15,15 +15,24 @@ public class BinaryValue
 {
 	private byte[] value;
 	
-	public BinaryValue(byte[] b){
+	private BinaryValue(byte[] b){
 		this(b, 0, b.length);
 	}
 	
-	public BinaryValue(byte[] b, int srcPos, int length){
+	private BinaryValue(byte[] b, int srcPos, int length){
 		Preconditions.checkArgument((b== null && length == 0) || 
 				(b != null) && b.length >= length);
 		this.value = new byte[(b==null)?0:length];
 		System.arraycopy(b, srcPos, value, 0, length);
+	}
+	
+	public static BinaryValue fromBytes(byte[] data){
+		Preconditions.checkNotNull(data);
+		return new BinaryValue(data);
+	}
+	
+	public static BinaryValue fromBytes(byte[] data, int srcPos, int length){
+		return new BinaryValue(data, srcPos, length);
 	}
 	
 	public static BinaryValue fromHexEncoded(String v){

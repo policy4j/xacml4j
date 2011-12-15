@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.types;
+package com.artagon.xacml.v30;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

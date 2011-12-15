@@ -37,7 +37,7 @@ public enum Base64BinaryType implements AttributeExpType
 			return fromXacmlString((String)any);
 		}
 		if(byte[].class.isInstance(any)){
-			return new Base64BinaryExp(new BinaryValue((byte[])any));
+			return new Base64BinaryExp(BinaryValue.fromBytes((byte[])any));
 		}
 		return new Base64BinaryExp((BinaryValue)any);
 	}

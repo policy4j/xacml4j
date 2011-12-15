@@ -36,7 +36,7 @@ public enum HexBinaryType implements AttributeExpType
 			return fromXacmlString((String)any);
 		}
 		if(byte[].class.isInstance(any)){
-			return new HexBinaryExp(this, new BinaryValue((byte[])any));
+			return new HexBinaryExp(this, BinaryValue.fromBytes((byte[])any));
 		}
 		return new HexBinaryExp(this, (BinaryValue)any);
 	}
