@@ -58,13 +58,13 @@ public final class PolicyInformationPointBuilder
 		return this;
 	}
 	
-	public PolicyInformationPointBuilder withAnnotatedResolvers(Object annotatedResolver){
+	public PolicyInformationPointBuilder withResolver(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
 		registryBuilder.withResolver(annotatedResolver);
 		return this;
 	}
 	
-	public PolicyInformationPointBuilder withPolicyScopedAnnotatedResolvers(
+	public PolicyInformationPointBuilder withPolicyScopedResolver(
 			String policyId, Object annotatedResolver){
 		registryBuilder.withPolicyScopedResolver(policyId, annotatedResolver);
 		return this;

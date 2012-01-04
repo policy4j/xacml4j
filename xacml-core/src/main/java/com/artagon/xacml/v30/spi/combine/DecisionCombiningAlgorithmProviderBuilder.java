@@ -37,24 +37,14 @@ public final class DecisionCombiningAlgorithmProviderBuilder
 	}
 	
 	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProvider(
-			DecisionCombiningAlgorithmProvider p){
-		Preconditions.checkNotNull(p);
-		this.providers.add(p);
-		return this;
-	}
-	
-	/**
-	 * Adds an annotated decision combining algorithms to this builder
-	 * 
-	 * @param clazz a class containing an implementation of decision
-	 * combining algorithms
-	 * 
-	 * @return {@link DecisionCombiningAlgorithmProviderBuilder}
-	 */
-	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProvider(
-			Class<?> clazz){
-		Preconditions.checkNotNull(clazz);
-		this.providers.add(factory.create(clazz));
+			Object provider){
+		Preconditions.checkNotNull(provider instanceof DecisionCombiningAlgorithmProvider 
+				|| provider instanceof Class<?>);
+		if(provider instanceof Class<?>){
+			this.providers.add(factory.create((Class<?>)provider));
+			return this;
+		}
+		this.providers.add((DecisionCombiningAlgorithmProvider)provider);
 		return this;
 	}
 	

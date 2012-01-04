@@ -92,14 +92,8 @@ public final class ResolverRegistryBuilder
 			return this;
 		}
 		try{
-			for(AttributeResolver r : 
-				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
-				withAttributeResolver(r);
-			}
-			for(ContentResolver r : 
-				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
-				withContentResolver(r);
-			}
+			withAttributeResolvers(annotatedResolverFactory.getAttributeResolvers(annotatedResolver));
+			withContentResolvers(annotatedResolverFactory.getContentResolvers(annotatedResolver));
 			return this;
 		}catch(XacmlSyntaxException e){
 			throw new IllegalArgumentException(e);
@@ -149,6 +143,14 @@ public final class ResolverRegistryBuilder
 		return this;
 	}
 	
+	public ResolverRegistryBuilder withPolicyScopedAttributeResolvers(
+			String policyId, Iterable<AttributeResolver> resolvers){
+		for(AttributeResolver r : resolvers){
+			withPolicyScopedAttributeResolver(policyId, r);
+		}
+		return this;
+	}
+	
 	public ResolverRegistryBuilder withPolicyScopedContentResolver(
 			String policyId, ContentResolver resolver){
 		Preconditions.checkNotNull(resolver);
@@ -157,6 +159,14 @@ public final class ResolverRegistryBuilder
 			return this;
 		}
 		this.policyScopedContentResolvers.put(policyId, resolver);
+		return this;
+	}
+	
+	public ResolverRegistryBuilder withPolicyScopedContentResolvers(
+			String policyId, Iterable<ContentResolver> resolvers){
+		for(ContentResolver r : resolvers){
+			withPolicyScopedContentResolver(policyId, r);
+		}
 		return this;
 	}
 	
