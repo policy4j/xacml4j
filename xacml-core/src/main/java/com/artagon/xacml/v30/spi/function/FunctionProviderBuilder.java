@@ -52,7 +52,7 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withFunctionsFrom(Object p)
+	public FunctionProviderBuilder withFunctionsFromInstance(Object p)
 	{
 		Preconditions.checkNotNull(p);
 		try{
@@ -74,21 +74,21 @@ public final class FunctionProviderBuilder
 	 */
 	public FunctionProviderBuilder withDefaultFunctions()
 	{
-		withFunctions(ArithmeticFunctions.class);
-		withFunctions(BagFunctions.class);
-		withFunctions(DateTimeArithmeticFunctions.class);
-		withFunctions(EqualityPredicates.class);
-		withFunctions(LogicalFunctions.class);
-		withFunctions(NonNumericComparisionFunctions.class);
-		withFunctions(NumericConversionFunctions.class);
-		withFunctions(NumericComparisionFunctions.class);
-		withFunctions(RegularExpressionFunctions.class);
-		withFunctions(SetFunctions.class);
-		withFunctions(SpecialMatchFunctions.class);
-		withFunctions(StringConversionFunctions.class);
-		withFunctions(StringFunctions.class);
-		withFunctions(XPathFunctions.class);
-		withFunctions(HigherOrderFunctions.class);
+		withFunctionsFromClass(ArithmeticFunctions.class);
+		withFunctionsFromClass(BagFunctions.class);
+		withFunctionsFromClass(DateTimeArithmeticFunctions.class);
+		withFunctionsFromClass(EqualityPredicates.class);
+		withFunctionsFromClass(LogicalFunctions.class);
+		withFunctionsFromClass(NonNumericComparisionFunctions.class);
+		withFunctionsFromClass(NumericConversionFunctions.class);
+		withFunctionsFromClass(NumericComparisionFunctions.class);
+		withFunctionsFromClass(RegularExpressionFunctions.class);
+		withFunctionsFromClass(SetFunctions.class);
+		withFunctionsFromClass(SpecialMatchFunctions.class);
+		withFunctionsFromClass(StringConversionFunctions.class);
+		withFunctionsFromClass(StringFunctions.class);
+		withFunctionsFromClass(XPathFunctions.class);
+		withFunctionsFromClass(HigherOrderFunctions.class);
 		return this;
 	}
 	
@@ -98,7 +98,7 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withFunctions(Class<?> clazz)
+	public FunctionProviderBuilder withFunctionsFromClass(Class<?> clazz)
 	{
 		Preconditions.checkNotNull(clazz);
 		try{
@@ -129,6 +129,8 @@ public final class FunctionProviderBuilder
 	}
 	
 	public FunctionProvider build(){
+		Preconditions.checkState(!providers.isEmpty(), 
+				"At least one function provider must be specified");
 		return new AggregatingFunctionProvider(providers);
 	}
 	
