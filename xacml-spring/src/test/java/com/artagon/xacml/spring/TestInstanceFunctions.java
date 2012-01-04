@@ -12,14 +12,15 @@ import com.artagon.xacml.v30.types.IntegerExp;
 
 @Ignore
 @XacmlFunctionProvider(description="Provider2")
-public class TestStaticFunctions 
+public class TestInstanceFunctions 
 {
-	@XacmlFuncSpec(id="test1_provider2")
+	@XacmlFuncSpec(id="test1_provider1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp test1(
+	public BooleanExp test1(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a, 
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b) 
 	{
 		return BooleanType.BOOLEAN.create(a.equals(b));
 	}
 }
+

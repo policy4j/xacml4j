@@ -9,9 +9,11 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
 						http://www.artagon.com/schema/xacml/spring http://www.artagon.com/schema/xacml/spring/xacml.xsd">
  	
+ 	<beans:bean id="testInstance" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
 		 
 	<xacml-spring:FunctionProviders id="extensionFunctions">
 		<xacml-spring:FunctionProvider class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml-spring:FunctionProvider ref="testInstance"/>
 	</xacml-spring:FunctionProviders>
 	
 	<util:list id="resources">
