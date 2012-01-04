@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.*;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -36,6 +37,7 @@ public class BaseAttributeResolverTest
 	}
 	
 	@Test
+	@Ignore
 	public void testMBeanInvocationStats() throws Exception
 	{
 		expect(context.getDescriptor()).andReturn(d);
