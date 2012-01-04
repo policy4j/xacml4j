@@ -37,10 +37,20 @@ public final class AttributeSet
 		}
 	}
 	
+	/**
+	 * Gets attribute resolver descriptor
+	 * 
+	 * @return {@link AttributeResolverDescriptor}
+	 */
 	public AttributeResolverDescriptor getDescriptor(){
 		return d;
 	}
 	
+	/**
+	 * Gets issuer for attributes in this set
+	 * 
+	 * @return an issuer for attributes in this set
+	 */
 	public String getIssuer(){
 		return d.getIssuer();
 	}
