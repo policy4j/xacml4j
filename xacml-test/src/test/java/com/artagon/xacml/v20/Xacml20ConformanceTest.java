@@ -76,7 +76,7 @@ public class Xacml20ConformanceTest
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder("testPdp")
 		.withPolicyInformationPoint(PolicyInformationPointBuilder.builder("testPip")
 				.withDefaultResolvers()
-				.withAnnotatedResolvers(new Xacml20ConformanceAttributeResolver())
+				.withResolver(new Xacml20ConformanceAttributeResolver())
 				.build())
 		.withPolicyRepository(repository);
 	}
