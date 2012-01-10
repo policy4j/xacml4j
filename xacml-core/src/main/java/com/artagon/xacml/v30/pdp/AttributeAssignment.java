@@ -42,6 +42,14 @@ public class AttributeAssignment
 		this(attributeId, null, null, value);
 	}
 	
+	public AttributeAssignment(
+			String attributeId, 
+			String issuer,
+			AttributeExp value)
+	{
+		this(attributeId, null, null, value);
+	}
+	
 	/**
 	 * Gets attribute identifier
 	 * 

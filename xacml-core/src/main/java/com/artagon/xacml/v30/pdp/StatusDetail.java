@@ -3,16 +3,15 @@ package com.artagon.xacml.v30.pdp;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
+
 
 public class StatusDetail extends XacmlObject
 {
 	private List<Object> content;
 	
-	public StatusDetail(){
+	public StatusDetail(Iterable<Object> detail){
 		this.content = new LinkedList<Object>();
-	}
-	
-	public void addStatusDetail(Object o){
-		content.add(o);
+		Iterables.addAll(content, detail);
 	}
 }

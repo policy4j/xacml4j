@@ -20,7 +20,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 			},
 			"urn:cima:policy:compliance:cpni", "1.0");
 
-		verifyResponse(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
+		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
 	}
 
 	
@@ -35,6 +35,6 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport {
 	public void testCPNIComplianceAttrsInRequest() throws Exception {
 		PolicyDecisionPoint pdp = buildPDP("urn:cima:policy:compliance:cpni", "1.0");
 
-		verifyResponse(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
+		verifyXacml30Response(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
 	}
 }

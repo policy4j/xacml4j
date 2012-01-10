@@ -11,9 +11,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
-import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.oasis.xacml.v20.jaxb.context.ResultType;
 import org.oasis.xacml.v20.jaxb.context.StatusType;
@@ -21,21 +19,15 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 
+import com.artagon.xacml.v30.marshall.jaxb.JAXBContextUtil;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.RequestContext;
 
 public class Xacml20TestUtility 
 {
-	private static JAXBContext context;
-	private static Xacml20RequestContextUnmarshaller requestUnmarshaller;
-	static{
-		try{
-			context = JAXBContext.newInstance(ObjectFactory.class.getPackage().getName());
-			requestUnmarshaller = new Xacml20RequestContextUnmarshaller(context);
-		}catch(JAXBException e){
-			
-		}
-	}
+	private static JAXBContext context = JAXBContextUtil.getInstance();
+	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+
 	public static void assertResponse(ResponseType a, ResponseType b)
 	{
 		assertEquals(a.getResult().size(), b.getResult().size());

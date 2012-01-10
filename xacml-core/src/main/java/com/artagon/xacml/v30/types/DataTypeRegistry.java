@@ -1,6 +1,12 @@
 package com.artagon.xacml.v30.types;
 
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 
 public interface DataTypeRegistry 
 {
@@ -11,8 +17,9 @@ public interface DataTypeRegistry
 	 * @return {@link AttributeExpType} a data type instance
 	 */
 	AttributeExpType getType(String typeId);
+	AttributeExp create(String typeId, Object value) 
+			throws XacmlSyntaxException;
 	
-//	AttributeValue create(String typeId, Object value);
-//	AttributeValue create(String typeId,Object value, Object... params);
-//	AttributeValue create(String typeId, Object value, Map<QName, String> params); 
+	AttributeExp create(String typeId, Object value, Map<QName, String> attrs) 
+			throws XacmlSyntaxException;
 }

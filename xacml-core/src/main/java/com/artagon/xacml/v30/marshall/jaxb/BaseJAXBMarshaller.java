@@ -27,8 +27,8 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 	@Override
 	public final void marshal(T source, Object target) throws IOException 
 	{
-		Preconditions.checkArgument(source != null);
-		Preconditions.checkArgument(target != null);
+		Preconditions.checkNotNull(source);
+		Preconditions.checkNotNull(target);
 		try{
 			javax.xml.bind.Marshaller m = context.createMarshaller();
 			JAXBElement<?> jaxbElement = (JAXBElement<?>)marshal(source);

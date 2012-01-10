@@ -313,11 +313,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		if (statusDetail == null) {
 			return null;
 		}
-		StatusDetail d = new StatusDetail();
-		for(Object o : statusDetail.getAny()) {
-			d.addStatusDetail(o);
-		}
-		return d;
+		return new StatusDetail(statusDetail.getAny());
 	}
 	
 	private Collection<AttributeAssignment> create(

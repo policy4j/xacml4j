@@ -30,6 +30,7 @@ public abstract class BaseJAXBUnmarshaller <T>
 	@Override
 	public final T unmarshal(Object source) throws XacmlSyntaxException, IOException 
 	{
+		Preconditions.checkNotNull(source);
 		try{
 			javax.xml.bind.Unmarshaller u = context.createUnmarshaller();
 			JAXBElement<?> jaxbInstance = null;

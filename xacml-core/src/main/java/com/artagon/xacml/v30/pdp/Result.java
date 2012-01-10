@@ -48,7 +48,8 @@ public class Result extends XacmlObject
 	 * @param status an failure status
 	 */
 	public Result(Decision decision, 
-			Status status, Collection<Attributes> attributes, 
+			Status status, 
+			Collection<Attributes> attributes, 
 			Collection<Attributes> resolvedAttributes){
 		this(decision, status, 
 				Collections.<Advice>emptyList(),
@@ -64,6 +65,19 @@ public class Result extends XacmlObject
 				Collections.<Advice>emptyList(),
 				Collections.<Obligation>emptyList(),
 				Collections.<Attributes>emptyList(),
+				Collections.<Attributes>emptyList(),
+				Collections.<CompositeDecisionRuleIDReference>emptyList());
+	}
+	
+	public Result(
+			Decision decision, 
+			Status status,
+			Iterable<Obligation> obligations,
+			Iterable<Attributes> includeInResult){
+		this(decision,  status, 
+				Collections.<Advice>emptyList(), 
+				obligations, 
+				includeInResult,
 				Collections.<Attributes>emptyList(),
 				Collections.<CompositeDecisionRuleIDReference>emptyList());
 	}

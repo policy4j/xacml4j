@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -11,6 +12,8 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30ResponseContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.Advice;
@@ -39,11 +42,16 @@ public class XacmlPolicyTestSupport {
 	
 	private Xacml30RequestContextUnmarshaller requestUnmarshaller;
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
+	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
+	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
 
 	@Before
 	public void setup() throws Exception {
-		requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
-		responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
+		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
+		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
+		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
+		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		
 	}
 
 	protected InputStream[] getDefaultTestPolicies() throws Exception {
@@ -100,11 +108,26 @@ public class XacmlPolicyTestSupport {
 		return pdpBuilder.build();
 	}
 
-	protected void verifyResponse(PolicyDecisionPoint pdp, String xacmlRequestResource, String expectedXacmlResponseResource) throws Exception {
-		RequestContext req = getRequest(xacmlRequestResource);
-		ResponseContext expectedResponse = getResponse(expectedXacmlResponseResource);
+	protected void verifyXacml30Response(PolicyDecisionPoint pdp, 
+			String xacmlRequestResource, 
+			String expectedXacmlResponseResource) throws Exception {
+		RequestContext req = getXacml30Request(xacmlRequestResource);
+		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
 		ResponseContext resp = pdp.decide(req);
-
+		assertResponse(expectedResponse, resp);
+	}
+	
+	protected void verifyXacml20Response(PolicyDecisionPoint pdp, 
+			String xacmlRequestResource,
+			String expectedXacmlResponseResource) throws Exception {
+		RequestContext req = getXacml20Request(xacmlRequestResource);
+		assertNotNull(xacmlRequestResource, req);
+		ResponseContext expectedResponse = getXacml20Response(expectedXacmlResponseResource);
+		assertNotNull(expectedXacmlResponseResource, expectedResponse);
+		ResponseContext resp = pdp.decide(req);
+		if(log.isDebugEnabled()){
+			log.debug(resp.toString());
+		}
 		assertResponse(expectedResponse, resp);
 	}
 
@@ -119,15 +142,25 @@ public class XacmlPolicyTestSupport {
 	}
 
 	protected InputStream getPolicy(String path) throws Exception {
-		log.debug("Loading policy: {}", path);
+		if(log.isDebugEnabled()){
+			log.debug("Loading policy from path=\"{}\"", path);
+		}
 		return getResource(path);
 	}
 
-	protected ResponseContext getResponse(String resourcePath) throws Exception {
+	protected ResponseContext getXacml30Response(String resourcePath) throws Exception {
 		return responseUnmarshaller.unmarshal(getResource(resourcePath));
 	}
+	
+	protected ResponseContext getXacml20Response(String resourcePath) throws Exception {
+		return xacml20ResponseUnmarshaller.unmarshal(getResource(resourcePath));
+	}
+	
+	protected RequestContext getXacml20Request(String path) throws Exception {
+		return xacml20RequestUnmarshaller.unmarshal(getResource(path));
+	}
 
-	protected RequestContext getRequest(String path) throws Exception {
+	protected RequestContext getXacml30Request(String path) throws Exception {
 		return requestUnmarshaller.unmarshal(getResource(path));
 	}
 
@@ -143,6 +176,8 @@ public class XacmlPolicyTestSupport {
 		}
 		return new Attribute(attributeId, attrValues);
 	}
+	
+
 
 	public static void assertResponse(ResponseContext resp1,
 			ResponseContext resp2) {
@@ -256,7 +291,7 @@ public class XacmlPolicyTestSupport {
 		
 		public XacmlTestPdpBuilder withRootPolicy(String policyId, String version){
 			this.rootPolicyId = policyId;
-			this.rootPolicyVersion = rootPolicyVersion;
+			this.rootPolicyVersion = version;
 			return this;
 		}
 		

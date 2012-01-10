@@ -3,12 +3,26 @@ package com.artagon.xacml.v30.types;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.namespace.QName;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public final class DataTypeRegistryBuilder 
 {
+	private final static Logger log = LoggerFactory.getLogger(DataTypeRegistryBuilder.class);
+	
+	private final static String XPATH_CATEGORY_ATTR_NAME = "XPathCategory";
+	
 	private Map<String, AttributeExpType> types;
+	
 	
 	private DataTypeRegistryBuilder(){
 		this.types = new ConcurrentHashMap<String, AttributeExpType>();
@@ -47,11 +61,37 @@ public final class DataTypeRegistryBuilder
 		return this;
 	}
 	
+	public static DataTypeRegistryBuilder builder(){
+		return new DataTypeRegistryBuilder();
+	}
+	
 	public DataTypeRegistry build(){
 		return new DataTypeRegistry() {
 			@Override
 			public AttributeExpType getType(String typeId) {
 				return types.get(typeId);
+			}
+
+			@Override
+			public AttributeExp create(String typeId, Object value)
+					throws XacmlSyntaxException {
+				AttributeExpType type = getType(typeId);
+				if(type == null){
+					throw new XacmlSyntaxException("Unknown data type=\"%s\"", typeId);
+				}
+				return type.create(value);
+			}
+			
+			@Override
+			public AttributeExp create(String typeId, 
+					Object value, Map<QName, String> values) throws XacmlSyntaxException 
+			{
+				AttributeExpType type = getType(typeId);
+				try {
+					return type.create(value, getXPathCategory(values));
+				} catch (Exception e) {
+					throw new XacmlSyntaxException(e);
+				}
 			}
 		};
 	}
@@ -61,7 +101,21 @@ public final class DataTypeRegistryBuilder
 	}
 	
 	private void addType(String typeId, AttributeExpType type){
-		Preconditions.checkArgument(!types.containsKey(type.getDataTypeId()));
+		if(log.isDebugEnabled()){
+			log.debug("Adding typeId=\"{}\"", typeId);
+		}
+		Preconditions.checkArgument(!types.containsKey(typeId));
 		this.types.put(typeId, type);
 	}
+	
+	private static AttributeCategory getXPathCategory(Map<QName, String> attr) 
+			throws XacmlSyntaxException
+		{
+			for (QName n : attr.keySet()) {
+				if (n.getLocalPart().equals(XPATH_CATEGORY_ATTR_NAME)) {
+					return AttributeCategories.parse(attr.get(n));
+				}
+			}
+			return null;
+		}
 }
