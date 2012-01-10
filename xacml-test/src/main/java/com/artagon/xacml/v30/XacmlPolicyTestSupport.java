@@ -69,7 +69,7 @@ public class XacmlPolicyTestSupport {
 	}
 	
 	
-	protected XacmlTestPdpBuilder pdpBuilder(String rootPolicyId, String rootPolicyVersion)
+	protected XacmlTestPdpBuilder builder(String rootPolicyId, String rootPolicyVersion)
 	{
 		XacmlTestPdpBuilder pdpBuilder = new XacmlTestPdpBuilder("testPDP", "testPIP", "testRepositoryId");
 		pdpBuilder.withRootPolicy(rootPolicyId, rootPolicyVersion);
@@ -86,7 +86,7 @@ public class XacmlPolicyTestSupport {
 			Object[] decisionAlgoProviders,
 			String rootPolicyId, String rootPolicyVersion) throws Exception 
 	{
-		XacmlTestPdpBuilder pdpBuilder = pdpBuilder(rootPolicyId, rootPolicyVersion);
+		XacmlTestPdpBuilder pdpBuilder = builder(rootPolicyId, rootPolicyVersion);
 		if(attributeResolvers != null) {
 			for(Object r: attributeResolvers) {
 				pdpBuilder.withResolver(r);
@@ -294,7 +294,7 @@ public class XacmlPolicyTestSupport {
 			this.rootPolicyVersion = version;
 			return this;
 		}
-		
+			
 		public XacmlTestPdpBuilder withDefaultDecisionAlgorithms(){
 			decisionAlgoProviderBuilder.withDefaultAlgorithms();
 			return this;

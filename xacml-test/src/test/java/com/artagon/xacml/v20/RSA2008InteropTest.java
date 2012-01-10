@@ -20,13 +20,14 @@ import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.google.common.collect.Iterables;
 
-public class RSA2008InteropTest 
+public class RSA2008InteropTest
 {
 	private static PolicyDecisionPoint pdp;
 	
 	@BeforeClass
 	public static void init() throws Exception
 	{
+		
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()

@@ -64,8 +64,7 @@
     <Attribute
         AttributeId="urn:va:xacml:2.0:interop:rsa8:resource:hl7:type"
         DataType="http://www.w3.org/2001/XMLSchema#string">
-      <AttributeValue
-        >urn:va:xacml:2.0:interop:rsa8:resource:hl7:medical-record</AttributeValue>
+      <AttributeValue>urn:va:xacml:2.0:interop:rsa8:resource:hl7:medical-record</AttributeValue>
     </Attribute>
   </Resource>
   <Action/>  
