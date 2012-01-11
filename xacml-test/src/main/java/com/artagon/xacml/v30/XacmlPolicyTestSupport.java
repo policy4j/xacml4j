@@ -53,21 +53,6 @@ public class XacmlPolicyTestSupport {
 		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 		
 	}
-
-	protected InputStream[] getDefaultTestPolicies() throws Exception {
-		return new InputStream[0];
-	}
-
-	protected PolicyDecisionPoint buildPDP(
-			AttributeResolver [] attributeResolvers,
-			String rootPolicyId, String rootPolicyVersion) throws Exception {
-		return buildPDP(getDefaultTestPolicies(), attributeResolvers, null, null, rootPolicyId, rootPolicyVersion);
-	}
-
-	protected PolicyDecisionPoint buildPDP(String rootPolicyId, String rootPolicyVersion) throws Exception {
-		return buildPDP(getDefaultTestPolicies(), null, null, null, rootPolicyId, rootPolicyVersion);
-	}
-	
 	
 	protected XacmlTestPdpBuilder builder(String rootPolicyId, String rootPolicyVersion)
 	{
@@ -133,15 +118,20 @@ public class XacmlPolicyTestSupport {
 
 	protected InputStream getResource(String resourcePath, ClassLoader cl) {
 		log.debug("Loading resource \"{}\"", resourcePath);
-		return cl.getResourceAsStream(resourcePath);
+		InputStream in = cl.getResourceAsStream(resourcePath);
+		if(in  == null){
+			throw new IllegalArgumentException(String.format(
+					"Failed to load resource from path=\"%s\"", resourcePath));
+		}
+		return in;
 	}
-
+	
 	protected InputStream getResource(String resourcePath) {
 		return getResource(resourcePath, Thread.currentThread()
 				.getContextClassLoader());
 	}
 
-	protected InputStream getPolicy(String path) throws Exception {
+	protected InputStream getPolicy(String path){
 		if(log.isDebugEnabled()){
 			log.debug("Loading policy from path=\"{}\"", path);
 		}
@@ -327,6 +317,12 @@ public class XacmlPolicyTestSupport {
 		
 		public XacmlTestPdpBuilder withPolicy(InputStream stream){
 			this.policies.add(stream);
+			return this;
+		}
+		
+		public XacmlTestPdpBuilder withPolicyFromClasspath(String path ){
+			InputStream in = getPolicy(path);
+			this.policies.add(in);
 			return this;
 		}
 		
