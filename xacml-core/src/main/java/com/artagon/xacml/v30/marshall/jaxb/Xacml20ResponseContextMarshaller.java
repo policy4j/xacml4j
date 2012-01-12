@@ -216,5 +216,4 @@ public class Xacml20ResponseContextMarshaller
 			return attr;
 		}
 	}
-
 }

@@ -11,7 +11,6 @@ import java.util.Map;
 
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.pdp.Policy.Builder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 

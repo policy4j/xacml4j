@@ -136,7 +136,6 @@ implements ResponseUnmarshaller
 			if(result.getResourceId() != null){
 				attrs.add(new Attributes(AttributeCategories.RESOURCE, 
 						new Attribute(RESOURCE_ID, StringType.STRING.create(result.getResourceId()))));
-				
 			}
 			return new Result(d, status, getObligations(result), attrs);
 		}
