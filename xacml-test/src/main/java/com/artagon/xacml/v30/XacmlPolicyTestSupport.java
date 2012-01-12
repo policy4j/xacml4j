@@ -30,7 +30,6 @@ import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
-import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
@@ -152,10 +151,6 @@ public class XacmlPolicyTestSupport {
 
 	protected RequestContext getXacml30Request(String path) throws Exception {
 		return requestUnmarshaller.unmarshal(getResource(path));
-	}
-
-	protected AttributeResolver createAttributeResolverFor(AttributeCategory attrCategory, Attribute ...attributes) {
-		return new ExpectedAttributeResolver(attrCategory, attributes);
 	}
 
 	protected <T extends AttributeExpType> Attribute createAttribute(
