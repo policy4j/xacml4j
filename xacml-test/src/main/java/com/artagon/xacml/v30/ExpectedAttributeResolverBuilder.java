@@ -25,6 +25,10 @@ public class ExpectedAttributeResolverBuilder
 		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder.builder(id, "Test Resolver " + id, issuer, category));
 	}
 	
+	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category){
+		return builder(id, category);
+	}
+	
 	public ExpectedAttributeResolverBuilder withAttributeValue(String id, AttributeExp value){
 		b.attribute(id, value.getType());
 		this.values.put(id, value.toBag());

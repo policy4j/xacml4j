@@ -17,9 +17,6 @@ import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30RequestContextUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml30ResponseContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.pdp.Obligation;
@@ -63,35 +60,6 @@ public class XacmlPolicyTestSupport {
 		return pdpBuilder;
 	}
 	
-	protected PolicyDecisionPoint buildPDP(
-			InputStream[] policyResources,
-			Object [] attributeResolvers,
-			Object[] functionProviders,
-			Object[] decisionAlgoProviders,
-			String rootPolicyId, String rootPolicyVersion) throws Exception 
-	{
-		XacmlTestPdpBuilder pdpBuilder = builder(rootPolicyId, rootPolicyVersion);
-		if(attributeResolvers != null) {
-			for(Object r: attributeResolvers) {
-				pdpBuilder.withResolver(r);
-			}
-		 }
-		if(functionProviders != null){
-			for(Object f : functionProviders){
-				pdpBuilder.withFunctionProvider(f);
-			}
-		}
-		if(decisionAlgoProviders != null){
-			for(Object decisionAlgoProvider : decisionAlgoProviders){
-				pdpBuilder.withDecisionAlgorithmProvider(decisionAlgoProvider);
-			}
-		}
-		for (InputStream path : policyResources) {
-			pdpBuilder.withPolicy(path);
-		}
-		return pdpBuilder.build();
-	}
-
 	protected void verifyXacml30Response(PolicyDecisionPoint pdp, 
 			String xacmlRequestResource, 
 			String expectedXacmlResponseResource) throws Exception {
@@ -153,17 +121,6 @@ public class XacmlPolicyTestSupport {
 		return requestUnmarshaller.unmarshal(getResource(path));
 	}
 
-	protected <T extends AttributeExpType> Attribute createAttribute(
-			String attributeId, T type, Object... values) {
-		Collection<AttributeExp> attrValues = new LinkedList<AttributeExp>();
-		for(Object value : values) {
-			attrValues.add(type.create(value));
-		}
-		return new Attribute(attributeId, attrValues);
-	}
-	
-
-
 	public static void assertResponse(ResponseContext resp1,
 			ResponseContext resp2) {
 		assertEquals(resp1.getResults().size(), resp2.getResults().size());
@@ -174,7 +131,6 @@ public class XacmlPolicyTestSupport {
 			Result r2 = r2It.next();
 			assertResult(r1, r2);
 		}
-
 	}
 
 	private static void assertResult(Result r1, Result r2) {
