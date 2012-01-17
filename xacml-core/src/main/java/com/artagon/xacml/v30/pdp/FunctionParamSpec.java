@@ -2,9 +2,6 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.ListIterator;
 
-
-
-
 public interface FunctionParamSpec 
 {	
 	/**
@@ -30,5 +27,12 @@ public interface FunctionParamSpec
 	 */
 	boolean isValidParamType(ValueType type);
 	
+	/**
+	 * Tests if this parameter is variadic
+	 * 
+	 * @return <code>true</code> if a function
+	 * parameter represented by this object is
+	 * variadic
+	 */
 	boolean isVariadic();
 }
