@@ -26,7 +26,7 @@ public class ExpectedAttributeResolverBuilder
 	}
 	
 	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category){
-		return builder(id, category);
+		return builder(id, category, null);
 	}
 	
 	public ExpectedAttributeResolverBuilder withAttributeValue(String id, AttributeExp value){
