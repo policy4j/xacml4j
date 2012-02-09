@@ -1,0 +1,63 @@
+{
+	"results":[
+   		{
+	   		"decision": "Deny",
+	   		"status":{
+	   			"code": "urn:oasis:names:tc:xacml:1.0:status:ok"
+	   		},
+		   	"assocAdvice":[
+		   	 	{
+		   	 		"adviceId":"urn:cablelabs:ocla:1.0:advice:authz:maxRatings",
+		   	 		"attributeAssignment":[
+			 			{
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:authz:maxMPAA", 
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"value":"PG13"
+			 			},
+			 			{
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:authz:maxVCHIP", 
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"value":"TV-PG"
+			 			}
+		   			]
+		   		}
+		   	],
+		   	"attributes": [
+		   		{
+			        "category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+			        "attributes": [
+			          {
+			            "attrId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+			            "type":"http://www.w3.org/2001/XMLSchema#string",
+			            "values":["movie-asset-id"]
+			          }
+			        ]
+				}
+			]
+		},
+		{
+	   		"decision": "Permit",
+	   		"status":{
+	   			"code": "urn:oasis:names:tc:xacml:1.0:status:ok"
+	   		},
+	   		"obligations":[
+			 	{
+			 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:authz:log"
+		   		}
+		   	]
+		   	"attributes": [
+		   		{
+			        "category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+			        "attributes": [
+			          {
+			            "attrId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+			            "type":"http://www.w3.org/2001/XMLSchema#string",
+			            "values":["tv-show-expisode-id"]
+			          }
+			        ]
+				}
+			]
+		}
+		
+	]
+}

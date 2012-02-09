@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response xmlns"urn:oasis:names:tc:2.0:context:schema:os" >
+	<Result ResourceId="movie-asset-id">
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:1.0:status:ok"/>
+		</Status>
+		<Obligations xmlns="urn:oasis:names:tc:2.0:policy:schema:os">
+			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:authz:log"/>
+		</Obligations>
+	</Result>
+	<Result ResourceId="tv-show-episode-id">
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:1.0:status:ok"/>
+		</Status>
+		<Obligations xmlns="urn:oasis:names:tc:2.0:policy:schema:os">
+			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:authz:log"/>
+		</Obligations>
+	</Result>
+</Response>
