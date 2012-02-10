@@ -46,29 +46,30 @@ public class RequestContext
 			Collection<RequestReference> requestReferences, 
 			RequestDefaults requestDefaults)
 	{
-		Preconditions.checkNotNull(attributes);
-		Preconditions.checkNotNull(requestReferences);
 		this.returnPolicyIdList = returnPolicyIdList;
 		this.attributes = LinkedListMultimap.create();
-		this.requestReferences = new ArrayList<RequestReference>(requestReferences);
+		this.requestReferences = (requestReferences == null)?
+				Collections.<RequestReference>emptyList():new ArrayList<RequestReference>(requestReferences);
 		this.attributesByXmlId = new HashMap<String, Attributes>();
 		this.requestDefaults = requestDefaults;
 		this.combinedDecision = combinedDecision;
-		for(Attributes attr : attributes)
-		{
-			// index attributes by category
-			this.attributes.put(attr.getCategory(), attr);
-			// index attributes
-			// by id for fast lookup
-			if(attr.getId() != null){
-				this.attributesByXmlId.put(attr.getId(), attr);
+		if(attributes != null){
+			for(Attributes attr : attributes){
+				// index attributes by category
+				this.attributes.put(attr.getCategory(), attr);
+				// index attributes
+				// by id for fast lookup
+				if(attr.getId() != null){
+					this.attributesByXmlId.put(attr.getId(), attr);
+				}
 			}
 		}
-		this.cachedHashCode = Objects.hashCode(returnPolicyIdList, 
-				combinedDecision, 
-				attributes, 
-				requestReferences, 
-				requestDefaults);
+		this.cachedHashCode = Objects.hashCode(
+				this.returnPolicyIdList, 
+				this.combinedDecision, 
+				this.attributes, 
+				this.requestReferences, 
+				this.requestDefaults);
 	}
 	
 	/**
