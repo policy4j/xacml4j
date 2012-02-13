@@ -86,7 +86,7 @@ public class Obligation
 			return this;
 		}
 		
-		public Obligation build(){
+		public Obligation create(){
 			return new Obligation(id, appliesTo, attributes);
 		}
 	}

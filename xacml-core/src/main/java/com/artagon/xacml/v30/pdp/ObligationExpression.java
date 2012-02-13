@@ -59,10 +59,19 @@ public class ObligationExpression extends
 			this.appliesTo = appliesTo;
 		}
 	
-		public Builder withAttributeAssigment(
-				String id, Expression expression)
-		{
+		public Builder attributeAssigment(
+				String id, Expression expression){
 			attributes.add(new AttributeAssignmentExpression(id, expression));
+			return this;
+		}
+		
+		public Builder appliesTo(Effect effect){
+			this.appliesTo = effect;
+			return this;
+		}
+		
+		public Builder id(String id){
+			this.id = id;
 			return this;
 		}
 	

@@ -6,7 +6,6 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.easymock.Capture;
@@ -15,21 +14,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.AdviceExpression;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationContextHandler;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.Expression;
-import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.ObligationExpression;
-import com.artagon.xacml.v30.pdp.Policy;
-import com.artagon.xacml.v30.pdp.RootEvaluationContext;
-import com.artagon.xacml.v30.pdp.Rule;
-import com.artagon.xacml.v30.pdp.Target;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.artagon.xacml.v30.types.StringType;
 
@@ -78,17 +62,17 @@ public class PolicyTest
 				.withCombiningAlgorithm(combingingAlg)
 				.withObligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
-							.withAttributeAssigment("testId", denyObligationAttributeExp))
+							.attributeAssigment("testId", denyObligationAttributeExp))
 				.withObligation(ObligationExpression
 						.builder("permitObligation", Effect.PERMIT)
-						.withAttributeAssigment("testId", permitObligationAttributeExp))
+						.attributeAssigment("testId", permitObligationAttributeExp))
 				.withAdvice(AdviceExpression
 						.builder("denyAdvice", Effect.DENY)
 						.withAttributeAssigment("testId", denyAdviceAttributeExp))
 				.withAdvice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
 					.withAttributeAssigment("testId", permitAdviceAttributeExp))
-				.build();
+				.create();
 			
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);

@@ -47,7 +47,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-public class Xacml20RequestContextUnmarshaller extends 
+public final class Xacml20RequestContextUnmarshaller extends 
 	BaseJAXBUnmarshaller<RequestContext> 
 implements RequestUnmarshaller 
 {

@@ -118,7 +118,7 @@ public class MatchAnyOf
 		
 		public Builder withAllOf(MatchAllOf.Builder allOfBuilder){
 			Preconditions.checkNotNull(allOfBuilder);
-			this.allMatchAllOfs.add(allOfBuilder.build());
+			this.allMatchAllOfs.add(allOfBuilder.create());
 			return this;
 		}
 		
@@ -128,7 +128,7 @@ public class MatchAnyOf
 			return this;
 		}
 		
-		public MatchAnyOf build(){
+		public MatchAnyOf create(){
 			return new MatchAnyOf(allMatchAllOfs);
 		}
 	}

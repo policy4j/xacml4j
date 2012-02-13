@@ -76,10 +76,10 @@ public class RuleTest
 				.withCondition(condition)
 				.withObligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
-							.withAttributeAssigment("testId", denyObligationAttributeExp))
+							.attributeAssigment("testId", denyObligationAttributeExp))
 				.withObligation(ObligationExpression
 						.builder("permitObligation", Effect.PERMIT)
-						.withAttributeAssigment("testId", permitObligationAttributeExp))
+						.attributeAssigment("testId", permitObligationAttributeExp))
 				.withAdvice(AdviceExpression
 						.builder("denyAdvice", Effect.DENY)
 						.withAttributeAssigment("testId", denyAdviceAttributeExp))
@@ -206,10 +206,10 @@ public class RuleTest
 		assertTrue(
 				advices.getValue().contains(Advice
 						.builder("denyAdvice", Effect.DENY)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 		
 		assertTrue(
 				obligations.getValue().contains(Obligation
@@ -217,7 +217,7 @@ public class RuleTest
 						.withAttribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 		
 	}
 	
@@ -287,10 +287,10 @@ public class RuleTest
 		assertTrue(
 				advices.getValue().contains(Advice
 						.builder("permitAdvice", Effect.PERMIT)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 		
 		assertTrue(
 				obligations.getValue().contains(Obligation
@@ -298,7 +298,7 @@ public class RuleTest
 						.withAttribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 	}
 	
 	@Test
@@ -379,10 +379,10 @@ public class RuleTest
 		assertTrue(
 				advices.getValue().contains(Advice
 						.builder("denyAdvice", Effect.DENY)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 		
 		assertTrue(
 				obligations.getValue().contains(Obligation
@@ -390,7 +390,7 @@ public class RuleTest
 						.withAttribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.build()));
+								.create()));
 	}
 	
 	

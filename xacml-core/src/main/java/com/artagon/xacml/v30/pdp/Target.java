@@ -97,7 +97,7 @@ public class Target extends XacmlObject implements PolicyElement
 		
 		public Builder withAnyOf(MatchAnyOf.Builder anyOf){
 			Preconditions.checkNotNull(anyOf);
-			allAnyOf.add(anyOf.build());
+			allAnyOf.add(anyOf.create());
 			return this;
 		}
 		

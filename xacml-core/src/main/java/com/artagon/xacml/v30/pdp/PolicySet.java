@@ -367,7 +367,7 @@ public class PolicySet extends
 		
 		public Builder withPolicy(Policy.Builder b){
 			Preconditions.checkNotNull(b);
-			this.policies.add(b.build());
+			this.policies.add(b.create());
 			return this;
 		}
 		

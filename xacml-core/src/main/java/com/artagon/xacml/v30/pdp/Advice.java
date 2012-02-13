@@ -55,30 +55,35 @@ public class Advice extends BaseDecisionRuleResponse
 			this.appliesTo = effect;
 		}
 		
-		public Builder withAttribute(AttributeAssignment attr){
+		public Builder attribute(AttributeAssignment attr){
 			Preconditions.checkNotNull(attr);
 			this.attributes.add(attr);
 			return this;
 		}
 		
-		public Builder withAttribute(
-				String id, AttributeExp value)
+		public Builder attribute(
+				String id, AttributeExp ... values)
 		{
-			this.attributes.add(new AttributeAssignment(id, value));
-			return this;
+			return attribute(id, null, null, values);
 		}
 		
-		public Builder withAttribute(
+		public Builder attribute(
 				String id,  
 				AttributeCategory category, 
 				String issuer, 
-				AttributeExp value)
+				AttributeExp ... values)
 		{
-			this.attributes.add(new AttributeAssignment(id, category, issuer, value));
+			if(values == null || 
+					values.length == 0){
+				return this;
+			}
+			for(AttributeExp v : values){
+				this.attributes.add(new AttributeAssignment(id, category, issuer, v));
+			}
 			return this;
 		}
 		
-		public Advice build(){
+		public Advice create(){
 			return new Advice(id, appliesTo, attributes);
 		}
 	}

@@ -68,20 +68,21 @@ public class Policy extends BaseCompositeDecisionRule
 	{
 		super(policyId, version, description, 
 				target, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(variables);
-		Preconditions.checkNotNull(rules);
 		Preconditions.checkNotNull(combine);
 		this.issuer = issuer;
-		this.rules = ImmutableList.copyOf(rules);
+		this.rules = (rules != null)?ImmutableList.copyOf(rules):ImmutableList.<Rule>of();
 		this.combine = combine;
 		this.reference = new PolicyIDReference(policyId, version);
 		this.policyDefaults = policyDefaults;
-		this.variableDefinitions = Maps.uniqueIndex(variables, new Function<VariableDefinition, String>(){
-			@Override
-			public String apply(VariableDefinition from) {
-				return from.getVariableId();
-			}
-		});
+		if(variables != null){
+			this.variableDefinitions = Maps.uniqueIndex
+					(variables, new Function<VariableDefinition, String>(){
+				@Override
+				public String apply(VariableDefinition from) {
+					return from.getVariableId();
+				}
+			});
+		}
 	}
 	
 	public Policy(
@@ -457,7 +458,7 @@ public class Policy extends BaseCompositeDecisionRule
 			return this;
 		}
 		
-		public Policy build(){
+		public Policy create(){
 			return new Policy(
 					id, 
 					version, 

@@ -125,7 +125,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 			return withMatch(new Match(predicate, value, ref));
 		}
 		
-		public MatchAllOf build(){
+		public MatchAllOf create(){
 			return new MatchAllOf(matches);
 		}
 	}
