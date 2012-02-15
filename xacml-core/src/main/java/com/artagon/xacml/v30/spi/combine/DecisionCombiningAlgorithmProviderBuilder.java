@@ -56,7 +56,7 @@ public final class DecisionCombiningAlgorithmProviderBuilder
 		return this;
 	}
 	
-	public DecisionCombiningAlgorithmProvider build(){
+	public DecisionCombiningAlgorithmProvider create(){
 		return new AggregatingDecisionCombiningAlgorithmProvider(providers);
 	}
 }

@@ -128,7 +128,7 @@ public final class FunctionProviderBuilder
 		return this;
 	}
 	
-	public FunctionProvider build(){
+	public FunctionProvider create(){
 		Preconditions.checkState(!providers.isEmpty(), 
 				"At least one function provider must be specified");
 		return new AggregatingFunctionProvider(providers);

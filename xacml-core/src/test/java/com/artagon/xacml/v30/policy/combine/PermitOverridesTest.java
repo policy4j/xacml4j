@@ -117,7 +117,7 @@ public class PermitOverridesTest
 		expect(r2.createContext(context)).andReturn(context);
 		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
 		replay(r1, r2, context);
-		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
+		assertEquals(Decision.INDETERMINATE, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
 		
@@ -153,7 +153,7 @@ public class PermitOverridesTest
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
 		replay(r1);
-		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
+		assertEquals(Decision.INDETERMINATE, algorithm.combine(context, decisions));
 		verify(r1);
 	}
 	

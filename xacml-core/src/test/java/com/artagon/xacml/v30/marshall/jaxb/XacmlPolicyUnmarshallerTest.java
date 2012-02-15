@@ -35,10 +35,10 @@ public class XacmlPolicyUnmarshallerTest
 		reader = new XacmlPolicyUnmarshaller(
 				FunctionProviderBuilder
 				.builder()
-				.withDefaultFunctions().build(), 
+				.withDefaultFunctions().create(), 
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
-				.withDefaultAlgorithms().build());
+				.withDefaultAlgorithms().create());
 	}
 	
 	@SuppressWarnings("unchecked")

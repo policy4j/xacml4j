@@ -41,7 +41,7 @@ public class AggregatingFunctionProvider
 	public AggregatingFunctionProvider(Collection<FunctionProvider> providers){
 		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 		for(FunctionProvider p : providers){
-				add(p);
+			add(p);
 		}
 	}
 	

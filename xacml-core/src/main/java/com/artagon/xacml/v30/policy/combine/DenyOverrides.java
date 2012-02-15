@@ -55,6 +55,9 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 			if(decision == Decision.DENY){
 				return Decision.DENY;
 			}
+			if(decision == Decision.INDETERMINATE){
+				return Decision.DENY;
+			}
 			if(decision == Decision.PERMIT){
 				atLeastOnePermit = true;
 				continue;
