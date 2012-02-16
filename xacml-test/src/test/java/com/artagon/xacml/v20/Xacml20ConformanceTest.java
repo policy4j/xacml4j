@@ -43,10 +43,10 @@ public class Xacml20ConformanceTest
 				"testRepositoryId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
-				.build(), 
+				.create(), 
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.build());
+				.create());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		
 		addAllPolicies(repository, "IIA", 22);

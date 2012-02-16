@@ -16,6 +16,7 @@
 		<module>xacml-opensaml</module>
 		<module>xacml-ehcache</module>
 		<module>xacml-ws</module>
+		<module>xacml-json</module>
 	</modules>
 	<properties>
 		<junit.version>4.5</junit.version>

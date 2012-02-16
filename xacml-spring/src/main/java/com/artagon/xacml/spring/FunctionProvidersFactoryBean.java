@@ -19,7 +19,8 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<com.artago
 	public void setProviders(Collection<FunctionProvider> providers){
 		Preconditions.checkNotNull(providers);
 		for(FunctionProvider p : providers){
-			Preconditions.checkState(p.getProviderClass() != null || p.getProviderInstance() != null);
+			Preconditions.checkState(p.getProviderClass() != null 
+					|| p.getProviderInstance() != null);
 			if(p.getProviderClass() != null){
 				builder.withFunctionsFromClass(p.getProviderClass());
 			}
@@ -36,6 +37,6 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<com.artago
 
 	@Override
 	protected com.artagon.xacml.v30.spi.function.FunctionProvider createInstance() throws Exception {	
-		return builder.build();
+		return builder.create();
 	}	
 }

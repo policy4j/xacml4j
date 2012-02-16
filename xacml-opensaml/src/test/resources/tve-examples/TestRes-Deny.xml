@@ -6,12 +6,12 @@
 			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
 		</Status>
 		<Obligations xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
-			<Obligation FulfillOn="Deny" ObligationId="urn:cablelabs:ocla:1.0:advice:authz:maxRatings">
+			<Obligation FulfillOn="Deny" ObligationId="urn:cablelabs:ocla:1.0:obligations:restrict-pc">
 				<AttributeAssignment
-					AttributeId="urn:cablelabs:ocla:1.0:attribute:authz:maxMPAA"
+					AttributeId="urn:cablelabs:ocla:1.0:attribute:content:maxMPAA"
 					DataType="http://www.w3.org/2001/XMLSchema#string">PG13</AttributeAssignment>
 				<AttributeAssignment
-					AttributeId="urn:cablelabs:ocla:1.0:attribute:authz:maxVCHIP"
+					AttributeId="urn:cablelabs:ocla:1.0:attribute:content:maxVCHIP"
 					DataType="http://www.w3.org/2001/XMLSchema#string">TV-PG</AttributeAssignment>
 			</Obligation>
 		</Obligations>
@@ -23,7 +23,20 @@
 			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
 		</Status>
 		<Obligations xmlns="urn:oasis:names:tc:2.0:policy:schema:os">
-			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:authz:log"/>
+			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:re-authz">
+				<AttributeAssignment
+					AttributeId="urn:cablelabs:ocla:1.0:attribute:authz-valid-for-seconds"
+					DataType="http://www.w3.org/2001/XMLSchema#integer">3600</AttributeAssignment>
+			</Obligation>
+			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:log"/>
+			<Obligation FulfillOn="Permit" ObligationId="urn:cablelabs:ocla:1.0:obligations:restrict-pc">
+				<AttributeAssignment
+					AttributeId="urn:cablelabs:ocla:1.0:attribute:content:maxMPAA"
+					DataType="http://www.w3.org/2001/XMLSchema#string">PG13</AttributeAssignment>
+				<AttributeAssignment
+					AttributeId="urn:cablelabs:ocla:1.0:attribute:content:maxVCHIP"
+					DataType="http://www.w3.org/2001/XMLSchema#string">TV-PG</AttributeAssignment>
+			</Obligation>
 		</Obligations>
 	</Result>
 </Response>

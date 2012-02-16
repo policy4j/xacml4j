@@ -55,7 +55,8 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	private static XACMLAuthzDecisionQuerySigner signer;
 	
 	@BeforeClass
-	public static void init() throws Exception{
+	public static void init() throws Exception
+	{
 		DefaultBootstrap.bootstrap();
 		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
 		hboPublic = (X509Certificate)ks.getCertificate("1");

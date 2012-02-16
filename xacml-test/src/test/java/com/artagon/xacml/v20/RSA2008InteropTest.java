@@ -32,10 +32,10 @@ public class RSA2008InteropTest
 				"testId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
-				.build(), 
+				.create(), 
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.build());
+				.create());
 	
 		repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));

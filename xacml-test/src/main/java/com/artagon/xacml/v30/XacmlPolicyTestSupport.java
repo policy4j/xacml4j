@@ -271,6 +271,13 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 		
+		public XacmlTestPdpBuilder withPolicies(InputStream ... policies){
+			for(InputStream s : policies){
+				this.policies.add(s);
+			}
+			return this;
+		}
+		
 		public XacmlTestPdpBuilder withPolicyFromClasspath(String path ){
 			InputStream in = getPolicy(path);
 			this.policies.add(in);
@@ -286,8 +293,8 @@ public class XacmlPolicyTestSupport {
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId, 
-					functionProviderBuilder.build(), 
-					decisionAlgoProviderBuilder.build());
+					functionProviderBuilder.create(), 
+					decisionAlgoProviderBuilder.create());
 			for(InputStream in : policies){
 				repository.importPolicy(in);
 			}

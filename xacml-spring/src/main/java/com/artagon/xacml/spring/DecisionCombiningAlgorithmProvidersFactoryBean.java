@@ -26,7 +26,7 @@ public class DecisionCombiningAlgorithmProvidersFactoryBean
 	protected DecisionCombiningAlgorithmProvider createInstance()
 			throws Exception 
 	{
-		return builder.build();
+		return builder.create();
 	}
 
 	@Override

@@ -5,17 +5,17 @@
 	   		"status":{
 	   			"code": "urn:oasis:names:tc:xacml:1.0:status:ok"
 	   		},
-		   	"assocAdvice":[
+		   	"obligations":[
 		   	 	{
-		   	 		"adviceId":"urn:cablelabs:ocla:1.0:advice:authz:maxRatings",
+		   	 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:restrict-pc",
 		   	 		"attributeAssignment":[
 			 			{
-			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:authz:maxMPAA", 
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:content:maxMPAA", 
 			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
 			 				"value":"PG13"
 			 			},
 			 			{
-			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:authz:maxVCHIP", 
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:content:maxVCHIP", 
 			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
 			 				"value":"TV-PG"
 			 			}
@@ -24,7 +24,7 @@
 		   	],
 		   	"attributes": [
 		   		{
-			        "category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+			        "category": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 			        "attributes": [
 			          {
 			            "attrId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
@@ -42,7 +42,32 @@
 	   		},
 	   		"obligations":[
 			 	{
-			 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:authz:log"
+			 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:log"
+		   		},
+		   		{
+		   	 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:re-authz",
+		   	 		"attributeAssignment":[
+			 			{
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:authz-valid-for-seconds", 
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#integer", 
+			 				"value":"3600"
+			 			}
+		   			]
+		   		},
+		   		{
+		   	 		"obligationId":"urn:cablelabs:ocla:1.0:obligations:restrict-pc",
+		   	 		"attributeAssignment":[
+			 			{
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:content:maxMPAA", 
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"value":"PG13"
+			 			},
+			 			{
+			 				"attrId":"urn:cablelabs:ocla:1.0:attribute:content:maxVCHIP", 
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"value":"TV-PG"
+			 			}
+		   			]
 		   		}
 		   	]
 		   	"attributes": [
