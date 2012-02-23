@@ -1,8 +1,8 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import com.google.common.base.Preconditions;
 
-public class StatusCode extends XacmlObject
+public class StatusCode
 {
 	private StatusCodeId value;
 	private StatusCode minorStatus;
@@ -14,24 +14,24 @@ public class StatusCode extends XacmlObject
 		this.minorStatus = minorStatus;
 	}
 	
-	public StatusCode(StatusCodeId value){
+	public StatusCode(StatusCodeIds value){
 		this(value, null);
 	}
 	
 	public static StatusCode createMissingAttribute(){
-		return new StatusCode(StatusCodeId.MISSING_ATTRIBUTE);
+		return new StatusCode(StatusCodeIds.MISSING_ATTRIBUTE);
 	}
 	
 	public static StatusCode createProcessingError(){
-		return new StatusCode(StatusCodeId.STATUS_PROCESSING_ERROR);
+		return new StatusCode(StatusCodeIds.STATUS_PROCESSING_ERROR);
 	}
 	
 	public static StatusCode createSyntaxError(){
-		return new StatusCode(StatusCodeId.SYNTAX_ERROR);
+		return new StatusCode(StatusCodeIds.SYNTAX_ERROR);
 	}
 	
 	public static StatusCode createOk(){
-		return new StatusCode(StatusCodeId.OK);
+		return new StatusCode(StatusCodeIds.OK);
 	}
 	
 	/**
@@ -55,18 +55,22 @@ public class StatusCode extends XacmlObject
 	}
 	
 	public boolean isOk(){
-		return value == StatusCodeId.OK;
+		return value.equals(StatusCodeIds.OK);
 	}
 	
 	public boolean isFailure(){
-		return value != StatusCodeId.OK;
+		return !isOk();
 	}
 	
 	public boolean isProcessingError(){
-		return value == StatusCodeId.STATUS_PROCESSING_ERROR;
+		return value.equals(StatusCodeIds.STATUS_PROCESSING_ERROR);
+	}
+	
+	public boolean isMissingAttributeError(){
+		return value.equals(StatusCodeIds.MISSING_ATTRIBUTE);
 	}
 	
 	public boolean isSyntaxError(){
-		return value == StatusCodeId.SYNTAX_ERROR;
+		return value.equals(StatusCodeIds.SYNTAX_ERROR);
 	}
 }

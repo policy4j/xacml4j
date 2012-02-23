@@ -20,6 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.AttributesReference;
@@ -29,8 +31,6 @@ import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestReference;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
-import com.artagon.xacml.v30.pdp.StatusCode;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.collect.Iterables;
 

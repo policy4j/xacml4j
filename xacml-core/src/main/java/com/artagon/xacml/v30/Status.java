@@ -1,8 +1,9 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public final class Status extends XacmlObject
+public final class Status 
 {
 	private StatusCode code;
 	private String message;
@@ -34,7 +35,7 @@ public final class Status extends XacmlObject
 	}
 	
 	public static Status createSuccess(){
-		return new Status(new StatusCode(StatusCodeId.OK), null , null);
+		return new Status(new StatusCode(StatusCodeIds.OK), null , null);
 	}
 	
 	public static Status createSyntaxError(String format, Object ...params){
@@ -61,11 +62,23 @@ public final class Status extends XacmlObject
 	}
 	
 	public boolean isSuccess(){
-		return code.getValue() == StatusCodeId.OK;
+		return code.isOk();
+	}
+	
+	public boolean isProcessingError(){
+		return code.isFailure();
+	}
+	
+	public boolean isSyntaxError(){
+		return code.isSyntaxError();
+	}
+	
+	public boolean isMissingAttributeError(){
+		return code.isMissingAttributeError();
 	}
 	
 	public boolean isFailure(){
-		return code.getValue() != StatusCodeId.OK;
+		return !isSuccess();
 	}
 	
 	public String getMessage(){
@@ -74,5 +87,14 @@ public final class Status extends XacmlObject
 	
 	public StatusDetail getDetail(){
 		return detail;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+				.add("code", code)
+				.add("message", message)
+				.add("detail", detail)
+				.toString();
 	}
 }

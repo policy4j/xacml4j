@@ -16,6 +16,7 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;

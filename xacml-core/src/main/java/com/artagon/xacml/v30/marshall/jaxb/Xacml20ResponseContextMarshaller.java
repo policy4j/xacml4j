@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.pdp.Advice;
 import com.artagon.xacml.v30.pdp.Attribute;
@@ -31,7 +32,6 @@ import com.artagon.xacml.v30.pdp.Effect;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.collect.Iterables;
 

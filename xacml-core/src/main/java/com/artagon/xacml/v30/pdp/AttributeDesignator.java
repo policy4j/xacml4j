@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Objects;
 

@@ -23,6 +23,10 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.StatusCodeIds;
+import com.artagon.xacml.v30.StatusDetail;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.AttributeAssignment;
@@ -34,10 +38,6 @@ import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
-import com.artagon.xacml.v30.pdp.StatusCode;
-import com.artagon.xacml.v30.pdp.StatusCodeId;
-import com.artagon.xacml.v30.pdp.StatusDetail;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypeRegistry;
 import com.artagon.xacml.v30.types.DataTypeRegistryBuilder;
@@ -180,7 +180,7 @@ implements ResponseUnmarshaller
 			if(code == null){
 				return null;
 			}
-			return new StatusCode(StatusCodeId.parse(code.getValue()), create(code.getStatusCode()));
+			return new StatusCode(StatusCodeIds.parse(code.getValue()), create(code.getStatusCode()));
 		}
 		
 		private AttributeExp createValue(String dataTypeId, 

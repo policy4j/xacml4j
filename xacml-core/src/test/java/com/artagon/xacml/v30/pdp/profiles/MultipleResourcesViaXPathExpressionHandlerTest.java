@@ -28,14 +28,14 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
-import com.artagon.xacml.v30.pdp.StatusCode;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;

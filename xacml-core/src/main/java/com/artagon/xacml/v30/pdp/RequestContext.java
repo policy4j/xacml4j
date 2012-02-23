@@ -11,6 +11,7 @@ import java.util.Set;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.StatusCode;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;

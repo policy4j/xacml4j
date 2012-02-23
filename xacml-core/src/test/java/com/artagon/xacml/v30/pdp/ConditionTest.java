@@ -11,13 +11,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.Condition;
 import com.artagon.xacml.v30.pdp.ConditionResult;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionInvocationException;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
-import com.artagon.xacml.v30.pdp.StatusCode;
 
 
 public class ConditionTest 

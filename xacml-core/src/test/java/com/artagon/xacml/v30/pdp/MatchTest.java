@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.AttributeDesignator;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.artagon.xacml.v30.pdp.AttributeReferenceEvaluationException;
@@ -20,7 +21,6 @@ import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.pdp.Match;
 import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.StatusCode;
 import com.artagon.xacml.v30.spi.function.FunctionInvocation;
 import com.artagon.xacml.v30.spi.function.FunctionSpecBuilder;
 import com.google.common.collect.ImmutableList;

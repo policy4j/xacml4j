@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.AttributeAssignment;
 import com.artagon.xacml.v30.pdp.AttributeAssignmentExpression;
 import com.artagon.xacml.v30.pdp.Decision;
@@ -25,7 +26,6 @@ import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ObligationExpression;
-import com.artagon.xacml.v30.pdp.StatusCode;
 import com.artagon.xacml.v30.pdp.XacmlException;
 
 public class ObligationExpressionTest 

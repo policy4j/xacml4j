@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.XPathVersion;
 
 public interface EvaluationContext 

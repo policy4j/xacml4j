@@ -14,6 +14,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.Advice;
 import com.artagon.xacml.v30.pdp.AdviceExpression;
 import com.artagon.xacml.v30.pdp.Condition;
@@ -29,7 +30,6 @@ import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ObligationExpression;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.Rule;
-import com.artagon.xacml.v30.pdp.StatusCode;
 import com.artagon.xacml.v30.pdp.Target;
 import com.artagon.xacml.v30.types.StringType;
 

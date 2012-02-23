@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.Status;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

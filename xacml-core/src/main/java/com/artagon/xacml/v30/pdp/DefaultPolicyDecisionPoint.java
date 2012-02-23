@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;

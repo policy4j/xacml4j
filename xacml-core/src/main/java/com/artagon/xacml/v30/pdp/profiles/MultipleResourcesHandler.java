@@ -3,11 +3,11 @@ package com.artagon.xacml.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.pdp.Advice;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 
 

@@ -6,12 +6,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.StatusCodeId;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.Iterables;
 
@@ -32,7 +32,7 @@ public class Xacml20ResponseContextUnmarshallerTest
 		ResponseContext res = unmarshaller.unmarshal(cl.getResourceAsStream("test-response.xml"));
 		Result r = Iterables.getOnlyElement(res.getResults());
 		assertEquals(Decision.PERMIT, r.getDecision());
-		assertEquals(r.getStatus().getStatusCode().getValue(), StatusCodeId.OK);
+		assertEquals(r.getStatus().getStatusCode().getValue(), StatusCodeIds.OK);
 		assertNull(r.getStatus().getMessage());
 		assertNull(r.getStatus().getDetail());
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());

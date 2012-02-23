@@ -33,6 +33,11 @@ import org.oasis.xacml.v30.jaxb.StatusType;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.StatusCodeId;
+import com.artagon.xacml.v30.StatusCodeIds;
+import com.artagon.xacml.v30.StatusDetail;
 import com.artagon.xacml.v30.pdp.Advice;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.AttributeAssignment;
@@ -48,10 +53,6 @@ import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestReference;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.Status;
-import com.artagon.xacml.v30.pdp.StatusCode;
-import com.artagon.xacml.v30.pdp.StatusCodeId;
-import com.artagon.xacml.v30.pdp.StatusDetail;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
@@ -279,7 +280,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 			return null;
 		}
 		StatusCode detailedCode = create(statusCode.getStatusCode());
-		StatusCodeId codeId = StatusCodeId.parse(statusCode.getValue());
+		StatusCodeId codeId = StatusCodeIds.parse(statusCode.getValue());
 		Preconditions.checkArgument(codeId != null);
 		return new StatusCode(codeId, detailedCode);
 	}
