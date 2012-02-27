@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class StatusCode
@@ -72,5 +73,34 @@ public class StatusCode
 	
 	public boolean isSyntaxError(){
 		return value.equals(StatusCodeIds.SYNTAX_ERROR);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects.toStringHelper(this)
+				.add("code", value)
+				.add("minorStatus", minorStatus)
+				.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(value, minorStatus);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof StatusCode)){
+			return false;
+		}
+		StatusCode s = (StatusCode)o;
+		return Objects.equal(value, s.value) 
+				&& Objects.equal(minorStatus, s.minorStatus);
 	}
 }

@@ -97,4 +97,21 @@ public final class Status
 				.add("detail", detail)
 				.toString();
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Status)){
+			return false;
+		}
+		Status s = (Status)o;
+		return Objects.equal(code, s.code) &&
+				Objects.equal(message, s.message) &&
+				Objects.equal(detail, s.detail);
+	}
 }

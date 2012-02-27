@@ -93,7 +93,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		System.out.println(" Request ----- " + new String(outResponse.toByteArray()));
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
@@ -110,7 +110,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
@@ -127,7 +127,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
@@ -154,7 +154,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 				query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminate(com.artagon.xacml.v30.pdp.Status.createProcessingError())));
+				Result.createIndeterminate(com.artagon.xacml.v30.Status.createProcessingError())));
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
