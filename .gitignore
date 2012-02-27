@@ -68,3 +68,9 @@
 /xacml-ws/target
 /xacml-ws/.settings
 /xacml-ws/.springBeans
+
+# /xacml-json/
+/xacml-json/.classpath
+/xacml-json/.project
+/xacml-json/target
+/xacml-json/.settings
