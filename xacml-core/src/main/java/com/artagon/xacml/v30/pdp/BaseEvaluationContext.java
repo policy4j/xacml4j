@@ -44,9 +44,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private Integer combinedDecisionCacheTTL = null;
 	
-	private Map<PolicyIDReference, Policy> cachedPolicyRefs;
-	private Map<PolicySetIDReference, PolicySet> cachedPolicySetRefs;
-	
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -78,8 +75,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
 		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
 		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
-		this.cachedPolicyRefs = new HashMap<PolicyIDReference, Policy>(128);
-		this.cachedPolicySetRefs = new HashMap<PolicySetIDReference, PolicySet>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 	}
 	
