@@ -128,7 +128,7 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public Decision evaluateIfApplicable(EvaluationContext context) {
+	public Decision evaluateIfMatch(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
@@ -136,11 +136,11 @@ public final class PolicyIDReference extends
 		}
 		Policy p = context.getCurrentPolicy();
 		Preconditions.checkState(p != null);
-		return p.evaluateIfApplicable(context);
+		return p.evaluateIfMatch(context);
 	}
 
 	@Override
-	public MatchResult isApplicable(EvaluationContext context) {
+	public MatchResult isMatch(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
@@ -148,7 +148,7 @@ public final class PolicyIDReference extends
 		}
 		Policy p = context.getCurrentPolicy();
 		Preconditions.checkState(p != null);
-		return p.isApplicable(context);
+		return p.isMatch(context);
 	}
 
 	@Override

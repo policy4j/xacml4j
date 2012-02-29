@@ -113,7 +113,7 @@ public class PolicyTest
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		c.replay();
-		assertEquals(MatchResult.MATCH, policy.isApplicable(policyContext));
+		assertEquals(MatchResult.MATCH, policy.isMatch(policyContext));
 		c.verify();
 	}
 	
@@ -123,7 +123,7 @@ public class PolicyTest
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		assertEquals(MatchResult.NOMATCH, policy.isApplicable(policyContext));
+		assertEquals(MatchResult.NOMATCH, policy.isMatch(policyContext));
 		c.verify();
 	}
 	
@@ -133,7 +133,7 @@ public class PolicyTest
 		EvaluationContext policyContext = policy.createContext(context);
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, policy.isApplicable(policyContext));
+		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
 		c.verify();
 	}
 	
@@ -146,6 +146,8 @@ public class PolicyTest
 		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
 		
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
+		expect(combingingAlg.getId()).andReturn("id");
+		
 		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		
@@ -167,6 +169,7 @@ public class PolicyTest
 		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
 		
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
+		expect(combingingAlg.getId()).andReturn("id");
 		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		
@@ -188,6 +191,7 @@ public class PolicyTest
 		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
 		
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.INDETERMINATE);
+		expect(combingingAlg.getId()).andReturn("id");
 		
 		c.replay();
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));

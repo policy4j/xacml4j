@@ -111,7 +111,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public Decision evaluateIfApplicable(EvaluationContext context) {
+	public Decision evaluateIfMatch(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
@@ -119,11 +119,11 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		}
 		PolicySet ps = context.getCurrentPolicySet();
 		Preconditions.checkState(ps != null);
-		return ps.evaluateIfApplicable(context);
+		return ps.evaluateIfMatch(context);
 	}
 
 	@Override
-	public MatchResult isApplicable(EvaluationContext context) {
+	public MatchResult isMatch(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
@@ -131,7 +131,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		}
 		PolicySet ps = context.getCurrentPolicySet();
 		Preconditions.checkState(ps != null);
-		return ps.isApplicable(context);
+		return ps.isMatch(context);
 	}
 	
 	@Override

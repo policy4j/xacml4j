@@ -132,14 +132,14 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 	
 	/**
-	 * Combines {@link #isApplicable(EvaluationContext)} and 
+	 * Combines {@link #isMatch(EvaluationContext)} and 
 	 * {@link #evaluate(EvaluationContext)} calls to one single
 	 * method invocation
 	 */
 	@Override
-	public  Decision evaluateIfApplicable(EvaluationContext context)
+	public  Decision evaluateIfMatch(EvaluationContext context)
 	{
-		MatchResult r = isApplicable(context);
+		MatchResult r = isMatch(context);
 		Preconditions.checkState(r != null);
 		if(r == MatchResult.MATCH){
 			if(log.isDebugEnabled()){

@@ -106,7 +106,7 @@ public class RuleTest
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		c.replay();
-		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isApplicable(ruleContext));
+		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -117,7 +117,7 @@ public class RuleTest
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		c.replay();
-		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isApplicable(ruleContext));
+		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -128,7 +128,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		c.replay();
-		assertEquals(MatchResult.MATCH, ruleDeny.isApplicable(ruleContext));
+		assertEquals(MatchResult.MATCH, ruleDeny.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -139,7 +139,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, rulePermit.isApplicable(ruleContext));
+		assertEquals(MatchResult.INDETERMINATE, rulePermit.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -150,7 +150,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isApplicable(ruleContext));
+		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -161,7 +161,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		c.replay();
-		assertEquals(MatchResult.MATCH, rulePermit.isApplicable(ruleContext));
+		assertEquals(MatchResult.MATCH, rulePermit.isMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -172,7 +172,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		assertEquals(MatchResult.NOMATCH, ruleDeny.isApplicable(ruleContext));
+		assertEquals(MatchResult.NOMATCH, ruleDeny.isMatch(ruleContext));
 		c.verify();		
 	}
 	
@@ -332,7 +332,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluateIfMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -344,7 +344,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluateIfMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -373,7 +373,7 @@ public class RuleTest
 		
 		c.replay();
 		
-		assertEquals(Decision.DENY, ruleDeny.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.DENY, ruleDeny.evaluateIfMatch(ruleContext));
 		c.verify();
 		
 		assertTrue(
@@ -402,7 +402,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluateIfMatch(ruleContext));
 		c.verify();
 	}
 	
@@ -414,7 +414,7 @@ public class RuleTest
 		expect(context.getCurrentPolicy()).andReturn(currentPolicy);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluateIfMatch(ruleContext));
 		c.verify();
 	}	
 	
@@ -442,7 +442,7 @@ public class RuleTest
 		
 		c.replay();
 		
-		assertEquals(Decision.PERMIT, rulePermit.evaluateIfApplicable(ruleContext));
+		assertEquals(Decision.PERMIT, rulePermit.evaluateIfMatch(ruleContext));
 		c.verify();
 	}
 }

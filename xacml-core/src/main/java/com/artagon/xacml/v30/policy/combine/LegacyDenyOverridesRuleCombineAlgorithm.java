@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfApplicable;
+import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		boolean atLeastOneError = false;
 		for(Rule r : rules)
 		{
-			Decision d = evaluateIfApplicable(context, r);
+			Decision d = evaluateIfMatch(context, r);
 		
 			if (d == Decision.DENY){
 				return Decision.DENY;

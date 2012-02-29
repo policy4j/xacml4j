@@ -29,7 +29,7 @@ public final class OnlyOneApplicablePolicyCombingingAlgorithm extends
 		for(CompositeDecisionRule d : decisions)
 		{
 			policyContext = d.createContext(context);
-			MatchResult r = d.isApplicable(policyContext);
+			MatchResult r = d.isMatch(policyContext);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;
 			}

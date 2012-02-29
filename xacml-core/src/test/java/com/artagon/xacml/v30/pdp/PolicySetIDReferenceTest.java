@@ -113,7 +113,7 @@ public class PolicySetIDReferenceTest
 		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
 		
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
+		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		c.verify();
 	}
 	
@@ -145,12 +145,12 @@ public class PolicySetIDReferenceTest
 		
 		expect(refPolicySet.getId()).andReturn("testId");
 		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
-		expect(refPolicySet.isApplicable(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
+		expect(refPolicySet.isMatch(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
 
 		c.replay();
 		
 		EvaluationContext policyRefContext = ref.createContext(context);
-		assertEquals(MatchResult.MATCH, ref.isApplicable(policyRefContext));
+		assertEquals(MatchResult.MATCH, ref.isMatch(policyRefContext));
 		c.verify();
 		
 		
@@ -180,11 +180,11 @@ public class PolicySetIDReferenceTest
 		
 		expect(refPolicySet.getId()).andReturn("testId");
 		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
-		expect(refPolicySet.evaluateIfApplicable(isA(EvaluationContext.class))).andReturn(Decision.DENY);
+		expect(refPolicySet.evaluateIfMatch(isA(EvaluationContext.class))).andReturn(Decision.DENY);
 
 		c.replay();
 		EvaluationContext policyRefContext = ref.createContext(context);
-		assertEquals(Decision.DENY, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(Decision.DENY, ref.evaluateIfMatch(policyRefContext));
 		c.verify();
 		
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());

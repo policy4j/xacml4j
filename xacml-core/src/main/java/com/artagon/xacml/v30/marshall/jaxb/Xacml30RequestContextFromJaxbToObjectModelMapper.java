@@ -338,9 +338,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return attr;
 	}
 
-	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException {
-		AttributeExp value = create((AttributeValueType)a);
-		
+	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException 
+	{
+		AttributeExp value = create((AttributeValueType)a);	
 		return new AttributeAssignment(
 				a.getAttributeId(),
 				AttributeCategories.parse(a.getCategory()),

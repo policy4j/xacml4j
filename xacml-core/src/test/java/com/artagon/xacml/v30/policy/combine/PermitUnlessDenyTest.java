@@ -48,7 +48,7 @@ public class PermitUnlessDenyTest {
 		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.DENY);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.DENY);
 		mockCtl.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		mockCtl.verify();
@@ -60,7 +60,7 @@ public class PermitUnlessDenyTest {
 		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
 		mockCtl.replay();
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		mockCtl.verify();
@@ -72,7 +72,7 @@ public class PermitUnlessDenyTest {
 		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE);
 		mockCtl.replay();
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		mockCtl.verify();
@@ -87,9 +87,9 @@ public class PermitUnlessDenyTest {
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.DENY);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.DENY);
 		mockCtl.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		mockCtl.verify();

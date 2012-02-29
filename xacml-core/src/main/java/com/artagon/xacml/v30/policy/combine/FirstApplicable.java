@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfApplicable;
+import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions) 
 	{
 		for(D d : decisions){
-			Decision decision = evaluateIfApplicable(context, d);
+			Decision decision = evaluateIfMatch(context, d);
 			if(log.isDebugEnabled()){
 				log.debug("Decision=\"{}\" " +
 						"evaluation result=\"{}\"", d, decision);

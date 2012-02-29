@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfApplicable;
+import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 		boolean atLeastOnePermit = false;
 		for(D d : decisions)
 		{
-			Decision decision = evaluateIfApplicable(context, d);
+			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.DENY){
 				return Decision.DENY;
 			}

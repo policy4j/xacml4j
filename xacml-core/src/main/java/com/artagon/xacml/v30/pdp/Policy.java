@@ -262,6 +262,11 @@ public class Policy extends BaseCompositeDecisionRule
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(isEvaluationContextValid(context));
 		Decision decision = combine.combine(context, rules);
+		if(log.isDebugEnabled()) {
+			log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
+					"decision result=\"{}\"", 
+					new Object[] { getId(), combine.getId(), decision });
+		}
 		decision = evaluateAdvicesAndObligations(context, decision);
 		context.addEvaluatedApplicablePolicy(this, decision);
 		return decision;

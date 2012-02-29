@@ -16,16 +16,16 @@ public final class DecisionCombingingAlgorithms
 	
 	/**
 	 * A helper method which invokes {@link DecisionRule#createContext(EvaluationContext)}
-	 * then sub-sequentially invokes {@link DecisionRule#evaluateIfApplicable(EvaluationContext)}
+	 * then sub-sequentially invokes {@link DecisionRule#evaluateIfMatch(EvaluationContext)}
 	 * with the just created {@link EvaluationContext} instance as an argument
 	 * 
 	 * @param context a parent evaluation context
 	 * @param decision a decision rule to be evaluated
 	 * @return evaluation result as {@link Decision} instance
 	 */
-	public static <D extends DecisionRule> Decision evaluateIfApplicable(EvaluationContext context, D decision) {
+	public static <D extends DecisionRule> Decision evaluateIfMatch(EvaluationContext context, D decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
-		return decision.evaluateIfApplicable(decisionContext);
+		return decision.evaluateIfMatch(decisionContext);
 	}
 	
 	/**

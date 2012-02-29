@@ -104,7 +104,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	 * @param context an evaluation context
 	 * @return {@link MatchResult} a match result
 	 */
-	public MatchResult isApplicable(EvaluationContext context){ 
+	public MatchResult isMatch(EvaluationContext context){ 
 		Preconditions.checkArgument(
 				isEvaluationContextValid(context));
 		return (target == null)?MatchResult.MATCH:target.match(context);

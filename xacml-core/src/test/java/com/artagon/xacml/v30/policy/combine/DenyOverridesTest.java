@@ -49,11 +49,11 @@ public class DenyOverridesTest
 		decisions.add(r2);
 		decisions.add(r3);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
 		expect(r3.createContext(context)).andReturn(context);
-		expect(r3.evaluateIfApplicable(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r3.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		c.verify();
@@ -67,9 +67,9 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		c.replay();
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		c.verify();
@@ -83,7 +83,7 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.DENY);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.DENY);
 		c.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		c.verify();
@@ -95,7 +95,7 @@ public class DenyOverridesTest
 		DecisionRule r1 = c.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_P);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_P);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
 		c.verify();
@@ -107,7 +107,7 @@ public class DenyOverridesTest
 		DecisionRule r1 = c.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_D);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_D);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
 		c.verify();
@@ -119,7 +119,7 @@ public class DenyOverridesTest
 		DecisionRule r1 = c.createMock(DecisionRule.class);
 		decisions.add(r1);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		c.verify();
@@ -133,9 +133,9 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		c.verify();
@@ -149,9 +149,9 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_DP);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_DP);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 		c.verify();
@@ -165,9 +165,9 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfApplicable(context)).andReturn(Decision.INDETERMINATE_DP);
+		expect(r2.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_DP);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 		c.verify();
@@ -182,7 +182,7 @@ public class DenyOverridesTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfApplicable(context)).andReturn(Decision.DENY);
+		expect(r1.evaluateIfMatch(context)).andReturn(Decision.DENY);
 		c.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
   		c.verify();

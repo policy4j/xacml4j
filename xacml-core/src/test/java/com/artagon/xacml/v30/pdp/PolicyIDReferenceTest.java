@@ -64,13 +64,13 @@ public class PolicyIDReferenceTest
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(Decision.INDETERMINATE, ref.evaluateIfMatch(policyRefContext));
 		c.verify();
 		
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
+		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		c.verify();
 	}
 	
@@ -98,13 +98,13 @@ public class PolicyIDReferenceTest
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(Decision.INDETERMINATE, ref.evaluateIfMatch(policyRefContext));
 		c.verify();
 		
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
+		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		c.verify();
 	}
 	
@@ -125,7 +125,7 @@ public class PolicyIDReferenceTest
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(Decision.INDETERMINATE, ref.evaluateIfMatch(policyRefContext));
 		c.verify();
 	}
 	
@@ -147,7 +147,7 @@ public class PolicyIDReferenceTest
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(Decision.INDETERMINATE, ref.evaluateIfApplicable(policyRefContext));
+		assertEquals(Decision.INDETERMINATE, ref.evaluateIfMatch(policyRefContext));
 		c.verify();
 		
 	}
@@ -170,7 +170,7 @@ public class PolicyIDReferenceTest
 		c.reset();
 		expect(context.getCurrentPolicy()).andReturn(null);
 		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, ref.isApplicable(policyRefContext));
+		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		c.verify();
 	}
 	
@@ -222,10 +222,10 @@ public class PolicyIDReferenceTest
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");
-		expect(refPolicy.evaluateIfApplicable(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
+		expect(refPolicy.evaluateIfMatch(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
 		c.replay();
 		EvaluationContext ctx = ref.createContext(context);
-		assertEquals(Decision.PERMIT, ref.evaluateIfApplicable(ctx));
+		assertEquals(Decision.PERMIT, ref.evaluateIfMatch(ctx));
 		c.verify();
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
 		assertSame(refPolicy, ctx.getCurrentPolicy());
@@ -248,10 +248,10 @@ public class PolicyIDReferenceTest
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");
-		expect(refPolicy.isApplicable(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
+		expect(refPolicy.isMatch(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
 		c.replay();
 		EvaluationContext ctx = ref.createContext(context);
-		assertEquals(MatchResult.MATCH, ref.isApplicable(ctx));
+		assertEquals(MatchResult.MATCH, ref.isMatch(ctx));
 		c.verify();
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
 		assertSame(refPolicy, ctx.getCurrentPolicy());

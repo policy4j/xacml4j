@@ -290,8 +290,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
 		if(log.isDebugEnabled()){
-			log.debug("Resolver " +
-					"designator=\"{}\" to value=\"{}\"", v);
+			log.debug("Resolved " +
+					"designator=\"{}\" to value=\"{}\"", ref, v);
 		}
 		this.designCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
@@ -313,8 +313,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
 		if(log.isDebugEnabled()){
-			log.debug("Resolver " +
-					"selector=\"{}\" to value=\"{}\"", v);
+			log.debug("Resolved " +
+					"selector=\"{}\" to value=\"{}\"", ref, v);
 		}
 		this.selectCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
