@@ -3,9 +3,8 @@
    		{
 	   		"decision": "Permit",
 	   		"status":{
-	   			"code": "urn:oasis:names:tc:xacml:1.0:status:ok",
-	   			"message":"Message",
-	   			det
+	   			"code": {"id": "urn:oasis:names:tc:xacml:1.0:status:ok"}
+	   			"message":"Message"
 	   		},
 	   		"obligations":[
 			 	{
