@@ -9,7 +9,6 @@ import java.util.Stack;
 import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;
-import org.oasis.xacml.v30.jaxb.AnyOfType;
 import org.oasis.xacml.v30.jaxb.CombinerParametersType;
 import org.oasis.xacml.v30.jaxb.ConditionType;
 import org.oasis.xacml.v30.jaxb.DefaultsType;
@@ -24,17 +23,13 @@ import org.oasis.xacml.v30.jaxb.RuleType;
 import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 
-import com.artagon.xacml.v30.pdp.Condition;
 import com.artagon.xacml.v30.pdp.DecisionRule;
 import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.MatchAnyOf;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
 import com.artagon.xacml.v30.pdp.PolicyVisitorSupport;
 import com.artagon.xacml.v30.pdp.Rule;
-import com.artagon.xacml.v30.pdp.Target;
-import com.artagon.xacml.v30.pdp.VariableDefinition;
 import com.google.common.base.Preconditions;
 
 public class Xacml30PolicyFromObjectModelToJaxbMapper extends PolicyVisitorSupport

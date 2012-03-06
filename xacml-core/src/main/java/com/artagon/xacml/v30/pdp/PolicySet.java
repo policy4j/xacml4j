@@ -13,12 +13,11 @@ import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public class PolicySet extends 
 	BaseCompositeDecisionRule implements PolicyElement
 {
-	private BigInteger maxDelegationDepth;
-	private PolicyIssuer issuer;
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
@@ -47,8 +46,9 @@ public class PolicySet extends
 			Version version,
 			String description,
 			PolicySetDefaults policySetDefaults,
-			PolicyIssuer issuer,
 			Target target, 
+			PolicyIssuer issuer,
+			BigInteger maxDelegationDepth,
 			Collection<CombinerParameters> combinerParameters,
 			Collection<PolicyCombinerParameters> policyCombinerParameters,
 			Collection<PolicySetCombinerParameters> policySetCombinerParameters,
@@ -57,7 +57,9 @@ public class PolicySet extends
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions) 
 	{
-		super(id, version, description, target, adviceExpressions, obligationExpressions);
+		super(id, version, description, target, 
+				issuer, maxDelegationDepth, 
+				adviceExpressions, obligationExpressions);
 		checkNotNull(combine, "Policy set combining algorithm must be specified");
 		Preconditions.checkNotNull(combinerParameters);
 		Preconditions.checkNotNull(policyCombinerParameters);
@@ -66,7 +68,6 @@ public class PolicySet extends
 		this.combine = combine;
 		this.decisionRules = ImmutableList.copyOf(policies);
 		this.policySetDefaults = policySetDefaults;
-		this.issuer = issuer;
 		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
 		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
 				 policyCombinerParameters.size());
@@ -93,8 +94,10 @@ public class PolicySet extends
 	{
 		this(id, version, 
 				description, 
-				null, null,
-				target, 
+				null,
+				target,
+				null,
+				null, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
 				Collections.<PolicySetCombinerParameters>emptyList(), 
@@ -106,7 +109,7 @@ public class PolicySet extends
 			Version version, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine) 
 	{
-		this(id, version, null, null, null, null, 
+		this(id, version, null, null, null, null, null,
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
 				Collections.<PolicySetCombinerParameters>emptyList(), 
@@ -119,15 +122,7 @@ public class PolicySet extends
 	public static Builder builder(){
 		return new Builder();
 	}
-	
-	public BigInteger getMaxDelegationDepth(){
-		return maxDelegationDepth;
-	}
-	
-	public PolicyIssuer getIssuer(){
-		return issuer;
-	}
-	
+		
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
@@ -272,11 +267,12 @@ public class PolicySet extends
 		}
 	}
 	
-	public final static class Builder extends BaseBuilder<Builder>
+	public final static class Builder extends BaseDecisionRuleBuilder<Builder>
 	{
 		private Version version;
 		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
+		private BigInteger maxDelegationDepth;
 		private PolicyIssuer policyIssuer;
 		private Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
 		private Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
@@ -352,7 +348,12 @@ public class PolicySet extends
 			return this;
 		}
 		
-	
+		public Builder withCompositeDecisionRules(Iterable<CompositeDecisionRule> rules){
+			Preconditions.checkNotNull(rules);
+			Iterables.addAll(policies, rules);
+			return this;
+			
+		}
 		public Builder withPolicy(Policy rule){
 			Preconditions.checkNotNull(rule);
 			this.policies.add(rule);
@@ -400,8 +401,9 @@ public class PolicySet extends
 					version, 
 					description, 
 					policyDefaults, 
-					policyIssuer, 
 					target,  
+					policyIssuer,
+					maxDelegationDepth,
 					combinerParameters,
 					policyCombinerParameters,
 					policySetCombinerParameters,

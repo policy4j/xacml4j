@@ -68,9 +68,8 @@ public interface EvaluationContext
 	void setValidateFuncParamsAtRuntime(boolean validate);
 		
 	/**
-	 * Gets extended evaluation failure
-	 * status information to be included
-	 * in the response as {@link StatusCode}
+	 * Gets evaluation status information to be 
+	 * included in the response as {@link StatusCode}
 	 * instance
 	 * 
 	 * @return {@link StatusCode} or 

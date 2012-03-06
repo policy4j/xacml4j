@@ -1,10 +1,13 @@
 package com.artagon.xacml.v30.pdp;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
 
 import com.artagon.xacml.v30.Version;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Objects.ToStringHelper;
 
 /**
  * A base class for composite decision rule. A composite decision
@@ -19,6 +22,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	protected String id;
 	protected Version version;
 	private PolicyIssuer policyIssuer;
+	private BigInteger maxDelegationDepth;
 	
 	/**
 	 * Constructs composite decision rule
@@ -35,6 +39,8 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			Version version,
 			String description,
 			Target target,
+			PolicyIssuer issuer,
+			BigInteger maxDelegationDepth,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		super(description, target,  adviceExpressions, obligationExpressions);
@@ -52,14 +58,14 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			Target target,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		this(id, version, null, target, adviceExpressions, obligationExpressions);
+		this(id, version, null, target, null, null, adviceExpressions, obligationExpressions);
 	}
 	
 	protected BaseCompositeDecisionRule(
 			String id, 
 			Version version,
 			Target target){
-		this(id, version, null, target, 
+		this(id, version, null, target, null, null,
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
 	}
@@ -74,8 +80,16 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		return version;
 	}
 	
+	/**
+	 * Gets this composite rule issuer
+	 * @return {@link PolicyIssuer}
+	 */
 	public PolicyIssuer getPolicyIssuer(){
 		return policyIssuer;
+	}
+	
+	public BigInteger getMaxDelegationDepth(){
+		return maxDelegationDepth;
 	}
 	
 	public boolean isTrusted(){
@@ -110,5 +124,19 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		}
 		return (r == MatchResult.INDETERMINATE)?
 				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
+	}
+	
+	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+		b.add("id", id);
+		b.add("version", version);
+		b.add("issuer", policyIssuer);
+		super._addProperties(b);
+		return b;
+	}
+	
+	public abstract static class BaseCompositeDecisionRuleBuilder<T extends BaseCompositeDecisionRuleBuilder<?>> 
+		extends BaseDecisionRuleBuilder<T>
+	{
+		
 	}
 }

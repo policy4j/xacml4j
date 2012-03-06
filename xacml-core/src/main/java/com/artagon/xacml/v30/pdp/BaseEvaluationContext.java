@@ -330,7 +330,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
-		
 		return Collections.unmodifiableMap(resolvedDesignators);
 	}
 

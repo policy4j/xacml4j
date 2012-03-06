@@ -8,8 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.StatusCode;
+import com.google.common.base.Objects;
+import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 {
@@ -247,7 +250,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 	
 	
-	public abstract static class BaseBuilder<T extends BaseBuilder<?>>
+	protected abstract static class BaseDecisionRuleBuilder<T extends BaseDecisionRuleBuilder<?>>
 	{
 		protected String id;
 		protected String description;
@@ -255,7 +258,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		protected Collection<AdviceExpression> adviceExpressions = new LinkedList<AdviceExpression>();
 		protected Collection<ObligationExpression> obligationExpressions = new LinkedList<ObligationExpression>();
 		
-		protected BaseBuilder(){
+		protected BaseDecisionRuleBuilder(){
 		}
 		
 		public T withId(String id){
@@ -309,9 +312,21 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 			return getThis();
 		}
 		
+		public T withAdvices(Iterable<AdviceExpression> advices){
+			Preconditions.checkNotNull(advices);
+			Iterables.addAll(adviceExpressions, advices);
+			return getThis();
+		}
+		
 		public T withObligation(ObligationExpression advice){
 			Preconditions.checkNotNull(advice);
 			this.obligationExpressions.add(advice);
+			return getThis();
+		}
+		
+		public T withObligations(Iterable<ObligationExpression> obligations){
+			Preconditions.checkNotNull(obligations);
+			Iterables.addAll(obligationExpressions, obligations);
 			return getThis();
 		}
 		
@@ -322,5 +337,13 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		}
 		
 		protected abstract T getThis();
+	}
+	
+	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+		return b.add("description", description)
+				.add("target", target)
+				.add("adviceExp", adviceExpressions)
+				.add("obligationExp", obligationExpressions);
+		
 	}
 }

@@ -181,7 +181,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		v.visitLeave(this);
 	}
 	
-	public static class Builder extends BaseBuilder<Builder>
+	public static class Builder extends BaseDecisionRuleBuilder<Builder>
 	{
 		private Effect effect;
 		private Condition condition;

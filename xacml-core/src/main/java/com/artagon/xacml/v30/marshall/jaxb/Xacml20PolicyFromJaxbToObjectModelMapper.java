@@ -152,10 +152,8 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	{
 		try
 		{
-			Collection<ObligationExpression> obligations = getObligations(p
-					.getObligations());
-			PolicySetDefaults policySetDefaults = createPolicySetDefaults(p
-					.getPolicySetDefaults());
+			Collection<ObligationExpression> obligations = getObligations(p.getObligations()); 
+			PolicySetDefaults policySetDefaults = createPolicySetDefaults(p.getPolicySetDefaults());
 			Collection<CompositeDecisionRule> policies = getPolicies(p);
 			Collection<CombinerParameters> combinerParams = new LinkedList<CombinerParameters>();
 			Collection<PolicyCombinerParameters> policyCombinerParams = new LinkedList<PolicyCombinerParameters>();
@@ -166,8 +164,9 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					Version.parse(p.getVersion()), 
 					p.getDescription(), 
 					policySetDefaults, 
-					null,
 					target,
+					null,
+					null,
 					combinerParams, 
 					policyCombinerParams,
 					policySetCombinerParams,

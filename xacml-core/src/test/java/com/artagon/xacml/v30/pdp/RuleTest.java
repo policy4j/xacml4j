@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
@@ -15,22 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.AdviceExpression;
-import com.artagon.xacml.v30.pdp.Condition;
-import com.artagon.xacml.v30.pdp.ConditionResult;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.DecisionRule;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.Expression;
-import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.Obligation;
-import com.artagon.xacml.v30.pdp.ObligationExpression;
-import com.artagon.xacml.v30.pdp.Policy;
-import com.artagon.xacml.v30.pdp.Rule;
-import com.artagon.xacml.v30.pdp.Target;
 import com.artagon.xacml.v30.types.StringType;
 
 public class RuleTest

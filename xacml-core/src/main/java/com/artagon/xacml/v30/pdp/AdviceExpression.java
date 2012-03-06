@@ -82,10 +82,16 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 			attributes.add(new AttributeAssignmentExpression(id, expression));
 			return this;
 		}
+		
+		public Builder withAttributeAssigment(
+				String id, AttributeCategory category, Expression expression)
+		{
+			attributes.add(new AttributeAssignmentExpression(id, expression, category, null));
+			return this;
+		}
 	
 		public Builder withAttributeAssigment(
-				String id, Expression expression, 
-				AttributeCategory category, String issuer)
+				String id, AttributeCategory category, String issuer, Expression expression)
 		{
 			attributes.add(new AttributeAssignmentExpression(id, expression, category, issuer));
 			return this;

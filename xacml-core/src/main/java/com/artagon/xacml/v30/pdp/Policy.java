@@ -12,6 +12,8 @@ import java.util.Map;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
+import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -28,8 +30,6 @@ public class Policy extends BaseCompositeDecisionRule
 //	private CombinerParameters combinerParameters;
 //	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
 	
-	private BigInteger maxDelegationDepth;
-	private PolicyIssuer issuer;
 	
 	/**
 	 * A reference to itself
@@ -56,8 +56,9 @@ public class Policy extends BaseCompositeDecisionRule
 			Version version,
 			String description,
 			PolicyDefaults policyDefaults,
-			PolicyIssuer issuer,
 			Target target, 
+			PolicyIssuer issuer,
+			BigInteger maxDelehgationDepth,
 			Collection<VariableDefinition> variables,
 			Collection<CombinerParameters> combinerParameters,
 			Collection<RuleCombinerParameters> ruleCombinerParameters,
@@ -67,9 +68,8 @@ public class Policy extends BaseCompositeDecisionRule
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		super(policyId, version, description, 
-				target, adviceExpressions, obligationExpressions);
+				target, issuer, maxDelehgationDepth, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
-		this.issuer = issuer;
 		this.rules = (rules != null)?ImmutableList.copyOf(rules):ImmutableList.<Rule>of();
 		this.combine = combine;
 		this.reference = new PolicyIDReference(policyId, version);
@@ -98,7 +98,7 @@ public class Policy extends BaseCompositeDecisionRule
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		this(policyId, version, description, policyDefaults, 
-				null, target, variables, 
+				target, null, null, variables, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<RuleCombinerParameters>emptyList(),
 				combine, rules, adviceExpressions, obligationExpressions);
@@ -159,15 +159,7 @@ public class Policy extends BaseCompositeDecisionRule
 	public static Builder builder(){
 		return new Builder();
 	}
-	
-	public BigInteger getMaxDelegationDepth(){
-		return maxDelegationDepth;
-	}
-	
-	public PolicyIssuer getIssuer(){
-		return issuer;
-	}
-	
+		
 	/**
 	 * Gets policy defaults
 	 * 
@@ -355,13 +347,24 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 	}
 	
-	public final static class Builder extends BaseBuilder<Builder>
+	@Override
+	public String toString(){
+		ToStringHelper h = Objects.toStringHelper(this);
+		return _addProperties(h)
+		.add("variableDefnitions", variableDefinitions)
+		.add("policyDefaults",policyDefaults)
+		.add("rules", rules)
+		.toString();
+	}
+	
+	public final static class Builder extends BaseDecisionRuleBuilder<Builder>
 	{
 		private Version version;
 		private DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
 		private Collection<VariableDefinition> variables = new LinkedList<VariableDefinition>();
 		private PolicyDefaults policyDefaults;
 		private PolicyIssuer policyIssuer;
+		private BigInteger maxDelegationDepth;
 		private Collection<Rule> rules = new LinkedList<Rule>();
 		private Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
 		private Collection<RuleCombinerParameters> ruleCombinerParameters = new LinkedList<RuleCombinerParameters>();
@@ -469,8 +472,9 @@ public class Policy extends BaseCompositeDecisionRule
 					version, 
 					description, 
 					policyDefaults, 
-					policyIssuer,
 					target, 
+					policyIssuer,
+					maxDelegationDepth,
 					variables, 
 					combinerParameters,
 					ruleCombinerParameters,
