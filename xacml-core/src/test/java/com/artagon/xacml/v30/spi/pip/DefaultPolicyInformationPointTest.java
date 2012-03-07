@@ -1,7 +1,6 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;

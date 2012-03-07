@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
@@ -28,13 +27,8 @@ public class DefaultResolverRegistryTest
 	
 	private AttributeResolver r1;
 	private AttributeResolver r2;
-	private AttributeResolver r3;
-	private AttributeResolver r4;
 	
 	private AttributeResolverDescriptor d1;
-	private AttributeResolverDescriptor d2;
-	private AttributeResolverDescriptor d3;
-	private AttributeResolverDescriptor d4;
 	
 	@Before
 	public void init(){
@@ -43,29 +37,16 @@ public class DefaultResolverRegistryTest
 		this.context = control.createMock(EvaluationContext.class);
 		this.r1 = control.createMock(AttributeResolver.class);
 		this.r2 = control.createMock(AttributeResolver.class);
-		this.r3 = control.createMock(AttributeResolver.class);
-		this.r4 = control.createMock(AttributeResolver.class);
 		
 		this.d1 = AttributeResolverDescriptorBuilder.
 		builder("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
 		.attribute("testAttr1", IntegerType.INTEGER).build();
 		
-		this.d2 = AttributeResolverDescriptorBuilder.
-				builder("testId2", "Test1", "TestIssuer", AttributeCategories.SUBJECT_ACCESS)
-		.attribute("testAttr1", IntegerType.INTEGER).build();
-		
-		this.d3 = AttributeResolverDescriptorBuilder.
-				builder("testId1", "Test1", "TestIssuer1", AttributeCategories.SUBJECT_ACCESS)
-				.attribute("testAttr1", IntegerType.INTEGER).build();
-		
-		this.d4 = AttributeResolverDescriptorBuilder.
-				builder("testId1Recipient", "Test1", AttributeCategories.SUBJECT_RECIPIENT)
-				.attribute("testAttr1", IntegerType.INTEGER).build();
 	
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testAddResolverWithTheSameAttributesNoIssuer()
+	@Test()
+	public void testAddDifferentResolversWithTheSameAttributesNoIssuer()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
 				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
@@ -79,7 +60,28 @@ public class DefaultResolverRegistryTest
 				.attribute("testAttr1", IntegerType.INTEGER)
 				.build());
 		
+		control.replay();
+		
+		r.addAttributeResolver(r1);
+		r.addAttributeResolver(r2);
+		
+		control.verify();
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testAddResolversWithTheSameIdsAndAttributesNoIssuer()
+	{
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.attribute("testAttr1", IntegerType.INTEGER)
+				.build();
 		expect(r1.getDescriptor()).andReturn(d);
+		
+		expect(r2.getDescriptor()).andReturn(
+				AttributeResolverDescriptorBuilder
+				.builder("test1", "Test2", AttributeCategories.SUBJECT_ACCESS)
+				.attribute("testAttr1", IntegerType.INTEGER)
+				.build());
 		
 		control.replay();
 		

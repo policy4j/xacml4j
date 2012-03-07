@@ -37,7 +37,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategory, Map<String, Map<String, AttributeResolver>>> attributeResolvers;
+	private Map<AttributeCategory, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
 	private ConcurrentMap<String, AttributeResolver> attributeResolversById;
 	
 	private Multimap<String, AttributeResolver> scopedAttributeResolvers;
@@ -63,7 +63,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	
 	public DefaultResolverRegistry()
 	{
-		this.attributeResolvers = new LinkedHashMap<AttributeCategory, Map<String, Map<String, AttributeResolver>>>();
+		this.attributeResolvers = new LinkedHashMap<AttributeCategory, Map<String, Multimap<String, AttributeResolver>>>();
 		this.scopedAttributeResolvers = LinkedHashMultimap.create();
 		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
 		this.policyScopedContentResolvers = LinkedHashMultimap.create();
@@ -76,6 +76,8 @@ class DefaultResolverRegistry implements ResolverRegistry
 	public void addAttributeResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
+		Preconditions.checkArgument(!attributeResolversById.containsKey(d.getId()), 
+				"Attribute resolver with id=\"{}\" is already registered with this registry", d.getId());
 		Lock lock =  attributeResolverRWLock.writeLock();
 		try
 		{
@@ -86,38 +88,24 @@ class DefaultResolverRegistry implements ResolverRegistry
 				}
 				return;
 			}
-			Map<String, Map<String, AttributeResolver>> byCategory = attributeResolvers.get(d.getCategory());
+			Map<String, Multimap<String, AttributeResolver>> byCategory = attributeResolvers.get(d.getCategory());
 			if(byCategory == null){
-				byCategory = new LinkedHashMap<String, Map<String, AttributeResolver>>();
+				byCategory = new LinkedHashMap<String, Multimap<String, AttributeResolver>>();
 				attributeResolvers.put(d.getCategory(), byCategory);
 			}	
-			Map<String, AttributeResolver> byIssuer = byCategory.get(d.getIssuer());
+			Multimap<String, AttributeResolver> byIssuer = byCategory.get(d.getIssuer());
 			if(byIssuer == null){
-				byIssuer = new LinkedHashMap<String, AttributeResolver>();
+				byIssuer = LinkedHashMultimap.create();
 				byCategory.put(d.getIssuer(), byIssuer);
-			}
-			if(log.isDebugEnabled()){
-				log.debug("Adding resolver id=\"{}\" category=\"{}\", issuer=\"{}\"", 
-						new Object[]{d.getId(), d.getCategory(), d.getIssuer()});
 			}
 			for(String attributeId : d.getProvidedAttributeIds()){
 				if(log.isDebugEnabled()){
-						log.debug("Indexing resolver id=\"{}\" attributeId=\"{}\"", 
-								d.getId(), attributeId);
-				}
-				AttributeResolver oldResolver = byIssuer.get(attributeId);
-				if(oldResolver != null){
-					cleanUpRegistration(d, byIssuer);
-					throw new IllegalArgumentException(String.format(
-									"Resolver id=\"%s\" attributeId=\"%s\" for " +
-										"category=\"%s\" already provided via other resolver id=\"%s\"", 
-										d.getId(),
-										attributeId, 
-										d.getCategory(),
-										oldResolver.getDescriptor().getId()));
+						log.debug("Indexing resolver id=\"{}\" category=\"{}\", issuer=\"{}\" attributeId=\"{}\"", 
+								new Object[]{d.getId(), d.getCategory(), d.getIssuer(), attributeId});
 				}
 				byIssuer.put(attributeId, resolver);
 			}
+			attributeResolversById.put(d.getId(), resolver);
 		}catch(InterruptedException e){
 			if(log.isWarnEnabled()){
 				log.warn("Interrupted while " +
@@ -129,21 +117,6 @@ class DefaultResolverRegistry implements ResolverRegistry
 		}
 	}
 	
-	/**
-	 * Cleans internal state if attribute resolver registration fails
-	 * 
-	 * @param d an attribute resolver descriptor
-	 * @param byIssuer an index of resolver attribute identifiers
-	 */
-	private void cleanUpRegistration(AttributeResolverDescriptor d,  Map<String, AttributeResolver> byIssuer){
-		if(log.isDebugEnabled()){
-			log.debug("Removing indexed attributes " +
-					"for a resolver=\"{}\"", d.getId());
-		}
-		for(String attrId : d.getProvidedAttributeIds()){
-			byIssuer.remove(attrId);
-		}
-	}
 	
 	public void addContentResolver(ContentResolver r)
 	{
@@ -248,30 +221,29 @@ class DefaultResolverRegistry implements ResolverRegistry
 						}
 						return;
 					}
-					Map<String, Map<String, AttributeResolver>> byIssuer = attributeResolvers.get(ref.getCategory());
-				 	if(byIssuer == null || 
-				 			byIssuer.isEmpty()){
-				 		return;
-				 	}
-				 	if(log.isDebugEnabled()){
-				 		log.debug("Found=\"{}\" resolvers for category=\"{}\"", 
-				 				byIssuer.size(), ref.getCategory());
-				 	}
-				 	for(Entry<String, Map<String, AttributeResolver>> e : byIssuer.entrySet()){
-				 		AttributeResolver resolver = e.getValue().get(ref.getAttributeId());
-				 		if(resolver == null){
-				 			continue;
-				 		}
-				 		AttributeResolverDescriptor d = resolver.getDescriptor();
-					 	if(d.canResolve(ref)){
-							if(log.isDebugEnabled()){
-								log.debug("Found root resolver=\"{}\" " +
-										"for a reference=\"{}\"", d.getId(), ref);
+					Map<String, Multimap<String, AttributeResolver>> byIssuer = attributeResolvers.get(ref.getCategory());
+					if(byIssuer == null || 
+							byIssuer.isEmpty()){
+						return;
+					}
+					if(log.isDebugEnabled()){
+						log.debug("Found=\"{}\" resolvers for category=\"{}\"", 
+								byIssuer.size(), ref.getCategory());
+					}
+					for(Entry<String, Multimap<String, AttributeResolver>> e : byIssuer.entrySet()){
+						for(AttributeResolver r : e.getValue().get(ref.getAttributeId())){
+							AttributeResolverDescriptor d = r.getDescriptor();
+							if(d.canResolve(ref)){
+								if(log.isDebugEnabled()){
+									log.debug("Found root resolver=\"{}\" " +
+											"for a reference=\"{}\"", d.getId(), ref);	
+								}
+								found.add(r);
 							}
-							found.add(resolver);
-					 	}
-				 	}	;
-				}catch(InterruptedException e){
+						}
+					}
+				}
+				catch(InterruptedException e){
 					if(log.isWarnEnabled()){
 						log.warn("Interrupted while " +
 								"waiting to accuire a read lock", e);
