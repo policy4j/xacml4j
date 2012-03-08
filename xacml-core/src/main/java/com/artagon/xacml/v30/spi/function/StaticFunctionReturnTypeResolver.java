@@ -7,11 +7,11 @@ import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.pdp.ValueType;
 import com.google.common.base.Preconditions;
 
-final class FixedReturnTypeFunctionReturnTypeResolver implements FunctionReturnTypeResolver
+final class StaticFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {
 	private ValueType returnType;
 	
-	public FixedReturnTypeFunctionReturnTypeResolver(ValueType returnType){
+	public StaticFunctionReturnTypeResolver(ValueType returnType){
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}

@@ -92,7 +92,7 @@ public final class FunctionSpecBuilder
 	public DefaultFunctionSpec build(ValueType returnType,
 			FunctionInvocation invocation) {
 		return build(
-				new FixedReturnTypeFunctionReturnTypeResolver(returnType), 
+				new StaticFunctionReturnTypeResolver(returnType), 
 				invocation);
 	}
 	
@@ -100,7 +100,7 @@ public final class FunctionSpecBuilder
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return build(
-				new FixedReturnTypeFunctionReturnTypeResolver(returnType), 
+				new StaticFunctionReturnTypeResolver(returnType), 
 				validator,
 				invocation);
 	}
