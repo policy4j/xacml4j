@@ -197,6 +197,9 @@ public interface EvaluationContext
 	 */
 	void addAdvices(Collection<Advice> advices);
 	
+	Iterable<Obligation> getObligations(Decision decision);
+	Iterable<Advice> getAdvices(Decision decision);
+	
 	/**
 	 * Gets variable evaluation result for given
 	 * variable identifier.

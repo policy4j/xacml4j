@@ -60,6 +60,10 @@ public abstract class BaseDecisionRuleResponse
 		return effect;
 	}
 	
+	public boolean isApplicableTo(Decision d){
+		return effect.getResult().equals(d);
+	}
+	
 	public final Collection<AttributeAssignment> getAttributes(){
 		return attributes.values();
 	}

@@ -18,6 +18,8 @@ import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
 {
@@ -331,6 +333,27 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		return Collections.unmodifiableMap(resolvedDesignators);
+	}
+	
+	@Override
+	public Iterable<Obligation> getObligations(final Decision decision) {
+		return Collections2.filter(obligations, new Predicate<Obligation>() {
+			@Override
+			public boolean apply(Obligation input) {
+				return input.isApplicableTo(decision);
+			}
+			
+		});
+	}
+	
+	@Override
+	public Iterable<Advice> getAdvices(final Decision decision) {
+		return Collections2.filter(advices, new Predicate<Advice>() {
+			@Override
+			public boolean apply(Advice input) {
+				return input.isApplicableTo(decision);
+			}
+		});
 	}
 
 	/**

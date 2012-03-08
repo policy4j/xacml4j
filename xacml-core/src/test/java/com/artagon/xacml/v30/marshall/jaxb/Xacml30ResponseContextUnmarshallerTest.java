@@ -18,6 +18,7 @@ import com.artagon.xacml.v30.pdp.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
+import com.google.common.collect.Iterables;
 
 public class Xacml30ResponseContextUnmarshallerTest {
 
@@ -32,8 +33,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// Test obligations
 		assertEquals(2, r1.getObligations().size());
-		Obligation o1 = r1.getObligation("urn:test:obligation1");
-		assertNotNull(o1);
+		Obligation o1 = Iterables.getOnlyElement(r1.getObligation("urn:test:obligation1"));
 		assertEquals(1, o1.getAttributes().size());
 		Collection<AttributeAssignment> oa1 = o1.getAttribute("urn:test:obligation1");
 		assertEquals(1, oa1.size());
@@ -43,8 +43,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// test advises
 		assertEquals(2, r1.getAssociatedAdvice().size());
-		Advice a1 = r1.getAssociatedAdvice("urn:test:advice1");
-		assertNotNull(a1);
+		Advice a1 = Iterables.getOnlyElement(r1.getAssociatedAdvice("urn:test:advice1"));
 		assertEquals(1, a1.getAttributes().size());
 		Collection<AttributeAssignment> aa1 = a1.getAttribute("urn:test:advice1:attr1");
 		assertEquals(1, aa1.size());

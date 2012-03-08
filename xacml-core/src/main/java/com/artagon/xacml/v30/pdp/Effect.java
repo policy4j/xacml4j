@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-
 public enum Effect 
 {
 	PERMIT(Decision.PERMIT),

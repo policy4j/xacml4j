@@ -19,13 +19,11 @@ import com.google.common.collect.Iterables;
 public class Xacml20ResponseContextUnmarshallerTest 
 {
 	private ResponseUnmarshaller unmarshaller;
-	private ResponseMarshaller marshaller;
 	
 	@Before
 	public void init() throws Exception
 	{
 		this.unmarshaller = new Xacml20ResponseContextUnmarshaller();
-		this.marshaller = new Xacml20ResponseContextMarshaller();
 	}
 	
 	@Test
@@ -39,8 +37,7 @@ public class Xacml20ResponseContextUnmarshallerTest
 		assertNull(r.getStatus().getMessage());
 		assertNull(r.getStatus().getDetail());
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());
-		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
-		assertNotNull(o1);
+		Obligation o1 = Iterables.getOnlyElement(r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1"));
 		assertEquals(StringType.STRING.create("assignment1"),  
 				Iterables.getOnlyElement(
 						o1.getAttribute(
@@ -49,7 +46,8 @@ public class Xacml20ResponseContextUnmarshallerTest
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());
-		Obligation o2 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2");
+		
+		Obligation o2 = Iterables.getOnlyElement(r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2"));
 		assertNotNull(o2);
 		assertEquals(StringType.STRING.create("assignment1"),  
 				Iterables.getOnlyElement(

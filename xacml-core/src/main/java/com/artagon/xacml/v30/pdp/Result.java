@@ -3,7 +3,6 @@ package com.artagon.xacml.v30.pdp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -11,13 +10,15 @@ import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Status;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 public class Result extends XacmlObject
 {
 	private Status status;
 	private Decision decision;
-	private Map<String, Obligation> obligations;
-	private Map<String, Advice> associatedAdvice;
+	private Multimap<String, Obligation> obligations;
+	private Multimap<String, Advice> associatedAdvice;
 	private Map<AttributeCategory, Attributes> includeInResultAttributes;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;
 	private Map<AttributeCategory, Attributes> resolvedAttributes;
@@ -110,8 +111,8 @@ public class Result extends XacmlObject
 				status.isFailure()));
 		this.decision = decision;
 		this.status = status;
-		this.associatedAdvice = new LinkedHashMap<String, Advice>();
-		this.obligations = new LinkedHashMap<String, Obligation>();
+		this.associatedAdvice = LinkedHashMultimap.create();
+		this.obligations = LinkedHashMultimap.create();
 		this.includeInResultAttributes = new HashMap<AttributeCategory, Attributes>();
 		this.policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
 		this.resolvedAttributes = new HashMap<AttributeCategory, Attributes>();
@@ -226,7 +227,7 @@ public class Result extends XacmlObject
 	 * @param obligationId an obligation identifier
 	 * @return {@link Obligation}
 	 */
-	public Obligation getObligation(String obligationId){
+	public Iterable<Obligation> getObligation(String obligationId){
 		return obligations.get(obligationId);
 	}
 	
@@ -247,7 +248,7 @@ public class Result extends XacmlObject
 	 * @param adviceId an advice identifier
 	 * @return {@link Advice}
 	 */
-	public Advice getAssociatedAdvice(String adviceId){
+	public Iterable<Advice> getAssociatedAdvice(String adviceId){
 		return associatedAdvice.get(adviceId);
 	}
 	

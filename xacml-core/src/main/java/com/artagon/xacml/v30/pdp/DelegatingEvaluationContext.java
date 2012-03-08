@@ -251,4 +251,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		return delegate.getResolvedDesignators();
 	}
+
+	public Iterable<Obligation> getObligations(Decision decision) {
+		return delegate.getObligations(decision);
+	}
+
+	public Iterable<Advice> getAdvices(Decision decision) {
+		return delegate.getAdvices(decision);
+	}
 }
