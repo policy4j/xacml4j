@@ -5,13 +5,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Status;
@@ -22,6 +18,9 @@ import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Timer;
+import com.yammer.metrics.core.TimerContext;
 
 /**
  * A default implementation of {@link PolicyDecisionPoint}
@@ -30,16 +29,15 @@ import com.google.common.collect.Multimap;
  */
 public final class DefaultPolicyDecisionPoint 
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
-{
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
-		
-	private AtomicBoolean auditEnabled;
-	private AtomicBoolean cacheEnabled;
-	private AtomicLong decisionCount;
-	private AtomicLong avgDecisionTime;
+{	
 	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
+	
+	private AtomicBoolean auditEnabled;
+	private AtomicBoolean cacheEnabled;
+
+	private Timer decisionTimer;
 	
 	public DefaultPolicyDecisionPoint(
 			String id,
@@ -53,8 +51,7 @@ public final class DefaultPolicyDecisionPoint
 		this.factory = factory;
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
-		this.decisionCount = new AtomicLong(0);
-		this.avgDecisionTime = new AtomicLong(0);
+		this.decisionTimer = Metrics.newTimer(DefaultPolicyDecisionPoint.class, "decision-stats", getId());
 	}
 	
 	@Override
@@ -63,10 +60,6 @@ public final class DefaultPolicyDecisionPoint
 		MDCSupport.setPdpContext(this);
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("Processing decision " +
-						"request=\"{}\"", request);
-			}
 			PolicyDecisionPointContext context = factory.createContext(this);
 			RequestContextHandler chain = context.getRequestHandlers();
 			Collection<Result> results = chain.handle(request, context);
@@ -87,8 +80,8 @@ public final class DefaultPolicyDecisionPoint
 	{
 		PolicyDecisionCache decisionCache = context.getDecisionCache();
 		PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
-		long start = System.currentTimeMillis();
 		Result r =  null;
+		TimerContext timerContext = decisionTimer.time();
 		if(isDecisionCacheEnabled()){
 			r = decisionCache.getDecision(request);
 		}
@@ -96,7 +89,7 @@ public final class DefaultPolicyDecisionPoint
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
-			avgDecisionTime.set(System.currentTimeMillis() - start);
+			timerContext.stop();
 			return r;
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
@@ -115,7 +108,7 @@ public final class DefaultPolicyDecisionPoint
 					request, r, 
 					evalContext.getDecisionCacheTTL());
 		}
-		avgDecisionTime.set(System.currentTimeMillis() - start);
+		timerContext.stop();
 		return r;
 	}
 	
@@ -126,7 +119,6 @@ public final class DefaultPolicyDecisionPoint
 			Collection<Attributes> resolvedAttributes,
 			boolean returnPolicyIdList)
 	{
-		decisionCount.incrementAndGet();
 		if(decision == Decision.NOT_APPLICABLE){
 			return new Result(decision, 
 					Status.createSuccess(), 
@@ -193,15 +185,5 @@ public final class DefaultPolicyDecisionPoint
 	@Override
 	public void setDecisionCacheEnabled(boolean enabled) {
 		this.cacheEnabled.set(enabled);		
-	}
-
-	@Override
-	public long getDecisionCount() {
-		return decisionCount.get();
-	}
-
-	@Override
-	public long getAverageDecisionTime() {
-		return avgDecisionTime.get();
 	}
 }

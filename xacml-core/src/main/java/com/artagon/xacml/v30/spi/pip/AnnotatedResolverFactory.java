@@ -13,6 +13,7 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.Pair;
 import com.artagon.xacml.util.Reflections;
+import com.artagon.xacml.util.TypeToken;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.artagon.xacml.v30.pdp.AttributeExpType;
@@ -27,6 +28,12 @@ import com.google.common.base.Strings;
 class AnnotatedResolverFactory 
 {
 	private  final static Logger log = LoggerFactory.getLogger(AnnotatedResolverFactory.class);
+	
+	private final static TypeToken<?> ATTR_RESOLVER_RETURN_TYPE;
+	
+	static{
+		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
+	}
 	
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException
@@ -89,11 +96,16 @@ class AnnotatedResolverFactory
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());
-		if(!m.getReturnType().isAssignableFrom(Map.class)){
+		TypeToken<?> returnType = TypeToken.get(m.getGenericReturnType());
+		if(log.isDebugEnabled()){
+			log.debug("Attribute resolver id=\"{}\" retrun type=\"{}\"", 
+					d.id(), returnType.toString());
+		}
+		if(!ATTR_RESOLVER_RETURN_TYPE.equals(returnType)){
 			throw new XacmlSyntaxException(
 					"Attribute resolver method=\"%s\" " +
 					"must return=\"%s\"", m.getName(), 
-					Map.class.getName());
+					ATTR_RESOLVER_RETURN_TYPE.toString());
 		}
 		AttributeResolverDescriptor descriptor = b.build();
 		return new AnnotatedAttributeResolver(descriptor, 

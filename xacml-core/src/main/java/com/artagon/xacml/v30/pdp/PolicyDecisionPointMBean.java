@@ -6,6 +6,4 @@ public interface PolicyDecisionPointMBean
 	void setDecisionAuditEnabled(boolean enabled);
 	boolean isDecisionCacheEnabled();
 	void setDecisionCacheEnabled(boolean enabled);
-	long getDecisionCount();
-	long getAverageDecisionTime();
 }

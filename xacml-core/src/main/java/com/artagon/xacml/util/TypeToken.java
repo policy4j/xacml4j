@@ -294,7 +294,7 @@ public class TypeToken<T> {
   public static TypeToken<?> get(Type type) {
     return new TypeToken<Object>(type);
   }
-
+  
   /**
    * Gets type literal for the given {@code Class} instance.
    */

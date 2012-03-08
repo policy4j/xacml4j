@@ -194,6 +194,12 @@ public class Result extends XacmlObject
 		return Collections.unmodifiableCollection(includeInResultAttributes.values());
 	}
 	
+	/**
+	 * Gets all resolved by PIP attributes from external
+	 * sources during request context evaluation
+	 * 
+	 * @return a collection of resolved attributes 
+	 */
 	public Collection<Attributes> getResolvedAttributes(){
 		return Collections.unmodifiableCollection(resolvedAttributes.values());
 	}

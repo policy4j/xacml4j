@@ -2,13 +2,12 @@ package com.artagon.xacml.v30.spi.pip;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.createMockBuilder;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.types.IntegerType;
@@ -41,15 +40,8 @@ public class BaseAttributeResolverTest
 	public void testMBeanInvocationStats() throws Exception
 	{
 		expect(context.getDescriptor()).andReturn(d);
-		assertEquals(0, r.getInvocationCount());
-		assertEquals(0, r.getFailuresCount());
-		assertEquals(0, r.getSuccessCount());
-		assertEquals(0, r.getSuccessInvocationTimeCMA());
 		c.replay();
 		r.resolve(context);
-		assertEquals(1, r.getInvocationCount());
-		assertEquals(0, r.getFailuresCount());
-		assertEquals(1, r.getSuccessCount());
 		c.verify();
 	}
 }

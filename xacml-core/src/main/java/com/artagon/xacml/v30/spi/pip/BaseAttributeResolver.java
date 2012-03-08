@@ -3,13 +3,16 @@ package com.artagon.xacml.v30.spi.pip;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.google.common.base.Preconditions;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Counter;
+import com.yammer.metrics.core.Timer;
+import com.yammer.metrics.core.TimerContext;
 
 /**
  * A base implementation of {@link AttributeResolver}
@@ -21,10 +24,10 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private AttributeResolverDescriptorDelegate descriptor;
-	private AtomicLong failuresCount;
-	private AtomicLong successCount;
+	
+	private Counter failuresCount;
+	private Timer attrResolveTimer;
 	private AtomicInteger preferedCacheTTL;
-	private AtomicLong successInvocationTimeCMA;
 	
 	protected BaseAttributeResolver(
 			AttributeResolverDescriptor descriptor){
@@ -36,9 +39,8 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 						super.getPreferreredCacheTTL():preferedCacheTTL.get();
 			}
 		};
-		this.failuresCount = new AtomicLong(0);
-		this.successCount = new AtomicLong(0);
-		this.successInvocationTimeCMA = new AtomicLong(0);
+		this.attrResolveTimer = Metrics.newTimer(BaseAttributeResolver.class, "attributes-resolve", descriptor.getId());
+		this.failuresCount = Metrics.newCounter(BaseAttributeResolver.class, "failures-count", descriptor.getId());
 	}
 	
 	@Override
@@ -57,25 +59,20 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 					"id=\"{}\" name=\"{}\"", 
 					descriptor.getId(), descriptor.getName());
 		}
+		TimerContext timerCtx = attrResolveTimer.time();
 		try
 		{
-			long start = System.currentTimeMillis();
 			Map<String, BagOfAttributeExp> v = doResolve(context);
-			long n = successCount.incrementAndGet();
-			long time = (System.currentTimeMillis() - start);
-			successInvocationTimeCMA.set((time  + (n - 1) * successCount.incrementAndGet()) / n);
-			if(log.isDebugEnabled()){
-				log.debug("Attribute resolver id=\"{}\" " +
-						"invocation took=\"{}\" miliseconds", getId(), time);
-			}
 			return new AttributeSet(descriptor, 
 					(v != null)?v:Collections.<String, BagOfAttributeExp>emptyMap());
 		}catch(Exception e){
-			failuresCount.incrementAndGet();
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
+			failuresCount.inc();
 			throw e;
+		}finally{
+			timerCtx.stop();
 		}
 	}
 	
@@ -91,41 +88,15 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 			ResolverContext context) throws Exception;
 
 	@Override
-	public final String getId() {
-		return descriptor.getId();
-	}
-
-	@Override
-	public final long getInvocationCount() {
-		return successCount.get() + 
-				failuresCount.get();
-	}
-
-	@Override
-	public long getSuccessCount() {
-		return successCount.get();
-	}
-
-	@Override
-	public final long getFailuresCount() {
-		return failuresCount.get();
-	}
-
-	@Override
-	public final long getSuccessInvocationTimeCMA() {
-		return successInvocationTimeCMA.get();
-	}
-
-	@Override
 	public final int getPreferredCacheTTL() {
 		return descriptor.getPreferreredCacheTTL();
 	}
 	
 	public void reset(){
-		successCount.set(0);
-		failuresCount.set(0);
-		successInvocationTimeCMA.set(0);
+		attrResolveTimer.clear();
+		failuresCount.clear();
 	}
+	
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
 		if(descriptor.isCachable() 

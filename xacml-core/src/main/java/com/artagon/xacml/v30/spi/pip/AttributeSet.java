@@ -59,11 +59,18 @@ public final class AttributeSet
 		return d.getAttributesByKey().keySet();
 	}
 	
+	/**
+	 * Gets an attribute value for a given designator
+	 * 
+	 * @param key an attribute designator
+	 * @return {@link BagOfAttributeExp}
+	 * @exception IllegalArgumentException
+	 */
 	public BagOfAttributeExp get(AttributeDesignatorKey key)
 	{
-		Preconditions.checkState(d.canResolve(key));
+		Preconditions.checkArgument(d.canResolve(key));
 		AttributeDescriptor ad = d.getAttribute(key.getAttributeId());
-		Preconditions.checkState(ad != null);
+		Preconditions.checkArgument(ad != null);
 		BagOfAttributeExp v = values.get(key.getAttributeId());
 		return (v != null)?v:ad.getDataType().emptyBag();
 	}

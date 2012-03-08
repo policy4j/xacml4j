@@ -1,7 +1,6 @@
 package com.artagon.xacml.v30.spi.pip;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +18,9 @@ public abstract class BaseContentResolver implements ContentResolver
 	private final static Logger log = LoggerFactory.getLogger(BaseContentResolver.class);
 	
 	private ContentResolverDescriptor descriptor;
-	private AtomicLong failuresCount;
-	private AtomicLong successCount;
+	
 	private AtomicInteger preferedCacheTTL;
-	private AtomicLong successInvocationTimeCMA;
+
 
 	protected BaseContentResolver(ContentResolverDescriptor descriptor){
 		Preconditions.checkArgument(descriptor != null);
@@ -33,9 +31,6 @@ public abstract class BaseContentResolver implements ContentResolver
 						super.getPreferreredCacheTTL():preferedCacheTTL.get();
 			}
 		};
-		this.failuresCount = new AtomicLong();
-		this.successCount = new AtomicLong();
-		this.successInvocationTimeCMA = new AtomicLong();
 	}
 	
 	@Override
@@ -56,18 +51,9 @@ public abstract class BaseContentResolver implements ContentResolver
 		}
 		try{
 			
-			long start = System.currentTimeMillis();
 			Node node = doResolve(context);
-			long time = (System.currentTimeMillis() - start);
-			long n = successCount.incrementAndGet();
-			successInvocationTimeCMA.set((time  + (n - 1) * successCount.incrementAndGet()) / n);
-			if(log.isDebugEnabled()){
-				log.debug("Content resolver id=\"{}\" " +
-						"invocation took=\"{}\" miliseconds", getId(), time);
-			}
 			return new Content(descriptor, node);
 		}catch(Exception e){
-			failuresCount.incrementAndGet();
 			throw e;
 		}		
 	}
@@ -83,30 +69,6 @@ public abstract class BaseContentResolver implements ContentResolver
 			ResolverContext context) 
 		throws Exception;
 
-	@Override
-	public String getId() {
-		return descriptor.getId();
-	}
-
-	@Override
-	public long getInvocationCount() {
-		return successCount.get() + failuresCount.get();
-	}
-
-	@Override
-	public long getFailuresCount() {
-		return failuresCount.get();
-	}
-
-	@Override
-	public long getSuccessCount() {
-		return successCount.get();
-	}
-
-	@Override
-	public long getSuccessInvocationTimeCMA() {
-		return successInvocationTimeCMA.get();
-	}
 	
 	@Override
 	public final int getPreferredCacheTTL() {
