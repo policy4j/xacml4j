@@ -21,6 +21,7 @@
 			DataType="http://www.w3.org/2001/XMLSchema#string">
 			<AttributeValue>showtime</AttributeValue>
 		</Attribute>
+		
 		<Attribute
 			AttributeId="urn:cablelabs:ocla:1.0:attribute:content:rating:mpaa"
 			DataType="http://www.w3.org/2001/XMLSchema#string">
