@@ -52,6 +52,10 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 				m.marshal(jaxbElement, (Node)target);
 				return;
 			}
+			if(target instanceof OutputStream){
+				m.marshal(jaxbElement, (OutputStream)target);
+				return;
+			}
 			throw new IllegalArgumentException(
 					String.format("Unsupported marshalling target=\"%s\"", 
 							target.getClass().getName()));

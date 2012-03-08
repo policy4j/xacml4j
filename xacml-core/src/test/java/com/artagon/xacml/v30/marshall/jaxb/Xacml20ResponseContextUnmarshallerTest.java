@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.StatusCodeIds;
+import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.Obligation;
@@ -18,11 +19,13 @@ import com.google.common.collect.Iterables;
 public class Xacml20ResponseContextUnmarshallerTest 
 {
 	private ResponseUnmarshaller unmarshaller;
+	private ResponseMarshaller marshaller;
 	
 	@Before
 	public void init() throws Exception
 	{
 		this.unmarshaller = new Xacml20ResponseContextUnmarshaller();
+		this.marshaller = new Xacml20ResponseContextMarshaller();
 	}
 	
 	@Test
