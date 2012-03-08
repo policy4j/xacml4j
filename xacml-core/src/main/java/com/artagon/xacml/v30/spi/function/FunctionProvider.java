@@ -9,7 +9,7 @@ public interface FunctionProvider
 	 * identifier.
 	 * 
 	 * @param functionId a function identifier
-	 * @return {@link DefaultFunctionSpec} instance for a given
+	 * @return {@link FunctionSpecImpl} instance for a given
 	 * identifier or <code>null</code> if function
 	 * can not be found for a given identifier
 	 */
