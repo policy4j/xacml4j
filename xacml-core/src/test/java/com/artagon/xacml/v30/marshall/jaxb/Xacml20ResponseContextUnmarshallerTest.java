@@ -1,13 +1,13 @@
 package com.artagon.xacml.v30.marshall.jaxb;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.StatusCodeIds;
-import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.Obligation;
@@ -37,7 +37,8 @@ public class Xacml20ResponseContextUnmarshallerTest
 		assertNull(r.getStatus().getMessage());
 		assertNull(r.getStatus().getDetail());
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());
-		Obligation o1 = Iterables.getOnlyElement(r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1"));
+		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
+		assertNotNull(o1);
 		assertEquals(StringType.STRING.create("assignment1"),  
 				Iterables.getOnlyElement(
 						o1.getAttribute(
@@ -46,8 +47,7 @@ public class Xacml20ResponseContextUnmarshallerTest
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());
-		
-		Obligation o2 = Iterables.getOnlyElement(r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2"));
+		Obligation o2 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2");
 		assertNotNull(o2);
 		assertEquals(StringType.STRING.create("assignment1"),  
 				Iterables.getOnlyElement(

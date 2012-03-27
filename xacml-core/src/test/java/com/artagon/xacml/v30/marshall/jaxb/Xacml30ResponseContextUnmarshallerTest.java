@@ -18,14 +18,13 @@ import com.artagon.xacml.v30.pdp.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
-import com.google.common.collect.Iterables;
 
 public class Xacml30ResponseContextUnmarshallerTest {
 
 	@Test
 	public void testResponseUnmarshal() throws Exception {
 		Xacml30ResponseContextUnmarshaller u = new Xacml30ResponseContextUnmarshaller();
-		
+
 		ResponseContext resp = u.unmarshal(getClass().getClassLoader().getResourceAsStream("v30Response.xml"));
 		assertNotNull(resp);
 		assertEquals(1, resp.getResults().size());
@@ -33,17 +32,19 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// Test obligations
 		assertEquals(2, r1.getObligations().size());
-		Obligation o1 = Iterables.getOnlyElement(r1.getObligation("urn:test:obligation1"));
+		Obligation o1 = r1.getObligation("urn:test:obligation1");
+		assertNotNull(o1);
 		assertEquals(1, o1.getAttributes().size());
 		Collection<AttributeAssignment> oa1 = o1.getAttribute("urn:test:obligation1");
 		assertEquals(1, oa1.size());
 		assertEquals("oa-value", oa1.iterator().next().getAttribute().toXacmlString());
-		
+
 		assertNotNull(r1.getObligation("urn:test:obligation2"));
 
 		// test advises
 		assertEquals(2, r1.getAssociatedAdvice().size());
-		Advice a1 = Iterables.getOnlyElement(r1.getAssociatedAdvice("urn:test:advice1"));
+		Advice a1 = r1.getAssociatedAdvice("urn:test:advice1");
+		assertNotNull(a1);
 		assertEquals(1, a1.getAttributes().size());
 		Collection<AttributeAssignment> aa1 = a1.getAttribute("urn:test:advice1:attr1");
 		assertEquals(1, aa1.size());
@@ -67,7 +68,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals("1.0", pi1.getVersion().getPattern());
 		assertNull(pi1.getEarliestVersion());
 		assertNull(pi1.getLatestVersion());
-		
+
 		CompositeDecisionRuleIDReference pi2 = refIterator.next();
 		assertNull(pi2.getVersion());
 		assertEquals("2.0", pi2.getEarliestVersion().getPattern());
