@@ -29,7 +29,7 @@
 		<xml.resolver.version>1.2</xml.resolver.version>
 		<spring.version>3.0.4.RELEASE</spring.version>
 		<spring.ws.version>2.0.0.RELEASE</spring.ws.version>	
-		<!-- Default Source encoding -->
+		<yammer.metrics.version>2.0.3</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>	
@@ -61,6 +61,10 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.yammer.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -78,7 +82,12 @@
 						<artifactId>log4j-over-slf4j</artifactId>
 					</exclusion>
 				</exclusions>
-				</dependency>
+			</dependency>
+			<dependency>
+			    <groupId>com.yammer.metrics</groupId>
+			    <artifactId>metrics-core</artifactId>
+			    <version>${yammer.metrics.version}</version>
+   			</dependency>
 			<dependency>
 				<groupId>xml-resolver</groupId>
 				<artifactId>xml-resolver</artifactId>
