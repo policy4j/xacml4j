@@ -45,24 +45,13 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public void addAdvices(Collection<Advice> advices) {
-		delegate.addAdvices(advices);
+	public void addAdvices(Decision d, Iterable<Advice> advices){
+		delegate.addAdvices(d, advices);
 	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
+	
 	@Override
-	public void addObligations(Collection<Obligation> obligations) {
-		delegate.addObligations(obligations);
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public Collection<Advice> getAdvices() {
-		return delegate.getAdvices();
+	public void addObligations(Decision d, Iterable<Obligation> obligations){
+		delegate.addObligations(d, obligations);
 	}
 
 	/**
@@ -99,14 +88,6 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public PolicySet getCurrentPolicySet() {
 		return delegate.getCurrentPolicySet();
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public Collection<Obligation> getObligations() {
-		return delegate.getObligations();
 	}
 
 	/**
@@ -252,11 +233,11 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.getResolvedDesignators();
 	}
 
-	public Iterable<Obligation> getObligations(Decision decision) {
-		return delegate.getObligations(decision);
+	public Iterable<Obligation> getMatchingObligations(Decision decision) {
+		return delegate.getMatchingObligations(decision);
 	}
 
-	public Iterable<Advice> getAdvices(Decision decision) {
-		return delegate.getAdvices(decision);
+	public Iterable<Advice> getMatchingAdvices(Decision decision) {
+		return delegate.getMatchingAdvices(decision);
 	}
 }

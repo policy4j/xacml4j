@@ -16,8 +16,6 @@ import org.oasis.xacml.v20.jaxb.context.EnvironmentType;
 import org.oasis.xacml.v20.jaxb.context.RequestType;
 import org.oasis.xacml.v20.jaxb.context.ResourceContentType;
 import org.oasis.xacml.v20.jaxb.context.ResourceType;
-import org.oasis.xacml.v20.jaxb.context.ResponseType;
-import org.oasis.xacml.v20.jaxb.context.ResultType;
 import org.oasis.xacml.v20.jaxb.context.SubjectType;
 import org.oasis.xacml.v20.jaxb.policy.EffectType;
 import org.slf4j.Logger;
@@ -37,8 +35,6 @@ import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.Effect;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
-import com.artagon.xacml.v30.pdp.ResponseContext;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.artagon.xacml.v30.types.XPathExpType;
@@ -102,39 +98,16 @@ implements RequestUnmarshaller
 		
 		}
 		
-		
-		public ResponseContext create(ResponseType response)
-		{
-			Preconditions.checkNotNull(response);
-			Collection<Result> results = new LinkedList<Result>();
-			for(ResultType result : response.getResult()){
-				results.add(create(result));
-			}
-			return new ResponseContext(results);
-		}
-		
-		private Result create(ResultType result)
-		{
-			return null;
-		}
-		
-		
-		
-		
-		
-		
-		
 		public RequestContext create(RequestType req) throws XacmlSyntaxException
 		{
 			Collection<Attributes> attributes = new LinkedList<Attributes>();
 			if(!req.getResource().isEmpty()){
-				
-				for(ResourceType resource : req.getResource()){
-					attributes.add(createResource(resource, req.getResource().size() > 1));
+				Collection<ResourceType> resources = req.getResource();
+				for(ResourceType r : resources){
+					attributes.add(createResource(r, resources.size() > 1));
 				}
 			}
-			if(!req.getSubject().isEmpty())
-			{
+			if(!req.getSubject().isEmpty()){
 				Multimap<AttributeCategory, Attributes> map = LinkedHashMultimap.create();
 				for(SubjectType subject : req.getSubject()){
 					Attributes attr =  createSubject(subject);
@@ -142,8 +115,7 @@ implements RequestUnmarshaller
 				}
 				attributes.addAll(normalize(map));
 			}
-			if(req.getAction() != null)
-			{
+			if(req.getAction() != null){
 				attributes.add(createAction(req.getAction()));
 			}
 			if(req.getEnvironment() != null)

@@ -20,8 +20,8 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	
 	private String description;
 	private Target target;
-	private Collection<AdviceExpression> adviceExpressions;
-	private Collection<ObligationExpression> obligationExpressions;
+	protected Collection<AdviceExpression> adviceExpressions;
+	protected Collection<ObligationExpression> obligationExpressions;
 	
 	/**
 	 * Constructs base decision with a given identifier
@@ -81,26 +81,6 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	}
 	
 	/**
-	 * Gets decision rule collection of {@link ObligationExpression}
-	 * expressions
-	 * 
-	 * @return a collection of {@link ObligationExpression}
-	 */
-	public Collection<ObligationExpression> getObligationExpressions(){
-		return obligationExpressions;
-	}
-	
-	/**
-	 * Gets decision rule collection of {@link AdviceExpression}
-	 * expressions
-	 * 
-	 * @return a collection of {@link AdviceExpression}
-	 */
-	public Collection<AdviceExpression> getAdviceExpressions(){
-		return adviceExpressions;
-	}
-	
-	/**
 	 * Testing if this decision rule is applicable to
 	 * the current evaluation context
 	 * 
@@ -133,12 +113,8 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 			}
 			Collection<Advice> advices = evaluateAdvices(context, result);
 			Collection<Obligation> obligations = evaluateObligations(context, result);
-			if(!advices.isEmpty()){
-				context.addAdvices(advices);
-			}
-			if(!obligations.isEmpty()){
-				context.addObligations(obligations);
-			}
+			context.addAdvices(result, advices);
+			context.addObligations(result, obligations);
 			return result;
 		}catch(Exception e){
 			return Decision.INDETERMINATE;
@@ -154,7 +130,8 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	 * @return collection of {@link Advice} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private Collection<Advice> evaluateAdvices(EvaluationContext context, Decision result) 
+	private Collection<Advice> evaluateAdvices(EvaluationContext context, 
+			Decision result) 
 		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){

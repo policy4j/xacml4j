@@ -1,7 +1,6 @@
 package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,7 +9,6 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
 import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
@@ -120,28 +118,31 @@ public final class DefaultPolicyDecisionPoint
 			boolean returnPolicyIdList)
 	{
 		if(decision == Decision.NOT_APPLICABLE){
-			return new Result(decision, 
-					Status.createSuccess(), 
-					includeInResult, 
-					resolvedAttributes);
+			return Result
+					.createOk(decision)
+					.includeInResultAttr(includeInResult)
+					.resolvedAttr(resolvedAttributes)
+					.create();
 		}
 		if(decision.isIndeterminate()){
 			StatusCode status = (context.getEvaluationStatus() == null)?
 					StatusCode.createProcessingError():context.getEvaluationStatus();
-			return new Result(decision, new Status(status), 
-					includeInResult, 
-					resolvedAttributes);
+			return Result
+					.createIndeterminate(status)
+					.includeInResultAttr(includeInResult)
+					.resolvedAttr(resolvedAttributes)
+					.create();		
 		}
-		return new Result(
-				decision, 
-				Status.createSuccess(),
-				context.getAdvices(), 
-				context.getObligations(), 
-				includeInResult, 
-				resolvedAttributes,
-				(returnPolicyIdList?
-						context.getEvaluatedPolicies():
-							Collections.<CompositeDecisionRuleIDReference>emptyList()));
+		Result.Builder b = Result.createOk(decision)
+				.advice(context.getMatchingAdvices(decision))
+				.obligation(context.getMatchingObligations(decision))
+				.includeInResultAttr(includeInResult)
+				.resolvedAttr(resolvedAttributes);
+		if(returnPolicyIdList){
+			b.evaluatedPolicies(
+					context.getEvaluatedPolicies());
+		}
+		return b.create();
 	}
 	
 	/**

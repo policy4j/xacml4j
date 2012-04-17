@@ -222,10 +222,10 @@ public class PolicySet extends
 		for(DecisionRule decision : decisionRules){
 			decision.accept(v);
 		}
-		for(ObligationExpression obligation : getObligationExpressions()){
+		for(ObligationExpression obligation : obligationExpressions){
 			obligation.accept(v);
 		}
-		for(AdviceExpression advice : getAdviceExpressions()){
+		for(AdviceExpression advice : adviceExpressions){
 			advice.accept(v);
 		}
 		v.visitLeave(this);

@@ -81,23 +81,13 @@ public class MultipleResourcesHandlerTest
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
 		
 		expect(context.requestDecision(capture(c0))).andReturn(
-					new Result(Decision.DENY, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), 
-						Collections.<Attributes>emptyList()));
+						Result.createOk(Decision.DENY).create());
 		
-		expect(context.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.DENY, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), 
-						Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.DENY).create());
 		
-		expect(context.requestDecision(capture(c2))).andReturn(
-				new Result(Decision.DENY, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), 
-				Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.DENY).create());
 		
-		expect(context.requestDecision(capture(c3))).andReturn(
-				new Result(Decision.DENY, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.DENY).create());
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -126,21 +116,13 @@ public class MultipleResourcesHandlerTest
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
 		
-		expect(context.requestDecision(capture(c0))).andReturn(
-					new Result(Decision.PERMIT, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.PERMIT).create());
 		
-		expect(context.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.PERMIT, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.PERMIT).create());
 		
-		expect(context.requestDecision(capture(c2))).andReturn(
-				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.PERMIT).create());
 		
-		expect(context.requestDecision(capture(c3))).andReturn(
-				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.PERMIT).create());
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
@@ -200,7 +182,7 @@ public class MultipleResourcesHandlerTest
 	}
 	
 	@Test
-	public void testVariousResults()
+	public void testAllResultsNotApplicable()
 	{
 		
 		
@@ -212,29 +194,21 @@ public class MultipleResourcesHandlerTest
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
 		
-		expect(context.requestDecision(capture(c0))).andReturn(
-					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
 		
-		expect(context.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.DENY, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
 		
-		expect(context.requestDecision(capture(c2))).andReturn(
-				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
 		
-		expect(context.requestDecision(capture(c3))).andReturn(
-				new Result(Decision.PERMIT, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
 		
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
 	
-		assertEquals(Decision.INDETERMINATE, r.getDecision());
-		assertEquals(Status.createProcessingError(), r.getStatus());
+		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
+		assertEquals(Status.createSuccess(), r.getStatus());
 		
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());

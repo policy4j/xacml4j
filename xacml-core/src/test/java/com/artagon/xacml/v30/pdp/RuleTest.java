@@ -177,8 +177,11 @@ public class RuleTest
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
 				StringType.STRING.create("testVal1"));
 		
-		context.addAdvices(capture(advices));
-		context.addObligations(capture(obligations));
+		Capture<Decision> advicesD = new Capture<Decision>();
+		Capture<Decision> obligationsD = new Capture<Decision>();
+		
+		context.addAdvices(capture(advicesD), capture(advices));
+		context.addObligations(capture(obligationsD), capture(obligations));
 				
 		c.replay();
 		
@@ -197,7 +200,7 @@ public class RuleTest
 		assertTrue(
 				obligations.getValue().contains(Obligation
 						.builder("denyObligation", Effect.DENY)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
 								.create()));
@@ -260,9 +263,12 @@ public class RuleTest
 		expect(permitAdviceAttributeExp.evaluate(context)).andReturn(StringType.STRING.create("testVal1"));
 		expect(permitObligationAttributeExp.evaluate(context)).andReturn(StringType.STRING.create("testVal1"));
 		
-		context.addAdvices(capture(advices));
-		context.addObligations(capture(obligations));
-	
+		Capture<Decision> advicesD = new Capture<Decision>();
+		Capture<Decision> obligationsD = new Capture<Decision>();
+		
+		context.addAdvices(capture(advicesD), capture(advices));
+		context.addObligations(capture(obligationsD), capture(obligations));
+		
 		c.replay();
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
 		c.verify();
@@ -278,7 +284,7 @@ public class RuleTest
 		assertTrue(
 				obligations.getValue().contains(Obligation
 						.builder("permitObligation", Effect.PERMIT)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
 								.create()));
@@ -349,10 +355,12 @@ public class RuleTest
 		expect(denyObligationAttributeExp.evaluate(context)).andReturn(StringType.STRING.create("testVal1"));
 		
 		Capture<Collection<Advice>> advices = new Capture<Collection<Advice>>();
+		Capture<Decision> advicesD = new Capture<Decision>();
 		Capture<Collection<Obligation>> obligations = new Capture<Collection<Obligation>>();
+		Capture<Decision> obligationsD = new Capture<Decision>();
 		
-		context.addAdvices(capture(advices));
-		context.addObligations(capture(obligations));
+		context.addAdvices(capture(advicesD), capture(advices));
+		context.addObligations(capture(obligationsD), capture(obligations));
 		
 		c.replay();
 		
@@ -370,7 +378,7 @@ public class RuleTest
 		assertTrue(
 				obligations.getValue().contains(Obligation
 						.builder("denyObligation", Effect.DENY)
-						.withAttribute(
+						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
 								.create()));
@@ -415,12 +423,14 @@ public class RuleTest
 			
 		expect(permitAdviceAttributeExp.evaluate(context)).andReturn(StringType.STRING.create("testVal1"));
 		expect(permitObligationAttributeExp.evaluate(context)).andReturn(StringType.STRING.create("testVal1"));
-		
+			
 		Capture<Collection<Advice>> advices = new Capture<Collection<Advice>>();
+		Capture<Decision> advicesD = new Capture<Decision>();
 		Capture<Collection<Obligation>> obligations = new Capture<Collection<Obligation>>();
+		Capture<Decision> obligationsD = new Capture<Decision>();
 		
-		context.addAdvices(capture(advices));
-		context.addObligations(capture(obligations));
+		context.addAdvices(capture(advicesD), capture(advices));
+		context.addObligations(capture(obligationsD), capture(obligations));
 		
 		
 		c.replay();

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Status;
+import com.artagon.xacml.v30.StatusCode;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
@@ -130,35 +131,47 @@ public class Result extends XacmlObject
 		}
 	}
 	
-	
-	public static Result createIndeterminate(Status status, 
-			Collection<Attributes> attributes){
-		return new Result(Decision.INDETERMINATE, status, 
-				attributes, 
-				Collections.<Attributes>emptyList());
+	public Result(Builder b){
+		this.decision = b.decision;
+		this.status = b.status;
+		this.associatedAdvice = Collections.unmodifiableMap(b.associatedAdvice);
+		this.obligations = Collections.unmodifiableMap(b.obligations);
+		this.includeInResultAttributes = Collections.unmodifiableMap(b.includeInResultAttributes);
+		this.policyReferences = Collections.unmodifiableCollection(b.policyReferences);
+		this.resolvedAttributes = Collections.unmodifiableMap(b.resolvedAttributes);
 	}
 	
-	public static Result createIndeterminate(Status status){
-		return new Result(Decision.INDETERMINATE, status, 
-				Collections.<Attributes>emptyList(), 
-				Collections.<Attributes>emptyList());
+	public static Result.Builder createOk(Decision d){
+		Preconditions.checkArgument(!d.isIndeterminate());
+		return new Result.Builder(d, Status.createSuccess());
 	}
 	
-	public static Result createIndeterminateSyntaxError(
-			Collection<Attributes> attributes, 
+	public static Result.Builder createIndeterminate(Status status){
+		Preconditions.checkArgument(status.isFailure());
+		return new Result.Builder(Decision.INDETERMINATE, status);
+	}
+	
+	public static Result.Builder createIndeterminate(StatusCode status){
+		Preconditions.checkArgument(status.isFailure());
+		return new Result.Builder(Decision.INDETERMINATE, new Status(status));
+	}
+	
+	public static Result.Builder createIndeterminateSyntaxError(
 			String format, Object ...params){
-		return new Result(Decision.INDETERMINATE, 
-				Status.createSyntaxError(format, params), attributes, 
-				Collections.<Attributes>emptyList());
+		return createIndeterminate(Status.createSyntaxError(format, params));
 	}
 	
-	public static Result createIndeterminateProcessingError(
-			Collection<Attributes> attributes,
+	public static Result.Builder createIndeterminateSyntaxError(){
+		return createIndeterminate(Status.createSyntaxError());
+	}
+	
+	public static Result.Builder createIndeterminateProcessingError(
 			String format, Object ...params){
-		return new Result(Decision.INDETERMINATE, 
-				Status.createProcessingError(format, params), 
-				attributes, 
-				Collections.<Attributes>emptyList());
+		return createIndeterminate(Status.createProcessingError(format, params));
+	}
+	
+	public static Result.Builder createIndeterminateProcessingError(){
+		return createIndeterminate(Status.createProcessingError());
 	}
 	
 	
@@ -258,5 +271,106 @@ public class Result extends XacmlObject
 	 */
 	public Collection<CompositeDecisionRuleIDReference> getPolicyIdentifiers(){
 		return Collections.unmodifiableCollection(policyReferences);
+	}
+	
+	public static class Builder
+	{
+		private Status status;
+		private Decision decision;
+		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
+		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
+		private Map<AttributeCategory, Attributes> includeInResultAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
+		private Collection<CompositeDecisionRuleIDReference> policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
+		private Map<AttributeCategory, Attributes> resolvedAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
+		
+		public Builder(Decision d, Status s){
+			Preconditions.checkNotNull(d);
+			Preconditions.checkNotNull(s);
+			Preconditions.checkArgument(!(d.isIndeterminate() ^ 
+					s.isFailure()));
+			this.decision = d;
+			this.status = s;
+		}
+		
+		public Builder includeInResult(Attributes a){
+			Preconditions.checkNotNull(a);
+			Preconditions.checkState(includeInResultAttributes.put(a.getCategory(), a) != null);
+			return this;
+		}
+		
+		public Builder includeInResultAttr(Iterable<Attributes> attributes){
+			for(Attributes a : attributes){
+				includeInResultAttributes.put(a.getCategory(), a);
+			}
+			return this;
+		}
+		
+		public Builder resolvedAttr(Iterable<Attributes> attributes){
+			for(Attributes a : attributes){
+				resolvedAttributes.put(a.getCategory(), a);
+			}
+			return this;
+		}
+		
+		public Builder referencedPolicy(CompositeDecisionRuleIDReference ... refs)
+		{
+			Preconditions.checkNotNull(refs);
+			for(CompositeDecisionRuleIDReference ref : refs){
+				Preconditions.checkNotNull(ref);
+				this.policyReferences.add(ref);
+			}
+			return this;
+		}
+		
+		public Builder evaluatedPolicies(Iterable<CompositeDecisionRuleIDReference> refs)
+		{
+			Preconditions.checkNotNull(refs);
+			for(CompositeDecisionRuleIDReference ref : refs){
+				Preconditions.checkNotNull(ref);
+				this.policyReferences.add(ref);
+			}
+			return this;
+		}
+				
+		public Builder advice(Iterable<Advice> advice){
+			for(Advice a : advice){
+				advice(a);
+			}
+			return this;
+		}
+		
+		public Builder advice(Advice advice){
+			Preconditions.checkNotNull(advice);
+			Advice a = associatedAdvice.get(advice.getId());			
+			if(a != null){
+				associatedAdvice.put(a.getId(), a.merge(advice));
+				return this;
+			}
+			associatedAdvice.put(advice.getId(), advice);
+			return this;
+		}
+		
+		public Builder obligation(Obligation obligation){
+			Preconditions.checkNotNull(obligation);
+			Obligation a = obligations.get(obligation.getId());
+			if(a != null){
+				obligations.put(a.getId(), a.merge(obligation));
+				return this;
+			}
+			obligations.put(obligation.getId(), obligation);
+			return this;
+		}
+		
+		public Builder obligation(Iterable<Obligation> obligations){
+			for(Obligation o : obligations){
+				Preconditions.checkNotNull(o);
+				obligation(o);
+			}
+			return this;
+		}
+		
+		public Result create(){
+			return new Result(this);
+		}
 	}
 }

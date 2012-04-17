@@ -283,10 +283,10 @@ public class Policy extends BaseCompositeDecisionRule
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
 		}
-		for(ObligationExpression obligation : getObligationExpressions()){
+		for(ObligationExpression obligation : obligationExpressions){
 			obligation.accept(v);
 		}
-		for(AdviceExpression advice : getAdviceExpressions()){
+		for(AdviceExpression advice : adviceExpressions){
 			advice.accept(v);
 		}
 		for(DecisionRule rule : rules){

@@ -122,7 +122,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return getExtendedIndeterminate();
 		}
 		Decision d = (result == ConditionResult.TRUE)?
-				getEffect().getResult():Decision.NOT_APPLICABLE;
+				getEffect().getApplicableDecision():Decision.NOT_APPLICABLE;
 		d = evaluateAdvicesAndObligations(context, d);		
 		if(log.isDebugEnabled()){
 			log.debug("Rule id=\"{}\" " +

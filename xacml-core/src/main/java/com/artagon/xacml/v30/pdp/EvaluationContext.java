@@ -157,24 +157,6 @@ public interface EvaluationContext
 	PolicySetIDReference getCurrentPolicySetIDReference();
 	
 	/**
-	 * Gets all advice instances from
-	 * decision evaluated in this context
-	 * 
-	 * @return collection of {@link Advice}
-	 * instances
-	 */
-	Collection<Advice> getAdvices();
-	
-	/**
-	 * Gets all obligations from decision
-	 * evaluated in this context
-	 * 
-	 * @return collection of {@link Obligation}
-	 * instances
-	 */
-	Collection<Obligation> getObligations();
-	
-	/**
 	 * Gets XPath version
 	 * 
 	 * @return {@link XPathVersion}
@@ -182,23 +164,16 @@ public interface EvaluationContext
 	XPathVersion getXPathVersion();
 	
 	/**
-	 * Adds evaluated obligation from
-	 * decision evaluated in this context 
-	 * 
-	 * @param obligations a collection of {@link Obligation}
-	 */
-	void addObligations(Collection<Obligation> obligations);
-	
-	/**
 	 * Adds evaluated {@link Advice} instances to this context
 	 * from decision evaluated in this context
 	 * 
 	 * @param advices a collection of advices
 	 */
-	void addAdvices(Collection<Advice> advices);
+	void addAdvices(Decision d, Iterable<Advice> advices);
+	void addObligations(Decision d, Iterable<Obligation> obligations);
 	
-	Iterable<Obligation> getObligations(Decision decision);
-	Iterable<Advice> getAdvices(Decision decision);
+	Iterable<Obligation> getMatchingObligations(Decision decision);
+	Iterable<Advice> getMatchingAdvices(Decision decision);
 	
 	/**
 	 * Gets variable evaluation result for given

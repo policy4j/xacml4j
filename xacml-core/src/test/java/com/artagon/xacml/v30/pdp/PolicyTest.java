@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.artagon.xacml.v30.types.StringType;
+import com.google.common.collect.Iterables;
 
 public class PolicyTest 
 {
@@ -156,8 +157,9 @@ public class PolicyTest
 		c.verify();
 		assertSame(policy, policyContext.getCurrentPolicy());
 		assertSame(policyContext, contextCapture.getValue());
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		
+		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.DENY)));
+		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.DENY)));
 	}
 	
 	@Test
@@ -178,8 +180,8 @@ public class PolicyTest
 		c.verify();
 		assertSame(policy, policyContext.getCurrentPolicy());
 		assertSame(policyContext, contextCapture.getValue());
-		assertEquals(1, context.getAdvices().size());
-		assertEquals(1, context.getObligations().size());
+		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
+		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
 	}
 	
 	@Test
@@ -198,8 +200,10 @@ public class PolicyTest
 		c.verify();
 		assertSame(policy, policyContext.getCurrentPolicy());
 		assertSame(policyContext, contextCapture.getValue());
-		assertEquals(0, context.getAdvices().size());
-		assertEquals(0, context.getObligations().size());
+		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.DENY)));
+		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.DENY)));
+		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
+		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
 	}
 	
 	

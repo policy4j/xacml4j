@@ -22,6 +22,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	{
 		super(id, appliesTo, attributeExpressions);
 	}	
+
 	
 	/**
 	 * Evaluates this advice expression by evaluating
@@ -35,7 +36,10 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
 		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		return new Advice(getId(), getEffect(), attributes);
+		return Advice
+				.builder(getId(), getEffect())
+				.attributes(attributes)
+				.create();
 	}
 	
 	public static Builder builder(String id, Effect applieTo){

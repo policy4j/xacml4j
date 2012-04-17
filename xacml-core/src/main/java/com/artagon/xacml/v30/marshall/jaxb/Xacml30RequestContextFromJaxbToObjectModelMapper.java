@@ -243,7 +243,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Advice create(AdviceType a) throws XacmlSyntaxException {
-		return new Advice(a.getAdviceId(), null, create(a.getAttributeAssignment()));
+		return Advice.builder(a.getAdviceId(), null)
+				.attributes(create(a.getAttributeAssignment()))
+				.create();
 	}
 
 	private Collection<Obligation> createObligations(ObligationsType obligationsType) throws XacmlSyntaxException {
@@ -268,7 +270,11 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Obligation create(ObligationType o) throws XacmlSyntaxException {
-		return new Obligation(o.getObligationId(), null, create(o.getAttributeAssignment()));
+		
+		return Obligation
+				.builder(o.getObligationId())
+				.attributes(create(o.getAttributeAssignment()))
+				.create();
 	}
 
 	private Status create(StatusType status) {

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,6 @@ import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
 {
@@ -28,8 +27,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private EvaluationContextHandler contextHandler;
 	private PolicyReferenceResolver resolver;
 	
-	private Collection<Advice> advices;
-	private Collection<Obligation> obligations;
+	private Map<String, Advice> denyAdvices;
+	private Map<String, Obligation> denyObligations;
+	
+	private Map<String, Advice> permitAdvices;
+	private Map<String, Obligation> permitObligations;
 	
 	private boolean validateFuncParamsAtRuntime = false;
 	
@@ -66,8 +68,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		Preconditions.checkNotNull(contextHandler);
 
 		Preconditions.checkNotNull(repository);
-		this.advices = new LinkedList<Advice>();
-		this.obligations = new LinkedList<Obligation>();
+		this.denyAdvices = new LinkedHashMap<String, Advice>();
+		this.denyObligations = new LinkedHashMap<String, Obligation>();
+		this.permitAdvices = new LinkedHashMap<String, Advice>();
+		this.permitObligations = new LinkedHashMap<String, Obligation>();
 		//this.validateAtRuntime = validateFuncParams;
 		this.contextHandler = contextHandler;
 		this.resolver = repository;
@@ -136,27 +140,55 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public void addAdvices(Collection<Advice> advices) {
-		Preconditions.checkNotNull(advices);
-		this.advices.addAll(advices);
-	}
-
-	@Override
-	public void addObligations(Collection<Obligation> obligations) {
-		Preconditions.checkNotNull(obligations);
-		this.obligations.addAll(obligations);
-	}
-
-	@Override
-	public Collection<Advice> getAdvices() {
-		return Collections.unmodifiableCollection(advices);
-	}
-
-	@Override
-	public Collection<Obligation> getObligations() {
-		return Collections.unmodifiableCollection(obligations);
+	public void addAdvices(Decision d, Iterable<Advice> advices) 
+	{
+		Preconditions.checkNotNull(d);
+		if(d.isIndeterminate() || 
+				d == Decision.NOT_APPLICABLE){
+			return;
+		}
+		for(Advice a : advices){
+			addAndMergeAdvice(d, a);
+		}
 	}
 	
+	@Override
+	public void addObligations(Decision d, Iterable<Obligation> obligations) 
+	{
+		Preconditions.checkNotNull(d);
+		if(d.isIndeterminate() || 
+				d == Decision.NOT_APPLICABLE){
+			return;
+		}
+		for(Obligation a : obligations){
+			addAndMergeObligation(d, a);
+		}
+	}
+	
+	private void addAndMergeAdvice(Decision d, Advice a)
+	{
+		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
+		Map<String, Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
+		Advice other = advices.get(a.getId());
+		if(other != null){
+			advices.put(a.getId(), other.merge(a));
+		}else{
+			advices.put(a.getId(), a);
+		}
+	}
+	
+	private void addAndMergeObligation(Decision d, Obligation a)
+	{
+		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
+		Map<String, Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
+		Obligation other = obligations.get(a.getId());
+		if(other != null){
+			obligations.put(a.getId(), other.merge(a));
+		}else{
+			obligations.put(a.getId(), a);
+		}
+	}
+
 	/**
 	 * Implementation always
 	 * return <code>null</code>
@@ -336,24 +368,13 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 	
 	@Override
-	public Iterable<Obligation> getObligations(final Decision decision) {
-		return Collections2.filter(obligations, new Predicate<Obligation>() {
-			@Override
-			public boolean apply(Obligation input) {
-				return input.isApplicableTo(decision);
-			}
-			
-		});
+	public Iterable<Obligation> getMatchingObligations(final Decision decision) {
+		return (decision == Decision.PERMIT)?permitObligations.values():denyObligations.values();
 	}
 	
 	@Override
-	public Iterable<Advice> getAdvices(final Decision decision) {
-		return Collections2.filter(advices, new Predicate<Advice>() {
-			@Override
-			public boolean apply(Advice input) {
-				return input.isApplicableTo(decision);
-			}
-		});
+	public Iterable<Advice> getMatchingAdvices(final Decision decision) {
+		return (decision == Decision.PERMIT)?permitAdvices.values():denyAdvices.values();
 	}
 
 	/**

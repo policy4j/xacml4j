@@ -1,13 +1,11 @@
 package com.artagon.xacml.v30.pdp;
 
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.Collection;
 
+import com.artagon.xacml.v30.AttributeCategory;
 import com.google.common.base.Objects;
-import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
@@ -26,23 +24,10 @@ public abstract class BaseDecisionRuleResponse
 	private transient int hashCode;
 	
 	protected BaseDecisionRuleResponse(
-			String id, 
-			Effect effect,
-			Iterable<AttributeAssignment> attributes) 
+			BaseBuilder<?> b) 
 	{
-		checkNotNull(id, "Decision rule response id can not be null");
-		checkNotNull(attributes, 
-				"Decision rule attribute assignments can not be null");
-		this.id = id;
-		this.attributes = LinkedHashMultimap.create();
-		this.effect = effect;
-		for(AttributeAssignment a : attributes){
-			checkArgument(a != null, 
-					"Decision rule with id=\"%s\" " +
-					"attribute assignment can not be null", id);
-			this.attributes.put(a.getAttributeId(), a);
-		}
-		this.attributes = Multimaps.unmodifiableMultimap(this.attributes);
+		this.id = b.id;
+		this.attributes = Multimaps.unmodifiableMultimap(b.attributes);
 		this.hashCode = Objects.hashCode(id, attributes);
 	}
 	
@@ -56,12 +41,9 @@ public abstract class BaseDecisionRuleResponse
 	 * 
 	 * @return {@link Effect}
 	 */
+	@Deprecated
 	public Effect getFullfillOn(){
 		return effect;
-	}
-	
-	public boolean isApplicableTo(Decision d){
-		return effect.getResult().equals(d);
 	}
 	
 	public final Collection<AttributeAssignment> getAttributes(){
@@ -83,5 +65,55 @@ public abstract class BaseDecisionRuleResponse
 		.add("id", id)
 		.add("attributes", attributes)
 		.toString();
+	}
+	
+	public abstract static class BaseBuilder <T extends BaseBuilder<?>>
+	{
+		protected String id;
+		protected Effect appliesTo;
+		protected Multimap<String, AttributeAssignment> attributes = LinkedListMultimap.create();
+		
+		protected BaseBuilder(String id, Effect effect){
+			Preconditions.checkNotNull(id);
+			this.id = id;
+			this.appliesTo = effect;
+		}
+		
+		public final T attribute(AttributeAssignment attr){
+			Preconditions.checkNotNull(attr);
+			this.attributes.put(attr.getAttributeId(), attr);
+			return getThis();
+		}
+		
+		public final T attributes(Iterable<AttributeAssignment> attributes){
+			for(AttributeAssignment attr : attributes){
+				this.attributes.put(attr.getAttributeId(), attr);
+			}
+			return getThis();
+		}
+		
+		public final T attribute(
+				String id, AttributeExp ... values)
+		{
+			return attribute(id, null, null, values);
+		}
+		
+		public final T attribute(
+				String id,  
+				AttributeCategory category, 
+				String issuer, 
+				AttributeExp ... values)
+		{
+			if(values == null || 
+					values.length == 0){
+				return getThis();
+			}
+			for(AttributeExp v : values){
+				attribute(new AttributeAssignment(id, category, issuer, v));
+			}
+			return getThis();
+		}
+		
+		protected abstract T getThis();
 	}
 }

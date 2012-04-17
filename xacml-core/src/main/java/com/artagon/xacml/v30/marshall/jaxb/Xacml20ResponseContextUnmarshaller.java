@@ -162,7 +162,10 @@ implements ResponseUnmarshaller
 				attrs.add(new AttributeAssignment(a.getAttributeId(), 
 						createValue(a.getDataType(), a.getContent(), a.getOtherAttributes())));
 			}
-			return new Obligation(o.getObligationId(), v20ToV30EffectnMapping.get(o.getFulfillOn()), attrs);
+			return Obligation
+					.builder(o.getObligationId(), v20ToV30EffectnMapping.get(o.getFulfillOn()))
+					.attributes(attrs)
+					.create();
 		}
 		
 		private Status create(StatusType status) throws XacmlSyntaxException

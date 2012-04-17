@@ -43,6 +43,10 @@ public final class Status
 				(format == null)?null:String.format(format, params), null);
 	}
 	
+	public static Status createSyntaxError(){
+		return createSyntaxError(null, (Object[])null);
+	}
+	
 	public static Status createProcessingError(String format, Object ...params){
 		return new Status(StatusCode.createProcessingError(), 
 				(format == null)?null:String.format(format, params), null);

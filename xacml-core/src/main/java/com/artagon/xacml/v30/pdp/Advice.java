@@ -1,12 +1,7 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import com.artagon.xacml.v30.AttributeCategory;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-
-
 
 /**
  * In some applications it is helpful to specify supplemental 
@@ -18,10 +13,8 @@ import com.google.common.base.Preconditions;
  */
 public class Advice extends BaseDecisionRuleResponse
 {
-	public Advice(String adviceId, 
-			Effect effect,
-			Iterable<AttributeAssignment> attributes){
-		super(adviceId, effect, attributes);
+	private Advice(Builder b){
+		super(b);
 	}
 	
 	public static Builder builder(String id, Effect appliesTo){
@@ -40,51 +33,32 @@ public class Advice extends BaseDecisionRuleResponse
 			return false;
 		}
 		Advice a = (Advice)o;
-		return id.equals(a.id) && 
-		attributes.equals(a.attributes);
+		return id.equals(a.id) &&
+				attributes.equals(a.attributes);
 	}
 	
-	public static class Builder
+	public Advice merge(Advice a)
 	{
-		private String id;
-		private Effect appliesTo;
-		private Collection<AttributeAssignment> attributes = new LinkedList<AttributeAssignment>();
+		Preconditions.checkArgument(Objects.equal(getFullfillOn(), a.getFullfillOn()));
+		Preconditions.checkArgument(a.getId().equals(getId()));
+		return new Advice.Builder(getId(), getFullfillOn())
+		.attributes(getAttributes()).attributes(a.getAttributes()).create();
 		
+	}
+	
+	public static class Builder extends BaseBuilder<Builder>
+	{	
 		private Builder(String id, Effect effect){
-			this.id = id;
-			this.appliesTo = effect;
-		}
-		
-		public Builder attribute(AttributeAssignment attr){
-			Preconditions.checkNotNull(attr);
-			this.attributes.add(attr);
-			return this;
-		}
-		
-		public Builder attribute(
-				String id, AttributeExp ... values)
-		{
-			return attribute(id, null, null, values);
-		}
-		
-		public Builder attribute(
-				String id,  
-				AttributeCategory category, 
-				String issuer, 
-				AttributeExp ... values)
-		{
-			if(values == null || 
-					values.length == 0){
-				return this;
-			}
-			for(AttributeExp v : values){
-				this.attributes.add(new AttributeAssignment(id, category, issuer, v));
-			}
-			return this;
+			super(id, effect);
 		}
 		
 		public Advice create(){
-			return new Advice(id, appliesTo, attributes);
+			return new Advice(this);
+		}
+
+		@Override
+		protected Builder getThis() {
+			return this;
 		}
 	}
 }

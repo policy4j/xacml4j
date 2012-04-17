@@ -3,7 +3,9 @@ package com.artagon.xacml.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.artagon.xacml.v30.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.pdp.Advice;
 import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.RequestContext;
@@ -13,6 +15,8 @@ import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 
 public class MultipleResourcesHandler extends RequestContextHandlerChain
 {	
+	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesHandler.class);
+	
 	public MultipleResourcesHandler()
 	{
 		super(new MultipleResourcesViaRequestReferencesHandler(), 
@@ -24,8 +28,10 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 	@Override
 	protected Collection<Result> postProcessResults(RequestContext req,
 			Collection<Result> results) {
-		if(!req.isCombinedDecision() || 
-				results.size() == 1){
+		if(!req.isCombinedDecision()){
+			return results;
+		}
+		if(results.size() == 1){
 			return results;
 		}
 		Result prev = null;
@@ -34,37 +40,35 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 			Collection<Advice> advice = r.getAssociatedAdvice();
 			if(!advice.isEmpty()){
 				return Collections.singleton(
-						Result.createIndeterminate(
-								Status.createProcessingError()));
+						Result.createIndeterminateProcessingError().create());
 			}
 			Collection<Obligation> obligation = r.getObligations();
 			if(!obligation.isEmpty()){
 				return Collections.singleton(
-						Result.createIndeterminate(
-								Status.createProcessingError()));
+						Result.createIndeterminateProcessingError().create());
 			}
 			if(prev != null){
 				if(r.getDecision().isIndeterminate()){
 					if(!prev.getDecision().isIndeterminate()){
 						return Collections.singleton(
-								Result.createIndeterminate(
-										Status.createProcessingError()));
+								Result.createIndeterminateProcessingError().create());
 					}
 				}
 				if(!r.getDecision().equals(prev.getDecision())){
+					if(log.isDebugEnabled()){
+						log.debug("Previous decision result=\"{}\" " +
+								"can not be combined with the current result=\"{}\"", prev, r);
+					}
 					return Collections.singleton(
-							Result.createIndeterminate(
-									Status.createProcessingError()));
+							Result.createIndeterminateProcessingError().create());
 				}
 			}
 			prev = r;
 		}
 		if(prev == null){
 			return Collections.singleton(
-					Result.createIndeterminate(
-							Status.createProcessingError()));
+					Result.createIndeterminateProcessingError().create());
 		}
-		return Collections.singleton(new Result(
-				prev.getDecision(), Status.createSuccess()));
+		return Collections.singleton(Result.createOk(prev.getDecision()).create());
 	}
 }

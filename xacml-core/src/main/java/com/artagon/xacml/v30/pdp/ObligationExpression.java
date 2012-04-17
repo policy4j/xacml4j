@@ -16,9 +16,10 @@ public class ObligationExpression extends
 	}
 	
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException{
-		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
-		return new Obligation(getId(), getEffect(), attributes);
-	
+		return Obligation
+				.builder(getId(), getEffect())
+				.attributes(evaluateAttributeAssingments(context))
+				.create();
 	}
 	
 	public static Builder builder(String id, Effect applieTo){

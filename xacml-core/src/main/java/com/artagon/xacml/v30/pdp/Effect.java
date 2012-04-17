@@ -11,7 +11,13 @@ public enum Effect
 		this.result = r;
 	}
 	
-	public Decision getResult(){
+	/**
+	 * Gets an applicable decision for this
+	 * effect
+	 * 
+	 * @return an applicable decion
+	 */
+	public Decision getApplicableDecision(){
 		return result;
 	}
 }

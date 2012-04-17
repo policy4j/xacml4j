@@ -1,13 +1,11 @@
 package com.artagon.xacml.v30.pdp.profiles;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.AttributesReference;
-import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestReference;
@@ -34,9 +32,11 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 				RequestContext resolvedRequest = resolveAttributes(request, ref);
 				results.addAll(handleNext(resolvedRequest, context));
 			}catch(RequestSyntaxException e){
-				results.add(new Result(Decision.INDETERMINATE, e.getStatus(), 
-						request.getIncludeInResultAttributes(), 
-						Collections.<Attributes>emptyList()));
+				results.add(
+						Result
+						.createIndeterminate(e.getStatus())
+						.includeInResultAttr(request.getIncludeInResultAttributes())
+						.create()); 
 			}
 		}
 		return results;

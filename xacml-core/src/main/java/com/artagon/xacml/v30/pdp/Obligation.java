@@ -1,9 +1,6 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import com.artagon.xacml.v30.AttributeCategory;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
@@ -25,17 +22,29 @@ import com.google.common.base.Preconditions;
 public class Obligation 
 	extends BaseDecisionRuleResponse
 {
-	public Obligation(String id, 
-			Effect effect,
-			Collection<AttributeAssignment> attributes) 
+	public Obligation(Builder b) 
 	{
-		super(id, effect, attributes);
+		super(b);
 	}
 	
 	public static Builder builder(String id, Effect appliesTo){
 		return new Builder(id, appliesTo);
 	}
 	
+	public static Builder builder(String id){
+		return new Builder(id, null);
+	}
+	
+	
+	public Obligation merge(Obligation o)
+	{
+		Preconditions.checkArgument(getId().equals(o.getId()));
+		Preconditions.checkArgument(Objects.equal(getFullfillOn(), o.getFullfillOn()));
+		return new Obligation.Builder(getId(), getFullfillOn())
+		.attributes(getAttributes())
+		.attributes(o.getAttributes())
+		.create();
+	}
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -52,42 +61,19 @@ public class Obligation
 		attributes.equals(a.attributes);
 	}
 	
-	public static class Builder
-	{
-		private String id;
-		private Effect appliesTo;
-		private Collection<AttributeAssignment> attributes = new LinkedList<AttributeAssignment>();
-		
+	public static class Builder extends BaseBuilder<Builder>
+	{	
 		private Builder(String id, Effect effect){
-			this.id = id;
-			this.appliesTo = effect;
+			super(id, effect);
 		}
 		
-		public Builder withAttribute(AttributeAssignment attr){
-			Preconditions.checkNotNull(attr);
-			this.attributes.add(attr);
+		@Override
+		protected Builder getThis() {
 			return this;
 		}
-		
-		public Builder withAttribute(
-				String id, AttributeExp value)
-		{
-			this.attributes.add(new AttributeAssignment(id, value));
-			return this;
-		}
-		
-		public Builder withAttribute(
-				String id,  
-				AttributeCategory category, 
-				String issuer, 
-				AttributeExp value)
-		{
-			this.attributes.add(new AttributeAssignment(id, category, issuer, value));
-			return this;
-		}
-		
+
 		public Obligation create(){
-			return new Obligation(id, appliesTo, attributes);
+			return new Obligation(this);
 		}
 	}
 }
