@@ -30,7 +30,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 		.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry))
 		.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
-		.build();
+		.create();
 	}
 	
 	@Override

@@ -33,7 +33,7 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext>
 		.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 		.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
-		.build();
+		.create();
 	}
 	
 	@Override
