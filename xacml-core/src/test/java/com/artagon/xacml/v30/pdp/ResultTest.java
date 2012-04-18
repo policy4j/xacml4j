@@ -27,15 +27,15 @@ public class ResultTest
 		this.denyObligationWithId1 = Obligation
 				.builder("id1", Effect.DENY)
 				.attribute("test1", StringType.STRING.create("v1"))
-				.create();
+				.build();
 		this.denyObligationWithId2 = Obligation
 				.builder("id2", Effect.DENY)
 				.attribute("test1", StringType.STRING.create("v1"))
-				.create();
+				.build();
 		this.denyObligationWithSameId1 = Obligation
 				.builder("id1", Effect.DENY)
 				.attribute("test1", StringType.STRING.create("v2"))
-				.create();
+				.build();
 	}
 	
 	@Test

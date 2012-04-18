@@ -22,7 +22,7 @@ import com.google.common.base.Preconditions;
 public class Obligation 
 	extends BaseDecisionRuleResponse
 {
-	public Obligation(Builder b) 
+	Obligation(Builder b) 
 	{
 		super(b);
 	}
@@ -36,6 +36,13 @@ public class Obligation
 	}
 	
 	
+	/**
+	 * Combines this obligation attributes with a 
+	 * given obligation attributes
+	 * 
+	 * @param a an obligation
+	 * @return a new obligation instance with combined attributes
+	 */
 	@SuppressWarnings("deprecation")
 	public Obligation merge(Obligation o)
 	{
@@ -44,7 +51,7 @@ public class Obligation
 		return new Obligation.Builder(getId(), getFullfillOn())
 		.attributes(getAttributes())
 		.attributes(o.getAttributes())
-		.create();
+		.build();
 	}
 	
 	@Override
@@ -74,7 +81,7 @@ public class Obligation
 			return this;
 		}
 
-		public Obligation create(){
+		public Obligation build(){
 			return new Obligation(this);
 		}
 	}

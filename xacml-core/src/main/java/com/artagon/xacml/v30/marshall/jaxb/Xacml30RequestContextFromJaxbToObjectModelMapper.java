@@ -274,7 +274,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return Obligation
 				.builder(o.getObligationId())
 				.attributes(create(o.getAttributeAssignment()))
-				.create();
+				.build();
 	}
 
 	private Status create(StatusType status) {

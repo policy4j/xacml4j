@@ -203,7 +203,7 @@ public class RuleTest
 						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.create()));
+								.build()));
 		
 	}
 	
@@ -287,7 +287,7 @@ public class RuleTest
 						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.create()));
+								.build()));
 	}
 	
 	@Test
@@ -381,7 +381,7 @@ public class RuleTest
 						.attribute(
 								"testId", 
 								StringType.STRING.create("testVal1"))
-								.create()));
+								.build()));
 	}
 	
 	

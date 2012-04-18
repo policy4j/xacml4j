@@ -19,7 +19,7 @@ public class ObligationExpression extends
 		return Obligation
 				.builder(getId(), getEffect())
 				.attributes(evaluateAttributeAssingments(context))
-				.create();
+				.build();
 	}
 	
 	public static Builder builder(String id, Effect applieTo){

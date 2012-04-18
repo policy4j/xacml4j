@@ -37,6 +37,13 @@ public class Advice extends BaseDecisionRuleResponse
 				attributes.equals(a.attributes);
 	}
 	
+	/**
+	 * Combines this advice attributes with a 
+	 * given advice attributes
+	 * 
+	 * @param a an advice
+	 * @return a new advice instance with combined attributes
+	 */
 	@SuppressWarnings("deprecation")
 	public Advice merge(Advice a)
 	{
