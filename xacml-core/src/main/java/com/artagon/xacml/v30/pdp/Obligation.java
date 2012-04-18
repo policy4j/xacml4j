@@ -36,6 +36,7 @@ public class Obligation
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public Obligation merge(Obligation o)
 	{
 		Preconditions.checkArgument(getId().equals(o.getId()));
@@ -45,6 +46,7 @@ public class Obligation
 		.attributes(o.getAttributes())
 		.create();
 	}
+	
 	@Override
 	public boolean equals(Object o){
 		if(o == this){

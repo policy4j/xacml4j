@@ -37,12 +37,14 @@ public class Advice extends BaseDecisionRuleResponse
 				attributes.equals(a.attributes);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public Advice merge(Advice a)
 	{
 		Preconditions.checkArgument(Objects.equal(getFullfillOn(), a.getFullfillOn()));
 		Preconditions.checkArgument(a.getId().equals(getId()));
 		return new Advice.Builder(getId(), getFullfillOn())
-		.attributes(getAttributes()).attributes(a.getAttributes()).create();
+		.attributes(getAttributes())
+		.attributes(a.getAttributes()).create();
 		
 	}
 	

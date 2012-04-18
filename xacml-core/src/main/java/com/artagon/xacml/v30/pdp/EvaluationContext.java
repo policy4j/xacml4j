@@ -164,15 +164,28 @@ public interface EvaluationContext
 	XPathVersion getXPathVersion();
 	
 	/**
-	 * Adds evaluated {@link Advice} instances to this context
-	 * from decision evaluated in this context
+	 * Adds evaluated {@link Advice} matching give
+	 * decision
 	 * 
-	 * @param advices a collection of advices
+	 * @param d an access decision
 	 */
 	void addAdvices(Decision d, Iterable<Advice> advices);
 	void addObligations(Decision d, Iterable<Obligation> obligations);
 	
+	/**
+	 * Gets obligations matching given decision
+	 * 
+	 * @param decision an access decision
+	 * @return matching obligations
+	 */
 	Iterable<Obligation> getMatchingObligations(Decision decision);
+	
+	/**
+	 * Gets advices matching given decision
+	 * 
+	 * @param decision an access decision
+	 * @return matching advices
+	 */
 	Iterable<Advice> getMatchingAdvices(Decision decision);
 	
 	/**
