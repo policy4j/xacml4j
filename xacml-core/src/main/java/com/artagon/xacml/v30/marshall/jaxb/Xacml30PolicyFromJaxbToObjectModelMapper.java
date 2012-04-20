@@ -635,6 +635,10 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				return new VariableReference(varDef);
 			}
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
+			if(varDefExp == null){
+				throw new XacmlSyntaxException("Variable with id=\"%s\" " +
+						"is not defined", varRef.getVariableId());
+			}
 			m.pushVariableDefinition(varRef.getVariableId());
 			parseExpression(varDefExp, m);
 			varDef = m.getVariableDefinition(varRef.getVariableId());

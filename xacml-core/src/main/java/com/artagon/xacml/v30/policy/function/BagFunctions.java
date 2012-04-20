@@ -104,6 +104,20 @@ public class BagFunctions
 		return BooleanType.BOOLEAN.create(bag.contains(v));
 	}
 	
+	static BooleanExp isEmpty(BagOfAttributeExp bag){
+
+		return BooleanType.BOOLEAN.create(bag.isEmpty());
+	}
+	
+	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:string-bag-is-empty")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	public static BooleanExp stringBagIsEmpty(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
+			BagOfAttributeExp bag) 
+	{
+		return isEmpty(bag);
+	}
+	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp stringOneAndOnly(
