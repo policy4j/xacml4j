@@ -39,11 +39,12 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			Version version,
 			String description,
 			Target target,
+			Condition condition,
 			PolicyIssuer issuer,
 			BigInteger maxDelegationDepth,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(description, target,  adviceExpressions, obligationExpressions);
+		super(description, target, condition, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(id, 
 				"Composite decision rule id can not be null");
 		Preconditions.checkNotNull(version, 
@@ -56,16 +57,18 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			String id, 
 			Version version,
 			Target target,
+			Condition condition,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		this(id, version, null, target, null, null, adviceExpressions, obligationExpressions);
+		this(id, version, null, target, 
+				condition, null, null, adviceExpressions, obligationExpressions);
 	}
 	
 	protected BaseCompositeDecisionRule(
 			String id, 
 			Version version,
 			Target target){
-		this(id, version, null, target, null, null,
+		this(id, version, null, target, null, null, null,
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
 	}

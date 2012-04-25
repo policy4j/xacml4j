@@ -73,13 +73,13 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public void addEvaluatedApplicablePolicy(Policy policy, Decision result) {
-		delegate.addEvaluatedApplicablePolicy(policy, result);
+	public void addPolicyEvaluationResult(Policy policy, Decision result) {
+		delegate.addPolicyEvaluationResult(policy, result);
 	}
 
 	@Override
-	public void addEvaluatedApplicablePolicySet(PolicySet policySet, Decision result) {
-		delegate.addEvaluatedApplicablePolicySet(policySet, result);
+	public void addPolicySetEvaluationResult(PolicySet policySet, Decision result) {
+		delegate.addPolicySetEvaluationResult(policySet, result);
 	}
 
 	/**

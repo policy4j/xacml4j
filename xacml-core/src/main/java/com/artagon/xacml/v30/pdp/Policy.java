@@ -57,6 +57,7 @@ public class Policy extends BaseCompositeDecisionRule
 			String description,
 			PolicyDefaults policyDefaults,
 			Target target, 
+			Condition condition,
 			PolicyIssuer issuer,
 			BigInteger maxDelehgationDepth,
 			Collection<VariableDefinition> variables,
@@ -68,7 +69,7 @@ public class Policy extends BaseCompositeDecisionRule
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		super(policyId, version, description, 
-				target, issuer, maxDelehgationDepth, adviceExpressions, obligationExpressions);
+				target, condition, issuer, maxDelehgationDepth, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(combine);
 		this.rules = (rules != null)?ImmutableList.copyOf(rules):ImmutableList.<Rule>of();
 		this.combine = combine;
@@ -98,7 +99,7 @@ public class Policy extends BaseCompositeDecisionRule
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		this(policyId, version, description, policyDefaults, 
-				target, null, null, variables, 
+				target, null, null, null, variables, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<RuleCombinerParameters>emptyList(),
 				combine, rules, adviceExpressions, obligationExpressions);
@@ -256,12 +257,31 @@ public class Policy extends BaseCompositeDecisionRule
 		Decision decision = combine.combine(context, rules);
 		if(log.isDebugEnabled()) {
 			log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
-					"decision result=\"{}\"", 
+					"evaluation result=\"{}\"", 
 					new Object[] { getId(), combine.getId(), decision });
 		}
-		decision = evaluateAdvicesAndObligations(context, decision);
-		context.addEvaluatedApplicablePolicy(this, decision);
-		return decision;
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		if(log.isDebugEnabled()) {
+			log.debug("PolicySet id=\"{}\" condition " +
+					"evaluation result=\"{}\"", id, result);
+		}
+		if(result == ConditionResult.TRUE){
+			if(!decision.isIndeterminate() || 
+					decision != Decision.NOT_APPLICABLE){
+				decision = evaluateAdvicesAndObligations(context, decision);
+				context.addPolicyEvaluationResult(this, decision);
+			}
+			return decision;
+		}
+		if(result == ConditionResult.INDETERMINATE){
+			switch(decision){
+				case DENY : return Decision.INDETERMINATE_D;
+				case PERMIT : return Decision.INDETERMINATE_P;
+				case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
+				default: return decision;
+			}
+		}
+		return Decision.NOT_APPLICABLE;
 	}
 	
 	protected boolean isEvaluationContextValid(EvaluationContext context){
@@ -473,6 +493,7 @@ public class Policy extends BaseCompositeDecisionRule
 					description, 
 					policyDefaults, 
 					target, 
+					condition,
 					policyIssuer,
 					maxDelegationDepth,
 					variables, 

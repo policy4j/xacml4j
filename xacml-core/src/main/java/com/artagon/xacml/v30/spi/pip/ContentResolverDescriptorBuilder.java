@@ -25,7 +25,7 @@ public final class ContentResolverDescriptorBuilder
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(category);
-		this.id = id;
+		this.id = id.replace(":", ".");
 		this.name = name;
 		this.category = category;
 		this.keys = new LinkedList<AttributeReferenceKey>();

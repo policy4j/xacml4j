@@ -20,6 +20,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	
 	private String description;
 	private Target target;
+	protected Condition condition;
 	protected Collection<AdviceExpression> adviceExpressions;
 	protected Collection<ObligationExpression> obligationExpressions;
 	
@@ -37,26 +38,39 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	protected BaseDecisionRule( 
 			String description,
 			Target target, 
+			Condition condition,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
 		this.description = description;
 		this.target = target;
+		this.condition = condition;
 		this.adviceExpressions = (adviceExpressions != null)?
 				ImmutableList.copyOf(adviceExpressions):ImmutableList.<AdviceExpression>of();
 		this.obligationExpressions = (obligationExpressions != null)?
 				ImmutableList.copyOf(obligationExpressions):ImmutableList.<ObligationExpression>of();
 	}
 	
+	protected BaseDecisionRule( 
+			BaseDecisionRuleBuilder<?> b){
+		this.description = b.description;
+		this.target = b.target;
+		this.condition = b.condition;
+		this.adviceExpressions = (b.adviceExpressions != null)?
+				ImmutableList.copyOf(b.adviceExpressions):ImmutableList.<AdviceExpression>of();
+		this.obligationExpressions = (b.obligationExpressions != null)?
+				ImmutableList.copyOf(b.obligationExpressions):ImmutableList.<ObligationExpression>of();
+	}
+	
 	protected BaseDecisionRule(
 			Target target, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		this(null, target, adviceExpressions, obligationExpressions);
+		this(null, target, null, adviceExpressions, obligationExpressions);
 	}
 	
 	protected BaseDecisionRule(
 			Target target){
-		this(null, target, 
+		this(null, target, null,
 				Collections.<AdviceExpression>emptyList(), 
 				Collections.<ObligationExpression>emptyList());
 	}
@@ -78,6 +92,16 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	 */
 	public Target getTarget(){
 		return target;
+	}
+	
+	/**
+	 * Gets descion rule condition
+	 * 
+	 * @return {@link Condition} or <code>null</code>
+	 * implying always <code>true</code> condition
+	 */
+	public Condition getCondition(){
+		return condition;
 	}
 	
 	/**
@@ -224,6 +248,15 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		}
 	}
 	
+	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+		return b.add("description", description)
+				.add("target", target)
+				.add("condition", condition)
+				.add("adviceExp", adviceExpressions)
+				.add("obligationExp", obligationExpressions);
+		
+	}
+	
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 	
 	
@@ -232,6 +265,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		protected String id;
 		protected String description;
 		protected Target target;	
+		protected Condition condition;
 		protected Collection<AdviceExpression> adviceExpressions = new LinkedList<AdviceExpression>();
 		protected Collection<ObligationExpression> obligationExpressions = new LinkedList<ObligationExpression>();
 		
@@ -253,6 +287,28 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		public T withTarget(Target target){
 			Preconditions.checkNotNull(target);
 			this.target = target;
+			return getThis();
+		}
+		
+		public T withTarget(Condition condition){
+			Preconditions.checkNotNull(condition);
+			this.condition = condition;
+			return getThis();
+		}
+		
+		
+		public T withCondition(Expression predicate){
+			this.condition = new Condition(predicate);
+			return getThis();
+		}
+		
+		public T withCondition(Condition condition){
+			this.condition = condition;
+			return getThis();
+		}
+		
+		public T withoutCondition(){
+			this.condition = null;
 			return getThis();
 		}
 		
@@ -314,13 +370,5 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		}
 		
 		protected abstract T getThis();
-	}
-	
-	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
-		return b.add("description", description)
-				.add("target", target)
-				.add("adviceExp", adviceExpressions)
-				.add("obligationExp", obligationExpressions);
-		
 	}
 }

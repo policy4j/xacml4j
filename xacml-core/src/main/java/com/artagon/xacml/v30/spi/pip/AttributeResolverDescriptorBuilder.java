@@ -37,7 +37,8 @@ public final class AttributeResolverDescriptorBuilder
 		Preconditions.checkNotNull(category);
 		this.name = name;
 		this.issuer = Strings.emptyToNull(issuer);
-		this.id = id;
+		// JMX friendly name
+		this.id = id.replace(":", ".");
 		this.category = category;
 		this.attributesById = new LinkedHashMap<String, AttributeDescriptor>();
 		this.attributesByKey = new LinkedHashMap<AttributeDesignatorKey, AttributeDescriptor>();

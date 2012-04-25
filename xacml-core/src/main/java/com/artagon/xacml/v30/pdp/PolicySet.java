@@ -47,6 +47,7 @@ public class PolicySet extends
 			String description,
 			PolicySetDefaults policySetDefaults,
 			Target target, 
+			Condition condition,
 			PolicyIssuer issuer,
 			BigInteger maxDelegationDepth,
 			Collection<CombinerParameters> combinerParameters,
@@ -58,6 +59,7 @@ public class PolicySet extends
 			Collection<ObligationExpression> obligationExpressions) 
 	{
 		super(id, version, description, target, 
+				condition,
 				issuer, maxDelegationDepth, 
 				adviceExpressions, obligationExpressions);
 		checkNotNull(combine, "Policy set combining algorithm must be specified");
@@ -97,6 +99,7 @@ public class PolicySet extends
 				null,
 				target,
 				null,
+				null,
 				null, 
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
@@ -109,7 +112,7 @@ public class PolicySet extends
 			Version version, 
 			DecisionCombiningAlgorithm<CompositeDecisionRule> combine) 
 	{
-		this(id, version, null, null, null, null, null,
+		this(id, version, null, null, null, null, null, null,
 				Collections.<CombinerParameters>emptyList(), 
 				Collections.<PolicyCombinerParameters>emptyList(), 
 				Collections.<PolicySetCombinerParameters>emptyList(), 
@@ -185,9 +188,28 @@ public class PolicySet extends
 					"decision result=\"{}\"", 
 					new Object[] { getId(), combine.getId(), decision });
 		}
-		decision = evaluateAdvicesAndObligations(context, decision);
-		context.addEvaluatedApplicablePolicySet(this, decision);
-		return decision;
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		if(log.isDebugEnabled()) {
+			log.debug("PolicySet id=\"{}\" condition " +
+					"evaluation result=\"{}\"", id, result);
+		}
+		if(result == ConditionResult.TRUE){
+			if(!decision.isIndeterminate() || 
+					decision != Decision.NOT_APPLICABLE){
+				decision = evaluateAdvicesAndObligations(context, decision);
+				context.addPolicySetEvaluationResult(this, decision);
+			}
+			return decision;
+		}
+		if(result == ConditionResult.INDETERMINATE){
+			switch(decision){
+				case DENY : return Decision.INDETERMINATE_D;
+				case PERMIT : return Decision.INDETERMINATE_P;
+				case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
+				default: return decision;
+			}
+		}
+		return Decision.NOT_APPLICABLE;
 	}
 	
 	public List<? extends CompositeDecisionRule> getDecisions() {
@@ -402,6 +424,7 @@ public class PolicySet extends
 					description, 
 					policyDefaults, 
 					target,  
+					condition,
 					policyIssuer,
 					maxDelegationDepth,
 					combinerParameters,

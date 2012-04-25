@@ -167,6 +167,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					target,
 					null,
 					null,
+					null,
 					combinerParams, 
 					policyCombinerParams,
 					policySetCombinerParams,

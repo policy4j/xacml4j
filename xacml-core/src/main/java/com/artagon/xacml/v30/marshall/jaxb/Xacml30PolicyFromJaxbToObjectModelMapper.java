@@ -201,6 +201,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				p.getDescription(), 
 				createPolicySetDefaults(p.getPolicySetDefaults()), 
 				target,   
+				null,
 				createPolicyIssuer(p.getPolicyIssuer()),
 				null,
 				combinerParameters,

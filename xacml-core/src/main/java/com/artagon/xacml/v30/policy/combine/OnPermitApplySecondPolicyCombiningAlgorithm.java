@@ -67,7 +67,6 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 			context.setEvaluationStatus(StatusCode.createProcessingError());
 			return Decision.INDETERMINATE_DP;
 		}
-		Preconditions.checkState(d1 == Decision.NOT_APPLICABLE);
 		return Decision.NOT_APPLICABLE;
 	}
 	

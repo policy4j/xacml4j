@@ -9,7 +9,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private String ruleId;
 	private Effect effect;
-	private Condition condition;
 	
 	/**
 	 * Constructs rule with a given identifier, 
@@ -26,14 +25,19 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			Effect effect, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(description, target, adviceExpressions, obligationExpressions);
+		super(description, target, condition, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(ruleId, 
 				"Rule identifier can't be null");
 		Preconditions.checkNotNull(effect, 
 				"Rule effect can't be null");
 		this.ruleId = ruleId;
-		this.condition = condition;
 		this.effect = effect;
+	}
+	
+	private Rule(Rule.Builder b){
+		super(b);
+		this.ruleId = b.id;
+		this.effect = b.effect;
 	}
 	
 	/**
@@ -75,16 +79,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 	
 	/**
-	 * Gets rule condition
-	 * 
-	 * @return {@link Collection} rule 
-	 * condition
-	 */
-	public Condition getCondition(){
-		return condition;
-	}
-	
-	/**
 	 * Implementation returns the same context which was
 	 * passed as parent context. Rule evaluation shares
 	 * a context with a parent policy
@@ -109,26 +103,24 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	{
 		Preconditions.checkArgument(
 				isEvaluationContextValid(context));
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating rule id=\"{}\" " +
-					"condition=\"{}\"", getId(), condition);
-		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
 		if(log.isDebugEnabled()){
 			log.debug("Rule id=\"{}\" condition " +
 					"evaluation result=\"{}\"", getId(), result);
 		}
+		if(result == ConditionResult.TRUE){
+			Decision d = effect.toDecision();
+			d = evaluateAdvicesAndObligations(context, d);		
+			if(log.isDebugEnabled()){
+				log.debug("Rule id=\"{}\" " +
+						"decision result=\"{}\"", getId(), d);
+			}
+			return d;
+		}
 		if(result == ConditionResult.INDETERMINATE){
 			return getExtendedIndeterminate();
 		}
-		Decision d = (result == ConditionResult.TRUE)?
-				getEffect().getApplicableDecision():Decision.NOT_APPLICABLE;
-		d = evaluateAdvicesAndObligations(context, d);		
-		if(log.isDebugEnabled()){
-			log.debug("Rule id=\"{}\" " +
-					"decision result=\"{}\"", getId(), d);
-		}
-		return d;
+		return Decision.NOT_APPLICABLE;
 	}
 	
 	/**
@@ -157,14 +149,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 				getExtendedIndeterminate():Decision.NOT_APPLICABLE;
 	}
 		
-	/**
-	 * Gets rule extended "Indeterminate" status
-	 * 
-	 * @return {@link Decision} instance representing
-	 * extended "Indeterminate" status
-	 */
 	private Decision getExtendedIndeterminate(){
-		return effect == Effect.DENY?
+		return (effect == Effect.DENY)?
 				Decision.INDETERMINATE_D:Decision.INDETERMINATE_P;
 	}
 
@@ -175,8 +161,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		if(getTarget() != null){
 			getTarget().accept(v);
 		}
-		if(condition != null){
-			condition.accept(v);
+		if(getCondition() != null){
+			getCondition().accept(v);
 		}
 		v.visitLeave(this);
 	}
@@ -184,8 +170,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	public static class Builder extends BaseDecisionRuleBuilder<Builder>
 	{
 		private Effect effect;
-		private Condition condition;
-		
 		
 		private Builder(){
 		}
@@ -196,34 +180,12 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return this;
 		}
 		
-		public Builder withCondition(Expression predicate){
-			this.condition = new Condition(predicate);
-			return this;
-		}
-		
-		public Builder withCondition(Condition condition){
-			this.condition = condition;
-			return this;
-		}
-		
-		public Builder withoutCondition(){
-			this.condition = null;
-			return this;
-		}
-		
 		@Override
 		protected Builder getThis() {
 			return this;
 		}
-
-
 		public Rule build(){
-			return new Rule(id, description, 
-					target, 
-					condition, 
-					effect,  
-					adviceExpressions, 
-					obligationExpressions);
+			return new Rule(this);
 		}
 	}
 }

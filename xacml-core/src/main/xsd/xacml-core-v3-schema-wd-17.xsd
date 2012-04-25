@@ -245,6 +245,7 @@
 			<xs:element ref="xacml:PolicyIssuer" minOccurs="0"/>
 			<xs:element ref="xacml:PolicySetDefaults" minOccurs="0"/>
 			<xs:element ref="xacml:Target"/>
+			<xs:element ref="xacml:Condition" minOccurs="0"/>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
 				<xs:element ref="xacml:PolicySet"/>
 				<xs:element ref="xacml:Policy"/>
@@ -357,6 +358,7 @@
 			<xs:element ref="xacml:PolicyIssuer" minOccurs="0"/>
 			<xs:element ref="xacml:PolicyDefaults" minOccurs="0"/>
 			<xs:element ref="xacml:Target"/>
+			<xs:element ref="xacml:Condition" minOccurs="0"/>
 			<xs:choice maxOccurs="unbounded">
 				<xs:element ref="xacml:CombinerParameters" minOccurs="0"/>
 				<xs:element ref="xacml:RuleCombinerParameters" minOccurs="0"/>

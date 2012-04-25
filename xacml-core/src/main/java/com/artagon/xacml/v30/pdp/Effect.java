@@ -12,12 +12,12 @@ public enum Effect
 	}
 	
 	/**
-	 * Gets an applicable decision for this
-	 * effect
+	 * Converts this effect 
+	 * to an access decision
 	 * 
-	 * @return an applicable decion
+	 * @return {@link Decision}
 	 */
-	public Decision getApplicableDecision(){
+	public Decision toDecision(){
 		return result;
 	}
 }
