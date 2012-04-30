@@ -155,6 +155,11 @@ class DefaultResolverRegistry implements ResolverRegistry
 			return;
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
+		if(log.isDebugEnabled()){
+			log.debug("Adding policyId=\"{}\" scoped atttribute " +
+					"resolver=\"{}\" for category=\"{}\"", 
+					new Object[]{policyId, d.getId(), d.getCategory()});
+		}
 		this.scopedAttributeResolvers.put(policyId, r);
 		this.attributeResolversById.put(d.getId(), r);
 	}
@@ -332,12 +337,13 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 */
 	private String getCurrentIdentifier(EvaluationContext context)
 	{
+		Preconditions.checkArgument(context != null);
 		Policy currentPolicy = context.getCurrentPolicy();
 		if(currentPolicy == null){
 			PolicySet currentPolicySet = context.getCurrentPolicySet();
 			return currentPolicySet != null?currentPolicySet.getId():null;
 		}
-		return (currentPolicy != null)?currentPolicy.getId():null;		
+		return currentPolicy.getId();		
 	}
 
 	@Override

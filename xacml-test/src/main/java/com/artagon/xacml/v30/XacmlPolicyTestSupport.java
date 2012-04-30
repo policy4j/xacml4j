@@ -66,6 +66,8 @@ public class XacmlPolicyTestSupport {
 		RequestContext req = getXacml30Request(xacmlRequestResource);
 		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
 		ResponseContext resp = pdp.decide(req);
+		log.debug("Expected xacml 30 respone=\"{}\"", expectedResponse);
+		log.debug("Received xacml 30 respone=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
 	}
 	
