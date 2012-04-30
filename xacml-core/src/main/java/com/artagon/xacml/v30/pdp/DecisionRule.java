@@ -10,9 +10,9 @@ package com.artagon.xacml.v30.pdp;
 public interface DecisionRule extends PolicyElement
 {
 	/**
-	 * Gets decision identifier
+	 * Gets decision rule identifier
 	 * 
-	 * @return decision identifier
+	 * @return decision rule identifier
 	 */
 	String getId();
 	

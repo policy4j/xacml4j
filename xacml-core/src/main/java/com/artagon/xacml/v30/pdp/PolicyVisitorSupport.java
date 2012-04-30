@@ -206,55 +206,7 @@ public class PolicyVisitorSupport implements PolicyVisitor
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void visitEnter(CombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(CombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(RuleCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(RuleCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(PolicyCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(PolicyCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitEnter(PolicySetCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitLeave(PolicySetCombinerParameters p) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void visitEnter(PolicyIssuer p) {
 		// TODO Auto-generated method stub

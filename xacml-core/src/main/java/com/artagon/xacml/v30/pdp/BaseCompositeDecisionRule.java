@@ -1,13 +1,14 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.math.BigInteger;
 import java.util.Collection;
-import java.util.Collections;
 
 import com.artagon.xacml.v30.Version;
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * A base class for composite decision rule. A composite decision
@@ -19,63 +20,17 @@ import com.google.common.base.Objects.ToStringHelper;
 abstract class BaseCompositeDecisionRule extends BaseDecisionRule 
 	implements CompositeDecisionRule, Versionable
 {
-	protected String id;
 	protected Version version;
-	private PolicyIssuer policyIssuer;
-	private BigInteger maxDelegationDepth;
+	private PolicyIssuer issuer;
+	private Integer maxDelegationDepth;
+	private Multimap<String, CombinerParameter> combinerParameters;
 	
-	/**
-	 * Constructs composite decision rule
-	 * 
-	 * @param id a rule identifier
-	 * @param target a rule target
-	 * @param adviceExpressions a rule advice 
-	 * expressions
-	 * @param obligationExpressions a rule obligation 
-	 * expressions
-	 */
-	protected BaseCompositeDecisionRule(
-			String id,
-			Version version,
-			String description,
-			Target target,
-			Condition condition,
-			PolicyIssuer issuer,
-			BigInteger maxDelegationDepth,
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
-		super(description, target, condition, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(id, 
-				"Composite decision rule id can not be null");
-		Preconditions.checkNotNull(version, 
-				"Composite decision rule version can not be null");
-		this.id = id;
-		this.version = version;
-	}
-	
-	protected BaseCompositeDecisionRule(
-			String id, 
-			Version version,
-			Target target,
-			Condition condition,
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
-		this(id, version, null, target, 
-				condition, null, null, adviceExpressions, obligationExpressions);
-	}
-	
-	protected BaseCompositeDecisionRule(
-			String id, 
-			Version version,
-			Target target){
-		this(id, version, null, target, null, null, null,
-				Collections.<AdviceExpression>emptyList(), 
-				Collections.<ObligationExpression>emptyList());
-	}
-	
-	@Override
-	public String getId(){
-		return id;
+	protected BaseCompositeDecisionRule(BaseCompositeDecisionRuleBuilder<?> b){
+		super(b);
+		this.version = b.version;
+		this.maxDelegationDepth = b.maxDelegationDepth;
+		this.issuer = b.issuer;
+		this.combinerParameters = ImmutableListMultimap.copyOf(b.combinerParameters);
 	}
 	
 	@Override
@@ -84,19 +39,44 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 	
 	/**
-	 * Gets this composite rule issuer
-	 * @return {@link PolicyIssuer}
+	 * Gets this rule issuer attributes
+	 * 
+	 * @return this rule issuer attributes
 	 */
-	public PolicyIssuer getPolicyIssuer(){
-		return policyIssuer;
+	public PolicyIssuer getIssuer(){
+		return issuer;
 	}
 	
-	public BigInteger getMaxDelegationDepth(){
+	/**
+	 * Gets composite decision rule combiner parameter
+	 * 
+	 * @param name a parameter name
+	 * @return a collection of parameters
+	 */
+	public Collection<CombinerParameter> getCombinerParam(String name){
+		return combinerParameters.get(name);
+	}
+	
+	/**
+	 * Gets composite decision rule combiner parameters
+	 * 
+	 * @return a collection of parameters
+	 */
+	public Collection<CombinerParameter> getCombinerParams(){
+		return combinerParameters.values();
+	}
+	
+	/**
+	 * Gets limits the depth of delegation which is authorized by this policy
+	 * 
+	 * @return max delegation depth
+	 */
+	public Integer getMaxDelegationDepth(){
 		return maxDelegationDepth;
 	}
 	
 	public boolean isTrusted(){
-		return (policyIssuer == null);
+		return (issuer == null);
 	}
 	
 	/**
@@ -130,9 +110,10 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 	
 	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
-		b.add("id", id);
 		b.add("version", version);
-		b.add("issuer", policyIssuer);
+		b.add("issuer", issuer);
+		b.add("maxDelegationDepth", maxDelegationDepth);
+		b.add("combinerParameters", combinerParameters);
 		super._addProperties(b);
 		return b;
 	}
@@ -140,6 +121,50 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	public abstract static class BaseCompositeDecisionRuleBuilder<T extends BaseCompositeDecisionRuleBuilder<?>> 
 		extends BaseDecisionRuleBuilder<T>
 	{
+		protected Version version;
+		protected Integer maxDelegationDepth;
+		protected PolicyIssuer issuer;
+		protected Multimap<String, CombinerParameter> combinerParameters = LinkedHashMultimap.create();
 		
+		protected BaseCompositeDecisionRuleBuilder(String ruleId) {
+			super(ruleId);
+			this.version = Version.parse("1.0");
+		}
+		
+		public T withVersion(Version version){
+			Preconditions.checkNotNull(version, "Version can't be null");
+			this.version = version;
+			return getThis();
+		}
+		
+		public T withCombinerParam(CombinerParameter p){
+			Preconditions.checkNotNull(p);
+			this.combinerParameters.put(p.getName(), p);
+			return getThis();
+		}
+		
+		public T withCombinerParams(Iterable<CombinerParameter> params){
+			Preconditions.checkNotNull(params);
+			for(CombinerParameter p : params){
+				withCombinerParam(p);
+			}
+			return getThis();
+		}
+		
+		public T withVersion(String version){
+			return withVersion(Version.parse(version));
+		}
+		
+		public T withIssuer(PolicyIssuer issuer){
+			this.issuer = issuer;
+			return getThis();
+		}
+		
+		public T withMaxDelegationDepth(Integer maxDelegationdepth)
+		{
+			Preconditions.checkArgument(maxDelegationdepth == null || maxDelegationdepth >= 0);
+			this.maxDelegationDepth = maxDelegationdepth;
+			return getThis();
+		}
 	}
 }

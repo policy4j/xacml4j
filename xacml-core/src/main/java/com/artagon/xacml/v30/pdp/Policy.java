@@ -1,164 +1,59 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 public class Policy extends BaseCompositeDecisionRule 
 	implements PolicyElement
 {
-	
 	private PolicyDefaults policyDefaults;
-	private List<Rule> rules;
 	private Map<String, VariableDefinition> variableDefinitions;
-	private DecisionCombiningAlgorithm<Rule> combine;
-	
-//	private CombinerParameters combinerParameters;
-//	private Map<String, RuleCombinerParameters> ruleCombinerParameters;
-	
+	private List<Rule> rules;
+	private DecisionCombiningAlgorithm<Rule> combine;	
+	private Map<String, Multimap<String, CombinerParameter>> ruleCombingingParameters;
 	
 	/**
 	 * A reference to itself
 	 */
 	private PolicyIDReference reference;
 	
-	/**
-	 * Creates policy with a given identifier, target, variables.
-	 * decision combining algorithm, rules and advice and obligation
-	 * expressions
-	 * 
-	 * @param policyId a policy identifier
-	 * @param version a policy version
-	 * @param policyDefaults a policy defaults
-	 * @param target a policy target
-	 * @param variables a policy variable definitions
-	 * @param combine a policy rules combine algorithm
-	 * @param rules a policy rules
-	 * @param adviceExpressions an advice expressions
-	 * @param obligationExpressions an obligation expressions
-	 */
-	public Policy(
-			String policyId,
-			Version version,
-			String description,
-			PolicyDefaults policyDefaults,
-			Target target, 
-			Condition condition,
-			PolicyIssuer issuer,
-			BigInteger maxDelehgationDepth,
-			Collection<VariableDefinition> variables,
-			Collection<CombinerParameters> combinerParameters,
-			Collection<RuleCombinerParameters> ruleCombinerParameters,
-			DecisionCombiningAlgorithm<Rule> combine,
-			Collection<Rule> rules, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions) 
-	{
-		super(policyId, version, description, 
-				target, condition, issuer, maxDelehgationDepth, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(combine);
-		this.rules = (rules != null)?ImmutableList.copyOf(rules):ImmutableList.<Rule>of();
-		this.combine = combine;
-		this.reference = new PolicyIDReference(policyId, version);
-		this.policyDefaults = policyDefaults;
-		if(variables != null){
-			this.variableDefinitions = Maps.uniqueIndex
-					(variables, new Function<VariableDefinition, String>(){
-				@Override
-				public String apply(VariableDefinition from) {
-					return from.getVariableId();
-				}
-			});
+	private Policy(PolicyBuilder b){
+		super(b);
+		Preconditions.checkNotNull(b.combiningAlgorithm, 
+				"Rule decision combining algorithm must be specified");
+		this.combine = b.combiningAlgorithm;
+		this.policyDefaults = b.policyDefaults;
+		this.reference = new PolicyIDReference(b.id, b.version);
+		this.rules = ImmutableList.copyOf(b.rules);
+		this.variableDefinitions = Maps.uniqueIndex(b.variables,
+				new Function<VariableDefinition, String>(){
+					@Override
+					public String apply(VariableDefinition from) {
+						return from.getVariableId();
+					}});
+		for(Entry<String, Multimap<String, CombinerParameter>> p : b.ruleCombinerParameters.entrySet()){
+			ruleCombingingParameters.put(p.getKey(), ImmutableListMultimap.copyOf(p.getValue()));
 		}
 	}
 	
-	public Policy(
-			String policyId,
-			Version version,
-			String description,
-			PolicyDefaults policyDefaults,
-			Target target, 
-			Collection<VariableDefinition> variables,
-			DecisionCombiningAlgorithm<Rule> combine,
-			Collection<Rule> rules, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions) 
-	{
-		this(policyId, version, description, policyDefaults, 
-				target, null, null, null, variables, 
-				Collections.<CombinerParameters>emptyList(), 
-				Collections.<RuleCombinerParameters>emptyList(),
-				combine, rules, adviceExpressions, obligationExpressions);
-	}
-	
-	/**
-	 * Constructs policy with a given identifier,
-	 * version, combining algorithm and rules
-	 * @param policyId a policy identifier
-	 * @param version a policy version
-	 * @param combine a rules combining algorithm
-	 * @param rules a collection of rules
-	 * @param advice a collection of advice expressions
-	 * @param obligations a collection of 
-	 * obligation expressions
-	 */
-	public Policy(
-			String policyId, 
-			Version version,
-			DecisionCombiningAlgorithm<Rule> combine,
-			Collection<Rule> rules, 
-			Collection<AdviceExpression> advice,
-			Collection<ObligationExpression> obligations) 
-	{
-		this(policyId, 
-				version,
-				null,
-				null,
-				null, 
-				Collections.<VariableDefinition>emptyList(),
-				combine,
-				rules,
-				advice,
-				obligations);
-	}
-	
-	/**
-	 * Constructs policy with a given identifier,
-	 * version, combining algorithm and rules
-	 * @param policyId a policy identifier
-	 * @param version a policy version
-	 * @param combine a rules combining algorithm
-	 * @param rules an array of rules
-	 */
-	public Policy(
-			String policyId, 
-			Version version,
-			DecisionCombiningAlgorithm<Rule> combine,
-			Rule ...rules) 
-	{
-		this(policyId, version, combine,
-				Arrays.asList(rules),
-				Collections.<AdviceExpression>emptyList(),
-				Collections.<ObligationExpression>emptyList());
-	}
-	
-	
-	public static Builder builder(){
-		return new Builder();
+	public static PolicyBuilder builder(String policyId){
+		return new PolicyBuilder(policyId);
 	}
 		
 	/**
@@ -170,6 +65,16 @@ public class Policy extends BaseCompositeDecisionRule
 		return policyDefaults;
 	}
 
+	public Collection<CombinerParameter> getRuleCombinerParams(String ruleId){
+		Multimap<String, CombinerParameter> p = ruleCombingingParameters.get(ruleId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
+	}
+	
+	public Collection<CombinerParameter> getRuleCombinerParam(String ruleId, String name){
+		Multimap<String, CombinerParameter> p = ruleCombingingParameters.get(ruleId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
+	}
+	
 	/**
 	 * Gets policy rule combining algorithm
 	 * 
@@ -180,26 +85,6 @@ public class Policy extends BaseCompositeDecisionRule
 	}
 	
 	/**
-	 * A rule combining algorithm parameters
-	 * 
-	 * @return {@link CombinerParameters} or <code>null</code>
-	 * if no parameters are specified
-	 */
-	public CombinerParameters getCombinerParameter(String name) {
-		throw new UnsupportedOperationException();
-	}
-	
-	/**
-	 * A rule combining algorithm parameters
-	 * 
-	 * @return {@link CombinerParameters} or <code>null</code>
-	 * if no parameters are specified
-	 */
-	public RuleCombinerParameters getRuleCombinerParameter(String ruleId, String name) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
 	 * Gets policy variable definitions
 	 * 
 	 * @return a collection of {@link VariableDefinition} instances
@@ -208,6 +93,7 @@ public class Policy extends BaseCompositeDecisionRule
 		return variableDefinitions.values();
 	}
 	
+	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}
@@ -294,12 +180,6 @@ public class Policy extends BaseCompositeDecisionRule
 		if(getTarget() != null){
 			getTarget().accept(v);
 		}
-//		if(combinerParameters != null){
-//			combinerParameters.accept(v);
-//		}
-//		if(ruleCombinerParameters != null){
-//			ruleCombinerParameters.accept(v);
-//		}
 		for(VariableDefinition var : variableDefinitions.values()){
 			var.accept(v);
 		}
@@ -377,104 +257,98 @@ public class Policy extends BaseCompositeDecisionRule
 		.toString();
 	}
 	
-	public final static class Builder extends BaseDecisionRuleBuilder<Builder>
+	public final static class PolicyBuilder extends BaseCompositeDecisionRuleBuilder<PolicyBuilder>
 	{
-		private Version version;
 		private DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
 		private Collection<VariableDefinition> variables = new LinkedList<VariableDefinition>();
 		private PolicyDefaults policyDefaults;
-		private PolicyIssuer policyIssuer;
-		private BigInteger maxDelegationDepth;
+
 		private Collection<Rule> rules = new LinkedList<Rule>();
-		private Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
-		private Collection<RuleCombinerParameters> ruleCombinerParameters = new LinkedList<RuleCombinerParameters>();
+		private Map<String, Multimap<String, CombinerParameter>> ruleCombinerParameters = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
 		
-		private Builder(){
+		public PolicyBuilder(String policyId){
+			super(policyId);
 		}
 		
-		public Builder withIssuer(PolicyIssuer issuer){
-			Preconditions.checkNotNull(issuer);
-			this.policyIssuer = issuer;
-			return this;
-		}
-		
-		public Builder withoutIssuer(){
-			this.policyIssuer = null;
-			return this;
-		}
-		
-		public Builder withVersion(Version v){
-			Preconditions.checkNotNull(v);
-			this.version = v;
-			return this;
-		}
-		
-		public Builder withVersion(String v){
-			return withVersion(Version.parse(v));
-		}
-				
-		public Builder withCombinerParameters(CombinerParameters p){
+		public PolicyBuilder withRuleCombinerParameter(String ruleId, CombinerParameter p){
+			Preconditions.checkNotNull(ruleId);
 			Preconditions.checkNotNull(p);
-			this.combinerParameters.add(p);
+			Multimap<String, CombinerParameter> params = ruleCombinerParameters.get(ruleId);
+			if(params == null){
+				params = LinkedHashMultimap.create();
+				ruleCombinerParameters.put(ruleId, params);
+			}
+			params.put(p.getName(), p);
 			return this;
 		}
 		
-		public Builder withoutCombinerParameters(){
-			this.combinerParameters.clear();
+		public PolicyBuilder withRuleCombinerParameters(String ruleId, Iterable<CombinerParameter> params){
+			Preconditions.checkNotNull(ruleId);
+			Preconditions.checkNotNull(params);
+			for(CombinerParameter p : params){
+				withRuleCombinerParameter(ruleId, p);
+			}
 			return this;
 		}
 		
-		public Builder withRuleCombinerParameters(RuleCombinerParameters p){
-			Preconditions.checkNotNull(p);
-			this.ruleCombinerParameters.add(p);
-			return this;
-		}
-		
-		public Builder withoutRuleCombinerParameters(){
+		public PolicyBuilder withoutRuleCombinerParameters(){
 			this.ruleCombinerParameters.clear();
 			return this;
 		}
 		
-		public Builder withDefaults(PolicyDefaults defaults){
-			Preconditions.checkNotNull(defaults);
+		public PolicyBuilder withDefaults(PolicyDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
 		
-		public Builder withoutDefaults(){
+		public PolicyBuilder withoutDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
 		
-		public Builder withVariable(VariableDefinition var){
+		public PolicyBuilder withVariables(Iterable<VariableDefinition> vars){
+			for (VariableDefinition var : vars) {
+				withVariable(var);
+			}
+			return this;
+		}
+		
+		public PolicyBuilder withVariable(VariableDefinition var){
 			Preconditions.checkNotNull(var);
 			this.variables.add(var);
 			return this;
 		}
 		
-		public Builder withoutVariables(){
+		public PolicyBuilder withoutVariables(){
 			this.variables.clear();
 			return this;
 		}
 		
-		public Builder withRule(Rule rule){
+		public PolicyBuilder withRule(Rule rule){
 			Preconditions.checkNotNull(rule);
 			this.rules.add(rule);
 			return this;
 		}
 		
-		public Builder withRule(Rule.Builder b){
+		public PolicyBuilder withRule(Rule.Builder b){
 			Preconditions.checkNotNull(b);
 			this.rules.add(b.build());
 			return this;
 		}
 		
-		public Builder withoutRules(){
+		public PolicyBuilder withRules(Iterable<Rule> rules){
+			for(Rule rule : rules) {
+				withRule(rule);
+			}
+			return this;
+		}
+		
+		public PolicyBuilder withoutRules(){
 			this.rules.clear();
 			return this;
 		}
 		
-		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
+		public PolicyBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
 		{
 			Preconditions.checkNotNull(algo);
 			this.combiningAlgorithm = algo;
@@ -482,27 +356,12 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 
 		@Override
-		protected Builder getThis() {
+		protected PolicyBuilder getThis() {
 			return this;
 		}
 		
 		public Policy create(){
-			return new Policy(
-					id, 
-					version, 
-					description, 
-					policyDefaults, 
-					target, 
-					condition,
-					policyIssuer,
-					maxDelegationDepth,
-					variables, 
-					combinerParameters,
-					ruleCombinerParameters,
-					combiningAlgorithm,
-					rules, 
-					adviceExpressions, 
-					obligationExpressions);
+			return new Policy(this);
 		}
 	}
 }

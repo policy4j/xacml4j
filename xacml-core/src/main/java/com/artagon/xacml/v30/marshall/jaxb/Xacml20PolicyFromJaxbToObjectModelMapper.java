@@ -43,15 +43,12 @@ import org.oasis.xacml.v20.jaxb.policy.VariableReferenceType;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshallerSupport;
-import com.artagon.xacml.v30.pdp.AdviceExpression;
 import com.artagon.xacml.v30.pdp.Apply;
 import com.artagon.xacml.v30.pdp.AttributeAssignmentExpression;
 import com.artagon.xacml.v30.pdp.AttributeDesignator;
 import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeSelector;
-import com.artagon.xacml.v30.pdp.CombinerParameters;
 import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.Condition;
 import com.artagon.xacml.v30.pdp.Effect;
@@ -62,11 +59,9 @@ import com.artagon.xacml.v30.pdp.MatchAllOf;
 import com.artagon.xacml.v30.pdp.MatchAnyOf;
 import com.artagon.xacml.v30.pdp.ObligationExpression;
 import com.artagon.xacml.v30.pdp.Policy;
-import com.artagon.xacml.v30.pdp.PolicyCombinerParameters;
 import com.artagon.xacml.v30.pdp.PolicyDefaults;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
 import com.artagon.xacml.v30.pdp.PolicySet;
-import com.artagon.xacml.v30.pdp.PolicySetCombinerParameters;
 import com.artagon.xacml.v30.pdp.PolicySetDefaults;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
 import com.artagon.xacml.v30.pdp.Rule;
@@ -125,22 +120,18 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	{
 		try{
 			VariableManager<JAXBElement<?>> m = getVariables(p);
-			Collection<ObligationExpression> obligations = getObligations(p.getObligations());
-			PolicyDefaults policyDefaults = createPolicyDefaults(p.getPolicyDefaults());
-			Target target = create(p.getTarget());
 			Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
-			Collection<Rule> rules = getRules(p, m);
-			return new Policy(
-					p.getPolicyId(), 
-					Version.parse(p.getVersion()), 
-					p.getDescription(), 
-					policyDefaults, 
-					target, 
-					variableDefinitions.values(),
-					createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()),
-					rules, 
-					Collections.<AdviceExpression> emptyList(),
-					obligations);
+			return Policy
+					.builder(p.getPolicyId())
+					.withDescription(p.getDescription())
+					.withVersion(p.getVersion())
+					.withDefaults(createPolicyDefaults(p.getPolicyDefaults()))
+					.withTarget(create(p.getTarget()))
+					.withCombiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
+					.withRules(getRules(p, m))
+					.withVariables(variableDefinitions.values())
+					.withObligations(getObligations(p.getObligations()))
+					.create();
 		}catch(XacmlSyntaxException e){
 			throw e;
 		}catch(IllegalArgumentException e){
@@ -152,29 +143,16 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	{
 		try
 		{
-			Collection<ObligationExpression> obligations = getObligations(p.getObligations()); 
-			PolicySetDefaults policySetDefaults = createPolicySetDefaults(p.getPolicySetDefaults());
-			Collection<CompositeDecisionRule> policies = getPolicies(p);
-			Collection<CombinerParameters> combinerParams = new LinkedList<CombinerParameters>();
-			Collection<PolicyCombinerParameters> policyCombinerParams = new LinkedList<PolicyCombinerParameters>();
-			Collection<PolicySetCombinerParameters> policySetCombinerParams = new LinkedList<PolicySetCombinerParameters>();
-			Target target = create(p.getTarget());
-			return new PolicySet(
-					p.getPolicySetId(), 
-					Version.parse(p.getVersion()), 
-					p.getDescription(), 
-					policySetDefaults, 
-					target,
-					null,
-					null,
-					null,
-					combinerParams, 
-					policyCombinerParams,
-					policySetCombinerParams,
-					createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()), 
-					policies, 
-					Collections.<AdviceExpression> emptyList(),
-					obligations);
+			return PolicySet
+					.builder(p.getPolicySetId())
+					.withVersion(p.getVersion())
+					.withDescription(p.getDescription())
+					.withTarget(create(p.getTarget()))
+					.withDefaults(createPolicySetDefaults(p.getPolicySetDefaults()))
+					.withCombiningAlgorithm(createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()))
+					.withObligations(getObligations(p.getObligations()))
+					.withCompositeDecisionRules(getPolicies(p))
+					.create();
 		}catch(XacmlSyntaxException e){
 			throw e;
 		}catch(Exception e){

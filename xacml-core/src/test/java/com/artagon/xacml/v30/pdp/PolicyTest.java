@@ -55,9 +55,8 @@ public class PolicyTest
 		this.denyObligationAttributeExp = c.createMock(Expression.class);
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 		
-		this.policy = Policy.builder()
+		this.policy = Policy.builder("TestPolicy")
 				.withVersion("1.0")
-				.withId("TestPolicy")
 				.withTarget(target)
 				.withRule(c.createMock(Rule.class))
 				.withCombiningAlgorithm(combingingAlg)
@@ -78,6 +77,17 @@ public class PolicyTest
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);
 		this.context = new RootEvaluationContext(true, 0, referenceResolver, handler);
+	}
+	
+	@Test
+	public void testPolicyBuilder()
+	{
+		Policy p = Policy
+				.builder("testId")
+				.withVersion("1.0.1")
+				.withCombiningAlgorithm(combingingAlg)
+				.withTarget(Target.builder())
+				.create();
 	}
 	
 	@Test

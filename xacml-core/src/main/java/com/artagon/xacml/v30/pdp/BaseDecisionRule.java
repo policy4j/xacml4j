@@ -1,7 +1,6 @@
 package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import org.slf4j.Logger;
@@ -16,8 +15,9 @@ import com.google.common.collect.Iterables;
 
 abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 {
-	protected final Logger log = LoggerFactory.getLogger(getClass());
+	protected static final Logger log = LoggerFactory.getLogger(BaseDecisionRule.class);
 	
+	protected String id;
 	private String description;
 	private Target target;
 	protected Condition condition;
@@ -36,11 +36,14 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	 * obligation expressions
 	 */
 	protected BaseDecisionRule( 
+			String ruleId,
 			String description,
 			Target target, 
 			Condition condition,
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
+		Preconditions.checkNotNull(ruleId);
+		this.id = ruleId;
 		this.description = description;
 		this.target = target;
 		this.condition = condition;
@@ -52,27 +55,17 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	
 	protected BaseDecisionRule( 
 			BaseDecisionRuleBuilder<?> b){
+		this.id = b.id;
 		this.description = b.description;
 		this.target = b.target;
 		this.condition = b.condition;
-		this.adviceExpressions = (b.adviceExpressions != null)?
-				ImmutableList.copyOf(b.adviceExpressions):ImmutableList.<AdviceExpression>of();
-		this.obligationExpressions = (b.obligationExpressions != null)?
-				ImmutableList.copyOf(b.obligationExpressions):ImmutableList.<ObligationExpression>of();
+		this.adviceExpressions = ImmutableList.copyOf(b.adviceExpressions);
+		this.obligationExpressions = ImmutableList.copyOf(b.obligationExpressions);
 	}
 	
-	protected BaseDecisionRule(
-			Target target, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
-		this(null, target, null, adviceExpressions, obligationExpressions);
-	}
-	
-	protected BaseDecisionRule(
-			Target target){
-		this(null, target, null,
-				Collections.<AdviceExpression>emptyList(), 
-				Collections.<ObligationExpression>emptyList());
+	@Override
+	public String getId(){
+		return id;
 	}
 	
 	/**
@@ -95,7 +88,7 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	}
 	
 	/**
-	 * Gets descion rule condition
+	 * Gets decision rule condition
 	 * 
 	 * @return {@link Condition} or <code>null</code>
 	 * implying always <code>true</code> condition
@@ -249,7 +242,8 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	}
 	
 	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
-		return b.add("description", description)
+		return b.add("id", id)
+				.add("description", description)
 				.add("target", target)
 				.add("condition", condition)
 				.add("adviceExp", adviceExpressions)
@@ -269,35 +263,31 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 		protected Collection<AdviceExpression> adviceExpressions = new LinkedList<AdviceExpression>();
 		protected Collection<ObligationExpression> obligationExpressions = new LinkedList<ObligationExpression>();
 		
-		protected BaseDecisionRuleBuilder(){
+		protected BaseDecisionRuleBuilder(String ruleId){
+			Preconditions.checkNotNull(ruleId, 
+					"Decision rule identifier can't be null");
+			this.id = ruleId;
 		}
 		
 		public T withId(String id){
-			Preconditions.checkNotNull(id);
+			Preconditions.checkNotNull(id, 
+					"Decision rule identifier can't be null");
 			this.id = id;
 			return getThis();
 		}
 		
 		public T withDescription(String desc){
-			Preconditions.checkNotNull(desc);
 			this.description = desc;
 			return getThis();
 		}
 		
 		public T withTarget(Target target){
-			Preconditions.checkNotNull(target);
 			this.target = target;
 			return getThis();
 		}
 		
-		public T withTarget(Condition condition){
-			Preconditions.checkNotNull(condition);
-			this.condition = condition;
-			return getThis();
-		}
-		
-		
 		public T withCondition(Expression predicate){
+			Preconditions.checkNotNull(predicate);
 			this.condition = new Condition(predicate);
 			return getThis();
 		}

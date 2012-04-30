@@ -2,14 +2,12 @@ package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.XPathVersion;
 
-
-
 public class PolicySetDefaults extends BaseCompositeDecisionRuleDefaults
 {
 	public PolicySetDefaults(XPathVersion version){
 		super(version);
 	}
-
+	
 	public static PolicySetDefaults create(Object... objects)
 			throws XacmlSyntaxException {
 		if(objects != null && 

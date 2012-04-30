@@ -32,10 +32,6 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfMatch(context, d);
-			if(log.isDebugEnabled()){
-				log.debug("Decision=\"{}\" " +
-						"evaluation result=\"{}\"", d, decision);
-			}
 			if(decision == Decision.DENY){
 				return decision;
 			}

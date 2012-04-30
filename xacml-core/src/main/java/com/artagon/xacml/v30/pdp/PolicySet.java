@@ -1,19 +1,19 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 public class PolicySet extends 
 	BaseCompositeDecisionRule implements PolicyElement
@@ -21,116 +21,94 @@ public class PolicySet extends
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
-	private Collection<CombinerParameters> combinerParameters;
-	private	Map<String, PolicySetCombinerParameters> policySetCombinerParameters;
-	private Map<String, PolicyCombinerParameters> policyCombinerParameters;
+	
+	private Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
+	private	Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
+	
 	private PolicySetIDReference reference;
 	
-	/**
-	 * Constructs a policy set with a given identifier
-	 * target, decision combining algorithm, policies,
-	 * advice and obligation expressions
-	 * 
-	 * @param id a policy set identifier
-	 * @param target a policy set target
-	 * @param combinerParameters a combiner parameters
-	 * @param policyCombinerParameters a policy combiner parameters
-	 * @param policySetCombinerParameters a policy set combiner parameters
-	 * @param combine a policy combining algorithm
-	 * @param policies a collection of policies or policy sets
-	 * @param adviceExpressions a collection of advice expressions
-	 * @param obligationExpressions a collection of obligation expressions
-	 */
-	public PolicySet(
-			String id, 
-			Version version,
-			String description,
-			PolicySetDefaults policySetDefaults,
-			Target target, 
-			Condition condition,
-			PolicyIssuer issuer,
-			BigInteger maxDelegationDepth,
-			Collection<CombinerParameters> combinerParameters,
-			Collection<PolicyCombinerParameters> policyCombinerParameters,
-			Collection<PolicySetCombinerParameters> policySetCombinerParameters,
-			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
-			Collection<CompositeDecisionRule> policies, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions) 
+	private PolicySet(PolicySetBuilder b)
 	{
-		super(id, version, description, target, 
-				condition,
-				issuer, maxDelegationDepth, 
-				adviceExpressions, obligationExpressions);
-		checkNotNull(combine, "Policy set combining algorithm must be specified");
-		Preconditions.checkNotNull(combinerParameters);
-		Preconditions.checkNotNull(policyCombinerParameters);
-		Preconditions.checkNotNull(policySetCombinerParameters);
+		super(b);
 		this.reference = new PolicySetIDReference(id, version);
-		this.combine = combine;
-		this.decisionRules = ImmutableList.copyOf(policies);
-		this.policySetDefaults = policySetDefaults;
-		this.combinerParameters = new ArrayList<CombinerParameters>(combinerParameters);
-		this.policyCombinerParameters = new HashMap<String, PolicyCombinerParameters>(
-				 policyCombinerParameters.size());
-		for(PolicyCombinerParameters p : policyCombinerParameters){
-			Preconditions.checkState(
-					this.policyCombinerParameters.put(p.getPolicyId(), p) == null);
+		this.policySetDefaults = b.policyDefaults;
+		Preconditions.checkNotNull(b.combiningAlgorithm, 
+				"Policy decision combinging algorithm must be specified");
+		this.combine = b.combiningAlgorithm;
+		this.decisionRules = ImmutableList.copyOf(b.policies);
+		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicySets = ImmutableMap.builder();
+		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicies = ImmutableMap.builder();
+		for(Entry<String, Multimap<String, CombinerParameter>> e : b.policySetCombinerParams.entrySet()){
+			forPolicySets.put(e.getKey(), ImmutableListMultimap.copyOf(e.getValue()));
 		}
-		this.policySetCombinerParameters = new HashMap<String, PolicySetCombinerParameters>(policySetCombinerParameters.size());
-		for(PolicySetCombinerParameters p : policySetCombinerParameters){
-			Preconditions.checkState(
-					this.policySetCombinerParameters.put(p.getPolicySetId(), p) == null);
+		for(Entry<String, Multimap<String, CombinerParameter>> e : b.policyCombinerParams.entrySet()){
+			forPolicies.put(e.getKey(), ImmutableListMultimap.copyOf(e.getValue()));
 		}
-	}
-
-	public PolicySet(
-			String id, 
-			Version version,
-			String description,
-			Target target, 
-			DecisionCombiningAlgorithm<CompositeDecisionRule> combine, 
-			Collection<CompositeDecisionRule> policies, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions) 
-	{
-		this(id, version, 
-				description, 
-				null,
-				target,
-				null,
-				null,
-				null, 
-				Collections.<CombinerParameters>emptyList(), 
-				Collections.<PolicyCombinerParameters>emptyList(), 
-				Collections.<PolicySetCombinerParameters>emptyList(), 
-				combine, policies, adviceExpressions, obligationExpressions);
-	}
-	
-	public PolicySet(
-			String id, 
-			Version version, 
-			DecisionCombiningAlgorithm<CompositeDecisionRule> combine) 
-	{
-		this(id, version, null, null, null, null, null, null,
-				Collections.<CombinerParameters>emptyList(), 
-				Collections.<PolicyCombinerParameters>emptyList(), 
-				Collections.<PolicySetCombinerParameters>emptyList(), 
-				combine, 
-				Collections.<CompositeDecisionRule>emptyList(), 
-				Collections.<AdviceExpression>emptyList(), 
-				Collections.<ObligationExpression>emptyList());
-	}
-	
-	public static Builder builder(){
-		return new Builder();
-	}
+		this.policySetCombinerParameters = forPolicySets.build();
+		this.policyCombinerParameters = forPolicies.build();
 		
+	}
+	
+	public static PolicySetBuilder builder(String id){
+		return new PolicySetBuilder(id);
+	}
+	
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}
 
+	/**
+	 * Gets all combiner parameters for a given policy identifier
+	 * 
+	 * @param policyId a policy identifier
+	 * @return a collection of combiner parameters
+	 */
+	public Collection<CombinerParameter> getPolicyCombinerParams(String policyId){
+		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
+	}
+	
+	/**
+	 * Gets policy combiner parameter with a given name
+	 * 
+	 * @param policyId a policy identifier
+	 * @param name a parameter name
+	 * @return a collection of combiner parameters
+	 */
+	public Collection<CombinerParameter> getPolicyCombinerParam(String policyId, String name){
+		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
+	}
+	
+	/**
+	 * Gets all combiner parameters for a given policy set identifier
+	 * 
+	 * @param policySetId a policy set identifier
+	 * @return a collection of combiner parameters
+	 */
+	public Collection<CombinerParameter> getPolicySetCombinerParams(String policySetId){
+		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policySetId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
+	}
+	
+	/**
+	 * Gets policy set combiner parameter with a given name
+	 * 
+	 * @param policySetId a policy set identifier
+	 * @param name a parameter name
+	 * @return a collection of combiner parameters
+	 */
+	public Collection<CombinerParameter> getPolicySetCombinerParam(String policyId, String name){
+		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policyId);
+		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
+	}
+	
+	/**
+	 * Gets policy set decision combining algorithm
+	 * 
+	 * @return a decision combining algorithm
+	 */
 	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
 		return combine;
 	}
@@ -142,18 +120,6 @@ public class PolicySet extends
 	 */
 	public PolicySetDefaults getDefaults() {
 		return policySetDefaults;
-	}
-	
-	public Collection<CombinerParameters> getCombinerParameters() {
-		return combinerParameters;
-	}
-
-	public Collection<PolicyCombinerParameters> getPolicyCombinerParameters() {
-		return policyCombinerParameters.values();
-	}
-
-	public Collection<PolicySetCombinerParameters> getPolicySetCombinerParameters() {
-		return policySetCombinerParameters.values();
 	}
 	
 	/**
@@ -226,21 +192,6 @@ public class PolicySet extends
 		if(policySetDefaults != null){
 			policySetDefaults.accept(v);
 		}
-		if(combinerParameters != null){
-			for(CombinerParameters p :combinerParameters){
-				p.accept(v);
-			}
-		}
-		if(policyCombinerParameters != null){
-			for(PolicyCombinerParameters p : policyCombinerParameters.values()){
-				p.accept(v);
-			}
-		}
-		if(policySetCombinerParameters != null){
-			for(PolicySetCombinerParameters p : policySetCombinerParameters.values()){
-				p.accept(v);
-			}
-		}
 		for(DecisionRule decision : decisionRules){
 			decision.accept(v);
 		}
@@ -289,123 +240,103 @@ public class PolicySet extends
 		}
 	}
 	
-	public final static class Builder extends BaseDecisionRuleBuilder<Builder>
+	public final static class PolicySetBuilder extends BaseCompositeDecisionRuleBuilder<PolicySetBuilder>
 	{
-		private Version version;
 		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
-		private BigInteger maxDelegationDepth;
-		private PolicyIssuer policyIssuer;
 		private Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
-		private Collection<CombinerParameters> combinerParameters = new LinkedList<CombinerParameters>();
-		private Collection<PolicyCombinerParameters> policyCombinerParameters = new LinkedList<PolicyCombinerParameters>();
-		private Collection<PolicySetCombinerParameters> policySetCombinerParameters = new LinkedList<PolicySetCombinerParameters>();
 		
-		private Builder(){
+		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
+		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
+		
+		private PolicySetBuilder(String policySetId){
+			super(policySetId);
 		}
 		
-		public Builder withIssuer(PolicyIssuer issuer){
-			Preconditions.checkNotNull(issuer);
-			this.policyIssuer = issuer;
-			return this;
-		}
 		
-		public Builder withoutIssuer(){
-			this.policyIssuer = null;
-			return this;
-		}
-		
-	
-		public Builder withVersion(Version v){
-			Preconditions.checkNotNull(v);
-			this.version = v;
-			return this;
-		}
-		
-		public Builder withVersion(String v){
-			return withVersion(Version.parse(v));
-		}
-		
-		public Builder withCombinerParameters(CombinerParameters p){
+		public PolicySetBuilder withPolicyCombinerParameter(String policyId, CombinerParameter p){
+			Preconditions.checkNotNull(policyId);
 			Preconditions.checkNotNull(p);
-			this.combinerParameters.add(p);
+			Multimap<String, CombinerParameter> params = policyCombinerParams.get(policyId);
+			if(params == null){
+				params = LinkedHashMultimap.create();
+				policyCombinerParams.put(policyId, params);
+			}
+			params.put(p.getName(), p);
 			return this;
 		}
 		
-		public Builder withoutCombinerParameters(){
-			this.combinerParameters.clear();
-			return this;
-		}
-		
-		public Builder withPolicyCombinerParameters(PolicyCombinerParameters p){
+		public PolicySetBuilder withPolicySetCombinerParameter(String policySetId, CombinerParameter p){
+			Preconditions.checkNotNull(policySetId);
 			Preconditions.checkNotNull(p);
-			this.policyCombinerParameters.add(p);
+			Multimap<String, CombinerParameter> params = policySetCombinerParams.get(policySetId);
+			if(params == null){
+				params = LinkedHashMultimap.create();
+				policySetCombinerParams.put(policySetId, params);
+			}
+			params.put(p.getName(), p);
 			return this;
 		}
 		
-		public Builder withoutPolicyCombinerParameters(){
-			this.policyCombinerParameters.clear();
+		public PolicySetBuilder withoutPolicyCombinerParameters(){
+			this.policyCombinerParams.clear();
 			return this;
 		}
 		
-		public Builder withPolicyCombinerParameters(PolicySetCombinerParameters p){
-			Preconditions.checkNotNull(p);
-			this.policySetCombinerParameters.add(p);
+		public PolicySetBuilder withoutPolicySetCombinerParameters(){
+			this.policySetCombinerParams.clear();
 			return this;
 		}
 		
-		public Builder withoutPolicySetCombinerParameters(){
-			this.policySetCombinerParameters.clear();
-			return this;
-		}
-		
-		public Builder withDefaults(PolicySetDefaults defaults){
-			Preconditions.checkNotNull(defaults);
+		public PolicySetBuilder withDefaults(PolicySetDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
 		
-		public Builder withoutDefaults(){
+		public PolicySetBuilder withoutDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
 		
-		public Builder withCompositeDecisionRules(Iterable<CompositeDecisionRule> rules){
-			Preconditions.checkNotNull(rules);
-			Iterables.addAll(policies, rules);
-			return this;
-			
-		}
-		public Builder withPolicy(Policy rule){
-			Preconditions.checkNotNull(rule);
-			this.policies.add(rule);
+		public PolicySetBuilder withPolicy(Policy p){
+			Preconditions.checkNotNull(p);
+			this.policies.add(p);
 			return this;
 		}
 		
-		public Builder withPolicySet(PolicySet rule){
-			Preconditions.checkNotNull(rule);
-			this.policies.add(rule);
+		public PolicySetBuilder withPolicySet(PolicySet p){
+			Preconditions.checkNotNull(p);
+			this.policies.add(p);
 			return this;
 		}
 		
-		public Builder withPolicy(Policy.Builder b){
+		public PolicySetBuilder withCompositeDecisionRules(Iterable<CompositeDecisionRule> rules)
+		{
+			for(CompositeDecisionRule r : rules){
+				Preconditions.checkNotNull(r);
+				this.policies.add(r);
+			}
+			return this;
+		}
+		
+		public PolicySetBuilder withPolicy(Policy.PolicyBuilder b){
 			Preconditions.checkNotNull(b);
 			this.policies.add(b.create());
 			return this;
 		}
 		
-		public Builder withPolicy(PolicySet.Builder b){
+		public PolicySetBuilder withPolicy(PolicySet.PolicySetBuilder b){
 			Preconditions.checkNotNull(b);
-			this.policies.add(b.build());
+			this.policies.add(b.create());
 			return this;
 		}
 		
-		public Builder withoutRules(){
+		public PolicySetBuilder withoutRules(){
 			this.policies.clear();
 			return this;
 		}
 		
-		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> algo)
+		public PolicySetBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> algo)
 		{
 			Preconditions.checkNotNull(algo);
 			this.combiningAlgorithm = algo;
@@ -413,28 +344,12 @@ public class PolicySet extends
 		}
 
 		@Override
-		protected Builder getThis() {
+		protected PolicySetBuilder getThis() {
 			return this;
 		}
 		
-		public PolicySet build(){
-			return new PolicySet(
-					id, 
-					version, 
-					description, 
-					policyDefaults, 
-					target,  
-					condition,
-					policyIssuer,
-					maxDelegationDepth,
-					combinerParameters,
-					policyCombinerParameters,
-					policySetCombinerParameters,
-					combiningAlgorithm,
-					policies, 
-					adviceExpressions, 
-					obligationExpressions);
+		public PolicySet create(){
+			return new PolicySet(this);
 		}
 	}
-
 }

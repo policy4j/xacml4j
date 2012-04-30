@@ -196,6 +196,7 @@ public abstract class AbstractPolicyRepository
 	@Override
 	public final boolean add(CompositeDecisionRule r) 
 	{
+		Preconditions.checkNotNull(r);
 		r.accept(new DecisionAlgorithmValidatingVisitor());
 		//r.accept(new FunctionValidatingVisitor());
 		if(r instanceof Policy){

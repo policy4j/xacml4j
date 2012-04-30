@@ -3,8 +3,6 @@ package com.artagon.xacml.v30.pdp;
 import com.artagon.xacml.v30.XPathVersion;
 
 
-
-
 public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults
 {
 	public PolicyDefaults(XPathVersion version) {

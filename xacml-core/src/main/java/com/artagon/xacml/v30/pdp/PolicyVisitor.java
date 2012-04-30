@@ -57,19 +57,6 @@ public interface PolicyVisitor
 	void visitEnter(CombinerParameter p);
 	void visitLeave(CombinerParameter p);
 	
-	
-	void visitEnter(CombinerParameters p);
-	void visitLeave(CombinerParameters p);
-	
-	void visitEnter(RuleCombinerParameters p);
-	void visitLeave(RuleCombinerParameters p);
-	
-	void visitEnter(PolicyCombinerParameters p);
-	void visitLeave(PolicyCombinerParameters p);
-	
-	void visitEnter(PolicySetCombinerParameters p);
-	void visitLeave(PolicySetCombinerParameters p);
-	
 	void visitEnter(PolicyIssuer p);
 	void visitLeave(PolicyIssuer p);
 }

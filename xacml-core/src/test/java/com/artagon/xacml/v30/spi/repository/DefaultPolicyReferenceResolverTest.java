@@ -32,8 +32,15 @@ public class DefaultPolicyReferenceResolverTest
 	{
 		this.c = createControl();
 		this.repository = c.createMock(PolicyRepository.class);
-		this.p1v1 = new Policy("id", Version.parse("1.0.0"), c.createMock(DecisionCombiningAlgorithm.class));
-		this.ps1v1 = new PolicySet("id", Version.parse("1.2.1"), c.createMock(DecisionCombiningAlgorithm.class));
+		this.p1v1 = Policy
+				.builder("id")
+				.withVersion("1.0.0")
+				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
+				.create();
+		this.ps1v1 = PolicySet
+				.builder("id")
+				.withVersion("1.2.1")
+				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).create();
 	
 	}
 	

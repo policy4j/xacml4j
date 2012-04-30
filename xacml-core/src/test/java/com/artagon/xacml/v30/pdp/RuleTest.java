@@ -54,7 +54,7 @@ public class RuleTest
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 		
 		this.builder = Rule
-				.builder()
+				.builder("TestRuleId", Effect.DENY)
 				.withTarget(target)
 				.withCondition(condition)
 				.withObligation(ObligationExpression

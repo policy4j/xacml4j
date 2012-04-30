@@ -51,11 +51,12 @@ public class InMemoryPolicyRepositoryTest
 		this.algorithm = c.createMock(DecisionCombiningAlgorithm.class);
 		this.functions = c.createMock(FunctionProvider.class);
 		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
-		this.p1v1 = new Policy("id1", Version.parse("1"), algorithm);
-		this.p1v2 = new Policy("id1", Version.parse("1.1"), algorithm);
-		this.p1v2DiffInstance = new Policy("id1", Version.parse("1.1"), algorithm);
-		this.p1v3 = new Policy("id1", Version.parse("1.2.1"), algorithm);
-		this.p1v4 = new Policy("id1", Version.parse("2.0.1"), algorithm);
+		
+		this.p1v1 = Policy.builder("id1").withVersion("1").withCombiningAlgorithm(algorithm).create(); 
+		this.p1v2 = Policy.builder("id1").withVersion("1.1").withCombiningAlgorithm(algorithm).create(); 
+		this.p1v2DiffInstance =  Policy.builder("id1").withVersion("1.1").withCombiningAlgorithm(algorithm).create();
+		this.p1v3 =  Policy.builder("id1").withVersion("1.2.1").withCombiningAlgorithm(algorithm).create();
+		this.p1v4 =  Policy.builder("id1").withVersion("2.0.1").withCombiningAlgorithm(algorithm).create();
 		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
 		this.l = c.createMock(PolicyRepositoryListener.class);
 		this.r.addPolicyRepositoryListener(l);

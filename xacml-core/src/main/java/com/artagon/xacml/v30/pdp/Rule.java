@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
-	private String ruleId;
 	private Effect effect;
 	
 	/**
@@ -25,18 +24,16 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			Effect effect, 
 			Collection<AdviceExpression> adviceExpressions,
 			Collection<ObligationExpression> obligationExpressions){
-		super(description, target, condition, adviceExpressions, obligationExpressions);
+		super(ruleId, description, target, condition, adviceExpressions, obligationExpressions);
 		Preconditions.checkNotNull(ruleId, 
 				"Rule identifier can't be null");
 		Preconditions.checkNotNull(effect, 
 				"Rule effect can't be null");
-		this.ruleId = ruleId;
 		this.effect = effect;
 	}
 	
 	private Rule(Rule.Builder b){
 		super(b);
-		this.ruleId = b.id;
 		this.effect = b.effect;
 	}
 	
@@ -60,13 +57,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 				Collections.<ObligationExpression>emptyList());
 	}
 	
-	public static Builder builder(){
-		return new Builder();
-	}
-	
-	@Override
-	public String getId(){
-		return ruleId;
+	public static Builder builder(String ruleId, Effect effect){
+		return new Builder(ruleId, effect);
 	}
 	
 	/**
@@ -171,11 +163,14 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	{
 		private Effect effect;
 		
-		private Builder(){
+		private Builder(String ruleId, Effect effect){
+			super(ruleId);
+			Preconditions.checkNotNull(effect, "Rule effect can't be null");
+			this.effect = effect;
 		}
 
 		public Builder withEffect(Effect effect){
-			Preconditions.checkNotNull(effect);
+			Preconditions.checkNotNull(effect, "Rule effect can't be null");
 			this.effect = effect;
 			return this;
 		}
