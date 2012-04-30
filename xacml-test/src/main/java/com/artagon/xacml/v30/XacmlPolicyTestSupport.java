@@ -71,7 +71,8 @@ public class XacmlPolicyTestSupport {
 		assertResponse(expectedResponse, resp);
 	}
 	
-	protected void verifyXacml20Response(PolicyDecisionPoint pdp, 
+	protected void verifyXacml20Response(
+			PolicyDecisionPoint pdp, 
 			String xacmlRequestResource,
 			String expectedXacmlResponseResource) throws Exception {
 		RequestContext req = getXacml20Request(xacmlRequestResource);
@@ -287,6 +288,11 @@ public class XacmlPolicyTestSupport {
 		}
 		
 		public XacmlTestPdpBuilder withResolver(Object resolver){
+			pipBuilder.withResolver(resolver);
+			return this;
+		}
+		
+		public XacmlTestPdpBuilder withResolver(String policyId, Object resolver){
 			pipBuilder.withResolver(resolver);
 			return this;
 		}

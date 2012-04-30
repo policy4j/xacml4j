@@ -22,7 +22,7 @@ public class ExpectedAttributeResolverBuilder
 	}
 	
 	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category, String issuer){
-		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder.builder(id, "Test Resolver " + id, issuer, category));
+		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder.builder(id, "ExpectedAttributeResolver " + id, issuer, category));
 	}
 	
 	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category){
