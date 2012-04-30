@@ -140,18 +140,18 @@ public class Policy extends BaseCompositeDecisionRule
 	{
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(isEvaluationContextValid(context));
-		Decision decision = combine.combine(context, rules);
-		if(log.isDebugEnabled()) {
-			log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
-					"evaluation result=\"{}\"", 
-					new Object[] { getId(), combine.getId(), decision });
-		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
 		if(log.isDebugEnabled()) {
 			log.debug("Policy id=\"{}\" condition " +
 					"evaluation result=\"{}\"", id, result);
 		}
 		if(result == ConditionResult.TRUE){
+			Decision decision = combine.combine(context, rules);
+			if(log.isDebugEnabled()) {
+				log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
+						"evaluation result=\"{}\"", 
+						new Object[] { getId(), combine.getId(), decision });
+			}  
 			if(!decision.isIndeterminate() || 
 					decision != Decision.NOT_APPLICABLE){
 				decision = evaluateAdvicesAndObligations(context, decision);
@@ -160,6 +160,7 @@ public class Policy extends BaseCompositeDecisionRule
 			return decision;
 		}
 		if(result == ConditionResult.INDETERMINATE){
+			Decision decision = combine.combine(context, rules);
 			switch(decision){
 				case DENY : return Decision.INDETERMINATE_D;
 				case PERMIT : return Decision.INDETERMINATE_P;

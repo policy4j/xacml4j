@@ -1,8 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement

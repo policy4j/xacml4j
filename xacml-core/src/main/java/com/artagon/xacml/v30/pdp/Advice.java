@@ -21,6 +21,10 @@ public class Advice extends BaseDecisionRuleResponse
 		return new Builder(id, appliesTo);
 	}
 	
+	public static Builder builder(String id){
+		return new Builder(id, null);
+	}
+	
 	@Override
 	public boolean equals(Object o){
 		if(o == null){

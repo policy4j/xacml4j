@@ -27,7 +27,8 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	
 	protected BaseDecisionRule( 
 			BaseDecisionRuleBuilder<?> b){
-		Preconditions.checkNotNull(b.id, "Decision rule identifier can not be null");
+		Preconditions.checkNotNull(b.id, 
+				"Decision rule identifier can not be null");
 		this.id = b.id;
 		this.description = b.description;
 		this.target = b.target;
