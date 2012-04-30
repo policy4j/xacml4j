@@ -167,6 +167,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private void addAndMergeAdvice(Decision d, Advice a)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Adding advice=\"{}\" for a decision=\"{}\"", a, d);
+		}
 		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
 		Map<String, Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
 		Advice other = advices.get(a.getId());
@@ -179,6 +182,9 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	
 	private void addAndMergeObligation(Decision d, Obligation a)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Adding obligation=\"{}\" for a decision=\"{}\"", a, d);
+		}
 		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
 		Map<String, Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
 		Obligation other = obligations.get(a.getId());

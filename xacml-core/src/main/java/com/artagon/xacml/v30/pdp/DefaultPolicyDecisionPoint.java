@@ -8,6 +8,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
@@ -15,6 +18,7 @@ import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
@@ -28,6 +32,8 @@ import com.yammer.metrics.core.TimerContext;
 public final class DefaultPolicyDecisionPoint 
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {	
+	
+	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 	
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
@@ -133,9 +139,15 @@ public final class DefaultPolicyDecisionPoint
 					.resolvedAttr(resolvedAttributes)
 					.create();		
 		}
+		Iterable<Advice> advice = context.getMatchingAdvices(decision);
+		Iterable<Obligation> obligation = context.getMatchingObligations(decision);
+		if(log.isDebugEnabled()){
+			log.debug("Maching {} advices={}", decision, Iterables.toString(advice));
+			log.debug("Maching {} obligations={}", decision, Iterables.toString(obligation));
+		}
 		Result.Builder b = Result.createOk(decision)
-				.advice(context.getMatchingAdvices(decision))
-				.obligation(context.getMatchingObligations(decision))
+				.advice(advice)
+				.obligation(obligation)
 				.includeInResultAttr(includeInResult)
 				.resolvedAttr(resolvedAttributes);
 		if(returnPolicyIdList){

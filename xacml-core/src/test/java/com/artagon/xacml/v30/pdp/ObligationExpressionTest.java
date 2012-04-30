@@ -43,11 +43,16 @@ public class ObligationExpressionTest
 	public void testCreateObligationExpression() throws XacmlException
 	{
 		AttributeAssignmentExpression attrExp = c.createMock(AttributeAssignmentExpression.class);
+		
+		expect(attrExp.getAttributeId()).andReturn("attributeId");
+		c.replay();
 		ObligationExpression exp = new ObligationExpression("test",Effect.DENY, Collections.singletonList(attrExp));
+		
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
 		assertEquals("test", exp.getId());
+		c.verify();
 	}
 	
 	@Test

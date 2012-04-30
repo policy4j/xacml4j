@@ -6,9 +6,8 @@ import java.util.LinkedList;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 /**
  * A base class for XACML Obligation or Advice expressions
@@ -32,7 +31,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	 * @param effect an effect
 	 * @param attributeExpressions a collection of {@link AttributeAssignmentExpression}
 	 */
-	public BaseDecisionRuleResponseExpression(
+	protected BaseDecisionRuleResponseExpression(
 			String id, 
 			Effect effect, 
 			Collection<AttributeAssignmentExpression> attributeExpressions) 
@@ -45,14 +44,14 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 				"Decision rule expression attribute expressions can not be null");
 		this.id = id;
 		this.effect = effect;
-		this.attributeExpressions = LinkedHashMultimap.create();
+		ImmutableSetMultimap.Builder<String, AttributeAssignmentExpression> b = ImmutableSetMultimap.builder();
 		for(AttributeAssignmentExpression exp : attributeExpressions){
 			Preconditions.checkArgument(exp != null, 
 					"Decision rule response expression with id=\"%s\" " +
 					"attribute assignment expression can not be null", id);
-			this.attributeExpressions.put(exp.getAttributeId(), exp);
+			b.put(exp.getAttributeId(), exp);
 		}
-		this.attributeExpressions = Multimaps.unmodifiableMultimap(this.attributeExpressions);
+		this.attributeExpressions = b.build();
 		this.hashCode = Objects.hashCode(id, effect, attributeExpressions);
 	}
 	

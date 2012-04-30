@@ -5,9 +5,9 @@ import java.util.Collection;
 import com.artagon.xacml.v30.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 
 public abstract class BaseDecisionRuleResponse
@@ -27,7 +27,7 @@ public abstract class BaseDecisionRuleResponse
 			BaseBuilder<?> b) 
 	{
 		this.id = b.id;
-		this.attributes = Multimaps.unmodifiableMultimap(b.attributes);
+		this.attributes = ImmutableSetMultimap.copyOf(b.attributes);
 		this.hashCode = Objects.hashCode(id, attributes);
 	}
 	
@@ -71,7 +71,7 @@ public abstract class BaseDecisionRuleResponse
 	{
 		protected String id;
 		protected Effect appliesTo;
-		protected Multimap<String, AttributeAssignment> attributes = LinkedListMultimap.create();
+		protected Multimap<String, AttributeAssignment> attributes = LinkedHashMultimap.create();
 		
 		protected BaseBuilder(String id, Effect effect){
 			Preconditions.checkNotNull(id);
