@@ -188,19 +188,18 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	public PolicySet createPolicySet(PolicySetType p) throws XacmlSyntaxException 
 	{	
 		VariableManager<JAXBElement<?>> m = new VariableManager<JAXBElement<?>>(ImmutableMap.<String, JAXBElement<?>>of());
-		Map<String, VariableDefinition> variableDefinitions = m.getVariableDefinitions();
-		Condition condition  = create(p.getCondition(), m);
-					
 		return PolicySet
 				.builder(p.getPolicySetId())
 				.withVersion(p.getVersion())
-				.withCondition(condition)
+				.withCondition(create(p.getCondition(), m))
 				.withDescription(p.getDescription())
 				.withIssuer(createPolicyIssuer(p.getPolicyIssuer()))
 				.withTarget(create(p.getTarget()))
 				.withDefaults(createPolicySetDefaults(p.getPolicySetDefaults()))
 				.withCombiningAlgorithm(createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()))
 				.withCompositeDecisionRules(createPolicies(p))
+				.withObligations(getExpressions(p.getObligationExpressions(), m))
+				.withAdvices(getExpressions(p.getAdviceExpressions(), m))
 				.create();
 	}
 	

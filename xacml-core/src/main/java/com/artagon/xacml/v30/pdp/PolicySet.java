@@ -160,11 +160,6 @@ public class PolicySet extends
 				decision = evaluateAdvicesAndObligations(context, decision);
 				context.addPolicySetEvaluationResult(this, decision);
 			}
-			if(log.isDebugEnabled()) {
-				log.debug("PolicySet id=\"{}\" combining algorithm=\"{}\" " +
-						"evaluation result=\"{}\"", 
-						new Object[] { getId(), combine.getId(), decision });
-			}
 			return decision;
 		}
 		if(result == ConditionResult.INDETERMINATE){
