@@ -24,37 +24,10 @@ abstract class BaseDecisionRule extends XacmlObject implements DecisionRule
 	protected Collection<AdviceExpression> adviceExpressions;
 	protected Collection<ObligationExpression> obligationExpressions;
 	
-	/**
-	 * Constructs base decision with a given identifier
-	 * 
-	 * @param id an decision identifier
-	 * @param description a decision rule description
-	 * @param target a a decision target
-	 * @param adviceExpressions a decision 
-	 * advice expressions
-	 * @param obligationExpressions a decision 
-	 * obligation expressions
-	 */
-	protected BaseDecisionRule( 
-			String ruleId,
-			String description,
-			Target target, 
-			Condition condition,
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
-		Preconditions.checkNotNull(ruleId);
-		this.id = ruleId;
-		this.description = description;
-		this.target = target;
-		this.condition = condition;
-		this.adviceExpressions = (adviceExpressions != null)?
-				ImmutableList.copyOf(adviceExpressions):ImmutableList.<AdviceExpression>of();
-		this.obligationExpressions = (obligationExpressions != null)?
-				ImmutableList.copyOf(obligationExpressions):ImmutableList.<ObligationExpression>of();
-	}
 	
 	protected BaseDecisionRule( 
 			BaseDecisionRuleBuilder<?> b){
+		Preconditions.checkNotNull(b.id, "Decision rule identifier can not be null");
 		this.id = b.id;
 		this.description = b.description;
 		this.target = b.target;

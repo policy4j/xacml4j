@@ -148,7 +148,7 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
 		if(log.isDebugEnabled()) {
-			log.debug("PolicySet id=\"{}\" condition " +
+			log.debug("Policy id=\"{}\" condition " +
 					"evaluation result=\"{}\"", id, result);
 		}
 		if(result == ConditionResult.TRUE){

@@ -9,54 +9,11 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private Effect effect;
 	
-	/**
-	 * Constructs rule with a given identifier, 
-	 * condition and effect.
-	 * 
-	 * @param ruleId a rule unique identifier
-	 * @param condition a condition
-	 * @param effect a rule effect
-	 */
-	public Rule(String ruleId, 
-			String description,
-			Target target,
-			Condition condition, 
-			Effect effect, 
-			Collection<AdviceExpression> adviceExpressions,
-			Collection<ObligationExpression> obligationExpressions){
-		super(ruleId, description, target, condition, adviceExpressions, obligationExpressions);
-		Preconditions.checkNotNull(ruleId, 
-				"Rule identifier can't be null");
-		Preconditions.checkNotNull(effect, 
-				"Rule effect can't be null");
-		this.effect = effect;
-	}
-	
 	private Rule(Rule.Builder b){
 		super(b);
 		this.effect = b.effect;
 	}
-	
-	/**
-	 * Constructs rule instance with a given identifier
-	 * target, condition and effect
-	 * @param ruleId a rule identifier
-	 * @param description
-	 * @param target a rule target
-	 * @param condition a rule condition
-	 * @param effect a rule effect
-	 */
-	public Rule(
-			String ruleId, 
-			String description,
-			Target target,
-			Condition condition, 
-			Effect effect){
-		this(ruleId, description, target, condition, effect, 
-				Collections.<AdviceExpression>emptyList(), 
-				Collections.<ObligationExpression>emptyList());
-	}
-	
+
 	public static Builder builder(String ruleId, Effect effect){
 		return new Builder(ruleId, effect);
 	}

@@ -252,8 +252,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 
 	private Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
 		throws XacmlSyntaxException 
-	{
-		Effect effect = r.getEffect() == EffectType.DENY ? Effect.DENY: Effect.PERMIT;
+	{ 
 		Collection<ObligationExpression> obligations = new LinkedList<ObligationExpression>();
 		Collection<AdviceExpression> advice = new LinkedList<AdviceExpression>();
 		ObligationExpressionsType obligExps = r.getObligationExpressions();
@@ -268,9 +267,14 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				advice.add(create(exp, variables));
 			}
 		}
-		return new Rule(r.getRuleId(), r.getDescription(), 
-				create(r.getTarget()), 
-				create(r.getCondition(), variables), effect, advice, obligations);
+		return Rule
+				.builder(r.getRuleId(), (r.getEffect() == EffectType.DENY ? Effect.DENY: Effect.PERMIT))
+				.withDescription(r.getDescription())
+				.withTarget(create(r.getTarget()))
+				.withObligations(obligations)
+				.withAdvices(advice)
+				.withCondition(create(r.getCondition(), variables))
+				.build();
 	}
 	
 	private Condition create(ConditionType c, VariableManager<JAXBElement<?>> variables)

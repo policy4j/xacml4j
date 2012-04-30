@@ -408,12 +408,12 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	private Rule create(RuleType r, VariableManager<JAXBElement<?>> variables)
 			throws XacmlSyntaxException 
 	{
-		return new Rule(
-				r.getRuleId(), 
-				r.getDescription(), 
-				create(r.getTarget()), 
-				create(r.getCondition(), variables), 
-				v20ToV30EffectnMapping.get(r.getEffect()));
+		return Rule
+				.builder(r.getRuleId(), v20ToV30EffectnMapping.get(r.getEffect()))
+				.withDescription(r.getDescription())
+				.withTarget(create(r.getTarget()))
+				.withCondition(create(r.getCondition(), variables))
+				.build();
 	}
 
 	private Condition create(ConditionType c, 
