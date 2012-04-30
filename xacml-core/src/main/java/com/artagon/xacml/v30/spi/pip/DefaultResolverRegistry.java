@@ -337,7 +337,6 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 */
 	private String getCurrentIdentifier(EvaluationContext context)
 	{
-		Preconditions.checkArgument(context != null);
 		Policy currentPolicy = context.getCurrentPolicy();
 		if(currentPolicy == null){
 			PolicySet currentPolicySet = context.getCurrentPolicySet();
