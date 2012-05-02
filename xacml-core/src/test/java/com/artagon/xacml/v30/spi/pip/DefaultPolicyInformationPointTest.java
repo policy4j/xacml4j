@@ -63,7 +63,7 @@ public class DefaultPolicyInformationPointTest
 				.cache(30)
 				.attribute("testAttributeId1", StringType.STRING)
 				.attribute("testAttributeId2", IntegerType.INTEGER)
-				.designatorRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
+				.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
 				.build();
 
 		this.descriptor1WithIssuer = AttributeResolverDescriptorBuilder
@@ -72,7 +72,7 @@ public class DefaultPolicyInformationPointTest
 				.cache(40)
 				.attribute("testAttributeId1", StringType.STRING)
 				.attribute("testAttributeId2", IntegerType.INTEGER)
-				.designatorRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
+				.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
 				.build();
 
 		
@@ -82,7 +82,7 @@ public class DefaultPolicyInformationPointTest
 		.noCache()
 		.attribute("testAttributeId1", StringType.STRING)
 		.attribute("testAttributeId2", IntegerType.INTEGER)
-		.designatorRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
+		.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", StringType.STRING, null)
 		.build();
 	}
 	

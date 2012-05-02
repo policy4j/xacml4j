@@ -55,7 +55,7 @@ public final class AttributeResolverDescriptorBuilder
 		return new AttributeResolverDescriptorBuilder(id, name, issuer, category);
 	}
 	
-	public AttributeResolverDescriptorBuilder designatorRef(AttributeCategory category, 
+	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category, 
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(new AttributeDesignatorKey(
@@ -63,7 +63,13 @@ public final class AttributeResolverDescriptorBuilder
 		return this;
 	}
 	
-	public AttributeResolverDescriptorBuilder selectorRef(
+	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category, 
+			String attributeId, AttributeExpType dataType)
+	{
+		return designatorKeyRef(category, attributeId, dataType, null);
+	}
+	
+	public AttributeResolverDescriptorBuilder selectorKeyRef(
 			AttributeCategory category, 
 			String xpath, AttributeExpType dataType, 
 			String contextAttributeId)

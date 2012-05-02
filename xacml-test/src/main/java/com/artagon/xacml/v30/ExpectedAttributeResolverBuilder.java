@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.AttributeResolver;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
@@ -29,6 +30,12 @@ public class ExpectedAttributeResolverBuilder
 		return builder(id, category, null);
 	}
 	
+	public ExpectedAttributeResolverBuilder withDesignatorKeyRef(
+			AttributeCategory category, String attributeId, AttributeExpType type)
+	{
+		b.designatorKeyRef(category, attributeId, type);
+		return this;
+	}
 	public ExpectedAttributeResolverBuilder withAttributeValue(String id, AttributeExp value){
 		b.attribute(id, value.getType());
 		this.values.put(id, value.toBag());
