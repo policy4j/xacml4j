@@ -73,6 +73,7 @@ public class ObligationExpressionTest
 		Obligation obligation = exp.evaluate(context);
 		Iterator<AttributeAssignment> it = obligation.getAttributes().iterator();
 		AttributeAssignment a0 = it.next();
+		assertEquals(Effect.DENY, obligation.getFullfillOn());
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
