@@ -19,7 +19,7 @@ public abstract class BaseDecisionRuleResponse
 	 * For compatibility with XACML 2.0
 	 * response context
 	 */
-	private Effect effect;
+	private Effect fullfillOn;
 	
 	private transient int hashCode;
 	
@@ -29,6 +29,7 @@ public abstract class BaseDecisionRuleResponse
 		this.id = b.id;
 		this.attributes = ImmutableSetMultimap.copyOf(b.attributes);
 		this.hashCode = Objects.hashCode(id, attributes);
+		this.fullfillOn = b.fullFillOn;
 	}
 	
 	public final String getId(){
@@ -41,9 +42,8 @@ public abstract class BaseDecisionRuleResponse
 	 * 
 	 * @return {@link Effect}
 	 */
-	@Deprecated
 	public Effect getFullfillOn(){
-		return effect;
+		return fullfillOn;
 	}
 	
 	public final Collection<AttributeAssignment> getAttributes(){
@@ -70,13 +70,13 @@ public abstract class BaseDecisionRuleResponse
 	public abstract static class BaseBuilder <T extends BaseBuilder<?>>
 	{
 		protected String id;
-		protected Effect appliesTo;
+		protected Effect fullFillOn;
 		protected Multimap<String, AttributeAssignment> attributes = LinkedHashMultimap.create();
 		
-		protected BaseBuilder(String id, Effect effect){
+		protected BaseBuilder(String id, Effect fullFillOn){
 			Preconditions.checkNotNull(id);
 			this.id = id;
-			this.appliesTo = effect;
+			this.fullFillOn = fullFillOn;
 		}
 		
 		public final T attribute(AttributeAssignment attr){

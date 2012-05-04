@@ -17,8 +17,8 @@ public class Advice extends BaseDecisionRuleResponse
 		super(b);
 	}
 	
-	public static Builder builder(String id, Effect appliesTo){
-		return new Builder(id, appliesTo);
+	public static Builder builder(String id, Effect fullFillOn){
+		return new Builder(id, fullFillOn);
 	}
 	
 	public static Builder builder(String id){
@@ -48,7 +48,6 @@ public class Advice extends BaseDecisionRuleResponse
 	 * @param a an advice
 	 * @return a new advice instance with combined attributes
 	 */
-	@SuppressWarnings("deprecation")
 	public Advice merge(Advice a)
 	{
 		Preconditions.checkArgument(Objects.equal(getFullfillOn(), a.getFullfillOn()));
