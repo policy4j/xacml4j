@@ -24,23 +24,22 @@ import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.Attribute;
 import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 
-public class MultipleResourcesViaRepeatingAttributesHandlerTest 
+public class MultipleResourcesViaRepeatingAttributesHandlerTest
 {
 	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
-	
+
 	@Before
 	public void init(){
 		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaRepeatingAttributesHandler();
 	}
-	
+
 	@Test
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
@@ -48,33 +47,27 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
-		
+
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
 		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
 		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
 		Attributes resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
-		
+
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
 		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
 		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
-		
-		RequestContext context = new RequestContext(false, 
+
+		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource0, resource1));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		
+
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()), 
-						Collections.<Attributes>emptyList(), 
-						Collections.<Attributes>emptyList()));
+				Result.createIndeterminateProcessingError().build());
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()),
-				Collections.<Attributes>emptyList(), 
-				Collections.<Attributes>emptyList()));
+				Result.createIndeterminateProcessingError().build());
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
@@ -91,8 +84,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
-	
-	
+
+
 	@Test
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
@@ -100,24 +93,21 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
 		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
-		
-		
+
+
 		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
 		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
 		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
 		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
-		
-		RequestContext context = new RequestContext(false, 
+
+		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource0));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		
+
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()), 
-						Collections.<Attributes>emptyList(), 
-						Collections.<Attributes>emptyList()));
-		
+				Result.createIndeterminateProcessingError().build());
+
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
@@ -127,21 +117,18 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
-	
+
 	@Test
 	public void testWithEmptyRequest()
 	{
-		RequestContext context = new RequestContext(false, 
+		RequestContext context = new RequestContext(false,
 				Collections.<Attributes>emptyList());
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		
+
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()),
-						Collections.<Attributes>emptyList(), 
-						Collections.<Attributes>emptyList()));
-		
+				Result.createIndeterminateProcessingError().build());
+
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());

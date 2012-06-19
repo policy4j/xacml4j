@@ -60,10 +60,10 @@ import com.google.common.base.Preconditions;
 public class Xacml30RequestContextFromJaxbToObjectModelMapper
 {
 	private ObjectFactory factory;
-	
+
 	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-	
+
 	static
 	{
 		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
@@ -73,17 +73,17 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
 		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
 		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-		
+
 		v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
 		v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
 		v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
 		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 	}
-		
+
 	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();
 	}
-	
+
 	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
 		Collection<Attributes> attributes = create(req.getAttributes());
@@ -93,10 +93,10 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				multiRequests.add(create(m));
 			}
 		}
-		return new RequestContext(req.isReturnPolicyIdList(), 
+		return new RequestContext(req.isReturnPolicyIdList(),
 				req.isCombinedDecision(), attributes, multiRequests, null);
 	}
-	
+
 	public ResponseType create(ResponseContext res) throws XacmlSyntaxException
 	{
 		ResponseType response = new ResponseType();
@@ -107,25 +107,23 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	public ResponseContext create(ResponseType response) throws XacmlSyntaxException {
-		Collection<Result> results = new LinkedList<Result>();
+		Preconditions.checkNotNull(response);
+		ResponseContext.Builder b = ResponseContext.newBuilder();
 		for(ResultType result : response.getResult()){
-			results.add(create(result));
+			b.result(create(result));
 		}
-
-		ResponseContext responseCtx = new ResponseContext(results);
-		return responseCtx;
+		return b.build();
 	}
 
 	private Result create(ResultType result) throws XacmlSyntaxException {
 		Decision decision = create(result.getDecision());
-		return new Result(
-				decision,
-				create(result.getStatus()),
-				createAdvices(result.getAssociatedAdvice()),
-				createObligations(result.getObligations()),
-				create(result.getAttributes()),
-				Collections.<Attributes>emptyList(),
-				create(result.getPolicyIdentifierList()));
+		return Result
+				.builder(decision, create(result.getStatus()))
+				.advice(createAdvices(result.getAssociatedAdvice()))
+				.obligation(createObligations(result.getObligations()))
+				.evaluatedPolicies(create(result.getPolicyIdentifierList()))
+				.includeInResultAttr(create(result.getAttributes()))
+				.build();
 	}
 
 	private Collection<CompositeDecisionRuleIDReference> create(
@@ -185,7 +183,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		result.setDecision(create(r.getDecision()));
 		return result;
 	}
-	
+
 	private IdReferenceType create(CompositeDecisionRuleIDReference ref)
 	{
 		IdReferenceType idRef = new IdReferenceType();
@@ -193,7 +191,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		idRef.setVersion(ref.getVersion().toString());
 		return idRef;
 	}
-	
+
 	private AttributesType create(Attributes a)
 	{
 		AttributesType attributes = new AttributesType();
@@ -204,11 +202,11 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		return attributes;
 	}
-	
+
 	private AttributeType create(Attribute a){
 		return null;
 	}
-	
+
 	private DecisionType create(Decision d){
 		DecisionType jaxbD = v30ToV20DecisionMapping.get(d);
 		Preconditions.checkState(jaxbD != null);
@@ -270,7 +268,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Obligation create(ObligationType o) throws XacmlSyntaxException {
-		
+
 		return Obligation
 				.builder(o.getObligationId())
 				.attributes(create(o.getAttributeAssignment()))
@@ -299,7 +297,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		s.setStatusDetail(create(status.getDetail()));
 		return s;
 	}
-	
+
 	private StatusCodeType create(StatusCode c)
 	{
 		if(c == null){
@@ -310,7 +308,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		code.setStatusCode(create(c.getMinorStatus()));
 		return code;
 	}
-	
+
 	private StatusDetailType create(StatusDetail d)
 	{
 		return null;
@@ -322,7 +320,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		return new StatusDetail(statusDetail.getAny());
 	}
-	
+
 	private Collection<AttributeAssignment> create(
 			Collection<AttributeAssignmentType> attributeAssignment) throws XacmlSyntaxException {
 		Collection<AttributeAssignment> attrs = new LinkedList<AttributeAssignment>();
@@ -344,16 +342,16 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return attr;
 	}
 
-	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException 
+	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException
 	{
-		AttributeExp value = create((AttributeValueType)a);	
+		AttributeExp value = create((AttributeValueType)a);
 		return new AttributeAssignment(
 				a.getAttributeId(),
 				AttributeCategories.parse(a.getCategory()),
 				a.getIssuer(),
 				value);
 	}
-	
+
 	private Collection<Attributes> create(List<AttributesType> input) throws XacmlSyntaxException {
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(AttributesType a : input){
@@ -368,10 +366,10 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		for(AttributeType a : attributes.getAttribute()){
 			attr.add(create(a));
 		}
-		return new Attributes(AttributeCategories.parse(attributes.getCategory()), 
+		return new Attributes(AttributeCategories.parse(attributes.getCategory()),
 				getContent(attributes.getContent()), attr);
 	}
-	
+
 	private Node getContent(ContentType content) throws XacmlSyntaxException
 	{
 		if(content == null){
@@ -383,7 +381,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		return (Node)o.iterator().next();
 	}
-	
+
 	private RequestReference create(RequestReferenceType m) throws XacmlSyntaxException
 	{
 		Collection<AttributesReference> references = new LinkedList<AttributesReference>();
@@ -392,28 +390,28 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		return new RequestReference(references);
 	}
-	
+
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		for(AttributeValueType v : a.getAttributeValue()){
 			values.add(create(v));
 		}
-		return new Attribute(a.getAttributeId(), 
+		return new Attribute(a.getAttributeId(),
 				a.getIssuer(), a.isIncludeInResult(), values);
 	}
-		
+
 	private AttributeExp create(
-			AttributeValueType value) 
+			AttributeValueType value)
 		throws XacmlSyntaxException
 	{
 		List<Object> content = value.getContent();
-		if(content == null || 
+		if(content == null ||
 				content.isEmpty()){
 			throw new XacmlSyntaxException(
 					"Attribute does not have content");
 		}
-		return DataTypes.createAttributeValue(value.getDataType(), 
+		return DataTypes.createAttributeValue(value.getDataType(),
 				content.iterator().next(), value.getOtherAttributes());
 	}
 }

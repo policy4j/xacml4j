@@ -1,41 +1,66 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 
-import com.google.common.base.Preconditions;
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 
-public class RequestReference extends XacmlObject
+public class RequestReference
 {
 	private Collection<AttributesReference> references;
-	
+
 	/**
 	 * Constructs request reference with given referenced attributes
-	 * 
+	 *
 	 * @param references an attribute references
 	 */
 	public RequestReference(Collection<AttributesReference> references){
-		Preconditions.checkNotNull(references);
-		this.references = new LinkedList<AttributesReference>(references);
+		this.references = ImmutableList.copyOf(references);
 	}
-	
+
 	/**
 	 * Constructs request reference with given referenced attributes
-	 * 
+	 *
 	 * @param references an attribute references
 	 */
 	public RequestReference(AttributesReference ...references){
-		this(Arrays.asList(references));
+		this.references = ImmutableList.copyOf(references);
 	}
-	
+
 	/**
 	 * Gets all referenced attributes
-	 * 
+	 *
 	 * @return collection of referenced attributes
 	 */
 	public Collection<AttributesReference> getReferencedAttributes(){
-		return Collections.unmodifiableCollection(references);
+		return references;
+	}
+
+	@Override
+	public int hashCode(){
+		return references.hashCode();
+	}
+
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("references", references)
+				.toString();
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof RequestReference)){
+			return false;
+		}
+		RequestReference r = (RequestReference)o;
+		return references.equals(r.references);
 	}
 }

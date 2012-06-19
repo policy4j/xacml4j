@@ -588,8 +588,10 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			Expression exp = parseExpression(arg, m);
 			arguments.add(exp);
 		}
-		return new Apply(
-				createFunction(apply.getFunctionId()), arguments);
+		return Apply
+				.builder(createFunction(apply.getFunctionId()))
+				.params(arguments)
+				.build();
 	}
 
 	/**

@@ -18,7 +18,10 @@ public class ResponseContextAdapter implements JsonDeserializer<ResponseContext>
 	public ResponseContext deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
 		JsonArray array = json.getAsJsonArray();
-		Collection<Result> results = context.deserialize(array, new TypeToken<Collection<Result>>(){}.getType());
-		return new ResponseContext(results);
+		Collection<Result> r = context.deserialize(array, new TypeToken<Collection<Result>>(){}.getType());
+		return ResponseContext
+				.newBuilder()
+				.results(r)
+				.build();
 	}
 }

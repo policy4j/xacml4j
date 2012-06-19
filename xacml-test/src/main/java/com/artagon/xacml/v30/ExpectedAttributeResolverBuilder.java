@@ -33,7 +33,7 @@ public class ExpectedAttributeResolverBuilder
 	public ExpectedAttributeResolverBuilder withDesignatorKeyRef(
 			AttributeCategory category, String attributeId, AttributeExpType type)
 	{
-		b.designatorKeyRef(category, attributeId, type);
+		b.requestContextKey(category, attributeId, type);
 		return this;
 	}
 	public ExpectedAttributeResolverBuilder withAttributeValue(String id, AttributeExp value){

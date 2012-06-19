@@ -19,9 +19,9 @@ import com.google.gson.JsonElement;
 public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 {
 	private Gson json;
-	
+
 	public JsonRequestContextUnmarshaller(DataTypeRegistry typesRegistry)
-	
+
 	{
 		this.json = new GsonBuilder()
 		.registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
@@ -32,7 +32,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
 		.create();
 	}
-	
+
 	@Override
 	public RequestContext unmarshal(Object source) throws XacmlSyntaxException,
 			IOException {
@@ -44,5 +44,5 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 		}
 		return null;
 	}
-	
+
 }

@@ -8,55 +8,58 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.DataTypes;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 /**
- * Condition represents a Boolean expression that refines the applicability 
- * of the rule beyond the predicates implied by its target. 
+ * Condition represents a Boolean expression that refines the applicability
+ * of the rule beyond the predicates implied by its target.
  * Therefore, it may be absent in the {@link Rule}
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class Condition extends XacmlObject implements PolicyElement
+public class Condition implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Condition.class);
-	
+
 	private Expression predicate;
 
 	/**
 	 * Constructs condition with an predicate
 	 * expression
-	 * 
+	 *
 	 * @param predicate an expression which always evaluates
 	 * to {@link BooleanExp}
 	 */
-	public Condition(Expression predicate) 
+	public Condition(Expression predicate)
 	{
-		checkNotNull(predicate, "Condition predicate can not be null");
-		checkArgument(predicate.getEvaluatesTo().equals(BOOLEAN),
+		Preconditions.checkNotNull(predicate, "Condition predicate can not be null");
+		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(BOOLEAN),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
-					"with return value type=\"%s\"", 
+					"with return value type=\"%s\"",
 					DataTypes.BOOLEAN, predicate.getEvaluatesTo());
 		this.predicate = predicate;
 	}
-	
+
 	/**
 	 * Gets condition expression predicate
-	 * 
-	 * @return {@link Expression} a condition 
+	 *
+	 * @return {@link Expression} a condition
 	 * expression predicate
 	 */
 	public Expression getExpression(){
 		return predicate;
 	}
+
 	/**
 	 * Evaluates this condition and returns instance of
 	 * {@link ConditionResult}
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @return {@link ConditionResult}
 	 */
-	public ConditionResult evaluate(EvaluationContext context) 
+	public ConditionResult evaluate(EvaluationContext context)
 	{
 		try
 		{
@@ -81,5 +84,33 @@ public class Condition extends XacmlObject implements PolicyElement
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+
+	@Override
+	public int hashCode(){
+		return predicate.hashCode();
+	}
+
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("predicate", predicate)
+				.toString();
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Condition)){
+			return false;
+		}
+		Condition c = (Condition)o;
+		return predicate.equals(c.predicate);
 	}
 }

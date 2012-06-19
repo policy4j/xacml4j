@@ -1,11 +1,11 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public abstract class BaseResolverDescriptor 
 	implements ResolverDescriptor 
@@ -36,7 +36,7 @@ public abstract class BaseResolverDescriptor
 		this.id = id;
 		this.name = name;
 		this.category = category;
-		this.keyRefs = new ArrayList<AttributeReferenceKey>(keys);
+		this.keyRefs = ImmutableList.copyOf(keys);
 		this.cacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
 	}
 	

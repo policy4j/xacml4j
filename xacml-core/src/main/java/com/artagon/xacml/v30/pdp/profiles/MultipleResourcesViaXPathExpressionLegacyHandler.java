@@ -31,7 +31,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		if(request.containsRepeatingCategories()){
 			return Collections.singleton(
 					Result.createIndeterminateSyntaxError("Found repeating categories in the request")
-							.includeInResultAttr(request.getIncludeInResultAttributes()).create());
+							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
 		}
 		Attributes resource = request.getOnlyAttributes(AttributeCategories.RESOURCE);
 		if(resource == null){
@@ -49,7 +49,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
 							XPathExpType.XPATHEXPRESSION)
 							.includeInResultAttr(request.getIncludeInResultAttributes())
-							.create());
+							.build());
 		}
 		Collection<Attributes> attributes = new LinkedList<Attributes>();
 		for(Attributes attrs : request.getAttributes())

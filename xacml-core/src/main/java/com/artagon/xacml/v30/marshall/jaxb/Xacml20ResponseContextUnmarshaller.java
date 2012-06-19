@@ -46,45 +46,45 @@ import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public class Xacml20ResponseContextUnmarshaller 
-	extends BaseJAXBUnmarshaller<ResponseContext> 
+public class Xacml20ResponseContextUnmarshaller
+	extends BaseJAXBUnmarshaller<ResponseContext>
 implements ResponseUnmarshaller
 {
 	private Mapper mapper;
-	
+
 	public Xacml20ResponseContextUnmarshaller(DataTypeRegistry dataTypes){
 		super(JAXBContextUtil.getInstance());
 		Preconditions.checkNotNull(dataTypes);
 		this.mapper = new Mapper(dataTypes);
 	}
-	
+
 	public Xacml20ResponseContextUnmarshaller(){
 		this(DataTypeRegistryBuilder.builder()
 				.withDefaultTypes()
 				.build());
 	}
-	
+
 	@Override
 	protected ResponseContext create(JAXBElement<?> jaxbInstance)
 			throws XacmlSyntaxException {
 		return mapper.create(
 				(ResponseType)jaxbInstance.getValue());
 	}
-	
+
 	static class Mapper
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
-		
+
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-		
+
 		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-		
+
 		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
-		
+
 		private DataTypeRegistry dataTypes;
-		
+
 		static
 		{
 			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
@@ -94,52 +94,55 @@ implements ResponseUnmarshaller
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-			
+
 			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
 			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
 			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
 			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-			
-			
+
+
 			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
 			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-			
+
 			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
 			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-		
+
 		}
-		
+
 		public Mapper(DataTypeRegistry dataTypes){
 			Preconditions.checkNotNull(dataTypes);
 			this.dataTypes = dataTypes;
 		}
-	
+
 		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
 		{
 			Preconditions.checkNotNull(response);
-			Collection<Result> results = new LinkedList<Result>();
+			ResponseContext.Builder b = ResponseContext.newBuilder();
 			for(ResultType result : response.getResult()){
-				results.add(create(result));
+				b.result(create(result));
 			}
-			return new ResponseContext(results);
+			return b.build();
 		}
-		
+
 		private Result create(ResultType result) throws XacmlSyntaxException
 		{
 			Preconditions.checkArgument(result.getDecision() != null);
 			Decision d = v20ToV30DecisionMapping.get(result.getDecision());
 			Status status = create(result.getStatus());
 			if(d.isIndeterminate()){
-				return new Result(d, status);
+				return Result.createIndeterminate(d, status).build();
 			}
 			Collection<Attributes> attrs = new LinkedList<Attributes>();
 			if(result.getResourceId() != null){
-				attrs.add(new Attributes(AttributeCategories.RESOURCE, 
+				attrs.add(new Attributes(AttributeCategories.RESOURCE,
 						new Attribute(RESOURCE_ID, StringType.STRING.create(result.getResourceId()))));
 			}
-			return new Result(d, status, getObligations(result), attrs);
+			return Result
+					.builder(d, create(result.getStatus()))
+					.obligation(getObligations(result))
+					.build();
 		}
-		
+
 		private Collection<Obligation> getObligations(ResultType r) throws XacmlSyntaxException
 		{
 			if(r.getObligations() == null){
@@ -154,12 +157,12 @@ implements ResponseUnmarshaller
 			}
 			return obligations;
 		}
-		
+
 		private Obligation create(ObligationType o) throws XacmlSyntaxException
 		{
 			Collection<AttributeAssignment> attrs = new LinkedList<AttributeAssignment>();
 			for(AttributeAssignmentType a : o.getAttributeAssignment()){
-				attrs.add(new AttributeAssignment(a.getAttributeId(), 
+				attrs.add(new AttributeAssignment(a.getAttributeId(),
 						createValue(a.getDataType(), a.getContent(), a.getOtherAttributes())));
 			}
 			return Obligation
@@ -167,17 +170,17 @@ implements ResponseUnmarshaller
 					.attributes(attrs)
 					.build();
 		}
-		
+
 		private Status create(StatusType status) throws XacmlSyntaxException
 		{
 			StatusDetail detail = null;
-			if(status.getStatusDetail() != null && 
+			if(status.getStatusDetail() != null &&
 					!status.getStatusDetail().getAny().isEmpty()){
 				detail =  new StatusDetail(status.getStatusDetail().getAny());
 			}
 			return new Status(create(status.getStatusCode()), status.getStatusMessage(), detail);
 		}
-		
+
 		private StatusCode create(StatusCodeType code) throws XacmlSyntaxException
 		{
 			if(code == null){
@@ -185,12 +188,12 @@ implements ResponseUnmarshaller
 			}
 			return new StatusCode(StatusCodeIds.parse(code.getValue()), create(code.getStatusCode()));
 		}
-		
-		private AttributeExp createValue(String dataTypeId, 
-				List<Object> any, Map<QName, String> other) 
+
+		private AttributeExp createValue(String dataTypeId,
+				List<Object> any, Map<QName, String> other)
 			throws XacmlSyntaxException
 		{
-			if(any == null || 
+			if(any == null ||
 					any.isEmpty()){
 				throw new RequestSyntaxException("Attribute does not have content");
 			}

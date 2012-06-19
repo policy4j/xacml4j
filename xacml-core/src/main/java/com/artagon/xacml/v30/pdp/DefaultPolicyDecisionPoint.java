@@ -18,7 +18,6 @@ import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
@@ -26,26 +25,26 @@ import com.yammer.metrics.core.TimerContext;
 
 /**
  * A default implementation of {@link PolicyDecisionPoint}
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public final class DefaultPolicyDecisionPoint 
+public final class DefaultPolicyDecisionPoint
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
-{	
-	
+{
+
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
-	
+
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
-	
+
 	private AtomicBoolean auditEnabled;
 	private AtomicBoolean cacheEnabled;
 
 	private Timer decisionTimer;
-	
+
 	public DefaultPolicyDecisionPoint(
 			String id,
-			PolicyDecisionPointContextFactory factory) 
+			PolicyDecisionPointContextFactory factory)
 		throws NotCompliantMBeanException
 	{
 		super(PolicyDecisionPointMBean.class);
@@ -57,7 +56,7 @@ public final class DefaultPolicyDecisionPoint
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
 		this.decisionTimer = Metrics.newTimer(DefaultPolicyDecisionPoint.class, "decision-stats", getId());
 	}
-	
+
 	@Override
 	public ResponseContext decide(RequestContext request)
 	{
@@ -66,21 +65,23 @@ public final class DefaultPolicyDecisionPoint
 		{
 			PolicyDecisionPointContext context = factory.createContext(this);
 			RequestContextHandler chain = context.getRequestHandlers();
-			Collection<Result> results = chain.handle(request, context);
-			return new ResponseContext(results);
+			return ResponseContext
+					.newBuilder()
+					.results(chain.handle(request, context))
+					.build();
 		}finally{
 			MDCSupport.cleanPdpContext();
 		}
 	}
-	
+
 	public String getId(){
 		return id;
 	}
-	
+
 	@Override
 	public Result requestDecision(
-			PolicyDecisionPointContext context, 
-			RequestContext request) 
+			PolicyDecisionPointContext context,
+			RequestContext request)
 	{
 		PolicyDecisionCache decisionCache = context.getDecisionCache();
 		PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
@@ -99,9 +100,9 @@ public final class DefaultPolicyDecisionPoint
 		EvaluationContext evalContext = context.createEvaluationContext(request);
 		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 		Decision decision = rootPolicy.evaluateIfMatch(rootPolicy.createContext(evalContext));
-		r = createResult(evalContext, 
-				decision, 
-				request.getIncludeInResultAttributes(), 
+		r = createResult(evalContext,
+				decision,
+				request.getIncludeInResultAttributes(),
 				getResolvedAttributes(evalContext),
 				request.isReturnPolicyIdList());
 		if(isDecisionAuditEnabled()){
@@ -109,17 +110,17 @@ public final class DefaultPolicyDecisionPoint
 		}
 		if(isDecisionCacheEnabled()){
 			decisionCache.putDecision(
-					request, r, 
+					request, r,
 					evalContext.getDecisionCacheTTL());
 		}
 		timerContext.stop();
 		return r;
 	}
-	
+
 	private Result createResult(
-			EvaluationContext context, 
-			Decision decision, 
-			Collection<Attributes> includeInResult, 
+			EvaluationContext context,
+			Decision decision,
+			Collection<Attributes> includeInResult,
 			Collection<Attributes> resolvedAttributes,
 			boolean returnPolicyIdList)
 	{
@@ -128,23 +129,19 @@ public final class DefaultPolicyDecisionPoint
 					.createOk(decision)
 					.includeInResultAttr(includeInResult)
 					.resolvedAttr(resolvedAttributes)
-					.create();
+					.build();
 		}
 		if(decision.isIndeterminate()){
 			StatusCode status = (context.getEvaluationStatus() == null)?
 					StatusCode.createProcessingError():context.getEvaluationStatus();
 			return Result
-					.createIndeterminate(status)
+					.createIndeterminate(decision, status)
 					.includeInResultAttr(includeInResult)
 					.resolvedAttr(resolvedAttributes)
-					.create();		
+					.build();
 		}
 		Iterable<Advice> advice = context.getMatchingAdvices(decision);
 		Iterable<Obligation> obligation = context.getMatchingObligations(decision);
-		if(log.isDebugEnabled()){
-			log.debug("Maching {} advices={}", decision, Iterables.toString(advice));
-			log.debug("Maching {} obligations={}", decision, Iterables.toString(obligation));
-		}
 		Result.Builder b = Result.createOk(decision)
 				.advice(advice)
 				.obligation(obligation)
@@ -154,13 +151,13 @@ public final class DefaultPolicyDecisionPoint
 			b.evaluatedPolicies(
 					context.getEvaluatedPolicies());
 		}
-		return b.create();
+		return b.build();
 	}
-	
+
 	/**
 	 * Gets all attributes from an {@link EvaluationContext} which were resolved
 	 * and not present in the original access decision request
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @return a collection of {@link Attribute} instances
 	 */
@@ -174,7 +171,7 @@ public final class DefaultPolicyDecisionPoint
 		}
 		Collection<Attributes> result = new LinkedList<Attributes>();
 		for(AttributeCategory c : attributes.keySet()){
-			
+
 			result.add(new Attributes(c, attributes.get(c)));
 		}
 		return result;
@@ -197,6 +194,6 @@ public final class DefaultPolicyDecisionPoint
 
 	@Override
 	public void setDecisionCacheEnabled(boolean enabled) {
-		this.cacheEnabled.set(enabled);		
+		this.cacheEnabled.set(enabled);
 	}
 }

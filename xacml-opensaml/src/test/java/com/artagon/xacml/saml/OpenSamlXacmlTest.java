@@ -49,16 +49,16 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 	private XACMLAuthzDecisionQueryEndpoint endpoint;
 	private PolicyDecisionPoint pdp;
 	private IMocksControl control;
-	
+
 	private static PrivateKey hboPrivate;
 	private static X509Certificate hboPublic;
 	private static XACMLAuthzDecisionQuerySigner signer;
-	
+
 	@BeforeClass
 	public static void init() throws Exception
 	{
 		DefaultBootstrap.bootstrap();
-		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");		
+		KeyStore ks = getKeyStore("PKCS12", "/hbo-dev-cert.p12", "hbo");
 		hboPublic = (X509Certificate)ks.getCertificate("1");
 		assertNotNull(hboPublic);
 		Certificate[] certs = new Certificate[]{hboPublic};
@@ -68,17 +68,17 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		KeyStore newKs = KeyStore.getInstance("PKCS12");
 		newKs.load(null, "hbo".toCharArray());
 		newKs.setEntry("hbo", new KeyStore.PrivateKeyEntry(hboPrivate,certs),  new KeyStore.PasswordProtection("hbo".toCharArray()));
-		
+
 		signer = new XACMLAuthzDecisionQuerySigner(newKs, "hbo", "hbo");
 	}
-	
+
 	@Before
 	public void testInit() throws Exception
 	{
 		this.control = EasyMock.createControl();
 		this.pdp = control.createMock(PolicyDecisionPoint.class);
 		new KeyStoreX509CredentialAdapter(getKeyStore("PKCS12", "/test-keystore.p12", "changeme"), "ping", "changeme".toCharArray());
-		
+
 		this.endpoint = new XACMLAuthzDecisionQueryEndpoint(idpConfiguration, pdp);
 	}
 
@@ -92,32 +92,40 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		OpenSamlObjectBuilder.serialize(xacmlSamlQuery, outResponse);
 		System.out.println(" Request ----- " + new String(outResponse.toByteArray()));
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
-		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminateProcessingError().create()));
+		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
+				.newBuilder()
+				.result(Result
+						.createIndeterminateProcessingError()
+						.build())
+				.build());
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
 		outResponse = new ByteArrayOutputStream();
 		OpenSamlObjectBuilder.serialize(response, outResponse);
 		System.out.println("Response ----- " + new String(outResponse.toByteArray()));
-		control.verify();		
+		control.verify();
 	}
-	
+
 	@Test
 	public void testXACMLAuthzDecisionQuery1() throws Exception
 	{
 		Document query = parse("TestXacmlSamlRequest.xml");
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
-		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminateProcessingError().create()));
+		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
+				.newBuilder()
+				.result(Result
+						.createIndeterminateProcessingError()
+						.build())
+				.build());
 		control.replay();
 		Response response = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response);
 		ByteArrayOutputStream outResponse = new ByteArrayOutputStream();
 		OpenSamlObjectBuilder.serialize(response, outResponse);
 		System.out.println("Response ----- " + new String(outResponse.toByteArray()));
-		control.verify();		
+		control.verify();
 	}
 
 	@Test
@@ -126,8 +134,12 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		Document query = parse("TestXacmlSamlRequest-invalidSignature.xml");
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
-		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminateProcessingError().create()));
+		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
+				.newBuilder()
+				.result(Result
+						.createIndeterminateProcessingError()
+						.build())
+				.build());
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
@@ -138,23 +150,27 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		Response response2 = endpoint.handle(xacmlSamlQuery);
 		assertNotNull(response2);
 		assertEquals(StatusCode.SUCCESS_URI, response2.getStatus().getStatusCode().getValue());
-		control.verify();		
+		control.verify();
 	}
-	
+
 	@Test
 	public void testXACMLAuthzDecisionQueryNoSignatureSignWithOtherLibrary() throws Exception
 	{
 		Document query = parse("TestXacmlSamlRequest-nosignature.xml");
-		new ApacheXMLDsigGenerator().signSamlRequest(query.getDocumentElement(), hboPrivate, hboPublic);	
-		
+		new ApacheXMLDsigGenerator().signSamlRequest(query.getDocumentElement(), hboPrivate, hboPublic);
+
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		XMLUtils.outputDOMc14nWithComments(query, bos);
-		
+
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(
 				query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
-		expect(pdp.decide(capture(captureRequest))).andReturn(new ResponseContext(
-				Result.createIndeterminateProcessingError().create()));
+		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
+				.newBuilder()
+				.result(Result
+						.createIndeterminateProcessingError()
+						.build())
+				.build());
 		control.replay();
 		Response response1 = endpoint.handle(xacmlSamlQuery);
 
@@ -164,13 +180,13 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		control.verify();
 	}
 
-	private static KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception 
+	private static KeyStore getKeyStore(String ksType, String resource, String ksPwd) throws Exception
 	{
 		KeyStore ks = KeyStore.getInstance(ksType);
 		ks.load(OpenSamlXacmlTest.class.getResourceAsStream(resource), ksPwd.toCharArray());
 		return ks;
 	}
-	
+
 	public static Document parse(String resourcePath) throws Exception
 	{
 		InputStream in =Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);

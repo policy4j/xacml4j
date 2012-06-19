@@ -18,13 +18,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 
-public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
+public class JsonRequestContextMarshaller implements Marshaller<RequestContext>
 {
 
 	private Gson json;
-	
+
 	public JsonRequestContextMarshaller()
-	
+
 	{
 		this.json = new GsonBuilder()
 		.registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
@@ -35,9 +35,9 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext>
 		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
 		.create();
 	}
-	
+
 	@Override
-	public Object marshal(RequestContext source) throws IOException 
+	public Object marshal(RequestContext source) throws IOException
 	{
 		return json.toJsonTree(source);
 	}
@@ -50,7 +50,7 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext>
 			return;
 		}
 		if(source instanceof OutputStream){
-			json.toJson(object, new TypeToken<RequestContext>(){}.getType(), 
+			json.toJson(object, new TypeToken<RequestContext>(){}.getType(),
 					new JsonWriter(new OutputStreamWriter((OutputStream)source)));
 			return;
 		}

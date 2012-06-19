@@ -17,56 +17,56 @@ import com.artagon.xacml.v30.pdp.FunctionParamSpec;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.pdp.ValueExpression;
 import com.artagon.xacml.v30.pdp.ValueType;
-import com.artagon.xacml.v30.pdp.XacmlObject;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public final class FunctionSpecBuilder 
+public final class FunctionSpecBuilder
 {
 	private String functionId;
 	private String legacyId;
 	private List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
-	
+
 	private FunctionSpecBuilder(String functionId){
 		this(functionId, null);
 	}
-	
+
 	private FunctionSpecBuilder(String functionId, String legacyId){
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
 	}
-	
-	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
+
+	public static FunctionSpecBuilder  newBuilder(String functionId, String legacyId){
 		return new FunctionSpecBuilder(functionId, legacyId);
 	}
-	
-	public static FunctionSpecBuilder  builder(String functionId){
-		return builder(functionId, null);
+
+	public static FunctionSpecBuilder  newBuilder(String functionId){
+		return newBuilder(functionId, null);
 	}
-	
+
 	public FunctionSpecBuilder withParamFunctionReference()
 	{
 		this.paramSpec.add(new FunctionParamFuncReferenceSpec());
 		return this;
 	}
-	
+
 	public FunctionSpecBuilder withParam(ValueType type){
 		Preconditions.checkNotNull(type);
-		Preconditions.checkState(!hadVarArg, 
+		Preconditions.checkState(!hadVarArg,
 				String.format("Can't add parameter after variadic parameter"));
 		this.paramSpec.add(new FunctionParamValueTypeSpec(type));
 		return this;
 	}
-	
+
 	public FunctionSpecBuilder withLazyArgumentsEvaluation(){
 		this.lazyArgumentEvaluation = true;
 		return this;
 	}
-	
+
 	public FunctionSpecBuilder withParam(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
@@ -76,71 +76,71 @@ public final class FunctionSpecBuilder
 		this.paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max, type));
 		return this;
 	}
-	
+
 	public FunctionSpecBuilder withParamAnyBag() {
 		this.paramSpec.add(new FunctionParamAnyBagSpec());
 		return this;
 	}
-	
+
 	public FunctionSpecBuilder withParamAnyAttribute() {
 		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
 		return this;
 	}
 
-	public FunctionSpec build(FunctionReturnTypeResolver returnType, 
+	public FunctionSpec build(FunctionReturnTypeResolver returnType,
 			FunctionInvocation invocation) {
-		return new FunctionSpecImpl(functionId, 
+		return new FunctionSpecImpl(functionId,
 				legacyId, paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
-	
-	public FunctionSpec build(FunctionReturnTypeResolver returnType, 
+
+	public FunctionSpec build(FunctionReturnTypeResolver returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
-		return new FunctionSpecImpl(functionId, 
-				legacyId, paramSpec, returnType, 
-				invocation, 
-				validator, 
+		return new FunctionSpecImpl(functionId,
+				legacyId, paramSpec, returnType,
+				invocation,
+				validator,
 				lazyArgumentEvaluation);
 	}
 
 	public FunctionSpec build(ValueType returnType,
 			FunctionInvocation invocation) {
 		return build(
-				new StaticFunctionReturnTypeResolver(returnType), 
+				new StaticFunctionReturnTypeResolver(returnType),
 				invocation);
 	}
-	
+
 	public FunctionSpec build(ValueType returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return build(
-				new StaticFunctionReturnTypeResolver(returnType), 
+				new StaticFunctionReturnTypeResolver(returnType),
 				validator,
 				invocation);
 	}
-	
+
 	/**
 	 * A XACML function specification implementation
 	 *
 	 * @param <ReturnType>
 	 */
-	static final class FunctionSpecImpl extends XacmlObject implements FunctionSpec
-	{	
+	static final class FunctionSpecImpl implements FunctionSpec
+	{
 		private final static Logger log = LoggerFactory.getLogger(FunctionSpecImpl.class);
-		
+
 		private String functionId;
 		private String legacyId;
 		private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
 		private boolean evaluateParameters = false;
-		
+
 		private FunctionInvocation invocation;
 		private FunctionReturnTypeResolver resolver;
 		private FunctionParametersValidator validator;
-		
+
 		/**
 		 * Constructs function spec with given function
 		 * identifier and parameters
-		 * 
+		 *
 		 * @param functionId a function identifier
 		 * @param legacyId a legacy identifier
 		 * @param params a function parameters spec
@@ -151,9 +151,9 @@ public final class FunctionSpecBuilder
 		 * before passing them to the function
 		 */
 		public FunctionSpecImpl(
-				String functionId, 
+				String functionId,
 				String legacyId,
-				List<FunctionParamSpec> params, 
+				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				FunctionParametersValidator validator,
@@ -170,33 +170,33 @@ public final class FunctionSpecBuilder
 			this.evaluateParameters = evaluateParameters;
 			this.legacyId = legacyId;
 		}
-		
+
 		public FunctionSpecImpl(
-				String functionId, 
+				String functionId,
 				String legacyId,
-				List<FunctionParamSpec> params, 
+				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				boolean evaluateParameters){
 			this(functionId, legacyId, params, resolver, invocation, null, evaluateParameters);
 		}
-		
+
 		public FunctionSpecImpl(
-				String functionId, 
-				List<FunctionParamSpec> params, 
+				String functionId,
+				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				boolean lazyParamEval){
 			this(functionId, null, params, resolver, invocation, null, lazyParamEval);
 		}
-		
+
 		@Override
 		public  String getId(){
 			return functionId;
 		}
-		
-		
-		
+
+
+
 		@Override
 		public String getLegacyId() {
 			return legacyId;
@@ -206,7 +206,7 @@ public final class FunctionSpecBuilder
 		public final FunctionParamSpec getParamSpecAt(int index){
 			return parameters.get(index);
 		}
-		
+
 		@Override
 		public boolean isRequiresLazyParamEval() {
 			return evaluateParameters;
@@ -216,27 +216,27 @@ public final class FunctionSpecBuilder
 		public boolean isVariadic(){
 			return parameters.isEmpty()?false:parameters.get(parameters.size() - 1).isVariadic();
 		}
-		
+
 		@Override
 		public  int getNumberOfParams(){
 			return parameters.size();
 		}
-		
+
 		@Override
 		public ValueType resolveReturnType(List<Expression> arguments) {
 			return resolver.resolve(this, arguments);
 		}
-		
+
 		public <T extends ValueExpression> T invoke(EvaluationContext context,
 				Expression ...arguments) throws EvaluationException {
 			return this.<T>invoke(context, Arrays.asList(arguments));
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends ValueExpression> T invoke(EvaluationContext context,
 				List<Expression> arguments) throws EvaluationException {
-			
+
 			try
 			{
 				if(context.isValidateFuncParamsAtRuntime()){
@@ -246,7 +246,7 @@ public final class FunctionSpecBuilder
 					}
 					validateParameters(arguments);
 				}
-				T result = (T)invocation.invoke(this, context, 
+				T result = (T)invocation.invoke(this, context,
 						isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
 				if(log.isDebugEnabled()){
 					log.debug("Function=\"{}\" " +
@@ -258,7 +258,7 @@ public final class FunctionSpecBuilder
 				throw e;
 			}
 			catch(Exception e){
-				throw new FunctionInvocationException(context, this, e, 
+				throw new FunctionInvocationException(context, this, e,
 						"Failed to invoke function=\"%s\"", getId());
 			}
 		}
@@ -274,14 +274,14 @@ public final class FunctionSpecBuilder
 				if(!p.validate(expIt)){
 					throw new XacmlSyntaxException(
 							"Expression at index=\"%d\", " +
-							"can't be used as function=\"%s\" parameter", 
+							"can't be used as function=\"%s\" parameter",
 							expIt.nextIndex() - 1, functionId);
 				}
-				if(!it.hasNext() && 
+				if(!it.hasNext() &&
 						expIt.hasNext()){
 					throw new XacmlSyntaxException(
 							"Expression at index=\"%d\", " +
-							"can't be used as function=\"%s\" parameter", 
+							"can't be used as function=\"%s\" parameter",
 							expIt.nextIndex() - 1, functionId);
 				}
 			}
@@ -289,7 +289,7 @@ public final class FunctionSpecBuilder
 				throw new XacmlSyntaxException("Failed addition validation");
 			}
 		}
-		
+
 		@Override
 		public boolean validateParameters(List<Expression> arguments)
 		{
@@ -301,25 +301,25 @@ public final class FunctionSpecBuilder
 				if(!p.validate(expIt)){
 					return false;
 				}
-				if(!it.hasNext() && 
+				if(!it.hasNext() &&
 						expIt.hasNext()){
 					return false;
 				}
 			}
 			return validateAdditional(arguments);
 		}
-		
+
 		/**
 		 * Evaluates given array of function parameters
-		 * 
+		 *
 		 * @param context an evaluation context
-		 * @param params a function invocation 
+		 * @param params a function invocation
 		 * parameters
 		 * @return an array of evaluated parameters
 		 * @throws EvaluationException if an evaluation
 		 * error occurs
 		 */
-		private List<Expression> evaluate(EvaluationContext context, List<Expression> arguments) 
+		private List<Expression> evaluate(EvaluationContext context, List<Expression> arguments)
 			throws EvaluationException
 		{
 			List<Expression> eval = new ArrayList<Expression>(arguments.size());
@@ -328,10 +328,10 @@ public final class FunctionSpecBuilder
 			}
 			return eval;
 		}
-		
+
 		/**
 		 * Additional function parameter validation function
-		 * 
+		 *
 		 * @param paramIndex a parameter index
 		 * in a function signature
 		 * @param spec a parameter specification
@@ -342,7 +342,17 @@ public final class FunctionSpecBuilder
 		 */
 		private boolean validateAdditional(List<Expression> arguments){
 			return (validator == null)?true:validator.validate(this, arguments);
-		}	
+		}
+
+		@Override
+		public String toString(){
+			return Objects.toStringHelper(this)
+					.add("functionId", functionId)
+					.add("legacyId", legacyId)
+					.add("evaluateParams", evaluateParameters)
+					.add("params", parameters)
+					.toString();
+		}
 	}
 
 }

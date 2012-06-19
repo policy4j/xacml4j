@@ -27,20 +27,20 @@ import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
 import com.artagon.xacml.v30.types.StringType;
 
-public class Xacml30PolicyExpressionFromModelToJaxbMapperTest 
+public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 {
 	private Xacml30PolicyExpressionFromModelToJaxbMapper mapper;
-	
+
 	private FunctionSpec func;
 	private IMocksControl ctrl;
-	
+
 	@Before
 	public void init(){
 		this.ctrl = createControl();
 		this.func = ctrl.createMock(FunctionSpec.class);
 		this.mapper = new Xacml30PolicyExpressionFromModelToJaxbMapper();
 	}
-	
+
 	@Test
 	public void testMapAttributeValue()
 	{
@@ -49,7 +49,7 @@ public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 		assertEquals("http://www.w3.org/2001/XMLSchema#string", v.getDataType());
 		assertEquals("Test", v.getContent().get(0));
 	}
-	
+
 	@Test
 	public void testAttributeSelector()
 	{
@@ -61,7 +61,7 @@ public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 		assertEquals("/Test", v.getPath());
 		assertFalse(v.isMustBePresent());
 	}
-	
+
 	@Test
 	public void testAttributeDesignator()
 	{
@@ -73,26 +73,26 @@ public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 		assertEquals(AttributeCategories.SUBJECT_ACCESS.getId(), v.getCategory());
 		assertFalse(v.isMustBePresent());
 	}
-	
+
 	@Test
 	public void testApplyMapOneLevel() throws Exception
 	{
 		Capture<List<Expression>> args = new Capture<List<Expression>>();
 		expect(func.validateParameters(capture(args))).andReturn(true);
 		expect(func.getId()).andReturn("TestFunc");
-		
+
 		ctrl.replay();
 		Expression exp0 = new AttributeDesignator(AttributeCategories.SUBJECT_ACCESS, "TestId", "Issuer", StringType.STRING, false);
 		Expression exp1 = StringType.STRING.create("Test");
-		Expression exp2 = new Apply(func, exp0, exp1);
+		Expression exp2 = Apply.builder(func).param(exp0).param(exp1).build();
 		JAXBElement<?> jaxb = mapper.create(exp2);
 		ctrl.verify();
-		
+
 		ApplyType v = (ApplyType)jaxb.getValue();
 		assertEquals("TestFunc", v.getFunctionId());
-		
+
 	}
-	
+
 	@Test
 	public void testApplyMapTwoLevel() throws Exception
 	{
@@ -100,41 +100,41 @@ public class Xacml30PolicyExpressionFromModelToJaxbMapperTest
 		Capture<List<Expression>> args1 = new Capture<List<Expression>>();
 		expect(func.validateParameters(capture(args0))).andReturn(true);
 		expect(func.getId()).andReturn("TestFunc1");
-		
+
 		expect(func.validateParameters(capture(args1))).andReturn(true);
 		expect(func.getId()).andReturn("TestFunc2");
-		
+
 		ctrl.replay();
-		
+
 		Expression exp0 = new AttributeDesignator(AttributeCategories.SUBJECT_ACCESS, "TestId", "Issuer", StringType.STRING, false);
 		Expression exp1 = StringType.STRING.create("Test1");
-		Expression exp2 = new Apply(func, exp0, exp1);
-		
+		Expression exp2 = Apply.builder(func).param(exp0).param(exp1).build();
+
 		Expression exp3 = StringType.STRING.create("Test2");
-		Expression exp4 = new Apply(func, exp3, exp2);
-		
+		Expression exp4 = Apply.builder(func).param(exp2).param(exp3).build();
+
 		JAXBElement<?> jaxb = mapper.create(exp4);
 		ctrl.verify();
-		
+
 		ApplyType v1 = (ApplyType)jaxb.getValue();
 		assertEquals("TestFunc1", v1.getFunctionId());
-		
-		assertEquals("http://www.w3.org/2001/XMLSchema#string", ((AttributeValueType)v1.getExpression().get(0).getValue()).getDataType());
-		assertEquals("Test2", ((AttributeValueType)v1.getExpression().get(0).getValue()).getContent().get(0));
-		
-		ApplyType v2 = ((ApplyType)v1.getExpression().get(1).getValue());
+
+		assertEquals("http://www.w3.org/2001/XMLSchema#string", ((AttributeValueType)v1.getExpression().get(1).getValue()).getDataType());
+		assertEquals("Test2", ((AttributeValueType)v1.getExpression().get(1).getValue()).getContent().get(0));
+
+		ApplyType v2 = ((ApplyType)v1.getExpression().get(0).getValue());
 		assertEquals("TestFunc2", v2.getFunctionId());
-		
-		AttributeDesignatorType jaxbExp0 = (AttributeDesignatorType)v2.getExpression().get(0).getValue(); 
+
+		AttributeDesignatorType jaxbExp0 = (AttributeDesignatorType)v2.getExpression().get(0).getValue();
 		assertEquals("http://www.w3.org/2001/XMLSchema#string", jaxbExp0.getDataType());
 		assertEquals("TestId", jaxbExp0.getAttributeId());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS.getId(), jaxbExp0.getCategory());
-		
+
 		AttributeValueType jaxbExp1 = (AttributeValueType)v2.getExpression().get(1).getValue();
 
 		assertEquals("http://www.w3.org/2001/XMLSchema#string", jaxbExp1.getDataType());
 		assertEquals("Test1", jaxbExp1.getContent().get(0));
-			
-		
+
+
 	}
 }

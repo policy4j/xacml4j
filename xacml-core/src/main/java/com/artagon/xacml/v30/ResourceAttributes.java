@@ -3,10 +3,10 @@ package com.artagon.xacml.v30;
 import com.artagon.xacml.v30.types.AnyURIType;
 
 /**
- * A well known XACML subject attributes
+ * A well known XACML resource category attributes attributes
  * 
  * @author Giedrius Trumpickas
- *
+
  */
 public enum ResourceAttributes 
 {

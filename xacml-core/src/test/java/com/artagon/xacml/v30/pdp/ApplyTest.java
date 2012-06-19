@@ -45,7 +45,7 @@ public class ApplyTest
 		.build();
 		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
-		Apply apply = new Apply(function, params);
+		Apply apply = Apply.builder(function).params(params).build();
 		verify(function);
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(BooleanType.BOOLEAN.create(false));
@@ -65,7 +65,7 @@ public class ApplyTest
 		expect(function.validateParameters(params)).andReturn(false);
 		expect(function.getId()).andReturn("testId");
 		replay(function);
-		new Apply(function, IntegerType.INTEGER.create(10L));
+		Apply.builder(function).param(IntegerType.INTEGER.create(10L)).build();
 		verify(function);
 	}
 	
@@ -79,7 +79,7 @@ public class ApplyTest
 		expect(function.invoke(context, params))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
+		Apply apply = Apply.builder(function).param(IntegerType.INTEGER.create(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -94,7 +94,7 @@ public class ApplyTest
 		expect(function.invoke(context, params))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
+		Apply apply = Apply.builder(function).param(IntegerType.INTEGER.create(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -109,7 +109,7 @@ public class ApplyTest
 		expect(function.invoke(context, params)).
 		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
 		replay(function);
-		Apply apply = new Apply(function, IntegerType.INTEGER.create(10L));
+		Apply apply = Apply.builder(function).param(IntegerType.INTEGER.create(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}

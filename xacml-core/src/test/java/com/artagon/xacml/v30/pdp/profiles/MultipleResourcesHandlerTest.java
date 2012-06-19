@@ -31,204 +31,198 @@ import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 
-public class MultipleResourcesHandlerTest 
+public class MultipleResourcesHandlerTest
 {
 	private PolicyDecisionPointContext context;
 	private RequestContextHandler profile;
-	
+
 	private Attributes resource0;
 	private Attributes resource1;
 	private Attributes subject0;
 	private Attributes subject1;
-	
-	
+
+
 	@Before
 	public void init(){
 		this.context = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
-		
+
 		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
 		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
 		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
 		this.resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
-		
+
 		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
 		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
 		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
 		this.resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
-		
+
 		Collection<Attribute> subject0Attr = new LinkedList<Attribute>();
 		subject0Attr.add(new Attribute("testId7", STRING.create("value0")));
 		subject0Attr.add(new Attribute("testId8", STRING.create("value1")));
 		this.subject0 =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subject0Attr);
-		
+
 		Collection<Attribute> subject1Attr = new LinkedList<Attribute>();
 		subject1Attr.add(new Attribute("testId9", STRING.create("value0")));
 		subject1Attr.add(new Attribute("testId10", STRING.create("value1")));
 		this.subject1 =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subject1Attr);
 	}
-	
+
 	@Test
 	public void testAllResultsAreDeny()
 	{
-		
+
 		RequestContext request = new RequestContext(false, true,
 				Arrays.asList(subject0, subject1, resource0, resource1));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
-		
+
 		expect(context.requestDecision(capture(c0))).andReturn(
-						Result.createOk(Decision.DENY).create());
-		
-		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.DENY).create());
-		
-		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.DENY).create());
-		
-		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.DENY).create());
-		
+						Result.createOk(Decision.DENY).build());
+
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.DENY).build());
+
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.DENY).build());
+
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.DENY).build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
-	
+
 		assertEquals(Decision.DENY, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
-		
+
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAllResultsArePermit()
 	{
-		
-		
+
+
 		RequestContext request = new RequestContext(false, true,
 				Arrays.asList(subject0, subject1, resource0, resource1));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
-		
-		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.PERMIT).create());
-		
-		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.PERMIT).create());
-		
-		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.PERMIT).create());
-		
-		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.PERMIT).create());
-		
+
+		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.PERMIT).build());
+
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.PERMIT).build());
+
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.PERMIT).build());
+
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.PERMIT).build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
-	
+
 		assertEquals(Decision.PERMIT, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
-		
+
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAllResultsAreNotApplicable()
 	{
-		
-		
+
+
 		RequestContext request = new RequestContext(false, true,
 				Arrays.asList(subject0, subject1, resource0, resource1));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
-		
+
 		expect(context.requestDecision(capture(c0))).andReturn(
-					new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createOk(Decision.NOT_APPLICABLE).build());
+
 		expect(context.requestDecision(capture(c1))).andReturn(
-				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createOk(Decision.NOT_APPLICABLE).build());
+
 		expect(context.requestDecision(capture(c2))).andReturn(
-				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createOk(Decision.NOT_APPLICABLE).build());
+
 		expect(context.requestDecision(capture(c3))).andReturn(
-				new Result(Decision.NOT_APPLICABLE, Status.createSuccess(),
-				Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createOk(Decision.NOT_APPLICABLE).build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
-	
+
 		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
-		
+
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAllResultsNotApplicable()
 	{
-		
-		
+
+
 		RequestContext request = new RequestContext(false, true,
 				Arrays.asList(subject0, subject1, resource0, resource1));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 		Capture<RequestContext> c2 = new Capture<RequestContext>();
 		Capture<RequestContext> c3 = new Capture<RequestContext>();
-		
-		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
-		
-		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
-		
-		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
-		
-		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).create());
-		
+
+		expect(context.requestDecision(capture(c0))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).build());
+
+		expect(context.requestDecision(capture(c1))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).build());
+
+		expect(context.requestDecision(capture(c2))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).build());
+
+		expect(context.requestDecision(capture(c3))).andReturn(Result.createOk(Decision.NOT_APPLICABLE).build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
-	
+
 		assertEquals(Decision.NOT_APPLICABLE, r.getDecision());
 		assertEquals(Status.createSuccess(), r.getStatus());
-		
+
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testRequestWithSingleResultCombine()
 	{
 		RequestContext request = new RequestContext(false, true,
 				Arrays.asList(subject0, resource0));
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		
+
 		expect(context.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()), 
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createIndeterminateProcessingError().build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
@@ -238,20 +232,18 @@ public class MultipleResourcesHandlerTest
 		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
 		verify(context);
 	}
-	
+
 	@Test
 	public void testWithEmptyRequest()
 	{
 		RequestContext request = new RequestContext(false, true,
 				Collections.<Attributes>emptyList());
-		
+
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		
+
 		expect(context.requestDecision(capture(c0))).andReturn(
-				new Result(Decision.INDETERMINATE, 
-						new Status(StatusCode.createProcessingError()),
-						Collections.<Attributes>emptyList(), Collections.<Attributes>emptyList()));
-		
+				Result.createIndeterminateProcessingError().build());
+
 		replay(context);
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());

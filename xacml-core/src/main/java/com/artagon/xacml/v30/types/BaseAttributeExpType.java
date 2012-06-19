@@ -9,47 +9,50 @@ import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.BagOfAttributeExpType;
-import com.artagon.xacml.v30.pdp.XacmlObject;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
  * A base class for all XACML attributes.
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public abstract class BaseAttributeExpType<V extends AttributeExp> extends XacmlObject 
-	implements AttributeExpType
+public abstract class BaseAttributeExpType<V extends AttributeExp> implements AttributeExpType
 {
 	private static final long serialVersionUID = -8812998715997567246L;
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
 	/**
 	 * Constructs attribute type with given type identifier.
-	 * 
+	 *
 	 * @param typeId an attribute type identifier
 	 */
 	protected BaseAttributeExpType(String typeId)
 	{
 		Preconditions.checkNotNull(typeId);
-		this.typeId = typeId;		
+		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
+	/**
+	 * Gets data type identifier
+	 *
+	 * @return data type identifier
+	 */
 	public final String getDataTypeId(){
 		return typeId;
 	}
-	
+
 	@Override
 	public final BagOfAttributeExpType bagType(){
 		return bagType;
 	}
-	
+
 	@Override
-	public final BagOfAttributeExp bagOf(AttributeExp... values){	
+	public final BagOfAttributeExp bagOf(AttributeExp... values){
 		return bagType().create(values);
 	}
 
@@ -66,6 +69,12 @@ public abstract class BaseAttributeExpType<V extends AttributeExp> extends Xacml
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("TypeId=", typeId).toString();
+		return Objects.toStringHelper(this)
+				.add("TypeId=", typeId).toString();
+	}
+
+	@Override
+	public int hashCode(){
+		return typeId.hashCode();
 	}
 }

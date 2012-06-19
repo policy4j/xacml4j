@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.pdp.AttributesReference;
+import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestReference;
@@ -15,12 +16,12 @@ import com.artagon.xacml.v30.pdp.Result;
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
-	
+
 	public MultipleResourcesViaRequestReferencesHandler() {
 		super(FEATURE_ID);
 	}
-	
-	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
+
+	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context)
 	{
 		Collection<Result> results = new LinkedList<Result>();
 		Collection<RequestReference> references = request.getRequestReferences();
@@ -34,15 +35,15 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			}catch(RequestSyntaxException e){
 				results.add(
 						Result
-						.createIndeterminate(e.getStatus())
+						.createIndeterminate(Decision.INDETERMINATE, e.getStatus())
 						.includeInResultAttr(request.getIncludeInResultAttributes())
-						.create()); 
+						.build());
 			}
 		}
 		return results;
 	}
-	
-	private RequestContext resolveAttributes(RequestContext req, 
+
+	private RequestContext resolveAttributes(RequestContext req,
 			RequestReference reqRef) throws RequestSyntaxException
 	{
 		Collection<Attributes> resolved = new LinkedList<Attributes>();
@@ -50,12 +51,12 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			Attributes attributes = req.getReferencedAttributes(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference", 
+						"Failed to resolve attribute reference",
 						ref.getReferenceId());
 			}
 			resolved.add(attributes);
 		}
 		return new RequestContext(req.isReturnPolicyIdList(), resolved);
 	}
-	
+
 }

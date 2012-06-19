@@ -63,13 +63,13 @@ public final class AttributeResolverDescriptorBuilder
 		return this;
 	}
 	
-	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category, 
+	public AttributeResolverDescriptorBuilder requestContextKey(AttributeCategory category, 
 			String attributeId, AttributeExpType dataType)
 	{
 		return designatorKeyRef(category, attributeId, dataType, null);
 	}
 	
-	public AttributeResolverDescriptorBuilder selectorKeyRef(
+	public AttributeResolverDescriptorBuilder requestContextKey(
 			AttributeCategory category, 
 			String xpath, AttributeExpType dataType, 
 			String contextAttributeId)
@@ -129,6 +129,12 @@ public final class AttributeResolverDescriptorBuilder
 					AttributeResolverDescriptorBuilder.this.attributesById);
 			this.attributesByKey = ImmutableMap.copyOf(
 					AttributeResolverDescriptorBuilder.this.attributesByKey);
+			for(AttributeReferenceKey k : keys){
+				if(k instanceof AttributeDesignatorKey){
+					Preconditions.checkArgument(!canResolve((AttributeDesignatorKey)k), 
+							"Resolver referers to itself via context reference key=\"{}\"", k);
+				}
+			}
 		}
 		
 		@Override

@@ -40,18 +40,18 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 			Collection<Advice> advice = r.getAssociatedAdvice();
 			if(!advice.isEmpty()){
 				return Collections.singleton(
-						Result.createIndeterminateProcessingError().create());
+						Result.createIndeterminateProcessingError().build());
 			}
 			Collection<Obligation> obligation = r.getObligations();
 			if(!obligation.isEmpty()){
 				return Collections.singleton(
-						Result.createIndeterminateProcessingError().create());
+						Result.createIndeterminateProcessingError().build());
 			}
 			if(prev != null){
 				if(r.getDecision().isIndeterminate()){
 					if(!prev.getDecision().isIndeterminate()){
 						return Collections.singleton(
-								Result.createIndeterminateProcessingError().create());
+								Result.createIndeterminateProcessingError().build());
 					}
 				}
 				if(!r.getDecision().equals(prev.getDecision())){
@@ -60,15 +60,15 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 								"can not be combined with the current result=\"{}\"", prev, r);
 					}
 					return Collections.singleton(
-							Result.createIndeterminateProcessingError().create());
+							Result.createIndeterminateProcessingError().build());
 				}
 			}
 			prev = r;
 		}
 		if(prev == null){
 			return Collections.singleton(
-					Result.createIndeterminateProcessingError().create());
+					Result.createIndeterminateProcessingError().build());
 		}
-		return Collections.singleton(Result.createOk(prev.getDecision()).create());
+		return Collections.singleton(Result.createOk(prev.getDecision()).build());
 	}
 }

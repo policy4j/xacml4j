@@ -26,9 +26,9 @@ import java.util.Random;
  * standard.
  */
 public class EUI48 implements Serializable, Cloneable,
-		Comparable<EUI48> 
+		Comparable<EUI48>
 {
-	
+
 	private static final long serialVersionUID = -4797835241153743083L;
 
 	private final static char[] HEX_CHARS = "0123456789abcdefABCDEF"
@@ -60,12 +60,12 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * String constructor; given a 'standard' ethernet MAC address string (like
 	 * '00:C0:F0:3D:5B:7C'), constructs an EthernetAddress instance.
-	 * 
+	 *
 	 * Note that string is case-insensitive, and also that leading zeroes may be
 	 * omitted. Thus '00:C0:F0:3D:5B:7C' and '0:c0:f0:3d:5b:7c' are equivalent,
 	 * and a 'null' address could be passed as ':::::' as well as
 	 * '00:00:00:00:00:00' (or any other intermediate combination).
-	 * 
+	 *
 	 * @param addrStr
 	 *            String representation of the ethernet address
 	 */
@@ -167,7 +167,7 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Another binary constructor; constructs an instance from the given long
 	 * argument; the lowest 6 bytes contain the address.
-	 * 
+	 *
 	 * @param addr
 	 *            long that contains the MAC address in 6 least significant
 	 *            bytes.
@@ -186,13 +186,13 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Constructs a new EthernetAddress given the byte array that contains
 	 * binary representation of the address.
-	 * 
+	 *
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
-	 * 
+	 *
 	 * @param addr
 	 *            Binary representation of the ethernet address
-	 * 
+	 *
 	 * @throws NumberFormatException
 	 *             if addr is invalid (less or more than 6 bytes in array)
 	 */
@@ -204,13 +204,13 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Constructs a new EthernetAddress given the byte array that contains
 	 * binary representation of the address.
-	 * 
+	 *
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
-	 * 
+	 *
 	 * @param addr
 	 *            Binary representation of the ethernet address
-	 * 
+	 *
 	 * @throws NumberFormatException
 	 *             if addr is invalid (less or more than 6 ints in array)
 	 */
@@ -227,13 +227,13 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Constructs a new EthernetAddress given a string representation of the
 	 * ethernet address.
-	 * 
+	 *
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
-	 * 
+	 *
 	 * @param addrStr
 	 *            String representation of the ethernet address
-	 * 
+	 *
 	 * @throws NumberFormatException
 	 *             if addr representation is invalid
 	 */
@@ -246,10 +246,10 @@ public class EUI48 implements Serializable, Cloneable,
 	 * Constructs a new EthernetAddress given the long int value (64-bit)
 	 * representation of the ethernet address (of which 48 LSB contain the
 	 * definition)
-	 * 
+	 *
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
-	 * 
+	 *
 	 * @param addr
 	 *            Long int representation of the ethernet address
 	 */
@@ -264,7 +264,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 * returned; which one is returned is not specified. Method is meant for
 	 * accessing an address needed to construct generator for time+location
 	 * based UUID generation method.
-	 * 
+	 *
 	 * @return Ethernet address of one of interfaces system has; not including
 	 *         local or loopback addresses; if one exists, null if no such
 	 *         interfaces are found.
@@ -283,12 +283,11 @@ public class EUI48 implements Serializable, Cloneable,
 				}
 			}
 		} catch (java.net.SocketException e) {
-			// fine, let's take is as signal of not having any interfaces
 		}
 		return null;
 	}
 
-	
+
 
 	/*
 	 * /**********************************************************************
@@ -299,7 +298,7 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Returns 6 byte byte array that contains the binary representation of this
 	 * ethernet address; byte 0 is the most significant byte (and so forth)
-	 * 
+	 *
 	 * @return 6 byte byte array that contains the binary representation
 	 */
 	public byte[] asByteArray() {
@@ -310,7 +309,7 @@ public class EUI48 implements Serializable, Cloneable,
 
 	/**
 	 * Synonym to 'asByteArray()'
-	 * 
+	 *
 	 * @return 6 byte byte array that contains the binary representation
 	 */
 	public byte[] toByteArray() {
@@ -389,7 +388,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 * Method that compares this EthernetAddress to one passed in as argument.
 	 * Comparison is done simply by comparing individual address bytes in the
 	 * order.
-	 * 
+	 *
 	 * @return negative number if this EthernetAddress should be sorted before
 	 *         the parameter address if they are equal, os positive non-zero
 	 *         number if this address should be sorted after parameter
@@ -405,7 +404,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 * Returns the canonical string representation of this ethernet address.
 	 * Canonical means that all characters are lower-case and string length is
 	 * always 17 characters (ie. leading zeroes are not omitted).
-	 * 
+	 *
 	 * @return Canonical string representation of this ethernet address.
 	 */
 	@Override

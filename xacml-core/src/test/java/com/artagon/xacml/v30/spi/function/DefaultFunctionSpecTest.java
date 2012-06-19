@@ -33,7 +33,7 @@ public class DefaultFunctionSpecTest
 		this.c = createControl();
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.resolver = c.createMock(FunctionReturnTypeResolver.class);
-		this.b = FunctionSpecBuilder.builder("testId");
+		this.b = FunctionSpecBuilder.newBuilder("testId");
 		this.context = c.createMock(EvaluationContext.class);
 	}
 	

@@ -1,31 +1,69 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
-import com.google.common.base.Preconditions;
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 
-public class ResponseContext extends XacmlObject
+public class ResponseContext
 {
 	private Collection<Result> results;
-	
-	public ResponseContext(Result result){
-		this(Collections.singleton(result));
+
+	private ResponseContext(Builder builder){
+		this.results = builder.b.build();
 	}
-	
-	public ResponseContext(Collection<Result> results){
-		Preconditions.checkNotNull(results);
-		Preconditions.checkArgument(!results.isEmpty());
-		this.results = new ArrayList<Result>(results);
+
+	public static Builder newBuilder(){
+		return new Builder();
 	}
-	
-	public ResponseContext(Result ...results){
-		this(Arrays.asList(results));
-	}
-	
+
 	public Collection<Result> getResults(){
 		return results;
+	}
+
+	@Override
+	public int hashCode(){
+		return results.hashCode();
+	}
+
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("results", results)
+				.toString();
+	}
+
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof ResponseContext)){
+			return false;
+		}
+		ResponseContext r = (ResponseContext)o;
+		return results.equals(r.results);
+	}
+
+	public static class Builder
+	{
+		private ImmutableList.Builder<Result> b = ImmutableList.builder();
+
+		public Builder result(Result ... r){
+			this.b.add(r);
+			return this;
+		}
+
+		public Builder results(Iterable<Result> r){
+			this.b.addAll(r);
+			return this;
+		}
+
+		public ResponseContext build(){
+			return new ResponseContext(this);
+		}
 	}
 }

@@ -7,14 +7,18 @@ import java.util.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 
-public class Target extends XacmlObject implements PolicyElement
+public class Target implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Target.class);
 	
 	private Collection<MatchAnyOf> matches;
+	
+	private int hashCode;
 	
 	/**
 	 * Creates target with a collection
@@ -23,7 +27,8 @@ public class Target extends XacmlObject implements PolicyElement
 	 * @param matches a collection of {@link MatchAnyOf}
 	 */
 	public Target(Collection<MatchAnyOf> matches){
-		this.matches = new LinkedList<MatchAnyOf>(matches);
+		this.matches = ImmutableList.copyOf(matches);
+		this.hashCode = Objects.hashCode(matches);
 	}
 	
 	public Target(){
@@ -79,6 +84,30 @@ public class Target extends XacmlObject implements PolicyElement
 			m.accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	@Override
+	public int hashCode(){
+		return hashCode;
+	}
+	
+	public boolean equals(Object o){
+		if(o == this){
+			return false;
+		}
+		if(o == null){
+			return false;
+		}
+		Target t = (Target)o;
+		return matches.equals(t.matches);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("matches", matches)
+				.toString();
 	}
 	
 	

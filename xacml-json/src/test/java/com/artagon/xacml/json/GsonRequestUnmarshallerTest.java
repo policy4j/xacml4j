@@ -1,7 +1,7 @@
 package com.artagon.xacml.json;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,11 +16,11 @@ import com.artagon.xacml.v30.marshall.json.JsonRequestContextUnmarshaller;
 import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.types.DataTypeRegistryBuilder;
 
-public class GsonRequestUnmarshallerTest 
+public class GsonRequestUnmarshallerTest
 {
 	private Unmarshaller<RequestContext> unmarshaller;
 	private Marshaller<RequestContext> marshaller;
-	
+
 	@Before
 	public void init(){
 		this.unmarshaller = new JsonRequestContextUnmarshaller(DataTypeRegistryBuilder.builder()
@@ -28,9 +28,9 @@ public class GsonRequestUnmarshallerTest
 				.build());
 		this.marshaller = new JsonRequestContextMarshaller();
 	}
-	
+
 	@Test
-	public void testParseSchema() throws Exception
+	public void testXacmlJsonRequestRoundtrip() throws Exception
 	{
 		InputStream in = getClassPathResource("xacml30-req.json");
 		RequestContext req1 = unmarshaller.unmarshal(new InputStreamReader(in));
@@ -39,9 +39,9 @@ public class GsonRequestUnmarshallerTest
 		RequestContext req2 = unmarshaller.unmarshal(o);
 		assertEquals(req1, req2);
 	}
-	
-	
-	private InputStream getClassPathResource(String resource) 
+
+
+	private InputStream getClassPathResource(String resource)
 				throws Exception
 	{
 		return Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);

@@ -17,6 +17,21 @@ import com.google.common.collect.Iterables;
 
 public class AttributeResolverDescriptorBuilderTest 
 {
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testBuildDescriptiorWithContextKeyReferringToThisDescriptor()
+	{
+		AttributeResolverDescriptorBuilder.builder(
+				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
+		.attribute("testId1", IntegerType.INTEGER)
+		.attribute("testId2", StringType.STRING)
+		.requestContextKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER)
+		.build();
+		
+		
+	}
+	
+	
 	@Test
 	public void testBuildDescriptorWithIssuer()
 	{
