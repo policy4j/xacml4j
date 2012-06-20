@@ -8,9 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategory;
@@ -43,8 +40,6 @@ import com.yammer.metrics.core.TimerContext;
 public final class DefaultPolicyDecisionPoint
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {
-
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 
 	private String id;
 	private PolicyDecisionPointContextFactory factory;
