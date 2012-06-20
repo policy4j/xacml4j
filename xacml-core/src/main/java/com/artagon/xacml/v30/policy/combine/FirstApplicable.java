@@ -4,9 +4,6 @@ import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.eva
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
@@ -16,8 +13,6 @@ import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
 {
-	private final static Logger log = LoggerFactory.getLogger(FirstApplicable.class);
-	
 	protected FirstApplicable(String algorithmId) {
 		super(algorithmId);
 	}
@@ -25,10 +20,10 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 	public final Decision combine(EvaluationContext context, List<D> decisions){
 		return doCombine(context, decisions);
 	}
-	
+
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
-	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions) 
+	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfMatch(context, d);
