@@ -1,19 +1,23 @@
 package com.artagon.xacml.v30.pdp;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.MatchResult;
+import com.artagon.xacml.v30.PolicyResolutionException;
 import com.artagon.xacml.v30.Version;
+import com.artagon.xacml.v30.VersionMatch;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
  * A XACML {@link PolicySet} reference
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference 
+public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 	implements PolicyElement
 {
 
@@ -21,18 +25,18 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			VersionMatch earliest, VersionMatch latest) {
 		super(id, version, earliest, latest);
 	}
-	
+
 	public PolicySetIDReference(String id, VersionMatch version) {
 		super(id, version, null, null);
 	}
-	
+
 	public PolicySetIDReference(String id, Version version) {
 		super(id, VersionMatch.parse(version.getValue()), null, null);
 	}
 
 	/**
 	 * Creates {@link PolicySetIDReference}
-	 * 
+	 *
 	 * @param policyId a policy identifier
 	 * @param version a policy version match
 	 * @param earliest a policy earliest version match
@@ -40,7 +44,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 * @return {@link PolicySetIDReference} instance
 	 * @throws XacmlSyntaxException if syntax error occurs
 	 */
-	public static PolicySetIDReference create(String policyId, String version, 
+	public static PolicySetIDReference create(String policyId, String version,
 			String earliest, String latest) throws XacmlSyntaxException
 	{
 		return new PolicySetIDReference(policyId,
@@ -48,18 +52,18 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 				(earliest != null)?VersionMatch.parse(earliest):null,
 				(latest != null)?VersionMatch.parse(latest):null);
 	}
-	
+
 	/**
-	 * Tests if a given {@link PolicySet} is referenced
-	 * by this reference
-	 * 
-	 * @param policySet a policy set
-	 * @return <code>true</code> if this reference
-	 * references given policy set
+	 * Test this reference points to a given policy
+	 *
+	 * @param policy a policy
+	 * @return <code>true</code> if a this reference
+	 * points to a given policys
 	 */
-	public boolean isReferenceTo(PolicySet policySet) {
-		return policySet != null && 
-		matches(policySet.getId(), policySet.getVersion());
+	public boolean isReferenceTo(CompositeDecisionRule policy) {
+		PolicySet p = (PolicySet)policy;
+		return p != null &&
+		matches(p.getId(), p.getVersion());
 	}
 
 	@Override
@@ -74,12 +78,12 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			return false;
 		}
 		PolicySetIDReference r = (PolicySetIDReference)o;
-		return getId().equals(r.getId()) 
-		&& Objects.equal(getVersion(), r.getVersion()) 
-		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion()) 
+		return getId().equals(r.getId())
+		&& Objects.equal(getVersion(), r.getVersion())
+		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion())
 		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}
-	
+
 	/**
 	 * Creates an {@link EvaluationContext} to evaluate this reference.
 	 */
@@ -92,7 +96,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		}
 		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context);
 		try{
-			PolicySet policySet = refContext.resolve(this);
+			CompositeDecisionRule policySet = refContext.resolve(this);
 			if(policySet == null){
 				return refContext;
 			}
@@ -101,7 +105,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			return refContext;
 		}
 	}
-	
+
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
@@ -109,7 +113,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		PolicySet ps = context.getCurrentPolicySet();
+		CompositeDecisionRule ps = context.getCurrentPolicySet();
 		Preconditions.checkState(ps != null);
 		return ps.evaluate(context);
 	}
@@ -121,7 +125,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
 		}
-		PolicySet ps = context.getCurrentPolicySet();
+		CompositeDecisionRule ps = context.getCurrentPolicySet();
 		Preconditions.checkState(ps != null);
 		return ps.evaluateIfMatch(context);
 	}
@@ -133,11 +137,11 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return MatchResult.INDETERMINATE;
 		}
-		PolicySet ps = context.getCurrentPolicySet();
+		CompositeDecisionRule ps = context.getCurrentPolicySet();
 		Preconditions.checkState(ps != null);
 		return ps.isMatch(context);
 	}
-	
+
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
@@ -151,12 +155,12 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 
 	/**
 	 * A static helper method to detect cyclic references
-	 * 
+	 *
 	 * @param ref a policy set id reference
 	 * @param context an evaluation context
-	 * @return <code>true</code> if a given reference 
+	 * @return <code>true</code> if a given reference
 	 */
-	private static boolean isReferenceCyclic(PolicySetIDReference ref, 
+	private static boolean isReferenceCyclic(PolicySetIDReference ref,
 			EvaluationContext context)
 	{
 		if(context.getCurrentPolicySetIDReference() != null){
@@ -165,9 +169,9 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
 		}
-		return false;				
+		return false;
 	}
-	
+
 	class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
 	{
 		PolicySetIDReferenceEvaluationContext(
@@ -175,7 +179,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			super(context);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicySetIDReference.this, context));
 		}
-		
+
 		@Override
 		public PolicySetIDReference getCurrentPolicySetIDReference() {
 			return PolicySetIDReference.this;

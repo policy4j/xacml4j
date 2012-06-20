@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

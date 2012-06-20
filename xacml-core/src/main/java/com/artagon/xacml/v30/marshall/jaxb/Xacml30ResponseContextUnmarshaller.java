@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.marshall.jaxb;
 import javax.xml.bind.JAXBElement;
 
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public class Xacml30ResponseContextUnmarshaller extends 

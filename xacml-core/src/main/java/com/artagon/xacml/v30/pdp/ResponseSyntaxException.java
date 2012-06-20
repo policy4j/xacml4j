@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30.pdp;
 
+import com.artagon.xacml.v30.XacmlSyntaxException;
+
 
 public class ResponseSyntaxException extends XacmlSyntaxException
 {

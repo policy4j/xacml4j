@@ -22,10 +22,13 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
+import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;

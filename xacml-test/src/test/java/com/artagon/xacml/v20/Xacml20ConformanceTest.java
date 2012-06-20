@@ -15,27 +15,27 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
-import com.artagon.xacml.v30.pdp.RequestContext;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
 import com.artagon.xacml.v30.spi.repository.InMemoryPolicyRepository;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 
-public class Xacml20ConformanceTest 
+public class Xacml20ConformanceTest
 {
 	private static ResponseMarshaller responseMarshaller;
 	private static PolicyRepository repository;
 	private PolicyDecisionPoint pdp;
-	
+
 	private PolicyDecisionPointBuilder pdpBuilder;
-	
+
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
@@ -43,34 +43,34 @@ public class Xacml20ConformanceTest
 				"testRepositoryId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
-				.create(), 
+				.create(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
 				.create());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
-		
+
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
 		addAllPolicies(repository, "IIC", 233);
 		addAllPolicies(repository, "IID", 30);
-		
+
 		addAllPolicies(repository, "IIIA", 28);
 		addAllPolicies(repository, "IIIF", 7);
 		addAllPolicies(repository, "IIIG", 7);
-		
+
 		addPolicy(repository, "IIE", "Policy.xml", 1);
 		addPolicy(repository, "IIE", "PolicyId1.xml", 1);
 		addPolicy(repository, "IIE", "PolicySetId1.xml", 1);
-		
+
 		addPolicy(repository, "IIE", "Policy.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
 		addPolicy(repository, "IIE", "PolicySetId1.xml", 2);
-		
+
 		addPolicy(repository, "IIE", "Policy.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
 		addPolicy(repository, "IIE", "PolicyId2.xml", 2);
 	}
-	
+
 	@Before
 	public void init(){
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder("testPdp")
@@ -80,39 +80,39 @@ public class Xacml20ConformanceTest
 				.build())
 		.withPolicyRepository(repository);
 	}
-	
+
 	@Test
 	public void testIIATests() throws Exception
-	{	
+	{
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(2);
 		skipTests.add(3);
 		skipTests.add(4);
 		skipTests.add(5);
-		executeXacmlConformanceTestCase(skipTests, "IIA", 22);	
+		executeXacmlConformanceTestCase(skipTests, "IIA", 22);
 	}
-	
+
 	@Test
 	public void testIIIATests() throws Exception
-	{	
+	{
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(1);
 		skipTests.add(2);
 		skipTests.add(3);
 		skipTests.add(4);
 		skipTests.add(5);
-		executeXacmlConformanceTestCase(skipTests, "IIIA", 28);	
+		executeXacmlConformanceTestCase(skipTests, "IIIA", 28);
 	}
-	
+
 	@Test
 	public void testIIBTests() throws Exception
-	{	
-		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIB", 54);	
+	{
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIB", 54);
 	}
-	
+
 	@Test
 	public void testIICTests() throws Exception
-	{	
+	{
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(3);
 		skipTests.add(12);
@@ -131,47 +131,47 @@ public class Xacml20ConformanceTest
 		skipTests.add(93);
 		skipTests.add(98);
 		skipTests.add(99);
-		executeXacmlConformanceTestCase(skipTests, "IIC", 233);	
+		executeXacmlConformanceTestCase(skipTests, "IIC", 233);
 	}
-	
+
 	@Test
 	public void testIIDTests() throws Exception
-	{	
+	{
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(29);
-		executeXacmlConformanceTestCase(skipTests, "IID", 30);	
+		executeXacmlConformanceTestCase(skipTests, "IID", 30);
 	}
-	
+
 	@Test
 	public void testIIETests() throws Exception
-	{	
-		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIE", 3);	
+	{
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIE", 3);
 	}
-	
+
 	@Test
 	public void testIIIFTests() throws Exception
-	{	
-		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIIF", 7);	
+	{
+		executeXacmlConformanceTestCase(Collections.<Integer>emptySet(), "IIIF", 7);
 	}
-	
+
 	@Test
 	public void testIIIGTests() throws Exception
-	{	
+	{
 		Set<Integer> skipTests = new HashSet<Integer>();
 		skipTests.add(1);
 		skipTests.add(2);
 		skipTests.add(3);
 		skipTests.add(4);
 		skipTests.add(5);
-		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);	
+		executeXacmlConformanceTestCase(skipTests, "IIIG", 7);
 	}
-	
+
 	@Test
 	public void testExecuteIIIG006() throws Exception
 	{
 		executeTestCase("IIIG", 6);
 	}
-				
+
 	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
 	{
 		for(int i = 1; i < testCount; i++)
@@ -182,7 +182,7 @@ public class Xacml20ConformanceTest
 			executeTestCase(testPrefix, i);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
 	{
@@ -203,7 +203,7 @@ public class Xacml20ConformanceTest
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20TestUtility.assertResponse(getResponse(testPrefix, testCaseNum), actual);
 	}
-	
+
 	private static InputStream getPolicy(
 			String prefix, int number, String sufix) throws Exception
 	{
@@ -212,8 +212,8 @@ public class Xacml20ConformanceTest
 		InputStream in = Xacml20TestUtility.getClasspathResource(path);
 		return in;
 	}
-	
-	public static void addAllPolicies(PolicyRepository r, 
+
+	public static void addAllPolicies(PolicyRepository r,
 			String prefix, int count) throws Exception
 	{
 		for(int i = 1; i < count; i++)
@@ -221,7 +221,7 @@ public class Xacml20ConformanceTest
 			addPolicy(r, prefix, "Policy.xml", i);
 		}
 	}
-	
+
 	private static void addPolicy(PolicyRepository r, String prefix, String sufix, int index)
 	{
 		try{
@@ -230,7 +230,7 @@ public class Xacml20ConformanceTest
 				return;
 			}
 		}catch(Exception e){
-			
+
 		}
 	}
 
@@ -240,7 +240,7 @@ public class Xacml20ConformanceTest
 		.append(StringUtils.leftPad(Integer.toString(testCaseNum), 3, '0'))
 		.append(sufix).toString();
 	}
-	
+
 	private static ResponseType getResponse(String prefix, int num) throws Exception {
 		return Xacml20TestUtility.getResponse("oasis-xacml20-compat-test/" + createTestAssetName(prefix, num, "Response.xml"));
 	}

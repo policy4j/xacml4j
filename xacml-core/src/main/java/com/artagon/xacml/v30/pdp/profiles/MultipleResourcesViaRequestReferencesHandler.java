@@ -8,10 +8,10 @@ import com.artagon.xacml.v30.AttributesReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.RequestReference;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
-import com.artagon.xacml.v30.pdp.Result;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {

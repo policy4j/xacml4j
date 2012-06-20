@@ -9,6 +9,7 @@ import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression

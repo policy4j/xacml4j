@@ -3,9 +3,9 @@ package com.artagon.xacml.v30.spi.function;
 import java.util.ListIterator;
 
 import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.ValueType;
 import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionParamSpec;
-import com.artagon.xacml.v30.pdp.ValueType;
 
 final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 {

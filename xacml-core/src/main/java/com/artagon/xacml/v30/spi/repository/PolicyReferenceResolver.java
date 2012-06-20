@@ -1,8 +1,8 @@
 package com.artagon.xacml.v30.spi.repository;
 
+import com.artagon.xacml.v30.PolicyResolutionException;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
-import com.artagon.xacml.v30.pdp.PolicyResolutionException;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
 

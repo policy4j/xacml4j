@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ValueExpression;
+import com.artagon.xacml.v30.ValueType;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 
 public interface FunctionSpec 

@@ -8,47 +8,39 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.AttributeSelectorKey;
-import com.artagon.xacml.v30.pdp.Policy;
-import com.artagon.xacml.v30.pdp.PolicyIDReference;
-import com.artagon.xacml.v30.pdp.PolicyResolutionException;
-import com.artagon.xacml.v30.pdp.PolicySet;
-import com.artagon.xacml.v30.pdp.PolicySetIDReference;
-import com.artagon.xacml.v30.pdp.ValueExpression;
 
-public interface EvaluationContext 
-{	
+public interface EvaluationContext
+{
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
 	 * the attributes used in the authorization
 	 * decision TTL's
-	 * 
+	 *
 	 * @return a decision cache TTL in seconds
 	 */
 	int getDecisionCacheTTL();
-	
+
 	/**
 	 * Sets a decision cache TTL
-	 * 
+	 *
 	 * @param ttl a new time to cache
 	 * time for a decision
 	 */
 	void setDecisionCacheTTL(int ttl);
-	
+
 	/**
 	 * Gets time zone used in PDP time
 	 * calculations
-	 * 
+	 *
 	 * @return {@link TimeZone}
 	 */
 	TimeZone getTimeZone();
-	
+
 	/**
 	 * Gets evaluation context current date/time
 	 * in the evaluation time-zone
-	 * 
+	 *
 	 * @return {@link Calendar} instance
 	 * in the evaluation context time-zone
 	 */
@@ -58,190 +50,181 @@ public interface EvaluationContext
 	 * Tests if function parameters
 	 * need to be validate at runtime
 	 * every time function is invoked
-	 * 
+	 *
 	 * @return <code>true</code> if parameters
 	 * need to be validated at runtime
 	 */
 	boolean isValidateFuncParamsAtRuntime();
-	
+
 	/**
 	 * Enables/Disables function parameters validation
 	 * at runtime
-	 * 
+	 *
 	 * @param validate a flag to validate
 	 */
 	void setValidateFuncParamsAtRuntime(boolean validate);
-		
+
 	/**
-	 * Gets evaluation status information to be 
+	 * Gets evaluation status information to be
 	 * included in the response as {@link StatusCode}
 	 * instance
-	 * 
-	 * @return {@link StatusCode} or 
+	 *
+	 * @return {@link StatusCode} or
 	 * <code>null</code> if status
 	 * information is unavailable
 	 */
 	StatusCode getEvaluationStatus();
-	
+
 	/**
 	 * Sets extended evaluation failure
 	 * status information to be included
 	 * in the response
-	 * 
+	 *
 	 * @param code a status code indicating
 	 * evaluation failure status
 	 */
 	void setEvaluationStatus(StatusCode code);
-	
+
 	/**
 	 * Gets parent evaluation context
-	 * 
+	 *
 	 * @return parent evaluation context or
 	 * <code>null</code>
 	 */
 	EvaluationContext getParentContext();
-	
+
 	/**
-	 * Returns a list of all policies which were found 
+	 * Returns a list of all policies which were found
 	 * to be fully applicable during evaluation.
-	 * 
-	 * @return a collection of {@link PolicyIdentifier}
+	 *
+	 * @return a collection of {@link CompositeDecisionRuleIDReference}
 	 */
 	Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies();
-	
+
 	/**
-	 * Adds evaluated policy and policy 
+	 * Adds evaluated policy or policy set
 	 * evaluation result to the context
-	 * 
-	 * @param policy an evaluated policy
-	 * @param result a policy evaluaton result
+	 *
+	 * @param policy an evaluated policy or policy set
+	 * @param result a policy or policy set evaluation result
 	 */
-	void addPolicyEvaluationResult(Policy policy, Decision result);
-	
-	/**
-	 * Adds evaluated policy set and policy set
-	 * evaluation result to the context
-	 * 
-	 * @param policy an evaluated policy set
-	 * @param result a policy set evaluation result
-	 */
-	void addPolicySetEvaluationResult(PolicySet policySet, Decision result);
-	
+	void addEvaluationResult(CompositeDecisionRule policy, Decision result);
+
 	/**
 	 * Gets currently evaluated policy.
-	 * If invocation returns 
+	 * If invocation returns
 	 * <code>null</code> {@link #getCurrentPolicySet()}
 	 * will return NOT <code>null</code> reference
 	 * to the currently evaluated policy set
 	 *
-	 * 
-	 * @return {@link Policy} or <code>null</code>
+	 *
+	 * @return {@link CompositeDecisionRule} or <code>null</code>
 	 */
-	Policy getCurrentPolicy();
-	
+	CompositeDecisionRule getCurrentPolicy();
+
 	/**
 	 * Gets currently evaluated policy set
-	 * 
-	 * @return {@link PolicySet} or <code>null</code>
+	 *
+	 * @return {@link CompositeDecisionRule} or <code>null</code>
 	 */
-	PolicySet getCurrentPolicySet();
-	
+	CompositeDecisionRule getCurrentPolicySet();
+
 	/**
-	 * Gets current {@link PolicyIDReference}
-	 * 
-	 * @return current {@link PolicyIDReference} or
+	 * Gets current {@link CompositeDecisionRuleIDReference}
+	 *
+	 * @return current {@link CompositeDecisionRuleIDReference} or
 	 * <code>null</code>
 	 */
-	PolicyIDReference getCurrentPolicyIDReference();
-	
+	CompositeDecisionRuleIDReference getCurrentPolicyIDReference();
+
 	/**
-	 * Gets currently evaluated {@link PolicySetIDReference}
-	 * 
-	 * @return {@link PolicySetIDReference} or <code>null</code>
+	 * Gets currently evaluated {@link CompositeDecisionRuleIDReference}
+	 *
+	 * @return {@link CompositeDecisionRuleIDReference} or <code>null</code>
 	 */
-	PolicySetIDReference getCurrentPolicySetIDReference();
-	
+	CompositeDecisionRuleIDReference getCurrentPolicySetIDReference();
+
 	/**
 	 * Gets XPath version
-	 * 
+	 *
 	 * @return {@link XPathVersion}
 	 */
 	XPathVersion getXPathVersion();
-	
+
 	/**
 	 * Adds evaluated {@link Advice} matching give
 	 * decision
-	 * 
+	 *
 	 * @param d an access decision
 	 */
 	void addAdvices(Decision d, Iterable<Advice> advices);
 	void addObligations(Decision d, Iterable<Obligation> obligations);
-	
+
 	/**
 	 * Gets obligations matching given decision
-	 * 
+	 *
 	 * @param decision an access decision
 	 * @return matching obligations
 	 */
 	Iterable<Obligation> getMatchingObligations(Decision decision);
-	
+
 	/**
 	 * Gets advices matching given decision
-	 * 
+	 *
 	 * @param decision an access decision
 	 * @return matching advices
 	 */
 	Iterable<Advice> getMatchingAdvices(Decision decision);
-	
+
 	/**
 	 * Gets variable evaluation result for given
 	 * variable identifier.
-	 * 
+	 *
 	 * @param variableId a variable identifier
 	 * @return {@link ValueExpression} instance or {@code null}
 	 */
 	 ValueExpression getVariableEvaluationResult(String variableId);
-	
+
 	/**
 	 * Caches current policy variable evaluation result.
-	 * 
+	 *
 	 * @param variableId a variable identifier
 	 * @param value a variable value
 	 */
 	void setVariableEvaluationResult(String variableId, ValueExpression value);
-	
+
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
 	 * to the {@link BagOfAttributeExp}
-	 * 
+	 *
 	 * @param ref an attribute designator
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given designator
 	 */
-	BagOfAttributeExp resolve(AttributeDesignatorKey ref) 
+	BagOfAttributeExp resolve(AttributeDesignatorKey ref)
 		throws EvaluationException;
-	
+
 	/**
 	 * Resolves a given {@link AttributeSelectorKey}
 	 * to the {@link BagOfAttributeExp}
-	 * 
+	 *
 	 * @param ref an attribute selector
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
 	 */
-	BagOfAttributeExp resolve(AttributeSelectorKey ref) 
+	BagOfAttributeExp resolve(AttributeSelectorKey ref)
 		throws EvaluationException;
-	
+
 	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeExp v);
-	
+
 	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();
-	
+
 	/**
 	 * Evaluates a given XPath expression
 	 * to a {@link NodeList}
-	 * 
+	 *
 	 * @param xpath an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link NodeList} representing an evaluation
@@ -251,14 +234,14 @@ public interface EvaluationContext
 	 * expression
 	 */
 	NodeList evaluateToNodeSet(
-			String xpath, 
-			AttributeCategory categoryId) 
+			String xpath,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	/**
 	 * Evaluates a given XPath expression
 	 * to a {@link String}
-	 * 
+	 *
 	 * @param xpath an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link String} representing an evaluation
@@ -268,14 +251,14 @@ public interface EvaluationContext
 	 * expression
 	 */
 	String evaluateToString(
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	/**
 	 * Evaluates a given XPath expression
 	 * to a {@link Node}
-	 * 
+	 *
 	 * @param xpath an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link Node} representing an evaluation
@@ -285,14 +268,14 @@ public interface EvaluationContext
 	 * expression
 	 */
 	Node evaluateToNode(
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	/**
 	 * Evaluates a given XPath expression
 	 * to a {@link Number}
-	 * 
+	 *
 	 * @param xpath an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link Number} representing an evaluation
@@ -302,31 +285,20 @@ public interface EvaluationContext
 	 * expression
 	 */
 	Number evaluateToNumber(
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	/**
-	 * Resolves given {@link PolicyIDReference}
+	 * Resolves given {@link CompositeDecisionRuleIDReference}
 	 * reference
-	 * 
+	 *
 	 * @param ref a policy reference
-	 * @return resolved {@link Policy} instance
+	 * @return resolved {@link CompositeDecisionRule} instance
 	 * @throws PolicyResolutionException if
 	 * policy reference can not be resolved
 	 */
-	Policy resolve(PolicyIDReference ref) 
+	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 		throws PolicyResolutionException;
-	
-	/**
-	 * Resolves given {@link PolicySetIDReference}
-	 * reference
-	 * 
-	 * @param ref a policy reference
-	 * @return resolved {@link PolicySet} instance
-	 * @throws PolicyResolutionException if
-	 * policy set reference can not be resolved
-	 */
-	PolicySet resolve(PolicySetIDReference ref) 
-		throws PolicyResolutionException;
+
 }

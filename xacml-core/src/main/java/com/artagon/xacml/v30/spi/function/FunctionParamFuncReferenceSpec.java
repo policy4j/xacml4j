@@ -2,23 +2,22 @@ package com.artagon.xacml.v30.spi.function;
 
 import java.util.ListIterator;
 
+import com.artagon.xacml.v30.ValueType;
 import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionParamSpec;
 import com.artagon.xacml.v30.pdp.FunctionReference;
-import com.artagon.xacml.v30.pdp.ValueType;
-import com.artagon.xacml.v30.pdp.XacmlObject;
 
-final class FunctionParamFuncReferenceSpec extends XacmlObject implements FunctionParamSpec
-{		
+final class FunctionParamFuncReferenceSpec implements FunctionParamSpec
+{
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return false;
 	}
-	
+
 	public boolean isVariadic() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		Expression exp = it.next();

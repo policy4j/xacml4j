@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 
 
 public interface PolicyDecisionPoint extends PolicyDecisionPointMBean

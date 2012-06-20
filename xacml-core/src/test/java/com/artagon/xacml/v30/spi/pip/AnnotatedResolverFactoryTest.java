@@ -19,11 +19,11 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
+import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerType;

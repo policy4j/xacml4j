@@ -7,7 +7,7 @@ import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

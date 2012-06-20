@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public final class ResolverRegistryBuilder 

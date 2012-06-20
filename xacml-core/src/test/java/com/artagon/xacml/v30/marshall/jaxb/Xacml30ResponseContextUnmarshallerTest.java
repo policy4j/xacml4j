@@ -17,7 +17,7 @@ import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.Result;
 
 public class Xacml30ResponseContextUnmarshallerTest {
 

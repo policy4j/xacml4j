@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.yammer.metrics.Metrics;

@@ -19,10 +19,10 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Version;
+import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.Rule;
-import com.artagon.xacml.v30.pdp.VersionMatch;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 

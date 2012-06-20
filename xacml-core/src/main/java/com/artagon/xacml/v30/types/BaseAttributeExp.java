@@ -5,8 +5,8 @@ import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ValueType;
 import com.artagon.xacml.v30.pdp.ExpressionVisitor;
-import com.artagon.xacml.v30.pdp.ValueType;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

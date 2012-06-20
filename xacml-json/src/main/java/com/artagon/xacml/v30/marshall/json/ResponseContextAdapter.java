@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import com.artagon.xacml.v30.ResponseContext;
-import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.Result;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

@@ -6,10 +6,12 @@ import org.slf4j.LoggerFactory;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Objects;
 

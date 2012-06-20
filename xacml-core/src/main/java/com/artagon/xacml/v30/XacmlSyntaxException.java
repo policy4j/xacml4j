@@ -1,6 +1,8 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import javax.xml.stream.Location;
+
+import com.artagon.xacml.v30.pdp.XacmlException;
 
 public class XacmlSyntaxException extends XacmlException
 {

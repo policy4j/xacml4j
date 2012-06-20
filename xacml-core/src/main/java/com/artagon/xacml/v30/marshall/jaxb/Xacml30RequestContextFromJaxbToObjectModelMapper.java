@@ -45,14 +45,14 @@ import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.RequestReference;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.StatusDetail;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
-import com.artagon.xacml.v30.pdp.Result;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 

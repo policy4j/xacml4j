@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.common.base.Strings;
 
 public enum AttributeCategories implements AttributeCategory

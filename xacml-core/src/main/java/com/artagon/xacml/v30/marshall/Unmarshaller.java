@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.marshall;
 
 import java.io.IOException;
 
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 public interface Unmarshaller<T>
 {

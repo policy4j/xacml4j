@@ -2,7 +2,6 @@ package com.artagon.xacml.v30;
 
 import java.util.Collection;
 
-import com.artagon.xacml.v30.pdp.Result;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 

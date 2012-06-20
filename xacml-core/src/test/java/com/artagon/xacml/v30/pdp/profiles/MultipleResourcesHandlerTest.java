@@ -25,10 +25,10 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
 
 public class MultipleResourcesHandlerTest

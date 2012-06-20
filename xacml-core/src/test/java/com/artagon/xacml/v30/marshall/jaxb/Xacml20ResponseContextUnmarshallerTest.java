@@ -10,9 +10,9 @@ import org.junit.Test;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.Iterables;
 

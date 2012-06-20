@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.types.IntegerType;

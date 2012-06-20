@@ -7,12 +7,12 @@ import java.io.InputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.Decision;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointBuilder;
-import com.artagon.xacml.v30.pdp.RequestContext;
-import com.artagon.xacml.v30.pdp.ResponseContext;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPointBuilder;
@@ -23,20 +23,20 @@ import com.google.common.collect.Iterables;
 public class RSA2008InteropTest
 {
 	private static PolicyDecisionPoint pdp;
-	
+
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		
+
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()
 				.withDefaultFunctions()
-				.create(), 
+				.create(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
 				.create());
-	
+
 		repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02a-CDA.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-02b-N.xml"));
@@ -46,7 +46,7 @@ public class RSA2008InteropTest
 		repository.importPolicy(getPolicy("XacmlPolicySet-02f-emergency.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
 		repository.importPolicy(getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
-		
+
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.withPolicyRepository(repository)
 			.withPolicyInformationPoint(
@@ -56,139 +56,139 @@ public class RSA2008InteropTest
 					.build())
 			.withRootPolicy(repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml")))
 			.build();
-		
+
 	}
-	
+
 	@Test
 	public void testCase1Request01() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-01-01.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase1Request02() throws Exception
 	{
-		
+
 		Result r = executeTest("XacmlRequest-01-02.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase1Request03() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-01-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase1Request04() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-01-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase2Request01() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-02-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase2Request02() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-02-02.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase2Request03() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-02-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase2Request04() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-02-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase3Request01() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-03-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase3Request02() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-03-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase3Request03() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-03-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase4Request01() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-04-01.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase4Request02() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-04-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase4Request03() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-04-03.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase4Request04() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-04-04.xml");
 		assertEquals(Decision.DENY, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase5Request01() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-05-01.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	@Test
 	public void testCase5Request02() throws Exception
 	{
 		Result r = executeTest("XacmlRequest-05-02.xml");
 		assertEquals(Decision.PERMIT, r.getDecision());
 	}
-	
+
 	private static InputStream getPolicy(String name) throws Exception
 	{
 		return Xacml20TestUtility.getClasspathResource("rsa2008-interop/" + name);
 	}
-	
+
 	private RequestContext getRequest(String name) throws Exception
 	{
 		return Xacml20TestUtility.getRequest("rsa2008-interop/" + name);
 	}
-	
+
 	private Result executeTest(String name) throws Exception
 	{
 		RequestContext request = getRequest(name);

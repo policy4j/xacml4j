@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.spi.pdp;
 import java.util.Collection;
 
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
-import com.artagon.xacml.v30.pdp.Result;
 
 public interface RequestContextHandler 
 {

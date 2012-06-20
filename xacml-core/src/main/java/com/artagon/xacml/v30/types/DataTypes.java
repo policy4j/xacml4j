@@ -11,7 +11,7 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 /**
  * An enumeration  of all XACML 2.0 & 3.0 data types

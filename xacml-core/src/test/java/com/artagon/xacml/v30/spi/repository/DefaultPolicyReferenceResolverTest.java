@@ -10,12 +10,12 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.VersionMatch;
 import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
-import com.artagon.xacml.v30.pdp.VersionMatch;
 
 public class DefaultPolicyReferenceResolverTest
 {	

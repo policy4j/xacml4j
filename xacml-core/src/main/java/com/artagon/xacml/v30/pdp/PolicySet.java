@@ -20,24 +20,24 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-public class PolicySet extends 
+public class PolicySet extends
 	BaseCompositeDecisionRule implements PolicyElement
 {
 	private PolicySetDefaults policySetDefaults;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
 	private List<CompositeDecisionRule> decisionRules;
-	
+
 	private Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
 	private	Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
-	
+
 	private PolicySetIDReference reference;
-	
+
 	private PolicySet(PolicySetBuilder b)
 	{
 		super(b);
 		this.reference = new PolicySetIDReference(id, version);
 		this.policySetDefaults = b.policyDefaults;
-		Preconditions.checkNotNull(b.combiningAlgorithm, 
+		Preconditions.checkNotNull(b.combiningAlgorithm,
 				"Policy decision combinging algorithm must be specified");
 		this.combine = b.combiningAlgorithm;
 		this.decisionRules = ImmutableList.copyOf(b.policies);
@@ -51,13 +51,13 @@ public class PolicySet extends
 		}
 		this.policySetCombinerParameters = forPolicySets.build();
 		this.policyCombinerParameters = forPolicies.build();
-		
+
 	}
-	
+
 	public static PolicySetBuilder builder(String id){
 		return new PolicySetBuilder(id);
 	}
-	
+
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
@@ -65,7 +65,7 @@ public class PolicySet extends
 
 	/**
 	 * Gets all combiner parameters for a given policy identifier
-	 * 
+	 *
 	 * @param policyId a policy identifier
 	 * @return a collection of combiner parameters
 	 */
@@ -73,10 +73,10 @@ public class PolicySet extends
 		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
 	}
-	
+
 	/**
 	 * Gets policy combiner parameter with a given name
-	 * 
+	 *
 	 * @param policyId a policy identifier
 	 * @param name a parameter name
 	 * @return a collection of combiner parameters
@@ -85,10 +85,10 @@ public class PolicySet extends
 		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
 	}
-	
+
 	/**
 	 * Gets all combiner parameters for a given policy set identifier
-	 * 
+	 *
 	 * @param policySetId a policy set identifier
 	 * @return a collection of combiner parameters
 	 */
@@ -96,10 +96,10 @@ public class PolicySet extends
 		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policySetId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
 	}
-	
+
 	/**
 	 * Gets policy set combiner parameter with a given name
-	 * 
+	 *
 	 * @param policySetId a policy set identifier
 	 * @param name a parameter name
 	 * @return a collection of combiner parameters
@@ -108,30 +108,30 @@ public class PolicySet extends
 		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policyId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
 	}
-	
+
 	/**
 	 * Gets policy set decision combining algorithm
-	 * 
+	 *
 	 * @return a decision combining algorithm
 	 */
 	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
 		return combine;
 	}
-	
+
 	/**
 	 * Gets policy set defaults
-	 * 
+	 *
 	 * @return {@link PolicySetDefaults}
 	 */
 	public PolicySetDefaults getDefaults() {
 		return policySetDefaults;
 	}
-	
+
 	/**
 	 * Creates {@link EvaluationContext} to evaluate this policy
 	 * set to be used in {@link this#isApplicable(EvaluationContext)}
 	 * or {@link this#evaluate(EvaluationContext)}
-	 * 
+	 *
 	 * @param context a parent evaluation context
 	 * @return {@link EvaluationContext} instance to evaluate
 	 * this policy set
@@ -144,26 +144,26 @@ public class PolicySet extends
 		}
 		return new PolicySetDelegatingEvaluationContext(context);
 	}
-	
+
 	protected final boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicySet() == this;
 	}
-	
-	public final Decision evaluate(EvaluationContext context) 
+
+	public final Decision evaluate(EvaluationContext context)
 	{
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(isEvaluationContextValid(context));
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
 		if(log.isDebugEnabled()) {
 			log.debug("PolicySet id=\"{}\" condition " +
 					"evaluation result=\"{}\"", id, result);
 		}
 		if(result == ConditionResult.TRUE){
 			Decision decision = combine.combine(context, decisionRules);
-			if(!decision.isIndeterminate() || 
+			if(!decision.isIndeterminate() ||
 					decision != Decision.NOT_APPLICABLE){
 				decision = evaluateAdvicesAndObligations(context, decision);
-				context.addPolicySetEvaluationResult(this, decision);
+				context.addEvaluationResult(this, decision);
 			}
 			return decision;
 		}
@@ -178,13 +178,13 @@ public class PolicySet extends
 		}
 		return Decision.NOT_APPLICABLE;
 	}
-	
+
 	public List<? extends CompositeDecisionRule> getDecisions() {
 		return decisionRules;
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) 
+	public void accept(PolicyVisitor v)
 	{
 		v.visitEnter(this);
 		if(getTarget() != null){
@@ -203,17 +203,17 @@ public class PolicySet extends
 			advice.accept(v);
 		}
 		v.visitLeave(this);
-	}		
+	}
 
-	class PolicySetDelegatingEvaluationContext 
-		extends DelegatingEvaluationContext 
-	{	
+	class PolicySetDelegatingEvaluationContext
+		extends DelegatingEvaluationContext
+	{
 		/**
 		 * Constructs delegating evaluation context
 		 * which delegates all invocations to the enclosing
-		 * policy set or root context to evaluate given 
+		 * policy set or root context to evaluate given
 		 * policy set
-		 * 
+		 *
 		 * @param parentContext a parent context
 		 */
 		PolicySetDelegatingEvaluationContext(
@@ -233,28 +233,28 @@ public class PolicySet extends
 		@Override
 		public XPathVersion getXPathVersion() {
 			PolicySetDefaults defaults = PolicySet.this.getDefaults();
-			if(defaults != null && 
+			if(defaults != null &&
 					defaults.getXPathVersion() != null){
 				return defaults.getXPathVersion();
 			}
 			return super.getXPathVersion();
 		}
 	}
-	
+
 	public final static class PolicySetBuilder extends BaseCompositeDecisionRuleBuilder<PolicySetBuilder>
 	{
 		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
 		private Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
-		
+
 		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
 		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
-		
+
 		private PolicySetBuilder(String policySetId){
 			super(policySetId);
 		}
-		
-		
+
+
 		public PolicySetBuilder withPolicyCombinerParameter(String policyId, CombinerParameter p){
 			Preconditions.checkNotNull(policyId);
 			Preconditions.checkNotNull(p);
@@ -266,7 +266,7 @@ public class PolicySet extends
 			params.put(p.getName(), p);
 			return this;
 		}
-		
+
 		public PolicySetBuilder withPolicySetCombinerParameter(String policySetId, CombinerParameter p){
 			Preconditions.checkNotNull(policySetId);
 			Preconditions.checkNotNull(p);
@@ -278,39 +278,39 @@ public class PolicySet extends
 			params.put(p.getName(), p);
 			return this;
 		}
-		
+
 		public PolicySetBuilder withoutPolicyCombinerParameters(){
 			this.policyCombinerParams.clear();
 			return this;
 		}
-		
+
 		public PolicySetBuilder withoutPolicySetCombinerParameters(){
 			this.policySetCombinerParams.clear();
 			return this;
 		}
-		
+
 		public PolicySetBuilder withDefaults(PolicySetDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
-		
+
 		public PolicySetBuilder withoutDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
-		
+
 		public PolicySetBuilder withPolicy(Policy p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
-		
+
 		public PolicySetBuilder withPolicySet(PolicySet p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
-		
+
 		public PolicySetBuilder withCompositeDecisionRules(Iterable<CompositeDecisionRule> rules)
 		{
 			for(CompositeDecisionRule r : rules){
@@ -319,24 +319,24 @@ public class PolicySet extends
 			}
 			return this;
 		}
-		
+
 		public PolicySetBuilder withPolicy(Policy.PolicyBuilder b){
 			Preconditions.checkNotNull(b);
 			this.policies.add(b.create());
 			return this;
 		}
-		
+
 		public PolicySetBuilder withPolicy(PolicySet.PolicySetBuilder b){
 			Preconditions.checkNotNull(b);
 			this.policies.add(b.create());
 			return this;
 		}
-		
+
 		public PolicySetBuilder withoutRules(){
 			this.policies.clear();
 			return this;
 		}
-		
+
 		public PolicySetBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> algo)
 		{
 			Preconditions.checkNotNull(algo);
@@ -348,7 +348,7 @@ public class PolicySet extends
 		protected PolicySetBuilder getThis() {
 			return this;
 		}
-		
+
 		public PolicySet create(){
 			return new PolicySet(this);
 		}

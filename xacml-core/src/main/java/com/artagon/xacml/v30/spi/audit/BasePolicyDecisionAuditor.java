@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v30.pdp.Result;
 
 public class BasePolicyDecisionAuditor 
 	implements PolicyDecisionAuditor 

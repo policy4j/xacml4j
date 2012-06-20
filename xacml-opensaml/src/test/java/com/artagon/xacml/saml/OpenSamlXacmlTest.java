@@ -37,8 +37,8 @@ import com.artagon.xacml.opensaml.XACMLAuthzDecisionQueryEndpoint;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQuerySigner;
 import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v30.pdp.Result;
 
 
 @ContextConfiguration(locations={"classpath:testApplicationContext.xml"})

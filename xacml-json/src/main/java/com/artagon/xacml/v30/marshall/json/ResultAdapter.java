@@ -7,7 +7,7 @@ import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Obligation;
-import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.Result;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

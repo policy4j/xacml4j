@@ -6,9 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import com.artagon.xacml.v30.pdp.AttributeExpType;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-
 public class AttributeResolverTestSupport {
 
 	protected <T extends AttributeExpType> void checkHasAttribute(

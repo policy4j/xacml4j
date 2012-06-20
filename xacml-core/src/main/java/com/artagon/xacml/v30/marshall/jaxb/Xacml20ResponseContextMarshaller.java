@@ -29,9 +29,9 @@ import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.ResponseContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.collect.Iterables;
 

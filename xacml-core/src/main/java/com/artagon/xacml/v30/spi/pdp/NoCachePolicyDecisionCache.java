@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.pdp;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.Result;
 
 public class NoCachePolicyDecisionCache implements PolicyDecisionCache
 {

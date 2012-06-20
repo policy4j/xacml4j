@@ -2,6 +2,8 @@ package com.artagon.xacml.v30.pdp;
 
 import javax.xml.stream.Location;
 
+import com.artagon.xacml.v30.XacmlSyntaxException;
+
 public class XacmlPolicySyntaxException extends XacmlSyntaxException
 {
 	private static final long serialVersionUID = 345591401946746019L;

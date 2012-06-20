@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -23,23 +25,23 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-public class Policy extends BaseCompositeDecisionRule 
+public class Policy extends BaseCompositeDecisionRule
 	implements PolicyElement
 {
 	private PolicyDefaults policyDefaults;
 	private Map<String, VariableDefinition> variableDefinitions;
 	private List<Rule> rules;
-	private DecisionCombiningAlgorithm<Rule> combine;	
+	private DecisionCombiningAlgorithm<Rule> combine;
 	private Map<String, Multimap<String, CombinerParameter>> ruleCombingingParameters;
-	
+
 	/**
 	 * A reference to itself
 	 */
 	private PolicyIDReference reference;
-	
+
 	private Policy(PolicyBuilder b){
 		super(b);
-		Preconditions.checkNotNull(b.combiningAlgorithm, 
+		Preconditions.checkNotNull(b.combiningAlgorithm,
 				"Rule decision combining algorithm must be specified");
 		this.combine = b.combiningAlgorithm;
 		this.policyDefaults = b.policyDefaults;
@@ -55,14 +57,14 @@ public class Policy extends BaseCompositeDecisionRule
 			ruleCombingingParameters.put(p.getKey(), ImmutableListMultimap.copyOf(p.getValue()));
 		}
 	}
-	
+
 	public static PolicyBuilder builder(String policyId){
 		return new PolicyBuilder(policyId);
 	}
-		
+
 	/**
 	 * Gets policy defaults
-	 * 
+	 *
 	 * @return policy defaults
 	 */
 	public PolicyDefaults getDefaults() {
@@ -73,38 +75,38 @@ public class Policy extends BaseCompositeDecisionRule
 		Multimap<String, CombinerParameter> p = ruleCombingingParameters.get(ruleId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
 	}
-	
+
 	public Collection<CombinerParameter> getRuleCombinerParam(String ruleId, String name){
 		Multimap<String, CombinerParameter> p = ruleCombingingParameters.get(ruleId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
 	}
-	
+
 	/**
 	 * Gets policy rule combining algorithm
-	 * 
+	 *
 	 * @return {@link DecisionCombiningAlgorithm} instance
 	 */
 	public DecisionCombiningAlgorithm<Rule> getRuleCombiningAlgorithm(){
 		return combine;
 	}
-	
+
 	/**
 	 * Gets policy variable definitions
-	 * 
+	 *
 	 * @return a collection of {@link VariableDefinition} instances
 	 */
 	public Collection<VariableDefinition> getVariableDefinitions(){
 		return variableDefinitions.values();
 	}
-	
+
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return reference;
 	}
-	
+
 	/**
 	 * Gets {@link VariableDefinition} by identifier
-	 * 
+	 *
 	 * @param variableId variable identifier
 	 * @return {@link VariableDefinition} or <code>null</code>
 	 * if variable definition can not be resolved
@@ -112,39 +114,39 @@ public class Policy extends BaseCompositeDecisionRule
 	public VariableDefinition getVariableDefinition(String variableId){
 		return variableDefinitions.get(variableId);
 	}
-	
+
 	/**
 	 * Gets all policy rules
-	 * 
+	 *
 	 * @return a collection of {@link Rule}
 	 * instances
 	 */
 	public List<Rule> getRules(){
 		return rules;
 	}
-	
+
 	/**
 	 * Implementation creates {@link PolicyDelegatingEvaluationContext}
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context) 
+	public EvaluationContext createContext(EvaluationContext context)
 	{
 		Preconditions.checkNotNull(context);
-		Policy p = context.getCurrentPolicy();
-		Preconditions.checkArgument(p == this 
+		CompositeDecisionRule p = context.getCurrentPolicy();
+		Preconditions.checkArgument(p == this
 				|| p == null);
 		if(p == this){
 			return context;
 		}
 		return new PolicyDelegatingEvaluationContext(context);
 	}
-	
+
 	@Override
 	public Decision evaluate(EvaluationContext context)
 	{
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(isEvaluationContextValid(context));
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
 		if(log.isDebugEnabled()) {
 			log.debug("Policy id=\"{}\" condition " +
 					"evaluation result=\"{}\"", id, result);
@@ -153,13 +155,13 @@ public class Policy extends BaseCompositeDecisionRule
 			Decision decision = combine.combine(context, rules);
 			if(log.isDebugEnabled()) {
 				log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
-						"evaluation result=\"{}\"", 
+						"evaluation result=\"{}\"",
 						new Object[] { getId(), combine.getId(), decision });
-			}  
-			if(!decision.isIndeterminate() || 
+			}
+			if(!decision.isIndeterminate() ||
 					decision != Decision.NOT_APPLICABLE){
 				decision = evaluateAdvicesAndObligations(context, decision);
-				context.addPolicyEvaluationResult(this, decision);
+				context.addEvaluationResult(this, decision);
 			}
 			return decision;
 		}
@@ -174,11 +176,11 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 		return Decision.NOT_APPLICABLE;
 	}
-	
+
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicy() == this;
 	}
-	
+
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
@@ -198,26 +200,26 @@ public class Policy extends BaseCompositeDecisionRule
 			rule.accept(v);
 		}
 		v.visitLeave(this);
-	}	
-	
+	}
+
 	/**
 	 * An {@link EvaluationContext} implementation for evaluating
 	 * {@link Policy} instances
 	 */
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
-	{			
+	{
 		private Map<String, ValueExpression> varDefEvalResults;
-		
+
 		/**
 		 * Creates policy evaluation context with a given parent context
-		 * 
+		 *
 		 * @param context a parent evaluation context
 		 */
 		PolicyDelegatingEvaluationContext(EvaluationContext context){
 			super(context);
 			this.varDefEvalResults = new HashMap<String, ValueExpression>();
 		}
-		
+
 		@Override
 		public ValueExpression getVariableEvaluationResult(String variableId) {
 			Preconditions.checkNotNull(variableId);
@@ -230,12 +232,12 @@ public class Policy extends BaseCompositeDecisionRule
 			Preconditions.checkNotNull(variableId);
 			Preconditions.checkNotNull(value);
 			Preconditions.checkArgument(
-					variableDefinitions.containsKey(variableId), 
-					"Given variable id=\"%s\" is not defined the policy id=\"%s\"", 
+					variableDefinitions.containsKey(variableId),
+					"Given variable id=\"%s\" is not defined the policy id=\"%s\"",
 					variableId, id);
 			varDefEvalResults.put(variableId, value);
 		}
-		
+
 		@Override
 		public Policy getCurrentPolicy() {
 			return Policy.this;
@@ -244,14 +246,14 @@ public class Policy extends BaseCompositeDecisionRule
 		@Override
 		public XPathVersion getXPathVersion() {
 			PolicyDefaults defaults = Policy.this.getDefaults();
-			if(defaults != null && 
+			if(defaults != null &&
 					defaults.getXPathVersion() != null){
 				return defaults.getXPathVersion();
 			}
 			return super.getXPathVersion();
 		}
 	}
-	
+
 	@Override
 	public String toString(){
 		ToStringHelper h = Objects.toStringHelper(this);
@@ -261,7 +263,7 @@ public class Policy extends BaseCompositeDecisionRule
 		.add("rules", rules)
 		.toString();
 	}
-	
+
 	public final static class PolicyBuilder extends BaseCompositeDecisionRuleBuilder<PolicyBuilder>
 	{
 		private DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
@@ -270,11 +272,11 @@ public class Policy extends BaseCompositeDecisionRule
 
 		private Collection<Rule> rules = new LinkedList<Rule>();
 		private Map<String, Multimap<String, CombinerParameter>> ruleCombinerParameters = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
-		
+
 		public PolicyBuilder(String policyId){
 			super(policyId);
 		}
-		
+
 		public PolicyBuilder withRuleCombinerParameter(String ruleId, CombinerParameter p){
 			Preconditions.checkNotNull(ruleId);
 			Preconditions.checkNotNull(p);
@@ -286,7 +288,7 @@ public class Policy extends BaseCompositeDecisionRule
 			params.put(p.getName(), p);
 			return this;
 		}
-		
+
 		public PolicyBuilder withRuleCombinerParameters(String ruleId, Iterable<CombinerParameter> params){
 			Preconditions.checkNotNull(ruleId);
 			Preconditions.checkNotNull(params);
@@ -295,64 +297,64 @@ public class Policy extends BaseCompositeDecisionRule
 			}
 			return this;
 		}
-		
+
 		public PolicyBuilder withoutRuleCombinerParameters(){
 			this.ruleCombinerParameters.clear();
 			return this;
 		}
-		
+
 		public PolicyBuilder withDefaults(PolicyDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
-		
+
 		public PolicyBuilder withoutDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
-		
+
 		public PolicyBuilder withVariables(Iterable<VariableDefinition> vars){
 			for (VariableDefinition var : vars) {
 				withVariable(var);
 			}
 			return this;
 		}
-		
+
 		public PolicyBuilder withVariable(VariableDefinition var){
 			Preconditions.checkNotNull(var);
 			this.variables.add(var);
 			return this;
 		}
-		
+
 		public PolicyBuilder withoutVariables(){
 			this.variables.clear();
 			return this;
 		}
-		
+
 		public PolicyBuilder withRule(Rule rule){
 			Preconditions.checkNotNull(rule);
 			this.rules.add(rule);
 			return this;
 		}
-		
+
 		public PolicyBuilder withRule(Rule.Builder b){
 			Preconditions.checkNotNull(b);
 			this.rules.add(b.build());
 			return this;
 		}
-		
+
 		public PolicyBuilder withRules(Iterable<Rule> rules){
 			for(Rule rule : rules) {
 				withRule(rule);
 			}
 			return this;
 		}
-		
+
 		public PolicyBuilder withoutRules(){
 			this.rules.clear();
 			return this;
 		}
-		
+
 		public PolicyBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
 		{
 			Preconditions.checkNotNull(algo);
@@ -364,7 +366,7 @@ public class Policy extends BaseCompositeDecisionRule
 		protected PolicyBuilder getThis() {
 			return this;
 		}
-		
+
 		public Policy create(){
 			return new Policy(this);
 		}

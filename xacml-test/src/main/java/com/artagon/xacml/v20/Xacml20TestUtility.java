@@ -19,11 +19,11 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 
+import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.marshall.jaxb.JAXBContextUtil;
 import com.artagon.xacml.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
-import com.artagon.xacml.v30.pdp.RequestContext;
 
-public class Xacml20TestUtility 
+public class Xacml20TestUtility
 {
 	private static JAXBContext context = JAXBContextUtil.getInstance();
 	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
@@ -37,7 +37,7 @@ public class Xacml20TestUtility
 			assertResults(ar.get(i), br.get(i));
 		}
 	}
-	
+
 	public static void assertResults(ResultType a, ResultType b)
 	{
 		assertEquals(a.getDecision(), b.getDecision());
@@ -45,15 +45,15 @@ public class Xacml20TestUtility
 		assertStatus(a.getStatus(), b.getStatus());
 		assertObligations(a.getObligations(), b.getObligations());
 	}
-	
+
 	public static void assertStatus(StatusType a, StatusType b)
 	{
 		assertEquals(a.getStatusCode().getValue(), b.getStatusCode().getValue());
 	}
-	
+
 	public static void assertObligations(ObligationsType a, ObligationsType b)
 	{
-		if(a == null && 
+		if(a == null &&
 				b == null){
 			return;
 		}
@@ -62,17 +62,17 @@ public class Xacml20TestUtility
 		assertEquals(oa.size(), ob.size());
 		Map<String , ObligationType> aMap = toObligationMap(oa);
 		Map<String , ObligationType> bMap = toObligationMap(ob);
-		
+
 		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
 		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-		
+
 		for(String obligationId : aMap.keySet()){
 			ObligationType obligationA = aMap.get(obligationId);
 			ObligationType obligationB = bMap.get(obligationId);
 			assertObligation(obligationA, obligationB);
 		}
 	}
-	
+
 	public static void assertObligation(ObligationType a, ObligationType b)
 	{
 		List<AttributeAssignmentType> aAttr = a.getAttributeAssignment();
@@ -88,14 +88,14 @@ public class Xacml20TestUtility
 			assertAttributeAssignment(attrA, attrB);
 		}
 	}
-	
+
 	public static void assertAttributeAssignment(AttributeAssignmentType a, AttributeAssignmentType b)
 	{
 		assertEquals(a.getAttributeId(), b.getAttributeId());
 		assertEquals(a.getDataType(), b.getDataType());
 		assertEquals(a.getContent(), b.getContent());
 	}
-	
+
 	private static Map<String, ObligationType> toObligationMap(
 			List<ObligationType> obligations)
 	{
@@ -105,7 +105,7 @@ public class Xacml20TestUtility
 		}
 		return map;
 	}
-	
+
 	private static Map<String, AttributeAssignmentType> toAttributeAssignmentMap(
 			List<AttributeAssignmentType> attributes)
 	{
@@ -115,7 +115,7 @@ public class Xacml20TestUtility
 		}
 		return map;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static ResponseType getResponse(String resourcePath) throws Exception
 	{

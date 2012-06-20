@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.pdp;
 
 import com.artagon.xacml.v30.RequestContext;
-import com.artagon.xacml.v30.pdp.Result;
+import com.artagon.xacml.v30.Result;
 
 public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 {

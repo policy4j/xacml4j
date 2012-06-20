@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 public interface DataTypeRegistry 
 {

@@ -9,9 +9,9 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.Result;
 import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
-import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.types.XPathExpType;
 
 final class MultipleResourcesViaXPathExpressionLegacyHandler 

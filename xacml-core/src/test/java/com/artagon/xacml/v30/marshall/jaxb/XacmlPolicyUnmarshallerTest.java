@@ -14,13 +14,13 @@ import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.pdp.MatchAnyOf;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.Rule;
 import com.artagon.xacml.v30.pdp.Target;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 

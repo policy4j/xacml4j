@@ -1,11 +1,4 @@
-package com.artagon.xacml.v30.pdp;
-
-import com.artagon.xacml.v30.EvaluationContext;
-import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.StatusCode;
-
-
-
+package com.artagon.xacml.v30;
 
 public class PolicyResolutionException extends EvaluationException
 {
@@ -17,24 +10,24 @@ public class PolicyResolutionException extends EvaluationException
 				context, template, arguments);
 	}
 
-	public PolicyResolutionException(EvaluationContext context, 
+	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause, String message,
 			Object... arguments) {
-		super(StatusCode.createProcessingError(), 
+		super(StatusCode.createProcessingError(),
 				context, cause, message, arguments);
 	}
 
-	public PolicyResolutionException(EvaluationContext context, 
+	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause) {
-		super(StatusCode.createProcessingError(), 
+		super(StatusCode.createProcessingError(),
 				context, cause);
 	}
-	
-	public PolicyIDReference getPolicyIDReference(){
+
+	public CompositeDecisionRuleIDReference getPolicyIDReference(){
 		return getEvaluationContext().getCurrentPolicyIDReference();
 	}
-	
-	public PolicySetIDReference getPolicySetIDReference(){
+
+	public CompositeDecisionRuleIDReference getPolicySetIDReference(){
 		return getEvaluationContext().getCurrentPolicySetIDReference();
 	}
 }

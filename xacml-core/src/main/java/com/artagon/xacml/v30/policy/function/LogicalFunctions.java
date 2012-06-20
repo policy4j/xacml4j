@@ -2,8 +2,8 @@ package com.artagon.xacml.v30.policy.function;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.pdp.Expression;
-import com.artagon.xacml.v30.pdp.ValueExpression;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParamVarArg;

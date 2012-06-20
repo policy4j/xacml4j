@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 
 public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults

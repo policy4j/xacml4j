@@ -5,10 +5,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
 
 final class DefaultResolverContext implements

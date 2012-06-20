@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.Iterables;

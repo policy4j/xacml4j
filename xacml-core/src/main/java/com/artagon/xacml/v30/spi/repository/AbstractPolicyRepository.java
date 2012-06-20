@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Version;
+import com.artagon.xacml.v30.VersionMatch;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import com.artagon.xacml.v30.pdp.Apply;
@@ -21,8 +23,6 @@ import com.artagon.xacml.v30.pdp.FunctionReference;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.PolicyVisitorSupport;
-import com.artagon.xacml.v30.pdp.VersionMatch;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;

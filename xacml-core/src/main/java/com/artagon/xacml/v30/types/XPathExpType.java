@@ -8,7 +8,7 @@ import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.BagOfAttributeExpType;
-import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.common.base.Preconditions;
 
 public enum XPathExpType implements AttributeExpType

@@ -2,6 +2,7 @@ package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.XacmlSyntaxException;
 
 
 

@@ -17,44 +17,49 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
+import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.PolicyResolutionException;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
 {
 	protected final Logger log = LoggerFactory.getLogger(BaseEvaluationContext.class);
-	
+
 	private EvaluationContextHandler contextHandler;
 	private PolicyReferenceResolver resolver;
-	
+
 	private Map<String, Advice> denyAdvices;
 	private Map<String, Obligation> denyObligations;
-	
+
 	private Map<String, Advice> permitAdvices;
 	private Map<String, Obligation> permitObligations;
-	
+
 	private boolean validateFuncParamsAtRuntime = false;
-	
+
 	private List<CompositeDecisionRuleIDReference> evaluatedPolicies;
-		
+
 	private StatusCode evaluationStatus;
-	
+
 	private TimeZone timezone;
 	private Calendar currentDateTime;
-	
+
 	private Map<AttributeDesignatorKey, BagOfAttributeExp> designCache;
 	private Map<AttributeSelectorKey, BagOfAttributeExp> selectCache;
 	private Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
-	
+
 	private Integer combinedDecisionCacheTTL = null;
-	
+
 	/**
 	 * Constructs evaluation context with a given attribute provider,
 	 * policy resolver and
@@ -62,13 +67,13 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 * @param policyResolver
 	 */
 	protected BaseEvaluationContext(
-			EvaluationContextHandler attributeService, 
+			EvaluationContextHandler attributeService,
 			PolicyReferenceResolver repository){
 		this(false, 30, attributeService,  repository);
 	}
-	
+
 	protected BaseEvaluationContext(
-			boolean validateFuncParams, 
+			boolean validateFuncParams,
 			int defaultDecisionCacheTTL,
 			EvaluationContextHandler contextHandler,
 			PolicyReferenceResolver repository){
@@ -90,17 +95,17 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 	}
-	
+
 	@Override
 	public StatusCode getEvaluationStatus() {
 		return evaluationStatus;
 	}
-	
+
 	@Override
 	public void setEvaluationStatus(StatusCode status){
 		this.evaluationStatus = status;
 	}
-	
+
 	@Override
 	public int getDecisionCacheTTL() {
 		return (combinedDecisionCacheTTL == null)?0:combinedDecisionCacheTTL;
@@ -120,37 +125,32 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		Preconditions.checkState(timezone != null);
 		return timezone;
 	}
-	
+
 	@Override
 	public final Calendar getCurrentDateTime() {
 		return currentDateTime;
 	}
 
 	@Override
-	public final void addPolicyEvaluationResult(Policy policy, Decision result) {
+	public final void addEvaluationResult(CompositeDecisionRule policy, Decision result) {
 		this.evaluatedPolicies.add(policy.getReference());
-	}
-	
-	@Override
-	public final void addPolicySetEvaluationResult(PolicySet policySet, Decision result) {
-		this.evaluatedPolicies.add(policySet.getReference());
 	}
 
 	@Override
 	public boolean isValidateFuncParamsAtRuntime() {
 		return validateFuncParamsAtRuntime;
 	}
-	
+
 	@Override
 	public void setValidateFuncParamsAtRuntime(boolean validate){
 		this.validateFuncParamsAtRuntime = validate;
 	}
 
 	@Override
-	public void addAdvices(Decision d, Iterable<Advice> advices) 
+	public void addAdvices(Decision d, Iterable<Advice> advices)
 	{
 		Preconditions.checkNotNull(d);
-		if(d.isIndeterminate() || 
+		if(d.isIndeterminate() ||
 				d == Decision.NOT_APPLICABLE){
 			return;
 		}
@@ -158,12 +158,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			addAndMergeAdvice(d, a);
 		}
 	}
-	
+
 	@Override
-	public void addObligations(Decision d, Iterable<Obligation> obligations) 
+	public void addObligations(Decision d, Iterable<Obligation> obligations)
 	{
 		Preconditions.checkNotNull(d);
-		if(d.isIndeterminate() || 
+		if(d.isIndeterminate() ||
 				d == Decision.NOT_APPLICABLE){
 			return;
 		}
@@ -171,7 +171,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			addAndMergeObligation(d, a);
 		}
 	}
-	
+
 	private void addAndMergeAdvice(Decision d, Advice a)
 	{
 		if(log.isDebugEnabled()){
@@ -186,7 +186,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 			advices.put(a.getId(), a);
 		}
 	}
-	
+
 	private void addAndMergeObligation(Decision d, Obligation a)
 	{
 		if(log.isDebugEnabled()){
@@ -219,7 +219,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public Policy getCurrentPolicy() {
 		return null;
 	}
-	
+
 	/**
 	 * Implementation always
 	 * returns <code>null</code>
@@ -228,7 +228,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public PolicyIDReference getCurrentPolicyIDReference() {
 		return null;
 	}
-	
+
 	/**
 	 * Implementation always
 	 * returns <code>null</code>
@@ -246,34 +246,46 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public PolicySet getCurrentPolicySet() {
 		return null;
 	}
-	
+
 	@Override
 	public final ValueExpression getVariableEvaluationResult(
 			String variableId){
 		return null;
 	}
-	
+
 	@Override
 	public final void setVariableEvaluationResult(String variableId, ValueExpression value) {
 	}
 
 	@Override
-	public final Policy resolve(PolicyIDReference ref) 
+	public final CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
+			throws PolicyResolutionException
+	{
+		if(ref instanceof PolicyIDReference){
+			return resolve((PolicyIDReference)ref);
+		}
+		if(ref instanceof PolicySetIDReference){
+			return resolve((PolicySetIDReference)ref);
+		}
+		throw new PolicyResolutionException(this,
+				"Failed to resolve reference");
+	}
+
+	private final Policy resolve(PolicyIDReference ref)
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
 		if(log.isDebugEnabled()){
 			log.debug("Trying to resolve " +
 					"Policy reference=\"{}\"", ref);
 		}
-		if(p == null){			
-			throw new PolicyResolutionException(this, 
+		if(p == null){
+			throw new PolicyResolutionException(this,
 					"Failed to resolve PolicySet reference");
 		}
 		return p;
 	}
 
-	@Override
-	public final PolicySet resolve(PolicySetIDReference ref)
+	private final PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
 		if(log.isDebugEnabled()){
@@ -281,24 +293,24 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 					"PolicySet reference=\"{}\"", ref);
 		}
 		if(p == null){
-			throw new PolicyResolutionException(this, 
+			throw new PolicyResolutionException(this,
 					"Failed to resolve PolicySet reference");
 		}
 		return p;
 	}
 
-	
+
 	@Override
 	public final Node evaluateToNode(String path, AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		return contextHandler.evaluateToNode(this, path, categoryId);
 	}
 
 	@Override
-	public final NodeList evaluateToNodeSet(String path, 
+	public final NodeList evaluateToNodeSet(String path,
 			AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		return contextHandler.evaluateToNodeSet(this, path, categoryId);
 	}
@@ -311,14 +323,14 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	@Override
 	public final String evaluateToString(String path, AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		return contextHandler.evaluateToString(this, path, categoryId);
 	}
-	
+
 	@Override
 	public final BagOfAttributeExp resolve(
-			AttributeDesignatorKey ref) 
+			AttributeDesignatorKey ref)
 		throws EvaluationException
 	{
 		BagOfAttributeExp v = designCache.get(ref);
@@ -338,11 +350,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.designCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
 	}
-	
+
 	@Override
 	public final BagOfAttributeExp resolve(
 			AttributeSelectorKey ref)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		BagOfAttributeExp v = selectCache.get(ref);
 		if(v != null){
@@ -361,30 +373,30 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.selectCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
 		return v;
 	}
-	
+
 	public void setResolvedDesignatorValue(
-			AttributeDesignatorKey key, 
+			AttributeDesignatorKey key,
 			BagOfAttributeExp v){
 		Preconditions.checkNotNull(key);
 		this.resolvedDesignators.put(key, (v == null)?key.getDataType().emptyBag():v);
 		this.designCache.put(key, (v == null)?key.getDataType().emptyBag():v);
 	}
-	
+
 	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
-	
+
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		return Collections.unmodifiableMap(resolvedDesignators);
 	}
-	
+
 	@Override
 	public Iterable<Obligation> getMatchingObligations(final Decision decision) {
 		return (decision == Decision.PERMIT)?permitObligations.values():denyObligations.values();
 	}
-	
+
 	@Override
 	public Iterable<Advice> getMatchingAdvices(final Decision decision) {
 		return (decision == Decision.PERMIT)?permitAdvices.values():denyAdvices.values();

@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
-import com.artagon.xacml.v30.pdp.AttributeSelectorKey;
+import com.artagon.xacml.v30.AttributeReferenceKey;
+import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;

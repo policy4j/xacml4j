@@ -10,42 +10,47 @@ import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeDesignatorKey;
+import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.PolicyResolutionException;
 import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
 
 /**
  * An implementation of {@link EvaluationContext} which
  * delegates all invocation to the given context
- * 
+ *
  * @author Giedrius Trumpickas
  */
 class DelegatingEvaluationContext implements EvaluationContext
 {
 	private EvaluationContext delegate;
-	
+
 	protected DelegatingEvaluationContext(
 			EvaluationContext context){
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
 	}
-	
+
 	@Override
 	public EvaluationContext getParentContext(){
 		return delegate;
 	}
-	
+
 	@Override
 	public boolean isValidateFuncParamsAtRuntime() {
 		return delegate.isValidateFuncParamsAtRuntime();
 	}
-	
+
 	@Override
 	public void setValidateFuncParamsAtRuntime(boolean validate){
 		delegate.setValidateFuncParamsAtRuntime(validate);
@@ -55,7 +60,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public void addAdvices(Decision d, Iterable<Advice> advices){
 		delegate.addAdvices(d, advices);
 	}
-	
+
 	@Override
 	public void addObligations(Decision d, Iterable<Obligation> obligations){
 		delegate.addObligations(d, obligations);
@@ -65,10 +70,10 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Policy getCurrentPolicy() {
+	public CompositeDecisionRule getCurrentPolicy() {
 		return delegate.getCurrentPolicy();
 	}
-	
+
 	@Override
 	public StatusCode getEvaluationStatus() {
 		return delegate.getEvaluationStatus();
@@ -80,20 +85,15 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public void addPolicyEvaluationResult(Policy policy, Decision result) {
-		delegate.addPolicyEvaluationResult(policy, result);
-	}
-
-	@Override
-	public void addPolicySetEvaluationResult(PolicySet policySet, Decision result) {
-		delegate.addPolicySetEvaluationResult(policySet, result);
+	public void addEvaluationResult(CompositeDecisionRule policySet, Decision result) {
+		delegate.addEvaluationResult(policySet, result);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public PolicySet getCurrentPolicySet() {
+	public CompositeDecisionRule getCurrentPolicySet() {
 		return delegate.getCurrentPolicySet();
 	}
 
@@ -104,7 +104,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public ValueExpression getVariableEvaluationResult(String variableId) {
 		return delegate.getVariableEvaluationResult(variableId);
 	}
-	
+
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
@@ -112,29 +112,23 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public void setVariableEvaluationResult(String variableId, ValueExpression value) {
 		delegate.setVariableEvaluationResult(variableId, value);
 	}
-	
+
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Policy resolve(PolicyIDReference ref) throws PolicyResolutionException 
+	public CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
+			throws PolicyResolutionException
 	{
 		return delegate.resolve(ref);
 	}
 
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public PolicySet resolve(PolicySetIDReference ref) throws PolicyResolutionException {
-		return delegate.resolve(ref);
-	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public PolicyIDReference getCurrentPolicyIDReference() {
+	public CompositeDecisionRuleIDReference getCurrentPolicyIDReference() {
 		return delegate.getCurrentPolicyIDReference();
 	}
 
@@ -142,7 +136,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public PolicySetIDReference getCurrentPolicySetIDReference() {
+	public CompositeDecisionRuleIDReference getCurrentPolicySetIDReference() {
 		return delegate.getCurrentPolicySetIDReference();
 	}
 
@@ -153,12 +147,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public TimeZone getTimeZone() {
 		return delegate.getTimeZone();
 	}
-	
+
 	@Override
 	public Calendar getCurrentDateTime() {
 		return delegate.getCurrentDateTime();
 	}
-	
+
 	@Override
 	public XPathVersion getXPathVersion() {
 		return delegate.getXPathVersion();
@@ -190,7 +184,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 			throws EvaluationException {
 		return delegate.evaluateToNumber(path, categoryId);
 	}
-	
+
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
@@ -206,7 +200,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp resolve(
 			AttributeSelectorKey ref)
@@ -234,7 +228,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public void setDecisionCacheTTL(int ttl) {
 		delegate.setDecisionCacheTTL(ttl);
 	}
-	
+
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
 		return delegate.getResolvedDesignators();

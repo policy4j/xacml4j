@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.PolicyResolutionException;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicyIDReference;
-import com.artagon.xacml.v30.pdp.PolicyResolutionException;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.PolicySetIDReference;
 import com.google.common.base.Preconditions;
