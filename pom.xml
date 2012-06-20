@@ -320,8 +320,8 @@
             </snapshotRepository>
        </distributionManagement>
 	<scm>
-		<connection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</connection>
-		<developerConnection>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</developerConnection>
-		<url>scm:svn:https://venture1.projectlocker.com/Artagon/xacml/svn/trunk</url>
+		<connection>scm:git:git-Artagon@venture1.projectlocker.com:xacml.git</connection>
+		<developerConnection>scm:git:git-Artagon@venture1.projectlocker.com:xacml.git</developerConnection>
+		<url>scm:git:git-Artagon@venture1.projectlocker.com:xacml.git</url>
 	</scm>
 </project>
