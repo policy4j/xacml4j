@@ -9,12 +9,12 @@ import org.junit.Test;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.RFC822NameType;
 import com.artagon.xacml.v30.types.RFC822NameExp;
-import com.artagon.xacml.v30.types.StringType;
+import com.artagon.xacml.v30.types.RFC822NameType;
 import com.artagon.xacml.v30.types.StringExp;
-import com.artagon.xacml.v30.types.X500NameType;
+import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.X500NameExp;
+import com.artagon.xacml.v30.types.X500NameType;
 
 public class SpecialMatchFunctionsTest 
 {

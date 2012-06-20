@@ -1,10 +1,8 @@
 package com.artagon.xacml.v30.pdp;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-
-import com.artagon.xacml.v30.pdp.Decision;
-
-import static org.junit.Assert.*;
 
 public class DecisionTest 
 {

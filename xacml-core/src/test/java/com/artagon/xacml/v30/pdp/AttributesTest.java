@@ -20,8 +20,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.Attributes;
 import com.artagon.xacml.v30.types.DataTypes;
 
 public class AttributesTest 

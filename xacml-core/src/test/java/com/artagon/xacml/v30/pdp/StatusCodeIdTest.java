@@ -1,6 +1,8 @@
 package com.artagon.xacml.v30.pdp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import org.junit.Test;
 
 import com.artagon.xacml.v30.StatusCodeId;

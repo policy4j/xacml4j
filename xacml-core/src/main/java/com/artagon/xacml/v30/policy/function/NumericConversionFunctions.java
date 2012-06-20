@@ -4,10 +4,10 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.DoubleExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.IntegerType;
 
 /**
  * A.3.4 Numeric data-type conversion functions

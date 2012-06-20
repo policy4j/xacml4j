@@ -1,12 +1,12 @@
 package com.artagon.xacml.v30.pdp;
 
+import static org.easymock.EasyMock.createControl;
+
 import org.easymock.IMocksControl;
-import static org.easymock.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.types.StringType;
-import com.google.common.collect.ImmutableList;
 
 public class ResultTest 
 {

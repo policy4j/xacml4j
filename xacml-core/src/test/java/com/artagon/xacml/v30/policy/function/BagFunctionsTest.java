@@ -9,16 +9,16 @@ import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.types.AnyURIType;
 import com.artagon.xacml.v30.types.AnyURIExp;
-import com.artagon.xacml.v30.types.BooleanType;
+import com.artagon.xacml.v30.types.AnyURIType;
 import com.artagon.xacml.v30.types.BooleanExp;
-import com.artagon.xacml.v30.types.DoubleType;
+import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.DoubleExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerExp;
-import com.artagon.xacml.v30.types.StringType;
+import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.StringType;
 
 public class BagFunctionsTest 
 {

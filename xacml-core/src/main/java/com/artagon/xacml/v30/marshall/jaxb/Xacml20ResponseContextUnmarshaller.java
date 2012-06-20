@@ -186,7 +186,9 @@ implements ResponseUnmarshaller
 			if(code == null){
 				return null;
 			}
-			return new StatusCode(StatusCodeIds.parse(code.getValue()), create(code.getStatusCode()));
+			return StatusCode.builder(StatusCodeIds.parse(code.getValue()))
+					.minorStatus(create(code.getStatusCode()))
+					.build();
 		}
 
 		private AttributeExp createValue(String dataTypeId,

@@ -13,12 +13,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.Match;
-import com.artagon.xacml.v30.pdp.MatchAllOf;
-import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.Matchable;
-
 public class MatchAllOfTest
 {
 	private Collection<Match> matches;

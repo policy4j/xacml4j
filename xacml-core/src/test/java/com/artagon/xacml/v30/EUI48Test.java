@@ -18,12 +18,15 @@ package com.artagon.xacml.v30;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
-import java.util.Random;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * JUnit Test class for the com.fasterxml.uuid.EthernetAddress class.

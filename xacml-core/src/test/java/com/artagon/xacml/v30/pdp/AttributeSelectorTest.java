@@ -14,12 +14,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.pdp.AttributeReferenceEvaluationException;
-import com.artagon.xacml.v30.pdp.AttributeSelector;
-import com.artagon.xacml.v30.pdp.AttributeSelectorKey;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.types.DateType;
 
 public class AttributeSelectorTest

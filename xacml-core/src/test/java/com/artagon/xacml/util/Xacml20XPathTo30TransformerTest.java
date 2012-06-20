@@ -8,10 +8,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.StringExp;
-import com.artagon.xacml.v30.types.XPathExpType;
+import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.XPathExp;
+import com.artagon.xacml.v30.types.XPathExpType;
 
 public class Xacml20XPathTo30TransformerTest 
 {

@@ -35,7 +35,6 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.StatusCodeId;
 import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.StatusDetail;
 import com.artagon.xacml.v30.pdp.Advice;
@@ -283,10 +282,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		if (statusCode == null) {
 			return null;
 		}
-		StatusCode detailedCode = create(statusCode.getStatusCode());
-		StatusCodeId codeId = StatusCodeIds.parse(statusCode.getValue());
-		Preconditions.checkArgument(codeId != null);
-		return new StatusCode(codeId, detailedCode);
+		return StatusCode.builder(StatusCodeIds.parse(statusCode.getValue()))
+				.minorStatus(create(statusCode.getStatusCode()))
+				.build();
 	}
 
 	private StatusType create(Status status)

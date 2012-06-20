@@ -3,7 +3,6 @@ package com.artagon.xacml.v30.marshall.jaxb.builder;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.RuleType;
 
 import com.google.common.base.Preconditions;

@@ -20,37 +20,37 @@ import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.xpath.XPathEvaluationException;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
-import com.artagon.xacml.v30.types.XPathExpType;
 import com.artagon.xacml.v30.types.XPathExp;
+import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.base.Preconditions;
 
-class DefaultEvaluationContextHandler 
+class DefaultEvaluationContextHandler
 	implements EvaluationContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
-	
+
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-	
+
 	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
-	
+
 	private RequestContextCallback requestCallback;
-	
+
 	private Map<AttributeCategory, Node> contentCache;
-	
+
 	private Stack<AttributeDesignatorKey> designatorResolutionStack;
 	private Stack<AttributeSelectorKey> selectorResolutionStack;
 	private Stack<AttributeCategory> contentResolutionStack;
-	
+
 	DefaultEvaluationContextHandler(
 			RequestContextCallback requestCallback,
-			XPathProvider xpathProvider, 
+			XPathProvider xpathProvider,
 			PolicyInformationPoint pip)
 	{
 		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(pip);
 		Preconditions.checkNotNull(requestCallback);
-		
+
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 		this.requestCallback = requestCallback;
@@ -59,20 +59,20 @@ class DefaultEvaluationContextHandler
 		this.designatorResolutionStack = new Stack<AttributeDesignatorKey>();
 		this.contentResolutionStack = new Stack<AttributeCategory>();
 	}
-	
+
 	@Override
 	public BagOfAttributeExp resolve(
-			EvaluationContext context, 
-			AttributeDesignatorKey key) 
-		throws EvaluationException 
+			EvaluationContext context,
+			AttributeDesignatorKey key)
+		throws EvaluationException
 	{
-		
+
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
 		BagOfAttributeExp v  = requestCallback.getAttributeValue(
-				key.getCategory(), 
-				key.getAttributeId(), 
-				key.getDataType(), 
+				key.getCategory(),
+				key.getAttributeId(),
+				key.getDataType(),
 				key.getIssuer());
 		if(!v.isEmpty()){
 			if(log.isDebugEnabled()){
@@ -82,7 +82,7 @@ class DefaultEvaluationContextHandler
 			return v;
 		}
 		Preconditions.checkState(
-				!designatorResolutionStack.contains(key), 
+				!designatorResolutionStack.contains(key),
 				"Cyclic designator=\"%s\" resolution detected", key);
 		try
 		{
@@ -98,22 +98,22 @@ class DefaultEvaluationContextHandler
 				log.debug(e.getMessage(), e);
 			}
 			throw new AttributeReferenceEvaluationException(
-					context, key, 
-					StatusCode.createMissingAttribute(), e);
+					context, key,
+					StatusCode.createMissingAttributeError(), e);
 		}finally{
-			designatorResolutionStack.pop();	
+			designatorResolutionStack.pop();
 		}
 	}
 
 
 	@Override
 	public BagOfAttributeExp resolve(
-			EvaluationContext context, 
+			EvaluationContext context,
 			AttributeSelectorKey ref)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		Preconditions.checkState(
-				!selectorResolutionStack.contains(ref), 
+				!selectorResolutionStack.contains(ref),
 				"Cyclic designator=\"%s\" resolution detected", ref);
 		try
 		{
@@ -128,13 +128,13 @@ class DefaultEvaluationContextHandler
 			selectorResolutionStack.pop();
 		}
 	}
-	
+
 	@Override
 	public final Node evaluateToNode(
-			EvaluationContext context, 
-			String path, 
+			EvaluationContext context,
+			String path,
 			AttributeCategory categoryId)
-		throws EvaluationException 
+		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" " +
@@ -163,10 +163,10 @@ class DefaultEvaluationContextHandler
 
 	@Override
 	public final NodeList evaluateToNodeSet(
-			EvaluationContext context, 
-			String path, 
+			EvaluationContext context,
+			String path,
 			AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
@@ -192,9 +192,9 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public final Number evaluateToNumber(EvaluationContext context, 
+	public final Number evaluateToNumber(EvaluationContext context,
 			String path, AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
@@ -218,11 +218,11 @@ class DefaultEvaluationContextHandler
 			throw new com.artagon.xacml.v30.pdp.XPathEvaluationException(path, context, e);
 		}
 	}
-	
+
 	@Override
-	public final String evaluateToString(EvaluationContext context, 
+	public final String evaluateToString(EvaluationContext context,
 			String path, AttributeCategory categoryId)
-			throws EvaluationException 
+			throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating xpath=\"{}\" " +
@@ -251,20 +251,20 @@ class DefaultEvaluationContextHandler
 
 	/**
 	 * Resolves category content via {@link PolicyInformationPoint}
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute reference
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */
-	private final Node doGetContent(EvaluationContext context, AttributeCategory category) 
-		throws Exception 
+	private final Node doGetContent(EvaluationContext context, AttributeCategory category)
+		throws Exception
 	{
-		
+
 		Node content = requestCallback.getContent(category);
 		if(content != null){
 			if(log.isDebugEnabled()){
-				log.debug("Resolved content=\"{}\" from a request", 
+				log.debug("Resolved content=\"{}\" from a request",
 						content);
 			}
 			return content;
@@ -293,10 +293,10 @@ class DefaultEvaluationContextHandler
 			contentResolutionStack.pop();
 		}
 	}
-	
+
 	private final BagOfAttributeExp doResolve(
 			EvaluationContext context,
-			AttributeSelectorKey ref) throws EvaluationException 
+			AttributeSelectorKey ref) throws EvaluationException
 	{
 		try
 		{
@@ -306,20 +306,20 @@ class DefaultEvaluationContextHandler
 			}
 			Node contextNode = content;
 			BagOfAttributeExp v = requestCallback.getAttributeValue(
-					ref.getCategory(), 
-						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()), 
+					ref.getCategory(),
+						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()),
 								XPathExpType.XPATHEXPRESSION, null);
 			if(v.size() > 1){
-				throw new AttributeReferenceEvaluationException(context, ref, 
+				throw new AttributeReferenceEvaluationException(context, ref,
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
 			}
 			if(v.size() == 1){
 				XPathExp xpath = v.value();
 				if(xpath.getCategory() != ref.getCategory()){
-					throw new AttributeReferenceEvaluationException(context, ref, 
+					throw new AttributeReferenceEvaluationException(context, ref,
 							"AttributeSelector category=\"%s\" and " +
 							"ContextAttributeId XPathExpression " +
-							"category=\"%s\" do not match", ref.getCategory(), 
+							"category=\"%s\" do not match", ref.getCategory(),
 							xpath.getCategory());
 				}
 				if(log.isDebugEnabled()){
@@ -331,14 +331,14 @@ class DefaultEvaluationContextHandler
 			}
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
 					context.getXPathVersion(), ref.getPath(), contextNode);
-			if(nodeSet == null || 
+			if(nodeSet == null ||
 					nodeSet.getLength() == 0){
-				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty", 
+				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty",
 						ref.getPath(), ref.getCategory());
 				return (BagOfAttributeExp)ref.getDataType().bagType().createEmpty();
 			}
 			if(log.isDebugEnabled()){
-				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"", 
+				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"",
 						new Object[]{nodeSet.getLength(), ref.getPath(), ref.getCategory()});
 			}
 			return toBag(context, ref, nodeSet);
@@ -347,7 +347,7 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(context, ref, 
+			throw new AttributeReferenceEvaluationException(context, ref,
 					StatusCode.createProcessingError(), e);
 		}
 		catch(EvaluationException e){
@@ -361,14 +361,14 @@ class DefaultEvaluationContextHandler
 				log.debug(e.getMessage(), e);
 			}
 			throw new AttributeReferenceEvaluationException(
-					context, ref, 
+					context, ref,
 					StatusCode.createProcessingError(), e);
 		}
 	}
-	
+
 	/**
 	 * Converts a given node list to the {@link BagOfAttributeExp}
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute selector
 	 * @param nodeSet a node set
@@ -377,7 +377,7 @@ class DefaultEvaluationContextHandler
 	 */
 	private BagOfAttributeExp toBag(
 			EvaluationContext context,
-			AttributeSelectorKey ref, NodeList nodeSet) 
+			AttributeSelectorKey ref, NodeList nodeSet)
 		throws EvaluationException
 	{
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
@@ -401,7 +401,7 @@ class DefaultEvaluationContextHandler
 				default:
 					throw new AttributeReferenceEvaluationException(
 							StatusCode.createSyntaxError(),
-							context, ref, 
+							context, ref,
 							"Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try
@@ -414,8 +414,8 @@ class DefaultEvaluationContextHandler
 				values.add(value);
 			}catch(Exception e){
 				throw new AttributeReferenceEvaluationException(
-						context, 
-						ref, 
+						context,
+						ref,
 						StatusCode.createSyntaxError(), e);
 			}
 		}

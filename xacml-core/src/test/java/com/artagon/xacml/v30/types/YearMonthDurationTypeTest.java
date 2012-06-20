@@ -1,5 +1,7 @@
 package com.artagon.xacml.v30.types;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
@@ -7,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.YearMonthDuration;
-
-import static org.junit.Assert.*;
 
 public class YearMonthDurationTypeTest 
 {

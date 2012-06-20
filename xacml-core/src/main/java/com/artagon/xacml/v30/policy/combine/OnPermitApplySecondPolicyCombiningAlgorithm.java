@@ -1,15 +1,14 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import java.util.List;
-
 import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+
+import java.util.List;
 
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import com.google.common.base.Preconditions;
 
 /**
  * XACML 3.0 does not allow Condition elements at the policy or policy set levels. 

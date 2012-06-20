@@ -12,10 +12,10 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.BooleanExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.IntegerType;
 import com.artagon.xacml.v30.types.StringExp;
 import com.artagon.xacml.v30.types.XPathExp;
 

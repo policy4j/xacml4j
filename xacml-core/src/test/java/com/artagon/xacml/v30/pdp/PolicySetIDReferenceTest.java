@@ -15,16 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.Version;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.PolicyIDReference;
-import com.artagon.xacml.v30.pdp.PolicyResolutionException;
-import com.artagon.xacml.v30.pdp.PolicySet;
-import com.artagon.xacml.v30.pdp.PolicySetIDReference;
-import com.artagon.xacml.v30.pdp.VersionMatch;
-import com.artagon.xacml.v30.pdp.XacmlException;
 
 public class PolicySetIDReferenceTest
 {

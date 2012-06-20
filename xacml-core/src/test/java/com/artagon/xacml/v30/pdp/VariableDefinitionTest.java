@@ -10,11 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.Expression;
-import com.artagon.xacml.v30.pdp.VariableDefinition;
-
 
 public class VariableDefinitionTest
 {

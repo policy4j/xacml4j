@@ -31,10 +31,10 @@ import com.artagon.xacml.v30.spi.xpath.DefaultXPathProvider;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
-import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.StringExp;
-import com.artagon.xacml.v30.types.XPathExpType;
+import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.XPathExp;
+import com.artagon.xacml.v30.types.XPathExpType;
 
 public class XPathFunctionsTest 
 {

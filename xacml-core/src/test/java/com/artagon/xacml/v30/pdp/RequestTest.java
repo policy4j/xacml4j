@@ -15,10 +15,6 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.XPathVersion;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.RequestContext;
 
 
 public class RequestTest 

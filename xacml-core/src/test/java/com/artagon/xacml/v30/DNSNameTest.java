@@ -5,9 +5,6 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.DNSName;
-import com.artagon.xacml.v30.PortRange;
-
 
 public class DNSNameTest 
 {

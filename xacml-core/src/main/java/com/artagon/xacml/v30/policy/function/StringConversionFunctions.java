@@ -4,8 +4,8 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.StringExp;
+import com.artagon.xacml.v30.types.StringType;
 
 @XacmlFunctionProvider(description="XACML string conversion functions")
 public class StringConversionFunctions 

@@ -11,10 +11,10 @@ import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
-import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.BooleanExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.IntegerType;
 
 @XacmlFunctionProvider(description="TestFunctions")
 @Ignore

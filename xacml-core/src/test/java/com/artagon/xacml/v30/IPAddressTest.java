@@ -1,12 +1,11 @@
 package com.artagon.xacml.v30;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Test;
 
 import com.artagon.xacml.util.IPAddressUtils;
-import com.artagon.xacml.v30.IPAddress;
-import com.artagon.xacml.v30.PortRange;
-
-import static org.junit.Assert.*;
 
 public class IPAddressTest 
 {

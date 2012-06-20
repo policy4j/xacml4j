@@ -14,7 +14,6 @@ import org.junit.Test;
 import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.Decision;
 import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.pdp.DecisionRule;
 import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.EvaluationException;
 

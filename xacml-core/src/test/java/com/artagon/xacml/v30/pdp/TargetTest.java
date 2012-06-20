@@ -13,11 +13,6 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.MatchAnyOf;
-import com.artagon.xacml.v30.pdp.MatchResult;
-import com.artagon.xacml.v30.pdp.Target;
-
 public class TargetTest
 {
 	private Collection<MatchAnyOf> matches;

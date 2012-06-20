@@ -1,7 +1,9 @@
 package com.artagon.xacml.v30.spi.combine;
 
 import com.artagon.xacml.v30.policy.combine.DenyOverridesPolicyCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesPolicyOrderedCombiningAlgorithm;
 import com.artagon.xacml.v30.policy.combine.DenyOverridesRuleCombiningAlgorithm;
+import com.artagon.xacml.v30.policy.combine.DenyOverridesRuleOrderedCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.DenyUnlessPermitPolicyCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.DenyUnlessPermitRuleCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.FirstApplicablePolicyCombiningAlgorithm;
@@ -15,12 +17,10 @@ import com.artagon.xacml.v30.policy.combine.LegacyOrderedPermitOverridesRuleComb
 import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesPolicyCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.LegacyPermitOverridesRuleCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.OnlyOneApplicablePolicyCombingingAlgorithm;
-import com.artagon.xacml.v30.policy.combine.DenyOverridesPolicyOrderedCombiningAlgorithm;
-import com.artagon.xacml.v30.policy.combine.DenyOverridesRuleOrderedCombingingAlgorithm;
-import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyOrderedCombineAlgorithm;
-import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleOrderedCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesPolicyOrderedCombineAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleCombineAlgorithm;
+import com.artagon.xacml.v30.policy.combine.PermitOverridesRuleOrderedCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgorithm;
 import com.artagon.xacml.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
 

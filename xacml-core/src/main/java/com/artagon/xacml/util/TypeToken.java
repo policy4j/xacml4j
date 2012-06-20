@@ -16,13 +16,14 @@ package com.artagon.xacml.util;
  * limitations under the License.
  */
 
-import com.google.common.base.Preconditions;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Represents a generic type {@code T}. Java doesn't yet provide a way to

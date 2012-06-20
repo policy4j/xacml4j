@@ -7,9 +7,6 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.spi.pdp.RequestContextHandler;
-import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
-
 
 
 public class RequestContextHandlerChainTest 

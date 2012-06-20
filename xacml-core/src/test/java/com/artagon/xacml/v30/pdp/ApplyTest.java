@@ -13,14 +13,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.Apply;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.Expression;
-import com.artagon.xacml.v30.pdp.FunctionInvocationException;
-import com.artagon.xacml.v30.pdp.FunctionSpec;
-import com.artagon.xacml.v30.pdp.ValueExpression;
-import com.artagon.xacml.v30.pdp.XacmlException;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.google.common.collect.ImmutableList;

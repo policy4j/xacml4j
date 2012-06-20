@@ -16,14 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.AdviceExpression;
-import com.artagon.xacml.v30.pdp.AttributeAssignment;
-import com.artagon.xacml.v30.pdp.AttributeAssignmentExpression;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.XacmlException;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 

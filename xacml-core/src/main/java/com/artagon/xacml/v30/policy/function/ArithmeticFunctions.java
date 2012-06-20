@@ -5,10 +5,10 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParamVarArg;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.DoubleExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.IntegerType;
 import com.google.common.base.Preconditions;
 
 

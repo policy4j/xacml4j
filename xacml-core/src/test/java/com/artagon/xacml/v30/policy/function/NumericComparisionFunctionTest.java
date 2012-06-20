@@ -5,10 +5,10 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.types.BooleanType;
-import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.DoubleExp;
-import com.artagon.xacml.v30.types.IntegerType;
+import com.artagon.xacml.v30.types.DoubleType;
 import com.artagon.xacml.v30.types.IntegerExp;
+import com.artagon.xacml.v30.types.IntegerType;
 
 
 public class NumericComparisionFunctionTest

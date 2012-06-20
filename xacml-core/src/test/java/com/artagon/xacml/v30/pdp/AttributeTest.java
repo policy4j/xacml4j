@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.types.StringType;
 
 

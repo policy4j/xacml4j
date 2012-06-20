@@ -1,19 +1,15 @@
 package com.artagon.xacml.v30.pdp;
 
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+
 import org.easymock.IMocksControl;
-
-import static org.easymock.EasyMock.*;
-
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.BaseEvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationContextHandler;
-import com.artagon.xacml.v30.pdp.EvaluationException;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.artagon.xacml.v30.types.StringType;
 

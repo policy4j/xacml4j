@@ -5,8 +5,8 @@ import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;
 import com.artagon.xacml.v30.spi.function.XacmlFunctionProvider;
-import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.BooleanExp;
+import com.artagon.xacml.v30.types.BooleanType;
 
 @XacmlFunctionProvider(description="XACML Set Functions")
 public class SetFunctions 

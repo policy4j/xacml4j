@@ -1,6 +1,7 @@
 package com.artagon.xacml.v30.spi.function;
 
 import com.artagon.xacml.v30.pdp.FunctionSpec;
+import com.artagon.xacml.v30.spi.function.FunctionSpecBuilder.FunctionSpecImpl;
 
 public interface FunctionProvider 
 {

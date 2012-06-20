@@ -35,7 +35,7 @@ public final class Status
 	}
 
 	public static Status createSuccess(){
-		return new Status(new StatusCode(StatusCodeIds.OK), null , null);
+		return new Status(StatusCode.createOk(), null , null);
 	}
 
 	public static Status createSyntaxError(String format, Object ...params){
@@ -57,7 +57,7 @@ public final class Status
 	}
 
 	public static Status createMissingAttribute(String format, Object ...params){
-		return new Status(StatusCode.createMissingAttribute(),
+		return new Status(StatusCode.createMissingAttributeError(),
 				(format == null)?null:String.format(format, params), null);
 	}
 
