@@ -12,11 +12,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
-import com.artagon.xacml.v30.pdp.MatchResult;
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.MatchResult;
 
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 {

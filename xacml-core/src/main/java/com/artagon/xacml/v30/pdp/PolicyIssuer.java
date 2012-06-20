@@ -7,6 +7,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeContainer;
 import com.google.common.base.Objects;
 
 public class PolicyIssuer extends AttributeContainer 

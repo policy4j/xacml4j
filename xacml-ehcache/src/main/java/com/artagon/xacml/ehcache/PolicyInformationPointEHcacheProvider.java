@@ -6,7 +6,7 @@ import java.util.Map;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;
 import com.artagon.xacml.v30.spi.pip.BasePolicyInformationPointCacheProvider;

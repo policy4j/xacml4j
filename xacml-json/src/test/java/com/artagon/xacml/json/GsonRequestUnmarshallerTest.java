@@ -9,11 +9,11 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.marshall.Marshaller;
 import com.artagon.xacml.v30.marshall.Unmarshaller;
 import com.artagon.xacml.v30.marshall.json.JsonRequestContextMarshaller;
 import com.artagon.xacml.v30.marshall.json.JsonRequestContextUnmarshaller;
-import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.types.DataTypeRegistryBuilder;
 
 public class GsonRequestUnmarshallerTest

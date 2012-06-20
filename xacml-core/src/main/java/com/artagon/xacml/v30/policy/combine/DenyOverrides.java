@@ -4,9 +4,9 @@ import static com.artagon.xacml.v30.spi.combine.DecisionCombingingAlgorithms.eva
 
 import java.util.List;
 
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.DecisionRule;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;

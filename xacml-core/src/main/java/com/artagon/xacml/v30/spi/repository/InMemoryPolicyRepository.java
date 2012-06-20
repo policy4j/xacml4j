@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Version;
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.artagon.xacml.v30.pdp.VersionMatch;

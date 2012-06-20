@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.policy.combine;
 
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
+import com.artagon.xacml.v30.CompositeDecisionRule;
 
 public final class PermitOverridesPolicyOrderedCombineAlgorithm extends 
 	PermitOverrides<CompositeDecisionRule>

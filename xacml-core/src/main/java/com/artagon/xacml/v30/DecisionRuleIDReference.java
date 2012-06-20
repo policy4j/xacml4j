@@ -1,4 +1,6 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
+
+import com.artagon.xacml.v30.pdp.VersionMatch;
 
 /**
  * An interface for a references to a decision rule

@@ -3,9 +3,9 @@ package com.artagon.xacml.v30.marshall.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.RequestContext;
-import com.artagon.xacml.v30.pdp.RequestReference;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.RequestReference;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.marshall.json;
 
 import java.lang.reflect.Type;
 
-import com.artagon.xacml.v30.pdp.AttributesReference;
+import com.artagon.xacml.v30.AttributesReference;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

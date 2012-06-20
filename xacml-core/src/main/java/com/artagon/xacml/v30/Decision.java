@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import java.util.HashMap;
 import java.util.Map;

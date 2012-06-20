@@ -10,11 +10,11 @@ import java.util.Iterator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
-import com.artagon.xacml.v30.pdp.Effect;
 import com.artagon.xacml.v30.pdp.MatchAnyOf;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

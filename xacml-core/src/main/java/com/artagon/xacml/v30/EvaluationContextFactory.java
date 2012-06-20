@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 

@@ -1,6 +1,10 @@
 package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 
 
 

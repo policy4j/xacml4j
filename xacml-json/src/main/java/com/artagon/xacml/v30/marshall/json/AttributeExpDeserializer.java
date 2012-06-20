@@ -2,8 +2,8 @@ package com.artagon.xacml.v30.marshall.json;
 
 import java.lang.reflect.Type;
 
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.AttributeExpType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.types.DataTypeRegistry;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;

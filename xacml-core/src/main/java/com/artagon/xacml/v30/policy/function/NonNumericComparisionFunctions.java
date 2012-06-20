@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.policy.function;
 
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.Time;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;

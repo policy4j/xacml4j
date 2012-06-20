@@ -6,9 +6,9 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.Obligation;
-import com.artagon.xacml.v30.pdp.RequestContext;
+import com.artagon.xacml.v30.Advice;
+import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.spi.pdp.RequestContextHandlerChain;
 

@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

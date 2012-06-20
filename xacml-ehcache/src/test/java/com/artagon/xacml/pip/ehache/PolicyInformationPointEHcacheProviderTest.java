@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptor;
 import com.artagon.xacml.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import com.artagon.xacml.v30.spi.pip.AttributeSet;

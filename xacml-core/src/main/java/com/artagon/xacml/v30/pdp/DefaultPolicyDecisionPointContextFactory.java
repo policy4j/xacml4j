@@ -1,5 +1,8 @@
 package com.artagon.xacml.v30.pdp;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.XPathVersion;
 import com.artagon.xacml.v30.spi.audit.PolicyDecisionAuditor;
 import com.artagon.xacml.v30.spi.pdp.PolicyDecisionCache;

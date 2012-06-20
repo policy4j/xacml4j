@@ -35,9 +35,9 @@ import com.artagon.xacml.opensaml.IDPConfiguration;
 import com.artagon.xacml.opensaml.OpenSamlObjectBuilder;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQueryEndpoint;
 import com.artagon.xacml.opensaml.XACMLAuthzDecisionQuerySigner;
+import com.artagon.xacml.v30.RequestContext;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPoint;
-import com.artagon.xacml.v30.pdp.RequestContext;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 
 

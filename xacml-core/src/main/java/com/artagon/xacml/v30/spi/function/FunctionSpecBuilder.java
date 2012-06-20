@@ -9,8 +9,8 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionInvocationException;
 import com.artagon.xacml.v30.pdp.FunctionParamSpec;

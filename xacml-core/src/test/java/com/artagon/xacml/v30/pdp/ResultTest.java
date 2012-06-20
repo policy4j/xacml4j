@@ -6,6 +6,8 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.types.StringType;
 
 public class ResultTest 

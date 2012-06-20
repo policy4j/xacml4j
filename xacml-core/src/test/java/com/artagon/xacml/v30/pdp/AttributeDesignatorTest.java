@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.types.IntegerType;
 
 public class AttributeDesignatorTest

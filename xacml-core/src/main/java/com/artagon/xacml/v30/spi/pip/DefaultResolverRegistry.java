@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
 import com.artagon.xacml.v30.pdp.Policy;
 import com.artagon.xacml.v30.pdp.PolicySet;
 import com.google.common.base.Preconditions;

@@ -6,7 +6,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.google.common.base.Objects;

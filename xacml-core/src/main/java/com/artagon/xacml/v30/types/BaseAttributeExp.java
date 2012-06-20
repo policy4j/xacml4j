@@ -1,10 +1,10 @@
 package com.artagon.xacml.v30.types;
 
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.AttributeExpType;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.pdp.ExpressionVisitor;
 import com.artagon.xacml.v30.pdp.ValueType;
 import com.google.common.base.Objects;

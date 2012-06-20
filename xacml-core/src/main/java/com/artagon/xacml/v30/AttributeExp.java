@@ -1,6 +1,8 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import java.io.Serializable;
+
+import com.artagon.xacml.v30.pdp.ValueExpression;
 
 public interface AttributeExp 
 	extends ValueExpression, Serializable

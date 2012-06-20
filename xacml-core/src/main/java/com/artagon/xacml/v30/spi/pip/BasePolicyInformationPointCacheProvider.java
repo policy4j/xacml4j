@@ -2,7 +2,7 @@ package com.artagon.xacml.v30.spi.pip;
 
 import java.util.List;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.google.common.base.Preconditions;
 
 public class BasePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider

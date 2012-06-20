@@ -13,6 +13,12 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.MatchResult;
 import com.artagon.xacml.v30.spi.repository.PolicyReferenceResolver;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.Iterables;

@@ -3,10 +3,10 @@ package com.artagon.xacml.v30.marshall.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Obligation;
+import com.artagon.xacml.v30.Advice;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.pdp.Result;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

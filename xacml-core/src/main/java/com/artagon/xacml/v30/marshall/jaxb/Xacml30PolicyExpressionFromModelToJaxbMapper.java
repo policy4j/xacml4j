@@ -14,9 +14,9 @@ import org.oasis.xacml.v30.jaxb.FunctionType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.pdp.Apply;
 import com.artagon.xacml.v30.pdp.AttributeDesignator;
-import com.artagon.xacml.v30.pdp.AttributeExp;
 import com.artagon.xacml.v30.pdp.AttributeSelector;
 import com.artagon.xacml.v30.pdp.DefaultExpressionVisitor;
 import com.artagon.xacml.v30.pdp.Expression;

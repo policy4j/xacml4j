@@ -3,7 +3,12 @@ package com.artagon.xacml.v30.pdp;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.artagon.xacml.v30.Advice;
+import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression

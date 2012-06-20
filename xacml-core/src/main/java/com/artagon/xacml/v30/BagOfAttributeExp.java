@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.artagon.xacml.v30.pdp.ExpressionVisitor;
+import com.artagon.xacml.v30.pdp.ValueExpression;
+import com.artagon.xacml.v30.pdp.ValueType;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultiset;

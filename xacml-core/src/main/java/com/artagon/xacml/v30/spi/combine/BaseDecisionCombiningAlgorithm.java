@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.combine;
 
+import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
-import com.artagon.xacml.v30.pdp.DecisionRule;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

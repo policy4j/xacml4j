@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -8,9 +8,14 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.XPathVersion;
+import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
+import com.artagon.xacml.v30.pdp.AttributeSelectorKey;
+import com.artagon.xacml.v30.pdp.Policy;
+import com.artagon.xacml.v30.pdp.PolicyIDReference;
+import com.artagon.xacml.v30.pdp.PolicyResolutionException;
+import com.artagon.xacml.v30.pdp.PolicySet;
+import com.artagon.xacml.v30.pdp.PolicySetIDReference;
+import com.artagon.xacml.v30.pdp.ValueExpression;
 
 public interface EvaluationContext 
 {	

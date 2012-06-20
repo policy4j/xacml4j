@@ -7,9 +7,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.DecisionRule;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;

@@ -1,7 +1,7 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import com.artagon.xacml.v30.pdp.AttributeExpType;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.pdp.XacmlObject;
 import com.google.common.base.Preconditions;
 

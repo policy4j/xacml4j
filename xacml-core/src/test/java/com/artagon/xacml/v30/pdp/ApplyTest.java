@@ -13,6 +13,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
 import com.google.common.collect.ImmutableList;

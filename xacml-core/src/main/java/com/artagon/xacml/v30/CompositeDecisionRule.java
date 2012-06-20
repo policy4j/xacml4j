@@ -1,4 +1,5 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
+
 
 public interface CompositeDecisionRule extends DecisionRule
 {

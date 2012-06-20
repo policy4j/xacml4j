@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

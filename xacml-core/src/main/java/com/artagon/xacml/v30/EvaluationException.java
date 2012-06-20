@@ -1,6 +1,6 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
-import com.artagon.xacml.v30.StatusCode;
+import com.artagon.xacml.v30.pdp.XacmlException;
 import com.google.common.base.Preconditions;
 
 

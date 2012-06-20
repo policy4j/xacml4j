@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 
 /**
  * A default XACML enviroment attributes resolver

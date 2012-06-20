@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.marshall.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

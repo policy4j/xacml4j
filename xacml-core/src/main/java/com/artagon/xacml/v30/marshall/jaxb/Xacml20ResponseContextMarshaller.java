@@ -19,18 +19,18 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.Advice;
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.marshall.ResponseMarshaller;
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeAssignment;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.Obligation;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.collect.Iterables;
@@ -209,7 +209,7 @@ public class Xacml20ResponseContextMarshaller
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
 			AttributeAssignmentType attr = new AttributeAssignmentType();
-			com.artagon.xacml.v30.pdp.AttributeExpType t = (com.artagon.xacml.v30.pdp.AttributeExpType)(a.getAttribute().getType());
+			com.artagon.xacml.v30.AttributeExpType t = (com.artagon.xacml.v30.AttributeExpType)(a.getAttribute().getType());
 			attr.setDataType(t.getDataTypeId());
 			attr.setAttributeId(a.getAttributeId());
 			attr.getContent().add(a.getAttribute().toXacmlString());

@@ -3,11 +3,11 @@ package com.artagon.xacml.v30.marshall.json;
 import java.io.IOException;
 import java.io.Reader;
 
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.marshall.Unmarshaller;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

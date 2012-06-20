@@ -3,6 +3,10 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.List;
 
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
+
 public interface DecisionCombiningAlgorithm <D extends DecisionRule> 
 {
 	/**

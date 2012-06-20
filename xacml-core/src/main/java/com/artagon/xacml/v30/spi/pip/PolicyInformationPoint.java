@@ -4,9 +4,9 @@ package com.artagon.xacml.v30.spi.pip;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
 
 /**
  * A XACML Policy Information Point

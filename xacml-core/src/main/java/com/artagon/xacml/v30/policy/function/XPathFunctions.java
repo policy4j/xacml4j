@@ -5,8 +5,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
-import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParamEvaluationContext;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;

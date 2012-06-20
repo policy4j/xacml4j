@@ -1,6 +1,6 @@
 package com.artagon.xacml.v30.spi.function;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.types.BooleanExp;
 
 public class JavaMethodToFunctionSpecTestFunctions 

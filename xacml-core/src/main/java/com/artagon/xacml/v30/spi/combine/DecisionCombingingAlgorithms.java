@@ -1,8 +1,8 @@
 package com.artagon.xacml.v30.spi.combine;
 
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.DecisionRule;
-import com.artagon.xacml.v30.pdp.EvaluationContext;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.DecisionRule;
+import com.artagon.xacml.v30.EvaluationContext;
 
 /**
  * An utility class for evaluating {@link DecisionRule}

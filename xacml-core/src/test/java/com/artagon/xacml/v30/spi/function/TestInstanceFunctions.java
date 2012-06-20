@@ -3,7 +3,7 @@ package com.artagon.xacml.v30.spi.function;
 
 import org.junit.Ignore;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.types.BooleanExp;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerExp;

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.spi.function.AnnotiationBasedFunctionProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
 import com.artagon.xacml.v30.types.AnyURIExp;

@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.spi.pip;
 import java.util.Calendar;
 import java.util.List;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.EvaluationException;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationException;
 
 public interface ResolverContext 
 {

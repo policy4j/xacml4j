@@ -7,11 +7,11 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Obligation;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.Iterables;

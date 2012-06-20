@@ -9,14 +9,14 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import com.artagon.xacml.v30.Advice;
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.pdp.Advice;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeAssignment;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.CompositeDecisionRuleIDReference;
-import com.artagon.xacml.v30.pdp.Obligation;
-import com.artagon.xacml.v30.pdp.ResponseContext;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 
 public class Xacml30ResponseContextUnmarshallerTest {

@@ -25,15 +25,15 @@ import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
+import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.RequestContext;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
@@ -238,7 +238,7 @@ implements RequestUnmarshaller
 					content.isEmpty()){
 				throw new RequestSyntaxException("Attribute does not have content");
 			}
-			com.artagon.xacml.v30.pdp.AttributeExpType dataType = DataTypes.getType(dataTypeId);
+			com.artagon.xacml.v30.AttributeExpType dataType = DataTypes.getType(dataTypeId);
 			if(dataType == null){
 				throw new RequestSyntaxException(
 						"DataTypeId=\"%s\" can be be " +

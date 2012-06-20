@@ -22,21 +22,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.util.Xacml20XPathTo30Transformer;
+import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategories;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.Attributes;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.Obligation;
+import com.artagon.xacml.v30.ResponseContext;
 import com.artagon.xacml.v30.Status;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.StatusCodeIds;
 import com.artagon.xacml.v30.StatusDetail;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
-import com.artagon.xacml.v30.pdp.Attribute;
-import com.artagon.xacml.v30.pdp.AttributeAssignment;
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.Attributes;
-import com.artagon.xacml.v30.pdp.Decision;
-import com.artagon.xacml.v30.pdp.Effect;
-import com.artagon.xacml.v30.pdp.Obligation;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
-import com.artagon.xacml.v30.pdp.ResponseContext;
 import com.artagon.xacml.v30.pdp.Result;
 import com.artagon.xacml.v30.pdp.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypeRegistry;
@@ -199,7 +199,7 @@ implements ResponseUnmarshaller
 					any.isEmpty()){
 				throw new RequestSyntaxException("Attribute does not have content");
 			}
-			com.artagon.xacml.v30.pdp.AttributeExpType dataType = dataTypes.getType(dataTypeId);
+			com.artagon.xacml.v30.AttributeExpType dataType = dataTypes.getType(dataTypeId);
 			if(dataType == null){
 				throw new RequestSyntaxException(
 						"DataTypeId=\"%s\" can be be " +

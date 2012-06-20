@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Version;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshaller;
 import com.artagon.xacml.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import com.artagon.xacml.v30.pdp.Apply;
-import com.artagon.xacml.v30.pdp.CompositeDecisionRule;
 import com.artagon.xacml.v30.pdp.DecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.pdp.FunctionReference;
 import com.artagon.xacml.v30.pdp.Policy;

@@ -8,7 +8,14 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;

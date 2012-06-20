@@ -5,10 +5,10 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.AttributeExp;
-import com.artagon.xacml.v30.pdp.AttributeExpType;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
-import com.artagon.xacml.v30.pdp.BagOfAttributeExpType;
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 

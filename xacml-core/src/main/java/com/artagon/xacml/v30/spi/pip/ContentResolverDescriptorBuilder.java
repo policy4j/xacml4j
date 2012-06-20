@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.pdp.AttributeDesignatorKey;
-import com.artagon.xacml.v30.pdp.AttributeExpType;
 import com.artagon.xacml.v30.pdp.AttributeReferenceKey;
 import com.artagon.xacml.v30.pdp.AttributeSelectorKey;
 import com.google.common.base.Preconditions;

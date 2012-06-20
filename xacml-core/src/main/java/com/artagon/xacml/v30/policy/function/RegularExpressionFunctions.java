@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.AttributeExp;
+import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.spi.function.XacmlFuncParam;
 import com.artagon.xacml.v30.spi.function.XacmlFuncReturnType;
 import com.artagon.xacml.v30.spi.function.XacmlFuncSpec;

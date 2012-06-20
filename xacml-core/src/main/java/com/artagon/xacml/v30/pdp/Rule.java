@@ -1,5 +1,9 @@
 package com.artagon.xacml.v30.pdp;
 
+import com.artagon.xacml.v30.Decision;
+import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.MatchResult;
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement

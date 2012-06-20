@@ -2,6 +2,9 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.List;
 
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
+
 
 public interface FunctionSpec 
 {

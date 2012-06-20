@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.pdp.BagOfAttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.google.common.base.Preconditions;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Counter;

@@ -1,6 +1,5 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
-import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Objects;
 
 

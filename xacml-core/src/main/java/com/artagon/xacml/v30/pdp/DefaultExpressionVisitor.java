@@ -1,5 +1,8 @@
 package com.artagon.xacml.v30.pdp;
 
+import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+
 public class DefaultExpressionVisitor 
 	implements ExpressionVisitor
 {

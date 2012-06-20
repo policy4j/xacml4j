@@ -4,6 +4,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.artagon.xacml.v30.AttributeCategory;
+import com.artagon.xacml.v30.BagOfAttributeExp;
+import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.EvaluationException;
 
 
 public interface EvaluationContextHandler 
