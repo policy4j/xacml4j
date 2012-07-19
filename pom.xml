@@ -320,8 +320,8 @@
             </snapshotRepository>
        </distributionManagement>
 	<scm>
-		<connection>scm:git:git@github.com:artagon/xacml4j.git</connection>
-		<developerConnection>scm:git:git@github.com:artagon/xacml4j.git</developerConnection>
-		<url>scm:git:git@github.com:artagon/xacml4j.git</url>
+		<connection>scm:git:https://github.com/artagon/xacml4j.git</connection>
+		<developerConnection>scm:git:https://github.com/artagon/xacml4j.git</developerConnection>
+		<url>scm:git:https://github.com/artagon/xacml4j.git</url>
 	</scm>
 </project>
