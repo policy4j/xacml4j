@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.types.BooleanType;
 import com.artagon.xacml.v30.types.IntegerType;
@@ -40,7 +41,7 @@ public class ApplyTest
 		.build();
 		expect(function.validateParameters(params)).andReturn(true);
 		replay(function);
-		Apply apply = Apply.builder(function).params(params).build();
+		Apply apply = Apply.builder(function).param(params).build();
 		verify(function);
 		reset(function);
 		expect(function.invoke(context, params)).andReturn(BooleanType.BOOLEAN.create(false));

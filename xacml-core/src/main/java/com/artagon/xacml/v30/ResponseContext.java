@@ -3,6 +3,7 @@ package com.artagon.xacml.v30;
 import java.util.Collection;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 public class ResponseContext
@@ -53,11 +54,13 @@ public class ResponseContext
 		private ImmutableList.Builder<Result> b = ImmutableList.builder();
 
 		public Builder result(Result ... r){
+			Preconditions.checkNotNull(r);
 			this.b.add(r);
 			return this;
 		}
 
 		public Builder results(Iterable<Result> r){
+			Preconditions.checkNotNull(r);
 			this.b.addAll(r);
 			return this;
 		}

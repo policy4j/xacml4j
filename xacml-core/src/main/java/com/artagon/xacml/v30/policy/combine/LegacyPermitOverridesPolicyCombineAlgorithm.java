@@ -6,12 +6,11 @@ import java.util.List;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Decision;
-import com.artagon.xacml.v30.DecisionRule;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 
-public class LegacyPermitOverridesPolicyCombineAlgorithm 
+public class LegacyPermitOverridesPolicyCombineAlgorithm
 	extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides";
@@ -19,20 +18,20 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 	protected LegacyPermitOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
-	
+
 	public LegacyPermitOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
-	
+
 	@Override
-	public final Decision combine(EvaluationContext context, 
+	public final Decision combine(EvaluationContext context,
 			List<CompositeDecisionRule> rules){
 		return doCombine(context, rules);
 	}
-	
+
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
-	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, 
-			List<CompositeDecisionRule> rules) 
+	public final static  Decision doCombine(EvaluationContext context,
+			List<CompositeDecisionRule> rules)
 	{
 		boolean atLeastOneError = false;
 		boolean atLeastOneDeny = false;
@@ -61,5 +60,5 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 			return Decision.INDETERMINATE;
 		}
 		return Decision.NOT_APPLICABLE;
-	}	
+	}
 }

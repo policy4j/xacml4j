@@ -10,6 +10,7 @@ import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
@@ -157,7 +158,8 @@ public class AttributeDesignator extends AttributeReference
 	}
 
 	@Override
-	public void accept(ExpressionVisitor v) {
+	public void accept(ExpressionVisitor expv) {
+		AttributeDesignatorVisitor v = (AttributeDesignatorVisitor)expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
@@ -192,5 +194,11 @@ public class AttributeDesignator extends AttributeReference
 		return Objects.hashCode(
 				designatorKey,
 				isMustBePresent());
+	}
+
+	public interface AttributeDesignatorVisitor extends ExpressionVisitor
+	{
+		void visitEnter(AttributeDesignator v);
+		void visitLeave(AttributeDesignator v);
 	}
 }

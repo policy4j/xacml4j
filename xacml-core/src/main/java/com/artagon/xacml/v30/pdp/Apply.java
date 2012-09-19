@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.ValueType;
 import com.google.common.base.Objects;
@@ -48,6 +50,12 @@ public class Apply implements Expression
 		this.hashCode = Objects.hashCode(spec, arguments);
 	}
 
+	/**
+	 * Creates {@link Apply} builder with
+	 * a given function
+	 * @param func a function
+	 * @return {@link Builder}
+	 */
 	public static Builder builder(FunctionSpec func){
 		return new Builder(func);
 	}
@@ -111,12 +119,19 @@ public class Apply implements Expression
 
 
 	@Override
-	public void accept(ExpressionVisitor v){
+	public void accept(ExpressionVisitor expv){
+		ApplyVistor v = (ApplyVistor)expv;
 		v.visitEnter(this);
 		for(Expression arg : arguments){
 			arg.accept(v);
 		}
 		v.visitLeave(this);
+	}
+
+	public interface ApplyVistor extends ExpressionVisitor
+	{
+		void visitEnter(Apply v);
+		void visitLeave(Apply v);
 	}
 
 	public final static class Builder
@@ -129,24 +144,20 @@ public class Apply implements Expression
 			this.func = spec;
 		}
 
-		public Builder param(Expression p){
-			Preconditions.checkNotNull(p);
-			this.params.add(p);
-			return this;
-		}
-
-		public Builder params(Iterable<Expression> params){
+		public Builder param(Iterable<Expression> params){
 			Preconditions.checkNotNull(params);
 			for(Expression p : params){
-				param(p);
+				Preconditions.checkNotNull(p);
+				this.params.add(p);
 			}
 			return this;
 		}
 
-		public Builder params(Expression ...params){
+		public Builder param(Expression ...params){
 			Preconditions.checkNotNull(params);
 			for(Expression p : params){
-				param(p);
+				Preconditions.checkNotNull(p);
+				this.params.add(p);
 			}
 			return this;
 		}

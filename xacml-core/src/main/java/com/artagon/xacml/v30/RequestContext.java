@@ -12,6 +12,8 @@ import org.w3c.dom.Node;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
@@ -71,6 +73,28 @@ public class RequestContext
 				this.requestDefaults);
 	}
 
+	private RequestContext(Builder b)
+	{
+		this.returnPolicyIdList = b.returnPolicyIdList;
+		this.attributes = LinkedListMultimap.create();
+		this.requestReferences = b.reqRefs.build();
+		this.attributesByXmlId = new HashMap<String, Attributes>();
+		this.requestDefaults = b.reqDefaults;
+		this.combinedDecision = b.combinedDecision;
+		this.attributes = b.attrBuilder.build();
+		for(Attributes attr : attributes.values()){
+				if(attr.getId() != null){
+					this.attributesByXmlId.put(attr.getId(), attr);
+				}
+		}
+		this.cachedHashCode = Objects.hashCode(
+				this.returnPolicyIdList,
+				this.combinedDecision,
+				this.attributes,
+				this.requestReferences,
+				this.requestDefaults);
+	}
+
 	/**
 	 * Constructs a request with a given attributes
 	 *
@@ -121,6 +145,9 @@ public class RequestContext
 				Collections.<RequestReference>emptyList(), requestDefaults);
 	}
 
+	public static Builder builder(){
+		return new Builder();
+	}
 
 	/**
 	 * If the {@link #isReturnPolicyIdList()} returns
@@ -388,7 +415,10 @@ public class RequestContext
 		for(Attributes a : attributes.values()){
 			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
-				resultAttr.add(new Attributes(a.getCategory(), includeInResult));
+				resultAttr.add(Attributes
+						.builder(a.getCategory())
+						.attributes(includeInResult)
+						.build());
 			}
 		}
 		return resultAttr;
@@ -424,5 +454,82 @@ public class RequestContext
 		return !(returnPolicyIdList ^ r.returnPolicyIdList) &&
 			!(combinedDecision ^ r.combinedDecision) && attributes.equals(attributes) &&
 			requestReferences.equals(r.requestReferences) && Objects.equal(requestDefaults, r.requestDefaults);
+	}
+
+	public static class Builder
+	{
+		private boolean returnPolicyIdList;
+		private boolean combinedDecision;
+		private RequestDefaults reqDefaults;
+		private ImmutableListMultimap.Builder<AttributeCategory, Attributes> attrBuilder = ImmutableListMultimap.builder();
+		private ImmutableList.Builder<RequestReference> reqRefs = ImmutableList.builder();
+
+		public Builder returnPolicyIdList(){
+			this.returnPolicyIdList = true;
+			return this;
+		}
+
+		public Builder reqDefaults(RequestDefaults defaults){
+			this.reqDefaults = defaults;
+			return this;
+		}
+
+		public Builder combineDecision(boolean combine){
+			this.combinedDecision = combine;
+			return this;
+		}
+
+		public Builder returnPolicyIdList(boolean returnPolicyIdList){
+			this.returnPolicyIdList = returnPolicyIdList;
+			return this;
+		}
+
+		public Builder reference(RequestReference ...refs){
+			this.reqRefs.add(refs);
+			return this;
+		}
+
+		public Builder reference(Iterable<RequestReference> refs){
+			this.reqRefs.addAll(refs);
+			return this;
+		}
+
+		public Builder copyOf(RequestContext req)
+		{
+			combineDecision(req.isCombinedDecision());
+			returnPolicyIdList(req.isReturnPolicyIdList());
+			reqDefaults(req.getRequestDefaults());
+			attributes(req.getAttributes());
+			reference(req.getRequestReferences());
+			return this;
+		}
+
+		public Builder noAttributes(){
+			attrBuilder = ImmutableListMultimap.builder();
+			return this;
+		}
+
+		public Builder attributes(Attributes ... attrs)
+		{
+			Preconditions.checkNotNull(attrs);
+			for(Attributes a : attrs){
+				this.attrBuilder.put(a.getCategory(), a);
+			}
+			return this;
+		}
+
+		public Builder attributes(Iterable<Attributes> attrs)
+		{
+			Preconditions.checkNotNull(attrs);
+			for(Attributes a : attrs){
+				this.attrBuilder.put(a.getCategory(), a);
+			}
+			return this;
+		}
+
+		public RequestContext build(){
+			return new RequestContext(this);
+		}
+
 	}
 }

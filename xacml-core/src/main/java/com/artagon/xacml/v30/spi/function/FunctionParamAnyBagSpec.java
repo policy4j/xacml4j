@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.spi.function;
 import java.util.ListIterator;
 
 import com.artagon.xacml.v30.BagOfAttributeExpType;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionParamSpec;
 
 

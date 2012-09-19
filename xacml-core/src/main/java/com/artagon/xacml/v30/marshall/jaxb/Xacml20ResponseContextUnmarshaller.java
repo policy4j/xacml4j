@@ -132,15 +132,20 @@ implements ResponseUnmarshaller
 			if(d.isIndeterminate()){
 				return Result.createIndeterminate(d, status).build();
 			}
-			Collection<Attributes> attrs = new LinkedList<Attributes>();
-			if(result.getResourceId() != null){
-				attrs.add(new Attributes(AttributeCategories.RESOURCE,
-						new Attribute(RESOURCE_ID, StringType.STRING.create(result.getResourceId()))));
-			}
-			return Result
+			Result.Builder b = Result
 					.builder(d, create(result.getStatus()))
-					.obligation(getObligations(result))
-					.build();
+					.obligation(getObligations(result));
+			if(result.getResourceId() != null){
+				b.includeInResult(Attributes
+						.builder(AttributeCategories.RESOURCE)
+						.attributes(
+								Attribute
+								.builder(RESOURCE_ID)
+								.value(StringType.STRING, result.getResourceId())
+								.build())
+						.build());
+			}
+			return b.build();
 		}
 
 		private Collection<Obligation> getObligations(ResultType r) throws XacmlSyntaxException

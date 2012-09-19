@@ -38,7 +38,6 @@ import com.artagon.xacml.v30.AttributeAssignment;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.Attributes;
-import com.artagon.xacml.v30.AttributesReference;
 import com.artagon.xacml.v30.CompositeDecisionRuleIDReference;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Obligation;
@@ -364,8 +363,11 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		for(AttributeType a : attributes.getAttribute()){
 			attr.add(create(a));
 		}
-		return new Attributes(AttributeCategories.parse(attributes.getCategory()),
-				getContent(attributes.getContent()), attr);
+		return Attributes
+				.builder(AttributeCategories.parse(attributes.getCategory()))
+				.content(getContent(attributes.getContent()))
+				.attributes(attr)
+				.build();
 	}
 
 	private Node getContent(ContentType content) throws XacmlSyntaxException
@@ -382,21 +384,23 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 
 	private RequestReference create(RequestReferenceType m) throws XacmlSyntaxException
 	{
-		Collection<AttributesReference> references = new LinkedList<AttributesReference>();
+		RequestReference.Builder b = RequestReference.builder();
 		for(AttributesReferenceType r : m.getAttributesReference()){
-			references.add(new AttributesReference(r.getReferenceId().toString()));
+			b.reference((String)r.getReferenceId());
 		}
-		return new RequestReference(references);
+		return b.build();
 	}
 
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
+		Attribute.Builder b =  Attribute
+				.builder(a.getAttributeId())
+				.issuer(a.getIssuer())
+				.includeInResult(a.isIncludeInResult());
 		for(AttributeValueType v : a.getAttributeValue()){
-			values.add(create(v));
+			b.value(create(v));
 		}
-		return new Attribute(a.getAttributeId(),
-				a.getIssuer(), a.isIncludeInResult(), values);
+		return b.build();
 	}
 
 	private AttributeExp create(

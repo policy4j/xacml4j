@@ -1,6 +1,10 @@
 package com.artagon.xacml.v30;
 
-
+/**
+ * An interface for a composite decision rules
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface CompositeDecisionRule extends DecisionRule
 {
 

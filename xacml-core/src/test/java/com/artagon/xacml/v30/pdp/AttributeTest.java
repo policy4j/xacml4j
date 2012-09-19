@@ -13,14 +13,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.Attribute;
+import com.artagon.xacml.v30.Attribute.Builder;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.types.StringType;
 
 
-public class AttributeTest 
+public class AttributeTest
 {
 	private Collection<AttributeExp> values;
-	
+
 	@Before
 	public void init()
 	{
@@ -30,11 +31,16 @@ public class AttributeTest
 		values.add(INTEGER.create(3));
 		values.add(INTEGER.create(2));
 	}
-	
+
 	@Test
 	public void testCreateWithAllArguments()
 	{
-		Attribute attr = new Attribute("testId", "testIssuer", true, values);
+		Attribute attr = Attribute
+				.builder("testId")
+				.issuer("testIssuer")
+				.includeInResult(true)
+				.value(values)
+				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
@@ -46,7 +52,10 @@ public class AttributeTest
 	@Test
 	public void testCreateMethod()
 	{
-		Attribute attr = Attribute.create("testId", StringType.STRING, "value1", "value2");
+		Attribute attr = Attribute
+				.builder("testId")
+				.value(StringType.STRING, "value1", "value2")
+				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
@@ -61,10 +70,11 @@ public class AttributeTest
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		values.add(INTEGER.create(1));
 		values.add(INTEGER.create(1));
-		Attribute attr = new Attribute("testId", "testIssuer", true, values);
-		Attribute attr1 = new Attribute("testId", null, true, values);
-		Attribute attr2 = new Attribute("testId", "testIssuer", false, values);
-		Attribute attr3 = new Attribute("testId", "testIssuer", true, values);
+		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).value(values);
+		Attribute attr = b.build();
+		Attribute attr1 = b.issuer(null).build();
+		Attribute attr2 = b.includeInResult(false).build();
+		Attribute attr3 = b.includeInResult(true).issuer("testIssuer").build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
@@ -75,27 +85,14 @@ public class AttributeTest
 		assertFalse(attr.equals(attr2));
 		assertTrue(attr.equals(attr3));
 	}
-	
-	@Test
-	public void testCreateWithIdAndValuesCollection()
-	{
-		Attribute attr = new Attribute("testId", values);
-		assertEquals("testId", attr.getAttributeId());
-		assertNull(attr.getIssuer());
-		assertFalse(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
-	}
-	
+
+
 	@Test
 	public void testCreateWithIdAndValuesVarArg()
 	{
-		Attribute attr = new Attribute("testId", 
-				INTEGER.create(1), 
-				INTEGER.create(2),
-				INTEGER.create(3),
-				INTEGER.create(2));
+		Attribute attr = Attribute.builder("testId")
+				.value(INTEGER.create(1), INTEGER.create(2), INTEGER.create(3), INTEGER.create(2))
+				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
@@ -103,5 +100,5 @@ public class AttributeTest
 		assertTrue(attr.getValues().containsAll(values));
 		assertTrue(values.containsAll(attr.getValues()));
 	}
-	
+
 }

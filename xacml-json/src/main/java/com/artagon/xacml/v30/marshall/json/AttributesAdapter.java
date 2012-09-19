@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.google.gson.JsonDeserializationContext;
@@ -24,10 +23,12 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			JsonDeserializationContext context) throws JsonParseException {
 		try{
 			JsonObject o = json.getAsJsonObject();
-			String id = GsonUtil.getAsString(o, "id", null);
-			AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, "category", null));
-			Collection<Attribute> attributes = context.deserialize(o.getAsJsonArray("attributes"), new TypeToken<Collection<Attribute>>(){}.getType());
-			return new Attributes(id, category, attributes);
+			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray("attributes"), new TypeToken<Collection<Attribute>>(){}.getType());
+			return Attributes
+					.builder( AttributeCategories.parse(GsonUtil.getAsString(o, "category", null)))
+					.id(GsonUtil.getAsString(o, "id", null))
+					.attributes(attr)
+					.build();
 		}catch(XacmlSyntaxException e){
 			throw new JsonParseException(e);
 		}

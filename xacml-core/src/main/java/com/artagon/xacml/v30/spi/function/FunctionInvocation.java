@@ -3,8 +3,8 @@ package com.artagon.xacml.v30.spi.function;
 import java.util.List;
 
 import com.artagon.xacml.v30.EvaluationContext;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueExpression;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionInvocationException;
 import com.artagon.xacml.v30.pdp.FunctionSpec;
 

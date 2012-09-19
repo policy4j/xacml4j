@@ -14,7 +14,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -47,25 +46,26 @@ public class MultipleResourcesHandlerTest
 		this.context = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
 
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
-		this.resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
+		this.resource0 = Attributes.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId1").value(STRING.create("value0")).build(),
+						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.build();
+		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build()).build();
 
-		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
-		this.resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
+		this.subject0 = Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build()).build();
 
-		Collection<Attribute> subject0Attr = new LinkedList<Attribute>();
-		subject0Attr.add(new Attribute("testId7", STRING.create("value0")));
-		subject0Attr.add(new Attribute("testId8", STRING.create("value1")));
-		this.subject0 =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subject0Attr);
 
-		Collection<Attribute> subject1Attr = new LinkedList<Attribute>();
-		subject1Attr.add(new Attribute("testId9", STRING.create("value0")));
-		subject1Attr.add(new Attribute("testId10", STRING.create("value1")));
-		this.subject1 =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subject1Attr);
+		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId9").value(STRING.create("value0")).build(),
+						Attribute.builder("testId10").value(STRING.create("value1")).build()).build();
 	}
 
 	@Test

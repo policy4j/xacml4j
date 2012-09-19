@@ -5,8 +5,8 @@ import com.artagon.xacml.v30.AttributeExpType;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.pdp.ExpressionVisitor;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -14,11 +14,11 @@ public abstract class BaseAttributeExp<T>
 	implements AttributeExp
 {
 	private static final long serialVersionUID = 4131180767511036271L;
-	
+
 	private T value;
 	private AttributeExpType type;
-	
-	protected BaseAttributeExp(AttributeExpType type, 
+
+	protected BaseAttributeExp(AttributeExpType type,
 			T value) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkNotNull(value);
@@ -30,7 +30,7 @@ public abstract class BaseAttributeExp<T>
 	public final ValueType getEvaluatesTo(){
 		return type;
 	}
-	
+
 	@Override
 	public final AttributeExpType getType(){
 		return type;
@@ -41,33 +41,33 @@ public abstract class BaseAttributeExp<T>
 			EvaluationContext context) throws EvaluationException {
 		return this;
 	}
-	
+
 	@Override
 	public String toXacmlString() {
 		return value.toString();
 	}
-	
+
 	public final T getValue(){
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).
 		add("Value", value).
 		add("Type", getType()).toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(
 				getType(), value);
 	}
-	
+
 	public BagOfAttributeExp toBag(){
 		return type.bagOf(this);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null){
@@ -80,12 +80,13 @@ public abstract class BaseAttributeExp<T>
 			return false;
 		}
 		AttributeExp e = (AttributeExp)o;
-		return type.equals(e.getType()) && 
+		return type.equals(e.getType()) &&
 				value.equals(e.getValue());
 	}
-	
+
 	@Override
-	public final void accept(ExpressionVisitor v) {
+	public final void accept(ExpressionVisitor expv) {
+		AttributeExpVisitor v = (AttributeExpVisitor)expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}

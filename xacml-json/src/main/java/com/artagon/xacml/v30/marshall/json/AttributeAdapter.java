@@ -17,7 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 class AttributeAdapter implements JsonDeserializer<Attribute>, JsonSerializer<Attribute>
 {
-	
+
 	@Override
 	public Attribute deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
@@ -27,8 +27,12 @@ class AttributeAdapter implements JsonDeserializer<Attribute>, JsonSerializer<At
 		boolean inclInRes = GsonUtil.getAsBoolean(o, "inclInRes", false);
 		Collection<AttributeExp> values = context.deserialize(o.get("values"),  new TypeToken<Collection<AttributeExp>>(){}.getType());
 		Preconditions.checkState(values != null && !values.isEmpty());
-		Attribute a = new Attribute(attrId, issuer, inclInRes, values);
-		return a;
+		return Attribute
+				.builder(attrId)
+				.issuer(issuer)
+				.includeInResult(inclInRes)
+				.value(values)
+				.build();
 	}
 
 	@Override

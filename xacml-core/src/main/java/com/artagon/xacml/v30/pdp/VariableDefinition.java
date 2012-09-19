@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.ValueType;
 import com.google.common.base.Objects;

@@ -43,12 +43,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-public final class Xacml20RequestContextUnmarshaller extends 
-	BaseJAXBUnmarshaller<RequestContext> 
-implements RequestUnmarshaller 
+public final class Xacml20RequestContextUnmarshaller extends
+	BaseJAXBUnmarshaller<RequestContext>
+implements RequestUnmarshaller
 {
 	private Mapper mapper20;
-		
+
 	public Xacml20RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper20 = new Mapper();
@@ -57,23 +57,23 @@ implements RequestUnmarshaller
 	@Override
 	protected RequestContext create(JAXBElement<?> jaxbInstance)
 			throws XacmlSyntaxException {
-		Preconditions.checkArgument((jaxbInstance.getValue() 
+		Preconditions.checkArgument((jaxbInstance.getValue()
 				instanceof org.oasis.xacml.v20.jaxb.context.RequestType));
 		return mapper20.create((org.oasis.xacml.v20.jaxb.context.RequestType)jaxbInstance.getValue());
 	}
-	
+
 	static class Mapper
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
-		
+
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-		
+
 		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-		
+
 		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
-		
+
 		static
 		{
 			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
@@ -83,21 +83,21 @@ implements RequestUnmarshaller
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-			
+
 			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
 			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
 			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
 			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-			
-			
+
+
 			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
 			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-			
+
 			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
 			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-		
+
 		}
-		
+
 		public RequestContext create(RequestType req) throws XacmlSyntaxException
 		{
 			Collection<Attributes> attributes = new LinkedList<Attributes>();
@@ -124,7 +124,7 @@ implements RequestUnmarshaller
 			}
 			return new RequestContext(false, attributes);
 		}
-		
+
 		private Collection<Attributes> normalize(Multimap<AttributeCategory, Attributes> attributes)
 		{
 			Collection<Attributes> normalized = new LinkedList<Attributes>();
@@ -134,22 +134,27 @@ implements RequestUnmarshaller
 				for(Attributes a : byCategory){
 					categoryAttr.addAll(a.getAttributes());
 				}
-				normalized.add(new Attributes(categoryId, categoryAttr));
+				normalized.add(Attributes
+						.builder(categoryId)
+						.attributes(categoryAttr)
+						.build());
 			}
 			return normalized;
 		}
-		
-		private Attributes createSubject(SubjectType subject) 
+
+		private Attributes createSubject(SubjectType subject)
 			throws XacmlSyntaxException
 		{
 			AttributeCategory category = getCategoryId(subject.getSubjectCategory());
 			if(log.isDebugEnabled()){
 				log.debug("Processing subject category=\"{}\"", category);
 			}
-			return new Attributes(category, create(subject.getAttribute(), category, false));
+			return Attributes.builder(category)
+					.attributes(create(subject.getAttribute(), category, false))
+					.build();
 		}
-		
-		private AttributeCategory getCategoryId(String id) 
+
+		private AttributeCategory getCategoryId(String id)
 			throws XacmlSyntaxException
 		{
 			AttributeCategory category = AttributeCategories.parse(id);
@@ -158,33 +163,38 @@ implements RequestUnmarshaller
 			}
 			return category;
 		}
-		
-		private Attributes createEnviroment(EnvironmentType subject) 
+
+		private Attributes createEnviroment(EnvironmentType subject)
 			throws XacmlSyntaxException
 		{
-			return new Attributes(AttributeCategories.ENVIRONMENT, 
-					null, create(subject.getAttribute(), AttributeCategories.ENVIRONMENT, false));
+			return Attributes
+					.builder(AttributeCategories.ENVIRONMENT)
+					.attributes(create(subject.getAttribute(), AttributeCategories.ENVIRONMENT, false))
+					.build();
 		}
-		
+
 		private Attributes createAction(ActionType subject) throws XacmlSyntaxException
 		{
-			return new Attributes(AttributeCategories.ACTION, 
-					null, create(subject.getAttribute(), AttributeCategories.ACTION, false));
+			return Attributes
+					.builder(AttributeCategories.ACTION)
+					.attributes(create(subject.getAttribute(), AttributeCategories.ACTION, false))
+					.build();
 		}
-		
-		private Attributes createResource(ResourceType resource, 
+
+		private Attributes createResource(ResourceType resource,
 				boolean multipleResources) throws XacmlSyntaxException
 		{
 			Node content = getResourceContent(resource);
 			if(content != null){
 				content = DOMUtil.copyNode(content);
 			}
-			return new Attributes(AttributeCategories.RESOURCE, 
-					content, 
-					create(resource.getAttribute(), 
-							AttributeCategories.RESOURCE, multipleResources));
+			return Attributes
+					.builder(AttributeCategories.RESOURCE)
+					.content(content)
+					.attributes(create(resource.getAttribute(), AttributeCategories.RESOURCE, multipleResources))
+					.build();
 		}
-		
+
 		private Node getResourceContent(ResourceType resource)
 		{
 			ResourceContentType content = resource.getResourceContent();
@@ -200,9 +210,9 @@ implements RequestUnmarshaller
 			}
 			return null;
 		}
-		
-		private Collection<Attribute> create(Collection<AttributeType> contextAttributes, 
-				AttributeCategory category, boolean includeInResult) 
+
+		private Collection<Attribute> create(Collection<AttributeType> contextAttributes,
+				AttributeCategory category, boolean includeInResult)
 			throws XacmlSyntaxException
 		{
 			Collection<Attribute> attributes = new LinkedList<Attribute>();
@@ -211,9 +221,9 @@ implements RequestUnmarshaller
 			}
 			return attributes;
 		}
-		
-		private Attribute createAttribute(AttributeType a, AttributeCategory category, 
-					boolean incudeInResultResourceId) 
+
+		private Attribute createAttribute(AttributeType a, AttributeCategory category,
+					boolean incudeInResultResourceId)
 			throws XacmlSyntaxException
 		{
 			Collection<AttributeExp> values = new LinkedList<AttributeExp>();
@@ -224,17 +234,20 @@ implements RequestUnmarshaller
 				}
 				values.add(value);
 			}
-			return new Attribute(a.getAttributeId(), a.getIssuer(), 
-					((a.getAttributeId().equals(RESOURCE_ID))?incudeInResultResourceId:false), values);
+			return Attribute.builder(a.getAttributeId())
+					.issuer(a.getIssuer())
+					.includeInResult(a.getAttributeId().equals(RESOURCE_ID)?incudeInResultResourceId:false)
+					.value(values)
+					.build();
 		}
-		
-		private AttributeExp createValue(String dataTypeId, 
-				AttributeValueType value, 
-				AttributeCategory categoryId) 
+
+		private AttributeExp createValue(String dataTypeId,
+				AttributeValueType value,
+				AttributeCategory categoryId)
 			throws XacmlSyntaxException
 		{
 			List<Object> content = value.getContent();
-			if(content == null || 
+			if(content == null ||
 					content.isEmpty()){
 				throw new RequestSyntaxException("Attribute does not have content");
 			}

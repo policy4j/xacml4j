@@ -2,6 +2,8 @@ package com.artagon.xacml.v30.pdp;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.ValueType;
 import com.google.common.base.Objects;
@@ -57,7 +59,8 @@ public class VariableReference implements Expression
 		return varDef.evaluate(context);
 	}
 
-	public void accept(ExpressionVisitor v) {
+	public void accept(ExpressionVisitor expv) {
+		VariableReferenceVisitor v = (VariableReferenceVisitor)expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
@@ -88,5 +91,11 @@ public class VariableReference implements Expression
 		}
 		VariableReference r = (VariableReference)o;
 		return varDef.equals(r.varDef);
+	}
+
+	public interface VariableReferenceVisitor extends ExpressionVisitor
+	{
+		void visitEnter(VariableReference var);
+		void visitLeave(VariableReference var);
 	}
 }

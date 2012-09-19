@@ -132,17 +132,22 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		for(Attribute a : attributes.getAttributes())
 		{
 			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
-				Attribute selectorAttr = new Attribute(CONTENT_SELECTOR,
-						a.getIssuer(),
-						a.isIncludeInResult(),
-						XPathExpType.XPATHEXPRESSION.create(xpath, attributes.getCategory()));
+				Attribute selectorAttr =
+						Attribute.builder(CONTENT_SELECTOR)
+						.issuer(a.getIssuer())
+						.includeInResult(a.isIncludeInResult())
+						.value(XPathExpType.XPATHEXPRESSION.create(xpath, attributes.getCategory()))
+						.build();
 				newAttributes.add(selectorAttr);
 				continue;
 			}
 			newAttributes.add(a);
 		}
-		return new Attributes(attributes.getId(),
-				attributes.getCategory(),
-				attributes.getContent(), newAttributes);
+		return Attributes
+				.builder(attributes.getCategory())
+				.id(attributes.getId())
+				.content(attributes.getContent())
+				.attributes(newAttributes)
+				.build();
 	}
 }

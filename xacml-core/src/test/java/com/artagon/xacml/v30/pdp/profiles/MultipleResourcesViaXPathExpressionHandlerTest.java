@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -78,20 +77,23 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	public void testMultipleDecisionProfileWithSelectorInSingleCategory()
 	{
 
-		Collection<Attribute> resourceAttrs = new LinkedList<Attribute>();
-		resourceAttrs.add(new Attribute("testId3", STRING.create("value0")));
-		resourceAttrs.add(new Attribute("testId4", STRING.create("value1")));
+		Attributes resource = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.content(content)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build(),
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+				.build();
 
-		resourceAttrs.add(new Attribute(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR,
-				XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)));
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build())
 
-
-		Attributes resource = new Attributes(AttributeCategories.RESOURCE, content, resourceAttrs);
-
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
+				.build();
 
 		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource));
@@ -130,24 +132,28 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	public void testMultipleDecisionProfileWithSelectorInMultipleCategories()
 	{
 
-		Collection<Attribute> resourceAttrs = new LinkedList<Attribute>();
-		resourceAttrs.add(new Attribute("testId3", STRING.create("value0")));
-		resourceAttrs.add(new Attribute("testId4", STRING.create("value1")));
+		Attributes resource = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.content(content)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build(),
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+				.build();
 
-		resourceAttrs.add(new Attribute(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR,
-				XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)));
 
 
-		Attributes resource = new Attributes(AttributeCategories.RESOURCE, content, resourceAttrs);
-
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-
-		subjectAttr.add(new Attribute(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR,
-				XPATHEXPRESSION.create("//md:record/md:patient/md:patientDoB/@md:attrn1", AttributeCategories.SUBJECT_ACCESS)));
-
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, content, subjectAttr);
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.content(content)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build(),
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+								 .value(
+										 XPATHEXPRESSION.create("//md:record/md:patient/md:patientDoB/@md:attrn1", AttributeCategories.SUBJECT_ACCESS)
+								).build()).build();
 
 		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource));
@@ -213,21 +219,24 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	public void testMultipleDecisionRequestHasMultipleContentSelectorOfInvalidType()
 	{
 
-		Collection<Attribute> resourceAttrs = new LinkedList<Attribute>();
-		resourceAttrs.add(new Attribute("testId3", STRING.create("value0")));
-		resourceAttrs.add(new Attribute("testId4", STRING.create("value1")));
+		Attributes resource = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.content(content)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build(),
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+						.value(STRING.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+				.build();
 
-		resourceAttrs.add(new Attribute(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR,
-				STRING.create("//md:record/md:patient")));
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.content(content)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build()
+				).build();
 
-
-		Attributes resource = new Attributes(AttributeCategories.RESOURCE, content, resourceAttrs);
-
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, content, subjectAttr);
 
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(subject, resource));
@@ -250,20 +259,22 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	public void testMultipleDecisionCategoryDoesNotHaveContent()
 	{
 
-		Collection<Attribute> resourceAttrs = new LinkedList<Attribute>();
-		resourceAttrs.add(new Attribute("testId3", STRING.create("value0")));
-		resourceAttrs.add(new Attribute("testId4", STRING.create("value1")));
+		Attributes resource = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build(),
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+				.build();
 
-		resourceAttrs.add(new Attribute(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR,
-				XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)));
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build()
+				).build();
 
-		Attributes resource = new Attributes(AttributeCategories.RESOURCE, resourceAttrs);
-
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
 
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 

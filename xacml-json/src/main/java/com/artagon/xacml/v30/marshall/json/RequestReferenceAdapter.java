@@ -19,12 +19,11 @@ final class RequestReferenceAdapter implements JsonDeserializer<RequestReference
 	@Override
 	public RequestReference deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
-		Collection<AttributesReference> refs = context.deserialize(json.getAsJsonArray(), 
+		Collection<AttributesReference> refs = context.deserialize(json.getAsJsonArray(),
 				new TypeToken<Collection<AttributesReference>>(){}.getType());
-		RequestReference ref = new RequestReference(refs);
-		return ref;
+		return RequestReference.builder().reference(refs).build();
 	}
-	
+
 	@Override
 	public JsonElement serialize(RequestReference src, Type typeOfSrc,
 			JsonSerializationContext context) {

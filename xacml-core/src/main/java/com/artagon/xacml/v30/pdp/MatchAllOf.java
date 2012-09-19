@@ -17,14 +17,14 @@ import com.google.common.base.Preconditions;
 public class MatchAllOf implements PolicyElement, Matchable
 {
 	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
-	
+
 	private Collection<Match> matches;
-	
+
 	/**
 	 * Constructs a {@link MatchAllOf} with
 	 * a given collection of {@link Match}
 	 * elements
-	 * 
+	 *
 	 * @param match a collection of {@link Match}
 	 * instances
 	 */
@@ -33,11 +33,11 @@ public class MatchAllOf implements PolicyElement, Matchable
 		Preconditions.checkArgument(match.size() >= 1);
 		this.matches = new LinkedList<Match>(match);
 	}
-	
+
 	public MatchAllOf(Match ... matches){
 		this(Arrays.asList(matches));
 	}
-	
+
 	public static Builder builder(){
 		return new Builder();
 	}
@@ -45,14 +45,14 @@ public class MatchAllOf implements PolicyElement, Matchable
 	public Collection<Match> getMatch(){
 		return Collections.unmodifiableCollection(matches);
 	}
-	
+
 	@Override
 	public MatchResult match(EvaluationContext context)
 	{
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
 			MatchResult r = m.match(context);
-			if(r == MatchResult.INDETERMINATE && 
+			if(r == MatchResult.INDETERMINATE &&
 					state == MatchResult.MATCH){
 				if(log.isDebugEnabled()){
 					log.debug("Match result=\"{}\" " +
@@ -72,19 +72,19 @@ public class MatchAllOf implements PolicyElement, Matchable
 		}
 		return state;
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 				.add("Matches", matches)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return matches.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null){
@@ -99,35 +99,45 @@ public class MatchAllOf implements PolicyElement, Matchable
 		MatchAllOf m = (MatchAllOf)o;
 		return matches.equals(m.matches);
 	}
-	
+
 	@Override
-	public void accept(PolicyVisitor v) {		
+	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		for(Matchable m : matches){
 			m.accept(v);
 		}
 		v.visitLeave(this);
 	}
-	
+
 	public static class Builder
 	{
 		private Collection<Match> matches = new LinkedList<Match>();
-		
+
 		private Builder(){
 		}
-		
-		public Builder withMatch(Match match){
+
+		public Builder match(Match ...match){
 			Preconditions.checkNotNull(match);
-			this.matches.add(match);
+			for(Match m : match){
+				this.matches.add(m);
+			}
 			return this;
 		}
-		
-		public Builder withMatch(AttributeExp value, 
+
+		public Builder match(Iterable<Match> match){
+			Preconditions.checkNotNull(match);
+			for(Match m : match){
+				this.matches.add(m);
+			}
+			return this;
+		}
+
+		public Builder withMatch(AttributeExp value,
 				AttributeReference ref, FunctionSpec predicate)
 		{
-			return withMatch(new Match(predicate, value, ref));
+			return match(new Match(predicate, value, ref));
 		}
-		
+
 		public MatchAllOf create(){
 			return new MatchAllOf(matches);
 		}

@@ -12,20 +12,20 @@ import com.artagon.xacml.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 import com.artagon.xacml.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 /**
- * The deny overrides combining algorithm is intended for those cases where a deny 
+ * The deny overrides combining algorithm is intended for those cases where a deny
  * decision should have priority over a permit decision.<p>
  * This algorithm has the following behavior:<p>
  * <ol>
  * <li>If any decision is "Deny", the result is "Deny"</li>
  * <li>Otherwise, if any decision is "Indeterminate{DP}", the result is "Indeterminate{DP}"</li>
- * <li>Otherwise, if any decision is "Indeterminate{D}" and another decision is 
+ * <li>Otherwise, if any decision is "Indeterminate{D}" and another decision is
  * "Indeterminate{P} or Permit, the result is "Indeterminate{DP}"</li>
  * <li>Otherwise, if any decision is "Indeterminate{D}", the result is "Indeterminate{D}"</li>
  * <li>Otherwise, if any decision is "Permit", the result is "Permit"</li>
  * <li>Otherwise, if any decision is "Indeterminate{P}", the result is "Indeterminate{P}"<li>
  * <li>Otherwise, the result is "NotApplicable"<li>
  * <ol>
- * 
+ *
  * @author Giedrius Trumpickas
  *
  * @param <D> a {@link DecisionRule} implementation type
@@ -35,15 +35,15 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 	protected DenyOverrides(String id){
 		super(id);
 	}
-	
+
 	@Override
 	public final Decision combine(EvaluationContext context, List<D> decisions){
 		return doCombine(context, decisions);
 	}
-	
+
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides")
-	public static final  <D extends DecisionRule>  Decision doCombine(EvaluationContext context, List<D> decisions) 
+	public static final  <D extends DecisionRule>  Decision doCombine(EvaluationContext context, List<D> decisions)
 	{
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;
@@ -76,12 +76,12 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 			if(decision == Decision.INDETERMINATE_DP){
 				atLeastOneIndeterminateDP = true;
 				continue;
-			}	
+			}
 		}
 		if(atLeastOneIndeterminateDP){
 			return Decision.INDETERMINATE_DP;
 		}
-		if(atLeastOneIndeterminateD && 
+		if(atLeastOneIndeterminateD &&
 				(atLeastOneIndeterminateP || atLeastOnePermit)){
 			return Decision.INDETERMINATE_DP;
 		}

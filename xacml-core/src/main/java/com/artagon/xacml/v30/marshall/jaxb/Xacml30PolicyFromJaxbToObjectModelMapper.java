@@ -45,6 +45,7 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v30.pdp.AdviceExpression;
@@ -54,7 +55,6 @@ import com.artagon.xacml.v30.pdp.AttributeDesignator;
 import com.artagon.xacml.v30.pdp.AttributeReference;
 import com.artagon.xacml.v30.pdp.AttributeSelector;
 import com.artagon.xacml.v30.pdp.Condition;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionReference;
 import com.artagon.xacml.v30.pdp.Match;
 import com.artagon.xacml.v30.pdp.MatchAllOf;
@@ -334,12 +334,14 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
+		Attribute.Builder b =  Attribute
+				.builder(a.getAttributeId())
+				.issuer(a.getIssuer())
+				.includeInResult(a.isIncludeInResult());
 		for(AttributeValueType v : a.getAttributeValue()){
-			values.add(create(v));
+			b.value(create(v));
 		}
-		return new Attribute(a.getAttributeId(),
-				a.getIssuer(), a.isIncludeInResult(), values);
+		return b.build();
 	}
 
 	private AttributeExp create(
@@ -598,7 +600,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		return Apply
 				.builder(createFunction(apply.getFunctionId()))
-				.params(arguments)
+				.param(arguments)
 				.build();
 	}
 

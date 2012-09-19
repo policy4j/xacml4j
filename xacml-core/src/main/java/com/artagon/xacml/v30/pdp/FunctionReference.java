@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.ValueType;
 import com.google.common.base.Objects;
@@ -132,8 +134,15 @@ public class FunctionReference implements Expression
 	}
 
 	@Override
-	public void accept(ExpressionVisitor v) {
+	public void accept(ExpressionVisitor fv) {
+		FunctionReferenceVisitor v = (FunctionReferenceVisitor)fv;
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+
+	public interface FunctionReferenceVisitor extends ExpressionVisitor
+	{
+		void visitEnter(FunctionReference v);
+		void visitLeave(FunctionReference v);
 	}
 };

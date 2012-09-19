@@ -1,5 +1,6 @@
 package com.artagon.xacml.v30;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import com.artagon.xacml.util.Base64;
@@ -8,39 +9,41 @@ import com.google.common.base.Preconditions;
 
 /**
  * A base class for XACML binary values
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class BinaryValue
+public class BinaryValue implements Serializable
 {
+	private static final long serialVersionUID = 798617605980758773L;
+
 	private byte[] value;
-	
+
 	private BinaryValue(byte[] b){
 		this(b, 0, b.length);
 	}
-	
+
 	private BinaryValue(byte[] b, int srcPos, int length){
-		Preconditions.checkArgument((b== null && length == 0) || 
+		Preconditions.checkArgument((b== null && length == 0) ||
 				(b != null) && b.length >= length);
 		this.value = new byte[(b==null)?0:length];
 		System.arraycopy(b, srcPos, value, 0, length);
 	}
-	
+
 	public static BinaryValue fromBytes(byte[] data){
 		Preconditions.checkNotNull(data);
 		return new BinaryValue(data);
 	}
-	
+
 	public static BinaryValue fromBytes(byte[] data, int srcPos, int length){
 		return new BinaryValue(data, srcPos, length);
 	}
-	
+
 	public static BinaryValue fromHexEncoded(String v){
 		Preconditions.checkNotNull(v);
 		byte[] bin = hexToBin(v);
 		return new BinaryValue(bin);
 	}
-	
+
 	public static BinaryValue fromBase64Encoded(String v){
 		Preconditions.checkNotNull(v);
 		try{
@@ -50,12 +53,12 @@ public class BinaryValue
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Arrays.hashCode(value);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 	    	if(o == null){
@@ -70,34 +73,34 @@ public class BinaryValue
 	    	BinaryValue v = (BinaryValue)o;
 	    	return Arrays.equals(value, v.value);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Arrays.toString(value);
 	}
-	
+
 	/**
 	 * Encodes this binary value
 	 * to hexadecimal representation
-	 * 
+	 *
 	 * @return a hexadecimal representation
 	 * of this binary value
 	 */
 	public String toHexEncoded(){
 		return binToHex(value);
 	}
-	
+
 	/**
 	 * Encodes this binary value
 	 * to base64 representation
-	 * 
+	 *
 	 * @return a base64 representation
 	 * of this binary value
 	 */
 	public String toBase64Encoded(){
 		return Base64.encode(value);
 	}
-	
+
 	/**
      * Return the hex character for a particular nibble (half a byte).
      *
@@ -107,8 +110,8 @@ public class BinaryValue
     private static char binToHexNibble(int nibble) {
         return (nibble < 10)?(char) (nibble + '0'):(char) ((nibble - 10) + 'A');
     }
-    
-  
+
+
     /**
      * Return a straight hexadecimal conversion of a byte array.
      * This is a String containing only hex digits.
@@ -120,7 +123,7 @@ public class BinaryValue
         int byteLength = bytes.length;
         char [] chars = new char [byteLength * 2];
         int charIndex = 0;
-        
+
         for (int byteIndex = 0; byteIndex < byteLength; byteIndex++) {
             byte b = bytes[byteIndex];
             chars[charIndex++] = binToHexNibble((b >> 4) & 0xf);
@@ -129,8 +132,8 @@ public class BinaryValue
 
         return new String(chars);
     }
-    
-    
+
+
     /**
      * Return the int value of a hex character. Return -1 if the
      * character is not a valid hex character.

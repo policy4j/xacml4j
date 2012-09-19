@@ -5,8 +5,8 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueType;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionParamSpec;
 import com.google.common.base.Preconditions;
 

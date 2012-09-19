@@ -46,6 +46,7 @@ import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.CompositeDecisionRule;
 import com.artagon.xacml.v30.Effect;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.PolicyUnmarshallerSupport;
 import com.artagon.xacml.v30.pdp.Apply;
@@ -53,7 +54,6 @@ import com.artagon.xacml.v30.pdp.AttributeAssignmentExpression;
 import com.artagon.xacml.v30.pdp.AttributeDesignator;
 import com.artagon.xacml.v30.pdp.AttributeSelector;
 import com.artagon.xacml.v30.pdp.Condition;
-import com.artagon.xacml.v30.pdp.Expression;
 import com.artagon.xacml.v30.pdp.FunctionReference;
 import com.artagon.xacml.v30.pdp.Match;
 import com.artagon.xacml.v30.pdp.MatchAllOf;
@@ -590,7 +590,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		}
 		return Apply
 				.builder(createFunction(apply.getFunctionId()))
-				.params(arguments)
+				.param(arguments)
 				.build();
 	}
 

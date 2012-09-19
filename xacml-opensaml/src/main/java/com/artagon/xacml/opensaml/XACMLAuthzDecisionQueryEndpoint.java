@@ -48,22 +48,22 @@ import com.artagon.xacml.v30.types.StringType;
 
 public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 {
-	
+
 	private final static Logger log = LoggerFactory.getLogger(XACMLAuthzDecisionQueryEndpoint.class);
-	
+
 	private IDPConfiguration idpConfig;
-	
+
 	private PolicyDecisionPoint pdp;
 	private Xacml20RequestContextUnmarshaller xacmlRequest20Unmarshaller;
 	private Xacml20ResponseContextMarshaller xacmlResponse20Unmarshaller;
-	
+
 	private DocumentBuilderFactory dbf;
 	private BasicParserPool parserPool;
 
 	private boolean requireSignatureValidation;
-	
+
 	public XACMLAuthzDecisionQueryEndpoint(
-			IDPConfiguration idpConfig, 
+			IDPConfiguration idpConfig,
 			PolicyDecisionPoint pdp){
 		this.idpConfig = idpConfig;
 		this.pdp = pdp;
@@ -85,10 +85,10 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	{
 		if(log.isDebugEnabled()){
 			QName n = request.getElementQName();
-			log.debug("Processing SAML request type=\"{}:{}\"", 
+			log.debug("Processing SAML request type=\"{}:{}\"",
 					n.getNamespaceURI(), n.getLocalPart());
 		}
-		if(!(request instanceof XACMLAuthzDecisionQueryType)){	
+		if(!(request instanceof XACMLAuthzDecisionQueryType)){
 			return makeErrorResponse(request, "Invalid request");
 		}
 		XACMLAuthzDecisionQueryType xacml20DecisionQuery = (XACMLAuthzDecisionQueryType)request;
@@ -122,7 +122,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			Document resDom = performXacmlRequest(xacml20DecisionQuery.getIssuer().getValue(), reqDom);
 			ResponseType xacmlResponse = OpenSamlObjectBuilder.unmarshallXacml20Response(resDom.getDocumentElement());
 			Assertion assertion = OpenSamlObjectBuilder.makeXacml20AuthzDecisionAssertion(
-					idpConfig.getLocalEntity().getEntityID(), 
+					idpConfig.getLocalEntity().getEntityID(),
 					xacml20DecisionQuery.isReturnContext()?xacmlRequest:null, xacmlResponse);
 			Response samlResponse = OpenSamlObjectBuilder.makeXacml20AuthzDecisionQueryResponse(
 					idpConfig.getLocalEntity().getEntityID(), xacml20DecisionQuery, assertion);
@@ -133,16 +133,16 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			return makeErrorResponse(request, "Internal error");
 		}
 	}
-	
+
 	private Response makeErrorResponse(RequestAbstractType request, String errorMessage)
 	{
-		Response response = OpenSamlObjectBuilder.makeResponse(request, 
+		Response response = OpenSamlObjectBuilder.makeResponse(request,
 				OpenSamlObjectBuilder.makeStatus(StatusCode.REQUESTER_URI, errorMessage));
 		response.setIssuer(OpenSamlObjectBuilder.makeIssuer(idpConfig.getLocalEntity().getEntityID()));
 		return response;
 	}
-	
-	private boolean validateRequestSignature(RequestAbstractType request) 
+
+	private boolean validateRequestSignature(RequestAbstractType request)
 		throws ValidationException, SecurityException
 	{
 		SAMLSignatureProfileValidator validator = new SAMLSignatureProfileValidator();
@@ -151,7 +151,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			return false;
 		}
 		validator.validate(request.getSignature());
-		if(request.getIssuer() == null 
+		if(request.getIssuer() == null
 				|| request.getIssuer().getValue() == null){
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have issuer");
@@ -168,9 +168,9 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	    }
 	    return dsigTrusted;
 	}
-	
+
 	private boolean validateRequest(RequestAbstractType request)
-	{ 
+	{
 		AuthzService authzService = idpConfig.getAuthzServiceByLocation(request.getDestination());
 		if(authzService == null){
 			if(log.isDebugEnabled()) {
@@ -180,7 +180,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		}
 		return true;
 	}
-		
+
 	public Document performXacmlRequest(String issuer, Document reqDom) throws Exception
 	{
 		try
@@ -200,12 +200,12 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 			}
 			throw e;
 		}
-		
+
 	}
-	
+
 	private void signResponse(Response response) throws Exception
 	{
-				
+
 		Signature dsig = (Signature) Configuration.getBuilderFactory()
         .getBuilder(Signature.DEFAULT_ELEMENT_NAME)
         .buildObject(Signature.DEFAULT_ELEMENT_NAME);
@@ -218,11 +218,15 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 		Configuration.getMarshallerFactory().getMarshaller(response).marshall(response);
 		Signer.signObject(dsig);
 	}
-	
+
 	private RequestContext addIssuerToRequest(String issuer, RequestContext req)
 	{
-		Attributes indermediarySubject = new Attributes(AttributeCategories.SUBJECT_INTERMEDIARY, 
-				new Attribute(SubjectAttributes.SUBJECT_ID.toString(), StringType.STRING.create(issuer))); 
+		Attributes indermediarySubject = Attributes.builder()
+				.category(AttributeCategories.SUBJECT_INTERMEDIARY)
+				.attributes(Attribute
+						.builder(SubjectAttributes.SUBJECT_ID.toString())
+						.value(StringType.STRING, issuer).build())
+				.build();
 		Collection<Attributes> filtered = new LinkedList<Attributes>();
 		filtered.add(indermediarySubject);
 		for(Attributes a : req.getAttributes()){

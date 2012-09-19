@@ -174,12 +174,18 @@ public final class DefaultPolicyDecisionPoint
 		for(AttributeDesignatorKey k : desig.keySet()){
 			BagOfAttributeExp v = desig.get(k);
 			Collection<Attribute> values = attributes.get(k.getCategory());
-			values.add(new Attribute(k.getAttributeId(), k.getIssuer(), false, v.values()));
+			values.add(Attribute
+					.builder(k.getAttributeId())
+					.issuer(k.getIssuer())
+					.value(v.values())
+					.build());
 		}
 		Collection<Attributes> result = new LinkedList<Attributes>();
 		for(AttributeCategory c : attributes.keySet()){
-
-			result.add(new Attributes(c, attributes.get(c)));
+			result.add(Attributes
+					.builder(c)
+					.attributes(attributes.get(c))
+					.build());
 		}
 		return result;
 	}

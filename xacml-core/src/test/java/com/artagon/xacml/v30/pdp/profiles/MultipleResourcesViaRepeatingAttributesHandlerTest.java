@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -43,20 +42,26 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	@Test
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
+		Attributes resource0 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId1").value(STRING.create("value0")).build(),
+						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> resource1Attr = new LinkedList<Attribute>();
-		resource1Attr.add(new Attribute("testId3", STRING.create("value0")));
-		resource1Attr.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes resource1 = new Attributes(AttributeCategories.RESOURCE, resource1Attr);
+		Attributes resource1 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build())
+				.build();
 
 		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource0, resource1));
@@ -89,16 +94,20 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	@Test
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
-		Collection<Attribute> resource0Attr = new LinkedList<Attribute>();
-		resource0Attr.add(new Attribute("testId1", STRING.create("value0")));
-		resource0Attr.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes resource0 = new Attributes(AttributeCategories.RESOURCE, resource0Attr);
+		Attributes resource0 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.attributes(
+						Attribute.builder("testId1").value(STRING.create("value0")).build(),
+						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.build();
 
 
-		Collection<Attribute> subjectAttr = new LinkedList<Attribute>();
-		subjectAttr.add(new Attribute("testId7", STRING.create("value0")));
-		subjectAttr.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes subject =  new Attributes(AttributeCategories.SUBJECT_ACCESS, subjectAttr);
+		Attributes subject = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build())
+				.build();
 
 		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource0));

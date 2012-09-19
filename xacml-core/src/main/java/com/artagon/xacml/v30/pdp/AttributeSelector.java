@@ -10,6 +10,7 @@ import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.types.DataTypes;
@@ -133,7 +134,8 @@ public class AttributeSelector extends
 	}
 
 	@Override
-	public void accept(ExpressionVisitor v) {
+	public void accept(ExpressionVisitor expv) {
+		AttributeSelectorVisitor v = (AttributeSelectorVisitor)expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
@@ -171,5 +173,11 @@ public class AttributeSelector extends
 				"to empty node set and mustBePresents=\"true\"", getPath());
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
+	}
+
+	public interface AttributeSelectorVisitor extends ExpressionVisitor
+	{
+		void visitEnter(AttributeSelector v);
+		void visitLeave(AttributeSelector v);
 	}
 }

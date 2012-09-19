@@ -14,19 +14,19 @@ import com.artagon.xacml.v30.pdp.AbstractRequestContextHandler;
 import com.artagon.xacml.v30.pdp.PolicyDecisionPointContext;
 import com.artagon.xacml.v30.types.XPathExpType;
 
-final class MultipleResourcesViaXPathExpressionLegacyHandler 
+final class MultipleResourcesViaXPathExpressionLegacyHandler
 	extends AbstractRequestContextHandler
 {
 	final static String FEATURE_ID = "urn:oasis:names:tc:xacml:2.0:profile:multiple:xpath-expression";
-	
+
 	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-	
+
 	public MultipleResourcesViaXPathExpressionLegacyHandler(){
 		super(FEATURE_ID);
 	}
-	
+
 	@Override
-	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context) 
+	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context)
 	{
 		if(request.containsRepeatingCategories()){
 			return Collections.singleton(
@@ -37,7 +37,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		if(resource == null){
 			return handleNext(request, context);
 		}
-		Collection<AttributeExp> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE, 
+		Collection<AttributeExp> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
 				XPathExpType.XPATHEXPRESSION);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
@@ -46,7 +46,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			return Collections.singleton(
 					Result.createIndeterminateSyntaxError(
 							"Found more than AttributeId=\"%s\" " +
-							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
+							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE,
 							XPathExpType.XPATHEXPRESSION)
 							.includeInResultAttr(request.getIncludeInResultAttributes())
 							.build());
@@ -59,15 +59,22 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 				for(Attribute attr : attrs.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
-						Attribute selector = new Attribute(
-								MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR, 
-								attr.getIssuer(), true, attr.getValues());
+						Attribute selector =
+								Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+								.issuer(attr.getIssuer())
+								.includeInResult(attr.isIncludeInResult())
+								.value(attr.getValues())
+								.build();
 						resourceAttr.add(selector);
 						continue;
 					}
 					resourceAttr.add(attr);
 				}
-				attributes.add(new Attributes(attrs.getCategory(), attrs.getContent(), resourceAttr));
+				attributes.add(Attributes
+						.builder(attrs.getCategory())
+						.content(attrs.getContent())
+						.attributes(resourceAttr)
+						.build());
 				continue;
 			}
 			attributes.add(attrs);

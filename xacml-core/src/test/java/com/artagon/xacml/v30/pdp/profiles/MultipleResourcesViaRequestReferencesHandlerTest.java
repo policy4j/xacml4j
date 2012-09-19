@@ -48,43 +48,58 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	@Test
 	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
-		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId1", STRING.create("value0")));
-		attributes0.add(new Attribute("testId2", STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr0",  AttributeCategories.RESOURCE, attributes0);
+		Attributes attr0 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.id("resourceAttr0")
+				.attributes(
+						Attribute.builder("testId1").value(STRING.create("value0")).build(),
+						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId3", STRING.create("value0")));
-		attributes1.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr1 = new Attributes("resourceAttr1",  AttributeCategories.RESOURCE, attributes1);
+		Attributes attr1 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.id("resourceAttr1")
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> attributes2 = new LinkedList<Attribute>();
-		attributes2.add(new Attribute("testId3", STRING.create("value0")));
-		attributes2.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr2 = new Attributes("actionAttr1",  AttributeCategories.ACTION, attributes1);
+		Attributes attr2 = Attributes
+				.builder(AttributeCategories.ACTION)
+				.id("actionAttr0")
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> attributes3 = new LinkedList<Attribute>();
-		attributes3.add(new Attribute("testId5", STRING.create("value0")));
-		attributes3.add(new Attribute("testId6", STRING.create("value1")));
-		Attributes attr3 = new Attributes("subjectAttr0",  AttributeCategories.SUBJECT_ACCESS, attributes2);
+		Attributes attr3 = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.id("subjectAttr0")
+				.attributes(
+						Attribute.builder("testId5").value(STRING.create("value0")).build(),
+						Attribute.builder("testId6").value(STRING.create("value1")).build())
+				.build();
 
-		Collection<Attribute> attributes4 = new LinkedList<Attribute>();
-		attributes4.add(new Attribute("testId7", STRING.create("value0")));
-		attributes4.add(new Attribute("testId8", STRING.create("value1")));
-		Attributes attr4 = new Attributes("subjectAttr1",  AttributeCategories.SUBJECT_ACCESS, attributes3);
+		Attributes attr4 = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.id("subjectAttr1")
+				.attributes(
+						Attribute.builder("testId7").value(STRING.create("value0")).build(),
+						Attribute.builder("testId8").value(STRING.create("value1")).build())
+				.build();
 
+		RequestReference reference0 = RequestReference.builder()
+				.reference("resourceAttr0", "subjectAttr0")
+				.build();
 
-		Collection<AttributesReference> ref0 = new LinkedList<AttributesReference>();
-		ref0.add(new AttributesReference("resourceAttr0"));
-		ref0.add(new AttributesReference("subjectAttr0"));
-		RequestReference reference0 = new RequestReference(ref0);
 
 		Collection<AttributesReference> ref1 = new LinkedList<AttributesReference>();
 		ref1.add(new AttributesReference("resourceAttr1"));
 		ref1.add(new AttributesReference("subjectAttr1"));
 
-		RequestReference reference1 = new RequestReference(ref1);
-
+		RequestReference reference1 = RequestReference.builder()
+				.reference("resourceAttr1", "subjectAttr1")
+				.build();
 
 		RequestContext context = new RequestContext(false, false,
 				Arrays.asList(attr0, attr1, attr2, attr3, attr4),
@@ -124,15 +139,22 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	@Test
 	public void testWithNoReferences()
 	{
-		Collection<Attribute> attributes0 = new LinkedList<Attribute>();
-		attributes0.add(new Attribute("testId3", STRING.create("value0")));
-		attributes0.add(new Attribute("testId4", STRING.create("value1")));
-		Attributes attr0 = new Attributes("resourceAttr1",  AttributeCategories.RESOURCE, attributes0);
 
-		Collection<Attribute> attributes1 = new LinkedList<Attribute>();
-		attributes1.add(new Attribute("testId5", STRING.create("value0")));
-		attributes1.add(new Attribute("testId6", STRING.create("value1")));
-		Attributes attr1 = new Attributes("subjectAttr0",  AttributeCategories.SUBJECT_ACCESS, attributes1);
+		Attributes attr0 = Attributes
+				.builder(AttributeCategories.RESOURCE)
+				.id("resourceAttr0")
+				.attributes(
+						Attribute.builder("testId3").value(STRING.create("value0")).build(),
+						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.build();
+
+		Attributes attr1 = Attributes
+				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.id("subjectAttr0")
+				.attributes(
+						Attribute.builder("testId5").value(STRING.create("value0")).build(),
+						Attribute.builder("testId6").value(STRING.create("value1")).build())
+				.build();
 
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(attr0, attr1));

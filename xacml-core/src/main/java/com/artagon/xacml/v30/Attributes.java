@@ -1,8 +1,5 @@
 package com.artagon.xacml.v30;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -15,103 +12,48 @@ public class Attributes extends AttributeContainer
 	private String id;
 	private AttributeCategory categoryId;
 	private Document content;
-	
-	/**
-	 * Constructs an attributes with a given identifier,
-	 * category, attributes and XML content.
-	 * XML content is deep copied from a given
-	 * content node
-	 * 
-	 * @param id an optional unique identifier
-	 * @param categoryId an attribute category
-	 * @param content an optional XML content
-	 * @param attributes a collection of attributes
-	 */
-	public Attributes(
-			String id, 
-			AttributeCategory categoryId, 
-			Node content, 
-			Iterable<Attribute> attrs){
-		super(attrs);
-		Preconditions.checkNotNull(categoryId);
-		Preconditions.checkNotNull(attrs);
-		this.id = id;
-		this.categoryId = categoryId;
-		this.content = DOMUtil.copyNode(content);
+
+	private Attributes(Builder b){
+		super(b);
+		this.id = b.id;
+		Preconditions.checkNotNull(b.category);
+		this.categoryId = b.category;
+		this.content = DOMUtil.copyNode(b.content);
 	}
-	
-	/** 
-	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
-	 */
-	public Attributes(String id, AttributeCategory categoryId, 
-			Node content, Attribute ...attributes){
-		this(id, categoryId, content, Arrays.asList(attributes));
+
+	public static Builder builder(AttributeCategory category){
+		return new Builder(category);
 	}
-	
-	/** 
-	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
-	 */
-	public Attributes(AttributeCategory categoryId, 
-			Iterable<Attribute> attributes){
-		this(null, categoryId, null, attributes);
+
+	public static Builder builder(){
+		return new Builder();
 	}
-	
-	public Attributes(AttributeCategory categoryId, 
-			Node content,
-			Iterable<Attribute> attributes){
-		this(null, categoryId, content, attributes);
-	}
-	
-	/** 
-	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
-	 */
-	public Attributes(String id, 
-			AttributeCategory categoryId, 
-			Iterable<Attribute> attributes){
-		this(id, categoryId, null, attributes);
-	}
-	
-	/** 
-	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
-	 */
-	public Attributes(String id, AttributeCategory categoryId, 
-			Attribute ...attributes){
-		this(id, categoryId, null, Arrays.asList(attributes));
-	}
-	
-	/** 
-	 * @see {@link #Attributes(String, AttributeCategory, Node, Collection)
-	 */
-	public Attributes(AttributeCategory categoryId, 
-			Attribute ...attributes){
-		this(null, categoryId, null, Arrays.asList(attributes));
-	}
-	
+
 	/**
 	 * An unique identifier of the attribute in
 	 * the request context
-	 * 
+	 *
 	 * @return unique identifier of the
 	 * attribute in the request context
 	 */
 	public String getId(){
 		return id;
 	}
-	
+
 	/**
 	 * Gets content as {@link Node}
 	 * instance
-	 * 
+	 *
 	 * @return a {@link Node} instance
 	 * or <code>null</code>
 	 */
 	public Node getContent(){
 		return content;
 	}
-	
+
 	/**
 	 * Gets an attribute category
-	 * 
+	 *
 	 * @return attribute category
 	 */
 	public AttributeCategory getCategory(){
@@ -127,12 +69,12 @@ public class Attributes extends AttributeContainer
 		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
 		.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(categoryId, id, content, attributes);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -146,8 +88,58 @@ public class Attributes extends AttributeContainer
 		}
 		Attributes a = (Attributes)o;
 		return Objects.equal(categoryId, a.categoryId) &&
-		Objects.equal(id, a.id) && 
+		Objects.equal(id, a.id) &&
 		DOMUtil.isEqual(content, a.content) &&
 		Objects.equal(attributes, a.attributes);
+	}
+
+	public static class Builder
+		extends AttributeContainerBuilder<Builder>
+	{
+		private String id;
+		private AttributeCategory category;
+		private Node content;
+
+		private Builder(AttributeCategory category){
+			Preconditions.checkNotNull(category);
+			this.category = category;
+		}
+
+		private Builder(){
+		}
+
+		public Builder content(Node node){
+			this.content = node;
+			return this;
+		}
+
+		public Builder copyOf(Attributes a){
+			Preconditions.checkNotNull(a);
+			id(a.getId());
+			content(a.getContent());
+			category(a.getCategory());
+			attributes(a.getAttributes());
+			return this;
+		}
+
+		public Builder id(String id){
+			this.id = id;
+			return this;
+		}
+
+		public Builder category(AttributeCategory category){
+			Preconditions.checkNotNull(category);
+			this.category = category;
+			return this;
+		}
+
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+
+		public Attributes build(){
+			return new Attributes(this);
+		}
 	}
 }

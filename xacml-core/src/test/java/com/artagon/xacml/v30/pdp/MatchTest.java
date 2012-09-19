@@ -14,6 +14,7 @@ import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.MatchResult;
 import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.spi.function.FunctionInvocation;
