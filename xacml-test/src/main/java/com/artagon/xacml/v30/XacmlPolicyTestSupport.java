@@ -301,10 +301,10 @@ public class XacmlPolicyTestSupport {
 			}
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)
-					.withPolicyInformationPoint(pipBuilder.build())
-					.withPolicyRepository(repository)
-					.withDefaultRequestHandlers()
-					.withRootPolicy(repository.get(rootPolicyId, Version.parse(rootPolicyVersion)))
+					.pip(pipBuilder.build())
+					.policyRepository(repository)
+					.defaultRequestHandlers()
+					.rootPolicy(repository.get(rootPolicyId, Version.parse(rootPolicyVersion)))
 					.build();
 		}
 	}

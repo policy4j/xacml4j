@@ -29,37 +29,37 @@ public class PolicyDecisionPointFactoryBean extends
 	}
 
 	public void setXPathProvider(XPathProvider xpath){
-		this.pdpBuilder.withXPathProvider(xpath);
+		this.pdpBuilder.xpathProvider(xpath);
 	}
 
 	public void setDecisionAuditor(PolicyDecisionAuditor auditor){
-		this.pdpBuilder.withDecisionAuditor(auditor);
+		this.pdpBuilder.decisionAuditor(auditor);
 	}
 
 	public void setDecisionCache(PolicyDecisionCache cache){
-		this.pdpBuilder.withDecisionCache(cache);
+		this.pdpBuilder.decisionCache(cache);
 	}
 
 	public void setDecisionCacheTTL(int decisionCacheTTL){
-		this.pdpBuilder.withDecisionCacheTTL(decisionCacheTTL);
+		this.pdpBuilder.decisionCacheTTL(decisionCacheTTL);
 	}
 
 	public void setPolicyInformationPoint(PolicyInformationPoint pip){
-		this.pdpBuilder.withPolicyInformationPoint(pip);
+		this.pdpBuilder.pip(pip);
 	}
 
 	public void setDomainPolicy(CompositeDecisionRule policyStore){
-		this.pdpBuilder.withRootPolicy(policyStore);
+		this.pdpBuilder.rootPolicy(policyStore);
 	}
 
 	public void setPolicyRepository(PolicyRepository policyRepository)
 	{
-		this.pdpBuilder.withPolicyRepository(policyRepository);
+		this.pdpBuilder.policyRepository(policyRepository);
 	}
 
 	public void setHandlers(List<RequestContextHandler> handlers){
 		for(RequestContextHandler handler : handlers){
-			pdpBuilder.withRequestHandler(handler);
+			pdpBuilder.requestHandler(handler);
 		}
 	}
 

@@ -47,20 +47,6 @@
 					<schemaIncludes><value>*.xsd</value></schemaIncludes>
 					<schemaExcludes><value>xml.xsd</value></schemaExcludes>
 					<schemaDirectory>${basedir}/src/main/xsd</schemaDirectory>
-					<!-- 
-					<args>
-                     	<arg>-Xvisitor</arg>
-                    	<arg>-Xvisitor-package:org.oasis.xacml.jaxb</arg>
-                  	</args>
-
-	                 <plugins>
-	                      <plugin>
-	                         <groupId>com.massfords</groupId>
-	                         <artifactId>jaxb-visitor</artifactId>
-	                         <version>1.5</version>
-	                      </plugin>
-	                  </plugins>
-	                   -->
 				</configuration>
 			</plugin>
 		</plugins>

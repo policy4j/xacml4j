@@ -301,10 +301,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		<pluginRepository>
-			<id>dtrott</id>
-			<url>http://maven.davidtrott.com/repository</url>
-		</pluginRepository>
 	</pluginRepositories>
 	<distributionManagement>
             <repository>

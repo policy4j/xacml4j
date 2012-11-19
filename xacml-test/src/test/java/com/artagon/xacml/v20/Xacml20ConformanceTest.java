@@ -74,11 +74,11 @@ public class Xacml20ConformanceTest
 	@Before
 	public void init(){
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder("testPdp")
-		.withPolicyInformationPoint(PolicyInformationPointBuilder.builder("testPip")
+		.pip(PolicyInformationPointBuilder.builder("testPip")
 				.withDefaultResolvers()
 				.withResolver(new Xacml20ConformanceAttributeResolver())
 				.build())
-		.withPolicyRepository(repository);
+		.policyRepository(repository);
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class Xacml20ConformanceTest
 				Integer.toString(testCaseNum), 3, '0')).toString();
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		this.pdp = pdpBuilder
-		.withRootPolicy(
+		.rootPolicy(
 				repository.importPolicy(
 						getPolicy(testPrefix, testCaseNum, "Policy.xml")))
 						.build();
