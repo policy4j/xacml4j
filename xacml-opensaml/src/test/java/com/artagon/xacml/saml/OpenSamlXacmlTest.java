@@ -93,7 +93,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		System.out.println(" Request ----- " + new String(outResponse.toByteArray()));
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
-				.newBuilder()
+				.builder()
 				.result(Result
 						.createIndeterminateProcessingError()
 						.build())
@@ -114,7 +114,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
-				.newBuilder()
+				.builder()
 				.result(Result
 						.createIndeterminateProcessingError()
 						.build())
@@ -135,7 +135,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 		XACMLAuthzDecisionQueryType xacmlSamlQuery = OpenSamlObjectBuilder.unmarshallXacml20AuthzDecisionQuery(query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
-				.newBuilder()
+				.builder()
 				.result(Result
 						.createIndeterminateProcessingError()
 						.build())
@@ -166,7 +166,7 @@ public class OpenSamlXacmlTest extends AbstractJUnit4SpringContextTests
 				query.getDocumentElement());
 		Capture<RequestContext> captureRequest = new Capture<RequestContext>();
 		expect(pdp.decide(capture(captureRequest))).andReturn(ResponseContext
-				.newBuilder()
+				.builder()
 				.result(Result
 						.createIndeterminateProcessingError()
 						.build())

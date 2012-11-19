@@ -12,7 +12,6 @@
 		<module>xacml-core</module>
 		<module>xacml-spring</module>
 		<module>xacml-test</module>
-		<module>xacml-protobuf</module>
 		<module>xacml-opensaml</module>
 		<module>xacml-ehcache</module>
 		<module>xacml-ws</module>
