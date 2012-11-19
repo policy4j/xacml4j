@@ -33,7 +33,7 @@ public class DefaultFunctionSpecTest
 		this.c = createControl();
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.resolver = c.createMock(FunctionReturnTypeResolver.class);
-		this.b = FunctionSpecBuilder.newBuilder("testId");
+		this.b = FunctionSpecBuilder.builder("testId");
 		this.context = c.createMock(EvaluationContext.class);
 	}
 	
@@ -43,7 +43,7 @@ public class DefaultFunctionSpecTest
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(BOOLEAN.create(false))
 		.build();
-		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, params)).andReturn(BOOLEAN.create(true));
 		c.replay();
@@ -57,7 +57,7 @@ public class DefaultFunctionSpecTest
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(BOOLEAN.create(false))
 		.build();
-		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(context, spec, "Fail"));
 		c.replay();
@@ -71,7 +71,7 @@ public class DefaultFunctionSpecTest
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(BOOLEAN.create(false))
 		.build();
-		FunctionSpec spec = b.withParam(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException("Fail"));
 		c.replay();

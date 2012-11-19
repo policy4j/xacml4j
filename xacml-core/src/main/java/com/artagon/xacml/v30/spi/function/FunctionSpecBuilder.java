@@ -40,21 +40,21 @@ public final class FunctionSpecBuilder
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
 	}
 
-	public static FunctionSpecBuilder  newBuilder(String functionId, String legacyId){
+	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
 		return new FunctionSpecBuilder(functionId, legacyId);
 	}
 
-	public static FunctionSpecBuilder  newBuilder(String functionId){
-		return newBuilder(functionId, null);
+	public static FunctionSpecBuilder  builder(String functionId){
+		return builder(functionId, null);
 	}
 
-	public FunctionSpecBuilder withParamFunctionReference()
+	public FunctionSpecBuilder funcRefParam()
 	{
 		this.paramSpec.add(new FunctionParamFuncReferenceSpec());
 		return this;
 	}
 
-	public FunctionSpecBuilder withParam(ValueType type){
+	public FunctionSpecBuilder param(ValueType type){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg,
 				String.format("Can't add parameter after variadic parameter"));
@@ -62,12 +62,12 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder withLazyArgumentsEvaluation(){
+	public FunctionSpecBuilder lazyArgEval(){
 		this.lazyArgumentEvaluation = true;
 		return this;
 	}
 
-	public FunctionSpecBuilder withParam(ValueType type, int min, int max){
+	public FunctionSpecBuilder param(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
@@ -77,12 +77,12 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder withParamAnyBag() {
+	public FunctionSpecBuilder anyBag() {
 		this.paramSpec.add(new FunctionParamAnyBagSpec());
 		return this;
 	}
 
-	public FunctionSpecBuilder withParamAnyAttribute() {
+	public FunctionSpecBuilder anyAttribute() {
 		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
 		return this;
 	}

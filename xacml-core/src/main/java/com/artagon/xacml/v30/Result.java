@@ -22,7 +22,7 @@ public class Result
 	private Map<AttributeCategory, Attributes> resolvedAttributes;
 	private int hashCode;
 
-	public Result(Builder b){
+	private Result(Builder b){
 		this.decision = b.decision;
 		this.status = b.status;
 		this.associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
@@ -278,12 +278,19 @@ public class Result
 
 		public Builder advice(Iterable<Advice> advice){
 			for(Advice a : advice){
-				advice(a);
+				addAdvice(a);
 			}
 			return this;
 		}
 
-		public Builder advice(Advice advice){
+		public Builder obligation(Advice ... advices){
+			for(Advice a : advices){
+				addAdvice(a);
+			}
+			return this;
+		}
+
+		private Builder addAdvice(Advice advice){
 			Preconditions.checkNotNull(advice);
 			Advice a = associatedAdvice.get(advice.getId());
 			if(a != null){
@@ -294,7 +301,7 @@ public class Result
 			return this;
 		}
 
-		public Builder obligation(Obligation obligation){
+		private  Builder addObligation(Obligation obligation){
 			Preconditions.checkNotNull(obligation);
 			Obligation a = obligations.get(obligation.getId());
 			if(a != null){
@@ -305,10 +312,17 @@ public class Result
 			return this;
 		}
 
+		public Builder obligation(Obligation ... obligations){
+			for(Obligation o : obligations){
+				addObligation(o);
+			}
+			return this;
+		}
+
 		public Builder obligation(Iterable<Obligation> obligations){
 			for(Obligation o : obligations){
 				Preconditions.checkNotNull(o);
-				obligation(o);
+				addObligation(o);
 			}
 			return this;
 		}

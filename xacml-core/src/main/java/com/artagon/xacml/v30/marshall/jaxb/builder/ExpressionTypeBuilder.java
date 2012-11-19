@@ -21,6 +21,7 @@ public interface ExpressionTypeBuilder
  	ExpressionType build();
  	JAXBElement<?> buildJaxbElement();
 
+
  	public class ApplyTypeBuilder extends JAXBObjectBuilder
  		implements ExpressionTypeBuilder
  	{

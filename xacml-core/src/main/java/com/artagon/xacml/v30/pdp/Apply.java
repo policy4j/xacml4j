@@ -128,7 +128,8 @@ public class Apply implements Expression
 		v.visitLeave(this);
 	}
 
-	public interface ApplyVistor extends ExpressionVisitor
+	public interface ApplyVistor
+		extends ExpressionVisitor
 	{
 		void visitEnter(Apply v);
 		void visitLeave(Apply v);

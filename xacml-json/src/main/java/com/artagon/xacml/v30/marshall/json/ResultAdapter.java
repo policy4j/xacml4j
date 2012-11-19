@@ -8,6 +8,7 @@ import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.Decision;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.Result;
+import com.artagon.xacml.v30.Status;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -21,12 +22,18 @@ public class ResultAdapter implements JsonDeserializer<Result>
 	@Override
 	public Result deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
-		JsonObject o = json.getAsJsonObject(); 
+		JsonObject o = json.getAsJsonObject();
 		Collection<Advice> advice = context.deserialize(o.get("assocAdvice"), new TypeToken<Collection<Advice>>(){}.getType());
 		Collection<Obligation> obligations = context.deserialize(o.get("obligations"), new TypeToken<Collection<Obligation>>(){}.getType());
 		Collection<Attributes> attributes = context.deserialize(o.get("attributes"), new TypeToken<Collection<Obligation>>(){}.getType());
 		Decision decision = Decision.parse(o.getAsJsonPrimitive("decision").toString());
-		return null;
+		Status status =  context.deserialize(o.get("status"), new TypeToken<Collection<Obligation>>(){}.getType());
+		return Result
+				.builder(decision, status)
+				.advice(advice)
+				.obligation(obligations)
+				.includeInResultAttr(attributes)
+				.build();
 	}
-	
+
 }

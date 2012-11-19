@@ -14,7 +14,7 @@ public class ResponseContext
 		this.results = builder.b.build();
 	}
 
-	public static Builder newBuilder(){
+	public static Builder builder(){
 		return new Builder();
 	}
 
@@ -59,7 +59,7 @@ public class ResponseContext
 			return this;
 		}
 
-		public Builder results(Iterable<Result> r){
+		public Builder result(Iterable<Result> r){
 			Preconditions.checkNotNull(r);
 			this.b.addAll(r);
 			return this;

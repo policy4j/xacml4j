@@ -36,9 +36,9 @@ public class MatchTest
 		this.c = createControl();
 		this.ref = c.createMock(AttributeDesignator.class);
 		this.context = c.createMock(EvaluationContext.class);
-		this.builder = FunctionSpecBuilder.newBuilder("testFunction");
+		this.builder = FunctionSpecBuilder.builder("testFunction");
 		this.invocation = c.createMock(FunctionInvocation.class);
-		this.spec = builder.withParam(INTEGER).withParam(INTEGER).build(
+		this.spec = builder.param(INTEGER).param(INTEGER).build(
 				BOOLEAN, invocation);
 	}
 

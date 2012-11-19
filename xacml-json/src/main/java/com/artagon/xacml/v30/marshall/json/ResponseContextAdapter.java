@@ -20,8 +20,8 @@ public class ResponseContextAdapter implements JsonDeserializer<ResponseContext>
 		JsonArray array = json.getAsJsonArray();
 		Collection<Result> r = context.deserialize(array, new TypeToken<Collection<Result>>(){}.getType());
 		return ResponseContext
-				.newBuilder()
-				.results(r)
+				.builder()
+				.result(r)
 				.build();
 	}
 }

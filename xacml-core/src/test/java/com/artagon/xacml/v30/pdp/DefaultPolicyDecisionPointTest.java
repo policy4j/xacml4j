@@ -55,13 +55,13 @@ public class DefaultPolicyDecisionPointTest
 		this.xpathProvider = control.createMock(XPathProvider.class);
 		this.pdpBuilder = PolicyDecisionPointBuilder
 		.builder("testPdp")
-			.withDecisionAuditor(decisionAuditor)
-			.withPolicyRepository(repository)
-			.withDecisionCache(decisionCache)
-			.withDecisionCacheTTL(10)
-			.withPolicyInformationPoint(pip)
-			.withRootPolicy(policyDomain)
-			.withXPathProvider(xpathProvider);
+			.decisionAuditor(decisionAuditor)
+			.policyRepository(repository)
+			.decisionCache(decisionCache)
+			.decisionCacheTTL(10)
+			.pip(pip)
+			.rootPolicy(policyDomain)
+			.xpathProvider(xpathProvider);
 	}
 	
 	@Test

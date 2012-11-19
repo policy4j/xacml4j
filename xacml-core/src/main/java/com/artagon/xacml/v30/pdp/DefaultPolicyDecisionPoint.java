@@ -37,7 +37,7 @@ import com.yammer.metrics.core.TimerContext;
  *
  * @author Giedrius Trumpickas
  */
-public final class DefaultPolicyDecisionPoint
+final class DefaultPolicyDecisionPoint
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {
 
@@ -49,7 +49,7 @@ public final class DefaultPolicyDecisionPoint
 
 	private Timer decisionTimer;
 
-	public DefaultPolicyDecisionPoint(
+	DefaultPolicyDecisionPoint(
 			String id,
 			PolicyDecisionPointContextFactory factory)
 		throws NotCompliantMBeanException
@@ -73,8 +73,8 @@ public final class DefaultPolicyDecisionPoint
 			PolicyDecisionPointContext context = factory.createContext(this);
 			RequestContextHandler chain = context.getRequestHandlers();
 			return ResponseContext
-					.newBuilder()
-					.results(chain.handle(request, context))
+					.builder()
+					.result(chain.handle(request, context))
 					.build();
 		}finally{
 			MDCSupport.cleanPdpContext();

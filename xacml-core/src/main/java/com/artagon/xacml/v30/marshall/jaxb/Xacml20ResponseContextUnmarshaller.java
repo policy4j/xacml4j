@@ -117,7 +117,7 @@ implements ResponseUnmarshaller
 		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
 		{
 			Preconditions.checkNotNull(response);
-			ResponseContext.Builder b = ResponseContext.newBuilder();
+			ResponseContext.Builder b = ResponseContext.builder();
 			for(ResultType result : response.getResult()){
 				b.result(create(result));
 			}

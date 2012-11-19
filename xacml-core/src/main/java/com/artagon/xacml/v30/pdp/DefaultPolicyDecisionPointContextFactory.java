@@ -15,9 +15,9 @@ import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 import com.google.common.base.Preconditions;
 
-public class DefaultPolicyDecisionPointContextFactory 
+final class DefaultPolicyDecisionPointContextFactory
 	implements PolicyDecisionPointContextFactory
-{	
+{
 	private PolicyInformationPoint pip;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
@@ -25,19 +25,19 @@ public class DefaultPolicyDecisionPointContextFactory
 	private PolicyReferenceResolver policyReferenceResolver;
 	private CompositeDecisionRule policyDomain;
 	private RequestContextHandlerChain requestHandlers;
-	
+
 	private boolean decisionCacheEnabled = true;
 	private boolean decisionAuditEnabled = true;
 	private boolean validateFuncParamsAtRuntime = false;
 	private int decisionCacheTTL = 30;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
-	
-	public DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain, 
+
+	DefaultPolicyDecisionPointContextFactory(
+			CompositeDecisionRule policyDomain,
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
-			XPathProvider xpathProvider, 
+			XPathProvider xpathProvider,
 			PolicyInformationPoint pip,
 			RequestContextHandlerChain handlerChain)
 	{
@@ -55,21 +55,21 @@ public class DefaultPolicyDecisionPointContextFactory
 		this.decisionCache = cache;
 		this.requestHandlers = handlerChain;
 	}
-	
+
 	@Override
 	public int getDefaultDecisionCacheTTL(){
 		return decisionCacheTTL;
 	}
-	
+
 	public void setDefaultDecisionCacheTTL(int ttl){
 		this.decisionCacheTTL = (ttl > 0)?ttl:0;
 	}
-	
+
 	public void setValidaFunctionParametersAtRuntime(
 			boolean validate){
 		this.validateFuncParamsAtRuntime = validate;
 	}
-	
+
 	@Override
 	public boolean isDecisionAuditEnabled() {
 		return decisionAuditEnabled;
@@ -81,45 +81,45 @@ public class DefaultPolicyDecisionPointContextFactory
 	}
 
 	@Override
-	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp) 
+	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp)
 	{
 		return new PolicyDecisionPointContext() {
-			
+
 			@Override
 			public boolean isDecisionCacheEnabled(){
 				return decisionCacheEnabled;
 			}
-			
+
 			@Override
 			public boolean isValidateFuncParamsAtRuntime(){
 				return validateFuncParamsAtRuntime;
 			}
-			
+
 			@Override
 			public boolean isDecisionAuditEnabled(){
 				return decisionAuditEnabled;
 			}
-			
+
 			@Override
 			public XPathProvider getXPathProvider() {
 				return xpathProvider;
 			}
-			
+
 			@Override
 			public CompositeDecisionRule getDomainPolicy() {
 				return policyDomain;
 			}
-			
+
 			@Override
 			public PolicyDecisionCache getDecisionCache() {
 				return decisionCache;
 			}
-			
+
 			@Override
 			public PolicyDecisionAuditor getDecisionAuditor() {
 				return decisionAuditor;
 			}
-			
+
 			@Override
 			public Result requestDecision(RequestContext req) {
 
@@ -132,7 +132,7 @@ public class DefaultPolicyDecisionPointContextFactory
 			}
 
 			@Override
-			public EvaluationContext createEvaluationContext(RequestContext request) 
+			public EvaluationContext createEvaluationContext(RequestContext request)
 			{
 				Preconditions.checkArgument(!request.containsRepeatingCategories());
 				Preconditions.checkArgument(!request.containsRequestReferences());
@@ -142,8 +142,8 @@ public class DefaultPolicyDecisionPointContextFactory
 				return new RootEvaluationContext(
 						validateFuncParamsAtRuntime,
 						decisionCacheTTL,
-						defaultXPathVersion, 
-						policyReferenceResolver, 
+						defaultXPathVersion,
+						policyReferenceResolver,
 						handler);
 			}
 		};

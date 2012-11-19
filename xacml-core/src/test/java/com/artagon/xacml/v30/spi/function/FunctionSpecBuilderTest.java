@@ -25,10 +25,10 @@ public class FunctionSpecBuilderTest
 	public void init(){
 		this.c = createControl();
 		this.impl =  c.createMock(FunctionInvocation.class);
-		FunctionSpecBuilder b = FunctionSpecBuilder.newBuilder("testFunc1"); 
-		this.specSameTypeArgs = b.withParam(INTEGER).withParam(INTEGER).build(INTEGER, impl);
-		b = FunctionSpecBuilder.newBuilder("testFunc2"); 
-		this.specDiffTypeArgs = b.withParam(INTEGER).withParam(STRING).build(INTEGER, impl);
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1"); 
+		this.specSameTypeArgs = b.param(INTEGER).param(INTEGER).build(INTEGER, impl);
+		b = FunctionSpecBuilder.builder("testFunc2"); 
+		this.specDiffTypeArgs = b.param(INTEGER).param(STRING).build(INTEGER, impl);
 	}
 	
 	@Test
@@ -62,18 +62,18 @@ public class FunctionSpecBuilderTest
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
-		FunctionSpecBuilder b = FunctionSpecBuilder.newBuilder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
 		c.replay();
-		b.withParam(INTEGER, 1, 10).withParam(INTEGER);
+		b.param(INTEGER, 1, 10).param(INTEGER);
 		c.verify();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
-		FunctionSpecBuilder b = FunctionSpecBuilder.newBuilder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
 		c.replay();
-		b.withParam(INTEGER, 3, 3).withParam(INTEGER);
+		b.param(INTEGER, 3, 3).param(INTEGER);
 		c.verify();
 	}
 }

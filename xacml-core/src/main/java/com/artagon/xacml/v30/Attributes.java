@@ -12,6 +12,7 @@ public class Attributes extends AttributeContainer
 	private String id;
 	private AttributeCategory categoryId;
 	private Document content;
+	private AttributesReference ref;
 
 	private Attributes(Builder b){
 		super(b);
@@ -19,6 +20,12 @@ public class Attributes extends AttributeContainer
 		Preconditions.checkNotNull(b.category);
 		this.categoryId = b.category;
 		this.content = DOMUtil.copyNode(b.content);
+		if(b.id != null){
+			this.ref = AttributesReference
+					.builder()
+					.id(b.id)
+					.build();
+		}
 	}
 
 	public static Builder builder(AttributeCategory category){
@@ -38,6 +45,10 @@ public class Attributes extends AttributeContainer
 	 */
 	public String getId(){
 		return id;
+	}
+
+	public AttributesReference getReference(){
+		return ref;
 	}
 
 	/**

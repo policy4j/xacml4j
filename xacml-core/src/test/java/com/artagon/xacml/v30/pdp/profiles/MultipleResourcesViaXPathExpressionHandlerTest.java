@@ -14,7 +14,6 @@ import static org.junit.Assert.assertSame;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -238,8 +237,9 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 				).build();
 
 
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject, resource));
+		RequestContext request = RequestContext.builder()
+				.attributes(resource, subject)
+				.build();
 
 		assertFalse(request.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -278,8 +278,9 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject, resource));
+		RequestContext request = RequestContext.builder()
+				.attributes(resource, subject)
+				.build();
 
 		assertFalse(request.containsRepeatingCategories());
 
@@ -294,8 +295,8 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	@Test
 	public void testWithEmptyRequest()
 	{
-		RequestContext context = new RequestContext(false,
-				Collections.<Attributes>emptyList());
+
+		RequestContext context = RequestContext.builder().build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

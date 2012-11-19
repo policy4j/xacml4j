@@ -2,11 +2,11 @@ package com.artagon.xacml.v30;
 
 
 /**
- * An XACML expression visitor
+ * A surrogate visitor for {@link Expression}
+ * implementations
  *
  * @author Giedrius Trumpickas
  */
-public interface ExpressionVisitor
-{
+public interface ExpressionVisitor{
 
 }

@@ -61,7 +61,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
-		FunctionSpecBuilder b = FunctionSpecBuilder.newBuilder(funcId.id(),
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder(funcId.id(),
 				(legacyFuncId == null) ? null : legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
@@ -114,7 +114,7 @@ class JavaMethodToFunctionSpecConverter
 													+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 											type, m.getName(), types[i]));
 				}
-				b.withParam(param.isBag() ? type.bagType() : type);
+				b.param(param.isBag() ? type.bagType() : type);
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -132,20 +132,20 @@ class JavaMethodToFunctionSpecConverter
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				AttributeExpType type = DataTypes.getType(param.typeId());
-				b.withParam(param.isBag() ? type.bagType() : type, param.min(),
+				b.param(param.isBag() ? type.bagType() : type, param.min(),
 						param.max());
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamFunctionReference) {
-				b.withParamFunctionReference();
+				b.funcRefParam();
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamAnyBag) {
-				b.withParamAnyBag();
+				b.anyBag();
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamAnyAttribute) {
-				b.withParamAnyAttribute();
+				b.anyAttribute();
 				continue;
 			}
 			if (params[i][0] == null) {
