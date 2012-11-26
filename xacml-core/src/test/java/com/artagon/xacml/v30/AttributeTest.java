@@ -1,4 +1,4 @@
-package com.artagon.xacml.v30.pdp;
+package com.artagon.xacml.v30;
 
 import static com.artagon.xacml.v30.types.IntegerType.INTEGER;
 import static org.junit.Assert.assertEquals;
@@ -12,10 +12,9 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.Attribute.Builder;
-import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.types.StringType;
+import com.google.common.collect.ImmutableSet;
 
 
 public class AttributeTest
@@ -99,6 +98,16 @@ public class AttributeTest
 		assertEquals(values.size(), attr.getValues().size());
 		assertTrue(attr.getValues().containsAll(values));
 		assertTrue(values.containsAll(attr.getValues()));
+	}
+
+	@Test
+	public void testBuilder()
+	{
+		Iterable<String> a = ImmutableSet.of("test1", "test2");
+		Attribute.builder("testId")
+		.value(StringType.STRING, a)
+		.value(StringType.STRING, "test2", "test3")
+		.build();
 	}
 
 }

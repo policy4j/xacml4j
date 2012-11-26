@@ -6,6 +6,9 @@ import org.w3c.dom.Node;
 import com.artagon.xacml.util.DOMUtil;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 
 public class Attributes extends AttributeContainer
 {
@@ -125,11 +128,16 @@ public class Attributes extends AttributeContainer
 		}
 
 		public Builder copyOf(Attributes a){
+			return copyOf(a, Predicates.<Attribute>alwaysTrue());
+		}
+
+		public Builder copyOf(Attributes a,
+				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
 			id(a.getId());
 			content(a.getContent());
 			category(a.getCategory());
-			attributes(a.getAttributes());
+			attributes(Collections2.filter(a.getAttributes(), f));
 			return this;
 		}
 

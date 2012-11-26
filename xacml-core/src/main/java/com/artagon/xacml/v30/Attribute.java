@@ -173,7 +173,7 @@ public class Attribute
 		}
 
 
-		public Builder value(AttributeExpType type, Iterable<Object> values){
+		public Builder value(AttributeExpType type, Iterable<?> values){
 			Preconditions.checkNotNull(type);
 			Preconditions.checkNotNull(values);
 			for(Object v : values){
