@@ -209,4 +209,8 @@ final class DefaultPolicyDecisionPoint
 	public void setDecisionCacheEnabled(boolean enabled) {
 		this.cacheEnabled.set(enabled);
 	}
+
+	public void close(){
+		Metrics.shutdown();
+	}
 }

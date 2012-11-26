@@ -2,6 +2,7 @@ package com.artagon.xacml.spring.pdp;
 
 import java.util.List;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.artagon.xacml.v30.CompositeDecisionRule;
@@ -14,10 +15,11 @@ import com.artagon.xacml.v30.spi.pip.PolicyInformationPoint;
 import com.artagon.xacml.v30.spi.repository.PolicyRepository;
 import com.artagon.xacml.v30.spi.xpath.XPathProvider;
 
-public class PolicyDecisionPointFactoryBean extends
-	AbstractFactoryBean<PolicyDecisionPoint>
+public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDecisionPoint>
+	implements DisposableBean
 {
 	private PolicyDecisionPointBuilder pdpBuilder;
+	private PolicyDecisionPoint pdp;
 
 	public PolicyDecisionPointFactoryBean(String id){
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder(id);
@@ -66,6 +68,16 @@ public class PolicyDecisionPointFactoryBean extends
 	@Override
 	protected PolicyDecisionPoint createInstance() throws Exception
 	{
-		return pdpBuilder.build();
+		if(pdp == null){
+			pdp = pdpBuilder.build();
+		}
+		return pdp;
 	}
+
+	@Override
+	public void destroy() throws Exception {
+		pdp.close();
+	}
+
+
 }

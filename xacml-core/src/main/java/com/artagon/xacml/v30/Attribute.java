@@ -172,11 +172,6 @@ public class Attribute
 			return this;
 		}
 
-		public Builder value(AttributeExpType type, Object value){
-			Preconditions.checkNotNull(type);
-			valueBuilder.add(type.create(value));
-			return this;
-		}
 
 		public Builder value(AttributeExpType type, Iterable<Object> values){
 			Preconditions.checkNotNull(type);
