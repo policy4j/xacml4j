@@ -87,14 +87,14 @@ public class RequestReference
 
 		public Builder reference(String ... attributeIds){
 			for(String attributeId : attributeIds){
-				refs.add(new AttributesReference(attributeId));
+				refs.add(AttributesReference.builder().id(attributeId).build());
 			}
 			return this;
 		}
 
 		public Builder reference(Attributes ... attrs){
 			for(Attributes a : attrs){
-				this.refs.add(new AttributesReference(a.getId()));
+				this.refs.add(AttributesReference.builder().from(a).build());
 			}
 			return this;
 		}

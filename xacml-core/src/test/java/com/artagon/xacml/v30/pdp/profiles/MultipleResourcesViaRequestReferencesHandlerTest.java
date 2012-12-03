@@ -94,8 +94,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 
 
 		Collection<AttributesReference> ref1 = new LinkedList<AttributesReference>();
-		ref1.add(new AttributesReference("resourceAttr1"));
-		ref1.add(new AttributesReference("subjectAttr1"));
+		ref1.add(AttributesReference.builder().id("resourceAttr1").build());
+		ref1.add(AttributesReference.builder().id("subjectAttr1").build());
 
 		RequestReference reference1 = RequestReference.builder()
 				.reference("resourceAttr1", "subjectAttr1")

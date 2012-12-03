@@ -13,7 +13,7 @@ public class AttributesReference
 	 *
 	 * @param referenceId a reference identifier
 	 */
-	public AttributesReference(String referenceId){
+	private AttributesReference(String referenceId){
 		Preconditions.checkNotNull(referenceId,
 				"Attribute reference id can not be null");
 		this.referenceId = referenceId;

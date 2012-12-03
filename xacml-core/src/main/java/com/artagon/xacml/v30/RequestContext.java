@@ -504,6 +504,17 @@ public class RequestContext
 			return this;
 		}
 
+//		public Builder attributes(RequestContext req, Predicate<Attributes> p)
+//		{
+//			combineDecision(req.isCombinedDecision());
+//			returnPolicyIdList(req.isReturnPolicyIdList());
+//			reqDefaults(req.getRequestDefaults());
+//			Collection<Attributes> attributes = Collections2.filter(req.getAttributes(), p);
+//			attributes();
+//			reference(req.getRequestReferences());
+//			return this;
+//		}
+
 		public Builder noAttributes(){
 			attrBuilder = ImmutableListMultimap.builder();
 			return this;
