@@ -8,17 +8,6 @@ public class AttributesReference
 {
 	private String referenceId;
 
-	/**
-	 * Constructs an attribute reference
-	 *
-	 * @param referenceId a reference identifier
-	 */
-	private AttributesReference(String referenceId){
-		Preconditions.checkNotNull(referenceId,
-				"Attribute reference id can not be null");
-		this.referenceId = referenceId;
-	}
-
 	private AttributesReference(Builder b){
 		Preconditions.checkNotNull(b.id);
 		this.referenceId = b.id;
