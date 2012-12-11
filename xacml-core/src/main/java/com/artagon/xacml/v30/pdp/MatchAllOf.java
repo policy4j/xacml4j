@@ -1,9 +1,6 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +10,7 @@ import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.MatchResult;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public class MatchAllOf implements PolicyElement, Matchable
 {
@@ -28,14 +26,9 @@ public class MatchAllOf implements PolicyElement, Matchable
 	 * @param match a collection of {@link Match}
 	 * instances
 	 */
-	public MatchAllOf(Collection<Match> match){
-		Preconditions.checkNotNull(match);
-		Preconditions.checkArgument(match.size() >= 1);
-		this.matches = new LinkedList<Match>(match);
-	}
-
-	public MatchAllOf(Match ... matches){
-		this(Arrays.asList(matches));
+	private MatchAllOf(Builder b){
+		this.matches = b.matches.build();
+		Preconditions.checkArgument(matches.size() >= 1);
 	}
 
 	public static Builder builder(){
@@ -43,7 +36,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 	}
 
 	public Collection<Match> getMatch(){
-		return Collections.unmodifiableCollection(matches);
+		return matches;
 	}
 
 	@Override
@@ -111,35 +104,29 @@ public class MatchAllOf implements PolicyElement, Matchable
 
 	public static class Builder
 	{
-		private Collection<Match> matches = new LinkedList<Match>();
+		private ImmutableList.Builder<Match> matches = ImmutableList.builder();
 
 		private Builder(){
 		}
 
-		public Builder match(Match ...match){
-			Preconditions.checkNotNull(match);
-			for(Match m : match){
-				this.matches.add(m);
-			}
+		public Builder allOf(Match ...match){
+			this.matches.add(match);
 			return this;
 		}
 
-		public Builder match(Iterable<Match> match){
-			Preconditions.checkNotNull(match);
-			for(Match m : match){
-				this.matches.add(m);
-			}
+		public Builder allOf(Iterable<Match> match){
+			this.matches.addAll(match);
 			return this;
 		}
 
-		public Builder withMatch(AttributeExp value,
+		public Builder match(AttributeExp value,
 				AttributeReference ref, FunctionSpec predicate)
 		{
-			return match(new Match(predicate, value, ref));
+			return allOf(new Match(predicate, value, ref));
 		}
 
-		public MatchAllOf create(){
-			return new MatchAllOf(matches);
+		public MatchAllOf build(){
+			return new MatchAllOf(this);
 		}
 	}
 }

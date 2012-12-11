@@ -19,13 +19,13 @@ public class MatchAnyOfTest
 {
 	private Collection<MatchAllOf> matches;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.matches = new LinkedList<MatchAllOf>();
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testAtLeastOneMatch1()
 	{
@@ -37,11 +37,11 @@ public class MatchAnyOfTest
 		matches.add(m3);;
 		expect(m1.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = MatchAnyOf.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
-	
+
 	@Test
 	public void testAtLeastOneMatch2()
 	{
@@ -55,11 +55,11 @@ public class MatchAnyOfTest
 		expect(m2.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m3.match(context)).andReturn(MatchResult.MATCH);
 		replay(m1, m2, m3);
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = MatchAnyOf.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
-	
+
 	@Test
 	public void testNoMatchAndAtLeastOneIndeterminate()
 	{
@@ -73,11 +73,11 @@ public class MatchAnyOfTest
 		expect(m3.match(context)).andReturn(MatchResult.INDETERMINATE);
 		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = MatchAnyOf.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		verify(m1, m2, m3);
 	}
-	
+
 	@Test
 	public void testAllNoMatch()
 	{
@@ -91,9 +91,9 @@ public class MatchAnyOfTest
 		expect(m2.match(context)).andReturn(MatchResult.NOMATCH);
 		expect(m3.match(context)).andReturn(MatchResult.NOMATCH);
 		replay(m1, m2, m3);
-		Matchable m = new MatchAnyOf(matches);
+		Matchable m = MatchAnyOf.builder().anyOf(matches).build();
 		assertEquals(MatchResult.NOMATCH, m.match(context));
 		verify(m1, m2, m3);
 	}
-	
+
 }

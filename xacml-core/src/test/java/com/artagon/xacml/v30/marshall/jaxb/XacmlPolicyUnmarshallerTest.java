@@ -3,6 +3,7 @@ package com.artagon.xacml.v30.marshall.jaxb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -24,23 +25,23 @@ import com.artagon.xacml.v30.pdp.Target;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import com.artagon.xacml.v30.spi.function.FunctionProviderBuilder;
 
-public class XacmlPolicyUnmarshallerTest 
+public class XacmlPolicyUnmarshallerTest
 {
-	private static PolicyUnmarshaller reader; 
-	
-	
+	private static PolicyUnmarshaller reader;
+
+
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
 		reader = new XacmlPolicyUnmarshaller(
 				FunctionProviderBuilder
 				.builder()
-				.withDefaultFunctions().create(), 
+				.withDefaultFunctions().create(),
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
 				.withDefaultAlgorithms().create());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static <T extends CompositeDecisionRule> T getPolicy(String name) throws Exception
 	{
@@ -48,8 +49,8 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(stream);
 		return  (T)reader.unmarshal(stream);
 	}
-	
-	
+
+
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
 	{
@@ -58,7 +59,8 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals("Policy for Conformance Test IIIF005.", p0.getDescription());
 		assertNotNull(p0.getDefaults());
 		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
-		assertNull(p0.getTarget());
+		assertNotNull(p0.getTarget());
+		assertTrue(p0.getTarget().getAnyOf().isEmpty());
 		assertEquals(1, p0.getRules().size());
 		Rule r = p0.getRules().get(0);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:rule", r.getId());
@@ -76,7 +78,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals(1, m1.getAllOf().size());
 		assertEquals(1, m2.getAllOf().size());
 	}
-	
+
 	@Test
 	public void testPolicyIIIF006Mapping() throws Exception
 	{
@@ -89,24 +91,24 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p0.getTarget());
 		assertEquals(1, p0.getDecisions().size());
 	}
-	
+
 	@Test
 	public void testPolicyIIIF007Mapping() throws Exception
 	{
 		Policy p = getPolicy("IIIF007Policy.xml");
 		assertNotNull(p);
-		
+
 	}
-	
-	
+
+
 	@Test
 	public void testPolicyIIC231Mapping() throws Exception
 	{
 		Policy p = getPolicy("IIC231Policy.xml");
 		assertNotNull(p);
-		
+
 	}
-	
+
 	@Test
 	public void testFeatures001Policy() throws Exception
 	{
@@ -118,7 +120,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR04"));
 		assertNotNull(p.getVariableDefinition("VAR05"));
 	}
-	
+
 	@Test(expected=XacmlSyntaxException.class)
 	public void testFeatures002Policy() throws Exception
 	{
@@ -127,7 +129,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR01"));
 		assertNotNull(p.getVariableDefinition("VAR02"));
 	}
-	
+
 	@Test
 	public void testPolicy1Mapping() throws Exception
 	{
@@ -150,7 +152,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals(1, m1.getAllOf().size());
 		assertEquals(1, m2.getAllOf().size());
 	}
-	
+
 	@Test
 	public void testPolicy2Mapping() throws Exception
 	{
@@ -159,14 +161,14 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals(Version.parse("1.0"), p.getVersion());
 		assertEquals("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides", p.getRuleCombiningAlgorithm().getId());
 	}
-	
+
 	@Test
 	public void testPolicySet1Mapping() throws Exception
 	{
 		getPolicy("PolicySet1.xml");
-		
+
 	}
-	
+
 	@Test
 	public void testPolicy3() throws Exception
 	{

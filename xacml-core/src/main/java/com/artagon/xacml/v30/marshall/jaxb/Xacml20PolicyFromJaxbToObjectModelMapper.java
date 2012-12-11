@@ -224,39 +224,39 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if(target == null){
 			return null;
 		}
-		Collection<MatchAnyOf> match = new LinkedList<MatchAnyOf>();
+		Target.Builder b = Target.builder();
 		ActionsType actions = target.getActions();
 		if (actions != null) {
-			match.add(create(actions));
+			b.anyOf(create(actions));
 		}
 		EnvironmentsType env = target.getEnvironments();
 		if (env != null) {
-			match.add(create(env));
+			b.anyOf(create(env));
 		}
 		ResourcesType resources = target.getResources();
 		if (resources != null) {
-			match.add(create(resources));
+			b.anyOf(create(resources));
 		}
 		SubjectsType subjects = target.getSubjects();
 		if (subjects != null) {
-			match.add(create(subjects));
+			b.anyOf(create(subjects));
 		}
-		return !match.isEmpty() ?new Target(match):null;
+		return b.build();
 	}
 
 	private MatchAnyOf create(ActionsType actions) throws XacmlSyntaxException {
 		if (actions == null) {
 			return null;
 		}
-		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		MatchAnyOf.Builder anyOfb = MatchAnyOf.builder();
 		for (ActionType action : actions.getAction()) {
-			Collection<Match> matches = new LinkedList<Match>();
+			MatchAllOf.Builder allOfb = MatchAllOf.builder();
 			for (ActionMatchType match : action.getActionMatch()) {
-				matches.add(createMatch(match));
+				allOfb.allOf(createMatch(match));
 			}
-			allOf.add(new MatchAllOf(matches));
+			anyOfb.anyOf(allOfb.build());
 		}
-		return new MatchAnyOf(allOf);
+		return anyOfb.build();
 	}
 
 	private MatchAnyOf create(ResourcesType resources)
@@ -264,15 +264,15 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if (resources == null) {
 			return null;
 		}
-		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		MatchAnyOf.Builder anyOfb = MatchAnyOf.builder();
 		for (ResourceType action : resources.getResource()) {
-			Collection<Match> matches = new LinkedList<Match>();
+			MatchAllOf.Builder allOfb = MatchAllOf.builder();
 			for (ResourceMatchType match : action.getResourceMatch()) {
-				matches.add(createMatch(match));
+				allOfb.allOf(createMatch(match));
 			}
-			allOf.add(new MatchAllOf(matches));
+			anyOfb.anyOf(allOfb.build());
 		}
-		return new MatchAnyOf(allOf);
+		return anyOfb.build();
 	}
 
 	private MatchAnyOf create(SubjectsType resources)
@@ -280,15 +280,15 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if (resources == null) {
 			return null;
 		}
-		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		MatchAnyOf.Builder anyOfBuilder = MatchAnyOf.builder();
 		for (SubjectType action : resources.getSubject()) {
-			Collection<Match> matches = new LinkedList<Match>();
+			MatchAllOf.Builder allOfBuilder = MatchAllOf.builder();
 			for (SubjectMatchType match : action.getSubjectMatch()) {
-				matches.add(createMatch(match));
+				allOfBuilder.allOf(createMatch(match));
 			}
-			allOf.add(new MatchAllOf(matches));
+			anyOfBuilder.anyOf(allOfBuilder.build());
 		}
-		return new MatchAnyOf(allOf);
+		return anyOfBuilder.build();
 	}
 
 	private MatchAnyOf create(EnvironmentsType actions)
@@ -296,15 +296,15 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if (actions == null) {
 			return null;
 		}
-		Collection<MatchAllOf> allOf = new LinkedList<MatchAllOf>();
+		MatchAnyOf.Builder anyOfBuilder = MatchAnyOf.builder();
 		for (EnvironmentType action : actions.getEnvironment()) {
-			Collection<Match> matches = new LinkedList<Match>();
+			MatchAllOf.Builder allOfBuilder = MatchAllOf.builder();
 			for (EnvironmentMatchType match : action.getEnvironmentMatch()) {
-				matches.add(createMatch(match));
+				allOfBuilder.allOf(createMatch(match));
 			}
-			allOf.add(new MatchAllOf(matches));
+			anyOfBuilder.anyOf(allOfBuilder.build());
 		}
-		return new MatchAnyOf(allOf);
+		return anyOfBuilder.build();
 	}
 
 	private VariableManager<JAXBElement<?>> getVariables(PolicyType p)

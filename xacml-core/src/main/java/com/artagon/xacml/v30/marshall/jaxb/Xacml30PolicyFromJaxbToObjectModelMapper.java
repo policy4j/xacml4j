@@ -456,29 +456,29 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		if (target == null) {
 			return null;
 		}
-		Collection<MatchAnyOf> m = new LinkedList<MatchAnyOf>();
+		Target.Builder b = Target.builder();
 		for (AnyOfType anyOf : target.getAnyOf()) {
-			m.add(create(anyOf));
+			b.anyOf(create(anyOf));
 		}
-		return new Target(m);
+		return b.build();
 	}
 
 	private MatchAnyOf create(AnyOfType anyOf) throws XacmlSyntaxException {
 		Preconditions.checkArgument(anyOf != null);
-		Collection<MatchAllOf> m = new LinkedList<MatchAllOf>();
+		MatchAnyOf.Builder b = MatchAnyOf.builder();
 		for (AllOfType allOf : anyOf.getAllOf()) {
-			m.add(create(allOf));
+			b.anyOf(create(allOf));
 		}
-		return new MatchAnyOf(m);
+		return b.build();
 	}
 
 	private MatchAllOf create(AllOfType allOf) throws XacmlSyntaxException {
 		Preconditions.checkArgument(allOf != null);
-		List<Match> m = new LinkedList<Match>();
+		MatchAllOf.Builder b = MatchAllOf.builder();
 		for (MatchType match : allOf.getMatch()) {
-			m.add(createMatch(match));
+			b.allOf(createMatch(match));
 		}
-		return new MatchAllOf(m);
+		return b.build();
 	}
 
 	/**

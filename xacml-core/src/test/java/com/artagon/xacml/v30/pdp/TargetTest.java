@@ -21,14 +21,14 @@ public class TargetTest
 	private Collection<MatchAnyOf> matches;
 	private EvaluationContext context;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.matches = new LinkedList<MatchAnyOf>();
 		this.c = createStrictControl();
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testAllMatch(){
 		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
@@ -40,21 +40,21 @@ public class TargetTest
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.MATCH);
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, t.match(context));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEmptyTarget()
 	{
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, t.match(context));
 		c.verify();
 	}
-	
-		
+
+
 	@Test
 	public void testFirstMatchSecondIsNoMatch()
 	{
@@ -69,11 +69,11 @@ public class TargetTest
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.NOMATCH, t.match(context));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testFirstMatchAndSecondIsIndeterminate()
 	{
@@ -88,11 +88,11 @@ public class TargetTest
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testFirstIsNoMatch()
 	{
@@ -105,11 +105,11 @@ public class TargetTest
 		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.NOMATCH);
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.NOMATCH, t.match(context));
 		c.verify();
-	}	
-	
+	}
+
 	@Test
 	public void testFirstIsIndeterminate()
 	{
@@ -120,7 +120,7 @@ public class TargetTest
 		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
-		Target t = new Target(matches);
+		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
 		c.verify();
 	}
