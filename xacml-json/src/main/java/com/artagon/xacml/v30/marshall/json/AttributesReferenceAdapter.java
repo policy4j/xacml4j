@@ -20,7 +20,10 @@ final class AttributesRefererenceAdapater implements JsonDeserializer<Attributes
 		JsonObject ref = json.getAsJsonObject();
 		JsonElement element = ref.get("$ref");
 		Preconditions.checkNotNull(element);
-		return new AttributesReference(element.getAsString());
+		return AttributesReference
+				.builder()
+				.id(ref.get("$ref").getAsString())
+				.build();
 	}
 
 	@Override
@@ -29,6 +32,6 @@ final class AttributesRefererenceAdapater implements JsonDeserializer<Attributes
 		JsonObject o = new JsonObject();
 		o.addProperty("$ref", src.getReferenceId());
 		return o;
-	}	
+	}
 }
 
