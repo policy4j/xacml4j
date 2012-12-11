@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.artagon.xacml.v30.EvaluationContext;
@@ -34,19 +33,20 @@ public class Apply implements Expression
 	 *
 	 * @param spec a function to be invoked
 	 * @param returnType a function return type
-	 * @param params a function invocation arguments
+	 * @param paramsBuilder a function invocation arguments
 	 */
 	private Apply(Builder b)
 	{
-		if(!b.func.validateParameters(b.params)){
+		List<Expression> params = b.paramsBuilder.build();
+		if(!b.func.validateParameters(params)){
 			throw new IllegalArgumentException(
 					String.format(
 							"Given arguments=\"%s\" are " +
 							"not valid for function=\"%s\"",
-							b.params, b.func));
+							b.paramsBuilder, b.func));
 		}
 		this.spec = b.func;
-		this.arguments = ImmutableList.copyOf(b.params);
+		this.arguments = params;
 		this.hashCode = Objects.hashCode(spec, arguments);
 	}
 
@@ -138,7 +138,7 @@ public class Apply implements Expression
 	public final static class Builder
 	{
 		private FunctionSpec func;
-		private List<Expression> params = new LinkedList<Expression>();
+		private ImmutableList.Builder<Expression> paramsBuilder = ImmutableList.builder();
 
 		private Builder(FunctionSpec spec){
 			Preconditions.checkNotNull(spec);
@@ -146,20 +146,12 @@ public class Apply implements Expression
 		}
 
 		public Builder param(Iterable<Expression> params){
-			Preconditions.checkNotNull(params);
-			for(Expression p : params){
-				Preconditions.checkNotNull(p);
-				this.params.add(p);
-			}
+			this.paramsBuilder.addAll(params);
 			return this;
 		}
 
 		public Builder param(Expression ...params){
-			Preconditions.checkNotNull(params);
-			for(Expression p : params){
-				Preconditions.checkNotNull(p);
-				this.params.add(p);
-			}
+			this.paramsBuilder.add(params);
 			return this;
 		}
 

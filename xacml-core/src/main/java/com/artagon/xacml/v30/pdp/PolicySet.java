@@ -2,7 +2,6 @@ package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +39,7 @@ public class PolicySet extends
 		Preconditions.checkNotNull(b.combiningAlgorithm,
 				"Policy decision combinging algorithm must be specified");
 		this.combine = b.combiningAlgorithm;
-		this.decisionRules = ImmutableList.copyOf(b.policies);
+		this.decisionRules = b.policies.build();
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicySets = ImmutableMap.builder();
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicies = ImmutableMap.builder();
 		for(Entry<String, Multimap<String, CombinerParameter>> e : b.policySetCombinerParams.entrySet()){
@@ -245,7 +244,7 @@ public class PolicySet extends
 	{
 		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
-		private Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
+		private ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
 
 		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
 		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
@@ -289,7 +288,7 @@ public class PolicySet extends
 			return this;
 		}
 
-		public PolicySetBuilder withDefaults(PolicySetDefaults defaults){
+		public PolicySetBuilder defaults(PolicySetDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
@@ -299,25 +298,28 @@ public class PolicySet extends
 			return this;
 		}
 
-		public PolicySetBuilder withPolicy(Policy p){
+		public PolicySetBuilder policy(Policy p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
 
-		public PolicySetBuilder withPolicySet(PolicySet p){
+		public PolicySetBuilder policySet(PolicySet p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
 
-		public PolicySetBuilder withCompositeDecisionRules(Iterable<CompositeDecisionRule> rules)
+		public PolicySetBuilder compositeDecisionRules(Iterable<CompositeDecisionRule> rules)
 		{
-			for(CompositeDecisionRule r : rules){
-				Preconditions.checkNotNull(r);
-				this.policies.add(r);
-			}
-			return this;
+			this.policies.addAll(rules);
+			return getThis();
+		}
+
+		public PolicySetBuilder compositeDecisionRules(CompositeDecisionRule ... rules)
+		{
+			this.policies.add(rules);
+			return getThis();
 		}
 
 		public PolicySetBuilder withPolicy(Policy.PolicyBuilder b){
@@ -333,7 +335,7 @@ public class PolicySet extends
 		}
 
 		public PolicySetBuilder withoutRules(){
-			this.policies.clear();
+			this.policies = ImmutableList.builder();
 			return this;
 		}
 

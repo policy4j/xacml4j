@@ -7,6 +7,7 @@ import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueExpression;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {
@@ -17,70 +18,63 @@ public class AttributeAssignmentExpression implements PolicyElement
 
 	/**
 	 * Constructs attribute assignment
-	 * 
+	 *
 	 * @param attributeId an attribute id
 	 * @param expression an attribute assignment
 	 * expression
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer
 	 */
-	public AttributeAssignmentExpression(
-			String attributeId, 
-			Expression expression, 
-			AttributeCategory category, 
-			String issuer)
+	private AttributeAssignmentExpression(Builder b){
+		this.attributeId = b.id;
+		this.expression = b.expression;
+		this.category = b.category;
+		this.issuer = b.issuer;
+	}
+
+	public static Builder builder(String id)
 	{
-		Preconditions.checkNotNull(attributeId);
-		Preconditions.checkNotNull(expression);
-		this.attributeId = attributeId;
-		this.expression = expression;
-		this.category = category;
-		this.issuer = issuer;
+		return new Builder().id(id);
 	}
-	
-	public AttributeAssignmentExpression(String attributeId, 
-			Expression expression){
-		this(attributeId, expression, null, null);
-	}
-	
+
 	/**
 	 * Gets attribute identifier
-	 * 
+	 *
 	 * @return attribute identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
-	
+
 	/**
-	 * An optional category of the attribute. 
+	 * An optional category of the attribute.
 	 * If category is not specified, the attribute has no category
-	 * 
+	 *
 	 * @return category identifier or <code>null</code>
 	 */
 	public AttributeCategory getCategory(){
 		return category;
 	}
-	
+
 	/**
 	 * Gets an issuer of the attribute.
 	 * If issuer is not specified, the attribute
 	 * has not issuer
-	 * 
+	 *
 	 * @return attribute issuer or <code>null</code>
 	 */
 	public String getIssuer(){
 		return issuer;
 	}
-	
-	public ValueExpression evaluate(EvaluationContext context) 
+
+	public ValueExpression evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
 		ValueExpression val =  (ValueExpression)expression.evaluate(context);
 		Preconditions.checkState(val != null);
 		return val;
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -90,16 +84,16 @@ public class AttributeAssignmentExpression implements PolicyElement
 		.add("expression", expression)
 		.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(
-				attributeId, 
-				category, 
-				issuer, 
+				attributeId,
+				category,
+				issuer,
 				expression);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -112,16 +106,52 @@ public class AttributeAssignmentExpression implements PolicyElement
 			return false;
 		}
 		AttributeAssignmentExpression e = (AttributeAssignmentExpression)o;
-		return attributeId.equals(e.attributeId) && 
+		return attributeId.equals(e.attributeId) &&
 		Objects.equal(category, e.category) &&
-		Objects.equal(issuer, e.issuer) && 
+		Objects.equal(issuer, e.issuer) &&
 		expression.equals(e.expression);
-		
+
 	}
 
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
-	}	
+	}
+
+	public static class Builder
+	{
+		private String id;
+		private String issuer;
+		private Expression expression;
+		private AttributeCategory category;
+
+		public Builder id(String id){
+			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+			this.id = id;
+			return this;
+		}
+
+		public Builder issuer(String issuer){
+			this.issuer = issuer;
+			return this;
+		}
+
+		public Builder category(AttributeCategory category){
+			this.category = category;
+			return this;
+		}
+
+		public Builder expression(Expression exp){
+			Preconditions.checkNotNull(exp);
+			this.expression = exp;
+			return this;
+		}
+
+		public AttributeAssignmentExpression build(){
+			Preconditions.checkState(id != null);
+			Preconditions.checkState(expression != null);
+			return new AttributeAssignmentExpression(this);
+		}
+	}
 }

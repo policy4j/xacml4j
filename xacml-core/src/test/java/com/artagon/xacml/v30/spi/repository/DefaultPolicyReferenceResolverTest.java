@@ -33,12 +33,12 @@ public class DefaultPolicyReferenceResolverTest
 		this.repository = c.createMock(PolicyRepository.class);
 		this.p1v1 = Policy
 				.builder("id")
-				.withVersion("1.0.0")
+				.version("1.0.0")
 				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
 				.create();
 		this.ps1v1 = PolicySet
 				.builder("id")
-				.withVersion("1.2.1")
+				.version("1.2.1")
 				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).create();
 	
 	}

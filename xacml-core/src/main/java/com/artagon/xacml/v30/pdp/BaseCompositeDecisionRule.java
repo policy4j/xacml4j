@@ -135,7 +135,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			this.version = Version.parse("1.0");
 		}
 		
-		public T withVersion(Version version){
+		public T version(Version version){
 			Preconditions.checkNotNull(version, "Version can't be null");
 			this.version = version;
 			return getThis();
@@ -147,7 +147,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			return getThis();
 		}
 		
-		public T withCombinerParams(Iterable<CombinerParameter> params){
+		public T combinerParams(Iterable<CombinerParameter> params){
 			Preconditions.checkNotNull(params);
 			for(CombinerParameter p : params){
 				withCombinerParam(p);
@@ -155,16 +155,16 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			return getThis();
 		}
 		
-		public T withVersion(String version){
-			return withVersion(Version.parse(version));
+		public T version(String version){
+			return version(Version.parse(version));
 		}
 		
-		public T withIssuer(PolicyIssuer issuer){
+		public T issuer(PolicyIssuer issuer){
 			this.issuer = issuer;
 			return getThis();
 		}
 		
-		public T withMaxDelegationDepth(Integer maxDelegationdepth)
+		public T maxDelegationDepth(Integer maxDelegationdepth)
 		{
 			Preconditions.checkArgument(maxDelegationdepth == null || maxDelegationdepth >= 0);
 			this.maxDelegationDepth = maxDelegationdepth;

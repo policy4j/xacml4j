@@ -1,34 +1,28 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.Obligation;
 
 
-public class ObligationExpression extends 
+public class ObligationExpression extends
 	BaseDecisionRuleResponseExpression
 {
-	public ObligationExpression(String id, Effect effect,
-			Collection<AttributeAssignmentExpression> attributeExpressions)  
+	public ObligationExpression(Builder b)
 	{
-		super(id, effect, attributeExpressions);
+		super(b);
 	}
-	
+
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException{
 		return Obligation
 				.builder(getId(), getEffect())
 				.attributes(evaluateAttributeAssingments(context))
 				.build();
 	}
-	
-	public static Builder builder(String id, Effect applieTo){
-		return new Builder(id, applieTo);
+
+	public static Builder builder(String id, Effect appliesTo){
+		return new Builder().id(id).effect(appliesTo);
 	}
 
 	@Override
@@ -39,7 +33,7 @@ public class ObligationExpression extends
 		}
 		v.visitLeave(this);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -49,48 +43,22 @@ public class ObligationExpression extends
 			return false;
 		}
 		ObligationExpression ox = (ObligationExpression)o;
-		return id.equals(ox.id) 
-			&& effect.equals(ox.effect) 
+		return id.equals(ox.id)
+			&& effect.equals(ox.effect)
 			&& attributeExpressions.equals(ox.attributeExpressions);
 	}
-	
-	public static class Builder 
+
+	public static class Builder extends BaseDecisionRuleResponseExpressionBuilder<Builder>
 	{
-		private String id;
-		private Effect appliesTo;
-		private Collection<AttributeAssignmentExpression> attributes = new LinkedList<AttributeAssignmentExpression>();
-	
-		private Builder(String id, Effect appliesTo){
-			this.id = id;
-			this.appliesTo = appliesTo;
-		}
-	
-		public Builder attributeAssigment(
-				String id, Expression expression){
-			attributes.add(new AttributeAssignmentExpression(id, expression));
+
+		@Override
+		protected Builder getThis() {
 			return this;
 		}
-		
-		public Builder appliesTo(Effect effect){
-			this.appliesTo = effect;
-			return this;
-		}
-		
-		public Builder id(String id){
-			this.id = id;
-			return this;
-		}
-	
-		public Builder withAttributeAssigment(
-				String id, Expression expression, 
-				AttributeCategory category, String issuer)
-		{
-			attributes.add(new AttributeAssignmentExpression(id, expression, category, issuer));
-			return this;
-		}
-		
+
 		public ObligationExpression build(){
-			return new ObligationExpression(id, appliesTo, attributes);
+			return new ObligationExpression(this);
 		}
 	}
+
 }

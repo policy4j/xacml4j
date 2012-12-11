@@ -63,22 +63,22 @@ public class PolicyTest
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 		
 		this.policy = Policy.builder("TestPolicy")
-				.withVersion("1.0")
-				.withTarget(target)
+				.version("1.0")
+				.target(target)
 				.withRule(c.createMock(Rule.class))
 				.withCombiningAlgorithm(combingingAlg)
-				.withObligation(ObligationExpression
+				.obligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
-							.attributeAssigment("testId", denyObligationAttributeExp))
-				.withObligation(ObligationExpression
+							.attribute("testId", denyObligationAttributeExp))
+				.obligation(ObligationExpression
 						.builder("permitObligation", Effect.PERMIT)
-						.attributeAssigment("testId", permitObligationAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", permitObligationAttributeExp))
+				.advice(AdviceExpression
 						.builder("denyAdvice", Effect.DENY)
-						.withAttributeAssigment("testId", denyAdviceAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", denyAdviceAttributeExp))
+				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
-					.withAttributeAssigment("testId", permitAdviceAttributeExp))
+					.attribute("testId", permitAdviceAttributeExp))
 				.create();
 			
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
@@ -91,9 +91,9 @@ public class PolicyTest
 	{
 		Policy p = Policy
 				.builder("testId")
-				.withVersion("1.0.1")
+				.version("1.0.1")
 				.withCombiningAlgorithm(combingingAlg)
-				.withTarget(Target.builder())
+				.target(Target.builder())
 				.create();
 	}
 	

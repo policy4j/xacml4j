@@ -115,16 +115,16 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		Condition condition  = create(p.getCondition(), m);
 		return Policy
 					.builder(p.getPolicyId())
-					.withDescription(p.getDescription())
-					.withVersion(p.getVersion())
-					.withCondition(condition)
-					.withTarget(create(p.getTarget()))
-					.withIssuer(createPolicyIssuer(p.getPolicyIssuer()))
+					.description(p.getDescription())
+					.version(p.getVersion())
+					.condition(condition)
+					.target(create(p.getTarget()))
+					.issuer(createPolicyIssuer(p.getPolicyIssuer()))
 					.withCombiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
 					.withRules(createRules(p, m))
 					.withVariables(variableDefinitions.values())
-					.withObligations(getExpressions(p.getObligationExpressions(), m))
-					.withAdvices(getExpressions(p.getAdviceExpressions(), m))
+					.obligation(getExpressions(p.getObligationExpressions(), m))
+					.advice(getExpressions(p.getAdviceExpressions(), m))
 					.withDefaults(createPolicyDefaults(p.getPolicyDefaults()))
 					.create();
 	}
@@ -189,16 +189,16 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		VariableManager<JAXBElement<?>> m = new VariableManager<JAXBElement<?>>(ImmutableMap.<String, JAXBElement<?>>of());
 		return PolicySet
 				.builder(p.getPolicySetId())
-				.withVersion(p.getVersion())
-				.withCondition(create(p.getCondition(), m))
-				.withDescription(p.getDescription())
-				.withIssuer(createPolicyIssuer(p.getPolicyIssuer()))
-				.withTarget(create(p.getTarget()))
-				.withDefaults(createPolicySetDefaults(p.getPolicySetDefaults()))
+				.version(p.getVersion())
+				.condition(create(p.getCondition(), m))
+				.description(p.getDescription())
+				.issuer(createPolicyIssuer(p.getPolicyIssuer()))
+				.target(create(p.getTarget()))
+				.defaults(createPolicySetDefaults(p.getPolicySetDefaults()))
 				.withCombiningAlgorithm(createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()))
-				.withCompositeDecisionRules(createPolicies(p))
-				.withObligations(getExpressions(p.getObligationExpressions(), m))
-				.withAdvices(getExpressions(p.getAdviceExpressions(), m))
+				.compositeDecisionRules(createPolicies(p))
+				.obligation(getExpressions(p.getObligationExpressions(), m))
+				.advice(getExpressions(p.getAdviceExpressions(), m))
 				.create();
 	}
 
@@ -267,11 +267,11 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		return Rule
 				.builder(r.getRuleId(), (r.getEffect() == EffectType.DENY ? Effect.DENY: Effect.PERMIT))
-				.withDescription(r.getDescription())
-				.withTarget(create(r.getTarget()))
-				.withObligations(obligations)
-				.withAdvices(advice)
-				.withCondition(create(r.getCondition(), variables))
+				.description(r.getDescription())
+				.target(create(r.getTarget()))
+				.obligation(obligations)
+				.advice(advice)
+				.condition(create(r.getCondition(), variables))
 				.build();
 	}
 
@@ -413,8 +413,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.getAttributeAssignmentExpression()) {
 			attrExp.add(create(e, m));
 		}
-		return new AdviceExpression(exp.getAdviceId(),
-				jaxbToNativeEffectMappings.get(exp.getAppliesTo()), attrExp);
+		return AdviceExpression
+				.builder(exp.getAdviceId(), jaxbToNativeEffectMappings.get(exp.getAppliesTo()))
+				.attribute(attrExp).build();
 	}
 
 	/**
@@ -436,8 +437,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.getAttributeAssignmentExpression()) {
 			attrExp.add(create(e, m));
 		}
-		return new ObligationExpression(exp.getObligationId(),
-				jaxbToNativeEffectMappings.get(exp.getFulfillOn()), attrExp);
+		return ObligationExpression.builder(exp.getObligationId(),
+				jaxbToNativeEffectMappings.get(exp.getFulfillOn()))
+				.attribute(attrExp).build();
 	}
 
 	/**
@@ -576,11 +578,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			AttributeAssignmentExpressionType exp,
 			VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
-		return new AttributeAssignmentExpression(
-				exp.getAttributeId(),
-				parseExpression(exp.getExpression(), m),
-				AttributeCategories.parse(exp.getCategory()),
-				exp.getIssuer());
+		return AttributeAssignmentExpression
+				.builder(exp.getAttributeId())
+				.expression(parseExpression(exp.getExpression(), m))
+				.category(AttributeCategories.parse(exp.getCategory()))
+				.issuer(exp.getIssuer())
+				.build();
 	}
 
 	/**

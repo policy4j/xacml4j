@@ -63,22 +63,22 @@ public class PolicySetTest
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 		
 		this.policySet = PolicySet.builder("TestPolicy")
-				.withVersion("1.0")
-				.withTarget(target)
-				.withPolicy(c.createMock(Policy.class))
+				.version("1.0")
+				.target(target)
+				.policy(c.createMock(Policy.class))
 				.withCombiningAlgorithm(combingingAlg)
-				.withObligation(ObligationExpression
+				.obligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
-							.attributeAssigment("testId", denyObligationAttributeExp))
-				.withObligation(ObligationExpression
+							.attribute("testId", denyObligationAttributeExp))
+				.obligation(ObligationExpression
 						.builder("permitObligation", Effect.PERMIT)
-						.attributeAssigment("testId", permitObligationAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", permitObligationAttributeExp))
+				.advice(AdviceExpression
 						.builder("denyAdvice", Effect.DENY)
-						.withAttributeAssigment("testId", denyAdviceAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", denyAdviceAttributeExp))
+				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
-					.withAttributeAssigment("testId", permitAdviceAttributeExp))
+					.attribute("testId", permitAdviceAttributeExp))
 				.create();
 			
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);

@@ -19,7 +19,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 
 abstract class BaseDecisionRule implements DecisionRule
 {
@@ -41,8 +40,8 @@ abstract class BaseDecisionRule implements DecisionRule
 		this.description = b.description;
 		this.target = b.target;
 		this.condition = b.condition;
-		this.adviceExpressions = ImmutableList.copyOf(b.adviceExpressions);
-		this.obligationExpressions = ImmutableList.copyOf(b.obligationExpressions);
+		this.adviceExpressions = b.adviceExpressions.build();
+		this.obligationExpressions = b.obligationExpressions.build();
 	}
 
 	@Override
@@ -242,8 +241,8 @@ abstract class BaseDecisionRule implements DecisionRule
 		protected String description;
 		protected Target target;
 		protected Condition condition;
-		protected Collection<AdviceExpression> adviceExpressions = new LinkedList<AdviceExpression>();
-		protected Collection<ObligationExpression> obligationExpressions = new LinkedList<ObligationExpression>();
+		protected ImmutableList.Builder<AdviceExpression> adviceExpressions = ImmutableList.builder();
+		protected ImmutableList.Builder<ObligationExpression> obligationExpressions = ImmutableList.builder();
 
 		protected BaseDecisionRuleBuilder(String ruleId){
 			Preconditions.checkNotNull(ruleId,
@@ -251,30 +250,30 @@ abstract class BaseDecisionRule implements DecisionRule
 			this.id = ruleId;
 		}
 
-		public T withId(String id){
+		public T id(String id){
 			Preconditions.checkNotNull(id,
 					"Decision rule identifier can't be null");
 			this.id = id;
 			return getThis();
 		}
 
-		public T withDescription(String desc){
+		public T description(String desc){
 			this.description = desc;
 			return getThis();
 		}
 
-		public T withTarget(Target target){
+		public T target(Target target){
 			this.target = target;
 			return getThis();
 		}
 
-		public T withCondition(Expression predicate){
+		public T condition(Expression predicate){
 			Preconditions.checkNotNull(predicate);
 			this.condition = new Condition(predicate);
 			return getThis();
 		}
 
-		public T withCondition(Condition condition){
+		public T condition(Condition condition){
 			this.condition = condition;
 			return getThis();
 		}
@@ -284,7 +283,7 @@ abstract class BaseDecisionRule implements DecisionRule
 			return getThis();
 		}
 
-		public T withTarget(Target.Builder b){
+		public T target(Target.Builder b){
 			Preconditions.checkNotNull(b);
 			this.target = b.build();
 			return getThis();
@@ -295,47 +294,46 @@ abstract class BaseDecisionRule implements DecisionRule
 			return getThis();
 		}
 
-		public T withAdvice(AdviceExpression advice){
-			Preconditions.checkNotNull(advice);
-			this.adviceExpressions.add(advice);
-			return getThis();
-		}
+
 
 		public T withoutAdvices(){
-			this.adviceExpressions.clear();
+			this.adviceExpressions = ImmutableList.builder();
 			return getThis();
 		}
 
 		public T withoutObligations(){
-			this.obligationExpressions.clear();
+			this.obligationExpressions = ImmutableList.builder();
 			return getThis();
 		}
 
-		public T withAdvice(AdviceExpression.Builder b){
+		public T advice(AdviceExpression.Builder b){
 			Preconditions.checkNotNull(b);
 			this.adviceExpressions.add(b.build());
 			return getThis();
 		}
 
-		public T withAdvices(Iterable<AdviceExpression> advices){
-			Preconditions.checkNotNull(advices);
-			Iterables.addAll(adviceExpressions, advices);
+		public T advice(Iterable<AdviceExpression> advices){
+			this.adviceExpressions.addAll(advices);
 			return getThis();
 		}
 
-		public T withObligation(ObligationExpression advice){
-			Preconditions.checkNotNull(advice);
-			this.obligationExpressions.add(advice);
+		public T advice(AdviceExpression ... advices){
+			this.adviceExpressions.add(advices);
 			return getThis();
 		}
 
-		public T withObligations(Iterable<ObligationExpression> obligations){
+		public T obligation(ObligationExpression ... obligations){
+			this.obligationExpressions.add(obligations);
+			return getThis();
+		}
+
+		public T obligation(Iterable<ObligationExpression> obligations){
 			Preconditions.checkNotNull(obligations);
-			Iterables.addAll(obligationExpressions, obligations);
+			this.obligationExpressions.addAll(obligations);
 			return getThis();
 		}
 
-		public T withObligation(ObligationExpression.Builder b){
+		public T obligation(ObligationExpression.Builder b){
 			Preconditions.checkNotNull(b);
 			this.obligationExpressions.add(b.build());
 			return getThis();

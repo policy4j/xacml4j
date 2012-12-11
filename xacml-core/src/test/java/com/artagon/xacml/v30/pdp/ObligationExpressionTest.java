@@ -8,8 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.easymock.IMocksControl;
@@ -25,33 +23,33 @@ import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Obligation;
 import com.artagon.xacml.v30.StatusCode;
 
-public class ObligationExpressionTest 
+public class ObligationExpressionTest
 {
 	private IMocksControl c;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testCreateObligationExpression() throws XacmlException
 	{
 		AttributeAssignmentExpression attrExp = c.createMock(AttributeAssignmentExpression.class);
-		
+
 		expect(attrExp.getAttributeId()).andReturn("attributeId");
 		c.replay();
-		ObligationExpression exp = new ObligationExpression("test",Effect.DENY, Collections.singletonList(attrExp));
-		
+		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp).build();
+
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
 		assertEquals("test", exp.getId());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateObligationExpression() throws XacmlException
 	{
@@ -66,7 +64,8 @@ public class ObligationExpressionTest
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
 		expect(attrExp1.evaluate(context)).andReturn(BOOLEAN.create(false));
 		c.replay();
-		ObligationExpression exp = new ObligationExpression("test", Effect.DENY, Arrays.asList(attrExp0, attrExp1));
+		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
+
 		Obligation obligation = exp.evaluate(context);
 		Iterator<AttributeAssignment> it = obligation.getAttributes().iterator();
 		AttributeAssignment a0 = it.next();
@@ -82,7 +81,7 @@ public class ObligationExpressionTest
 		assertEquals(BOOLEAN.create(false), a1.getAttribute());
 		c.verify();
 	}
-	
+
 	@Test(expected=EvaluationException.class)
 	public void testAttributeAssignmentThrowsEvauationException() throws XacmlException
 	{
@@ -97,7 +96,9 @@ public class ObligationExpressionTest
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
 		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(StatusCode.createProcessingError(), context, new NullPointerException()));
 		c.replay();
-		ObligationExpression exp = new ObligationExpression("test", Effect.DENY, Arrays.asList(attrExp0, attrExp1));
+
+		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
+
 		exp.evaluate(context);
 		c.verify();
 	}

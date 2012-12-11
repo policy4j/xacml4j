@@ -1,15 +1,12 @@
 package com.artagon.xacml.v30.pdp;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import com.artagon.xacml.v30.Advice;
 import com.artagon.xacml.v30.AttributeAssignment;
-import com.artagon.xacml.v30.AttributeCategory;
 import com.artagon.xacml.v30.Effect;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
-import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 
 
@@ -23,18 +20,15 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 * assignment expression for this advice
 	 * @exception XacmlSyntaxException
 	 */
-	public AdviceExpression(String id, 
-			Effect appliesTo,
-			Collection<AttributeAssignmentExpression> attributeExpressions)  
-	{
-		super(id, appliesTo, attributeExpressions);
-	}	
+	private AdviceExpression(Builder b){
+		super(b);
+	}
 
-	
+
 	/**
 	 * Evaluates this advice expression by evaluating
 	 * all {@link AttributeAssignmentExpression}
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @return {@link Advice} instance
 	 * @throws EvaluationException if an evaluation error
@@ -48,11 +42,11 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 				.attributes(attributes)
 				.create();
 	}
-	
-	public static Builder builder(String id, Effect applieTo){
-		return new Builder(id, applieTo);
+
+	public static Builder builder(String id, Effect appliesTo){
+		return new Builder().id(id).effect(appliesTo);
 	}
-	
+
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
@@ -61,7 +55,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 		}
 		v.visitLeave(this);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -71,45 +65,21 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 			return false;
 		}
 		AdviceExpression ox = (AdviceExpression)o;
-		return id.equals(ox.id) 
-			&& effect.equals(ox.effect) 
+		return id.equals(ox.id)
+			&& effect.equals(ox.effect)
 			&& attributeExpressions.equals(ox.attributeExpressions);
 	}
-	
-	public static class Builder 
+
+	public static class Builder extends BaseDecisionRuleResponseExpressionBuilder<Builder>
 	{
-		private String id;
-		private Effect appliesTo;
-		private Collection<AttributeAssignmentExpression> attributes = new LinkedList<AttributeAssignmentExpression>();
-	
-		private Builder(String id, Effect appliesTo){
-			this.id = id;
-			this.appliesTo = appliesTo;
-		}
-	
-		public Builder withAttributeAssigment(
-				String id, Expression expression)
-		{
-			attributes.add(new AttributeAssignmentExpression(id, expression));
+
+		@Override
+		protected Builder getThis() {
 			return this;
 		}
-		
-		public Builder withAttributeAssigment(
-				String id, AttributeCategory category, Expression expression)
-		{
-			attributes.add(new AttributeAssignmentExpression(id, expression, category, null));
-			return this;
-		}
-	
-		public Builder withAttributeAssigment(
-				String id, AttributeCategory category, String issuer, Expression expression)
-		{
-			attributes.add(new AttributeAssignmentExpression(id, expression, category, issuer));
-			return this;
-		}
-		
+
 		public AdviceExpression build(){
-			return new AdviceExpression(id, appliesTo, attributes);
+			return new AdviceExpression(this);
 		}
 	}
 }

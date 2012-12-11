@@ -64,28 +64,28 @@ public class RuleTest
 		
 		this.builder = Rule
 				.builder("TestRuleId", Effect.DENY)
-				.withTarget(target)
-				.withCondition(condition)
-				.withObligation(ObligationExpression
+				.target(target)
+				.condition(condition)
+				.obligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
-							.attributeAssigment("testId", denyObligationAttributeExp))
-				.withObligation(ObligationExpression
+							.attribute("testId", denyObligationAttributeExp))
+				.obligation(ObligationExpression
 						.builder("permitObligation", Effect.PERMIT)
-						.attributeAssigment("testId", permitObligationAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", permitObligationAttributeExp))
+				.advice(AdviceExpression
 						.builder("denyAdvice", Effect.DENY)
-						.withAttributeAssigment("testId", denyAdviceAttributeExp))
-				.withAdvice(AdviceExpression
+						.attribute("testId", denyAdviceAttributeExp))
+				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
-					.withAttributeAssigment("testId", permitAdviceAttributeExp));
+					.attribute("testId", permitAdviceAttributeExp));
 		
 		this.rulePermit = builder
-				.withId("testPermitRule")
+				.id("testPermitRule")
 				.withEffect(Effect.PERMIT)
 				.build();
 		
 		this.ruleDeny = builder
-				.withId("testDenyRule")
+				.id("testDenyRule")
 				.withEffect(Effect.DENY)
 				.build();
 		
