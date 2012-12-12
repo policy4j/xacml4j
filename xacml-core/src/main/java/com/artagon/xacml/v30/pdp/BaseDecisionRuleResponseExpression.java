@@ -153,7 +153,6 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			return getThis();
 		}
 
-
 		public T attribute(String id, Expression exp){
 			return attribute(AttributeAssignmentExpression.builder(id).expression(exp));
 		}

@@ -164,7 +164,7 @@ public class Attribute
 			return this;
 		}
 
-		public Builder value(Iterable<AttributeExp> values){
+		public Builder values(Iterable<AttributeExp> values){
 			Preconditions.checkNotNull(values);
 			for(AttributeExp v : values){
 				valueBuilder.add(v);
@@ -173,7 +173,7 @@ public class Attribute
 		}
 
 
-		public Builder value(AttributeExpType type, Iterable<?> values){
+		public Builder values(AttributeExpType type, Iterable<?> values){
 			Preconditions.checkNotNull(type);
 			Preconditions.checkNotNull(values);
 			for(Object v : values){

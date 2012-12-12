@@ -38,7 +38,7 @@ public class AttributeTest
 				.builder("testId")
 				.issuer("testIssuer")
 				.includeInResult(true)
-				.value(values)
+				.values(values)
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
@@ -69,7 +69,7 @@ public class AttributeTest
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 		values.add(INTEGER.create(1));
 		values.add(INTEGER.create(1));
-		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).value(values);
+		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
 		Attribute attr2 = b.includeInResult(false).build();
@@ -105,7 +105,7 @@ public class AttributeTest
 	{
 		Iterable<String> a = ImmutableSet.of("test1", "test2");
 		Attribute.builder("testId")
-		.value(StringType.STRING, a)
+		.values(StringType.STRING, a)
 		.value(StringType.STRING, "test2", "test3")
 		.build();
 	}

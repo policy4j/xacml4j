@@ -177,7 +177,7 @@ final class DefaultPolicyDecisionPoint
 			values.add(Attribute
 					.builder(k.getAttributeId())
 					.issuer(k.getIssuer())
-					.value(v.values())
+					.values(v.values())
 					.build());
 		}
 		Collection<Attributes> result = new LinkedList<Attributes>();

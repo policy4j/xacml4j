@@ -237,7 +237,7 @@ implements RequestUnmarshaller
 			return Attribute.builder(a.getAttributeId())
 					.issuer(a.getIssuer())
 					.includeInResult(a.getAttributeId().equals(RESOURCE_ID)?incudeInResultResourceId:false)
-					.value(values)
+					.values(values)
 					.build();
 		}
 
