@@ -31,7 +31,7 @@ class AttributeAdapter implements JsonDeserializer<Attribute>, JsonSerializer<At
 				.builder(attrId)
 				.issuer(issuer)
 				.includeInResult(inclInRes)
-				.value(values)
+				.values(values)
 				.build();
 	}
 
