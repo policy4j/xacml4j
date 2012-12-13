@@ -17,23 +17,23 @@ import com.yammer.metrics.core.TimerContext;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class DefaultPolicyInformationPoint 
+public class DefaultPolicyInformationPoint
 	implements PolicyInformationPoint
-{	
+{
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
-	
+
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
-	
+
 	private Timer attrResTimer;
 	private Timer contResTimer;
-	
-	public DefaultPolicyInformationPoint(String id, 
-			ResolverRegistry resolvers, 
+
+	public DefaultPolicyInformationPoint(String id,
+			ResolverRegistry resolvers,
 			PolicyInformationPointCacheProvider cache)
 	{
 		Preconditions.checkNotNull(id);
@@ -45,7 +45,7 @@ public class DefaultPolicyInformationPoint
 		this.attrResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "attribute-resolve", id);
 		this.contResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "content-resolve", id);
 	}
-	
+
 	public DefaultPolicyInformationPoint(String id, ResolverRegistry resolvers){
 		this(id, resolvers, new NoCachePolicyInformationPointCacheProvider());
 	}
@@ -53,11 +53,11 @@ public class DefaultPolicyInformationPoint
 	public String getId(){
 		return id;
 	}
-	
+
 	@Override
 	public BagOfAttributeExp resolve(
 			final EvaluationContext context,
-			AttributeDesignatorKey ref) throws Exception 
+			AttributeDesignatorKey ref) throws Exception
 	{
 		TimerContext timerContext = attrResTimer.time();
 		try{
@@ -107,7 +107,7 @@ public class DefaultPolicyInformationPoint
 						continue;
 					}
 					if(log.isDebugEnabled()){
-						log.debug("Resolved attributes=\"{}\"", 
+						log.debug("Resolved attributes=\"{}\"",
 								attributes);
 					}
 				}catch(Exception e){
@@ -134,18 +134,18 @@ public class DefaultPolicyInformationPoint
 				}
 				context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
 				return attributes.get(ref.getAttributeId());
-			}		
+			}
 			return ref.getDataType().emptyBag();
 		}finally{
 			timerContext.stop();
 		}
-		
+
 	}
-	
+
 	@Override
-	public Node resolve(final EvaluationContext context, 
+	public Node resolve(final EvaluationContext context,
 			AttributeCategory category)
-			throws Exception 
+			throws Exception
 	{
 		TimerContext timerContext = contResTimer.time();
 		try{
@@ -154,7 +154,7 @@ public class DefaultPolicyInformationPoint
 				return null;
 			}
 			ContentResolverDescriptor d = r.getDescriptor();
-			ResolverContext pipContext = createContext(context, d);		
+			ResolverContext pipContext = createContext(context, d);
 			Content v = null;
 			if(d.isCachable()){
 				v = cache.getContent(pipContext);
@@ -171,7 +171,7 @@ public class DefaultPolicyInformationPoint
 			}catch(Exception e){
 				if(log.isDebugEnabled()){
 					log.debug("Received error=\"{}\" " +
-							"while resolving content for category=\"{}\"", 
+							"while resolving content for category=\"{}\"",
 							e.getMessage(), category);
 					log.debug("Error stack trace", e);
 				}
@@ -185,10 +185,15 @@ public class DefaultPolicyInformationPoint
 		}finally{
 			timerContext.stop();
 		}
-		
+
 	}
-	
-	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d) 
+
+	@Override
+	public ResolverRegistry getRegistry() {
+		return registry;
+	}
+
+	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d)
 		throws EvaluationException
 	{
 		return new DefaultResolverContext(context, d);

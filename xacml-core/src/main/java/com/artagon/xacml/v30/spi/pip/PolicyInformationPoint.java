@@ -10,22 +10,22 @@ import com.artagon.xacml.v30.EvaluationContext;
 
 /**
  * A XACML Policy Information Point
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public interface PolicyInformationPoint 
+public interface PolicyInformationPoint
 {
 	/**
-	 * Gets identifier for this policy 
+	 * Gets identifier for this policy
 	 * information point
-	 * 
+	 *
 	 * @return a unique identifier
 	 */
 	String getId();
-	
+
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute designator
 	 * @return {@link BagOfAttributeExp}
@@ -33,14 +33,14 @@ public interface PolicyInformationPoint
 	 */
 	BagOfAttributeExp resolve(
 			EvaluationContext context,
-			AttributeDesignatorKey ref) 
+			AttributeDesignatorKey ref)
 		throws Exception;
-	
-	
+
+
 	/**
 	 * Resolves a content for a given
 	 * attribute category
-	 * 
+	 *
 	 * @param context an evaluation context
 	 * @param category an attribute category
 	 * @return {@link Node} or <code>null</code>
@@ -48,6 +48,13 @@ public interface PolicyInformationPoint
 	 */
 	Node resolve(
 			EvaluationContext context,
-			AttributeCategory category) 
+			AttributeCategory category)
 		throws Exception;
+
+	/**
+	 * Gets resolver registry used by this PIP
+	 *
+	 * @return {@link ResolverRegistry}
+	 */
+	ResolverRegistry getRegistry();
 }
