@@ -1,15 +1,13 @@
 package com.artagon.xacml.v30;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedHashMultiset;
+import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 
 /**
@@ -40,27 +38,25 @@ public final class BagOfAttributeExp
 	 * @param attributes a collection of attributes
 	 */
 	BagOfAttributeExp(BagOfAttributeExpType type,
-			Collection<AttributeExp> attributes){
-		this.values = LinkedHashMultiset.create(attributes.size());
+			Iterable<AttributeExp> attributes){
+		this.type = type;
+		ImmutableMultiset.Builder<AttributeExp> b = ImmutableMultiset.builder();
 		for(AttributeExp attr: attributes){
 			Preconditions.checkArgument(
 					attr.getType().equals(type.getDataType()),
 					String.format("Only attributes of type=\"%s\" " +
 							"are allowed in this bag, given type=\"%s\"",
 					type.getDataType(), attr.getType()));
-			values.add(attr);
+			b.add(attr);
 		}
-		this.type = type;
+		this.values = b.build();
+
 	}
 
-	/**
-	 * Constructs bag of attributes.
-	 *
-	 * @param type a bag attribute type
-	 */
-	BagOfAttributeExp(BagOfAttributeExpType type,
-			AttributeExp ...attributes){
-		this(type, Arrays.asList(attributes));
+	private BagOfAttributeExp(Builder b){
+		this.type = b.bagType;
+		this.values = b.valuesBuilder.build();
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -269,5 +265,66 @@ public final class BagOfAttributeExp
 	{
 		void visitEnter(BagOfAttributeExp v);
 		void visitLeave(BagOfAttributeExp v);
+	}
+
+	public static class Builder
+	{
+
+		private BagOfAttributeExpType bagType;
+		private ImmutableMultiset.Builder<AttributeExp> valuesBuilder = ImmutableMultiset.builder();
+
+		public Builder(AttributeExpType type){
+			this.bagType = new BagOfAttributeExpType(type);
+		}
+
+		public Builder value(Object ...values){
+			for(Object v : values){
+				if(v instanceof AttributeExp){
+					attribute((AttributeExp)v);
+					continue;
+				}
+				this.valuesBuilder.add(bagType.getDataType().create(v));
+			}
+			return this;
+		}
+
+		public Builder values(Iterable<? extends Object> values){
+			for(Object v : values){
+				if(v instanceof AttributeExp){
+					attribute((AttributeExp)v);
+					continue;
+				}
+				this.valuesBuilder.add(bagType.getDataType().create(v));
+			}
+			return this;
+		}
+
+		public Builder attribute(AttributeExp ...values){
+			for(AttributeExp v : values){
+				if(!v.getType().equals(bagType.getDataType())){
+					throw new IllegalArgumentException(String.format(
+							"Given attribute value=\"{}\" " +
+							"can't be used as a value of bag=\"{}\"", v, bagType));
+				}
+				this.valuesBuilder.add(v);
+			}
+			return this;
+		}
+
+		public Builder attributes(Iterable<AttributeExp> values){
+			for(AttributeExp v : values){
+				if(!v.getType().equals(bagType.getDataType())){
+					throw new IllegalArgumentException(String.format(
+							"Given attribute value=\"{}\" " +
+							"can't be used as a value of bag=\"{}\"", v, bagType));
+				}
+				this.valuesBuilder.add(v);
+			}
+			return this;
+		}
+
+		public BagOfAttributeExp build(){
+			return new BagOfAttributeExp(this);
+		}
 	}
 }

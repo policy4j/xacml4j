@@ -15,16 +15,16 @@ import com.artagon.xacml.v30.Date;
 public enum DateType implements AttributeExpType
 {
 	DATE("http://www.w3.org/2001/XMLSchema#date");
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
 
-	private DateType(String typeId) 
+	private DateType(String typeId)
 	{
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	public boolean isConvertableFrom(Object any) {
 		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any) ||
 		GregorianCalendar.class.isInstance(any);
@@ -34,16 +34,20 @@ public enum DateType implements AttributeExpType
 	public DateExp fromXacmlString(String v, Object ...params) {
 		return new DateExp(this, Date.create(v));
 	}
-	
+
 	@Override
 	public DateExp create(Object any, Object ...params){
-		
+
 		return new DateExp(this, Date.create(any));
 	}
-	
+
 	@Override
 	public String getDataTypeId() {
 		return typeId;
+	}
+
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public enum DateType implements AttributeExpType
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
@@ -70,7 +74,7 @@ public enum DateType implements AttributeExpType
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

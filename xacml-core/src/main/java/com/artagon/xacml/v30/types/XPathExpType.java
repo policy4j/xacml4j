@@ -14,38 +14,38 @@ import com.google.common.base.Preconditions;
 public enum XPathExpType implements AttributeExpType
 {
 	XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
-	
+
 	private XPathExpType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	public boolean isConvertableFrom(Object any) {
 		return (any instanceof String);
 	}
-	
-	public XPathExp create(String xpath, AttributeCategories category) 
+
+	public XPathExp create(String xpath, AttributeCategories category)
 	{
 		return new XPathExp(this, xpath, category);
 	}
-	
+
 	@Override
-	public XPathExp create(Object v, Object ... params) 
+	public XPathExp create(Object v, Object ... params)
 	{
-		Preconditions.checkArgument(isConvertableFrom(v), 
+		Preconditions.checkArgument(isConvertableFrom(v),
 				"Given instance=\"%s\" can not be converted to this type value", v);
-		Preconditions.checkArgument(params != null && params.length > 0, 
+		Preconditions.checkArgument(params != null && params.length > 0,
 				"XPath category must be specified");
 		return new XPathExp(this, (String)v, (AttributeCategories)params[0]);
 	}
-	
+
 	@Override
-	public XPathExp fromXacmlString(String v, Object ...params) 
+	public XPathExp fromXacmlString(String v, Object ...params)
 	{
-		Preconditions.checkArgument(params != null && params.length > 0, 
+		Preconditions.checkArgument(params != null && params.length > 0,
 				"XPath category must be specified");
 		try{
 			AttributeCategory categoryId = AttributeCategories.parse(String.valueOf(params[0]));
@@ -54,10 +54,14 @@ public enum XPathExpType implements AttributeExpType
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	@Override
 	public String getDataTypeId() {
 		return typeId;
+	}
+
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
 	}
 
 	@Override
@@ -74,7 +78,7 @@ public enum XPathExpType implements AttributeExpType
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
@@ -84,7 +88,7 @@ public enum XPathExpType implements AttributeExpType
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

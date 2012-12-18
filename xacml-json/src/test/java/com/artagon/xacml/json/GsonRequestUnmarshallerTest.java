@@ -14,7 +14,7 @@ import com.artagon.xacml.v30.marshall.Marshaller;
 import com.artagon.xacml.v30.marshall.Unmarshaller;
 import com.artagon.xacml.v30.marshall.json.JsonRequestContextMarshaller;
 import com.artagon.xacml.v30.marshall.json.JsonRequestContextUnmarshaller;
-import com.artagon.xacml.v30.types.DataTypeRegistryBuilder;
+import com.artagon.xacml.v30.types.DataTypeRegistry;
 
 public class GsonRequestUnmarshallerTest
 {
@@ -23,8 +23,8 @@ public class GsonRequestUnmarshallerTest
 
 	@Before
 	public void init(){
-		this.unmarshaller = new JsonRequestContextUnmarshaller(DataTypeRegistryBuilder.builder()
-				.withDefaultTypes()
+		this.unmarshaller = new JsonRequestContextUnmarshaller(DataTypeRegistry.Builder.builder()
+				.defaultTypes()
 				.build());
 		this.marshaller = new JsonRequestContextMarshaller();
 	}

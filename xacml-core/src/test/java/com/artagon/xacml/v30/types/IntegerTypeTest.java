@@ -7,16 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artagon.xacml.v30.AttributeExp;
+import com.artagon.xacml.v30.BagOfAttributeExp;
 
-public class IntegerTypeTest 
+public class IntegerTypeTest
 {
 	private IntegerType t;
-	
+
 	@Before
 	public void init(){
 		this.t = IntegerType.INTEGER;
 	}
-	
+
 	@Test
 	public void testCreate()
 	{
@@ -28,7 +29,7 @@ public class IntegerTypeTest
 		assertEquals(v3, v1);
 		assertEquals(v3, v2);
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -37,5 +38,12 @@ public class IntegerTypeTest
 		IntegerExp v2 = t.create(3l);
 		assertEquals(v0, v2);
 		assertFalse(v1.equals(v2));
+	}
+
+	@Test
+	public void multipleConstructors()
+	{
+		BagOfAttributeExp bag1 = t.bagOf(1, 2, 3, 4);
+		BagOfAttributeExp bag2 = t.bagOf(t.create(1), t.create(2), t.create(3), t.create(4));
 	}
 }

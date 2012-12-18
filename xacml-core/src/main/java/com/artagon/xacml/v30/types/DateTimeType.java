@@ -11,7 +11,7 @@ import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.artagon.xacml.v30.DateTime;
 
-public enum DateTimeType implements AttributeExpType 
+public enum DateTimeType implements AttributeExpType
 {
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime");
 
@@ -35,13 +35,17 @@ public enum DateTimeType implements AttributeExpType
 	}
 
 	@Override
-	public DateTimeExp create(Object any, Object... params) {		
+	public DateTimeExp create(Object any, Object... params) {
 		return new DateTimeExp(this, DateTime.create(any));
 	}
 
 	@Override
 	public String getDataTypeId() {
 		return typeId;
+	}
+
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public enum DateTimeType implements AttributeExpType
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
@@ -68,7 +72,7 @@ public enum DateTimeType implements AttributeExpType
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

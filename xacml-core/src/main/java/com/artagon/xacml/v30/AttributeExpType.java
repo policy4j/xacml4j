@@ -49,6 +49,8 @@ public interface AttributeExpType  extends ValueType
 	 */
 	BagOfAttributeExpType bagType();
 
+	BagOfAttributeExp.Builder bag();
+
 	/**
 	 * Creates a bag from the given array of
 	 * {@link AttributeExp} instances

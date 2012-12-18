@@ -119,7 +119,7 @@ public class Result
 	 * @return a collection of resolved attributes
 	 */
 	public Collection<Attributes> getResolvedAttributes(){
-		return Collections.unmodifiableCollection(resolvedAttributes.values());
+		return resolvedAttributes.values();
 	}
 
 	public Attributes getAttribute(AttributeCategory categoryId){
@@ -135,7 +135,7 @@ public class Result
 	 * @return a collection of obligations
 	 */
 	public Collection<Obligation> getObligations(){
-		return Collections.unmodifiableCollection(obligations.values());
+		return obligations.values();
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class Result
 	 * @return a collection of associated advice
 	 */
 	public Collection<Advice> getAssociatedAdvice(){
-		return Collections.unmodifiableCollection(associatedAdvice.values());
+		return associatedAdvice.values();
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class Result
 	 * @return list of policy identifiers
 	 */
 	public Collection<CompositeDecisionRuleIDReference> getPolicyIdentifiers(){
-		return Collections.unmodifiableCollection(policyReferences);
+		return policyReferences;
 	}
 
 	@Override

@@ -15,22 +15,22 @@ public enum HexBinaryType implements AttributeExpType
 
 	private String typeId;
 	private BagOfAttributeExpType bagType;
-	
+
 	private HexBinaryType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	private boolean isConvertableFrom(Object any) {
-		return byte[].class.isInstance(any) || String.class.isInstance(any) 
+		return byte[].class.isInstance(any) || String.class.isInstance(any)
 				|| BinaryValue.class.isInstance(any);
 	}
-	
+
 	@Override
 	public HexBinaryExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type",
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
@@ -45,7 +45,7 @@ public enum HexBinaryType implements AttributeExpType
 	public HexBinaryExp fromXacmlString(String v, Object ...params) {
 		return new HexBinaryExp(this, BinaryValue.fromHexEncoded(v));
 	}
-    
+
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -61,11 +61,15 @@ public enum HexBinaryType implements AttributeExpType
 		return bagType.create(values);
 	}
 
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
+	}
+
 	@Override
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
@@ -75,7 +79,7 @@ public enum HexBinaryType implements AttributeExpType
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

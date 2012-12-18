@@ -14,33 +14,33 @@ import com.artagon.xacml.v30.BagOfAttributeExp;
 
 /**
  * A default XACML enviroment attributes resolver
- * 
+ *
  * @author Giedrius Trumpickas
  */
 class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
-{	
+{
 	public DefaultEnviromentAttributeResolver() {
 		super(AttributeResolverDescriptorBuilder.builder(
-				"urn:oasis:names:tc:xacml:1.0:environment:resolver", 
-				"XACML Enviroment Attributes Resolver", 
+				"urn:oasis:names:tc:xacml:1.0:environment:resolver",
+				"XACML Enviroment Attributes Resolver",
 				AttributeCategories.ENVIRONMENT)
 				.noCache()
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time",TIME)
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date",DATE)
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",DATETIME).build());
 	}
-	
+
 	@Override
 	protected Map<String, BagOfAttributeExp> doResolve(
 			ResolverContext context) throws Exception {
 		Calendar currentDateTime = context.getCurrentDateTime();
-		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();	
-		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time", 
-					TIME.create(currentDateTime).toBag());
-		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date", 
-					DATE.create(currentDateTime).toBag());
-		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", 
-					DATETIME.create(currentDateTime).toBag());
+		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time",
+					TIME.bagOf(currentDateTime));
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date",
+					DATE.bagOf(currentDateTime));
+		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",
+					DATETIME.bagOf(currentDateTime));
 		return v;
 	}
 }

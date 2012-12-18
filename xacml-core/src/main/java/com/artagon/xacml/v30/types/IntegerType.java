@@ -11,15 +11,15 @@ import com.google.common.base.Preconditions;
 public enum IntegerType implements AttributeExpType
 {
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer");
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
-	
+
 	private IntegerType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	private boolean isConvertableFrom(Object any) {
 		return Long.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
@@ -31,7 +31,7 @@ public enum IntegerType implements AttributeExpType
 	public IntegerExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"integer\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"integer\" type",
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
@@ -51,13 +51,13 @@ public enum IntegerType implements AttributeExpType
 	@Override
 	public IntegerExp fromXacmlString(String v, Object ...params) {
         Preconditions.checkNotNull(v);
-		if ((v.length() >= 1) && 
+		if ((v.length() >= 1) &&
         		(v.charAt(0) == '+')){
 			v = v.substring(1);
 		}
 		return new IntegerExp(this, Long.valueOf(v));
 	}
-	
+
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -77,17 +77,21 @@ public enum IntegerType implements AttributeExpType
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
+	}
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

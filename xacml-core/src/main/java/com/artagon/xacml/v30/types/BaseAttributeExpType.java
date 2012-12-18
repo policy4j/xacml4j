@@ -46,6 +46,10 @@ public abstract class BaseAttributeExpType<V extends AttributeExp> implements At
 		return typeId;
 	}
 
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
+	}
+
 	@Override
 	public final BagOfAttributeExpType bagType(){
 		return bagType;

@@ -26,11 +26,11 @@ public final class AttributeResolverDescriptorBuilder
 	private String issuer;
 	private List<AttributeReferenceKey> keys;
 	private int preferredCacheTTL = 0;
-	
+
 	private AttributeResolverDescriptorBuilder(
-			String id, 
-			String name, 
-			String issuer, 
+			String id,
+			String name,
+			String issuer,
 			AttributeCategory category){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
@@ -44,85 +44,94 @@ public final class AttributeResolverDescriptorBuilder
 		this.attributesByKey = new LinkedHashMap<AttributeDesignatorKey, AttributeDescriptor>();
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
-	
-	public static AttributeResolverDescriptorBuilder builder(String id, 
+
+	public static AttributeResolverDescriptorBuilder builder(String id,
 			String name, AttributeCategory category){
 		return builder(id, name, null, category);
 	}
-	
-	public static AttributeResolverDescriptorBuilder builder(String id, 
+
+	public static AttributeResolverDescriptorBuilder builder(String id,
 			String name, String issuer, AttributeCategory category){
 		return new AttributeResolverDescriptorBuilder(id, name, issuer, category);
 	}
-	
-	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category, 
+
+	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(new AttributeDesignatorKey(
 				category, attributeId, dataType, Strings.emptyToNull(issuer)));
 		return this;
 	}
-	
-	public AttributeResolverDescriptorBuilder requestContextKey(AttributeCategory category, 
+
+	public AttributeResolverDescriptorBuilder requestContextKey(AttributeCategory category,
 			String attributeId, AttributeExpType dataType)
 	{
 		return designatorKeyRef(category, attributeId, dataType, null);
 	}
-	
+
 	public AttributeResolverDescriptorBuilder requestContextKey(
-			AttributeCategory category, 
-			String xpath, AttributeExpType dataType, 
+			AttributeCategory category,
+			String xpath, AttributeExpType dataType,
 			String contextAttributeId)
 	{
 		this.keys.add(new AttributeSelectorKey(
 				category, xpath, dataType, Strings.emptyToNull(contextAttributeId)));
 		return this;
 	}
-	
+
 	public AttributeResolverDescriptorBuilder keys(Iterable<AttributeReferenceKey> keys){
 		Iterables.addAll(this.keys, keys);
 		return this;
 	}
-	
+
 	public AttributeResolverDescriptorBuilder noCache(){
 		this.preferredCacheTTL = -1;
 		return this;
 	}
-	
+
 	public AttributeResolverDescriptorBuilder cache(int ttl){
 		this.preferredCacheTTL = ttl;
 		return this;
 	}
-		
+
 	public AttributeResolverDescriptorBuilder attribute(
-			String attributeId, 
+			String attributeId,
 			AttributeExpType dataType){
 		return attribute(attributeId, dataType, null);
 	}
-	
+
+	public AttributeResolverDescriptorBuilder attributes(
+			Iterable<String> attributeIds,
+			AttributeExpType dataType){
+		for(String attributeId : attributeIds){
+			attribute(attributeId, dataType);
+		}
+		return this;
+	}
+
 	public AttributeResolverDescriptorBuilder attribute(
-			String attributeId, 
-			AttributeExpType dataType, 
+			String attributeId,
+			AttributeExpType dataType,
 			String[] defaultValue){
 		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType);
 		AttributeDesignatorKey key = new AttributeDesignatorKey(category, attributeId, dataType, issuer);
 		Preconditions.checkState(attributesById.put(attributeId, d) == null,
 				"Builder already has an attribute with id=\"%s\"", attributeId);
-		Preconditions.checkState( this.attributesByKey.put(key, d) == null, 
+		Preconditions.checkState( this.attributesByKey.put(key, d) == null,
 				"Builder already has an attribute with id=\"%s\"", attributeId);
 		return this;
 	}
-		
+
 	public AttributeResolverDescriptor build(){
 		return new AttributeResolverDescriptorImpl();
 	}
 
 	private class AttributeResolverDescriptorImpl extends BaseResolverDescriptor
-			implements AttributeResolverDescriptor 
+			implements AttributeResolverDescriptor
 	{
 		private Map<String, AttributeDescriptor> attributesById;
 		private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
-		
+
 		AttributeResolverDescriptorImpl() {
 			super(id, name, category, keys, preferredCacheTTL);
 			this.attributesById = ImmutableMap.copyOf(
@@ -131,22 +140,22 @@ public final class AttributeResolverDescriptorBuilder
 					AttributeResolverDescriptorBuilder.this.attributesByKey);
 			for(AttributeReferenceKey k : keys){
 				if(k instanceof AttributeDesignatorKey){
-					Preconditions.checkArgument(!canResolve((AttributeDesignatorKey)k), 
+					Preconditions.checkArgument(!canResolve((AttributeDesignatorKey)k),
 							"Resolver referers to itself via context reference key=\"{}\"", k);
 				}
 			}
 		}
-		
+
 		@Override
 		public String getIssuer() {
 			return issuer;
 		}
-		
+
 		@Override
 		public int getAttributesCount(){
 			return attributesById.size();
 		}
-		
+
 		public Set<String> getProvidedAttributeIds(){
 			return attributesById.keySet();
 		}
@@ -160,7 +169,7 @@ public final class AttributeResolverDescriptorBuilder
 		public AttributeDescriptor getAttribute(String attributeId) {
 			return attributesById.get(attributeId);
 		}
-		
+
 		public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey(){
 			return attributesByKey;
 		}
@@ -169,11 +178,11 @@ public final class AttributeResolverDescriptorBuilder
 		public boolean isAttributeProvided(String attributeId) {
 			return attributesById.containsKey(attributeId);
 		}
-		
+
 		@Override
 		public boolean canResolve(AttributeDesignatorKey ref)
 		{
-			if(getCategory().equals(ref.getCategory()) && 
+			if(getCategory().equals(ref.getCategory()) &&
 					((ref.getIssuer() != null)?ref.getIssuer().equals(getIssuer()):true)){
 				AttributeDescriptor d = getAttribute(ref.getAttributeId());
 				return (d != null)?d.getDataType().equals(ref.getDataType()):false;

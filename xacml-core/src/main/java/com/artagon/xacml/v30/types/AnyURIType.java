@@ -10,24 +10,24 @@ import com.artagon.xacml.v30.BagOfAttributeExpType;
 import com.google.common.base.Preconditions;
 
 public enum AnyURIType implements AttributeExpType
-{	
+{
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI");
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
-	
+
 	private AnyURIType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	@Override
 	public AnyURIExp fromXacmlString(String v, Object ...params) {
 		Preconditions.checkNotNull(v);
 		URI u = URI.create(v).normalize();
 		return new AnyURIExp(u);
 	}
-	
+
 	public boolean isConvertableFrom(Object any) {
 		return URI.class.isInstance(any) || String.class.isInstance(any);
 	}
@@ -36,7 +36,7 @@ public enum AnyURIType implements AttributeExpType
 	public AnyURIExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"anyURI\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"anyURI\" type",
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
@@ -49,6 +49,10 @@ public enum AnyURIType implements AttributeExpType
 		return typeId;
 	}
 
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
+	}
+
 	@Override
 	public BagOfAttributeExpType bagType() {
 		return bagType;
@@ -58,12 +62,12 @@ public enum AnyURIType implements AttributeExpType
 	public BagOfAttributeExp bagOf(AttributeExp... values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
@@ -73,7 +77,7 @@ public enum AnyURIType implements AttributeExpType
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;

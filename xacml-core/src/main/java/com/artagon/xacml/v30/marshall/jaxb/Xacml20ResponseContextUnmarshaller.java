@@ -40,7 +40,6 @@ import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.ResponseUnmarshaller;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
 import com.artagon.xacml.v30.types.DataTypeRegistry;
-import com.artagon.xacml.v30.types.DataTypeRegistryBuilder;
 import com.artagon.xacml.v30.types.StringType;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.base.Preconditions;
@@ -59,8 +58,8 @@ implements ResponseUnmarshaller
 	}
 
 	public Xacml20ResponseContextUnmarshaller(){
-		this(DataTypeRegistryBuilder.builder()
-				.withDefaultTypes()
+		this(DataTypeRegistry.Builder.builder()
+				.defaultTypes()
 				.build());
 	}
 

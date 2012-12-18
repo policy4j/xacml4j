@@ -11,28 +11,28 @@ import com.google.common.base.Preconditions;
 public enum DoubleType implements AttributeExpType
 {
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double");
-	
+
 	private String typeId;
 	private BagOfAttributeExpType bagType;
-	
+
 	private DoubleType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-	
+
 	public boolean isConvertableFrom(Object any) {
 		return Double.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
-		Float.class.isInstance(any) || Long.class.isInstance(any) 
+		Float.class.isInstance(any) || Long.class.isInstance(any)
 		|| String.class.isInstance(any);
 	}
-	
-	
+
+
 	@Override
 	public DoubleExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"double\" type", 
+				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"double\" type",
 				any, any.getClass()));
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
@@ -54,7 +54,7 @@ public enum DoubleType implements AttributeExpType
 		}
 		return new DoubleExp(this, (Double)any);
 	}
-	
+
 	@Override
 	public DoubleExp fromXacmlString(String v, Object ...params) {
 
@@ -64,7 +64,7 @@ public enum DoubleType implements AttributeExpType
         }
         return new DoubleExp(this, Double.parseDouble(v));
 	}
-	
+
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -80,21 +80,25 @@ public enum DoubleType implements AttributeExpType
 		return bagType.create(values);
 	}
 
+	public BagOfAttributeExp.Builder bag(){
+		return new BagOfAttributeExp.Builder(this);
+	}
+
 	@Override
 	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp bagOf(Object... values) {
 		return bagType.bagOf(values);
 	}
-	
+
 	@Override
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
 	}
-	
+
 	@Override
 	public String toString(){
 		return typeId;
