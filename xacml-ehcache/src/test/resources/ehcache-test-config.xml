@@ -11,11 +11,11 @@
 		memoryStoreEvictionPolicy="LRU" />
 		
 		
-	<cache name="com.artagon.xacml.pip.attributeCache"
+	<cache name="org.xacml4j.pip.attributeCache"
 		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="60"
 		timeToLiveSeconds="60" overflowToDisk="false" />
 		
-	<cache name="com.artagon.xacml.pip.contentCache"
+	<cache name="org.xacml4j.pip.contentCache"
 		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="30"
 		timeToLiveSeconds="60" overflowToDisk="false" />
 		

@@ -3,8 +3,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:util="http://www.springframework.org/schema/util" 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
-						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		
 	<bean id="cacheManager"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
@@ -14,16 +14,16 @@
 	<bean id="attributeCache"
 		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager" ref="cacheManager"/>		
-		<property name="cacheName" value="com.artagon.xacml.pip.attributeCache"/>		
+		<property name="cacheName" value="org.xacml4j.pip.attributeCache"/>		
 	</bean>
 	
 	<bean id="contentCache"
 		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager" ref="cacheManager"/>		
-		<property name="cacheName" value="com.artagon.xacml.pip.contentCache"/>		
+		<property name="cacheName" value="org.xacml4j.pip.contentCache"/>		
 	</bean>
 	
-	<bean id="pipCache" class="com.artagon.xacml.ehcache.PolicyInformationPointEHcacheProvider"> 
+	<bean id="pipCache" class="org.xacml4j.ehcache.PolicyInformationPointEHcacheProvider"> 
 		<constructor-arg ref="attributeCache"/>
 		<constructor-arg ref="contentCache"/>
 	</bean>

@@ -1,6 +1,6 @@
 
-package com.artagon.xacml.v30.protbuf;
-option java_package = "com.artagon.xacml.v30.protbuf";
+package org.xacml4j.v30.protbuf;
+option java_package = "org.xacml4j.v30.protbuf";
 option optimize_for = CODE_SIZE;
 
 enum AttributeDataTypeId
