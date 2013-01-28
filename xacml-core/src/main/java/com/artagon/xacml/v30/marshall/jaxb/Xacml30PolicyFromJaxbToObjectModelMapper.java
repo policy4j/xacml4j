@@ -73,7 +73,6 @@ import com.artagon.xacml.v30.pdp.VariableDefinition;
 import com.artagon.xacml.v30.pdp.VariableReference;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -312,12 +311,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		if(issuer == null){
 			return null;
 		}
-		Collection<Attribute> attributes = new LinkedList<Attribute>();
+		PolicyIssuer.Builder b = PolicyIssuer.builder();
+		b.content(createDOMNode(issuer.getContent()));
 		for(AttributeType a : issuer.getAttribute()){
-			attributes.add(create(a));
+			b.attribute(create(a));
 		}
-		return new PolicyIssuer(
-				createDOMNode(issuer.getContent()), attributes);
+		return b.build();
 	}
 
 	private Node createDOMNode(ContentType content) throws XacmlSyntaxException
@@ -523,21 +522,25 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			if(log.isDebugEnabled()){
 				log.debug(selector.getPath());
 			}
-			return AttributeSelector.create(
-					selector.getCategory(),
-					selector.getPath(),
-					selector.getContextSelectorId(),
-					selector.getDataType(),
-					selector.isMustBePresent());
+			return AttributeSelector
+					.builder() 
+					.category(selector.getCategory())
+					.xpath(selector.getPath())
+					.contextSelectorId(selector.getContextSelectorId())
+					.dataType(getDataType(selector.getDataType()))
+					.mustBePresent(selector.isMustBePresent())
+					.build();
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
-			return AttributeDesignator.create(
-					desig.getCategory(),
-					desig.getAttributeId(),
-					desig.getIssuer(),
-					desig.getDataType(),
-					desig.isMustBePresent());
+			return AttributeDesignator
+					.builder() 
+					.category(desig.getCategory())
+					.attributeId(desig.getAttributeId())
+					.issuer(desig.getIssuer())
+					.dataType(getDataType(desig.getDataType()))
+					.mustBePresent(desig.isMustBePresent())
+					.build();
 		}
 		throw new XacmlSyntaxException(
 				"Given JAXB object instance of=\"%s\" can not be converted"
@@ -561,8 +564,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		if (content == null || content.isEmpty()) {
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
-		return DataTypes.createAttributeValue(dataType,
-				content.iterator().next(), otherAttributes);
+		return getTypes().valueOf(dataType, content.iterator().next(), otherAttributes);
 	}
 
 	/**

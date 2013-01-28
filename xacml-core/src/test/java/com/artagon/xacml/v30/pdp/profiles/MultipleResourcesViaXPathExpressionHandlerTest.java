@@ -79,7 +79,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.content(content)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
@@ -88,7 +88,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build())
 
@@ -134,7 +134,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.content(content)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
@@ -146,7 +146,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.content(content)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
@@ -221,7 +221,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.content(content)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
@@ -231,7 +231,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.content(content)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build()
 				).build();
@@ -261,7 +261,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
@@ -270,7 +270,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build()
 				).build();

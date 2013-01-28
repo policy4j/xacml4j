@@ -8,9 +8,13 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.google.common.base.Ticker;
+
 
 public interface EvaluationContext
 {
+	Ticker getTicker();
+	
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on

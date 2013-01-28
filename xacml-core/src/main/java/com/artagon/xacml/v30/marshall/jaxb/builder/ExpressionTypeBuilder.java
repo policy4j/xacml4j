@@ -150,10 +150,10 @@ public interface ExpressionTypeBuilder
 
 		public static AttributeDesignatorTypeBuilder newBuilder(AttributeDesignator d){
 			return new AttributeDesignatorTypeBuilder()
-			.attributeId(d.getAttributeId())
-			.category(d.getCategory().toString())
-			.dataType(d.getDataType().getDataTypeId())
-			.issuer(d.getIssuer())
+			.attributeId(d.getReferenceKey().getAttributeId())
+			.category(d.getReferenceKey().getCategory().toString())
+			.dataType(d.getReferenceKey().getDataType().getDataTypeId())
+			.issuer(d.getReferenceKey().getIssuer())
 			.mustBePresent(d.isMustBePresent());
 		}
 

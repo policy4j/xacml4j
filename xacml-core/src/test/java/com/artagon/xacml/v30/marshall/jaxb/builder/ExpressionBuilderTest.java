@@ -10,10 +10,5 @@ public class ExpressionBuilderTest
 	@Test
 	public void testExpressionBuilder()
 	{
-		ApplyTypeBuilder.newBuilder()
-		.functionId("test")
-		.expression(VariableReferenceTypeBuilder.newBuilder()
-				.variableId("test"))
-				.build();
 	}
 }

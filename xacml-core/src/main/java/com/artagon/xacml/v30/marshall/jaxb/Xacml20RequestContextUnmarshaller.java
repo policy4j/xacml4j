@@ -36,7 +36,7 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
 import com.artagon.xacml.v30.pdp.RequestSyntaxException;
-import com.artagon.xacml.v30.types.DataTypes;
+import com.artagon.xacml.v30.types.Types;
 import com.artagon.xacml.v30.types.XPathExpType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -47,8 +47,44 @@ public final class Xacml20RequestContextUnmarshaller extends
 	BaseJAXBUnmarshaller<RequestContext>
 implements RequestUnmarshaller
 {
+	private final static Logger log = LoggerFactory.getLogger(Mapper.class);
+
+	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+
+	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
+	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
+
+	private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
+	private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
+
+	static
+	{
+		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
+		v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
+		v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
+		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
+
+		v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
+		v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
+		v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
+		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
+
+
+		v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
+		v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
+
+		v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
+		v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
+
+	}
+
 	private Mapper mapper20;
 
+	private Types xacmlTypes = Types.Builder.builder().defaultTypes().create();
+	
 	public Xacml20RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper20 = new Mapper();
@@ -62,42 +98,8 @@ implements RequestUnmarshaller
 		return mapper20.create((org.oasis.xacml.v20.jaxb.context.RequestType)jaxbInstance.getValue());
 	}
 
-	static class Mapper
+	public class Mapper
 	{
-		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
-
-		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-
-		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
-		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-
-		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
-		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
-
-		static
-		{
-			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
-			v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
-			v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-
-			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
-			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
-			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
-			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-
-
-			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
-			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-
-			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
-			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-
-		}
-
 		public RequestContext create(RequestType req) throws XacmlSyntaxException
 		{
 			Collection<Attributes> attributes = new LinkedList<Attributes>();
@@ -251,7 +253,7 @@ implements RequestUnmarshaller
 					content.isEmpty()){
 				throw new RequestSyntaxException("Attribute does not have content");
 			}
-			com.artagon.xacml.v30.AttributeExpType dataType = DataTypes.getType(dataTypeId);
+			com.artagon.xacml.v30.AttributeExpType dataType = xacmlTypes.getType(dataTypeId);
 			if(dataType == null){
 				throw new RequestSyntaxException(
 						"DataTypeId=\"%s\" can be be " +

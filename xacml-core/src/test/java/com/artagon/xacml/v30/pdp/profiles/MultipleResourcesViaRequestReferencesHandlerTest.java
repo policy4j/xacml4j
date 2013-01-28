@@ -51,7 +51,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr0")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId1").value(STRING.create("value0")).build(),
 						Attribute.builder("testId2").value(STRING.create("value1")).build())
 				.build();
@@ -59,7 +59,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr1 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr1")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build())
 				.build();
@@ -67,7 +67,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr2 = Attributes
 				.builder(AttributeCategories.ACTION)
 				.id("actionAttr0")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build())
 				.build();
@@ -75,7 +75,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr3 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId5").value(STRING.create("value0")).build(),
 						Attribute.builder("testId6").value(STRING.create("value1")).build())
 				.build();
@@ -83,7 +83,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr4 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr1")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build())
 				.build();
@@ -143,7 +143,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr0")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build())
 				.build();
@@ -151,7 +151,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr1 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
-				.attributes(
+				.attribute(
 						Attribute.builder("testId5").value(STRING.create("value0")).build(),
 						Attribute.builder("testId6").value(STRING.create("value1")).build())
 				.build();

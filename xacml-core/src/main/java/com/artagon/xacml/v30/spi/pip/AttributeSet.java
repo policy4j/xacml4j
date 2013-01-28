@@ -1,7 +1,5 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,32 +7,27 @@ import com.artagon.xacml.v30.AttributeDesignatorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
+import com.google.common.collect.ImmutableMap;
 
 public final class AttributeSet 
 {
-	private Map<String, BagOfAttributeExp> values;
+	private long timestamp;
+	private ImmutableMap<String, BagOfAttributeExp> values;
 	private AttributeResolverDescriptor d;
 	
-	public AttributeSet(
-			AttributeResolverDescriptor d){
-		this(d, Collections.<String, BagOfAttributeExp>emptyMap());
+	private AttributeSet(Builder b){
+		this.d = b.d;
+		this.values = b.mapBuilder.build();
+		this.timestamp = b.ticker.read();
 	}
 	
-	public AttributeSet(
-			AttributeResolverDescriptor d, 
-			Map<String, BagOfAttributeExp> values){
-		Preconditions.checkNotNull(d);
-		Preconditions.checkNotNull(values);
-		this.d = d;
-		this.values = new HashMap<String, BagOfAttributeExp>(values.size());
-		for(Entry<String, BagOfAttributeExp> e : values.entrySet()){
-			AttributeDescriptor ad = d.getAttribute(e.getKey());
-			Preconditions.checkArgument(ad != null, 
-					"Attribute descriptior with id=\"%s\" does not contain attribute with id=\"%s\"", 
-					d.getId(), e.getKey());
-			Preconditions.checkArgument(ad.getDataType().equals(e.getValue().getDataType()));
-			this.values.put(e.getKey(), e.getValue());
-		}
+	public static Builder builder(AttributeResolverDescriptor d){
+		return new Builder(d);
+	}
+	
+	public static Builder builder(AttributeResolver r){
+		return new Builder(r.getDescriptor());
 	}
 	
 	/**
@@ -44,6 +37,16 @@ public final class AttributeSet
 	 */
 	public AttributeResolverDescriptor getDescriptor(){
 		return d;
+	}
+	
+	/**
+	 * Gets a time when this 
+	 * attribute set was created
+	 * 
+	 * @return a time stamp in nanoseconds
+	 */
+	public long getTimestamp(){
+		return timestamp;
 	}
 	
 	/**
@@ -108,13 +111,8 @@ public final class AttributeSet
 		return d.getAttributesCount();
 	}
 	
-	public Map<String, BagOfAttributeExp> toMap()
-	{
-		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>(size());
-		for(String attributeId : getAttributeIds()){
-			v.put(attributeId, get(attributeId));
-		}
-		return v;
+	public Map<String, BagOfAttributeExp> toMap(){
+		return values;
 	}
 	
 	@Override
@@ -129,5 +127,61 @@ public final class AttributeSet
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(d, values);
+	}
+	
+	public static class Builder
+	{
+		private Ticker ticker = Ticker.systemTicker();
+		private AttributeResolverDescriptor d;
+		private ImmutableMap.Builder<String, BagOfAttributeExp> mapBuilder = ImmutableMap.builder();
+
+		Builder(AttributeResolverDescriptor d){
+			Preconditions.checkNotNull(d);
+			this.d = d;
+		}
+		
+		public Builder resolver(AttributeResolverDescriptor d){
+			Preconditions.checkNotNull(d);
+			this.d = d;
+			return this;
+		}
+		
+		public Builder ticker(Ticker t){
+			this.ticker = t;
+			return this;
+		}
+		
+		public Builder resolver(AttributeResolver r){
+			return resolver(r.getDescriptor());
+		}
+		
+		public Builder attribute(String id, BagOfAttributeExp value){
+			Preconditions.checkNotNull(id);
+			Preconditions.checkNotNull(value);
+			AttributeDescriptor attrDesc = d.getAttribute(id);
+
+			Preconditions.checkArgument(!(attrDesc == null), 
+					"Attribute=\"%s\" is not defined by resolver=\"%s\"",
+					id, d.getId());
+			Preconditions.checkArgument(attrDesc.getDataType().equals(value.getDataType()), 
+					"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
+					id, value.getDataType(), attrDesc.getDataType());
+			this.mapBuilder.put(id, value);
+			return this;
+		}
+		
+		public Builder attributes(Map<String, BagOfAttributeExp> attributes){
+			if(attributes == null){
+				return this;
+			}
+			for(Entry<String, BagOfAttributeExp> e : attributes.entrySet()){
+				attribute(e.getKey(), e.getValue());
+			}
+			return this;
+		}
+		
+		public AttributeSet build(){
+			return new AttributeSet(this);
+		}
 	}
 }

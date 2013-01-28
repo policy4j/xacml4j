@@ -9,8 +9,6 @@ import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.Expression;
 import com.artagon.xacml.v30.ValueType;
 
-
-
 /**
  * A base class for XACML attribute references
  * in the XACML policies
@@ -29,8 +27,8 @@ public abstract class AttributeReference  implements Expression
 	 * @param dataType attribute reference bag XACML
 	 * data type
 	 */
-	protected AttributeReference(boolean mustBePresent){
-		this.mustBePresent = mustBePresent;
+	protected AttributeReference(AttributeReferenceBuilder<?> b){
+		this.mustBePresent = b.mustBePresent;
 	}
 	
 	@Override
@@ -38,6 +36,11 @@ public abstract class AttributeReference  implements Expression
 		return getReferenceKey().getDataType().bagType();
 	}
 	
+	/**
+	 * Gets attribute reference key
+	 * 
+	 * @return an attribute reference key
+	 */
 	public abstract AttributeReferenceKey getReferenceKey();
 	
 	/**
@@ -74,5 +77,32 @@ public abstract class AttributeReference  implements Expression
 	@Override
 	public abstract BagOfAttributeExp evaluate(EvaluationContext context) 
 		throws EvaluationException;
-
+	
+	public static abstract class AttributeReferenceBuilder<T>
+	{
+		private boolean mustBePresent = false;
+		
+		public T category(AttributeCategory category){
+			getBuilder().category(category);
+			return getThis();
+		}
+		
+		public T category(String category){
+			getBuilder().category(category);
+			return getThis();
+		}
+		
+		public T dataType(AttributeExpType type){
+			getBuilder().dataType(type);
+			return getThis();
+		}
+		
+		public T mustBePresent(boolean present){
+			this.mustBePresent = present;
+			return getThis();
+		}
+		
+		protected abstract T getThis();
+		protected abstract AttributeReferenceKey.AttributeReferenceBuilder<?> getBuilder();
+	}
 }

@@ -23,7 +23,6 @@ import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeCategories;
 import com.artagon.xacml.v30.Attributes;
 import com.artagon.xacml.v30.Attributes.Builder;
-import com.artagon.xacml.v30.types.DataTypes;
 
 public class AttributesTest
 {
@@ -218,7 +217,7 @@ public class AttributesTest
 				.build();
 		assertEquals(2, test.getAttributeValues("testId10", null, INTEGER).size());
 		assertEquals(1, test.getAttributeValues("testId10", null, STRING).size());
-		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", DataTypes.STRING.getDataType()).size());
-		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", DataTypes.INTEGER.getDataType()).size());
+		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", STRING).size());
+		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", INTEGER).size());
 	}
 }

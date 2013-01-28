@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import com.artagon.xacml.v30.AttributeExp;
 import com.artagon.xacml.v30.AttributeExpType;
-import com.artagon.xacml.v30.types.DataTypeRegistry;
+import com.artagon.xacml.v30.types.Types;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -14,9 +14,9 @@ import com.google.gson.JsonParseException;
 
 class AttributeExpDeserializer implements JsonDeserializer<AttributeExp>
 {
-	private DataTypeRegistry typesRegistry;
+	private Types typesRegistry;
 	
-	public AttributeExpDeserializer(DataTypeRegistry registry){
+	public AttributeExpDeserializer(Types registry){
 		Preconditions.checkNotNull(registry);
 		this.typesRegistry = registry;
 	}

@@ -78,8 +78,13 @@ public class BaseEvaluationContextTest
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{
 		c.replay();
-		AttributeDesignatorKey k = new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testId", StringType.STRING, "test");
+		AttributeDesignatorKey k = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId")
+				.dataType(StringType.STRING)
+				.issuer("test")
+				.build();
 		context.setResolvedDesignatorValue(k, StringType.STRING.bagOf("aaa"));
 		assertEquals(StringType.STRING.bagOf("aaa"), context.resolve(k));
 		c.verify();
@@ -88,8 +93,13 @@ public class BaseEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{
-		AttributeDesignatorKey k = new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testId", StringType.STRING, "test");
+		AttributeDesignatorKey k = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId")
+				.dataType(StringType.STRING)
+				.issuer("test")
+				.build();
 		expect(handler.resolve(context, k)).andReturn(StringType.STRING.bagOf("aaa", "ccc"));
 		c.replay();
 		assertEquals(StringType.STRING.bagOf("aaa", "ccc"), context.resolve(k));

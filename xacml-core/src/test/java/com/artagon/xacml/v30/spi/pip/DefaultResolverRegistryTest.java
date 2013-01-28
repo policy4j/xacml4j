@@ -129,21 +129,23 @@ public class DefaultResolverRegistryTest
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
 		
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null));
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
+		
+		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
 		
 		assertEquals(2, Iterables.size(matchNoIssuer));
 		assertSame(r1, Iterables.get(matchNoIssuer, 0));
 		assertSame(r2, Iterables.get(matchNoIssuer, 1));
 		
-		Iterable<AttributeResolver> matchWithMatchingIssuer1 = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer1"));
+		Iterable<AttributeResolver> matchWithMatchingIssuer1 = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
 		
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer1));
 		assertSame(r1, Iterables.get(matchWithMatchingIssuer1, 0));
 		
-		Iterable<AttributeResolver> matchWithtMatchingIssuer2 = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer2"));
+		Iterable<AttributeResolver> matchWithtMatchingIssuer2 = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer2").build());
 		
 		assertEquals(1, Iterables.size(matchWithtMatchingIssuer2));
 		assertSame(r2, Iterables.get(matchWithtMatchingIssuer2, 0));
@@ -186,23 +188,25 @@ public class DefaultResolverRegistryTest
 		
 		control.replay();
 		
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
+		
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null));
+		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
 		
 		assertEquals(2, Iterables.size(matchNoIssuer));
 		assertSame(r1, Iterables.get(matchNoIssuer, 0));
 		assertSame(r2, Iterables.get(matchNoIssuer, 1));
 		
-		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer"));
+		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer").build());
 		
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer));
 		assertSame(r2, Iterables.get(matchWithMatchingIssuer, 0));
 		
-		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer1"));
+		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
 		
 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
 		
@@ -217,8 +221,10 @@ public class DefaultResolverRegistryTest
 				.attribute("testAttr1", IntegerType.INTEGER)
 				.build();
 		
-		AttributeDesignatorKey key = new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
 		
 		// add
 		expect(r1.getDescriptor()).andReturn(d);
@@ -240,7 +246,7 @@ public class DefaultResolverRegistryTest
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver("testId", r2);
 		
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
 		
 		assertFalse(Iterables.isEmpty(resolvers));
 		assertSame(r2, Iterables.get(resolvers, 0));
@@ -289,23 +295,26 @@ public class DefaultResolverRegistryTest
 		
 		control.replay();
 		
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
+		
+		
 		r.addAttributeResolver(r1);
 		r.addAttributeResolver(r2);
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null));
+		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
 		
 		assertEquals(2, Iterables.size(matchNoIssuer));
 		assertSame(r1, Iterables.get(matchNoIssuer, 0));
 		assertSame(r2, Iterables.get(matchNoIssuer, 1));
 		
-		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer"));
+		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer").build());
 		
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer));
 		assertSame(r2, Iterables.get(matchWithMatchingIssuer, 0));
 		
-		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, "Issuer1"));
+		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
 		
 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
 		
@@ -315,9 +324,12 @@ public class DefaultResolverRegistryTest
 	@Test
 	public void testAddResolverForPolicyIdCurrentPolicyHasMatchingResolver()
 	{
-		AttributeDesignatorKey key = new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testAttr1", IntegerType.INTEGER, null);
-		assertTrue(d1.canResolve(key));
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
+		
+		assertTrue(d1.canResolve(keyB.build()));
 		expect(r1.getDescriptor()).andReturn(d1);
 		Policy p = control.createMock(Policy.class);
 		expect(context.getCurrentPolicy()).andReturn(p);
@@ -326,7 +338,7 @@ public class DefaultResolverRegistryTest
 		expect(context.getParentContext()).andReturn(null);
 		control.replay();
 		r.addAttributeResolver("testId", r1);
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
 		assertFalse(Iterables.isEmpty(resolvers));
 		assertSame(r1, Iterables.getOnlyElement(resolvers));
 		control.verify();
@@ -342,10 +354,13 @@ public class DefaultResolverRegistryTest
 		
 		AttributeResolver resolver = control.createMock(AttributeResolver.class);
 		
-		AttributeDesignatorKey key = new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, 
-				"testAttr1", IntegerType.INTEGER, null);
+		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(IntegerType.INTEGER);
 		
-		assertTrue(d1.canResolve(key));
+		
+		assertTrue(d1.canResolve(keyB.build()));
 		
 		expect(resolver.getDescriptor()).andReturn(d1);
 		Policy p1 = control.createMock(Policy.class);
@@ -368,7 +383,7 @@ public class DefaultResolverRegistryTest
 		control.replay();
 		r.addAttributeResolver("testIdP2", resolver);
 		
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, key);
+		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
 		
 		assertFalse(Iterables.isEmpty(resolvers));
 		assertSame(resolver, Iterables.getOnlyElement(resolvers));

@@ -1,6 +1,5 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -62,9 +61,11 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 		TimerContext timerCtx = attrResolveTimer.time();
 		try
 		{
-			Map<String, BagOfAttributeExp> v = doResolve(context);
-			return new AttributeSet(descriptor, 
-					(v != null)?v:Collections.<String, BagOfAttributeExp>emptyMap());
+			return AttributeSet
+					.builder(descriptor)
+					.attributes(doResolve(context))
+					.ticker(context.getTicker())
+					.build();
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);

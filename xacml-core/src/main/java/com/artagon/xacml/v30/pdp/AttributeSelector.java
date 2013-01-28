@@ -3,17 +3,13 @@ package com.artagon.xacml.v30.pdp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.artagon.xacml.v30.AttributeCategories;
-import com.artagon.xacml.v30.AttributeCategory;
-import com.artagon.xacml.v30.AttributeExpType;
+import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.AttributeSelectorKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
 import com.artagon.xacml.v30.ExpressionVisitor;
 import com.artagon.xacml.v30.StatusCode;
-import com.artagon.xacml.v30.XacmlSyntaxException;
-import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Objects;
 
 public class AttributeSelector extends
@@ -23,91 +19,24 @@ public class AttributeSelector extends
 
 	private AttributeSelectorKey selectorKey;
 
-	public AttributeSelector(
-			AttributeCategory category,
-			String xpath,
-			String contextAttributeId,
-			AttributeExpType dataType,
-					boolean mustBePresent){
-		super(mustBePresent);
-		this.selectorKey = new AttributeSelectorKey(category, xpath, dataType, contextAttributeId);
+	private AttributeSelector(Builder b){
+		super(b);
+		this.selectorKey = b.keyBuilder.build();
 	}
 
-	public AttributeSelector(
-			AttributeCategory category,
-			String xpath,
-			AttributeExpType dataType,
-			boolean mustBePresent){
-		this(category, xpath, null, dataType, mustBePresent);
+	public static Builder builder(){
+		return new Builder();
 	}
-
-	public static AttributeSelector create(String categoryId, String xpath,
-			String contextAttributeId, String dataTypeId, boolean mustBePresent)
-		throws XacmlSyntaxException
-	{
-		AttributeCategory category = AttributeCategories.parse(categoryId);
-		return create(category, xpath, contextAttributeId, dataTypeId, mustBePresent);
-	}
-
-	public static AttributeSelector create(
-			AttributeCategory category,
-			String xpath,
-			String contextAttributeId,
-			String dataTypeId, boolean mustBePresent)
-		throws XacmlSyntaxException
-	{
-		AttributeExpType dataType = DataTypes.getType(dataTypeId);
-		return new AttributeSelector(category, xpath,
-				contextAttributeId, dataType, mustBePresent);
-	}
-
-	public static AttributeSelector create(String categoryId, String xpath,
-			String dataTypeId, boolean mustBePresent)
-		throws XacmlSyntaxException
-	{
-		return create(categoryId, xpath, null, dataTypeId, mustBePresent);
-	}
-
-
+	
 	@Override
 	public AttributeSelectorKey getReferenceKey() {
 		return selectorKey;
 	}
-
-	/**
-	 * An XPath expression whose context node is the Content
-	 * element of the attribute category indicated by the Category
-	 * attribute. There SHALL be no restriction on the XPath syntax,
-	 * but the XPath MUST NOT refer to or traverse any content
-	 * outside the Content element in any way.
-	 *
-	 * @return an XPath expression
-	 */
-	public String getPath(){
-		return selectorKey.getPath();
-	}
-
-	/**
-	 * This attribute id refers to the attribute (by its AttributeId)
-	 * in the request context in the category given by the Category attribute.
-	 * The referenced attribute MUST have data type
-	 * urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression,
-	 * and must select a single node in the content element.
-	 * The XPathCategory attribute of the referenced attribute MUST
-	 * be equal to the Category attribute of the attribute selector
-	 *
-	 * @return
-	 */
-	public String getContextSelectorId(){
-		return selectorKey.getContextSelectorId();
-	}
-
+	
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("path", selectorKey.getPath())
-		.add("category", selectorKey.getCategory())
-		.add("contextSelectorId", selectorKey.getContextSelectorId())
+		.add("selectorKey", selectorKey)
 		.add("mustBePresent", isMustBePresent())
 		.toString();
 	}
@@ -165,12 +94,12 @@ public class AttributeSelector extends
 				&& isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve xpath=\"{}\", category=\"{}\"",
-						getPath(), getCategory());
+						selectorKey.getPath(), selectorKey.getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(
 					context, selectorKey,
 				"Selector XPath expression=\"%s\" evaluated " +
-				"to empty node set and mustBePresents=\"true\"", getPath());
+				"to empty node set and mustBePresents=\"true\"", selectorKey.getPath());
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}
@@ -179,5 +108,34 @@ public class AttributeSelector extends
 	{
 		void visitEnter(AttributeSelector v);
 		void visitLeave(AttributeSelector v);
+	}
+	
+	public static class Builder extends AttributeReferenceBuilder<Builder>
+	{
+		private AttributeSelectorKey.Builder keyBuilder = AttributeSelectorKey.builder();
+			
+		public Builder xpath(String xpath){
+			keyBuilder.xpath(xpath);
+			return this;
+		}
+		
+		public Builder contextSelectorId(String id){
+			keyBuilder.contextSelectorId(id);
+			return this;
+		}
+		
+		public AttributeSelector build(){
+			return new AttributeSelector(this);
+		}
+
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+
+		@Override
+		protected AttributeReferenceKey.AttributeReferenceBuilder<?> getBuilder() {
+			return keyBuilder;
+		}
 	}
 }

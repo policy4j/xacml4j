@@ -4,10 +4,7 @@ import java.util.Collection;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 
 public class ResponseContext
 {
@@ -62,7 +59,7 @@ public class ResponseContext
 			return this;
 		}
 
-		public Builder result(Iterable<Result> r){
+		public Builder results(Iterable<Result> r){
 			Preconditions.checkNotNull(r);
 			this.b.addAll(r);
 			return this;

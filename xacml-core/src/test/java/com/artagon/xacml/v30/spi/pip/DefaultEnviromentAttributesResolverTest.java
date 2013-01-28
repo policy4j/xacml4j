@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.artagon.xacml.v30.types.DateTimeType;
 import com.artagon.xacml.v30.types.DateType;
 import com.artagon.xacml.v30.types.TimeType;
+import com.google.common.base.Ticker;
 
 public class DefaultEnviromentAttributesResolverTest 
 {
@@ -33,6 +34,7 @@ public class DefaultEnviromentAttributesResolverTest
 		Calendar now = Calendar.getInstance();
 		expect(context.getDescriptor()).andReturn(r.getDescriptor());
 		expect(context.getCurrentDateTime()).andReturn(now);
+		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 		c.replay();
 		AttributeSet a = r.resolve(context);
 		assertEquals(DateTimeType.DATETIME.bagOf(DateTimeType.DATETIME.create(now)), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));

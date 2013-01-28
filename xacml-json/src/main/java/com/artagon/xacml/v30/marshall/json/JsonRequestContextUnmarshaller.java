@@ -11,7 +11,7 @@ import com.artagon.xacml.v30.RequestContext;
 import com.artagon.xacml.v30.RequestReference;
 import com.artagon.xacml.v30.XacmlSyntaxException;
 import com.artagon.xacml.v30.marshall.RequestUnmarshaller;
-import com.artagon.xacml.v30.types.DataTypeRegistry;
+import com.artagon.xacml.v30.types.Types;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -20,7 +20,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 {
 	private Gson json;
 
-	public JsonRequestContextUnmarshaller(DataTypeRegistry typesRegistry)
+	public JsonRequestContextUnmarshaller(Types typesRegistry)
 
 	{
 		this.json = new GsonBuilder()

@@ -7,6 +7,6 @@ public class DataTypesRegistryBuilderTest
 	@Test
 	public void createDefaultBuilder()
 	{
-		DataTypeRegistry.Builder.builder().defaultTypes().build();
+		Types.Builder.builder().defaultTypes().create();
 	}
 }

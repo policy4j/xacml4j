@@ -75,10 +75,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest() 
 		throws EvaluationException
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, null);
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(INTEGER)
+				.build();
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
@@ -99,10 +101,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet() 
 		throws Exception
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, null);
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(INTEGER)
+				.build();
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
@@ -124,10 +128,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute() 
 		throws Exception
 	{
-		final AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, null);
+		final AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(INTEGER)
+				.build();
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
@@ -153,10 +159,13 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient", INTEGER, null);
-		
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient")
+				.dataType(INTEGER)
+				.build();
+
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
 		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
@@ -173,9 +182,12 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", DATE, null);
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(DATE)
+				.build();
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
@@ -193,10 +205,13 @@ public class DefaultEvaluationContextHandlerTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				DATE, null);
+		
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(DATE)
+				.build();
 		
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
@@ -214,11 +229,13 @@ public class DefaultEvaluationContextHandlerTest
 	@Test
 	public void testSelectorResolveContentInRequestExistXPathReturnsEmptySet() throws EvaluationException
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/test", 
-				INTEGER, null);
-		
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/test")
+				.dataType(INTEGER)
+				.build();
+			
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
 		
 		expect(requestContextCallback.getAttributeValue(ref.getCategory(), 
@@ -237,11 +254,14 @@ public class DefaultEvaluationContextHandlerTest
 	public void testSelectorResolveContentIsNotInRequestPIPThrowsRuntimeException() 
 		throws Exception
 	{
-		AttributeSelectorKey ref = new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patient-number/text()", 
-				INTEGER, null);
 		
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(INTEGER)
+				.build();
+			
 		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 		
 		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new RuntimeException());
@@ -255,8 +275,12 @@ public class DefaultEvaluationContextHandlerTest
 	@Test
 	public void testDesignatorResolveAttributeIsInRequest() throws Exception
 	{
-		AttributeDesignatorKey ref = new AttributeDesignatorKey(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null);
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.RESOURCE)
+				.attributeId("testId")
+				.dataType(ANYURI)
+				.build();
 		
 		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
@@ -272,9 +296,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testDesignatorResolveAttributeIsNotInRequest() 
 		throws Exception
 	{
-		AttributeDesignatorKey ref = new AttributeDesignatorKey(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null);
-		
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.RESOURCE)
+				.attributeId("testId")
+				.dataType(ANYURI)
+				.build();
 	
 		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
@@ -294,9 +321,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testDesignatorResolveAttributeIsNotInRequestPIPThrowsRuntimeException() 
 		throws Exception
 	{
-		AttributeDesignatorKey ref = new AttributeDesignatorKey(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null);
-		
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.RESOURCE)
+				.attributeId("testId")
+				.dataType(ANYURI)
+				.build();
 	
 		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
@@ -313,9 +343,12 @@ public class DefaultEvaluationContextHandlerTest
 	public void testDesignatorResolveAttributeIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute() 
 		throws Exception
 	{
-		final AttributeDesignatorKey ref = new AttributeDesignatorKey(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null);
-		
+		final AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.RESOURCE)
+				.attributeId("testId")
+				.dataType(ANYURI)
+				.build();
 	
 		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());

@@ -35,9 +35,14 @@ public class AttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer",
-				IntegerType.INTEGER, true);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
@@ -55,9 +60,15 @@ public class AttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer", 
-				IntegerType.INTEGER, true);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.mustBePresent(true)
+				.dataType(IntegerType.INTEGER)
+				.build();
+				
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
@@ -76,9 +87,14 @@ public class AttributeDesignatorTest
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(
-				AttributeCategories.SUBJECT_RECIPIENT, "testId", "testIssuer", 
-				IntegerType.INTEGER, true);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(
 				IntegerType.INTEGER.bagOf(
@@ -94,8 +110,14 @@ public class AttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, false);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(IntegerType.INTEGER.emptyBag());
 		replay(context);
@@ -109,8 +131,14 @@ public class AttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, false);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
@@ -124,8 +152,14 @@ public class AttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, true);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, desig.getReferenceKey(), "Errror"));
 		replay(context);
@@ -136,8 +170,14 @@ public class AttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, false);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
 				desig.getReferenceKey(), "Errror"));
@@ -152,8 +192,14 @@ public class AttributeDesignatorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueContextHandlerThrowsRuntimeException() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, true);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
@@ -164,8 +210,14 @@ public class AttributeDesignatorTest
 	@Test
 	public void testMustBePresentFalseContextHandlerThrowsRuntimeException() throws EvaluationException
 	{
-		AttributeDesignator desig = new AttributeDesignator(AttributeCategories.SUBJECT_RECIPIENT,
-				"testId", "testIssuer",  type, false);
+		AttributeDesignator desig = AttributeDesignator
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(IntegerType.INTEGER)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);

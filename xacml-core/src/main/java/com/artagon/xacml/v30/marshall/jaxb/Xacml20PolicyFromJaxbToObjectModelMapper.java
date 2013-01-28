@@ -71,7 +71,6 @@ import com.artagon.xacml.v30.pdp.VariableDefinition;
 import com.artagon.xacml.v30.pdp.VariableReference;
 import com.artagon.xacml.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import com.artagon.xacml.v30.spi.function.FunctionProvider;
-import com.artagon.xacml.v30.types.DataTypes;
 import com.google.common.base.Preconditions;
 
 public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
@@ -618,16 +617,19 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			throw new XacmlSyntaxException("Attribute does not have content");
 		}
 
-		return DataTypes.createAttributeValue(dataType, content.iterator().next());
+		return getTypes().valueOf(dataType, content.iterator().next());
 	}
 
 	private AttributeSelector createSelector(AttributeCategories categoryId,
 			AttributeSelectorType selector) throws XacmlSyntaxException
 	{
-		String xpath = transformSelectorXPath(selector);
-		return AttributeSelector.create(categoryId, xpath, null,
-				selector.getDataType(),
-				selector.isMustBePresent());
+		return AttributeSelector
+				.builder()
+				.category(categoryId)
+				.xpath(transformSelectorXPath(selector))
+				.dataType(getDataType(selector.getDataType()))
+				.mustBePresent(selector.isMustBePresent())
+				.build();
 	}
 
 	private AttributeCategories getSelectoryCategory(AttributeSelectorType selector) {
@@ -648,13 +650,16 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	 * @throws XacmlSyntaxException
 	 */
 	private AttributeDesignator createDesignator(AttributeCategory categoryId,
-			AttributeDesignatorType ref) throws XacmlSyntaxException {
-
-		return AttributeDesignator.create(categoryId,
-				ref.getAttributeId(),
-				ref.getIssuer(),
-				ref.getDataType(),
-				ref.isMustBePresent());
+			AttributeDesignatorType ref) throws XacmlSyntaxException 
+	{
+		return AttributeDesignator
+				.builder()
+				.category(categoryId)
+				.attributeId(ref.getAttributeId())
+				.dataType(getDataType(ref.getDataType()))
+				.mustBePresent(ref.isMustBePresent())
+				.issuer(ref.getIssuer())
+				.build();
 	}
 
 	/**

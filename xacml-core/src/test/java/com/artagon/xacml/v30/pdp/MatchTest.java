@@ -65,7 +65,7 @@ public class MatchTest
 	{
 		expect(ref.getDataType()).andReturn(INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(context,
-				new AttributeDesignatorKey(AttributeCategories.RESOURCE, "testId", INTEGER, null), "Failed"));
+				AttributeDesignatorKey.builder().category(AttributeCategories.RESOURCE).dataType(INTEGER).attributeId("testId").build(), "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttributeError());
 		c.replay();
 		Match m = new Match(spec, INTEGER.create(1), ref);

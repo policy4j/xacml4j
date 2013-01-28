@@ -51,8 +51,11 @@ public abstract class BaseContentResolver implements ContentResolver
 		}
 		try{
 			
-			Node node = doResolve(context);
-			return new Content(descriptor, node);
+			return Content.builder()
+					.resolver(this)
+					.content(doResolve(context))
+					.ticker(context.getTicker())
+					.build();
 		}catch(Exception e){
 			throw e;
 		}		

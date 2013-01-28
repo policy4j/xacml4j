@@ -1,13 +1,9 @@
 package com.artagon.xacml.v30.pdp;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.artagon.xacml.util.DOMUtil;
-import com.artagon.xacml.v30.Attribute;
 import com.artagon.xacml.v30.AttributeContainer;
 import com.google.common.base.Objects;
 
@@ -16,23 +12,13 @@ public class PolicyIssuer extends AttributeContainer
 {
 	private Document content;
 	
-	public PolicyIssuer(Node content, 
-			Collection<Attribute> attributes){
-		super(attributes);
-		this.content = DOMUtil.copyNode(content);
+	private PolicyIssuer(Builder b){
+		super(b);
+		this.content = b.content;
 	}
 	
-	public PolicyIssuer(Collection<Attribute> attributes){
-		this(null ,attributes);
-	}
-	
-	public PolicyIssuer(Node content, 
-			Attribute ...attributes){
-		this(content, Arrays.asList(attributes));
-	}
-	
-	public PolicyIssuer(Attribute ...attributes){
-		this(null, Arrays.asList(attributes));
+	public static Builder builder(){
+		return new Builder();
 	}
 	
 	/**
@@ -75,5 +61,24 @@ public class PolicyIssuer extends AttributeContainer
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+	
+	public static class Builder extends AttributeContainerBuilder<Builder>
+	{
+		private Document content;
+		
+		public Builder content(Node content){
+			this.content = DOMUtil.copyNode(content);
+			return this;
+		}
+		
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+		
+		public PolicyIssuer build(){
+			return new PolicyIssuer(this);
+		}
 	}
 }

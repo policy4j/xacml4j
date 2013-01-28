@@ -1,15 +1,16 @@
 package com.artagon.xacml.v30.spi.pip;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import com.artagon.xacml.v30.AttributeReferenceKey;
 import com.artagon.xacml.v30.BagOfAttributeExp;
 import com.artagon.xacml.v30.EvaluationContext;
 import com.artagon.xacml.v30.EvaluationException;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
+import com.google.common.collect.ImmutableList;
 
 final class DefaultResolverContext implements
 		ResolverContext 
@@ -33,14 +34,17 @@ final class DefaultResolverContext implements
 		return context.getCurrentDateTime();
 	}
 	
+	public Ticker getTicker(){
+		return context.getTicker();
+	}
+	
 	@Override
 	public ResolverDescriptor getDescriptor(){
 		return desciptor;
 	}
 	
 	@Override
-	public List<BagOfAttributeExp> getKeys()
-	{
+	public List<BagOfAttributeExp> getKeys(){
 		return keys;
 	}
 	
@@ -48,13 +52,21 @@ final class DefaultResolverContext implements
 			List<AttributeReferenceKey> keyRefs) throws EvaluationException
 	{
 		if(keyRefs == null){
-			return Collections.<BagOfAttributeExp>emptyList();
+			return ImmutableList.of();
 		}
-		List<BagOfAttributeExp> keys = new ArrayList<BagOfAttributeExp>(keyRefs.size());
+		ImmutableList.Builder<BagOfAttributeExp> b = ImmutableList.builder();
 		for(AttributeReferenceKey ref : keyRefs){
-			keys.add(ref.resolve(context));
+			b.add(ref.resolve(context));
 		}
-		return Collections.unmodifiableList(keys);
+		return b.build();
+	}
+	
+	public String toString(){
+		return Objects.toStringHelper(this)
+				.add("context", context)
+				.add("descriptor", desciptor)
+				.add("keys", keys)
+				.toString();
 	}
 	
 }

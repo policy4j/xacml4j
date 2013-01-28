@@ -24,6 +24,7 @@ import com.artagon.xacml.v30.StatusCode;
 import com.artagon.xacml.v30.ValueExpression;
 import com.artagon.xacml.v30.XPathVersion;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -41,6 +42,10 @@ class DelegatingEvaluationContext implements EvaluationContext
 		this.delegate = context;
 	}
 
+	public Ticker getTicker(){
+		return delegate.getTicker();
+	}
+	
 	@Override
 	public EvaluationContext getParentContext(){
 		return delegate;

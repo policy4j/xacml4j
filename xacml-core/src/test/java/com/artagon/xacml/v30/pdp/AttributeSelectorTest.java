@@ -33,10 +33,13 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenTrueAndReturnsNonEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, true);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
 		replay(context);
@@ -49,10 +52,13 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, false);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andReturn(
 				DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
@@ -66,10 +72,13 @@ public class AttributeSelectorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, true);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
 		replay(context);
@@ -80,10 +89,13 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, false);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
 		replay(context);
@@ -96,16 +108,18 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, false);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(false)
+				.build();
+	
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
-				new AttributeSelectorKey(AttributeCategories.SUBJECT_RECIPIENT, 
-						"/md:record/md:patient/md:patientDoB/text()", 
-						DATE, null), 
-				StatusCode.createProcessingError(), new NullPointerException()));
+		expect(context.resolve(capture(c))).andThrow(
+				new AttributeReferenceEvaluationException(context, ref.getReferenceKey(), 
+						StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, DATE.emptyBag());
@@ -116,10 +130,13 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, false);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(false)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
@@ -132,10 +149,13 @@ public class AttributeSelectorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, true);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
@@ -146,17 +166,17 @@ public class AttributeSelectorTest
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
-		AttributeSelector ref = new AttributeSelector(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, true);
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(DATE)
+				.mustBePresent(true)
+				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
-				new AttributeSelectorKey(
-				AttributeCategories.SUBJECT_RECIPIENT, 
-				"/md:record/md:patient/md:patientDoB/text()", 
-				DATE, null), 
-				StatusCode.createProcessingError(), new NullPointerException()));
+		expect(context.resolve(capture(c))).andThrow(
+				new AttributeReferenceEvaluationException(context, 
+						ref.getReferenceKey(), StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		ref.evaluate(context);
 		verify(context);

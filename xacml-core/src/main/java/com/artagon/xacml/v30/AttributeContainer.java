@@ -162,7 +162,7 @@ public class AttributeContainer
 	{
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
-		public T attributes(Attribute ...attrs)
+		public T attribute(Attribute ...attrs)
 		{
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);
