@@ -1,14 +1,11 @@
 package org.xacml4j.v30.spi.pip;
 
-import java.util.List;
-
-import org.xacml4j.v30.BagOfAttributeExp;
-
+import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 public final class DefaultPolicyInformationPointCacheProvider 
-	extends BasePolicyInformationPointCacheProvider
+	implements PolicyInformationPointCacheProvider
 {
 	private Cache<ResolverCacheKey, AttributeSet> attributeCache;
 	private Cache<ResolverCacheKey, Content> contentCache;
@@ -29,29 +26,65 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.maximumSize(maxContentSize)
 				.build();
 	}
-
-	@Override
-	protected Content doGetContent(ContentResolverDescriptor d,
-			List<BagOfAttributeExp> keys) {
-		return contentCache.getIfPresent(ResolverCacheKey.builder().id(d).keys(keys).build());
+	
+	public Content getContent(ResolverContext context) {
+		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
+		if(d.isCachable()){
+			Content v = contentCache.getIfPresent(ResolverCacheKey
+					.builder()
+					.id(d)
+					.keys(context.getKeys())
+					.build());
+			return isExpired(v, context)?null:v;
+		}
+		return null;
+	}
+	
+	public void putContent(ResolverContext context, Content content) {
+		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
+		Preconditions.checkArgument(context.getDescriptor() == content.getDescriptor());
+		if(d.isCachable()){
+			contentCache.put(ResolverCacheKey
+					.builder()
+					.id(d)
+					.keys(context.getKeys())
+					.build(), content);
+		}
+	}
+	
+	public AttributeSet getAttributes(ResolverContext context) {
+		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
+		if(d.isCachable()){
+			AttributeSet v = attributeCache.getIfPresent(ResolverCacheKey
+					.builder()
+					.id(d)
+					.keys(context.getKeys())
+					.build());
+			return isExpired(v, context)?null:v;
+		}
+		return null;
 	}
 
 	@Override
-	protected AttributeSet doGetAttributes(AttributeResolverDescriptor d,
-			List<BagOfAttributeExp> keys) {
-		
-		return attributeCache.getIfPresent(ResolverCacheKey.builder().id(d).keys(keys).build());
+	public final void putAttributes(ResolverContext context, AttributeSet v) {
+		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
+		Preconditions.checkArgument(d.getId().equals(v.getDescriptor().getId()));
+		if(d.isCachable()){
+			attributeCache.put(ResolverCacheKey
+					.builder()
+					.id(d)
+					.keys(context.getKeys())
+					.build(), v);
+		}
 	}
 
-	@Override
-	protected void doPutContent(ContentResolverDescriptor d,
-			List<BagOfAttributeExp> keys, Content content) {
-		contentCache.put(ResolverCacheKey.builder().id(d).keys(keys).build(), content);
+	private boolean isExpired(AttributeSet v, ResolverContext context){
+		return ((context.getTicker().read() - v.getTimestamp()) / 
+				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
-
-	@Override
-	protected void doPutAttributes(AttributeResolverDescriptor d,
-			List<BagOfAttributeExp> keys, AttributeSet v) {
-		attributeCache.put(ResolverCacheKey.builder().id(d).keys(keys).build(), v);
+	
+	private boolean isExpired(Content v, ResolverContext context){
+		return ((context.getTicker().read() - v.getTimestamp()) / 
+				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 }
