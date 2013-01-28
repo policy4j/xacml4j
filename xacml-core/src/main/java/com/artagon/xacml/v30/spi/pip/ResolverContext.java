@@ -17,6 +17,11 @@ public interface ResolverContext
 	 */
 	Calendar getCurrentDateTime();
 	
+	/**
+	 * Gets ticker
+	 * 
+	 * @return {@link Ticker}
+	 */
 	Ticker getTicker();
 	
 	/**
