@@ -30,24 +30,24 @@ public class RequestTest
 	public void init()
 	{
 			this.resource0 = Attributes.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId10").value(STRING.create("value0")).build(),
 						Attribute.builder("testId11").value(STRING.create("value1")).build())
 				.build();
 		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId11").value(STRING.create("value0")).build(),
 						Attribute.builder("testId22").value(STRING.create("value1")).build(),
 						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),
 						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(STRING.create("value2")).build())
 				.build();
 		this.subject0 =  Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId31").value(STRING.create("value0")).build(),
 						Attribute.builder("testId32").value(STRING.create("value1")).build())
 				.build();
 		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_CODEBASE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId11").value(STRING.create("value0")).build(),
 						Attribute.builder("testId22").value(STRING.create("value1")).build(),
 						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),

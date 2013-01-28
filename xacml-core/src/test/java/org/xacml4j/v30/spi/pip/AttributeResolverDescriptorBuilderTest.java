@@ -31,10 +31,7 @@ public class AttributeResolverDescriptorBuilderTest
 		.attribute("testId2", StringType.STRING)
 		.requestContextKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER)
 		.build();
-		
-		
 	}
-	
 	
 	@Test
 	public void testBuildDescriptorWithIssuer()
@@ -47,31 +44,32 @@ public class AttributeResolverDescriptorBuilderTest
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, d.getCategory());
-		assertTrue(d.canResolve(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null)));
-		assertTrue(d.canResolve(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer")));
-		assertFalse(d.canResolve(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", StringType.STRING, "issuer")));
+		
+		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(IntegerType.INTEGER);
+		
+		assertTrue(d.canResolve(key.build()));
+		assertTrue(d.canResolve(key.issuer("issuer").build()));
+		assertFalse(d.canResolve(key.dataType(StringType.STRING).build()));
 		
 		Map<AttributeDesignatorKey, AttributeDescriptor> byKey = d.getAttributesByKey();
 		assertEquals(2, byKey.size());
 	
-		assertNotNull(byKey.get(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer")));
-		assertNotNull(byKey.get(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId2", StringType.STRING, "issuer")));
+		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId1").dataType(IntegerType.INTEGER).issuer("issuer");
+		
+		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId2").dataType(StringType.STRING).issuer("issuer");
+		
+		assertNotNull(byKey.get(key0.build()));
+		assertNotNull(byKey.get(key1.build()));
 	
 		
 		Iterable<AttributeDesignatorKey> keys = d.getAttributesByKey().keySet();
 		
-		assertEquals(new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer"), 
-				Iterables.get(keys, 0));
-		assertEquals(new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId2", StringType.STRING, "issuer"), 
-				Iterables.get(keys, 1));
+		assertEquals(key0.build(), Iterables.get(keys, 0));
+		assertEquals(key1.build(), Iterables.get(keys, 1));
 	}
 	
 	@Test
@@ -85,19 +83,24 @@ public class AttributeResolverDescriptorBuilderTest
 		assertEquals("name", d.getName());
 		assertNull(d.getIssuer());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, d.getCategory());
-		assertTrue(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null)));
-		assertFalse(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer")));
-		assertFalse(d.canResolve(
-				new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", StringType.STRING, "issuer")));
+		
+		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(IntegerType.INTEGER);
+		
+		assertTrue(d.canResolve(key.build()));
+		assertFalse(d.canResolve(key.issuer("issuer").build()));
+		assertFalse(d.canResolve(key.dataType(StringType.STRING).build()));
 		
 		
 		Iterable<AttributeDesignatorKey> keys = d.getAttributesByKey().keySet();
 		
-		assertEquals(new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null), 
-				Iterables.get(keys, 0));
-		assertEquals(new AttributeDesignatorKey(AttributeCategories.SUBJECT_ACCESS, "testId2", StringType.STRING, null), 
-				Iterables.get(keys, 1));
+		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId1").dataType(IntegerType.INTEGER);
+		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId2").dataType(StringType.STRING);
+		
+		assertEquals(key0.build(), Iterables.get(keys, 0));
+		assertEquals(key1.build(), Iterables.get(keys, 1));
 	}
 }

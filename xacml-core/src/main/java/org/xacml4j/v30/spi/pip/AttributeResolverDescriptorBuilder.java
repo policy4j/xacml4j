@@ -59,8 +59,12 @@ public final class AttributeResolverDescriptorBuilder
 	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
-		this.keys.add(new AttributeDesignatorKey(
-				category, attributeId, dataType, Strings.emptyToNull(issuer)));
+		this.keys.add(AttributeDesignatorKey
+				.builder()
+				.category(category)
+				.attributeId(attributeId)
+				.dataType(dataType)
+				.issuer(issuer).build());
 		return this;
 	}
 
@@ -75,8 +79,13 @@ public final class AttributeResolverDescriptorBuilder
 			String xpath, AttributeExpType dataType,
 			String contextAttributeId)
 	{
-		this.keys.add(new AttributeSelectorKey(
-				category, xpath, dataType, Strings.emptyToNull(contextAttributeId)));
+		this.keys.add(AttributeSelectorKey
+				.builder()
+				.category(category)
+				.xpath(xpath)
+				.dataType(dataType)
+				.contextSelectorId(contextAttributeId)
+				.build());
 		return this;
 	}
 
@@ -115,7 +124,12 @@ public final class AttributeResolverDescriptorBuilder
 			AttributeExpType dataType,
 			String[] defaultValue){
 		AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType);
-		AttributeDesignatorKey key = new AttributeDesignatorKey(category, attributeId, dataType, issuer);
+		AttributeDesignatorKey key = AttributeDesignatorKey.builder()
+				.category(category)
+				.attributeId(attributeId)
+				.dataType(dataType)
+				.issuer(issuer)
+				.build();
 		Preconditions.checkState(attributesById.put(attributeId, d) == null,
 				"Builder already has an attribute with id=\"%s\"", attributeId);
 		Preconditions.checkState( this.attributesByKey.put(key, d) == null,

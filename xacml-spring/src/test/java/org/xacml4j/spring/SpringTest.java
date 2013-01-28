@@ -63,7 +63,10 @@ public class SpringTest extends AbstractJUnit4SpringContextTests
 		expect(parentContext.getCurrentPolicySet()).andReturn(null);
 		expect(parentContext.getParentContext()).andReturn(null);
 		c.replay();
-		resolverRegistry.getMatchingAttributeResolvers(policyContext, new AttributeDesignatorKey(AttributeCategories.parse("subject"), "testId1", StringType.STRING, null));
+		resolverRegistry.getMatchingAttributeResolvers(policyContext, AttributeDesignatorKey.builder()
+				.category(AttributeCategories.parse("subject"))
+				.attributeId("testId1")
+				.dataType(StringType.STRING).build());
 		c.verify();
 	}
 }

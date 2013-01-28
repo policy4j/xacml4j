@@ -15,7 +15,7 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.DataTypes;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -29,6 +29,7 @@ public class PolicyUnmarshallerSupport
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
+	private Types types = Types.Builder.builder().defaultTypes().create();
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,
@@ -113,7 +114,11 @@ public class PolicyUnmarshallerSupport
 	protected AttributeExpType getDataType(String typeId) 
 		throws XacmlSyntaxException
 	{
-		return DataTypes.getType(typeId);
+		return types.getType(typeId);
+	}
+	
+	protected Types getTypes(){
+		return types;
 	}
 	
 	protected  AttributeExp createAttributeValue(

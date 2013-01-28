@@ -11,7 +11,7 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshall.RequestUnmarshaller;
-import org.xacml4j.v30.types.DataTypeRegistry;
+import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +21,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
 {
 	private Gson json;
 
-	public JsonRequestContextUnmarshaller(DataTypeRegistry typesRegistry)
+	public JsonRequestContextUnmarshaller(Types typesRegistry)
 
 	{
 		this.json = new GsonBuilder()

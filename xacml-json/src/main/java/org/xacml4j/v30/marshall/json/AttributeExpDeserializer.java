@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.types.DataTypeRegistry;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
@@ -15,9 +15,9 @@ import com.google.gson.JsonParseException;
 
 class AttributeExpDeserializer implements JsonDeserializer<AttributeExp>
 {
-	private DataTypeRegistry typesRegistry;
+	private Types typesRegistry;
 	
-	public AttributeExpDeserializer(DataTypeRegistry registry){
+	public AttributeExpDeserializer(Types registry){
 		Preconditions.checkNotNull(registry);
 		this.typesRegistry = registry;
 	}

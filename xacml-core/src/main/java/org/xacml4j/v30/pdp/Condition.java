@@ -9,7 +9,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DataTypes;
+import org.xacml4j.v30.types.BooleanType;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -41,7 +41,7 @@ public class Condition implements PolicyElement
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"",
-					DataTypes.BOOLEAN, predicate.getEvaluatesTo());
+					BooleanType.BOOLEAN, predicate.getEvaluatesTo());
 		this.predicate = predicate;
 	}
 

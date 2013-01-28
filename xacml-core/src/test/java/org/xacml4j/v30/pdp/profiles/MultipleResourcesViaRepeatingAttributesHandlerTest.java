@@ -45,21 +45,21 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	{
 		Attributes resource0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId1").value(STRING.create("value0")).build(),
 						Attribute.builder("testId2").value(STRING.create("value1")).build())
 				.build();
 
 		Attributes resource1 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build())
 				.build();
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build())
 				.build();
@@ -97,7 +97,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	{
 		Attributes resource0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId1").value(STRING.create("value0")).build(),
 						Attribute.builder("testId2").value(STRING.create("value1")).build())
 				.build();
@@ -105,7 +105,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attributes(
+				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build())
 				.build();

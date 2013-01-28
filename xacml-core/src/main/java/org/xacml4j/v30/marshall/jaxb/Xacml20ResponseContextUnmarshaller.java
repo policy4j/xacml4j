@@ -38,8 +38,8 @@ import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshall.ResponseUnmarshaller;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
-import org.xacml4j.v30.types.DataTypeRegistry;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExpType;
 
 import com.google.common.base.Preconditions;
@@ -51,16 +51,16 @@ implements ResponseUnmarshaller
 {
 	private Mapper mapper;
 
-	public Xacml20ResponseContextUnmarshaller(DataTypeRegistry dataTypes){
+	public Xacml20ResponseContextUnmarshaller(Types dataTypes){
 		super(JAXBContextUtil.getInstance());
 		Preconditions.checkNotNull(dataTypes);
 		this.mapper = new Mapper(dataTypes);
 	}
 
 	public Xacml20ResponseContextUnmarshaller(){
-		this(DataTypeRegistry.Builder.builder()
+		this(Types.Builder.builder()
 				.defaultTypes()
-				.build());
+				.create());
 	}
 
 	@Override
@@ -82,7 +82,7 @@ implements ResponseUnmarshaller
 		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
 
-		private DataTypeRegistry dataTypes;
+		private Types dataTypes;
 
 		static
 		{
@@ -108,7 +108,7 @@ implements ResponseUnmarshaller
 
 		}
 
-		public Mapper(DataTypeRegistry dataTypes){
+		public Mapper(Types dataTypes){
 			Preconditions.checkNotNull(dataTypes);
 			this.dataTypes = dataTypes;
 		}
@@ -137,7 +137,7 @@ implements ResponseUnmarshaller
 			if(result.getResourceId() != null){
 				b.includeInResult(Attributes
 						.builder(AttributeCategories.RESOURCE)
-						.attributes(
+						.attribute(
 								Attribute
 								.builder(RESOURCE_ID)
 								.value(StringType.STRING, result.getResourceId())

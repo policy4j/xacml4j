@@ -31,6 +31,7 @@ import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
 
 public abstract class BaseEvaluationContext implements EvaluationContext
 {
@@ -59,6 +60,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
 
 	private Integer combinedDecisionCacheTTL = null;
+	
+	private Ticker ticker = Ticker.systemTicker();
 
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -94,6 +97,10 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
 		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
+	}
+	
+	public Ticker getTicker(){
+		return ticker;
 	}
 
 	@Override

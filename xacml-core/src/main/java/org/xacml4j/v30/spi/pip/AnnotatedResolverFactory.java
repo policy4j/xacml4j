@@ -20,10 +20,9 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.types.DataTypes;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 
 class AnnotatedResolverFactory 
 {
@@ -34,6 +33,8 @@ class AnnotatedResolverFactory
 	static{
 		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
 	}
+	
+	private Types xacmlRegistry = Types.Builder.builder().defaultTypes().create();
 	
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException
@@ -90,7 +91,7 @@ class AnnotatedResolverFactory
 					"must be specified by the descriptor on method=\"{}\"", m.getName());
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
-			AttributeExpType type = DataTypes.getType(attr.dataType());
+			AttributeExpType type = xacmlRegistry.getType(attr.dataType());
 			b.attribute(attr.id(), type);
 			
 		}
@@ -169,11 +170,13 @@ class AnnotatedResolverFactory
 							m.getName(), i, BagOfAttributeExp.class.getName());
 				}
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
-				keys.add(new AttributeDesignatorKey(
-							AttributeCategories.parse(ref.category()), 
-							ref.attributeId(), 
-							DataTypes.getType(ref.dataType()), 
-							Strings.emptyToNull(ref.issuer())));
+				keys.add(AttributeDesignatorKey
+						.builder()
+						.category(ref.category())
+						.attributeId(ref.attributeId())
+						.dataType(xacmlRegistry.getType(ref.dataType()))
+						.issuer(ref.issuer())
+						.build());
 				continue;
 			}
 			if(p.length > 0 && 
@@ -187,11 +190,13 @@ class AnnotatedResolverFactory
 							m.getName(), i, BagOfAttributeExp.class.getName());
 				}
 				XacmlAttributeSelector ref = (XacmlAttributeSelector)p[0];
-				keys.add(new AttributeSelectorKey(
-						AttributeCategories.parse(ref.category()), 
-						ref.xpath(), 
-						DataTypes.getType(ref.dataType()), 
-						Strings.emptyToNull(ref.contextAttributeId())));
+				keys.add(AttributeSelectorKey
+						.builder()
+						.category(ref.category())
+						.xpath(ref.xpath())
+						.dataType(xacmlRegistry.getType(ref.dataType()))
+						.contextSelectorId(ref.contextAttributeId())
+						.build());
 				continue;
 			}
 			i++;

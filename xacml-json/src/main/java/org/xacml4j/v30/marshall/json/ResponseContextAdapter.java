@@ -22,7 +22,7 @@ public class ResponseContextAdapter implements JsonDeserializer<ResponseContext>
 		Collection<Result> r = context.deserialize(array, new TypeToken<Collection<Result>>(){}.getType());
 		return ResponseContext
 				.builder()
-				.result(r)
+				.results(r)
 				.build();
 	}
 }

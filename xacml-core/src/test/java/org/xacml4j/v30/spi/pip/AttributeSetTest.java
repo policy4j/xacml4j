@@ -40,43 +40,58 @@ public class AttributeSetTest
 	@Test
 	public void testAttributeSetWithIssuer()
 	{
-		AttributeSet v = new AttributeSet(withIssuer);
+		AttributeDesignatorKey.Builder key = 
+				AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(IntegerType.INTEGER)
+				.issuer("issuer");
+		
+		AttributeDesignatorKey.Builder key1 = 
+				AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId2")
+				.issuer("issuer")
+				.dataType(StringType.STRING);
+		
+		AttributeSet v = AttributeSet
+				.builder(withIssuer)
+				.build();
 		assertNotNull(v.get("testId1"));
 		assertNotNull(v.get("testId2"));
-		BagOfAttributeExp v1 = v.get(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, "issuer"));
+		BagOfAttributeExp v1 = v.get(key.build());
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
 		
-		BagOfAttributeExp v2 = v.get(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null));
+		BagOfAttributeExp v2 = v.get(key.build());
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
 		
 		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
-		assertEquals(
-				new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, withIssuer.getIssuer()), 
-				Iterables.get(keys, 0));
-		assertEquals(
-				new AttributeDesignatorKey(
-				AttributeCategories.SUBJECT_ACCESS, "testId2", StringType.STRING, withIssuer.getIssuer()), 
-				Iterables.get(keys, 1));
+		assertEquals(key.build(), Iterables.get(keys, 0));
+		assertEquals(key1.build(), Iterables.get(keys, 1));
 	}
 	
 	@Test
 	public void testAttributeSetWithNoIssuer()
 	{
-		AttributeSet v = new AttributeSet(noIssuer);
+		AttributeDesignatorKey.Builder key = 
+				AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(IntegerType.INTEGER);
+		
+		AttributeSet v = AttributeSet
+				.builder(noIssuer)
+				.build();
 		assertNotNull(v.get("testId1"));
 		assertNotNull(v.get("testId2"));
-		BagOfAttributeExp v1 = v.get(
-				new AttributeDesignatorKey(
-						AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER, null));
+		BagOfAttributeExp v1 = v.get(key.build());
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
@@ -84,7 +99,9 @@ public class AttributeSetTest
 	
 	@Test
 	public void testIsEmpty(){
-		AttributeSet v = new AttributeSet(noIssuer);
+		AttributeSet v = AttributeSet
+				.builder(noIssuer)
+				.build();
 		assertTrue(v.isEmpty());
 	}
 	

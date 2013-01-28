@@ -13,8 +13,7 @@ import org.xacml4j.v30.marshall.Marshaller;
 import org.xacml4j.v30.marshall.Unmarshaller;
 import org.xacml4j.v30.marshall.json.JsonRequestContextMarshaller;
 import org.xacml4j.v30.marshall.json.JsonRequestContextUnmarshaller;
-import org.xacml4j.v30.types.DataTypeRegistry;
-
+import org.xacml4j.v30.types.Types;
 
 public class GsonRequestUnmarshallerTest
 {
@@ -23,9 +22,9 @@ public class GsonRequestUnmarshallerTest
 
 	@Before
 	public void init(){
-		this.unmarshaller = new JsonRequestContextUnmarshaller(DataTypeRegistry.Builder.builder()
+		this.unmarshaller = new JsonRequestContextUnmarshaller(Types.Builder.builder()
 				.defaultTypes()
-				.build());
+				.create());
 		this.marshaller = new JsonRequestContextMarshaller();
 	}
 

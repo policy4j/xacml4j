@@ -75,7 +75,7 @@ final class DefaultPolicyDecisionPoint
 			RequestContextHandler chain = context.getRequestHandlers();
 			return ResponseContext
 					.builder()
-					.result(chain.handle(request, context))
+					.results(chain.handle(request, context))
 					.build();
 		}finally{
 			MDCSupport.cleanPdpContext();

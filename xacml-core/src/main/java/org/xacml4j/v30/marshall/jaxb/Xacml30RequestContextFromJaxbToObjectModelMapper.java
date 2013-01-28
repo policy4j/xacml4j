@@ -51,7 +51,7 @@ import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.DataTypes;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -78,6 +78,8 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 	}
 
+	private Types xacmlTypes = Types.Builder.builder().defaultTypes().create();
+	
 	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();
 	}
@@ -413,7 +415,6 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 			throw new XacmlSyntaxException(
 					"Attribute does not have content");
 		}
-		return DataTypes.createAttributeValue(value.getDataType(),
-				content.iterator().next(), value.getOtherAttributes());
+		return xacmlTypes.valueOf(value.getDataType(), content.iterator().next(), value.getOtherAttributes());
 	}
 }

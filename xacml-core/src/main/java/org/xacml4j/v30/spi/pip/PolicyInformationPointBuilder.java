@@ -17,7 +17,7 @@ public final class PolicyInformationPointBuilder
 	public PolicyInformationPointBuilder(String id){
 		Preconditions.checkNotNull(id);
 		this.id = id;
-		this.cache = new NoCachePolicyInformationPointCacheProvider();
+		this.cache = new DefaultPolicyInformationPointCacheProvider();
 		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
 	

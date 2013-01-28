@@ -223,7 +223,7 @@ public class XACMLAuthzDecisionQueryEndpoint implements OpenSamlEndpoint
 	{
 		Attributes indermediarySubject = Attributes.builder()
 				.category(AttributeCategories.SUBJECT_INTERMEDIARY)
-				.attributes(Attribute
+				.attribute(Attribute
 						.builder(SubjectAttributes.SUBJECT_ID.toString())
 						.value(StringType.STRING, issuer).build())
 				.build();

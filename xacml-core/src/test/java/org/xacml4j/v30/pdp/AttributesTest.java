@@ -21,7 +21,6 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Attributes.Builder;
-import org.xacml4j.v30.types.DataTypes;
 import org.xml.sax.InputSource;
 
 
@@ -218,7 +217,7 @@ public class AttributesTest
 				.build();
 		assertEquals(2, test.getAttributeValues("testId10", null, INTEGER).size());
 		assertEquals(1, test.getAttributeValues("testId10", null, STRING).size());
-		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", DataTypes.STRING.getDataType()).size());
-		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", DataTypes.INTEGER.getDataType()).size());
+		assertEquals(2, test.getAttributeValues("testId11", "testIssuer", STRING).size());
+		assertEquals(1, test.getAttributeValues("testId11", "testIssuer", INTEGER).size());
 	}
 }

@@ -15,7 +15,7 @@ import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
-public interface DataTypeRegistry
+public interface Types
 {
 	/**
 	 * Gets type by given type identifier
@@ -24,10 +24,10 @@ public interface DataTypeRegistry
 	 * @return {@link AttributeExpType} a data type instance
 	 */
 	AttributeExpType getType(String typeId);
-	AttributeExp create(String typeId, Object value)
+	AttributeExp valueOf(String typeId, Object value)
 			throws XacmlSyntaxException;
 
-	AttributeExp create(String typeId, Object value, Map<QName, String> attrs)
+	AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs)
 			throws XacmlSyntaxException;
 
 	public final class Builder
@@ -63,7 +63,7 @@ public interface DataTypeRegistry
 			addType(XPathExpType.XPATHEXPRESSION);
 			addType(YearMonthDurationType.YEARMONTHDURATION);
 
-			// Legacy XACML 2.0 type mappings
+			// Legacy XACML 2.0 type mappings/aliases
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpType.XPATHEXPRESSION);
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XPathExpType.XPATHEXPRESSION);
 			addType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration", DayTimeDurationType.DAYTIMEDURATION);
@@ -80,15 +80,15 @@ public interface DataTypeRegistry
 			return new Builder();
 		}
 
-		public DataTypeRegistry build(){
-			return new DataTypeRegistry() {
+		public Types create(){
+			return new Types() {
 				@Override
 				public AttributeExpType getType(String typeId) {
 					return types.get(typeId);
 				}
 
 				@Override
-				public AttributeExp create(String typeId, Object value)
+				public AttributeExp valueOf(String typeId, Object value)
 						throws XacmlSyntaxException {
 					AttributeExpType type = getType(typeId);
 					if(type == null){
@@ -98,7 +98,7 @@ public interface DataTypeRegistry
 				}
 
 				@Override
-				public AttributeExp create(String typeId,
+				public AttributeExp valueOf(String typeId,
 						Object value, Map<QName, String> values) throws XacmlSyntaxException
 				{
 					AttributeExpType type = getType(typeId);

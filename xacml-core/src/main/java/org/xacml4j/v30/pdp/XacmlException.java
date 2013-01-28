@@ -1,7 +1,7 @@
 package org.xacml4j.v30.pdp;
 
 
-public class XacmlException extends Exception
+public class XacmlException extends RuntimeException
 {
 	private static final long serialVersionUID = -546790992581476011L;
 

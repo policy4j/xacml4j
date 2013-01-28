@@ -1,6 +1,7 @@
 package org.xacml4j.v30.spi.pip;
 
 import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -23,21 +24,12 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.spi.pip.AnnotatedResolverFactory;
-import org.xacml4j.v30.spi.pip.AttributeDescriptor;
-import org.xacml4j.v30.spi.pip.AttributeResolver;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
-import org.xacml4j.v30.spi.pip.ContentResolver;
-import org.xacml4j.v30.spi.pip.DefaultResolverContext;
-import org.xacml4j.v30.spi.pip.ResolverContext;
-import org.xacml4j.v30.spi.pip.XacmlAttributeDescriptor;
-import org.xacml4j.v30.spi.pip.XacmlAttributeDesignator;
-import org.xacml4j.v30.spi.pip.XacmlAttributeResolverDescriptor;
-import org.xacml4j.v30.spi.pip.XacmlContentResolverDescriptor;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringType;
+
+import com.google.common.base.Ticker;
 
 
 public class AnnotatedResolverFactoryTest 
@@ -56,17 +48,27 @@ public class AnnotatedResolverFactoryTest
 	@Test
 	public void testParseAttributeResolverWithKeys() throws Exception
 	{
-		AttributeDesignatorKey excpectedKey0 = new AttributeDesignatorKey(
-				AttributeCategories.parse("test"), "attr1", BooleanType.BOOLEAN, null);
+		AttributeDesignatorKey excpectedKey0 = 
+				AttributeDesignatorKey.builder()
+				.category("test")
+				.attributeId("attr1")
+				.dataType(BooleanType.BOOLEAN)
+				.build();
 		
-		AttributeDesignatorKey excpectedKey1 = new AttributeDesignatorKey(
-				AttributeCategories.parse("test"), "attr2", IntegerType.INTEGER, "test");
+		AttributeDesignatorKey excpectedKey1 = 
+				AttributeDesignatorKey.builder()
+				.category("test")
+				.attributeId("attr2")
+				.issuer("test")
+				.dataType(IntegerType.INTEGER)
+				.build();
 		
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 		
-		expect(context.resolve(excpectedKey0)).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false)));
-		expect(context.resolve(excpectedKey1)).andReturn(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)));
+		expect(context.resolve(eq(excpectedKey0))).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false)));
+		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)));
+		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 		
 		control.replay();
 		
@@ -118,6 +120,7 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolve2");
 		assertNotNull(m);
+		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 		replay(context);
 		AttributeResolver r = p.parseAttributeResolver(this, m);
 		AttributeResolverDescriptor d = r.getDescriptor();
