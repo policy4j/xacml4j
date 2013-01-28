@@ -139,11 +139,13 @@ public class DefaultPolicyInformationPoint
 	}
 	
 	private boolean isExpired(AttributeSet v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+		return ((context.getTicker().read() - v.getTimestamp()) / 
+				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 	
 	private boolean isExpired(Content v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+		return ((context.getTicker().read() - v.getTimestamp()) / 
+				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 
 	@Override
