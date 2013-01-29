@@ -6,8 +6,6 @@ import static org.easymock.EasyMock.createStrictMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 
 
 

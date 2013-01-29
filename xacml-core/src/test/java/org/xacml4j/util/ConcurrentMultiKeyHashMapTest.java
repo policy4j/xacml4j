@@ -1,7 +1,6 @@
 package org.xacml4j.util;
 
 import org.junit.Test;
-import org.xacml4j.util.ConcurrentMultiKeyHashMap;
 
 public class ConcurrentMultiKeyHashMapTest 
 {

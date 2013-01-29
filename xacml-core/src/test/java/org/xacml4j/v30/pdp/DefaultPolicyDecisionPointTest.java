@@ -20,8 +20,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
-import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;

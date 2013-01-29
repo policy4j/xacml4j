@@ -8,8 +8,6 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.YearMonthDuration;
-import org.xacml4j.v30.types.YearMonthDurationExp;
-import org.xacml4j.v30.types.YearMonthDurationType;
 
 
 public class YearMonthDurationTypeTest 

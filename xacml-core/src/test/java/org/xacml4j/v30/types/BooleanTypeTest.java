@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 
 
 public class BooleanTypeTest 

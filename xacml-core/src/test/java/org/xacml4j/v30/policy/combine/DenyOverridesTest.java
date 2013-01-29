@@ -15,7 +15,6 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyOverrides;
 
 
 public class DenyOverridesTest

@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 
 
 public class IntegerTypeTest

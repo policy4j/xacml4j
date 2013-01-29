@@ -34,7 +34,7 @@ class AnnotatedResolverFactory
 		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
 	}
 	
-	private Types xacmlRegistry = Types.Builder.builder().defaultTypes().create();
+	private Types xacmlRegistry = Types.builder().defaultTypes().create();
 	
 	public Collection<ContentResolver> getContentResolvers(Object instance) 
 		throws XacmlSyntaxException

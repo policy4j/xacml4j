@@ -21,9 +21,6 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.XacmlException;
 
 
 public class PolicyIDReferenceTest

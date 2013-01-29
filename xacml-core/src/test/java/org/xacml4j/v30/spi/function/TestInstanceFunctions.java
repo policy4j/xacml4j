@@ -3,10 +3,6 @@ package org.xacml4j.v30.spi.function;
 
 import org.junit.Ignore;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerExp;

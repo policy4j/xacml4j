@@ -12,7 +12,7 @@ public class TypesTest
 	
 	@Before
 	public void init(){
-		this.types = Types.Builder.builder().defaultTypes().create();
+		this.types = Types.builder().defaultTypes().create();
 	}
 	
 	@Test

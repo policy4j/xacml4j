@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.util.DefaultInvocationFactory;
-import org.xacml4j.v30.spi.function.JavaMethodToFunctionSpecConverter;
 
 
 public class JavaMethodToFunctionSpecTest 

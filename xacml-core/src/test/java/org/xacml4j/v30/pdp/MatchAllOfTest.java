@@ -14,9 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.pdp.Match;
-import org.xacml4j.v30.pdp.MatchAllOf;
-import org.xacml4j.v30.pdp.Matchable;
 
 
 public class MatchAllOfTest

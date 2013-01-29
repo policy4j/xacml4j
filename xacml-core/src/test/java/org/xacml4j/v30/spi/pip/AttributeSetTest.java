@@ -9,9 +9,6 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
-import org.xacml4j.v30.spi.pip.AttributeSet;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringType;
 

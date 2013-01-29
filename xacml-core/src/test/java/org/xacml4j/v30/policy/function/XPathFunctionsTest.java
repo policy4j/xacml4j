@@ -23,7 +23,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.policy.function.XPathFunctions;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;

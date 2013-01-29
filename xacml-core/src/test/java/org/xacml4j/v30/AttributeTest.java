@@ -11,8 +11,6 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attribute.Builder;
 import org.xacml4j.v30.types.StringType;
 

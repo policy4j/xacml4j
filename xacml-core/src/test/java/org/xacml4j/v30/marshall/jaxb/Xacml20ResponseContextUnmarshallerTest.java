@@ -12,7 +12,6 @@ import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.StatusCodeIds;
 import org.xacml4j.v30.marshall.ResponseUnmarshaller;
-import org.xacml4j.v30.marshall.jaxb.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.types.StringType;
 
 import com.google.common.collect.Iterables;

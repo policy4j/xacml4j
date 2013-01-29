@@ -11,7 +11,6 @@ import static org.xacml4j.v30.types.TimeType.TIME;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.policy.function.NonNumericComparisionFunctions;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.TimeExp;
 import org.xacml4j.v30.types.TimeType;

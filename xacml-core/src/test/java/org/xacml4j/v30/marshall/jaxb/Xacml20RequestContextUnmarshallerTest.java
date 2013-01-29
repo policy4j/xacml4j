@@ -18,7 +18,6 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshall.RequestUnmarshaller;
-import org.xacml4j.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.collect.Iterables;

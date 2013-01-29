@@ -24,9 +24,6 @@ import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
 
 
 public class InMemoryPolicyRepositoryTest

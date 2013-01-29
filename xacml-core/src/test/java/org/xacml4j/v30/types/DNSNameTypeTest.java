@@ -6,8 +6,6 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.DNSName;
-import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.DNSNameType;
 
 
 public class DNSNameTypeTest 

@@ -15,9 +15,6 @@ import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolver;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
 
 
 public class DefaultPolicyReferenceResolverTest

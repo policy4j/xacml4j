@@ -21,9 +21,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.XacmlException;
 
 
 public class ObligationExpressionTest

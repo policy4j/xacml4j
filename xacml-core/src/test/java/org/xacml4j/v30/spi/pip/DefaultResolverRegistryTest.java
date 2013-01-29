@@ -15,11 +15,6 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.spi.pip.AttributeResolver;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
-import org.xacml4j.v30.spi.pip.DefaultResolverRegistry;
-import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.types.IntegerType;
 
 import com.google.common.collect.Iterables;

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.policy.function.RegularExpressionFunctions;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;

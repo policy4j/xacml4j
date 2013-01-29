@@ -15,9 +15,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.policy.combine.DenyOverrides;
-import org.xacml4j.v30.spi.combine.AnnotatedDecisionCombiningAlgorithmProviderFactory;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 
 public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest 

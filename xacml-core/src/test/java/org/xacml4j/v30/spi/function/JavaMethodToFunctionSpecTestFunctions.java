@@ -1,8 +1,6 @@
 package org.xacml4j.v30.spi.function;
 
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.types.BooleanExp;
 
 

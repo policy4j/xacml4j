@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 
 import org.junit.Test;
-import org.xacml4j.v30.types.TimeExp;
-import org.xacml4j.v30.types.TimeType;
 
 public class TimeTypeTest 
 {

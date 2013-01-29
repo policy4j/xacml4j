@@ -29,7 +29,6 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
-import org.xacml4j.v30.pdp.profiles.MultipleResourcesViaRequestReferencesHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
 import com.google.common.collect.Iterables;

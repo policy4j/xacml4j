@@ -13,10 +13,6 @@ import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.pdp.Condition;
-import org.xacml4j.v30.pdp.ConditionResult;
-import org.xacml4j.v30.pdp.FunctionInvocationException;
-import org.xacml4j.v30.pdp.FunctionSpec;
 
 
 

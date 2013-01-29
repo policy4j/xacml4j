@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
 
 
 public class XPathExpressionTypeTest

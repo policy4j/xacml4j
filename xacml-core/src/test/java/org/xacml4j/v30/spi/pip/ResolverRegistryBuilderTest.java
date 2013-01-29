@@ -7,8 +7,6 @@ import static org.junit.Assert.assertSame;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.pip.ResolverRegistry;
-import org.xacml4j.v30.spi.pip.ResolverRegistryBuilder;
 
 public class ResolverRegistryBuilderTest 
 {

@@ -6,8 +6,6 @@ import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.types.DateExp;
-import org.xacml4j.v30.types.DateType;
 
 public class DateTypeTest 
 {

@@ -13,7 +13,6 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
-import org.xacml4j.v30.spi.function.FunctionParamValueTypeSpec;
 import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.StringType;
 

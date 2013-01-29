@@ -3,7 +3,6 @@ package org.xacml4j.v30.policy.function;
 import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.NumericComparisionFunctions;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.DoubleType;

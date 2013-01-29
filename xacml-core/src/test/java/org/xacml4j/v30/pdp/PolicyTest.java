@@ -20,14 +20,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.pdp.AdviceExpression;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.EvaluationContextHandler;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.RootEvaluationContext;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
 

@@ -3,7 +3,6 @@ package org.xacml4j.v30.policy.function;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.ArithmeticFunctions;
 import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.IntegerType;
 

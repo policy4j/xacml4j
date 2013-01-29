@@ -16,10 +16,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.pdp.Apply;
-import org.xacml4j.v30.pdp.FunctionInvocationException;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.pdp.XacmlException;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerType;
 

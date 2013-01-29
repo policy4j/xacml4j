@@ -16,10 +16,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeReferenceEvaluationException;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.pdp.Match;
 import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
 

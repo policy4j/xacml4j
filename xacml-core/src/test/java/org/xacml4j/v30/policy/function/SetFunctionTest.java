@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.policy.function.SetFunctions;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanType;

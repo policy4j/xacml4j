@@ -2,10 +2,6 @@ package org.xacml4j.util;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.util.CglibInvocationFactory;
-import org.xacml4j.util.DefaultInvocationFactory;
-import org.xacml4j.util.Invocation;
-import org.xacml4j.util.InvocationFactory;
 
 public class InvocatonBenchmark 
 {

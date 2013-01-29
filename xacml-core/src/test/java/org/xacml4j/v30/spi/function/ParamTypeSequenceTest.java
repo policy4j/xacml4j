@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.spi.function.FunctionParamValueTypeSequenceSpec;
 import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.StringType;
 

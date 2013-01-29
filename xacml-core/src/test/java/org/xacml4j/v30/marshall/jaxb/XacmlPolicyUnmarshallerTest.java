@@ -16,7 +16,6 @@ import org.xacml4j.v30.Version;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshall.PolicyUnmarshaller;
-import org.xacml4j.v30.marshall.jaxb.XacmlPolicyUnmarshaller;
 import org.xacml4j.v30.pdp.MatchAnyOf;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;

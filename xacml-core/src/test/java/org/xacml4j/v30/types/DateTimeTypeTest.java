@@ -7,12 +7,6 @@ import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.DateTimeType;
-import org.xacml4j.v30.types.DayTimeDurationExp;
-import org.xacml4j.v30.types.DayTimeDurationType;
-import org.xacml4j.v30.types.YearMonthDurationExp;
-import org.xacml4j.v30.types.YearMonthDurationType;
 
 
 public class DateTimeTypeTest 

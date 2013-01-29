@@ -22,13 +22,6 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.pdp.AdviceExpression;
-import org.xacml4j.v30.pdp.Condition;
-import org.xacml4j.v30.pdp.ConditionResult;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.types.StringType;
 
 

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
-import org.xacml4j.v30.spi.pip.ContentResolverDescriptorBuilder;
 
 
 public class ContentResolverDescriptorBuilderTest 

@@ -29,7 +29,7 @@ public class PolicyUnmarshallerSupport
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
-	private Types types = Types.Builder.builder().defaultTypes().create();
+	private Types types = Types.builder().defaultTypes().create();
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,

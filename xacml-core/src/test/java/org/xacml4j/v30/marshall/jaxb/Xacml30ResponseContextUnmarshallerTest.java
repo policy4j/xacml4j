@@ -17,7 +17,6 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.marshall.jaxb.Xacml30ResponseContextUnmarshaller;
 
 
 public class Xacml30ResponseContextUnmarshallerTest {

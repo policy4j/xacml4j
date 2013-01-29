@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.RFC822Name;
 
 public class RFC822NameTest 
 {

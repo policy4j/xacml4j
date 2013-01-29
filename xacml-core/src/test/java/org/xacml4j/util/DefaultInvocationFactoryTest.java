@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.util.DefaultInvocationFactory;
-import org.xacml4j.util.Invocation;
-import org.xacml4j.util.InvocationFactory;
 
 public class DefaultInvocationFactoryTest
 {

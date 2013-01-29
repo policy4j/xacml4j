@@ -18,9 +18,6 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.pdp.AdviceExpression;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-import org.xacml4j.v30.pdp.XacmlException;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerType;
 

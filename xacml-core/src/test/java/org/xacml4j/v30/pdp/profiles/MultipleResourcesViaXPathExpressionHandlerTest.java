@@ -32,7 +32,6 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-import org.xacml4j.v30.pdp.profiles.MultipleResourcesViaXPathExpressionHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;

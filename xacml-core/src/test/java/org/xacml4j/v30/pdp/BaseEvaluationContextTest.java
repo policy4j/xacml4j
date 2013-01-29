@@ -12,8 +12,6 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.pdp.BaseEvaluationContext;
-import org.xacml4j.v30.pdp.EvaluationContextHandler;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
 

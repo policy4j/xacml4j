@@ -9,11 +9,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.spi.pip.AttributeResolver;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
-import org.xacml4j.v30.spi.pip.BaseAttributeResolver;
-import org.xacml4j.v30.spi.pip.ResolverContext;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringType;
 

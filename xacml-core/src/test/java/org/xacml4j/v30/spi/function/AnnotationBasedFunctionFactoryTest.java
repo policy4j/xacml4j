@@ -13,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
 
 
 

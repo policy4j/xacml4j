@@ -14,8 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.pdp.MatchAnyOf;
-import org.xacml4j.v30.pdp.Target;
 
 
 public class TargetTest

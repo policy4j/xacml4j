@@ -24,7 +24,7 @@ class JavaMethodToFunctionSpecConverter
 			.getLogger(JavaMethodToFunctionSpecConverter.class);
 
 	private InvocationFactory invocationFactory;
-	private Types xacmlTypes = Types.Builder.builder().defaultTypes().create();
+	private Types xacmlTypes = Types.builder().defaultTypes().create();
 	
 	public JavaMethodToFunctionSpecConverter(
 			InvocationFactory invocationFactory)

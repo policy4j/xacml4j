@@ -15,9 +15,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionInvocation;
-import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
 
 import com.google.common.collect.ImmutableList;
 

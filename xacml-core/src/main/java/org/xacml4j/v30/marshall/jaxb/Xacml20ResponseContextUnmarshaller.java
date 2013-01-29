@@ -58,7 +58,7 @@ implements ResponseUnmarshaller
 	}
 
 	public Xacml20ResponseContextUnmarshaller(){
-		this(Types.Builder.builder()
+		this(Types.builder()
 				.defaultTypes()
 				.create());
 	}

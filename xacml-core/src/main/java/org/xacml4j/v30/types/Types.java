@@ -15,7 +15,7 @@ import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
-public interface Types
+public abstract class Types
 {
 	/**
 	 * Gets type by given type identifier
@@ -23,14 +23,16 @@ public interface Types
 	 * @param typeId a type identifier
 	 * @return {@link AttributeExpType} a data type instance
 	 */
-	AttributeExpType getType(String typeId);
-	AttributeExp valueOf(String typeId, Object value)
-			throws XacmlSyntaxException;
+	public abstract AttributeExpType getType(String typeId);
+	public abstract  AttributeExp valueOf(String typeId, Object value);
 
-	AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs)
-			throws XacmlSyntaxException;
+	public abstract AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs);
+	
+	public static Builder builder(){
+		return new Builder();
+	}
 
-	public final class Builder
+	public final static class Builder
 	{
 		private final static Logger log = LoggerFactory.getLogger(Builder.class);
 
@@ -74,10 +76,6 @@ public interface Types
 		public Builder type(AttributeExpType type){
 			addType(type);
 			return this;
-		}
-
-		public static Builder builder(){
-			return new Builder();
 		}
 
 		public Types create(){

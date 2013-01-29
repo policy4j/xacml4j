@@ -17,8 +17,6 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.DefaultFunctionInvocation;
-import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringType;
 

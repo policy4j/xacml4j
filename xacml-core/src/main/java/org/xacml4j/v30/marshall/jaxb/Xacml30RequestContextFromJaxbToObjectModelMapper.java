@@ -78,7 +78,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 	}
 
-	private Types xacmlTypes = Types.Builder.builder().defaultTypes().create();
+	private Types xacmlTypes = Types.builder().defaultTypes().create();
 	
 	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();

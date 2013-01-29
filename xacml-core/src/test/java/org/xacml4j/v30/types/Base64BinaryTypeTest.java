@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.types.Base64BinaryExp;
-import org.xacml4j.v30.types.Base64BinaryType;
 
 
 public class Base64BinaryTypeTest 

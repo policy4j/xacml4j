@@ -7,8 +7,6 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.AnyURIType;
 
 
 public class AnyURITypeTest 

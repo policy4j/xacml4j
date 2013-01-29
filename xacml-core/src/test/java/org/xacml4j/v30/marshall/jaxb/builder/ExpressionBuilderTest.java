@@ -1,8 +1,6 @@
 package org.xacml4j.v30.marshall.jaxb.builder;
 
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.types.StringType;
