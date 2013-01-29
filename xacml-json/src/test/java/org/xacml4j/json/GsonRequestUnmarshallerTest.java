@@ -22,7 +22,7 @@ public class GsonRequestUnmarshallerTest
 
 	@Before
 	public void init(){
-		this.unmarshaller = new JsonRequestContextUnmarshaller(Types.Builder.builder()
+		this.unmarshaller = new JsonRequestContextUnmarshaller(Types.builder()
 				.defaultTypes()
 				.create());
 		this.marshaller = new JsonRequestContextMarshaller();
