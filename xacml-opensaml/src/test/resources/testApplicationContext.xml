@@ -9,17 +9,17 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
  	
 	
-	<beans:bean id="idpMetadata" class="com.artagon.xacml.opensaml.OpenSamlMetadataFactoryBean">
+	<beans:bean id="idpMetadata" class="org.xacml4j.opensaml.OpenSamlMetadataFactoryBean">
 		<beans:property name="location" value="classpath:metadata.xml"/>
 	</beans:bean>
 	
-	<beans:bean id="idpConfig" class="com.artagon.xacml.opensaml.DefaultIDPConfiguration">
+	<beans:bean id="idpConfig" class="org.xacml4j.opensaml.DefaultIDPConfiguration">
 		<beans:constructor-arg value="https://sso.comcast.net/Comcast/IdP/sso"/>
 		<beans:constructor-arg ref="idpMetadata"/>
 		<beans:constructor-arg>
 			<beans:bean  class="org.opensaml.xml.security.x509.KeyStoreX509CredentialAdapter">
 				<beans:constructor-arg>
-					<beans:bean class="com.artagon.xacml.opensaml.KeyStoreFactory">
+					<beans:bean class="org.xacml4j.opensaml.KeyStoreFactory">
 						<beans:property name="password" value="changeme"/>
 						<beans:property name="location" value="test-keystore.p12"/>
 						<beans:property name="type" value="PKCS12"/>

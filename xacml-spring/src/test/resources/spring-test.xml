@@ -4,54 +4,45 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:xacml-spring="http://www.artagon.com/schema/xacml/spring"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
-						http://www.artagon.com/schema/xacml/spring http://www.artagon.com/schema/xacml/spring/xacml.xsd">
+	xmlns:xacml-spring="http://xacml4j.org/schema/xacml/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://xacml4j.org/schema/xacml/spring http://xacml4j.org/schema/xacml/spring/xacmlj-spring.xsd">
  	
- 	<beans:bean id="testInstance" class="com.artagon.xacml.spring.TestInstanceFunctions"/>
-		 
+ 	<beans:bean id="testInstance" class="org.xacml4j.spring.TestInstanceFunctions"/>
+
 	<xacml-spring:FunctionProviders id="extensionFunctions">
-		<xacml-spring:FunctionProvider class="com.artagon.xacml.spring.TestStaticFunctions"/>
+		<xacml-spring:FunctionProvider class="org.xacml4j.spring.TestStaticFunctions"/>
 		<xacml-spring:FunctionProvider ref="testInstance"/>
 	</xacml-spring:FunctionProviders>
-	
+
 	<util:list id="resources">
 		<value>classpath:/Policy1.xml</value>
 	</util:list>
-	
-	<xacml-spring:InMemoryPolicyRepository 
+
+	<xacml-spring:InMemoryPolicyRepository
 	id="repository" extensionFunctions="extensionFunctions" policies="resources"/>
 
-	<!-- 
-	<beans:bean id="repository" class="com.artagon.xacml.spring.repository.InMemoryPolicyRepositoryFactoryBean">
-		<beans:property name="extensionFunctions" ref="extensionFunctions"/>
-		<beans:property name="policies" ref="resources"/>
-	</beans:bean>
-	 -->
-	 
-	<beans:bean id="testResolver" class="com.artagon.xacml.spring.pip.TestResolver"/>
-	 
+	<beans:bean id="testResolver" class="org.xacml4j.spring.pip.TestResolver"/>
+
 	<xacml-spring:ResolverRegistry id="resolvers">
 		<xacml-spring:Resolver ref="testResolver"/>
 		<xacml-spring:Resolver ref="testResolver" policyId="testId"/>
 	</xacml-spring:ResolverRegistry>
-	 
+
 	<xacml-spring:PolicyInformationPoint id="pip" resolvers="resolvers"/>
-	
-	<bean id="multipleResourcesHandler" class="com.artagon.xacml.v30.pdp.profiles.MultipleResourcesHandler"/>
-	
+
+	<bean id="multipleResourcesHandler" class="org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler"/>
+
 	<xacml-spring:RequestContextHandlerChain id="handlers">
 		<xacml-spring:RequestContextHandler ref="multipleResourcesHandler"/>
 	</xacml-spring:RequestContextHandlerChain>	
-	
-	<bean id="testAuditor" class="com.artagon.xacml.spring.MockAuditor">
+
+	<bean id="testAuditor" class="org.xacml4j.spring.MockAuditor">
 	</bean>
 
 	<xacml-spring:PolicyDecisionPoint id="pdp" 
 	repository="repository" pip="pip" handlers="handlers" auditor="testAuditor" decisionCacheTTL="30">
 		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
 	</xacml-spring:PolicyDecisionPoint>
-	
-	
 </beans>
