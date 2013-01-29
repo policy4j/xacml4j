@@ -42,10 +42,12 @@ public abstract class BaseAttributeExpType<V extends AttributeExp> implements At
 	 *
 	 * @return data type identifier
 	 */
+	@Override
 	public final String getDataTypeId(){
 		return typeId;
 	}
 
+	@Override
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}

@@ -99,6 +99,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 	}
 	
+	@Override
 	public Ticker getTicker(){
 		return ticker;
 	}
@@ -381,6 +382,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		return v;
 	}
 
+	@Override
 	public void setResolvedDesignatorValue(
 			AttributeDesignatorKey key,
 			BagOfAttributeExp v){

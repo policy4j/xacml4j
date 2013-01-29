@@ -355,6 +355,7 @@ public class DefaultEvaluationContextHandlerTest
 		
 
 		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeExp>() {
+			@Override
 			public BagOfAttributeExp answer() throws Throwable{
 				handler.resolve(context, ref);
 				return ANYURI.emptyBag();

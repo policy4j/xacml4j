@@ -46,6 +46,7 @@ public class DefaultPolicyInformationPoint
 		this.contResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "content-resolve", id);
 	}
 	
+	@Override
 	public String getId(){
 		return id;
 	}

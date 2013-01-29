@@ -12,6 +12,7 @@ public interface AttributeExp
 	 *
 	 * @return {@Link AttributeValueType}
 	 */
+	@Override
 	AttributeExpType getType();
 
 	/**

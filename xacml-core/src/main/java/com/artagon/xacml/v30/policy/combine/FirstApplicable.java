@@ -17,6 +17,7 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 		super(algorithmId);
 	}
 
+	@Override
 	public final Decision combine(EvaluationContext context, List<D> decisions){
 		return doCombine(context, decisions);
 	}

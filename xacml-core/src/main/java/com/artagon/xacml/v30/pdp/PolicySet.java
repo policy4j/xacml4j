@@ -144,10 +144,12 @@ public class PolicySet extends
 		return new PolicySetDelegatingEvaluationContext(context);
 	}
 
+	@Override
 	protected final boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicySet() == this;
 	}
 
+	@Override
 	public final Decision evaluate(EvaluationContext context)
 	{
 		Preconditions.checkNotNull(context);

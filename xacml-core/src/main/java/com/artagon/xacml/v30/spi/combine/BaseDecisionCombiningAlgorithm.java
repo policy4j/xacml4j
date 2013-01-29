@@ -25,6 +25,7 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
 	 *
 	 * @return decision algorithm identifier
 	 */
+	@Override
 	public final String getId(){
 		return algorithmId;
 	}

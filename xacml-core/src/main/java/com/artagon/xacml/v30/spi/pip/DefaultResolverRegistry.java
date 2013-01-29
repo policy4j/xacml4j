@@ -72,6 +72,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		this.scopedAttributeResolverRWLock = new ReentrantReadWriteLock();
 	}
 
+	@Override
 	public void addAttributeResolver(AttributeResolver resolver)
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
@@ -117,6 +118,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	}
 
 
+	@Override
 	public void addContentResolver(ContentResolver r)
 	{
 		Preconditions.checkArgument(r != null);
@@ -129,6 +131,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		contentResolvers.put(d.getCategory(), r);
 	}
 
+	@Override
 	public void addContentResolver(String policyId, ContentResolver r)
 	{
 		if(policyId == null){
@@ -147,6 +150,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		this.contentResolversById.put(policyId, r);
 	}
 
+	@Override
 	public void addAttributeResolver(String policyId, AttributeResolver r)
 	{
 		if(policyId == null){
@@ -191,6 +195,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		}
 	}
 
+	@Override
 	public Iterable<AttributeResolver> getMatchingAttributeResolvers(
 			EvaluationContext context,
 			AttributeDesignatorKey ref){
@@ -301,6 +306,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @return {@link ContentResolver} or <code>null</code>
 	 *
 	 */
+	@Override
 	public ContentResolver getMatchingContentResolver(EvaluationContext context,
 			AttributeCategory category)
 	{

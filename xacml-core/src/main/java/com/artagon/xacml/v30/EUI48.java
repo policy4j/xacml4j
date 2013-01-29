@@ -179,6 +179,7 @@ public class EUI48 implements Serializable, Cloneable,
 	/**
 	 * Default cloning behaviour (bitwise copy) is just fine...
 	 */
+	@Override
 	public Object clone() {
 		return new EUI48(_address);
 	}
@@ -393,6 +394,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 *         the parameter address if they are equal, os positive non-zero
 	 *         number if this address should be sorted after parameter
 	 */
+	@Override
 	public int compareTo(EUI48 other) {
 		long l = _address - other._address;
 		if (l < 0L)

@@ -47,6 +47,7 @@ public abstract class BaseAttributeExp<T>
 		return value.toString();
 	}
 
+	@Override
 	public final T getValue(){
 		return value;
 	}
@@ -64,6 +65,7 @@ public abstract class BaseAttributeExp<T>
 				getType(), value);
 	}
 
+	@Override
 	public BagOfAttributeExp toBag(){
 		return type.bagOf(this);
 	}

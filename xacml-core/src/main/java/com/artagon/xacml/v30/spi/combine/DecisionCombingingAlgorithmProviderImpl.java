@@ -50,10 +50,12 @@ public class DecisionCombingingAlgorithmProviderImpl implements DecisionCombinin
 	}
 
 
+	@Override
 	public final boolean isRuleAgorithmProvided(String algorithmId){
 		return ruleAlgo.containsKey(algorithmId);
 	}
 	
+	@Override
 	public final boolean isPolicyAgorithmProvided(String algorithmId){
 		return policyAlgo.containsKey(algorithmId);
 	}

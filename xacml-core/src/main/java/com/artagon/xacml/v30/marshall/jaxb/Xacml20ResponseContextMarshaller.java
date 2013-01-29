@@ -209,7 +209,7 @@ public class Xacml20ResponseContextMarshaller
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
 			AttributeAssignmentType attr = new AttributeAssignmentType();
-			com.artagon.xacml.v30.AttributeExpType t = (com.artagon.xacml.v30.AttributeExpType)(a.getAttribute().getType());
+			com.artagon.xacml.v30.AttributeExpType t = (a.getAttribute().getType());
 			attr.setDataType(t.getDataTypeId());
 			attr.setAttributeId(a.getAttributeId());
 			attr.getContent().add(a.getAttribute().toXacmlString());

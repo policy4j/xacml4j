@@ -113,6 +113,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
 	}
 	
+	@Override
 	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
 		b.add("version", version);
 		b.add("issuer", issuer);

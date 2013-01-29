@@ -454,15 +454,18 @@ public final class Types {
       }
     }
 
-    public Type[] getActualTypeArguments() {
+    @Override
+	public Type[] getActualTypeArguments() {
       return typeArguments.clone();
     }
 
-    public Type getRawType() {
+    @Override
+	public Type getRawType() {
       return rawType;
     }
 
-    public Type getOwnerType() {
+    @Override
+	public Type getOwnerType() {
       return ownerType;
     }
 
@@ -502,7 +505,8 @@ public final class Types {
       this.componentType = canonicalize(componentType);
     }
 
-    public Type getGenericComponentType() {
+    @Override
+	public Type getGenericComponentType() {
       return componentType;
     }
 
@@ -550,11 +554,13 @@ public final class Types {
       }
     }
 
-    public Type[] getUpperBounds() {
+    @Override
+	public Type[] getUpperBounds() {
       return new Type[] { upperBound };
     }
 
-    public Type[] getLowerBounds() {
+    @Override
+	public Type[] getLowerBounds() {
       return lowerBound != null ? new Type[] { lowerBound } : EMPTY_TYPE_ARRAY;
     }
 

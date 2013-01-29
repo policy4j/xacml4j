@@ -53,6 +53,7 @@ public final class DayTimeDuration
 		return new DayTimeDuration(d);
 	}
 	
+	@Override
 	protected DayTimeDuration makeDuration(Duration d){
 		return new DayTimeDuration(d);
 	}

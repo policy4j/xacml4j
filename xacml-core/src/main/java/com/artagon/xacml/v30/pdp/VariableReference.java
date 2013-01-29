@@ -53,12 +53,14 @@ public class VariableReference implements Expression
 	 * @return {@link ValueExpression} representing evaluation
 	 * result
 	 */
+	@Override
 	public ValueExpression evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
 		return varDef.evaluate(context);
 	}
 
+	@Override
 	public void accept(ExpressionVisitor expv) {
 		VariableReferenceVisitor v = (VariableReferenceVisitor)expv;
 		v.visitEnter(this);

@@ -53,6 +53,7 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 		return value;
 	}
 	
+	@Override
 	public final String toString(){
 		return value.toString();
 	}

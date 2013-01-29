@@ -27,6 +27,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.build();
 	}
 	
+	@Override
 	public Content getContent(ResolverContext context) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
 		if(d.isCachable()){
@@ -40,6 +41,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 		return null;
 	}
 	
+	@Override
 	public void putContent(ResolverContext context, Content content) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
 		Preconditions.checkArgument(context.getDescriptor() == content.getDescriptor());
@@ -52,6 +54,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 		}
 	}
 	
+	@Override
 	public AttributeSet getAttributes(ResolverContext context) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
 		if(d.isCachable()){

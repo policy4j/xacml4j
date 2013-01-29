@@ -24,6 +24,7 @@ public abstract class AbstractRequestContextHandler
 		this.next = new AtomicReference<RequestContextHandler>();
 	}
 	
+	@Override
 	public Collection<String> getFeatures(){
 		return features;
 	}

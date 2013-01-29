@@ -35,6 +35,7 @@ public class ResponseContext
 				.toString();
 	}
 
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;

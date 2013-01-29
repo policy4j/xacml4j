@@ -13,6 +13,7 @@ class ContentResolverDescriptorDelegate extends ResolverDescriptorDelegate
 		this.d = d;
 	}
 	
+	@Override
 	public boolean canResolve(AttributeCategory category) {
 		return d.canResolve(category);
 	}

@@ -60,6 +60,7 @@ public enum XPathExpType implements AttributeExpType
 		return typeId;
 	}
 
+	@Override
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}

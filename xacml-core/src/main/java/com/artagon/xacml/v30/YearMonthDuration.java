@@ -39,6 +39,7 @@ public final class YearMonthDuration extends BaseDuration<YearMonthDuration>
 		return new YearMonthDuration(d);
 	}
 	
+	@Override
 	protected YearMonthDuration makeDuration(Duration d){
 		return new YearMonthDuration(d);
 	}

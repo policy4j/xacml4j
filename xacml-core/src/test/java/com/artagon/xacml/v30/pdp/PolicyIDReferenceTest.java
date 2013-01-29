@@ -213,6 +213,7 @@ public class PolicyIDReferenceTest
 		expect(context.resolve(ref)).andReturn(refPolicy);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
 				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);
@@ -239,6 +240,7 @@ public class PolicyIDReferenceTest
 		expect(context.resolve(ref)).andReturn(refPolicy);
 		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
 				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);

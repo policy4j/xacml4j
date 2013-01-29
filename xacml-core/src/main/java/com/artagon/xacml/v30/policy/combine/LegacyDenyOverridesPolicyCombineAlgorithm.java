@@ -22,6 +22,7 @@ public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombi
 		super(algorithmId);
 	}
 	
+	@Override
 	public Decision combine(EvaluationContext context, 
 			List<CompositeDecisionRule> rules) {
 		return doCombine(context, rules);

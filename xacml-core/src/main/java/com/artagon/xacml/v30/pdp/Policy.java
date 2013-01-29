@@ -177,6 +177,7 @@ public class Policy extends BaseCompositeDecisionRule
 		return Decision.NOT_APPLICABLE;
 	}
 
+	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return context.getCurrentPolicy() == this;
 	}

@@ -43,6 +43,7 @@ public final class PolicyIDReference extends
 	 * @return <code>true</code> if a this reference
 	 * points to a given policys
 	 */
+	@Override
 	public boolean isReferenceTo(CompositeDecisionRule policy) {
 		Policy p = (Policy)policy;
 		return p != null &&

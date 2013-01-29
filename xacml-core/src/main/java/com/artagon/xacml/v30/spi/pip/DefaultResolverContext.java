@@ -34,6 +34,7 @@ final class DefaultResolverContext implements
 		return context.getCurrentDateTime();
 	}
 	
+	@Override
 	public Ticker getTicker(){
 		return context.getTicker();
 	}
@@ -61,6 +62,7 @@ final class DefaultResolverContext implements
 		return b.build();
 	}
 	
+	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
 				.add("context", context)

@@ -227,6 +227,7 @@ public final class FunctionSpecBuilder
 			return resolver.resolve(this, arguments);
 		}
 
+		@Override
 		public <T extends ValueExpression> T invoke(EvaluationContext context,
 				Expression ...arguments) throws EvaluationException {
 			return this.<T>invoke(context, Arrays.asList(arguments));

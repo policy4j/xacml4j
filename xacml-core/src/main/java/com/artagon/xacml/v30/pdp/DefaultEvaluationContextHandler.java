@@ -341,7 +341,7 @@ class DefaultEvaluationContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty",
 						ref.getPath(), ref.getCategory());
-				return (BagOfAttributeExp)ref.getDataType().bagType().createEmpty();
+				return ref.getDataType().bagType().createEmpty();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"",
@@ -425,6 +425,6 @@ class DefaultEvaluationContextHandler
 						StatusCode.createSyntaxError(), e);
 			}
 		}
-	  	return (BagOfAttributeExp) ref.getDataType().bagType().create(values);
+	  	return ref.getDataType().bagType().create(values);
 	}
 }

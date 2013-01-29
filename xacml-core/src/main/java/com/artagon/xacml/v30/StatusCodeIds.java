@@ -39,12 +39,15 @@ public enum StatusCodeIds implements StatusCodeId
 			public String getId() {
 				return v;
 			}
+			@Override
 			public int hashCode(){
 				return v.hashCode();
 			}
+			@Override
 			public String toString(){
 				return v;
 			}
+			@Override
 			public boolean equals(Object o){
 				if(o == this){
 					return true;

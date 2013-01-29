@@ -25,10 +25,12 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 		return type;
 	}
 
+	@Override
 	public boolean isVariadic() {
 		return false;
 	}
 
+	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		if(!it.hasNext()){
 			log.debug("Parameter iterator at index=\"{}\" does not " +

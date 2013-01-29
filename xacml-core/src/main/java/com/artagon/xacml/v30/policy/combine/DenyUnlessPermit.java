@@ -17,6 +17,7 @@ public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombin
 		super(algorithmId);
 	}
 	
+	@Override
 	public final Decision combine(EvaluationContext context, List<D> decisions)
 	{
 		return doCombine(context, decisions);

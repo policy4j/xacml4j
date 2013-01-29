@@ -42,6 +42,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 		this.delegate = context;
 	}
 
+	@Override
 	public Ticker getTicker(){
 		return delegate.getTicker();
 	}
@@ -239,10 +240,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.getResolvedDesignators();
 	}
 
+	@Override
 	public Iterable<Obligation> getMatchingObligations(Decision decision) {
 		return delegate.getMatchingObligations(decision);
 	}
 
+	@Override
 	public Iterable<Advice> getMatchingAdvices(Decision decision) {
 		return delegate.getMatchingAdvices(decision);
 	}

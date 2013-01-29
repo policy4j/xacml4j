@@ -29,22 +29,22 @@ public final class DateTimeExp
 	}
 	
 	public DateTimeExp add(DayTimeDurationExp v){
-		return new DateTimeExp((DateTimeType)getType(), 
+		return new DateTimeExp(getType(), 
 				getValue().add(v.getValue()));
 	}
 	
 	public DateTimeExp subtract(DayTimeDurationExp v){
-		return new DateTimeExp((DateTimeType)getType(), 
+		return new DateTimeExp(getType(), 
 				getValue().subtract(v.getValue()));
 	}
 	
 	public DateTimeExp subtract(YearMonthDurationExp v){
-		return new DateTimeExp((DateTimeType)getType(), 
+		return new DateTimeExp(getType(), 
 				getValue().subtract(v.getValue()));
 	}
 	
 	public DateTimeExp add(YearMonthDurationExp v){
-		return new DateTimeExp((DateTimeType)getType(), 
+		return new DateTimeExp(getType(), 
 				getValue().add(v.getValue()));
 	}
 }

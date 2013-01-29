@@ -165,11 +165,11 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		for (JAXBElement<?> o : p.getPolicySetOrPolicyOrPolicySetIdReference()) {
 			Object v = o.getValue();
 			if (v instanceof PolicySetType) {
-				policies.add(create((PolicySetType) v));
+				policies.add(create(v));
 				continue;
 			}
 			if (v instanceof PolicyType) {
-				policies.add(create((PolicyType) v));
+				policies.add(create(v));
 				continue;
 			}
 			if (v instanceof IdReferenceType) {

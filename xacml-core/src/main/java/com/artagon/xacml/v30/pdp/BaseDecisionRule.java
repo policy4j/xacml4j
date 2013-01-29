@@ -85,6 +85,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	 * @param context an evaluation context
 	 * @return {@link MatchResult} a match result
 	 */
+	@Override
 	public MatchResult isMatch(EvaluationContext context){
 		Preconditions.checkArgument(
 				isEvaluationContextValid(context));

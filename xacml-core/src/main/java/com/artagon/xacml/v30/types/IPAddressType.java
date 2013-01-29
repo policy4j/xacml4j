@@ -78,6 +78,7 @@ public enum IPAddressType implements AttributeExpType
 		return bagType;
 	}
 
+	@Override
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}

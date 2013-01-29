@@ -17,30 +17,37 @@ class AttributeResolverDescriptorDelegate
 		this.d = d;
 	}
 	
+	@Override
 	public boolean canResolve(AttributeDesignatorKey key) {
 		return d.canResolve(key);
 	}
 
+	@Override
 	public AttributeDescriptor getAttribute(String attributeId) {
 		return d.getAttribute(attributeId);
 	}
 
+	@Override
 	public int getAttributesCount() {
 		return d.getAttributesCount();
 	}
 
+	@Override
 	public Set<String> getProvidedAttributeIds() {
 		return d.getProvidedAttributeIds();
 	}
 
+	@Override
 	public Map<String, AttributeDescriptor> getAttributesById() {
 		return d.getAttributesById();
 	}
 
+	@Override
 	public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey() {
 		return d.getAttributesByKey();
 	}
 
+	@Override
 	public boolean isAttributeProvided(String attributeId) {
 		return d.isAttributeProvided(attributeId);
 	}

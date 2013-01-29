@@ -92,6 +92,7 @@ public enum DNSNameType implements AttributeExpType
 		return bagType.create(values);
 	}
 
+	@Override
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}

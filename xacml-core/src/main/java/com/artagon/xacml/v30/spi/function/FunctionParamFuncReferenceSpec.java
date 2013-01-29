@@ -14,6 +14,7 @@ final class FunctionParamFuncReferenceSpec implements FunctionParamSpec
 		return false;
 	}
 
+	@Override
 	public boolean isVariadic() {
 		return false;
 	}

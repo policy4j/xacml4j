@@ -76,6 +76,7 @@ public enum RFC822NameType implements AttributeExpType
 		return bagType;
 	}
 
+	@Override
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}

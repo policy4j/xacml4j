@@ -170,6 +170,7 @@ public final class AttributeResolverDescriptorBuilder
 			return attributesById.size();
 		}
 
+		@Override
 		public Set<String> getProvidedAttributeIds(){
 			return attributesById.keySet();
 		}
@@ -184,6 +185,7 @@ public final class AttributeResolverDescriptorBuilder
 			return attributesById.get(attributeId);
 		}
 
+		@Override
 		public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey(){
 			return attributesByKey;
 		}

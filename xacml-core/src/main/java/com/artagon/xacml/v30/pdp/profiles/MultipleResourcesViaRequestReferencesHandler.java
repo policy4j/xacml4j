@@ -21,6 +21,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 		super(FEATURE_ID);
 	}
 
+	@Override
 	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context)
 	{
 		Collection<Result> results = new LinkedList<Result>();

@@ -37,6 +37,7 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 		this(min, null, paramType);
 	}
 
+	@Override
 	public boolean isVariadic() {
 		return true;
 	}
@@ -69,6 +70,7 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 		return this.paramType.equals(type);
 	}
 
+	@Override
 	public boolean validate(ListIterator<Expression> it) {
 		int c = 0;
 		boolean valid = true;

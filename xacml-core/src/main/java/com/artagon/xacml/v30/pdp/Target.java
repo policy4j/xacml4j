@@ -83,6 +83,7 @@ public class Target implements PolicyElement
 		return matches.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return false;
