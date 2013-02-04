@@ -12,7 +12,6 @@
 		<module>xacml-core</module>
 		<module>xacml-spring</module>
 		<module>xacml-test</module>
-		<module>xacml-opensaml</module>
 		<module>xacml-ws</module>
 		<module>xacml-json</module>
 	</modules>
