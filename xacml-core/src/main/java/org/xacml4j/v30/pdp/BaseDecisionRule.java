@@ -77,6 +77,14 @@ abstract class BaseDecisionRule implements DecisionRule
 	public Condition getCondition(){
 		return condition;
 	}
+	
+	public Collection<AdviceExpression> getAdviceExpressions(){
+		return adviceExpressions;
+	}
+	
+	public Collection<ObligationExpression> getObligationExpressions(){
+		return obligationExpressions;
+	}
 
 	/**
 	 * Testing if this decision rule is applicable to

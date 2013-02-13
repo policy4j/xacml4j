@@ -14,6 +14,7 @@ import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 public abstract class Types
 {
@@ -44,7 +45,12 @@ public abstract class Types
 		private Builder(){
 			this.types = new ConcurrentHashMap<String, AttributeExpType>();
 		}
-
+		
+		/**
+		 * Adds default XACML 2.0/3.0 types to this registry
+		 * 
+		 * @return {@link Builder}
+		 */
 		public Builder defaultTypes()
 		{
 			addType(AnyURIType.ANYURI);
@@ -73,25 +79,35 @@ public abstract class Types
 			return this;
 		}
 
+		/**
+		 * Adds given type to this registry
+		 * 
+		 * @param type a XACML type definition
+		 * @return {@link Builder}
+		 */
 		public Builder type(AttributeExpType type){
 			addType(type);
 			return this;
 		}
-
+		
 		public Types create(){
 			return new Types() {
 				@Override
 				public AttributeExpType getType(String typeId) {
-					return types.get(typeId);
+					Preconditions.checkArgument(
+							!Strings.isNullOrEmpty(typeId));
+					AttributeExpType type = types.get(typeId);
+					if(type == null){
+						throw new XacmlSyntaxException(
+								"Unknown XACML type=\"%s\"", typeId);
+					}
+					return type;
 				}
 
 				@Override
 				public AttributeExp valueOf(String typeId, Object value)
 						throws XacmlSyntaxException {
 					AttributeExpType type = getType(typeId);
-					if(type == null){
-						throw new XacmlSyntaxException("Unknown data type=\"%s\"", typeId);
-					}
 					return type.create(value);
 				}
 

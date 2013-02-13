@@ -86,8 +86,6 @@ public class Xacml20ConformanceTest
 	public void testIIATests() throws Exception
 	{
 		Set<Integer> skipTests = new HashSet<Integer>();
-		skipTests.add(2);
-		skipTests.add(3);
 		skipTests.add(4);
 		skipTests.add(5);
 		executeXacmlConformanceTestCase(skipTests, "IIA", 22);

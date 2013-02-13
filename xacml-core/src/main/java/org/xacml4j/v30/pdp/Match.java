@@ -65,6 +65,10 @@ public class Match implements PolicyElement, Matchable
 		return value;
 	}
 	
+	public AttributeReference getReference(){
+		return attributeRef;
+	}
+	
 	@Override
 	public MatchResult match(EvaluationContext context)
 	{

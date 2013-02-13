@@ -66,16 +66,13 @@ public abstract class ExpressionTypeBuilder
 				return new FunctionTypeBuilder();
 			}
  		});
- 		b.put(AttributeExp.class, new Maker(){
-			@Override
-			public ExpressionTypeBuilder make() {
-				return new AttributeValueTypeBuilder();
-			}
- 		});
  		builders = b.build();
  	}
  	
  	public static ExpressionTypeBuilder getBuilder(Expression exp){
+ 		if(exp instanceof AttributeExp){
+ 			return new AttributeValueTypeBuilder();
+ 		}
  		Maker m = builders.get(exp);
  		return (m != null)?m.make():null;
  	}

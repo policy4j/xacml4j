@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import static org.xacml4j.v30.types.AnyURIType.ANYURI;
 import static org.xacml4j.v30.types.Base64BinaryType.BASE64BINARY;
@@ -19,6 +20,10 @@ import static org.xacml4j.v30.types.IntegerType.INTEGER;
 import static org.xacml4j.v30.types.IPAddressType.IPADDRESS;
 import static org.xacml4j.v30.types.RFC822NameType.RFC822NAME;
 import static org.xacml4j.v30.types.StringType.STRING;
+import static org.xacml4j.v30.types.TimeType.TIME;
+import static org.xacml4j.v30.types.XPathExpType.XPATHEXPRESSION;
+import static org.xacml4j.v30.types.YearMonthDurationType.YEARMONTHDURATION;
+
 
 
 public class TypesTest
@@ -38,21 +43,31 @@ public class TypesTest
 		assertNotNull(types.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"));
 	}
 	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testUknownType()
+	{
+		types.getType("TypeDoesNotExist");
+	}
+	
 	@Test
 	public void testDefaultTypes()
 	{
-		assertEquals(ANYURI, types.getType(ANYURI.getDataTypeId()));
-		assertEquals(BASE64BINARY, types.getType(BASE64BINARY.getDataTypeId()));
+		assertEquals(ANYURI, types.getType("http://www.w3.org/2001/XMLSchema#anyURI"));
+		assertEquals(BASE64BINARY, types.getType("http://www.w3.org/2001/XMLSchema#base64Binary"));
 		assertEquals(BOOLEAN, types.getType(BOOLEAN.getDataTypeId()));
 		assertEquals(DATE, types.getType(DATE.getDataTypeId()));
 		assertEquals(DATETIME, types.getType(DATETIME.getDataTypeId()));
 		assertEquals(DAYTIMEDURATION, types.getType(DAYTIMEDURATION.getDataTypeId()));
 		assertEquals(DNSNAME, types.getType(DNSNAME.getDataTypeId()));
 		assertEquals(DOUBLE, types.getType(DOUBLE.getDataTypeId()));
+		assertEquals(HEXBINARY, types.getType(HEXBINARY.getDataTypeId()));
 		assertEquals(INTEGER, types.getType(INTEGER.getDataTypeId()));
 		assertEquals(IPADDRESS, types.getType(IPADDRESS.getDataTypeId()));
 		assertEquals(RFC822NAME, types.getType(RFC822NAME.getDataTypeId()));
 		assertEquals(STRING, types.getType(STRING.getDataTypeId()));
+		assertEquals(TIME, types.getType(TIME.getDataTypeId()));
+		assertEquals(XPATHEXPRESSION, types.getType(XPATHEXPRESSION.getDataTypeId()));
+		assertEquals(YEARMONTHDURATION, types.getType(YEARMONTHDURATION.getDataTypeId()));
 	}
 	
 }
