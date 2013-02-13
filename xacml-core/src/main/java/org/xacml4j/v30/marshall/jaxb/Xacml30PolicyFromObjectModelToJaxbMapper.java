@@ -1,4 +1,4 @@
-package org.xacml4j.v30.marshall.jaxb.builder;
+package org.xacml4j.v30.marshall.jaxb;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,6 +10,8 @@ import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;
 import org.oasis.xacml.v30.jaxb.AllOfType;
 import org.oasis.xacml.v30.jaxb.AnyOfType;
 import org.oasis.xacml.v30.jaxb.AttributeAssignmentExpressionType;
+import org.oasis.xacml.v30.jaxb.AttributeDesignatorType;
+import org.oasis.xacml.v30.jaxb.AttributeSelectorType;
 import org.oasis.xacml.v30.jaxb.AttributeType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.oasis.xacml.v30.jaxb.ConditionType;
@@ -33,6 +35,9 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.pdp.AdviceExpression;
 import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
+import org.xacml4j.v30.pdp.AttributeDesignator;
+import org.xacml4j.v30.pdp.AttributeReference;
+import org.xacml4j.v30.pdp.AttributeSelector;
 import org.xacml4j.v30.pdp.Match;
 import org.xacml4j.v30.pdp.MatchAllOf;
 import org.xacml4j.v30.pdp.MatchAnyOf;
@@ -285,6 +290,22 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	{
 		Preconditions.checkNotNull(t);
 		MatchType jaxbMatch = factory.createMatchType();
+		jaxbMatch.setMatchId(t.getMatchId());
+		AttributeValueType v = factory.createAttributeValueType();
+		v.setDataType(t.getAttributeValue().getType().getDataTypeId());
+		v.getContent().add(t.getAttributeValue().toXacmlString());
+		jaxbMatch.setAttributeValue(v);
+		AttributeReference ref = t.getReference();
+		if(ref instanceof AttributeSelector){
+			@SuppressWarnings("unchecked")
+			JAXBElement<AttributeSelectorType> s = (JAXBElement<AttributeSelectorType>)ExpressionTypeBuilder.getBuilder(ref).build();
+			jaxbMatch.setAttributeSelector(s.getValue());
+		}
+		if(ref instanceof AttributeDesignator){
+			@SuppressWarnings("unchecked")
+			JAXBElement<AttributeDesignatorType> d = (JAXBElement<AttributeDesignatorType>)ExpressionTypeBuilder.getBuilder(ref).build();
+			jaxbMatch.setAttributeDesignator(d.getValue());
+		}
 		return jaxbMatch;
 	}
 	

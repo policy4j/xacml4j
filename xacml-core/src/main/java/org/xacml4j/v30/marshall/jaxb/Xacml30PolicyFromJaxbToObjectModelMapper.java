@@ -296,6 +296,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		return PolicyDefaults.create(defaults.getXPathVersion());
 	}
+	
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
 		throws XacmlSyntaxException
 	{

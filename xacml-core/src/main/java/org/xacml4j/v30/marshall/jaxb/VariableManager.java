@@ -9,7 +9,7 @@ import org.xacml4j.v30.pdp.VariableDefinition;
 
 import com.google.common.base.Preconditions;
 
-public class VariableManager <VExpression>
+class VariableManager <VExpression>
 {
 	private Map<String, VExpression> variableDefinitionExpressions;
 	private Map<String, VariableDefinition> variableDefinitions;

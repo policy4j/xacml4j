@@ -1,9 +1,10 @@
-package org.xacml4j.v30.marshall.jaxb.builder;
+package org.xacml4j.v30.marshall.jaxb;
 
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.marshall.jaxb.ExpressionTypeBuilder;
 import org.xacml4j.v30.types.StringType;
 
 public class ExpressionBuilderTest 

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.marshall.jaxb.builder;
+package org.xacml4j.v30.marshall.jaxb;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.xacml4j.v30.pdp.VariableReference;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
-public abstract class ExpressionTypeBuilder
+abstract class ExpressionTypeBuilder
 {
 	private final static ObjectFactory factory = new ObjectFactory();
 	private static ImmutableMap<Class<? extends Expression>, Maker> builders;
