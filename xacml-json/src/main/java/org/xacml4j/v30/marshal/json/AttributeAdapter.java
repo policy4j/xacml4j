@@ -16,36 +16,41 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class AttributeAdapter implements JsonDeserializer<Attribute>, JsonSerializer<Attribute>
-{
+class AttributeAdapter implements JsonDeserializer<Attribute>, JsonSerializer<Attribute> {
+
+	private static final String ATTRIBUTE_ID_PROPERTY = "AttributeId";
+	private static final String VALUE_PROPERTY = "Value";
+	private static final String DATA_TYPE_PROPERTY = "DataType";
+	private static final String ISSUER_PROPERTY = "Issuer";
+	private static final String INCLUDE_IN_RESULT_PROPERTY = "IncludeInResult";
 
 	@Override
-	public Attribute deserialize(JsonElement json, Type typeOfT,
-			JsonDeserializationContext context) throws JsonParseException {
+	public Attribute deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		String attrId = GsonUtil.getAsString(o, "attrId", null);
-		String issuer = GsonUtil.getAsString(o, "issuer", null);
-		boolean inclInRes = GsonUtil.getAsBoolean(o, "inclInRes", false);
-		Collection<AttributeExp> values = context.deserialize(o.get("values"),  new TypeToken<Collection<AttributeExp>>(){}.getType());
+		String attrId = GsonUtil.getAsString(o, ATTRIBUTE_ID_PROPERTY, null);
+		// TODO: deserialize DataType
+		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
+		boolean inclInRes = GsonUtil.getAsBoolean(o, INCLUDE_IN_RESULT_PROPERTY, false);
+		Collection<AttributeExp> values = context.deserialize(o.get(VALUE_PROPERTY),
+				new TypeToken<Collection<AttributeExp>>() {
+				}.getType());
 		Preconditions.checkState(values != null && !values.isEmpty());
-		return Attribute
-				.builder(attrId)
-				.issuer(issuer)
-				.includeInResult(inclInRes)
-				.values(values)
-				.build();
+		return Attribute.builder(attrId).issuer(issuer).includeInResult(inclInRes).values(values).build();
 	}
 
 	@Override
-	public JsonElement serialize(Attribute src, Type typeOfSrc,
-			JsonSerializationContext context) {
+	public JsonElement serialize(Attribute src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.addProperty("attrId", src.getAttributeId());
-		if(src.getIssuer() != null){
-			o.addProperty("issuer", src.getIssuer());
+		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
+		o.add(VALUE_PROPERTY, context.serialize(src.getValues(), new TypeToken<Collection<AttributeExp>>() {
+		}.getType()));
+		// TODO: serialize DataType
+		if (src.getIssuer() != null) {
+			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		o.addProperty("inclInRes", src.isIncludeInResult());
-		o.add("values", context.serialize(src.getValues(), new TypeToken<Collection<AttributeExp>>(){}.getType()));
+		o.addProperty(INCLUDE_IN_RESULT_PROPERTY, src.isIncludeInResult());
 		return o;
 	}
+
 }

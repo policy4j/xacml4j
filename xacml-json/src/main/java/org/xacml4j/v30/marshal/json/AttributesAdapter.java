@@ -31,6 +31,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
+			// TODO: deserialize Content
 			return Attributes.builder(AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null)))
 					.id(GsonUtil.getAsString(o, ID_PROPERTY, null)).attributes(attr).build();
 		} catch (XacmlSyntaxException e) {
@@ -45,6 +46,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			o.addProperty(ID_PROPERTY, src.getId());
 		}
 		o.addProperty(CATEGORY_PROPERTY, src.getCategory().getId());
+		// TODO: serialize Content
 		o.add(ATTRIBUTE_PROPERTY, context.serialize(src.getAttributes()));
 		return o;
 	}
