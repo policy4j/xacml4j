@@ -1,4 +1,4 @@
-package org.xacml4j.v30.marshall.json;
+package org.xacml4j.v30.marshal.json;
 
 import java.lang.reflect.Type;
 

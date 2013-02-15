@@ -1,4 +1,4 @@
-package org.xacml4j.json;
+package org.xacml4j.v30.marshal.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,10 +9,10 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.marshal.json.JsonRequestContextMarshaller;
+import org.xacml4j.v30.marshal.json.JsonRequestContextUnmarshaller;
 import org.xacml4j.v30.marshall.Marshaller;
 import org.xacml4j.v30.marshall.Unmarshaller;
-import org.xacml4j.v30.marshall.json.JsonRequestContextMarshaller;
-import org.xacml4j.v30.marshall.json.JsonRequestContextUnmarshaller;
 import org.xacml4j.v30.types.Types;
 
 public class GsonRequestUnmarshallerTest
