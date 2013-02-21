@@ -23,9 +23,9 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 	public RequestContext deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, "returnPolicyIdList", false);
-		boolean combinedDecision = GsonUtil.getAsBoolean(o, "combinedDecision", false);
-		Collection<Attributes> attributes = context.deserialize(o.getAsJsonArray("attributes"), new TypeToken<Collection<Attributes>>(){}.getType());
+		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, "ReturnPolicyIdList", false);
+		boolean combinedDecision = GsonUtil.getAsBoolean(o, "CombinedDecision", false);
+		Collection<Attributes> attributes = context.deserialize(o.getAsJsonArray("Attributes"), new TypeToken<Collection<Attributes>>(){}.getType());
 		Collection<RequestReference> reqRef = context.deserialize(o.getAsJsonArray("multipleRequests"), new TypeToken<Collection<RequestReference>>(){}.getType());
 		return new RequestContext(returnPolicyIdList, combinedDecision, attributes, reqRef);
 	}
@@ -35,10 +35,10 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 			JsonSerializationContext context) {
 		
 		JsonObject o = new JsonObject();
-		o.addProperty("returnPolicyIdList", src.isReturnPolicyIdList());
-		o.addProperty("combinedDecision", src.isCombinedDecision());
-		o.add("attributes", context.serialize(src.getAttributes()));
-		o.add("multipleRequests", context.serialize(src.getRequestReferences()));
+		o.addProperty("ReturnPolicyIdList", src.isReturnPolicyIdList());
+		o.addProperty("CombinedDecision", src.isCombinedDecision());
+		o.add("Attributes", context.serialize(src.getAttributes()));
+		o.add("MultipleRequests", context.serialize(src.getRequestReferences()));
 		return o;
 	}
 	

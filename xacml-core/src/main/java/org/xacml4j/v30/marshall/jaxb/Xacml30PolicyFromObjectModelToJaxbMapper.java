@@ -28,6 +28,8 @@ import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.oasis.xacml.v30.jaxb.RuleType;
 import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
@@ -59,6 +61,8 @@ import com.google.common.collect.ImmutableMap;
 
 public class Xacml30PolicyFromObjectModelToJaxbMapper
 {
+	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromObjectModelToJaxbMapper.class);
+	
 	private final static ObjectFactory factory = new ObjectFactory();
 	
 	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings;
@@ -125,6 +129,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	}
 	
 	private JAXBElement<?> toJaxb(Rule d){
+		if(log.isDebugEnabled()){
+			log.debug("Mapping Rule id=\"{}\"", d.getId());
+		}
 		Rule rule = (Rule)d;
 		RuleType jaxbRule = factory.createRuleType();
 		jaxbRule.setRuleId(rule.getId());
@@ -133,7 +140,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbRule.setEffect(nativeToJaxbEffectMappings.get(rule.getEffect()));
 		if(d.getCondition() != null){
 			ConditionType condition = factory.createConditionType();
-			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).build());
+			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).from(d.getCondition().getExpression()));
 			jaxbRule.setCondition(condition);
 		}
 		jaxbRule.setAdviceExpressions(toJaxbAdvices(rule.getAdviceExpressions()));
@@ -142,6 +149,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	}
 	
 	private JAXBElement<?> toJaxb(Policy d){
+		if(log.isDebugEnabled()){
+			log.debug("Mapping Policy id=\"{}\"", d.getId());
+		}
 		Policy p = (Policy)d;
 		PolicyType jaxbPolicy = factory.createPolicyType();
 		jaxbPolicy.setPolicyId(p.getId());
@@ -152,7 +162,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbPolicy.setRuleCombiningAlgId(p.getRuleCombiningAlgorithm().getId());
 		if(d.getCondition() != null){
 			ConditionType condition = factory.createConditionType();
-			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).build());
+			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).from(d.getCondition().getExpression()));
 			jaxbPolicy.setCondition(condition);
 		}
 		jaxbPolicy.setAdviceExpressions(toJaxbAdvices(p.getAdviceExpressions()));
@@ -167,6 +177,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	}
 	
 	private JAXBElement<?> toJaxb(PolicySet d){
+		if(log.isDebugEnabled()){
+			log.debug("Mapping PolicySet id=\"{}\"", d.getId());
+		}
 		PolicySet ps = (PolicySet)d;
 		PolicySetType jaxbPolicySet = factory.createPolicySetType();
 		jaxbPolicySet.setPolicySetId(ps.getId());
@@ -177,7 +190,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbPolicySet.setPolicyCombiningAlgId(ps.getPolicyDecisionCombiningAlgorithm().getId());
 		if(d.getCondition() != null){
 			ConditionType condition = factory.createConditionType();
-			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).build());
+			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).from(d.getCondition().getExpression()));
 			jaxbPolicySet.setCondition(condition);
 		}
 		jaxbPolicySet.setAdviceExpressions(toJaxbAdvices(ps.getAdviceExpressions()));
@@ -213,7 +226,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		Preconditions.checkNotNull(var);
 		VariableDefinitionType jaxbVar = factory.createVariableDefinitionType();
 		jaxbVar.setVariableId(var.getVariableId());
-		JAXBElement<?> expression = ExpressionTypeBuilder.getBuilder(var.getExpression()).build();
+		JAXBElement<?> expression = ExpressionTypeBuilder.getBuilder(var.getExpression()).from(var.getExpression());
 		jaxbVar.setExpression(expression);
 		return jaxbVar;
 	}
@@ -298,12 +311,16 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		AttributeReference ref = t.getReference();
 		if(ref instanceof AttributeSelector){
 			@SuppressWarnings("unchecked")
-			JAXBElement<AttributeSelectorType> s = (JAXBElement<AttributeSelectorType>)ExpressionTypeBuilder.getBuilder(ref).build();
+			JAXBElement<AttributeSelectorType> s = (JAXBElement<AttributeSelectorType>)ExpressionTypeBuilder
+			.getBuilder(ref)
+			.from(ref);
 			jaxbMatch.setAttributeSelector(s.getValue());
 		}
 		if(ref instanceof AttributeDesignator){
 			@SuppressWarnings("unchecked")
-			JAXBElement<AttributeDesignatorType> d = (JAXBElement<AttributeDesignatorType>)ExpressionTypeBuilder.getBuilder(ref).build();
+			JAXBElement<AttributeDesignatorType> d = (JAXBElement<AttributeDesignatorType>)ExpressionTypeBuilder
+			.getBuilder(ref)
+			.from(ref);
 			jaxbMatch.setAttributeDesignator(d.getValue());
 		}
 		return jaxbMatch;
@@ -369,7 +386,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	private AttributeAssignmentExpressionType toJaxb(
 			AttributeAssignmentExpression exp){
 		AttributeAssignmentExpressionType jaxbExp = factory.createAttributeAssignmentExpressionType();
-		JAXBElement<?> expression = ExpressionTypeBuilder.getBuilder(exp.getExpression()).build();
+		JAXBElement<?> expression = ExpressionTypeBuilder.getBuilder(exp.getExpression()).from(exp.getExpression());
 		jaxbExp.setExpression(expression);
 		jaxbExp.setAttributeId(exp.getAttributeId());
 		jaxbExp.setCategory(exp.getCategory().getId());

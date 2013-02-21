@@ -1,38 +1,43 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.XPathVersion;
-import org.xacml4j.v30.XacmlSyntaxException;
-
 
 public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults
 {
-	public PolicyDefaults(XPathVersion version) {
-		super(version);
+	private PolicyDefaults(Builder b) {
+		super(b);
 	}
 	
-	public static PolicyDefaults create(Object... objects)
-			throws XacmlSyntaxException 
-	{
-		if(objects != null && 
-				objects.length > 0){
-			if(objects[0] instanceof String){
-				String value = (String)objects[0];
-				XPathVersion v = XPathVersion.parse(value);
-				if(v == null){
-					throw new XacmlSyntaxException(
-							"Unparsable XPath version=\"%s\"", value);
-				}
-				return new PolicyDefaults(v);
-			}
-		}
-		return null;
+	public static  Builder builder(){
+		return new Builder();
 	}
-
+	
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof PolicyDefaults)){
+			return false;
+		}
+		PolicyDefaults d = (PolicyDefaults)o;
+		return values.equals(d.values);
+	}
 	
+	public static class Builder extends BaseCompositeDecisionRuleDefaultsBuilder<Builder>
+	{
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+		
+		public PolicyDefaults build(){
+			return new PolicyDefaults(this);
+		}
+	}
 }

@@ -134,18 +134,20 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
  		Collection<CompositeDecisionRuleIDReference> list = new LinkedList<CompositeDecisionRuleIDReference>();
 		for(JAXBElement<IdReferenceType> o: policyIdentifierList.getPolicyIdReferenceOrPolicySetIdReference()) {
 			if (o.getName().getLocalPart().equals("PolicyIdReference")) {
-				PolicyIDReference ref = PolicyIDReference.create(
-						o.getValue().getValue(),
-						o.getValue().getVersion(),
-						o.getValue().getEarliestVersion(),
-						o.getValue().getLatestVersion());
+				PolicyIDReference ref = PolicyIDReference
+						.builder(o.getValue().getValue())
+						.version(o.getValue().getVersion())
+						.earliest(o.getValue().getEarliestVersion())
+						.latest(o.getValue().getLatestVersion())
+						.build();
 				list.add(ref);
 			} else if(o.getName().getLocalPart().equals("PolicySetIdReference")) {
-				PolicySetIDReference ref = PolicySetIDReference.create(
-						o.getValue().getValue(),
-						o.getValue().getVersion(),
-						o.getValue().getEarliestVersion(),
-						o.getValue().getLatestVersion());
+				PolicySetIDReference ref = PolicySetIDReference
+						.builder(o.getValue().getValue())
+						.version(o.getValue().getVersion())
+						.earliest(o.getValue().getEarliestVersion())
+						.latest(o.getValue().getLatestVersion())
+						.build();
 				list.add(ref);
 			}
 		}

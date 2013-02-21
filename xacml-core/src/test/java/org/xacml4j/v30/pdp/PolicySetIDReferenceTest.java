@@ -19,7 +19,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
 
 
 public class PolicySetIDReferenceTest
@@ -40,7 +39,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateFailToResolveReferenceViaException() throws XacmlException
 	{
-		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -63,7 +62,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateFailToResolveReferenceReturnsNull() throws XacmlException
 	{
-		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
@@ -91,7 +90,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testIsApplicableFailToResolveReference() throws XacmlException
 	{
-		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -116,14 +115,14 @@ public class PolicySetIDReferenceTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testPolicyIDResolutionViaWrongEvaluationContext() throws EvaluationException
 	{
-		PolicyIDReference ref = new PolicyIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		ref.evaluate(context);
 	}
 	
 	@Test
 	public void testIsApplicablePolicyIDReference() throws XacmlException
 	{
-		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
@@ -159,7 +158,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateIfApplicable() throws XacmlException
 	{
-		PolicySetIDReference ref = new PolicySetIDReference("testId", new VersionMatch("1.+"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("testId").version("1.+").build();
 		
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);

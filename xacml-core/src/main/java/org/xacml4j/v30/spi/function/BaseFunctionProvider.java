@@ -7,7 +7,7 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Preconditions;
 
-public class BaseFunctionProvider implements FunctionProvider
+class BaseFunctionProvider implements FunctionProvider
 {
 	private ConcurrentMap<String, FunctionSpec> functions;
 	

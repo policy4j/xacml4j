@@ -15,7 +15,6 @@ import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 
 public abstract class Types
 {

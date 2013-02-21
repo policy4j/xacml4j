@@ -35,7 +35,7 @@ public class PolicySet extends
 	private PolicySet(PolicySetBuilder b)
 	{
 		super(b);
-		this.reference = new PolicySetIDReference(id, version);
+		this.reference = PolicySetIDReference.builder(id).version(b.version).build();
 		this.policySetDefaults = b.policyDefaults;
 		Preconditions.checkNotNull(b.combiningAlgorithm,
 				"Policy decision combinging algorithm must be specified");

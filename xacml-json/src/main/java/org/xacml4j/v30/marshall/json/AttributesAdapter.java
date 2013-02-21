@@ -24,10 +24,10 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			JsonDeserializationContext context) throws JsonParseException {
 		try{
 			JsonObject o = json.getAsJsonObject();
-			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray("attributes"), new TypeToken<Collection<Attribute>>(){}.getType());
+			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray("Attribute"), new TypeToken<Collection<Attribute>>(){}.getType());
 			return Attributes
-					.builder( AttributeCategories.parse(GsonUtil.getAsString(o, "category", null)))
-					.id(GsonUtil.getAsString(o, "id", null))
+					.builder( AttributeCategories.parse(GsonUtil.getAsString(o, "Category", null)))
+					.id(GsonUtil.getAsString(o, "Id", null))
 					.attributes(attr)
 					.build();
 		}catch(XacmlSyntaxException e){

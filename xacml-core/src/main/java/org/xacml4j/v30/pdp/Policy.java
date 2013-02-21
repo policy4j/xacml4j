@@ -46,7 +46,7 @@ public class Policy extends BaseCompositeDecisionRule
 				"Rule decision combining algorithm must be specified");
 		this.combine = b.combiningAlgorithm;
 		this.policyDefaults = b.policyDefaults;
-		this.reference = new PolicyIDReference(b.id, b.version);
+		this.reference = PolicyIDReference.builder(b.id).version(b.version).build();
 		this.rules = ImmutableList.copyOf(b.rules);
 		this.variableDefinitions = Maps.uniqueIndex(b.variables,
 				new Function<VariableDefinition, String>(){
@@ -259,7 +259,7 @@ public class Policy extends BaseCompositeDecisionRule
 	@Override
 	public String toString(){
 		ToStringHelper h = Objects.toStringHelper(this);
-		return _addProperties(h)
+		return toStringBuilder(h)
 		.add("variableDefnitions", variableDefinitions)
 		.add("policyDefaults",policyDefaults)
 		.add("rules", rules)

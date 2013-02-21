@@ -8,9 +8,6 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -20,22 +17,14 @@ public final class PolicyIDReference extends
 {
 	private final static Logger log = LoggerFactory.getLogger(PolicyIDReference.class);
 
-	public PolicyIDReference(
-			String id,
-			VersionMatch version,
-			VersionMatch earliest,
-			VersionMatch latest) {
-		super(id, version, earliest, latest);
+	private PolicyIDReference(Builder b) {
+		super(b);
 	}
 
-	public PolicyIDReference(String id, VersionMatch version) {
-		super(id, version, null, null);
+	public static Builder builder(String id){
+		return new Builder().id(id);
 	}
-
-	public PolicyIDReference(String id, Version version) {
-		super(id, VersionMatch.parse(version.getValue()), null, null);
-	}
-
+	
 	/**
 	 * Test this reference points to a given policy
 	 *
@@ -48,25 +37,6 @@ public final class PolicyIDReference extends
 		Policy p = (Policy)policy;
 		return p != null &&
 		matches(p.getId(), p.getVersion());
-	}
-
-	/**
-	 * Creates a {@link PolicyIDReference} instance
-	 *
-	 * @param policyId a policy identifier
-	 * @param version a policy version match
-	 * @param earliest a policy earliest version match
-	 * @param latest a policy latest version match
-	 * @return {@link PolicyIDReference} instance
-	 * @throws XacmlSyntaxException
-	 */
-	public static PolicyIDReference create(String policyId, String version,
-			String earliest, String latest) throws XacmlSyntaxException
-	{
-		return new PolicyIDReference(policyId,
-				(version != null)?VersionMatch.parse(version):null,
-				(earliest != null)?VersionMatch.parse(earliest):null,
-				(latest != null)?VersionMatch.parse(latest):null);
 	}
 
 	@Override
@@ -220,6 +190,18 @@ public final class PolicyIDReference extends
 		@Override
 		public PolicyIDReference getCurrentPolicyIDReference() {
 			return PolicyIDReference.this;
+		}
+	}
+	
+	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
+	{
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+		
+		public PolicyIDReference build(){
+			return new PolicyIDReference(this);
 		}
 	}
 

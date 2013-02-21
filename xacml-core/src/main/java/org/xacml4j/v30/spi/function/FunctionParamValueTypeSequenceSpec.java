@@ -8,6 +8,8 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 
+import com.google.common.base.Objects;
+
 
 final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 {
@@ -93,5 +95,37 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 			valid &= c <= max;
 		}
 		return valid;
+	}
+	
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("min", min)
+				.add("max", max)
+				.add("type", paramType)
+				.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(min, max, paramType);
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof FunctionParamValueTypeSequenceSpec)){
+			return false;
+		}
+		FunctionParamValueTypeSequenceSpec s = (FunctionParamValueTypeSequenceSpec)o;
+		return Objects.equal(min, s.min) && 
+				Objects.equal(max, s.max) && 
+				paramType.equals(s.paramType);
 	}
 }

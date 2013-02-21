@@ -231,7 +231,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		}
 	}
 
-	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		return b.add("id", id)
 				.add("description", description)
 				.add("target", target)
