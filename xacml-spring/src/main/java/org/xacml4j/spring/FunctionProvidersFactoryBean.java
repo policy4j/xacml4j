@@ -22,10 +22,10 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<org.xacml4
 			Preconditions.checkState(p.getProviderClass() != null 
 					|| p.getProviderInstance() != null);
 			if(p.getProviderClass() != null){
-				builder.withFunctionsFromClass(p.getProviderClass());
+				builder.fromClass(p.getProviderClass());
 			}
 			if(p.getProviderInstance() != null){
-				builder.withFunctionsFromInstance(p.getProviderInstance());
+				builder.fromInstance(p.getProviderInstance());
 			}
 		}
 	}
@@ -37,6 +37,6 @@ public class FunctionProvidersFactoryBean extends AbstractFactoryBean<org.xacml4
 
 	@Override
 	protected org.xacml4j.v30.spi.function.FunctionProvider createInstance() throws Exception {	
-		return builder.create();
+		return builder.build();
 	}	
 }

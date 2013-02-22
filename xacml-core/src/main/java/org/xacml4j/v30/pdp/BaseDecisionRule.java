@@ -78,10 +78,20 @@ abstract class BaseDecisionRule implements DecisionRule
 		return condition;
 	}
 	
+	/**
+	 * Gets advice expressions in this rule
+	 * 
+	 * @return a collection of {@link AdviceExpression}
+	 */
 	public Collection<AdviceExpression> getAdviceExpressions(){
 		return adviceExpressions;
 	}
 	
+	/**
+	 * Gets obligation expressions in this rule
+	 * 
+	 * @return a collection of {@link ObligationExpression}
+	 */
 	public Collection<ObligationExpression> getObligationExpressions(){
 		return obligationExpressions;
 	}

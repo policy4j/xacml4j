@@ -23,6 +23,10 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		super(b);
 	}
 	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
 	public static Builder builder(String id){
 		return new Builder().id(id);
 	}

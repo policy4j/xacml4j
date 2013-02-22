@@ -21,6 +21,10 @@ public final class PolicyIDReference extends
 		super(b);
 	}
 
+	public static Builder builder(){
+		return new Builder();
+	}
+	
 	public static Builder builder(String id){
 		return new Builder().id(id);
 	}

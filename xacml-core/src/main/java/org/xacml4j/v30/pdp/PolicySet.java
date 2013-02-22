@@ -11,6 +11,7 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.Preconditions;
@@ -210,6 +211,8 @@ public class PolicySet extends
 	class PolicySetDelegatingEvaluationContext
 		extends DelegatingEvaluationContext
 	{
+		private StatusCode evalStatus;
+		
 		/**
 		 * Constructs delegating evaluation context
 		 * which delegates all invocations to the enclosing
@@ -230,6 +233,17 @@ public class PolicySet extends
 		@Override
 		public PolicySet getCurrentPolicySet() {
 			return PolicySet.this;
+		}
+		
+		@Override
+		public StatusCode getEvaluationStatus() {
+			return evalStatus;
+		}
+		
+		@Override
+		public void setEvaluationStatus(StatusCode code) {
+			Preconditions.checkNotNull(code);
+			this.evalStatus = code;
 		}
 
 		@Override
