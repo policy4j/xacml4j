@@ -17,31 +17,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
-public class JsonRequestContextUnmarshaller implements RequestUnmarshaller
-{
-	private Gson json;
+public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
+	private final Gson json;
 
 	public JsonRequestContextUnmarshaller(Types typesRegistry)
 
 	{
-		this.json = new GsonBuilder()
-		.registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-		.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-		.registerTypeAdapter(Attribute.class, new AttributeAdapter())
-		.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry))
-		.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
-		.create();
+		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
+				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
+				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(typesRegistry))
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry))
+				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
+				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}
 
 	@Override
-	public RequestContext unmarshal(Object source) throws XacmlSyntaxException,
-			IOException {
-		if(source instanceof Reader){
-			return json.<RequestContext>fromJson((Reader)source, RequestContext.class);
+	public RequestContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
+		if (source instanceof Reader) {
+			return json.<RequestContext> fromJson((Reader) source, RequestContext.class);
 		}
-		if(source instanceof JsonElement){
-			return json.fromJson((JsonElement)source, RequestContext.class);
+		if (source instanceof JsonElement) {
+			return json.fromJson((JsonElement) source, RequestContext.class);
 		}
 		return null;
 	}

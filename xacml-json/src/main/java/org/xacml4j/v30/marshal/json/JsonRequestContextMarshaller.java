@@ -19,47 +19,44 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 
-public class JsonRequestContextMarshaller implements Marshaller<RequestContext>
-{
+public class JsonRequestContextMarshaller implements Marshaller<RequestContext> {
 
-	private Gson json;
+	private final Gson json;
 
 	public JsonRequestContextMarshaller()
 
 	{
-		this.json = new GsonBuilder()
-		.registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-		.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-		.registerTypeAdapter(Attribute.class, new AttributeAdapter())
-		.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
-		.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-		.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater())
-		.create();
+		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
+				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
+				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
+				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
+				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}
 
 	@Override
-	public Object marshal(RequestContext source) throws IOException
-	{
+	public Object marshal(RequestContext source) throws IOException {
 		return json.toJsonTree(source);
 	}
 
 	@Override
-	public void marshal(RequestContext object, Object source)
-			throws IOException {
-		if(source instanceof Writer){
-			json.toJson(object, new TypeToken<RequestContext>(){}.getType(), new JsonWriter((Writer)source));
+	public void marshal(RequestContext object, Object source) throws IOException {
+		if (source instanceof Writer) {
+			json.toJson(object, new TypeToken<RequestContext>() {
+			}.getType(), new JsonWriter((Writer) source));
 			return;
 		}
-		if(source instanceof OutputStream){
-			json.toJson(object, new TypeToken<RequestContext>(){}.getType(),
-					new JsonWriter(new OutputStreamWriter((OutputStream)source)));
+		if (source instanceof OutputStream) {
+			json.toJson(object, new TypeToken<RequestContext>() {
+			}.getType(), new JsonWriter(new OutputStreamWriter((OutputStream) source)));
 			return;
 		}
-		if(source instanceof JsonObject){
-			JsonObject o = (JsonObject)source;
-			o.add("xacmlRequest", json.toJsonTree(object));
+		if (source instanceof JsonObject) {
+			JsonObject o = (JsonObject) source;
+			o.add("Request", json.toJsonTree(object));
 			return;
 		}
 		throw new IllegalArgumentException("Unsupported marshalling source");
 	}
+
 }

@@ -21,7 +21,7 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 	public JsonResponseContextUnmarshaller(){
 		this.json = new GsonBuilder()
 		.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-		.registerTypeAdapter(Attribute.class, new AttributeAdapter())
+		.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 		.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 		.create();
 	}
