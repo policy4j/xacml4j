@@ -95,7 +95,7 @@ public class GsonRequestUnmarshallerTest {
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
-								.value(types.valueOf(StringType.STRING.getDataTypeId(), "raktas-po-kilimeliu")).build()))
+								.value(StringType.STRING, "koks oras paryziuj?", "as vistiek nesiojuosi sketi").build()))
 				.build();
 		RequestContext reqIn = RequestContext
 				.builder()

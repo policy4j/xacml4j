@@ -14,9 +14,9 @@ import java.util.Collection;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
+import org.xacml4j.v30.types.StringType;
 import org.xacml4j.v30.types.Types;
 
-import com.artagon.xacml.v30.types.StringType;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
