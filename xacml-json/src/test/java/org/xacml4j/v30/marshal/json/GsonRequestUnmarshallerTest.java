@@ -2,14 +2,19 @@ package org.xacml4j.v30.marshal.json;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.InputStream;
+import java.io.StringReader;
 
-import org.junit.Assert;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
@@ -21,6 +26,7 @@ import org.xacml4j.v30.marshall.Marshaller;
 import org.xacml4j.v30.marshall.Unmarshaller;
 import org.xacml4j.v30.types.StringType;
 import org.xacml4j.v30.types.Types;
+import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
 
@@ -45,13 +51,14 @@ public class GsonRequestUnmarshallerTest {
 		Object o = marshaller.marshal(reqIn);
 		log.debug("JSON request: {}", o);
 		RequestContext reqOut = unmarshaller.unmarshal(o);
-		Assert.assertThat(reqOut, is(equalTo(reqIn)));
+		assertThat(reqOut, is(equalTo(reqIn)));
 	}
 
-	private RequestContext createTestRequest() {
+	private RequestContext createTestRequest() throws Exception {
 		Attributes subjectAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
+				.content(sampleContent1())
 				.attributes(
 						ImmutableList.<Attribute> of(
 								Attribute
@@ -110,4 +117,12 @@ public class GsonRequestUnmarshallerTest {
 	private InputStream getClassPathResource(String resource) throws Exception {
 		return Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
 	}
+
+	private Node sampleContent1() throws Exception {
+		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+		return documentBuilder.parse(new InputSource(new StringReader(
+				"<security><through obscurity=\"true\"></through></security>")));
+	}
+
 }
