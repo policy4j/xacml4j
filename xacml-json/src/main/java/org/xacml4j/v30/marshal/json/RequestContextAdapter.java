@@ -7,6 +7,7 @@ import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -33,10 +34,15 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		Collection<Attributes> attributes = context.deserialize(o.getAsJsonArray(ATTRIBUTES_PROPERTY),
 				new TypeToken<Collection<Attributes>>() {
 				}.getType());
-		Collection<RequestReference> reqRef = context.deserialize(o.getAsJsonArray(MULTI_REQUESTS_PROPERTY),
-				new TypeToken<Collection<RequestReference>>() {
-				}.getType());
-		return new RequestContext(returnPolicyIdList, combinedDecision, attributes, reqRef);
+
+		Collection<RequestReference> reqRefs = ImmutableList.of();
+		JsonObject multiRequests = o.getAsJsonObject(MULTI_REQUESTS_PROPERTY);
+		if (multiRequests != null) {
+			reqRefs = context.deserialize(multiRequests.getAsJsonArray(REQUEST_REFERENCE_PROPERTY),
+					new TypeToken<Collection<RequestReference>>() {
+					}.getType());
+		}
+		return new RequestContext(returnPolicyIdList, combinedDecision, attributes, reqRefs);
 	}
 
 	@Override
