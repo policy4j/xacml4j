@@ -1,9 +1,13 @@
 package org.xacml4j.v30.marshal.json;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -14,8 +18,10 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.XacmlSyntaxException;
+import org.xml.sax.InputSource;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -33,6 +39,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 	private static final String ATTRIBUTE_PROPERTY = "Attribute";
 
 	private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
 	@Override
 	public Attributes deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -42,11 +49,33 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
-			// TODO: deserialize Content
-			return Attributes.builder(AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null)))
-					.id(GsonUtil.getAsString(o, ID_PROPERTY, null)).attributes(attr).build();
+			AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null));
+			Node content = stringToNode(GsonUtil.getAsString(o, CONTENT_PROPERTY, null));
+			String id = GsonUtil.getAsString(o, ID_PROPERTY, null);
+
+			return Attributes.builder(category).id(id).attributes(attr).content(content).build();
 		} catch (XacmlSyntaxException e) {
 			throw new JsonParseException(e);
+		}
+	}
+
+	private Node stringToNode(String str) {
+		if (str == null) {
+			return null;
+		}
+
+		final DocumentBuilder documentBuilder;
+		try {
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new IllegalStateException(String.format("Failed to create %s", DocumentBuilder.class.getName()), e);
+		}
+
+		InputSource source = new InputSource(new StringReader(str));
+		try {
+			return documentBuilder.parse(source);
+		} catch (Exception e) {
+			throw new IllegalArgumentException(String.format("Failed to parse DOM from string: \"%s\"", str), e);
 		}
 	}
 
@@ -62,16 +91,20 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 		return o;
 	}
 
-	public String nodeToString(Node node) {
-		Transformer transformer;
+	private String nodeToString(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		final Transformer transformer;
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
 			throw new IllegalStateException(String.format("Failed to create %s", Transformer.class.getName()), e);
 		}
 
-		StreamResult result = new StreamResult(new StringWriter());
 		DOMSource source = new DOMSource(node);
+		StreamResult result = new StreamResult(new StringWriter());
 		try {
 			transformer.transform(source, result);
 			return result.getWriter().toString();
