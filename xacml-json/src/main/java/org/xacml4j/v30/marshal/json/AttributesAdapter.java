@@ -1,8 +1,17 @@
 package org.xacml4j.v30.marshal.json;
 
+import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
@@ -22,6 +31,8 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 	private static final String ID_PROPERTY = "Id";
 	private static final String CONTENT_PROPERTY = "Content";
 	private static final String ATTRIBUTE_PROPERTY = "Attribute";
+
+	private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
 	@Override
 	public Attributes deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -46,9 +57,28 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			o.addProperty(ID_PROPERTY, src.getId());
 		}
 		o.addProperty(CATEGORY_PROPERTY, src.getCategory().getId());
-		// TODO: serialize Content
+		o.addProperty(CONTENT_PROPERTY, nodeToString(src.getContent()));
 		o.add(ATTRIBUTE_PROPERTY, context.serialize(src.getAttributes()));
 		return o;
+	}
+
+	public String nodeToString(Node node) {
+		Transformer transformer;
+		try {
+			transformer = transformerFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			throw new IllegalStateException(String.format("Failed to create %s", Transformer.class.getName()), e);
+		}
+
+		StreamResult result = new StreamResult(new StringWriter());
+		DOMSource source = new DOMSource(node);
+		try {
+			transformer.transform(source, result);
+			return result.getWriter().toString();
+		} catch (TransformerException e) {
+			// TODO: should the content serialization be fatal?
+			throw new IllegalArgumentException("Failed to serialize Node to String.", e);
+		}
 	}
 
 }
