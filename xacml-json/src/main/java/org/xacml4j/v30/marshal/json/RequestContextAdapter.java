@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 final class RequestContextAdapter implements JsonDeserializer<RequestContext>, JsonSerializer<RequestContext> {
 
+	private static final String REQUEST_REFERENCE_PROPERTY = "RequestReference";
 	private static final String RETURN_POLICY_ID_LIST_PROPERTY = "ReturnPolicyIdList";
 	private static final String COMBINED_DECISION_PROPERTY = "CombinedDecision";
 	private static final String ATTRIBUTES_PROPERTY = "Attributes";
@@ -48,7 +49,9 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		// SPEC: There must be at least one RequestReference object inside the MultiRequests object
 		Collection<RequestReference> requestReferences = src.getRequestReferences();
 		if (requestReferences != null && !requestReferences.isEmpty()) {
-			o.add(MULTI_REQUESTS_PROPERTY, context.serialize(requestReferences));
+			JsonObject multiRequests = new JsonObject();
+			multiRequests.add(REQUEST_REFERENCE_PROPERTY, context.serialize(requestReferences));
+			o.add(MULTI_REQUESTS_PROPERTY, multiRequests);
 		}
 		return o;
 	}

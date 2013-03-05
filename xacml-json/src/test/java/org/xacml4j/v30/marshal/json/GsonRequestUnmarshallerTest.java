@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,6 +19,7 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestDefaults;
+import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.ResourceAttributes;
 import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.marshall.Marshaller;
@@ -83,7 +83,6 @@ public class GsonRequestUnmarshallerTest {
 				.build();
 		Attributes actionAttributes = Attributes
 				.builder(AttributeCategories.ACTION)
-				.id("ActionAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
 								.includeInResult(false).value(types.valueOf(StringType.STRING.getDataTypeId(), "VIEW"))
@@ -104,25 +103,27 @@ public class GsonRequestUnmarshallerTest {
 								.includeInResult(false)
 								.value(StringType.STRING, "koks oras paryziuj?", "as vistiek nesiojuosi sketi").build()))
 				.build();
+
+		RequestReference requestRef1 = RequestReference.builder().reference(subjectAttributes, resourceAttributes)
+				.build();
+		RequestReference requestRef2 = RequestReference.builder()
+				.reference(subjectAttributes, environmentAttributes, subjectIntermAttributes).build();
+
 		RequestContext reqIn = RequestContext
 				.builder()
 				.combineDecision(false)
 				.returnPolicyIdList()
 				.reqDefaults(new RequestDefaults())
 				.attributes(subjectAttributes, resourceAttributes, actionAttributes, environmentAttributes,
-						subjectIntermAttributes).build();
+						subjectIntermAttributes).reference(requestRef1, requestRef2).build();
 		return reqIn;
-	}
-
-	private InputStream getClassPathResource(String resource) throws Exception {
-		return Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
 	}
 
 	private Node sampleContent1() throws Exception {
 		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
 		return documentBuilder.parse(new InputSource(new StringReader(
-				"<security><through obscurity=\"true\"></through></security>")));
+				"<security>\n<through obscurity=\"true\"></through></security>")));
 	}
 
 }
