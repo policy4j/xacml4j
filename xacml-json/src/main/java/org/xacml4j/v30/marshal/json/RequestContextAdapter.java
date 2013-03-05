@@ -42,6 +42,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 					new TypeToken<Collection<RequestReference>>() {
 					}.getType());
 		}
+
 		return new RequestContext(returnPolicyIdList, combinedDecision, attributes, reqRefs);
 	}
 
