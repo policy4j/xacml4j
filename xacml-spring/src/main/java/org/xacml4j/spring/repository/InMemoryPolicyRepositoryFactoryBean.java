@@ -45,9 +45,9 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	protected PolicyRepository createInstance() throws Exception 
 	{
 		FunctionProviderBuilder functionProviderBuilder = FunctionProviderBuilder.builder()
-			.withDefaultFunctions();
+			.defaultFunctions();
 		if(extensionFuctions != null){
-			functionProviderBuilder.withFunctions(extensionFuctions);
+			functionProviderBuilder.provider(extensionFuctions);
 		}
 		DecisionCombiningAlgorithmProviderBuilder decisionAlgorithmProviderBuilder = 
 			DecisionCombiningAlgorithmProviderBuilder.builder()
@@ -57,7 +57,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		}
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				id, functionProviderBuilder.create(), decisionAlgorithmProviderBuilder.create());
+				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.create());
 		for(Resource r : resources){
 			repository.importPolicy(r.getInputStream());
 		}

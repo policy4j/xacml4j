@@ -53,6 +53,7 @@ public abstract class Types
 		 */
 		public Builder defaultTypes()
 		{
+			// default types
 			addType(AnyURIType.ANYURI);
 			addType(Base64BinaryType.BASE64BINARY);
 			addType(BooleanType.BOOLEAN);
@@ -70,7 +71,26 @@ public abstract class Types
 			addType(X500NameType.X500NAME);
 			addType(XPathExpType.XPATHEXPRESSION);
 			addType(YearMonthDurationType.YEARMONTHDURATION);
-
+			
+			// short type aliases
+			addType("anyURI", AnyURIType.ANYURI);
+			addType("base64Binary", Base64BinaryType.BASE64BINARY);
+			addType("boolean", BooleanType.BOOLEAN);
+			addType("dateTime", DateTimeType.DATETIME);
+			addType("date", DateType.DATE);
+			addType("dayTimeDuration", DayTimeDurationType.DAYTIMEDURATION);
+			addType("dnsName", DNSNameType.DNSNAME);
+			addType("double", DoubleType.DOUBLE);
+			addType("hexBinary", HexBinaryType.HEXBINARY);
+			addType("integer", IntegerType.INTEGER);
+			addType("ipAddress", IPAddressType.IPADDRESS);
+			addType("rfc822Name", RFC822NameType.RFC822NAME);
+			addType("string", StringType.STRING);
+			addType("time", TimeType.TIME);
+			addType("x500Name", X500NameType.X500NAME);
+			addType("xpathExpression", XPathExpType.XPATHEXPRESSION);
+			addType("yearMonthDuration", YearMonthDurationType.YEARMONTHDURATION);
+			
 			// Legacy XACML 2.0 type mappings/aliases
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpType.XPATHEXPRESSION);
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XPathExpType.XPATHEXPRESSION);
@@ -133,7 +153,8 @@ public abstract class Types
 			if(log.isDebugEnabled()){
 				log.debug("Adding typeId=\"{}\"", typeId);
 			}
-			Preconditions.checkArgument(!types.containsKey(typeId));
+			Preconditions.checkArgument(!types.containsKey(typeId), 
+					"Type with identifier=\"%s\" already exist", typeId);
 			this.types.put(typeId, type);
 		}
 

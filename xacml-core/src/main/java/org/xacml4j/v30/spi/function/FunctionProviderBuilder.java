@@ -53,13 +53,13 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withFunctionsFromInstance(Object p)
+	public FunctionProviderBuilder fromInstance(Object p)
 	{
 		Preconditions.checkNotNull(p);
 		try{
 			return (p instanceof FunctionProvider)?
-					withFunctions((FunctionProvider)p):
-						withFunctions(
+					provider((FunctionProvider)p):
+						provider(
 								new AnnotiationBasedFunctionProvider(p, 
 										invocationFactory));
 		}catch(Exception e){
@@ -73,23 +73,23 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withDefaultFunctions()
+	public FunctionProviderBuilder defaultFunctions()
 	{
-		withFunctionsFromClass(ArithmeticFunctions.class);
-		withFunctionsFromClass(BagFunctions.class);
-		withFunctionsFromClass(DateTimeArithmeticFunctions.class);
-		withFunctionsFromClass(EqualityPredicates.class);
-		withFunctionsFromClass(LogicalFunctions.class);
-		withFunctionsFromClass(NonNumericComparisionFunctions.class);
-		withFunctionsFromClass(NumericConversionFunctions.class);
-		withFunctionsFromClass(NumericComparisionFunctions.class);
-		withFunctionsFromClass(RegularExpressionFunctions.class);
-		withFunctionsFromClass(SetFunctions.class);
-		withFunctionsFromClass(SpecialMatchFunctions.class);
-		withFunctionsFromClass(StringConversionFunctions.class);
-		withFunctionsFromClass(StringFunctions.class);
-		withFunctionsFromClass(XPathFunctions.class);
-		withFunctionsFromClass(HigherOrderFunctions.class);
+		fromClass(ArithmeticFunctions.class);
+		fromClass(BagFunctions.class);
+		fromClass(DateTimeArithmeticFunctions.class);
+		fromClass(EqualityPredicates.class);
+		fromClass(LogicalFunctions.class);
+		fromClass(NonNumericComparisionFunctions.class);
+		fromClass(NumericConversionFunctions.class);
+		fromClass(NumericComparisionFunctions.class);
+		fromClass(RegularExpressionFunctions.class);
+		fromClass(SetFunctions.class);
+		fromClass(SpecialMatchFunctions.class);
+		fromClass(StringConversionFunctions.class);
+		fromClass(StringFunctions.class);
+		fromClass(XPathFunctions.class);
+		fromClass(HigherOrderFunctions.class);
 		return this;
 	}
 	
@@ -99,11 +99,11 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withFunctionsFromClass(Class<?> clazz)
+	public FunctionProviderBuilder fromClass(Class<?> clazz)
 	{
 		Preconditions.checkNotNull(clazz);
 		try{
-			return withFunctions(
+			return provider(
 					new AnnotiationBasedFunctionProvider(clazz, invocationFactory));
 		}catch(Exception e){
 			throw new IllegalArgumentException(e);
@@ -116,20 +116,20 @@ public final class FunctionProviderBuilder
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
-	public FunctionProviderBuilder withFunctions(Iterable<FunctionProvider> provider){
+	public FunctionProviderBuilder providers(Iterable<FunctionProvider> provider){
 		for(FunctionProvider p : providers){
-			withFunctions(p);
+			provider(p);
 		}
 		return this;
 	}
 	
-	public FunctionProviderBuilder withFunctions(FunctionProvider p){
+	public FunctionProviderBuilder provider(FunctionProvider p){
 		Preconditions.checkNotNull(p);
 		this.providers.add(p);
 		return this;
 	}
 	
-	public FunctionProvider create(){
+	public FunctionProvider build(){
 		Preconditions.checkState(!providers.isEmpty(), 
 				"At least one function provider must be specified");
 		return new AggregatingFunctionProvider(providers);

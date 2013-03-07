@@ -9,7 +9,6 @@ import org.xacml4j.v30.marshall.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 
-
 public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule> 
 	implements PolicyUnmarshaller
 {

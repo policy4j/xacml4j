@@ -5,8 +5,6 @@ import java.util.List;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-
-
 public interface FunctionParametersValidator 
 {
 	/**

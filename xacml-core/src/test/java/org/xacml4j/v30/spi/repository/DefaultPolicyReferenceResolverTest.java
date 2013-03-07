@@ -51,7 +51,7 @@ public class DefaultPolicyReferenceResolverTest
 		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicyIDReference ref = new PolicyIDReference("id", new VersionMatch("1.0.0"));
+		PolicyIDReference ref = PolicyIDReference.builder("id").version("1.0.0").build();
 		Policy p = r.resolve(ref);
 		p = r.resolve(ref);
 		assertSame(p1v1, p);
@@ -69,7 +69,7 @@ public class DefaultPolicyReferenceResolverTest
 		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicySetIDReference ref = new PolicySetIDReference("id", new VersionMatch("1.0.0"));
+		PolicySetIDReference ref = PolicySetIDReference.builder("id").version("1.0.0").build();
 		PolicySet p = r.resolve(ref);
 		p = r.resolve(ref);
 		assertSame(ps1v1, p);

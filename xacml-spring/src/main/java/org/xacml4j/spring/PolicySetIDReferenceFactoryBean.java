@@ -6,25 +6,22 @@ import org.xacml4j.v30.pdp.PolicySetIDReference;
 
 public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicySetIDReference>
 {
-	private String id;
-	private String version;
-	private String earliest;
-	private String latest;
+	private PolicySetIDReference.Builder ref = PolicySetIDReference.builder();
 	
 	public void setId(String id){
-		this.id  = id;
+		this.ref.id(id);
 	}
 	
 	public void setEarliest(String earliest){
-		this.earliest = earliest;
+		this.ref.earliest(earliest);
 	}
 	
 	public void setVersion(String version){
-		this.version = version;
+		this.ref.version(version);
 	}
 	
 	public void setLatest(String latest){
-		this.latest = latest;
+		this.ref.latest(latest);
 	}
 	
 	@Override
@@ -35,7 +32,7 @@ public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicyS
 	@Override
 	protected PolicySetIDReference createInstance() throws Exception 
 	{
-		return PolicySetIDReference.create(id, version, earliest, latest);
+		return ref.build();
 	}
 	
 	

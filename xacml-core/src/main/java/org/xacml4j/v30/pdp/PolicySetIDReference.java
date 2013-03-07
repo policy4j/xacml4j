@@ -6,9 +6,6 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -22,38 +19,18 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	implements PolicyElement
 {
 
-	public PolicySetIDReference(String id, VersionMatch version,
-			VersionMatch earliest, VersionMatch latest) {
-		super(id, version, earliest, latest);
+	private PolicySetIDReference(Builder b) {
+		super(b);
 	}
-
-	public PolicySetIDReference(String id, VersionMatch version) {
-		super(id, version, null, null);
+	
+	public static Builder builder(){
+		return new Builder();
 	}
-
-	public PolicySetIDReference(String id, Version version) {
-		super(id, VersionMatch.parse(version.getValue()), null, null);
+	
+	public static Builder builder(String id){
+		return new Builder().id(id);
 	}
-
-	/**
-	 * Creates {@link PolicySetIDReference}
-	 *
-	 * @param policyId a policy identifier
-	 * @param version a policy version match
-	 * @param earliest a policy earliest version match
-	 * @param latest a policy latest version match
-	 * @return {@link PolicySetIDReference} instance
-	 * @throws XacmlSyntaxException if syntax error occurs
-	 */
-	public static PolicySetIDReference create(String policyId, String version,
-			String earliest, String latest) throws XacmlSyntaxException
-	{
-		return new PolicySetIDReference(policyId,
-				(version != null)?VersionMatch.parse(version):null,
-				(earliest != null)?VersionMatch.parse(earliest):null,
-				(latest != null)?VersionMatch.parse(latest):null);
-	}
-
+	
 	/**
 	 * Test this reference points to a given policy
 	 *
@@ -185,6 +162,18 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		@Override
 		public PolicySetIDReference getCurrentPolicySetIDReference() {
 			return PolicySetIDReference.this;
+		}
+	}
+	
+	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
+	{
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+		
+		public PolicySetIDReference build(){
+			return new PolicySetIDReference(this);
 		}
 	}
 }

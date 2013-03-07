@@ -8,6 +8,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 final class FunctionParamValueTypeSpec implements FunctionParamSpec
@@ -54,6 +55,34 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return this.type.equals(type);
+	}
+	
+	@Override
+	public String toString(){
+		return Objects
+				.toStringHelper(this)
+				.add("type", type)
+				.toString();
+	}
+	
+	@Override
+	public int hashCode(){
+		return type.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof FunctionParamValueTypeSpec)){
+			return false;
+		}
+		FunctionParamValueTypeSpec s = (FunctionParamValueTypeSpec)o;
+		return type.equals(s.type);
 	}
 
 }

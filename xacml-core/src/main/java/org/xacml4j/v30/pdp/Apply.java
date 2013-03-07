@@ -27,7 +27,7 @@ public class Apply implements Expression
 	private List<Expression> arguments;
 
 	private int hashCode;
-
+	
 	/**
 	 * Constructs XACML apply expression with given function and list
 	 * of arguments to given function.
@@ -117,8 +117,22 @@ public class Apply implements Expression
 		.add("arguments", arguments)
 		.toString();
 	}
-
-
+	
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Apply)){
+			return false;
+		}
+		Apply a = (Apply)o;
+		return spec.equals(a.spec) && 
+				arguments.equals(a.arguments);
+	}
+	
 	@Override
 	public void accept(ExpressionVisitor expv){
 		ApplyVistor v = (ApplyVistor)expv;

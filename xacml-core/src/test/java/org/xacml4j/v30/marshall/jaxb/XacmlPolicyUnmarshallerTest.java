@@ -15,6 +15,7 @@ import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.marshall.PolicyMarshaller;
 import org.xacml4j.v30.marshall.PolicyUnmarshaller;
 import org.xacml4j.v30.pdp.MatchAnyOf;
 import org.xacml4j.v30.pdp.Policy;
@@ -28,7 +29,7 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 public class XacmlPolicyUnmarshallerTest
 {
 	private static PolicyUnmarshaller reader;
-
+	private static PolicyMarshaller writer;
 
 	@BeforeClass
 	public static void init_static() throws Exception
@@ -36,10 +37,12 @@ public class XacmlPolicyUnmarshallerTest
 		reader = new XacmlPolicyUnmarshaller(
 				FunctionProviderBuilder
 				.builder()
-				.withDefaultFunctions().create(),
+				.defaultFunctions()
+				.build(),
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
 				.withDefaultAlgorithms().create());
+		writer = new Xacml30PolicyMarshaller();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -179,5 +182,8 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR03"));
 		assertNotNull(p.getVariableDefinition("VAR04"));
 		assertNotNull(p.getVariableDefinition("VAR05"));
+		Object jaxb = writer.marshal(p);
+		Policy p1 = (Policy)reader.unmarshal(jaxb);
+		//assertEquals(p, p1);
 	}
 }

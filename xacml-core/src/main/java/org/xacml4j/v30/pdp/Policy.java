@@ -13,6 +13,7 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 
@@ -46,7 +47,7 @@ public class Policy extends BaseCompositeDecisionRule
 				"Rule decision combining algorithm must be specified");
 		this.combine = b.combiningAlgorithm;
 		this.policyDefaults = b.policyDefaults;
-		this.reference = new PolicyIDReference(b.id, b.version);
+		this.reference = PolicyIDReference.builder(b.id).version(b.version).build();
 		this.rules = ImmutableList.copyOf(b.rules);
 		this.variableDefinitions = Maps.uniqueIndex(b.variables,
 				new Function<VariableDefinition, String>(){
@@ -184,6 +185,16 @@ public class Policy extends BaseCompositeDecisionRule
 	}
 
 	@Override
+	public String toString(){
+		ToStringHelper h = Objects.toStringHelper(this);
+		return toStringBuilder(h)
+		.add("variableDefnitions", variableDefinitions)
+		.add("policyDefaults",policyDefaults)
+		.add("rules", rules)
+		.toString();
+	}
+	
+	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		if(getTarget() != null){
@@ -211,6 +222,7 @@ public class Policy extends BaseCompositeDecisionRule
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{
 		private Map<String, ValueExpression> varDefEvalResults;
+		private StatusCode code;
 
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -244,6 +256,18 @@ public class Policy extends BaseCompositeDecisionRule
 		public Policy getCurrentPolicy() {
 			return Policy.this;
 		}
+		
+
+		@Override
+		public StatusCode getEvaluationStatus() {
+			return code;
+		}
+
+		@Override
+		public void setEvaluationStatus(StatusCode code) {
+			Preconditions.checkNotNull(code);
+			this.code = code;
+		}
 
 		@Override
 		public XPathVersion getXPathVersion() {
@@ -254,16 +278,6 @@ public class Policy extends BaseCompositeDecisionRule
 			}
 			return super.getXPathVersion();
 		}
-	}
-
-	@Override
-	public String toString(){
-		ToStringHelper h = Objects.toStringHelper(this);
-		return _addProperties(h)
-		.add("variableDefnitions", variableDefinitions)
-		.add("policyDefaults",policyDefaults)
-		.add("rules", rules)
-		.toString();
 	}
 
 	public final static class PolicyBuilder extends BaseCompositeDecisionRuleBuilder<PolicyBuilder>

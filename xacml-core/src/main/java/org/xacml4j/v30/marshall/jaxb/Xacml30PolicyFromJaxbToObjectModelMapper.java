@@ -146,7 +146,11 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		for(Object o : p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition())
 		{
 			if(o instanceof RuleType){
-				rules.add(create((RuleType)o, m));
+				RuleType r = (RuleType)o;
+				if(log.isDebugEnabled()){
+					log.debug("Mapping Rule id=\"{}\"", r.getRuleId());
+				}
+				rules.add(create(r, m));
 			}
 		}
 		return rules;
@@ -223,10 +227,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 							throw new XacmlSyntaxException(
 									"PolicySet reference id can't be null");
 						}
-						PolicySetIDReference policySetRef = PolicySetIDReference.create(ref.getValue(),
-										ref.getVersion(),
-										ref.getEarliestVersion(),
-										ref.getLatestVersion());
+						PolicySetIDReference policySetRef = PolicySetIDReference
+								.builder(ref.getValue())
+								.version(ref.getVersion())
+								.earliest(ref.getEarliestVersion())
+								.latest(ref.getLatestVersion())
+								.build();
 						all.add(policySetRef);
 						continue;
 					}
@@ -235,10 +241,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 							throw new XacmlSyntaxException(
 									"Policy reference id can't be null");
 						}
-						PolicyIDReference policySetRef = PolicyIDReference.create(ref.getValue(),
-								ref.getVersion(),
-								ref.getEarliestVersion(),
-								ref.getLatestVersion());
+						PolicyIDReference policySetRef = PolicyIDReference
+								.builder(ref.getValue())
+								.version(ref.getVersion())
+								.earliest(ref.getEarliestVersion())
+								.latest(ref.getLatestVersion())
+								.build();
 						all.add(policySetRef);
 						continue;
 					}
@@ -289,22 +297,29 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 
 
 	private PolicyDefaults createPolicyDefaults(DefaultsType defaults)
-		throws XacmlSyntaxException
+			throws XacmlSyntaxException
 	{
 		if(defaults == null){
 			return null;
 		}
-		return PolicyDefaults.create(defaults.getXPathVersion());
-	}
-	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
-		throws XacmlSyntaxException
-	{
-		if(defaults == null){
-			return null;
-		}
-		return PolicySetDefaults.create(defaults.getXPathVersion());
+		return PolicyDefaults
+				.builder()
+				.xpathVersion(defaults.getXPathVersion())
+				.build();
 	}
 
+	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
+			throws XacmlSyntaxException
+	{
+		if(defaults == null){
+			return null;
+		}
+		return PolicySetDefaults
+				.builder()
+				.xpathVersion(defaults.getXPathVersion())
+				.build();
+	}
+	
 	private PolicyIssuer createPolicyIssuer(PolicyIssuerType issuer)
 		throws XacmlSyntaxException
 	{

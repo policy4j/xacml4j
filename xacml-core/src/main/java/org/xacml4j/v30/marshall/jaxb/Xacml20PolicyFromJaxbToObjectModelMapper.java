@@ -179,9 +179,12 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 						throw new XacmlSyntaxException(
 								"PolicySet reference id can't be null");
 					}
-					PolicySetIDReference policySetRef =
-						PolicySetIDReference.create(ref.getValue(),
-								ref.getVersion(), ref.getEarliestVersion(), ref.getLatestVersion());
+					PolicySetIDReference policySetRef = PolicySetIDReference
+						.builder(ref.getValue())
+						.version(ref.getVersion())
+						.earliest(ref.getEarliestVersion())
+						.latest(ref.getLatestVersion())
+						.build();
 					policies.add(policySetRef);
 					continue;
 				}
@@ -190,8 +193,12 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 						throw new XacmlSyntaxException(
 								"Policy reference id can't be null");
 					}
-					PolicyIDReference policyRef = PolicyIDReference.create(ref.getValue(),
-							ref.getVersion(), ref.getEarliestVersion(), ref.getLatestVersion());
+					PolicyIDReference policyRef = PolicyIDReference
+							.builder(ref.getValue())
+							.version(ref.getVersion())
+							.earliest(ref.getEarliestVersion())
+							.latest(ref.getLatestVersion())
+							.build();
 					policies.add(policyRef);
 					continue;
 				}
@@ -206,7 +213,10 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if(defaults == null){
 			return null;
 		}
-		return PolicyDefaults.create(defaults.getXPathVersion());
+		return PolicyDefaults
+				.builder()
+				.xpathVersion(defaults.getXPathVersion())
+				.build();
 	}
 
 	private PolicySetDefaults createPolicySetDefaults(DefaultsType defaults)
@@ -215,7 +225,10 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		if(defaults == null){
 			return null;
 		}
-		return PolicySetDefaults.create(defaults.getXPathVersion());
+		return PolicySetDefaults
+				.builder()
+				.xpathVersion(defaults.getXPathVersion())
+				.build();
 	}
 
 	private Target create(TargetType target) throws XacmlSyntaxException

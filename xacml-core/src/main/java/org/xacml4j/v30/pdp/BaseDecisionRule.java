@@ -78,10 +78,20 @@ abstract class BaseDecisionRule implements DecisionRule
 		return condition;
 	}
 	
+	/**
+	 * Gets advice expressions in this rule
+	 * 
+	 * @return a collection of {@link AdviceExpression}
+	 */
 	public Collection<AdviceExpression> getAdviceExpressions(){
 		return adviceExpressions;
 	}
 	
+	/**
+	 * Gets obligation expressions in this rule
+	 * 
+	 * @return a collection of {@link ObligationExpression}
+	 */
 	public Collection<ObligationExpression> getObligationExpressions(){
 		return obligationExpressions;
 	}
@@ -231,7 +241,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		}
 	}
 
-	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		return b.add("id", id)
 				.add("description", description)
 				.add("target", target)

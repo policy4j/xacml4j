@@ -115,12 +115,12 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 	
 	@Override
-	protected ToStringHelper _addProperties(Objects.ToStringHelper b){
+	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		b.add("version", version);
 		b.add("issuer", issuer);
 		b.add("maxDelegationDepth", maxDelegationDepth);
 		b.add("combinerParameters", combinerParameters);
-		super._addProperties(b);
+		super.toStringBuilder(b);
 		return b;
 	}
 	
