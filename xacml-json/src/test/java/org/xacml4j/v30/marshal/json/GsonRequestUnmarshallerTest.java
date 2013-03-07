@@ -65,36 +65,29 @@ public class GsonRequestUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(types.valueOf(
-												StringType.STRING.getDataTypeId(),
-												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
+										.value(StringType.STRING,
+												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW")
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(types.valueOf(StringType.STRING.getDataTypeId(), "TestDomain")).build()))
-				.build();
+										.value(StringType.STRING, "TestDomain").build())).build();
 		Attributes resourceAttributes = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("ResourceAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true)
-								.value(types.valueOf(StringType.STRING.getDataTypeId(), "testResourceId")).build()))
-				.build();
+								.includeInResult(true).value(StringType.STRING, "testResourceId").build())).build();
 		Attributes actionAttributes = Attributes
 				.builder(AttributeCategories.ACTION)
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(types.valueOf(StringType.STRING.getDataTypeId(), "VIEW"))
-								.build())).build();
+								.includeInResult(false).value(StringType.STRING, "VIEW").build())).build();
 		Attributes environmentAttributes = Attributes
 				.builder(AttributeCategories.ENVIRONMENT)
 				.id("EnvironmentAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false)
-								.value(types.valueOf(StringType.STRING.getDataTypeId(), "json\\-\"test\"")).build()))
-				.build();
+								.includeInResult(false).value(StringType.STRING, "json\\-\"test\"").build())).build();
 		Attributes subjectIntermAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_INTERMEDIARY)
 				.id("SubjectIntermediaryAttributes")
