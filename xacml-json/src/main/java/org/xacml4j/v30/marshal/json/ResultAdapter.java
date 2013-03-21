@@ -17,23 +17,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
-public class ResultAdapter implements JsonDeserializer<Result>
-{
+public class ResultAdapter implements JsonDeserializer<Result> {
 
 	@Override
-	public Result deserialize(JsonElement json, Type typeOfT,
-			JsonDeserializationContext context) throws JsonParseException {
+	public Result deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		Collection<Advice> advice = context.deserialize(o.get("assocAdvice"), new TypeToken<Collection<Advice>>(){}.getType());
-		Collection<Obligation> obligations = context.deserialize(o.get("obligations"), new TypeToken<Collection<Obligation>>(){}.getType());
-		Collection<Attributes> attributes = context.deserialize(o.get("attributes"), new TypeToken<Collection<Obligation>>(){}.getType());
-		Decision decision = Decision.parse(o.getAsJsonPrimitive("decision").toString());
-		Status status =  context.deserialize(o.get("status"), new TypeToken<Collection<Obligation>>(){}.getType());
-		return Result
-				.builder(decision, status)
-				.advice(advice)
-				.obligation(obligations)
-				.includeInResultAttr(attributes)
+		Decision decision = Decision.parse(GsonUtil.getAsString(o, "Decision", null));
+		Status status = context.deserialize(o.get("Status"), Status.class);
+
+		Collection<Advice> advice = context.deserialize(o.get("assocAdvice"), new TypeToken<Collection<Advice>>() {
+		}.getType());
+		Collection<Obligation> obligations = context.deserialize(o.get("obligations"),
+				new TypeToken<Collection<Obligation>>() {
+				}.getType());
+		Collection<Attributes> attributes = context.deserialize(o.get("attributes"),
+				new TypeToken<Collection<Obligation>>() {
+				}.getType());
+		return Result.builder(decision, status).advice(advice).obligation(obligations).includeInResultAttr(attributes)
 				.build();
 	}
 

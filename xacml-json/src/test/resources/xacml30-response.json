@@ -1,0 +1,13 @@
+{
+    "Result":[
+        {
+            "Decision":"Permit",
+            "Status":{
+                "StatusMessage":"alles kaput",
+                "StatusCode":{
+                    "Value":"urn:oasis:names:tc:xacml:1.0:status:ok"
+                }
+            }
+        }
+    ]
+}
