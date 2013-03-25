@@ -23,7 +23,8 @@ public class JsonResponseContextUnmarshallerTest {
 	}
 
 	private ResponseContext createExpectedResponse() {
-		return ResponseContext.builder().result(Result.createOk(Decision.PERMIT).build()).build();
+		return ResponseContext.builder().result(Result.createOk(Decision.PERMIT).build())
+				.build();
 	}
 
 }

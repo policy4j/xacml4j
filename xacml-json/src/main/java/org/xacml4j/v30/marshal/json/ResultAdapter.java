@@ -26,16 +26,25 @@ public class ResultAdapter implements JsonDeserializer<Result> {
 		Decision decision = Decision.parse(GsonUtil.getAsString(o, "Decision", null));
 		Status status = context.deserialize(o.get("Status"), Status.class);
 
-		Collection<Advice> advice = context.deserialize(o.get("assocAdvice"), new TypeToken<Collection<Advice>>() {
-		}.getType());
-		Collection<Obligation> obligations = context.deserialize(o.get("obligations"),
+		Result.Builder builder = Result.builder(decision, status);
+
+		Collection<Obligation> obligations = context.deserialize(o.get("Obligations"),
 				new TypeToken<Collection<Obligation>>() {
 				}.getType());
+		if (obligations != null) {
+			builder.obligation(obligations);
+		}
+
+		Collection<Advice> advice = context.deserialize(o.get("AssociatedAdvice"), new TypeToken<Collection<Advice>>() {
+		}.getType());
+		if (advice != null) {
+			builder.advice(advice);
+		}
+
 		Collection<Attributes> attributes = context.deserialize(o.get("attributes"),
 				new TypeToken<Collection<Obligation>>() {
 				}.getType());
-		return Result.builder(decision, status).advice(advice).obligation(obligations).includeInResultAttr(attributes)
-				.build();
+		return builder.includeInResultAttr(attributes).build();
 	}
 
 }

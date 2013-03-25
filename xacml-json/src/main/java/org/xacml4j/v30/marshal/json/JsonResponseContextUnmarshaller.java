@@ -3,9 +3,11 @@ package org.xacml4j.v30.marshal.json;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
@@ -25,6 +27,8 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
 				.registerTypeAdapter(StatusCode.class, new StatusCodeAdapter())
+				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
+				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer()).create();
