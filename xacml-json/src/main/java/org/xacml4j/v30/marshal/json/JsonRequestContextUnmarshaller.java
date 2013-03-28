@@ -21,7 +21,6 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	private final Gson json;
 
 	public JsonRequestContextUnmarshaller(Types typesRegistry)
-
 	{
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())

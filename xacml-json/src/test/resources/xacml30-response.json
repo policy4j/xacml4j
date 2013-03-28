@@ -8,6 +8,12 @@
                     "Value":"urn:oasis:names:tc:xacml:1.0:status:ok"
                 }
             },
+            "Obligations":[
+            ],
+            "AssociatedAdvice":[
+            ],
+            "Attributes":[
+            ]
         }
     ]
 }

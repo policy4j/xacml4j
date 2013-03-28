@@ -1,5 +1,7 @@
 package org.xacml4j.v30.marshal.json;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -32,19 +34,26 @@ public class ResultAdapter implements JsonDeserializer<Result> {
 				new TypeToken<Collection<Obligation>>() {
 				}.getType());
 		if (obligations != null) {
+			checkArgument(!obligations.isEmpty(), "At least one obligation should be specified.");
 			builder.obligation(obligations);
 		}
 
 		Collection<Advice> advice = context.deserialize(o.get("AssociatedAdvice"), new TypeToken<Collection<Advice>>() {
 		}.getType());
 		if (advice != null) {
+			checkArgument(!advice.isEmpty(), "At least one advice should be specified.");
 			builder.advice(advice);
 		}
 
-		Collection<Attributes> attributes = context.deserialize(o.get("attributes"),
-				new TypeToken<Collection<Obligation>>() {
+		Collection<Attributes> attributes = context.deserialize(o.get("Attributes"),
+				new TypeToken<Collection<Attributes>>() {
 				}.getType());
-		return builder.includeInResultAttr(attributes).build();
+		if (attributes != null) {
+			builder.includeInResultAttr(attributes);
+			// TODO: or should we call builder.resolvedAttr?
+		}
+
+		return builder.build();
 	}
 
 }

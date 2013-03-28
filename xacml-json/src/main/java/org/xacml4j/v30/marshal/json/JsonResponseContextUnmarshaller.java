@@ -14,6 +14,7 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshall.Unmarshaller;
+import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +23,7 @@ import com.google.gson.JsonElement;
 public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseContext> {
 	private final Gson json;
 
-	public JsonResponseContextUnmarshaller() {
+	public JsonResponseContextUnmarshaller(Types typesRegistry) {
 		json = new GsonBuilder().registerTypeAdapter(ResponseContext.class, new ResponseContextAdapter())
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
@@ -30,8 +31,8 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer()).create();
+				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(typesRegistry))
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry)).create();
 	}
 
 	@Override

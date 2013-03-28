@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.types.Types;
 
 public class JsonResponseContextUnmarshallerTest {
 
@@ -17,14 +18,14 @@ public class JsonResponseContextUnmarshallerTest {
 	public void testUnmarshal() throws Exception {
 		Reader input = new InputStreamReader(Thread.currentThread().getContextClassLoader()
 				.getResourceAsStream("xacml30-response.json"));
-		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller();
+		Types types = Types.builder().defaultTypes().create();
+		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller(types);
 		ResponseContext response = unmarshaller.unmarshal(input);
 		assertThat(response, is(createExpectedResponse()));
 	}
 
 	private ResponseContext createExpectedResponse() {
-		return ResponseContext.builder().result(Result.createOk(Decision.PERMIT).build())
-				.build();
+		return ResponseContext.builder().result(Result.createOk(Decision.PERMIT).build()).build();
 	}
 
 }
