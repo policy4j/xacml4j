@@ -5,6 +5,7 @@ import java.io.Reader;
 
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Obligation;
@@ -29,6 +30,7 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Status.class, new StatusAdapter())
 				.registerTypeAdapter(StatusCode.class, new StatusCodeAdapter())
 				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
+				.registerTypeAdapter(AttributeAssignment.class, new AttributeAssignmentDeserializer(typesRegistry))
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(typesRegistry))
