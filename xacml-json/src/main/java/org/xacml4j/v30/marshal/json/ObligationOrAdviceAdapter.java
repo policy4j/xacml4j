@@ -26,7 +26,7 @@ public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRul
 		JsonObject o = json.getAsJsonObject();
 		String id = GsonUtil.getAsString(o, "Id", null);
 		Collection<AttributeAssignment> attributeAssignments = context.deserialize(o.get("AttributeAssignment"),
-				new TypeToken<Collection<Advice>>() {
+				new TypeToken<Collection<AttributeAssignment>>() {
 				}.getType());
 
 		if (typeOfT == Obligation.class) {

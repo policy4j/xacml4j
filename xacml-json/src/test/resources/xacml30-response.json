@@ -9,8 +9,35 @@
                 }
             },
             "Obligations":[
+	      {
+		"Id":"obligation1",
+		"AttributeAssignment":[
+		  {
+		    "AttributeId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+		    "Category":"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+		    "DataType":"http://www.w3.org/2001/XMLSchema#string",
+		    "Value":"obuolys",
+		    "Issuer":"Vytenai"
+		  }
+		]
+	      },
+	      {
+		"Id":"obligation2",
+		"AttributeAssignment":[
+		]
+	      }
             ],
             "AssociatedAdvice":[
+	      {
+		"Id":"advice1",
+		"AttributeAssignment":[
+		]
+	      },
+	      {
+		"Id":"advice2",
+		"AttributeAssignment":[
+		]
+	      }
             ],
             "Attributes":[
             ]
