@@ -13,24 +13,24 @@ import com.google.common.collect.ImmutableMap;
 
 public class Result
 {
-	private Status status;
-	private Decision decision;
-	private Map<String, Obligation> obligations;
-	private Map<String, Advice> associatedAdvice;
-	private Map<AttributeCategory, Attributes> includeInResultAttributes;
-	private Collection<CompositeDecisionRuleIDReference> policyReferences;
-	private Map<AttributeCategory, Attributes> resolvedAttributes;
-	private int hashCode;
+	private final Status status;
+	private final Decision decision;
+	private final Map<String, Obligation> obligations;
+	private final Map<String, Advice> associatedAdvice;
+	private final Map<AttributeCategory, Attributes> includeInResultAttributes;
+	private final Collection<CompositeDecisionRuleIDReference> policyReferences;
+	private final Map<AttributeCategory, Attributes> resolvedAttributes;
+	private final int hashCode;
 
 	private Result(Builder b){
-		this.decision = b.decision;
-		this.status = b.status;
-		this.associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
-		this.obligations = ImmutableMap.copyOf(b.obligations);
-		this.includeInResultAttributes = ImmutableMap.copyOf(b.includeInResultAttributes);
-		this.policyReferences = ImmutableList.copyOf(b.policyReferences);
-		this.resolvedAttributes = ImmutableMap.copyOf(b.resolvedAttributes);
-		this.hashCode = Objects.hashCode(decision, status,
+		decision = b.decision;
+		status = b.status;
+		associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
+		obligations = ImmutableMap.copyOf(b.obligations);
+		includeInResultAttributes = ImmutableMap.copyOf(b.includeInResultAttributes);
+		policyReferences = ImmutableList.copyOf(b.policyReferences);
+		resolvedAttributes = ImmutableMap.copyOf(b.resolvedAttributes);
+		hashCode = Objects.hashCode(decision, status,
 				associatedAdvice,
 				obligations,
 				includeInResultAttributes,
@@ -220,21 +220,21 @@ public class Result
 
 	public static class Builder
 	{
-		private Status status;
-		private Decision decision;
-		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
-		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
-		private Map<AttributeCategory, Attributes> includeInResultAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
-		private Collection<CompositeDecisionRuleIDReference> policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
-		private Map<AttributeCategory, Attributes> resolvedAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
+		private final Status status;
+		private final Decision decision;
+		private final Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
+		private final Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
+		private final Map<AttributeCategory, Attributes> includeInResultAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
+		private final Collection<CompositeDecisionRuleIDReference> policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
+		private final Map<AttributeCategory, Attributes> resolvedAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
 
 		public Builder(Decision d, Status s){
 			Preconditions.checkNotNull(d);
 			Preconditions.checkNotNull(s);
 			Preconditions.checkArgument(!(d.isIndeterminate() ^
 					s.isFailure()));
-			this.decision = d;
-			this.status = s;
+			decision = d;
+			status = s;
 		}
 
 		public Builder includeInResult(Attributes a){
@@ -262,17 +262,17 @@ public class Result
 			Preconditions.checkNotNull(refs);
 			for(CompositeDecisionRuleIDReference ref : refs){
 				Preconditions.checkNotNull(ref);
-				this.policyReferences.add(ref);
+				policyReferences.add(ref);
 			}
 			return this;
 		}
 
-		public Builder evaluatedPolicies(Iterable<CompositeDecisionRuleIDReference> refs)
+		public Builder evaluatedPolicies(Iterable<? extends CompositeDecisionRuleIDReference> refs)
 		{
 			Preconditions.checkNotNull(refs);
 			for(CompositeDecisionRuleIDReference ref : refs){
 				Preconditions.checkNotNull(ref);
-				this.policyReferences.add(ref);
+				policyReferences.add(ref);
 			}
 			return this;
 		}

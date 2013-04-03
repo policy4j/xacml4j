@@ -11,6 +11,8 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.pdp.PolicyIDReference;
+import org.xacml4j.v30.pdp.PolicySetIDReference;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -51,6 +53,23 @@ public class ResultAdapter implements JsonDeserializer<Result> {
 		if (attributes != null) {
 			builder.includeInResultAttr(attributes);
 			// TODO: or should we call builder.resolvedAttr?
+		}
+
+//		builder.referencedPolicy();
+		JsonObject jsonPolicyIdentifiers = o.getAsJsonObject("PolicyIdentifier");
+		if (jsonPolicyIdentifiers != null) {
+			Collection<PolicyIDReference> policyIdReferences = context.deserialize(o.get("PolicyIdReference"),
+					new TypeToken<Collection<PolicyIDReference>>() {
+					}.getType());
+			if (policyIdReferences != null) {
+				builder.evaluatedPolicies(policyIdReferences);
+			}
+			Collection<PolicySetIDReference> policySetIdReferences = context.deserialize(o.get("PolicyIdReference"),
+					new TypeToken<Collection<PolicySetIDReference>>() {
+					}.getType());
+			if (policySetIdReferences != null) {
+				builder.evaluatedPolicies(policySetIdReferences);
+			}
 		}
 
 		return builder.build();

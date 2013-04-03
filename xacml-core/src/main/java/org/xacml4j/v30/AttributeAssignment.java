@@ -4,26 +4,26 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
-public class AttributeAssignment 
+public class AttributeAssignment
 {
-	private AttributeExp attribute;
-	private AttributeCategory category;
-	private String attributeId;
-	private String issuer;
-	
+	private final AttributeExp attribute;
+	private final AttributeCategory category;
+	private final String attributeId;
+	private final String issuer;
+
 	/**
-	 * Creates attribute assignment with a 
+	 * Creates attribute assignment with a
 	 * given attribute identifier
-	 * 
+	 *
 	 * @param attributeId an attribute id
 	 * @param category an attribute category
 	 * @param issuer an attribute issuer
 	 * @param value an attribute value
 	 */
 	public AttributeAssignment(
-			String attributeId, 
-			AttributeCategory category, 
-			String issuer, 
+			String attributeId,
+			AttributeCategory category,
+			String issuer,
 			AttributeExp value)
 	{
 		Preconditions.checkNotNull(attributeId, "Attribute id can't be null");
@@ -31,70 +31,70 @@ public class AttributeAssignment
 		this.attributeId = attributeId;
 		this.category = category;
 		this.issuer = issuer;
-		this.attribute = value;
+		attribute = value;
 	}
-	
+
 	public AttributeAssignment(
-			String attributeId, 
+			String attributeId,
 			AttributeExp value)
 	{
 		this(attributeId, null, null, value);
 	}
-	
+
 	public AttributeAssignment(
-			String attributeId, 
+			String attributeId,
 			String issuer,
 			AttributeExp value)
 	{
-		this(attributeId, null, null, value);
+		this(attributeId, null, issuer, value);
 	}
-	
+
 	/**
 	 * Gets attribute identifier
-	 * 
+	 *
 	 * @return attribute identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
-	
+
 	/**
 	 * Gets attribute value
-	 * 
+	 *
 	 * @return attribute value
 	 */
 	public AttributeExp getAttribute(){
 		return attribute;
 	}
-	
+
 	/**
 	 * Gets attribute category
-	 * 
+	 *
 	 * @return attribute category
 	 */
 	public AttributeCategory getCategory(){
 		return category;
 	}
-	
-	
+
+
 	/**
 	 * Gets attribute issuer identifier
-	 * 
+	 *
 	 * @return attribute issuer
 	 */
 	public String getIssuer(){
 		return issuer;
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(
-				attributeId, 
-				category, 
-				attribute, 
+				attributeId,
+				category,
+				attribute,
 				issuer);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -103,7 +103,7 @@ public class AttributeAssignment
 		.add("value", attribute)
 		.add("issuer", issuer).toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -117,7 +117,7 @@ public class AttributeAssignment
 		}
 		AttributeAssignment a = (AttributeAssignment)o;
 		return attributeId.equals(a.attributeId) &&
-			attribute.equals(a.attribute) && 
+			attribute.equals(a.attribute) &&
 			Objects.equal(category, a.category) &&
 			Objects.equal(issuer, a.issuer);
 	}

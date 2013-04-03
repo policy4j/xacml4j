@@ -1,46 +1,83 @@
 {
-    "Result":[
-        {
-            "Decision":"Permit",
-            "Status":{
-                "StatusMessage":"alles kaput",
-                "StatusCode":{
-                    "Value":"urn:oasis:names:tc:xacml:1.0:status:ok"
-                }
-            },
-            "Obligations":[
-	      {
-		"Id":"obligation1",
-		"AttributeAssignment":[
-		  {
-		    "AttributeId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-		    "Category":"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
-		    "DataType":"http://www.w3.org/2001/XMLSchema#string",
-		    "Value":"obuolys",
-		    "Issuer":"Vytenai"
-		  }
-		]
-	      },
-	      {
-		"Id":"obligation2",
-		"AttributeAssignment":[
-		]
-	      }
-            ],
-            "AssociatedAdvice":[
-	      {
-		"Id":"advice1",
-		"AttributeAssignment":[
-		]
-	      },
-	      {
-		"Id":"advice2",
-		"AttributeAssignment":[
-		]
-	      }
-            ],
-            "Attributes":[
-            ]
-        }
+ "Result": [
+  {
+   "Decision": "Permit",
+   "Status": {
+    "StatusMessage": "alles kaput",
+    "StatusCode": {
+     "Value": "urn:oasis:names:tc:xacml:1.0:status:ok"
+    }
+   },
+   "Obligations": [
+    {
+     "Id": "obligation1",
+     "AttributeAssignment": [
+      {
+       "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+       "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+       "DataType": "http://www.w3.org/2001/XMLSchema#string",
+       "Value": "obuolys",
+       "Issuer": "Vytenai"
+      },
+      {
+       "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:key-info",
+       "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+       "Value": "apelsinas",
+       "Issuer": "ispanija"
+      }
+     ]
+    },
+    {
+     "Id": "obligation2",
+     "AttributeAssignment": [
+      {
+       "AttributeId": "custom:attribute1",
+       "Category": "totaly:made:up:attribute-category1",
+       "Value": "same old apelsinas"
+      }
+     ]
+    }
+   ],
+   "AssociatedAdvice": [
+    {
+     "Id": "advice1",
+     "AttributeAssignment": [
+      {
+       "AttributeId": "test:advice1",
+       "Value": "nespjauk i sulini"
+      }
+     ]
+    },
+    {
+     "Id": "advice2"
+    }
+   ],
+   "Attributes": [],
+   "PolicyIdentifier": {
+    "PolicyIdReference": [
+     {
+      "Id": "policy1",
+      "Version": "1.0",
+      "EarliestVersion": "0.5",
+      "LatestVersion": "1.5"
+     },
+     {
+      "Id": "policy2"
+     }
+    ],
+    "PolicySetIdReference": [
+     {
+      "Id": "policySet3",
+      "Version": "1.1",
+      "EarliestVersion": "1.0",
+      "LatestVersion": "1.9"
+     },
+     {
+      "Id": "policySet4",
+      "Version": "2.0"
+     }
     ]
+   }
+  }
+ ]
 }
