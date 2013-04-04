@@ -55,16 +55,16 @@ public class ResultAdapter implements JsonDeserializer<Result> {
 			// TODO: or should we call builder.resolvedAttr?
 		}
 
-//		builder.referencedPolicy();
 		JsonObject jsonPolicyIdentifiers = o.getAsJsonObject("PolicyIdentifier");
 		if (jsonPolicyIdentifiers != null) {
-			Collection<PolicyIDReference> policyIdReferences = context.deserialize(o.get("PolicyIdReference"),
-					new TypeToken<Collection<PolicyIDReference>>() {
+			Collection<PolicyIDReference> policyIdReferences = context.deserialize(
+					jsonPolicyIdentifiers.get("PolicyIdReference"), new TypeToken<Collection<PolicyIDReference>>() {
 					}.getType());
 			if (policyIdReferences != null) {
 				builder.evaluatedPolicies(policyIdReferences);
 			}
-			Collection<PolicySetIDReference> policySetIdReferences = context.deserialize(o.get("PolicyIdReference"),
+			Collection<PolicySetIDReference> policySetIdReferences = context.deserialize(
+					jsonPolicyIdentifiers.get("PolicySetIdReference"),
 					new TypeToken<Collection<PolicySetIDReference>>() {
 					}.getType());
 			if (policySetIdReferences != null) {

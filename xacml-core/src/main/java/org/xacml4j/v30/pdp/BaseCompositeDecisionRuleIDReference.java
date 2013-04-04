@@ -8,24 +8,24 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-abstract class BaseCompositeDecisionRuleIDReference
+public abstract class BaseCompositeDecisionRuleIDReference
 	implements CompositeDecisionRuleIDReference
 {
-	private String id;
-	private VersionMatch version;
-	private VersionMatch earliest;
-	private VersionMatch latest;
+	private final String id;
+	private final VersionMatch version;
+	private final VersionMatch earliest;
+	private final VersionMatch latest;
 
-	private int hashCode;
+	private final int hashCode;
 
 	protected BaseCompositeDecisionRuleIDReference(BaseCompositeDecisionRuleIDReferenceBuilder<?> b){
 		Preconditions.checkNotNull(b.id,
 				"Decision rule identifier can not be null");
-		this.id = b.id;
-		this.version = b.version;
-		this.latest = b.latest;
-		this.earliest = b.earliest;
-		this.hashCode = Objects.hashCode(id, version, latest, earliest);
+		id = b.id;
+		version = b.version;
+		latest = b.latest;
+		earliest = b.earliest;
+		hashCode = Objects.hashCode(id, version, latest, earliest);
 	}
 
 	@Override
@@ -91,46 +91,46 @@ abstract class BaseCompositeDecisionRuleIDReference
 	public final int hashCode(){
 		return hashCode;
 	}
-	
+
 	public static abstract class BaseCompositeDecisionRuleIDReferenceBuilder<T extends BaseCompositeDecisionRuleIDReferenceBuilder<?>>
 	{
 		private String id;
 		private VersionMatch version;
 		private VersionMatch earliest;
 		private VersionMatch latest;
-		
+
 		public T id(String id){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
 			this.id = id;
 			return getThis();
 		}
-		
+
 		public T version(String version){
 			this.version = VersionMatch.parse(version);
 			return getThis();
 		}
-		
+
 		public T version(Version version){
 			this.version = VersionMatch.parse(version.getValue());
 			return getThis();
 		}
-		
+
 		public T version(VersionMatch version){
 			Preconditions.checkNotNull(version);
 			this.version = version;
 			return getThis();
 		}
-		
+
 		public T latest(String version){
 			this.latest = VersionMatch.parse(version);
 			return getThis();
 		}
-		
+
 		public T earliest(String version){
 			this.earliest = VersionMatch.parse(version);
 			return getThis();
 		}
-		
+
 		protected abstract T getThis();
 	}
 }
