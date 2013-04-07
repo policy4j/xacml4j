@@ -16,16 +16,13 @@ import org.xacml4j.v30.marshall.Marshaller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonWriter;
 
 public class JsonRequestContextMarshaller implements Marshaller<RequestContext> {
 
 	private final Gson json;
 
-	public JsonRequestContextMarshaller()
-
-	{
+	public JsonRequestContextMarshaller() {
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
@@ -40,23 +37,21 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 	}
 
 	@Override
-	public void marshal(RequestContext object, Object source) throws IOException {
-		if (source instanceof Writer) {
-			json.toJson(object, new TypeToken<RequestContext>() {
-			}.getType(), new JsonWriter((Writer) source));
+	public void marshal(RequestContext source, Object target) throws IOException {
+		if (target instanceof Writer) {
+			json.toJson(source, RequestContext.class, new JsonWriter((Writer) target));
 			return;
 		}
-		if (source instanceof OutputStream) {
-			json.toJson(object, new TypeToken<RequestContext>() {
-			}.getType(), new JsonWriter(new OutputStreamWriter((OutputStream) source)));
+		if (target instanceof OutputStream) {
+			json.toJson(source, RequestContext.class, new JsonWriter(new OutputStreamWriter((OutputStream) target)));
 			return;
 		}
-		if (source instanceof JsonObject) {
-			JsonObject o = (JsonObject) source;
-			o.add("Request", json.toJsonTree(object));
+		if (target instanceof JsonObject) {
+			JsonObject o = (JsonObject) target;
+			o.add("Request", json.toJsonTree(source));
 			return;
 		}
-		throw new IllegalArgumentException("Unsupported marshalling source");
+		throw new IllegalArgumentException("Unsupported marshalling target");
 	}
 
 }

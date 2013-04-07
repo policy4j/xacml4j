@@ -30,8 +30,8 @@ import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
 
-public class GsonRequestUnmarshallerTest {
-	private static final Logger log = LoggerFactory.getLogger(GsonRequestUnmarshallerTest.class);
+public class JsonRequestUnmarshallerTest {
+	private static final Logger log = LoggerFactory.getLogger(JsonRequestUnmarshallerTest.class);
 
 	private Unmarshaller<RequestContext> unmarshaller;
 	private Marshaller<RequestContext> marshaller;
