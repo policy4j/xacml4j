@@ -1,5 +1,7 @@
 package org.xacml4j.v30.marshal.json;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -20,14 +22,20 @@ import com.google.gson.reflect.TypeToken;
 public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRuleResponse>,
 		JsonDeserializer<BaseDecisionRuleResponse> {
 
+	private static final String ID_PROPERTY = "Id";
+	private static final String ATTRIBUTE_ASSIGNMENTS_PROPERTY = "AttributeAssignment";
+
+	private static final Type ATTRIBUTE_ASSIGNMENTS_TYPE = new TypeToken<Collection<AttributeAssignment>>() {
+	}.getType();
+
 	@Override
 	public BaseDecisionRuleResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		String id = GsonUtil.getAsString(o, "Id", null);
-		Collection<AttributeAssignment> attributeAssignments = context.deserialize(o.get("AttributeAssignment"),
-				new TypeToken<Collection<AttributeAssignment>>() {
-				}.getType());
+		String id = checkNotNull(GsonUtil.getAsString(o, ID_PROPERTY, null));
+
+		Collection<AttributeAssignment> attributeAssignments = context.deserialize(
+				o.get(ATTRIBUTE_ASSIGNMENTS_PROPERTY), ATTRIBUTE_ASSIGNMENTS_TYPE);
 
 		if (typeOfT == Obligation.class) {
 			Obligation.Builder builder = Obligation.builder(id);
@@ -42,8 +50,14 @@ public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRul
 
 	@Override
 	public JsonElement serialize(BaseDecisionRuleResponse src, Type typeOfSrc, JsonSerializationContext context) {
-		// TODO Auto-generated method stub
-		return null;
+		JsonObject o = new JsonObject();
+		o.addProperty(ID_PROPERTY, src.getId());
+		Collection<AttributeAssignment> attributeAssignments = src.getAttributes();
+		if (attributeAssignments != null && !attributeAssignments.isEmpty()) {
+			o.add(ATTRIBUTE_ASSIGNMENTS_PROPERTY, context.serialize(attributeAssignments, ATTRIBUTE_ASSIGNMENTS_TYPE));
+		}
+
+		return o;
 	}
 
 }

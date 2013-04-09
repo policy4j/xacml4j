@@ -107,12 +107,12 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 
 		Collection<Obligation> obligations = src.getObligations();
 		if (obligations != null && !obligations.isEmpty()) {
-			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations));
+			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations, OBLIGATIONS_TYPE));
 		}
 
 		Collection<Advice> associatedAdvice = src.getAssociatedAdvice();
 		if (associatedAdvice != null && !associatedAdvice.isEmpty()) {
-			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice));
+			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice, ADVICE_TYPE));
 		}
 
 		Collection<Attributes> attributes = src.getIncludeInResultAttributes();
