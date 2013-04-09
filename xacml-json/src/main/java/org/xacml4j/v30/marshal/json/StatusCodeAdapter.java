@@ -17,15 +17,18 @@ import com.google.gson.JsonSerializer;
 
 public class StatusCodeAdapter implements JsonSerializer<StatusCode>, JsonDeserializer<StatusCode> {
 
+	private static final String VALUE_PROPERTY = "Value";
+	private static final String STATUS_CODE_PROPERTY = "StatusCode";
+
 	@Override
 	public StatusCode deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		String value = GsonUtil.getAsString(o, "Value", null);
+		String value = GsonUtil.getAsString(o, VALUE_PROPERTY, null);
 		checkNotNull(value);
 		StatusCode.Builder builder = StatusCode.builder(StatusCodeIds.parse(value));
 
-		StatusCode embededStatusCode = context.deserialize(o.getAsJsonObject("StatusCode"), StatusCode.class);
+		StatusCode embededStatusCode = context.deserialize(o.getAsJsonObject(STATUS_CODE_PROPERTY), StatusCode.class);
 		if (embededStatusCode != null) {
 			builder.minorStatus(embededStatusCode);
 		}
@@ -35,8 +38,13 @@ public class StatusCodeAdapter implements JsonSerializer<StatusCode>, JsonDeseri
 
 	@Override
 	public JsonElement serialize(StatusCode src, Type typeOfSrc, JsonSerializationContext context) {
-		// TODO Auto-generated method stub
-		return null;
+		JsonObject o = new JsonObject();
+		o.addProperty(VALUE_PROPERTY, src.getValue().toString());
+		if (src.getMinorStatus() != null) {
+			o.add(STATUS_CODE_PROPERTY, context.serialize(src.getMinorStatus()));
+		}
+
+		return o;
 	}
 
 }
