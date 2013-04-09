@@ -16,21 +16,27 @@ import com.google.gson.JsonSerializer;
 
 public class StatusAdapter implements JsonSerializer<Status>, JsonDeserializer<Status> {
 
+	private static final String STATUS_MESSAGE_PROPERTY = "StatusMessage";
+	private static final String STATUS_CODE_PROPERTY = "StatusCode";
+
 	@Override
 	public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		String statusMessage = GsonUtil.getAsString(o, "StatusMessage", null);
-		// TODO: status detail
+		String statusMessage = GsonUtil.getAsString(o, STATUS_MESSAGE_PROPERTY, null);
+		// TODO: deserialize status detail
 		StatusDetail statusDetail = null;
-		StatusCode statusCode = context.deserialize(o.get("StatusCode"), StatusCode.class);
+		StatusCode statusCode = context.deserialize(o.get(STATUS_CODE_PROPERTY), StatusCode.class);
 		return new Status(statusCode, statusMessage, statusDetail);
 	}
 
 	@Override
 	public JsonElement serialize(Status src, Type typeOfSrc, JsonSerializationContext context) {
-		// TODO Auto-generated method stub
-		return null;
+		JsonObject o = new JsonObject();
+		o.addProperty(STATUS_MESSAGE_PROPERTY, src.getMessage());
+		// TODO: serialize status detail
+		o.add(STATUS_CODE_PROPERTY, context.serialize(src.getStatusCode()));
+		return o;
 	}
 
 }
