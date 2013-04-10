@@ -20,21 +20,19 @@ import com.google.gson.JsonSerializer;
 public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisionRuleIDReference>,
 		JsonSerializer<BaseCompositeDecisionRuleIDReference> {
 
-	@Override
-	public JsonElement serialize(BaseCompositeDecisionRuleIDReference src, Type typeOfSrc,
-			JsonSerializationContext context) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private static final String ID_PROPERTY = "Id";
+	private static final String VERSION_PROPERTY = "Version";
+	private static final String EARLIEST_VERSION_PROPERTY = "EarliestVersion";
+	private static final String LATEST_VERSION_PROPERTY = "LatestVersion";
 
 	@Override
 	public BaseCompositeDecisionRuleIDReference deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		String id = checkNotNull(GsonUtil.getAsString(o, "Id", null));
-		String version = GsonUtil.getAsString(o, "Version", null);
-		String earliestVersion = GsonUtil.getAsString(o, "EarliestVersion", null);
-		String latestVersion = GsonUtil.getAsString(o, "LatestVersion", null);
+		String id = checkNotNull(GsonUtil.getAsString(o, ID_PROPERTY, null));
+		String version = GsonUtil.getAsString(o, VERSION_PROPERTY, null);
+		String earliestVersion = GsonUtil.getAsString(o, EARLIEST_VERSION_PROPERTY, null);
+		String latestVersion = GsonUtil.getAsString(o, LATEST_VERSION_PROPERTY, null);
 
 		if (typeOfT == PolicyIDReference.class) {
 			PolicyIDReference.Builder builder = PolicyIDReference.builder(id);
@@ -61,6 +59,25 @@ public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisio
 		}
 
 		return builder;
+	}
+
+	@Override
+	public JsonElement serialize(BaseCompositeDecisionRuleIDReference src, Type typeOfSrc,
+			JsonSerializationContext context) {
+		JsonObject o = new JsonObject();
+		o.addProperty(ID_PROPERTY, src.getId());
+
+		if (src.getVersion() != null) {
+			o.addProperty(VERSION_PROPERTY, src.getVersion().getPattern());
+		}
+		if (src.getEarliestVersion() != null) {
+			o.addProperty(EARLIEST_VERSION_PROPERTY, src.getEarliestVersion().getPattern());
+		}
+		if (src.getLatestVersion() != null) {
+			o.addProperty(LATEST_VERSION_PROPERTY, src.getLatestVersion().getPattern());
+		}
+
+		return o;
 	}
 
 }

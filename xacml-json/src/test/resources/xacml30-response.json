@@ -52,7 +52,29 @@
      "Id": "advice2"
     }
    ],
-   "Attributes": [],
+   "Attributes": [
+    {
+     "Id": "SubjectAttributes",
+     "Category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+     "Content": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>",
+     "Attribute": [
+      {
+       "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+       "Value": "VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW",
+       "DataType": "http://www.w3.org/2001/XMLSchema#string",
+       "Issuer": "testIssuer",
+       "IncludeInResult": false
+      },
+      {
+       "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id-qualifier",
+       "Value": "TestDomain",
+       "DataType": "http://www.w3.org/2001/XMLSchema#string",
+       "Issuer": "testIssuer",
+       "IncludeInResult": false
+      }
+     ]
+    }
+   ],
    "PolicyIdentifier": {
     "PolicyIdReference": [
      {
