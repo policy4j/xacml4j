@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-ws</artifactId>
 	<packaging>jar</packaging>
-	<name>Artagon XACML 3.9 spring web services integration</name>
+	<name>Artagon XACML 3.0 spring web services integration</name>
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
