@@ -1,10 +1,14 @@
 package org.xacml4j.v30.pdp;
 
+
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
@@ -36,35 +40,70 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	 */
 	@Override
 	public EvaluationContext createContext(EvaluationContext context) {
-		return context;
+		if(isEvaluationContextValid(context)){
+			return context;
+		}
+		return new RuleEvaluationContext(context);
 	}
 	
-	/**
-	 * Implementation checks if this rule is 
-	 * enclosed by the parent policy in the evaluation context
-	 */
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
-		return context.getCurrentPolicy() != null;
+		return this == context.getCurrentRule() &&
+			   context.getCurrentPolicy() != null;
+	}
+	
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof Rule)){
+			return false;
+		}
+		Rule r = (Rule)o;
+		return effect.equals(r.effect) && 
+				equalsTo(r);
+	}
+	
+	public String toString(){
+		return toStringBuilder(Objects.toStringHelper(this))
+				.add("effect", effect)
+				.toString();
 	}
 	
 
 	@Override
 	public final Decision evaluate(EvaluationContext context)
 	{
-		Preconditions.checkArgument(
-				isEvaluationContextValid(context));
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context); 
+		if(!isEvaluationContextValid(context)){
+			return getExtendedIndeterminate();
+		}
+		MatchResult m  = isMatch(context);
 		if(log.isDebugEnabled()){
-			log.debug("Rule id=\"{}\" condition " +
-					"evaluation result=\"{}\"", getId(), result);
+			log.debug("Decision rule id=\"{}\" " +
+					"target evaluation is=\"{}\"", id, m);
+		}
+		if(m == MatchResult.INDETERMINATE){
+			return getExtendedIndeterminate();
+		}
+		if(m == MatchResult.NOMATCH){
+			return Decision.NOT_APPLICABLE;
+		}
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
+		if(log.isDebugEnabled()){
+			log.debug("Decision rule id=\"{}\" " +
+					"condition evaluation is=\"{}\"", id, result);
 		}
 		if(result == ConditionResult.TRUE){
 			Decision d = effect.toDecision();
-			d = evaluateAdvicesAndObligations(context, d);		
-			if(log.isDebugEnabled()){
-				log.debug("Rule id=\"{}\" " +
-						"decision result=\"{}\"", getId(), d);
+			if(!context.isExtendedIndeterminateEval()){
+				try{
+					evaluateAdvicesAndObligations(context, d);
+				}catch(EvaluationException e){
+					return getExtendedIndeterminate();
+				}
 			}
 			return d;
 		}
@@ -72,32 +111,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return getExtendedIndeterminate();
 		}
 		return Decision.NOT_APPLICABLE;
-	}
-	
-	/**
-	 * Combines {@link #isMatch(EvaluationContext)} and 
-	 * {@link #evaluate(EvaluationContext)} calls to one single
-	 * method invocation
-	 */
-	@Override
-	public  Decision evaluateIfMatch(EvaluationContext context)
-	{
-		MatchResult r = isMatch(context);
-		Preconditions.checkState(r != null);
-		if(r == MatchResult.MATCH){
-			if(log.isDebugEnabled()){
-				log.debug("Rule=\"{}\" match " +
-						"result is=\"{}\", evaluating rule", getId(), r);
-			}
-			return evaluate(context);
-		}
-		if(log.isDebugEnabled()){
-			log.debug("Rule=\"{}\" " +
-					"match result is=\"{}\", " +
-					"not evaluating rule", getId(), r);
-		}
-		return (r == MatchResult.INDETERMINATE)?
-				getExtendedIndeterminate():Decision.NOT_APPLICABLE;
 	}
 		
 	private Decision getExtendedIndeterminate(){
@@ -116,6 +129,18 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			getCondition().accept(v);
 		}
 		v.visitLeave(this);
+	}
+	
+	public class RuleEvaluationContext extends DelegatingEvaluationContext
+	{
+		public RuleEvaluationContext(EvaluationContext context){
+			super(context);
+		}
+		
+		@Override
+		public DecisionRule getCurrentRule() {
+			return Rule.this;
+		}
 	}
 	
 	public static class Builder extends BaseDecisionRuleBuilder<Builder>
@@ -141,5 +166,5 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		public Rule build(){
 			return new Rule(this);
 		}
-	}
+	} 
 }

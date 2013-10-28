@@ -27,6 +27,8 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 * @param issuer an attribute issuer
 	 */
 	private AttributeAssignmentExpression(Builder b){
+		Preconditions.checkNotNull(b.id);
+		Preconditions.checkNotNull(b.expression);
 		this.attributeId = b.id;
 		this.expression = b.expression;
 		this.category = b.category;
@@ -154,8 +156,6 @@ public class AttributeAssignmentExpression implements PolicyElement
 		}
 
 		public AttributeAssignmentExpression build(){
-			Preconditions.checkState(id != null);
-			Preconditions.checkState(expression != null);
 			return new AttributeAssignmentExpression(this);
 		}
 	}

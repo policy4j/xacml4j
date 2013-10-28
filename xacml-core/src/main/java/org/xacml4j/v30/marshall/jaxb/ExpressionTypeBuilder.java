@@ -25,28 +25,30 @@ import com.google.common.collect.ImmutableMap;
 abstract class ExpressionTypeBuilder
 {
 	private final static ObjectFactory factory = new ObjectFactory();
-	private static ImmutableMap<Class<? extends Expression>, ExpressionTypeBuilder> builders;
-	
+	private static ImmutableMap<Class<? extends Expression>, ExpressionTypeBuilder> builders = ImmutableMap.of(
+			Apply.class, new ApplyTypeBuilder(),
+			AttributeDesignator.class, new AttributeDesignatorTypeBuilder(),
+			AttributeSelector.class, new AttributeSelectorTypeBuilder(),
+			VariableReference.class, new VariableReferenceTypeBuilder(),
+			FunctionReference.class, new FunctionTypeBuilder());
+
  	public abstract JAXBElement<?> from(Expression e);
- 	
- 	static
- 	{
- 		ImmutableMap.Builder<Class<? extends Expression>, ExpressionTypeBuilder> b = ImmutableMap.builder();
- 		b.put(Apply.class, new ApplyTypeBuilder());
- 		b.put(AttributeDesignator.class, new AttributeDesignatorTypeBuilder());
- 		b.put(AttributeSelector.class, new AttributeSelectorTypeBuilder());
- 		b.put(VariableReference.class, new VariableReferenceTypeBuilder());
- 		b.put(FunctionReference.class, new FunctionTypeBuilder());
- 		builders = b.build();
+
+ 	public static void addBuilder(Class<? extends Expression> expType, ExpressionTypeBuilder expBuilder){
+		Preconditions.checkNotNull(expBuilder);
+		ImmutableMap.Builder<Class<? extends Expression>, ExpressionTypeBuilder> b = ImmutableMap.builder();
+		b.putAll(builders);
+		b.put(expType, expBuilder);
+		builders = b.build();
  	}
- 	
+
  	public static ExpressionTypeBuilder getBuilder(Expression exp){
  		Preconditions.checkNotNull(exp);
  		if(exp instanceof AttributeExp){
  			return new AttributeValueTypeBuilder();
  		}
  		ExpressionTypeBuilder b = builders.get(exp.getClass());
- 		Preconditions.checkArgument(b != null, 
+ 		Preconditions.checkArgument(b != null,
  				"Failed to find builder for expressio=\"%s\"", exp.getClass().getName());
  		return (b != null)?b:null;
  	}
@@ -68,7 +70,7 @@ abstract class ExpressionTypeBuilder
  			return factory.createApply(applyJaxb);
  		}
  	}
-	
+
  	static class VariableReferenceTypeBuilder extends ExpressionTypeBuilder
  	{
 
@@ -81,7 +83,7 @@ abstract class ExpressionTypeBuilder
  			return factory.createVariableReference(exp);
  		}
  	}
- 	
+
  	public static class FunctionTypeBuilder extends ExpressionTypeBuilder
  	{
  		@Override
@@ -93,7 +95,7 @@ abstract class ExpressionTypeBuilder
 			return factory.createFunction(exp);
  		}
  	}
- 	
+
  	static class AttributeValueTypeBuilder extends ExpressionTypeBuilder
  	{
  		@Override
@@ -123,7 +125,7 @@ abstract class ExpressionTypeBuilder
 			return factory.createAttributeDesignator(exp);
 		}
 	}
-	
+
 	public static class AttributeSelectorTypeBuilder extends ExpressionTypeBuilder
 	{
 		@Override
@@ -140,5 +142,4 @@ abstract class ExpressionTypeBuilder
 			return factory.createAttributeSelector(exp);
 		}
 	}
-	
 }

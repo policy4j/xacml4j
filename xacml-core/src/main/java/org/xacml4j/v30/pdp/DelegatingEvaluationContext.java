@@ -15,6 +15,7 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
@@ -32,7 +33,7 @@ import com.google.common.base.Ticker;
  *
  * @author Giedrius Trumpickas
  */
-class DelegatingEvaluationContext implements EvaluationContext
+abstract class DelegatingEvaluationContext implements EvaluationContext
 {
 	private EvaluationContext delegate;
 
@@ -41,15 +42,24 @@ class DelegatingEvaluationContext implements EvaluationContext
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
 	}
+	
+	protected EvaluationContext getDelegate(){
+		return delegate;
+	}
+	
+	@Override
+	public EvaluationContext createExtIndeterminateEvalContext() {
+		return delegate.createExtIndeterminateEvalContext();
+	}
+	
+	@Override
+	public boolean isExtendedIndeterminateEval() {
+		return delegate.isExtendedIndeterminateEval();
+	}
 
 	@Override
 	public Ticker getTicker(){
 		return delegate.getTicker();
-	}
-	
-	@Override
-	public EvaluationContext getParentContext(){
-		return delegate;
 	}
 
 	@Override
@@ -78,6 +88,12 @@ class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public CompositeDecisionRule getCurrentPolicy() {
 		return delegate.getCurrentPolicy();
+	}
+	
+
+	@Override
+	public DecisionRule getCurrentRule() {
+		return delegate.getCurrentRule();
 	}
 
 	@Override
@@ -158,12 +174,7 @@ class DelegatingEvaluationContext implements EvaluationContext
 	public Calendar getCurrentDateTime() {
 		return delegate.getCurrentDateTime();
 	}
-
-	@Override
-	public XPathVersion getXPathVersion() {
-		return delegate.getXPathVersion();
-	}
-
+	
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
@@ -241,12 +252,22 @@ class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Iterable<Obligation> getMatchingObligations(Decision decision) {
+	public Collection<Obligation> getMatchingObligations(Decision decision) {
 		return delegate.getMatchingObligations(decision);
 	}
 
 	@Override
-	public Iterable<Advice> getMatchingAdvices(Decision decision) {
+	public Collection<Advice> getMatchingAdvices(Decision decision) {
 		return delegate.getMatchingAdvices(decision);
+	}
+
+	@Override
+	public EvaluationContext getParentContext() {
+		return delegate;
+	}
+
+	@Override
+	public XPathVersion getXPathVersion() {
+		return delegate.getXPathVersion();
 	}
 }

@@ -2,17 +2,19 @@ package org.xacml4j.v30.pdp;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Version;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 /**
@@ -25,6 +27,8 @@ import com.google.common.collect.Multimap;
 abstract class BaseCompositeDecisionRule extends BaseDecisionRule 
 	implements CompositeDecisionRule, Versionable
 {
+	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
+	
 	protected Version version;
 	private PolicyIssuer issuer;
 	private Integer maxDelegationDepth;
@@ -35,7 +39,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		this.version = b.version;
 		this.maxDelegationDepth = b.maxDelegationDepth;
 		this.issuer = b.issuer;
-		this.combinerParameters = ImmutableListMultimap.copyOf(b.combinerParameters);
+		this.combinerParameters = b.combParamBuilder.build();
 	}
 	
 	@Override
@@ -53,19 +57,19 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 	
 	/**
-	 * Gets composite decision rule combiner parameter
+	 * Gets composite decision rule combiner parameter by name
 	 * 
 	 * @param name a parameter name
-	 * @return a collection of parameters
+	 * @return parameters bound to the given name
 	 */
 	public Collection<CombinerParameter> getCombinerParam(String name){
 		return combinerParameters.get(name);
 	}
 	
 	/**
-	 * Gets composite decision rule combiner parameters
+	 * Gets all composite decision rule combiner parameters
 	 * 
-	 * @return a collection of parameters
+	 * @return a collection of all combiner parameters
 	 */
 	public Collection<CombinerParameter> getCombinerParams(){
 		return combinerParameters.values();
@@ -84,35 +88,79 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		return (issuer == null);
 	}
 	
-	/**
-	 * Combines {@link #isMatch(EvaluationContext)} and 
-	 * {@link #evaluate(EvaluationContext)} calls to one single
-	 * method invocation
-	 */
 	@Override
-	public  Decision evaluateIfMatch(EvaluationContext context)
-	{
+	public Decision evaluate(EvaluationContext context) {
 		if(log.isDebugEnabled()){
-			log.debug("Invoking decision rule " +
-					"id=\"{}\" evaluateIfApplicable", getId());
+			log.debug("Evaluating composite " +
+					"decision rule with id=\"{}\"", id);
 		}
 		MatchResult r = isMatch(context);
-		Preconditions.checkState(r != null);
-		if(r == MatchResult.MATCH){
+		if(r == MatchResult.NOMATCH){
 			if(log.isDebugEnabled()){
-				log.debug("Decision rule id=\"{}\" " +
-						"match result is=\"{}\", evaluating rule", 
-						getId(), r);
+				log.debug("Composite decision rule " +
+						"id=\"{}\" target is NO_MATCH, " +
+						"decision result is NOT_APPLICABLE", id);
 			}
-			return evaluate(context);
+			return Decision.NOT_APPLICABLE;
 		}
-		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" match " +
-					"result is=\"{}\", not evaluating rule", getId(), r);
+		if(r == MatchResult.MATCH){
+			ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
+			if(result == ConditionResult.TRUE){
+				Decision decision = combineDecisions(context);
+				if(log.isDebugEnabled()){
+					log.debug("Composite decision rule " +
+							"id=\"{}\" condition eval is TRUE, " +
+							"decision result is=\"{}\"", id, decision);
+				}
+				if(!decision.isIndeterminate() ||
+						decision != Decision.NOT_APPLICABLE){
+					if(!context.isExtendedIndeterminateEval()){
+						try
+						{
+							evaluateAdvicesAndObligations(context, decision);
+						}catch(EvaluationException e){
+							return getExtendedIndeterminate(
+									context.createExtIndeterminateEvalContext());
+						}
+						context.addEvaluationResult(this, decision);
+					}
+				}
+				return decision;
+			}
+			if(result == ConditionResult.FALSE){
+				if(log.isDebugEnabled()){
+					log.debug("Composite decision rule " +
+							"id=\"{}\" condition eval is FALSE, " +
+							"decision result is=\"{}\"", id, Decision.NOT_APPLICABLE);
+				}
+				return Decision.NOT_APPLICABLE;
+			}
 		}
-		return (r == MatchResult.INDETERMINATE)?
-				Decision.INDETERMINATE:Decision.NOT_APPLICABLE;
+		return getExtendedIndeterminate(context.createExtIndeterminateEvalContext());
 	}
+	
+	protected Decision getExtendedIndeterminate(EvaluationContext context)
+	{
+		Decision evaluationResult = null;
+		try{
+			evaluationResult = combineDecisions(context);
+		}catch(Exception  e){
+			evaluationResult = Decision.INDETERMINATE;
+		}
+		switch(evaluationResult){
+			case DENY : return Decision.INDETERMINATE_D;
+			case PERMIT : return Decision.INDETERMINATE_P;
+			case NOT_APPLICABLE: return Decision.NOT_APPLICABLE;
+
+			case INDETERMINATE_D : return Decision.INDETERMINATE_D;
+			case INDETERMINATE_P : return Decision.INDETERMINATE_P;
+			case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
+			default: return Decision.INDETERMINATE_DP;
+		}
+	}
+	
+	protected abstract Decision combineDecisions(EvaluationContext context);
+
 	
 	@Override
 	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
@@ -130,7 +178,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		protected Version version;
 		protected Integer maxDelegationDepth;
 		protected PolicyIssuer issuer;
-		protected Multimap<String, CombinerParameter> combinerParameters = LinkedHashMultimap.create();
+		protected ImmutableMultimap.Builder<String, CombinerParameter> combParamBuilder = ImmutableMultimap.builder();
 		
 		protected BaseCompositeDecisionRuleBuilder(String ruleId) {
 			super(ruleId);
@@ -143,16 +191,18 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			return getThis();
 		}
 		
-		public T withCombinerParam(CombinerParameter p){
-			Preconditions.checkNotNull(p);
-			this.combinerParameters.put(p.getName(), p);
+		public T combinerParam(CombinerParameter ... params){
+			Preconditions.checkNotNull(params);
+			for(CombinerParameter p : params){
+				this.combParamBuilder.put(p.getName(), p);
+			}
 			return getThis();
 		}
 		
 		public T combinerParams(Iterable<CombinerParameter> params){
 			Preconditions.checkNotNull(params);
 			for(CombinerParameter p : params){
-				withCombinerParam(p);
+				combinerParam(p);
 			}
 			return getThis();
 		}

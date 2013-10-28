@@ -1,52 +1,36 @@
 package org.xacml4j.v30;
 
+import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 
 public class AttributeAssignment
 {
-	private final AttributeExp attribute;
-	private final AttributeCategory category;
-	private final String attributeId;
-	private final String issuer;
+	private AttributeExp attribute;
+	private AttributeCategory category;
+	private String attributeId;
+	private String issuer;
 
 	/**
 	 * Creates attribute assignment with a
 	 * given attribute identifier
 	 *
-	 * @param attributeId an attribute id
-	 * @param category an attribute category
-	 * @param issuer an attribute issuer
-	 * @param value an attribute value
+	 * @param b attribute assignment builder
 	 */
-	public AttributeAssignment(
-			String attributeId,
-			AttributeCategory category,
-			String issuer,
-			AttributeExp value)
+	private AttributeAssignment(Builder b)
 	{
-		Preconditions.checkNotNull(attributeId, "Attribute id can't be null");
-		Preconditions.checkNotNull(value, "Attribute value can't be null");
-		this.attributeId = attributeId;
-		this.category = category;
-		this.issuer = issuer;
-		attribute = value;
+		Preconditions.checkNotNull(b.attributeId, "Attribute id can't be null");
+		Preconditions.checkNotNull(b.value, "Attribute value can't be null");
+		this.attributeId = b.attributeId;
+		this.category = b.category;
+		this.issuer = b.issuer;
+		this.attribute = b.value;
 	}
 
-	public AttributeAssignment(
-			String attributeId,
-			AttributeExp value)
-	{
-		this(attributeId, null, null, value);
-	}
-
-	public AttributeAssignment(
-			String attributeId,
-			String issuer,
-			AttributeExp value)
-	{
-		this(attributeId, null, issuer, value);
+	public static Builder builder(){
+		return new Builder();
 	}
 
 	/**
@@ -120,5 +104,59 @@ public class AttributeAssignment
 			attribute.equals(a.attribute) &&
 			Objects.equal(category, a.category) &&
 			Objects.equal(issuer, a.issuer);
+	}
+
+	public static class Builder
+	{
+		private String attributeId;
+		private AttributeCategory category;
+		private String issuer;
+		private AttributeExp value;
+
+		public Builder id(String attributeId){
+			Preconditions.checkNotNull(attributeId);
+			this.attributeId = attributeId;
+			return this;
+		}
+
+		/**
+		 * Copies all state from a given {@link AttributeAssignmentExpression}
+		 * except attribute value expression
+		 *
+		 * @param attrAssigExp
+		 * @return {@link Builder}
+		 */
+		public Builder from(AttributeAssignmentExpression attrAssigExp)
+		{
+			this.attributeId = attrAssigExp.getAttributeId();
+			this.category = attrAssigExp.getCategory();
+			this.issuer = attrAssigExp.getIssuer();
+			return this;
+		}
+
+		public Builder category(AttributeCategory category){
+			this.category = category;
+			return this;
+		}
+
+		public Builder category(String category){
+			this.category = AttributeCategories.parse(category);
+			return this;
+		}
+
+		public Builder issuer(String issuer){
+			this.issuer =  issuer;
+			return this;
+		}
+
+		public Builder value(AttributeExp v){
+			Preconditions.checkNotNull(v);
+			this.value = v;
+			return this;
+		}
+
+		public AttributeAssignment build(){
+			return new AttributeAssignment(this);
+		}
 	}
 }

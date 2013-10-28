@@ -1,28 +1,27 @@
 package org.xacml4j.v30.types;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.XacmlSyntaxException;
-
+import static org.junit.Assert.assertNotNull;
 import static org.xacml4j.v30.types.AnyURIType.ANYURI;
 import static org.xacml4j.v30.types.Base64BinaryType.BASE64BINARY;
 import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
-import static org.xacml4j.v30.types.DateType.DATE;
-import static org.xacml4j.v30.types.DateTimeType.DATETIME;
-import static org.xacml4j.v30.types.DayTimeDurationType.DAYTIMEDURATION;
 import static org.xacml4j.v30.types.DNSNameType.DNSNAME;
+import static org.xacml4j.v30.types.DateTimeType.DATETIME;
+import static org.xacml4j.v30.types.DateType.DATE;
+import static org.xacml4j.v30.types.DayTimeDurationType.DAYTIMEDURATION;
 import static org.xacml4j.v30.types.DoubleType.DOUBLE;
 import static org.xacml4j.v30.types.HexBinaryType.HEXBINARY;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
 import static org.xacml4j.v30.types.IPAddressType.IPADDRESS;
+import static org.xacml4j.v30.types.IntegerType.INTEGER;
 import static org.xacml4j.v30.types.RFC822NameType.RFC822NAME;
 import static org.xacml4j.v30.types.StringType.STRING;
 import static org.xacml4j.v30.types.TimeType.TIME;
 import static org.xacml4j.v30.types.XPathExpType.XPATHEXPRESSION;
 import static org.xacml4j.v30.types.YearMonthDurationType.YEARMONTHDURATION;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 
 

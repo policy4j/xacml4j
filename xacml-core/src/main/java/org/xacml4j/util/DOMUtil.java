@@ -27,11 +27,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 
-public class DOMUtil 
-{	
-	
+public class DOMUtil
+{
+
 	private static TransformerFactory tf;
-	
+
 	static{
 		try{
 			tf = TransformerFactory.newInstance();
@@ -39,24 +39,24 @@ public class DOMUtil
 			e.printStackTrace(System.err);
 		}
 	}
-	
+
 	/**
 	 * Creates XPath expression for a given DOM node
 	 * @param n a DOM node
 	 * @return an XPath expression of the node
 	 * representing node location in the document
 	 */
-	public static String getXPath(Node n) 
+	public static String getXPath(Node n)
 	{
 		Preconditions.checkNotNull(n);
 		Stack<Node> hierarchy = new Stack<Node>();
 		StringBuilder buffer = new StringBuilder();
 		hierarchy.push(n);
 		Node parent = getParent(n);
-		while (parent != null) 
+		while (parent != null)
 		{
 			hierarchy.push(parent);
-			if(parent.getNodeType() 
+			if(parent.getNodeType()
 					== Node.DOCUMENT_NODE){
 				break;
 			}
@@ -64,20 +64,20 @@ public class DOMUtil
 		}
 		Node node = null;
 		Node previous = null;
-		while (!hierarchy.isEmpty() && 
-				(node = hierarchy.pop()) != null) 
+		while (!hierarchy.isEmpty() &&
+				(node = hierarchy.pop()) != null)
 		{
 			if(node.getNodeType() == Node.DOCUMENT_NODE){
 				buffer.append("//");
 			}
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (previous != null && 
+				if (previous != null &&
 						previous.getNodeType() != Node.DOCUMENT_NODE) {
 					buffer.append("/");
 				}
 				buffer.append(node.getNodeName());
-				if(previous != null && 
-						previous.getNodeType() 
+				if(previous != null &&
+						previous.getNodeType()
 						!= Node.DOCUMENT_NODE){
 					buffer
 					.append("[")
@@ -97,15 +97,15 @@ public class DOMUtil
 		}
 		return buffer.toString();
 	}
-	
+
 	/**
 	 * Copies node and all its children
 	 * to the new document as root element
 	 * in the new document
-	 * 
+	 *
 	 * @param source a source node
 	 * @return {@link Document} a new DOM
-	 * document with copy of the node as 
+	 * document with copy of the node as
 	 * root element
 	 */
 	public static Document copyNode(Node source)
@@ -118,15 +118,15 @@ public class DOMUtil
 		Preconditions.checkState(sourceDoc != null);
 		DOMImplementation domImpl = sourceDoc.getImplementation();
 		Document doc = domImpl.createDocument(sourceDoc.getNamespaceURI(),
-				null, sourceDoc.getDoctype()); 
+				null, sourceDoc.getDoctype());
 		Node copy =  doc.importNode(rootNode, true);
 		doc.appendChild(copy);
 		return doc;
 	}
-	
+
 	/**
 	 * Gets parent node of the given node
-	 * 
+	 *
 	 * @param node a DOM node
 	 * @return a parent node {@link Node} instance
 	 */
@@ -134,10 +134,10 @@ public class DOMUtil
 		return (node.getNodeType() == Node.ATTRIBUTE_NODE)?
 				((Attr)node).getOwnerElement():node.getParentNode();
 	}
-	
+
 	/**
 	 * Gets node index relative to its siblings
-	 * 
+	 *
 	 * @param node a node
 	 * @return a node index
 	 */
@@ -158,7 +158,7 @@ public class DOMUtil
 		}
 		return prev_siblings;
 	}
-	
+
 	/**
 	 * Safe cast of the given node to
 	 * {@link Element} instance
@@ -172,26 +172,26 @@ public class DOMUtil
 		if(n == null){
 			return null;
 		}
-		Preconditions.checkArgument(n.getNodeType() == Node.DOCUMENT_NODE 
-				|| n.getNodeType() == Node.ELEMENT_NODE, 
+		Preconditions.checkArgument(n.getNodeType() == Node.DOCUMENT_NODE
+				|| n.getNodeType() == Node.ELEMENT_NODE,
 				"Given node must be either DOM document or element node");
 		if(n.getNodeType() == Node.DOCUMENT_NODE){
 			return ((Document)n).getDocumentElement();
 		}
 		return (Element)n;
 	}
-	
-	public static void serializeToXml(Node node, OutputStream out) 
+
+	public static void serializeToXml(Node node, OutputStream out)
 		throws TransformerException
 	{
 		serializeToXml(node, out, true, false);
 	}
-	
+
 	public static void serializeToXml(
-			Node node, 
-			OutputStream out, 
-			boolean ommitXmlDecl, 
-			boolean prettyPrint) 
+			Node node,
+			OutputStream out,
+			boolean ommitXmlDecl,
+			boolean prettyPrint)
 		throws TransformerException
 	{
 		Preconditions.checkNotNull(node);
@@ -205,12 +205,12 @@ public class DOMUtil
 		Result result = new StreamResult(out);
 		t.transform (source, result);
 	}
-	
+
 	/**
 	 * Test two DOM nodes for equality, if both
 	 * nodes are not equal to <code>null</code>
 	 * then they are compared via {@link Node#isEqualNode(Node)}
-	 * 
+	 *
 	 * @param a a DOM node
 	 * @param b a DOM node
 	 */
@@ -220,10 +220,10 @@ public class DOMUtil
 						a.isEqualNode(b):false);
 	}
 
-	
+
 	/**
 	 * Creates a {@link String} representation
-	 * 
+	 *
 	 * @param n a DOM node
 	 * @return a string representation
 	 */
@@ -242,28 +242,28 @@ public class DOMUtil
 		fqname.append(n.getLocalName());
 		return fqname.toString();
 	}
-	
+
 	public static NamespaceContext createNamespaceContext(Node n){
 		return new NodeNamespaceContext(n);
 	}
-	
+
 	/**
 	 * {@link NamespaceContext} implementation
 	 * for {@link Node} representing a root
 	 * node of some document
 	 */
-	private static class NodeNamespaceContext 
+	private static class NodeNamespaceContext
 		implements NamespaceContext
 	{
 		private final static Logger log = LoggerFactory.getLogger(NodeNamespaceContext.class);
-		
+
 		private Node node;
 
 		public NodeNamespaceContext(Node node){
 			Preconditions.checkNotNull(node);
 			this.node = node;
 		}
-		
+
 		@Override
 		public String getNamespaceURI(String prefix){
 			 if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
@@ -275,7 +275,7 @@ public class DOMUtil
 			String namespaceURI = node.lookupNamespaceURI(prefix);
 			if(log.isDebugEnabled()){
 				log.debug("NamespaceURI=\"{}\" " +
-						"for prefix=\"{}\"", 
+						"for prefix=\"{}\"",
 						namespaceURI, prefix);
 			}
 			return namespaceURI == null?XMLConstants.NULL_NS_URI:namespaceURI;
@@ -286,7 +286,7 @@ public class DOMUtil
 			String prefix = node.lookupPrefix(namespaceURI);
 			if(log.isDebugEnabled()){
 				log.debug("Namespace prefix=\"{}\" " +
-						"for namespaceURI=\"{}\"", 
+						"for namespaceURI=\"{}\"",
 						prefix, namespaceURI);
 			}
 			return prefix;

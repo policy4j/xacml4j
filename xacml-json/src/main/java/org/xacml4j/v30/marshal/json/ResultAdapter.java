@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.ImmutableBiMap;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -48,11 +49,21 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	private static final Type POLICY_SET_ID_REFERENCES_TYPE = new TypeToken<Collection<PolicySetIDReference>>() {
 	}.getType();
 
+	private static ImmutableBiMap<Decision, String> DECISION_VALUE_MAP = ImmutableBiMap.of(
+			Decision.PERMIT, "Permit",
+			Decision.DENY, "Deny",
+			Decision.NOT_APPLICABLE, "NotApplicable",
+			Decision.INDETERMINATE, "Indeterminate");
+
 	@Override
 	public Result deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		Decision decision = Decision.parse(GsonUtil.getAsString(o, DECISION_PROPERTY, null));
+		final String decisionValue = GsonUtil.getAsString(o, DECISION_PROPERTY, null);
+		Decision decision = DECISION_VALUE_MAP.inverse().get(decisionValue);
+		if (decision == null) {
+			throw new JsonParseException(String.format("Invalid 'Decision' value: \"%s\"", decisionValue));
+		}
 		Status status = context.deserialize(o.get(STATUS_PROPERTY), Status.class);
 
 		Result.Builder builder = Result.builder(decision, status);
@@ -99,7 +110,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	@Override
 	public JsonElement serialize(Result src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.addProperty(DECISION_PROPERTY, src.getDecision().toString());
+		o.addProperty(DECISION_PROPERTY, DECISION_VALUE_MAP.get(src.getDecision()));
 
 		if (src.getStatus() != null) {
 			o.add(STATUS_PROPERTY, context.serialize(src.getStatus()));

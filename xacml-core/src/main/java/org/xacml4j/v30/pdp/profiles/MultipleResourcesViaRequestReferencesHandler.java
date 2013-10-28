@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.AttributesReference;
-import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.Result;
@@ -37,7 +36,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			}catch(RequestSyntaxException e){
 				results.add(
 						Result
-						.createIndeterminate(Decision.INDETERMINATE, e.getStatus())
+						.createIndeterminate(e.getStatus())
 						.includeInResultAttr(request.getIncludeInResultAttributes())
 						.build());
 			}

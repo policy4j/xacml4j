@@ -43,8 +43,8 @@ public class Xacml20ConformanceTest
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
 				FunctionProviderBuilder.builder()
-				.withDefaultFunctions()
-				.create(),
+				.defaultFunctions()
+				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
 				.create());
@@ -207,7 +207,6 @@ public class Xacml20ConformanceTest
 			String prefix, int number, String sufix) throws Exception
 	{
 		String path = "oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, sufix);
-		System.out.println("Loading policy - " + path);
 		InputStream in = Xacml20TestUtility.getClasspathResource(path);
 		return in;
 	}

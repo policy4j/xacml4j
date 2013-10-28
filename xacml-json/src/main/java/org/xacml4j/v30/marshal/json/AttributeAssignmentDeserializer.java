@@ -42,7 +42,13 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, "Category", null));
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 
-		return new AttributeAssignment(attrId, category, issuer, value);
+		return AttributeAssignment
+				.builder()
+				.id(attrId)
+				.category(category)
+				.issuer(issuer)
+				.value(value)
+				.build();
 	}
 
 	private AttributeExp deserializeValue(JsonDeserializationContext context, JsonObject o) {

@@ -137,7 +137,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbRule.setRuleId(rule.getId());
 		jaxbRule.setDescription(rule.getDescription());
 		jaxbRule.setTarget(toJaxb(d.getTarget()));
-		jaxbRule.setEffect(nativeToJaxbEffectMappings.get(rule.getEffect()));
+		EffectType effect = nativeToJaxbEffectMappings.get(rule.getEffect());
+		Preconditions.checkState(effect != null);
+		jaxbRule.setEffect(effect);
 		if(d.getCondition() != null){
 			ConditionType condition = factory.createConditionType();
 			condition.setExpression(ExpressionTypeBuilder.getBuilder(d.getCondition().getExpression()).from(d.getCondition().getExpression()));

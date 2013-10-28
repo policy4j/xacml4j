@@ -2,8 +2,6 @@ package org.xacml4j.v30.pdp;
 
 import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -23,8 +21,6 @@ import com.google.common.base.Preconditions;
  */
 public class Condition implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(Condition.class);
-
 	private Expression predicate;
 
 	/**
@@ -69,15 +65,9 @@ public class Condition implements PolicyElement
 			BooleanExp result = (BooleanExp)predicate.evaluate(context);
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate condition", e);
-			}
 			context.setEvaluationStatus(e.getStatusCode());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate condition", e);
-			}
 			context.setEvaluationStatus(StatusCode.createProcessingError());
 			return ConditionResult.INDETERMINATE;
 		}

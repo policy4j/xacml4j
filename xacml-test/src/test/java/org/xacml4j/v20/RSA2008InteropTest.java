@@ -32,8 +32,8 @@ public class RSA2008InteropTest
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()
-				.withDefaultFunctions()
-				.create(),
+				.defaultFunctions()
+				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
 				.create());

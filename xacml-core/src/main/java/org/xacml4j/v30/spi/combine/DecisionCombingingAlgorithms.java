@@ -1,5 +1,6 @@
 package org.xacml4j.v30.spi.combine;
 
+
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -25,7 +26,7 @@ public final class DecisionCombingingAlgorithms
 	 */
 	public static <D extends DecisionRule> Decision evaluateIfMatch(EvaluationContext context, D decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
-		return decision.evaluateIfMatch(decisionContext);
+		return decision.evaluate(decisionContext);
 	}
 	
 	/**

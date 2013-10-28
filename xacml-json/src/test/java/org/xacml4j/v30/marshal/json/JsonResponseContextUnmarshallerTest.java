@@ -51,23 +51,43 @@ public class JsonResponseContextUnmarshallerTest {
 				.obligation(Obligation
 						.builder("obligation1")
 						.attributes(
-								ImmutableList.<AttributeAssignment> of(new AttributeAssignment(
-										SubjectAttributes.SUBJECT_ID.toString(), AttributeCategories.ACTION, "Vytenai",
-										StringType.STRING.create("obuolys")), new AttributeAssignment(
-										SubjectAttributes.KEY_INFO.toString(), AttributeCategories.ACTION, "ispanija",
-										StringType.STRING.create("apelsinas")))).build());
+								ImmutableList.<AttributeAssignment> of(
+										AttributeAssignment.builder()
+												.id(SubjectAttributes.SUBJECT_ID.toString())
+												.category(AttributeCategories.ACTION)
+												.issuer("Vytenai")
+												.value(StringType.STRING.create("obuolys"))
+												.build(),
+										AttributeAssignment.builder()
+												.id(SubjectAttributes.KEY_INFO.toString())
+												.category(AttributeCategories.ACTION)
+												.issuer("ispanija")
+												.value(StringType.STRING.create("apelsinas"))
+												.build()))
+						.build());
 		resultBuilder.obligation(Obligation
 				.builder("obligation2")
 				.attributes(
-						ImmutableList.<AttributeAssignment> of(new AttributeAssignment("custom:attribute1",
-								AttributeCategories.parse("totaly:made:up:attribute-category1"), null,
-								StringType.STRING.create("same old apelsinas")))).build());
+						ImmutableList.<AttributeAssignment> of(
+								AttributeAssignment
+										.builder()
+										.id("custom:attribute1")
+										.category("totaly:made:up:attribute-category1")
+										.value(StringType.STRING.create("same old apelsinas"))
+						                .build()))
+				.build());
 		resultBuilder.advice(ImmutableList.of(
-				Advice.builder("advice1")
-						.attributes(
-								ImmutableList.<AttributeAssignment> of(new AttributeAssignment("test:advice1",
-										StringType.STRING.create("nespjauk i sulini")))).create(),
-				Advice.builder("advice2").create()));
+				Advice
+					.builder("advice1")
+					.attributes(
+							ImmutableList.<AttributeAssignment> of(
+								AttributeAssignment
+										.builder()
+										.id("test:advice1")
+										.value(StringType.STRING.create("nespjauk i sulini"))
+										.build()))
+					.build(),
+				Advice.builder("advice2").build()));
 
 		Attributes subjectAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
@@ -88,10 +108,10 @@ public class JsonResponseContextUnmarshallerTest {
 		resultBuilder.includeInResultAttr(ImmutableList.<Attributes> of(subjectAttributes));
 
 		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")
-				.version("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));
+				.versionAsString("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));
 		resultBuilder.evaluatedPolicies(ImmutableList.<PolicySetIDReference> of(
-				PolicySetIDReference.builder("policySet3").version("1.1").earliest("1.0").latest("1.9").build(),
-				PolicySetIDReference.builder("policySet4").version("2.0").build()));
+				PolicySetIDReference.builder("policySet3").versionAsString("1.1").earliest("1.0").latest("1.9").build(),
+				PolicySetIDReference.builder("policySet4").versionAsString("2.0").build()));
 
 		return ResponseContext.builder().result(resultBuilder.build()).build();
 	}

@@ -22,12 +22,14 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 
 import com.google.common.base.Preconditions;
@@ -62,6 +64,8 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private Integer combinedDecisionCacheTTL = null;
 	
 	private Ticker ticker = Ticker.systemTicker();
+	
+	private boolean extendedIndeterminateEval = false;
 
 	/**
 	 * Constructs evaluation context with a given attribute provider,
@@ -102,6 +106,32 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	@Override
 	public Ticker getTicker(){
 		return ticker;
+	}
+	
+	@Override
+	public boolean isExtendedIndeterminateEval() {
+		return extendedIndeterminateEval;
+	}
+	
+
+	@Override
+	public EvaluationContext createExtIndeterminateEvalContext() {
+		return new DelegatingEvaluationContext(this){
+			@Override
+			public EvaluationContext createExtIndeterminateEvalContext() {
+				return this;
+			}
+
+			@Override
+			public boolean isExtendedIndeterminateEval() {
+				return true;
+			}
+		};
+	}
+
+	@Override
+	public XPathVersion getXPathVersion() {
+		return null;
 	}
 
 	@Override
@@ -182,9 +212,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	private void addAndMergeAdvice(Decision d, Advice a)
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Adding advice=\"{}\" for a decision=\"{}\"", a, d);
-		}
 		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
 		Map<String, Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
 		Advice other = advices.get(a.getId());
@@ -197,9 +224,6 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 
 	private void addAndMergeObligation(Decision d, Obligation a)
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Adding obligation=\"{}\" for a decision=\"{}\"", a, d);
-		}
 		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
 		Map<String, Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
 		Obligation other = obligations.get(a.getId());
@@ -225,6 +249,11 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public Policy getCurrentPolicy() {
+		return null;
+	}
+	
+	@Override
+	public DecisionRule getCurrentRule() {
 		return null;
 	}
 
@@ -402,12 +431,12 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Iterable<Obligation> getMatchingObligations(final Decision decision) {
+	public Collection<Obligation> getMatchingObligations(final Decision decision) {
 		return (decision == Decision.PERMIT)?permitObligations.values():denyObligations.values();
 	}
 
 	@Override
-	public Iterable<Advice> getMatchingAdvices(final Decision decision) {
+	public Collection<Advice> getMatchingAdvices(final Decision decision) {
 		return (decision == Decision.PERMIT)?permitAdvices.values():denyAdvices.values();
 	}
 

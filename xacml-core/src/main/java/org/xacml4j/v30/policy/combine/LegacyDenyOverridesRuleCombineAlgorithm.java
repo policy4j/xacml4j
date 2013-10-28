@@ -1,9 +1,9 @@
 package org.xacml4j.v30.policy.combine;
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
-
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
@@ -14,6 +14,8 @@ import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
 {
+	private final static Logger log = LoggerFactory.getLogger(LegacyDenyOverridesRuleCombineAlgorithm.class);
+	
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides";
 
 	public LegacyDenyOverridesRuleCombineAlgorithm() {
@@ -42,8 +44,10 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		boolean atLeastOneError = false;
 		for(Rule r : rules)
 		{
-			Decision d = evaluateIfMatch(context, r);
-		
+			Decision d = r.evaluate(r.createContext(context));  
+			if(log.isDebugEnabled()){
+				log.debug("Decision rule id=\"{}\" evaluation result=\"{}\"", r.getId(), d);
+			}
 			if (d == Decision.DENY){
 				return Decision.DENY;
 			}

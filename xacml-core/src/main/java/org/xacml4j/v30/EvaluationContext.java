@@ -10,16 +10,39 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.base.Ticker;
 
-
 public interface EvaluationContext
 {
+	/**
+	 * Indicates that evaluation is performed
+	 * just to determine extended indeterminate
+	 * and there is no need to evaluate advice and 
+	 * obligations in the decision rules
+	 * 
+	 * @return <code><code>true</code> if context
+	 * was create to evaluate extended indeterminate
+	 */
+	boolean isExtendedIndeterminateEval();
+	
+	/**
+	 * Creates an evaluation context to evaluate policy tree
+	 * for extended indeterminate
+	 * 
+	 * @return {@link EvaluationContext} to evaluate extended indeterminate
+	 */
+	EvaluationContext createExtIndeterminateEvalContext();
+	
+	/**
+	 * Gets clock ticker
+	 * 
+	 * @return clock ticker
+	 */
 	Ticker getTicker();
 	
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
 	 * the attributes used in the authorization
-	 * decision TTL's
+	 * decision caching TTL's
 	 *
 	 * @return a decision cache TTL in seconds
 	 */
@@ -132,6 +155,13 @@ public interface EvaluationContext
 	 * @return {@link CompositeDecisionRule} or <code>null</code>
 	 */
 	CompositeDecisionRule getCurrentPolicySet();
+	
+	/**
+	 * Gets current rule
+	 * 
+	 * @return {@link DecisionRule} or <code>null</code>
+	 */
+	DecisionRule getCurrentRule();
 
 	/**
 	 * Gets current {@link CompositeDecisionRuleIDReference}
@@ -156,8 +186,8 @@ public interface EvaluationContext
 	XPathVersion getXPathVersion();
 
 	/**
-	 * Adds evaluated {@link Advice} matching give
-	 * decision
+	 * Adds evaluated {@link Advice} matching
+	 * given access decision
 	 *
 	 * @param d an access decision
 	 */
@@ -170,7 +200,7 @@ public interface EvaluationContext
 	 * @param decision an access decision
 	 * @return matching obligations
 	 */
-	Iterable<Obligation> getMatchingObligations(Decision decision);
+	Collection<Obligation> getMatchingObligations(Decision decision);
 
 	/**
 	 * Gets advices matching given decision
@@ -178,7 +208,7 @@ public interface EvaluationContext
 	 * @param decision an access decision
 	 * @return matching advices
 	 */
-	Iterable<Advice> getMatchingAdvices(Decision decision);
+	Collection<Advice> getMatchingAdvices(Decision decision);
 
 	/**
 	 * Gets variable evaluation result for given
@@ -221,8 +251,19 @@ public interface EvaluationContext
 	BagOfAttributeExp resolve(AttributeSelectorKey ref)
 		throws EvaluationException;
 
+	/**
+	 * Sets resolved designator {@link AttributeDesignatorKey} value
+	 * 
+	 * @param ref an attribute designator
+	 * @param v an attribute designator value
+	 */
 	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeExp v);
 
+	/**
+	 * Gets all resolved designators in this context
+	 * 
+	 * @return a map of all resolved designators
+	 */
 	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();
 
 	/**

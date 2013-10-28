@@ -65,13 +65,12 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(2, r1.getPolicyIdentifiers().size());
 		Iterator<CompositeDecisionRuleIDReference> refIterator = r1.getPolicyIdentifiers().iterator();
 		CompositeDecisionRuleIDReference pi1 = refIterator.next();
-		assertEquals("1.0", pi1.getVersion().getPattern());
+		assertEquals("1.0", pi1.getVersion().toString());
 		assertNull(pi1.getEarliestVersion());
 		assertNull(pi1.getLatestVersion());
 
 		CompositeDecisionRuleIDReference pi2 = refIterator.next();
-		assertNull(pi2.getVersion());
-		assertEquals("2.0", pi2.getEarliestVersion().getPattern());
+		assertEquals("2.0",  pi2.getVersion().toString());
 		assertNull(pi2.getLatestVersion());
 	}
 }

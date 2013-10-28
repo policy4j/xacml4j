@@ -2,10 +2,8 @@ package org.xacml4j.v30.marshall.jaxb;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
@@ -54,29 +52,11 @@ import org.xacml4j.v30.pdp.PolicySetIDReference;
 import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public class Xacml30RequestContextFromJaxbToObjectModelMapper
 {
 	private ObjectFactory factory;
-
-	private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
-	private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-
-	static
-	{
-		v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
-		v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
-		v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
-		v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
-		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
-		v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-
-		v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
-		v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
-		v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
-		v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-	}
 
 	private Types xacmlTypes = Types.builder().defaultTypes().create();
 	
@@ -116,9 +96,8 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Result create(ResultType result) throws XacmlSyntaxException {
-		Decision decision = create(result.getDecision());
 		return Result
-				.builder(decision, create(result.getStatus()))
+				.builder(create(result.getDecision()), create(result.getStatus()))
 				.advice(createAdvices(result.getAssociatedAdvice()))
 				.obligation(createObligations(result.getObligations()))
 				.evaluatedPolicies(create(result.getPolicyIdentifierList()))
@@ -129,14 +108,14 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private Collection<CompositeDecisionRuleIDReference> create(
 			PolicyIdentifierListType policyIdentifierList) throws XacmlSyntaxException {
 		if (policyIdentifierList == null) {
-			return Collections.emptyList();
+			return ImmutableList.of();
 		}
  		Collection<CompositeDecisionRuleIDReference> list = new LinkedList<CompositeDecisionRuleIDReference>();
 		for(JAXBElement<IdReferenceType> o: policyIdentifierList.getPolicyIdReferenceOrPolicySetIdReference()) {
 			if (o.getName().getLocalPart().equals("PolicyIdReference")) {
 				PolicyIDReference ref = PolicyIDReference
 						.builder(o.getValue().getValue())
-						.version(o.getValue().getVersion())
+						.versionAsString(o.getValue().getVersion())
 						.earliest(o.getValue().getEarliestVersion())
 						.latest(o.getValue().getLatestVersion())
 						.build();
@@ -144,7 +123,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 			} else if(o.getName().getLocalPart().equals("PolicySetIdReference")) {
 				PolicySetIDReference ref = PolicySetIDReference
 						.builder(o.getValue().getValue())
-						.version(o.getValue().getVersion())
+						.versionAsString(o.getValue().getVersion())
 						.earliest(o.getValue().getEarliestVersion())
 						.latest(o.getValue().getLatestVersion())
 						.build();
@@ -210,15 +189,29 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private DecisionType create(Decision d){
-		DecisionType jaxbD = v30ToV20DecisionMapping.get(d);
-		Preconditions.checkState(jaxbD != null);
-		return jaxbD;
+		if(d == Decision.PERMIT){
+			return DecisionType.PERMIT;
+		}
+		if(d == Decision.DENY){
+			return DecisionType.DENY;
+		}
+		if(d.isIndeterminate()){
+			return DecisionType.INDETERMINATE;
+		}
+		return DecisionType.NOT_APPLICABLE;
 	}
 
-	private Decision create(DecisionType jaxbD) {
-		Decision d = v20ToV30DecisionMapping.get(jaxbD);
-		Preconditions.checkState(d != null);
-		return d;
+	private Decision create(DecisionType d) {
+		if(d == DecisionType.PERMIT){
+			return Decision.PERMIT;
+		}
+		if(d == DecisionType.DENY){
+			return Decision.DENY;
+		}
+		if(d == DecisionType.INDETERMINATE){
+			return Decision.INDETERMINATE;
+		}
+		return Decision.NOT_APPLICABLE;
 	}
 
 	private Collection<Advice> createAdvices(AssociatedAdviceType associatedAdviceType) throws XacmlSyntaxException {
@@ -245,7 +238,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private Advice create(AdviceType a) throws XacmlSyntaxException {
 		return Advice.builder(a.getAdviceId(), null)
 				.attributes(create(a.getAttributeAssignment()))
-				.create();
+				.build();
 	}
 
 	private Collection<Obligation> createObligations(ObligationsType obligationsType) throws XacmlSyntaxException {
@@ -346,11 +339,13 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException
 	{
 		AttributeExp value = create((AttributeValueType)a);
-		return new AttributeAssignment(
-				a.getAttributeId(),
-				AttributeCategories.parse(a.getCategory()),
-				a.getIssuer(),
-				value);
+		return AttributeAssignment
+				.builder()
+				.id(a.getAttributeId())
+				.category(a.getCategory())
+				.issuer(a.getIssuer())
+				.value(value)
+				.build();
 	}
 
 	private Collection<Attributes> create(List<AttributesType> input) throws XacmlSyntaxException {

@@ -251,17 +251,17 @@ public class XacmlPolicyTestSupport {
 		}
 
 		public XacmlTestPdpBuilder withDefaultFunctions(){
-			functionProviderBuilder.withDefaultFunctions();
+			functionProviderBuilder.defaultFunctions();
 			return this;
 		}
 
 		public XacmlTestPdpBuilder withFunctionProvider(Object provider){
-			functionProviderBuilder.withFunctionsFromInstance(provider);
+			functionProviderBuilder.fromInstance(provider);
 			return this;
 		}
 
 		public XacmlTestPdpBuilder withFunctionProvider(Class<?> clazz){
-			functionProviderBuilder.withFunctionsFromClass(clazz);
+			functionProviderBuilder.fromClass(clazz);
 			return this;
 		}
 
@@ -302,7 +302,7 @@ public class XacmlPolicyTestSupport {
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
-					functionProviderBuilder.create(),
+					functionProviderBuilder.build(),
 					decisionAlgoProviderBuilder.create());
 			for(InputStream in : policies){
 				repository.importPolicy(in);

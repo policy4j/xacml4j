@@ -47,9 +47,9 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r1.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r2.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
 		replay(r1, r2);
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -63,7 +63,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		replay(r1, r2);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -77,7 +77,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.DENY);
+		expect(r1.evaluate(context)).andReturn(Decision.DENY);
 		replay(r1, r2);
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -92,7 +92,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE);
+		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE);
 		replay(r1, r2);
 		assertEquals(Decision.INDETERMINATE, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -106,7 +106,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_D);
+		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_D);
 		replay(r1, r2);
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -120,7 +120,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_P);
+		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_P);
 		replay(r1, r2);
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
 		verify(r1, r2);
@@ -134,7 +134,7 @@ public class FirstApplicableTest
 		decisions.add(r1);
 		decisions.add(r2);
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.INDETERMINATE_DP);
+		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_DP);
 		replay(r1, r2);
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 		verify(r1, r2);

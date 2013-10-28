@@ -45,7 +45,14 @@ public class Obligation
 	 */
 	public Obligation merge(Obligation o)
 	{
+		if( o == null){
+			return this;
+		}
+		if(o == this){
+			return this;
+		}
 		Preconditions.checkArgument(getId().equals(o.getId()));
+		// HACK: not sure if we need this check
 		Preconditions.checkArgument(Objects.equal(getFullfillOn(), o.getFullfillOn()));
 		return new Obligation.Builder(getId(), getFullfillOn())
 		.attributes(getAttributes())

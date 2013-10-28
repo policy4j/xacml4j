@@ -304,10 +304,10 @@ public class IPAddressUtils {
         }
         return false;
     }
-    
+
     public static InetAddress parseAddress(String address){
     	try
-    	{	    	
+    	{
 	    	if(isIPv4LiteralAddress(address)){
 	    		byte[] addr = textToNumericFormatV4(address);
 	    		return InetAddress.getByAddress(addr);
@@ -321,7 +321,7 @@ public class IPAddressUtils {
     		return null;
     	}
     }
-    
+
     public static String toStringWithNoHostname(InetAddress address){
     	String addr = address.toString();
     	int i = addr.indexOf("/");

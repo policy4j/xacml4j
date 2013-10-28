@@ -18,7 +18,7 @@ public class PolicyIDReferenceFactoryBean extends
 	}
 	
 	public void setVersion(String version){
-		this.ref.version(version);
+		this.ref.versionAsString(version);
 	}
 	
 	public void setLatest(String latest){

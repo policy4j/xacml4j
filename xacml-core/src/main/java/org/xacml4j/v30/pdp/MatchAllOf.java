@@ -122,7 +122,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 		public Builder match(AttributeExp value,
 				AttributeReference ref, FunctionSpec predicate)
 		{
-			return allOf(new Match(predicate, value, ref));
+			return allOf(Match.builder().predicate(predicate).attribute(value).attrRef(ref).build());
 		}
 
 		public MatchAllOf build(){

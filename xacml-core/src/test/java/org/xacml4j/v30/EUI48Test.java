@@ -26,11 +26,12 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * JUnit Test class for the com.fasterxml.uuid.EthernetAddress class.
- * 
+ *
  * @author Eric Bie
  * @author Tatu Saloranta (changes for version 3.0)
  */
@@ -130,7 +131,7 @@ public class EUI48Test {
 	private static final EUI48 MAC9_ETHERNET_ADDRESS = new EUI48(
 			0x0000cf74d8ef49b8L);
 
-	
+
 	/**************************************************************************
 	 * Begin Constructor tests
 	 *************************************************************************/
@@ -1100,7 +1101,7 @@ public class EUI48Test {
 	/**
 	 * Ok; this test is bit non-kosher, as it assumes existence of a valid
 	 * interface
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	@Test

@@ -90,9 +90,6 @@ implements ResponseUnmarshaller
 			v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
 			v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
 
 			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
 			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
@@ -128,8 +125,8 @@ implements ResponseUnmarshaller
 			Preconditions.checkArgument(result.getDecision() != null);
 			Decision d = v20ToV30DecisionMapping.get(result.getDecision());
 			Status status = create(result.getStatus());
-			if(d.isIndeterminate()){
-				return Result.createIndeterminate(d, status).build();
+			if(d == Decision.INDETERMINATE){
+				return Result.createIndeterminate(status).build();
 			}
 			Result.Builder b = Result
 					.builder(d, create(result.getStatus()))
@@ -166,8 +163,10 @@ implements ResponseUnmarshaller
 		{
 			Collection<AttributeAssignment> attrs = new LinkedList<AttributeAssignment>();
 			for(AttributeAssignmentType a : o.getAttributeAssignment()){
-				attrs.add(new AttributeAssignment(a.getAttributeId(),
-						createValue(a.getDataType(), a.getContent(), a.getOtherAttributes())));
+				attrs.add(
+						AttributeAssignment.builder()
+						.id(a.getAttributeId())
+						.value(createValue(a.getDataType(), a.getContent(), a.getOtherAttributes())).build());
 			}
 			return Obligation
 					.builder(o.getObligationId(), v20ToV30EffectnMapping.get(o.getFulfillOn()))

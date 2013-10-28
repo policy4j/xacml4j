@@ -108,7 +108,7 @@ final class DefaultPolicyDecisionPoint
 		}
 		EvaluationContext evalContext = context.createEvaluationContext(request);
 		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
-		Decision decision = rootPolicy.evaluateIfMatch(rootPolicy.createContext(evalContext));
+		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
 		r = createResult(evalContext,
 				decision,
 				request.getIncludeInResultAttributes(),

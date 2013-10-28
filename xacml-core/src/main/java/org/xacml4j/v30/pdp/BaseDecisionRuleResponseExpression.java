@@ -1,8 +1,6 @@
 package org.xacml4j.v30.pdp;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeCategory;
@@ -18,6 +16,7 @@ import org.xacml4j.v30.ValueExpression;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -83,7 +82,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	}
 
 	public Collection<AttributeAssignmentExpression> getAttributeAssignmentExpressions(){
-		return Collections.unmodifiableCollection(attributeExpressions.values());
+		return attributeExpressions.values();
 	}
 
 	/**
@@ -98,28 +97,20 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		throws EvaluationException
 	{
 
-		Collection<AttributeAssignment> attr = new LinkedList<AttributeAssignment>();
-		for(AttributeAssignmentExpression attrExp : attributeExpressions.values())
-		{
+		ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
+		for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
+			AttributeAssignment.Builder b = AttributeAssignment.builder().from(attrExp);
 			ValueExpression val = attrExp.evaluate(context);
 			if(val instanceof AttributeExp){
-				attr.add(new AttributeAssignment(
-						attrExp.getAttributeId(),
-						attrExp.getCategory(),
-						attrExp.getIssuer(),
-						(AttributeExp)val));
+				attr.add(b.value((AttributeExp)val).build());
 				continue;
 			}
 			BagOfAttributeExp bag = (BagOfAttributeExp)val;
 			for(AttributeExp v : bag.values()){
-				attr.add(new AttributeAssignment(
-						attrExp.getAttributeId(),
-						attrExp.getCategory(),
-						attrExp.getIssuer(),
-						v));
+				attr.add(b.value((AttributeExp)v).build());
 			}
 		}
-		return attr;
+		return attr.build();
 	}
 
 	@Override

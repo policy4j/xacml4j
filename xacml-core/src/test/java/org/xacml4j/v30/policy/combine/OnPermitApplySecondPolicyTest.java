@@ -49,9 +49,9 @@ public class OnPermitApplySecondPolicyTest
 		decisions.add(r2);
 	
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfMatch(context)).andReturn(Decision.NOT_APPLICABLE);
+		expect(r2.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		c.verify();
@@ -68,9 +68,9 @@ public class OnPermitApplySecondPolicyTest
 		decisions.add(r2);
 	
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
+		expect(r2.evaluate(context)).andReturn(Decision.PERMIT);
 		c.replay();
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		c.verify();
@@ -87,9 +87,9 @@ public class OnPermitApplySecondPolicyTest
 		decisions.add(r2);
 	
 		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluateIfMatch(context)).andReturn(Decision.PERMIT);
+		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluateIfMatch(context)).andReturn(Decision.DENY);
+		expect(r2.evaluate(context)).andReturn(Decision.DENY);
 		c.replay();
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		c.verify();

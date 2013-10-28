@@ -119,12 +119,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					.condition(condition)
 					.target(create(p.getTarget()))
 					.issuer(createPolicyIssuer(p.getPolicyIssuer()))
-					.withCombiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
-					.withRules(createRules(p, m))
-					.withVariables(variableDefinitions.values())
+					.combiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
+					.rules(createRules(p, m))
+					.vars(variableDefinitions.values())
 					.obligation(getExpressions(p.getObligationExpressions(), m))
 					.advice(getExpressions(p.getAdviceExpressions(), m))
-					.withDefaults(createPolicyDefaults(p.getPolicyDefaults()))
+					.defaults(createPolicyDefaults(p.getPolicyDefaults()))
 					.create();
 	}
 
@@ -229,7 +229,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 						}
 						PolicySetIDReference policySetRef = PolicySetIDReference
 								.builder(ref.getValue())
-								.version(ref.getVersion())
+								.versionAsString(ref.getVersion())
 								.earliest(ref.getEarliestVersion())
 								.latest(ref.getLatestVersion())
 								.build();
@@ -243,7 +243,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 						}
 						PolicyIDReference policySetRef = PolicyIDReference
 								.builder(ref.getValue())
-								.version(ref.getVersion())
+								.versionAsString(ref.getVersion())
 								.earliest(ref.getEarliestVersion())
 								.latest(ref.getLatestVersion())
 								.build();
@@ -510,10 +510,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throw new XacmlSyntaxException(
 					"Match=\"%s\" attribute value must be specified");
 		}
-		return new Match(createFunction(m.getMatchId()), createValue(v.getDataType(),
-				v.getContent(), v.getOtherAttributes()), createAttributeReference((m
-				.getAttributeDesignator() != null) ? m.getAttributeDesignator()
-				: m.getAttributeSelector()));
+		return Match
+				.builder()
+				.predicate(createFunction(m.getMatchId()))
+				.attribute(createValue(v.getDataType(), v.getContent(), v.getOtherAttributes()))
+				.attrRef(createAttributeReference((m.getAttributeDesignator() != null) ? m.getAttributeDesignator():m.getAttributeSelector()))
+				.build();
 	}
 
 	/**

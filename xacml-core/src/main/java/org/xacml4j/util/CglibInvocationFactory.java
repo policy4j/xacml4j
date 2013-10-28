@@ -9,11 +9,11 @@ public final class CglibInvocationFactory implements InvocationFactory
 {
 	@Override
 	public <T> Invocation<T> create(final Object instance, final Method m) {
-		return new Invocation<T>() 
+		return new Invocation<T>()
 		{
 			private FastClass fastClass;
 			private FastMethod fastMethod;
-	
+
 			{
 				this.fastClass = FastClass.create(m.getDeclaringClass());
 				this.fastMethod = fastClass.getMethod(m);
@@ -26,5 +26,5 @@ public final class CglibInvocationFactory implements InvocationFactory
 			}
 		};
 	}
-	
+
 }

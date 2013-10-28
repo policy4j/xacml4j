@@ -46,10 +46,10 @@ public class SimpleNamespaceContext implements NamespaceContext {
     private Map<String, String> prefixToNamespaceUri = new HashMap<String, String>();
 
     private Multimap<String, String> namespaceUriToPrefixes = LinkedListMultimap.create();
-    
+
     public SimpleNamespaceContext(){
     }
-    
+
     public SimpleNamespaceContext(Map<String, String> bindings){
     	for(Entry<String, String> e : bindings.entrySet()){
     		bindNamespaceUri(e.getKey(), e.getValue());
@@ -112,12 +112,12 @@ public class SimpleNamespaceContext implements NamespaceContext {
         Preconditions.checkNotNull(prefix);
         Preconditions.checkNotNull(namespaceUri);
         if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
-            Preconditions.checkArgument(XMLConstants.XML_NS_URI.equals(namespaceUri), 
-            		"Prefix \"%s\"\" bound to namespace \"%s\" (should be \"%s\")", 
+            Preconditions.checkArgument(XMLConstants.XML_NS_URI.equals(namespaceUri),
+            		"Prefix \"%s\"\" bound to namespace \"%s\" (should be \"%s\")",
             		prefix, namespaceUri, XMLConstants.XML_NS_URI);
         } else if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
-        	Preconditions.checkArgument(XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceUri), 
-            		"Prefix \"%s\"\" bound to namespace \"%s\" (should be \"%s\")", 
+        	Preconditions.checkArgument(XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceUri),
+            		"Prefix \"%s\"\" bound to namespace \"%s\" (should be \"%s\")",
             		prefix, namespaceUri, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
         }
         else {

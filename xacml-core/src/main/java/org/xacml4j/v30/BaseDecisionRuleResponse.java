@@ -84,6 +84,13 @@ public abstract class BaseDecisionRuleResponse
 			return getThis();
 		}
 		
+		public final T from(BaseDecisionRuleResponse r){
+			this.id = r.id;
+			this.fullFillOn = r.fullfillOn; 
+			this.attributes.putAll(r.attributes);
+			return getThis();
+		}
+		
 		public final T attributes(Iterable<AttributeAssignment> attributes){
 			for(AttributeAssignment attr : attributes){
 				this.attributes.put(attr.getAttributeId(), attr);
@@ -108,7 +115,13 @@ public abstract class BaseDecisionRuleResponse
 				return getThis();
 			}
 			for(AttributeExp v : values){
-				attribute(new AttributeAssignment(id, category, issuer, v));
+				attribute(AttributeAssignment
+						.builder()
+						.id(id)
+						.category(category)
+						.issuer(issuer)
+						.value(v)
+						.build());
 			}
 			return getThis();
 		}

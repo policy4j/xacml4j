@@ -124,11 +124,11 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.builder(p.getPolicyId())
 					.description(p.getDescription())
 					.version(p.getVersion())
-					.withDefaults(createPolicyDefaults(p.getPolicyDefaults()))
+					.defaults(createPolicyDefaults(p.getPolicyDefaults()))
 					.target(create(p.getTarget()))
-					.withCombiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
-					.withRules(getRules(p, m))
-					.withVariables(variableDefinitions.values())
+					.combiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
+					.rules(getRules(p, m))
+					.vars(variableDefinitions.values())
 					.obligation(getObligations(p.getObligations()))
 					.create();
 		}catch(XacmlSyntaxException e){
@@ -181,7 +181,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					}
 					PolicySetIDReference policySetRef = PolicySetIDReference
 						.builder(ref.getValue())
-						.version(ref.getVersion())
+						.versionAsString(ref.getVersion())
 						.earliest(ref.getEarliestVersion())
 						.latest(ref.getLatestVersion())
 						.build();
@@ -195,7 +195,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					}
 					PolicyIDReference policyRef = PolicyIDReference
 							.builder(ref.getValue())
-							.version(ref.getVersion())
+							.versionAsString(ref.getVersion())
 							.earliest(ref.getEarliestVersion())
 							.latest(ref.getLatestVersion())
 							.build();
@@ -520,15 +520,21 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.getSubjectAttributeDesignator();
 			if (desig != null) {
 				AttributeCategory categoryId = AttributeCategories.parse(desig.getSubjectCategory());
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createDesignator(categoryId, desig));
+				return Match
+						.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createDesignator(categoryId, desig))
+						.build();
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createSelector(getSelectoryCategory(selector), selector));
+				return Match
+						.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createSelector(getSelectoryCategory(selector), selector))
+						.build();
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match
@@ -538,15 +544,20 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			ActionMatchType match = (ActionMatchType) exp;
 			AttributeDesignatorType desig = match.getActionAttributeDesignator();
 			if (desig != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createDesignator(AttributeCategories.ACTION, desig));
+				return Match.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createDesignator(AttributeCategories.ACTION, desig))
+						.build();
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()), createSelector(
-								getSelectoryCategory(selector), selector));
+				return Match
+						.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createSelector(getSelectoryCategory(selector), selector))
+						.build();
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match
@@ -557,15 +568,21 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			AttributeDesignatorType desig = match
 					.getResourceAttributeDesignator();
 			if (desig != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createDesignator(AttributeCategories.RESOURCE, desig));
+				return Match
+						.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createDesignator(AttributeCategories.RESOURCE, desig))
+						.build();
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()), createSelector(
-								getSelectoryCategory(selector), selector));
+				return Match
+						.builder() 
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createSelector(getSelectoryCategory(selector), selector))
+						.build();
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match
@@ -575,17 +592,21 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			EnvironmentMatchType match = (EnvironmentMatchType) exp;
 			AttributeDesignatorType desig = match.getEnvironmentAttributeDesignator();
 			if (desig != null) {
-				return new Match(createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createDesignator(AttributeCategories.ENVIRONMENT, desig));
+				return Match
+						.builder()
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createDesignator(AttributeCategories.ENVIRONMENT, desig))
+						.build();
 			}
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
-				return new Match(
-						createFunction(match.getMatchId()),
-						createValue(match.getAttributeValue()),
-						createSelector(getSelectoryCategory(selector),
-								selector));
+				return Match
+						.builder() 
+						.predicate(createFunction(match.getMatchId()))
+						.attribute(createValue(match.getAttributeValue()))
+						.attrRef(createSelector(getSelectoryCategory(selector), selector))
+						.build();
 			}
 			throw new XacmlSyntaxException("Match with functionId=\"%s\" "
 					+ "does not have designator or selector", match

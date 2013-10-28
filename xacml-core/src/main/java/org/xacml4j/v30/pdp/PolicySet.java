@@ -105,8 +105,8 @@ public class PolicySet extends
 	 * @param name a parameter name
 	 * @return a collection of combiner parameters
 	 */
-	public Collection<CombinerParameter> getPolicySetCombinerParam(String policyId, String name){
-		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policyId);
+	public Collection<CombinerParameter> getPolicySetCombinerParam(String policySetId, String name){
+		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policySetId);
 		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
 	}
 
@@ -130,8 +130,8 @@ public class PolicySet extends
 
 	/**
 	 * Creates {@link EvaluationContext} to evaluate this policy
-	 * set to be used in {@link this#isApplicable(EvaluationContext)}
-	 * or {@link this#evaluate(EvaluationContext)}
+	 * set to be used in {@link #isMatch(EvaluationContext)}
+	 * or {@link #evaluate(EvaluationContext)}
 	 *
 	 * @param context a parent evaluation context
 	 * @return {@link EvaluationContext} instance to evaluate
@@ -148,42 +148,20 @@ public class PolicySet extends
 
 	@Override
 	protected final boolean isEvaluationContextValid(EvaluationContext context){
+		// TBD: use equals instead
 		return context.getCurrentPolicySet() == this;
 	}
 
-	@Override
-	public final Decision evaluate(EvaluationContext context)
-	{
-		Preconditions.checkNotNull(context);
-		Preconditions.checkArgument(isEvaluationContextValid(context));
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
-		if(log.isDebugEnabled()) {
-			log.debug("PolicySet id=\"{}\" condition " +
-					"evaluation result=\"{}\"", id, result);
-		}
-		if(result == ConditionResult.TRUE){
-			Decision decision = combine.combine(context, decisionRules);
-			if(!decision.isIndeterminate() ||
-					decision != Decision.NOT_APPLICABLE){
-				decision = evaluateAdvicesAndObligations(context, decision);
-				context.addEvaluationResult(this, decision);
-			}
-			return decision;
-		}
-		if(result == ConditionResult.INDETERMINATE){
-			Decision decision = combine.combine(context, decisionRules);
-			switch(decision){
-				case DENY : return Decision.INDETERMINATE_D;
-				case PERMIT : return Decision.INDETERMINATE_P;
-				case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
-				default: return decision;
-			}
-		}
-		return Decision.NOT_APPLICABLE;
+	protected Decision combineDecisions(EvaluationContext context){
+		return combine.combine(context, decisionRules);
 	}
 
 	public List<? extends CompositeDecisionRule> getDecisions() {
 		return decisionRules;
+	}
+
+	public boolean contains(CompositeDecisionRule r){
+		return decisionRules.contains(r);
 	}
 
 	@Override
@@ -212,7 +190,7 @@ public class PolicySet extends
 		extends DelegatingEvaluationContext
 	{
 		private StatusCode evalStatus;
-		
+
 		/**
 		 * Constructs delegating evaluation context
 		 * which delegates all invocations to the enclosing
@@ -234,16 +212,21 @@ public class PolicySet extends
 		public PolicySet getCurrentPolicySet() {
 			return PolicySet.this;
 		}
-		
+
 		@Override
 		public StatusCode getEvaluationStatus() {
 			return evalStatus;
 		}
-		
+
 		@Override
 		public void setEvaluationStatus(StatusCode code) {
 			Preconditions.checkNotNull(code);
 			this.evalStatus = code;
+		}
+
+		@Override
+		public EvaluationContext getParentContext() {
+			return getDelegate();
 		}
 
 		@Override

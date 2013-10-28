@@ -55,7 +55,12 @@ public class MatchTest
 				ImmutableList.<Expression>builder().add(INTEGER.create(1), INTEGER.create(1)).build()))
 				.andReturn(BOOLEAN.create(true));
 		c.replay();
-		Match m = new Match(spec, INTEGER.create(1), ref);
+		Match m = Match
+				.builder()
+				.predicate(spec)
+				.attribute(INTEGER.create(1))
+				.attrRef(ref)
+				.build();
 		assertEquals(MatchResult.MATCH, m.match(context));
 		c.verify();
 	}
@@ -68,7 +73,12 @@ public class MatchTest
 				AttributeDesignatorKey.builder().category(AttributeCategories.RESOURCE).dataType(INTEGER).attributeId("testId").build(), "Failed"));
 		context.setEvaluationStatus(StatusCode.createMissingAttributeError());
 		c.replay();
-		Match m = new Match(spec, INTEGER.create(1), ref);
+		Match m = Match
+				.builder()
+				.predicate(spec)
+				.attribute(INTEGER.create(1))
+				.attrRef(ref)
+				.build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
 		c.verify();
 	}

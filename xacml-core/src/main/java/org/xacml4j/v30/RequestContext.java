@@ -493,7 +493,14 @@ public class RequestContext
 			this.reqRefs.addAll(refs);
 			return this;
 		}
-
+		
+		/**
+		 * Copies all state to this builder from
+		 * a given request context
+		 * 
+		 * @param req a request context
+		 * @return {@link Builder}
+		 */
 		public Builder copyOf(RequestContext req)
 		{
 			combineDecision(req.isCombinedDecision());
@@ -504,16 +511,21 @@ public class RequestContext
 			return this;
 		}
 
-//		public Builder attributes(RequestContext req, Predicate<Attributes> p)
-//		{
-//			combineDecision(req.isCombinedDecision());
-//			returnPolicyIdList(req.isReturnPolicyIdList());
-//			reqDefaults(req.getRequestDefaults());
-//			Collection<Attributes> attributes = Collections2.filter(req.getAttributes(), p);
-//			attributes();
-//			reference(req.getRequestReferences());
-//			return this;
-//		}
+		/**
+		 * Copies all state to this builder from
+		 * a given request context except attributes
+		 * 
+		 * @param req a request context
+		 * @return {@link Builder}
+		 */
+		public Builder copyOf(RequestContext req, Iterable<Attributes> attributes)
+		{
+			combineDecision(req.isCombinedDecision());
+			returnPolicyIdList(req.isReturnPolicyIdList());
+			reqDefaults(req.getRequestDefaults());
+			attributes(attributes);
+			return this;
+		}
 
 		public Builder noAttributes(){
 			attrBuilder = ImmutableListMultimap.builder();

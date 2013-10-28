@@ -98,18 +98,6 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public Decision evaluateIfMatch(EvaluationContext context) {
-		Preconditions.checkNotNull(context);
-		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
-		if(!isReferenceTo(context.getCurrentPolicySet())){
-			return Decision.INDETERMINATE;
-		}
-		CompositeDecisionRule ps = context.getCurrentPolicySet();
-		Preconditions.checkState(ps != null);
-		return ps.evaluateIfMatch(context);
-	}
-
-	@Override
 	public MatchResult isMatch(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
@@ -162,6 +150,11 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		@Override
 		public PolicySetIDReference getCurrentPolicySetIDReference() {
 			return PolicySetIDReference.this;
+		}
+		
+		@Override
+		public EvaluationContext getParentContext() {
+			return getDelegate();
 		}
 	}
 	

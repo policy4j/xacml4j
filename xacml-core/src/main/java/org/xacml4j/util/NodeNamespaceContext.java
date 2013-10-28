@@ -15,14 +15,14 @@ import com.google.common.base.Preconditions;
 public final class NodeNamespaceContext implements NamespaceContext
 {
 	private final static Logger log = LoggerFactory.getLogger(NodeNamespaceContext.class);
-	
+
 	private Node node;
-	
+
 	public NodeNamespaceContext(Node node){
 		Preconditions.checkNotNull(node);
 		this.node = node;
 	}
-	
+
 	@Override
 	public String getNamespaceURI(String prefix){
 		 if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {

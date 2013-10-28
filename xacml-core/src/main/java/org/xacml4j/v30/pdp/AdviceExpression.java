@@ -15,16 +15,12 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 {
 	/**
 	 * Constructs advice expression with a given identifier
-	 * @param id an advice identifier
-	 * @param appliesTo an effect when this advice is applicable
-	 * @param attributeExpressions a collection of attribute
-	 * assignment expression for this advice
+	 * @param b an advice expression builder
 	 * @exception XacmlSyntaxException
 	 */
 	private AdviceExpression(Builder b){
 		super(b);
 	}
-
 
 	/**
 	 * Evaluates this advice expression by evaluating
@@ -41,7 +37,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 		return Advice
 				.builder(getId(), getEffect())
 				.attributes(attributes)
-				.create();
+				.build();
 	}
 
 	public static Builder builder(String id, Effect appliesTo){

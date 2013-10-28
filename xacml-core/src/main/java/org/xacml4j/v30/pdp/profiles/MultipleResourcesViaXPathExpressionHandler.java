@@ -15,7 +15,6 @@ import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
-import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;
@@ -82,7 +81,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			return results;
 		}catch(RequestSyntaxException e){
 			return Collections.singleton(
-					Result.createIndeterminate(Decision.INDETERMINATE, e.getStatus())
+					Result.createIndeterminate(e.getStatus())
 					.includeInResultAttr(request.getIncludeInResultAttributes())
 					.build());
 		}

@@ -48,8 +48,8 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 						Result.createIndeterminateProcessingError().build());
 			}
 			if(prev != null){
-				if(r.getDecision().isIndeterminate()){
-					if(!prev.getDecision().isIndeterminate()){
+				if(r.isIndeterminate()){
+					if(!prev.isIndeterminate()){
 						return Collections.singleton(
 								Result.createIndeterminateProcessingError().build());
 					}

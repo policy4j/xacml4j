@@ -98,7 +98,7 @@ public final class PolicyIDReference extends
 		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion())
 		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}
-
+	
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
@@ -109,18 +109,6 @@ public final class PolicyIDReference extends
 		CompositeDecisionRule p = context.getCurrentPolicy();
 		Preconditions.checkState(p != null);
 		return p.evaluate(context);
-	}
-
-	@Override
-	public Decision evaluateIfMatch(EvaluationContext context) {
-		Preconditions.checkNotNull(context);
-		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
-		if(!isReferenceTo(context.getCurrentPolicy())){
-			return Decision.INDETERMINATE;
-		}
-		CompositeDecisionRule p = context.getCurrentPolicy();
-		Preconditions.checkState(p != null);
-		return p.evaluateIfMatch(context);
 	}
 
 	@Override
@@ -190,7 +178,12 @@ public final class PolicyIDReference extends
 			Preconditions.checkArgument(context.getCurrentPolicy() == null);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicyIDReference.this, context));
 		}
-
+		
+		@Override
+		public EvaluationContext getParentContext() {
+			return getDelegate();
+		}
+		
 		@Override
 		public PolicyIDReference getCurrentPolicyIDReference() {
 			return PolicyIDReference.this;

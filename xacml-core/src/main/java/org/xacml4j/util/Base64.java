@@ -26,8 +26,8 @@ package org.xacml4j.util;
  * periodically to check for updates or to contribute improvements.
  * </p>
  *
- * 
- * 
+ *
+ *
  * @version 1.3
  */
 

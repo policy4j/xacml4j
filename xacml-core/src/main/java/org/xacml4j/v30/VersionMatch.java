@@ -2,8 +2,7 @@ package org.xacml4j.v30;
 
 import java.util.regex.Pattern;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 public class VersionMatch
 {
@@ -28,9 +27,16 @@ public class VersionMatch
      */
     public VersionMatch(String versionMatchPattern)
     {
-        Preconditions.checkArgument(versionMatchPattern.matches(PATTERN), 
-        		"Given version match=\"%s\" should match regular expression=\"%s\"", 
-        		versionMatchPattern, PATTERN);
+    	if(Strings.isNullOrEmpty(versionMatchPattern)){
+    		throw new XacmlSyntaxException("Version can't be null or empty");
+    	}
+    	if(!versionMatchPattern.matches(PATTERN)){
+    		throw new XacmlSyntaxException(
+    				String.format(
+    						"Given version match=\"%s\" should " +
+    						"match regular expression=\"%s\"", 
+        		versionMatchPattern, PATTERN));
+    	}      		
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
     }
@@ -87,7 +93,6 @@ public class VersionMatch
      * match constraint can not be parsed
      */
     public static VersionMatch parse(String pattern) {
-    	Preconditions.checkNotNull(pattern);
         return new VersionMatch(pattern);
     }
     
@@ -108,8 +113,7 @@ public class VersionMatch
     
     @Override
     public String toString(){
-    	return Objects.toStringHelper(this)
-    	.add("pattern", pattern).toString();
+    	return pattern;
     }
     
     @Override

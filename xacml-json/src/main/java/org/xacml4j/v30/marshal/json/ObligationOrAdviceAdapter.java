@@ -42,7 +42,7 @@ public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRul
 			return attributeAssignments != null ? builder.attributes(attributeAssignments).build() : builder.build();
 		} else if (typeOfT == Advice.class) {
 			Advice.Builder builder = Advice.builder(id);
-			return attributeAssignments != null ? builder.attributes(attributeAssignments).create() : builder.create();
+			return attributeAssignments != null ? builder.attributes(attributeAssignments).build() : builder.build();
 		} else {
 			throw new IllegalArgumentException(String.format("Invalid type: %s", typeOfT));
 		}

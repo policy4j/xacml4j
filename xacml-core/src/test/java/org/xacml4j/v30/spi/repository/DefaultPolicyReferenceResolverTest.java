@@ -34,7 +34,7 @@ public class DefaultPolicyReferenceResolverTest
 		this.p1v1 = Policy
 				.builder("id")
 				.version("1.0.0")
-				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
+				.combiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
 				.create();
 		this.ps1v1 = PolicySet
 				.builder("id")
@@ -51,7 +51,7 @@ public class DefaultPolicyReferenceResolverTest
 		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicyIDReference ref = PolicyIDReference.builder("id").version("1.0.0").build();
+		PolicyIDReference ref = PolicyIDReference.builder("id").versionAsString("1.0.0").build();
 		Policy p = r.resolve(ref);
 		p = r.resolve(ref);
 		assertSame(p1v1, p);
@@ -69,7 +69,7 @@ public class DefaultPolicyReferenceResolverTest
 		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicySetIDReference ref = PolicySetIDReference.builder("id").version("1.0.0").build();
+		PolicySetIDReference ref = PolicySetIDReference.builder("id").versionAsString("1.0.0").build();
 		PolicySet p = r.resolve(ref);
 		p = r.resolve(ref);
 		assertSame(ps1v1, p);

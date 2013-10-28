@@ -1,36 +1,39 @@
 package org.xacml4j.v30;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class Result
 {
-	private final Status status;
-	private final Decision decision;
-	private final Map<String, Obligation> obligations;
-	private final Map<String, Advice> associatedAdvice;
-	private final Map<AttributeCategory, Attributes> includeInResultAttributes;
-	private final Collection<CompositeDecisionRuleIDReference> policyReferences;
-	private final Map<AttributeCategory, Attributes> resolvedAttributes;
-	private final int hashCode;
+	private Status status;
+	private Decision decision;
+	private Map<String, Obligation> obligations;
+	private Map<String, Advice> associatedAdvice;
+	private Map<AttributeCategory, Attributes> includeInResultAttributes;
+	private Collection<CompositeDecisionRuleIDReference> policyReferences;
+	private Map<AttributeCategory, Attributes> resolvedAttributes;
+	private int hashCode;
 
 	private Result(Builder b){
-		decision = b.decision;
-		status = b.status;
-		associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
-		obligations = ImmutableMap.copyOf(b.obligations);
-		includeInResultAttributes = ImmutableMap.copyOf(b.includeInResultAttributes);
-		policyReferences = ImmutableList.copyOf(b.policyReferences);
-		resolvedAttributes = ImmutableMap.copyOf(b.resolvedAttributes);
-		hashCode = Objects.hashCode(decision, status,
+		Preconditions.checkArgument(b.decision !=null, "Decision must be specified");
+		Preconditions.checkArgument(b.status !=null, "Status must be specified");
+		Preconditions.checkArgument(!(b.decision.isIndeterminate() ^
+				b.status.isFailure()));
+		this.decision = b.decision;
+		this.status = b.status;
+		this.obligations = ImmutableMap.copyOf(b.obligations);
+		this.associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
+		this.includeInResultAttributes = b.includeInResultAttributes.build();
+		this.policyReferences = b.policyReferences.build();
+		this.resolvedAttributes = b.resolvedAttributes.build();
+		this.hashCode = Objects.hashCode(decision, status,
 				associatedAdvice,
 				obligations,
 				includeInResultAttributes,
@@ -38,45 +41,49 @@ public class Result
 				resolvedAttributes);
 	}
 
-	public static Result.Builder builder(Decision d, Status status){
-		return new Result.Builder(d, status);
+	public static Result.Builder builder(){
+		return new Result.Builder();
 	}
 
+	public static Result.Builder builder(Decision d, Status status){
+		return new Result.Builder().decision(d).status(status);
+	}
+
+	/**
+	 * Creates {@link Result.Builder} with given decision and {@link StatusCodeId#
+	 * @param d
+	 * @return
+	 */
 	public static Result.Builder createOk(Decision d){
 		Preconditions.checkArgument(!d.isIndeterminate());
-		return new Result.Builder(d, Status.createSuccess());
+		return new Result.Builder().decision(d).status(Status.createSuccess());
 	}
 
-	public static Result.Builder createIndeterminate(Decision d, Status status){
+	public static Result.Builder createIndeterminate(Status status){
 		Preconditions.checkArgument(status.isFailure());
-		Preconditions.checkArgument(d.isIndeterminate());
-		return new Result.Builder(d, status);
+		return new Result.Builder().decision(Decision.INDETERMINATE).status(status);
 	}
 
 	public static Result.Builder createIndeterminate(Decision d, StatusCode status){
-		return new Result.Builder(d, new Status(status));
+		return new Result.Builder().decision(d).status(new Status(status));
 	}
 
 	public static Result.Builder createIndeterminateSyntaxError(
 			String format, Object ...params){
-		return createIndeterminate(Decision.INDETERMINATE,
-				Status.createSyntaxError(format, params));
+		return createIndeterminate(Status.createSyntaxError(format, params));
 	}
 
 	public static Result.Builder createIndeterminateSyntaxError(){
-		return createIndeterminate(Decision.INDETERMINATE,
-				Status.createSyntaxError());
+		return createIndeterminate(Status.createSyntaxError());
 	}
 
 	public static Result.Builder createIndeterminateProcessingError(
 			String format, Object ...params){
-		return createIndeterminate(Decision.INDETERMINATE,
-				Status.createProcessingError(format, params));
+		return createIndeterminate(Status.createProcessingError(format, params));
 	}
 
 	public static Result.Builder createIndeterminateProcessingError(){
-		return createIndeterminate(Decision.INDETERMINATE,
-				Status.createProcessingError());
+		return createIndeterminate(Status.createProcessingError());
 	}
 
 
@@ -101,15 +108,31 @@ public class Result
 		return decision;
 	}
 
+	public boolean isIndeterminate(){
+		return decision.isIndeterminate();
+	}
+
+	public boolean isPermit(){
+		return decision == Decision.PERMIT;
+	}
+
+	public boolean isDeny(){
+		return decision == Decision.DENY;
+	}
+
+	public boolean isNotApplicable(){
+		return decision == Decision.NOT_APPLICABLE;
+	}
+
 	/**
 	 * Gets a list of attributes that were part of the request.
 	 * The choice of which attributes are included here is made
-	 * with the request attributes {@link Attributes#isIncludeInResult()}
+	 * with the request attributes {@link org.xacml4j.v30.Attributes#getIncludeInResultAttributes()}}
 	 *
 	 * @return a collection of {@link Attributes} instances
 	 */
 	public Collection<Attributes> getIncludeInResultAttributes(){
-		return Collections.unmodifiableCollection(includeInResultAttributes.values());
+		return includeInResultAttributes.values();
 	}
 
 	/**
@@ -218,28 +241,33 @@ public class Result
 			resolvedAttributes.equals(r.resolvedAttributes);
 	}
 
+
+
 	public static class Builder
 	{
-		private final Status status;
-		private final Decision decision;
-		private final Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
-		private final Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
-		private final Map<AttributeCategory, Attributes> includeInResultAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
-		private final Collection<CompositeDecisionRuleIDReference> policyReferences = new LinkedList<CompositeDecisionRuleIDReference>();
-		private final Map<AttributeCategory, Attributes> resolvedAttributes = new LinkedHashMap<AttributeCategory, Attributes>();
+		private Status status;
+		private Decision decision;
+		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
+		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
+		private ImmutableMap.Builder<AttributeCategory, Attributes> includeInResultAttributes = ImmutableMap.builder();
+		private ImmutableCollection.Builder<CompositeDecisionRuleIDReference> policyReferences = ImmutableList.builder();
+		private ImmutableMap.Builder<AttributeCategory, Attributes> resolvedAttributes = ImmutableMap.builder();
 
-		public Builder(Decision d, Status s){
-			Preconditions.checkNotNull(d);
-			Preconditions.checkNotNull(s);
-			Preconditions.checkArgument(!(d.isIndeterminate() ^
-					s.isFailure()));
-			decision = d;
-			status = s;
-		}
 
 		public Builder includeInResult(Attributes a){
 			Preconditions.checkNotNull(a);
 			Preconditions.checkState(includeInResultAttributes.put(a.getCategory(), a) != null);
+			return this;
+		}
+
+		public Builder decision(Decision d){
+			Preconditions.checkNotNull(d);
+			this.decision = d;
+			return this;
+		}
+
+		public Builder status(Status status){
+			this.status = status;
 			return this;
 		}
 
@@ -262,7 +290,7 @@ public class Result
 			Preconditions.checkNotNull(refs);
 			for(CompositeDecisionRuleIDReference ref : refs){
 				Preconditions.checkNotNull(ref);
-				policyReferences.add(ref);
+				this.policyReferences.add(ref);
 			}
 			return this;
 		}
@@ -272,7 +300,7 @@ public class Result
 			Preconditions.checkNotNull(refs);
 			for(CompositeDecisionRuleIDReference ref : refs){
 				Preconditions.checkNotNull(ref);
-				policyReferences.add(ref);
+				this.policyReferences.add(ref);
 			}
 			return this;
 		}
@@ -284,32 +312,10 @@ public class Result
 			return this;
 		}
 
-		public Builder obligation(Advice ... advices){
+		public Builder advice(Advice ... advices){
 			for(Advice a : advices){
 				addAdvice(a);
 			}
-			return this;
-		}
-
-		private Builder addAdvice(Advice advice){
-			Preconditions.checkNotNull(advice);
-			Advice a = associatedAdvice.get(advice.getId());
-			if(a != null){
-				associatedAdvice.put(a.getId(), a.merge(advice));
-				return this;
-			}
-			associatedAdvice.put(advice.getId(), advice);
-			return this;
-		}
-
-		private  Builder addObligation(Obligation obligation){
-			Preconditions.checkNotNull(obligation);
-			Obligation a = obligations.get(obligation.getId());
-			if(a != null){
-				obligations.put(a.getId(), a.merge(obligation));
-				return this;
-			}
-			obligations.put(obligation.getId(), obligation);
 			return this;
 		}
 
@@ -322,9 +328,32 @@ public class Result
 
 		public Builder obligation(Iterable<Obligation> obligations){
 			for(Obligation o : obligations){
-				Preconditions.checkNotNull(o);
 				addObligation(o);
 			}
+			return this;
+		}
+
+		private Builder addAdvice(Advice advice){
+			Preconditions.checkNotNull(advice);
+			Advice a = associatedAdvice.get(advice.getId());
+			if(a != null){
+				a = a.merge(advice);
+				associatedAdvice.put(a.getId(), a);
+				return this;
+			}
+			associatedAdvice.put(advice.getId(), advice);
+			return this;
+		}
+
+		private  Builder addObligation(Obligation obligation){
+			Preconditions.checkNotNull(obligation);
+			Obligation o = obligations.get(obligation.getId());
+			if(o != null){
+				o = o.merge(obligation);
+				obligations.put(o.getId(), o);
+				return this;
+			}
+			obligations.put(obligation.getId(), obligation);
 			return this;
 		}
 

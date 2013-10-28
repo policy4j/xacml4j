@@ -105,9 +105,14 @@ abstract class BaseDecisionRule implements DecisionRule
 	 */
 	@Override
 	public MatchResult isMatch(EvaluationContext context){
-		Preconditions.checkArgument(
-				isEvaluationContextValid(context));
-		return (target == null)?MatchResult.MATCH:target.match(context);
+		if(!isEvaluationContextValid(context)){
+			return MatchResult.INDETERMINATE;
+		}
+		try{
+			return (target == null)?MatchResult.MATCH:target.match(context);
+		}catch(Exception e){
+			return MatchResult.INDETERMINATE;
+		}
 	}
 
 	/**
@@ -116,25 +121,34 @@ abstract class BaseDecisionRule implements DecisionRule
 	 *
 	 * @param context an evaluation context
 	 * @param result a rule evaluation result
-	 * @return a rule evaluation result or {@link Decision#INDETERMINATE}
-	 * if any of the advice or obligation evaluation fails
 	 */
-	protected final Decision evaluateAdvicesAndObligations(
-			EvaluationContext context, Decision result)
+	protected final void evaluateAdvicesAndObligations(
+			EvaluationContext context, Decision result) throws EvaluationException
 	{
+		if(result.isIndeterminate() ||
+				result == Decision.NOT_APPLICABLE){
+			return;
+		}
 		try
 		{
-			if(result.isIndeterminate() ||
-					result == Decision.NOT_APPLICABLE){
-				return result;
-			}
 			Collection<Advice> advices = evaluateAdvices(context, result);
 			Collection<Obligation> obligations = evaluateObligations(context, result);
 			context.addAdvices(result, advices);
 			context.addObligations(result, obligations);
-			return result;
-		}catch(Exception e){
-			return Decision.INDETERMINATE;
+		}catch(EvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"associated advices and obligations", e);
+			}
+			throw e;
+		}
+		catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug("Failed to evaluate " +
+						"associated advices and obligations", e);
+			}
+			throw new EvaluationException(
+					StatusCode.createProcessingError(), context, e);
 		}
 	}
 
@@ -249,6 +263,15 @@ abstract class BaseDecisionRule implements DecisionRule
 				.add("adviceExp", adviceExpressions)
 				.add("obligationExp", obligationExpressions);
 
+	}
+	
+	protected boolean equalsTo(BaseDecisionRule r){
+		return Objects.equal(id, r.id) &&
+			Objects.equal(target, r.target) &&
+			Objects.equal(condition, r.condition) &&
+			adviceExpressions.equals(r.adviceExpressions) &&
+			obligationExpressions.equals(r.obligationExpressions) &&
+			Objects.equal(description, r.description);
 	}
 
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);

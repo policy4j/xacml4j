@@ -25,8 +25,24 @@ public abstract class Types
 	 * @return {@link AttributeExpType} a data type instance
 	 */
 	public abstract AttributeExpType getType(String typeId);
+	
+	/**
+	 * Creates {@link AttributeExp} of a given type
+	 * 
+	 * @param typeId a type identifier
+	 * @param value a value for an attribute
+	 * @return {@link AttributeExp} instance
+	 */
 	public abstract  AttributeExp valueOf(String typeId, Object value);
 
+	/**
+	 * Creates {@link AttributeExp} of a given type
+	 * 
+	 * @param typeId a type identifier
+	 * @param value a value for an attribute
+	 * @param attrs additional attributes
+	 * @return {@link AttributeExp} instance
+	 */
 	public abstract AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs);
 	
 	public static Builder builder(){

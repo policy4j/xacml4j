@@ -3,12 +3,15 @@
 /.project
 /.settings
 /target
+/.idea/
+/xacml.iml
 
 # /xacml-core/
 /xacml-core/.classpath
 /xacml-core/.project
 /xacml-core/.settings
 /xacml-core/target
+/xacml-core/xacml-core.iml
 
 # /xacml-ehcache/
 /xacml-ehcache/.classpath
@@ -54,12 +57,14 @@
 /xacml-spring/.project
 /xacml-spring/.settings
 /xacml-spring/.springBeans
+/xacml-spring/xacml-spring-support.iml
 
 # /xacml-test/
 /xacml-test/.project
 /xacml-test/.classpath
 /xacml-test/.settings
 /xacml-test/target
+/xacml-test/xacml-test.iml
 
 # /xacml-ws/
 /xacml-ws/.classpath
@@ -67,9 +72,11 @@
 /xacml-ws/target
 /xacml-ws/.settings
 /xacml-ws/.springBeans
+/xacml-ws/xacml-ws.iml
 
 # /xacml-json/
 /xacml-json/.classpath
 /xacml-json/.project
 /xacml-json/target
 /xacml-json/.settings
+/xacml-json/xacml-json.iml

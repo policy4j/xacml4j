@@ -26,27 +26,27 @@ public class Match implements PolicyElement, Matchable
 	 * @param attrRef an attribute reference
 	 * @param function a match function
 	 */
-	public Match(
-			FunctionSpec spec, 
-			AttributeExp value, 
-			AttributeReference attributeReference)
+	private Match(Builder b)
 	{
-		Preconditions.checkNotNull(spec);
-		Preconditions.checkNotNull(value);
-		Preconditions.checkNotNull(attributeReference);
-		Preconditions.checkArgument(spec.getNumberOfParams() == 2, 
+		Preconditions.checkNotNull(b.attr);
+		Preconditions.checkNotNull(b.attrRef);
+		Preconditions.checkNotNull(b.predFunc);
+		Preconditions.checkArgument(b.predFunc.getNumberOfParams() == 2, 
 				"Excpeting function with 2 arguments");
-		Preconditions.checkArgument(spec.getParamSpecAt(0).
-				isValidParamType(value.getEvaluatesTo()), 
+		Preconditions.checkArgument(b.predFunc.getParamSpecAt(0).
+				isValidParamType(b.attr.getEvaluatesTo()), 
 				"Given function argument at index=\"0\" type is not compatible with a given attribute value type");
-		Preconditions.checkArgument(spec.getParamSpecAt(1).
-				isValidParamType((attributeReference.getDataType())), 
+		Preconditions.checkArgument(b.predFunc.getParamSpecAt(1).
+				isValidParamType((b.attrRef.getDataType())), 
 				"Given function argument at index=\"1\" type is not compatible with a given attribute reference type");
-		this.value = value;
-		this.predicate = spec;
-		this.attributeRef = attributeReference;	
+		this.value = b.attr;
+		this.predicate = b.predFunc;
+		this.attributeRef = b.attrRef;	
 	}
 	
+	public static Builder builder(){
+		return new Builder();
+	}
 	/**
 	 * Gets match function XACML identifier.
 	 * 
@@ -65,6 +65,11 @@ public class Match implements PolicyElement, Matchable
 		return value;
 	}
 	
+	/**
+	 * Gets attribute reference
+	 * 
+	 * @return {@link AttributeReference}
+	 */
 	public AttributeReference getReference(){
 		return attributeRef;
 	}
@@ -138,5 +143,34 @@ public class Match implements PolicyElement, Matchable
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
+	}
+	
+	public static class Builder
+	{
+		private AttributeExp attr;
+		private FunctionSpec predFunc;
+		private AttributeReference attrRef;
+		
+		public Builder attribute(AttributeExp v){
+			Preconditions.checkNotNull(v);
+			this.attr = v;
+			return this;
+		}
+		
+		public Builder predicate(FunctionSpec f){
+			Preconditions.checkNotNull(f);
+			this.predFunc = f;
+			return this;
+		}
+		
+		public Builder attrRef(AttributeReference ref){
+			Preconditions.checkNotNull(ref);
+			this.attrRef = ref;
+			return this;
+		}
+		
+		public Match build(){
+			return new Match(this);
+		}
 	}
 }

@@ -1,7 +1,5 @@
 package org.xacml4j.v30.policy.combine;
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
-
 import java.util.List;
 
 import org.xacml4j.v30.Decision;
@@ -52,11 +50,8 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 		boolean atLeastOnePermit = false;
 		for(D d : decisions)
 		{
-			Decision decision = evaluateIfMatch(context, d);
+			Decision decision = d.evaluate(d.createContext(context));
 			if(decision == Decision.DENY){
-				return Decision.DENY;
-			}
-			if(decision == Decision.INDETERMINATE){
 				return Decision.DENY;
 			}
 			if(decision == Decision.PERMIT){
@@ -74,7 +69,8 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == Decision.INDETERMINATE_DP){
+			if(decision == Decision.INDETERMINATE_DP || 
+					decision == Decision.INDETERMINATE){
 				atLeastOneIndeterminateDP = true;
 				continue;
 			}

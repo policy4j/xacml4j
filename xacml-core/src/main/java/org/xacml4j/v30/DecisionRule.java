@@ -28,15 +28,6 @@ public interface DecisionRule extends PolicyElement
 	EvaluationContext createContext(EvaluationContext context);
 
 	/**
-	 * Combines {@link #isMatch(EvaluationContext)} with
-	 * an actual decision rule evaluation to one invocation.
-	 *
-	 * @param context an evaluation context for this decision
-	 * @return {@link Decision}
-	 */
-	Decision evaluateIfMatch(EvaluationContext context);
-
-	/**
 	 * Tests if this decision rule is applicable to a given
 	 * evaluation context. An evaluation context
 	 * must be created by invoking

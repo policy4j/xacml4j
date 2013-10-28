@@ -23,18 +23,18 @@ import java.util.concurrent.ConcurrentMap;
 
 
 /**
- * Simplified version of a {@link ConcurrentMap} that uses two keys. 
+ * Simplified version of a {@link ConcurrentMap} that uses two keys.
  * A nested map is used under the hood to make gets
  * as fast as possible.
- * 
+ *
  * @author Eric Dalquist
  * @version $Revision$
  */
-public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable 
+public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable
 {
 	private static final long serialVersionUID = -5305668694683812841L;
 	private final ConcurrentMap<K1, ConcurrentMap<K2, V>> map = new ConcurrentHashMap<K1, ConcurrentMap<K2,V>>();
-    
+
     /**
      * @param key1 primary key
      * @param key2 sub key
@@ -45,7 +45,7 @@ public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable
         final ConcurrentMap<K2, V> subMap = this.map.get(key1);
         return subMap != null && subMap.containsKey(key2);
     }
-    
+
     /**
      * @param key1 primary key
      * @param key2 sub key
@@ -57,23 +57,23 @@ public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable
         final ConcurrentMap<K2, V> subMap = this.getOrCreateSubMap(key1);
         return subMap.put(key2, value);
     }
-    
+
     /**
      * @param key1 primary key
      * @param key2 sub key
      * @param value the value to add to the map if no previous value exists
-     * @return the previous value associated with the specified key or null if there was no previous value 
+     * @return the previous value associated with the specified key or null if there was no previous value
      * @see ConcurrentMap#putIfAbsent(Object, Object)
      */
     public V putIfAbsent(K1 key1, K2 key2, V value) {
         final ConcurrentMap<K2, V> subMap = this.getOrCreateSubMap(key1);
         return subMap.putIfAbsent(key2, value);
     }
-    
+
     public Map<K2, V> get(K1 k){
     	return map.get(k);
     }
-    
+
     /**
      * @param key1 primary key
      * @param key2 sub key
@@ -87,7 +87,7 @@ public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable
         }
         return subMap.get(key2);
     }
-    
+
     /**
      * Get/create the subMap for the specified key
      */

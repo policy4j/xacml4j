@@ -60,9 +60,9 @@ public class AdviceExpressionTest
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
 		expect(attrExp0.evaluate(context)).andReturn(IntegerType.INTEGER.create(1));
 
-		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(3);
-		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE).times(2);
-		expect(attrExp1.getIssuer()).andReturn("issuer1").times(2);
+		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
+		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE).times(1);
+		expect(attrExp1.getIssuer()).andReturn("issuer1").times(1);
 		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.bagOf(false, true));
 
 		c.replay();

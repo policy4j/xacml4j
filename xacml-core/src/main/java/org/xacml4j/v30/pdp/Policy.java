@@ -13,7 +13,6 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 
@@ -48,7 +47,7 @@ public class Policy extends BaseCompositeDecisionRule
 		this.combine = b.combiningAlgorithm;
 		this.policyDefaults = b.policyDefaults;
 		this.reference = PolicyIDReference.builder(b.id).version(b.version).build();
-		this.rules = ImmutableList.copyOf(b.rules);
+		this.rules = b.rules.build();
 		this.variableDefinitions = Maps.uniqueIndex(b.variables,
 				new Function<VariableDefinition, String>(){
 					@Override
@@ -126,7 +125,11 @@ public class Policy extends BaseCompositeDecisionRule
 	public List<Rule> getRules(){
 		return rules;
 	}
-
+	
+	public boolean contains(Rule r){
+		return rules.contains(r);
+	}
+	
 	/**
 	 * Implementation creates {@link PolicyDelegatingEvaluationContext}
 	 */
@@ -142,46 +145,15 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 		return new PolicyDelegatingEvaluationContext(context);
 	}
-
-	@Override
-	public Decision evaluate(EvaluationContext context)
-	{
-		Preconditions.checkNotNull(context);
-		Preconditions.checkArgument(isEvaluationContextValid(context));
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
-		if(log.isDebugEnabled()) {
-			log.debug("Policy id=\"{}\" condition " +
-					"evaluation result=\"{}\"", id, result);
-		}
-		if(result == ConditionResult.TRUE){
-			Decision decision = combine.combine(context, rules);
-			if(log.isDebugEnabled()) {
-				log.debug("Policy id=\"{}\" combining algorithm=\"{}\" " +
-						"evaluation result=\"{}\"",
-						new Object[] { getId(), combine.getId(), decision });
-			}
-			if(!decision.isIndeterminate() ||
-					decision != Decision.NOT_APPLICABLE){
-				decision = evaluateAdvicesAndObligations(context, decision);
-				context.addEvaluationResult(this, decision);
-			}
-			return decision;
-		}
-		if(result == ConditionResult.INDETERMINATE){
-			Decision decision = combine.combine(context, rules);
-			switch(decision){
-				case DENY : return Decision.INDETERMINATE_D;
-				case PERMIT : return Decision.INDETERMINATE_P;
-				case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
-				default: return decision;
-			}
-		}
-		return Decision.NOT_APPLICABLE;
+	
+	protected Decision combineDecisions(EvaluationContext context){
+		return combine.combine(context, rules);
 	}
-
+	
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
-		return context.getCurrentPolicy() == this;
+		// TBD: use equals instead
+		return this == context.getCurrentPolicy();
 	}
 
 	@Override
@@ -222,7 +194,6 @@ public class Policy extends BaseCompositeDecisionRule
 	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
 	{
 		private Map<String, ValueExpression> varDefEvalResults;
-		private StatusCode code;
 
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -236,8 +207,12 @@ public class Policy extends BaseCompositeDecisionRule
 
 		@Override
 		public ValueExpression getVariableEvaluationResult(String variableId) {
-			Preconditions.checkNotNull(variableId);
 			return varDefEvalResults.get(variableId);
+		}
+		
+		@Override
+		public EvaluationContext getParentContext() {
+			return getDelegate();
 		}
 
 		@Override
@@ -257,18 +232,6 @@ public class Policy extends BaseCompositeDecisionRule
 			return Policy.this;
 		}
 		
-
-		@Override
-		public StatusCode getEvaluationStatus() {
-			return code;
-		}
-
-		@Override
-		public void setEvaluationStatus(StatusCode code) {
-			Preconditions.checkNotNull(code);
-			this.code = code;
-		}
-
 		@Override
 		public XPathVersion getXPathVersion() {
 			PolicyDefaults defaults = Policy.this.getDefaults();
@@ -286,14 +249,14 @@ public class Policy extends BaseCompositeDecisionRule
 		private Collection<VariableDefinition> variables = new LinkedList<VariableDefinition>();
 		private PolicyDefaults policyDefaults;
 
-		private Collection<Rule> rules = new LinkedList<Rule>();
+		private ImmutableList.Builder<Rule> rules = ImmutableList.builder();
 		private Map<String, Multimap<String, CombinerParameter>> ruleCombinerParameters = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
 
 		public PolicyBuilder(String policyId){
 			super(policyId);
 		}
 
-		public PolicyBuilder withRuleCombinerParameter(String ruleId, CombinerParameter p){
+		public PolicyBuilder ruleCombinerParameter(String ruleId, CombinerParameter p){
 			Preconditions.checkNotNull(ruleId);
 			Preconditions.checkNotNull(p);
 			Multimap<String, CombinerParameter> params = ruleCombinerParameters.get(ruleId);
@@ -305,38 +268,38 @@ public class Policy extends BaseCompositeDecisionRule
 			return this;
 		}
 
-		public PolicyBuilder withRuleCombinerParameters(String ruleId, Iterable<CombinerParameter> params){
+		public PolicyBuilder ruleCombineParams(String ruleId, Iterable<CombinerParameter> params){
 			Preconditions.checkNotNull(ruleId);
 			Preconditions.checkNotNull(params);
 			for(CombinerParameter p : params){
-				withRuleCombinerParameter(ruleId, p);
+				ruleCombinerParameter(ruleId, p);
 			}
 			return this;
 		}
 
-		public PolicyBuilder withoutRuleCombinerParameters(){
+		public PolicyBuilder noRuleCombinerParams(){
 			this.ruleCombinerParameters.clear();
 			return this;
 		}
 
-		public PolicyBuilder withDefaults(PolicyDefaults defaults){
+		public PolicyBuilder defaults(PolicyDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
 
-		public PolicyBuilder withoutDefaults(){
+		public PolicyBuilder noDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
 
-		public PolicyBuilder withVariables(Iterable<VariableDefinition> vars){
+		public PolicyBuilder vars(Iterable<VariableDefinition> vars){
 			for (VariableDefinition var : vars) {
-				withVariable(var);
+				var(var);
 			}
 			return this;
 		}
 
-		public PolicyBuilder withVariable(VariableDefinition var){
+		public PolicyBuilder var(VariableDefinition var){
 			Preconditions.checkNotNull(var);
 			this.variables.add(var);
 			return this;
@@ -347,31 +310,28 @@ public class Policy extends BaseCompositeDecisionRule
 			return this;
 		}
 
-		public PolicyBuilder withRule(Rule rule){
-			Preconditions.checkNotNull(rule);
-			this.rules.add(rule);
+		public PolicyBuilder rule(Rule ...rules){
+			this.rules.add(rules);
 			return this;
 		}
 
-		public PolicyBuilder withRule(Rule.Builder b){
+		public PolicyBuilder rule(Rule.Builder b){
 			Preconditions.checkNotNull(b);
 			this.rules.add(b.build());
 			return this;
 		}
 
-		public PolicyBuilder withRules(Iterable<Rule> rules){
-			for(Rule rule : rules) {
-				withRule(rule);
-			}
+		public PolicyBuilder rules(Iterable<Rule> rules){
+			this.rules.addAll(rules);
 			return this;
 		}
 
 		public PolicyBuilder withoutRules(){
-			this.rules.clear();
+			this.rules = ImmutableList.builder();
 			return this;
 		}
 
-		public PolicyBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
+		public PolicyBuilder combiningAlgorithm(DecisionCombiningAlgorithm<Rule> algo)
 		{
 			Preconditions.checkNotNull(algo);
 			this.combiningAlgorithm = algo;

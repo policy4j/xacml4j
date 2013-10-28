@@ -42,10 +42,6 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 			if(decision == Decision.NOT_APPLICABLE){
 				continue;
 			}
-			if(decision == Decision.INDETERMINATE){
-				atLeastOneIndeterminate  = true;
-				continue;
-			}
 			if(decision == Decision.INDETERMINATE_D){
 				atLeastOneIndeterminateD = true;
 				continue;
@@ -54,7 +50,8 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == Decision.INDETERMINATE_DP){
+			if(decision == Decision.INDETERMINATE_DP || 
+					decision ==  Decision.INDETERMINATE){
 				atLeastOneIndeterminateDP = true;
 				continue;
 			}

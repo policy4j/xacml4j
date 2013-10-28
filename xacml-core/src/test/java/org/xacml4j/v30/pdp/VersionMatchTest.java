@@ -34,7 +34,7 @@ public class VersionMatchTest
 		assertFalse(m.match(Version.parse("2.1.1")));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=XacmlSyntaxException.class)
 	public void testCreateWithSubsquentialTwoTimes() throws XacmlSyntaxException
 	{
 		new VersionMatch("1.+.+");

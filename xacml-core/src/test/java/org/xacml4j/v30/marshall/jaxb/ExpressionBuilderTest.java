@@ -1,14 +1,10 @@
 package org.xacml4j.v30.marshall.jaxb;
 
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
+import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.marshall.jaxb.ExpressionTypeBuilder;
-import org.xacml4j.v30.pdp.AttributeDesignator;
 import org.xacml4j.v30.types.StringType;
 
 public class ExpressionBuilderTest 
