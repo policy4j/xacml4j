@@ -8,13 +8,13 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 
 
-public class BasePolicyDecisionAuditor 
-	implements PolicyDecisionAuditor 
+public class BasePolicyDecisionAuditor
+	implements PolicyDecisionAuditor
 {
 	private final static Logger log = LoggerFactory.getLogger(BasePolicyDecisionAuditor.class);
-	
+
 	@Override
-	public final void audit(PolicyDecisionPoint pdp, Result result, RequestContext req) 
+	public final void audit(PolicyDecisionPoint pdp, Result result, RequestContext req)
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Auditing access decision=\"{}\" " +
@@ -24,11 +24,11 @@ public class BasePolicyDecisionAuditor
 			doAudit(pdp, req, result);
 		}
 	}
-	
+
 	/**
 	 * Invokes appropriate audit hook based
 	 * on decision result
-	 * 
+	 *
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
@@ -52,51 +52,51 @@ public class BasePolicyDecisionAuditor
 					break;
 		}
 	}
-	
+
 	/**
 	 * Tests if a given {@link RequestContext} need to be audited
-	 * 
+	 *
 	 * @param req a decision request
 	 * @return <code>true</code> if request needs to be audited
 	 */
 	protected boolean isAuditable(PolicyDecisionPoint pdp, RequestContext req){
 		return false;
 	}
-	
+
 	/**
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#PERMIT}
-	 * 
+	 *
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
 	protected void doPermitAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
-		
+
 	}
-	
+
 	/**
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#DENY}
-	 * 
+	 *
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
 	protected void doDenyAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
-		
+
 	}
-	
+
 	/**
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#DENY}
-	 * 
+	 *
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
 	protected void doNotApplicableAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
-		
+
 	}
-	
+
 	protected void doIndeterminateAudit(PolicyDecisionPoint pdp, RequestContext req, Result result){
-		
+
 	}
 }

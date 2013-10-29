@@ -5,38 +5,38 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 /**
- * A XACML version  is expressed as a sequence of decimal numbers, 
+ * A XACML version  is expressed as a sequence of decimal numbers,
  * each separated by a period (.).
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public final class Version implements Comparable<Version> 
+public final class Version implements Comparable<Version>
 {
 	private  static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
-	
+
 	private String value;
     private int[] version;
     private int hashCode;
-    
+
     /**
      * Constructs version from
      * a given string
-     * 
+     *
      * @param v a version represented as string
      * @exception XacmlSyntaxException if version can not be parsed
      */
-    private Version(String version) 
+    private Version(String version)
     {
 
     	this.value = version;
     	this.version = parseVersion(version);
     	this.hashCode = value.hashCode();
     }
-    
+
     /**
-     * Gets version value 
-     * 
-     * @return version value as 
+     * Gets version value
+     *
+     * @return version value as
      * a string
      */
     public String getValue() {
@@ -56,20 +56,20 @@ public final class Version implements Comparable<Version>
     	}
     	return compareTo((Version)other) == 0;
     }
-    
+
     @Override
     public String toString(){
     	return Objects.toStringHelper(this).
     	add("version", value).toString();
     }
-    
+
     @Override
     public int hashCode(){
     	return hashCode;
     }
-   
+
     @Override
-    public int compareTo(Version v) 
+    public int compareTo(Version v)
     {
         int min = Math.min(version.length, v.version.length);
         for(int i = 0; i < min; i++){
@@ -83,7 +83,7 @@ public final class Version implements Comparable<Version>
         }
         return version.length - v.version.length;
     }
-    
+
     /**
      * Checks if a given version vector starting at given
      * pos is all <code>0</code>
@@ -102,7 +102,7 @@ public final class Version implements Comparable<Version>
     /**
      * Parses given version string and returns
      * version as an array of non-negative integers
-     * 
+     *
      * @param version a version string
      * @return an array of non-negative integers
      */
@@ -112,7 +112,7 @@ public final class Version implements Comparable<Version>
     	if(!version.matches(VERSION_PATTERN)){
     		throw new IllegalArgumentException(
     				String.format("Invalid version=\"%s\", " +
-    				"does not match regular expression=\"%s\"", 
+    				"does not match regular expression=\"%s\"",
     				version, VERSION_PATTERN));
     	}
     	 String[] vc = version.split("\\.");
@@ -128,32 +128,32 @@ public final class Version implements Comparable<Version>
     	 }
     	 return v;
     }
-	
+
 	/**
-	 * A static factory method to 
-	 * create {@link Version} instances 
+	 * A static factory method to
+	 * create {@link Version} instances
 	 * from a given string
-	 * 
+	 *
 	 * @param version a version
 	 * @return {@link Version} instance
 	 */
-    public static Version parse(String version)  
+    public static Version parse(String version)
     {
         return Strings.isNullOrEmpty(version)?new Version("1.0"):new Version(version);
     }
-    
+
     /**
-	 * A static factory method to 
-	 * create {@link Version} instances 
+	 * A static factory method to
+	 * create {@link Version} instances
 	 * from a given integer
-	 * 
+	 *
 	 * @param version a version
 	 * @return {@link Version} instance
 	 */
-    public static Version valueOf(int version) 
+    public static Version valueOf(int version)
     	throws XacmlSyntaxException
     {
-    	Preconditions.checkArgument(version > 0, 
+    	Preconditions.checkArgument(version > 0,
     			"Version must be positive integer");
     	return parse(Integer.toString(version));
     }

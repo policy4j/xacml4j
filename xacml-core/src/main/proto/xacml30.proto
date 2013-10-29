@@ -24,8 +24,8 @@ enum AttributeDataTypeId
 	XPATHEXPRESSION = 17;
 }
 
-enum AttributeCategory 
-{	
+enum AttributeCategory
+{
 	ACTION = 1;
 	ENVIROMENT = 2;
 	STATUSDETAIL = 3;
@@ -39,7 +39,7 @@ enum AttributeCategory
 message AttributeValue
 {
 	required AttributeDataTypeId type = 1;
-		
+
 	optional bool booleanValue = 2;
 	optional double doubleValue = 3;
 	optional string stringVal = 4;
@@ -70,7 +70,7 @@ message Attributes
     optional string content = 3;
     repeated Attribute attributes = 4;
 }
-    
+
 message Response
 {
     optional bool ReturnPolicyIdList = 1 [ default=false];

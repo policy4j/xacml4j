@@ -12,39 +12,39 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 
-public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
+public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule>
 {
 	private final static Logger log = LoggerFactory.getLogger(LegacyDenyOverridesRuleCombineAlgorithm.class);
-	
+
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides";
 
 	public LegacyDenyOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
-	
+
 	LegacyDenyOverridesRuleCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
-	
+
 	@Override
 	public Decision combine(EvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
-	
+
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")
 	public static Decision doCombineOrdered(EvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
-	
+
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
-	public static Decision doCombine(EvaluationContext context, List<Rule> rules) 
+	public static Decision doCombine(EvaluationContext context, List<Rule> rules)
 	{
 		boolean potentialDeny	= false;
 		boolean atLeastOnePermit = false;
 		boolean atLeastOneError = false;
 		for(Rule r : rules)
 		{
-			Decision d = r.evaluate(r.createContext(context));  
+			Decision d = r.evaluate(r.createContext(context));
 			if(log.isDebugEnabled()){
 				log.debug("Decision rule id=\"{}\" evaluation result=\"{}\"", r.getId(), d);
 			}

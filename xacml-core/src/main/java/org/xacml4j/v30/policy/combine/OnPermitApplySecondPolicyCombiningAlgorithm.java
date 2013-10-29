@@ -12,22 +12,22 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
 
 /**
- * XACML 3.0 does not allow Condition elements at the policy or policy set levels. 
- * In some cases it may be useful to have a Condition at the policy or policy set level since a 
+ * XACML 3.0 does not allow Condition elements at the policy or policy set levels.
+ * In some cases it may be useful to have a Condition at the policy or policy set level since a
  * Condition allows for more expressive matching than a Target, which can only match against constant values.
- * For instance, someone may want to write a policy which applies to the cases where the subject is 
- * the owner of the resource. In this case the policy should apply if the subject-id of the request 
- * equals the owner attribute of the resource in the request. This matching cannot be done with 
- * a <Target> since it is not a match expression against a constant value. 
+ * For instance, someone may want to write a policy which applies to the cases where the subject is
+ * the owner of the resource. In this case the policy should apply if the subject-id of the request
+ * equals the owner attribute of the resource in the request. This matching cannot be done with
+ * a <Target> since it is not a match expression against a constant value.
  * Such a policy would require a Condition at the Policy level
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class OnPermitApplySecondPolicyCombiningAlgorithm extends 
-	BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
+public class OnPermitApplySecondPolicyCombiningAlgorithm extends
+	BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
-	
+
 	public OnPermitApplySecondPolicyCombiningAlgorithm() {
 		super(ID);
 	}
@@ -69,5 +69,5 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 		}
 		return Decision.NOT_APPLICABLE;
 	}
-	
+
 }

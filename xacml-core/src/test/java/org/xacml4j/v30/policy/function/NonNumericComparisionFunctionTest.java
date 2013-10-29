@@ -18,10 +18,10 @@ import org.xacml4j.v30.types.TimeType;
 
 
 
-public class NonNumericComparisionFunctionTest 
+public class NonNumericComparisionFunctionTest
 {
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.context = createStrictMock(EvaluationContext.class);
@@ -32,14 +32,14 @@ public class NonNumericComparisionFunctionTest
 	{
 		StringExp a = STRING.create("ab");
 		StringExp b = STRING.create("aa");
-		assertEquals(BOOLEAN.create(true), 
+		assertEquals(BOOLEAN.create(true),
 				NonNumericComparisionFunctions.greatherThan(a, b));
 		a = STRING.create("aaa");
 		b = STRING.create("aa");
-		assertEquals(BOOLEAN.create(true), 
+		assertEquals(BOOLEAN.create(true),
 				NonNumericComparisionFunctions.greatherThan(a, b));
 	}
-	
+
 	@Test
 	public void testTimeLessThan()
 	{
@@ -51,7 +51,7 @@ public class NonNumericComparisionFunctionTest
 		t2 = TIME.create("08:23:46-05:00");
 		assertEquals(BOOLEAN.create(false), NonNumericComparisionFunctions.lessThan(t1, t2));
 	}
-	
+
 	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsInRange()
 	{
@@ -59,18 +59,18 @@ public class NonNumericComparisionFunctionTest
 		TimeExp a = TIME.create("09:30:10");
 		TimeExp b = TIME.create("08:30:10");
 		TimeExp c = TIME.create("09:30:11");
-		assertEquals(BOOLEAN.create(true), 
+		assertEquals(BOOLEAN.create(true),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
-	
+
 	@Test
 	public void testTimeInRangeWithTimeZonesAndTimeIsInRange()
 	{
 		TimeExp a = TimeType.TIME.create("09:30:10Z");
 		TimeExp b = TimeType.TIME.create("08:30:10Z");
 		TimeExp c = TimeType.TIME.create("09:30:11Z");
-		assertEquals(BOOLEAN.create(true), 
+		assertEquals(BOOLEAN.create(true),
 				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
 	}
 

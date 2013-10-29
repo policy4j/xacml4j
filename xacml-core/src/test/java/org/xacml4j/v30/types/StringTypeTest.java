@@ -8,15 +8,15 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 
 
-public class StringTypeTest 
+public class StringTypeTest
 {
 	private StringType t;
-	
+
 	@Before
 	public void init(){
 		this.t = StringType.STRING;
 	}
-	
+
 	@Test
 	public void testEquals()
 	{

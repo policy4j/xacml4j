@@ -4,24 +4,24 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import com.google.common.base.Preconditions;
 
-public class ResolverRegistrationFactoryBean 
+public class ResolverRegistrationFactoryBean
 extends AbstractFactoryBean<ResolverRegistration>
 {
 	private String policyId;
 	private Object instance;
-	
+
 	/**
-	 * Sets optionally resolver policy 
+	 * Sets optionally resolver policy
 	 * or policy set identifier
 	 * @param policyId a policy or policy set identifier
 	 */
 	public void setPolicyId(String policyId){
 		this.policyId = policyId;
 	}
-	
+
 	/**
 	 * Sets actual resolver instance
-	 * 
+	 *
 	 * @param instance a resolver bean instance
 	 */
 	public void setResolver(Object instance){
@@ -29,9 +29,9 @@ extends AbstractFactoryBean<ResolverRegistration>
 	}
 
 	@Override
-	protected ResolverRegistration createInstance() throws Exception 
+	protected ResolverRegistration createInstance() throws Exception
 	{
-		Preconditions.checkState(instance != null, 
+		Preconditions.checkState(instance != null,
 				"Resolver instance can not be null");
 		return new ResolverRegistration(policyId, instance);
 	}

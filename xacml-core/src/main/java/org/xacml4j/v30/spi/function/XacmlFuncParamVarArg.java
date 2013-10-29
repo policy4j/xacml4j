@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlFuncParamVarArg 
+public @interface XacmlFuncParamVarArg
 {
 	String typeId();
 	int min() default 2;

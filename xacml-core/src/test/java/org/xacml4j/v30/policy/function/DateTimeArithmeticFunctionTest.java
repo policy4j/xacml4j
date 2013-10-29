@@ -15,16 +15,16 @@ import org.xacml4j.v30.types.YearMonthDurationExp;
 import org.xacml4j.v30.types.YearMonthDurationType;
 
 
-public class DateTimeArithmeticFunctionTest 
+public class DateTimeArithmeticFunctionTest
 {
 	private FunctionProvider p;
-	
+
 	@Before
 	public void init() throws Exception
 	{
 		this.p = new AnnotiationBasedFunctionProvider(DateTimeArithmeticFunctions.class);
 	}
-	
+
 	@Test
 	public void testProvidedFunctions()
 	{
@@ -32,19 +32,19 @@ public class DateTimeArithmeticFunctionTest
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-add-yearMonthDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-dayTimeDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-yearMonthDuration"));
-		
+
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-dayTimeDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-yearMonthDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-dayTimeDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-yearMonthDuration"));
-		
+
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:date-subtract-yearMonthDuration"));
-		
+
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:date-add-yearMonthDuration"));
 		assertNotNull(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:date-subtract-yearMonthDuration"));
 	}
-	
+
 	@Test
 	public void testDateTimeAddDayTimeDuration()
 	{
@@ -52,9 +52,9 @@ public class DateTimeArithmeticFunctionTest
 		DateTimeExp dateTime2 = DateTimeType.DATETIME.create("2002-03-27T10:23:47-05:00");
 		DayTimeDurationExp duration = DayTimeDurationType.DAYTIMEDURATION.create("P5DT2H0M0S");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
-		
+
 	}
-	
+
 	@Test
 	public void testDateTimeAddYearMonthDuration()
 	{

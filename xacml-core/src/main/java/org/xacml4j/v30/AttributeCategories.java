@@ -7,8 +7,8 @@ import java.util.Map;
 import com.google.common.base.Strings;
 
 public enum AttributeCategories implements AttributeCategory
-{ 
-	
+{
+
 	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
 	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
 	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource"),
@@ -22,17 +22,17 @@ public enum AttributeCategories implements AttributeCategory
 	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority"),
 	DELGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
 	DELGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
-	
-	
+
+
 	private String categoryURI;
-	
+
 	private AttributeCategory delegated;
-	
+
 	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
-	
+
 	private static final Map<String, AttributeCategory> BY_ID = new HashMap<String, AttributeCategory>();
-	
-	static 
+
+	static
 	{
 		for(AttributeCategory category : EnumSet.allOf(AttributeCategories.class)){
 			BY_ID.put(category.getId(), category);
@@ -42,7 +42,7 @@ public enum AttributeCategories implements AttributeCategory
 			}
 		}
 	}
-	
+
 	private AttributeCategories(
 			String categoryURI){
 		this.categoryURI = categoryURI;
@@ -50,18 +50,18 @@ public enum AttributeCategories implements AttributeCategory
 			this.delegated = new CustomCategory(toDelegateURI(categoryURI));
 		}
 	}
-	
+
 	@Override
 	public String getId(){
 		return categoryURI;
 	}
-	
+
 	@Override
 	public boolean isDelegated() {
 		return delegated != null;
 	}
-	
-	
+
+
 	@Override
 	public AttributeCategory toDelegatedCategory() {
 		return delegated;
@@ -71,17 +71,17 @@ public enum AttributeCategories implements AttributeCategory
 	public String toString(){
 		return categoryURI;
 	}
-	
+
 	/**
 	 * Parses given value to the {@link AttributeCategories}
-	 * 
+	 *
 	 * @param v a value
 	 * @return {@link AttributeCategories}
 	 * @throws XacmlSyntaxException if given
 	 * value can not be converted to the
 	 * {@link AttributeCategories} value
 	 */
-	public static AttributeCategory parse(String v) 
+	public static AttributeCategory parse(String v)
 		throws XacmlSyntaxException
 	{
 		if(Strings.isNullOrEmpty(v)){
@@ -91,13 +91,13 @@ public enum AttributeCategories implements AttributeCategory
 		if(c == null){
 			c = new CustomCategory(v);
 		}
-		return c; 
+		return c;
 	}
-	
+
 	/**
 	 * Tests if a given category URI represents
 	 * a delegated category
-	 * 
+	 *
 	 * @param categoryURI a category URI
 	 * @return <code>true</code> if a given category
 	 * URI represents a delegated category
@@ -105,11 +105,11 @@ public enum AttributeCategories implements AttributeCategory
 	private static boolean isDelegate(String categoryURI){
 		return categoryURI.startsWith(DELEGATED_CATEGORY_PREFIX);
 	}
-	
+
 	/**
 	 * Creates a XACML 3.0 delegated category
 	 * from a given category URI
-	 * 
+	 *
 	 * @param categoryURI a category URI
 	 * @return a delegated category URI
 	 */
@@ -122,12 +122,12 @@ public enum AttributeCategories implements AttributeCategory
 				.append(categoryURI).toString();
 	}
 
-	private static class CustomCategory 
+	private static class CustomCategory
 		implements AttributeCategory
 	{
 		private String categoryURI;
 		private AttributeCategory delegated;
-		
+
 		private CustomCategory(
 				String categoryURI)
 		{
@@ -136,12 +136,12 @@ public enum AttributeCategories implements AttributeCategory
 				this.delegated = new CustomCategory(toDelegateURI(categoryURI));
 			}
 		}
-			
+
 		@Override
 		public String getId(){
 			return categoryURI;
 		}
-		
+
 		@Override
 		public boolean isDelegated() {
 			return delegated == null;
@@ -156,7 +156,7 @@ public enum AttributeCategories implements AttributeCategory
 		public int hashCode() {
 			return categoryURI.hashCode();
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			if(this == obj){
@@ -168,10 +168,10 @@ public enum AttributeCategories implements AttributeCategory
 			AttributeCategory c = (AttributeCategory)obj;
 			return c.getId().equals(categoryURI);
 		}
-		
+
 		@Override
 		public String toString() {
 			return categoryURI;
-		}		
+		}
 	}
 }

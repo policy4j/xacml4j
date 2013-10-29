@@ -33,7 +33,7 @@
                       AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:bart-simpson-age"
                       DataType="http://www.w3.org/2001/XMLSchema#double"/>
             </Apply>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class BinaryValueTest 
+public class BinaryValueTest
 {
 	@Test
 	public void testCreateFromBinaryAndEncodeToBase64()
@@ -16,7 +16,7 @@ public class BinaryValueTest
 		assertEquals(value1, value2);
 		assertEquals("AAEDBQ==", value1.toBase64Encoded());
 	}
-	
+
 	@Test
 	public void testCreateFromZeroLenghtArray()
 	{
@@ -25,13 +25,13 @@ public class BinaryValueTest
 		assertEquals("", bv.toBase64Encoded());
 		assertEquals("", bv.toHexEncoded());
 	}
-	
+
 	@Test(expected=NullPointerException.class)
 	public void testCreateFromNull()
 	{
 		BinaryValue.fromBytes(null);
 	}
-	
+
 	@Test
 	public void testCreateFromBinaryAndEncodeToHex()
 	{

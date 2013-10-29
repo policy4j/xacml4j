@@ -24,5 +24,5 @@ public class ResponseSyntaxException extends XacmlSyntaxException
 	public ResponseSyntaxException(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

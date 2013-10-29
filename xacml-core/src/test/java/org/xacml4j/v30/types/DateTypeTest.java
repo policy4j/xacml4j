@@ -7,15 +7,15 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DateTypeTest 
+public class DateTypeTest
 {
 	private DateType t1;
-	
+
 	@Before
 	public void init() throws Exception{
 		this.t1 = DateType.DATE;
 	}
-	
+
 	@Test
 	public void testFromXacmlString(){
 		DateExp value = t1.fromXacmlString("2002-09-24Z");
@@ -25,12 +25,12 @@ public class DateTypeTest
 		assertEquals("2002-09-24Z", value.toXacmlString());
 	}
 
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
 		t1.fromXacmlString("2002-05-30T09:30:10-06:00");
 	}
-	
+
 	@Test
 	public void testCreateFromCalendar()
 	{

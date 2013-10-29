@@ -7,11 +7,11 @@ import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 public final class RootEvaluationContext extends BaseEvaluationContext
 {
 	private XPathVersion defaultXPathVersion;
-	
+
 	public RootEvaluationContext(
-			boolean validateFuncParamsAtRuntime, 
+			boolean validateFuncParamsAtRuntime,
 			int defaultDecisionCacheTTL,
-			XPathVersion defaultXPathVersion, 
+			XPathVersion defaultXPathVersion,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler contextHandler) {
 		super(validateFuncParamsAtRuntime,
@@ -20,23 +20,23 @@ public final class RootEvaluationContext extends BaseEvaluationContext
 				referenceResolver);
 		this.defaultXPathVersion = defaultXPathVersion;
 	}
-	
+
 	public RootEvaluationContext(
-			boolean validateFuncParamsAtRuntime, 
+			boolean validateFuncParamsAtRuntime,
 			int defaultDecisionCacheTTL,
-			PolicyReferenceResolver referenceResolver, 
+			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler handler){
-		this(validateFuncParamsAtRuntime, 
+		this(validateFuncParamsAtRuntime,
 				defaultDecisionCacheTTL,
-				XPathVersion.XPATH1, 
-				referenceResolver, 
+				XPathVersion.XPATH1,
+				referenceResolver,
 				handler);
 	}
 
 	@Override
-	public XPathVersion getXPathVersion() { 
+	public XPathVersion getXPathVersion() {
 		return defaultXPathVersion;
-	}	
+	}
 }
 
 

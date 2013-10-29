@@ -10,15 +10,15 @@ import org.junit.Test;
 import org.xacml4j.v30.YearMonthDuration;
 
 
-public class YearMonthDurationTypeTest 
+public class YearMonthDurationTypeTest
 {
 	private DatatypeFactory df;
-	
+
 	@Before
 	public void init() throws Exception{
 		this.df = DatatypeFactory.newInstance();
 	}
-	
+
 	@Test
 	public void testFromXacmlString()
 	{
@@ -27,7 +27,7 @@ public class YearMonthDurationTypeTest
 		assertEquals("-P1Y2M", v1.toXacmlString());
 		assertEquals(v1, v2);
 	}
-		
+
 	@Test
 	public void createFromJavaDuration()
 	{
@@ -36,7 +36,7 @@ public class YearMonthDurationTypeTest
 		YearMonthDurationExp v2 = YearMonthDurationType.YEARMONTHDURATION.fromXacmlString("-P1Y2M");
 		assertEquals(v1, v2);
 	}
-	
+
 	@Test
 	public void createFromXacmlDuration()
 	{

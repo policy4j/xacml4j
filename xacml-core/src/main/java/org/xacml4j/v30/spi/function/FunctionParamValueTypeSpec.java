@@ -56,7 +56,7 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 	public boolean isValidParamType(ValueType type) {
 		return this.type.equals(type);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects
@@ -64,12 +64,12 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 				.add("type", type)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return type.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){

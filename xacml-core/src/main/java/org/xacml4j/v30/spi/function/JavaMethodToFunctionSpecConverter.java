@@ -18,27 +18,27 @@ import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
-class JavaMethodToFunctionSpecConverter 
+class JavaMethodToFunctionSpecConverter
 {
 	private final static Logger log = LoggerFactory
 			.getLogger(JavaMethodToFunctionSpecConverter.class);
 
 	private InvocationFactory invocationFactory;
 	private Types xacmlTypes = Types.builder().defaultTypes().create();
-	
+
 	public JavaMethodToFunctionSpecConverter(
 			InvocationFactory invocationFactory)
 	{
 		Preconditions.checkNotNull(invocationFactory);
 		this.invocationFactory = invocationFactory;
 	}
-	
+
 	public FunctionSpec createFunctionSpec(Method m) throws XacmlSyntaxException
 	{
 		return createFunctionSpec(m, null);
 	}
-	
-	public FunctionSpec createFunctionSpec(Method m, Object instance) throws XacmlSyntaxException 
+
+	public FunctionSpec createFunctionSpec(Method m, Object instance) throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		Preconditions.checkArgument(!m.getReturnType().equals(Void.TYPE),
@@ -50,7 +50,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		Preconditions.checkArgument(funcId != null,
 				"Method=\"%s\" must be annotated via XacmlFunc annotation", m.getName());
-		
+
 		Preconditions.checkArgument((instance != null ^ Modifier.isStatic(m.getModifiers())),
 						"Only static method can be annotiated via XacmlFunc annotiation, method=\"%s\" "
 								+ "in the stateless function provider, " +
@@ -166,7 +166,7 @@ class JavaMethodToFunctionSpecConverter
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
-							.<ValueExpression>create(instance, m), 
+							.<ValueExpression>create(instance, m),
 							evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
@@ -174,7 +174,7 @@ class JavaMethodToFunctionSpecConverter
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
-							.<ValueExpression>create(instance, m), 
+							.<ValueExpression>create(instance, m),
 							evalContextParamFound));
 		}
 		throw new IllegalArgumentException(
@@ -194,7 +194,7 @@ class JavaMethodToFunctionSpecConverter
 		if (returnTypeResolver != null) {
 			return;
 		}
-			if (returnType.isBag() && 
+			if (returnType.isBag() &&
 					!BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
 				throw new IllegalArgumentException(
 						String

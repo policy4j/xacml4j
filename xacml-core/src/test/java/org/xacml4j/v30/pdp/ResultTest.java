@@ -16,14 +16,14 @@ import org.xacml4j.v30.types.StringType;
 import com.google.common.collect.ImmutableList;
 
 
-public class ResultTest 
+public class ResultTest
 {
 	private IMocksControl c;
-	
+
 	private Obligation denyObligationWithId1;
 	private Obligation denyObligationWithId2;
-	private Obligation denyObligationWithSameId1;	
-	
+	private Obligation denyObligationWithSameId1;
+
 	@Before
 	public void init(){
 		c = createControl();
@@ -40,7 +40,7 @@ public class ResultTest
 				.attribute("test1", StringType.STRING.create("v2"))
 				.build();
 	}
-	
+
 	@Test
 	public void testMergeObligationValues()
 	{
@@ -57,6 +57,6 @@ public class ResultTest
 				.builder("id2", Effect.DENY)
 				.attribute("test1", StringType.STRING.create("v1"))
 				.build(), r.getObligation("id2"));
-		
+
 	}
 }

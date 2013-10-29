@@ -32,15 +32,15 @@ import org.xacml4j.v30.types.BooleanType;
 import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML higher order functions")
-public class HigherOrderFunctions 
+public class HigherOrderFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp anyOf(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyAttribute AttributeExp value,
-			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag)
 		throws EvaluationException
 	{
 		for(AttributeExp valueFromBag : bag.values()){
@@ -51,14 +51,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(false);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp allOf(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyAttribute AttributeExp value,
-			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag)
 		throws EvaluationException
 	{
 		for(AttributeExp valueFromBag : bag.values()){
@@ -69,14 +69,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(true);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp anyOfAny(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfAttributeExp a,
-			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp b)
 		throws EvaluationException
 	{
 		for(AttributeExp aValue : a.values()){
@@ -89,14 +89,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(false);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp allOfAny(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfAttributeExp a,
-			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp b)
 		throws EvaluationException
 	{
 		boolean result = true;
@@ -108,14 +108,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(result);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp anyOfAll(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfAttributeExp a,
-			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp b)
 		throws EvaluationException
 	{
 		for(AttributeExp va : a.values())
@@ -127,14 +127,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(false);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp allOfAll(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfAttributeExp a,
-			@XacmlFuncParamAnyBag BagOfAttributeExp b) 
+			@XacmlFuncParamAnyBag BagOfAttributeExp b)
 		throws EvaluationException
 	{
 		for(AttributeExp aValue : a.values())
@@ -148,14 +148,14 @@ public class HigherOrderFunctions
 		}
 		return BooleanType.BOOLEAN.create(true);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)
 	public static  BagOfAttributeExp map(
-			@XacmlFuncParamEvaluationContext EvaluationContext context, 
-			@XacmlFuncParamFunctionReference FunctionReference ref, 
-			@XacmlFuncParamAnyBag BagOfAttributeExp bag) 
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
+			@XacmlFuncParamFunctionReference FunctionReference ref,
+			@XacmlFuncParamAnyBag BagOfAttributeExp bag)
 		throws EvaluationException
 	{
 		Collection<AttributeExp> values = new ArrayList<AttributeExp>(bag.size());
@@ -170,41 +170,41 @@ public class HigherOrderFunctions
 	 * An implementation of {@link FunctionReturnTypeResolver} and
 	 * {@link FunctionParametersValidator} for XACML map higher
 	 * order function
-	 * 
+	 *
 	 * @author Giedrius Trumpickas
 	 */
-	public static class MapFunctionResolverValidator implements 
+	public static class MapFunctionResolverValidator implements
 		FunctionParametersValidator, FunctionReturnTypeResolver
 	{
 		private final static Logger log = LoggerFactory.getLogger(MapFunctionResolverValidator.class);
-		
+
 		public MapFunctionResolverValidator(){
 		}
-		
+
 		@Override
-		public ValueType resolve(FunctionSpec spec, 
-				List<Expression> arguments) 
+		public ValueType resolve(FunctionSpec spec,
+				List<Expression> arguments)
 		{
-			Preconditions.checkArgument(arguments != null, 
+			Preconditions.checkArgument(arguments != null,
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, arguments must be specified", spec.getId());
-			Preconditions.checkArgument(arguments.size() == spec.getNumberOfParams(), 
+			Preconditions.checkArgument(arguments.size() == spec.getNumberOfParams(),
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, function requires 2 parameters to be specified", spec.getId());
 			Expression ref = arguments.get(0);
-			Preconditions.checkArgument(ref instanceof FunctionReference, 
+			Preconditions.checkArgument(ref instanceof FunctionReference,
 					"First function argument must be function reference");
 			AttributeExpType type = (AttributeExpType)((FunctionReference)ref).getEvaluatesTo();
 			return type.bagType();
 		}
 
 		@Override
-		public boolean validate(FunctionSpec spec, List<Expression> arguments) 
+		public boolean validate(FunctionSpec spec, List<Expression> arguments)
 		{
 			if(log.isDebugEnabled()){
 				log.debug("Validating function=\"{}\" parameters", spec.getId());
 			}
-			if(arguments == null || 
+			if(arguments == null ||
 					arguments.size() != 2){
 				return false;
 			}

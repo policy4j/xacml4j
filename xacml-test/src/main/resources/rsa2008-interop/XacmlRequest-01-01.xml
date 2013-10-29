@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Request
     xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
       http://docs.oasis-open.org/xacml/access_control-xacml-2.0-context-schema-os.xsd">
 
   <!-- **************************************************************** -->
@@ -19,8 +19,8 @@
         DataType="http://www.w3.org/2001/XMLSchema#string">
       <AttributeValue>Dr. Alice</AttributeValue>
     </Attribute>
-    <Attribute 
-        AttributeId="urn:oasis:names:tc:xacml:1.0:subject:locality" 
+    <Attribute
+        AttributeId="urn:oasis:names:tc:xacml:1.0:subject:locality"
         DataType="http://www.w3.org/2001/XMLSchema#string" >
       <AttributeValue>Facility A</AttributeValue>
     </Attribute>
@@ -70,10 +70,10 @@
         >urn:va:xacml:2.0:interop:rsa8:resource:hl7:medical-record</AttributeValue>
     </Attribute>
   </Resource>
-  <Action/>  
+  <Action/>
   <Environment>
-    <Attribute 
-        AttributeId="urn:va:xacml:2.0:interop:rsa8:environment:locality" 
+    <Attribute
+        AttributeId="urn:va:xacml:2.0:interop:rsa8:environment:locality"
         DataType="http://www.w3.org/2001/XMLSchema#string" >
       <AttributeValue>Facility A</AttributeValue>
     </Attribute>

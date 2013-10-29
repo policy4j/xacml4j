@@ -12,11 +12,11 @@ import org.xacml4j.v30.types.IntegerType;
 
 /**
  * A.3.4 Numeric data-type conversion functions
- * 
+ *
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML numeric conversion functions")
-public class NumericConversionFunctions 
+public class NumericConversionFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
@@ -25,7 +25,7 @@ public class NumericConversionFunctions
 	{
 		return IntegerType.INTEGER.create(v.getValue().intValue());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static DoubleExp integerToDouble(

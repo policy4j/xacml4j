@@ -8,11 +8,11 @@ import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 
 import com.google.common.base.Preconditions;
 
-public class DecisionCombiningAlgorithmProvidersFactoryBean 
+public class DecisionCombiningAlgorithmProvidersFactoryBean
 	extends AbstractFactoryBean<DecisionCombiningAlgorithmProvider>
 {
 	private DecisionCombiningAlgorithmProviderBuilder builder;
-	
+
 	public DecisionCombiningAlgorithmProvidersFactoryBean(){
 		this.builder = DecisionCombiningAlgorithmProviderBuilder.builder();
 	}
@@ -24,7 +24,7 @@ public class DecisionCombiningAlgorithmProvidersFactoryBean
 
 	@Override
 	protected DecisionCombiningAlgorithmProvider createInstance()
-			throws Exception 
+			throws Exception
 	{
 		return builder.create();
 	}
@@ -33,6 +33,6 @@ public class DecisionCombiningAlgorithmProvidersFactoryBean
 	public Class<DecisionCombiningAlgorithmProvider> getObjectType() {
 		return DecisionCombiningAlgorithmProvider.class;
 	}
-	
-	
+
+
 }

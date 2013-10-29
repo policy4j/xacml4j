@@ -21,7 +21,7 @@ public class VariableReferenceTest
 	private VariableReference varRef;
 	private Expression expression;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init()
 	{
@@ -30,7 +30,7 @@ public class VariableReferenceTest
 		this.varDef = new VariableDefinition("testId", expression);
 		this.varRef = new VariableReference(varDef);
 	}
-	
+
 	@Test
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
@@ -41,7 +41,7 @@ public class VariableReferenceTest
 		assertEquals(BOOLEAN.create(true), varRef.evaluate(context));
 		verify(context, expression);
 	}
-	
+
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{

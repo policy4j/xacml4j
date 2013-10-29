@@ -19,7 +19,7 @@
 	   		<Condition>
 	   			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
 	   				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
-	   					<AttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#boolean" 
+	   					<AttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#boolean"
 	   						AttributeId="urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant"
 	   						MustBePresent="true"
 	   						Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/>

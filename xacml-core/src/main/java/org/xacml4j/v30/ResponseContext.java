@@ -21,7 +21,7 @@ public class ResponseContext
 	public Collection<Result> getResults(){
 		return results;
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return results.hashCode();

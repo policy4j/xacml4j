@@ -21,14 +21,14 @@ public abstract class BaseJAXBUnmarshaller <T>
 	implements Unmarshaller<T>
 {
 	private JAXBContext context;
-	
+
 	protected BaseJAXBUnmarshaller(JAXBContext context){
 		Preconditions.checkArgument(context != null);
 		this.context = context;
 	}
-	
+
 	@Override
-	public final T unmarshal(Object source) throws XacmlSyntaxException, IOException 
+	public final T unmarshal(Object source) throws XacmlSyntaxException, IOException
 	{
 		Preconditions.checkNotNull(source);
 		try{
@@ -59,12 +59,12 @@ public abstract class BaseJAXBUnmarshaller <T>
 				return create(jaxbInstance);
 			}
 			throw new IllegalArgumentException(
-					String.format("Unsupported source=\"%s\"", 
+					String.format("Unsupported source=\"%s\"",
 							source.getClass().getName()));
 		}catch(JAXBException e){
 			throw new XacmlSyntaxException(e);
 		}
 	}
-	
+
 	protected abstract T create(JAXBElement<?> jaxbInstance) throws XacmlSyntaxException;
 }

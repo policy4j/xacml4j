@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlAttributeResolverDescriptor 
+public @interface XacmlAttributeResolverDescriptor
 {
 	String id();
 	String name();

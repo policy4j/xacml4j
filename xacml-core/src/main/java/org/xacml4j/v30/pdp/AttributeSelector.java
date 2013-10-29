@@ -27,12 +27,12 @@ public class AttributeSelector extends
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	@Override
 	public AttributeSelectorKey getReferenceKey() {
 		return selectorKey;
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -109,21 +109,21 @@ public class AttributeSelector extends
 		void visitEnter(AttributeSelector v);
 		void visitLeave(AttributeSelector v);
 	}
-	
+
 	public static class Builder extends AttributeReferenceBuilder<Builder>
 	{
 		private AttributeSelectorKey.Builder keyBuilder = AttributeSelectorKey.builder();
-			
+
 		public Builder xpath(String xpath){
 			keyBuilder.xpath(xpath);
 			return this;
 		}
-		
+
 		public Builder contextSelectorId(String id){
 			keyBuilder.contextSelectorId(id);
 			return this;
 		}
-		
+
 		public AttributeSelector build(){
 			return new AttributeSelector(this);
 		}

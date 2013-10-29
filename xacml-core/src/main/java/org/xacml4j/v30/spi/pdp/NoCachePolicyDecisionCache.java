@@ -9,12 +9,12 @@ import org.xacml4j.v30.Result;
 public class NoCachePolicyDecisionCache implements PolicyDecisionCache
 {
 	private AtomicLong cacheMiss = new AtomicLong(0);
-	
+
 	@Override
 	public long getCacheHitCount() {
 		return 0;
 	}
-	
+
 	@Override
 	public long getCacheMissCount() {
 		return cacheMiss.get();

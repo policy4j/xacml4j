@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class RFC822NameTest 
+public class RFC822NameTest
 {
 	@Test
 	public void testParseValidName()

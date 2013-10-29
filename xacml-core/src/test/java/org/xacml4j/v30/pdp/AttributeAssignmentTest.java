@@ -8,7 +8,7 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.types.IntegerType;
 
 
-public class AttributeAssignmentTest 
+public class AttributeAssignmentTest
 {
 	@Test
 	public void testCreateAndEquals()

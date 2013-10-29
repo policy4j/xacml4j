@@ -97,7 +97,7 @@
                 </Apply>
                 <AttributeValue
                       DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
-            
+
 </Apply></Condition>
         </Rule>
     </Policy>
@@ -194,7 +194,7 @@
                 </Apply>
                 <AttributeValue
                       DataType="http://www.w3.org/2001/XMLSchema#integer">100</AttributeValue>
-            
+
 </Apply></Condition>
         </Rule>
     </Policy>

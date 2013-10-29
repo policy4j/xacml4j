@@ -10,16 +10,16 @@ import com.google.common.base.Preconditions;
 class BaseFunctionProvider implements FunctionProvider
 {
 	private ConcurrentMap<String, FunctionSpec> functions;
-	
+
 	protected BaseFunctionProvider(){
 		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
 	}
-	
+
 	/**
 	 * Adds given {@link FunctionSpecImpl} to this factory
-	 * 
+	 *
 	 * @param spec a function specification
-	 * @exception 
+	 * @exception
 	 */
 	protected final void add(FunctionSpec spec)
 	{
@@ -27,18 +27,18 @@ class BaseFunctionProvider implements FunctionProvider
 		FunctionSpec other = functions.putIfAbsent(spec.getId(), spec);
 		Preconditions.checkState(other == null,
 					"This factory already contains " +
-					"function=\"%s\" with a given identifier=\"%s\"", 
+					"function=\"%s\" with a given identifier=\"%s\"",
 					spec, spec.getId());
 		if(spec.getLegacyId() != null){
 			other = functions.putIfAbsent(spec.getLegacyId(), spec);
 			Preconditions.checkState(other == null,
 					"This factory already contains " +
-					"function=\"%s\" with a given identifier=\"%s\"", 
+					"function=\"%s\" with a given identifier=\"%s\"",
 					spec, spec.getId());
 		}
 	}
-	
-	
+
+
 
 	@Override
 	public FunctionSpec remove(String functionId) {

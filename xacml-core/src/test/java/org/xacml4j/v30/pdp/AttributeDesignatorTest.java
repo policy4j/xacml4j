@@ -25,13 +25,13 @@ public class AttributeDesignatorTest
 {
 	private IntegerType type;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
-		this.type = IntegerType.INTEGER;	
+		this.type = IntegerType.INTEGER;
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
@@ -56,7 +56,7 @@ public class AttributeDesignatorTest
 		}
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
@@ -68,7 +68,7 @@ public class AttributeDesignatorTest
 				.mustBePresent(true)
 				.dataType(IntegerType.INTEGER)
 				.build();
-				
+
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
@@ -83,7 +83,7 @@ public class AttributeDesignatorTest
 		verify(context);
 	}
 
-	
+
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException
 	{
@@ -99,14 +99,14 @@ public class AttributeDesignatorTest
 		expect(context.resolve(capture(c))).andReturn(
 				IntegerType.INTEGER.bagOf(
 						IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)));
-				
+
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(type.bagType(), v.getEvaluatesTo());
 		assertEquals(IntegerType.INTEGER.bagOf(
 				IntegerType.INTEGER.create(1), IntegerType.INTEGER.create(2)), v);
 	}
-	
+
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
@@ -127,7 +127,7 @@ public class AttributeDesignatorTest
 		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
 	{
@@ -148,7 +148,7 @@ public class AttributeDesignatorTest
 		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
@@ -166,7 +166,7 @@ public class AttributeDesignatorTest
 		desig.evaluate(context);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
@@ -179,7 +179,7 @@ public class AttributeDesignatorTest
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context, 
+		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(context,
 				desig.getReferenceKey(), "Errror"));
 		replay(context);
 		Expression v = desig.evaluate(context);
@@ -188,7 +188,7 @@ public class AttributeDesignatorTest
 		assertEquals(IntegerType.INTEGER.emptyBag(), v);
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresentTrueContextHandlerThrowsRuntimeException() throws EvaluationException
 	{
@@ -206,7 +206,7 @@ public class AttributeDesignatorTest
 		desig.evaluate(context);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresentFalseContextHandlerThrowsRuntimeException() throws EvaluationException
 	{

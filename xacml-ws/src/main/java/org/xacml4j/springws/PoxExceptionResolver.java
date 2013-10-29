@@ -13,7 +13,7 @@ public class PoxExceptionResolver extends AbstractEndpointExceptionResolver
 {
 	@Override
 	protected boolean resolveExceptionInternal(MessageContext context,
-			Object endpoint, Exception ex) 
+			Object endpoint, Exception ex)
 	{
 		if(!(context.getRequest() instanceof PoxMessage)){
 			return false;
@@ -26,5 +26,5 @@ public class PoxExceptionResolver extends AbstractEndpointExceptionResolver
 		}
 		return true;
 	}
-	
+
 }

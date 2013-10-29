@@ -6,17 +6,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class HexTypeTest 
+public class HexTypeTest
 {
 	private HexBinaryType t;
-	
+
 	@Before
 	public void init(){
 		this.t = HexBinaryType.HEXBINARY;
 	}
-	
 
-	
+
+
 	@Test
 	public void testCreateValueFromBinaryArray()
 	{
@@ -28,7 +28,7 @@ public class HexTypeTest
 		assertEquals(value1.toXacmlString(), value2.toXacmlString());
 		assertEquals("00010305", value1.toXacmlString());
 	}
-	
+
 	@Test
 	public void testCreateValueFromString()
 	{

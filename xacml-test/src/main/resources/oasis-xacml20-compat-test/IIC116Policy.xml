@@ -22,7 +22,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#dateTime">2002-03-22T08:23:47-05:10</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

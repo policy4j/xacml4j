@@ -69,7 +69,7 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == Decision.INDETERMINATE_DP || 
+			if(decision == Decision.INDETERMINATE_DP ||
 					decision == Decision.INDETERMINATE){
 				atLeastOneIndeterminateDP = true;
 				continue;

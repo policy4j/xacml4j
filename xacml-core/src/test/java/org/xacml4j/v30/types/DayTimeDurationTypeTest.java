@@ -10,17 +10,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class DayTimeDurationTypeTest 
+public class DayTimeDurationTypeTest
 {
 	private DatatypeFactory f;
 	private DayTimeDurationType t1;
-	
+
 	@Before
 	public void init() throws Exception{
 		this.t1 = DayTimeDurationType.DAYTIMEDURATION;
 		this.f = DatatypeFactory.newInstance();
 	}
-	
+
 	@Test
 	public void testFromXacmlString()
 	{
@@ -28,7 +28,7 @@ public class DayTimeDurationTypeTest
 		assertEquals(3, v1.getValue().getDays());
 		assertEquals(10, v1.getValue().getHours());
 		assertEquals(30, v1.getValue().getMinutes());
-		assertEquals(00, v1.getValue().getSeconds());
+		assertEquals(0, v1.getValue().getSeconds());
 		assertEquals("P3DT10H30M", v1.toXacmlString());
 		v1 = t1.fromXacmlString("P3DT10H30M10S");
 		assertEquals(3, v1.getValue().getDays());
@@ -36,7 +36,7 @@ public class DayTimeDurationTypeTest
 		assertEquals(30, v1.getValue().getMinutes());
 		assertEquals(10, v1.getValue().getSeconds());
 	}
-	
+
 	@Test
 	public void testToXacmlString()
 	{
@@ -44,14 +44,14 @@ public class DayTimeDurationTypeTest
 		DayTimeDurationExp v = t1.create(d);
 		assertEquals("P1DT2H30M10S", v.toXacmlString());
 	}
-	
+
 	@Test
 	public void testCompareTo()
 	{
 		Duration a = f.newDurationDayTime(true, 1, 2, 30, 10);
 		Duration b = f.newDurationDayTime(true, 1, 2, 30, 11);
 		Duration c = f.newDurationDayTime(true, 1, 2, 30, 9);
-		
+
 		DayTimeDurationExp ad = t1.create(a);
 		DayTimeDurationExp bd = t1.create(b);
 		DayTimeDurationExp cd = t1.create(c);
@@ -60,7 +60,7 @@ public class DayTimeDurationTypeTest
 		assertTrue(bd.compareTo(cd) > 0);
 		assertTrue(ad.compareTo(dd) == 0);
 	}
-	
+
 	@Test
 	public void testEquals()
 	{

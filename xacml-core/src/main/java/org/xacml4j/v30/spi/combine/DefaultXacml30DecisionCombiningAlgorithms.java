@@ -24,42 +24,42 @@ import org.xacml4j.v30.policy.combine.PermitOverridesRuleOrderedCombingingAlgori
 import org.xacml4j.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgorithm;
 import org.xacml4j.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
 
-class DefaultXacml30DecisionCombiningAlgorithms 
-	extends DecisionCombingingAlgorithmProviderImpl 
+class DefaultXacml30DecisionCombiningAlgorithms
+	extends DecisionCombingingAlgorithmProviderImpl
 {
-	public DefaultXacml30DecisionCombiningAlgorithms() 
+	public DefaultXacml30DecisionCombiningAlgorithms()
 	{
 		super();
 		addRuleCombineAlgorithm(new FirstApplicableRuleCombiningAlgorithm());
-		
+
 		addRuleCombineAlgorithm(new PermitOverridesRuleCombineAlgorithm());
 		addRuleCombineAlgorithm(new PermitOverridesRuleOrderedCombingingAlgorithm());
-		
+
 		addRuleCombineAlgorithm(new DenyOverridesRuleCombiningAlgorithm());
 		addRuleCombineAlgorithm(new DenyOverridesRuleOrderedCombingingAlgorithm());
-		
+
 		addRuleCombineAlgorithm(new PermitUnlessDenyRuleCombiningAlgorithm());
 		addRuleCombineAlgorithm(new DenyUnlessPermitRuleCombingingAlgorithm());
-		
+
 		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyOrderedCombiningAlgorithm());
-			
+
 		addCompositeRuleCombineAlgorithm(new PermitOverridesPolicyCombineAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PermitOverridesPolicyOrderedCombineAlgorithm());
-	
+
 		addCompositeRuleCombineAlgorithm(new FirstApplicablePolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new OnlyOneApplicablePolicyCombingingAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PermitUnlessDenyPolicyCombingingAlgorithm());
-		addCompositeRuleCombineAlgorithm(new DenyUnlessPermitPolicyCombingingAlgorithm());	
-		
+		addCompositeRuleCombineAlgorithm(new DenyUnlessPermitPolicyCombingingAlgorithm());
+
 		// Legacy algorithms
-		
+
 		// rule combining algorithms
 		addRuleCombineAlgorithm(new LegacyDenyOverridesRuleCombineAlgorithm());
 		addRuleCombineAlgorithm(new LegacyOrderedDenyOverridesRuleCombineAlgorihm());
 		addRuleCombineAlgorithm(new LegacyPermitOverridesRuleCombineAlgorithm());
 		addRuleCombineAlgorithm(new LegacyOrderedPermitOverridesRuleCombineAlgorithm());
-		
+
 		// policy combining algorithms
 		addCompositeRuleCombineAlgorithm(new LegacyDenyOverridesPolicyCombineAlgorithm());
 		addCompositeRuleCombineAlgorithm(new LegacyOrderedDenyOverridesPolicyCombineAlgorithm());

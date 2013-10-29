@@ -20,25 +20,25 @@ import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 
 public class FirstApplicableTest
 {
-	
+
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new FirstApplicable<DecisionRule>("test");
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testNoDecisions()
 	{
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 	}
 
-	
+
 	@Test
 	public void testNoApplicableDecisions() throws EvaluationException
 	{
@@ -54,7 +54,7 @@ public class FirstApplicableTest
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
+
 	@Test
 	public void testPermit() throws EvaluationException
 	{
@@ -68,7 +68,7 @@ public class FirstApplicableTest
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
+
 	@Test
 	public void testDeny() throws EvaluationException
 	{
@@ -82,8 +82,8 @@ public class FirstApplicableTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
-		
+
+
 	@Test
 	public void testIndeterminate() throws EvaluationException
 	{
@@ -97,7 +97,7 @@ public class FirstApplicableTest
 		assertEquals(Decision.INDETERMINATE, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
+
 	@Test
 	public void testIndeterminateD() throws EvaluationException
 	{
@@ -111,7 +111,7 @@ public class FirstApplicableTest
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
+
 	@Test
 	public void testIndeterminateP() throws EvaluationException
 	{
@@ -125,7 +125,7 @@ public class FirstApplicableTest
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
 		verify(r1, r2);
 	}
-	
+
 	@Test
 	public void testIndeterminateDP() throws EvaluationException
 	{

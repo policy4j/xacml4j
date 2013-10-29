@@ -12,23 +12,23 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
 
 
-public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule> 
+public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule>
 {
 	private final static String ID ="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides";
 
-	
+
 	protected LegacyPermitOverridesRuleCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
-	
+
 	public LegacyPermitOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
-	
-	
+
+
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides")
 	@Override
-	public Decision combine(EvaluationContext context, List<Rule> rules) 
+	public Decision combine(EvaluationContext context, List<Rule> rules)
 	{
 		boolean atLeastOneError = false;
 		boolean potentialPermit = false;

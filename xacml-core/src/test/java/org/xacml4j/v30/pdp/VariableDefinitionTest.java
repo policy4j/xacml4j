@@ -20,7 +20,7 @@ public class VariableDefinitionTest
 	private VariableDefinition varDef;
 	private Expression expression;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init()
 	{
@@ -28,7 +28,7 @@ public class VariableDefinitionTest
 		this.context = createStrictMock(EvaluationContext.class);
 		this.varDef = new VariableDefinition("testId", expression);
 	}
-	
+
 	@Test
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
@@ -39,7 +39,7 @@ public class VariableDefinitionTest
 		assertEquals(BOOLEAN.create(true), varDef.evaluate(context));
 		verify(context, expression);
 	}
-	
+
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{

@@ -22,7 +22,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#double">5.5</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

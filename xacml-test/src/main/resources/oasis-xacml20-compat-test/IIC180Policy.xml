@@ -24,7 +24,7 @@
             <SubjectAttributeDesignator
                   AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:test-attr"
                   DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

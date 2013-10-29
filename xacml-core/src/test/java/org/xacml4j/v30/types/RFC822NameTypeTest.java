@@ -9,15 +9,15 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 
 
-public class RFC822NameTypeTest 
+public class RFC822NameTypeTest
 {
 	private RFC822NameType t;
-	
+
 	@Before
 	public void init(){
 		this.t = RFC822NameType.RFC822NAME;
 	}
-	
+
 	@Test
 	public void testEquals()
 	{

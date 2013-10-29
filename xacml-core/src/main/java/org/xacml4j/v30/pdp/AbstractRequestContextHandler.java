@@ -12,34 +12,34 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-public abstract class AbstractRequestContextHandler 
+public abstract class AbstractRequestContextHandler
 	implements RequestContextHandler
 {
 	private AtomicReference<RequestContextHandler> next;
 	private List<String> features;
-	
+
 	protected AbstractRequestContextHandler(String featureId)
 	{
 		Preconditions.checkNotNull(featureId);
 		this.features = ImmutableList.of(featureId);
 		this.next = new AtomicReference<RequestContextHandler>();
 	}
-	
+
 	@Override
 	public Collection<String> getFeatures(){
 		return features;
 	}
-	
+
 	/**
 	 * A helper method to be used by implementations
 	 * to invoke a next handler in the chain
-	 * 
+	 *
 	 * @param request a decision request
-	 * @param pdp a policy decision point callback
+	 * @param context a policy decision point context
 	 * @return collection of  {@link Result} instances
 	 */
 	protected final Collection<Result> handleNext(
-			RequestContext request, 
+			RequestContext request,
 			PolicyDecisionPointContext context)
 	{
 		RequestContextHandler h = next.get();
@@ -55,7 +55,7 @@ public abstract class AbstractRequestContextHandler
 	@Override
 	public final void setNext(RequestContextHandler handler) {
 		Preconditions.checkNotNull(handler);
-		Preconditions.checkState(next.get() == null, 
+		Preconditions.checkState(next.get() == null,
 				"Handler is already has next handler");
 		this.next.set(handler);
 	}

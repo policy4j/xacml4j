@@ -578,7 +578,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
 				return Match
-						.builder() 
+						.builder()
 						.predicate(createFunction(match.getMatchId()))
 						.attribute(createValue(match.getAttributeValue()))
 						.attrRef(createSelector(getSelectoryCategory(selector), selector))
@@ -602,7 +602,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			AttributeSelectorType selector = match.getAttributeSelector();
 			if (selector != null) {
 				return Match
-						.builder() 
+						.builder()
 						.predicate(createFunction(match.getMatchId()))
 						.attribute(createValue(match.getAttributeValue()))
 						.attrRef(createSelector(getSelectoryCategory(selector), selector))
@@ -634,7 +634,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	/**
 	 * Creates {@link AttributeExp} from a given {@link JAXBElement}
 	 *
-	 * @param element
+	 * @param value
 	 *            a JAXB element
 	 * @return {@link AttributeExp}
 	 * @throws XacmlSyntaxException
@@ -684,7 +684,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	 * @throws XacmlSyntaxException
 	 */
 	private AttributeDesignator createDesignator(AttributeCategory categoryId,
-			AttributeDesignatorType ref) throws XacmlSyntaxException 
+			AttributeDesignatorType ref) throws XacmlSyntaxException
 	{
 		return AttributeDesignator
 				.builder()

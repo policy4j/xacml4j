@@ -57,7 +57,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#integer">5</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
     <Rule
@@ -76,7 +76,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#string">J. Hibbert</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
     <Rule
@@ -98,7 +98,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#string">Zaphod Beeblebrox</AttributeValue>
-      
+
 </Apply></Condition>
     </Rule>
 </Policy>

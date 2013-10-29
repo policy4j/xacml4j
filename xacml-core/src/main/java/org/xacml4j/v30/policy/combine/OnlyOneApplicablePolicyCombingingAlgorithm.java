@@ -10,18 +10,18 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
 
 
-public final class OnlyOneApplicablePolicyCombingingAlgorithm extends 
-	BaseDecisionCombiningAlgorithm<CompositeDecisionRule> 
+public final class OnlyOneApplicablePolicyCombingingAlgorithm extends
+	BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
-	
+
 	public OnlyOneApplicablePolicyCombingingAlgorithm() {
 		super(ID);
 	}
 
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
 	@Override
-	public Decision combine(EvaluationContext context, List<CompositeDecisionRule> decisions) 
+	public Decision combine(EvaluationContext context, List<CompositeDecisionRule> decisions)
 	{
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;

@@ -22,15 +22,15 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	private PolicySetIDReference(Builder b) {
 		super(b);
 	}
-	
+
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	public static Builder builder(String id){
 		return new Builder().id(id);
 	}
-	
+
 	/**
 	 * Test this reference points to a given policy
 	 *
@@ -151,20 +151,20 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		public PolicySetIDReference getCurrentPolicySetIDReference() {
 			return PolicySetIDReference.this;
 		}
-		
+
 		@Override
 		public EvaluationContext getParentContext() {
 			return getDelegate();
 		}
 	}
-	
+
 	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
 	{
 		@Override
 		protected Builder getThis() {
 			return this;
 		}
-		
+
 		public PolicySetIDReference build(){
 			return new PolicySetIDReference(this);
 		}

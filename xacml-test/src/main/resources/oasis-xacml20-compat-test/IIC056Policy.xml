@@ -37,7 +37,7 @@
                           DataType="http://www.w3.org/2001/XMLSchema#string"/>
                 </Apply>
             </Apply>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

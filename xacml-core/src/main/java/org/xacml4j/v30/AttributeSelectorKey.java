@@ -4,13 +4,13 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-public final class AttributeSelectorKey 
-	extends AttributeReferenceKey 
+public final class AttributeSelectorKey
+	extends AttributeReferenceKey
 {
 	private String xpath;
 	private String contextSelectorId;
 	private int hashCode;
-	
+
 	private AttributeSelectorKey(Builder b){
 		super(b);
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(b.xpath));
@@ -19,11 +19,11 @@ public final class AttributeSelectorKey
 		this.hashCode = Objects.hashCode(
 				category, xpath, dataType, contextSelectorId);
 	}
-	
+
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	/**
 	 * An XPath expression whose context node is the Content
 	 * element of the attribute category indicated by the Category
@@ -36,7 +36,7 @@ public final class AttributeSelectorKey
 	public String getPath(){
 		return xpath;
 	}
-	
+
 	/**
 	 * This attribute id refers to the attribute (by its AttributeId)
 	 * in the request context in the category given by the Category attribute.
@@ -51,8 +51,8 @@ public final class AttributeSelectorKey
 	public String getContextSelectorId(){
 		return contextSelectorId;
 	}
-	
-	
+
+
 	@Override
 	public BagOfAttributeExp resolve(EvaluationContext context)
 			throws EvaluationException {
@@ -67,12 +67,12 @@ public final class AttributeSelectorKey
 		.add("DataType", getDataType())
 		.add("ContextSelectorId", contextSelectorId).toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return hashCode;
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -89,23 +89,23 @@ public final class AttributeSelectorKey
 		dataType.equals(s.dataType) && xpath.equals(s.xpath) &&
 		Objects.equal(contextSelectorId, s.contextSelectorId);
 	}
-	
+
 	public static class Builder extends AttributeReferenceBuilder<Builder>
 	{
 		private String xpath;
 		private String contextSelectorId;
-		
+
 		public Builder xpath(String xpath){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(xpath));
 			this.xpath = xpath;
 			return this;
 		}
-		
+
 		public Builder contextSelectorId(String id){
 			this.contextSelectorId = Strings.emptyToNull(id);
 			return this;
 		}
-		
+
 		public Builder from(AttributeSelectorKey s){
 			return builder()
 					.category(s.category)
@@ -113,12 +113,12 @@ public final class AttributeSelectorKey
 					.xpath(s.xpath)
 					.contextSelectorId(s.contextSelectorId);
 		}
-		
+
 		@Override
 		protected Builder getThis() {
 			return this;
 		}
-		
+
 		public AttributeSelectorKey build(){
 			return new AttributeSelectorKey(this);
 		}

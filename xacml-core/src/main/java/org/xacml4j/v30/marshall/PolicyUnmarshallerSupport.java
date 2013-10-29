@@ -20,12 +20,12 @@ import org.xacml4j.v30.types.Types;
 import com.google.common.base.Preconditions;
 
 /**
- * A support class for dealing with XACML 
+ * A support class for dealing with XACML
  * functions and decision combining algorithms
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class PolicyUnmarshallerSupport 
+public class PolicyUnmarshallerSupport
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
@@ -35,24 +35,24 @@ public class PolicyUnmarshallerSupport
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
 	{
-		Preconditions.checkNotNull(functions, 
+		Preconditions.checkNotNull(functions,
 				"Function provider can't be null");
-		Preconditions.checkNotNull(decisionCombiningAlgorithms, 
+		Preconditions.checkNotNull(decisionCombiningAlgorithms,
 				"Decision combingin algorithm provider can't be null");
 		this.functions = functions;
 		this.combingingAlgorithms = decisionCombiningAlgorithms;
 	}
-	
+
 	/**
 	 * Creates function from a given identifier
-	 * 
+	 *
 	 * @param functionId a function identifier
 	 * @return {@link FunctionSpec} instance
 	 * @throws XacmlSyntaxException if function with a given
 	 * identifier is not known to this factory
 	 */
 	protected final FunctionSpec createFunction(String functionId)
-			throws XacmlSyntaxException 
+			throws XacmlSyntaxException
 	{
 		FunctionSpec spec = functions.getFunction(functionId);
 		if (spec == null) {
@@ -61,11 +61,11 @@ public class PolicyUnmarshallerSupport
 		}
 		return spec;
 	}
-	
+
 	/**
 	 * Creates {@link DecisionCombiningAlgorithmProvider} based
 	 * on a given algorithm identifier
-	 * 
+	 *
 	 * @param algorithmId an algorithm identifier
 	 * @return {@link DecisionCombiningAlgorithmProvider} instance
 	 * @throws XacmlSyntaxException if no algorithm can be found
@@ -82,11 +82,11 @@ public class PolicyUnmarshallerSupport
 		}
 		return algorithm;
 	}
-	
+
 	/**
 	 * Creates {@link DecisionCombiningAlgorithmProvider} based
 	 * on a given algorithm identifier
-	 * 
+	 *
 	 * @param algorithmId an algorithm identifier
 	 * @return {@link DecisionCombiningAlgorithmProvider} instance
 	 * @throws XacmlSyntaxException if no algorithm can be found
@@ -103,27 +103,27 @@ public class PolicyUnmarshallerSupport
 		}
 		return algorithm;
 	}
-	
+
 	/**
 	 * Gets data type via date type identifier
-	 * 
+	 *
 	 * @param typeId a data type identifier
 	 * @return {@link AttributeExpType}
 	 * @throws XacmlSyntaxException
 	 */
-	protected AttributeExpType getDataType(String typeId) 
+	protected AttributeExpType getDataType(String typeId)
 		throws XacmlSyntaxException
 	{
 		return types.getType(typeId);
 	}
-	
+
 	protected Types getTypes(){
 		return types;
 	}
-	
+
 	protected  AttributeExp createAttributeValue(
-			String typeId, 
-			Object value, Map<QName, String> values) throws XacmlSyntaxException 
+			String typeId,
+			Object value, Map<QName, String> values) throws XacmlSyntaxException
 	{
 		AttributeExpType type = getDataType(typeId);
 		try {
@@ -133,7 +133,7 @@ public class PolicyUnmarshallerSupport
 		}
 	}
 
-	private  AttributeCategory getXPathCategory(Map<QName, String> attr) 
+	private  AttributeCategory getXPathCategory(Map<QName, String> attr)
 		throws XacmlSyntaxException
 	{
 		for (QName n : attr.keySet()) {

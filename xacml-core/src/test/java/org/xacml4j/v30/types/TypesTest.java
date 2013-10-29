@@ -28,12 +28,12 @@ import org.xacml4j.v30.XacmlSyntaxException;
 public class TypesTest
 {
 	private Types types;
-	
+
 	@Before
 	public void init(){
 		this.types = Types.builder().defaultTypes().create();
 	}
-	
+
 	@Test
 	public void testXACML20DeprecatedTypeMapping()
 	{
@@ -41,13 +41,13 @@ public class TypesTest
 		assertNotNull(types.getType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression"));
 		assertNotNull(types.getType("http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"));
 	}
-	
+
 	@Test(expected=XacmlSyntaxException.class)
 	public void testUknownType()
 	{
 		types.getType("TypeDoesNotExist");
 	}
-	
+
 	@Test
 	public void testDefaultTypes()
 	{
@@ -68,5 +68,5 @@ public class TypesTest
 		assertEquals(XPATHEXPRESSION, types.getType(XPATHEXPRESSION.getDataTypeId()));
 		assertEquals(YEARMONTHDURATION, types.getType(YEARMONTHDURATION.getDataTypeId()));
 	}
-	
+
 }

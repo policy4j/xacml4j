@@ -16,7 +16,7 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 import com.google.common.collect.ImmutableList;
 
 public class FunctionSpecBuilderTest
-{	
+{
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
 	private FunctionInvocation impl;
@@ -25,15 +25,15 @@ public class FunctionSpecBuilderTest
 	public void init(){
 		this.c = createControl();
 		this.impl =  c.createMock(FunctionInvocation.class);
-		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1"); 
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		this.specSameTypeArgs = b.param(INTEGER).param(INTEGER).build(INTEGER, impl);
-		b = FunctionSpecBuilder.builder("testFunc2"); 
+		b = FunctionSpecBuilder.builder("testFunc2");
 		this.specDiffTypeArgs = b.param(INTEGER).param(STRING).build(INTEGER, impl);
 	}
-	
+
 	@Test
 	public void testValidateSingleTypeParametersWithSameTypeArgs()
-	{ 
+	{
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specSameTypeArgs.validateParameters(b.build()));
@@ -42,7 +42,7 @@ public class FunctionSpecBuilderTest
 		assertFalse(specSameTypeArgs.validateParameters(b.add(INTEGER.create(13L)).build()));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testValidateSingeTypeParametersWithDiffTypesArgs()
 	{
@@ -58,7 +58,7 @@ public class FunctionSpecBuilderTest
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(STRING.create("a")).add(INTEGER.create(10L)).build()));
 		c.verify();
 	}
-	
+
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
@@ -67,7 +67,7 @@ public class FunctionSpecBuilderTest
 		b.param(INTEGER, 1, 10).param(INTEGER);
 		c.verify();
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{

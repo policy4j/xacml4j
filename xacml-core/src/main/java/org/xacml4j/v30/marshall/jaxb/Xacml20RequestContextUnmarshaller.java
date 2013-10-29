@@ -84,7 +84,7 @@ implements RequestUnmarshaller
 	private Mapper mapper20;
 
 	private Types xacmlTypes = Types.builder().defaultTypes().create();
-	
+
 	public Xacml20RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper20 = new Mapper();

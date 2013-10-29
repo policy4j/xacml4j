@@ -26,26 +26,26 @@ public class RuleTest
 {
 	private Rule rulePermit;
 	private Rule ruleDeny;
-	
+
 	private Policy enclosingPolicy;
 	private Condition condition;
 	private Target target;
-	
+
 	private EvaluationContext context;
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
-	
+
 	private IMocksControl c;
-	
+
 	private Expression denyObligationAttributeExp;
 	private Expression permitObligationAttributeExp;
-	
+
 	private Expression denyAdviceAttributeExp;
 	private Expression permitAdviceAttributeExp;
-	
+
 	private Rule.Builder builder;
 	private DecisionCombiningAlgorithm<Rule> combiner;
-	
+
 	@Before
 	public void init()
 	{
@@ -53,21 +53,21 @@ public class RuleTest
 		this.combiner = c.createMock(DecisionCombiningAlgorithm.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);
 		this.resolver = c.createMock(PolicyReferenceResolver.class);
-		 
-		
+
+
 		this.condition = c.createMock(Condition.class);
 		this.target = c.createMock(Target.class);
 		this.enclosingPolicy = c.createMock(Policy.class);
-	
-	
+
+
 		this.permitAdviceAttributeExp = c.createMock(Expression.class);
 		this.denyAdviceAttributeExp = c.createMock(Expression.class);
-		
+
 		this.denyObligationAttributeExp = c.createMock(Expression.class);
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
-		
+
 		Policy.PolicyBuilder b  = Policy.builder("testPolicyId").version("1.0");
-		
+
 		this.builder = Rule
 				.builder("TestRuleId", Effect.DENY)
 				.target(target)
@@ -84,7 +84,7 @@ public class RuleTest
 				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
 					.attribute("testId", permitAdviceAttributeExp));
-		
+
 		this.rulePermit = builder
 				.id("testPermitRule")
 				.withEffect(Effect.PERMIT)
@@ -95,9 +95,9 @@ public class RuleTest
 				.build();
 		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).create();
 		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, 0, resolver, handler));
-		
+
 	}
-	
+
 	@Test
 	public void testDenyRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
@@ -107,7 +107,7 @@ public class RuleTest
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testPermitRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
@@ -117,7 +117,7 @@ public class RuleTest
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleApplicabilityWithTargetMatch() throws EvaluationException
 	{
@@ -127,7 +127,7 @@ public class RuleTest
 		assertEquals(MatchResult.MATCH, ruleDeny.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testPermitRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
@@ -137,7 +137,7 @@ public class RuleTest
 		assertEquals(MatchResult.INDETERMINATE, rulePermit.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
@@ -147,7 +147,7 @@ public class RuleTest
 		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testPermitRuleIsApplicableWithTargetMatch() throws EvaluationException
 	{
@@ -157,7 +157,7 @@ public class RuleTest
 		assertEquals(MatchResult.MATCH, rulePermit.isMatch(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleIsApplicableWithTargetNoMatch() throws EvaluationException
 	{
@@ -165,147 +165,147 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isMatch(ruleContext));
-		c.verify();		
+		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleConditionTrue() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
 				StringType.STRING.create("testVal1"));
-		
-		
+
+
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
 				StringType.STRING.create("testVal1"));
-		
+
 		c.replay();
-		
+
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-		
+
 		c.verify();
-		
+
 		assertTrue(
 				context.getMatchingAdvices(Decision.DENY) .contains(Advice
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
-		
+
 		assertTrue(
 				context.getMatchingObligations(Decision.DENY).contains(Obligation
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
-		
+
 	}
-	
+
 	@Test
 	public void testDenyRuleObligationOrAdviceEvaluationFails() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		
+
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-			
+
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
 				StringType.STRING.create("testVal1"));
-		
+
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
 				new EvaluationException(StatusCode.createProcessingError(), ruleContext, new NullPointerException()));
-		
+
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleConditionFalse() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		
+
 		c.replay();
-		
+
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
-		c.verify();	
+		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleConditionIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);	
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
 		c.verify();
 	}
-	
-		
+
+
 	@Test
 	public void testPermitRuleConditionTrue() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
 		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-		
-		
+
+
 		c.replay();
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
 		c.verify();
-		
+
 		assertTrue(
 				context.getMatchingAdvices(Decision.PERMIT).contains(Advice
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
-		
+
 		assertTrue(
 				context.getMatchingObligations(Decision.PERMIT).contains(Obligation
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
 	}
-	
+
 	@Test
 	public void testPermitRuleConditionFalse() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);	
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testPermitRuleConditionIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);	
+		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		c.verify();	
+		c.verify();
 	}
 
 	@Test
-	public void testDenyRuleEvaluateIfApplicableWithTargetIndeterminate() 
+	public void testDenyRuleEvaluateIfApplicableWithTargetIndeterminate()
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
@@ -314,7 +314,7 @@ public class RuleTest
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleEvaluateIfApplicableWithTargetNoMatch()
 		throws EvaluationException
@@ -325,44 +325,44 @@ public class RuleTest
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue() throws EvaluationException
 	{
-		
+
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		
+
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-		
+
 		c.replay();
-		
+
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
 		c.verify();
-		
+
 		assertTrue(
 				context.getMatchingAdvices(Decision.DENY).contains(Advice
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
-		
+
 		assertTrue(
 				context.getMatchingObligations(Decision.DENY).contains(Obligation
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
 	}
-	
-	
+
+
 	@Test
-	public void testPermitRuleEvaluateIfApplicableWithTargetIndeterminate() 
+	public void testPermitRuleEvaluateIfApplicableWithTargetIndeterminate()
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
@@ -371,9 +371,9 @@ public class RuleTest
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
 		c.verify();
 	}
-	
+
 	@Test
-	public void testPermitRuleEvaluateIfApplicableWithTargetNoMatch() 
+	public void testPermitRuleEvaluateIfApplicableWithTargetNoMatch()
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
@@ -381,43 +381,43 @@ public class RuleTest
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
 		c.verify();
-	}	
-	
+	}
+
 	@Test
 	public void testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue() throws EvaluationException
 	{
-		
+
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		
+
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		
+
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
 		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-				
+
 		c.replay();
-		
+
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
-		
+
 		assertTrue(
 				context.getMatchingAdvices(Decision.PERMIT).contains(Advice
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
-		
+
 		assertTrue(
 				context.getMatchingObligations(Decision.PERMIT).contains(Obligation
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
-								"testId", 
+								"testId",
 								StringType.STRING.create("testVal1"))
 								.build()));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEquals(){
 		Rule r1 = builder.build();

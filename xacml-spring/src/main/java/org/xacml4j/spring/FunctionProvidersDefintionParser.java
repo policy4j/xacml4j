@@ -14,7 +14,7 @@ import org.w3c.dom.Element;
 
 public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionParser
 {
-		
+
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
@@ -26,8 +26,8 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	      }
 	    return factory.getBeanDefinition();
 	}
-	
-	private static BeanDefinitionBuilder parseComponent(Element element) 
+
+	private static BeanDefinitionBuilder parseComponent(Element element)
 	{
 		BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(FunctionProvider.class);
 		String clazz = element.getAttribute("class");
@@ -40,8 +40,8 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	    }
 	    return component;
 	}
-	
-	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) 
+
+	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory)
 	{
 	      ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	      for (int i = 0; i < childElements.size(); ++i) {

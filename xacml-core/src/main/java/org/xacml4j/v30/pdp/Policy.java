@@ -125,11 +125,11 @@ public class Policy extends BaseCompositeDecisionRule
 	public List<Rule> getRules(){
 		return rules;
 	}
-	
+
 	public boolean contains(Rule r){
 		return rules.contains(r);
 	}
-	
+
 	/**
 	 * Implementation creates {@link PolicyDelegatingEvaluationContext}
 	 */
@@ -145,11 +145,11 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 		return new PolicyDelegatingEvaluationContext(context);
 	}
-	
+
 	protected Decision combineDecisions(EvaluationContext context){
 		return combine.combine(context, rules);
 	}
-	
+
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		// TBD: use equals instead
@@ -165,7 +165,7 @@ public class Policy extends BaseCompositeDecisionRule
 		.add("rules", rules)
 		.toString();
 	}
-	
+
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
@@ -209,7 +209,7 @@ public class Policy extends BaseCompositeDecisionRule
 		public ValueExpression getVariableEvaluationResult(String variableId) {
 			return varDefEvalResults.get(variableId);
 		}
-		
+
 		@Override
 		public EvaluationContext getParentContext() {
 			return getDelegate();
@@ -231,7 +231,7 @@ public class Policy extends BaseCompositeDecisionRule
 		public Policy getCurrentPolicy() {
 			return Policy.this;
 		}
-		
+
 		@Override
 		public XPathVersion getXPathVersion() {
 			PolicyDefaults defaults = Policy.this.getDefaults();

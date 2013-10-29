@@ -23,20 +23,20 @@ public class DenyUnlessPermitTest
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new DenyUnlessPermit<DecisionRule>("aaaa");
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testCombineWithNoDecisions()
 	{
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 	}
-	
+
 	@Test
 	public void testCombineWithPermit() throws EvaluationException
 	{
@@ -48,7 +48,7 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithNotApplicable() throws EvaluationException
 	{
@@ -60,7 +60,7 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithIndeterminate() throws EvaluationException
 	{
@@ -72,8 +72,8 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
-	
+
+
 	@Test
 	public void testCombineWithIndeterminateD() throws EvaluationException
 	{
@@ -85,7 +85,7 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithIndeterminateP() throws EvaluationException
 	{
@@ -97,7 +97,7 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithIndeterminateDP() throws EvaluationException
 	{
@@ -109,7 +109,7 @@ public class DenyUnlessPermitTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithDenyAndPermit() throws EvaluationException
 	{

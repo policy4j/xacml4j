@@ -8,15 +8,15 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-public class YearMonthDurationTest 
+public class YearMonthDurationTest
 {
 	private DatatypeFactory df;
-	
+
 	@Before
 	public void init() throws Exception{
 		this.df = DatatypeFactory.newInstance();
 	}
-	
+
 	@Test
 	public void testFromXacmlString()
 	{
@@ -27,7 +27,7 @@ public class YearMonthDurationTest
 		assertEquals(1, v1.getYears());
 		assertEquals(2, v1.getMonths());
 	}
-		
+
 	@Test
 	public void createFromJavaDuration()
 	{

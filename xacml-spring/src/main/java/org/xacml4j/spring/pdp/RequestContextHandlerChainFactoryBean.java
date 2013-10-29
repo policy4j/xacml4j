@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
 public class RequestContextHandlerChainFactoryBean extends AbstractFactoryBean<RequestContextHandlerChain>
 {
 	private Collection<RequestContextHandler> handlers;
-	
+
 	public void setHandlers(List<RequestContextHandler> handlers){
 		Preconditions.checkNotNull(handlers);
 		this.handlers = handlers;

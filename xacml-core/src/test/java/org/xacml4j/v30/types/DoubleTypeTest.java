@@ -9,15 +9,15 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 
 
-public class DoubleTypeTest 
+public class DoubleTypeTest
 {
 	private DoubleType t1;
-	
+
 	@Before
 	public void init(){
 		this.t1 = DoubleType.DOUBLE;
 	}
-	
+
 	@Test
 	public void testCreateDouble()
 	{
@@ -28,7 +28,7 @@ public class DoubleTypeTest
 		assertEquals(t1.create(1), t1.create(Float.valueOf("1")));
 		assertEquals(t1.create(1), t1.create(Double.valueOf("1")));
 	}
-	
+
 	@Test
 	public void testToXacmlString()
 	{
@@ -37,7 +37,7 @@ public class DoubleTypeTest
 		assertEquals("1.0", v0.toXacmlString());
 		assertEquals("-2.0", v1.toXacmlString());
 	}
-	
+
 	@Test
 	public void testFromAnyObject()
 	{
@@ -45,7 +45,7 @@ public class DoubleTypeTest
 		DoubleExp a = t1.create(o);
 		assertEquals(o, a.getValue());
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromAnyObjectWrongContentType()
 	{
@@ -53,7 +53,7 @@ public class DoubleTypeTest
 		t1.create(o);
 	}
 
-	
+
 	@Test
 	public void testEquals()
 	{

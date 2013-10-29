@@ -8,8 +8,8 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-public abstract class BaseResolverDescriptor 
-	implements ResolverDescriptor 
+public abstract class BaseResolverDescriptor
+	implements ResolverDescriptor
 {
 	private String id;
 	private String name;
@@ -17,19 +17,19 @@ public abstract class BaseResolverDescriptor
 	private AttributeCategory category;
 	private List<AttributeReferenceKey> keyRefs;
 	private int cacheTTL;
-	
+
 	protected BaseResolverDescriptor(String id,
 			String name,
 			AttributeCategory category,
 			List<AttributeReferenceKey> keys){
 		this(id, name, category, keys, 0);
 	}
-	
+
 	protected BaseResolverDescriptor(
 			String id,
 			String name,
 			AttributeCategory category,
-			List<AttributeReferenceKey> keys, 
+			List<AttributeReferenceKey> keys,
 			int preferredCacheTTL) {
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
@@ -40,18 +40,18 @@ public abstract class BaseResolverDescriptor
 		this.keyRefs = ImmutableList.copyOf(keys);
 		this.cacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
 	}
-	
+
 	@Override
 	public final String getId(){
 		return id;
 	}
-	
+
 	@Override
 	public final String getName(){
 		return name;
 	}
-	
-	
+
+
 	@Override
 	public boolean isCachable() {
 		return cacheTTL > 0;

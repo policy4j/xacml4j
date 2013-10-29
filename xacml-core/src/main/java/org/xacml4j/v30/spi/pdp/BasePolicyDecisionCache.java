@@ -10,19 +10,19 @@ import org.xacml4j.v30.Result;
 
 
 
-public abstract class BasePolicyDecisionCache 
+public abstract class BasePolicyDecisionCache
 	extends StandardMBean implements PolicyDecisionCache, PolicyDecisionCacheMBean
 {
 	private AtomicLong cacheMiss = new AtomicLong(0);
-	private AtomicLong cacheHit = new AtomicLong(0); 
-	
+	private AtomicLong cacheHit = new AtomicLong(0);
+
 	protected BasePolicyDecisionCache() throws NotCompliantMBeanException{
 		super(PolicyDecisionCacheMBean.class);
 	}
-	
+
 	@Override
 	public final Result getDecision(RequestContext req) {
-		
+
 		Result d =  doGetDecision(req);
 		if(d == null){
 			cacheMiss.incrementAndGet();
@@ -34,12 +34,12 @@ public abstract class BasePolicyDecisionCache
 
 	@Override
 	public final void putDecision(RequestContext req, Result result, int ttl) {
-		
+
 	}
 
 	protected abstract Result doGetDecision(RequestContext req);
 	protected abstract void doPutDecision(RequestContext req, Result result);
-	
+
 	@Override
 	public final long getCacheHitCount() {
 		return cacheHit.get();

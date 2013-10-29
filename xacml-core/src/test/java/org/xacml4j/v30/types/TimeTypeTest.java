@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-public class TimeTypeTest 
+public class TimeTypeTest
 {
 	@Test
 	public void testCompare()
@@ -19,7 +19,7 @@ public class TimeTypeTest
 		t2 = TimeType.TIME.create("08:23:46-05:00");
 		assertEquals(1, t1.compareTo(t2));
 	}
-	
+
 	@Test
 	public void testCreateFromCalendar()
 	{

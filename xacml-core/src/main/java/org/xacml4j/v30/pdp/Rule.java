@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private Effect effect;
-	
+
 	private Rule(Rule.Builder b){
 		super(b);
 		this.effect = b.effect;
@@ -23,16 +23,16 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	public static Builder builder(String ruleId, Effect effect){
 		return new Builder(ruleId, effect);
 	}
-	
+
 	/**
 	 * Gets rule effect
-	 * 
+	 *
 	 * @return {@link Effect}
 	 */
 	public Effect getEffect(){
 		return effect;
 	}
-	
+
 	/**
 	 * Implementation returns the same context which was
 	 * passed as parent context. Rule evaluation shares
@@ -45,13 +45,13 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 		return new RuleEvaluationContext(context);
 	}
-	
+
 	@Override
 	protected boolean isEvaluationContextValid(EvaluationContext context){
 		return this == context.getCurrentRule() &&
 			   context.getCurrentPolicy() != null;
 	}
-	
+
 	public boolean equals(Object o){
 		if(o == null){
 			return false;
@@ -63,16 +63,16 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return false;
 		}
 		Rule r = (Rule)o;
-		return effect.equals(r.effect) && 
+		return effect.equals(r.effect) &&
 				equalsTo(r);
 	}
-	
+
 	public String toString(){
 		return toStringBuilder(Objects.toStringHelper(this))
 				.add("effect", effect)
 				.toString();
 	}
-	
+
 
 	@Override
 	public final Decision evaluate(EvaluationContext context)
@@ -112,14 +112,14 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 		return Decision.NOT_APPLICABLE;
 	}
-		
+
 	private Decision getExtendedIndeterminate(){
 		return (effect == Effect.DENY)?
 				Decision.INDETERMINATE_D:Decision.INDETERMINATE_P;
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) 
+	public void accept(PolicyVisitor v)
 	{
 		v.visitEnter(this);
 		if(getTarget() != null){
@@ -130,23 +130,23 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 		v.visitLeave(this);
 	}
-	
+
 	public class RuleEvaluationContext extends DelegatingEvaluationContext
 	{
 		public RuleEvaluationContext(EvaluationContext context){
 			super(context);
 		}
-		
+
 		@Override
 		public DecisionRule getCurrentRule() {
 			return Rule.this;
 		}
 	}
-	
+
 	public static class Builder extends BaseDecisionRuleBuilder<Builder>
 	{
 		private Effect effect;
-		
+
 		private Builder(String ruleId, Effect effect){
 			super(ruleId);
 			Preconditions.checkNotNull(effect, "Rule effect can't be null");
@@ -158,7 +158,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			this.effect = effect;
 			return this;
 		}
-		
+
 		@Override
 		protected Builder getThis() {
 			return this;
@@ -166,5 +166,5 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		public Rule build(){
 			return new Rule(this);
 		}
-	} 
+	}
 }

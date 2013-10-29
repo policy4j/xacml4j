@@ -96,7 +96,7 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 		}
 		return valid;
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects
@@ -106,12 +106,12 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 				.add("type", paramType)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(min, max, paramType);
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -124,8 +124,8 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 			return false;
 		}
 		FunctionParamValueTypeSequenceSpec s = (FunctionParamValueTypeSequenceSpec)o;
-		return Objects.equal(min, s.min) && 
-				Objects.equal(max, s.max) && 
+		return Objects.equal(min, s.min) &&
+				Objects.equal(max, s.max) &&
 				paramType.equals(s.paramType);
 	}
 }

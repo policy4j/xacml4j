@@ -7,25 +7,25 @@ import org.xacml4j.v30.XPathVersion;
 
 /**
  * An XPath provider for executing XPath expressions
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public interface XPathProvider 
-{	
+public interface XPathProvider
+{
 	NodeList evaluateToNodeSet(
-			XPathVersion version, String path, Node context) 
+			XPathVersion version, String path, Node context)
 		throws XPathEvaluationException;
-	
+
 	String evaluateToString(
-			XPathVersion version, String path, Node context) 
+			XPathVersion version, String path, Node context)
 		throws XPathEvaluationException;
-	
+
 	Node evaluateToNode(
-			XPathVersion version, String path, Node context) 
+			XPathVersion version, String path, Node context)
 		throws XPathEvaluationException;
-	
+
 	Number evaluateToNumber(
-			XPathVersion version, String path, Node context) 
+			XPathVersion version, String path, Node context)
 		throws XPathEvaluationException;
-	
+
 }

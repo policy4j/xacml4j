@@ -13,51 +13,51 @@ public abstract class BaseDecisionRuleResponse
 {
 	protected String id;
 	protected Multimap<String, AttributeAssignment> attributes;
-	
+
 	/**
 	 * For compatibility with XACML 2.0
 	 * response context
 	 */
 	private Effect fullfillOn;
-	
+
 	private transient int hashCode;
-	
+
 	protected BaseDecisionRuleResponse(
-			BaseBuilder<?> b) 
+			BaseBuilder<?> b)
 	{
 		this.id = b.id;
 		this.attributes = ImmutableSetMultimap.copyOf(b.attributes);
 		this.hashCode = Objects.hashCode(id, attributes);
 		this.fullfillOn = b.fullFillOn;
 	}
-	
+
 	public final String getId(){
 		return id;
 	}
-	
+
 	/**
 	 * For compatibility with XACML 2.0 response
 	 * context
-	 * 
+	 *
 	 * @return {@link Effect}
 	 */
 	public Effect getFullfillOn(){
 		return fullfillOn;
 	}
-	
+
 	public final Collection<AttributeAssignment> getAttributes(){
 		return attributes.values();
 	}
-	
+
 	public final Collection<AttributeAssignment> getAttribute(String attributeId){
 		return this.attributes.get(attributeId);
 	}
-	
+
 	@Override
 	public final int hashCode(){
 		return hashCode;
 	}
-	
+
 	@Override
 	public final String toString(){
 		return Objects.toStringHelper(this)
@@ -65,52 +65,52 @@ public abstract class BaseDecisionRuleResponse
 		.add("attributes", attributes)
 		.toString();
 	}
-	
+
 	public abstract static class BaseBuilder <T extends BaseBuilder<?>>
 	{
 		protected String id;
 		protected Effect fullFillOn;
 		protected Multimap<String, AttributeAssignment> attributes = LinkedHashMultimap.create();
-		
+
 		protected BaseBuilder(String id, Effect fullFillOn){
 			Preconditions.checkNotNull(id);
 			this.id = id;
 			this.fullFillOn = fullFillOn;
 		}
-		
+
 		public final T attribute(AttributeAssignment attr){
 			Preconditions.checkNotNull(attr);
 			this.attributes.put(attr.getAttributeId(), attr);
 			return getThis();
 		}
-		
+
 		public final T from(BaseDecisionRuleResponse r){
 			this.id = r.id;
-			this.fullFillOn = r.fullfillOn; 
+			this.fullFillOn = r.fullfillOn;
 			this.attributes.putAll(r.attributes);
 			return getThis();
 		}
-		
+
 		public final T attributes(Iterable<AttributeAssignment> attributes){
 			for(AttributeAssignment attr : attributes){
 				this.attributes.put(attr.getAttributeId(), attr);
 			}
 			return getThis();
 		}
-		
+
 		public final T attribute(
 				String id, AttributeExp ... values)
 		{
 			return attribute(id, null, null, values);
 		}
-		
+
 		public final T attribute(
-				String id,  
-				AttributeCategory category, 
-				String issuer, 
+				String id,
+				AttributeCategory category,
+				String issuer,
 				AttributeExp ... values)
 		{
-			if(values == null || 
+			if(values == null ||
 					values.length == 0){
 				return getThis();
 			}
@@ -125,7 +125,7 @@ public abstract class BaseDecisionRuleResponse
 			}
 			return getThis();
 		}
-		
+
 		protected abstract T getThis();
 	}
 }

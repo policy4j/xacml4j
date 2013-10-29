@@ -11,37 +11,37 @@ import org.xacml4j.v30.EvaluationException;
 
 
 
-public interface EvaluationContextHandler 
+public interface EvaluationContextHandler
 {
 	NodeList evaluateToNodeSet(
 			EvaluationContext context,
-			String xpath, 
-			AttributeCategory categoryId) 
+			String xpath,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
-	
+
+
 	String evaluateToString(
 			EvaluationContext context,
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	Node evaluateToNode(
 			EvaluationContext context,
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	Number evaluateToNumber(
 			EvaluationContext context,
-			String path, 
-			AttributeCategory categoryId) 
+			String path,
+			AttributeCategory categoryId)
 		throws EvaluationException;
-	
+
 	BagOfAttributeExp resolve(
 			EvaluationContext context,
 			AttributeDesignatorKey key) throws EvaluationException;
-	
+
 	BagOfAttributeExp resolve(
 			EvaluationContext context,
 			AttributeSelectorKey key) throws EvaluationException;

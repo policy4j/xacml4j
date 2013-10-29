@@ -25,8 +25,8 @@ public class DecisionCombiningAlgorithmProvidersDefinitionParser extends Abstrac
 	      }
 	    return factory.getBeanDefinition();
 	}
-	
-	private static BeanDefinitionBuilder parseComponent(Element element) 
+
+	private static BeanDefinitionBuilder parseComponent(Element element)
 	{
 	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(DecisionCombingingAlgorithmProviderBean.class);
 	      String clazz = element.getAttribute("class");
@@ -39,8 +39,8 @@ public class DecisionCombiningAlgorithmProvidersDefinitionParser extends Abstrac
 	      }
 	      return component;
 	}
-	
-	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) 
+
+	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory)
 	{
 	      ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	      for (int i = 0; i < childElements.size(); ++i) {

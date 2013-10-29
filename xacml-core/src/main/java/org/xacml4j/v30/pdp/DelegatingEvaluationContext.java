@@ -42,16 +42,16 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
 	}
-	
+
 	protected EvaluationContext getDelegate(){
 		return delegate;
 	}
-	
+
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
 		return delegate.createExtIndeterminateEvalContext();
 	}
-	
+
 	@Override
 	public boolean isExtendedIndeterminateEval() {
 		return delegate.isExtendedIndeterminateEval();
@@ -89,7 +89,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public CompositeDecisionRule getCurrentPolicy() {
 		return delegate.getCurrentPolicy();
 	}
-	
+
 
 	@Override
 	public DecisionRule getCurrentRule() {
@@ -174,7 +174,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public Calendar getCurrentDateTime() {
 		return delegate.getCurrentDateTime();
 	}
-	
+
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */

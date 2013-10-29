@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-public interface PolicyDecisionPointMBean 
+public interface PolicyDecisionPointMBean
 {
 	boolean isDecisionAuditEnabled();
 	void setDecisionAuditEnabled(boolean enabled);

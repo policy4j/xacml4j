@@ -14,7 +14,7 @@ import com.google.common.base.Ticker;
 import com.google.common.collect.ImmutableList;
 
 final class DefaultResolverContext implements
-		ResolverContext 
+		ResolverContext
 {
 	private EvaluationContext context;
 	private List<BagOfAttributeExp> keys;
@@ -34,23 +34,23 @@ final class DefaultResolverContext implements
 	public Calendar getCurrentDateTime() {
 		return context.getCurrentDateTime();
 	}
-	
+
 	@Override
 	public Ticker getTicker(){
 		return context.getTicker();
 	}
-	
+
 	@Override
 	public ResolverDescriptor getDescriptor(){
 		return desciptor;
 	}
-	
+
 	@Override
 	public List<BagOfAttributeExp> getKeys(){
 		return keys;
 	}
-	
-	private static List<BagOfAttributeExp> evaluateKeys(EvaluationContext context, 
+
+	private static List<BagOfAttributeExp> evaluateKeys(EvaluationContext context,
 			List<AttributeReferenceKey> keyRefs) throws EvaluationException
 	{
 		if(keyRefs == null){
@@ -62,7 +62,7 @@ final class DefaultResolverContext implements
 		}
 		return b.build();
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -71,5 +71,5 @@ final class DefaultResolverContext implements
 				.add("keys", keys)
 				.toString();
 	}
-	
+
 }

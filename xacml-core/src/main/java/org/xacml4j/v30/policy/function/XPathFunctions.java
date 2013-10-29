@@ -20,23 +20,23 @@ import org.xacml4j.v30.types.XPathExp;
 
 
 /**
- * This class implements functions that take XPath expressions for arguments. 
- * An XPath expression evaluates to a node-set, which is a set of XML nodes 
- * that match the expression. A node or node-set is not in the formal data-type 
- * system of XACML. All comparison or other operations on node-sets are performed 
- * in isolation of the particular function specified. The context nodes and namespace mappings 
- * of the XPath expressions are defined by the XPath data-type, see section B.3 (XACML 3.0 core). 
- * 
+ * This class implements functions that take XPath expressions for arguments.
+ * An XPath expression evaluates to a node-set, which is a set of XML nodes
+ * that match the expression. A node or node-set is not in the formal data-type
+ * system of XACML. All comparison or other operations on node-sets are performed
+ * in isolation of the particular function specified. The context nodes and namespace mappings
+ * of the XPath expressions are defined by the XPath data-type, see section B.3 (XACML 3.0 core).
+ *
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML XPath functions")
-public class XPathFunctions 
+public class XPathFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp xpathCount(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath) 
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath)
 	{
 		try{
 			NodeList nodes = context.evaluateToNodeSet(xpath.getPath(), xpath.getCategory());
@@ -48,28 +48,28 @@ public class XPathFunctions
 			return IntegerType.INTEGER.create(0);
 		}
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp xpathCountXacml2(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath)
 	{
-		return xpathCount(context, 
+		return xpathCount(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp xpathNodeEqual(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1) 
-	{		
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1)
+	{
 		try{
 			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(), xpath0.getCategory());
 			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(), xpath1.getCategory());
-			if(nodes0 == null || 
+			if(nodes0 == null ||
 					nodes0  == null){
 				return BooleanType.BOOLEAN.create(false);
 			}
@@ -85,7 +85,7 @@ public class XPathFunctions
 			return BooleanType.BOOLEAN.create(false);
 		}
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp xpathNodeEqualXacml20(
@@ -93,24 +93,24 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath0,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1)
 	{
-		return xpathNodeEqual(context, 
+		return xpathNodeEqual(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp xpathNodeMatch(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1) 
-	{		
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1)
+	{
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(), 
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(),
 					xpath0.getCategory());
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(), 
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(),
 					xpath1.getCategory());
-			if(nodes0 == null || 
+			if(nodes0 == null ||
 					nodes0  == null){
 				return BooleanType.BOOLEAN.create(false);
 			}
@@ -142,26 +142,26 @@ public class XPathFunctions
 			return BooleanType.BOOLEAN.create(false);
 		}
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp xpathNodeMatchXacml20(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath0,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1)
 	{
-		return xpathNodeMatch(context, 
+		return xpathNodeMatch(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
 	}
-	
+
 	/**
-	 * Recursively compares the child nodes of the first 
+	 * Recursively compares the child nodes of the first
 	 * element with the second element
-	 * 
+	 *
 	 * @param a a first node to search recursively
 	 * @param b a second node to compare to
-	 * @return <code>true</code>, if some of the child nodes 
+	 * @return <code>true</code>, if some of the child nodes
 	 * of the first node is equals to the second node
 	 */
 	private static boolean compareChildNodes(Node a, Node b)
@@ -171,7 +171,7 @@ public class XPathFunctions
 			return false;
 		}
 		for(int i = 0; i < c.getLength(); i++){
-			if(c.item(i).isSameNode(b) || 
+			if(c.item(i).isSameNode(b) ||
 					compareChildNodes(c.item(i), b)){
 				return true;
 			}

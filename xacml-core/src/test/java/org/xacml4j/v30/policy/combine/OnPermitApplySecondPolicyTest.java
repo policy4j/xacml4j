@@ -17,13 +17,13 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 
 
-public class OnPermitApplySecondPolicyTest 
+public class OnPermitApplySecondPolicyTest
 {
 	private List<CompositeDecisionRule> decisions;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm;
 	private EvaluationContext context;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
@@ -31,23 +31,23 @@ public class OnPermitApplySecondPolicyTest
 		this.algorithm = new OnPermitApplySecondPolicyCombiningAlgorithm();
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testCombineWithNoDecisions()
 	{
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 	}
-	
+
 	@Test
 	public void testCombineFirstPermitSecondNotApplicable() throws EvaluationException
 	{
 		CompositeDecisionRule r1 = c.createMock(CompositeDecisionRule.class);
 		CompositeDecisionRule r2 = c.createMock(CompositeDecisionRule.class);
-	
+
 		decisions = new LinkedList<CompositeDecisionRule>();
 		decisions.add(r1);
 		decisions.add(r2);
-	
+
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
@@ -56,17 +56,17 @@ public class OnPermitApplySecondPolicyTest
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testCombineFirstPermitSecondPermit() throws EvaluationException
 	{
 		CompositeDecisionRule r1 = c.createMock(CompositeDecisionRule.class);
 		CompositeDecisionRule r2 = c.createMock(CompositeDecisionRule.class);
-	
+
 		decisions = new LinkedList<CompositeDecisionRule>();
 		decisions.add(r1);
 		decisions.add(r2);
-	
+
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);
@@ -75,17 +75,17 @@ public class OnPermitApplySecondPolicyTest
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testCombineFirstPermitSecondDeny() throws EvaluationException
 	{
 		CompositeDecisionRule r1 = c.createMock(CompositeDecisionRule.class);
 		CompositeDecisionRule r2 = c.createMock(CompositeDecisionRule.class);
-	
+
 		decisions = new LinkedList<CompositeDecisionRule>();
 		decisions.add(r1);
 		decisions.add(r2);
-	
+
 		expect(r1.createContext(context)).andReturn(context);
 		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
 		expect(r2.createContext(context)).andReturn(context);

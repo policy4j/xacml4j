@@ -15,19 +15,19 @@ import org.xacml4j.v30.types.TimeType;
 
 import com.google.common.base.Ticker;
 
-public class DefaultEnviromentAttributesResolverTest 
+public class DefaultEnviromentAttributesResolverTest
 {
 	private AttributeResolver r;
 	private ResolverContext context;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
 		this.r = new DefaultEnviromentAttributeResolver();
 		this.context = c.createMock(ResolverContext.class);
 	}
-	
+
 	@Test
 	public void testResolve() throws Exception
 	{

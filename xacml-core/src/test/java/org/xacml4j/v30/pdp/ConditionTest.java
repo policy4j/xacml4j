@@ -16,19 +16,19 @@ import org.xacml4j.v30.StatusCode;
 
 
 
-public class ConditionTest 
+public class ConditionTest
 {
 	private Expression exp;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.exp = createStrictMock(Expression.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateWithExpWhichReturnsNonBooleanValue() 
+	public void testCreateWithExpWhichReturnsNonBooleanValue()
 		throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(INTEGER).times(1, 2);
@@ -36,12 +36,12 @@ public class ConditionTest
 		new Condition(exp);
 		verify(exp);
 	}
-	
+
 	@Test
 	public void testExpressionThrowsEvaluationException() throws Exception
 	{
 		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
-		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context, 
+		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context,
 				createStrictMock(FunctionSpec.class), new NullPointerException()));
 		context.setEvaluationStatus(StatusCode.createProcessingError());
 		replay(exp, context);
@@ -49,7 +49,7 @@ public class ConditionTest
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		verify(exp, context);
 	}
-	
+
 	@Test
 	public void testExpressionThrowsRuntimeException() throws Exception
 	{
@@ -61,7 +61,7 @@ public class ConditionTest
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		verify(exp, context);
 	}
-	
+
 	@Test
 	public void testExpressionEvaluatesToFalse() throws Exception
 	{
@@ -72,7 +72,7 @@ public class ConditionTest
 		assertEquals(ConditionResult.FALSE, c.evaluate(context));
 		verify(exp, context);
 	}
-	
+
 	@Test
 	public void testExpressionEvaluatesToTrue() throws Exception
 	{

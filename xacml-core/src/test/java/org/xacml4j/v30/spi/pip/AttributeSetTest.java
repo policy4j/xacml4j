@@ -14,11 +14,11 @@ import org.xacml4j.v30.types.StringType;
 
 import com.google.common.collect.Iterables;
 
-public class AttributeSetTest 
+public class AttributeSetTest
 {
 	private AttributeResolverDescriptor noIssuer;
 	private AttributeResolverDescriptor withIssuer;
-	
+
 	@Before
 	public void init(){
 		this.noIssuer = AttributeResolverDescriptorBuilder.builder(
@@ -33,26 +33,26 @@ public class AttributeSetTest
 				.build();
 		assertEquals("issuer", withIssuer.getIssuer());
 	}
-	
+
 	@Test
 	public void testAttributeSetWithIssuer()
 	{
-		AttributeDesignatorKey.Builder key = 
+		AttributeDesignatorKey.Builder key =
 				AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(IntegerType.INTEGER)
 				.issuer("issuer");
-		
-		AttributeDesignatorKey.Builder key1 = 
+
+		AttributeDesignatorKey.Builder key1 =
 				AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId2")
 				.issuer("issuer")
 				.dataType(StringType.STRING);
-		
+
 		AttributeSet v = AttributeSet
 				.builder(withIssuer)
 				.build();
@@ -62,27 +62,27 @@ public class AttributeSetTest
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
-		
+
 		BagOfAttributeExp v2 = v.get(key.build());
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
-		
+
 		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
 		assertEquals(key.build(), Iterables.get(keys, 0));
 		assertEquals(key1.build(), Iterables.get(keys, 1));
 	}
-	
+
 	@Test
 	public void testAttributeSetWithNoIssuer()
 	{
-		AttributeDesignatorKey.Builder key = 
+		AttributeDesignatorKey.Builder key =
 				AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(IntegerType.INTEGER);
-		
+
 		AttributeSet v = AttributeSet
 				.builder(noIssuer)
 				.build();
@@ -93,7 +93,7 @@ public class AttributeSetTest
 		assertTrue(v1.isEmpty());
 		assertEquals(IntegerType.INTEGER, v1.getDataType());
 	}
-	
+
 	@Test
 	public void testIsEmpty(){
 		AttributeSet v = AttributeSet
@@ -101,5 +101,5 @@ public class AttributeSetTest
 				.build();
 		assertTrue(v.isEmpty());
 	}
-	
+
 }

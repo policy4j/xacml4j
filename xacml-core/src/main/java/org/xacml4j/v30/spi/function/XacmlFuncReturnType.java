@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFuncReturnType 
+public @interface XacmlFuncReturnType
 {
 	String typeId();
 	boolean isBag() default false;

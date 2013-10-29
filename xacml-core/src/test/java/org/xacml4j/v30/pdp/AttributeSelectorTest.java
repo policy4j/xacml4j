@@ -23,13 +23,13 @@ import org.xacml4j.v30.types.DateType;
 public class AttributeSelectorTest
 {
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init() throws Exception
 	{
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testMustBePresenTrueAndReturnsNonEmptyBag() throws EvaluationException
 	{
@@ -48,7 +48,7 @@ public class AttributeSelectorTest
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
@@ -68,7 +68,7 @@ public class AttributeSelectorTest
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
 	{
@@ -85,7 +85,7 @@ public class AttributeSelectorTest
 		ref.evaluate(context);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
 	{
@@ -104,7 +104,7 @@ public class AttributeSelectorTest
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
@@ -115,10 +115,10 @@ public class AttributeSelectorTest
 				.dataType(DATE)
 				.mustBePresent(false)
 				.build();
-	
+
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(context, ref.getReferenceKey(), 
+				new AttributeReferenceEvaluationException(context, ref.getReferenceKey(),
 						StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -126,7 +126,7 @@ public class AttributeSelectorTest
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
-	
+
 	@Test
 	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
 	{
@@ -145,7 +145,7 @@ public class AttributeSelectorTest
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
@@ -162,7 +162,7 @@ public class AttributeSelectorTest
 		ref.evaluate(context);
 		verify(context);
 	}
-	
+
 	@Test(expected=AttributeReferenceEvaluationException.class)
 	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
@@ -175,7 +175,7 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(context, 
+				new AttributeReferenceEvaluationException(context,
 						ref.getReferenceKey(), StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		ref.evaluate(context);

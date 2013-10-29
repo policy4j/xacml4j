@@ -20,17 +20,17 @@ public class ParamTypeSequenceTest
 	private FunctionParamValueTypeSequenceSpec specAttrZeroOrMore;
 	private FunctionParamValueTypeSequenceSpec specAttrOneOrMore;
 	private FunctionParamValueTypeSequenceSpec specAttrFromOneToFour;
-	
+
 	@Before
 	public void setUp() throws Exception
 	{
 		this.t1 = StringType.STRING;
 		this.t2 = DoubleType.DOUBLE;
-		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1); 
+		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, t1);
 		this.specAttrOneOrMore = new FunctionParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, t1);
-		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, t1);	
+		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, t1);
 	}
-	
+
 	@Test
 	public void testVarArgWithZeroOrMore() throws Exception
 	{
@@ -38,7 +38,7 @@ public class ParamTypeSequenceTest
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
 		p.add(t2.create(0.1));
-		assertFalse(specAttrZeroOrMore.validate(p.listIterator()));	
+		assertFalse(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
 		p.add(t1.create("1"));
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
@@ -54,7 +54,7 @@ public class ParamTypeSequenceTest
 		p.add(t1.create("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
-	
+
 	@Test
 	public void testWithOneToFour() throws Exception
 	{
@@ -62,7 +62,7 @@ public class ParamTypeSequenceTest
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
 		p.add(t2.create(0.1));
-		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));	
+		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
 		p.add(t1.create("1"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
@@ -78,7 +78,7 @@ public class ParamTypeSequenceTest
 		p.add(t1.create("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
-	
+
 	@Test
 	public void testVarArgWithOneOrMore() throws Exception
 	{
@@ -87,7 +87,7 @@ public class ParamTypeSequenceTest
 		p.add(t1.create("1"));
 		p.add(t1.create("2"));
 		p.add(t1.create("3"));
-		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));	
+		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
 		p.add(t1.create("1"));
 		p.add(t1.create("2"));

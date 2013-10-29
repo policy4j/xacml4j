@@ -6,8 +6,8 @@
         xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
-		xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+        xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+		xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
 		xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
         xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
@@ -15,28 +15,28 @@
 
   <wsdl:types>
     <xs:schema>
-      <xs:import 
-      namespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+      <xs:import
+      namespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
       schemaLocation="http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"/>
     </xs:schema>
   </wsdl:types>
-  
+
   <wsdl:message name="XACML30Request">
     <wsdl:part name="request" element="xacml:Request" />
   </wsdl:message>
   <wsdl:message name="XACML30Response">
     <wsdl:part name="response" element="xacml:Response" />
   </wsdl:message>
-  
+
   <wsdl:portType name="Xacml30PdpPort">
     <wsdl:operation name="decide">
       <wsdl:input message="tns:XACML30Request"/>
       <wsdl:output message="tns:XACML30Request"/>
     </wsdl:operation>
   </wsdl:portType>
-  
+
   <wsdl:binding name="Xacml30SoapBinding" type="tns:Xacml30PdpPort">
-      <soap:binding style="document" 
+      <soap:binding style="document"
          transport="http://schemas.xmlsoap.org/soap/http"/>
       <wsdl:operation name="decide">
          <wsdl:input>
@@ -47,8 +47,8 @@
          </wsdl:output>
       </wsdl:operation>
    </wsdl:binding>
-   
-    <wsdl:binding name="Xacml30PoxBinding" type="tns:Xacml30PdpPort">	
+
+    <wsdl:binding name="Xacml30PoxBinding" type="tns:Xacml30PdpPort">
    	  <http:binding verb="POST"/>
    	  <wsdl:operation name="decide">
             <http:operation location="/pox"/>
@@ -60,17 +60,17 @@
             </wsdl:output>
         </wsdl:operation>
    </wsdl:binding>
-   
+
    <wsdl:service name="Xacml30SoapService">
       <wsdl:port name="Xacml30SoapEndpoint" binding="tns:Xacml30SoapBinding">
          <soap:address location="https://login.comcast.net/api/xacml/soap/tve"/>
       </wsdl:port>
    </wsdl:service>
-   
+
    <wsdl:service name="Xacml30PoxService">
       <wsdl:port name="Xacml30PoxEndpoint" binding="tns:Xacml30PoxBinding">
          <http:address location="https://login.comcast.net/api/xacml/pox/tve"/>
       </wsdl:port>
    </wsdl:service>
-   
+
 </wsdl:definitions>

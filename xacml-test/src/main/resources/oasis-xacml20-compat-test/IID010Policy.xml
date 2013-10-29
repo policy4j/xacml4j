@@ -57,7 +57,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#integer">55</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
     <Rule
@@ -100,7 +100,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

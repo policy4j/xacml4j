@@ -2,14 +2,11 @@ package org.xacml4j.v30;
 
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.ExpectedAttributeResolverBuilder;
-import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.types.BooleanType;
 
 
-public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport 
+public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 {
 	@Test
 	public void testCPNICompliance() throws Exception {
@@ -23,7 +20,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 
 		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
 	}
-	
+
 	@Test
 	public void testCPNIComplianceAttrsInRequest() throws Exception {
 		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")

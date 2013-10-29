@@ -28,7 +28,7 @@
                 <AttributeValue
                       DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
             </Apply>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

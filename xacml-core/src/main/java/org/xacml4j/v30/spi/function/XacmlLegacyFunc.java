@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlLegacyFunc 
+public @interface XacmlLegacyFunc
 {
 	String id();
 }

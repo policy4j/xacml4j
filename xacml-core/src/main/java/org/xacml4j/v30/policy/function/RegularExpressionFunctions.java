@@ -20,81 +20,81 @@ import org.xacml4j.v30.types.X500NameExp;
 
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
-public class RegularExpressionFunctions 
+public class RegularExpressionFunctions
 {
 	private final static Logger log = LoggerFactory.getLogger(RegularExpressionFunctions.class);
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp stringRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp anyURIRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp ipAddressRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp dnsNameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp rfc822NameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static 
+	public static
 			BooleanExp x500NameRegexpMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp, 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp input)
 	{
 		 return matches(regexp, input);
 	}
-	
-	
-	
+
+
+
 	private static BooleanExp matches(StringExp regexp, AttributeExp input){
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", input, regexp);
 		}
 		 return BooleanType.BOOLEAN.create(Pattern.matches(
-				 covertXacmlToJavaSyntax(regexp.getValue()), 
+				 covertXacmlToJavaSyntax(regexp.getValue()),
 				 input.toXacmlString()));
 	}
-	
+
 	/*
 	 *
 	 * Copyright 2003-2006 Sun Microsystems, Inc. All Rights Reserved.
@@ -104,7 +104,7 @@ public class RegularExpressionFunctions
 	 *
 	 *   1. Redistribution of source code must retain the above copyright notice,
 	 *      this list of conditions and the following disclaimer.
-	 * 
+	 *
 	 *   2. Redistribution in binary form must reproduce the above copyright
 	 *      notice, this list of conditions and the following disclaimer in the
 	 *      documentation and/or other materials provided with the distribution.
@@ -112,7 +112,7 @@ public class RegularExpressionFunctions
 	 * Neither the name of Sun Microsystems, Inc. or the names of contributors may
 	 * be used to endorse or promote products derived from this software without
 	 * specific prior written permission.
-	 * 
+	 *
 	 * This software is provided "AS IS," without a warranty of any kind. ALL
 	 * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING
 	 * ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
@@ -128,7 +128,7 @@ public class RegularExpressionFunctions
 	 * You acknowledge that this software is not designed or intended for use in
 	 * the design, construction, operation or maintenance of any nuclear facility.
 	 */
-	public static String covertXacmlToJavaSyntax(String xpr) 
+	public static String covertXacmlToJavaSyntax(String xpr)
 	{
 	       // the regular expression syntax required by XACML differs
 	       // from the syntax supported by java.util.regex.Pattern
@@ -136,7 +136,7 @@ public class RegularExpressionFunctions
 	       // the XACML syntax into a semantically equivalent Pattern syntax
 
 	       StringBuffer buf = new StringBuffer(xpr);
-	       
+
 	       // in order to handle the requirement that the string is
 	       // considered to match the pattern if any substring matches
 	       // the pattern, we prepend ".*" and append ".*" to the reg exp,
@@ -148,7 +148,7 @@ public class RegularExpressionFunctions
 	       if (xpr.charAt(xpr.length() - 1) != '$')
 	           buf = buf.insert(buf.length(), ".*");
 
-	       // in order to handle Unicode blocks, we replace all 
+	       // in order to handle Unicode blocks, we replace all
 	       // instances of "\p{Is" with "\p{In" in the reg exp
 
 	       int idx = -1;
@@ -158,7 +158,7 @@ public class RegularExpressionFunctions
 	           idx = buf.indexOf("\\p{Is", idx);
 	       }
 
-	       // in order to handle Unicode blocks, we replace all instances 
+	       // in order to handle Unicode blocks, we replace all instances
 	       // of "\P{Is" with "\P{In" in the reg exp
 
 	       idx = -1;
@@ -167,7 +167,7 @@ public class RegularExpressionFunctions
 	           buf = buf.replace(idx, idx+5, "\\P{In");
 	           idx = buf.indexOf("\\P{Is", idx);
 	       }
-	       
+
 	       // converts to class subtraction
 	       // in order to handle character class subtraction, we
 	       // replace nested instances of "-[" with "&&[^" in the reg exp
@@ -179,7 +179,7 @@ public class RegularExpressionFunctions
 	    	   }
 	    	   idx = buf.indexOf("-[", idx+1);
 	       }
-	       
+
 	       String regexp = buf.toString();
 	       if(log.isDebugEnabled()){
 	    	   log.debug("XACML regexp=\"{}\", " +

@@ -12,7 +12,7 @@ import org.xacml4j.v30.Version;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 
-public class VersionTest 
+public class VersionTest
 {
 	@Test
 	public void testCreateVersion() throws XacmlSyntaxException
@@ -26,7 +26,7 @@ public class VersionTest
 		assertFalse(v1.equals(null));
 		assertFalse(v1.equals("1.0"));
 	}
-	
+
 	@Test
 	public void testLessThanVersion() throws XacmlSyntaxException
 	{
@@ -41,26 +41,26 @@ public class VersionTest
 		assertTrue(v2.compareTo(v2) == 0);
 		assertTrue(v4.compareTo(v2) == 0);
 	}
-	
+
 	@Test
 	public void testDefaultVersion() throws XacmlSyntaxException
 	{
 		Version v = Version.parse(null);
 		assertEquals("1.0", v.getValue());
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testNegativeComponent() throws XacmlSyntaxException
 	{
 		Version.parse("-1.0");
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testUnparsableVersion() throws XacmlSyntaxException
 	{
 		Version.parse("1.a....");
 	}
-	
+
 	@Test
 	public void sortVersion() throws Exception
 	{

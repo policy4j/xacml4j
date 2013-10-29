@@ -16,7 +16,7 @@ import com.google.gson.JsonParseException;
 class AttributeExpDeserializer implements JsonDeserializer<AttributeExp>
 {
 	private Types typesRegistry;
-	
+
 	public AttributeExpDeserializer(Types registry){
 		Preconditions.checkNotNull(registry);
 		this.typesRegistry = registry;

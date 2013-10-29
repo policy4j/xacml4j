@@ -142,12 +142,12 @@
 			<xs:element ref="xacml:AttributesReference" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	
+
 	<xs:element name="AttributesReference" type="xacml:AttributesReferenceType"/>
 	<xs:complexType name="AttributesReferenceType">
 		<xs:attribute name="ReferenceId" type="xs:IDREF" use="required" />
 	</xs:complexType>
-	
+
 	<xs:element name="Obligations" type="xacml:ObligationsType"/>
 	<xs:complexType name="ObligationsType">
 		<xs:sequence>

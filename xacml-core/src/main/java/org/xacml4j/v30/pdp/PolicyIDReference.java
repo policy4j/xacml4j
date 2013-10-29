@@ -24,11 +24,11 @@ public final class PolicyIDReference extends
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	public static Builder builder(String id){
 		return new Builder().id(id);
 	}
-	
+
 	/**
 	 * Test this reference points to a given policy
 	 *
@@ -98,7 +98,7 @@ public final class PolicyIDReference extends
 		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion())
 		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}
-	
+
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
@@ -178,25 +178,25 @@ public final class PolicyIDReference extends
 			Preconditions.checkArgument(context.getCurrentPolicy() == null);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicyIDReference.this, context));
 		}
-		
+
 		@Override
 		public EvaluationContext getParentContext() {
 			return getDelegate();
 		}
-		
+
 		@Override
 		public PolicyIDReference getCurrentPolicyIDReference() {
 			return PolicyIDReference.this;
 		}
 	}
-	
+
 	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
 	{
 		@Override
 		protected Builder getThis() {
 			return this;
 		}
-		
+
 		public PolicyIDReference build(){
 			return new PolicyIDReference(this);
 		}

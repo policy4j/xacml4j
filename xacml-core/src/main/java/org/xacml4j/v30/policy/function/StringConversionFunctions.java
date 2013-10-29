@@ -9,7 +9,7 @@ import org.xacml4j.v30.types.StringType;
 
 
 @XacmlFunctionProvider(description="XACML string conversion functions")
-public class StringConversionFunctions 
+public class StringConversionFunctions
 {
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-space")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
@@ -18,7 +18,7 @@ public class StringConversionFunctions
 	{
 		return StringType.STRING.create(v.getValue().trim());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp normalizeToLowerCase(
@@ -26,7 +26,7 @@ public class StringConversionFunctions
 	{
 		return StringType.STRING.create(v.getValue().toLowerCase());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:string-normalize-to-upper-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp normalizeToUpperCase(

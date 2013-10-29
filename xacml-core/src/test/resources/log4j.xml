@@ -12,11 +12,11 @@
 				value="%d{ABSOLUTE} %-5p [%c{1}] PDP[%X{pdpId}] %m%n" />
 		</layout>
 	</appender>
-	
+
 	<root>
 		<priority value="DEBUG" />
 		<appender-ref ref="Console" />
 	</root>
 
 </log4j:configuration>
- 
+

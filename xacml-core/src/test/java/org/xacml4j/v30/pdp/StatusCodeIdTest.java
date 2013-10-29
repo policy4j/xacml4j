@@ -8,7 +8,7 @@ import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.StatusCodeIds;
 
 
-public class StatusCodeIdTest 
+public class StatusCodeIdTest
 {
 	@Test
 	public void testParseStatusCodeId()
@@ -18,7 +18,7 @@ public class StatusCodeIdTest
 		c = StatusCodeIds.parse("AAAA");
 		assertEquals("AAAA", c.getId());
 		assertEquals("AAAA", c.toString());
-		
+
 		StatusCodeId c1 = StatusCodeIds.parse("AAAA");
 		StatusCodeId c2 = StatusCodeIds.parse("AAAA");
 		assertEquals(c1, c2);

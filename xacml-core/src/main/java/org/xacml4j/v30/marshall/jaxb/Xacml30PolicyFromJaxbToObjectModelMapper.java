@@ -319,7 +319,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.xpathVersion(defaults.getXPathVersion())
 				.build();
 	}
-	
+
 	private PolicyIssuer createPolicyIssuer(PolicyIssuerType issuer)
 		throws XacmlSyntaxException
 	{
@@ -540,7 +540,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				log.debug(selector.getPath());
 			}
 			return AttributeSelector
-					.builder() 
+					.builder()
 					.category(selector.getCategory())
 					.xpath(selector.getPath())
 					.contextSelectorId(selector.getContextSelectorId())
@@ -551,7 +551,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
 			return AttributeDesignator
-					.builder() 
+					.builder()
 					.category(desig.getCategory())
 					.attributeId(desig.getAttributeId())
 					.issuer(desig.getIssuer())

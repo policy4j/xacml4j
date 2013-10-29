@@ -11,11 +11,11 @@ import com.google.common.base.Preconditions;
 public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverRegistry>
 {
 	private ResolverRegistryBuilder registryBuilder;
-	
+
 	public ResolverRegistryFactoryBean(){
 		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
-	
+
 	public void setResolvers(
 			Collection<ResolverRegistration> resolvers){
 		Preconditions.checkNotNull(resolvers);
@@ -26,20 +26,20 @@ public class ResolverRegistryFactoryBean extends AbstractFactoryBean<ResolverReg
 				continue;
 			}
 			registryBuilder.withPolicyScopedResolver(
-					registration.getPolicyId(), 
+					registration.getPolicyId(),
 					registration.getResolver());
 		}
 	}
-	
+
 	@Override
-	protected ResolverRegistry createInstance() 
-		throws Exception 
+	protected ResolverRegistry createInstance()
+		throws Exception
 	{
 		return registryBuilder.build();
 	}
-	
+
 	@Override
-	public Class<ResolverRegistry> getObjectType() 
+	public Class<ResolverRegistry> getObjectType()
 	{
 		return ResolverRegistry.class;
 	}

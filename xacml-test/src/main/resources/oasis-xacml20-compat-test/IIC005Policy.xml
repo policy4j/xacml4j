@@ -29,7 +29,7 @@
                       AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:author"
                       DataType="http://www.w3.org/2001/XMLSchema#string"/>
             </Apply>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

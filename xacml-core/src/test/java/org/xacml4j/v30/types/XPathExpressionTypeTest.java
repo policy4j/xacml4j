@@ -16,13 +16,13 @@ public class XPathExpressionTypeTest
 		assertEquals("/test", v.toXacmlString());
 		assertEquals(AttributeCategories.SUBJECT_RECIPIENT, v.getCategory());
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateXPathWithoutCategory()
 	{
 		XPathExpType.XPATHEXPRESSION.create("/test");
 	}
-	
+
 	@Test(expected=ClassCastException.class)
 	public void testCreateXPathWithCategoryAsString()
 	{

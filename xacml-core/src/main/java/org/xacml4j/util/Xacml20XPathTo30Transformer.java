@@ -8,22 +8,22 @@ import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XPathExpType;
 
 
-public class Xacml20XPathTo30Transformer 
+public class Xacml20XPathTo30Transformer
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20XPathTo30Transformer.class);
-	
+
 	private final static String REQUEST_ELEMENT_NAME = "Request";
 	private final static String RESOURCE_ELEMENT_NAME = "Resource";
 	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
-	
-	
+
+
 	public static XPathExp fromXacml20String(StringExp path)
 	{
 		XPathExp xpathExp = XPathExpType.XPATHEXPRESSION.create(
 				transform20PathTo30(path.getValue()), AttributeCategories.RESOURCE);
 		return xpathExp;
 	}
-	
+
 	public static String transform20PathTo30(String xpath)
 	{
 		StringBuffer buf = new StringBuffer(xpath);
@@ -38,7 +38,7 @@ public class Xacml20XPathTo30Transformer
 			}
 		}
 		// found namespace prefix
-		if(firstIndex > 0 && 
+		if(firstIndex > 0 &&
 				buf.charAt(firstIndex - 1) == ':'){
 			int index = xpath.indexOf("/");
 			if(index == -1){

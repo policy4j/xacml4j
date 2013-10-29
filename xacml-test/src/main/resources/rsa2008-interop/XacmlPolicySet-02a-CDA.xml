@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PolicySet
     xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os 
-      http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+      http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
     PolicySetId="urn:va:xacml:2.0:interop:rsa8:policysetid:CDA"
     PolicyCombiningAlgId=
       "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
@@ -25,7 +25,7 @@
       </Description>
       <Target/>
       <Condition>
-       <!-- True if hl7:dissented-subject-id NOT EQUAL TO subject:subject-id --> 
+       <!-- True if hl7:dissented-subject-id NOT EQUAL TO subject:subject-id -->
        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
         <!-- True if hl7:dissented-subject-id EQUAL TO subject:subject-id  -->
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:any-of">

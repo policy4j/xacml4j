@@ -21,19 +21,19 @@ import com.google.common.collect.Multimap;
  * A base class for composite decision rule. A composite decision
  * rule is a rule which contains other rules combined via decision
  * combining algorithm
- * 
+ *
  * @author Giedrius Trumpickas
  */
-abstract class BaseCompositeDecisionRule extends BaseDecisionRule 
+abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	implements CompositeDecisionRule, Versionable
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
-	
+
 	protected Version version;
 	private PolicyIssuer issuer;
 	private Integer maxDelegationDepth;
 	private Multimap<String, CombinerParameter> combinerParameters;
-	
+
 	protected BaseCompositeDecisionRule(BaseCompositeDecisionRuleBuilder<?> b){
 		super(b);
 		this.version = b.version;
@@ -41,53 +41,53 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		this.issuer = b.issuer;
 		this.combinerParameters = b.combParamBuilder.build();
 	}
-	
+
 	@Override
 	public  Version getVersion() {
 		return version;
 	}
-	
+
 	/**
 	 * Gets this rule issuer attributes
-	 * 
+	 *
 	 * @return this rule issuer attributes
 	 */
 	public PolicyIssuer getIssuer(){
 		return issuer;
 	}
-	
+
 	/**
 	 * Gets composite decision rule combiner parameter by name
-	 * 
+	 *
 	 * @param name a parameter name
 	 * @return parameters bound to the given name
 	 */
 	public Collection<CombinerParameter> getCombinerParam(String name){
 		return combinerParameters.get(name);
 	}
-	
+
 	/**
 	 * Gets all composite decision rule combiner parameters
-	 * 
+	 *
 	 * @return a collection of all combiner parameters
 	 */
 	public Collection<CombinerParameter> getCombinerParams(){
 		return combinerParameters.values();
 	}
-	
+
 	/**
 	 * Gets limits the depth of delegation which is authorized by this policy
-	 * 
+	 *
 	 * @return max delegation depth
 	 */
 	public Integer getMaxDelegationDepth(){
 		return maxDelegationDepth;
 	}
-	
+
 	public boolean isTrusted(){
 		return (issuer == null);
 	}
-	
+
 	@Override
 	public Decision evaluate(EvaluationContext context) {
 		if(log.isDebugEnabled()){
@@ -138,7 +138,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		}
 		return getExtendedIndeterminate(context.createExtIndeterminateEvalContext());
 	}
-	
+
 	protected Decision getExtendedIndeterminate(EvaluationContext context)
 	{
 		Decision evaluationResult = null;
@@ -158,10 +158,10 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			default: return Decision.INDETERMINATE_DP;
 		}
 	}
-	
+
 	protected abstract Decision combineDecisions(EvaluationContext context);
 
-	
+
 	@Override
 	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		b.add("version", version);
@@ -171,26 +171,26 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		super.toStringBuilder(b);
 		return b;
 	}
-	
-	public abstract static class BaseCompositeDecisionRuleBuilder<T extends BaseCompositeDecisionRuleBuilder<?>> 
+
+	public abstract static class BaseCompositeDecisionRuleBuilder<T extends BaseCompositeDecisionRuleBuilder<?>>
 		extends BaseDecisionRuleBuilder<T>
 	{
 		protected Version version;
 		protected Integer maxDelegationDepth;
 		protected PolicyIssuer issuer;
 		protected ImmutableMultimap.Builder<String, CombinerParameter> combParamBuilder = ImmutableMultimap.builder();
-		
+
 		protected BaseCompositeDecisionRuleBuilder(String ruleId) {
 			super(ruleId);
 			this.version = Version.parse("1.0");
 		}
-		
+
 		public T version(Version version){
 			Preconditions.checkNotNull(version, "Version can't be null");
 			this.version = version;
 			return getThis();
 		}
-		
+
 		public T combinerParam(CombinerParameter ... params){
 			Preconditions.checkNotNull(params);
 			for(CombinerParameter p : params){
@@ -198,7 +198,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			}
 			return getThis();
 		}
-		
+
 		public T combinerParams(Iterable<CombinerParameter> params){
 			Preconditions.checkNotNull(params);
 			for(CombinerParameter p : params){
@@ -206,16 +206,16 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			}
 			return getThis();
 		}
-		
+
 		public T version(String version){
 			return version(Version.parse(version));
 		}
-		
+
 		public T issuer(PolicyIssuer issuer){
 			this.issuer = issuer;
 			return getThis();
 		}
-		
+
 		public T maxDelegationDepth(Integer maxDelegationdepth)
 		{
 			Preconditions.checkArgument(maxDelegationdepth == null || maxDelegationdepth >= 0);

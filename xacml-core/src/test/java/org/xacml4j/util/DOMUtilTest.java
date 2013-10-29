@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class DOMUtilTest 
+public class DOMUtilTest
 {
 	private String testXml1 = "<md:record xmlns:md=\"urn:example:med:schemas:record\" " +
 	"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
@@ -36,7 +36,7 @@ public class DOMUtilTest
 	"<md:patient-number>11111</md:patient-number>" +
 	"</md:patient>" +
 	"</md:record>";
-	
+
 	private String testXml2 = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 	"xmlns:md=\"urn:example:med:schemas:record\">" +
 	"<md:patient>" +
@@ -48,9 +48,9 @@ public class DOMUtilTest
 	"<md:patient-number>12394</md:patient-number>" +
 	"</md:patient>" +
 	"</md:record>";
-	
+
 	private String testXml4 = "<test>aaa</test>";
-	
+
 	private Element content1;
 	private Element content2;
 	private Element content3;
@@ -71,9 +71,9 @@ public class DOMUtilTest
 		this.xpf = XPathFactory.newInstance();
 		this.xpath = xpf.newXPath();
 		xpath.setNamespaceContext(new NodeNamespaceContext(content1));
-	
+
 	}
-	
+
 	@Test
 	public void testCopyNode()
 	{
@@ -91,16 +91,16 @@ public class DOMUtilTest
 		assertEquals("patient", c.getChildNodes().item(1).getLocalName());
 		assertEquals("urn:example:med:schemas:record", c.getChildNodes().item(1).getNamespaceURI());
 		assertTrue(c.isEqualNode(content1));
-		
+
 	}
-	
+
 	@Test
 	public void testNodeXPathElementNodes1() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient", content1, XPathConstants.NODESET);
 		assertEquals("//md:record/md:patient[1]", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record/md:patient[2]", DOMUtil.getXPath(nodes.item(1)));
 	}
-	
+
 	@Test
 	public void testNodeXPathElementTextNodes() throws Exception{
 		assertEquals("//md:record", DOMUtil.getXPath(content1));
@@ -108,21 +108,21 @@ public class DOMUtilTest
 		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
 	}
-	
+
 	@Test
 	public void testNodeXPathAttributeNodes() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/@md:attrn1", content1, XPathConstants.NODESET);
 		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", DOMUtil.getXPath(nodes.item(1)));
 	}
-	
+
 	@Test
 	public void testNodeXPathElementNodes2() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB", content1, XPathConstants.NODESET);
 		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]", DOMUtil.getXPath(nodes.item(1)));
 	}
-	
+
 	@Test
 	public void testWriteNodeToStream() throws Exception
 	{
@@ -133,7 +133,7 @@ public class DOMUtilTest
 		assertEquals(testXml1, new String(out1.toByteArray()));
 		assertEquals(testXml1, new String(out2.toByteArray()));
 	}
-	
+
 	@Test
 	public void testNodeEquals(){
 		assertTrue(DOMUtil.isEqual(null, null));
@@ -144,12 +144,12 @@ public class DOMUtilTest
 		assertFalse(DOMUtil.isEqual(content1, content3));
 		assertFalse(DOMUtil.isEqual(content3, content1));
 	}
-	
+
 	@Test
 	public void testNodeToString(){
 		assertEquals("{urn:example:med:schemas:record}record", DOMUtil.toString(content1));
 		assertEquals("test", DOMUtil.toString(content4));
 		assertNull(DOMUtil.toString(null));
-		
+
 	}
 }

@@ -10,14 +10,14 @@ import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
-public final class ResolverRegistryBuilder 
+public final class ResolverRegistryBuilder
 {
 	private Map<String, AttributeResolver> policyScopedAttributeResolvers;
 	private Map<String, ContentResolver> policyScopedContentResolvers;
 	private Collection<AttributeResolver> attributeResolvers;
 	private Collection<ContentResolver> contentResolvers;
 	private AnnotatedResolverFactory annotatedResolverFactory;
-	
+
 	private ResolverRegistryBuilder(){
 		this.policyScopedAttributeResolvers = new HashMap<String, AttributeResolver>();
 		this.policyScopedContentResolvers = new HashMap<String, ContentResolver>();
@@ -25,29 +25,29 @@ public final class ResolverRegistryBuilder
 		this.contentResolvers = new LinkedList<ContentResolver>();
 		this.annotatedResolverFactory = new AnnotatedResolverFactory();
 	}
-	
+
 	/**
-	 * Creates a builder with a default 
+	 * Creates a builder with a default
 	 * {@link ResolverRegistry} implementation
-	 * 
+	 *
 	 * @return {@link ResolverRegistryBuilder}
 	 */
 	public static ResolverRegistryBuilder builder(){
 		return new ResolverRegistryBuilder();
 	}
-	
+
 	/**
 	 * Adds default XACML 3.0 resolvers
-	 * 
+	 *
 	 * @return {@link ResolverRegistryBuilder}
 	 */
 	public ResolverRegistryBuilder withDefaultResolvers(){
 		return withAttributeResolver(new DefaultEnviromentAttributeResolver());
 	}
-	
+
 	/**
 	 * Adds a given {@link AttributeResolver}
-	 * 
+	 *
 	 * @param resolver an attribute resolver
 	 * @return {@link ResolverRegistryBuilder}
 	 */
@@ -56,32 +56,32 @@ public final class ResolverRegistryBuilder
 		this.attributeResolvers.add(resolver);
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withAttributeResolvers(Iterable<AttributeResolver> resolvers){
 		for(AttributeResolver r : resolvers){
 			withAttributeResolver(r);
 		}
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withContentResolvers(Iterable<ContentResolver> resolvers){
 		for(ContentResolver r : resolvers){
 			withContentResolver(r);
 		}
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withContentResolver(ContentResolver resolver){
 		Preconditions.checkNotNull(resolver);
 		this.contentResolvers.add(resolver);
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withResolver(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		
+
 		if((annotatedResolver instanceof AttributeResolver) ||
-				annotatedResolver instanceof ContentResolver){	
+				annotatedResolver instanceof ContentResolver){
 			if(annotatedResolver instanceof AttributeResolver){
 				withAttributeResolver(
 						(AttributeResolver)annotatedResolver);
@@ -100,14 +100,14 @@ public final class ResolverRegistryBuilder
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	public ResolverRegistryBuilder withPolicyScopedResolver(
-			String policyId, 
+			String policyId,
 			Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
 		if((annotatedResolver instanceof AttributeResolver) ||
 				annotatedResolver instanceof ContentResolver){
-			
+
 			if(annotatedResolver instanceof AttributeResolver){
 				withPolicyScopedAttributeResolver(
 						policyId, (AttributeResolver)annotatedResolver);
@@ -119,11 +119,11 @@ public final class ResolverRegistryBuilder
 			return this;
 		}
 		try{
-			for(AttributeResolver r : 
+			for(AttributeResolver r :
 				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
 				withPolicyScopedAttributeResolver(policyId, r);
 			}
-			for(ContentResolver r : 
+			for(ContentResolver r :
 				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
 				withPolicyScopedContentResolver(policyId, r);
 			}
@@ -132,7 +132,7 @@ public final class ResolverRegistryBuilder
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	public ResolverRegistryBuilder withPolicyScopedAttributeResolver(
 			String policyId, AttributeResolver resolver){
 		Preconditions.checkNotNull(resolver);
@@ -143,7 +143,7 @@ public final class ResolverRegistryBuilder
 		this.policyScopedAttributeResolvers.put(policyId, resolver);
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withPolicyScopedAttributeResolvers(
 			String policyId, Iterable<AttributeResolver> resolvers){
 		for(AttributeResolver r : resolvers){
@@ -151,7 +151,7 @@ public final class ResolverRegistryBuilder
 		}
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withPolicyScopedContentResolver(
 			String policyId, ContentResolver resolver){
 		Preconditions.checkNotNull(resolver);
@@ -162,7 +162,7 @@ public final class ResolverRegistryBuilder
 		this.policyScopedContentResolvers.put(policyId, resolver);
 		return this;
 	}
-	
+
 	public ResolverRegistryBuilder withPolicyScopedContentResolvers(
 			String policyId, Iterable<ContentResolver> resolvers){
 		for(ContentResolver r : resolvers){
@@ -170,12 +170,12 @@ public final class ResolverRegistryBuilder
 		}
 		return this;
 	}
-	
+
 	public ResolverRegistry build()
 	{
 		return build(new DefaultResolverRegistry());
 	}
-	
+
 	public ResolverRegistry build(ResolverRegistry r)
 	{
 		if(r == null){

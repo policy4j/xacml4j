@@ -9,15 +9,15 @@ import org.junit.Test;
 
 
 
-public class RequestContextHandlerChainTest 
-{		
+public class RequestContextHandlerChainTest
+{
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
 	}
-	
+
 	@Test
 	public void testCreateCompositeHandlerWith1Handler()
 	{
@@ -32,7 +32,7 @@ public class RequestContextHandlerChainTest
 		h.setNext(m1);
 		c.verify();
 	}
-	
+
 	@Test
 	public void testCreateCompositeHandlerWith4Handlers()
 	{

@@ -59,7 +59,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private ObjectFactory factory;
 
 	private Types xacmlTypes = Types.builder().defaultTypes().create();
-	
+
 	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();
 	}

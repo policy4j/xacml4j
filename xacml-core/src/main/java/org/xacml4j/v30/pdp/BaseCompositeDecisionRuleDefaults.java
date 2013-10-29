@@ -10,7 +10,7 @@ abstract class BaseCompositeDecisionRuleDefaults
 	implements PolicyElement
 {
 	public static final String XPATH_VERSION = "XPathVersion";
-	
+
 	protected ImmutableMap<String, Object> values;
 
 	protected BaseCompositeDecisionRuleDefaults(
@@ -22,12 +22,12 @@ abstract class BaseCompositeDecisionRuleDefaults
 	public final XPathVersion getXPathVersion(){
 		return (XPathVersion)values.get(XPATH_VERSION);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public final <T> T getValue(String name){
 		return (T)values.get(name);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects
@@ -35,16 +35,16 @@ abstract class BaseCompositeDecisionRuleDefaults
 				.add("values", values)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return values.hashCode();
 	}
-	
+
 	public static abstract class BaseCompositeDecisionRuleDefaultsBuilder<T extends BaseCompositeDecisionRuleDefaultsBuilder<?>>
 	{
 		private ImmutableMap.Builder<String, Object> values = ImmutableMap.builder();
-		
+
 		public T xpathVersion(String xpathVersion){
 			XPathVersion v = null;
 			if(xpathVersion != null){
@@ -53,12 +53,12 @@ abstract class BaseCompositeDecisionRuleDefaults
 			values.put(XPATH_VERSION, v == null?XPathVersion.XPATH1:v);
 			return getThis();
 		}
-		
+
 		public T value(String name, Object v){
 			this.values.put(name, v);
 			return getThis();
 		}
-		
+
 		protected abstract T getThis();
 	}
 }

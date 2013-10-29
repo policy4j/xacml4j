@@ -10,5 +10,5 @@ public class NoAuditPolicyDecisionPointAuditor implements PolicyDecisionAuditor
 	@Override
 	public void audit(PolicyDecisionPoint pdp, Result result, RequestContext req) {
 	}
-	
+
 }

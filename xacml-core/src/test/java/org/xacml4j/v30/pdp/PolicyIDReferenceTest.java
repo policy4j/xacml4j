@@ -275,7 +275,7 @@ public class PolicyIDReferenceTest
 		assertTrue(ref.isReferenceTo(refPolicy));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testReferenceBuilder()
 	{

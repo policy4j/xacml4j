@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="spring-ws-common.xml" />
-		
+
 	<bean id="messageFactory" class="org.springframework.ws.pox.dom.DomPoxMessageFactory" />
-	<bean id="poxEndpointExceptionResolver" class="com.artagon.xacml.springws.PoxEndpointExceptionResolver" />
-	
+	<bean id="poxEndpointExceptionResolver" class="org.xacml4j.springws.PoxExceptionResolver" />
+
 </beans>

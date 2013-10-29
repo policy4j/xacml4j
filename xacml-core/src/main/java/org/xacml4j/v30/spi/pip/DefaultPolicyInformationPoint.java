@@ -31,7 +31,7 @@ public class DefaultPolicyInformationPoint
 
 	private Timer attrResTimer;
 	private Timer contResTimer;
-	
+
 	public DefaultPolicyInformationPoint(String id,
 			ResolverRegistry resolvers,
 			PolicyInformationPointCacheProvider cache)
@@ -45,7 +45,7 @@ public class DefaultPolicyInformationPoint
 		this.attrResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "attribute-resolve", id);
 		this.contResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "content-resolve", id);
 	}
-	
+
 	@Override
 	public String getId(){
 		return id;
@@ -82,7 +82,7 @@ public class DefaultPolicyInformationPoint
 								"values in cache", d.getId());
 					}
 					attributes = cache.getAttributes(rContext);
-					if(attributes != null && 
+					if(attributes != null &&
 							!isExpired(attributes, context)){
 						if(log.isDebugEnabled()){
 							log.debug("Found cached resolver id=\"{}\"" +
@@ -138,14 +138,14 @@ public class DefaultPolicyInformationPoint
 			timerContext.stop();
 		}
 	}
-	
+
 	private boolean isExpired(AttributeSet v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 
+		return ((context.getTicker().read() - v.getTimestamp()) /
 				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
-	
+
 	private boolean isExpired(Content v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 
+		return ((context.getTicker().read() - v.getTimestamp()) /
 				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 
@@ -165,7 +165,7 @@ public class DefaultPolicyInformationPoint
 			Content v = null;
 			if(d.isCachable()){
 				v = cache.getContent(pipContext);
-				if(v != null && 
+				if(v != null &&
 						!isExpired(v, context)){
 					if(log.isDebugEnabled()){
 						log.debug("Found cached " +

@@ -2,7 +2,7 @@ package org.xacml4j.util;
 
 import org.junit.Test;
 
-public class ConcurrentMultiKeyHashMapTest 
+public class ConcurrentMultiKeyHashMapTest
 {
 	@Test
 	public void testAdd()

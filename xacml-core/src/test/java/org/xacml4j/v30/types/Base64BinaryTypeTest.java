@@ -7,20 +7,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class Base64BinaryTypeTest 
+public class Base64BinaryTypeTest
 {
 	private Base64BinaryType t;
-	
+
 	@Before
 	public void init(){
 		this.t = Base64BinaryType.BASE64BINARY;
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testIncorrectlyBase64EncodedString(){
 		t.create("AAEDBQ+++");
 	}
-	
+
 	@Test
 	public void testCreateValueFromBinaryArray()
 	{
@@ -32,7 +32,7 @@ public class Base64BinaryTypeTest
 		assertEquals(value1.toXacmlString(), value2.toXacmlString());
 		assertEquals("AAEDBQ==", value1.toXacmlString());
 	}
-	
+
 	@Test
 	public void testCreateValueFromString()
 	{

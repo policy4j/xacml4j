@@ -18,11 +18,11 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 	protected PermitOverrides(String id){
 		super(id);
 	}
-	
+
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides")
 	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides")
 	@Override
-	public Decision combine(EvaluationContext context, List<D> decisions) 
+	public Decision combine(EvaluationContext context, List<D> decisions)
 	{
 		boolean atLeastOneIndeterminate = false;
 		boolean atLeastOneIndeterminateD = false;
@@ -50,12 +50,12 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 				atLeastOneIndeterminateP = true;
 				continue;
 			}
-			if(decision == Decision.INDETERMINATE_DP || 
+			if(decision == Decision.INDETERMINATE_DP ||
 					decision ==  Decision.INDETERMINATE){
 				atLeastOneIndeterminateDP = true;
 				continue;
 			}
-			
+
 		}
 		if(atLeastOneIndeterminate){
 			return Decision.INDETERMINATE;
@@ -63,7 +63,7 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 		if(atLeastOneIndeterminateDP){
 			return Decision.INDETERMINATE_DP;
 		}
-		if(atLeastOneIndeterminateD && 
+		if(atLeastOneIndeterminateD &&
 				(atLeastOneIndeterminateP || atLeastOneDeny)){
 			return Decision.INDETERMINATE_DP;
 		}

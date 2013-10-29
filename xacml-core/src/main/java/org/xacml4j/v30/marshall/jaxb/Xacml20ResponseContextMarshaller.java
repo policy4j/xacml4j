@@ -38,43 +38,43 @@ import com.google.common.collect.Iterables;
 
 /**
  * Marshals XACML 3.0 {@link ResponseContext} to the XACML 2.0 response
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class Xacml20ResponseContextMarshaller 
-	extends BaseJAXBMarshaller<ResponseContext> 
+public class Xacml20ResponseContextMarshaller
+	extends BaseJAXBMarshaller<ResponseContext>
 	implements ResponseMarshaller
 {
 	private Mapper mapper;
 	private ObjectFactory factory;
-	
+
 	public Xacml20ResponseContextMarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Mapper();
 		this.factory = new ObjectFactory();
 	}
-	
+
 	@Override
 	public Object marshal(ResponseContext source) throws IOException {
 		ResponseType response = mapper.create(source);
 		return factory.createResponse(response);
 	}
-	
 
-	
+
+
 	static class Mapper
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
-		
+
 		private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-		
+
 		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
 		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
-		
+
 		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
-		
+
 		static
 		{
 			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
@@ -84,21 +84,21 @@ public class Xacml20ResponseContextMarshaller
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
 			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
-			
+
 			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
 			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
 			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
 			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-			
-			
+
+
 			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
 			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-			
+
 			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
 			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-		
+
 		}
-		
+
 		public ResponseType create(ResponseContext response)
 		{
 			if(log.isDebugEnabled()){
@@ -114,8 +114,8 @@ public class Xacml20ResponseContextMarshaller
 			}
 			return responseV2;
 		}
-		
-		
+
+
 		private ResultType create(Result result)
 		{
 			ResultType resultv2 = new ResultType();
@@ -125,7 +125,7 @@ public class Xacml20ResponseContextMarshaller
 			resultv2.setDecision(v30ToV20DecisionMapping.get(result.getDecision()));
 			return resultv2;
 		}
-		
+
 		private StatusType createStatus(Status status)
 		{
 			StatusType statusType = new StatusType();
@@ -135,10 +135,10 @@ public class Xacml20ResponseContextMarshaller
 			statusType.setStatusMessage(status.getMessage());
 			return statusType;
 		}
-		
+
 		/**
 		 * Tries to locate resource id attribute
-		 * 
+		 *
 		 * @param result an evaluation result
 		 * @return a resource id attribute
 		 */
@@ -164,12 +164,12 @@ public class Xacml20ResponseContextMarshaller
 			}
 			return Iterables.getOnlyElement(values).toXacmlString();
 		}
-		
+
 		private ObligationsType getObligations(Result result)
 		{
 			Collection<Obligation> obligations = result.getObligations();
 			Collection<Advice> advices = result.getAssociatedAdvice();
-			if(obligations.isEmpty() && 
+			if(obligations.isEmpty() &&
 					advices.isEmpty()){
 				return null;
 			}
@@ -183,7 +183,7 @@ public class Xacml20ResponseContextMarshaller
 			}
 			return obligationsv2;
 		}
-		
+
 		private ObligationType create(Advice advice)
 		{
 			ObligationType obligation = new ObligationType();
@@ -194,7 +194,7 @@ public class Xacml20ResponseContextMarshaller
 			}
 			return obligation;
 		}
-		
+
 		private ObligationType create(Obligation o)
 		{
 			ObligationType obligation = new ObligationType();
@@ -205,7 +205,7 @@ public class Xacml20ResponseContextMarshaller
 			}
 			return obligation;
 		}
-		
+
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
 			AttributeAssignmentType attr = new AttributeAssignmentType();

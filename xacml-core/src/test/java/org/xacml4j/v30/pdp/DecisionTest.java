@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Decision;
 
 
-public class DecisionTest 
+public class DecisionTest
 {
 	@Test
 	public void testIndeterminate()
@@ -19,7 +19,7 @@ public class DecisionTest
 		assertFalse(Decision.DENY.isIndeterminate());
 		assertFalse(Decision.PERMIT.isIndeterminate());
 		assertFalse(Decision.NOT_APPLICABLE.isIndeterminate());
-		
+
 	}
-	
+
 }

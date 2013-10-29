@@ -11,29 +11,29 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 /**
  * An interface for a function invocation
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public interface FunctionInvocation
 {
 	/**
 	 * Invokes function
-	 * 
+	 *
 	 * @param <T>
 	 * @param spec a function spec
 	 * @param context an evaluation context
 	 * @param arguments a function invocation parameters
 	 * @return {@link ValueExpression} representing function invocation result
 	 * @throws FunctionInvocationException if function invocation
-	 * fails 
+	 * fails
 	 */
-	ValueExpression invoke(FunctionSpec spec, 
-			EvaluationContext context, Expression ...arguments) 
+	ValueExpression invoke(FunctionSpec spec,
+			EvaluationContext context, Expression ...arguments)
 		throws FunctionInvocationException;
-	
+
 	/**
 	 * Invokes function
-	 * 
+	 *
 	 * @param <T>
 	 * @param spec a function spec
 	 * @param context an evaluation context
@@ -42,7 +42,7 @@ public interface FunctionInvocation
 	 * @throws FunctionInvocationException if a function
 	 * invocation fails
 	 */
-	ValueExpression invoke(FunctionSpec spec, 
-			EvaluationContext context, List<Expression> params) 
+	ValueExpression invoke(FunctionSpec spec,
+			EvaluationContext context, List<Expression> params)
 		throws FunctionInvocationException;
 }

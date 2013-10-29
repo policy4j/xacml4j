@@ -9,15 +9,15 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 
 
-public class AnyURITypeTest 
+public class AnyURITypeTest
 {
 	private AnyURIType t1;
-	
+
 	@Before
 	public void init(){
 		this.t1 = AnyURIType.ANYURI;
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -26,7 +26,7 @@ public class AnyURITypeTest
 		assertEquals(v0, v1);
 		assertEquals(AnyURIType.ANYURI, new AnyURIExp(URI.create("test")).getType());
 	}
-	
+
 	@Test
 	public void toStringTest(){
 		assertEquals("http://www.w3.org/2001/XMLSchema#anyURI", t1.toString());

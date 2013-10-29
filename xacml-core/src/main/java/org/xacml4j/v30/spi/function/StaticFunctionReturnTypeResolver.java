@@ -11,14 +11,14 @@ import com.google.common.base.Preconditions;
 final class StaticFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {
 	private ValueType returnType;
-	
+
 	public StaticFunctionReturnTypeResolver(ValueType returnType){
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}
-	
+
 	@Override
-	public ValueType resolve(FunctionSpec spec, 
+	public ValueType resolve(FunctionSpec spec,
 			List<Expression> arguments) {
 		return returnType;
 	}

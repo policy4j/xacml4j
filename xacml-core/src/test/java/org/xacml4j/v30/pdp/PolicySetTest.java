@@ -26,45 +26,45 @@ import org.xacml4j.v30.types.StringType;
 
 import com.google.common.collect.Iterables;
 
-public class PolicySetTest 
+public class PolicySetTest
 {
 	private EvaluationContext context;
 	private PolicySet policy;
 	private Target target;
 	private Condition condition;
-	
-	
+
+
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combingingAlg;
-	
+
 	private Expression denyObligationAttributeExp;
 	private Expression permitObligationAttributeExp;
-	
+
 	private Expression denyAdviceAttributeExp;
 	private Expression permitAdviceAttributeExp;
 
-	
-	
+
+
 	private PolicyReferenceResolver referenceResolver;
 	private EvaluationContextHandler handler;
-	
+
 	private IMocksControl c;
-	
+
 	@SuppressWarnings("unchecked")
 	@Before
 	public void init() throws XacmlSyntaxException
-	{		
+	{
 		this.c = createStrictControl();
-		
+
 		this.target = c.createMock(Target.class);
 		this.condition = c.createMock(Condition.class);
 		this.combingingAlg = c.createMock(DecisionCombiningAlgorithm.class);
-		
+
 		this.permitAdviceAttributeExp = c.createMock(Expression.class);
 		this.denyAdviceAttributeExp = c.createMock(Expression.class);
-		
+
 		this.denyObligationAttributeExp = c.createMock(Expression.class);
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
-		
+
 		this.policy = PolicySet.builder("TestPolicy")
 				.version("1.0")
 				.target(target)
@@ -83,12 +83,12 @@ public class PolicySetTest
 					.builder("permitAdvice", Effect.PERMIT)
 					.attribute("testId", permitAdviceAttributeExp))
 				.create();
-			
+
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);
 		this.context = new RootEvaluationContext(true, 0, referenceResolver, handler);
 	}
-	
+
 	@Test
 	public void testCreateContext() throws EvaluationException
 	{
@@ -98,7 +98,7 @@ public class PolicySetTest
 		EvaluationContext policyContext1 = policy.createContext(policyContext);
 		assertSame(policyContext, policyContext1);
 	}
-	
+
 	@Test
 	public void testIsApplicableTargetMatch() throws EvaluationException
 	{
@@ -108,7 +108,7 @@ public class PolicySetTest
 		assertEquals(MatchResult.MATCH, policy.isMatch(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testIsApplicableTargetNoMatch() throws EvaluationException
 	{
@@ -118,7 +118,7 @@ public class PolicySetTest
 		assertEquals(MatchResult.NOMATCH, policy.isMatch(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testIsApplicableTargetIndeterminate() throws EvaluationException
 	{
@@ -128,7 +128,7 @@ public class PolicySetTest
 		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testIsApplicableTargetException() throws EvaluationException
 	{
@@ -138,7 +138,7 @@ public class PolicySetTest
 		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetMatchConditionFalse() throws EvaluationException
 	{
@@ -149,7 +149,7 @@ public class PolicySetTest
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetMatchConditionTrue() throws EvaluationException
 	{
@@ -160,7 +160,7 @@ public class PolicySetTest
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable() throws EvaluationException
 	{
@@ -173,7 +173,7 @@ public class PolicySetTest
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny() throws EvaluationException
 	{
@@ -187,7 +187,7 @@ public class PolicySetTest
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit() throws EvaluationException
 	{
@@ -201,7 +201,7 @@ public class PolicySetTest
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate() throws EvaluationException
 	{
@@ -215,48 +215,48 @@ public class PolicySetTest
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		
+
 		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
 		Capture<List<CompositeDecisionRule>> ruleCapture = new Capture<List<CompositeDecisionRule>>();
-		
+
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
-		
+
 		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
-		
+
 		c.replay();
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
 		c.verify();
 		assertSame(policy, policyContext.getCurrentPolicySet());
 		assertSame(policyContext, contextCapture.getValue());
-		
+
 		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.DENY)));
 		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.DENY)));
 	}
-	
+
 	@Test
 	public void testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		
+
 		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
 		Capture<List<CompositeDecisionRule>> ruleCapture = new Capture<List<CompositeDecisionRule>>();
-		
+
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
 		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
 		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
-		
+
 		c.replay();
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));
 		c.verify();
@@ -265,20 +265,20 @@ public class PolicySetTest
 		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
 		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
 	}
-	
+
 	@Test
 	public void testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		
+
 		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
 		Capture<List<CompositeDecisionRule>> ruleCapture = new Capture<List<CompositeDecisionRule>>();
-		
+
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
-		
+
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.INDETERMINATE);
-		
+
 		c.replay();
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
 		c.verify();
@@ -289,6 +289,6 @@ public class PolicySetTest
 		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
 		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
 	}
-	
-	
+
+
 }

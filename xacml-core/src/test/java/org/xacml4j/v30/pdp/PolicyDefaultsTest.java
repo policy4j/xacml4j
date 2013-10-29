@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.xacml4j.v30.XPathVersion;
 
-public class PolicyDefaultsTest 
+public class PolicyDefaultsTest
 {
 	@Test
 	public void testCreatePolicyDefaults()
@@ -14,7 +14,7 @@ public class PolicyDefaultsTest
 		PolicyDefaults d2 = PolicyDefaults.builder().build();
 		assertEquals(d1, d2);
 	}
-	
+
 	@Test
 	public void testCreatePolicyDefaultsWithXPath()
 	{

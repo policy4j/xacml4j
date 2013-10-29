@@ -7,25 +7,25 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlAttributeDescriptor 
+public @interface XacmlAttributeDescriptor
 {
 	/**
 	 * An attribute identifier
-	 * 
+	 *
 	 * @return attribute identifier
 	 */
 	String id();
-	
+
 	/**
 	 * Attribute XACML data type identifier
-	 * 
+	 *
 	 * @return data type identifier
 	 */
 	String dataType();
-	
+
 	/**
 	 * A default values for the attribute
-	 * 
+	 *
 	 * @return an array of default values for
 	 * the attribute
 	 */

@@ -28,7 +28,7 @@ import org.xacml4j.v30.types.BooleanExp;
 
 
 
-public class HigherOrderFunctionsTest 
+public class HigherOrderFunctionsTest
 {
 	private FunctionProvider higherOrderFunctions;
 	private FunctionProvider stringFunctions;
@@ -36,18 +36,18 @@ public class HigherOrderFunctionsTest
 	private FunctionProvider numericComparisionFunctions;
 	private FunctionProvider regExpFunctions;
 	private EvaluationContext context;
-	
+
 	private FunctionSpec intToString;
 	private FunctionSpec intEq;
 	private FunctionSpec intGreaterThan;
 	private FunctionSpec stringRegExpMatch;
-	
+
 	private FunctionSpec map;
 	private FunctionSpec anyOf;
 	private FunctionSpec allOfAny;
 	private FunctionSpec anyOfAll;
 	private FunctionSpec allOfAll;
-	
+
 	@Before
 	public void init() throws Exception
 	{
@@ -70,7 +70,7 @@ public class HigherOrderFunctionsTest
 		assertNotNull(intToString);
 		assertNotNull(intEq);
 	}
-	
+
 	@Test
 	public void testMapWithValidArguments() throws EvaluationException
 	{
@@ -78,18 +78,18 @@ public class HigherOrderFunctionsTest
 		v.add(INTEGER.create(10));
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
-		
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
-		
-		
+
+
 		replay(context);
 		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
-		verify(context);	
+		verify(context);
 		assertTrue(bag.contains(STRING.create("10")));
 		assertTrue(bag.contains(STRING.create("20")));
 		assertTrue(bag.contains(STRING.create("30")));
 	}
-	
+
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
@@ -97,99 +97,99 @@ public class HigherOrderFunctionsTest
 		v.add(INTEGER.create(10));
 		v.add(INTEGER.create(20));
 		v.add(INTEGER.create(30));
-		
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		
+
 		replay(context);
 		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAllOfAny() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(10));
 		a.add(INTEGER.create(20));
-		
+
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(5));
 		b.add(INTEGER.create(19));
-		
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		
+
 		replay(context);
-		BooleanExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAnyOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(3));
 		a.add(INTEGER.create(5));
-		
+
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(2));
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(4));
-			
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
-		
-		
+
+
 		replay(context);
-		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAnyOfAllIIC168() throws EvaluationException
 	{
-				
+
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(STRING.create("   This  is n*o*t* *IT!  "));
 		a.add(STRING.create("   This is not a match to IT!  "));
-		
+
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(STRING.create("   This  is IT!  "));
 		b.add(STRING.create("   This  is not IT!  "));
 
-		
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		
+
 		replay(context);
-		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch), 
+		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
 				STRING.bagOf(a), STRING.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);
 	}
-	
+
 	@Test
 	public void testAllOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
 		a.add(INTEGER.create(5));
 		a.add(INTEGER.create(6));
-		
+
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
 		b.add(INTEGER.create(1));
 		b.add(INTEGER.create(2));
 		b.add(INTEGER.create(3));
 		b.add(INTEGER.create(4));
-		
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
-		
+
 		replay(context);
-		BooleanExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan), 
+		BooleanExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
 				INTEGER.bagOf(a), INTEGER.bagOf(b));
 		assertEquals(BOOLEAN.create(true), r);
 		verify(context);

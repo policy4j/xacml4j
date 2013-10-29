@@ -14,23 +14,23 @@ import com.google.common.base.Preconditions;
 
 
 /**
- * All of the following functions SHALL take two arguments of the specified data-type, 
- * integer, or double, and SHALL return an element of integer or double data-type, 
- * respectively. However, the "add" functions MAY take more than two arguments. 
- * Each function evaluation operating on doubles SHALL proceed as specified by their 
- * logical counterparts in IEEE 754 [IEEE754]. For all of these functions, 
- * if any argument is "Indeterminate", then the function SHALL evaluate to 
+ * All of the following functions SHALL take two arguments of the specified data-type,
+ * integer, or double, and SHALL return an element of integer or double data-type,
+ * respectively. However, the "add" functions MAY take more than two arguments.
+ * Each function evaluation operating on doubles SHALL proceed as specified by their
+ * logical counterparts in IEEE 754 [IEEE754]. For all of these functions,
+ * if any argument is "Indeterminate", then the function SHALL evaluate to
  * "Indeterminate". In the case of the divide functions, if the divisor is zero,
  *  then the function SHALL evaluate to "Indeterminate".
- * 
+ *
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML arithmetic functions")
-public class ArithmeticFunctions 
+public class ArithmeticFunctions
 {
 	/**
 	 * Adds two or more integer data-type values
-	 * 
+	 *
 	 * @param values a two or more integer data-type value
 	 * @return an integer data-type value representing
 	 * arithmetic sum of a given values
@@ -39,7 +39,7 @@ public class ArithmeticFunctions
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp addInteger(
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
-			IntegerExp ...values) 
+			IntegerExp ...values)
 	{
 		Long sum = 0L;
 		for(IntegerExp v : values){
@@ -47,7 +47,7 @@ public class ArithmeticFunctions
 		}
 		return IntegerType.INTEGER.create(sum);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp multiplyInteger(
@@ -59,8 +59,8 @@ public class ArithmeticFunctions
 			value *= v.getValue();
 		}
 		return IntegerType.INTEGER.create(value);
-	}	
-	
+	}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp addDouble(
@@ -73,7 +73,7 @@ public class ArithmeticFunctions
 		}
 		return DoubleType.DOUBLE.create(sum);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp multiplyDouble(
@@ -86,7 +86,7 @@ public class ArithmeticFunctions
 		}
 		return DoubleType.DOUBLE.create(value);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp abs(
@@ -94,7 +94,7 @@ public class ArithmeticFunctions
 	{
 		return IntegerType.INTEGER.create(Math.abs(v.getValue()));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp abs(
@@ -102,7 +102,7 @@ public class ArithmeticFunctions
 	{
 		return DoubleType.DOUBLE.create(Math.abs(v.getValue()));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp floor(
@@ -110,7 +110,7 @@ public class ArithmeticFunctions
 	{
 		return DoubleType.DOUBLE.create(Math.floor(v.getValue()));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp round(
@@ -118,7 +118,7 @@ public class ArithmeticFunctions
 	{
 		return DoubleType.DOUBLE.create(Math.round(v.getValue()));
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp subtract(
@@ -127,7 +127,7 @@ public class ArithmeticFunctions
 	{
 		return DoubleType.DOUBLE.create(a.getValue() - b.getValue());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp divideDouble(
@@ -137,27 +137,27 @@ public class ArithmeticFunctions
 		Preconditions.checkArgument(b.getValue() != 0);
 		return DoubleType.DOUBLE.create(a.getValue()/b.getValue());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleExp divideInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return DoubleType.DOUBLE.create(a.getValue()/b.getValue());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp modInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b) 
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
 		return IntegerType.INTEGER.create(a.getValue() % b.getValue());
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp subtract(

@@ -47,7 +47,7 @@
                         <md:date>2000-10-05</md:date>
                         <md:malignancy type="yes"/>
                     </md:pathological_diagnosis>
-                </md:diagnosis_info>                
+                </md:diagnosis_info>
             </md:record>
         </ResourceContent>
         <Attribute

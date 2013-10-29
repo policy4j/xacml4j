@@ -16,33 +16,33 @@ import com.google.common.base.Preconditions;
 /**
  * An implementation of {@link DecisionCombiningAlgorithmProvider}
  * which aggregates other instances of {@link DecisionCombiningAlgorithmProvider}
- * 
+ *
  * @author Giedrius Trumpickas
  */
-final class AggregatingDecisionCombiningAlgorithmProvider 
+final class AggregatingDecisionCombiningAlgorithmProvider
 	implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithmProvider> ruleAlgorithms;
 	private Map<String, DecisionCombiningAlgorithmProvider> policyAlgorithms;
-	
+
 	public AggregatingDecisionCombiningAlgorithmProvider(){
 		this.ruleAlgorithms = new ConcurrentHashMap<String, DecisionCombiningAlgorithmProvider>();
 		this.policyAlgorithms = new ConcurrentHashMap<String, DecisionCombiningAlgorithmProvider>();
 	}
-	
+
 	/**
 	 * Constructs an aggregating decision algorithm provider
-	 * 
+	 *
 	 * @param providers an array of providers
 	 */
 	public AggregatingDecisionCombiningAlgorithmProvider(
 			DecisionCombiningAlgorithmProvider ...providers){
 		this(Arrays.asList(providers));
 	}
-	
+
 	/**
 	 * Constructs an aggregating decision algorithm provider
-	 * 
+	 *
 	 * @param providers an array of providers
 	 */
 	public AggregatingDecisionCombiningAlgorithmProvider(
@@ -53,11 +53,11 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 			add(p);
 		}
 	}
-	
+
 	/**
 	 * Adds new {@link DecisionCombiningAlgorithmProvider} to this
 	 * composite provider, imports all algorithms from a given provider
-	 * 
+	 *
 	 * @param p a decision combine algorithm provider
 	 */
 	public final void add(DecisionCombiningAlgorithmProvider p)
@@ -79,17 +79,17 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 			this.ruleAlgorithms.put(algorithmId, p);
 		}
 	}
-	
+
 	@Override
 	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
-			String algorithmId) 
+			String algorithmId)
 	{
 		DecisionCombiningAlgorithmProvider p = policyAlgorithms.get(algorithmId);
 		return (p == null)?null:p.getPolicyAlgorithm(algorithmId);
 	}
 
 	@Override
-	public final DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId) 
+	public final DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId)
 	{
 		DecisionCombiningAlgorithmProvider p = ruleAlgorithms.get(algorithmId);
 		return (p == null)?null:p.getRuleAlgorithm(algorithmId);
@@ -114,5 +114,5 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 	public final boolean isRuleAgorithmProvided(String algorithmId) {
 		return ruleAlgorithms.containsKey(algorithmId);
 	}
-	
+
 }

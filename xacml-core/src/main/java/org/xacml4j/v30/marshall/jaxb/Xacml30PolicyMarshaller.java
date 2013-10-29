@@ -9,12 +9,12 @@ public class Xacml30PolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisio
 	implements PolicyMarshaller
 {
 	private Xacml30PolicyFromObjectModelToJaxbMapper mapper = new Xacml30PolicyFromObjectModelToJaxbMapper();
-	
+
 	public Xacml30PolicyMarshaller() {
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml30PolicyFromObjectModelToJaxbMapper();
 	}
-	
+
 	@Override
 	public Object marshal(CompositeDecisionRule d) throws IOException {
 		return mapper.toJaxb(d);

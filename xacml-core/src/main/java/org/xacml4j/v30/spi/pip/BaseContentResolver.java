@@ -10,15 +10,15 @@ import com.google.common.base.Preconditions;
 
 /**
  * A base class for {@link ContentResolver} implementations
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public abstract class BaseContentResolver implements ContentResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseContentResolver.class);
-	
+
 	private ContentResolverDescriptor descriptor;
-	
+
 	private AtomicInteger preferedCacheTTL;
 
 
@@ -32,7 +32,7 @@ public abstract class BaseContentResolver implements ContentResolver
 			}
 		};
 	}
-	
+
 	@Override
 	public final ContentResolverDescriptor getDescriptor() {
 		return descriptor;
@@ -40,17 +40,17 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	@Override
 	public final Content resolve(
-			ResolverContext context) throws Exception 
+			ResolverContext context) throws Exception
 	{
 		Preconditions.checkArgument(context.getDescriptor() == descriptor);
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving content via resolver " +
-					"id=\"{}\" name=\"{}\"", 
-					descriptor.getId(), 
+					"id=\"{}\" name=\"{}\"",
+					descriptor.getId(),
 					descriptor.getName());
 		}
 		try{
-			
+
 			return Content.builder()
 					.resolver(this)
 					.content(doResolve(context))
@@ -58,21 +58,21 @@ public abstract class BaseContentResolver implements ContentResolver
 					.build();
 		}catch(Exception e){
 			throw e;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Performs an actual content resolution
-	 * 
+	 *
 	 * @param context a policy information context
 	 * @return {@link Node} a resolved content or <code>null</code>
 	 * @throws Exception if an error occurs
 	 */
 	abstract Node doResolve(
-			ResolverContext context) 
+			ResolverContext context)
 		throws Exception;
 
-	
+
 	@Override
 	public final int getPreferredCacheTTL() {
 		return descriptor.getPreferreredCacheTTL();
@@ -80,7 +80,7 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
-		if(descriptor.isCachable() 
+		if(descriptor.isCachable()
 				&& ttl > 0){
 			this.preferedCacheTTL.set(ttl);
 		}

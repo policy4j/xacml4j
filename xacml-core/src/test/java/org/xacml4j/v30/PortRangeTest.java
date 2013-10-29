@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class PortRangeTest 
+public class PortRangeTest
 {
 	@Test
 	public void testCreateIPPortRange()
@@ -17,7 +17,7 @@ public class PortRangeTest
 		assertFalse(range.isUpperBounded());
 		assertTrue(range.isUnbound());
 	}
-	
+
 	@Test
 	public void testContains()
 	{
@@ -33,16 +33,16 @@ public class PortRangeTest
 		assertTrue(range.contains(1024));
 		assertTrue(range.contains(6000));
 		assertFalse(range.contains(1023));
-		
+
 		range = PortRange.getRangeUntil(1024);
 		assertTrue(range.contains(1023));
 		assertTrue(range.contains(600));
 		assertFalse(range.contains(1025));
 	}
-	
+
 	@Test
 	public void testToString()
-	{	
+	{
 		PortRange range = PortRange.getSinglePort(1024);
 		assertEquals("1024", range.toString());
 		range = PortRange.getRange(1024, 1200);
@@ -52,39 +52,39 @@ public class PortRangeTest
 		range = PortRange.getRangeUntil(1024);
 		assertEquals("-1024", range.toString());
 	}
-	
+
 	@Test
 	public void testValueOf()
 	{
 		PortRange r = PortRange.valueOf("1024");
 		assertEquals(1024, r.getLowerBound());
 		assertEquals(1024, r.getUpperBound());
-		
+
 		r = PortRange.valueOf("1024-");
 		assertEquals(1024, r.getLowerBound());
 		assertFalse(r.isUpperBounded());
-		
+
 		r = PortRange.valueOf("-1024");
 		assertEquals(1024, r.getUpperBound());
 		assertFalse(r.isLowerBounded());
 	}
-	
+
 	@Test
 	public void testValueOfWithIndex()
 	{
 		PortRange r = PortRange.valueOf(4, "aaa:1024");
 		assertEquals(1024, r.getLowerBound());
 		assertEquals(1024, r.getUpperBound());
-		
+
 		r = PortRange.valueOf(4, "aaa:1024-");
 		assertEquals(1024, r.getLowerBound());
 		assertFalse(r.isUpperBounded());
-		
+
 		r = PortRange.valueOf(4, "aaa:-1024");
 		assertEquals(1024, r.getUpperBound());
 		assertFalse(r.isLowerBounded());
 	}
-	
+
 	@Test
 	public void testContainsRange()
 	{
@@ -95,7 +95,7 @@ public class PortRangeTest
 		assertFalse(r.contains(PortRange.getSinglePort(1023)));
 		assertFalse(r.contains(PortRange.getSinglePort(1201)));
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -104,7 +104,7 @@ public class PortRangeTest
 		PortRange r2 = PortRange.getRange(80, 80);
 		assertFalse(r0.equals(r1));
 		assertTrue(r1.equals(r2));
-		
+
 		PortRange r3 = PortRange.getRange(80, 100);
 		PortRange r4 = PortRange.getRange(80, 100);
 		assertTrue(r3.equals(r4));

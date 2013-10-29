@@ -69,7 +69,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	public String getIssuer(){
 		return issuer;
 	}
-	
+
 	public Expression getExpression(){
 		return expression;
 	}

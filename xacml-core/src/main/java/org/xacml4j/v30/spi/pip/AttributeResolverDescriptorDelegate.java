@@ -7,7 +7,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 
 import com.google.common.base.Preconditions;
 
-class AttributeResolverDescriptorDelegate 
+class AttributeResolverDescriptorDelegate
 	extends ResolverDescriptorDelegate implements AttributeResolverDescriptor
 {
 	private AttributeResolverDescriptor d;
@@ -17,7 +17,7 @@ class AttributeResolverDescriptorDelegate
 		Preconditions.checkNotNull(d);
 		this.d = d;
 	}
-	
+
 	@Override
 	public boolean canResolve(AttributeDesignatorKey key) {
 		return d.canResolve(key);

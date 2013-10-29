@@ -7,7 +7,7 @@ public final class StringExp extends BaseAttributeExp<String>
 	StringExp(StringType type, String value) {
 		super(type, value);
 	}
-	
+
 	public boolean equalsIgnoreCase(StringExp v){
 		return getValue().equalsIgnoreCase(v.getValue());
 	}

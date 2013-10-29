@@ -130,7 +130,7 @@
                       RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
                       MustBePresent="true"
                       DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

@@ -1,7 +1,8 @@
 package org.xacml4j.springws;
 
 
-import org.springframework.ws.server.endpoint.AbstractDomPayloadEndpoint;
+import org.springframework.ws.server.endpoint.annotation.Endpoint;
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xacml4j.v30.RequestContext;
@@ -13,29 +14,27 @@ import org.xacml4j.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 
 
-public class DomXacmlEndpoint extends AbstractDomPayloadEndpoint
-{
-	private PolicyDecisionPoint pdp;
-	private RequestUnmarshaller requestUnmarshaller;
-	private ResponseMarshaller responseMarshaller;
+@Endpoint
+public class DomXacmlEndpoint {
+
+	private final PolicyDecisionPoint pdp;
+	private final RequestUnmarshaller xacml20RequestUnmarshaller;
+	private final ResponseMarshaller xacml20ResponseMarshaller;
 
 	public DomXacmlEndpoint(
 			PolicyDecisionPoint pdp) {
 		this.pdp = pdp;
-		this.requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-		this.responseMarshaller = new Xacml20ResponseContextMarshaller();
+		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.xacml20ResponseMarshaller = new Xacml20ResponseContextMarshaller();
 	}
 
-
-
-	@Override
-	protected Element invokeInternal(Element requestElement,
+	@PayloadRoot(namespace ="urn:oasis:names:tc:xacml:2.0:context:schema:os", localPart = "Request")
+	public Element processXacml20Request(Element requestElement,
 			Document responseDocument) throws Exception {
-		RequestContext request = requestUnmarshaller.unmarshal(requestElement);
+		RequestContext request = xacml20RequestUnmarshaller.unmarshal(requestElement);
 		ResponseContext response = pdp.decide(request);
-		responseMarshaller.marshal(response, responseDocument);
+		xacml20ResponseMarshaller.marshal(response, responseDocument);
 		return responseDocument.getDocumentElement();
 	}
-
 }
 

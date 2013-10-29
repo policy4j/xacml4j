@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 public class RequestContexctHandlerFactoryBean extends AbstractFactoryBean<RequestContextHandler>
 {
 	private RequestContextHandler ref;
-	
+
 	public void setRef(RequestContextHandler handler){
 		Preconditions.checkNotNull(handler);
 		this.ref = handler;
@@ -23,5 +23,5 @@ public class RequestContexctHandlerFactoryBean extends AbstractFactoryBean<Reque
 	public Class<?> getObjectType() {
 		return RequestContextHandler.class;
 	}
-	
+
 }

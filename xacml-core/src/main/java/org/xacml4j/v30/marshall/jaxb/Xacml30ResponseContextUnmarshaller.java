@@ -8,12 +8,12 @@ import org.xacml4j.v30.marshall.ResponseUnmarshaller;
 
 import com.google.common.base.Preconditions;
 
-public class Xacml30ResponseContextUnmarshaller extends 
-	BaseJAXBUnmarshaller<ResponseContext> 
-implements ResponseUnmarshaller 
+public class Xacml30ResponseContextUnmarshaller extends
+	BaseJAXBUnmarshaller<ResponseContext>
+implements ResponseUnmarshaller
 {
 	private Xacml30RequestContextFromJaxbToObjectModelMapper mapper;
-	
+
 	public Xacml30ResponseContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml30RequestContextFromJaxbToObjectModelMapper();
@@ -22,7 +22,7 @@ implements ResponseUnmarshaller
 	@Override
 	protected ResponseContext create(JAXBElement<?> jaxbInstance)
 			throws XacmlSyntaxException {
-		Preconditions.checkArgument((jaxbInstance.getValue() 
+		Preconditions.checkArgument((jaxbInstance.getValue()
 				instanceof org.oasis.xacml.v30.jaxb.ResponseType));
 		return mapper.create((org.oasis.xacml.v30.jaxb.ResponseType)jaxbInstance.getValue());
 	}

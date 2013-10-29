@@ -15,29 +15,29 @@ public interface EvaluationContext
 	/**
 	 * Indicates that evaluation is performed
 	 * just to determine extended indeterminate
-	 * and there is no need to evaluate advice and 
+	 * and there is no need to evaluate advice and
 	 * obligations in the decision rules
-	 * 
+	 *
 	 * @return <code><code>true</code> if context
 	 * was create to evaluate extended indeterminate
 	 */
 	boolean isExtendedIndeterminateEval();
-	
+
 	/**
 	 * Creates an evaluation context to evaluate policy tree
 	 * for extended indeterminate
-	 * 
+	 *
 	 * @return {@link EvaluationContext} to evaluate extended indeterminate
 	 */
 	EvaluationContext createExtIndeterminateEvalContext();
-	
+
 	/**
 	 * Gets clock ticker
-	 * 
+	 *
 	 * @return clock ticker
 	 */
 	Ticker getTicker();
-	
+
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
@@ -155,10 +155,10 @@ public interface EvaluationContext
 	 * @return {@link CompositeDecisionRule} or <code>null</code>
 	 */
 	CompositeDecisionRule getCurrentPolicySet();
-	
+
 	/**
 	 * Gets current rule
-	 * 
+	 *
 	 * @return {@link DecisionRule} or <code>null</code>
 	 */
 	DecisionRule getCurrentRule();
@@ -253,7 +253,7 @@ public interface EvaluationContext
 
 	/**
 	 * Sets resolved designator {@link AttributeDesignatorKey} value
-	 * 
+	 *
 	 * @param ref an attribute designator
 	 * @param v an attribute designator value
 	 */
@@ -261,7 +261,7 @@ public interface EvaluationContext
 
 	/**
 	 * Gets all resolved designators in this context
-	 * 
+	 *
 	 * @return a map of all resolved designators
 	 */
 	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();

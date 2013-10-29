@@ -18,13 +18,13 @@ import org.xacml4j.v30.pdp.PolicySetIDReference;
 
 
 public class DefaultPolicyReferenceResolverTest
-{	
+{
 	private PolicyRepository repository;
 	private IMocksControl c;
-	
+
 	private Policy p1v1;
 	private PolicySet ps1v1;
-	
+
 	@SuppressWarnings("unchecked")
 	@Before
 	public void init() throws Exception
@@ -40,9 +40,9 @@ public class DefaultPolicyReferenceResolverTest
 				.builder("id")
 				.version("1.2.1")
 				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).create();
-	
+
 	}
-	
+
 	@Test
 	public void testResolvePolicyIDReference() throws Exception
 	{
@@ -60,7 +60,7 @@ public class DefaultPolicyReferenceResolverTest
 		assertSame(p1v1, p);
 		c.verify();
 	}
-	
+
 	@Test
 	public void testResolvePolicySetIDReference() throws Exception
 	{

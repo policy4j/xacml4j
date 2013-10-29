@@ -9,7 +9,7 @@ public final class Base64BinaryExp extends BaseAttributeExp<BinaryValue>
 	Base64BinaryExp(BinaryValue value) {
 		super(Base64BinaryType.BASE64BINARY, value);
 	}
-	
+
 	@Override
 	public String toXacmlString() {
 		return getValue().toBase64Encoded();

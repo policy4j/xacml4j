@@ -27,40 +27,40 @@ import com.google.common.collect.Collections2;
  * An implementation of {@link AbstractPolicyRepository} which keeps
  * all policies and policy sets in memory indexed by identifier and version
  * for fast search queries
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public class InMemoryPolicyRepository extends AbstractPolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
-	
+
 	private final static int INITIAL_POLICYSET_MAP_SIZE = 128;
 	private final static int INITIAL_POLICY_MAP_SIZE = 128;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
-	
+
 	public InMemoryPolicyRepository(
 			String id,
-			FunctionProvider functions, 
-			DecisionCombiningAlgorithmProvider decisionAlgorithms) 
+			FunctionProvider functions,
+			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 		throws Exception
 	{
 		super(id, functions, decisionAlgorithms);
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>(INITIAL_POLICY_MAP_SIZE);
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>(INITIAL_POLICYSET_MAP_SIZE);
 	}
-	
+
 	@Override
 	public Collection<Policy> getPolicies(
-			String id, 
+			String id,
 			VersionMatch version,
-			VersionMatch earliest, 
-			VersionMatch latest) 
+			VersionMatch earliest,
+			VersionMatch latest)
 	{
 		Map<Version, Policy> byId = policies.get(id);
-		if(log.isDebugEnabled() && 
+		if(log.isDebugEnabled() &&
 				byId != null){
-			log.debug("Found=\"{}\" versions of policy with id=\"{}\"", 
+			log.debug("Found=\"{}\" versions of policy with id=\"{}\"",
 					byId.size(), id);
 		}
 		return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -68,20 +68,20 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 
 	@Override
 	public Collection<PolicySet> getPolicySets(
-			String id, 
+			String id,
 			VersionMatch version,
-			VersionMatch earliest, 
-			VersionMatch latest) 
+			VersionMatch earliest,
+			VersionMatch latest)
 	{
 		Map<Version, PolicySet> byId = policySets.get(id);
-		if(log.isDebugEnabled() && 
+		if(log.isDebugEnabled() &&
 				byId != null){
-			log.debug("Found=\"{}\" versions of policy set with id=\"{}\"", 
+			log.debug("Found=\"{}\" versions of policy set with id=\"{}\"",
 					byId.size(), id);
 		}
 		return find((byId != null)?byId.values():null, version, earliest, latest);
 	}
-	
+
 	@Override
 	public CompositeDecisionRule get(String id, Version v) {
 		Map<Version, Policy> pv = policies.get(id);
@@ -93,7 +93,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 
 	@Override
-	protected  boolean addPolicy(Policy policy) 
+	protected  boolean addPolicy(Policy policy)
 	{
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();
@@ -114,7 +114,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 
 	@Override
-	protected boolean addPolicySet(PolicySet policySet) 
+	protected boolean addPolicySet(PolicySet policySet)
 	{
 		Preconditions.checkArgument(policySet != null);
 		String id = policySet.getId();
@@ -133,7 +133,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 		return versions.putIfAbsent(v, policySet) == null;
 	}
-	
+
 	@Override
 	protected boolean removePolicy(Policy p)
 	{
@@ -150,7 +150,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 		return (versions == null)?false:(versions.remove(v) != null);
 	}
-	
+
 	@Override
 	protected boolean removePolicySet(PolicySet p)
 	{
@@ -167,11 +167,11 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 		return (versions == null)?false:(versions.remove(v) != null);
 	}
-	
+
 	private <T extends Versionable> Collection<T> find(
-			Collection<T> c, 
-			final VersionMatch version, 
-			final VersionMatch earliest, 
+			Collection<T> c,
+			final VersionMatch version,
+			final VersionMatch earliest,
 			final VersionMatch latest)
 	{
 		if(c == null){
@@ -184,8 +184,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 						(earliest == null || earliest.match(p.getVersion())) &&
 						(latest == null || latest.match(p.getVersion()));
 			}
-			
+
 		});
 	}
-	
+
 }

@@ -1,15 +1,15 @@
 package org.xacml4j.v30.pdp;
 
-public interface PolicyDecisionPointContextFactory 
+public interface PolicyDecisionPointContextFactory
 {
 	int getDefaultDecisionCacheTTL();
-	
+
 	boolean isDecisionAuditEnabled();
 	boolean isDecisionCacheEnabled();
-	
+
 	/**
 	 * Creates policy decision context
-	 * 
+	 *
 	 * @param pdp a PDP callback
 	 * @return {@link PolicyDecisionPointContext} instance
 	 */

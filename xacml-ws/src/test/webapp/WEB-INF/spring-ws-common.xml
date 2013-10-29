@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="xacmlDomEndpoint" class="com.artagon.xacml.springws.XacmlEndpoint"/>
-	
+	<bean id="xacmlDomEndpoint" class="org.xacml4j.springws.DomXacmlEndpoint"/>
+
 	<bean id="endpointMapping"
-		class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+		class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
 		<property name="interceptors">
 			<list>
 				<ref bean="loggingInterceptor" />
 			</list>
 		</property>
-
-		<property name="mappings">
-			<props>
-				<prop key="{urn:oasis:names:tc:xacml:2.0:context:schema:os}Request">xacmlDomEndpoint</prop>
-				<prop key="{urn:oasis:names:tc:xacml:3.0:context:schema:os}Request">xacmlDomEndpoint</prop>
-			</props>
-		</property>
 	</bean>
-	
+
 	<bean id="loggingInterceptor"
 		class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" />
-		
-		
+
+
 </beans>

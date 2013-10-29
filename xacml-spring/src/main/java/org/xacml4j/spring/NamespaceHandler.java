@@ -12,7 +12,7 @@ public class NamespaceHandler extends NamespaceHandlerSupport
 {
 
 	@Override
-	public void init() 
+	public void init()
 	{
 		registerBeanDefinitionParser("FunctionProviders", new FunctionProvidersDefintionParser());
 		registerBeanDefinitionParser("DecisionCombingingAlgorithms", new DecisionCombiningAlgorithmProvidersDefinitionParser());

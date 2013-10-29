@@ -22,7 +22,7 @@ import org.xacml4j.v30.types.StringType;
 
 import com.google.common.collect.ImmutableList;
 
-public class DefaultFunctionInocationTest 
+public class DefaultFunctionInocationTest
 {
 	private Invocation<ValueExpression> inv0;
 	private Invocation<ValueExpression> inv1;
@@ -31,22 +31,22 @@ public class DefaultFunctionInocationTest
 	private FunctionInvocation f0;
 	private FunctionInvocation f1;
 	private EvaluationContext context;
-	
+
 	@SuppressWarnings("unchecked")
 	@Before
 	public void init(){
 		this.c = createControl();
-		this.inv0 = c.createMock(Invocation.class); 
+		this.inv0 = c.createMock(Invocation.class);
 		this.inv1 = c.createMock(Invocation.class);
 		this.spec = c.createMock(FunctionSpec.class);
 		this.f0 = new DefaultFunctionInvocation(inv0, false);
 		this.f1 = new DefaultFunctionInvocation(inv1, true);
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testInvokeNoEvaluationContextFuncionIsNotVariadic() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
@@ -59,10 +59,10 @@ public class DefaultFunctionInocationTest
 		assertEquals(IntegerType.INTEGER.create(1), v);
 		c.verify();
 	}
-	
+
 	@Test(expected=FunctionInvocationException.class)
 	public void testInvokeInvocationThrowsRuntimeException() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
@@ -74,18 +74,18 @@ public class DefaultFunctionInocationTest
 		f0.invoke(spec, context, p);
 		c.verify();
 	}
-	
+
 	@Test
 	public void testInvokeWithEvaluationContextFuncionIsNotVariadic() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
 		.build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv1.invoke(new Object[]{context, 
-				IntegerType.INTEGER.create(1), 
+		expect(inv1.invoke(new Object[]{context,
+				IntegerType.INTEGER.create(1),
 				IntegerType.INTEGER.create(2)})).andReturn(
 						IntegerType.INTEGER.create(1));
 		c.replay();
@@ -93,11 +93,11 @@ public class DefaultFunctionInocationTest
 		assertEquals(IntegerType.INTEGER.create(1), v);
 		c.verify();
 	}
-	
+
 	@Test
 	@Ignore
 	public void testInvokeWithEvaluationContextFuncionIsVariadic() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
@@ -105,11 +105,11 @@ public class DefaultFunctionInocationTest
 		.add(StringType.STRING.create("bbb"))
 		.build();
 		Object[] pArray = new Object[]{
-				context, 
-				IntegerType.INTEGER.create(1), 
+				context,
+				IntegerType.INTEGER.create(1),
 				IntegerType.INTEGER.create(2),
 				new Object[]{
-					StringType.STRING.create("aaa"), 
+					StringType.STRING.create("aaa"),
 					StringType.STRING.create("bbb")}
 				};
 		expect(spec.getNumberOfParams()).andReturn(3);
@@ -121,11 +121,11 @@ public class DefaultFunctionInocationTest
 		assertEquals(IntegerType.INTEGER.create(1), v);
 		c.verify();
 	}
-	
+
 	@Test
 	@Ignore
 	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
@@ -133,10 +133,10 @@ public class DefaultFunctionInocationTest
 		.add(StringType.STRING.create("bbb"))
 		.build();
 		Object[] pArray = new Object[]{
-				IntegerType.INTEGER.create(1), 
+				IntegerType.INTEGER.create(1),
 				IntegerType.INTEGER.create(2),
 				new Object[]{
-					StringType.STRING.create("aaa"), 
+					StringType.STRING.create("aaa"),
 					StringType.STRING.create("bbb")}
 				};
 		expect(spec.getNumberOfParams()).andReturn(3);
@@ -147,17 +147,17 @@ public class DefaultFunctionInocationTest
 		assertEquals(IntegerType.INTEGER.create(1), v);
 		c.verify();
 	}
-	
+
 	@Test
 	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndZeroVariadicParams() throws Exception
-	{	
+	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerType.INTEGER.create(1))
 		.add(IntegerType.INTEGER.create(2))
 		.build();
 		Object[] pArray = new Object[]{
-				IntegerType.INTEGER.create(1), 
-				IntegerType.INTEGER.create(2), 
+				IntegerType.INTEGER.create(1),
+				IntegerType.INTEGER.create(2),
 				null};
 		expect(spec.getNumberOfParams()).andReturn(3);
 		expect(spec.isVariadic()).andReturn(true).times(2);

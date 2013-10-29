@@ -116,7 +116,7 @@
                 </Apply>
                 <AttributeValue
                       DataType="http://www.w3.org/2001/XMLSchema#integer">5</AttributeValue>
-            
+
 </Apply></Condition>
         </Rule>
 

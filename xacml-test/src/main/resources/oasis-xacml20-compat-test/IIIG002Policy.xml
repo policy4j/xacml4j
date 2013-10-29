@@ -22,7 +22,7 @@
                   DataType="http://www.w3.org/2001/XMLSchema#string">//*[local-name()='Attribute'][namespace-uri()='urn:oasis:names:tc:xacml:2.0:context:schema:os']</AttributeValue>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#string">//*[local-name()='Subject'][namespace-uri()='urn:oasis:names:tc:xacml:2.0:context:schema:os']/*[local-name()='Attribute'][namespace-uri()='urn:oasis:names:tc:xacml:2.0:context:schema:os']</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

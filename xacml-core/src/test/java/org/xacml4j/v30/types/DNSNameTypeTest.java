@@ -8,15 +8,15 @@ import org.junit.Test;
 import org.xacml4j.v30.DNSName;
 
 
-public class DNSNameTypeTest 
+public class DNSNameTypeTest
 {
 	private DNSNameType t1;
-	
+
 	@Before
 	public void init(){
 		this.t1 = DNSNameType.DNSNAME;
 	}
-	
+
 	@Test
 	public void testFromXacmlString()
 	{
@@ -25,20 +25,20 @@ public class DNSNameTypeTest
 		assertEquals("test.org", v.getDomainName());
 		assertEquals(10, v.getPortRange().getLowerBound());
 		assertEquals(20, v.getPortRange().getUpperBound());
-		
+
 		a = t1.fromXacmlString("test.org:-20");
 		v = a.getValue();
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertEquals(20, v.getPortRange().getUpperBound());
-		
+
 		a = t1.fromXacmlString("test.org");
 		v = a.getValue();
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertFalse(v.getPortRange().isUpperBounded());
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -46,7 +46,7 @@ public class DNSNameTypeTest
 		DNSNameExp v2 = t1.fromXacmlString("test.org:10-20");
 		assertEquals(v1, v2);
 	}
-	
+
 	@Test
 	public void testToXacmlString()
 	{

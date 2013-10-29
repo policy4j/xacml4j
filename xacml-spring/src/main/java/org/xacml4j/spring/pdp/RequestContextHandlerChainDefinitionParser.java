@@ -20,13 +20,13 @@ public class RequestContextHandlerChainDefinitionParser	extends
 		BeanDefinitionBuilder chain = BeanDefinitionBuilder
 				.rootBeanDefinition(RequestContextHandlerChainFactoryBean.class);
 		parseHandlers(
-       		 DomUtils.getChildElementsByTagName(element, 
+       		 DomUtils.getChildElementsByTagName(element,
        		 "RequestContextHandler"), chain);
-		
+
 		return chain.getBeanDefinition();
 	}
 
-	private static void parseHandlers(List<Element> childElements, BeanDefinitionBuilder chain) 
+	private static void parseHandlers(List<Element> childElements, BeanDefinitionBuilder chain)
 	{
 		ManagedList<BeanDefinition> handlers = new ManagedList<BeanDefinition>(childElements.size());
 	    for (int i = 0; i < childElements.size(); ++i) {

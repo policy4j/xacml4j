@@ -13,13 +13,13 @@ import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringType;
 
 
-public class BaseAttributeResolverTest 
+public class BaseAttributeResolverTest
 {
 	private AttributeResolver r;
 	private ResolverContext context;
 	private AttributeResolverDescriptor d;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
@@ -34,7 +34,7 @@ public class BaseAttributeResolverTest
 		.withConstructor(d)
 		.createMock();
 	}
-	
+
 	@Test
 	@Ignore
 	public void testMBeanInvocationStats() throws Exception

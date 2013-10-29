@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface XacmlAttributeDesignator 
+public @interface XacmlAttributeDesignator
 {
 	String attributeId();
 	String category();

@@ -4,20 +4,20 @@
 	version="2.4">
 
 	<display-name>XACML</display-name>
-	
+
 	 <display-name>CXF Example Webservice</display-name>
- 
- 	<!--  
+
+ 	<!--
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
- 	
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>WEB-INF/applicationContext.xml</param-value>
     </context-param>
  	-->
- 	
+
  	<servlet>
 		<servlet-name>spring-pox</servlet-name>
 		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
@@ -46,15 +46,15 @@
 		<servlet-name>spring-pox</servlet-name>
 		<url-pattern>/pox</url-pattern>
 	</servlet-mapping>
-	
-	
-<!--  	
+
+
+<!--
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
- 
+
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/*</url-pattern>

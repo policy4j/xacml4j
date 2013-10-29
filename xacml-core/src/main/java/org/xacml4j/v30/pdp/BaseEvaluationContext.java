@@ -62,16 +62,16 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	private Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
 
 	private Integer combinedDecisionCacheTTL = null;
-	
+
 	private Ticker ticker = Ticker.systemTicker();
-	
+
 	private boolean extendedIndeterminateEval = false;
 
 	/**
-	 * Constructs evaluation context with a given attribute provider,
-	 * policy resolver and
-	 * @param attributeService
-	 * @param policyResolver
+	 * Constructs evaluation context with a given attribute provider and a
+	 * policy resolver.
+	 * @param attributeService attribute provider
+	 * @param repository policy resolver
 	 */
 	protected BaseEvaluationContext(
 			EvaluationContextHandler attributeService,
@@ -102,17 +102,17 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 	}
-	
+
 	@Override
 	public Ticker getTicker(){
 		return ticker;
 	}
-	
+
 	@Override
 	public boolean isExtendedIndeterminateEval() {
 		return extendedIndeterminateEval;
 	}
-	
+
 
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
@@ -251,7 +251,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 	public Policy getCurrentPolicy() {
 		return null;
 	}
-	
+
 	@Override
 	public DecisionRule getCurrentRule() {
 		return null;
@@ -308,7 +308,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 				"Failed to resolve reference");
 	}
 
-	private final Policy resolve(PolicyIDReference ref)
+	private Policy resolve(PolicyIDReference ref)
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
 		if(log.isDebugEnabled()){
@@ -322,7 +322,7 @@ public abstract class BaseEvaluationContext implements EvaluationContext
 		return p;
 	}
 
-	private final PolicySet resolve(PolicySetIDReference ref)
+	private PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
 		if(log.isDebugEnabled()){

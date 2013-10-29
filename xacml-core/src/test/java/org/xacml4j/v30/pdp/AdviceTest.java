@@ -12,7 +12,7 @@ import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.types.IntegerType;
 
 
-public class AdviceTest 
+public class AdviceTest
 {
 	@Test
 	public void testCreateAttributeAssignmentsWithDifferentIds()
@@ -36,7 +36,7 @@ public class AdviceTest
 		assertFalse(a.getAttribute("testId1").contains(attr2Builder.build()));
 		assertFalse(a.getAttribute("testId0").contains(attr1Builder.build()));
 	}
-	
+
 	@Test
 	public void testAdviceMergeDifferentAttributeIds()
 	{
@@ -45,25 +45,25 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-		
+
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
 				.attribute(attrBuilder.id("testId2").build())
 				.build();
-		
+
 		Advice a2 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.id("testId3").build())
 				.attribute(attrBuilder.id("testId4").build())
 				.build();
 		Advice a = a1.merge(a2);
 		assertEquals(a1.getId(), a.getId());
-		
+
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.id("testId1").build()));
 		assertTrue(a.getAttribute("testId2").contains(attrBuilder.id("testId2").build()));
 		assertTrue(a.getAttribute("testId3").contains(attrBuilder.id("testId3").build()));
 		assertTrue(a.getAttribute("testId4").contains(attrBuilder.id("testId4").build()));
 	}
-	
+
 	@Test
 	public void testAdviceMergeHasSameAttributeIds()
 	{
@@ -72,25 +72,25 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-		
+
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
 				.attribute(attrBuilder.id("testId2").build())
 				.build();
-		
-		
+
+
 		Advice a2 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.id("testId3").build())
 				.attribute(attrBuilder.id("testId4").build())
 				.build();
-		
+
 		Advice a = a1.merge(a2);
 		assertEquals(a1.getId(), a.getId());
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.id("testId1").build()));
 		assertTrue(a.getAttribute("testId2").contains(attrBuilder.id("testId2").build()));
 		assertTrue(a.getAttribute("testId4").contains(attrBuilder.id("testId4").build()));
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -99,7 +99,7 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-			
+
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.id("testId1").build())
 				.attribute(attrBuilder.id("testId2").build())
@@ -120,7 +120,7 @@ public class AdviceTest
 		assertFalse(a1.equals(a3));
 		assertFalse(a1.equals(a4));
 	}
-	
+
 	@Test
 	public void testCreateAttributeAssignmentsWithSameIds()
 	{
@@ -129,17 +129,17 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-		
+
 		Advice a = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
 				.attribute(attrBuilder.value(IntegerType.INTEGER.create(1)).build())
 				.build();
-		
+
 		assertEquals("testId", a.getId());
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerType.INTEGER.create(0)).build()));
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerType.INTEGER.create(1)).build()));
 	}
-	
+
 	@Test
 	public void testImmutability1()
 	{
@@ -148,14 +148,14 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-		
+
 		Advice a = Advice.builder("testId", Effect.PERMIT)
 				.attribute(attrBuilder.build())
 				.build();
-		
+
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.build()));
 	}
-	
+
 	@Test(expected=UnsupportedOperationException.class)
 	public void testImmutability2()
 	{
@@ -164,7 +164,7 @@ public class AdviceTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerType.INTEGER.create(0));
-		
+
 		Advice a = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
 				.build();

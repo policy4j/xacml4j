@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PolicySet
     xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os 
-      http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+      http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
     PolicySetId="urn:va:xacml:2.0:interop:rsa8:policysetid:N:PermCollections"
     PolicyCombiningAlgId=
       "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
@@ -42,7 +42,7 @@
       or collection of permissions. It is left in benign state, by having inserted
       the previous PolicySet, which performs the same processing without screening
       the Targets.
-      This PolicySet is left for reference and analysis, as it embodies the concept 
+      This PolicySet is left for reference and analysis, as it embodies the concept
       of virtual roles.
     </Description>
     <Target>
@@ -80,7 +80,7 @@
             <AttributeValue
                 DataType="http://www.w3.org/2001/XMLSchema#string"
               >urn:va:xacml:2.0:interop:rsa8:hl7:prd-009</AttributeValue>
-            <SubjectAttributeDesignator 
+            <SubjectAttributeDesignator
                 AttributeId="urn:va:xacml:2.0:interop:rsa8:subject:hl7:permission"
                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
           </SubjectMatch>

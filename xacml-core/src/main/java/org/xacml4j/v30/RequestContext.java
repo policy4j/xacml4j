@@ -493,11 +493,11 @@ public class RequestContext
 			this.reqRefs.addAll(refs);
 			return this;
 		}
-		
+
 		/**
 		 * Copies all state to this builder from
 		 * a given request context
-		 * 
+		 *
 		 * @param req a request context
 		 * @return {@link Builder}
 		 */
@@ -514,7 +514,7 @@ public class RequestContext
 		/**
 		 * Copies all state to this builder from
 		 * a given request context except attributes
-		 * 
+		 *
 		 * @param req a request context
 		 * @return {@link Builder}
 		 */

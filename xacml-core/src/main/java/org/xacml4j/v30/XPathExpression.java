@@ -3,27 +3,27 @@ package org.xacml4j.v30;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public final class XPathExpression 
+public final class XPathExpression
 {
 	private String path;
 	private AttributeCategory categoryId;
-	
-	public XPathExpression(String path, 
+
+	public XPathExpression(String path,
 			AttributeCategory category){
 		Preconditions.checkNotNull(path);
 		Preconditions.checkNotNull(category);
 		this.path = path;
 		this.categoryId = category;
 	}
-	
+
 	public AttributeCategory getCategory(){
 		return categoryId;
 	}
-	
+
 	public String getPath(){
 		return path;
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null){
@@ -36,10 +36,10 @@ public final class XPathExpression
 			return false;
 		}
 		XPathExpression xpath = (XPathExpression)o;
-		return categoryId.equals(xpath.categoryId) 
+		return categoryId.equals(xpath.categoryId)
 				&& path.equals(xpath.path);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)

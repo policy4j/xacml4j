@@ -7,36 +7,36 @@ import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
 
 import com.google.common.base.Preconditions;
 
-public final class RequestContextHandlerChainBuilder 
+public final class RequestContextHandlerChainBuilder
 {
 	private List<RequestContextHandler> handlers;
-	
+
 	private RequestContextHandlerChainBuilder(){
-		this.handlers = new LinkedList<RequestContextHandler>();	
+		this.handlers = new LinkedList<RequestContextHandler>();
 	}
-	
+
 	public static RequestContextHandlerChainBuilder builder(){
 		return new RequestContextHandlerChainBuilder();
 	}
-	
+
 	/**
 	 * Adds default XACML 3.0 handlers to the chain
-	 * 
+	 *
 	 * @return {@link RequestContextHandlerChainBuilder}
 	 */
 	public RequestContextHandlerChainBuilder withDefaultHandlers()
 	{
-		withRequestHandler(new MultipleResourcesHandler()); 
+		withRequestHandler(new MultipleResourcesHandler());
 		return this;
 	}
-	
+
 	public RequestContextHandlerChainBuilder withRequestHandler(RequestContextHandler handler)
 	{
 		Preconditions.checkNotNull(handler);
 		this.handlers.add(handler);
 		return this;
 	}
-	
+
 	public RequestContextHandler build(){
 		return new RequestContextHandlerChain(handlers);
 	}

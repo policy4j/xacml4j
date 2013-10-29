@@ -23,7 +23,7 @@ public class VersionMatchTest
 		m = new VersionMatch("1.*.+");
 		assertTrue(m.match(Version.parse("1.0")));
 	}
-	
+
 	@Test
 	public void testMatchAnySingleNumber() throws XacmlSyntaxException
 	{
@@ -33,13 +33,13 @@ public class VersionMatchTest
 		assertTrue(m.match(Version.parse("1.0.1")));
 		assertFalse(m.match(Version.parse("2.1.1")));
 	}
-	
+
 	@Test(expected=XacmlSyntaxException.class)
 	public void testCreateWithSubsquentialTwoTimes() throws XacmlSyntaxException
 	{
 		new VersionMatch("1.+.+");
 	}
-	
+
 	@Test
 	public void testMatchAnySingleNumberTwoTimesInTheRow() throws XacmlSyntaxException
 	{

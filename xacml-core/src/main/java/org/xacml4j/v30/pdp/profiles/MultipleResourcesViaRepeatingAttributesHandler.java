@@ -18,14 +18,14 @@ import com.google.common.collect.Sets;
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories";
-	
+
 	public MultipleResourcesViaRepeatingAttributesHandler(){
 		super(FEATURE_ID);
 	}
-	
+
 	@Override
-	public Collection<Result> handle(RequestContext request, 
-			PolicyDecisionPointContext context) 
+	public Collection<Result> handle(RequestContext request,
+			PolicyDecisionPointContext context)
 	{
 		if(!request.containsRepeatingCategories()){
 			return handleNext(request, context);
@@ -41,7 +41,7 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		}
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
-		for(List<Attributes> requestAttr : cartesian){	
+		for(List<Attributes> requestAttr : cartesian){
 			results.addAll(handleNext(RequestContext.builder().copyOf(request, requestAttr).build(), context));
 		}
 		return results;

@@ -18,14 +18,14 @@ import com.google.common.base.Preconditions;
 public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 {
 	private JAXBContext context;
-	
+
 	public BaseJAXBMarshaller(JAXBContext context){
 		Preconditions.checkArgument(context != null);
 		this.context = context;
 	}
-	
+
 	@Override
-	public final void marshal(T source, Object target) throws IOException 
+	public final void marshal(T source, Object target) throws IOException
 	{
 		Preconditions.checkNotNull(source);
 		Preconditions.checkNotNull(target);
@@ -57,7 +57,7 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 				return;
 			}
 			throw new IllegalArgumentException(
-					String.format("Unsupported marshalling target=\"%s\"", 
+					String.format("Unsupported marshalling target=\"%s\"",
 							target.getClass().getName()));
 		}catch(JAXBException e){
 			throw new IllegalStateException(e);

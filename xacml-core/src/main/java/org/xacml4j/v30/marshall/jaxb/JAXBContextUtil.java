@@ -5,10 +5,10 @@ import javax.xml.bind.JAXBException;
 
 import com.google.common.base.Preconditions;
 
-public class JAXBContextUtil 
+public class JAXBContextUtil
 {
 	private static JAXBContext INSTANCE;
-	
+
 	static{
 		StringBuilder b = new StringBuilder();
 		b.append(org.oasis.xacml.v30.jaxb.ObjectFactory.class.getPackage().getName()).append(":");
@@ -20,7 +20,7 @@ public class JAXBContextUtil
 			e.printStackTrace(System.err);
 		}
 	}
-	
+
 	public static JAXBContext getInstance()
 	{
 		Preconditions.checkState(INSTANCE != null, "Failed to initialize JAXB context");

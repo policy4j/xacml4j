@@ -12,24 +12,24 @@ public class XacmlSyntaxException extends XacmlException
 	public XacmlSyntaxException(String template, Object... arguments) {
 		super(template, arguments);
 	}
-	
+
 	public XacmlSyntaxException(
 			Throwable t,
 			String message,
 			Object... arguments) {
 		super(t, message, arguments);
 	}
-	
+
 	public XacmlSyntaxException(
-			Location location, 
+			Location location,
 			String message,
 			Object... arguments) {
-		super(String.format("XACML syntax error at line=\"%s\" column=\"%s\", error: %s", 
-				location.getLineNumber(), 
-				location.getColumnNumber(), 
+		super(String.format("XACML syntax error at line=\"%s\" column=\"%s\", error: %s",
+				location.getLineNumber(),
+				location.getColumnNumber(),
 				String.format(message, arguments)));
 	}
-	
+
 	public XacmlSyntaxException(Throwable cause) {
 		super(cause);
 	}

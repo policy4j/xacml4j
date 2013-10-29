@@ -23,20 +23,20 @@ public class PermitOverridesTest
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new PermitOverrides<DecisionRule>("aaaa");
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testCombineWithNoDecisions()
 	{
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 	}
-	
+
 	@Test
 	public void testCombineWithAllNotApplicable() throws EvaluationException
 	{
@@ -57,7 +57,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
 		verify(r1, r2, r3, context);
 	}
-	
+
 	@Test
 	public void testCombineWithPermit() throws EvaluationException
 	{
@@ -71,8 +71,8 @@ public class PermitOverridesTest
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
-	
-	
+
+
 	@Test
 	public void testCombineWithDenyThenNotApplicable() throws EvaluationException
 	{
@@ -88,7 +88,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
-	
+
 	@Test
 	public void testCombineWithDenyThenPermit() throws EvaluationException
 	{
@@ -104,7 +104,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
-	
+
 	@Test
 	public void testCombineWithDenyThenIndeterminate() throws EvaluationException
 	{
@@ -120,7 +120,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 		verify(r1, r2, context);
 	}
-		
+
 	@Test
 	public void testCombineWithInderterminateP() throws EvaluationException
 	{
@@ -132,7 +132,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-		
+
 	@Test
 	public void testCombineWithInderterminateD() throws EvaluationException
 	{
@@ -144,7 +144,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithInderterminate() throws EvaluationException
 	{
@@ -156,7 +156,7 @@ public class PermitOverridesTest
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
 		verify(r1);
 	}
-	
+
 	@Test
 	public void testCombineWithInderterminateDP() throws EvaluationException
 	{

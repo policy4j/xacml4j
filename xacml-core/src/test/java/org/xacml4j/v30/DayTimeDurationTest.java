@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class DayTimeDurationTest 
+public class DayTimeDurationTest
 {
 	@Test
 	public void testCreateValidDurationFromLexicalRepresentation()
@@ -23,7 +23,7 @@ public class DayTimeDurationTest
 		assertEquals(10, v2.getSeconds());
 		assertEquals("PT10H10S", v2.toString());
 	}
-	
+
 	@Test
 	public void testCreateValidDurationViaExplicitCtor()
 	{
@@ -36,7 +36,7 @@ public class DayTimeDurationTest
 		DayTimeDuration v2 = DayTimeDuration.create("P3DT10H30M");
 		assertEquals(v1, v2);
 	}
-	
+
 	@Test
 	public void testAddDurations()
 	{
@@ -49,7 +49,7 @@ public class DayTimeDurationTest
 		assertEquals(10, v3.getSeconds());
 		assertEquals("P3DT10H30M", v1.toString());
 	}
-	
+
 	@Test
 	public void testSubstractDurations()
 	{
@@ -61,7 +61,7 @@ public class DayTimeDurationTest
 		assertEquals(29, v3.getMinutes());
 		assertEquals(50, v3.getSeconds());
 	}
-	
+
 	@Test
 	public void testNegate()
 	{

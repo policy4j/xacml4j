@@ -21,17 +21,17 @@ import org.xacml4j.v30.types.IntegerType;
 
 import com.google.common.collect.ImmutableList;
 
-public class ApplyTest 
+public class ApplyTest
 {
 	private FunctionSpec function;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.function = createStrictMock(FunctionSpec.class);
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testApplyEvaluationWithValidFunctionAndValidParameters() throws XacmlException
 	{
@@ -51,7 +51,7 @@ public class ApplyTest
 		assertEquals(BooleanType.BOOLEAN.create(false), v);
 		verify(function);
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateApplyWithValidFunctionAndInvalidParameters() throws XacmlException
 	{
@@ -64,7 +64,7 @@ public class ApplyTest
 		Apply.builder(function).param(IntegerType.INTEGER.create(10L)).build();
 		verify(function);
 	}
-	
+
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
@@ -79,7 +79,7 @@ public class ApplyTest
 		apply.evaluate(context);
 		verify(function);
 	}
-	
+
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionParamValidationFails() throws XacmlException
 	{
@@ -94,7 +94,7 @@ public class ApplyTest
 		apply.evaluate(context);
 		verify(function);
 	}
-	
+
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{

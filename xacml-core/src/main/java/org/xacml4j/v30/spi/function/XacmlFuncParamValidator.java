@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFuncParamValidator 
+public @interface XacmlFuncParamValidator
 {
 	Class<? extends FunctionParametersValidator> validatorClass();
 }

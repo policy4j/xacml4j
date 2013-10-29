@@ -15,7 +15,7 @@ class ResolverDescriptorDelegate implements ResolverDescriptor
 		Preconditions.checkNotNull(d);
 		this.d = d;
 	}
-	
+
 	@Override
 	public String getId() {
 		return d.getId();

@@ -3,7 +3,6 @@ package org.xacml4j.v30.pdp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
@@ -24,13 +23,11 @@ import com.google.common.base.Objects;
  * the attribute values that are matched by the named attribute. In the
  * event that no matching attribute is present in the context, the
  * {@link AttributeDesignator#isMustBePresent()} governs whether it
- * evaluates to an empty bag or {@link EvaluationIndeterminateException} exception.
+ * evaluates to an empty bag or {@link EvaluationException} exception.
  *
  * See XACML 3.0 core section 7.3.5.
  *
  * @author Giedrius Trumpickas
- *
- * @param <T>
  */
 public class AttributeDesignator extends AttributeReference
 {
@@ -46,19 +43,18 @@ public class AttributeDesignator extends AttributeReference
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	@Override
 	public AttributeDesignatorKey getReferenceKey() {
 		return designatorKey;
 	}
-	
+
 	/**
 	 * Evaluates this attribute designator by resolving
-	 * attribute via {@link EvaluationContext#resolveAttributeDesignator(String,
-	 * String, AttributeExpType, String)
+	 * attribute via {@link EvaluationContext#resolve(org.xacml4j.v30.AttributeDesignatorKey)}
 	 *
 	 * @return {@link BagOfAttributeExp} instance
-	 * @exception EvaluationIndeterminateException if attribute can't be resolved
+	 * @exception EvaluationException if attribute can't be resolved
 	 * and {@link this#mustBePresent} is true
 	 */
 	@Override
@@ -99,8 +95,8 @@ public class AttributeDesignator extends AttributeReference
 			throw new AttributeReferenceEvaluationException(context,
 					designatorKey,
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
-					designatorKey.getCategory(), 
-					designatorKey.getAttributeId(), 
+					designatorKey.getCategory(),
+					designatorKey.getAttributeId(),
 					designatorKey.getIssuer());
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
@@ -149,21 +145,21 @@ public class AttributeDesignator extends AttributeReference
 		void visitEnter(AttributeDesignator v);
 		void visitLeave(AttributeDesignator v);
 	}
-	
+
 	public static class Builder extends AttributeReferenceBuilder<Builder>
 	{
 		private AttributeDesignatorKey.Builder keyBuilder = AttributeDesignatorKey.builder();
-			
+
 		public Builder attributeId(String attributeId){
 			keyBuilder.attributeId(attributeId);
 			return this;
 		}
-		
+
 		public Builder issuer(String issuer){
 			this.keyBuilder.issuer(issuer);
 			return this;
 		}
-		
+
 		public AttributeDesignator build(){
 			return new AttributeDesignator(this);
 		}

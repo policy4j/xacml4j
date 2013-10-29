@@ -26,7 +26,7 @@ public class NumericComparisionFunctionTest
 		b = DoubleType.DOUBLE.create(35.2);
 		assertEquals(BooleanType.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanDouble(a, b));
 	}
-	
+
 	@Test
 	public void testGreatherThanOrEqualDouble()
 	{
@@ -40,7 +40,7 @@ public class NumericComparisionFunctionTest
 		b = DoubleType.DOUBLE.create(35.2);
 		assertEquals(BooleanType.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanOrEqualDouble(a, b));
 	}
-	
+
 	@Test
 	public void testGreatherThanInteger()
 	{
@@ -54,7 +54,7 @@ public class NumericComparisionFunctionTest
 		b = IntegerType.INTEGER.create(36);
 		assertEquals(BooleanType.BOOLEAN.create(false), NumericComparisionFunctions.greatherThanInteger(a, b));
 	}
-	
+
 	@Test
 	public void testGreatherThanOrEqualsInteger()
 	{

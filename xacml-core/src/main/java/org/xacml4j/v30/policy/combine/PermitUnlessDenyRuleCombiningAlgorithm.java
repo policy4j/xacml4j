@@ -8,5 +8,5 @@ public final class PermitUnlessDenyRuleCombiningAlgorithm extends PermitUnlessDe
 
 	public PermitUnlessDenyRuleCombiningAlgorithm() {
 		super(ID);
-	}	
+	}
 }

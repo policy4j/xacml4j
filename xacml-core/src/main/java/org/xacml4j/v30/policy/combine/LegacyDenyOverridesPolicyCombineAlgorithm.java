@@ -18,18 +18,18 @@ public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombi
 	public LegacyDenyOverridesPolicyCombineAlgorithm() {
 		super(ID);
 	}
-	
+
 	protected LegacyDenyOverridesPolicyCombineAlgorithm(String algorithmId) {
 		super(algorithmId);
 	}
-	
+
 	@Override
-	public Decision combine(EvaluationContext context, 
+	public Decision combine(EvaluationContext context,
 			List<CompositeDecisionRule> rules) {
 		return doCombine(context, rules);
 	}
 	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides")
-	public static <D extends CompositeDecisionRule> Decision doCombine(EvaluationContext context, 
+	public static <D extends CompositeDecisionRule> Decision doCombine(EvaluationContext context,
 			List<D> rules) {
 		boolean atLeastOnePermit = false;
 		for(CompositeDecisionRule r : rules){
@@ -52,5 +52,5 @@ public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombi
 			return Decision.PERMIT;
 		}
 		return Decision.NOT_APPLICABLE;
-	}	
+	}
 }

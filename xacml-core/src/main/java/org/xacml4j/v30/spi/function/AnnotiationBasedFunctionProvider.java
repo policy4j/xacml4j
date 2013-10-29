@@ -16,9 +16,9 @@ import com.google.common.base.Preconditions;
 public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 {
 	private JavaMethodToFunctionSpecConverter converter;
-	
-	public AnnotiationBasedFunctionProvider(Class<?> factoryClass, 
-			InvocationFactory invocationFactory) 
+
+	public AnnotiationBasedFunctionProvider(Class<?> factoryClass,
+			InvocationFactory invocationFactory)
 		throws Exception
 	{
 		Preconditions.checkNotNull(factoryClass);
@@ -29,14 +29,14 @@ public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 			add(spec);
 		}
 	}
-	
-	public AnnotiationBasedFunctionProvider(Class<?> clazz) 
+
+	public AnnotiationBasedFunctionProvider(Class<?> clazz)
 		throws Exception{
 		this(clazz, new CglibInvocationFactory());
 	}
-	
-	public AnnotiationBasedFunctionProvider(Object instance, 
-			InvocationFactory invocationFactory) 
+
+	public AnnotiationBasedFunctionProvider(Object instance,
+			InvocationFactory invocationFactory)
 		throws Exception
 	{
 		Preconditions.checkNotNull(instance);
@@ -47,15 +47,15 @@ public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 			add(spec);
 		}
 	}
-	
+
 	public AnnotiationBasedFunctionProvider(Object instance) throws Exception{
 		this(instance, new DefaultInvocationFactory());
 	}
-		
-	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance) 
+
+	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
 		throws XacmlSyntaxException
 	{
-		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null, 
+		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null,
 				"Function provider=\"%s\" must have provider annotiation", clazz.getName());
 		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
 		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class);

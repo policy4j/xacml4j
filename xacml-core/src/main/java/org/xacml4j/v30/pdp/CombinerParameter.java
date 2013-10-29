@@ -7,22 +7,22 @@ import com.google.common.base.Preconditions;
 
 /**
  * Conveys a single parameter for a policy- or rule-combining algorithm.
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class CombinerParameter 
+public class CombinerParameter
 	implements PolicyElement
 {
 	private String name;
 	private AttributeExp value;
-	
+
 	/**
 	 * Constructs decision combining parameter
-	 * 
+	 *
 	 * @param name a parameter name
 	 * @param value a parameter value
 	 */
-	public CombinerParameter(String name, 
+	public CombinerParameter(String name,
 			AttributeExp value)
 	{
 		Preconditions.checkNotNull(name);
@@ -30,20 +30,20 @@ public class CombinerParameter
 		this.name = name;
 		this.value = value;
 	}
-	
+
 	public final String getName(){
 		return name;
 	}
-	
+
 	public final AttributeExp getValue(){
 		return value;
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(name, value);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -51,7 +51,7 @@ public class CombinerParameter
 		.add("value", value)
 		.toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object  o){
 		if(o == this){
@@ -64,7 +64,7 @@ public class CombinerParameter
 			return false;
 		}
 		CombinerParameter c = (CombinerParameter)o;
-		return name.equals(c.getName()) 
+		return name.equals(c.getName())
 		&& value.equals(c.value);
 	}
 
@@ -72,5 +72,5 @@ public class CombinerParameter
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
 		v.visitLeave(this);
-	}	
+	}
 }

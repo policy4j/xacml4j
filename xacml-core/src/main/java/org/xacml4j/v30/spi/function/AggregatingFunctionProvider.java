@@ -15,27 +15,27 @@ import com.google.common.base.Preconditions;
 /**
  * An implementation of {@link FunctionProvider} which
  * aggregates instances of {@link FunctionProvider}
- * 
+ *
  * @author Giedrius Trumpickas
  */
-public class AggregatingFunctionProvider 
+public class AggregatingFunctionProvider
 	implements FunctionProvider
 {
 	private final static Logger log = LoggerFactory.getLogger(AggregatingFunctionProvider.class);
-	
+
 	private Map<String, FunctionProvider> functions;
-	
+
 	public AggregatingFunctionProvider(){
 		this.functions = new ConcurrentHashMap<String, FunctionProvider>();
 	}
-	
+
 	public AggregatingFunctionProvider(FunctionProvider ...providers){
 		this(Arrays.asList(providers));
 	}
-	
+
 	/**
 	 * Creates aggregating function provider with a given providers
-	 * 
+	 *
 	 * @param providers a collection  of {@link FunctionProvider} instances
 	 */
 	public AggregatingFunctionProvider(Collection<FunctionProvider> providers){
@@ -44,10 +44,10 @@ public class AggregatingFunctionProvider
 			add(p);
 		}
 	}
-	
+
 	/**
 	 * Adds {@link FunctionProvider} to this aggregating provider
-	 * 
+	 *
 	 * @param provider a provider instance
 	 * @exception IllegalArgumentException if function exported via
 	 * given provider already exported via provider previously registered
@@ -60,7 +60,7 @@ public class AggregatingFunctionProvider
 		{
 			if(functions.containsKey(functionId)){
 				throw new IllegalArgumentException(String.format("Function provider " +
-						"already contains a function with functionId=\"%s\"", 
+						"already contains a function with functionId=\"%s\"",
 						functionId));
 			}
 			FunctionSpec spec = provider.getFunction(functionId);
@@ -71,7 +71,7 @@ public class AggregatingFunctionProvider
 			this.functions.put(functionId, provider);
 		}
 	}
-	
+
 	@Override
 	public final FunctionSpec remove(String functionId) {
 		FunctionProvider p = functions.remove(functionId);
@@ -92,5 +92,5 @@ public class AggregatingFunctionProvider
 	@Override
 	public final boolean isFunctionProvided(String functionId) {
 		return functions.containsKey(functionId);
-	}	
+	}
 }

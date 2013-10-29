@@ -4,18 +4,18 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-public final class DefaultPolicyInformationPointCacheProvider 
+public final class DefaultPolicyInformationPointCacheProvider
 	implements PolicyInformationPointCacheProvider
 {
 	private Cache<ResolverCacheKey, AttributeSet> attributeCache;
 	private Cache<ResolverCacheKey, Content> contentCache;
-	
+
 	public DefaultPolicyInformationPointCacheProvider(){
 		this(Integer.MAX_VALUE/2, Integer.MAX_VALUE/2);
 	}
-	
+
 	public DefaultPolicyInformationPointCacheProvider(
-			int maxAttrSize, 
+			int maxAttrSize,
 			int maxContentSize){
 		this.attributeCache = CacheBuilder
 				.newBuilder()
@@ -26,7 +26,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.maximumSize(maxContentSize)
 				.build();
 	}
-	
+
 	@Override
 	public Content getContent(ResolverContext context) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
@@ -40,7 +40,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void putContent(ResolverContext context, Content content) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
@@ -53,7 +53,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 					.build(), content);
 		}
 	}
-	
+
 	@Override
 	public AttributeSet getAttributes(ResolverContext context) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
@@ -82,12 +82,12 @@ public final class DefaultPolicyInformationPointCacheProvider
 	}
 
 	private boolean isExpired(AttributeSet v, ResolverContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 
+		return ((context.getTicker().read() - v.getTimestamp()) /
 				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
-	
+
 	private boolean isExpired(Content v, ResolverContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) / 
+		return ((context.getTicker().read() - v.getTimestamp()) /
 				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 }

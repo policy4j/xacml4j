@@ -15,7 +15,7 @@
           Effect="Permit">
         <Description>
             Julius Hibbert can read or write Bart Simpson's
-            medical record from a codebase of 
+            medical record from a codebase of
             http://www.medico.com/applications/PatientRecordAccess.
         </Description>
         <Target>
@@ -76,7 +76,7 @@
             </Apply>
             <AttributeValue
                   DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://www.medico.com/applications/PatientRecordAccess</AttributeValue>
-        
+
 </Apply></Condition>
     </Rule>
 </Policy>

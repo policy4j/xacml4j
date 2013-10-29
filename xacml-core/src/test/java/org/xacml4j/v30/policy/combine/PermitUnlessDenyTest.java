@@ -29,11 +29,11 @@ public class PermitUnlessDenyTest {
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new PermitUnlessDeny<DecisionRule>("aaaa");
-		
+
 		mockCtl = createStrictControl();
 		this.context = mockCtl.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testCombineWithNoDecisions()
 	{
@@ -41,7 +41,7 @@ public class PermitUnlessDenyTest {
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		mockCtl.verify();
 	}
-	
+
 	@Test
 	public void testCombineWithDeny() throws EvaluationException
 	{
@@ -53,7 +53,7 @@ public class PermitUnlessDenyTest {
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
 		mockCtl.verify();
 	}
-	
+
 	@Test
 	public void testCombineWithNotApplicable() throws EvaluationException
 	{
@@ -65,7 +65,7 @@ public class PermitUnlessDenyTest {
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		mockCtl.verify();
 	}
-	
+
 	@Test
 	public void testCombineWithIndeterminate() throws EvaluationException
 	{
@@ -77,8 +77,8 @@ public class PermitUnlessDenyTest {
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
 		mockCtl.verify();
 	}
-	
-	
+
+
 	@Test
 	public void testCombineWithDenyAndPermit() throws EvaluationException
 	{

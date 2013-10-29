@@ -29,18 +29,18 @@ final class FunctionParamAnyBagSpec implements FunctionParamSpec
 		Expression exp = it.next();
 		return isValidParamType(exp.getEvaluatesTo());
 	}
-	
+
 	public String toString(){
 		return Objects.
 				toStringHelper(this)
 				.toString();
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return 0;
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if(o == this){

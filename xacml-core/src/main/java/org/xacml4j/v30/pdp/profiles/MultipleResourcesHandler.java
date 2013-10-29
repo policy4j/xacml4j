@@ -14,12 +14,12 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 
 
 public class MultipleResourcesHandler extends RequestContextHandlerChain
-{	
+{
 	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesHandler.class);
-	
+
 	public MultipleResourcesHandler()
 	{
-		super(new MultipleResourcesViaRequestReferencesHandler(), 
+		super(new MultipleResourcesViaRequestReferencesHandler(),
 				new MultipleResourcesViaRepeatingAttributesHandler(),
 				new MultipleResourcesViaXPathExpressionLegacyHandler(),
 				new MultipleResourcesViaXPathExpressionHandler());

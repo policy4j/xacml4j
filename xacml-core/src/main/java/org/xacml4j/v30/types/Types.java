@@ -25,10 +25,10 @@ public abstract class Types
 	 * @return {@link AttributeExpType} a data type instance
 	 */
 	public abstract AttributeExpType getType(String typeId);
-	
+
 	/**
 	 * Creates {@link AttributeExp} of a given type
-	 * 
+	 *
 	 * @param typeId a type identifier
 	 * @param value a value for an attribute
 	 * @return {@link AttributeExp} instance
@@ -37,14 +37,14 @@ public abstract class Types
 
 	/**
 	 * Creates {@link AttributeExp} of a given type
-	 * 
+	 *
 	 * @param typeId a type identifier
 	 * @param value a value for an attribute
 	 * @param attrs additional attributes
 	 * @return {@link AttributeExp} instance
 	 */
 	public abstract AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs);
-	
+
 	public static Builder builder(){
 		return new Builder();
 	}
@@ -61,10 +61,10 @@ public abstract class Types
 		private Builder(){
 			this.types = new ConcurrentHashMap<String, AttributeExpType>();
 		}
-		
+
 		/**
 		 * Adds default XACML 2.0/3.0 types to this registry
-		 * 
+		 *
 		 * @return {@link Builder}
 		 */
 		public Builder defaultTypes()
@@ -87,7 +87,7 @@ public abstract class Types
 			addType(X500NameType.X500NAME);
 			addType(XPathExpType.XPATHEXPRESSION);
 			addType(YearMonthDurationType.YEARMONTHDURATION);
-			
+
 			// short type aliases
 			addType("anyURI", AnyURIType.ANYURI);
 			addType("base64Binary", Base64BinaryType.BASE64BINARY);
@@ -106,7 +106,7 @@ public abstract class Types
 			addType("x500Name", X500NameType.X500NAME);
 			addType("xpathExpression", XPathExpType.XPATHEXPRESSION);
 			addType("yearMonthDuration", YearMonthDurationType.YEARMONTHDURATION);
-			
+
 			// Legacy XACML 2.0 type mappings/aliases
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpType.XPATHEXPRESSION);
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression", XPathExpType.XPATHEXPRESSION);
@@ -117,7 +117,7 @@ public abstract class Types
 
 		/**
 		 * Adds given type to this registry
-		 * 
+		 *
 		 * @param type a XACML type definition
 		 * @return {@link Builder}
 		 */
@@ -125,7 +125,7 @@ public abstract class Types
 			addType(type);
 			return this;
 		}
-		
+
 		public Types create(){
 			return new Types() {
 				@Override
@@ -169,7 +169,7 @@ public abstract class Types
 			if(log.isDebugEnabled()){
 				log.debug("Adding typeId=\"{}\"", typeId);
 			}
-			Preconditions.checkArgument(!types.containsKey(typeId), 
+			Preconditions.checkArgument(!types.containsKey(typeId),
 					"Type with identifier=\"%s\" already exist", typeId);
 			this.types.put(typeId, type);
 		}

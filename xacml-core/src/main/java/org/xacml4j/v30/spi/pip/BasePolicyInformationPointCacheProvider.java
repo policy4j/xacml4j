@@ -14,7 +14,7 @@ public class BasePolicyInformationPointCacheProvider implements PolicyInformatio
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
 		return d.isCachable()?doGetContent(d, context.getKeys()):null;
 	}
-	
+
 	@Override
 	public final void putContent(ResolverContext context, Content content) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
@@ -38,22 +38,22 @@ public class BasePolicyInformationPointCacheProvider implements PolicyInformatio
 			doPutAttributes(d, context.getKeys(), v);
 		}
 	}
-	
+
 	protected Content doGetContent(ContentResolverDescriptor d, List<BagOfAttributeExp> keys){
 		return null;
 	}
-	
+
 	protected AttributeSet doGetAttributes(AttributeResolverDescriptor d,
 			List<BagOfAttributeExp> keys) {
 		return null;
 	}
-	
+
 	protected void doPutContent(ContentResolverDescriptor d, List<BagOfAttributeExp> keys,
-			Content content) {	
+			Content content) {
 	}
-	
+
 	protected void doPutAttributes(AttributeResolverDescriptor d, List<BagOfAttributeExp> keys,
 			AttributeSet v) {
-		
+
 	}
 }

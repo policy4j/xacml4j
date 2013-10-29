@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
 public final class RFC822Name implements Serializable
 {
 	private static final long serialVersionUID = -5984520030703446283L;
-	
+
 	/*
 	 * Copyright 2008 Les Hazlewood
 	 *
@@ -107,7 +107,7 @@ public final class RFC822Name implements Serializable
 	private static final String DOMAIN_LITERAL = "\\[" + "(" + FWSP + DCONTENT + "+)*" + FWSP + "\\]";
 	private static final String RFC_2822_DOMAIN = "(" + DOT_ATOM + "|" + DOMAIN_LITERAL + ")";
 
-	
+
 	private static final String DOMAIN;
 	static {
 		if (ALLOW_DOMAIN_LITERALS) {
@@ -126,7 +126,7 @@ public final class RFC822Name implements Serializable
 	//now compile a pattern for efficient re-use:
 	//if we're allowing quoted identifiers or not:
 	private static final String PATTERN_STRING;
-	
+
 	public static final Pattern VALID_PATTERN;
 
 	static {
@@ -144,12 +144,12 @@ public final class RFC822Name implements Serializable
 			throw e;
 		}
 	}
-	
+
 	private String localPart;
 	private String domainPart;
 	private String fqName;
-	
-	public RFC822Name(String localPart, 
+
+	public RFC822Name(String localPart,
 			String domainPart){
 		Preconditions.checkNotNull(localPart);
 		Preconditions.checkNotNull(domainPart);
@@ -161,7 +161,7 @@ public final class RFC822Name implements Serializable
 		.append(this.domainPart)
 		.toString();
 	}
-	
+
 	public boolean matches(String pattern){
 		int pos = pattern.indexOf('@');
 		if(pos != -1){
@@ -173,24 +173,24 @@ public final class RFC822Name implements Serializable
 		}
 		return domainPart.equalsIgnoreCase(pattern);
 	}
-	
+
 	public String getLocalPart(){
 		return localPart;
 	}
-	
+
 	public String getDomainPart(){
 		return domainPart;
 	}
-	
+
 	@Override
 	public String toString(){
 		return fqName;
 	}
-	
+
 	public String toXacmlString(){
 		return fqName;
 	}
-	
+
 	public static RFC822Name parse(String name){
 		Preconditions.checkNotNull(name);
 		String trimmedName = name.trim();
@@ -199,12 +199,12 @@ public final class RFC822Name implements Serializable
 		String [] parts = trimmedName.split("@");
 		return new RFC822Name(parts[0], parts[1]);
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return fqName.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object o){
 		if (o == null) {

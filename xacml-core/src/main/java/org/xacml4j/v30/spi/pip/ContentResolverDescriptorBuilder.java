@@ -12,14 +12,14 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public final class ContentResolverDescriptorBuilder 
+public final class ContentResolverDescriptorBuilder
 {
 	private String id;
 	private String name;
 	private AttributeCategory category;
 	private List<AttributeReferenceKey> keys;
 	private int cacheTTL;
-	
+
 	private ContentResolverDescriptorBuilder(String id, String name, AttributeCategory category)
 	{
 		Preconditions.checkNotNull(id);
@@ -30,12 +30,12 @@ public final class ContentResolverDescriptorBuilder
 		this.category = category;
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
-	
+
 	public static ContentResolverDescriptorBuilder bulder(String id, String name, AttributeCategory category){
 		return new ContentResolverDescriptorBuilder(id, name, category);
 	}
-	
-	public ContentResolverDescriptorBuilder designatorRef(AttributeCategory category, 
+
+	public ContentResolverDescriptorBuilder designatorRef(AttributeCategory category,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(AttributeDesignatorKey
@@ -47,10 +47,10 @@ public final class ContentResolverDescriptorBuilder
 				.build());
 		return this;
 	}
-	
+
 	public ContentResolverDescriptorBuilder selectorRef(
-			AttributeCategory category, 
-			String xpath, AttributeExpType dataType, 
+			AttributeCategory category,
+			String xpath, AttributeExpType dataType,
 			String contextAttributeId)
 	{
 		this.keys.add(AttributeSelectorKey
@@ -62,27 +62,27 @@ public final class ContentResolverDescriptorBuilder
 				.build());
 		return this;
 	}
-	
+
 	public ContentResolverDescriptorBuilder keys(Iterable<AttributeReferenceKey> keys){
 		Iterables.addAll(this.keys, keys);
 		return this;
 	}
-	
+
 	public ContentResolverDescriptorBuilder noCache(){
 		this.cacheTTL = -1;
 		return this;
 	}
-	
+
 	public ContentResolverDescriptorBuilder cache(int ttl){
 		this.cacheTTL = ttl;
 		return this;
 	}
-	
+
 	public ContentResolverDescriptor build(){
 		return new ContentResolverDescriptorImpl();
 	}
-	
-	public class ContentResolverDescriptorImpl 
+
+	public class ContentResolverDescriptorImpl
 		extends BaseResolverDescriptor implements ContentResolverDescriptor
 	{
 

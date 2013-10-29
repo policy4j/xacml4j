@@ -16,13 +16,13 @@ import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
 
 
-public class BaseEvaluationContextTest 
+public class BaseEvaluationContextTest
 {
 	private EvaluationContext context;
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
@@ -33,7 +33,7 @@ public class BaseEvaluationContextTest
 		.withConstructor(false, 0, handler, resolver)
 		.createMock();
 	}
-	
+
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
@@ -53,7 +53,7 @@ public class BaseEvaluationContextTest
 		assertEquals(0, context.getDecisionCacheTTL());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
@@ -73,7 +73,7 @@ public class BaseEvaluationContextTest
 		assertEquals(0, context.getDecisionCacheTTL());
 		c.verify();
 	}
-	
+
 	@Test
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{
@@ -89,7 +89,7 @@ public class BaseEvaluationContextTest
 		assertEquals(StringType.STRING.bagOf("aaa"), context.resolve(k));
 		c.verify();
 	}
-	
+
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{

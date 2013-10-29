@@ -23,14 +23,14 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	private OnlyOneApplicablePolicyCombingingAlgorithm c;
 	private List<CompositeDecisionRule> d;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		this.c = new OnlyOneApplicablePolicyCombingingAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
 		this.context = createStrictMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testDecisionIsNoMatchContinueEvaluation() throws EvaluationException
 	{
@@ -48,7 +48,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		assertEquals(Decision.NOT_APPLICABLE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
-	
+
 	@Test
 	public void testDecisionIndeterminateStopsEvaluation() throws EvaluationException
 	{
@@ -64,7 +64,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		assertEquals(Decision.INDETERMINATE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
-	
+
 	@Test
 	public void testMoreThanOneIsApplicable() throws EvaluationException
 	{
@@ -82,7 +82,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		assertEquals(Decision.INDETERMINATE, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
-	
+
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsPermit() throws EvaluationException
 	{
@@ -101,7 +101,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		assertEquals(Decision.PERMIT, c.combine(context, d));
 		verify(d1, d2, context, c2, c2);
 	}
-	
+
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsDeny() throws EvaluationException
 	{
@@ -120,7 +120,7 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 		assertEquals(Decision.DENY, c.combine(context, d));
 		verify(d1, d2, context, c1, c2);
 	}
-	
+
 	@Test
 	public void testOnlyOneIsApplicableAndDecisionIsIndeterminate() throws EvaluationException
 	{

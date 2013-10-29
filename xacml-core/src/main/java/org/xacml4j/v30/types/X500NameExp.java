@@ -9,5 +9,5 @@ public final class X500NameExp extends BaseAttributeExp<X500Principal>
 	X500NameExp(X500NameType type,
 			X500Principal value) {
 		super(type, value);
-	}	
+	}
 }

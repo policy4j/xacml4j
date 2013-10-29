@@ -20,9 +20,9 @@ import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.StringType;
 
 
-public class BagFunctionsTest 
+public class BagFunctionsTest
 {
-	
+
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{
@@ -88,7 +88,7 @@ public class BagFunctionsTest
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:2.0:function:dnsName-is-in"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:2.0:function:dnsName-bag"));
 	}
-	
+
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
@@ -101,7 +101,7 @@ public class BagFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.stringIsIn(v1, bag));
 		assertEquals(StringType.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
-	
+
 	@Test
 	public void testBooleanBagFunctions() throws EvaluationException
 	{
@@ -114,7 +114,7 @@ public class BagFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(BooleanType.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
 	}
-	
+
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
@@ -127,7 +127,7 @@ public class BagFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.integerIsIn(v1, bag));
 		assertEquals(IntegerType.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
-	
+
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
@@ -140,7 +140,7 @@ public class BagFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.doubleIsIn(v1, bag));
 		assertEquals(DoubleType.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
-	
+
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
@@ -153,7 +153,7 @@ public class BagFunctionsTest
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, bag));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v1, bag));
 		assertEquals(AnyURIType.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
-		
+
 		assertEquals(BooleanType.BOOLEAN.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
 		assertEquals(BooleanType.BOOLEAN.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
 	}

@@ -11,13 +11,13 @@
 			 		"obligationId":"urn:test:advice1",
 			 		"attributeAssignment":[
 			 			{
-			 				"attrId":"urn:test:advice1:attr1", 
-			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"attrId":"urn:test:advice1:attr1",
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string",
 			 				"value":"testValue1"
 			 			},
 			 			{
-			 				"attrId":"urn:test:advice1:attr2", 
-			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"attrId":"urn:test:advice1:attr2",
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string",
 			 				"value":"testValue2"
 			 			}
 		   			]
@@ -28,13 +28,13 @@
 		   	 		"adviceId":"urn:test:advice1",
 		   	 		"attributeAssingment":[
 			 			{
-			 				"attrId":"urn:test:advice1:attr1", 
-			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"attrId":"urn:test:advice1:attr1",
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string",
 			 				"value":"testValue1"
 			 			},
 			 			{
-			 				"attrId":"urn:test:advice1:attr2", 
-			 				"dataType":"http://www.w3.org/2001/XMLSchema#string", 
+			 				"attrId":"urn:test:advice1:attr2",
+			 				"dataType":"http://www.w3.org/2001/XMLSchema#string",
 			 				"value":"testValue2"
 			 			}
 		   			]
@@ -56,11 +56,11 @@
 			],
 			"policyIdList":[
 				{
-					"policyId":"testId", 
+					"policyId":"testId",
 					"version":"1.0"
 				},
 				{
-					"policySetId":"testId", 
+					"policySetId":"testId",
 					"version":"1.0"
 				}
 			]

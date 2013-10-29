@@ -9,16 +9,16 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
 
 
-public class BooleanTypeTest 
+public class BooleanTypeTest
 {
-	
+
 	private BooleanType t1;
-	
+
 	@Before
 	public void init(){
 		this.t1 = BooleanType.BOOLEAN;
 	}
-		
+
 	@Test
 	public void testCreate()
 	{
@@ -29,7 +29,7 @@ public class BooleanTypeTest
 		BooleanExp a1 = t1.create(o);
 		assertTrue(a1.getValue());
 	}
-	
+
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromAnyObjectWrongContentType()
 	{
@@ -49,7 +49,7 @@ public class BooleanTypeTest
 		v = t1.fromXacmlString("False");
 		assertEquals(Boolean.FALSE, v.getValue());
 	}
-	
+
 	@Test
 	public void toXacmlString()
 	{
@@ -58,7 +58,7 @@ public class BooleanTypeTest
 		assertEquals("true", v1.toXacmlString());
 		assertEquals("false", v2.toXacmlString());
 	}
-	
+
 	@Test
 	public void testEquals()
 	{
@@ -69,7 +69,7 @@ public class BooleanTypeTest
 		assertEquals(v1, v3);
 		assertEquals(v2, v4);
 	}
-	
+
 	@Test
 	public void testBagOf()
 	{
@@ -79,6 +79,6 @@ public class BooleanTypeTest
 		assertEquals(b1, b2);
 		assertTrue(b1.contains(t1.create(true)));
 		assertTrue(b1.contains(t1.create(false)));
-		
+
 	}
 }

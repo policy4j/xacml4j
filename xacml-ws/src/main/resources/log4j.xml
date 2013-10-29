@@ -12,7 +12,6 @@
 				value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
 		</layout>
 	</appender>
-	
 
 	<root>
 		<priority value="DEBUG" />
@@ -20,4 +19,4 @@
 	</root>
 
 </log4j:configuration>
- 
+

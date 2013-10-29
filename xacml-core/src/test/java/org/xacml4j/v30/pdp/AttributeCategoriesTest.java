@@ -11,7 +11,7 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 
 
-public class AttributeCategoriesTest 
+public class AttributeCategoriesTest
 {
 	@Test
 	public void testCategoryParse() throws Exception
@@ -35,7 +35,7 @@ public class AttributeCategoriesTest
 		assertEquals(AttributeCategories.ENVIRONMENT.toDelegatedCategory(), c3);
 		assertSame(AttributeCategories.ENVIRONMENT.toDelegatedCategory(), c3);
 	}
-	
+
 	@Test
 	public void testDelegatedCategory() throws Exception
 	{
@@ -43,6 +43,6 @@ public class AttributeCategoriesTest
 		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory", c.getId());
 		assertTrue(c.isDelegated());
 		assertNull(c.toDelegatedCategory());
-	
+
 	}
 }

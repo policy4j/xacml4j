@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 
 public class PolicyInformationPointDefinitionParser extends AbstractBeanDefinitionParser
 {
-		
+
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
@@ -25,5 +25,5 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 		}
 		return pip.getBeanDefinition();
 	}
-	
+
 }

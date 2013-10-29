@@ -14,20 +14,20 @@ import org.w3c.dom.Element;
 
 public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionParser
 {
-		
+
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
 		BeanDefinitionBuilder registry = BeanDefinitionBuilder.rootBeanDefinition(ResolverRegistryFactoryBean.class);
-		
+
 		parseResolvers(
-	        		 DomUtils.getChildElementsByTagName(element, 
+	        		 DomUtils.getChildElementsByTagName(element,
 	        		 "Resolver"), registry);
-		
+
 	    return registry.getBeanDefinition();
 	}
-	
-	private static BeanDefinitionBuilder parseResolvers(Element element) 
+
+	private static BeanDefinitionBuilder parseResolvers(Element element)
 	{
 	      BeanDefinitionBuilder component = BeanDefinitionBuilder.rootBeanDefinition(
 	    		  ResolverRegistrationFactoryBean.class);
@@ -41,9 +41,9 @@ public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionPars
 	      }
 	      return component;
 	}
-	
 
-	private static void parseResolvers(List<Element> childElements, BeanDefinitionBuilder factory) 
+
+	private static void parseResolvers(List<Element> childElements, BeanDefinitionBuilder factory)
 	{
 		ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
 	    for (int i = 0; i < childElements.size(); ++i) {

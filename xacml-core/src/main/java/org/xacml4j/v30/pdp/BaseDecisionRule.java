@@ -77,19 +77,19 @@ abstract class BaseDecisionRule implements DecisionRule
 	public Condition getCondition(){
 		return condition;
 	}
-	
+
 	/**
 	 * Gets advice expressions in this rule
-	 * 
+	 *
 	 * @return a collection of {@link AdviceExpression}
 	 */
 	public Collection<AdviceExpression> getAdviceExpressions(){
 		return adviceExpressions;
 	}
-	
+
 	/**
 	 * Gets obligation expressions in this rule
-	 * 
+	 *
 	 * @return a collection of {@link ObligationExpression}
 	 */
 	public Collection<ObligationExpression> getObligationExpressions(){
@@ -264,7 +264,7 @@ abstract class BaseDecisionRule implements DecisionRule
 				.add("obligationExp", obligationExpressions);
 
 	}
-	
+
 	protected boolean equalsTo(BaseDecisionRule r){
 		return Objects.equal(id, r.id) &&
 			Objects.equal(target, r.target) &&

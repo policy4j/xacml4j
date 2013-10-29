@@ -11,7 +11,7 @@ import org.xacml4j.v30.RequestContext;
 
 import com.google.common.base.Preconditions;
 
-public class DefaultRequestContextCallback 
+public class DefaultRequestContextCallback
 	implements RequestContextCallback
 {
 	private RequestContext request;
@@ -20,32 +20,32 @@ public class DefaultRequestContextCallback
 	{
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(
-				!request.containsRepeatingCategories(), 
+				!request.containsRepeatingCategories(),
 				"RequestContext has repeating attributes categories");
 		Preconditions.checkArgument(
-				!request.containsRequestReferences(), 
+				!request.containsRequestReferences(),
 				"RequestContext contains multiple request references");
 		this.request = request;
 	}
-	
+
 	@Override
 	public BagOfAttributeExp getAttributeValue(
-			AttributeCategory category, 
-			String attributeId, 
-			AttributeExpType dataType, 
+			AttributeCategory category,
+			String attributeId,
+			AttributeExpType dataType,
 			String issuer) {
 		Collection<AttributeExp> values = request.getAttributeValues(
-				category, 
-				attributeId, 
-				dataType, 
+				category,
+				attributeId,
+				dataType,
 				issuer);
 		return dataType.bagOf(values);
 	}
-	
+
 	@Override
 	public Node getContent(AttributeCategory category) {
 		Preconditions.checkNotNull(category);
 		return request.getOnlyContent(category);
 	}
-	
+
 }

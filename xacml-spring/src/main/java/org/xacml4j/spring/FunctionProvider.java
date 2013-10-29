@@ -7,23 +7,23 @@ public class FunctionProvider
 {
 	private Class<?> providerClass;
 	private Object providerInstance;
-		
+
 	public void setProviderClass(Class<FunctionProvider> providerClazz){
-		Preconditions.checkState(providerInstance  == null, 
+		Preconditions.checkState(providerInstance  == null,
 				"Either provider instance or class must be specified but not both");
 		this.providerClass = providerClazz;
 	}
-	
+
 	public void setProviderInstance(Object instance){
-		Preconditions.checkState(providerClass  == null, 
+		Preconditions.checkState(providerClass  == null,
 				"Either provider instance or class must be specified but not both");
 		this.providerInstance = instance;
 	}
-	
+
 	public Class<?> getProviderClass(){
 		return providerClass;
 	}
-	
+
 	public Object getProviderInstance(){
 		return providerInstance;
 	}

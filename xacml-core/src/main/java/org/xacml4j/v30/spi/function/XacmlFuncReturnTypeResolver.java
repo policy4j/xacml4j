@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlFuncReturnTypeResolver 
+public @interface XacmlFuncReturnTypeResolver
 {
 	Class<? extends FunctionReturnTypeResolver> resolverClass();
 }

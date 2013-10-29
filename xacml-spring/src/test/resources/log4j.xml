@@ -12,15 +12,15 @@
 				value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
 		</layout>
 	</appender>
-	
+
 	<category name="com.artagon.xacml">
 		<priority value="DEBUG" />
 	</category>
-	
+
 	<root>
 		<priority value="INFO" />
 		<appender-ref ref="Console" />
 	</root>
 
 </log4j:configuration>
- 
+

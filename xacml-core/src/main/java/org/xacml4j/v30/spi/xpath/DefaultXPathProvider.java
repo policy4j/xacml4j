@@ -17,21 +17,21 @@ import com.google.common.base.Preconditions;
 public class DefaultXPathProvider implements XPathProvider
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultXPathProvider.class);
-	
+
 	private XPathFactory xpathFactory;
 
 	public DefaultXPathProvider(){
 		this(XPathFactory.newInstance());
 	}
-	
+
 	public DefaultXPathProvider(XPathFactory xpathFactory){
 		Preconditions.checkNotNull(xpathFactory);
 		this.xpathFactory = xpathFactory;
 	}
-	
+
 	@Override
 	public Node evaluateToNode(XPathVersion v, String path, Node context)
-			throws XPathEvaluationException 
+			throws XPathEvaluationException
 	{
 		Preconditions.checkArgument(v != null);
 		Preconditions.checkArgument(path != null);
@@ -49,7 +49,7 @@ public class DefaultXPathProvider implements XPathProvider
 			XPath xpath = xpathFactory.newXPath();
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			Node result = (Node)xpath.evaluate(path, context, XPathConstants.NODE);
-			if(log.isDebugEnabled() && 
+			if(log.isDebugEnabled() &&
 					result != null){
 				log.debug("Evaluation result=\"{}:{}\" node",
 						result.getNamespaceURI(), result.getLocalName());
@@ -83,7 +83,7 @@ public class DefaultXPathProvider implements XPathProvider
 			xpath.setNamespaceContext(new NodeNamespaceContext(context));
 			NodeList result = (NodeList)xpath.evaluate(path, context, XPathConstants.NODESET);
 			if(log.isDebugEnabled() && result != null){
-				log.debug("Evaluation result has=\"{}\" nodes", 
+				log.debug("Evaluation result has=\"{}\" nodes",
 						result.getLength());
 			}
 			return result;
@@ -120,7 +120,7 @@ public class DefaultXPathProvider implements XPathProvider
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
-	
+
 	@Override
 	public Number evaluateToNumber(XPathVersion v, String path, Node context)
 			throws XPathEvaluationException {
@@ -146,5 +146,5 @@ public class DefaultXPathProvider implements XPathProvider
 			throw new XPathEvaluationException(path, v, context, e);
 		}
 	}
-	
+
 }

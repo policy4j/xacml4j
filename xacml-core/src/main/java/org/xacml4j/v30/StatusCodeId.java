@@ -1,6 +1,6 @@
 package org.xacml4j.v30;
 
-public interface StatusCodeId 
+public interface StatusCodeId
 {
 	String getId();
 }

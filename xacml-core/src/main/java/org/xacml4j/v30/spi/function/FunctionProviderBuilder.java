@@ -23,33 +23,33 @@ import org.xacml4j.v30.policy.function.XPathFunctions;
 
 import com.google.common.base.Preconditions;
 
-public final class FunctionProviderBuilder 
+public final class FunctionProviderBuilder
 {
 	private List<FunctionProvider> providers;
 	private InvocationFactory invocationFactory;
-	
+
 	private FunctionProviderBuilder(
 			InvocationFactory invocationFactory){
 		Preconditions.checkNotNull(invocationFactory);
 		this.providers = new LinkedList<FunctionProvider>();
 		this.invocationFactory = invocationFactory;
 	}
-	
+
 	private FunctionProviderBuilder(){
 		this(new DefaultInvocationFactory());
 	}
-	
+
 	public static FunctionProviderBuilder builder(){
 		return new FunctionProviderBuilder();
 	}
-	
+
 	public static FunctionProviderBuilder builder(InvocationFactory invocation){
 		return new FunctionProviderBuilder(invocation);
 	}
-	
+
 	/**
 	 * Adds function provider from a given anno instance
-	 * 
+	 *
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
@@ -60,16 +60,16 @@ public final class FunctionProviderBuilder
 			return (p instanceof FunctionProvider)?
 					provider((FunctionProvider)p):
 						provider(
-								new AnnotiationBasedFunctionProvider(p, 
+								new AnnotiationBasedFunctionProvider(p,
 										invocationFactory));
 		}catch(Exception e){
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	/**
 	 * Adds standard XACML 3.0 functions
-	 * 
+	 *
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
@@ -92,10 +92,10 @@ public final class FunctionProviderBuilder
 		fromClass(HigherOrderFunctions.class);
 		return this;
 	}
-	
+
 	/**
 	 * Adds function provider from a given annotated class
-	 * 
+	 *
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
@@ -109,10 +109,10 @@ public final class FunctionProviderBuilder
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	/**
 	 * Adds function provider from a given annotated class
-	 * 
+	 *
 	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
@@ -122,17 +122,17 @@ public final class FunctionProviderBuilder
 		}
 		return this;
 	}
-	
+
 	public FunctionProviderBuilder provider(FunctionProvider p){
 		Preconditions.checkNotNull(p);
 		this.providers.add(p);
 		return this;
 	}
-	
+
 	public FunctionProvider build(){
-		Preconditions.checkState(!providers.isEmpty(), 
+		Preconditions.checkState(!providers.isEmpty(),
 				"At least one function provider must be specified");
 		return new AggregatingFunctionProvider(providers);
 	}
-	
+
 }

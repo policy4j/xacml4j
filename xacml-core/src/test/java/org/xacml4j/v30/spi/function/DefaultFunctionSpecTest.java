@@ -27,7 +27,7 @@ public class DefaultFunctionSpecTest
 	private FunctionSpecBuilder b;
 	private EvaluationContext context;
 	private IMocksControl c;
-	
+
 	@Before
 	public void init(){
 		this.c = createControl();
@@ -36,7 +36,7 @@ public class DefaultFunctionSpecTest
 		this.b = FunctionSpecBuilder.builder("testId");
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testInvokeSpecWithListParamArguments() throws EvaluationException
 	{
@@ -50,7 +50,7 @@ public class DefaultFunctionSpecTest
 		assertEquals(BOOLEAN.create(true), spec.invoke(context, params));
 		c.verify();
 	}
-	
+
 	@Test(expected=FunctionInvocationException.class)
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
@@ -64,7 +64,7 @@ public class DefaultFunctionSpecTest
 		spec.invoke(context, params);
 		c.verify();
 	}
-	
+
 	@Test(expected=FunctionInvocationException.class)
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{

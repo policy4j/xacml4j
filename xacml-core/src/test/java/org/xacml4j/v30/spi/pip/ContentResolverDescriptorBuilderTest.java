@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 
 
-public class ContentResolverDescriptorBuilderTest 
+public class ContentResolverDescriptorBuilderTest
 {
 	@Test
 	public void testBuildDescriptor()
