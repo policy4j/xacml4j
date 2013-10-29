@@ -13,7 +13,7 @@
 		</layout>
 	</appender>
 
-	<category name="com.artagon.xacml">
+	<category name="org.xacml4j">
 		<priority value="DEBUG" />
 	</category>
 
