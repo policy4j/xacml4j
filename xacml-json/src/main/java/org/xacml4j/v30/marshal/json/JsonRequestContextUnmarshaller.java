@@ -10,7 +10,7 @@ import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.marshall.RequestUnmarshaller;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;

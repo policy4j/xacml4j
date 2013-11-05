@@ -19,8 +19,8 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.marshall.jaxb.JAXBContextUtil;
-import org.xacml4j.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
+import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 
 
 public class Xacml20TestUtility

@@ -11,7 +11,7 @@ import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.marshall.Marshaller;
+import org.xacml4j.v30.marshal.Marshaller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

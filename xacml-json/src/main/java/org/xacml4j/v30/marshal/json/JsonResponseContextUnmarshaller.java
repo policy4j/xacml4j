@@ -14,7 +14,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.marshall.Unmarshaller;
+import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
 import org.xacml4j.v30.types.Types;

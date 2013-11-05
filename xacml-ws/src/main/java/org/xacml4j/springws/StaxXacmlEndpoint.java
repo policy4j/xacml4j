@@ -6,10 +6,10 @@ import javax.xml.stream.XMLStreamWriter;
 import org.springframework.ws.server.endpoint.AbstractStaxStreamPayloadEndpoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.marshall.RequestUnmarshaller;
-import org.xacml4j.v30.marshall.ResponseMarshaller;
-import org.xacml4j.v30.marshall.jaxb.Xacml20RequestContextUnmarshaller;
-import org.xacml4j.v30.marshall.jaxb.Xacml20ResponseContextMarshaller;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
+import org.xacml4j.v30.marshal.ResponseMarshaller;
+import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 
 
