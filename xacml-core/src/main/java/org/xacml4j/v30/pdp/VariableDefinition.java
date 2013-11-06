@@ -20,8 +20,8 @@ public class VariableDefinition implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(VariableDefinition.class);
 
-	private String variableId;
-	private Expression expression;
+	private final String variableId;
+	private final Expression expression;
 
 	/**
 	 * Constructs variable definition
@@ -74,9 +74,6 @@ public class VariableDefinition implements PolicyElement
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
-		}
-		if(o == null){
-			return false;
 		}
 		if(!(o instanceof VariableDefinition)){
 			return false;

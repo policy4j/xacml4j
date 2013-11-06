@@ -27,22 +27,18 @@ import com.google.common.collect.Multimap;
  */
 abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 {
-	protected String id;
-	protected Effect effect;
-	protected Multimap<String, AttributeAssignmentExpression> attributeExpressions;
+	protected final String id;
+	protected final Effect effect;
+	protected final Multimap<String, AttributeAssignmentExpression> attributeExpressions;
 
 	private int hashCode;
 
 	/**
-	 * Constructs expression with a given identifier,
-	 * effect and collection of {@link AttributeAssignmentExpression}
-	 * expressions
+	 * Constructs expression from a given expression builder
 	 *
-	 * @param id an identifier
-	 * @param effect an effect
-	 * @param attributeExpressions a collection of {@link AttributeAssignmentExpression}
+	 * @param b {@link BaseDecisionRuleResponseExpression} builder instance
 	 */
-	protected BaseDecisionRuleResponseExpression(BaseDecisionRuleResponseExpressionBuilder<?> b)
+	protected BaseDecisionRuleResponseExpression(Builder<?> b)
 	{
 		this.id = b.id;
 		this.effect = b.effect;
@@ -92,7 +88,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	 * @return collection of {@link AttributeAssignment} instances
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	protected Collection<AttributeAssignment> evaluateAttributeAssingments(
+	protected Collection<AttributeAssignment> evaluateAttributeAssignments(
 			EvaluationContext context)
 		throws EvaluationException
 	{
@@ -107,7 +103,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			}
 			BagOfAttributeExp bag = (BagOfAttributeExp)val;
 			for(AttributeExp v : bag.values()){
-				attr.add(b.value((AttributeExp)v).build());
+				attr.add(b.value(v).build());
 			}
 		}
 		return attr.build();
@@ -127,7 +123,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		.toString();
 	}
 
-	public static abstract class BaseDecisionRuleResponseExpressionBuilder <T extends BaseDecisionRuleResponseExpressionBuilder<?>>
+	public static abstract class Builder<T extends Builder<?>>
 	{
 		private String id;
 		private Effect effect;
@@ -180,6 +176,5 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		}
 
 		protected abstract T getThis();
-
 	}
 }

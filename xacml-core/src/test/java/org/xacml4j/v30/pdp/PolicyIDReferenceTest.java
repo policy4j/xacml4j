@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
@@ -302,5 +303,23 @@ public class PolicyIDReferenceTest
 		assertEquals("testId", b.build().getId());
 		assertNull(b.build().getVersion());
 		assertNull(b.build().getLatestVersion());
+	}
+
+	@Test
+	public void testObjectMethods() {
+		PolicyIDReference ref1 = PolicyIDReference.builder("testId1").versionAsString("1.+").build();
+		PolicyIDReference ref2 = PolicyIDReference.builder("testId1").versionAsString("1.+").build();
+		PolicyIDReference ref3 = PolicyIDReference.builder("testId2").versionAsString("1.+").build();
+
+
+		assertTrue(ref1.equals(ref1));
+		assertTrue(ref1.equals(ref2));
+		assertFalse(ref1.equals(null));
+		assertFalse(ref1.equals(ref3));
+		assertFalse(ref1.equals("some string"));
+		assertFalse(ref1.equals(PolicySetIDReference.builder("testId1").versionAsString("1.+").build()));
+
+		assertEquals(ref1.hashCode(), ref2.hashCode());
+		assertEquals(ref1.toString(), ref2.toString());
 	}
 }

@@ -19,7 +19,7 @@ public interface EvaluationContext
 	 * obligations in the decision rules
 	 *
 	 * @return <code><code>true</code> if context
-	 * was create to evaluate extended indeterminate
+	 * was build to evaluate extended indeterminate
 	 */
 	boolean isExtendedIndeterminateEval();
 
@@ -287,7 +287,7 @@ public interface EvaluationContext
 	 * Evaluates a given XPath expression
 	 * to a {@link String}
 	 *
-	 * @param xpath an XPath expression
+	 * @param path an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link String} representing an evaluation
 	 * result
@@ -304,7 +304,7 @@ public interface EvaluationContext
 	 * Evaluates a given XPath expression
 	 * to a {@link Node}
 	 *
-	 * @param xpath an XPath expression
+	 * @param path an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link Node} representing an evaluation
 	 * result
@@ -321,7 +321,7 @@ public interface EvaluationContext
 	 * Evaluates a given XPath expression
 	 * to a {@link Number}
 	 *
-	 * @param xpath an XPath expression
+	 * @param path an XPath expression
 	 * @param categoryId an attribute category
 	 * @return {@link Number} representing an evaluation
 	 * result

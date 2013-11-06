@@ -82,7 +82,7 @@ public class PolicyTest
 				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
 					.attribute("testId", permitAdviceAttributeExp))
-				.create();
+				.build();
 
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);

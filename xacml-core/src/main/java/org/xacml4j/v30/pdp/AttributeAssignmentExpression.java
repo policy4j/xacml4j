@@ -12,19 +12,15 @@ import com.google.common.base.Strings;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {
-	private AttributeCategory category;
-	private String attributeId;
-	private String issuer;
-	private Expression expression;
+	private final AttributeCategory category;
+	private final String attributeId;
+	private final String issuer;
+	private final Expression expression;
 
 	/**
 	 * Constructs attribute assignment
 	 *
-	 * @param attributeId an attribute id
-	 * @param expression an attribute assignment
-	 * expression
-	 * @param category an attribute category
-	 * @param issuer an attribute issuer
+	 * @param b attribute assignment builder
 	 */
 	private AttributeAssignmentExpression(Builder b){
 		Preconditions.checkNotNull(b.id);
@@ -35,8 +31,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 		this.issuer = b.issuer;
 	}
 
-	public static Builder builder(String id)
-	{
+	public static Builder builder(String id) {
 		return new Builder().id(id);
 	}
 
@@ -106,18 +101,14 @@ public class AttributeAssignmentExpression implements PolicyElement
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeAssignmentExpression)){
 			return false;
 		}
 		AttributeAssignmentExpression e = (AttributeAssignmentExpression)o;
 		return attributeId.equals(e.attributeId) &&
-		Objects.equal(category, e.category) &&
-		Objects.equal(issuer, e.issuer) &&
-		expression.equals(e.expression);
-
+				Objects.equal(category, e.category) &&
+				Objects.equal(issuer, e.issuer) &&
+				expression.equals(e.expression);
 	}
 
 	@Override

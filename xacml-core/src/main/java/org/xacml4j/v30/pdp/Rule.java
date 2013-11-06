@@ -13,9 +13,9 @@ import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
-	private Effect effect;
+	private final Effect effect;
 
-	private Rule(Rule.Builder b){
+	private Rule(Builder b){
 		super(b);
 		this.effect = b.effect;
 	}
@@ -52,27 +52,32 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			   context.getCurrentPolicy() != null;
 	}
 
-	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
-		if(o == this){
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
 			return true;
 		}
-		if(!(o instanceof Rule)){
-			return false;
-		}
-		Rule r = (Rule)o;
-		return effect.equals(r.effect) &&
-				equalsTo(r);
+
+		return (o instanceof Rule)
+			&& ((Rule)o).equalsTo(this);
 	}
 
+	protected boolean equalsTo(Rule r) {
+		return super.equalsTo(r)
+			&& effect.equals(r.effect);
+	}
+
+	@Override
 	public String toString(){
 		return toStringBuilder(Objects.toStringHelper(this))
 				.add("effect", effect)
 				.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		return super.hashCode() * 31 + Objects.hashCode(effect);
+	}
 
 	@Override
 	public final Decision evaluate(EvaluationContext context)
@@ -143,7 +148,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 	}
 
-	public static class Builder extends BaseDecisionRuleBuilder<Builder>
+	public static class Builder extends BaseDecisionRule.Builder<Builder>
 	{
 		private Effect effect;
 

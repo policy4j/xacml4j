@@ -34,7 +34,7 @@ public final class PolicyIDReference extends
 	 *
 	 * @param policy a policy
 	 * @return <code>true</code> if a this reference
-	 * points to a given policys
+	 * points to a given policy
 	 */
 	@Override
 	public boolean isReferenceTo(CompositeDecisionRule policy) {
@@ -82,24 +82,6 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof PolicyIDReference)){
-			return false;
-		}
-		PolicyIDReference r = (PolicyIDReference)o;
-		return getId().equals(r.getId())
-		&& Objects.equal(getVersion(), r.getVersion())
-		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion())
-		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
-	}
-
-	@Override
 	public Decision evaluate(EvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
@@ -107,7 +89,7 @@ public final class PolicyIDReference extends
 			return Decision.INDETERMINATE;
 		}
 		CompositeDecisionRule p = context.getCurrentPolicy();
-		Preconditions.checkState(p != null);
+		Preconditions.checkNotNull(p);
 		return p.evaluate(context);
 	}
 
@@ -119,7 +101,7 @@ public final class PolicyIDReference extends
 			return MatchResult.INDETERMINATE;
 		}
 		CompositeDecisionRule p = context.getCurrentPolicy();
-		Preconditions.checkState(p != null);
+		Preconditions.checkNotNull(p);
 		return p.isMatch(context);
 	}
 
@@ -129,13 +111,23 @@ public final class PolicyIDReference extends
 		v.visitLeave(this);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		return (o instanceof PolicyIDReference)
+				&& ((PolicyIDReference)o).equalsTo(this);
+	}
+
 	/**
 	 * Validates if a given reference is cyclic
 	 * in a given evaluation context
 	 *
 	 * @param ref a reference
 	 * @param context an evaluation context
-	 * @return
+	 * @return {@code true} if given reference is cyclic; returns {@code false} otherwise
 	 */
 	private static boolean isReferenceCyclic(PolicyIDReference ref,
 			EvaluationContext context)
@@ -144,7 +136,7 @@ public final class PolicyIDReference extends
 		if(otherRef != null){
 			if(ref.equals(otherRef)){
 				if(log.isDebugEnabled()){
-					log.debug("Policv reference=\"{}\" " +
+					log.debug("Policy reference=\"{}\" " +
 							"cycle detected", ref);
 				}
 				return true;
@@ -167,7 +159,6 @@ public final class PolicyIDReference extends
 		 * Creates policy evaluation context with a given parent context
 		 *
 		 * @param context a parent evaluation context
-		 * @param policyIDRef a policy reference
 		 * @exception IllegalArgumentException if enclosing context
 		 * {@link EvaluationContext#getCurrentPolicySet()} returns
 		 * <code>null</code> or given policy ID reference is
@@ -190,7 +181,7 @@ public final class PolicyIDReference extends
 		}
 	}
 
-	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
+	public static class Builder extends BaseCompositeDecisionRuleIDReference.Builder<Builder>
 	{
 		@Override
 		protected Builder getThis() {

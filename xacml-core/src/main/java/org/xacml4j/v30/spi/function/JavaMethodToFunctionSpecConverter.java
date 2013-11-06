@@ -20,11 +20,10 @@ import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
 {
-	private final static Logger log = LoggerFactory
-			.getLogger(JavaMethodToFunctionSpecConverter.class);
+	private final static Logger log = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
 
-	private InvocationFactory invocationFactory;
-	private Types xacmlTypes = Types.builder().defaultTypes().create();
+	private final InvocationFactory invocationFactory;
+	private final Types xacmlTypes = Types.builder().defaultTypes().create();
 
 	public JavaMethodToFunctionSpecConverter(
 			InvocationFactory invocationFactory)
@@ -75,17 +74,16 @@ class JavaMethodToFunctionSpecConverter
 			}
 			if (params[i][0] instanceof XacmlFuncParamEvaluationContext) {
 				if (!types[i].isInstance(EvaluationContext.class)) {
-					new IllegalArgumentException(
-							String
-									.format("XACML evaluation context "
-											+ "annotation annotates wrong parameter type"));
+					// FIXME: why is the exception not thrown?
+					new IllegalArgumentException("XACML evaluation context "
+											+ "annotation annotates wrong parameter type");
 				}
 				if (i > 0) {
+					// FIXME: why is the exception not thrown?
 					new IllegalArgumentException(String.format(
 							"XACML evaluation context parameter must "
 									+ "be a first parameter "
-									+ "in the method=\"%s\" signature", m
-									.getName()));
+									+ "in the method=\"%s\" signature", m.getName()));
 				}
 				evalContextParamFound = true;
 				continue;
@@ -95,10 +93,8 @@ class JavaMethodToFunctionSpecConverter
 				AttributeExpType type = xacmlTypes.getType(param.typeId());
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log
-							.debug(
-									"Excpecting bag at index=\"{}\", actual type type=\"{}\"",
-									i, types[i].getName());
+					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
+							i, types[i].getName());
 					throw new IllegalArgumentException(String.format(
 							"Parameter type annotates bag of=\"%s\" "
 									+ "but method=\"%s\" is of class=\"%s\"",
@@ -106,14 +102,13 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.debug("Excpecting attribute value at index=\"{}\", "
+					log.debug("Expecting attribute value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
 					throw new IllegalArgumentException(
-							String
-									.format(
-											"Parameter type annotates attribute value of "
-													+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
-											type, m.getName(), types[i]));
+							String.format(
+									"Parameter type annotates attribute value of "
+											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
+									type, m.getName(), types[i]));
 				}
 				b.param(param.isBag() ? type.bagType() : type);
 				continue;
@@ -128,7 +123,7 @@ class JavaMethodToFunctionSpecConverter
 				if (m.isVarArgs() && i < params.length - 1) {
 					throw new IllegalArgumentException(
 							String.format("Found varArg parameter "
-									+ "declaration in incorect place, "
+									+ "declaration in incorrect place, "
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
@@ -189,7 +184,7 @@ class JavaMethodToFunctionSpecConverter
 		if (!(returnType == null ^ returnTypeResolver == null)) {
 			throw new IllegalArgumentException(
 					"Either \"XacmlFuncReturnTypeResolver\" or "
-							+ "\"XacmlFuncReturnType\" annotiation must be specified, not both");
+							+ "\"XacmlFuncReturnType\" annotation must be specified, not both");
 		}
 		if (returnTypeResolver != null) {
 			return;
@@ -218,7 +213,7 @@ class JavaMethodToFunctionSpecConverter
 			return clazz.newInstance();
 		} catch (Exception e) {
 			throw new IllegalArgumentException(String.format(
-					"Failed with error=\"%s\" to create instance of "
+					"Failed with error=\"%s\" to build instance of "
 							+ "function return type resolver, class=\"%s\"", e
 							.getMessage(), clazz.getName()));
 		}
@@ -230,7 +225,7 @@ class JavaMethodToFunctionSpecConverter
 			return clazz.newInstance();
 		} catch (Exception e) {
 			throw new IllegalArgumentException(String.format(
-					"Failed with error=\"%s\" to create instance of "
+					"Failed with error=\"%s\" to build instance of "
 							+ "function parameter validator, class=\"%s\"", e
 							.getMessage(), clazz.getName()));
 		}

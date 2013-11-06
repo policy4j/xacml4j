@@ -82,15 +82,13 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
 
 
-	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = new HashMap<Effect, EffectType>();
-	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = new HashMap<EffectType, Effect>();
+	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = ImmutableMap.of(
+			Effect.DENY, EffectType.DENY,
+			Effect.PERMIT, EffectType.PERMIT);
 
-	static {
-		nativeToJaxbEffectMappings.put(Effect.DENY, EffectType.DENY);
-		nativeToJaxbEffectMappings.put(Effect.PERMIT, EffectType.PERMIT);
-		jaxbToNativeEffectMappings.put(EffectType.DENY, Effect.DENY);
-		jaxbToNativeEffectMappings.put(EffectType.PERMIT, Effect.PERMIT);
-	}
+	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = ImmutableMap.of(
+			EffectType.DENY, Effect.DENY,
+			EffectType.PERMIT, Effect.PERMIT);
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
@@ -125,7 +123,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					.obligation(getExpressions(p.getObligationExpressions(), m))
 					.advice(getExpressions(p.getAdviceExpressions(), m))
 					.defaults(createPolicyDefaults(p.getPolicyDefaults()))
-					.create();
+					.build();
 	}
 
 
@@ -157,7 +155,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	}
 
 	/**
-	 * Tries to create either {@link Policy} or {@link PolicySet}
+	 * Tries to build either {@link Policy} or {@link PolicySet}
 	 * based on runtime type of the given JAXB object
 	 *
 	 * @param jaxbObject a JAXB object representing either
@@ -202,7 +200,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.compositeDecisionRules(createPolicies(p))
 				.obligation(getExpressions(p.getObligationExpressions(), m))
 				.advice(getExpressions(p.getAdviceExpressions(), m))
-				.create();
+				.build();
 	}
 
 	private Collection<CompositeDecisionRule> createPolicies(PolicySetType policySet)
@@ -248,7 +246,6 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 								.latest(ref.getLatestVersion())
 								.build();
 						all.add(policySetRef);
-						continue;
 					}
 				}
 		}
@@ -423,8 +420,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
 		Collection<AttributeAssignmentExpression> attrExp = new LinkedList<AttributeAssignmentExpression>();
-		for (AttributeAssignmentExpressionType e : exp
-				.getAttributeAssignmentExpression()) {
+		for (AttributeAssignmentExpressionType e : exp.getAttributeAssignmentExpression()) {
 			attrExp.add(create(e, m));
 		}
 		return AdviceExpression
@@ -447,8 +443,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throws XacmlSyntaxException {
 		Preconditions.checkArgument(exp != null);
 		Collection<AttributeAssignmentExpression> attrExp = new LinkedList<AttributeAssignmentExpression>();
-		for (AttributeAssignmentExpressionType e : exp
-				.getAttributeAssignmentExpression()) {
+		for (AttributeAssignmentExpressionType e : exp.getAttributeAssignmentExpression()) {
 			attrExp.add(create(e, m));
 		}
 		return ObligationExpression.builder(exp.getObligationId(),
@@ -566,13 +561,13 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	}
 
 	/**
-	 * Creates {@link AttributeValueExpression} instance
+	 * Creates {@link AttributeExp} instance
 	 *
 	 * @param dataType
 	 *            a data type identifier
 	 * @param content
 	 *            an list with attribute content
-	 * @return {@link AttributeValueExpression} instance
+	 * @return {@link AttributeExp} instance
 	 * @throws XacmlSyntaxException
 	 */
 	private AttributeExp createValue(String dataType, List<Object> content,
@@ -629,8 +624,8 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	/**
 	 * Creates instance of {@link Expression} from a given JAXB object
 	 *
-	 * @param expression
-	 * @return
+	 * @param expression expression JAXB element
+	 * @return {@link Expression} instance
 	 * @throws XacmlSyntaxException
 	 */
 	private Expression parseExpression(JAXBElement<?> expression,
@@ -706,7 +701,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				VariableDefinitionType varDef = (VariableDefinitionType) o;
 				if (expressions.containsKey(varDef.getVariableId())) {
 					throw new XacmlSyntaxException(
-							"Policy contains a variableId=\"%s\" is alerady "
+							"Policy contains a variableId=\"%s\" is already "
 									+ "used for previously defined variable",
 							varDef.getVariableId());
 				}
@@ -732,7 +727,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			Preconditions.checkState(expression != null);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved variable " +
-						"defintion variableId=\"{}\", expression=\"{}\"", varId, expression);
+						"definition variableId=\"{}\", expression=\"{}\"", varId, expression);
 			}
 			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 		}

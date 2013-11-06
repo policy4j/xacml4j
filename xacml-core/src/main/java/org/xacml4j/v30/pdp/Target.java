@@ -15,13 +15,12 @@ public class Target implements PolicyElement
 {
 	private final static Logger log = LoggerFactory.getLogger(Target.class);
 
-	private Collection<MatchAnyOf> matches;
+	private final Collection<MatchAnyOf> matches;
 
 	/**
-	 * Creates target with a collection
-	 * of {@link MatchAnyOf}
+	 * Creates target from a given {@link Builder} instance
 	 *
-	 * @param matches a collection of {@link MatchAnyOf}
+	 * @param b a {@link Builder} instance
 	 */
 	public Target(Builder b){
 		this.matches = b.allAnyOf.build();
@@ -88,9 +87,10 @@ public class Target implements PolicyElement
 		if(o == this){
 			return false;
 		}
-		if(o == null){
+		if(!(o instanceof Target)){
 			return false;
 		}
+
 		Target t = (Target)o;
 		return matches.equals(t.matches);
 	}
@@ -99,7 +99,7 @@ public class Target implements PolicyElement
 	public String toString(){
 		return Objects
 				.toStringHelper(this)
-				.add("matches", matches)
+				.add("AnyOf", matches)
 				.toString();
 	}
 
@@ -118,8 +118,8 @@ public class Target implements PolicyElement
 
 		/**
 		 * Adds {@link MatchAnyOf} created from a given
-		 * array of {@link MatchAllOf} instances
-		 * @param allOfs a matches
+		 * array of {@link MatchAnyOf} instances
+		 * @param anyOfs an array of {@code MatchAnyOf} matches
 		 */
 		public Builder anyOf(Iterable<MatchAnyOf> anyOfs){
 			allAnyOf.addAll(anyOfs);
@@ -129,6 +129,5 @@ public class Target implements PolicyElement
 		public Target build(){
 			return new Target(this);
 		}
-
 	}
 }

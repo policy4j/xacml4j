@@ -82,7 +82,7 @@ public class PolicySetTest
 				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
 					.attribute("testId", permitAdviceAttributeExp))
-				.create();
+				.build();
 
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);
@@ -289,6 +289,4 @@ public class PolicySetTest
 		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
 		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
 	}
-
-
 }

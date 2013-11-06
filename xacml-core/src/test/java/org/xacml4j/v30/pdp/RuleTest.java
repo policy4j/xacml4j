@@ -3,6 +3,7 @@ package org.xacml4j.v30.pdp;
 import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.easymock.IMocksControl;
@@ -66,7 +67,7 @@ public class RuleTest
 		this.denyObligationAttributeExp = c.createMock(Expression.class);
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 
-		Policy.PolicyBuilder b  = Policy.builder("testPolicyId").version("1.0");
+		Policy.Builder b  = Policy.builder("testPolicyId").version("1.0");
 
 		this.builder = Rule
 				.builder("TestRuleId", Effect.DENY)
@@ -93,7 +94,7 @@ public class RuleTest
 				.id("testDenyRule")
 				.withEffect(Effect.DENY)
 				.build();
-		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).create();
+		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).build();
 		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, 0, resolver, handler));
 
 	}
@@ -422,6 +423,20 @@ public class RuleTest
 	public void testEquals(){
 		Rule r1 = builder.build();
 		Rule r2 = builder.build();
+		Policy p1 = Policy
+				.builder("policy-id")
+				.combiningAlgorithm(combiner)
+				.build();
 		assertEquals(r1, r2);
+		assertFalse(r1.equals(null));
+		assertFalse(r1.equals(p1));
+	}
+
+	@Test
+	public void testHashCode(){
+		Rule r1 = builder.build();
+		Rule r2 = builder.build();
+
+		assertEquals(r1.hashCode(), r2.hashCode());
 	}
 }

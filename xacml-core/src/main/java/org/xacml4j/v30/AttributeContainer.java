@@ -9,23 +9,13 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 public class AttributeContainer
 {
-	protected Multimap<String, Attribute> attributes;
+	protected final Multimap<String, Attribute> attributes;
 
-	protected AttributeContainer(Iterable<Attribute> attributes){
-		this.attributes = LinkedListMultimap.create();
-		for(Attribute attr : attributes){
-			this.attributes.put(attr.getAttributeId(), attr);
-		}
-		this.attributes = Multimaps.unmodifiableMultimap(this.attributes);
-	}
-
-	protected AttributeContainer(AttributeContainerBuilder<?> b){
+	protected AttributeContainer(Builder<?> b){
 		this.attributes = b.attrsBuilder.build();
 	}
 
@@ -85,7 +75,7 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets all attribute {@Link Attribute}
+	 * Gets all attribute {@link Attribute}
 	 * instances
 	 *
 	 * @return immutable collection of {@link Attribute}
@@ -96,8 +86,8 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Finds all instance of {@Link Attribute} with
-	 * {@link #isIncludeInResult()} returning
+	 * Finds all instance of {@link Attribute} with
+	 * {@link Attribute#isIncludeInResult()} returning
 	 * <code>true</code>
 	 *
 	 * @return a collection of {@link Attribute}
@@ -158,25 +148,23 @@ public class AttributeContainer
 		return values;
 	}
 
-	public static abstract class AttributeContainerBuilder <T extends AttributeContainerBuilder<?>>
+	public static abstract class Builder<T extends Builder<?>>
 	{
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
-		public T attribute(Attribute ...attrs)
-		{
+		public T attribute(Attribute... attrs) {
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);
 			}
 			return getThis();
 		}
 
-		public T noAttributes(){
+		public T noAttributes() {
 			this.attrsBuilder = ImmutableListMultimap.builder();
 			return getThis();
 		}
 
-		public T attributes(Iterable<Attribute> attrs)
-		{
+		public T attributes(Iterable<Attribute> attrs) {
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);
 			}

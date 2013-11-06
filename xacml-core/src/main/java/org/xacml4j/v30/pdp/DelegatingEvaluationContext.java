@@ -35,7 +35,7 @@ import com.google.common.base.Ticker;
  */
 abstract class DelegatingEvaluationContext implements EvaluationContext
 {
-	private EvaluationContext delegate;
+	private final EvaluationContext delegate;
 
 	protected DelegatingEvaluationContext(
 			EvaluationContext context){
@@ -270,4 +270,21 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public XPathVersion getXPathVersion() {
 		return delegate.getXPathVersion();
 	}
+/*
+	FIXME: review delegation & test cases
+	@Override
+	public boolean equals(Object o) {
+		return delegate.equals(o);
+	}
+
+	@Override
+	public String toString() {
+		return delegate.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return delegate.hashCode();
+	}
+	*/
 }

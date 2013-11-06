@@ -3,7 +3,7 @@ package org.xacml4j.v30;
 import java.util.Collection;
 
 
-public interface AttributeExpType  extends ValueType
+public interface AttributeExpType extends ValueType
 {
 	/**
 	 * Gets data type identifier
@@ -14,12 +14,12 @@ public interface AttributeExpType  extends ValueType
 
 	/**
 	 * Parses given XACML string representation of an attribute
-	 * value to an actual {@link BaseAttribute} of this type
+	 * value to an actual {@link AttributeExp} of this type
 	 *
 	 * @param v an XACML string value representation of this type
-	 * @param params an additional parameters used to create
+	 * @param params an additional parameters used to build
 	 * value of this type from given string
-	 * @return {@link BaseAttribute} instance of this type
+	 * @return {@link AttributeExp} instance of this type
 	 * @exception IllegalArgumentException if given value does not
 	 * represent value of this type
 	 */
@@ -27,12 +27,10 @@ public interface AttributeExpType  extends ValueType
 
 	/**
 	 * Creates an attribute from a given object.
-	 * Object can be instance of {@link this#getValueClazz()}
-	 * or can be instance of {@link String}
 	 *
 	 * @param object an object
 	 * @param params  an additional parameters used to
-	 * create a value of this type
+	 * build a value of this type
 	 * @return {@link AttributeExp}
 	 * @exception IllegalArgumentException if attribute value of
 	 * this type can not be created from a given value

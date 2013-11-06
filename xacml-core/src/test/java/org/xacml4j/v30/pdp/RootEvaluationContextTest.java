@@ -16,9 +16,8 @@ import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
 
 
-public class BaseEvaluationContextTest
+public class RootEvaluationContextTest
 {
-	private EvaluationContext context;
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
 	private IMocksControl c;
@@ -28,19 +27,12 @@ public class BaseEvaluationContextTest
 		this.c = createControl();
 		this.handler = c.createMock(EvaluationContextHandler.class);
 		this.resolver = c.createMock(PolicyReferenceResolver.class);
-		this.context = createMockBuilder(
-				BaseEvaluationContext.class)
-		.withConstructor(false, 0, handler, resolver)
-		.createMock();
 	}
 
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
-		EvaluationContext context = createMockBuilder(
-				BaseEvaluationContext.class)
-		.withConstructor(false, 0, handler, resolver)
-		.createMock();
+		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		c.replay();
 		assertEquals(0, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -57,10 +49,7 @@ public class BaseEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
-		EvaluationContext context = createMockBuilder(
-				BaseEvaluationContext.class)
-		.withConstructor(false, 10, handler, resolver)
-		.createMock();
+		RootEvaluationContext context = new RootEvaluationContext(false, 10, resolver, handler);
 		c.replay();
 		assertEquals(10, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -77,6 +66,7 @@ public class BaseEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{
+		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		c.replay();
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
@@ -93,6 +83,7 @@ public class BaseEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{
+		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
@@ -101,6 +92,7 @@ public class BaseEvaluationContextTest
 				.issuer("test")
 				.build();
 		expect(handler.resolve(context, k)).andReturn(StringType.STRING.bagOf("aaa", "ccc"));
+
 		c.replay();
 		assertEquals(StringType.STRING.bagOf("aaa", "ccc"), context.resolve(k));
 		assertEquals(StringType.STRING.bagOf("aaa", "ccc"), context.resolve(k));

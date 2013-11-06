@@ -17,7 +17,7 @@ public class ObligationExpression extends
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException{
 		return Obligation
 				.builder(getId(), getEffect())
-				.attributes(evaluateAttributeAssingments(context))
+				.attributes(evaluateAttributeAssignments(context))
 				.build();
 	}
 
@@ -48,7 +48,7 @@ public class ObligationExpression extends
 			&& attributeExpressions.equals(ox.attributeExpressions);
 	}
 
-	public static class Builder extends BaseDecisionRuleResponseExpressionBuilder<Builder>
+	public static class Builder extends BaseDecisionRuleResponseExpression.Builder<Builder>
 	{
 
 		@Override

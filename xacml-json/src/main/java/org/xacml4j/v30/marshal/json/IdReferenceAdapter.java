@@ -8,7 +8,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import org.xacml4j.v30.pdp.BaseCompositeDecisionRuleIDReference;
-import org.xacml4j.v30.pdp.BaseCompositeDecisionRuleIDReference.BaseCompositeDecisionRuleIDReferenceBuilder;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
 
@@ -45,7 +44,7 @@ public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisio
 		}
 	}
 
-	private <T extends BaseCompositeDecisionRuleIDReferenceBuilder<T>> T setVersions(T builder, String version,
+	private <T extends BaseCompositeDecisionRuleIDReference.Builder<T>> T setVersions(T builder, String version,
 			String earliestVersion, String latestVersion) {
 		if (version != null) {
 			builder.versionAsString(version);

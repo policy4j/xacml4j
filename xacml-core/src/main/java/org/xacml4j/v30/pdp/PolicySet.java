@@ -1,11 +1,12 @@
 package org.xacml4j.v30.pdp;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
@@ -24,23 +25,23 @@ import com.google.common.collect.Multimap;
 public class PolicySet extends
 	BaseCompositeDecisionRule implements PolicyElement
 {
-	private PolicySetDefaults policySetDefaults;
-	private DecisionCombiningAlgorithm<CompositeDecisionRule> combine;
-	private List<CompositeDecisionRule> decisionRules;
+	private final PolicySetDefaults policySetDefaults;
+	private final DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
+	private final List<CompositeDecisionRule> decisionRules;
 
-	private Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
-	private	Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
+	private final Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
+	private	final Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
 
-	private PolicySetIDReference reference;
+	private final PolicySetIDReference reference;
 
-	private PolicySet(PolicySetBuilder b)
+	private PolicySet(Builder b)
 	{
 		super(b);
 		this.reference = PolicySetIDReference.builder(id).version(b.version).build();
 		this.policySetDefaults = b.policyDefaults;
 		Preconditions.checkNotNull(b.combiningAlgorithm,
-				"Policy decision combinging algorithm must be specified");
-		this.combine = b.combiningAlgorithm;
+				"Policy decision combining algorithm must be specified");
+		this.combiningAlgorithm = b.combiningAlgorithm;
 		this.decisionRules = b.policies.build();
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicySets = ImmutableMap.builder();
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicies = ImmutableMap.builder();
@@ -55,8 +56,8 @@ public class PolicySet extends
 
 	}
 
-	public static PolicySetBuilder builder(String id){
-		return new PolicySetBuilder(id);
+	public static Builder builder(String id){
+		return new Builder(id);
 	}
 
 	@Override
@@ -116,7 +117,7 @@ public class PolicySet extends
 	 * @return a decision combining algorithm
 	 */
 	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
-		return combine;
+		return combiningAlgorithm;
 	}
 
 	/**
@@ -148,12 +149,11 @@ public class PolicySet extends
 
 	@Override
 	protected final boolean isEvaluationContextValid(EvaluationContext context){
-		// TBD: use equals instead
-		return context.getCurrentPolicySet() == this;
+		return this.equals(context.getCurrentPolicySet());
 	}
 
 	protected Decision combineDecisions(EvaluationContext context){
-		return combine.combine(context, decisionRules);
+		return combiningAlgorithm.combine(context, decisionRules);
 	}
 
 	public List<? extends CompositeDecisionRule> getDecisions() {
@@ -186,9 +186,36 @@ public class PolicySet extends
 		v.visitLeave(this);
 	}
 
+	protected boolean equalsTo(PolicySet o) {
+		return super.equalsTo(o)
+			&& Objects.equal(policySetDefaults, o.policySetDefaults)
+			&& Objects.equal(combiningAlgorithm, o.combiningAlgorithm)
+			&& Objects.equal(decisionRules, o.decisionRules)
+			&& Objects.equal(policyCombinerParameters, o.policyCombinerParameters)
+			&& Objects.equal(policySetCombinerParameters, o.policySetCombinerParameters)
+			&& Objects.equal(reference, o.reference);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		return (o instanceof PolicySet)
+			&& ((PolicySet)o).equalsTo(this);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() * 31 +
+				Objects.hashCode(policySetDefaults, combiningAlgorithm,
+						decisionRules, policyCombinerParameters,
+						policySetCombinerParameters, reference);
+	}
+
 	class PolicySetDelegatingEvaluationContext
-		extends DelegatingEvaluationContext
-	{
+			extends DelegatingEvaluationContext {
 		private StatusCode evalStatus;
 
 		/**
@@ -240,21 +267,21 @@ public class PolicySet extends
 		}
 	}
 
-	public final static class PolicySetBuilder extends BaseCompositeDecisionRuleBuilder<PolicySetBuilder>
+	public final static class Builder extends BaseCompositeDecisionRule.Builder<Builder>
 	{
 		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
 		private ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
 
-		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
-		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = new LinkedHashMap<String, Multimap<String,CombinerParameter>>();
+		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = Maps.newLinkedHashMap();
+		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = Maps.newLinkedHashMap();
 
-		private PolicySetBuilder(String policySetId){
+		private Builder(String policySetId){
 			super(policySetId);
 		}
 
 
-		public PolicySetBuilder withPolicyCombinerParameter(String policyId, CombinerParameter p){
+		public Builder withPolicyCombinerParameter(String policyId, CombinerParameter p){
 			Preconditions.checkNotNull(policyId);
 			Preconditions.checkNotNull(p);
 			Multimap<String, CombinerParameter> params = policyCombinerParams.get(policyId);
@@ -266,7 +293,7 @@ public class PolicySet extends
 			return this;
 		}
 
-		public PolicySetBuilder withPolicySetCombinerParameter(String policySetId, CombinerParameter p){
+		public Builder withPolicySetCombinerParameter(String policySetId, CombinerParameter p){
 			Preconditions.checkNotNull(policySetId);
 			Preconditions.checkNotNull(p);
 			Multimap<String, CombinerParameter> params = policySetCombinerParams.get(policySetId);
@@ -278,80 +305,80 @@ public class PolicySet extends
 			return this;
 		}
 
-		public PolicySetBuilder withoutPolicyCombinerParameters(){
+		public Builder withoutPolicyCombinerParameters(){
 			this.policyCombinerParams.clear();
 			return this;
 		}
 
-		public PolicySetBuilder withoutPolicySetCombinerParameters(){
+		public Builder withoutPolicySetCombinerParameters(){
 			this.policySetCombinerParams.clear();
 			return this;
 		}
 
-		public PolicySetBuilder defaults(PolicySetDefaults defaults){
+		public Builder defaults(PolicySetDefaults defaults){
 			this.policyDefaults = defaults;
 			return this;
 		}
 
-		public PolicySetBuilder withoutDefaults(){
+		public Builder withoutDefaults(){
 			this.policyDefaults = null;
 			return this;
 		}
 
-		public PolicySetBuilder policy(Policy p){
+		public Builder policy(Policy p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
 
-		public PolicySetBuilder policySet(PolicySet p){
+		public Builder policySet(PolicySet p){
 			Preconditions.checkNotNull(p);
 			this.policies.add(p);
 			return this;
 		}
 
-		public PolicySetBuilder compositeDecisionRules(Iterable<CompositeDecisionRule> rules)
+		public Builder compositeDecisionRules(Iterable<CompositeDecisionRule> rules)
 		{
 			this.policies.addAll(rules);
 			return getThis();
 		}
 
-		public PolicySetBuilder compositeDecisionRules(CompositeDecisionRule ... rules)
+		public Builder compositeDecisionRules(CompositeDecisionRule ... rules)
 		{
 			this.policies.add(rules);
 			return getThis();
 		}
 
-		public PolicySetBuilder withPolicy(Policy.PolicyBuilder b){
+		public Builder withPolicy(Policy.Builder b){
 			Preconditions.checkNotNull(b);
-			this.policies.add(b.create());
+			this.policies.add(b.build());
 			return this;
 		}
 
-		public PolicySetBuilder withPolicy(PolicySet.PolicySetBuilder b){
+		public Builder withPolicy(Builder b){
 			Preconditions.checkNotNull(b);
-			this.policies.add(b.create());
+			this.policies.add(b.build());
 			return this;
 		}
 
-		public PolicySetBuilder withoutRules(){
+		public Builder withoutRules(){
 			this.policies = ImmutableList.builder();
 			return this;
 		}
 
-		public PolicySetBuilder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> algo)
+		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> alg)
 		{
-			Preconditions.checkNotNull(algo);
-			this.combiningAlgorithm = algo;
+			Preconditions.checkNotNull(alg);
+			this.combiningAlgorithm = alg;
 			return this;
 		}
 
 		@Override
-		protected PolicySetBuilder getThis() {
+		protected Builder getThis() {
 			return this;
 		}
 
-		public PolicySet create(){
+		public PolicySet build(){
 			return new PolicySet(this);
 		}
 	}

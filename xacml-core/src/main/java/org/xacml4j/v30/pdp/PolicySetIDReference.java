@@ -36,31 +36,13 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 *
 	 * @param policy a policy
 	 * @return <code>true</code> if a this reference
-	 * points to a given policys
+	 * points to a given policies
 	 */
 	@Override
 	public boolean isReferenceTo(CompositeDecisionRule policy) {
 		PolicySet p = (PolicySet)policy;
 		return p != null &&
 		matches(p.getId(), p.getVersion());
-	}
-
-	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof PolicySetIDReference)){
-			return false;
-		}
-		PolicySetIDReference r = (PolicySetIDReference)o;
-		return getId().equals(r.getId())
-		&& Objects.equal(getVersion(), r.getVersion())
-		&& Objects.equal(getEarliestVersion(), r.getEarliestVersion())
-		&& Objects.equal(getLatestVersion(), r.getLatestVersion());
 	}
 
 	/**
@@ -93,7 +75,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			return Decision.INDETERMINATE;
 		}
 		CompositeDecisionRule ps = context.getCurrentPolicySet();
-		Preconditions.checkState(ps != null);
+		Preconditions.checkNotNull(ps);
 		return ps.evaluate(context);
 	}
 
@@ -105,7 +87,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			return MatchResult.INDETERMINATE;
 		}
 		CompositeDecisionRule ps = context.getCurrentPolicySet();
-		Preconditions.checkState(ps != null);
+		Preconditions.checkNotNull(ps);
 		return ps.isMatch(context);
 	}
 
@@ -118,6 +100,16 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		return (o instanceof PolicySetIDReference)
+				&& ((PolicySetIDReference)o).equalsTo(this);
 	}
 
 	/**
@@ -158,7 +150,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		}
 	}
 
-	public static class Builder extends BaseCompositeDecisionRuleIDReferenceBuilder<Builder>
+	public static class Builder extends BaseCompositeDecisionRuleIDReference.Builder<Builder>
 	{
 		@Override
 		protected Builder getThis() {

@@ -24,7 +24,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.net.NetworkInterface;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -183,14 +185,14 @@ public class EUI48Test {
 		EUI48 ethernet_address = new EUI48(
 				new byte[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress(byte[]) did not create expected EthernetAddress",
+				"EthernetAddress(byte[]) did not build expected EthernetAddress",
 				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 
 		// let's test creating an array from a good byte array
 		ethernet_address = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertEquals(
-				"EthernetAddress(byte[]) did not create expected EthernetAddress",
+				"EthernetAddress(byte[]) did not build expected EthernetAddress",
 				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 	}
 
@@ -204,13 +206,13 @@ public class EUI48Test {
 		EUI48 ethernet_address = new EUI48(
 				0x0000000000000000L);
 		assertEquals(
-				"EthernetAddress(long) did not create expected EthernetAddress",
+				"EthernetAddress(long) did not build expected EthernetAddress",
 				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 
 		// let's test creating an array from a good long
 		ethernet_address = new EUI48(VALID_ETHERNET_ADDRESS_LONG);
 		assertEquals(
-				"EthernetAddress(long) did not create expected EthernetAddress",
+				"EthernetAddress(long) did not build expected EthernetAddress",
 				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 	}
 
@@ -329,7 +331,7 @@ public class EUI48Test {
 	@Test
 	public void testAsByteArray() {
 		// we'll test making a couple EthernetAddresses and then check that
-		// asByteArray returns the same value in long form as used to create it
+		// asByteArray returns the same value in long form as used to build it
 
 		// first we'll test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
@@ -431,7 +433,7 @@ public class EUI48Test {
 
 		// now we will test a bigger case of the compareTo functionality
 		// of the EthernetAddress class
-		// easiest way to do this is to create an array of EthernetAddresses
+		// easiest way to do this is to build an array of EthernetAddresses
 		// and sort it then test that this array is in the expected order
 
 		// before sort, the array contains (in psudo-random order)
@@ -507,19 +509,19 @@ public class EUI48Test {
 		// (as specified in the JDK docs for Object)
 		EUI48 x = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("equals(null) didn't return false", x.equals((Object) null));
+		assertFalse("equals(null) didn't return false", x.equals(null));
 
 		// test passing an object which is not a EthernetAddress returns false
 		assertFalse("x.equals(non_EthernetAddress_object) didn't return false",
 				x.equals(new Object()));
 
-		// test a case where two EthernetAddresss are definitly not equal
+		// test a case where two EthernetAddresss are definitely not equal
 		EUI48 w = new EUI48(
 				ANOTHER_VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertFalse("x == w didn't return false", x == w);
 		assertFalse("x.equals(w) didn't return false", x.equals(w));
 
-		// test refelexivity
+		// test reflexivity
 		assertTrue("x.equals(x) didn't return true", x.equals(x));
 
 		// test symmetry
@@ -551,7 +553,7 @@ public class EUI48Test {
 	 */
 	public void testToByteArray() {
 		// we'll test making a couple EthernetAddresses and then check that the
-		// toByteArray returns the same value in byte form as used to create it
+		// toByteArray returns the same value in byte form as used to build it
 
 		// first we'll test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
@@ -598,7 +600,7 @@ public class EUI48Test {
 		// first, passing null
 		try {
 			EUI48 ethernet_address = new EUI48(0L);
-			ethernet_address.toByteArray((byte[]) null);
+			ethernet_address.toByteArray(null);
 			// if we reached here we failed because we didn't get an exception
 			fail("Expected exception not caught");
 		} catch (NullPointerException ex) {
@@ -621,7 +623,7 @@ public class EUI48Test {
 		}
 
 		// we'll test making a couple EthernetAddresses and then check that
-		// toByteArray returns the same value in byte form as used to create it
+		// toByteArray returns the same value in byte form as used to build it
 
 		// here we'll test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
@@ -678,7 +680,7 @@ public class EUI48Test {
 		// first, passing null and 0
 		try {
 			EUI48 ethernet_address = new EUI48(0L);
-			ethernet_address.toByteArray((byte[]) null, 0);
+			ethernet_address.toByteArray(null, 0);
 			// if we reached here we failed because we didn't get an exception
 			fail("Expected exception not caught");
 		} catch (NullPointerException ex) {
@@ -743,7 +745,7 @@ public class EUI48Test {
 
 		// we'll test making a couple EthernetAddresss and then check
 		// that toByteArray
-		// returns the same value in byte form as used to create it
+		// returns the same value in byte form as used to build it
 
 		// here we'll test the null EthernetAddress at offset 0
 		EUI48 ethernet_address = new EUI48(0L);
@@ -824,7 +826,7 @@ public class EUI48Test {
 	@Test
 	public void testToLong() {
 		// test making a couple EthernetAddresss and then check that the toLong
-		// gives back the same value in long form that was used to create it
+		// gives back the same value in long form that was used to build it
 
 		// test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
@@ -844,7 +846,7 @@ public class EUI48Test {
 	@Test
 	public void testToString() {
 		// test making a few EthernetAddresss and check that the toString
-		// gives back the same value in string form that was used to create it
+		// gives back the same value in string form that was used to build it
 
 		// test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
@@ -928,14 +930,14 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(new byte[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 
 		// let's test creating an array from a good byte array
 		ethernet_address = EUI48
 				.valueOf(VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 	}
 
@@ -986,14 +988,14 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(new int[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 
 		// let's test creating an array from a good int array
 		ethernet_address = EUI48
 				.valueOf(VALID_ETHERNET_ADDRESS_INT_ARRAY);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 	}
 
@@ -1007,13 +1009,13 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(0x0000000000000000L);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 
 		// let's test creating an array from a good long
 		ethernet_address = EUI48.valueOf(VALID_ETHERNET_ADDRESS_LONG);
 		assertEquals(
-				"EthernetAddress.valueOf did not create expected EthernetAddress",
+				"EthernetAddress.valueOf did not build expected EthernetAddress",
 				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
 	}
 
@@ -1106,9 +1108,16 @@ public class EUI48Test {
 	 */
 	@Test
 	public void testFromInterface() throws Exception {
-		EUI48 addr = EUI48.fromInterface();
-		assertNotNull(addr);
-		assertNotNull(addr.toString());
+		boolean loopbacksOnly = true;
+		for(Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+			loopbacksOnly &= en.nextElement().isLoopback();
+		}
+
+		if (!loopbacksOnly) {
+			EUI48 addr = EUI48.fromInterface();
+			assertNotNull(addr);
+			assertNotNull(addr.toString());
+		}
 	}
 
 	/**************************************************************************

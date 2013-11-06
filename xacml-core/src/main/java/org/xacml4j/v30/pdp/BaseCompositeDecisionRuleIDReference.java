@@ -11,14 +11,14 @@ import com.google.common.base.Strings;
 public abstract class BaseCompositeDecisionRuleIDReference
 	implements CompositeDecisionRuleIDReference
 {
-	private String id;
-	private VersionMatch version;
-	private VersionMatch earliest;
-	private VersionMatch latest;
+	private final String id;
+	private final VersionMatch version;
+	private final VersionMatch earliest;
+	private final VersionMatch latest;
 
-	private int hashCode;
+	private final int hashCode;
 
-	protected BaseCompositeDecisionRuleIDReference(BaseCompositeDecisionRuleIDReferenceBuilder<?> b){
+	protected BaseCompositeDecisionRuleIDReference(Builder<?> b){
 		Preconditions.checkNotNull(b.id,
 				"Decision rule identifier can not be null");
 		this.id = b.id;
@@ -79,7 +79,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	}
 
 	@Override
-	public final String toString(){
+	public final String toString() {
 		return Objects.toStringHelper(this)
 		.add("id", id)
 		.add("version", version)
@@ -88,11 +88,18 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	}
 
 	@Override
-	public final int hashCode(){
+	public final int hashCode() {
 		return hashCode;
 	}
 
-	public static abstract class BaseCompositeDecisionRuleIDReferenceBuilder<T extends BaseCompositeDecisionRuleIDReferenceBuilder<?>>
+	protected boolean equalsTo(BaseCompositeDecisionRuleIDReference r) {
+		return id.equals(r.id)
+			&& Objects.equal(version, r.version)
+			&& Objects.equal(earliest, r.earliest)
+			&& Objects.equal(latest, r.latest);
+	}
+
+	public static abstract class Builder<T extends Builder<?>>
 	{
 		private String id;
 		private VersionMatch version;
@@ -124,10 +131,6 @@ public abstract class BaseCompositeDecisionRuleIDReference
 		}
 
 		public T versionMatch(VersionMatch version){
-			if(version == null){
-				this.version = null;
-				return getThis();
-			}
 			this.version = version;
 			return getThis();
 		}

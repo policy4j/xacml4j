@@ -89,7 +89,7 @@ public final class ConcurrentMultiKeyHashMap<K1, K2, V> implements Serializable
     }
 
     /**
-     * Get/create the subMap for the specified key
+     * Get/build the subMap for the specified key
      */
     private ConcurrentMap<K2, V> getOrCreateSubMap(K1 key1) {
         ConcurrentMap<K2, V> subMap = this.map.get(key1);

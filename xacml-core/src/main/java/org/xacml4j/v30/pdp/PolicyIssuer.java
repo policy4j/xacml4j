@@ -10,7 +10,7 @@ import com.google.common.base.Objects;
 public class PolicyIssuer extends AttributeContainer
 	implements PolicyElement
 {
-	private Document content;
+	private final Document content;
 
 	private PolicyIssuer(Builder b){
 		super(b);
@@ -32,19 +32,21 @@ public class PolicyIssuer extends AttributeContainer
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hashCode(content, attributes);
+	}
+
+	@Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
-		}
-		if(o == null){
-			return false;
 		}
 		if(!(o instanceof PolicyIssuer)){
 			return false;
 		}
 		PolicyIssuer pi = (PolicyIssuer)o;
 		return DOMUtil.isEqual(content, pi.content) &&
-		attributes.equals(pi.attributes);
+				attributes.equals(pi.attributes);
 	}
 
 	@Override
@@ -52,8 +54,8 @@ public class PolicyIssuer extends AttributeContainer
 		return Objects.toStringHelper(this)
 		.add("attributes", attributes)
 		.add("content",
-				(content != null)?DOMUtil.toString(
-						content.getDocumentElement()):content)
+				(content != null) ? DOMUtil.toString(
+						content.getDocumentElement()) : content)
 		.toString();
 	}
 
@@ -63,7 +65,7 @@ public class PolicyIssuer extends AttributeContainer
 		v.visitLeave(this);
 	}
 
-	public static class Builder extends AttributeContainerBuilder<Builder>
+	public static class Builder extends AttributeContainer.Builder<Builder>
 	{
 		private Document content;
 

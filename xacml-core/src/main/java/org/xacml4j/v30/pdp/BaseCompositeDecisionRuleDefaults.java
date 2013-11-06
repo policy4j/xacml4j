@@ -11,10 +11,10 @@ abstract class BaseCompositeDecisionRuleDefaults
 {
 	public static final String XPATH_VERSION = "XPathVersion";
 
-	protected ImmutableMap<String, Object> values;
+	protected final ImmutableMap<String, Object> values;
 
 	protected BaseCompositeDecisionRuleDefaults(
-			BaseCompositeDecisionRuleDefaultsBuilder<?> b){
+			Builder<?> b){
 		Preconditions.checkNotNull(b);
 		this.values = b.values.build();
 	}
@@ -41,7 +41,7 @@ abstract class BaseCompositeDecisionRuleDefaults
 		return values.hashCode();
 	}
 
-	public static abstract class BaseCompositeDecisionRuleDefaultsBuilder<T extends BaseCompositeDecisionRuleDefaultsBuilder<?>>
+	public static abstract class Builder<T extends Builder<?>>
 	{
 		private ImmutableMap.Builder<String, Object> values = ImmutableMap.builder();
 

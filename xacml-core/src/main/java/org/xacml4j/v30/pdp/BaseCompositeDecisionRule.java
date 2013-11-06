@@ -12,7 +12,6 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Version;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -29,12 +28,12 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 
-	protected Version version;
-	private PolicyIssuer issuer;
-	private Integer maxDelegationDepth;
-	private Multimap<String, CombinerParameter> combinerParameters;
+	private final Version version;
+	private final PolicyIssuer issuer;
+	private final Integer maxDelegationDepth;
+	private final Multimap<String, CombinerParameter> combinerParameters;
 
-	protected BaseCompositeDecisionRule(BaseCompositeDecisionRuleBuilder<?> b){
+	protected BaseCompositeDecisionRule(Builder<?> b){
 		super(b);
 		this.version = b.version;
 		this.maxDelegationDepth = b.maxDelegationDepth;
@@ -144,7 +143,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		Decision evaluationResult = null;
 		try{
 			evaluationResult = combineDecisions(context);
-		}catch(Exception  e){
+		}catch(Exception e){
 			evaluationResult = Decision.INDETERMINATE;
 		}
 		switch(evaluationResult){
@@ -161,26 +160,38 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 
 	protected abstract Decision combineDecisions(EvaluationContext context);
 
-
 	@Override
-	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
-		b.add("version", version);
-		b.add("issuer", issuer);
-		b.add("maxDelegationDepth", maxDelegationDepth);
-		b.add("combinerParameters", combinerParameters);
-		super.toStringBuilder(b);
-		return b;
+	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
+		return super.toStringBuilder(b)
+			.add("version", version)
+			.add("issuer", issuer)
+			.add("maxDelegationDepth", maxDelegationDepth)
+			.add("combinerParameters", combinerParameters);
 	}
 
-	public abstract static class BaseCompositeDecisionRuleBuilder<T extends BaseCompositeDecisionRuleBuilder<?>>
-		extends BaseDecisionRuleBuilder<T>
+	protected boolean equalsTo(BaseCompositeDecisionRule r) {
+		return super.equalsTo(r)
+			&& Objects.equal(version, r.version)
+			&& Objects.equal(issuer, r.issuer)
+			&& Objects.equal(maxDelegationDepth, r.maxDelegationDepth)
+			&& Objects.equal(combinerParameters, r.combinerParameters);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() * 31 +
+				Objects.hashCode(version, issuer, maxDelegationDepth, combinerParameters);
+	}
+
+	public abstract static class Builder<T extends Builder<?>>
+		extends BaseDecisionRule.Builder<T>
 	{
 		protected Version version;
 		protected Integer maxDelegationDepth;
 		protected PolicyIssuer issuer;
 		protected ImmutableMultimap.Builder<String, CombinerParameter> combParamBuilder = ImmutableMultimap.builder();
 
-		protected BaseCompositeDecisionRuleBuilder(String ruleId) {
+		protected Builder(String ruleId) {
 			super(ruleId);
 			this.version = Version.parse("1.0");
 		}
@@ -216,10 +227,10 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			return getThis();
 		}
 
-		public T maxDelegationDepth(Integer maxDelegationdepth)
+		public T maxDelegationDepth(Integer maxDelegationDepth)
 		{
-			Preconditions.checkArgument(maxDelegationdepth == null || maxDelegationdepth >= 0);
-			this.maxDelegationDepth = maxDelegationdepth;
+			Preconditions.checkArgument(maxDelegationDepth == null || maxDelegationDepth >= 0);
+			this.maxDelegationDepth = maxDelegationDepth;
 			return getThis();
 		}
 	}

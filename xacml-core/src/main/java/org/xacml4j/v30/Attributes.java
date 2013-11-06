@@ -12,23 +12,20 @@ import com.google.common.collect.Collections2;
 
 public class Attributes extends AttributeContainer
 {
-	private String id;
-	private AttributeCategory categoryId;
-	private Document content;
-	private AttributesReference ref;
+	private final String id;
+	private final AttributeCategory categoryId;
+	private final Document content;
+	private final AttributesReference ref;
 
-	private Attributes(Builder b){
+	private Attributes(Builder b) {
 		super(b);
-		this.id = b.id;
 		Preconditions.checkNotNull(b.category);
+		this.id = b.id;
 		this.categoryId = b.category;
 		this.content = DOMUtil.copyNode(b.content);
-		if(b.id != null){
-			this.ref = AttributesReference
-					.builder()
-					.id(b.id)
-					.build();
-		}
+		this.ref = (b.id == null)
+				? null
+				: AttributesReference.builder().id(b.id).build();
 	}
 
 	public static Builder builder(AttributeCategory category){
@@ -108,7 +105,7 @@ public class Attributes extends AttributeContainer
 	}
 
 	public static class Builder
-		extends AttributeContainerBuilder<Builder>
+		extends AttributeContainer.Builder<Builder>
 	{
 		private String id;
 		private AttributeCategory category;

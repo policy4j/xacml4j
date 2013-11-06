@@ -6,6 +6,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.BooleanType;
 
@@ -21,7 +22,7 @@ import com.google.common.base.Preconditions;
  */
 public class Condition implements PolicyElement
 {
-	private Expression predicate;
+	private final Expression predicate;
 
 	/**
 	 * Constructs condition with an predicate
@@ -33,11 +34,12 @@ public class Condition implements PolicyElement
 	public Condition(Expression predicate)
 	{
 		Preconditions.checkNotNull(predicate, "Condition predicate can not be null");
-		Preconditions.checkArgument(predicate.getEvaluatesTo().equals(BOOLEAN),
+		final ValueType resultType = predicate.getEvaluatesTo();
+		Preconditions.checkArgument(resultType.equals(BOOLEAN),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"",
-					BooleanType.BOOLEAN, predicate.getEvaluatesTo());
+					BooleanType.BOOLEAN, resultType);
 		this.predicate = predicate;
 	}
 
@@ -96,9 +98,6 @@ public class Condition implements PolicyElement
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
-		}
-		if(o == null){
-			return false;
 		}
 		if(!(o instanceof Condition)){
 			return false;

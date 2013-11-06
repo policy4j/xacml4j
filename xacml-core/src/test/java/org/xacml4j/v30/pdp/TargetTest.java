@@ -4,6 +4,8 @@ import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -122,6 +124,27 @@ public class TargetTest
 		c.replay();
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
+		c.verify();
+	}
+
+	@Test
+	public void testObjectMethods() {
+		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
+		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
+		MatchAnyOf m3 = c.createMock(MatchAnyOf.class);
+
+		Target t1 = Target.builder().anyOf(m1, m2).build();
+		Target t2 = Target.builder().anyOf(m1, m2).build();
+		Target t3 = Target.builder().anyOf(m3, m2).build();
+
+		c.replay();
+		assertTrue(t1.equals(t2));
+		assertFalse(t1.equals(t3));
+		assertFalse(t1.equals(m3));
+		assertFalse(t1.equals(null));
+
+		assertEquals(t1.hashCode(), t2.hashCode());
+		assertEquals(t1.toString(), t2.toString());
 		c.verify();
 	}
 }

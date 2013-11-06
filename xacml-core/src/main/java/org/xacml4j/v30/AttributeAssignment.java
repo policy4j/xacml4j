@@ -8,10 +8,10 @@ import com.google.common.base.Preconditions;
 
 public class AttributeAssignment
 {
-	private AttributeExp attribute;
-	private AttributeCategory category;
-	private String attributeId;
-	private String issuer;
+	private final AttributeExp attribute;
+	private final AttributeCategory category;
+	private final String attributeId;
+	private final String issuer;
 
 	/**
 	 * Creates attribute assignment with a
@@ -123,7 +123,7 @@ public class AttributeAssignment
 		 * Copies all state from a given {@link AttributeAssignmentExpression}
 		 * except attribute value expression
 		 *
-		 * @param attrAssigExp
+		 * @param attrAssigExp attribute assignment expression
 		 * @return {@link Builder}
 		 */
 		public Builder from(AttributeAssignmentExpression attrAssigExp)

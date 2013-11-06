@@ -13,8 +13,8 @@ import com.google.common.base.Preconditions;
 public class CombinerParameter
 	implements PolicyElement
 {
-	private String name;
-	private AttributeExp value;
+	private final String name;
+	private final AttributeExp value;
 
 	/**
 	 * Constructs decision combining parameter
@@ -57,15 +57,12 @@ public class CombinerParameter
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof CombinerParameter)){
 			return false;
 		}
 		CombinerParameter c = (CombinerParameter)o;
-		return name.equals(c.getName())
-		&& value.equals(c.value);
+		return name.equals(c.name)
+			&& value.equals(c.value);
 	}
 
 	@Override

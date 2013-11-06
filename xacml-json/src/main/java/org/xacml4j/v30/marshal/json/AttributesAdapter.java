@@ -68,7 +68,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 		try {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to create %s", DocumentBuilder.class.getName()), e);
+			throw new IllegalStateException(String.format("Failed to build %s", DocumentBuilder.class.getName()), e);
 		}
 
 		InputSource source = new InputSource(new StringReader(str));
@@ -100,7 +100,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to create %s", Transformer.class.getName()), e);
+			throw new IllegalStateException(String.format("Failed to build %s", Transformer.class.getName()), e);
 		}
 
 		DOMSource source = new DOMSource(node);

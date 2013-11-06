@@ -1,7 +1,6 @@
 package org.xacml4j.v30;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -9,7 +8,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMultiset;
-import com.google.common.collect.Multiset;
 
 /**
  * A XACML request context attribute
@@ -18,10 +16,10 @@ import com.google.common.collect.Multiset;
  */
 public class Attribute
 {
-	private String attributeId;
-	private Multiset<AttributeExp> values;
-	private boolean includeInResult;
-	private String issuer;
+	private final String attributeId;
+	private final ImmutableMultiset<AttributeExp> values;
+	private final boolean includeInResult;
+	private final String issuer;
 
 	private Attribute(Builder b){
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(b.attributeId));
@@ -75,7 +73,7 @@ public class Attribute
 	 * instances
 	 */
 	public Collection<AttributeExp> getValues(){
-		return Collections.unmodifiableCollection(values);
+		return values;
 	}
 
 	/**
@@ -84,14 +82,12 @@ public class Attribute
 	 * @param type an attribute type
 	 * @return a collection of {@link AttributeExp} of given type
 	 */
-	public Collection<AttributeExp> getValuesByType(final AttributeExpType type)
-	{
+	public Collection<AttributeExp> getValuesByType(final AttributeExpType type) {
 		return Collections2.filter(values, new Predicate<AttributeExp>() {
 			@Override
 			public boolean apply(AttributeExp a) {
 				return a.getType().equals(type);
 			}
-
 		});
 	}
 
@@ -101,7 +97,8 @@ public class Attribute
 		.add("AttributeId", attributeId)
 		.add("Issuer", issuer)
 		.add("IncludeInResult", includeInResult)
-		.add("Values", values).toString();
+		.add("Values", values)
+		.toString();
 	}
 
 	@Override
@@ -123,9 +120,9 @@ public class Attribute
 		}
 		Attribute a = (Attribute)o;
 		return Objects.equal(attributeId, a.attributeId) &&
-			(!(includeInResult ^ a.includeInResult)) &&
-			Objects.equal(issuer, a.issuer) && values.equals(a.values);
-
+			includeInResult == a.includeInResult &&
+			Objects.equal(issuer, a.issuer) &&
+			values.equals(a.values);
 	}
 
 	public static class Builder
@@ -194,6 +191,5 @@ public class Attribute
 		public Attribute build(){
 			return new Attribute(this);
 		}
-
 	}
 }

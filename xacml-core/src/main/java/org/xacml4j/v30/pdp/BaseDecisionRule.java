@@ -16,7 +16,6 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -24,16 +23,16 @@ abstract class BaseDecisionRule implements DecisionRule
 {
 	protected static final Logger log = LoggerFactory.getLogger(BaseDecisionRule.class);
 
-	protected String id;
-	private String description;
-	private Target target;
-	protected Condition condition;
-	protected Collection<AdviceExpression> adviceExpressions;
-	protected Collection<ObligationExpression> obligationExpressions;
+	protected final String id;
+	private final String description;
+	private final Target target;
+	protected final Condition condition;
+	protected final Collection<AdviceExpression> adviceExpressions;
+	protected final Collection<ObligationExpression> obligationExpressions;
 
 
 	protected BaseDecisionRule(
-			BaseDecisionRuleBuilder<?> b){
+			Builder<?> b){
 		Preconditions.checkNotNull(b.id,
 				"Decision rule identifier can not be null");
 		this.id = b.id;
@@ -167,7 +166,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating advices " +
-					"for descision rule id=\"{}\"", getId());
+					"for decision rule id=\"{}\"", getId());
 		}
 		Collection<Advice> advices = new LinkedList<Advice>();
 		try{
@@ -189,14 +188,12 @@ abstract class BaseDecisionRule implements DecisionRule
 			return advices;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"decision rule advices", e);
+				log.debug("Failed to evaluate decision rule advices", e);
 			}
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"decision rule advices", e);
+				log.debug("Failed to evaluate decision rule advices", e);
 			}
 			throw new EvaluationException(
 					StatusCode.createProcessingError(),
@@ -218,7 +215,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating obligations " +
-					"for descision rule id=\"{}\"", getId());
+					"for decision rule id=\"{}\"", getId());
 		}
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		try{
@@ -255,7 +252,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		}
 	}
 
-	protected ToStringHelper toStringBuilder(Objects.ToStringHelper b){
+	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		return b.add("id", id)
 				.add("description", description)
 				.add("target", target)
@@ -265,19 +262,23 @@ abstract class BaseDecisionRule implements DecisionRule
 
 	}
 
-	protected boolean equalsTo(BaseDecisionRule r){
-		return Objects.equal(id, r.id) &&
-			Objects.equal(target, r.target) &&
-			Objects.equal(condition, r.condition) &&
-			adviceExpressions.equals(r.adviceExpressions) &&
-			obligationExpressions.equals(r.obligationExpressions) &&
-			Objects.equal(description, r.description);
+	protected boolean equalsTo(BaseDecisionRule r) {
+		return Objects.equal(id, r.id)
+			&& Objects.equal(target, r.target)
+			&& Objects.equal(condition, r.condition)
+			&& adviceExpressions.equals(r.adviceExpressions)
+			&& obligationExpressions.equals(r.obligationExpressions)
+			&& Objects.equal(description, r.description);
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id, target, condition,
+				adviceExpressions, obligationExpressions, description);
+	}
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 
-
-	protected abstract static class BaseDecisionRuleBuilder<T extends BaseDecisionRuleBuilder<?>>
+	protected abstract static class Builder<T extends Builder<?>>
 	{
 		protected String id;
 		protected String description;
@@ -286,7 +287,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		protected ImmutableList.Builder<AdviceExpression> adviceExpressions = ImmutableList.builder();
 		protected ImmutableList.Builder<ObligationExpression> obligationExpressions = ImmutableList.builder();
 
-		protected BaseDecisionRuleBuilder(String ruleId){
+		protected Builder(String ruleId){
 			Preconditions.checkNotNull(ruleId,
 					"Decision rule identifier can't be null");
 			this.id = ruleId;

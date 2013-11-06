@@ -33,7 +33,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 */
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
-		Collection<AttributeAssignment> attributes = evaluateAttributeAssingments(context);
+		Collection<AttributeAssignment> attributes = evaluateAttributeAssignments(context);
 		return Advice
 				.builder(getId(), getEffect())
 				.attributes(attributes)
@@ -67,7 +67,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 			&& attributeExpressions.equals(ox.attributeExpressions);
 	}
 
-	public static class Builder extends BaseDecisionRuleResponseExpressionBuilder<Builder>
+	public static class Builder extends BaseDecisionRuleResponseExpression.Builder<Builder>
 	{
 
 		@Override

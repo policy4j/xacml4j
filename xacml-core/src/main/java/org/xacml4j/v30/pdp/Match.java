@@ -15,9 +15,9 @@ public class Match implements PolicyElement, Matchable
 {
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 
-	private AttributeExp value;
-	private AttributeReference attributeRef;
-	private FunctionSpec predicate;
+	private final AttributeExp value;
+	private final AttributeReference attributeRef;
+	private final FunctionSpec predicate;
 
 	/**
 	 * Constructs match.
@@ -28,17 +28,17 @@ public class Match implements PolicyElement, Matchable
 	{
 		Preconditions.checkNotNull(b.attr);
 		Preconditions.checkNotNull(b.attrRef);
-		Preconditions.checkNotNull(b.predFunc);
-		Preconditions.checkArgument(b.predFunc.getNumberOfParams() == 2,
-				"Excpeting function with 2 arguments");
-		Preconditions.checkArgument(b.predFunc.getParamSpecAt(0).
+		Preconditions.checkNotNull(b.predicate);
+		Preconditions.checkArgument(b.predicate.getNumberOfParams() == 2,
+				"Expecting function with 2 arguments");
+		Preconditions.checkArgument(b.predicate.getParamSpecAt(0).
 				isValidParamType(b.attr.getEvaluatesTo()),
 				"Given function argument at index=\"0\" type is not compatible with a given attribute value type");
-		Preconditions.checkArgument(b.predFunc.getParamSpecAt(1).
+		Preconditions.checkArgument(b.predicate.getParamSpecAt(1).
 				isValidParamType((b.attrRef.getDataType())),
 				"Given function argument at index=\"1\" type is not compatible with a given attribute reference type");
 		this.value = b.attr;
-		this.predicate = b.predFunc;
+		this.predicate = b.predicate;
 		this.attributeRef = b.attrRef;
 	}
 
@@ -57,7 +57,7 @@ public class Match implements PolicyElement, Matchable
 	/**
 	 * Gets match attribute value.
 	 *
-	 * @return {@link AttributeExp<?>} instance
+	 * @return {@link AttributeExp} instance
 	 */
 	public AttributeExp getAttributeValue(){
 		return value;
@@ -108,9 +108,6 @@ public class Match implements PolicyElement, Matchable
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof Match)){
 			return false;
 		}
@@ -146,7 +143,7 @@ public class Match implements PolicyElement, Matchable
 	public static class Builder
 	{
 		private AttributeExp attr;
-		private FunctionSpec predFunc;
+		private FunctionSpec predicate;
 		private AttributeReference attrRef;
 
 		public Builder attribute(AttributeExp v){
@@ -157,7 +154,7 @@ public class Match implements PolicyElement, Matchable
 
 		public Builder predicate(FunctionSpec f){
 			Preconditions.checkNotNull(f);
-			this.predFunc = f;
+			this.predicate = f;
 			return this;
 		}
 

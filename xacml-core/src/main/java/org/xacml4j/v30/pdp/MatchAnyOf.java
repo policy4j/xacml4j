@@ -16,7 +16,7 @@ public class MatchAnyOf
 {
 	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
 
-	private Collection<MatchAllOf> anyOfs;
+	private final Collection<MatchAllOf> anyOfs;
 
 	private MatchAnyOf(Builder b){
 		this.anyOfs = b.allMatchAllOfs.build();
@@ -68,7 +68,7 @@ public class MatchAnyOf
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-				.add("AllOfs", anyOfs)
+				.add("AnyOf", anyOfs)
 				.toString();
 	}
 

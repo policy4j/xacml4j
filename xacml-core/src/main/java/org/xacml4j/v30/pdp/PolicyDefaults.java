@@ -7,7 +7,7 @@ public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults
 		super(b);
 	}
 
-	public static  Builder builder(){
+	public static Builder builder(){
 		return new Builder();
 	}
 
@@ -29,7 +29,7 @@ public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults
 		return values.equals(d.values);
 	}
 
-	public static class Builder extends BaseCompositeDecisionRuleDefaultsBuilder<Builder>
+	public static class Builder extends BaseCompositeDecisionRuleDefaults.Builder<Builder>
 	{
 		@Override
 		protected Builder getThis() {

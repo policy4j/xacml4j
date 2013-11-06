@@ -16,15 +16,13 @@ public class MatchAllOf implements PolicyElement, Matchable
 {
 	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
 
-	private Collection<Match> matches;
+	private final Collection<Match> matches;
 
 	/**
 	 * Constructs a {@link MatchAllOf} with
-	 * a given collection of {@link Match}
-	 * elements
+	 * a given builder
 	 *
-	 * @param match a collection of {@link Match}
-	 * instances
+	 * @param b a {@link MatchAllOf} builder instance
 	 */
 	private MatchAllOf(Builder b){
 		this.matches = b.matches.build();
@@ -80,9 +78,6 @@ public class MatchAllOf implements PolicyElement, Matchable
 
 	@Override
 	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
 		if(o == this){
 			return true;
 		}

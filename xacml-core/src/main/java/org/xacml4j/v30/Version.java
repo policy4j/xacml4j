@@ -12,23 +12,21 @@ import com.google.common.base.Strings;
  */
 public final class Version implements Comparable<Version>
 {
-	private  static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
+	private static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
 
-	private String value;
-    private int[] version;
-    private int hashCode;
+	private final String value;
+    private final int[] version;
+    private final int hashCode;
 
     /**
      * Constructs version from
      * a given string
      *
-     * @param v a version represented as string
+     * @param version a version represented as string
      * @exception XacmlSyntaxException if version can not be parsed
      */
-    private Version(String version)
-    {
-
-    	this.value = version;
+    private Version(String version) {
+	    this.value = version;
     	this.version = parseVersion(version);
     	this.hashCode = value.hashCode();
     }
@@ -45,9 +43,6 @@ public final class Version implements Comparable<Version>
 
     @Override
     public boolean equals(Object other) {
-    	if (other == null) {
-    		return false;
-    	}
     	if (this == other) {
     		return true;
     	}
@@ -131,7 +126,7 @@ public final class Version implements Comparable<Version>
 
 	/**
 	 * A static factory method to
-	 * create {@link Version} instances
+	 * build {@link Version} instances
 	 * from a given string
 	 *
 	 * @param version a version
@@ -144,7 +139,7 @@ public final class Version implements Comparable<Version>
 
     /**
 	 * A static factory method to
-	 * create {@link Version} instances
+	 * build {@link Version} instances
 	 * from a given integer
 	 *
 	 * @param version a version

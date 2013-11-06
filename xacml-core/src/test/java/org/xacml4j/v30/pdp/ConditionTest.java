@@ -1,86 +1,112 @@
 package org.xacml4j.v30.pdp;
 
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
 import static org.xacml4j.v30.types.IntegerType.INTEGER;
 
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
-
 
 
 public class ConditionTest
 {
 	private Expression exp;
 	private EvaluationContext context;
+	private IMocksControl ctl;
 
 	@Before
 	public void init(){
-		this.exp = createStrictMock(Expression.class);
-		this.context = createStrictMock(EvaluationContext.class);
+		ctl = createStrictControl();
+		this.exp = ctl.createMock(Expression.class);
+		this.context = ctl.createMock(EvaluationContext.class);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateWithExpWhichReturnsNonBooleanValue()
-		throws Exception
-	{
-		expect(exp.getEvaluatesTo()).andReturn(INTEGER).times(1, 2);
-		replay(exp);
+	public void testCreateWithExpWhichReturnsNonBooleanValue() {
+		expect(exp.getEvaluatesTo()).andReturn(INTEGER);
+
+		ctl.replay();
 		new Condition(exp);
-		verify(exp);
+		ctl.verify();
 	}
 
 	@Test
-	public void testExpressionThrowsEvaluationException() throws Exception
-	{
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
+	public void testExpressionThrowsEvaluationException() {
+		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context,
-				createStrictMock(FunctionSpec.class), new NullPointerException()));
+				ctl.createMock(FunctionSpec.class), new NullPointerException()));
 		context.setEvaluationStatus(StatusCode.createProcessingError());
-		replay(exp, context);
+
+		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
-		verify(exp, context);
+		ctl.verify();
 	}
 
 	@Test
-	public void testExpressionThrowsRuntimeException() throws Exception
-	{
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
+	public void testExpressionThrowsRuntimeException() {
+		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
 		context.setEvaluationStatus(StatusCode.createProcessingError());
-		replay(exp, context);
+
+		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
-		verify(exp, context);
+		ctl.verify();
 	}
 
 	@Test
-	public void testExpressionEvaluatesToFalse() throws Exception
-	{
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
+	public void testExpressionEvaluatesToFalse() {
+		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
 		expect(exp.evaluate(context)).andReturn(BOOLEAN.create(false));
-		replay(exp, context);
+
+		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.FALSE, c.evaluate(context));
-		verify(exp, context);
+		ctl.verify();
 	}
 
 	@Test
-	public void testExpressionEvaluatesToTrue() throws Exception
-	{
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
+	public void testExpressionEvaluatesToTrue() {
+		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
 		expect(exp.evaluate(context)).andReturn(BOOLEAN.create(true));
-		replay(exp, context);
+
+		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.TRUE, c.evaluate(context));
-		verify(exp, context);
+		ctl.verify();
+	}
+
+	@Test
+	public void testObjectMethods() {
+		AttributeExp exp1 = ctl.createMock(AttributeExp.class);
+		AttributeExp exp2 = ctl.createMock(AttributeExp.class);
+
+		expect(exp1.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
+		expect(exp2.getEvaluatesTo()).andReturn(BOOLEAN).times(1);
+
+		ctl.replay();
+
+		Condition c1 = new Condition(exp1);
+		Condition c2 = new Condition(exp1);
+		Condition c3 = new Condition(exp2);
+
+		assertTrue(c1.equals(c2));
+		assertFalse(c1.equals(c3));
+		assertFalse(c1.equals(exp1));
+		assertFalse(c1.equals(null));
+
+		assertEquals(c1.hashCode(), c2.hashCode());
+		assertEquals(c1.toString(), c2.toString());
+		ctl.verify();
 	}
 }
