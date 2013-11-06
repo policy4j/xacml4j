@@ -13,11 +13,11 @@ public enum BooleanType implements AttributeExpType
 {
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
 
-	private BooleanExp FALSE;
-	private BooleanExp TRUE;
+	private final BooleanExp FALSE;
+	private final BooleanExp TRUE;
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private BooleanType(String typeId){
 		this.typeId = typeId;
@@ -26,16 +26,16 @@ public enum BooleanType implements AttributeExpType
 		this.TRUE = new BooleanExp(this, Boolean.TRUE);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return Boolean.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override
 	public BooleanExp create(Object any, Object ...parameters){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any),String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"boolean\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

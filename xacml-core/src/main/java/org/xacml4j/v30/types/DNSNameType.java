@@ -39,15 +39,15 @@ public enum DNSNameType implements AttributeExpType
 {
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private DNSNameType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return String.class.isInstance(any);
 	}
 
@@ -64,12 +64,13 @@ public enum DNSNameType implements AttributeExpType
 	}
 
 	@Override
-	public DNSNameExp create(Object o, Object ...params) {
-		Preconditions.checkNotNull(o);
-		Preconditions.checkArgument(isConvertableFrom(o), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"DNSName\" type",
-				o, o.getClass()));
-		return fromXacmlString((String)o);
+	public DNSNameExp create(Object any, Object ...params) {
+		Preconditions.checkNotNull(any);
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
+		return fromXacmlString((String) any);
 	}
 
 	@Override

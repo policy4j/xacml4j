@@ -7,9 +7,9 @@ import com.google.common.base.Strings;
 public final class AttributeDesignatorKey
 	extends AttributeReferenceKey
 {
-	private String attributeId;
-	private String issuer;
-	private int hashCode;
+	private final String attributeId;
+	private final String issuer;
+	private final int hashCode;
 
 	public AttributeDesignatorKey(Builder b){
 		super(b);
@@ -67,9 +67,6 @@ public final class AttributeDesignatorKey
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeDesignatorKey)){
 			return false;
 		}
@@ -79,7 +76,7 @@ public final class AttributeDesignatorKey
 		Objects.equal(issuer, s.issuer);
 	}
 
-	public static class Builder extends AttributeReferenceBuilder<Builder>
+	public static class Builder extends AttributeReferenceKey.Builder<Builder>
 	{
 		private String issuer;
 		private String attributeId;

@@ -17,7 +17,7 @@ public class AttributeSelector extends
 {
 	private final static Logger log = LoggerFactory.getLogger(AttributeSelector.class);
 
-	private AttributeSelectorKey selectorKey;
+	private final AttributeSelectorKey selectorKey;
 
 	private AttributeSelector(Builder b){
 		super(b);
@@ -63,8 +63,8 @@ public class AttributeSelector extends
 	}
 
 	@Override
-	public void accept(ExpressionVisitor expv) {
-		AttributeSelectorVisitor v = (AttributeSelectorVisitor)expv;
+	public void accept(ExpressionVisitor visitor) {
+		AttributeSelectorVisitor v = (AttributeSelectorVisitor) visitor;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
@@ -110,9 +110,9 @@ public class AttributeSelector extends
 		void visitLeave(AttributeSelector v);
 	}
 
-	public static class Builder extends AttributeReferenceBuilder<Builder>
+	public static class Builder extends AttributeReference.Builder<Builder>
 	{
-		private AttributeSelectorKey.Builder keyBuilder = AttributeSelectorKey.builder();
+		private final AttributeSelectorKey.Builder keyBuilder = AttributeSelectorKey.builder();
 
 		public Builder xpath(String xpath){
 			keyBuilder.xpath(xpath);
@@ -134,7 +134,7 @@ public class AttributeSelector extends
 		}
 
 		@Override
-		protected AttributeReferenceKey.AttributeReferenceBuilder<?> getBuilder() {
+		protected AttributeReferenceKey.Builder<?> getBuilder() {
 			return keyBuilder;
 		}
 	}

@@ -14,8 +14,8 @@ public enum AnyURIType implements AttributeExpType
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private AnyURIType(String typeId){
 		this.typeId = typeId;
@@ -29,16 +29,16 @@ public enum AnyURIType implements AttributeExpType
 		return new AnyURIExp(u);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return URI.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override
 	public AnyURIExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"anyURI\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

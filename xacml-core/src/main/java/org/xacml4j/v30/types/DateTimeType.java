@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -16,15 +17,15 @@ public enum DateTimeType implements AttributeExpType
 {
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private DateTimeType(String typeId) {
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return XMLGregorianCalendar.class.isInstance(any)
 				|| String.class.isInstance(any)
 				|| GregorianCalendar.class.isInstance(any);
@@ -37,6 +38,10 @@ public enum DateTimeType implements AttributeExpType
 
 	@Override
 	public DateTimeExp create(Object any, Object... params) {
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		return new DateTimeExp(this, DateTime.create(any));
 	}
 

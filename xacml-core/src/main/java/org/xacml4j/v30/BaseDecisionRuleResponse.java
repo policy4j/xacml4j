@@ -11,24 +11,24 @@ import com.google.common.collect.Multimap;
 
 public abstract class BaseDecisionRuleResponse
 {
-	protected String id;
-	protected Multimap<String, AttributeAssignment> attributes;
+	protected final String id;
+	protected final Multimap<String, AttributeAssignment> attributes;
 
 	/**
 	 * For compatibility with XACML 2.0
 	 * response context
 	 */
-	private Effect fullfillOn;
+	private final Effect fulfillOn;
 
-	private transient int hashCode;
+	private final transient int hashCode;
 
 	protected BaseDecisionRuleResponse(
-			BaseBuilder<?> b)
+			Builder<?> b)
 	{
 		this.id = b.id;
 		this.attributes = ImmutableSetMultimap.copyOf(b.attributes);
 		this.hashCode = Objects.hashCode(id, attributes);
-		this.fullfillOn = b.fullFillOn;
+		this.fulfillOn = b.fullFillOn;
 	}
 
 	public final String getId(){
@@ -41,8 +41,8 @@ public abstract class BaseDecisionRuleResponse
 	 *
 	 * @return {@link Effect}
 	 */
-	public Effect getFullfillOn(){
-		return fullfillOn;
+	public Effect getFulfillOn(){
+		return fulfillOn;
 	}
 
 	public final Collection<AttributeAssignment> getAttributes(){
@@ -58,21 +58,27 @@ public abstract class BaseDecisionRuleResponse
 		return hashCode;
 	}
 
+	protected boolean equalsTo(BaseDecisionRuleResponse r) {
+		return id.equals(r.id) &&
+				attributes.equals(r.attributes);
+	}
+
 	@Override
 	public final String toString(){
 		return Objects.toStringHelper(this)
 		.add("id", id)
 		.add("attributes", attributes)
+		.add("fullFillOn", fulfillOn)
 		.toString();
 	}
 
-	public abstract static class BaseBuilder <T extends BaseBuilder<?>>
+	public abstract static class Builder<T extends Builder<?>>
 	{
 		protected String id;
 		protected Effect fullFillOn;
 		protected Multimap<String, AttributeAssignment> attributes = LinkedHashMultimap.create();
 
-		protected BaseBuilder(String id, Effect fullFillOn){
+		protected Builder(String id, Effect fullFillOn){
 			Preconditions.checkNotNull(id);
 			this.id = id;
 			this.fullFillOn = fullFillOn;
@@ -86,7 +92,7 @@ public abstract class BaseDecisionRuleResponse
 
 		public final T from(BaseDecisionRuleResponse r){
 			this.id = r.id;
-			this.fullFillOn = r.fullfillOn;
+			this.fullFillOn = r.fulfillOn;
 			this.attributes.putAll(r.attributes);
 			return getThis();
 		}

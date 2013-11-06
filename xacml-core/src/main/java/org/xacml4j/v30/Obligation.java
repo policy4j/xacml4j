@@ -40,7 +40,7 @@ public class Obligation
 	 * Combines this obligation attributes with a
 	 * given obligation attributes
 	 *
-	 * @param a an obligation
+	 * @param o an obligation
 	 * @return a new obligation instance with combined attributes
 	 */
 	public Obligation merge(Obligation o)
@@ -53,30 +53,28 @@ public class Obligation
 		}
 		Preconditions.checkArgument(getId().equals(o.getId()));
 		// HACK: not sure if we need this check
-		Preconditions.checkArgument(Objects.equal(getFullfillOn(), o.getFullfillOn()));
-		return new Obligation.Builder(getId(), getFullfillOn())
+		Preconditions.checkArgument(Objects.equal(getFulfillOn(), o.getFulfillOn()));
+		return new Builder(getId(), getFulfillOn())
 		.attributes(getAttributes())
 		.attributes(o.getAttributes())
 		.build();
 	}
 
-	@Override
-	public boolean equals(Object o){
-		if(o == this){
-			return true;
-		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof Obligation)){
-			return false;
-		}
-		Obligation a = (Obligation)o;
-		return id.equals(a.id) &&
-		attributes.equals(a.attributes);
+	protected boolean equalsTo(Obligation o) {
+		return super.equalsTo(o);
 	}
 
-	public static class Builder extends BaseBuilder<Builder>
+	@Override
+	public boolean equals(Object o){
+		if (o == this) {
+			return true;
+		}
+
+		return (o instanceof Obligation)
+				&& ((Obligation)o).equalsTo(this);
+	}
+
+	public static class Builder extends BaseDecisionRuleResponse.Builder<Builder>
 	{
 		private Builder(String id, Effect effect){
 			super(id, effect);

@@ -13,15 +13,15 @@ public enum IntegerType implements AttributeExpType
 {
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private IntegerType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	private boolean isConvertableFrom(Object any) {
+	private boolean isConvertibleFrom(Object any) {
 		return Long.class.isInstance(any) || Integer.class.isInstance(any) ||
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
 		String.class.isInstance(any);
@@ -31,9 +31,9 @@ public enum IntegerType implements AttributeExpType
 	@Override
 	public IntegerExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"integer\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

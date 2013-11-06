@@ -17,12 +17,13 @@ import com.google.common.base.Preconditions;
  *
  * @author Giedrius Trumpickas
  */
+@Deprecated
 public abstract class BaseAttributeExpType<V extends AttributeExp> implements AttributeExpType
 {
 	private static final long serialVersionUID = -8812998715997567246L;
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -74,7 +75,8 @@ public abstract class BaseAttributeExpType<V extends AttributeExp> implements At
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this)
-				.add("TypeId=", typeId).toString();
+				.add("TypeId", typeId)
+				.toString();
 	}
 
 	@Override

@@ -116,9 +116,11 @@ public class AdviceTest
 				.attribute(attrBuilder.id("testId1").build())
 				.attribute(attrBuilder.id("testId2").build())
 				.build();
+		assertEquals(a1, a1);
 		assertEquals(a1, a2);
 		assertFalse(a1.equals(a3));
 		assertFalse(a1.equals(a4));
+		assertFalse(a1.equals(null));
 	}
 
 	@Test

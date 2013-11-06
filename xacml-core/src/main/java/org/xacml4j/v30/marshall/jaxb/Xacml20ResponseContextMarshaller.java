@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
@@ -18,18 +19,7 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshall.ResponseMarshaller;
 import org.xacml4j.v30.types.XPathExpType;
 
@@ -45,8 +35,8 @@ public class Xacml20ResponseContextMarshaller
 	extends BaseJAXBMarshaller<ResponseContext>
 	implements ResponseMarshaller
 {
-	private Mapper mapper;
-	private ObjectFactory factory;
+	private final Mapper mapper;
+	private final ObjectFactory factory;
 
 	public Xacml20ResponseContextMarshaller(){
 		super(JAXBContextUtil.getInstance());
@@ -69,35 +59,29 @@ public class Xacml20ResponseContextMarshaller
 		private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
-		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
-		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
+		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = ImmutableMap.<Decision, DecisionType>builder()
+				.put(Decision.DENY, DecisionType.DENY)
+				.put(Decision.PERMIT, DecisionType.PERMIT)
+				.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE)
+				.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE)
+				.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE)
+				.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE)
+				.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE)
+				.build();
 
-		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
-		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
+		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = ImmutableMap.of(
+				DecisionType.DENY, Decision.DENY,
+				DecisionType.PERMIT, Decision.PERMIT,
+				DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE,
+				DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 
-		static
-		{
-			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
-			v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
-			v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE);
+		private final static Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
+				EffectType.DENY, Effect.DENY,
+				EffectType.PERMIT, Effect.PERMIT);
 
-			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
-			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
-			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
-			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-
-
-			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
-			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-
-			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
-			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-
-		}
+		private final static Map<Effect, EffectType> v30ToV20EffectMapping = ImmutableMap.of(
+			Effect.DENY, EffectType.DENY,
+			Effect.PERMIT, EffectType.PERMIT);
 
 		public ResponseType create(ResponseContext response)
 		{
@@ -118,12 +102,12 @@ public class Xacml20ResponseContextMarshaller
 
 		private ResultType create(Result result)
 		{
-			ResultType resultv2 = new ResultType();
-			resultv2.setStatus(createStatus(result.getStatus()));
-			resultv2.setResourceId(getResourceId(result));
-			resultv2.setObligations(getObligations(result));
-			resultv2.setDecision(v30ToV20DecisionMapping.get(result.getDecision()));
-			return resultv2;
+			ResultType r = new ResultType();
+			r.setStatus(createStatus(result.getStatus()));
+			r.setResourceId(getResourceId(result));
+			r.setObligations(getObligations(result));
+			r.setDecision(v30ToV20DecisionMapping.get(result.getDecision()));
+			return r;
 		}
 
 		private StatusType createStatus(Status status)
@@ -188,7 +172,7 @@ public class Xacml20ResponseContextMarshaller
 		{
 			ObligationType obligation = new ObligationType();
 			obligation.setObligationId(advice.getId());
-			obligation.setFulfillOn(v30ToV20EffectnMapping.get(advice.getFullfillOn()));
+			obligation.setFulfillOn(v30ToV20EffectMapping.get(advice.getFulfillOn()));
 			for(AttributeAssignment a : advice.getAttributes()){
 				obligation.getAttributeAssignment().add(create(a));
 			}
@@ -199,7 +183,7 @@ public class Xacml20ResponseContextMarshaller
 		{
 			ObligationType obligation = new ObligationType();
 			obligation.setObligationId(o.getId());
-			obligation.setFulfillOn(v30ToV20EffectnMapping.get(o.getFullfillOn()));
+			obligation.setFulfillOn(v30ToV20EffectMapping.get(o.getFulfillOn()));
 			for(AttributeAssignment a : o.getAttributes()){
 				obligation.getAttributeAssignment().add(create(a));
 			}
@@ -209,7 +193,7 @@ public class Xacml20ResponseContextMarshaller
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
 			AttributeAssignmentType attr = new AttributeAssignmentType();
-			org.xacml4j.v30.AttributeExpType t = (org.xacml4j.v30.AttributeExpType)(a.getAttribute().getType());
+			AttributeExpType t = a.getAttribute().getType();
 			attr.setDataType(t.getDataTypeId());
 			attr.setAttributeId(a.getAttributeId());
 			attr.getContent().add(a.getAttribute().toXacmlString());

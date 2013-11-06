@@ -69,7 +69,7 @@ public class ObligationExpressionTest
 		Obligation obligation = exp.evaluate(context);
 		Iterator<AttributeAssignment> it = obligation.getAttributes().iterator();
 		AttributeAssignment a0 = it.next();
-		assertEquals(Effect.DENY, obligation.getFullfillOn());
+		assertEquals(Effect.DENY, obligation.getFulfillOn());
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
@@ -83,7 +83,7 @@ public class ObligationExpressionTest
 	}
 
 	@Test(expected=EvaluationException.class)
-	public void testAttributeAssignmentThrowsEvauationException() throws XacmlException
+	public void testAttributeAssignmentThrowsEvaluationException() throws XacmlException
 	{
 		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);

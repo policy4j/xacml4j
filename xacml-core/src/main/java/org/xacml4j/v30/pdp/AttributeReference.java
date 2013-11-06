@@ -17,7 +17,7 @@ import org.xacml4j.v30.ValueType;
  */
 public abstract class AttributeReference implements Expression
 {
-	private boolean mustBePresent;
+	private final boolean mustBePresent;
 
 	/**
 	 * Constructs attribute reference
@@ -25,7 +25,7 @@ public abstract class AttributeReference implements Expression
 	 * @param b attribute reference builder
 	 * data type
 	 */
-	protected AttributeReference(AttributeReferenceBuilder<?> b){
+	protected AttributeReference(Builder b){
 		this.mustBePresent = b.mustBePresent;
 	}
 
@@ -76,7 +76,7 @@ public abstract class AttributeReference implements Expression
 	public abstract BagOfAttributeExp evaluate(EvaluationContext context)
 		throws EvaluationException;
 
-	public static abstract class AttributeReferenceBuilder<T>
+	public static abstract class Builder<T>
 	{
 		private boolean mustBePresent = false;
 
@@ -101,6 +101,6 @@ public abstract class AttributeReference implements Expression
 		}
 
 		protected abstract T getThis();
-		protected abstract AttributeReferenceKey.AttributeReferenceBuilder<?> getBuilder();
+		protected abstract AttributeReferenceKey.Builder<?> getBuilder();
 	}
 }

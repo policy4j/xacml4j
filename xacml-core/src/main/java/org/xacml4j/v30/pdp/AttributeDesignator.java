@@ -19,7 +19,7 @@ import com.google.common.base.Objects;
  * matches the criteria set out below.
  *
  *
- * The {@Link AttributeDesignator} returns a bag containing all
+ * The {@link AttributeDesignator} returns a bag containing all
  * the attribute values that are matched by the named attribute. In the
  * event that no matching attribute is present in the context, the
  * {@link AttributeDesignator#isMustBePresent()} governs whether it
@@ -33,7 +33,7 @@ public class AttributeDesignator extends AttributeReference
 {
 	private final static Logger log = LoggerFactory.getLogger(AttributeDesignator.class);
 
-	private AttributeDesignatorKey designatorKey;
+	private final AttributeDesignatorKey designatorKey;
 
 	private AttributeDesignator(Builder b){
 		super(b);
@@ -103,8 +103,8 @@ public class AttributeDesignator extends AttributeReference
 	}
 
 	@Override
-	public void accept(ExpressionVisitor expv) {
-		AttributeDesignatorVisitor v = (AttributeDesignatorVisitor)expv;
+	public void accept(ExpressionVisitor visitor) {
+		AttributeDesignatorVisitor v = (AttributeDesignatorVisitor) visitor;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
@@ -146,9 +146,9 @@ public class AttributeDesignator extends AttributeReference
 		void visitLeave(AttributeDesignator v);
 	}
 
-	public static class Builder extends AttributeReferenceBuilder<Builder>
+	public static class Builder extends AttributeReference.Builder<Builder>
 	{
-		private AttributeDesignatorKey.Builder keyBuilder = AttributeDesignatorKey.builder();
+		private final AttributeDesignatorKey.Builder keyBuilder = AttributeDesignatorKey.builder();
 
 		public Builder attributeId(String attributeId){
 			keyBuilder.attributeId(attributeId);
@@ -170,7 +170,7 @@ public class AttributeDesignator extends AttributeReference
 		}
 
 		@Override
-		protected AttributeReferenceKey.AttributeReferenceBuilder<?> getBuilder() {
+		protected AttributeReferenceKey.Builder<?> getBuilder() {
 			return keyBuilder;
 		}
 	}

@@ -9,11 +9,11 @@ import com.google.common.base.Preconditions;
  */
 public abstract class AttributeReferenceKey
 {
-	protected AttributeCategory category;
-	protected AttributeExpType dataType;
+	protected final AttributeCategory category;
+	protected final AttributeExpType dataType;
 
 	protected AttributeReferenceKey(
-			AttributeReferenceBuilder<?> b){
+			Builder<?> b){
 		Preconditions.checkNotNull(b.category);
 		Preconditions.checkNotNull(b.dataType);
 		this.category = b.category;
@@ -31,7 +31,7 @@ public abstract class AttributeReferenceKey
 	public abstract BagOfAttributeExp resolve(
 			EvaluationContext context) throws EvaluationException;
 
-	public static abstract class AttributeReferenceBuilder<T>
+	public static abstract class Builder<T>
 	{
 		private AttributeCategory category;
 		private AttributeExpType dataType;

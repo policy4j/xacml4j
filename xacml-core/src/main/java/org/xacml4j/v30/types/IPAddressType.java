@@ -3,6 +3,7 @@ package org.xacml4j.v30.types;
 import java.net.InetAddress;
 import java.util.Collection;
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -32,8 +33,8 @@ public enum IPAddressType implements AttributeExpType
 {
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private IPAddressType(String typeId){
 		this.typeId = typeId;
@@ -53,13 +54,18 @@ public enum IPAddressType implements AttributeExpType
 		return new IPAddressExp(this, new IPAddress(address, mask, portRange));
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return String.class.isInstance(any)
-		|| InetAddress.class.isInstance(any) || IPAddress.class.isInstance(any);
+				|| InetAddress.class.isInstance(any)
+				|| IPAddress.class.isInstance(any);
 	}
 
 	@Override
 	public IPAddressExp create(Object any, Object ...params) {
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		return new IPAddressExp(this, IPAddress.parse(any));
 	}
 

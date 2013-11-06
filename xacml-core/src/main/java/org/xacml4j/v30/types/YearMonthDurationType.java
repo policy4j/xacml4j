@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.xml.datatype.Duration;
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -15,8 +16,8 @@ public enum YearMonthDurationType implements AttributeExpType
 {
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private YearMonthDurationType(String typeId)
 	{
@@ -24,7 +25,7 @@ public enum YearMonthDurationType implements AttributeExpType
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return any instanceof Duration || any instanceof String || any instanceof YearMonthDuration;
 	}
 
@@ -36,6 +37,10 @@ public enum YearMonthDurationType implements AttributeExpType
 
 	@Override
 	public YearMonthDurationExp create(Object any, Object ...params){
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		return new YearMonthDurationExp(this, YearMonthDuration.create(any));
 	}
 

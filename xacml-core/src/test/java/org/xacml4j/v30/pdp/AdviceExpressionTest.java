@@ -73,7 +73,7 @@ public class AdviceExpressionTest
 		AttributeAssignment a0 = it.next();
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
-		assertEquals(Effect.DENY, advice.getFullfillOn());
+		assertEquals(Effect.DENY, advice.getFulfillOn());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
 		assertEquals(IntegerType.INTEGER.create(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();

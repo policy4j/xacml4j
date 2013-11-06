@@ -25,20 +25,18 @@ public class Advice extends BaseDecisionRuleResponse
 		return new Builder(id, null);
 	}
 
+	protected boolean equalsTo(Advice o) {
+		return super.equalsTo(o);
+	}
+
 	@Override
 	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(!(o instanceof Advice)){
-			return false;
-		}
-		Advice a = (Advice)o;
-		return id.equals(a.id) &&
-				attributes.equals(a.attributes);
+
+		return (o instanceof Advice)
+				&& ((Advice)o).equalsTo(this);
 	}
 
 	/**
@@ -51,14 +49,14 @@ public class Advice extends BaseDecisionRuleResponse
 	public Advice merge(Advice a)
 	{
 		Preconditions.checkArgument(a.getId().equals(getId()));
-		Preconditions.checkArgument(Objects.equal(getFullfillOn(), a.getFullfillOn()));
-		return new Advice.Builder(getId(), getFullfillOn())
+		Preconditions.checkArgument(Objects.equal(getFulfillOn(), a.getFulfillOn()));
+		return new Builder(getId(), getFulfillOn())
 		.attributes(getAttributes())
 		.attributes(a.getAttributes()).build();
 
 	}
 
-	public static class Builder extends BaseBuilder<Builder>
+	public static class Builder extends BaseDecisionRuleResponse.Builder<Builder>
 	{
 		private Builder(String id, Effect effect){
 			super(id, effect);

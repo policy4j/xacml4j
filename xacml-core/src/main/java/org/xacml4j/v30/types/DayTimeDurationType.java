@@ -15,15 +15,14 @@ import org.xacml4j.v30.BagOfAttributeExpType;
 import com.google.common.base.Preconditions;
 
 
-public enum DayTimeDurationType
-	implements AttributeExpType
+public enum DayTimeDurationType implements AttributeExpType
 {
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
 
 	private DatatypeFactory xmlDataTypesFactory;
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private DayTimeDurationType(String typeId)
 	{
@@ -36,7 +35,7 @@ public enum DayTimeDurationType
 		}
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return Duration.class.isInstance(any) || String.class.isInstance(any);
 	}
 
@@ -50,10 +49,9 @@ public enum DayTimeDurationType
 	@Override
 	public DayTimeDurationExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" " +
-				"can't ne converted to XACML \"date\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

@@ -35,15 +35,15 @@ public enum RFC822NameType implements AttributeExpType
 {
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private RFC822NameType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return String.class.isInstance(any) || RFC822Name.class.isInstance(any);
 	}
 
@@ -58,9 +58,9 @@ public enum RFC822NameType implements AttributeExpType
 	public RFC822NameExp create(Object any, Object ...params)
 	{
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any),String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"rfc822Name\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(any instanceof String){
 			return fromXacmlString((String)any);
 		}

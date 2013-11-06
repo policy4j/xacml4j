@@ -14,15 +14,15 @@ public enum Base64BinaryType implements AttributeExpType
 {
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private Base64BinaryType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	private boolean isConvertableFrom(Object any) {
+	private boolean isConvertibleFrom(Object any) {
 		return byte[].class.isInstance(any) || String.class.isInstance(any) ||
 				BinaryValue.class.isInstance(any);
 	}
@@ -30,10 +30,9 @@ public enum Base64BinaryType implements AttributeExpType
 	@Override
 	public Base64BinaryExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can not be" +
-				" converted to XACML \"base64binary\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

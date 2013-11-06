@@ -14,15 +14,15 @@ public enum HexBinaryType implements AttributeExpType
 {
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private HexBinaryType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	private boolean isConvertableFrom(Object any) {
+	private boolean isConvertibleFrom(Object any) {
 		return byte[].class.isInstance(any) || String.class.isInstance(any)
 				|| BinaryValue.class.isInstance(any);
 	}
@@ -30,9 +30,10 @@ public enum HexBinaryType implements AttributeExpType
 	@Override
 	public HexBinaryExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"hexBinary\" type",
-				any, any.getClass()));
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
 			return fromXacmlString((String)any);
 		}

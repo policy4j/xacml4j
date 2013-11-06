@@ -14,15 +14,15 @@ public enum StringType implements AttributeExpType
 {
 	STRING("http://www.w3.org/2001/XMLSchema#string");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private StringType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return StringExp.class.isInstance(any) || String.class.isInstance(any);
 	}
 
@@ -34,9 +34,9 @@ public enum StringType implements AttributeExpType
 	@Override
 	public StringExp create(Object any, Object ...params){
 		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertableFrom(any), String.format(
-				"Value=\"%s\" of class=\"%s\" can't ne converted to XACML \"string\" type",
-				any, any.getClass()));
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		return new StringExp(this, (String)any);
 	}
 

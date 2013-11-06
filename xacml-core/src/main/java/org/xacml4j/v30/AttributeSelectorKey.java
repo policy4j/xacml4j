@@ -7,9 +7,9 @@ import com.google.common.base.Strings;
 public final class AttributeSelectorKey
 	extends AttributeReferenceKey
 {
-	private String xpath;
-	private String contextSelectorId;
-	private int hashCode;
+	private final String xpath;
+	private final String contextSelectorId;
+	private final int hashCode;
 
 	private AttributeSelectorKey(Builder b){
 		super(b);
@@ -90,7 +90,7 @@ public final class AttributeSelectorKey
 		Objects.equal(contextSelectorId, s.contextSelectorId);
 	}
 
-	public static class Builder extends AttributeReferenceBuilder<Builder>
+	public static class Builder extends AttributeReferenceKey.Builder<Builder>
 	{
 		private String xpath;
 		private String contextSelectorId;

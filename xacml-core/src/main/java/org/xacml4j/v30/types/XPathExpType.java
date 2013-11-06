@@ -16,31 +16,32 @@ public enum XPathExpType implements AttributeExpType
 {
 	XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
 
-	private String typeId;
-	private BagOfAttributeExpType bagType;
+	private final String typeId;
+	private final BagOfAttributeExpType bagType;
 
 	private XPathExpType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
-	public boolean isConvertableFrom(Object any) {
+	public boolean isConvertibleFrom(Object any) {
 		return (any instanceof String);
 	}
 
-	public XPathExp create(String xpath, AttributeCategories category)
-	{
+	public XPathExp create(String xpath, AttributeCategories category) {
 		return new XPathExp(this, xpath, category);
 	}
 
 	@Override
-	public XPathExp create(Object v, Object ... params)
+	public XPathExp create(Object any, Object ... params)
 	{
-		Preconditions.checkArgument(isConvertableFrom(v),
-				"Given instance=\"%s\" can not be converted to this type value", v);
+		Preconditions.checkNotNull(any);
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
 		Preconditions.checkArgument(params != null && params.length > 0,
 				"XPath category must be specified");
-		return new XPathExp(this, (String)v, (AttributeCategories)params[0]);
+		return new XPathExp(this, (String) any, (AttributeCategories)params[0]);
 	}
 
 	@Override
