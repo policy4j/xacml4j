@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.google.common.base.Objects;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.Advice;
@@ -270,21 +271,21 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public XPathVersion getXPathVersion() {
 		return delegate.getXPathVersion();
 	}
-/*
-	FIXME: review delegation & test cases
-	@Override
-	public boolean equals(Object o) {
-		return delegate.equals(o);
-	}
 
 	@Override
 	public String toString() {
-		return delegate.toString();
+		return Objects.toStringHelper(this).add("delegate", delegate).toString();
 	}
 
 	@Override
 	public int hashCode() {
 		return delegate.hashCode();
 	}
-	*/
+
+	@Override
+	public boolean equals(Object o) {
+		return o == this ||
+				(o instanceof DelegatingEvaluationContext) &&
+						delegate.equals(((DelegatingEvaluationContext) o).getDelegate());
+	}
 }
