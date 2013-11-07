@@ -71,16 +71,14 @@ public interface ResolverRegistry
 	/**
 	 * Gets attribute resolve by identifier
 	 * @param id a resolver identifier
-	 * @return {@link AttributeResolver} or <code>null</code>
-	 * if not resolver found
+	 * @return {@link AttributeResolver} or {@code null} if not resolver found
 	 */
 	AttributeResolver getAttributeResolver(String id);
 
 	/**
 	 * Gets content resolver by identifier
 	 * @param id a resolver identifier
-	 * @return {@link ContentResolver} or <code>null</code>
-	 * if not resolver found
+	 * @return {@link ContentResolver} or {@code null} if not resolver found
 	 */
 	ContentResolver getContentResolver(String id);
 }

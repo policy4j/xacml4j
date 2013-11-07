@@ -99,7 +99,7 @@ public enum AttributeCategories implements AttributeCategory
 	 * a delegated category
 	 *
 	 * @param categoryURI a category URI
-	 * @return <code>true</code> if a given category
+	 * @return {@code true} if a given category
 	 * URI represents a delegated category
 	 */
 	private static boolean isDelegate(String categoryURI){

@@ -524,7 +524,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	 * @throws XacmlSyntaxException
 	 *             if given
 	 * @exception IllegalArgumentException
-	 *                if given argument is <code>null</code>
+	 *                if given argument is {@code null}
 	 */
 	private AttributeReference createAttributeReference(Object ref)
 			throws XacmlSyntaxException {

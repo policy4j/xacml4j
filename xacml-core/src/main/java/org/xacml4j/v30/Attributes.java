@@ -55,8 +55,7 @@ public class Attributes extends AttributeContainer
 	 * Gets content as {@link Node}
 	 * instance
 	 *
-	 * @return a {@link Node} instance
-	 * or <code>null</code>
+	 * @return a {@link Node} instance or {@code null}
 	 */
 	public Node getContent(){
 		return content;

@@ -12,7 +12,7 @@ public interface FunctionProvider
 	 *
 	 * @param functionId a function identifier
 	 * @return {@link FunctionSpecImpl} instance for a given
-	 * identifier or <code>null</code> if function
+	 * identifier or {@code null} if function
 	 * can not be found for a given identifier
 	 */
 	FunctionSpec getFunction(String functionId);
@@ -22,7 +22,7 @@ public interface FunctionProvider
 	 * this factory
 	 *
 	 * @param functionId a function identifier
-	 * @return <code>true</code> if function
+	 * @return {@code true} if function
 	 * is supported by this factory
 	 */
 	boolean isFunctionProvided(String functionId);
@@ -32,7 +32,7 @@ public interface FunctionProvider
 	 *
 	 * @param functionId a function identifier
 	 * @return {@link FunctionSpec} a reference
-	 * to removed function or <code>null</code>
+	 * to removed function or {@code null}
 	 */
 	FunctionSpec remove(String functionId);
 

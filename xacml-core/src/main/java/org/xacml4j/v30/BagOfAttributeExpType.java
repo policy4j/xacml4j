@@ -12,8 +12,6 @@ import com.google.common.base.Preconditions;
  * Represents a XACML bag of attributes type.
  *
  * @author Giedrius Trumpickas
- *
- * @param <ContentType>
  */
 public final class BagOfAttributeExpType implements ValueType
 {
@@ -60,7 +58,7 @@ public final class BagOfAttributeExpType implements ValueType
 	 * Creates an empty bag.
 	 *
 	 * @return instance of {@link BagOfAttributeExp} with
-	 * no {@link BaseAttribute} instances
+	 * no {@link BagOfAttributeExp} instances
 	 */
 	public  BagOfAttributeExp createEmpty(){
 		return new BagOfAttributeExp(this, Collections.<AttributeExp>emptyList());

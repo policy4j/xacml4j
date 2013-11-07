@@ -48,7 +48,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 * An optional category of the attribute.
 	 * If category is not specified, the attribute has no category
 	 *
-	 * @return category identifier or <code>null</code>
+	 * @return category identifier or {@code null}
 	 */
 	public AttributeCategory getCategory(){
 		return category;
@@ -59,7 +59,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 * If issuer is not specified, the attribute
 	 * has not issuer
 	 *
-	 * @return attribute issuer or <code>null</code>
+	 * @return attribute issuer or {@code null}
 	 */
 	public String getIssuer(){
 		return issuer;

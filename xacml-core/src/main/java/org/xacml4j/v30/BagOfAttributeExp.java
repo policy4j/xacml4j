@@ -104,7 +104,7 @@ public final class BagOfAttributeExp
 	/**
 	 * Tests if this bag is empty.
 	 *
-	 * @return <code>true</code> if bag is empty
+	 * @return {@code true} if bag is empty
 	 */
 	public boolean isEmpty(){
 		return values.isEmpty();
@@ -114,7 +114,7 @@ public final class BagOfAttributeExp
 	 * Tests if this bag contains given attribute.
 	 *
 	 * @param attr an attribute
-	 * @return <code>true</code> if bag contains given attribute
+	 * @return {@code true} if bag contains given attribute
 	 */
 	public boolean contains(AttributeExp attr){
 		return values.contains(attr);
@@ -174,7 +174,7 @@ public final class BagOfAttributeExp
 	 * from the given bag
 	 *
 	 * @param bag a bag
-	 * @return <code>true</code> if this bag contains
+	 * @return {@code true} if this bag contains
 	 * at least one value from the given bag
 	 */
 	public boolean containsAtLeastOneOf(BagOfAttributeExp bag)
@@ -202,7 +202,7 @@ public final class BagOfAttributeExp
 	 * Tests if this bag is subset of given bag.
 	 *
 	 * @param bag a bag
-	 * @return <code>true</code> if given bag
+	 * @return {@code true} if given bag
 	 * is subset if this bag
 	 */
 	public boolean containsAll(BagOfAttributeExp bag){
@@ -241,10 +241,10 @@ public final class BagOfAttributeExp
 	 * A static helper method to retrieve a single
 	 * value from a given bag
 	 *
-	 * @param <T>
+	 * @param <T> attribute expression type
 	 * @param v a bag og values
-	 * @return a single value or <code>null</code>
-	 * if a given bag is <code>null</code> or empty
+	 * @return a single value or {@code null}
+	 * if a given bag is {@code null} or empty
 	 */
 	public static <T extends AttributeExp> T value(BagOfAttributeExp v){
 		if(v == null ||

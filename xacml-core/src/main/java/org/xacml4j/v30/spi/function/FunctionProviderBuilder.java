@@ -50,7 +50,7 @@ public final class FunctionProviderBuilder
 	/**
 	 * Adds function provider from a given anno instance
 	 *
-	 * @param clazz an annotated function provider
+	 * @param p an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
 	public FunctionProviderBuilder fromInstance(Object p)
@@ -70,7 +70,6 @@ public final class FunctionProviderBuilder
 	/**
 	 * Adds standard XACML 3.0 functions
 	 *
-	 * @param clazz an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
 	public FunctionProviderBuilder defaultFunctions()
@@ -113,7 +112,7 @@ public final class FunctionProviderBuilder
 	/**
 	 * Adds function provider from a given annotated class
 	 *
-	 * @param clazz an annotated function provider
+	 * @param provider an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
 	 */
 	public FunctionProviderBuilder providers(Iterable<FunctionProvider> provider){

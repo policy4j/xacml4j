@@ -32,7 +32,7 @@ public class Reflections
 	 *
 	 * @param clazz a class
 	 * @param name a method name
-	 * @return {@link Method} or <code>null</code> if method
+	 * @return {@link Method} or {@code null} if method
 	 * with a given name is note defined in a given class
 	 */
 	public static Method getMethod(Class<?> clazz, String name)

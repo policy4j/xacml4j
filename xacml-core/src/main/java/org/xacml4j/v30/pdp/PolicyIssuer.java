@@ -25,7 +25,7 @@ public class PolicyIssuer extends AttributeContainer
 	 * Gets a free form XML
 	 * describing policy issuer.
 	 *
-	 * @return {@link Node} or <code>null</code>
+	 * @return {@link Node} or {@code null}
 	 */
 	public Node getContent(){
 		return content;

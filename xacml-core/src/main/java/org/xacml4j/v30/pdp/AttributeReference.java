@@ -65,7 +65,7 @@ public abstract class AttributeReference implements Expression
 	 * to an empty bag or {@link EvaluationException}
 	 * is thrown during this reference evaluation
 	 *
-	 * @return <code>true</code> if attribute
+	 * @return {@code true} if attribute
 	 * must be present
 	 */
 	public boolean isMustBePresent(){

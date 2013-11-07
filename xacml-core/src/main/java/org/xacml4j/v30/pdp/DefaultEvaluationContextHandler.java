@@ -259,7 +259,7 @@ class DefaultEvaluationContextHandler
 	 * Resolves category content via {@link PolicyInformationPoint}
 	 *
 	 * @param context an evaluation context
-	 * @param ref an attribute reference
+	 * @param category an attribute category
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */

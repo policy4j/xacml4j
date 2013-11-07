@@ -26,9 +26,7 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
 
 /**
- * A base class for {@link PolicyRepository} implementations
- * every {@link PolicyRepository} implementation supports
- * at least {@link PolicyRepositorySearch} capability
+ * A base class for {@link PolicyRepository} implementations.
  *
  * @author Giedrius Trumpickas
  */
@@ -68,7 +66,7 @@ public abstract class AbstractPolicyRepository
 
 	/**
 	 * Implementation assumes that
-	 * {@link #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
+	 * {@link PolicyRepository#getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
 	 * returns unordered collection of policies
 	 */
 	@Override
@@ -88,7 +86,7 @@ public abstract class AbstractPolicyRepository
 
 	/**
 	 * Implementation assumes that
-	 * {@link #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
+	 * {@link PolicyRepository#getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
 	 * returns unordered collection of policies.
 	 */
 	@Override
@@ -109,7 +107,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 	/**
-	 * @see {@link #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
 	public final Collection<Policy> getPolicies(String id) {
@@ -117,7 +115,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 	/**
-	 * @see {@link #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
 	public final Collection<Policy> getPolicies(String id, VersionMatch earliest,
@@ -126,7 +124,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 	/**
-	 * @see {@link #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
 	public final Collection<Policy> getPolicies(String id, VersionMatch version){
@@ -134,7 +132,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 	/**
-	 * @see {@link #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
 	public final Collection<PolicySet> getPolicySets(String id, VersionMatch version){
@@ -177,12 +175,12 @@ public abstract class AbstractPolicyRepository
 
 	/**
 	 * Default implementation uses
-	 * {@link #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)
-	 * {@link #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * {@link PolicyRepository#getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}
+	 * {@link AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)}
 	 * to locate appropriate policy or policy set
 	 *
-	 * @see #getPolicies(String, VersionMatch, VersionMatch, VersionMatch)
-	 * @see #getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicies(String, VersionMatch, VersionMatch, VersionMatch)
+	 * @see AbstractPolicyRepository#getPolicySet(String, VersionMatch, VersionMatch, VersionMatch)
 	 */
 	@Override
 	public CompositeDecisionRule get(String id, Version v)
@@ -275,7 +273,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 //	/**
-//	 * A {@Link PolicyVisitor} implementation
+//	 * A {@link PolicyVisitor} implementation
 //	 * to validate function reference in a given
 //	 * policy or policy set
 //	 */
@@ -293,7 +291,7 @@ public abstract class AbstractPolicyRepository
 //	}
 
 	/**
-	 * A {@Link PolicyVisitor} implementation
+	 * A {@link org.xacml4j.v30.pdp.PolicyVisitor} implementation
 	 * to validate {@link DecisionCombiningAlgorithm} instances
 	 * in a given policy or policy set
 	 */

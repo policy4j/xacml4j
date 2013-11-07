@@ -16,7 +16,7 @@ public class XacmlException extends RuntimeException
 	/**
 	 * Constructs exception with a given message.
 	 *
-	 * @param template a template {@see String#format(String, Object...)}
+	 * @param template a template {@link String#format(String, Object...)}
 	 * @param arguments an arguments for template
 	 */
 	protected XacmlException(
@@ -28,7 +28,7 @@ public class XacmlException extends RuntimeException
 	 * Constructs exception with a given status and message.
 	 *
 	 * @param cause a root cause of this exception
-	 * @param message a template {@see String#format(String, Object...)}
+	 * @param message a template {@link String#format(String, Object...)}
 	 * @param arguments an arguments for template
 	 */
 	protected XacmlException(Throwable cause,

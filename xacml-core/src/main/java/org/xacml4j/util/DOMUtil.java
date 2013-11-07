@@ -208,7 +208,7 @@ public class DOMUtil
 
 	/**
 	 * Test two DOM nodes for equality, if both
-	 * nodes are not equal to <code>null</code>
+	 * nodes are not equal to {@code null}
 	 * then they are compared via {@link Node#isEqualNode(Node)}
 	 *
 	 * @param a a DOM node

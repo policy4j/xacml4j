@@ -32,7 +32,7 @@ public interface Expression
 	/**
 	 * Accepts {@link ExpressionVisitor} implementation
 	 *
-	 * @param v
+	 * @param v expression visitor
 	 * @exception ClassCastException if given implementation
 	 * is not supported by this node
 	 */

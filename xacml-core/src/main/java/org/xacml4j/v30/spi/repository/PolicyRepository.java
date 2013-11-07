@@ -14,10 +14,7 @@ import org.xacml4j.v30.pdp.PolicySet;
 
 
 /**
- * A repository for XACML policies, implements
- * {@link PolicyReferenceResolver} to resolve
- * policies referenced by the top level policies
- * in the {@link PolicyDomain}
+ * Defines an interface for XACML policies repository.
  *
  * @author Giedrius Trumpickas
  */
@@ -101,7 +98,7 @@ public interface PolicyRepository
 	 * @param version a  version match constraint
 	 * @param earliest a lower bound version match constraint
 	 * @param latest an upper bound version match constraint
-	 * @return {@link Policy} or <code>null</code> if this
+	 * @return {@link Policy} or {@code null} if this
 	 * repository does not contain matching policy
 	 */
 	Policy getPolicy(String id, VersionMatch version,
@@ -114,7 +111,7 @@ public interface PolicyRepository
 	 * @param version a  version match constraint
 	 * @param earliest a lower bound version match constraint
 	 * @param latest an upper bound version match constraint
-	 * @return {@link PolicySet} or <code>null</code> if this
+	 * @return {@link PolicySet} or {@code null} if this
 	 * repository does not contain matching policy set
 	 */
 	PolicySet getPolicySet(String id, VersionMatch version,
@@ -126,7 +123,7 @@ public interface PolicyRepository
 	 *
 	 * @param id an identifier
 	 * @param v a version
-	 * @return {@link CompositeDecisionRule} or <code>null</code>
+	 * @return {@link CompositeDecisionRule} or {@code null}
 	 * if no matching policy or policy set is found in
 	 * this repository
 	 */
@@ -137,7 +134,7 @@ public interface PolicyRepository
 	 * to this repository
 	 *
 	 * @param r a policy or policy set
-	 * @return <code>true</code> if
+	 * @return {@code true} if
 	 * policy was added successfully
 	 */
 	boolean add(CompositeDecisionRule r);
@@ -147,7 +144,7 @@ public interface PolicyRepository
 	 * from this repository
 	 *
 	 * @param r a policy or policy set
-	 * @return <code>true</code> if given
+	 * @return {@code true} if given
 	 * policy or policy set was removed
 	 * from this repository
 	 */

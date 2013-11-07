@@ -209,8 +209,6 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute reference
-	 * @return {@link AttributeResolver} or <code>null</code> if
-	 * no matching resolver found
 	 */
 	private void findMatchingAttributeResolvers(
 			EvaluationContext context,
@@ -303,7 +301,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 *
 	 * @param context an evaluation context
 	 * @param category an attribute category
-	 * @return {@link ContentResolver} or <code>null</code>
+	 * @return {@link ContentResolver} or {@code null}
 	 *
 	 */
 	@Override

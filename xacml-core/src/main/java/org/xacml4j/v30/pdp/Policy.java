@@ -107,7 +107,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * Gets {@link VariableDefinition} by identifier
 	 *
 	 * @param variableId variable identifier
-	 * @return {@link VariableDefinition} or <code>null</code>
+	 * @return {@link VariableDefinition} or {@code null}
 	 * if variable definition can not be resolved
 	 */
 	public VariableDefinition getVariableDefinition(String variableId){
@@ -129,7 +129,7 @@ public class Policy extends BaseCompositeDecisionRule
 	}
 
 	/**
-	 * Implementation creates {@link PolicyDelegatingEvaluationContext}
+	 * Implementation creates policy-bound evaluation context
 	 */
 	@Override
 	public EvaluationContext createContext(EvaluationContext context)

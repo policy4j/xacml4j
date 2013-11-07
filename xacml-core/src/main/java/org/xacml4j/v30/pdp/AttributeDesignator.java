@@ -55,7 +55,7 @@ public class AttributeDesignator extends AttributeReference
 	 *
 	 * @return {@link BagOfAttributeExp} instance
 	 * @exception EvaluationException if attribute can't be resolved
-	 * and {@link this#mustBePresent} is true
+	 * and {@link AttributeDesignator#mustBePresent} is true
 	 */
 	@Override
 	public BagOfAttributeExp evaluate(EvaluationContext context)

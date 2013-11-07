@@ -19,13 +19,11 @@ public interface FunctionInvocation
 	/**
 	 * Invokes function
 	 *
-	 * @param <T>
 	 * @param spec a function spec
 	 * @param context an evaluation context
 	 * @param arguments a function invocation parameters
 	 * @return {@link ValueExpression} representing function invocation result
-	 * @throws FunctionInvocationException if function invocation
-	 * fails
+	 * @throws FunctionInvocationException if function invocation fails
 	 */
 	ValueExpression invoke(FunctionSpec spec,
 			EvaluationContext context, Expression ...arguments)
@@ -34,13 +32,11 @@ public interface FunctionInvocation
 	/**
 	 * Invokes function
 	 *
-	 * @param <T>
 	 * @param spec a function spec
 	 * @param context an evaluation context
 	 * @param params a function invocation parameters
-	 * @return {@link T} a function invocation result
-	 * @throws FunctionInvocationException if a function
-	 * invocation fails
+	 * @return a function invocation result
+	 * @throws FunctionInvocationException if a function invocation fails
 	 */
 	ValueExpression invoke(FunctionSpec spec,
 			EvaluationContext context, List<Expression> params)

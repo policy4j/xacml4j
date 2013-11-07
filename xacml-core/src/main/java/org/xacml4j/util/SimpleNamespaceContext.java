@@ -34,9 +34,9 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
 /**
- * Simple <code>javax.xml.namespace.NamespaceContext</code> implementation. Follows the standard
- * <code>NamespaceContext</code> contract, and is loadable via a <code>java.util.Map</code> or
- * <code>java.util.Properties</code> object
+ * Simple {@code javax.xml.namespace.NamespaceContext} implementation. Follows the standard
+ * {@code NamespaceContext} contract, and is loadable via a {@code java.util.Map} or
+ * {@code java.util.Properties} object
  *
  * @author Arjen Poutsma
  * @since 1.0.0

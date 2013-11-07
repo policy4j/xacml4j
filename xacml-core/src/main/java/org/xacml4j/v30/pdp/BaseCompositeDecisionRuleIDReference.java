@@ -36,7 +36,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	/**
 	 * Gets earliest version match
 	 *
-	 * @return {@link VersionMatch} or <code>null</code>
+	 * @return {@link VersionMatch} or {@code null}
 	 */
 	@Override
 	public final VersionMatch getEarliestVersion() {
@@ -46,7 +46,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	/**
 	 * Gets latest version match
 	 *
-	 * @return {@link VersionMatch} or <code>null</code>
+	 * @return {@link VersionMatch} or {@code null}
 	 */
 	@Override
 	public final VersionMatch getLatestVersion() {
@@ -56,7 +56,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	/**
 	 * Gets version match
 	 *
-	 * @return {@link VersionMatch} or <code>null</code>
+	 * @return {@link VersionMatch} or {@code null}
 	 */
 	@Override
 	public final VersionMatch getVersion() {
@@ -69,7 +69,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	 *
 	 * @param id an identifier
 	 * @param v a version
-	 * @return <code>true</code> if given identifier
+	 * @return {@code true} if given identifier
 	 * and version matches this reference version constraints
 	 */
 	protected boolean matches(String id, Version v) {
@@ -137,8 +137,8 @@ public abstract class BaseCompositeDecisionRuleIDReference
 
 		/**
 		 * Sets latest version if given latest
-		 * version is <code>null</code> or empty string
-		 * latest version is set to <code>null</code>
+		 * version is {@code null} or empty string
+		 * latest version is set to {@code null}
 		 *
 		 * @param version a latest version textual representation
 		 */

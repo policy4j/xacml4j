@@ -54,8 +54,7 @@ public final class DNSName implements Serializable
 	 * true for www.google.com, foo.co.uk and bar.ca.us,
 	 * but not for google, com, or google.foo
 	 *
-	 * @return <code>true</code> if this domain name
-	 * ends in a public suffix
+	 * @return {@code true} if this domain name ends in a public suffix
 	 */
 	public boolean isUnderPublicSuffix(){
 		return name.isUnderPublicSuffix();
@@ -69,7 +68,7 @@ public final class DNSName implements Serializable
 	 * Examples of domain names that are not public suffixes
 	 * include google, google.com and foo.co.uk.
 	 *
-	 * @return
+	 * @return {@code true} if the suffix is public; returns {@code false} otherwise
 	 */
 	public boolean isPublicSuffix(){
 		return name.isPublicSuffix();

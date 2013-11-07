@@ -5,12 +5,10 @@ import org.w3c.dom.Node;
 public interface PolicyInformationPointCacheProvider
 {
 	/**
-	 * Gets content from the cache for a give resolver
-	 * and request context keys
+	 * Gets content from the cache for a given resolver context
 	 *
-	 * @param d a content resolver descriptor
-	 * @param keys a request context keys
-	 * @return {@link Node} or <code>null</code>
+	 * @param context resolver context
+	 * @return {@link Node} or @{code null}
 	 */
 	Content getContent(ResolverContext context);
 

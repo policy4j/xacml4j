@@ -15,7 +15,7 @@ public interface FunctionParamSpec
 	 * the next expression after "sequence"
 	 *
 	 * @param it an iterator
-	 * @return <code>true</code> if sequence of
+	 * @return {@code true} if sequence of
 	 * expressions starting at the current position
 	 * is valid according this spec
 	 */
@@ -27,14 +27,14 @@ public interface FunctionParamSpec
 	 * parameter specified by this specification
 	 *
 	 * @param type a value type
-	 * @return <code>true</code>
+	 * @return {@code true}
 	 */
 	boolean isValidParamType(ValueType type);
 
 	/**
 	 * Tests if this parameter is variadic
 	 *
-	 * @return <code>true</code> if a function
+	 * @return {@code true} if a function
 	 * parameter represented by this object is
 	 * variadic
 	 */

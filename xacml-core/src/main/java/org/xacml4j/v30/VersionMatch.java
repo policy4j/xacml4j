@@ -46,7 +46,7 @@ public class VersionMatch
      * version match constraint
      *
      * @param version a version
-     * @return <code>true</code> if given
+     * @return {@code true} if given
      * version matches this constraint
      * TODO: implement more efficient matching
      */
@@ -85,7 +85,7 @@ public class VersionMatch
     }
 
     /**
-     * @see {@link #VersionMatch(String)}
+     * @see VersionMatch#VersionMatch(String)
      *
      * @param pattern a version match constraint
      * @return {@link VersionMatch} instance

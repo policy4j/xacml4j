@@ -212,8 +212,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Implementation always
-	 * return <code>null</code>
+	 * Implementation always return {@code null}
 	 */
 	@Override
 	public EvaluationContext getParentContext() {
@@ -221,8 +220,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Implementation always
-	 * returns <code>null</code>
+	 * Implementation always returns {@code null}
 	 */
 	@Override
 	public Policy getCurrentPolicy() {
@@ -235,8 +233,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Implementation always
-	 * returns <code>null</code>
+	 * Implementation always returns {@code null}
 	 */
 	@Override
 	public PolicyIDReference getCurrentPolicyIDReference() {
@@ -244,8 +241,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Implementation always
-	 * returns <code>null</code>
+	 * Implementation always returns {@code null}
 	 */
 	@Override
 	public PolicySetIDReference getCurrentPolicySetIDReference() {
@@ -253,8 +249,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Implementation always
-	 * returns <code>null</code>
+	 * Implementation always returns {@code null}
 	 */
 	@Override
 	public PolicySet getCurrentPolicySet() {

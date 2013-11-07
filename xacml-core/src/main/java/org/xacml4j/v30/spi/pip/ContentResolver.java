@@ -14,7 +14,7 @@ public interface ContentResolver extends ContentResolverMBean
 	 * Resolves a content
 	 *
 	 * @param context a policy information point context
-	 * @return {@link Content} or <code>null</code>
+	 * @return {@link Content} or {@code null}
 	 * @throws Exception if an error occurs while resolving content
 	 */
 	Content resolve(ResolverContext context) throws Exception;

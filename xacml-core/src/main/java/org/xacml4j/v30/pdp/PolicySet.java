@@ -131,11 +131,11 @@ public class PolicySet extends
 
 	/**
 	 * Creates {@link EvaluationContext} to evaluate this policy
-	 * set to be used in {@link #isMatch(EvaluationContext)}
-	 * or {@link #evaluate(EvaluationContext)}
+	 * set to be used in {@link PolicySet#isMatch(EvaluationContext)}
+	 * or {@link PolicySet#evaluate(EvaluationContext)}
 	 *
 	 * @param context a parent evaluation context
-	 * @return {@link EvaluationContext} instance to evaluate
+	 * @return {@code EvaluationContext} instance to evaluate
 	 * this policy set
 	 */
 	@Override

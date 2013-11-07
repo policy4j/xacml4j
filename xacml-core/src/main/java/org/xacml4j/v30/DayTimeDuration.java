@@ -41,9 +41,9 @@ public final class DayTimeDuration
 	}
 
 	/**
-	 * Parses
-	 * @param any
-	 * @return
+	 * Parses a given object to {@link DayTimeDuration} instance
+	 * @param any an object to be parsed
+	 * @return new instance
 	 */
 	public static DayTimeDuration create(Object any){
 		if(any instanceof DayTimeDuration){

@@ -38,12 +38,11 @@ public interface PolicyInformationPoint
 
 
 	/**
-	 * Resolves a content for a given
-	 * attribute category
+	 * Resolves a content for a given attribute category
 	 *
 	 * @param context an evaluation context
 	 * @param category an attribute category
-	 * @return {@link Node} or <code>null</code>
+	 * @return {@link Node} or {@code null}
 	 * @throws Exception if an error occurs
 	 */
 	Node resolve(

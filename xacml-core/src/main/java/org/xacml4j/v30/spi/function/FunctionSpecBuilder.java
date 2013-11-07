@@ -23,9 +23,9 @@ import com.google.common.base.Preconditions;
 
 public final class FunctionSpecBuilder
 {
-	private String functionId;
-	private String legacyId;
-	private List<FunctionParamSpec> paramSpec;
+	private final String functionId;
+	private final String legacyId;
+	private final List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
 
@@ -121,8 +121,6 @@ public final class FunctionSpecBuilder
 
 	/**
 	 * A XACML function specification implementation
-	 *
-	 * @param <ReturnType>
 	 */
 	static final class FunctionSpecImpl implements FunctionSpec
 	{
@@ -314,7 +312,7 @@ public final class FunctionSpecBuilder
 		 * Evaluates given array of function parameters
 		 *
 		 * @param context an evaluation context
-		 * @param params a function invocation
+		 * @param arguments function invocation arguments
 		 * parameters
 		 * @return an array of evaluated parameters
 		 * @throws EvaluationException if an evaluation
@@ -333,12 +331,8 @@ public final class FunctionSpecBuilder
 		/**
 		 * Additional function parameter validation function
 		 *
-		 * @param paramIndex a parameter index
-		 * in a function signature
-		 * @param spec a parameter specification
-		 * @param p an actual parameter
-		 * @param params an array of all parameters
-		 * @return <code>true</code> if a given parameter is valid
+		 * @param arguments an array of additional function arguments
+		 * @return {@code true} if a given parameter is valid
 		 * according specification
 		 */
 		private boolean validateAdditional(List<Expression> arguments){

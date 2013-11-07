@@ -24,7 +24,7 @@ public class AttributeContainer
 	 * attribute with a given identifier
 	 *
 	 * @param attributeId an attribute id
-	 * @return <code>true</code> if contains
+	 * @return {@code true} if contains
 	 */
 	public boolean containsAttribute(String attributeId){
 		return attributes.containsKey(attributeId);
@@ -47,7 +47,7 @@ public class AttributeContainer
 	 * a given attribute identifier
 	 *
 	 * @param attributeId an attribute identifier
-	 * @return {@link Attribute} instance or <code>null</code>
+	 * @return {@link Attribute} instance or {@code null}
 	 * if no attribute available with a given identifier
 	 */
 	public Attribute getOnlyAttribute(String attributeId){
@@ -88,7 +88,7 @@ public class AttributeContainer
 	/**
 	 * Finds all instance of {@link Attribute} with
 	 * {@link Attribute#isIncludeInResult()} returning
-	 * <code>true</code>
+	 * {@code true}
 	 *
 	 * @return a collection of {@link Attribute}
 	 * instances
@@ -104,7 +104,7 @@ public class AttributeContainer
 	}
 
 	/**
-	 * @see {@link #getAttributeValues(String, String, AttributeExpType)
+	 * @see AttributeContainer#getAttributeValues(String, String, AttributeExpType)
 	 */
 	public Collection<AttributeExp> getAttributeValues(
 			String attributeId,
@@ -118,7 +118,7 @@ public class AttributeContainer
 	 *
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute value data type
-	 * @return {@link AttributeExp} of the given type or <code>null</code>
+	 * @return {@link AttributeExp} of the given type or {@code null}
 	 * if value matching given criteria does not exist
 	 * @exception IllegalArgumentException if more than one value is found
 	 * matching given criteria

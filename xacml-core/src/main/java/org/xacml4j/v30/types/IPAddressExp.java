@@ -37,7 +37,7 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	 * Gets IP address mask
 	 *
 	 * @return {@link InetAddress} representing
-	 * IP address mask or <code>null</code>
+	 * IP address mask or {@code null}
 	 * if mask is not specified
 	 */
 	public InetAddress getMask(){

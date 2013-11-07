@@ -12,7 +12,7 @@ public interface AttributeCategory
 	/**
 	 * Tests if this category is delegated
 	 *
-	 * @return <code>true</code> if this
+	 * @return {@code true} if this
 	 * category is delegated
 	 */
 	boolean isDelegated();

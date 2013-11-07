@@ -150,12 +150,11 @@ public class RequestContext
 	}
 
 	/**
-	 * If the {@link #isReturnPolicyIdList()} returns
-	 * <code>true</code>, a PDP that implements this optional
+	 * If the function returns {@code true}, a PDP that implements this optional
 	 * feature MUST return a list of all policies which were
 	 * found to be fully applicable. That is, all policies
-	 * where both the {@link Target} matched and the {@link Condition}
-	 * evaluated to <code>true</code>, whether or not the {@link Effect}
+	 * where both the {@link org.xacml4j.v30.pdp.Target} matched and the {@link org.xacml4j.v30.pdp.Condition}
+	 * evaluated to {@code true}, whether or not the {@link Effect}
 	 *  was the same or different from the {@link Decision}}
 	 *
 	 * @return boolean value
@@ -170,10 +169,10 @@ public class RequestContext
 	 * is specified in [Multi]. If the PDP does not implement the relevant
 	 * functionality in [Multi], then the PDP must return an Indeterminate
 	 * with a status code "Processing Error @{link {@link StatusCode#isProcessingError()} returns
-	 * <code>true</code> if it receives a request with this attribute
-	 * set to <code>true</code>
+	 * {@code true} if it receives a request with this attribute
+	 * set to {@code true}
 	 *
-	 * @return
+	 * @return {@code true} if the decision is combined; returns {@code false} otherwise
 	 */
 	public boolean isCombinedDecision(){
 		return combinedDecision;
@@ -226,7 +225,7 @@ public class RequestContext
 	 * Tests if this request has multiple
 	 * individual XACML requests
 	 *
-	 * @return <code>true</code> if this
+	 * @return {@code true} if this
 	 * request has multiple XACML individual
 	 * requests
 	 */
@@ -249,7 +248,7 @@ public class RequestContext
 	 * Resolves attribute reference to {@link Attributes}
 	 *
 	 * @param reference an attributes reference
-	 * @return {@link Attributes} or <code>null</code> if
+	 * @return {@link Attributes} or {@code null} if
 	 * reference can not be resolved
 	 */
 	public Attributes getReferencedAttributes(AttributesReference reference){
@@ -275,7 +274,7 @@ public class RequestContext
 	 * Gets only one attribute of the given category
 	 *
 	 * @param category a category identifier
-	 * @return {@link Attributes} or <code>null</code>
+	 * @return {@link Attributes} or {@code null}
 	 * if request does not have attributes of given category
 	 * @exception IllegalArgumentException if a request
 	 * has more than one instance of {@link Attributes}
@@ -291,7 +290,7 @@ public class RequestContext
 	 * the given category
 	 *
 	 * @param categoryId a category identifier
-	 * @return {@link Node} or <code>null</code>
+	 * @return {@link Node} or {@code null}
 	 * if category does not have content or
 	 * there is no attributes of given category
 	 * in this request
@@ -310,7 +309,7 @@ public class RequestContext
 	 * {@link Attributes} instances with the
 	 * same {@link Attributes#getCategory()} value
 	 *
-	 * @return <code>true</code> if this request
+	 * @return {@code true} if this request
 	 * has multiple attributes of same category
 	 */
 	public boolean containsRepeatingCategories(){
@@ -340,7 +339,7 @@ public class RequestContext
 	 *
 	 * @param attributeId an attribute identifier
 	 * @param type an attribute type
-	 * @return <code>true</code> if this request contains an at least
+	 * @return {@code true} if this request contains an at least
 	 * one attribute with a given identifier and the given type
 	 */
 	public boolean containsAttributeValues(String attributeId,
@@ -391,7 +390,7 @@ public class RequestContext
 	 * @param categoryId an attribute category identifier
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
-	 * @return {@link AttributeExp} or <code>null</code>
+	 * @return {@link AttributeExp} or {@code null}
 	 */
 	public AttributeExp getAttributeValue(AttributeCategory categoryId,
 			String attributeId,
@@ -403,11 +402,11 @@ public class RequestContext
 	/**
 	 * Gets all {@link Attributes} instances
 	 * containing an attributes with {@link Attribute#isIncludeInResult()}
-	 * returning <code>true</code>
+	 * returning {@code true}
 	 *
 	 * @return a collection of {@link Attributes} instances
 	 * containing only {@link Attribute} with
-	 * {@link Attribute#isIncludeInResult()} returning <code>true</code>
+	 * {@link Attribute#isIncludeInResult()} returning {@code true}
 	 */
 	public Collection<Attributes> getIncludeInResultAttributes()
 	{

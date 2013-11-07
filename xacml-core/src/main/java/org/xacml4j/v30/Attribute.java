@@ -37,7 +37,7 @@ public class Attribute
 	 * Gets this attribute issuer
 	 *
 	 * @return issuer of this attribute
-	 * identifier or <code>null</code>
+	 * identifier or {@code null}
 	 * if it's not available
 	 */
 	public String getIssuer(){
@@ -49,8 +49,7 @@ public class Attribute
 	 * to be included back to the
 	 * evaluation result
 	 *
-	 * @return <code>true</code>
-	 * if needs to be included
+	 * @return {@code true} if the attribute needs to be included
 	 */
 	public boolean isIncludeInResult(){
 		return includeInResult;

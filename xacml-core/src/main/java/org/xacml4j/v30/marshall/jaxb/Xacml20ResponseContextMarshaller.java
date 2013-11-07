@@ -2,7 +2,6 @@ package org.xacml4j.v30.marshall.jaxb;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -31,14 +31,14 @@ import com.google.common.base.Preconditions;
  * subclass of this class which enables retrieval the type information even at
  * runtime.
  *
- * <p>For example, to build a type literal for {@code List<String>}, you can
+ * <p>For example, to build a type literal for {@code List&lt;String&gt;}, you can
  * build an empty anonymous inner class:
  *
  * <p>
- * {@code TypeToken<List<String>> list = new TypeToken<List<String>>() {};}
+ * {@code TypeToken&lt;List&lt;String&gt;&gt; list = new TypeToken&lt;List&lt;String&gt;&gt;() {};}
  *
  * <p>This syntax cannot be used to build type literals that have wildcard
- * parameters, such as {@code Class<?>} or {@code List<? extends CharSequence>}.
+ * parameters, such as {@code Class&lt;?&gt;} or {@code List&lt;? extends CharSequence&gt;}.
  *
  * @author Bob Lee
  * @author Sven Mawson

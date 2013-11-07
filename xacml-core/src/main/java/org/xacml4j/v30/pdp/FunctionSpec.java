@@ -51,8 +51,8 @@ public interface FunctionSpec
 	 * Tells if this function has variable length
 	 * parameter
 	 *
-	 * @return <code>true</code> if it does
-	 * <code>false</code> otherwise
+	 * @return {@code true} if it does
+	 * {@code false} otherwise
 	 */
 	boolean isVariadic();
 
@@ -60,7 +60,7 @@ public interface FunctionSpec
 	 * Tests if this function requires lazy
 	 * parameters evaluation
 	 *
-	 * @return <code>true</code> if this
+	 * @return {@code true} if this
 	 * function requires lazy parameters
 	 * evaluation
 	 */

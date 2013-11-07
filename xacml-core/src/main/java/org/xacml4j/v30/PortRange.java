@@ -26,14 +26,14 @@ public final class PortRange implements Serializable
 	}
 
 	/**
-	 * Creates a <code>PortRange</code> with upper and lower bounds. Either of
-	 * the parameters may have the value <code>UNBOUND</code> meaning that there
+	 * Creates a {@code PortRange} with upper and lower bounds. Either of
+	 * the parameters may have the value {@code UNBOUND} meaning that there
 	 * is no bound at the respective end.
 	 *
 	 * @param lowerBound
-	 *            the lower-bound port number or <code>UNBOUND</code>
+	 *            the lower-bound port number or {@code UNBOUND}
 	 * @param upperBound
-	 *            the upper-bound port number or <code>UNBOUND</code>
+	 *            the upper-bound port number or {@code UNBOUND}
 	 */
 	public PortRange(Integer lowerBound, Integer upperBound) {
 		this.lowerBound = lowerBound;
@@ -42,7 +42,7 @@ public final class PortRange implements Serializable
 
 
 	/**
-	 * Creates a <code>PortRange</code> that represents a single port value
+	 * Creates a {@code PortRange} that represents a single port value
 	 * instead of a range of values.
 	 *
 	 * @param singlePort
@@ -74,12 +74,12 @@ public final class PortRange implements Serializable
 
 
 	/**
-	 * Creates an instance of <code>PortRange</code> based on the given value.
+	 * Creates an instance of {@code PortRange} based on the given value.
 	 *
 	 * @param value
-	 *            a <code>String</code> representing the range
+	 *            a {@code String} representing the range
 	 *
-	 * @return a new <code>PortRange</code>
+	 * @return a new {@code PortRange}
 	 *
 	 * @throws NumberFormatException
 	 *             if a port value isn't an integer
@@ -121,8 +121,8 @@ public final class PortRange implements Serializable
 
 	/**
 	 * Returns the lower-bound port value. If the range is not lower-bound, then
-	 * this returns <code>UNBOUND</code>. If the range is actually a single port
-	 * number, then this returns the same value as <code>getUpperBound</code>.
+	 * this returns {@code UNBOUND}. If the range is actually a single port
+	 * number, then this returns the same value as {@code getUpperBound}.
 	 *
 	 * @return the upper-bound
 	 */
@@ -133,8 +133,8 @@ public final class PortRange implements Serializable
 
 	/**
 	 * Returns the upper-bound port value. If the range is not upper-bound, then
-	 * this returns <code>UNBOUND</code>. If the range is actually a single port
-	 * number, then this returns the same value as <code>getLowerBound</code>.
+	 * this returns {@code UNBOUND}. If the range is actually a single port
+	 * number, then this returns the same value as {@code getLowerBound}.
 	 *
 	 * @return the upper-bound
 	 */
@@ -165,7 +165,7 @@ public final class PortRange implements Serializable
 	 * Tests if a given port is in this range
 	 *
 	 * @param port a positive number indicating port
-	 * @return <code>true</code> if a given port is
+	 * @return {@code true} if a given port is
 	 * in this range
 	 */
 	public boolean contains(int port){

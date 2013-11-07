@@ -65,7 +65,7 @@ public abstract class BaseContentResolver implements ContentResolver
 	 * Performs an actual content resolution
 	 *
 	 * @param context a policy information context
-	 * @return {@link Node} a resolved content or <code>null</code>
+	 * @return {@link Node} a resolved content or {@code null}
 	 * @throws Exception if an error occurs
 	 */
 	abstract Node doResolve(

@@ -70,7 +70,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	 * is applicable for a given {@link Decision}
 	 *
 	 * @param result a decision result
-	 * @return <code>true</code> if an expression is applicable
+	 * @return {@code true} if an expression is applicable
 	 */
 	public boolean isApplicable(Decision result){
 		return (result == Decision.PERMIT && effect == Effect.PERMIT) ||

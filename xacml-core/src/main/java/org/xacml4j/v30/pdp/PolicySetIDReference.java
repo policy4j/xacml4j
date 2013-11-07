@@ -7,7 +7,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -35,7 +34,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 * Test this reference points to a given policy
 	 *
 	 * @param policy a policy
-	 * @return <code>true</code> if a this reference
+	 * @return {@code true} if a this reference
 	 * points to a given policies
 	 */
 	@Override
@@ -117,7 +116,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 *
 	 * @param ref a policy set id reference
 	 * @param context an evaluation context
-	 * @return <code>true</code> if a given reference
+	 * @return {@code true} if a given reference
 	 */
 	private static boolean isReferenceCyclic(PolicySetIDReference ref,
 			EvaluationContext context)

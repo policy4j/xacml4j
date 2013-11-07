@@ -18,16 +18,16 @@ class ResolverRegistration
 	/**
 	 * Gets policy identifier
 	 *
-	 * @return
+	 * @return policy identifier
 	 */
 	public String getPolicyId(){
 		return policyId;
 	}
 
 	/**
-	 * Gets resolvers
+	 * Gets resolver
 	 *
-	 * @return
+	 * @return resolver
 	 */
 	public Object getResolver(){
 		return resolver;

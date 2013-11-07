@@ -31,7 +31,7 @@ public interface DecisionRule extends PolicyElement
 	 * Tests if this decision rule is applicable to a given
 	 * evaluation context. An evaluation context
 	 * must be created by invoking
-	 * {@link this#createContext(EvaluationContext)} first
+	 * {@link DecisionRule#createContext(EvaluationContext)} first
 	 *
 	 * @param context an evaluation context
 	 * @return {@link MatchResult} indicating applicability
@@ -42,9 +42,9 @@ public interface DecisionRule extends PolicyElement
 	/**
 	 * Evaluates this decision in the given evaluation context.
 	 * An evaluation context must be created by invoking
-	 * {@link this#createContext(EvaluationContext)} first.
+	 * {@link DecisionRule#createContext(EvaluationContext)} first.
 	 * Evaluation should be performed if prior call
-	 * to {@link #isMatch(EvaluationContext)} returns
+	 * to {@link DecisionRule#isMatch(EvaluationContext)} returns
 	 * {@link MatchResult#MATCH}
 	 *
 	 * @param context an evaluation context

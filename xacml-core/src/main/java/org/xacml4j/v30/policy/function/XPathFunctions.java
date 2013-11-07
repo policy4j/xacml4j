@@ -161,7 +161,7 @@ public class XPathFunctions
 	 *
 	 * @param a a first node to search recursively
 	 * @param b a second node to compare to
-	 * @return <code>true</code>, if some of the child nodes
+	 * @return {@code true}, if some of the child nodes
 	 * of the first node is equals to the second node
 	 */
 	private static boolean compareChildNodes(Node a, Node b)

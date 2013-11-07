@@ -24,14 +24,13 @@ public class FunctionReference implements Expression
 {
 	private final static Logger log = LoggerFactory.getLogger(FunctionReference.class);
 
-	private FunctionSpec spec;
-	private ValueType returnType;
+	private final FunctionSpec spec;
+	private final ValueType returnType;
 
 	/**
 	 * Constructs function reference expression
 	 *
 	 * @param spec a function specification
-	 * @param returnType a function return type
 	 */
 	public FunctionReference(FunctionSpec spec)
 	{
@@ -58,13 +57,12 @@ public class FunctionReference implements Expression
 	/**
 	 * Invokes a function with a given parameters
 	 *
-	 * @param <T>
-	 * @param context
-	 * @param params
-	 * @return
-	 * @throws EvaluationException
+	 * @param <T> value expression type
+	 * @param context evaluation context
+	 * @param params function parameters
+	 * @return function invocation value
+	 * @throws EvaluationException if function information fails
 	 */
-	@SuppressWarnings("unchecked")
 	public <T extends ValueExpression> T invoke(EvaluationContext context,
 			Expression ...params) throws EvaluationException
 	{
@@ -72,7 +70,7 @@ public class FunctionReference implements Expression
 				log.debug("Invoking function reference=\"{}\"",
 						spec.getId());
 		}
-		return (T)spec.invoke(context, params);
+		return spec.invoke(context, params);
 	}
 
 	/**
@@ -123,9 +121,6 @@ public class FunctionReference implements Expression
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof FunctionReference)){
 			return false;
 		}
@@ -145,4 +140,4 @@ public class FunctionReference implements Expression
 		void visitEnter(FunctionReference v);
 		void visitLeave(FunctionReference v);
 	}
-};
+}

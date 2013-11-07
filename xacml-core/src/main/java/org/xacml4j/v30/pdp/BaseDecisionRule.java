@@ -60,7 +60,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	/**
 	 * Gets decision rule target
 	 *
-	 * @return {@link Target} or <code>null</code>
+	 * @return {@link Target} or {@code null}
 	 * if rule is applicable to any request
 	 */
 	public Target getTarget(){
@@ -70,8 +70,8 @@ abstract class BaseDecisionRule implements DecisionRule
 	/**
 	 * Gets decision rule condition
 	 *
-	 * @return {@link Condition} or <code>null</code>
-	 * implying always <code>true</code> condition
+	 * @return {@link Condition} or {@code null}
+	 * implying always {@code true} condition
 	 */
 	public Condition getCondition(){
 		return condition;

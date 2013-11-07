@@ -22,7 +22,7 @@ public interface AttributeResolverDescriptor
 	 * given attribute
 	 *
 	 * @param key attribute designator key
-	 * @return <code>true</code> if resolver
+	 * @return {@code true} if resolver
 	 * is capable of resolving given attribute
 	 */
 	boolean canResolve(AttributeDesignatorKey key);
@@ -73,7 +73,7 @@ public interface AttributeResolverDescriptor
 	 * an attribute with a given identifier
 	 *
 	 * @param attributeId attribute identifier
-	 * @return <code>true</code>
+	 * @return {@code true} if the attribute can be resolved
 	 */
 	boolean isAttributeProvided(String attributeId);
 }

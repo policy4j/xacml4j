@@ -100,7 +100,6 @@ public class XacmlPolicyUnmarshallerTest
 	{
 		Policy p = getPolicy("IIIF007Policy.xml");
 		assertNotNull(p);
-
 	}
 
 
@@ -169,7 +168,6 @@ public class XacmlPolicyUnmarshallerTest
 	public void testPolicySet1Mapping() throws Exception
 	{
 		getPolicy("PolicySet1.xml");
-
 	}
 
 	@Test
@@ -184,6 +182,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p.getVariableDefinition("VAR05"));
 		Object jaxb = writer.marshal(p);
 		Policy p1 = (Policy)reader.unmarshal(jaxb);
-		//assertEquals(p, p1);
+		// FIXME: implement marshalling properly
+		// assertEquals(p, p1);
 	}
 }

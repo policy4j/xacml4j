@@ -18,7 +18,7 @@ public interface EvaluationContext
 	 * and there is no need to evaluate advice and
 	 * obligations in the decision rules
 	 *
-	 * @return <code><code>true</code> if context
+	 * @return {@code true} if context
 	 * was build to evaluate extended indeterminate
 	 */
 	boolean isExtendedIndeterminateEval();
@@ -42,7 +42,7 @@ public interface EvaluationContext
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
 	 * the attributes used in the authorization
-	 * decision caching TTL's
+	 * decision caching TTLs
 	 *
 	 * @return a decision cache TTL in seconds
 	 */
@@ -78,7 +78,7 @@ public interface EvaluationContext
 	 * need to be validate at runtime
 	 * every time function is invoked
 	 *
-	 * @return <code>true</code> if parameters
+	 * @return {@code true} if parameters
 	 * need to be validated at runtime
 	 */
 	boolean isValidateFuncParamsAtRuntime();
@@ -97,7 +97,7 @@ public interface EvaluationContext
 	 * instance
 	 *
 	 * @return {@link StatusCode} or
-	 * <code>null</code> if status
+	 * {@code null} if status
 	 * information is unavailable
 	 */
 	StatusCode getEvaluationStatus();
@@ -115,8 +115,7 @@ public interface EvaluationContext
 	/**
 	 * Gets parent evaluation context
 	 *
-	 * @return parent evaluation context or
-	 * <code>null</code>
+	 * @return parent evaluation context or {@code null}
 	 */
 	EvaluationContext getParentContext();
 
@@ -140,26 +139,26 @@ public interface EvaluationContext
 	/**
 	 * Gets currently evaluated policy.
 	 * If invocation returns
-	 * <code>null</code> {@link #getCurrentPolicySet()}
-	 * will return NOT <code>null</code> reference
+	 * {@code null}, {@link EvaluationContext#getCurrentPolicySet()}
+	 * will return NOT {@code null} reference
 	 * to the currently evaluated policy set
 	 *
 	 *
-	 * @return {@link CompositeDecisionRule} or <code>null</code>
+	 * @return {@link CompositeDecisionRule} or {@code null}
 	 */
 	CompositeDecisionRule getCurrentPolicy();
 
 	/**
 	 * Gets currently evaluated policy set
 	 *
-	 * @return {@link CompositeDecisionRule} or <code>null</code>
+	 * @return {@link CompositeDecisionRule} or {@code null}
 	 */
 	CompositeDecisionRule getCurrentPolicySet();
 
 	/**
 	 * Gets current rule
 	 *
-	 * @return {@link DecisionRule} or <code>null</code>
+	 * @return {@link DecisionRule} or {@code null}
 	 */
 	DecisionRule getCurrentRule();
 
@@ -167,14 +166,14 @@ public interface EvaluationContext
 	 * Gets current {@link CompositeDecisionRuleIDReference}
 	 *
 	 * @return current {@link CompositeDecisionRuleIDReference} or
-	 * <code>null</code>
+	 * {@code null}
 	 */
 	CompositeDecisionRuleIDReference getCurrentPolicyIDReference();
 
 	/**
 	 * Gets currently evaluated {@link CompositeDecisionRuleIDReference}
 	 *
-	 * @return {@link CompositeDecisionRuleIDReference} or <code>null</code>
+	 * @return {@link CompositeDecisionRuleIDReference} or {@code null}
 	 */
 	CompositeDecisionRuleIDReference getCurrentPolicySetIDReference();
 

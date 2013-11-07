@@ -32,10 +32,10 @@ public class LogicalFunctions
 	 * The evaluation SHALL stop with a result of "False" if any argument
 	 * evaluates to "False", leaving the rest of the arguments unevaluated.
 	 *
-	 * @param context
-	 * @param values
+	 * @param context evaluation context
+	 * @param values function parameters
 	 * @return {@link BooleanExp} representing function evaluation result
-	 * @throws EvaluationException if an evaluation error occurs
+	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -70,10 +70,10 @@ public class LogicalFunctions
 	 * The evaluation SHALL stop with a result of "True" if any argument
 	 * evaluates to "True", leaving the rest of the arguments unevaluated.
 	 *
-	 * @param context
-	 * @param values
-	 * @return
-	 * @throws EvaluationException
+	 * @param context evaluation context
+	 * @param values function parameters
+	 * @return {@link BooleanExp} representing function evaluation result
+	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -108,11 +108,11 @@ public class LogicalFunctions
 	 * The evaluation of arguments SHALL stop if it is determined that evaluating
 	 * the remaining arguments will not satisfy the requirement.
 	 *
-	 * @param context
-	 * @param n
-	 * @param values
-	 * @return
-	 * @throws EvaluationException
+	 * @param context evaluation context
+	 * @param n minimum number of parameters
+	 * @param values function parameters
+	 * @return {@link BooleanExp} representing function evaluation result
+	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:n-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")

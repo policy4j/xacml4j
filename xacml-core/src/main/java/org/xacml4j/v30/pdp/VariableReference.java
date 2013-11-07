@@ -15,9 +15,9 @@ public class VariableReference implements Expression
 	private VariableDefinition varDef;
 
 	/**
-	 * Constructs variable reference with a given identifier.
+	 * Constructs variable reference with a given definition.
 	 *
-	 * @param variableId a  variable identifier
+	 * @param varDef a variable definition
 	 */
 	public VariableReference(VariableDefinition varDef){
 		Preconditions.checkNotNull(varDef);

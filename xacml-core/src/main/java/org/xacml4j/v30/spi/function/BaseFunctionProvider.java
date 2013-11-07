@@ -16,10 +16,9 @@ class BaseFunctionProvider implements FunctionProvider
 	}
 
 	/**
-	 * Adds given {@link FunctionSpecImpl} to this factory
+	 * Adds given {@link FunctionSpec} to this factory
 	 *
 	 * @param spec a function specification
-	 * @exception
 	 */
 	protected final void add(FunctionSpec spec)
 	{

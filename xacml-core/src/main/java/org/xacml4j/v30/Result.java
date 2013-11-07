@@ -50,9 +50,9 @@ public class Result
 	}
 
 	/**
-	 * Creates {@link Result.Builder} with given decision and {@link StatusCodeId#
-	 * @param d
-	 * @return
+	 * Creates {@link Result.Builder} with given decision
+	 * @param d decision
+	 * @return decision builder
 	 */
 	public static Result.Builder createOk(Decision d){
 		Preconditions.checkArgument(!d.isIndeterminate());

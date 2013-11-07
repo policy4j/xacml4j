@@ -172,7 +172,7 @@ public class IPAddress implements Serializable
 	 * Gets IP address mask
 	 *
 	 * @return {@link InetAddress} representing
-	 * IP address mask or <code>null</code>
+	 * IP address mask or {@code null}
 	 * if mask is not specified
 	 */
 	public InetAddress getMask(){

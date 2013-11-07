@@ -57,7 +57,7 @@ public class BasePolicyDecisionAuditor
 	 * Tests if a given {@link RequestContext} need to be audited
 	 *
 	 * @param req a decision request
-	 * @return <code>true</code> if request needs to be audited
+	 * @return {@code true} if request needs to be audited
 	 */
 	protected boolean isAuditable(PolicyDecisionPoint pdp, RequestContext req){
 		return false;

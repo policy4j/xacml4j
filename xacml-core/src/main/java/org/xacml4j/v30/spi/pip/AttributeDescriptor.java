@@ -36,8 +36,8 @@ public final class AttributeDescriptor
 	}
 
 	/**
-	 * Gets attribute defal
-	 * @return
+	 * Gets attribute default value
+	 * @return attribute default value
 	 */
 	public BagOfAttributeExp getDefaultValue(){
 		return defaultValue;

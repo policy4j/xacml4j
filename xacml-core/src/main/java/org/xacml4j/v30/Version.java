@@ -80,11 +80,10 @@ public final class Version implements Comparable<Version>
     }
 
     /**
-     * Checks if a given version vector starting at given
-     * pos is all <code>0</code>
+     * Checks if a given version vector starting at given pos is all {@code 0}
      * @param versions a version vector
      * @param startIdx a start index
-     * @return <code>true</code> if all <code>0</code>
+     * @return {@code true} if all versions are equal to {@code 0}
      */
     private boolean checkAllZeros(int[] versions, int startIdx)
     {

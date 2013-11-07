@@ -52,8 +52,8 @@ public interface DecisionCombiningAlgorithmProvider
 	 * algorithm is supported by this provider
 	 *
 	 * @param algorithmId an algorithm identifier
-	 * @return <code>true</code> if algorithm
-	 * is supported and <code>false</code> otherwise
+	 * @return {@code true} if algorithm
+	 * is supported and {@code false} otherwise
 	 */
 	boolean isRuleAgorithmProvided(String algorithmId);
 
@@ -62,8 +62,8 @@ public interface DecisionCombiningAlgorithmProvider
 	 * algorithm is supported by this provider
 	 *
 	 * @param algorithmId an algorithm identifier
-	 * @return <code>true</code> if algorithm
-	 * is supported and <code>false</code> otherwise
+	 * @return {@code true} if algorithm
+	 * is supported and {@code false} otherwise
 	 */
 	boolean isPolicyAgorithmProvided(String algorithmId);
 }

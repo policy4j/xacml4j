@@ -17,7 +17,7 @@ public final class DecisionCombingingAlgorithms
 
 	/**
 	 * A helper method which invokes {@link DecisionRule#createContext(EvaluationContext)}
-	 * then sub-sequentially invokes {@link DecisionRule#evaluateIfMatch(EvaluationContext)}
+	 * then sub-sequentially invokes {@link DecisionRule#evaluate(org.xacml4j.v30.EvaluationContext)}
 	 * with the just created {@link EvaluationContext} instance as an argument
 	 *
 	 * @param context a parent evaluation context

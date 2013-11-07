@@ -9,7 +9,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public final class PolicyIDReference extends
@@ -33,7 +32,7 @@ public final class PolicyIDReference extends
 	 * Test this reference points to a given policy
 	 *
 	 * @param policy a policy
-	 * @return <code>true</code> if a this reference
+	 * @return {@code true} if a this reference
 	 * points to a given policy
 	 */
 	@Override
@@ -161,8 +160,7 @@ public final class PolicyIDReference extends
 		 * @param context a parent evaluation context
 		 * @exception IllegalArgumentException if enclosing context
 		 * {@link EvaluationContext#getCurrentPolicySet()} returns
-		 * <code>null</code> or given policy ID reference is
-		 * <code>null</code>
+		 * {@code null} or given policy ID reference is {@code null}
 		 */
 		PolicyIDReferenceEvaluationContext(EvaluationContext context){
 			super(context);
