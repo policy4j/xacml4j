@@ -1,15 +1,12 @@
 package org.xacml4j.v30;
 
-import org.junit.Test;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.xacml4j.v30.types.IntegerType;
 
 /**
  * @author Valdas Sevelis

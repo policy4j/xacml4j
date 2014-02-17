@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
@@ -20,13 +18,26 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.TypeToXacml30;
 import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExpType;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 

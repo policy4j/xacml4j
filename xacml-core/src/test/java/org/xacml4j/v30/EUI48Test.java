@@ -28,7 +28,6 @@ import java.net.NetworkInterface;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

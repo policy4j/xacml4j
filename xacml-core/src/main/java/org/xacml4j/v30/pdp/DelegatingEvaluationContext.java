@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TimeZone;
 
-import com.google.common.base.Objects;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.Advice;
@@ -26,6 +25,7 @@ import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.types.Types;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
 

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 
 import org.oasis.xacml.v30.jaxb.AdviceExpressionType;
 import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;

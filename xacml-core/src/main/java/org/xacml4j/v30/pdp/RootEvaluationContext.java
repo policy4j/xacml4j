@@ -1,16 +1,5 @@
 package org.xacml4j.v30.pdp;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.Types;
-
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +9,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.PolicyResolutionException;
+import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
+import org.xacml4j.v30.types.Types;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
 
 
 public final class RootEvaluationContext implements EvaluationContext {

@@ -1,7 +1,5 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
 import javax.security.auth.x500.X500Principal;
 
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
@@ -9,7 +7,6 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
-import org.xacml4j.v30.Time;
 
 import com.google.common.base.Preconditions;
 

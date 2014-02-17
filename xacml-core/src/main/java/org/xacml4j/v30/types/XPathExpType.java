@@ -1,7 +1,5 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
 import javax.xml.namespace.QName;
 
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
