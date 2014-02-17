@@ -2,19 +2,18 @@ package org.xacml4j.v30.types;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.xml.namespace.QName;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
+import com.google.common.reflect.TypeToken;
 
 public abstract class Types
 {
@@ -25,25 +24,38 @@ public abstract class Types
 	 * @return {@link AttributeExpType} a data type instance
 	 */
 	public abstract AttributeExpType getType(String typeId);
-
+	
 	/**
-	 * Creates {@link AttributeExp} of a given type
-	 *
+	 * Adds given capability <T> to the given type
+	 * 
 	 * @param typeId a type identifier
-	 * @param value a value for an attribute
-	 * @return {@link AttributeExp} instance
+	 * @param capability a type capability
 	 */
-	public abstract  AttributeExp valueOf(String typeId, Object value);
-
+	public abstract <T extends TypeCapability> void addCapability(String typeId, Class<T> capability, T capabilityImpl);
+	
 	/**
-	 * Creates {@link AttributeExp} of a given type
-	 *
-	 * @param typeId a type identifier
-	 * @param value a value for an attribute
-	 * @param attrs additional attributes
-	 * @return {@link AttributeExp} instance
+	 * Adds given capability <T> to the given type
+	 * 
+	 * @param type a type
+	 * @param capability a type capability
 	 */
-	public abstract AttributeExp valueOf(String typeId, Object value, Map<QName, String> attrs);
+	public abstract <T extends TypeCapability> void addCapability(AttributeExpType type, Class<T> capability, T capabilityImpl);
+	
+	/**
+	 * Gets capability <T> for the given type
+	 * 
+	 * @param typeId a type identifier
+	 * @return type capability or <code>null</code> if capability is not supported
+	 */
+	public abstract <T extends TypeCapability> T getCapability(String typeId, Class<T> capability);
+	
+	/**
+	 * Gets capability <T> for the given type
+	 * 
+	 * @param typeId a type
+	 * @return type capability or <code>null</code> if capability is not supported
+	 */
+	public abstract <T extends TypeCapability> T getCapability(AttributeExpType type, Class<T> capability);
 
 	public static Builder builder(){
 		return new Builder();
@@ -52,14 +64,15 @@ public abstract class Types
 	public final static class Builder
 	{
 		private final static Logger log = LoggerFactory.getLogger(Builder.class);
-
-		private final static String XPATH_CATEGORY_ATTR_NAME = "XPathCategory";
-
+			
 		private Map<String, AttributeExpType> types;
+		
+		private ConcurrentMap<String, ClassToInstanceMap<TypeCapability>> typeCapabilities;
 
 
 		private Builder(){
 			this.types = new ConcurrentHashMap<String, AttributeExpType>();
+			this.typeCapabilities = new ConcurrentHashMap<String, ClassToInstanceMap<TypeCapability>>();
 		}
 
 		/**
@@ -71,22 +84,72 @@ public abstract class Types
 		{
 			// default types
 			addType(AnyURIType.ANYURI);
+			addTypeCapability(AnyURIType.ANYURI, TypeToString.class, AnyURIType.ANYURI);
+			addTypeCapability(AnyURIType.ANYURI, TypeToXacml30.class, AnyURIType.ANYURI);
+			
 			addType(Base64BinaryType.BASE64BINARY);
+			addTypeCapability(Base64BinaryType.BASE64BINARY, TypeToString.class, Base64BinaryType.BASE64BINARY);
+			addTypeCapability(Base64BinaryType.BASE64BINARY, TypeToXacml30.class, Base64BinaryType.BASE64BINARY);
+			
 			addType(BooleanType.BOOLEAN);
+			addTypeCapability(BooleanType.BOOLEAN, TypeToString.class, BooleanType.BOOLEAN);
+			addTypeCapability(BooleanType.BOOLEAN, TypeToXacml30.class, BooleanType.BOOLEAN);
+			
 			addType(DateTimeType.DATETIME);
+			addTypeCapability(DateTimeType.DATETIME, TypeToString.class, DateTimeType.DATETIME);
+			addTypeCapability(DateTimeType.DATETIME, TypeToXacml30.class, DateTimeType.DATETIME);
+			
 			addType(DateType.DATE);
+			addTypeCapability(DateType.DATE, TypeToString.class, DateType.DATE);
+			addTypeCapability(DateType.DATE, TypeToXacml30.class, DateType.DATE);
+			
 			addType(DayTimeDurationType.DAYTIMEDURATION);
+			addTypeCapability(DayTimeDurationType.DAYTIMEDURATION, TypeToString.class, DayTimeDurationType.DAYTIMEDURATION);
+			addTypeCapability(DayTimeDurationType.DAYTIMEDURATION, TypeToXacml30.class, DayTimeDurationType.DAYTIMEDURATION);
+			
 			addType(DNSNameType.DNSNAME);
+			addTypeCapability(DNSNameType.DNSNAME, TypeToString.class, DNSNameType.DNSNAME);
+			addTypeCapability(DNSNameType.DNSNAME, TypeToXacml30.class, DNSNameType.DNSNAME);
+			
 			addType(DoubleType.DOUBLE);
+			addTypeCapability(DoubleType.DOUBLE, TypeToString.class, DoubleType.DOUBLE);
+			addTypeCapability(DoubleType.DOUBLE, TypeToXacml30.class, DoubleType.DOUBLE);
+			
 			addType(HexBinaryType.HEXBINARY);
+			addTypeCapability(HexBinaryType.HEXBINARY, TypeToString.class, HexBinaryType.HEXBINARY);
+			addTypeCapability(HexBinaryType.HEXBINARY, TypeToXacml30.class, HexBinaryType.HEXBINARY);
+			
 			addType(IntegerType.INTEGER);
+			addTypeCapability(IntegerType.INTEGER, TypeToString.class, IntegerType.INTEGER);
+			addTypeCapability(IntegerType.INTEGER, TypeToXacml30.class, IntegerType.INTEGER);
+			
 			addType(IPAddressType.IPADDRESS);
+			addTypeCapability(IPAddressType.IPADDRESS, TypeToString.class, IPAddressType.IPADDRESS);
+			addTypeCapability(IPAddressType.IPADDRESS, TypeToXacml30.class, IPAddressType.IPADDRESS);
+			
 			addType(RFC822NameType.RFC822NAME);
+			addTypeCapability(RFC822NameType.RFC822NAME, TypeToString.class, RFC822NameType.RFC822NAME);
+			addTypeCapability(RFC822NameType.RFC822NAME, TypeToXacml30.class, RFC822NameType.RFC822NAME);
+			
 			addType(StringType.STRING);
+			addTypeCapability(StringType.STRING, TypeToString.class, StringType.STRING);
+			addTypeCapability(StringType.STRING, TypeToXacml30.class, StringType.STRING);
+			
 			addType(TimeType.TIME);
+			addTypeCapability(TimeType.TIME, TypeToString.class, TimeType.TIME);
+			addTypeCapability(TimeType.TIME, TypeToXacml30.class, TimeType.TIME);
+			
 			addType(X500NameType.X500NAME);
+			addTypeCapability(X500NameType.X500NAME, TypeToString.class, X500NameType.X500NAME);
+			addTypeCapability(X500NameType.X500NAME, TypeToXacml30.class, X500NameType.X500NAME);
+			
 			addType(XPathExpType.XPATHEXPRESSION);
+			addTypeCapability(XPathExpType.XPATHEXPRESSION, TypeToXacml30.class, XPathExpType.XPATHEXPRESSION);
+			
 			addType(YearMonthDurationType.YEARMONTHDURATION);
+			addTypeCapability(YearMonthDurationType.YEARMONTHDURATION, TypeToString.class, YearMonthDurationType.YEARMONTHDURATION);
+			addTypeCapability(YearMonthDurationType.YEARMONTHDURATION, TypeToXacml30.class, YearMonthDurationType.YEARMONTHDURATION);
+			
 
 			// short type aliases
 			addType("anyURI", AnyURIType.ANYURI);
@@ -141,22 +204,34 @@ public abstract class Types
 				}
 
 				@Override
-				public AttributeExp valueOf(String typeId, Object value)
-						throws XacmlSyntaxException {
+				public <T extends TypeCapability> void addCapability(String typeId,
+						Class<T> capability, T capabilityImpl) {
 					AttributeExpType type = getType(typeId);
-					return type.create(value);
+					addTypeCapability(type, capability, capabilityImpl);
+				}
+				
+				@Override
+				public <T extends TypeCapability> void addCapability(AttributeExpType type,
+						Class<T> capability, T capabilityImpl) {
+					addTypeCapability(type, capability, capabilityImpl);
 				}
 
 				@Override
-				public AttributeExp valueOf(String typeId,
-						Object value, Map<QName, String> values) throws XacmlSyntaxException
-				{
+				public <T extends TypeCapability> T getCapability(
+						String typeId, Class<T> capability) {
 					AttributeExpType type = getType(typeId);
-					try {
-						return type.create(value, getXPathCategory(values));
-					} catch (Exception e) {
-						throw new XacmlSyntaxException(e);
+					ClassToInstanceMap<TypeCapability> map = typeCapabilities.get(type.getDataTypeId());
+					return (map != null)?map.getInstance(capability):null;
+				}
+				
+				@Override
+				public <T extends TypeCapability> T getCapability(
+						AttributeExpType type, Class<T> capability) {
+					ClassToInstanceMap<TypeCapability> map = typeCapabilities.get(type.getDataTypeId());
+					if(map != null){
+						return map.getInstance(capability);
 					}
+					return null;
 				}
 			};
 		}
@@ -164,7 +239,13 @@ public abstract class Types
 		private void addType(AttributeExpType type){
 			addType(type.getDataTypeId(), type);
 		}
-
+		
+		/**
+		 * Adds type with new type identifier alias
+		 * 
+		 * @param typeId a type identifier alias
+		 * @param type
+		 */
 		private void addType(String typeId, AttributeExpType type){
 			if(log.isDebugEnabled()){
 				log.debug("Adding typeId=\"{}\"", typeId);
@@ -173,16 +254,29 @@ public abstract class Types
 					"Type with identifier=\"%s\" already exist", typeId);
 			this.types.put(typeId, type);
 		}
-
-		private static AttributeCategory getXPathCategory(Map<QName, String> attr)
-				throws XacmlSyntaxException
-			{
-				for (QName n : attr.keySet()) {
-					if (n.getLocalPart().equals(XPATH_CATEGORY_ATTR_NAME)) {
-						return AttributeCategories.parse(attr.get(n));
-					}
-				}
-				return null;
+		
+		private <T extends TypeCapability> void addTypeCapability(AttributeExpType type, 
+				Class<T> capability, T capabilityImpl) {
+			if(!types.containsKey(type.getDataTypeId())){
+				throw new XacmlSyntaxException(
+						String.format("Type=\"%s\" does not exist", type));
 			}
+			TypeToken<?> capabilityTypeTok = TypeToken.of(capability);
+			TypeToken<?> capabilityImplTypeTok = TypeToken.of(capabilityImpl.getClass());
+			Preconditions.checkArgument(capability.isInterface());
+			Preconditions.checkArgument(capabilityTypeTok.isAssignableFrom(capabilityImplTypeTok));
+			ClassToInstanceMap<TypeCapability> map = typeCapabilities.get(type.getDataTypeId());
+			if(map == null){
+				map = MutableClassToInstanceMap.<TypeCapability>create(
+						new ConcurrentHashMap<Class<? extends TypeCapability>, TypeCapability>());
+				ClassToInstanceMap<TypeCapability> prev = typeCapabilities.putIfAbsent(type.getDataTypeId(), map);
+				if(prev != null){
+					map = prev;
+				}
+			}
+			if(!map.containsKey(capability)){
+				map.putInstance(capability, capabilityImpl);
+			}
+		}
 	}
 }

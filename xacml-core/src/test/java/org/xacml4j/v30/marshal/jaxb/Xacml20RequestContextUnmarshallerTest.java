@@ -18,6 +18,7 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.collect.Iterables;
@@ -32,7 +33,7 @@ public class Xacml20RequestContextUnmarshallerTest
 	@Before
 	public void init() throws Exception
 	{
-		this.unmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.unmarshaller = new Xacml20RequestContextUnmarshaller(Types.builder().defaultTypes().create());
 	}
 
 	@Test
@@ -59,7 +60,7 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertEquals(ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(ANYURI.fromAny("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
 		Attributes action = request.getOnlyAttributes(AttributeCategories.ACTION);
@@ -104,7 +105,7 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(ANYURI.create("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(ANYURI.fromAny("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Attributes resource = request.getOnlyAttributes(AttributeCategories.RESOURCE);
 		assertNotNull(resource);
@@ -112,7 +113,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 
 		assertNotNull(resourceId);
-		assertEquals(ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(ANYURI.fromAny("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
 		Attributes action = request.getOnlyAttributes(AttributeCategories.ACTION);
@@ -147,7 +148,7 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(ANYURI.create("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(ANYURI.fromAny("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Collection<Attributes> resource = request.getAttributes(AttributeCategories.RESOURCE);
 		assertNotNull(resource);
@@ -157,13 +158,13 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute resourceId0 = Iterables.getOnlyElement(resource0.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId0);
 		assertTrue(resourceId0.isIncludeInResult());
-		assertEquals(ANYURI.create("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId0.getValues()));
+		assertEquals(ANYURI.fromAny("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId0.getValues()));
 
 		Attributes resource1 = it.next();
 		Attribute resourceId1 = Iterables.getOnlyElement(resource1.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId1);
 		assertTrue(resourceId1.isIncludeInResult());
-		assertEquals(ANYURI.create("http://medico.com/record/patient/AnotherResource"), Iterables.getOnlyElement(resourceId1.getValues()));
+		assertEquals(ANYURI.fromAny("http://medico.com/record/patient/AnotherResource"), Iterables.getOnlyElement(resourceId1.getValues()));
 
 
 
@@ -192,7 +193,7 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertEquals(ANYURI.create("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(ANYURI.fromAny("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 		Attribute simpleFileName = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:simple-file-name"));
 		assertNotNull(simpleFileName);

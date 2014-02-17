@@ -12,7 +12,9 @@ import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.types.Types;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -22,11 +24,12 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 
 	private final Gson json;
 
-	public JsonRequestContextMarshaller() {
-		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
+	public JsonRequestContextMarshaller(Types types) {
+		Preconditions.checkNotNull(types);
+		this.json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer(types))
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}

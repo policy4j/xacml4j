@@ -10,10 +10,5 @@ public final class HexBinaryExp extends
 	HexBinaryExp(HexBinaryType type, BinaryValue value) {
 		super(type, value);
 	}
-
-	@Override
-	public String toXacmlString() {
-		return getValue().toHexEncoded();
-	}
 }
 

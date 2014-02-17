@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
@@ -16,10 +17,14 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.EffectType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.TypeToXacml30;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExpType;
 
 import com.google.common.collect.Iterables;
@@ -37,9 +42,9 @@ public class Xacml20ResponseContextMarshaller
 	private final Mapper mapper;
 	private final ObjectFactory factory;
 
-	public Xacml20ResponseContextMarshaller(){
+	public Xacml20ResponseContextMarshaller(Types types){
 		super(JAXBContextUtil.getInstance());
-		this.mapper = new Mapper();
+		this.mapper = new Mapper(types);
 		this.factory = new ObjectFactory();
 	}
 
@@ -48,9 +53,7 @@ public class Xacml20ResponseContextMarshaller
 		ResponseType response = mapper.create(source);
 		return factory.createResponse(response);
 	}
-
-
-
+	
 	static class Mapper
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
@@ -68,20 +71,16 @@ public class Xacml20ResponseContextMarshaller
 				.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE)
 				.build();
 
-		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = ImmutableMap.of(
-				DecisionType.DENY, Decision.DENY,
-				DecisionType.PERMIT, Decision.PERMIT,
-				DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE,
-				DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-
-		private final static Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
-				EffectType.DENY, Effect.DENY,
-				EffectType.PERMIT, Effect.PERMIT);
-
 		private final static Map<Effect, EffectType> v30ToV20EffectMapping = ImmutableMap.of(
 			Effect.DENY, EffectType.DENY,
 			Effect.PERMIT, EffectType.PERMIT);
-
+		
+		private Types types;
+		
+		public Mapper(Types types){
+			Preconditions.checkNotNull(types);
+			this.types = types;
+		}
 		public ResponseType create(ResponseContext response)
 		{
 			if(log.isDebugEnabled()){
@@ -137,7 +136,9 @@ public class Xacml20ResponseContextMarshaller
 			Collection<Attribute> attrs = resource.getAttributes(RESOURCE_ID);
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
-				return Iterables.getOnlyElement(resourceId.getValues()).toXacmlString();
+				AttributeExp v =  Iterables.getOnlyElement(resourceId.getValues());
+				TypeToString toString = types.getCapability(v.getType(), TypeToString.class);
+				return toString.toString();
 			}
 			Collection<AttributeExp> values =  resource.getAttributeValues(
 					CONTENT_SELECTOR, XPathExpType.XPATHEXPRESSION);
@@ -145,7 +146,9 @@ public class Xacml20ResponseContextMarshaller
 					values.size() > 1){
 				return null;
 			}
-			return Iterables.getOnlyElement(values).toXacmlString();
+			AttributeExp v =  Iterables.getOnlyElement(values);
+			TypeToString toString = types.getCapability(v.getType(), TypeToString.class);
+			return toString.toString();
 		}
 
 		private ObligationsType getObligations(Result result)
@@ -191,11 +194,13 @@ public class Xacml20ResponseContextMarshaller
 
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
+			TypeToXacml30 toXacml30 = types.getCapability(a.getAttribute().getType(), TypeToXacml30.class);
+			AttributeValueType v30 = toXacml30.toXacml30(a.getAttribute());
 			AttributeAssignmentType attr = new AttributeAssignmentType();
-			AttributeExpType t = a.getAttribute().getType();
-			attr.setDataType(t.getDataTypeId());
+			attr.setDataType(v30.getDataType());
 			attr.setAttributeId(a.getAttributeId());
-			attr.getContent().add(a.getAttribute().toXacmlString());
+			attr.getContent().addAll(v30.getContent());
+			attr.getOtherAttributes().putAll(v30.getOtherAttributes());
 			return attr;
 		}
 	}

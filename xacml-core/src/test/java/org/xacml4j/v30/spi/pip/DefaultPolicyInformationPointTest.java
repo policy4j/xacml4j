@@ -114,7 +114,7 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1)
-				.attribute("testAttributeId1", StringType.STRING.bagOf("v1"))
+				.attribute("testAttributeId1", StringType.STRING.create("v1").toBag())
 				.build();
 
 		// attribute resolver found
@@ -122,7 +122,7 @@ public class DefaultPolicyInformationPointTest
 		.andReturn(ImmutableList.of(resolver1, resolver2));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 
-		expect(context.resolve(eq(k))).andReturn(StringType.STRING.bagOf("testUser"));
+		expect(context.resolve(eq(k))).andReturn(StringType.STRING.create("testUser").toBag());
 
 		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
@@ -130,7 +130,7 @@ public class DefaultPolicyInformationPointTest
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
 
-		context.setResolvedDesignatorValue(eq(a0), eq(StringType.STRING.bagOf("v1")));
+		context.setResolvedDesignatorValue(eq(a0), eq(StringType.STRING.create("v1").toBag()));
 		context.setResolvedDesignatorValue(eq(a1), eq(IntegerType.INTEGER.emptyBag()));
 
 
@@ -170,7 +170,7 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringType.STRING.bagOf("v1"))
+				.attribute("testAttributeId1", StringType.STRING.create("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
@@ -230,7 +230,7 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringType.STRING.bagOf("v1"))
+				.attribute("testAttributeId1", StringType.STRING.create("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
@@ -251,7 +251,7 @@ public class DefaultPolicyInformationPointTest
 
 		context.setResolvedDesignatorValue(
 				attr0.issuer(descriptor1WithIssuer.getIssuer()).build(),
-				StringType.STRING.bagOf("v1"));
+				StringType.STRING.create("v1").toBag());
 
 		context.setResolvedDesignatorValue(
 				attr1.issuer(descriptor1WithIssuer.getIssuer()).build(),
@@ -291,14 +291,14 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1WithNoCache)
-				.attribute("testAttributeId1", StringType.STRING.bagOf("v1"))
+				.attribute("testAttributeId1", StringType.STRING.create("v1").toBag())
 				.build();
 
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
 
 		context.setResolvedDesignatorValue(
 						attr0.issuer(descriptor1WithNoCache.getIssuer()).build(),
-						StringType.STRING.bagOf("v1"));
+						StringType.STRING.create("v1").toBag());
 
 		context.setResolvedDesignatorValue(
 						attr1.issuer(descriptor1WithNoCache.getIssuer()).build(),

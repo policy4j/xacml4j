@@ -191,11 +191,11 @@ public final class RFC822Name implements Serializable
 		return fqName;
 	}
 
-	public static RFC822Name parse(String name){
+	public static RFC822Name parse(Object name){
 		Preconditions.checkNotNull(name);
-		String trimmedName = name.trim();
-		Preconditions.checkArgument(VALID_PATTERN.matcher(name).matches(),
-				"Given value=\"%s\" is invalid RFC822 name", name);
+		String trimmedName = ((String)name).trim();
+		Preconditions.checkArgument(VALID_PATTERN.matcher(trimmedName).matches(),
+				"Given value=\"%s\" is invalid RFC822 name", trimmedName);
 		String [] parts = trimmedName.split("@");
 		return new RFC822Name(parts[0], parts[1]);
 	}

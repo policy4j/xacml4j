@@ -2,30 +2,39 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.AttributeExp;
 
 
 public class XPathExpressionTypeTest
 {
+	private Types types;
+	
+	@Before
+	public void init(){
+		this.types = Types.builder().defaultTypes().create();
+	}
 
 	@Test
 	public void testCreateXPathAttribute() throws Exception
 	{
 		XPathExp v = XPathExpType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
-		assertEquals("/test", v.toXacmlString());
+		assertEquals("/test", v.getPath());
 		assertEquals(AttributeCategories.SUBJECT_RECIPIENT, v.getCategory());
 	}
-
-	@Test(expected=IllegalArgumentException.class)
-	public void testCreateXPathWithoutCategory()
+	
+	@Test
+	public void testToXacml30()
 	{
-		XPathExpType.XPATHEXPRESSION.create("/test");
-	}
-
-	@Test(expected=ClassCastException.class)
-	public void testCreateXPathWithCategoryAsString()
-	{
-		XPathExpType.XPATHEXPRESSION.create("/test", "test");
+		TypeToXacml30 toXacml = types.getCapability(XPathExpType.XPATHEXPRESSION, TypeToXacml30.class);
+		XPathExp xpath0 = XPathExpType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
+		AttributeValueType xacml = toXacml.toXacml30(xpath0);
+		assertEquals("/test", xacml.getContent().get(0));
+		assertEquals(AttributeCategories.SUBJECT_RECIPIENT.getId(), xacml.getOtherAttributes().get(XPathExpType.XPATH_CATEGORY_ATTR_NAME));
+		AttributeExp xpath1 = toXacml.fromXacml30(xacml);
+		assertEquals(xpath0, xpath1);
 	}
 }

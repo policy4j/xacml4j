@@ -67,21 +67,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.opensaml</groupId>
-				<artifactId>opensaml</artifactId>
-				<version>2.5.1-1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>log4j-over-slf4j</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
 			    <groupId>com.yammer.metrics</groupId>
 			    <artifactId>metrics-core</artifactId>
 			    <version>${yammer.metrics.version}</version>

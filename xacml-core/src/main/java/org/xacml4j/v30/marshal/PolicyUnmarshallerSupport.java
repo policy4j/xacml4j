@@ -1,13 +1,5 @@
 package org.xacml4j.v30.marshal;
 
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
@@ -104,43 +96,7 @@ public class PolicyUnmarshallerSupport
 		return algorithm;
 	}
 
-	/**
-	 * Gets data type via date type identifier
-	 *
-	 * @param typeId a data type identifier
-	 * @return {@link AttributeExpType}
-	 * @throws XacmlSyntaxException
-	 */
-	protected AttributeExpType getDataType(String typeId)
-		throws XacmlSyntaxException
-	{
-		return types.getType(typeId);
-	}
-
 	protected Types getTypes(){
 		return types;
-	}
-
-	protected  AttributeExp createAttributeValue(
-			String typeId,
-			Object value, Map<QName, String> values) throws XacmlSyntaxException
-	{
-		AttributeExpType type = getDataType(typeId);
-		try {
-			return type.create(value, getXPathCategory(values));
-		} catch (Exception e) {
-			throw new XacmlSyntaxException(e);
-		}
-	}
-
-	private  AttributeCategory getXPathCategory(Map<QName, String> attr)
-		throws XacmlSyntaxException
-	{
-		for (QName n : attr.keySet()) {
-			if (n.getLocalPart().equals("XPathCategory")) {
-				return AttributeCategories.parse(attr.get(n));
-			}
-		}
-		return null;
 	}
 }

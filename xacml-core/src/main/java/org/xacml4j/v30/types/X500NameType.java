@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
+import org.xacml4j.v30.Time;
 
 import com.google.common.base.Preconditions;
 
@@ -27,7 +29,7 @@ import com.google.common.base.Preconditions;
  * <br>The distinguished name must be specified using the grammar defined
  * in RFC 1779 or RFC 2253 (either format is acceptable).
  */
-public enum X500NameType implements AttributeExpType
+public enum X500NameType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name");
 
@@ -42,24 +44,45 @@ public enum X500NameType implements AttributeExpType
 	public boolean isConvertibleFrom(Object any) {
 		return X500Principal.class.isInstance(any) || String.class.isInstance(any);
 	}
-
-	@Override
-	public X500NameExp fromXacmlString(String v, Object ...params) {
-		Preconditions.checkNotNull(v);
-		return new X500NameExp(this, new X500Principal(v));
-	}
-
-	@Override
-	public X500NameExp create(Object any, Object ...params){
+	
+	public X500NameExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		return new X500NameExp(this, (X500Principal)any);
 	}
+	
+
+	@Override
+	public X500NameExp fromString(String v) {
+		Preconditions.checkNotNull(v);
+		return new X500NameExp(this, new X500Principal(v));
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public X500NameExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
+	
+	@Override
+	public String toString(AttributeExp exp) {
+		X500NameExp v = (X500NameExp)exp;
+		return v.getValue().toString();
+	}
+	
 
 	@Override
 	public String getDataTypeId() {
@@ -82,13 +105,8 @@ public enum X500NameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

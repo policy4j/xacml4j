@@ -53,7 +53,7 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(StringType.STRING, "value1", "value2")
+				.value(StringType.STRING.create("value1"), StringType.STRING.create("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
@@ -103,10 +103,10 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<String> a = ImmutableSet.of("test1", "test2");
+		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringType.STRING.create("test1"), StringType.STRING.create("test2"));
 		Attribute.builder("testId")
-		.values(StringType.STRING, a)
-		.value(StringType.STRING, "test2", "test3")
+		.values(a)
+		.value(StringType.STRING.create("test2"), StringType.STRING.create("test3"))
 		.build();
 	}
 

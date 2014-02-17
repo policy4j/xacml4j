@@ -54,6 +54,8 @@ import org.xacml4j.v30.pdp.PolicySetIDReference;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.pdp.VariableDefinition;
+import org.xacml4j.v30.types.TypeToXacml30;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -74,6 +76,13 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		nativeToJaxbEffectMappings = nativeToJaxbB.build();
 	}
 
+	private Types types;
+	
+	public Xacml30PolicyFromObjectModelToJaxbMapper(Types types){
+		Preconditions.checkNotNull(types);
+		this.types = types;
+	}
+	
 	public JAXBElement<?> toJaxb(CompositeDecisionRule d){
 		if(d instanceof PolicySet){
 			return toJaxb((PolicySet)d);
@@ -264,10 +273,8 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	private AttributeValueType toJaxb(AttributeExp a)
 	{
 		Preconditions.checkNotNull(a);
-		AttributeValueType jaxbAttr = factory.createAttributeValueType();
-		jaxbAttr.setDataType(a.getType().getDataTypeId());
-		jaxbAttr.getContent().add(a.toXacmlString());
-		return jaxbAttr;
+		TypeToXacml30 toXacml30 = types.getCapability(a.getType(), TypeToXacml30.class);
+		return toXacml30.toXacml30(a);
 	}
 
 	private TargetType toJaxb(Target t)
@@ -306,10 +313,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		Preconditions.checkNotNull(t);
 		MatchType jaxbMatch = factory.createMatchType();
 		jaxbMatch.setMatchId(t.getMatchId());
-		AttributeValueType v = factory.createAttributeValueType();
-		v.setDataType(t.getAttributeValue().getType().getDataTypeId());
-		v.getContent().add(t.getAttributeValue().toXacmlString());
-		jaxbMatch.setAttributeValue(v);
+		jaxbMatch.setAttributeValue(toJaxb(t.getAttributeValue()));
 		AttributeReference ref = t.getReference();
 		if(ref instanceof AttributeSelector){
 			@SuppressWarnings("unchecked")

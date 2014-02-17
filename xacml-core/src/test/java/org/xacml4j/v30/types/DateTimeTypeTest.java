@@ -7,28 +7,24 @@ import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.AttributeExp;
 
 
 public class DateTimeTypeTest
 {
 	private DateTimeType t1;
+	private Types types;
+	private TypeToString toString;
 
 	@Before
 	public void init() throws Exception{
 		this.t1 = DateTimeType.DATETIME;
+		this.types = Types.builder().defaultTypes().create();
+		this.toString = types.getCapability(DateTimeType.DATETIME, TypeToString.class);
 	}
-
-	@Test
-	public void testCreateFromCalendar()
-	{
-		Calendar c = new GregorianCalendar();
-		DateTimeExp v = t1.create(c);
-		System.out.println(v.toXacmlString());
-	}
-
 	@Test
 	public void testFromXacmlString(){
-		DateTimeExp value = t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+		DateTimeExp value = (DateTimeExp)toString.fromString("2002-05-30T09:30:10-06:00");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(5, value.getValue().getMonth());
 		assertEquals(30, value.getValue().getDay());
@@ -36,12 +32,12 @@ public class DateTimeTypeTest
 		assertEquals(30, value.getValue().getMinute());
 		assertEquals(10, value.getValue().getSecond());
 		assertEquals(-360, value.getValue().getTimezoneOffset());
-		assertEquals("2002-05-30T09:30:10-06:00", value.toXacmlString());
+		assertEquals("2002-05-30T09:30:10-06:00", toString.toString(value));
 	}
 
 	@Test
 	public void testFromXacmlStringNoTimeZone(){
-		DateTimeExp value = t1.fromXacmlString("2002-05-30T09:30:10");
+		DateTimeExp value = (DateTimeExp)t1.fromString("2002-05-30T09:30:10");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(5, value.getValue().getMonth());
 		assertEquals(30, value.getValue().getDay());
@@ -49,13 +45,13 @@ public class DateTimeTypeTest
 		assertEquals(30, value.getValue().getMinute());
 		assertEquals(10, value.getValue().getSecond());
 		assertEquals(0, value.getValue().getTimezoneOffset());
-		assertEquals("2002-05-30T09:30:10Z", value.toXacmlString());
+		assertEquals("2002-05-30T09:30:10Z", toString.toString(value));
 
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
-		t1.fromXacmlString("2002-09-24Z");
+		toString.fromString("2002-09-24Z");
 	}
 
 	@Test

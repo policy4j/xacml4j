@@ -1,19 +1,19 @@
 package org.xacml4j.v30.pdp;
 
 import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.createMockBuilder;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
+import static org.xacml4j.v30.types.StringType.STRING;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 
 
 public class RootEvaluationContextTest
@@ -32,7 +32,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
 		c.replay();
 		assertEquals(0, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -49,7 +49,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 10, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 10, resolver, handler);
 		c.replay();
 		assertEquals(10, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -66,7 +66,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
 		c.replay();
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
@@ -75,15 +75,15 @@ public class RootEvaluationContextTest
 				.dataType(StringType.STRING)
 				.issuer("test")
 				.build();
-		context.setResolvedDesignatorValue(k, StringType.STRING.bagOf("aaa"));
-		assertEquals(StringType.STRING.bagOf("aaa"), context.resolve(k));
+		context.setResolvedDesignatorValue(k, StringType.STRING.create("aaa").toBag());
+		assertEquals(StringType.STRING.create("aaa").toBag(), context.resolve(k));
 		c.verify();
 	}
 
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
@@ -91,11 +91,11 @@ public class RootEvaluationContextTest
 				.dataType(StringType.STRING)
 				.issuer("test")
 				.build();
-		expect(handler.resolve(context, k)).andReturn(StringType.STRING.bagOf("aaa", "ccc"));
+		expect(handler.resolve(context, k)).andReturn(StringType.STRING.bag().attribute(STRING.create("aaa"), STRING.create("ccc")).build());
 
 		c.replay();
-		assertEquals(StringType.STRING.bagOf("aaa", "ccc"), context.resolve(k));
-		assertEquals(StringType.STRING.bagOf("aaa", "ccc"), context.resolve(k));
+		assertEquals(StringType.STRING.bagOf(STRING.create("aaa"), STRING.create("ccc")), context.resolve(k));
+		assertEquals(StringType.STRING.bagOf(STRING.create("aaa"), STRING.create("ccc")), context.resolve(k));
 		c.verify();
 	}
 }

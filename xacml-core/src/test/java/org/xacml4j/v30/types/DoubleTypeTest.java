@@ -34,8 +34,8 @@ public class DoubleTypeTest
 	{
 		AttributeExp v0 = t1.create(1.0d);
 		AttributeExp v1 = t1.create(-2.0d);
-		assertEquals("1.0", v0.toXacmlString());
-		assertEquals("-2.0", v1.toXacmlString());
+		assertEquals("1.0", DoubleType.DOUBLE.toString(v0));
+		assertEquals("-2.0", DoubleType.DOUBLE.toString(v1));
 	}
 
 	@Test

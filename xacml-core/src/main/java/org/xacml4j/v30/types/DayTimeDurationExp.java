@@ -18,6 +18,11 @@ public final class DayTimeDurationExp extends BaseAttributeExp<DayTimeDuration>
 		Preconditions.checkArgument(!value.isSet(DatatypeConstants.YEARS) &&
 				!value.isSet(DatatypeConstants.MONTHS));
 	}
+	
+	DayTimeDurationExp(DayTimeDurationType type,
+			DayTimeDuration value) {
+		super(type, value);
+	}
 
 	@Override
 	public int compareTo(DayTimeDurationExp o) {

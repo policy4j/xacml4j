@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -31,7 +30,7 @@ import com.google.common.base.Preconditions;
  *   String = Atom / Quoted-string
  * </pre>
  * */
-public enum RFC822NameType implements AttributeExpType
+public enum RFC822NameType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name");
 
@@ -42,31 +41,38 @@ public enum RFC822NameType implements AttributeExpType
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-
-	public boolean isConvertibleFrom(Object any) {
-		return String.class.isInstance(any) || RFC822Name.class.isInstance(any);
-	}
-
-	@Override
-	public RFC822NameExp fromXacmlString(String v, Object ...params)
+	
+	public RFC822NameExp create(Object v)
 	{
 		Preconditions.checkNotNull(v);
         return new RFC822NameExp(this, RFC822Name.parse(v));
 	}
 
 	@Override
-	public RFC822NameExp create(Object any, Object ...params)
-	{
-		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertibleFrom(any),
-				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
-				any, any.getClass(), typeId);
-		if(any instanceof String){
-			return fromXacmlString((String)any);
-		}
-		return new RFC822NameExp(this, (RFC822Name)any);
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
 	}
 
+	@Override
+	public RFC822NameExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return fromString((String)v.getContent().get(0));
+	}
+
+	@Override
+	public String toString(AttributeExp exp) {
+		RFC822Name v = (RFC822Name)exp.getValue();
+		return v.toString();
+	}
+
+	@Override
+	public RFC822NameExp fromString(String v) {
+       return create(v);
+	}
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -88,15 +94,10 @@ public enum RFC822NameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
 	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
-	}
-
+	
 	@Override
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();

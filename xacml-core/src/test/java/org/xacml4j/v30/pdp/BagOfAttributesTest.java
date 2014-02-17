@@ -63,7 +63,7 @@ public class BagOfAttributesTest
 	@Test
 	public void testCreateBagFromValues()
 	{
-		BagOfAttributeExp b = StringType.STRING.bagOf("1", "aaa", "BB");
+		BagOfAttributeExp b = StringType.STRING.bagOf(StringType.STRING.create("1"), StringType.STRING.create("aaa"), StringType.STRING.create("BB"));
 		assertTrue(b.contains(StringType.STRING.create("1")));
 		assertTrue(b.contains(StringType.STRING.create("aaa")));
 		assertTrue(b.contains(StringType.STRING.create("BB")));
@@ -168,10 +168,18 @@ public class BagOfAttributesTest
 	@Test
 	public void testIntersection()
 	{
-		BagOfAttributeExp bag0 = intType.bagOf(1, 2, 3, 6);
-
-		BagOfAttributeExp bag1 = intType.bagOf(2, 2, 7, 6);
-
+		BagOfAttributeExp bag0 = intType.bagOf(
+				intType.create(1),
+				intType.create(2),
+				intType.create(3),
+				intType.create(6));
+	
+		BagOfAttributeExp bag1 = intType.bagOf(
+				intType.create(9),
+				intType.create(2),
+				intType.create(6),
+				intType.create(4));
+		
 		BagOfAttributeExp bag3 = bag0.intersection(bag1);
 		assertTrue(bag3.contains(INTEGER.create(2)));
 		assertTrue(bag3.contains(INTEGER.create(6)));
@@ -181,15 +189,16 @@ public class BagOfAttributesTest
 	@Test
 	public void testBuilder()
 	{
-		BagOfAttributeExp bag0 = INTEGER.bag().value(1,  2, 3).build();
-		BagOfAttributeExp bag1 = INTEGER.bag().value(INTEGER.create(2),  INTEGER.create(1), INTEGER.create(3)).build();
-		BagOfAttributeExp bag2 = INTEGER.bag().value(INTEGER.create(1),  2, 3).build();
+		BagOfAttributeExp bag0 = intType.bagOf(
+				intType.create(1),
+				intType.create(2),
+				intType.create(3));
+		BagOfAttributeExp bag1 = INTEGER.bag().attribute(INTEGER.create(2),  INTEGER.create(1), INTEGER.create(3)).build();
 		Iterable<AttributeExp> values = ImmutableList.<AttributeExp>of(INTEGER.create(2),  INTEGER.create(1), INTEGER.create(3));
-		BagOfAttributeExp bag3 = INTEGER.bag().values(values).build();
+		BagOfAttributeExp bag3 = INTEGER.bag().attributes(values).build();
 		BagOfAttributeExp bag4 = INTEGER.bag().attributes(values).build();
 		assertEquals(bag0, bag1);
-		assertEquals(bag1, bag2);
-		assertEquals(bag2, bag3);
-		assertEquals(bag2, bag4);
+		assertEquals(bag1, bag3);
+		assertEquals(bag1, bag4);
 	}
 }

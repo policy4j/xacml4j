@@ -38,8 +38,8 @@ public class DefaultEnviromentAttributesResolverTest
 		c.replay();
 		AttributeSet a = r.resolve(context);
 		assertEquals(DateTimeType.DATETIME.bagOf(DateTimeType.DATETIME.create(now)), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));
-		assertEquals(DateType.DATE.bagOf(now), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
-		assertEquals(TimeType.TIME.bagOf(now), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
+		assertEquals(DateType.DATE.create(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
+		assertEquals(TimeType.TIME.create(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
 		c.verify();
 	}
 }

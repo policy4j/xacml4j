@@ -18,6 +18,7 @@ import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.Versionable;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -41,11 +42,12 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 
 	public InMemoryPolicyRepository(
 			String id,
+			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 		throws Exception
 	{
-		super(id, functions, decisionAlgorithms);
+		super(id, types, functions, decisionAlgorithms);
 		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>(INITIAL_POLICY_MAP_SIZE);
 		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>(INITIAL_POLICYSET_MAP_SIZE);
 	}

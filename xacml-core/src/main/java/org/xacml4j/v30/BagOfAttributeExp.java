@@ -277,28 +277,6 @@ public final class BagOfAttributeExp
 			this.bagType = new BagOfAttributeExpType(type);
 		}
 
-		public Builder value(Object ...values){
-			for(Object v : values){
-				if(v instanceof AttributeExp){
-					attribute((AttributeExp)v);
-					continue;
-				}
-				this.valuesBuilder.add(bagType.getDataType().create(v));
-			}
-			return this;
-		}
-
-		public Builder values(Iterable<? extends Object> values){
-			for(Object v : values){
-				if(v instanceof AttributeExp){
-					attribute((AttributeExp)v);
-					continue;
-				}
-				this.valuesBuilder.add(bagType.getDataType().create(v));
-			}
-			return this;
-		}
-
 		public Builder attribute(AttributeExp ...values){
 			for(AttributeExp v : values){
 				if(!v.getType().equals(bagType.getDataType())){

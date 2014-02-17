@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -9,7 +8,7 @@ import org.xacml4j.v30.BagOfAttributeExpType;
 
 import com.google.common.base.Preconditions;
 
-public enum IntegerType implements AttributeExpType
+public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer");
 
@@ -26,16 +25,14 @@ public enum IntegerType implements AttributeExpType
 		Short.class.isInstance(any) || Byte.class.isInstance(any) ||
 		String.class.isInstance(any);
 	}
-
-
-	@Override
-	public IntegerExp create(Object any, Object ...params){
+	
+	public IntegerExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		if(Byte.class.isInstance(any)){
 			return new IntegerExp(this, ((Byte)any).longValue());
@@ -50,7 +47,27 @@ public enum IntegerType implements AttributeExpType
 	}
 
 	@Override
-	public IntegerExp fromXacmlString(String v, Object ...params) {
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public IntegerExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return fromString((String)v.getContent().get(0));
+	}
+
+	@Override
+	public String toString(AttributeExp exp) {
+		IntegerExp v = (IntegerExp)exp.getValue();
+		return v.getValue().toString();
+	}
+
+	@Override
+	public IntegerExp fromString(String v) {
         Preconditions.checkNotNull(v);
 		if ((v.length() >= 1) &&
         		(v.charAt(0) == '+')){
@@ -75,7 +92,7 @@ public enum IntegerType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
 	}
 
@@ -83,12 +100,7 @@ public enum IntegerType implements AttributeExpType
 	public BagOfAttributeExp.Builder bag(){
 		return new BagOfAttributeExp.Builder(this);
 	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
-	}
-
+	
 	@Override
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();

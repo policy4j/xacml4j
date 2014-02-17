@@ -24,6 +24,7 @@ import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+import org.xacml4j.v30.types.Types;
 
 
 public class XacmlPolicyUnmarshallerTest
@@ -34,7 +35,9 @@ public class XacmlPolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
+		Types types = Types.builder().defaultTypes().create();
 		reader = new XacmlPolicyUnmarshaller(
+				types,
 				FunctionProviderBuilder
 				.builder()
 				.defaultFunctions()
@@ -42,7 +45,7 @@ public class XacmlPolicyUnmarshallerTest
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
 				.withDefaultAlgorithms().create());
-		writer = new Xacml30PolicyMarshaller();
+		writer = new Xacml30PolicyMarshaller(types);
 	}
 
 	@SuppressWarnings("unchecked")

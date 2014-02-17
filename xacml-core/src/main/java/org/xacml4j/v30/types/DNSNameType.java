@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -35,7 +34,7 @@ import com.google.common.base.Preconditions;
  * all ports numbered "x" and above.
  * <br>[This syntax is taken from the Java SocketPermission.]
  */
-public enum DNSNameType implements AttributeExpType
+public enum DNSNameType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName");
 
@@ -63,22 +62,40 @@ public enum DNSNameType implements AttributeExpType
 		return create(name, PortRange.getRange(lowerBound, upperBound));
 	}
 
-	@Override
-	public DNSNameExp create(Object any, Object ...params) {
+	public DNSNameExp create(Object any) {
 		Preconditions.checkNotNull(any);
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
-		return fromXacmlString((String) any);
+		return fromString((String) any);
 	}
 
 	@Override
-	public DNSNameExp fromXacmlString(String v, Object ...params) {
-		return new DNSNameExp(this,
-				DNSName.parse(v));
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
 	}
 
+	@Override
+	public DNSNameExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
+
+	@Override
+	public String toString(AttributeExp exp) {
+		DayTimeDurationExp v = (DayTimeDurationExp)exp.getValue();
+		return v.getValue().toString();
+	}
+
+	@Override
+	public DNSNameExp fromString(String v) {
+		return new DNSNameExp(this, DNSName.parse(v));
+	}
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -100,13 +117,8 @@ public enum DNSNameType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

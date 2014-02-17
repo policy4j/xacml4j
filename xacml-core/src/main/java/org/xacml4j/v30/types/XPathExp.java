@@ -19,9 +19,4 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 	public AttributeCategory getCategory(){
 		return getValue().getCategory();
 	}
-
-	@Override
-	public String toXacmlString() {
-		return getPath();
-	}
 }

@@ -21,6 +21,7 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 
 
 public class RuleTest
@@ -95,7 +96,8 @@ public class RuleTest
 				.withEffect(Effect.DENY)
 				.build();
 		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).build();
-		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, 0, resolver, handler));
+		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(
+				Types.builder().defaultTypes().create(), false, 0, resolver, handler));
 
 	}
 

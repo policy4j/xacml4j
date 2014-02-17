@@ -144,9 +144,9 @@ public class BagFunctionsTest
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIExp v0 = AnyURIType.ANYURI.create("http://www.test0.org");
-		AnyURIExp v1 = AnyURIType.ANYURI.create("http://www.test1.org");
-		AnyURIExp v2 = AnyURIType.ANYURI.create("http://www.test2.org");
+		AnyURIExp v0 = AnyURIType.ANYURI.fromAny("http://www.test0.org");
+		AnyURIExp v1 = AnyURIType.ANYURI.fromAny("http://www.test1.org");
+		AnyURIExp v2 = AnyURIType.ANYURI.fromAny("http://www.test2.org");
 		BagOfAttributeExp bag = AnyURIType.ANYURI.bagOf(v0);
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
 		assertEquals(IntegerType.INTEGER.create(1), BagFunctions.anyURIBagSize(bag));

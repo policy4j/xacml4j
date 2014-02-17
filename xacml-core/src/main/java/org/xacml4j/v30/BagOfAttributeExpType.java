@@ -1,8 +1,6 @@
 package org.xacml4j.v30;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 import com.google.common.base.Objects;
@@ -50,7 +48,7 @@ public final class BagOfAttributeExpType implements ValueType
 	 * @return {@link BagOfAttributeExp} containing given attributes
 	 */
 	public BagOfAttributeExp create(
-			Collection<AttributeExp> attr){
+			Iterable<AttributeExp> attr){
 		return new BagOfAttributeExp(this, attr);
 	}
 
@@ -72,25 +70,6 @@ public final class BagOfAttributeExpType implements ValueType
 	 */
 	public BagOfAttributeExp create(AttributeExp ...attr){
 		return new BagOfAttributeExp(this, Arrays.asList(attr));
-	}
-
-	/**
-	 * Creates a bag from a given array
-	 * of attribute values
-	 *
-	 * @param values an array of attribute values
-	 * @return {@link BagOfAttributeExp}
-	 */
-	public BagOfAttributeExp bagOf(Object ...values){
-		if(values == null ||
-				values.length == 0){
-			return createEmpty();
-		}
-		Collection<AttributeExp> attrs = new ArrayList<AttributeExp>(values.length);
-		for(int  i = 0; i < values.length; i++){
-			attrs.add(type.create(values[i]));
-		}
-		return create(attrs);
 	}
 
 	@Override

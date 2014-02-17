@@ -1,25 +1,22 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
+import org.xacml4j.v30.DayTimeDuration;
 
 import com.google.common.base.Preconditions;
 
 
-public enum DayTimeDurationType implements AttributeExpType
+public enum DayTimeDurationType implements 
+AttributeExpType, TypeToString, TypeToXacml30
 {
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration");
-
-	private DatatypeFactory xmlDataTypesFactory;
 
 	private final String typeId;
 	private final BagOfAttributeExpType bagType;
@@ -28,32 +25,19 @@ public enum DayTimeDurationType implements AttributeExpType
 	{
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
-		try {
-			this.xmlDataTypesFactory = DatatypeFactory.newInstance();
-		} catch (DatatypeConfigurationException e) {
-			e.printStackTrace(System.err);
-		}
 	}
 
 	public boolean isConvertibleFrom(Object any) {
 		return Duration.class.isInstance(any) || String.class.isInstance(any);
 	}
 
-	@Override
-	public DayTimeDurationExp fromXacmlString(String v, Object ...params) {
-		Preconditions.checkNotNull(v);
-		Duration dayTimeDuration = xmlDataTypesFactory.newDurationDayTime(v);
-		return new DayTimeDurationExp(this, validate(dayTimeDuration));
-	}
-
-	@Override
-	public DayTimeDurationExp create(Object any, Object ...params){
+	public DayTimeDurationExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		return new DayTimeDurationExp(this, validate((Duration)any));
 	}
@@ -63,7 +47,32 @@ public enum DayTimeDurationType implements AttributeExpType
 				&& duration.isSet(DatatypeConstants.MONTHS))){
 			return duration;
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Invalid duration");
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public DayTimeDurationExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
+
+	@Override
+	public String toString(AttributeExp exp) {
+		DayTimeDurationExp v = (DayTimeDurationExp)exp.getValue();
+		return v.getValue().toString();
+	}
+
+	@Override
+	public DayTimeDurationExp fromString(String v) {
+		return new DayTimeDurationExp(this, DayTimeDuration.parse(v));
 	}
 
 	@Override
@@ -87,13 +96,8 @@ public enum DayTimeDurationType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

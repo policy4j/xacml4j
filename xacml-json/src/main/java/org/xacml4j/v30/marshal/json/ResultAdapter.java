@@ -6,7 +6,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.collect.ImmutableBiMap;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -17,6 +16,7 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
 
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

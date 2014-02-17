@@ -41,10 +41,10 @@ public class AttributeSelectorTest
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
+		expect(context.resolve(capture(c))).andReturn(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -61,10 +61,10 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andReturn(
-				DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")));
+				DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.DATE.bagOf(DateType.DATE.fromXacmlString("1992-03-21")), v);
+		assertEquals(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}

@@ -45,7 +45,7 @@ public final class DayTimeDuration
 	 * @param any an object to be parsed
 	 * @return new instance
 	 */
-	public static DayTimeDuration create(Object any){
+	public static DayTimeDuration parse(Object any){
 		if(any instanceof DayTimeDuration){
 			new DayTimeDuration(((DayTimeDuration)any).getDuration());
 		}

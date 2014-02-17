@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -9,7 +8,7 @@ import org.xacml4j.v30.BagOfAttributeExpType;
 
 import com.google.common.base.Preconditions;
 
-public enum BooleanType implements AttributeExpType
+public enum BooleanType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
 
@@ -25,27 +24,48 @@ public enum BooleanType implements AttributeExpType
 		this.FALSE = new BooleanExp(this, Boolean.FALSE);
 		this.TRUE = new BooleanExp(this, Boolean.TRUE);
 	}
-
+	
 	public boolean isConvertibleFrom(Object any) {
 		return Boolean.class.isInstance(any) || String.class.isInstance(any);
 	}
 
-	@Override
-	public BooleanExp create(Object any, Object ...parameters){
+	public BooleanExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		return ((Boolean)any)?TRUE:FALSE;
 	}
 
 	@Override
-	public BooleanExp fromXacmlString(String v, Object ...parameters) {
+	public BooleanExp fromString(String v) {
 		Preconditions.checkNotNull(v);
 		return Boolean.parseBoolean(v)?TRUE:FALSE;
+	}
+	
+	@Override
+	public String toString(AttributeExp v) {
+		Preconditions.checkNotNull(v);
+		BooleanExp boolVal = (BooleanExp)v;
+		return boolVal.getValue().toString();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		Preconditions.checkArgument(v.getType().equals(this));
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public AttributeExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
 	}
 
 	@Override
@@ -69,13 +89,8 @@ public enum BooleanType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

@@ -10,25 +10,27 @@ import org.junit.Test;
 public class DateTypeTest
 {
 	private DateType t1;
-
+	private Types types;
 	@Before
 	public void init() throws Exception{
 		this.t1 = DateType.DATE;
+		this.types = Types.builder().defaultTypes().create();
 	}
 
 	@Test
 	public void testFromXacmlString(){
-		DateExp value = t1.fromXacmlString("2002-09-24Z");
+		DateExp value = t1.create("2002-09-24Z");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(9, value.getValue().getMonth());
 		assertEquals(24, value.getValue().getDay());
-		assertEquals("2002-09-24Z", value.toXacmlString());
+		TypeToString toString = types.getCapability(DateType.DATE, TypeToString.class);
+		assertEquals("2002-09-24Z", toString.toString(value));
 	}
 
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
-		t1.fromXacmlString("2002-05-30T09:30:10-06:00");
+		t1.create("2002-05-30T09:30:10-06:00");
 	}
 
 	@Test
@@ -37,7 +39,6 @@ public class DateTypeTest
 		Calendar now = Calendar.getInstance();
 		DateExp d1 = t1.create(now);
 		DateExp d2 = t1.create(now);
-		System.out.println(d1.toXacmlString());
 		assertEquals(d1, d2);
 	}
 }

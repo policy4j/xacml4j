@@ -1,16 +1,18 @@
 package org.xacml4j.v30.types;
 
 import java.net.URI;
-import java.util.Collection;
 
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
-public enum AnyURIType implements AttributeExpType
+public enum AnyURIType implements AttributeExpType, 
+TypeToString, TypeToXacml30
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI");
 
@@ -22,27 +24,45 @@ public enum AnyURIType implements AttributeExpType
 		this.bagType = new BagOfAttributeExpType(this);
 	}
 
+	public AnyURIExp fromAny(Object any) {
+		Preconditions.checkArgument(isConvertibleFrom(any),
+				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
+				any, any.getClass(), typeId);
+		if(any instanceof String){
+			return new AnyURIExp(URI.create((String)any));
+		}
+		return new AnyURIExp((URI)any);
+	}
+	
 	@Override
-	public AnyURIExp fromXacmlString(String v, Object ...params) {
+	public AnyURIExp fromString(String v) {
 		Preconditions.checkNotNull(v);
 		URI u = URI.create(v).normalize();
 		return new AnyURIExp(u);
 	}
-
-	public boolean isConvertibleFrom(Object any) {
-		return URI.class.isInstance(any) || String.class.isInstance(any);
+	
+	@Override
+	public String toString(AttributeExp v) {
+		AnyURIExp anyUri = (AnyURIExp)v;
+		return anyUri.getValue().toString();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
 	}
 
 	@Override
-	public AnyURIExp create(Object any, Object ...params){
-		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertibleFrom(any),
-				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
-				any, any.getClass(), typeId);
-		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
-		}
-		return new AnyURIExp((URI)any);
+	public AnyURIExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return new AnyURIExp(URI.create((String)v.getContent().get(0)));
+	}
+
+	public boolean isConvertibleFrom(Object any) {
+		return URI.class.isInstance(any) || String.class.isInstance(any);
 	}
 
 	@Override
@@ -66,15 +86,26 @@ public enum AnyURIType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
 	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
+	
+	public BagOfAttributeExp bagOf(String ...values) {
+		ImmutableList.Builder<AttributeExp> b = ImmutableList.builder();
+		for(String v : values){
+			b.add(fromAny(v));
+		}
+		return bagOf(b.build());
 	}
-
+	
+	public BagOfAttributeExp bagOf(URI ...values) {
+		ImmutableList.Builder<AttributeExp> b = ImmutableList.builder();
+		for(URI v : values){
+			b.add(fromAny(v));
+		}
+		return bagOf(b.build());
+	}
+	
 	@Override
 	public BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();

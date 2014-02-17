@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -10,7 +9,8 @@ import org.xacml4j.v30.BinaryValue;
 
 import com.google.common.base.Preconditions;
 
-public enum HexBinaryType implements AttributeExpType
+public enum HexBinaryType implements AttributeExpType, 
+TypeToString, TypeToXacml30
 {
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary");
 
@@ -27,27 +27,48 @@ public enum HexBinaryType implements AttributeExpType
 				|| BinaryValue.class.isInstance(any);
 	}
 
-	@Override
-	public HexBinaryExp create(Object any, Object ...params){
+	public HexBinaryExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return new HexBinaryExp(this, BinaryValue.fromHexEncoded((String)any));
 		}
 		if(byte[].class.isInstance(any)){
 			return new HexBinaryExp(this, BinaryValue.fromBytes((byte[])any));
 		}
 		return new HexBinaryExp(this, (BinaryValue)any);
 	}
-
+	
 	@Override
-	public HexBinaryExp fromXacmlString(String v, Object ...params) {
-		return new HexBinaryExp(this, BinaryValue.fromHexEncoded(v));
+	public HexBinaryExp fromString(String v) {
+		Preconditions.checkNotNull(v);
+		return create(v);
+	}
+	
+	@Override
+	public String toString(AttributeExp v) {
+		Preconditions.checkNotNull(v);
+		HexBinaryExp base64Value = (HexBinaryExp)v;
+		return base64Value.getValue().toHexEncoded();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
 	}
 
+	@Override
+	public HexBinaryExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -69,13 +90,8 @@ public enum HexBinaryType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

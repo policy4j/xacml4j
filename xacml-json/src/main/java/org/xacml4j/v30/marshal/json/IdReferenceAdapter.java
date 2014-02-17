@@ -1,5 +1,13 @@
 package org.xacml4j.v30.marshal.json;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.lang.reflect.Type;
+
+import org.xacml4j.v30.pdp.BaseCompositeDecisionRuleIDReference;
+import org.xacml4j.v30.pdp.PolicyIDReference;
+import org.xacml4j.v30.pdp.PolicySetIDReference;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -7,13 +15,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import org.xacml4j.v30.pdp.BaseCompositeDecisionRuleIDReference;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
-
-import java.lang.reflect.Type;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisionRuleIDReference>,
 		JsonSerializer<BaseCompositeDecisionRuleIDReference> {

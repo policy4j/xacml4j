@@ -2,23 +2,27 @@ package org.xacml4j.v30.types;
 
 import java.util.Collection;
 
+import javax.xml.namespace.QName;
+
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
-import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
-public enum XPathExpType implements AttributeExpType
+public enum XPathExpType implements AttributeExpType, TypeToXacml30
 {
 	XPATHEXPRESSION("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression");
 
 	private final String typeId;
 	private final BagOfAttributeExpType bagType;
-
+	
+	public final static QName XPATH_CATEGORY_ATTR_NAME = new QName("XPathCategory");
+	
 	private XPathExpType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
@@ -28,35 +32,27 @@ public enum XPathExpType implements AttributeExpType
 		return (any instanceof String);
 	}
 
-	public XPathExp create(String xpath, AttributeCategories category) {
+	public XPathExp create(String xpath, AttributeCategory category) {
 		return new XPathExp(this, xpath, category);
 	}
 
 	@Override
-	public XPathExp create(Object any, Object ... params)
-	{
-		Preconditions.checkNotNull(any);
-		Preconditions.checkArgument(isConvertibleFrom(any),
-				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
-				any, any.getClass(), typeId);
-		Preconditions.checkArgument(params != null && params.length > 0,
-				"XPath category must be specified");
-		return new XPathExp(this, (String) any, (AttributeCategories)params[0]);
+	public AttributeValueType toXacml30(AttributeExp v) {
+		Preconditions.checkArgument(v.getType().equals(this));
+		AttributeValueType xacml30 = new AttributeValueType();
+		XPathExp xpath = (XPathExp)v;
+		xacml30.setDataType(getDataTypeId());
+		xacml30.getContent().add(xpath.getPath());
+		xacml30.getOtherAttributes().put(XPATH_CATEGORY_ATTR_NAME, xpath.getCategory().getId());
+		return xacml30;
 	}
-
+	
 	@Override
-	public XPathExp fromXacmlString(String v, Object ...params)
-	{
-		Preconditions.checkArgument(params != null && params.length > 0,
-				"XPath category must be specified");
-		try{
-			AttributeCategory categoryId = AttributeCategories.parse(String.valueOf(params[0]));
-			return new XPathExp(this, v, categoryId);
-		}catch(XacmlSyntaxException e){
-			throw new IllegalArgumentException(e);
-		}
+	public AttributeExp fromXacml30(AttributeValueType v) {
+		AttributeCategory categoryId = AttributeCategories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
+		return new XPathExp(this, (String)v.getContent().get(0), categoryId);
 	}
-
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -78,13 +74,8 @@ public enum XPathExpType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

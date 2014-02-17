@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -10,7 +9,7 @@ import org.xacml4j.v30.BinaryValue;
 
 import com.google.common.base.Preconditions;
 
-public enum Base64BinaryType implements AttributeExpType
+public enum Base64BinaryType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary");
 
@@ -21,20 +20,19 @@ public enum Base64BinaryType implements AttributeExpType
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-
+	
 	private boolean isConvertibleFrom(Object any) {
 		return byte[].class.isInstance(any) || String.class.isInstance(any) ||
 				BinaryValue.class.isInstance(any);
 	}
 
-	@Override
-	public Base64BinaryExp create(Object any, Object ...params){
+	public Base64BinaryExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		if(byte[].class.isInstance(any)){
 			return new Base64BinaryExp(BinaryValue.fromBytes((byte[])any));
@@ -43,9 +41,30 @@ public enum Base64BinaryType implements AttributeExpType
 	}
 
 	@Override
-	public Base64BinaryExp fromXacmlString(String v, Object ...params) {
+	public Base64BinaryExp fromString(String v) {
 		Preconditions.checkNotNull(v);
 		return new Base64BinaryExp(BinaryValue.fromBase64Encoded(v));
+	}
+	
+	@Override
+	public String toString(AttributeExp v) {
+		Preconditions.checkNotNull(v);
+		Base64BinaryExp base64Value = (Base64BinaryExp)v;
+		return base64Value.getValue().toBase64Encoded();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public AttributeExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
 	}
 
 	@Override
@@ -69,13 +88,8 @@ public enum Base64BinaryType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

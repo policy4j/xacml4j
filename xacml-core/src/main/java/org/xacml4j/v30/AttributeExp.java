@@ -29,14 +29,14 @@ public interface AttributeExp
 	 * @return {@link BagOfAttributeExp}
 	 */
 	BagOfAttributeExp toBag();
-
+	
 	/**
 	 * Converts this XACML attribute value
 	 * to {@link String}
 	 *
 	 * @return this attribute value as {@link String}
 	 */
-	String toXacmlString();
+	//String toXacmlString();
 
 	public interface AttributeExpVisitor extends ExpressionVisitor
 	{

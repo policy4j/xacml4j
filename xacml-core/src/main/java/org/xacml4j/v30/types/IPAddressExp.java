@@ -52,9 +52,4 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	public PortRange getRange(){
 		return getValue().getRange();
 	}
-
-	@Override
-	public String toXacmlString(){
-		return getValue().toXacmlString();
-	}
 }

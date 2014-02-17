@@ -20,12 +20,12 @@ import com.google.gson.JsonElement;
 public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	private final Gson json;
 
-	public JsonRequestContextUnmarshaller(Types typesRegistry)
+	public JsonRequestContextUnmarshaller(Types types)
 	{
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(typesRegistry))
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry))
+				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(types))
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(types))
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}

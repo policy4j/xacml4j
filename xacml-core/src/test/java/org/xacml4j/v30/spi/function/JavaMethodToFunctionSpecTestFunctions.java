@@ -1,6 +1,7 @@
 package org.xacml4j.v30.spi.function;
 
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.types.BooleanExp;
 
 
@@ -36,5 +37,4 @@ public class JavaMethodToFunctionSpecTestFunctions
 	public static BagOfAttributeExp returnTypeDeclarationExistButWrongMethodReturnType2(){
 		return null;
 	}
-
 }

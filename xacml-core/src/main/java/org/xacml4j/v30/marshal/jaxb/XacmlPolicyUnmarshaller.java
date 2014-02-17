@@ -8,6 +8,7 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.types.Types;
 
 public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 	implements PolicyUnmarshaller
@@ -16,25 +17,27 @@ public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecis
 	private Xacml20PolicyFromJaxbToObjectModelMapper v20mapper;
 
 	private boolean supportsXacml20Policies;
-
+	
 	public XacmlPolicyUnmarshaller(
 			JAXBContext context,
+			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms,
 			boolean supportsXacml20Policies) throws Exception
 	{
 		super(context);
 		this.supportsXacml20Policies = supportsXacml20Policies;
-		this.v30mapper = new Xacml30PolicyFromJaxbToObjectModelMapper(functions, decisionAlgorithms);
-		this.v20mapper = new Xacml20PolicyFromJaxbToObjectModelMapper(functions, decisionAlgorithms);
+		this.v30mapper = new Xacml30PolicyFromJaxbToObjectModelMapper(types, functions, decisionAlgorithms);
+		this.v20mapper = new Xacml20PolicyFromJaxbToObjectModelMapper(types, functions, decisionAlgorithms);
 	}
 
-	public XacmlPolicyUnmarshaller(FunctionProvider functions,
+	public XacmlPolicyUnmarshaller(
+			Types types,
+			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 		throws Exception
 	{
-		this(JAXBContextUtil.getInstance(),
-				functions, decisionAlgorithms, true);
+		this(JAXBContextUtil.getInstance(), types, functions, decisionAlgorithms, true);
 	}
 
 	@Override

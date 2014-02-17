@@ -32,6 +32,7 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.types.Types;
 import org.xml.sax.InputSource;
 
 
@@ -89,6 +90,7 @@ public class DefaultEvaluationContextHandlerTest
 				andReturn(XPATHEXPRESSION.emptyBag());
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
+		expect(context.getTypes()).andReturn(Types.builder().defaultTypes().create());
 		replay(context, request, requestContextCallback, pip);
 
 		Expression v = handler.resolve(context, ref);
@@ -116,7 +118,7 @@ public class DefaultEvaluationContextHandlerTest
 				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
+		expect(context.getTypes()).andReturn(Types.builder().defaultTypes().create());
 		replay(context, request, requestContextCallback, pip);
 
 		Expression v = handler.resolve(context, ref);
@@ -194,9 +196,10 @@ public class DefaultEvaluationContextHandlerTest
 		expect(requestContextCallback.getAttributeValue(ref.getCategory(),
 				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
 				andReturn(XPATHEXPRESSION.emptyBag());
-
+		
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
+		expect(context.getTypes()).andReturn(Types.builder().defaultTypes().create());
+		
 		replay(context, request, requestContextCallback, pip);
 		handler.resolve(context, ref);
 		verify(context, request, requestContextCallback, pip);
@@ -220,7 +223,8 @@ public class DefaultEvaluationContextHandlerTest
 				andReturn(XPATHEXPRESSION.emptyBag());
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
+		expect(context.getTypes()).andReturn(Types.builder().defaultTypes().create());
+		
 		replay(context, request, requestContextCallback, pip);
 		handler.resolve(context, ref);
 		verify(context, request, requestContextCallback, pip);
@@ -284,11 +288,11 @@ public class DefaultEvaluationContextHandlerTest
 
 		expect(requestContextCallback.getAttributeValue(
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
-				andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
+				andReturn(ANYURI.bagOf(ANYURI.fromAny("testValue")));
 
 		replay(context, request, pip, requestContextCallback);
 		ValueExpression v = handler.resolve(context, ref);
-		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
+		assertEquals(ANYURI.bagOf(ANYURI.fromAny("testValue")), v);
 		verify(context, request, pip, requestContextCallback);
 	}
 
@@ -307,12 +311,12 @@ public class DefaultEvaluationContextHandlerTest
 				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
 
 
-		expect(pip.resolve(context, ref)).andReturn(ANYURI.bagOf(ANYURI.create("testValue")));
+		expect(pip.resolve(context, ref)).andReturn(ANYURI.bagOf(ANYURI.fromAny("testValue")));
 
 
 		replay(context, request, pip, requestContextCallback);
 		ValueExpression v = handler.resolve(context, ref);
-		assertEquals(ANYURI.bagOf(ANYURI.create("testValue")), v);
+		assertEquals(ANYURI.bagOf(ANYURI.fromAny("testValue")), v);
 		verify(context, request, pip, requestContextCallback);
 	}
 

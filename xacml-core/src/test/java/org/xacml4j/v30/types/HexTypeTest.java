@@ -1,6 +1,7 @@
 package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
+import static  org.xacml4j.v30.types.HexBinaryType.HEXBINARY;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +26,8 @@ public class HexTypeTest
 		HexBinaryExp value1 = t.create(v0);
 		HexBinaryExp value2 = t.create(v1);
 		assertEquals(value1, value2);
-		assertEquals(value1.toXacmlString(), value2.toXacmlString());
-		assertEquals("00010305", value1.toXacmlString());
+		assertEquals(HEXBINARY.toString(value1), HEXBINARY.toString(value2));
+		assertEquals("00010305", HEXBINARY.toString(value1));
 	}
 
 	@Test

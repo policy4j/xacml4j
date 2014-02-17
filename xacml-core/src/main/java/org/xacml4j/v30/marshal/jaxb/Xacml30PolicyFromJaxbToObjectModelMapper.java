@@ -42,6 +42,7 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Expression;
@@ -72,6 +73,8 @@ import org.xacml4j.v30.pdp.VariableDefinition;
 import org.xacml4j.v30.pdp.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.types.TypeToXacml30;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -82,18 +85,19 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
 
 
-	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = ImmutableMap.of(
-			Effect.DENY, EffectType.DENY,
-			Effect.PERMIT, EffectType.PERMIT);
-
 	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
+	
+	private Types types;
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
+			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
+		Preconditions.checkNotNull(types);
+		this.types = types;
 	}
 
 	/**
@@ -359,16 +363,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			AttributeValueType value)
 		throws XacmlSyntaxException
 	{
-		List<Object> content = value.getContent();
-		if(content == null ||
-				content.isEmpty()){
-			throw new XacmlSyntaxException(
-					"Attribute does not have content");
-		}
-		return createAttributeValue(
-				value.getDataType(),
-				content.iterator().next(),
-				value.getOtherAttributes());
+		TypeToXacml30 toXacml30 = types.getCapability(value.getDataType(), TypeToXacml30.class);
+		Preconditions.checkState(toXacml30 != null);
+		return toXacml30.fromXacml30(value);
 	}
 
 	private Collection<AdviceExpression> getExpressions(
@@ -505,10 +502,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throw new XacmlSyntaxException(
 					"Match=\"%s\" attribute value must be specified");
 		}
+		TypeToXacml30 toXacml30 = types.getCapability(m.getAttributeValue().getDataType(), TypeToXacml30.class);
+		Preconditions.checkState(toXacml30 != null);
 		return Match
 				.builder()
 				.predicate(createFunction(m.getMatchId()))
-				.attribute(createValue(v.getDataType(), v.getContent(), v.getOtherAttributes()))
+				.attribute(toXacml30.fromXacml30(m.getAttributeValue()))
 				.attrRef(createAttributeReference((m.getAttributeDesignator() != null) ? m.getAttributeDesignator():m.getAttributeSelector()))
 				.build();
 	}
@@ -534,23 +533,27 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			if(log.isDebugEnabled()){
 				log.debug(selector.getPath());
 			}
+			AttributeExpType type = types.getType(selector.getDataType());
+			Preconditions.checkState(type != null);
 			return AttributeSelector
 					.builder()
 					.category(selector.getCategory())
 					.xpath(selector.getPath())
 					.contextSelectorId(selector.getContextSelectorId())
-					.dataType(getDataType(selector.getDataType()))
+					.dataType(type)
 					.mustBePresent(selector.isMustBePresent())
 					.build();
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
+			AttributeExpType type = types.getType(desig.getDataType());
+			Preconditions.checkState(type != null);
 			return AttributeDesignator
 					.builder()
 					.category(desig.getCategory())
 					.attributeId(desig.getAttributeId())
 					.issuer(desig.getIssuer())
-					.dataType(getDataType(desig.getDataType()))
+					.dataType(type)
 					.mustBePresent(desig.isMustBePresent())
 					.build();
 		}
@@ -558,25 +561,6 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				"Given JAXB object instance of=\"%s\" can not be converted"
 						+ "to XACML AttributeSelector or AttributeDesignator",
 				ref.getClass().getName());
-	}
-
-	/**
-	 * Creates {@link AttributeExp} instance
-	 *
-	 * @param dataType
-	 *            a data type identifier
-	 * @param content
-	 *            an list with attribute content
-	 * @return {@link AttributeExp} instance
-	 * @throws XacmlSyntaxException
-	 */
-	private AttributeExp createValue(String dataType, List<Object> content,
-			Map<QName, String> otherAttributes)
-			throws XacmlSyntaxException {
-		if (content == null || content.isEmpty()) {
-			throw new XacmlSyntaxException("Attribute does not have content");
-		}
-		return getTypes().valueOf(dataType, content.iterator().next(), otherAttributes);
 	}
 
 	/**
@@ -642,8 +626,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		if (e instanceof AttributeValueType) {
 			AttributeValueType t = (AttributeValueType) e;
-			return createValue(t.getDataType(), t.getContent(),
-					t.getOtherAttributes());
+			TypeToXacml30 toXacml30 = types.getCapability(t.getDataType(), TypeToXacml30.class);
+			Preconditions.checkState(toXacml30 != null);
+			return toXacml30.fromXacml30(t);
 		}
 		if (e instanceof VariableReferenceType) {
 			VariableReferenceType varRef = (VariableReferenceType)e;

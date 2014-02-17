@@ -63,7 +63,7 @@ public class AdviceExpressionTest
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE).times(1);
 		expect(attrExp1.getIssuer()).andReturn("issuer1").times(1);
-		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.bagOf(false, true));
+		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
 
 		c.replay();
 

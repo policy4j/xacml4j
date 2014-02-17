@@ -7,6 +7,7 @@ import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Ticker;
 
@@ -31,6 +32,13 @@ public interface EvaluationContext
 	 */
 	EvaluationContext createExtIndeterminateEvalContext();
 
+	/**
+	 * Gets type registry
+	 * 
+	 * @return {@link Types}
+	 */
+	Types getTypes();
+	
 	/**
 	 * Gets clock ticker
 	 *

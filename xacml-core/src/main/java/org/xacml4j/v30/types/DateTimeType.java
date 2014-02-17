@@ -1,19 +1,20 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.google.common.base.Preconditions;
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.DateTime;
 
+import com.google.common.base.Preconditions;
 
-public enum DateTimeType implements AttributeExpType
+public enum DateTimeType implements AttributeExpType, 
+TypeToString, TypeToXacml30
 {
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime");
 
@@ -24,6 +25,17 @@ public enum DateTimeType implements AttributeExpType
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends TypeCapability> T getCapability(Class<T> capability){
+		if(capability.equals(TypeToString.class)){
+			return (T)this;
+		}
+		if(capability.equals(TypeToXacml30.class)){
+			return (T)this;
+		}
+		return null;
+	}
 
 	public boolean isConvertibleFrom(Object any) {
 		return XMLGregorianCalendar.class.isInstance(any)
@@ -31,18 +43,40 @@ public enum DateTimeType implements AttributeExpType
 				|| GregorianCalendar.class.isInstance(any);
 	}
 
-	@Override
-	public DateTimeExp fromXacmlString(String v, Object... params) {
-		return new DateTimeExp(this, DateTime.create(v));
-	}
-
-	@Override
-	public DateTimeExp create(Object any, Object... params) {
+	public DateTimeExp create(Object any) {
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		return new DateTimeExp(this, DateTime.create(any));
+	}
+	
+
+	@Override
+	public AttributeExp fromString(String v) {
+		Preconditions.checkNotNull(v);
+		return new DateTimeExp(this, DateTime.create(v));
+	}
+	
+	@Override
+	public String toString(AttributeExp v) {
+		Preconditions.checkNotNull(v);
+		DateTimeExp dateTimeVal = (DateTimeExp)v;
+		return dateTimeVal.getValue().toXacmlString();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public AttributeExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
 	}
 
 	@Override
@@ -66,13 +100,8 @@ public enum DateTimeType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

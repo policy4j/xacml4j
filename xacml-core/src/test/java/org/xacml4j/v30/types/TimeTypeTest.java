@@ -26,7 +26,6 @@ public class TimeTypeTest
 		Calendar now = Calendar.getInstance();
 		TimeExp t1 = TimeType.TIME.create(now);
 		TimeExp t2 = TimeType.TIME.create(now);
-		System.out.println(t1.toXacmlString());
 		assertEquals(t1, t2);
 	}
 }

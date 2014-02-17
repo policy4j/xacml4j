@@ -1,6 +1,5 @@
 package org.xacml4j.v30;
 
-import java.util.Collection;
 
 
 public interface AttributeExpType extends ValueType
@@ -13,19 +12,6 @@ public interface AttributeExpType extends ValueType
 	String getDataTypeId();
 
 	/**
-	 * Parses given XACML string representation of an attribute
-	 * value to an actual {@link AttributeExp} of this type
-	 *
-	 * @param v an XACML string value representation of this type
-	 * @param params an additional parameters used to build
-	 * value of this type from given string
-	 * @return {@link AttributeExp} instance of this type
-	 * @exception IllegalArgumentException if given value does not
-	 * represent value of this type
-	 */
-	AttributeExp fromXacmlString(String v, Object ...params);
-
-	/**
 	 * Creates an attribute from a given object.
 	 *
 	 * @param object an object
@@ -36,8 +22,8 @@ public interface AttributeExpType extends ValueType
 	 * this type can not be created from a given value
 	 * and parameters
 	 */
-	AttributeExp create(Object object, Object ...params);
-
+//	AttributeExp create(Object object);
+	
 	/**
 	 * Creates type representing collection of
 	 * attribute values of this
@@ -70,7 +56,7 @@ public interface AttributeExpType extends ValueType
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributeExp bagOf(Collection<AttributeExp> values);
+	BagOfAttributeExp bagOf(Iterable<AttributeExp> values);
 
 	/**
 	 * Creates a bag from the given array of
@@ -81,7 +67,7 @@ public interface AttributeExpType extends ValueType
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributeExp bagOf(Object ...values);
+//	BagOfAttributeExp bagOf(Object ...values);
 
 	/**
 	 * Creates an empty bag

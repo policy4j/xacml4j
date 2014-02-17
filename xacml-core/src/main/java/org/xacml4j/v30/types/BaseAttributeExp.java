@@ -42,12 +42,7 @@ public abstract class BaseAttributeExp<T>
 			EvaluationContext context) throws EvaluationException {
 		return this;
 	}
-
-	@Override
-	public String toXacmlString() {
-		return value.toString();
-	}
-
+	
 	@Override
 	public final T getValue(){
 		return value;

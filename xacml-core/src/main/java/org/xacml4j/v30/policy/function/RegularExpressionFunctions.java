@@ -5,7 +5,9 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
+import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
 import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
@@ -16,7 +18,10 @@ import org.xacml4j.v30.types.DNSNameExp;
 import org.xacml4j.v30.types.IPAddressExp;
 import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.X500NameExp;
+
+import com.google.common.base.Preconditions;
 
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
@@ -28,71 +33,79 @@ public class RegularExpressionFunctions
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
 			BooleanExp stringRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
 			BooleanExp anyURIRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
 			BooleanExp ipAddressRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
-			BooleanExp dnsNameRegexpMatch(
+				BooleanExp dnsNameRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
 			BooleanExp rfc822NameRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static
 			BooleanExp x500NameRegexpMatch(
+			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp regexp,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp input)
 	{
-		 return matches(regexp, input);
+		 return matches(context, regexp, input);
 	}
 
 
 
-	private static BooleanExp matches(StringExp regexp, AttributeExp input){
+	private static BooleanExp matches(EvaluationContext context, StringExp regexp, AttributeExp value){
 		if(log.isDebugEnabled()){
-			log.debug("Matching input=\"{}\" via regexp=\"{}\"", input, regexp);
+			log.debug("Matching input=\"{}\" via regexp=\"{}\"", value, regexp);
 		}
-		 return BooleanType.BOOLEAN.create(Pattern.matches(
+		TypeToString c = context.getTypes().getCapability(value.getType(), TypeToString.class);
+		Preconditions.checkState(c != null);
+		return BooleanType.BOOLEAN.create(Pattern.matches(
 				 covertXacmlToJavaSyntax(regexp.getValue()),
-				 input.toXacmlString()));
+				 c.toString(value)));
 	}
 
 	/*

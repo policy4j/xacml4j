@@ -3,7 +3,6 @@ package org.xacml4j.v30.marshal.jaxb;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
@@ -35,11 +33,10 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
+import org.xacml4j.v30.types.TypeToXacml30;
 import org.xacml4j.v30.types.Types;
-import org.xacml4j.v30.types.XPathExpType;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -83,10 +80,12 @@ implements RequestUnmarshaller
 
 	private Mapper mapper20;
 
-	private Types xacmlTypes = Types.builder().defaultTypes().create();
+	private Types xacmlTypes;
 
-	public Xacml20RequestContextUnmarshaller(){
+	public Xacml20RequestContextUnmarshaller(Types types){
 		super(JAXBContextUtil.getInstance());
+		Preconditions.checkNotNull(types);
+		this.xacmlTypes = types;
 		this.mapper20 = new Mapper();
 	}
 
@@ -213,7 +212,8 @@ implements RequestUnmarshaller
 			return null;
 		}
 
-		private Collection<Attribute> create(Collection<AttributeType> contextAttributes,
+		private Collection<Attribute> create(
+				Collection<AttributeType> contextAttributes,
 				AttributeCategory category, boolean includeInResult)
 			throws XacmlSyntaxException
 		{
@@ -230,7 +230,7 @@ implements RequestUnmarshaller
 		{
 			Collection<AttributeExp> values = new LinkedList<AttributeExp>();
 			for(AttributeValueType v : a.getAttributeValue()){
-				AttributeExp value = createValue(a.getDataType(), v, category);
+				AttributeExp value = createValue(a, v);
 				if(log.isDebugEnabled()){
 					log.debug("Found attribute value=\"{}\" in request", value);
 				}
@@ -242,32 +242,16 @@ implements RequestUnmarshaller
 					.values(values)
 					.build();
 		}
-
-		private AttributeExp createValue(String dataTypeId,
-				AttributeValueType value,
-				AttributeCategory categoryId)
-			throws XacmlSyntaxException
+		
+		private AttributeExp createValue(AttributeType a, AttributeValueType av)
 		{
-			List<Object> content = value.getContent();
-			if(content == null ||
-					content.isEmpty()){
-				throw new RequestSyntaxException("Attribute does not have content");
-			}
-			org.xacml4j.v30.AttributeExpType dataType = xacmlTypes.getType(dataTypeId);
-			if(dataType == null){
-				throw new RequestSyntaxException(
-						"DataTypeId=\"%s\" can be be " +
-						"resolved to valid XACML type", dataTypeId);
-			}
-			Object o = Iterables.getOnlyElement(content);
-			if(log.isDebugEnabled()){
-				log.debug("Creating typeId=\"{}\" value=\"{}\"", dataType, o);
-			}
-			if(dataType.equals(XPathExpType.XPATHEXPRESSION)){
-				String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
-				return dataType.create(xpath, categoryId);
-			}
-			return dataType.create(o);
+			org.oasis.xacml.v30.jaxb.AttributeValueType v30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
+			v30.setDataType(a.getDataType());
+			v30.getOtherAttributes().putAll(av.getOtherAttributes());
+			v30.getContent().addAll(av.getContent());
+			TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getDataType(), TypeToXacml30.class);
+			Preconditions.checkState(toXacml30 != null);
+			return toXacml30.fromXacml30(v30);
 		}
 	}
 }

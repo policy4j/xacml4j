@@ -168,25 +168,6 @@ public class Attribute
 			return this;
 		}
 
-
-		public Builder values(AttributeExpType type, Iterable<?> values){
-			Preconditions.checkNotNull(type);
-			Preconditions.checkNotNull(values);
-			for(Object v : values){
-				valueBuilder.add(type.create(v));
-			}
-			return this;
-		}
-
-		public Builder value(AttributeExpType type, Object...values){
-			Preconditions.checkNotNull(type);
-			Preconditions.checkNotNull(values);
-			for(Object v : values){
-				valueBuilder.add(type.create(v));
-			}
-			return this;
-		}
-
 		public Attribute build(){
 			return new Attribute(this);
 		}

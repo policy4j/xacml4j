@@ -22,14 +22,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class AttributeAssignmentDeserializer implements JsonDeserializer<AttributeAssignment> {
-
-	private final Types typesRegistry;
+public class AttributeAssignmentDeserializer extends Support implements JsonDeserializer<AttributeAssignment> {
 
 	public AttributeAssignmentDeserializer(Types typesRegistry) {
-		this.typesRegistry = typesRegistry;
+		super(typesRegistry);
 	}
-
+	
 	@Override
 	public AttributeAssignment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
@@ -57,18 +55,19 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 			// TODO: properly infer data type
 			dataTypeId = StringType.STRING.getDataTypeId();
 		}
-		AttributeExpType type = typesRegistry.getType(dataTypeId);
+		AttributeExpType type = types.getType(dataTypeId);
 
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		// TODO: do a proper type coersion
-		AttributeExp value = deserializePrimitiveValue(type, jsonValue);
+		AttributeExp value = deserializeValue(type, jsonValue);
 
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return value;
 	}
 
-	private AttributeExp deserializePrimitiveValue(AttributeExpType type, JsonElement jsonValue) {
-		return type.fromXacmlString(jsonValue.getAsString());
+	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
+		TypeToGSon toGson = types.getCapability(type, TypeToGSon.class);
+		return toGson.fromJson(jsonValue);
 	}
 
 }

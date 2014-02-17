@@ -10,10 +10,11 @@ import org.junit.Test;
 public class Base64BinaryTypeTest
 {
 	private Base64BinaryType t;
-
+	private Types types;
 	@Before
 	public void init(){
 		this.t = Base64BinaryType.BASE64BINARY;
+		this.types = Types.builder().defaultTypes().create();
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -28,9 +29,11 @@ public class Base64BinaryTypeTest
 		byte[] v1 = {0, 1, 3, 5};
 		Base64BinaryExp value1 = t.create(v0);
 		Base64BinaryExp value2 = t.create(v1);
+		TypeToString c = types.getCapability(t, TypeToString.class);
+		
 		assertEquals(value1, value2);
-		assertEquals(value1.toXacmlString(), value2.toXacmlString());
-		assertEquals("AAEDBQ==", value1.toXacmlString());
+		assertEquals(c.toString(value1), c.toString(value2));
+		assertEquals("AAEDBQ==", c.toString(value1));
 	}
 
 	@Test

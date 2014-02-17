@@ -1,20 +1,21 @@
 package org.xacml4j.v30.types;
 
-
-import java.util.Collection;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.google.common.base.Preconditions;
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.Date;
 
+import com.google.common.base.Preconditions;
 
-public enum DateType implements AttributeExpType
+
+public enum DateType implements AttributeExpType, 
+	TypeToString, TypeToXacml30
 {
 	DATE("http://www.w3.org/2001/XMLSchema#date");
 
@@ -26,19 +27,13 @@ public enum DateType implements AttributeExpType
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
 	}
-
+	
 	public boolean isConvertibleFrom(Object any) {
 		return XMLGregorianCalendar.class.isInstance(any) || String.class.isInstance(any) ||
 		GregorianCalendar.class.isInstance(any);
 	}
 
-	@Override
-	public DateExp fromXacmlString(String v, Object ...params) {
-		return new DateExp(this, Date.create(v));
-	}
-
-	@Override
-	public DateExp create(Object any, Object ...params){
+	public DateExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
@@ -46,6 +41,33 @@ public enum DateType implements AttributeExpType
 		return new DateExp(this, Date.create(any));
 	}
 
+	@Override
+	public AttributeExp fromString(String v) {
+		Preconditions.checkNotNull(v);
+		return new DateExp(this, Date.create(v));
+	}
+	
+	@Override
+	public String toString(AttributeExp v) {
+		Preconditions.checkNotNull(v);
+		DateExp dateVal = (DateExp)v;
+		return dateVal.getValue().toXacmlString();
+	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
+
+	@Override
+	public AttributeExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -67,13 +89,8 @@ public enum DateType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

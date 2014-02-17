@@ -25,6 +25,7 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XPathExpType;
 
@@ -412,7 +413,16 @@ class DefaultEvaluationContextHandler
 			}
 			try
 			{
-				AttributeExp value = ref.getDataType().fromXacmlString(v);
+				TypeToString toString = context.getTypes().getCapability(
+						ref.getDataType(), TypeToString.class);
+				if(toString == null){
+					throw new AttributeReferenceEvaluationException(
+							StatusCode.createSyntaxError(),
+							context, ref,
+							"Unsupported XACML type=\"%d\"", 
+							ref.getDataType().getDataTypeId());
+				}
+				AttributeExp value = toString.fromString(v);
 				if(log.isDebugEnabled()){
 					log.debug("Node of type=\"{}\" " +
 							"converted attribute=\"{}\"", n.getNodeType(), value);

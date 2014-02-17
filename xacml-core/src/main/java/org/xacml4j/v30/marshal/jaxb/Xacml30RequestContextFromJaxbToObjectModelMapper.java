@@ -49,6 +49,7 @@ import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.types.TypeToXacml30;
 import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
@@ -330,9 +331,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
 		attr.setCategory(a.getCategory().toString());
-		AttributeExp v = a.getAttribute();
-		attr.setDataType(v.getType().getDataTypeId());
-		attr.getContent().add(v.toXacmlString());
+		AttributeValueType av = toJaxb(a.getAttribute());
+		attr.setDataType(av.getDataType());
+		attr.getContent().addAll(av.getContent());
 		return attr;
 	}
 
@@ -402,16 +403,20 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return b.build();
 	}
 
+	private AttributeValueType toJaxb(AttributeExp a)
+	{
+		Preconditions.checkNotNull(a);
+		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getType(), TypeToXacml30.class);
+		return toXacml30.toXacml30(a);
+	}
+	
 	private AttributeExp create(
 			AttributeValueType value)
 		throws XacmlSyntaxException
 	{
-		List<Object> content = value.getContent();
-		if(content == null ||
-				content.isEmpty()){
-			throw new XacmlSyntaxException(
-					"Attribute does not have content");
-		}
-		return xacmlTypes.valueOf(value.getDataType(), content.iterator().next(), value.getOtherAttributes());
+		
+		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(value.getDataType(), TypeToXacml30.class);
+		Preconditions.checkState(toXacml30 != null);
+		return toXacml30.fromXacml30(value);
 	}
 }

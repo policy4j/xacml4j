@@ -225,7 +225,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(STRING.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+						.value(STRING.create("//md:record/md:patient")).build())
 				.build();
 
 		Attributes subject = Attributes

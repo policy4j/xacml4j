@@ -13,10 +13,12 @@ public class BooleanTypeTest
 {
 
 	private BooleanType t1;
-
+	private Types types;
+	
 	@Before
 	public void init(){
 		this.t1 = BooleanType.BOOLEAN;
+		this.types = Types.builder().defaultTypes().create();
 	}
 
 	@Test
@@ -40,23 +42,24 @@ public class BooleanTypeTest
 	@Test
 	public void fromToXacmlString()
 	{
-		BooleanExp v = t1.fromXacmlString("True");
+		BooleanExp v = t1.create("True");
 		assertEquals(Boolean.TRUE, v.getValue());
-		v = t1.fromXacmlString("TRUE");
+		v = t1.create("TRUE");
 		assertEquals(Boolean.TRUE, v.getValue());
-		v = t1.fromXacmlString("FALSE");
+		v = t1.create("FALSE");
 		assertEquals(Boolean.FALSE, v.getValue());
-		v = t1.fromXacmlString("False");
+		v = t1.create("False");
 		assertEquals(Boolean.FALSE, v.getValue());
 	}
 
 	@Test
 	public void toXacmlString()
 	{
+		TypeToString c = types.getCapability(BooleanType.BOOLEAN, TypeToString.class);
 		BooleanExp v1 = t1.create(Boolean.TRUE);
 		BooleanExp v2 = t1.create(Boolean.FALSE);
-		assertEquals("true", v1.toXacmlString());
-		assertEquals("false", v2.toXacmlString());
+		assertEquals("true", c.toString(v1));
+		assertEquals("false", c.toString(v2));
 	}
 
 	@Test
@@ -73,8 +76,8 @@ public class BooleanTypeTest
 	@Test
 	public void testBagOf()
 	{
-		BagOfAttributeExp b1 = t1.bagOf("true", "false");
-		BagOfAttributeExp b2 = t1.bagOf(true, false);
+		BagOfAttributeExp b1 = t1.bagOf(BooleanType.BOOLEAN.create("true"), BooleanType.BOOLEAN.create("false"));
+		BagOfAttributeExp b2 = t1.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
 		assertEquals(2, b1.size());
 		assertEquals(b1, b2);
 		assertTrue(b1.contains(t1.create(true)));

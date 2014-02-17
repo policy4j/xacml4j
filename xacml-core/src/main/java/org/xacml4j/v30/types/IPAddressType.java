@@ -1,15 +1,16 @@
 package org.xacml4j.v30.types;
 
 import java.net.InetAddress;
-import java.util.Collection;
 
-import com.google.common.base.Preconditions;
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.IPAddress;
 import org.xacml4j.v30.PortRange;
+
+import com.google.common.base.Preconditions;
 
 
 /**
@@ -29,7 +30,7 @@ import org.xacml4j.v30.PortRange;
  * Addresses in URL's". (Note that an IPv6 address or mask, in this syntax,
  * is enclosed in literal "[" "]" brackets.)
  */
-public enum IPAddressType implements AttributeExpType
+public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress");
 
@@ -60,21 +61,39 @@ public enum IPAddressType implements AttributeExpType
 				|| IPAddress.class.isInstance(any);
 	}
 
-	@Override
-	public IPAddressExp create(Object any, Object ...params) {
+	public IPAddressExp create(Object any) {
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		return new IPAddressExp(this, IPAddress.parse(any));
 	}
-
+	
 	@Override
-	public IPAddressExp fromXacmlString(String v, Object ...params)
-	{
-		return new IPAddressExp(this, IPAddress.parse(v));
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
 	}
 
+	@Override
+	public IPAddressExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return fromString((String)v.getContent().get(0));
+	}
+
+	@Override
+	public String toString(AttributeExp exp) {
+		IPAddressExp v = (IPAddressExp)exp.getValue();
+		return v.getValue().toString();
+	}
+
+	@Override
+	public IPAddressExp fromString(String v) {
+       return create(v);
+	}
+	
 	@Override
 	public String getDataTypeId() {
 		return typeId;
@@ -96,13 +115,8 @@ public enum IPAddressType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.xacml4j.v30.types.AnyURIType.ANYURI;
 import static org.xacml4j.v30.types.Base64BinaryType.BASE64BINARY;
 import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
@@ -47,6 +48,19 @@ public class TypesTest
 	{
 		types.getType("TypeDoesNotExist");
 	}
+	
+	@Test
+	public void testAddCapability()
+	{
+		TestCapability c0 = new TestCapability() {
+		};
+		TestCapability c1 = new TestCapability() {
+		};
+		types.addCapability(ANYURI, TestCapability.class, c0);
+		assertSame(c0, types.getCapability(ANYURI, TestCapability.class));
+		types.addCapability(ANYURI, TestCapability.class, c1);
+		assertSame(c0, types.getCapability(ANYURI, TestCapability.class));
+	}
 
 	@Test
 	public void testDefaultTypes()
@@ -67,6 +81,11 @@ public class TypesTest
 		assertEquals(TIME, types.getType(TIME.getDataTypeId()));
 		assertEquals(XPATHEXPRESSION, types.getType(XPATHEXPRESSION.getDataTypeId()));
 		assertEquals(YEARMONTHDURATION, types.getType(YEARMONTHDURATION.getDataTypeId()));
+	}
+	
+	public interface TestCapability extends TypeCapability
+	{
+		
 	}
 
 }

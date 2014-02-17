@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
-import java.util.Collection;
-
+import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -9,7 +8,7 @@ import org.xacml4j.v30.BagOfAttributeExpType;
 
 import com.google.common.base.Preconditions;
 
-public enum DoubleType implements AttributeExpType
+public enum DoubleType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double");
 
@@ -27,16 +26,14 @@ public enum DoubleType implements AttributeExpType
 		Float.class.isInstance(any) || Long.class.isInstance(any)
 		|| String.class.isInstance(any);
 	}
-
-
-	@Override
-	public DoubleExp create(Object any, Object ...params){
+	
+	public DoubleExp create(Object any){
 		Preconditions.checkNotNull(any);
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return fromXacmlString((String)any);
+			return fromString((String)any);
 		}
 		if(Byte.class.isInstance(any)){
 			return new DoubleExp(this, ((Byte)any).doubleValue());
@@ -55,15 +52,35 @@ public enum DoubleType implements AttributeExpType
 		}
 		return new DoubleExp(this, (Double)any);
 	}
+	
+	@Override
+	public AttributeValueType toXacml30(AttributeExp v) {
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(v.getType().getDataTypeId());
+		xacml.getContent().add(toString(v));
+		return xacml;
+	}
 
 	@Override
-	public DoubleExp fromXacmlString(String v, Object ...params) {
+	public DoubleExp fromXacml30(AttributeValueType v) {
+		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
+		return create((String)v.getContent().get(0));
+	}
 
-        if (v.endsWith("INF")) {
-            int infIndex = v.lastIndexOf("INF");
-            v = v.substring(0, infIndex) + "Infinity";
-        }
-        return new DoubleExp(this, Double.parseDouble(v));
+	@Override
+	public String toString(AttributeExp exp) {
+		DoubleExp v = (DoubleExp)exp.getValue();
+		return v.getValue().toString();
+	}
+
+	@Override
+	public DoubleExp fromString(String v) {
+		Preconditions.checkNotNull(v);
+		 if (v.endsWith("INF")) {
+	            int infIndex = v.lastIndexOf("INF");
+	            v = v.substring(0, infIndex) + "Infinity";
+	     }
+		 return new DoubleExp(this, Double.parseDouble(v));
 	}
 
 	@Override
@@ -87,13 +104,8 @@ public enum DoubleType implements AttributeExpType
 	}
 
 	@Override
-	public BagOfAttributeExp bagOf(Collection<AttributeExp> values) {
+	public BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
-	}
-
-	@Override
-	public BagOfAttributeExp bagOf(Object... values) {
-		return bagType.bagOf(values);
 	}
 
 	@Override

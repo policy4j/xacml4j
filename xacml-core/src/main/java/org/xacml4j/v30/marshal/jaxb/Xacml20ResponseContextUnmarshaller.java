@@ -20,7 +20,6 @@ import org.oasis.xacml.v20.jaxb.policy.EffectType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeCategories;
@@ -37,20 +36,18 @@ import org.xacml4j.v30.StatusCodeIds;
 import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
-import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.TypeToXacml30;
 import org.xacml4j.v30.types.Types;
-import org.xacml4j.v30.types.XPathExpType;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
 public class Xacml20ResponseContextUnmarshaller
 	extends BaseJAXBUnmarshaller<ResponseContext>
 implements ResponseUnmarshaller
 {
 	private Mapper mapper;
-
+	
 	public Xacml20ResponseContextUnmarshaller(Types dataTypes){
 		super(JAXBContextUtil.getInstance());
 		Preconditions.checkNotNull(dataTypes);
@@ -137,7 +134,7 @@ implements ResponseUnmarshaller
 						.attribute(
 								Attribute
 								.builder(RESOURCE_ID)
-								.value(StringType.STRING, result.getResourceId())
+								.value(StringType.STRING.create(result.getResourceId()))
 								.build())
 						.build());
 			}
@@ -166,7 +163,7 @@ implements ResponseUnmarshaller
 				attrs.add(
 						AttributeAssignment.builder()
 						.id(a.getAttributeId())
-						.value(createValue(a.getDataType(), a.getContent(), a.getOtherAttributes())).build());
+						.value(createValue(a.getDataType(), a.getOtherAttributes(), a.getContent())).build());
 			}
 			return Obligation
 					.builder(o.getObligationId(), v20ToV30EffectnMapping.get(o.getFulfillOn()))
@@ -193,30 +190,15 @@ implements ResponseUnmarshaller
 					.minorStatus(create(code.getStatusCode()))
 					.build();
 		}
-
-		private AttributeExp createValue(String dataTypeId,
-				List<Object> any, Map<QName, String> other)
-			throws XacmlSyntaxException
+		
+		private AttributeExp createValue(String dataType, Map<QName, String> attr, List<Object> content)
 		{
-			if(any == null ||
-					any.isEmpty()){
-				throw new RequestSyntaxException("Attribute does not have content");
-			}
-			org.xacml4j.v30.AttributeExpType dataType = dataTypes.getType(dataTypeId);
-			if(dataType == null){
-				throw new RequestSyntaxException(
-						"DataTypeId=\"%s\" can be be " +
-						"resolved to valid XACML type", dataTypeId);
-			}
-			Object o = Iterables.getOnlyElement(any);
-			if(log.isDebugEnabled()){
-				log.debug("Creating typeId=\"{}\" value=\"{}\"", dataType, o);
-			}
-			if(dataType.equals(XPathExpType.XPATHEXPRESSION)){
-				String xpath = Xacml20XPathTo30Transformer.transform20PathTo30((String)o);
-				return dataType.create(xpath, other);
-			}
-			return dataType.create(o);
+			org.oasis.xacml.v30.jaxb.AttributeValueType va = new org.oasis.xacml.v30.jaxb.AttributeValueType();
+			va.setDataType(dataType);
+			va.getOtherAttributes().putAll(attr);
+			va.getContent().addAll(content);
+			TypeToXacml30 toXacml30 = dataTypes.getCapability(dataType, TypeToXacml30.class);
+			return toXacml30.fromXacml30(va);
 		}
 	}
 }

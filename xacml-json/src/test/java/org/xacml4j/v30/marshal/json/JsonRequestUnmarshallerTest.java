@@ -42,7 +42,7 @@ public class JsonRequestUnmarshallerTest {
 	public void init() {
 		types = Types.builder().defaultTypes().create();
 		unmarshaller = new JsonRequestContextUnmarshaller(types);
-		marshaller = new JsonRequestContextMarshaller();
+		marshaller = new JsonRequestContextMarshaller(types);
 	}
 
 	@Test
@@ -65,36 +65,36 @@ public class JsonRequestUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringType.STRING,
-												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW")
+										.value(StringType.STRING.create(
+												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringType.STRING, "TestDomain").build())).build();
+										.value(StringType.STRING.create("TestDomain")).build())).build();
 		Attributes resourceAttributes = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("ResourceAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true).value(StringType.STRING, "testResourceId").build())).build();
+								.includeInResult(true).value(StringType.STRING.create("testResourceId")).build())).build();
 		Attributes actionAttributes = Attributes
 				.builder(AttributeCategories.ACTION)
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(StringType.STRING, "VIEW").build())).build();
+								.includeInResult(false).value(StringType.STRING.create("VIEW")).build())).build();
 		Attributes environmentAttributes = Attributes
 				.builder(AttributeCategories.ENVIRONMENT)
 				.id("EnvironmentAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false).value(StringType.STRING, "json\\-\"test\"").build())).build();
+								.includeInResult(false).value(StringType.STRING.create("json\\-\"test\"")).build())).build();
 		Attributes subjectIntermAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_INTERMEDIARY)
 				.id("SubjectIntermediaryAttributes")
 				.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
-								.value(StringType.STRING, "koks oras paryziuj?", "as vistiek nesiojuosi sketi").build()))
+								.value(StringType.STRING.create("koks oras paryziuj?")).build()))
 				.build();
 
 		RequestReference requestRef1 = RequestReference.builder().reference(subjectAttributes, resourceAttributes)

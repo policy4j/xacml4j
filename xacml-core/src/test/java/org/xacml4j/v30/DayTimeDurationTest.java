@@ -10,13 +10,13 @@ public class DayTimeDurationTest
 	@Test
 	public void testCreateValidDurationFromLexicalRepresentation()
 	{
-		DayTimeDuration v1 = DayTimeDuration.create("P3DT10H30M");
+		DayTimeDuration v1 = DayTimeDuration.parse("P3DT10H30M");
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
 		assertEquals(0, v1.getSeconds());
 		assertEquals("P3DT10H30M", v1.toString());
-		DayTimeDuration v2 = DayTimeDuration.create("PT10H10S");
+		DayTimeDuration v2 = DayTimeDuration.parse("PT10H10S");
 		assertEquals(0, v2.getDays());
 		assertEquals(10, v2.getHours());
 		assertEquals(0, v2.getMinutes());
@@ -33,15 +33,15 @@ public class DayTimeDurationTest
 		assertEquals(30, v1.getMinutes());
 		assertEquals(0, v1.getSeconds());
 		assertTrue(v1.isPositive());
-		DayTimeDuration v2 = DayTimeDuration.create("P3DT10H30M");
+		DayTimeDuration v2 = DayTimeDuration.parse("P3DT10H30M");
 		assertEquals(v1, v2);
 	}
 
 	@Test
 	public void testAddDurations()
 	{
-		DayTimeDuration v1 = DayTimeDuration.create("P3DT10H30M");
-		DayTimeDuration v2 = DayTimeDuration.create("PT10H10S");
+		DayTimeDuration v1 = DayTimeDuration.parse("P3DT10H30M");
+		DayTimeDuration v2 = DayTimeDuration.parse("PT10H10S");
 		DayTimeDuration v3 = v1.add(v2);
 		assertEquals(3, v3.getDays());
 		assertEquals(20, v3.getHours());
@@ -53,8 +53,8 @@ public class DayTimeDurationTest
 	@Test
 	public void testSubstractDurations()
 	{
-		DayTimeDuration v1 = DayTimeDuration.create("P3DT10H30M");
-		DayTimeDuration v2 = DayTimeDuration.create("PT10H10S");
+		DayTimeDuration v1 = DayTimeDuration.parse("P3DT10H30M");
+		DayTimeDuration v2 = DayTimeDuration.parse("PT10H10S");
 		DayTimeDuration v3 = v1.substract(v2);
 		assertEquals(3, v3.getDays());
 		assertEquals(0, v3.getHours());
@@ -65,7 +65,7 @@ public class DayTimeDurationTest
 	@Test
 	public void testNegate()
 	{
-		DayTimeDuration v1 = DayTimeDuration.create("P3DT10H30M");
+		DayTimeDuration v1 = DayTimeDuration.parse("P3DT10H30M");
 		DayTimeDuration v2 = v1.negate();
 		DayTimeDuration v3 = v1.add(v2);
 		assertTrue(v3.isZero());
