@@ -55,7 +55,7 @@ public enum DNSNameType implements AttributeExpType, TypeToString, TypeToXacml30
 	}
 
 	public DNSNameExp create(String name, PortRange range){
-		return new DNSNameExp(this, new DNSName(name, range));
+		return new DNSNameExp(new DNSName(name, range));
 	}
 
 	public DNSNameExp create(String name, Integer lowerBound, Integer upperBound ){
@@ -93,7 +93,7 @@ public enum DNSNameType implements AttributeExpType, TypeToString, TypeToXacml30
 
 	@Override
 	public DNSNameExp fromString(String v) {
-		return new DNSNameExp(this, DNSName.parse(v));
+		return new DNSNameExp(DNSName.parse(v));
 	}
 	
 	@Override

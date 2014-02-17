@@ -35,15 +35,15 @@ public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
 			return fromString((String)any);
 		}
 		if(Byte.class.isInstance(any)){
-			return new IntegerExp(this, ((Byte)any).longValue());
+			return new IntegerExp(((Byte)any).longValue());
 		}
 		if(Short.class.isInstance(any)){
-			return new IntegerExp(this, ((Short)any).longValue());
+			return new IntegerExp(((Short)any).longValue());
 		}
 		if(Integer.class.isInstance(any)){
-			return new IntegerExp(this, ((Integer)any).longValue());
+			return new IntegerExp(((Integer)any).longValue());
 		}
-		return new IntegerExp(this, (Long)any);
+		return new IntegerExp((Long)any);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
         		(v.charAt(0) == '+')){
 			v = v.substring(1);
 		}
-		return new IntegerExp(this, Long.valueOf(v));
+		return new IntegerExp(Long.valueOf(v));
 	}
 
 	@Override

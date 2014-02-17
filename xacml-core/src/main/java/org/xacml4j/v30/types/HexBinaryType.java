@@ -34,12 +34,12 @@ TypeToString, TypeToXacml30
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
 		if(String.class.isInstance(any)){
-			return new HexBinaryExp(this, BinaryValue.fromHexEncoded((String)any));
+			return new HexBinaryExp(BinaryValue.fromHexEncoded((String)any));
 		}
 		if(byte[].class.isInstance(any)){
-			return new HexBinaryExp(this, BinaryValue.fromBytes((byte[])any));
+			return new HexBinaryExp(BinaryValue.fromBytes((byte[])any));
 		}
-		return new HexBinaryExp(this, (BinaryValue)any);
+		return new HexBinaryExp((BinaryValue)any);
 	}
 	
 	@Override

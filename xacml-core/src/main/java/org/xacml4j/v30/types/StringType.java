@@ -30,7 +30,7 @@ TypeToString, TypeToXacml30
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
-		return new StringExp(this, (String)any);
+		return new StringExp((String)any);
 	}
 
 	@Override

@@ -39,7 +39,7 @@ AttributeExpType, TypeToString, TypeToXacml30
 		if(String.class.isInstance(any)){
 			return fromString((String)any);
 		}
-		return new DayTimeDurationExp(this, validate((Duration)any));
+		return new DayTimeDurationExp(validate((Duration)any));
 	}
 
 	private Duration validate(Duration duration){

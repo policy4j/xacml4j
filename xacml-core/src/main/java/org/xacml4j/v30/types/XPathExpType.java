@@ -31,7 +31,7 @@ public enum XPathExpType implements AttributeExpType, TypeToXacml30
 	}
 
 	public XPathExp create(String xpath, AttributeCategory category) {
-		return new XPathExp(this, xpath, category);
+		return new XPathExp(xpath, category);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public enum XPathExpType implements AttributeExpType, TypeToXacml30
 	@Override
 	public AttributeExp fromXacml30(Types types, AttributeValueType v) {
 		AttributeCategory categoryId = AttributeCategories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
-		return new XPathExp(this, (String)v.getContent().get(0), categoryId);
+		return new XPathExp((String)v.getContent().get(0), categoryId);
 	}
 	
 	@Override

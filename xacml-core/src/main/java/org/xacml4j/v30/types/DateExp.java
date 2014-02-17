@@ -10,12 +10,12 @@ public final class DateExp extends BaseAttributeExp<Date>
 {
 	private static final long serialVersionUID = -4744947303379182831L;
 
-	DateExp(DateType type, Date value) {
-		super(type, value);
+	public DateExp(Date value) {
+		super(DateType.DATE, value);
 	}
 
-	DateExp(DateType type, XMLGregorianCalendar value) {
-		super(type, new Date(value));
+	public DateExp(XMLGregorianCalendar value) {
+		super(DateType.DATE, new Date(value));
 	}
 
 	@Override
@@ -24,10 +24,10 @@ public final class DateExp extends BaseAttributeExp<Date>
 	}
 
 	public DateExp subtract(YearMonthDurationExp v){
-		return new DateExp((DateType)getType(), getValue().subtract(v.getValue()));
+		return new DateExp(getValue().subtract(v.getValue()));
 	}
 
 	public DateExp add(YearMonthDurationExp v){
-		return new DateExp((DateType)getType(), getValue().add(v.getValue()));
+		return new DateExp(getValue().add(v.getValue()));
 	}
 }

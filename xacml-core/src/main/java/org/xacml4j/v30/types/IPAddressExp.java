@@ -17,10 +17,9 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	 * @param type IP address type
 	 * @param address a IP address
 	 */
-	IPAddressExp(IPAddressType type,
-			IPAddress address)
+	public IPAddressExp(IPAddress address)
 	{
-		super(type, address);
+		super(IPAddressType.IPADDRESS, address);
 
 	}
 

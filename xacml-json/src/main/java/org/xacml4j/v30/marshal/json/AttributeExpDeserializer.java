@@ -25,6 +25,6 @@ class AttributeExpDeserializer extends Support implements JsonDeserializer<Attri
 		String typeId = GsonUtil.getAsString(o, "type", null);
 		TypeToGSon gson = types.getCapability(typeId, TypeToGSon.class);
 		Preconditions.checkState(gson != null);
-		return gson.fromJson(json);
+		return gson.fromJson(types, json);
 	}
 }

@@ -33,7 +33,7 @@ TypeToString, TypeToXacml30
 	public YearMonthDurationExp fromString(String v)
 	{
 		Preconditions.checkNotNull(v);
-		return new YearMonthDurationExp(this, YearMonthDuration.create(v));
+		return new YearMonthDurationExp(YearMonthDuration.create(v));
 	}
 
 	public YearMonthDurationExp create(Object any){
@@ -41,7 +41,7 @@ TypeToString, TypeToXacml30
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
-		return new YearMonthDurationExp(this, YearMonthDuration.create(any));
+		return new YearMonthDurationExp(YearMonthDuration.create(any));
 	}
 	
 	@Override

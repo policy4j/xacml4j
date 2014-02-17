@@ -7,8 +7,8 @@ public final class HexBinaryExp extends
 {
 	private static final long serialVersionUID = 8087916652227967791L;
 
-	HexBinaryExp(HexBinaryType type, BinaryValue value) {
-		super(type, value);
+	public HexBinaryExp(BinaryValue value) {
+		super(HexBinaryType.HEXBINARY, value);
 	}
 }
 

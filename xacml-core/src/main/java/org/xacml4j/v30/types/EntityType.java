@@ -44,9 +44,11 @@ public enum EntityType implements AttributeExpType, TypeToXacml30
 		AttributeValueType xacml30 = new AttributeValueType();
 		xacml30.setDataType(v.getType().getDataTypeId());
 		Entity entity = ((EntityExp)v).getValue();
-		ContentType content = new ContentType();
-		content.getContent().add(DOMUtil.copyNode(entity.getContent()));
-		xacml30.getContent().add(XACML30_FACTORY.createContent(content));
+		if(entity.getContent() != null){
+			ContentType content = new ContentType();
+			content.getContent().add(DOMUtil.copyNode(entity.getContent()));
+			xacml30.getContent().add(XACML30_FACTORY.createContent(content));
+		}
 		for(Attribute a : entity.getAttributes()){
 			xacml30.getContent().add(XACML30_FACTORY.createAttribute(toXacml30(types, a)));
 		}

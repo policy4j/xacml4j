@@ -73,7 +73,7 @@ class AttributeDeserializer extends Support implements JsonDeserializer<Attribut
 	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
 		TypeToGSon toGson = types.getCapability(type, TypeToGSon.class);
 		Preconditions.checkState(toGson != null);
-		return toGson.fromJson(jsonValue);
+		return toGson.fromJson(types, jsonValue);
 	}
 
 }

@@ -6,7 +6,7 @@ public class EntityExp extends BaseAttributeExp<Entity>
 {
 	private static final long serialVersionUID = 6188174758603655643L;
 
-	EntityExp(Entity entity){
+	public EntityExp(Entity entity){
 		super(EntityType.ENTITY, entity);
 	}
 }

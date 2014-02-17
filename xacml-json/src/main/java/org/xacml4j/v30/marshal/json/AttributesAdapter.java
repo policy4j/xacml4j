@@ -32,14 +32,15 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<Attributes> {
-	private static final String CATEGORY_PROPERTY = "Category";
-	private static final String ID_PROPERTY = "Id";
-	private static final String CONTENT_PROPERTY = "Content";
-	private static final String ATTRIBUTE_PROPERTY = "Attribute";
+class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<Attributes> 
+{
+	static final String CATEGORY_PROPERTY = "Category";
+	static final String ID_PROPERTY = "Id";
+	static final String CONTENT_PROPERTY = "Content";
+	static final String ATTRIBUTE_PROPERTY = "Attribute";
 
-	private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+	private final static TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	private final static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
 	@Override
 	public Attributes deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -52,7 +53,6 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null));
 			Node content = stringToNode(GsonUtil.getAsString(o, CONTENT_PROPERTY, null));
 			String id = GsonUtil.getAsString(o, ID_PROPERTY, null);
-
 			return Attributes.builder(category).id(id).attributes(attr).content(content).build();
 		} catch (XacmlSyntaxException e) {
 			throw new JsonParseException(e);
@@ -91,7 +91,7 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 		return o;
 	}
 
-	private String nodeToString(Node node) {
+	static String nodeToString(Node node) {
 		if (node == null) {
 			return null;
 		}

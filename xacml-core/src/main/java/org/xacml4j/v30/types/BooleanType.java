@@ -21,8 +21,8 @@ public enum BooleanType implements AttributeExpType, TypeToString, TypeToXacml30
 	private BooleanType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
-		this.FALSE = new BooleanExp(this, Boolean.FALSE);
-		this.TRUE = new BooleanExp(this, Boolean.TRUE);
+		this.FALSE = new BooleanExp(Boolean.FALSE);
+		this.TRUE = new BooleanExp(Boolean.TRUE);
 	}
 	
 	public boolean isConvertibleFrom(Object any) {

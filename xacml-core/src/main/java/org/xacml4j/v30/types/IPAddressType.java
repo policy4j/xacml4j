@@ -43,16 +43,16 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 	}
 
 	public IPAddressExp create(InetAddress address, PortRange portRange) {
-		return new IPAddressExp(this, new IPAddress(address, portRange));
+		return new IPAddressExp(new IPAddress(address, portRange));
 	}
 
 	public IPAddressExp create(InetAddress address, InetAddress mask) {
-		return new IPAddressExp(this, new IPAddress(address, mask));
+		return new IPAddressExp(new IPAddress(address, mask));
 	}
 
 	public IPAddressExp create(InetAddress address, InetAddress mask,
 			PortRange portRange) {
-		return new IPAddressExp(this, new IPAddress(address, mask, portRange));
+		return new IPAddressExp(new IPAddress(address, mask, portRange));
 	}
 
 	public boolean isConvertibleFrom(Object any) {
@@ -66,7 +66,7 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
-		return new IPAddressExp(this, IPAddress.parse(any));
+		return new IPAddressExp(IPAddress.parse(any));
 	}
 	
 	@Override

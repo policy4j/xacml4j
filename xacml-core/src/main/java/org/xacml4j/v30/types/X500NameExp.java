@@ -6,8 +6,7 @@ public final class X500NameExp extends BaseAttributeExp<X500Principal>
 {
 	private static final long serialVersionUID = -609417077475809404L;
 
-	X500NameExp(X500NameType type,
-			X500Principal value) {
-		super(type, value);
+	public X500NameExp(X500Principal value) {
+		super(X500NameType.X500NAME, value);
 	}
 }

@@ -45,7 +45,7 @@ public enum RFC822NameType implements AttributeExpType, TypeToString, TypeToXacm
 	public RFC822NameExp create(Object v)
 	{
 		Preconditions.checkNotNull(v);
-        return new RFC822NameExp(this, RFC822Name.parse(v));
+        return new RFC822NameExp(RFC822Name.parse(v));
 	}
 
 	@Override

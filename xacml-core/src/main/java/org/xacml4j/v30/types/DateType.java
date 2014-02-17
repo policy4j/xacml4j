@@ -38,13 +38,13 @@ public enum DateType implements AttributeExpType,
 		Preconditions.checkArgument(isConvertibleFrom(any),
 				"Value=\"%s\" of type=\"%s\" can't be converted to XACML \"%s\" type",
 				any, any.getClass(), typeId);
-		return new DateExp(this, Date.create(any));
+		return new DateExp(Date.create(any));
 	}
 
 	@Override
 	public AttributeExp fromString(String v) {
 		Preconditions.checkNotNull(v);
-		return new DateExp(this, Date.create(v));
+		return new DateExp(Date.create(v));
 	}
 	
 	@Override

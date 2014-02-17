@@ -10,8 +10,8 @@ public final class TimeExp extends BaseAttributeExp<Time>
 {
 	private static final long serialVersionUID = -8244143626423796791L;
 
-	TimeExp(TimeType type, XMLGregorianCalendar value) {
-		super(type, new Time(value));
+	public TimeExp(XMLGregorianCalendar value) {
+		super(TimeType.TIME, new Time(value));
 	}
 
 	TimeExp(TimeType type, Time time) {

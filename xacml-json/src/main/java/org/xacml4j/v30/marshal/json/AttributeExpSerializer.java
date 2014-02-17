@@ -20,7 +20,7 @@ class AttributeExpSerializer extends Support implements JsonSerializer<Attribute
 	public JsonElement serialize(AttributeExp src, Type typeOfSrc, JsonSerializationContext context) {
 		TypeToGSon toGson = types.getCapability(src.getType(), TypeToGSon.class);
 		Preconditions.checkState(toGson != null);
-		return toGson.toJson(src);
+		return toGson.toJson(types, src);
 	}
 
 }

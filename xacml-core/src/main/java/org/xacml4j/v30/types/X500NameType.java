@@ -50,14 +50,14 @@ public enum X500NameType implements AttributeExpType, TypeToString, TypeToXacml3
 		if(String.class.isInstance(any)){
 			return fromString((String)any);
 		}
-		return new X500NameExp(this, (X500Principal)any);
+		return new X500NameExp((X500Principal)any);
 	}
 	
 
 	@Override
 	public X500NameExp fromString(String v) {
 		Preconditions.checkNotNull(v);
-		return new X500NameExp(this, new X500Principal(v));
+		return new X500NameExp(new X500Principal(v));
 	}
 	
 	@Override

@@ -67,7 +67,7 @@ public class AttributeAssignmentDeserializer extends Support implements JsonDese
 
 	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
 		TypeToGSon toGson = types.getCapability(type, TypeToGSon.class);
-		return toGson.fromJson(jsonValue);
+		return toGson.fromJson(types, jsonValue);
 	}
 
 }

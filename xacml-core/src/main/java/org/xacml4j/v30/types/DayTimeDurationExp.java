@@ -12,9 +12,8 @@ public final class DayTimeDurationExp extends BaseAttributeExp<DayTimeDuration>
 {
 	private static final long serialVersionUID = -3264977978603429807L;
 
-	DayTimeDurationExp(DayTimeDurationType type,
-			Duration value) {
-		super(type, new DayTimeDuration(value));
+	public DayTimeDurationExp(Duration value) {
+		super(DayTimeDurationType.DAYTIMEDURATION, new DayTimeDuration(value));
 		Preconditions.checkArgument(!value.isSet(DatatypeConstants.YEARS) &&
 				!value.isSet(DatatypeConstants.MONTHS));
 	}

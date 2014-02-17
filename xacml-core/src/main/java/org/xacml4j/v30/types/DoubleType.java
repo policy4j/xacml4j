@@ -36,21 +36,21 @@ public enum DoubleType implements AttributeExpType, TypeToString, TypeToXacml30
 			return fromString((String)any);
 		}
 		if(Byte.class.isInstance(any)){
-			return new DoubleExp(this, ((Byte)any).doubleValue());
+			return new DoubleExp(((Byte)any).doubleValue());
 		}
 		if(Short.class.isInstance(any)){
-			return new DoubleExp(this, ((Short)any).doubleValue());
+			return new DoubleExp(((Short)any).doubleValue());
 		}
 		if(Integer.class.isInstance(any)){
-			return new DoubleExp(this, ((Integer)any).doubleValue());
+			return new DoubleExp(((Integer)any).doubleValue());
 		}
 		if(Float.class.isInstance(any)){
-			return new DoubleExp(this, ((Float)any).doubleValue());
+			return new DoubleExp(((Float)any).doubleValue());
 		}
 		if(Long.class.isInstance(any)){
-			return new DoubleExp(this, ((Long)any).doubleValue());
+			return new DoubleExp(((Long)any).doubleValue());
 		}
-		return new DoubleExp(this, (Double)any);
+		return new DoubleExp((Double)any);
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public enum DoubleType implements AttributeExpType, TypeToString, TypeToXacml30
 	            int infIndex = v.lastIndexOf("INF");
 	            v = v.substring(0, infIndex) + "Infinity";
 	     }
-		 return new DoubleExp(this, Double.parseDouble(v));
+		 return new DoubleExp(Double.parseDouble(v));
 	}
 
 	@Override
