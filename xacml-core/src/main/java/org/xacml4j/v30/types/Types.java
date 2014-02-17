@@ -150,6 +150,9 @@ public abstract class Types
 			addTypeCapability(YearMonthDurationType.YEARMONTHDURATION, TypeToString.class, YearMonthDurationType.YEARMONTHDURATION);
 			addTypeCapability(YearMonthDurationType.YEARMONTHDURATION, TypeToXacml30.class, YearMonthDurationType.YEARMONTHDURATION);
 			
+			addType(EntityType.ENTITY);
+			addTypeCapability(EntityType.ENTITY, TypeToXacml30.class, EntityType.ENTITY);
+			
 
 			// short type aliases
 			addType("anyURI", AnyURIType.ANYURI);
@@ -169,6 +172,7 @@ public abstract class Types
 			addType("x500Name", X500NameType.X500NAME);
 			addType("xpathExpression", XPathExpType.XPATHEXPRESSION);
 			addType("yearMonthDuration", YearMonthDurationType.YEARMONTHDURATION);
+			addType("entity", EntityType.ENTITY);
 
 			// Legacy XACML 2.0 type mappings/aliases
 			addType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",  XPathExpType.XPATHEXPRESSION);
