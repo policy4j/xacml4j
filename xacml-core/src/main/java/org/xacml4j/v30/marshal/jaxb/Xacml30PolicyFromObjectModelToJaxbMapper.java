@@ -274,7 +274,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	{
 		Preconditions.checkNotNull(a);
 		TypeToXacml30 toXacml30 = types.getCapability(a.getType(), TypeToXacml30.class);
-		return toXacml30.toXacml30(a);
+		return toXacml30.toXacml30(types, a);
 	}
 
 	private TargetType toJaxb(Target t)

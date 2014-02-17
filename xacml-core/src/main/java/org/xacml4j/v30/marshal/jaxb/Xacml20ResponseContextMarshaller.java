@@ -206,7 +206,7 @@ public class Xacml20ResponseContextMarshaller
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
 			TypeToXacml30 toXacml30 = types.getCapability(a.getAttribute().getType(), TypeToXacml30.class);
-			AttributeValueType v30 = toXacml30.toXacml30(a.getAttribute());
+			AttributeValueType v30 = toXacml30.toXacml30(types, a.getAttribute());
 			AttributeAssignmentType attr = new AttributeAssignmentType();
 			attr.setDataType(v30.getDataType());
 			attr.setAttributeId(a.getAttributeId());

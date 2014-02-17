@@ -642,7 +642,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		v.getContent().add(value.getContent());
 		v.getOtherAttributes().putAll(value.getOtherAttributes());
 		TypeToXacml30 toXacml30 = types.getCapability(value.getDataType(), TypeToXacml30.class);
-		return toXacml30.fromXacml30(v);
+		return toXacml30.fromXacml30(types, v);
 	}
 
 	private AttributeSelector createSelector(AttributeCategories categoryId,

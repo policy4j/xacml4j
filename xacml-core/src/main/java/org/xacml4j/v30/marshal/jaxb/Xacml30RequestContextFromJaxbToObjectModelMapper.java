@@ -407,7 +407,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	{
 		Preconditions.checkNotNull(a);
 		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getType(), TypeToXacml30.class);
-		return toXacml30.toXacml30(a);
+		return toXacml30.toXacml30(xacmlTypes, a);
 	}
 	
 	private AttributeExp create(
@@ -417,6 +417,6 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		
 		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(value.getDataType(), TypeToXacml30.class);
 		Preconditions.checkState(toXacml30 != null);
-		return toXacml30.fromXacml30(value);
+		return toXacml30.fromXacml30(xacmlTypes, value);
 	}
 }

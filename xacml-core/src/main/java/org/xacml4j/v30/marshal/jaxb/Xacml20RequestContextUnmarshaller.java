@@ -251,7 +251,7 @@ implements RequestUnmarshaller
 			v30.getContent().addAll(av.getContent());
 			TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getDataType(), TypeToXacml30.class);
 			Preconditions.checkState(toXacml30 != null);
-			return toXacml30.fromXacml30(v30);
+			return toXacml30.fromXacml30(xacmlTypes, v30);
 		}
 	}
 }

@@ -31,10 +31,10 @@ public class XPathExpressionTypeTest
 	{
 		TypeToXacml30 toXacml = types.getCapability(XPathExpType.XPATHEXPRESSION, TypeToXacml30.class);
 		XPathExp xpath0 = XPathExpType.XPATHEXPRESSION.create("/test", AttributeCategories.SUBJECT_RECIPIENT);
-		AttributeValueType xacml = toXacml.toXacml30(xpath0);
+		AttributeValueType xacml = toXacml.toXacml30(types, xpath0);
 		assertEquals("/test", xacml.getContent().get(0));
 		assertEquals(AttributeCategories.SUBJECT_RECIPIENT.getId(), xacml.getOtherAttributes().get(XPathExpType.XPATH_CATEGORY_ATTR_NAME));
-		AttributeExp xpath1 = toXacml.fromXacml30(xacml);
+		AttributeExp xpath1 = toXacml.fromXacml30(types, xacml);
 		assertEquals(xpath0, xpath1);
 	}
 }

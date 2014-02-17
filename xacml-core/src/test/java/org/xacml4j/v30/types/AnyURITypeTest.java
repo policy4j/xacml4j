@@ -82,7 +82,7 @@ public class AnyURITypeTest
 	public void typeToXacml30Capability(){
 		TypeToXacml30 capability = types.getCapability(AnyURIType.ANYURI, TypeToXacml30.class);	
 		AttributeExp v0 = t1.fromAny("http://www.test.org");
-		AttributeValueType xml = capability.toXacml30(v0);
+		AttributeValueType xml = capability.toXacml30(types, v0);
 		assertEquals(AnyURIType.ANYURI.getDataTypeId(), xml.getDataType());
 		assertEquals("http://www.test.org", xml.getContent().get(0));
 	}

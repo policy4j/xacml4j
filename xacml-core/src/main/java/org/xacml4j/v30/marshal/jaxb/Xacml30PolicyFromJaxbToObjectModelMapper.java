@@ -364,7 +364,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	{
 		TypeToXacml30 toXacml30 = types.getCapability(value.getDataType(), TypeToXacml30.class);
 		Preconditions.checkState(toXacml30 != null);
-		return toXacml30.fromXacml30(value);
+		return toXacml30.fromXacml30(types, value);
 	}
 
 	private Collection<AdviceExpression> getExpressions(
@@ -506,7 +506,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		return Match
 				.builder()
 				.predicate(createFunction(m.getMatchId()))
-				.attribute(toXacml30.fromXacml30(m.getAttributeValue()))
+				.attribute(toXacml30.fromXacml30(types, m.getAttributeValue()))
 				.attrRef(createAttributeReference((m.getAttributeDesignator() != null) ? m.getAttributeDesignator():m.getAttributeSelector()))
 				.build();
 	}
@@ -627,7 +627,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			AttributeValueType t = (AttributeValueType) e;
 			TypeToXacml30 toXacml30 = types.getCapability(t.getDataType(), TypeToXacml30.class);
 			Preconditions.checkState(toXacml30 != null);
-			return toXacml30.fromXacml30(t);
+			return toXacml30.fromXacml30(types, t);
 		}
 		if (e instanceof VariableReferenceType) {
 			VariableReferenceType varRef = (VariableReferenceType)e;

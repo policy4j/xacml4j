@@ -47,7 +47,7 @@ public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
 	}
 
 	@Override
-	public AttributeValueType toXacml30(AttributeExp v) {
+	public AttributeValueType toXacml30(Types types, AttributeExp v) {
 		AttributeValueType xacml = new AttributeValueType();
 		xacml.setDataType(v.getType().getDataTypeId());
 		xacml.getContent().add(toString(v));
@@ -55,7 +55,7 @@ public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
 	}
 
 	@Override
-	public IntegerExp fromXacml30(AttributeValueType v) {
+	public IntegerExp fromXacml30(Types types, AttributeValueType v) {
 		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
 		return fromString((String)v.getContent().get(0));
 	}

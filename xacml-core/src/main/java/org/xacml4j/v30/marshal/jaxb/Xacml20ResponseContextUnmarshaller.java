@@ -198,7 +198,7 @@ implements ResponseUnmarshaller
 			va.getOtherAttributes().putAll(attr);
 			va.getContent().addAll(content);
 			TypeToXacml30 toXacml30 = dataTypes.getCapability(dataType, TypeToXacml30.class);
-			return toXacml30.fromXacml30(va);
+			return toXacml30.fromXacml30(dataTypes, va);
 		}
 	}
 }

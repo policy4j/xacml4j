@@ -40,7 +40,7 @@ public enum TimeType implements
 	}
 	
 	@Override
-	public AttributeValueType toXacml30(AttributeExp v) {
+	public AttributeValueType toXacml30(Types types, AttributeExp v) {
 		AttributeValueType xacml = new AttributeValueType();
 		xacml.setDataType(v.getType().getDataTypeId());
 		xacml.getContent().add(toString(v));
@@ -48,7 +48,7 @@ public enum TimeType implements
 	}
 
 	@Override
-	public TimeExp fromXacml30(AttributeValueType v) {
+	public TimeExp fromXacml30(Types types, AttributeValueType v) {
 		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
 		return create((String)v.getContent().get(0));
 	}

@@ -70,7 +70,7 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 	}
 	
 	@Override
-	public AttributeValueType toXacml30(AttributeExp v) {
+	public AttributeValueType toXacml30(Types types, AttributeExp v) {
 		AttributeValueType xacml = new AttributeValueType();
 		xacml.setDataType(v.getType().getDataTypeId());
 		xacml.getContent().add(toString(v));
@@ -78,7 +78,7 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 	}
 
 	@Override
-	public IPAddressExp fromXacml30(AttributeValueType v) {
+	public IPAddressExp fromXacml30(Types types, AttributeValueType v) {
 		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
 		return fromString((String)v.getContent().get(0));
 	}
