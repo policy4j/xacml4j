@@ -13,17 +13,17 @@ public class AttributeResolverTestSupport {
 
 	protected <T extends AttributeExpType> void checkHasAttribute(
 			Map<String, BagOfAttributeExp> v, String attributeName,
-			T type, Object ...values) {
+			AttributeExp ...values) {
 		BagOfAttributeExp bag = v.get(attributeName);
-		checkHasValues(bag, type, values);
+		checkHasValues(bag, values);
 	}
 
 	protected <T extends AttributeExpType> void checkHasValues(BagOfAttributeExp bag,
-			T type, Object ...values) {
+			AttributeExp ...values) {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
-		for(Object value: values) {
-			assertTrue(bag.contains(type.create(value)));
+		for(AttributeExp value: values) {
+			assertTrue(bag.contains(value));
 		}
 	}
 }

@@ -73,7 +73,7 @@ public enum DoubleType implements AttributeExpType, TypeToString, TypeToXacml30
 
 	@Override
 	public String toString(AttributeExp exp) {
-		DoubleExp v = (DoubleExp)exp.getValue();
+		DoubleExp v = (DoubleExp)exp;
 		return v.getValue().toString();
 	}
 

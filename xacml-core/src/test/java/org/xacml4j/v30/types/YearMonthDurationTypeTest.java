@@ -1,6 +1,7 @@
 package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
+import static org.xacml4j.v30.types.YearMonthDurationType.YEARMONTHDURATION;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -8,7 +9,6 @@ import javax.xml.datatype.Duration;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.YearMonthDuration;
-import static org.xacml4j.v30.types.YearMonthDurationType.YEARMONTHDURATION;
 
 
 public class YearMonthDurationTypeTest

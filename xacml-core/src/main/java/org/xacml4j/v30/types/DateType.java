@@ -43,7 +43,7 @@ public enum DateType implements AttributeExpType,
 	}
 
 	@Override
-	public AttributeExp fromString(String v) {
+	public DateExp fromString(String v) {
 		Preconditions.checkNotNull(v);
 		return new DateExp(Date.create(v));
 	}

@@ -5,7 +5,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.StringType;
 
 
 @XacmlFunctionProvider(description="XACML string conversion functions")
@@ -16,7 +15,7 @@ public class StringConversionFunctions
 	public static StringExp normalizeSpace(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return StringType.STRING.create(v.getValue().trim());
+		return new StringExp(v.getValue().trim());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case")
@@ -24,7 +23,7 @@ public class StringConversionFunctions
 	public static StringExp normalizeToLowerCase(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return StringType.STRING.create(v.getValue().toLowerCase());
+		return new StringExp(v.getValue().toLowerCase());
 	}
 
 	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:string-normalize-to-upper-case")
@@ -32,6 +31,6 @@ public class StringConversionFunctions
 	public static StringExp normalizeToUpperCase(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return StringType.STRING.create(v.getValue().toUpperCase());
+		return new StringExp(v.getValue().toUpperCase());
 	}
 }

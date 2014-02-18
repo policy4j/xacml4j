@@ -54,7 +54,7 @@ TypeToString, TypeToXacml30
 	
 
 	@Override
-	public AttributeExp fromString(String v) {
+	public DateTimeExp fromString(String v) {
 		Preconditions.checkNotNull(v);
 		return new DateTimeExp(this, DateTime.create(v));
 	}

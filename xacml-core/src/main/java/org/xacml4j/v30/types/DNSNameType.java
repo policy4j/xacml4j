@@ -91,7 +91,7 @@ public enum DNSNameType implements AttributeExpType, TypeToString, TypeToXacml30
 
 	@Override
 	public String toString(AttributeExp exp) {
-		DayTimeDurationExp v = (DayTimeDurationExp)exp.getValue();
+		DNSNameExp v = (DNSNameExp)exp;
 		return v.getValue().toString();
 	}
 

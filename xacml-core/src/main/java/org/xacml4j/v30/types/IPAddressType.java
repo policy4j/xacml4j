@@ -89,7 +89,7 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 
 	@Override
 	public String toString(AttributeExp exp) {
-		IPAddressExp v = (IPAddressExp)exp.getValue();
+		IPAddressExp v = (IPAddressExp)exp;
 		return v.getValue().toString();
 	}
 

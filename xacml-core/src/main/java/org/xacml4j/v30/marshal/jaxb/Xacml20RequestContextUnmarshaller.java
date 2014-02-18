@@ -22,10 +22,12 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
+import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
@@ -247,14 +249,22 @@ implements RequestUnmarshaller
 		private AttributeExp createValue(AttributeType a, AttributeValueType av)
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType v30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-			v30.setDataType(a.getDataType());
 			v30.getOtherAttributes().putAll(av.getOtherAttributes());
-			v30.getContent().addAll(av.getContent());
-			if(a.getDataType().equals(XPathExpType.XPATHEXPRESSION.getDataTypeId())){
-				v30.getOtherAttributes().put(XPathExpType.XPATH_CATEGORY_ATTR_NAME, AttributeCategories.RESOURCE.getId());
-			}
-			TypeToXacml30 xacml30 = xacmlTypes.getCapability(a.getDataType(), TypeToXacml30.class);
+			AttributeExpType type = xacmlTypes.getType(a.getDataType());
+			TypeToXacml30 xacml30 = xacmlTypes.getCapability(type, TypeToXacml30.class);			
 			Preconditions.checkState(xacml30 != null);
+			v30.setDataType(type.getDataTypeId());
+			if(type.equals(XPathExpType.XPATHEXPRESSION)){
+				if(av.getContent().size() > 0){
+					v30.getContent().add(
+							Xacml20XPathTo30Transformer.transform20PathTo30((String)av.getContent().get(0)));
+					v30.getOtherAttributes().put(XPathExpType.XPATH_CATEGORY_ATTR_NAME, 
+							AttributeCategories.RESOURCE.getId());
+					return xacml30.fromXacml30(xacmlTypes, v30);
+				}
+				throw new XacmlSyntaxException("Not content found for xpath expression");
+			}
+			v30.getContent().addAll(av.getContent());
 			return xacml30.fromXacml30(xacmlTypes, v30);
 		}
 	}

@@ -30,6 +30,7 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -41,13 +42,16 @@ public class XacmlPolicyTestSupport {
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
 	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
 	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
-
+	private Types types;
+	
 	@Before
 	public void setup() throws Exception {
+		
+		this.types = Types.builder().defaultTypes().create();
 		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
-		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller(types);
 
 	}
 
@@ -302,6 +306,7 @@ public class XacmlPolicyTestSupport {
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
+					types,
 					functionProviderBuilder.build(),
 					decisionAlgoProviderBuilder.create());
 			for(InputStream in : policies){

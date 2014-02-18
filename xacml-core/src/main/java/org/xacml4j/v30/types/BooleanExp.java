@@ -8,7 +8,11 @@ public final class BooleanExp extends
 	public final static BooleanExp FALSE = new BooleanExp(Boolean.FALSE);
 	public final static BooleanExp TRUE = new BooleanExp(Boolean.TRUE);
 	
-	public BooleanExp(Boolean value) {
+	private BooleanExp(Boolean value) {
 		super(BooleanType.BOOLEAN, value);
+	}
+	
+	public static BooleanExp create(boolean val){
+		return val?TRUE:FALSE;
 	}
 }

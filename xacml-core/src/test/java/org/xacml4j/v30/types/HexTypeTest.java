@@ -1,7 +1,7 @@
 package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
-import static  org.xacml4j.v30.types.HexBinaryType.HEXBINARY;
+import static org.xacml4j.v30.types.HexBinaryType.HEXBINARY;
 
 import org.junit.Before;
 import org.junit.Test;

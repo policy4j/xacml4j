@@ -2,6 +2,7 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -20,7 +21,7 @@ public class DayTimeDurationTypeTest
 	public void init() throws Exception{
 		this.t1 = DayTimeDurationType.DAYTIMEDURATION;
 		this.f = DatatypeFactory.newInstance();
-		this.types = Types.builder().create();
+		this.types = Types.builder().defaultTypes().create();
 	}
 
 	@Test
@@ -32,6 +33,7 @@ public class DayTimeDurationTypeTest
 		assertEquals(30, v1.getValue().getMinutes());
 		assertEquals(0, v1.getValue().getSeconds());
 		TypeToString toString = types.getCapability(t1, TypeToString.class);
+		assertNotNull(toString);
 		assertEquals("P3DT10H30M", toString.toString(v1));
 		v1 = (DayTimeDurationExp)toString.fromString("P3DT10H30M10S");
 		assertEquals(3, v1.getValue().getDays());

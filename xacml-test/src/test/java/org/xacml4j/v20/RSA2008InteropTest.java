@@ -18,6 +18,7 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.collect.Iterables;
 
@@ -31,6 +32,7 @@ public class RSA2008InteropTest
 
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
+				Types.builder().defaultTypes().create(),
 				FunctionProviderBuilder.builder()
 				.defaultFunctions()
 				.build(),

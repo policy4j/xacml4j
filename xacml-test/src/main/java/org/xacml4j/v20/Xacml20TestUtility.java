@@ -21,12 +21,13 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.types.Types;
 
 
 public class Xacml20TestUtility
 {
 	private static JAXBContext context = JAXBContextUtil.getInstance();
-	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller(Types.builder().defaultTypes().create());
 
 	public static void assertResponse(ResponseType a, ResponseType b)
 	{

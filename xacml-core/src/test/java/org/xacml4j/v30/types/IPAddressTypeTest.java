@@ -2,13 +2,13 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.xacml4j.v30.types.IPAddressType.IPADDRESS;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.util.IPAddressUtils;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.PortRange;
-import static org.xacml4j.v30.types.IPAddressType.IPADDRESS;
 
 
 public class IPAddressTypeTest

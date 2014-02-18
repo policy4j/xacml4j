@@ -66,7 +66,7 @@ public enum IntegerType implements AttributeExpType, TypeToString, TypeToXacml30
 
 	@Override
 	public String toString(AttributeExp exp) {
-		IntegerExp v = (IntegerExp)exp.getValue();
+		IntegerExp v = (IntegerExp)exp;
 		return v.getValue().toString();
 	}
 

@@ -3,6 +3,7 @@ package org.xacml4j.v30.types;
 import javax.xml.namespace.QName;
 
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
+import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeExp;
@@ -54,7 +55,7 @@ public enum XPathExpType implements AttributeExpType, TypeToXacml30
 				throw new XacmlSyntaxException(
 						"XPath category can not be null");
 			}
-			new XPathExp((String)v.getContent().get(0), categoryId);
+			return new XPathExp((String)v.getContent().get(0), categoryId);
 		}
 		throw new XacmlSyntaxException(
 				"No content found for the attribute value"); 

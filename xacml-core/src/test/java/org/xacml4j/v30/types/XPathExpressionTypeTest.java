@@ -37,4 +37,16 @@ public class XPathExpressionTypeTest
 		AttributeExp xpath1 = toXacml.fromXacml30(types, xacml);
 		assertEquals(xpath0, xpath1);
 	}
+	
+	public void testFromXacml30()
+	{
+		AttributeValueType xacml = new AttributeValueType();
+		xacml.setDataType(XPathExpType.XPATHEXPRESSION.getDataTypeId());
+		xacml.getContent().add("/test");
+		xacml.getOtherAttributes().put(XPathExpType.XPATH_CATEGORY_ATTR_NAME, AttributeCategories.RESOURCE.getId());
+		TypeToXacml30 toXacml = types.getCapability(XPathExpType.XPATHEXPRESSION, TypeToXacml30.class);
+		XPathExp xpath1 = (XPathExp)toXacml.fromXacml30(types, xacml);
+		assertEquals("/test", xpath1.getValue());
+		assertEquals(AttributeCategories.RESOURCE, xpath1.getCategory());
+	}
 }
