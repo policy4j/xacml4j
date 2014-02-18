@@ -15,6 +15,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.collect.ImmutableList;
 
@@ -33,7 +34,7 @@ public class DefaultFunctionSpecTest
 		this.c = createControl();
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.resolver = c.createMock(FunctionReturnTypeResolver.class);
-		this.b = FunctionSpecBuilder.builder("testId");
+		this.b = FunctionSpecBuilder.builder("testId", Types.builder().defaultTypes().create());
 		this.context = c.createMock(EvaluationContext.class);
 	}
 

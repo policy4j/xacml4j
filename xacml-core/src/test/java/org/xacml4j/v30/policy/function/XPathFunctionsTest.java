@@ -31,6 +31,7 @@ import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XPathExpType;
 import org.xml.sax.InputSource;
@@ -64,7 +65,9 @@ public class XPathFunctionsTest
 		this.content1 = builder.parse(new InputSource(
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
 		this.xpathProvider = new DefaultXPathProvider();
-		this.funcF = new AnnotiationBasedFunctionProvider(XPathFunctions.class);
+		this.funcF = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(),
+				XPathFunctions.class);
 	}
 
 	@Test

@@ -18,6 +18,7 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.collect.ImmutableList;
 
@@ -36,7 +37,7 @@ public class MatchTest
 		this.c = createControl();
 		this.ref = c.createMock(AttributeDesignator.class);
 		this.context = c.createMock(EvaluationContext.class);
-		this.builder = FunctionSpecBuilder.builder("testFunction");
+		this.builder = FunctionSpecBuilder.builder("testFunction", Types.builder().defaultTypes().create());
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.spec = builder.param(INTEGER).param(INTEGER).build(
 				BOOLEAN, invocation);

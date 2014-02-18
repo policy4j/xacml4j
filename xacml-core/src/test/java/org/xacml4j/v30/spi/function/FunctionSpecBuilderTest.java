@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.Types;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,9 +26,9 @@ public class FunctionSpecBuilderTest
 	public void init(){
 		this.c = createControl();
 		this.impl =  c.createMock(FunctionInvocation.class);
-		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1", Types.builder().defaultTypes().create());
 		this.specSameTypeArgs = b.param(INTEGER).param(INTEGER).build(INTEGER, impl);
-		b = FunctionSpecBuilder.builder("testFunc2");
+		b = FunctionSpecBuilder.builder("testFunc2", Types.builder().defaultTypes().create());
 		this.specDiffTypeArgs = b.param(INTEGER).param(STRING).build(INTEGER, impl);
 	}
 
@@ -62,7 +63,7 @@ public class FunctionSpecBuilderTest
 	@Test(expected=IllegalStateException.class)
 	public void testParameterAfterVaragParam()
 	{
-		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc", Types.builder().defaultTypes().create());
 		c.replay();
 		b.param(INTEGER, 1, 10).param(INTEGER);
 		c.verify();
@@ -71,7 +72,7 @@ public class FunctionSpecBuilderTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testParameterVarArgMinAndMaxEquals()
 	{
-		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc", Types.builder().defaultTypes().create());
 		c.replay();
 		b.param(INTEGER, 3, 3).param(INTEGER);
 		c.verify();

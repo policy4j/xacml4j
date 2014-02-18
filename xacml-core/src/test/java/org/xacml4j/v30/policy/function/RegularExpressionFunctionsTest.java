@@ -38,7 +38,9 @@ public class RegularExpressionFunctionsTest
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{	
-		FunctionProvider f = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
+		FunctionProvider f = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(),
+				RegularExpressionFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match"));

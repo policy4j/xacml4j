@@ -8,6 +8,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.types.Types;
 
 
 
@@ -28,6 +29,8 @@ public interface FunctionSpec
 	 */
 	String getLegacyId();
 
+	Types getTypes();
+	
 	/**
 	 * Gets parameter specification
 	 * at given

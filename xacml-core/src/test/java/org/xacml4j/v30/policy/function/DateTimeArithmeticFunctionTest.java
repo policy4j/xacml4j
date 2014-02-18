@@ -11,6 +11,7 @@ import org.xacml4j.v30.types.DateTimeExp;
 import org.xacml4j.v30.types.DateTimeType;
 import org.xacml4j.v30.types.DayTimeDurationExp;
 import org.xacml4j.v30.types.DayTimeDurationType;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.YearMonthDurationExp;
 import org.xacml4j.v30.types.YearMonthDurationType;
 
@@ -22,7 +23,9 @@ public class DateTimeArithmeticFunctionTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = new AnnotiationBasedFunctionProvider(DateTimeArithmeticFunctions.class);
+		this.p = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(),
+				DateTimeArithmeticFunctions.class);
 	}
 
 	@Test

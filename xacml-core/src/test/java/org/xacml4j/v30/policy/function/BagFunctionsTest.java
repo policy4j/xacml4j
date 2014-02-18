@@ -18,6 +18,7 @@ import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 
 
 public class BagFunctionsTest
@@ -26,7 +27,9 @@ public class BagFunctionsTest
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{
-		FunctionProvider f = new AnnotiationBasedFunctionProvider(BagFunctions.class);
+		FunctionProvider f = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(), 
+				BagFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-bag-size"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in"));

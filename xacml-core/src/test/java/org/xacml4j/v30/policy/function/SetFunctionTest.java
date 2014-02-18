@@ -10,6 +10,7 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanType;
+import org.xacml4j.v30.types.Types;
 
 
 public class SetFunctionTest
@@ -19,7 +20,9 @@ public class SetFunctionTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		p = new AnnotiationBasedFunctionProvider(SetFunctions.class);
+		p = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(),
+				SetFunctions.class);
 	}
 
 	@Test

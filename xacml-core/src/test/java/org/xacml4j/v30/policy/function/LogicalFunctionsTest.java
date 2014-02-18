@@ -20,6 +20,7 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.IntegerType;
+import org.xacml4j.v30.types.Types;
 
 
 public class LogicalFunctionsTest
@@ -38,7 +39,9 @@ public class LogicalFunctionsTest
 	public void init() throws Exception
 	{
 		this.control = createControl();
-		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
+		
+		this.f = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(), LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");

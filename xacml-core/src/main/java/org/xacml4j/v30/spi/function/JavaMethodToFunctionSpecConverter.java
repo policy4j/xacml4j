@@ -23,12 +23,15 @@ class JavaMethodToFunctionSpecConverter
 	private final static Logger log = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
 
 	private final InvocationFactory invocationFactory;
-	private final Types xacmlTypes = Types.builder().defaultTypes().create();
+	private final Types xacmlTypes;
 
 	public JavaMethodToFunctionSpecConverter(
+			Types types,
 			InvocationFactory invocationFactory)
 	{
 		Preconditions.checkNotNull(invocationFactory);
+		Preconditions.checkNotNull(types);
+		this.xacmlTypes = types;
 		this.invocationFactory = invocationFactory;
 	}
 
@@ -62,7 +65,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder(funcId.id(),
-				(legacyFuncId == null) ? null : legacyFuncId.id());
+				(legacyFuncId == null) ? null : legacyFuncId.id(), xacmlTypes);
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		boolean evalContextParamFound = false;

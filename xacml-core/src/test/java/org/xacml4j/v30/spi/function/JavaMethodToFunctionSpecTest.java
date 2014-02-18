@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.util.DefaultInvocationFactory;
+import org.xacml4j.v30.types.Types;
 
 
 public class JavaMethodToFunctionSpecTest
@@ -13,7 +14,7 @@ public class JavaMethodToFunctionSpecTest
 
 	@Before
 	public void init(){
-		this.builder = new JavaMethodToFunctionSpecConverter(new DefaultInvocationFactory());
+		this.builder = new JavaMethodToFunctionSpecConverter(Types.builder().defaultTypes().create(), new DefaultInvocationFactory());
 	}
 
 	@Test(expected=IllegalArgumentException.class)

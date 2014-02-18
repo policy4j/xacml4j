@@ -12,6 +12,7 @@ import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.RFC822NameType;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.X500NameExp;
 import org.xacml4j.v30.types.X500NameType;
 
@@ -23,7 +24,9 @@ public class SpecialMatchFunctionsTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = new AnnotiationBasedFunctionProvider(SpecialMatchFunctions.class);
+		this.p = new AnnotiationBasedFunctionProvider(
+				Types.builder().defaultTypes().create(),
+				SpecialMatchFunctions.class);
 	}
 
 	@Test

@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.Types;
 
 
 
@@ -25,8 +26,9 @@ public class AnnotationBasedFunctionFactoryTest
 	@Before
 	public void init() throws Exception
 	{
-		this.f1 = new AnnotiationBasedFunctionProvider(TestFunctions.class);
-		this.f2 = new AnnotiationBasedFunctionProvider(new TestInstanceFunctions());
+		Types types = Types.builder().defaultTypes().create();
+		this.f1 = new AnnotiationBasedFunctionProvider(types, TestFunctions.class);
+		this.f2 = new AnnotiationBasedFunctionProvider(types, new TestInstanceFunctions());
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 
