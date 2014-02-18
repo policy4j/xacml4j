@@ -10,6 +10,7 @@ import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.Date;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
@@ -64,8 +65,11 @@ public enum DateType implements AttributeExpType,
 
 	@Override
 	public AttributeExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
-		return create((String)v.getContent().get(0));
+		if(v.getContent().size() > 0){
+			return create((String)v.getContent().get(0));
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value");
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
+import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.YearMonthDuration;
 
 import com.google.common.base.Preconditions;
@@ -54,8 +55,11 @@ TypeToString, TypeToXacml30
 
 	@Override
 	public YearMonthDurationExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
-		return create((String)v.getContent().get(0));
+		if(v.getContent().size() > 0){
+			return fromString((String)(v.getContent().get(0)));
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value");
 	}
 	
 	@Override

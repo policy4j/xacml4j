@@ -6,6 +6,7 @@ import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.RFC822Name;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
@@ -58,8 +59,11 @@ public enum RFC822NameType implements AttributeExpType, TypeToString, TypeToXacm
 
 	@Override
 	public RFC822NameExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
-		return fromString((String)v.getContent().get(0));
+		if(v.getContent().size() > 0){
+			return fromString((String)v.getContent().get(0));
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value");
 	}
 
 	@Override

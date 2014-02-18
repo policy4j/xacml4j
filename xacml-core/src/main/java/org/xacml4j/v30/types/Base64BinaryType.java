@@ -63,7 +63,6 @@ public enum Base64BinaryType implements AttributeExpType, TypeToString, TypeToXa
 
 	@Override
 	public AttributeExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
 		return create((String)v.getContent().get(0));
 	}
 

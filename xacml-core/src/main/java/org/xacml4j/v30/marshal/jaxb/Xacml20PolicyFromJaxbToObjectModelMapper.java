@@ -639,9 +639,9 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			throws XacmlSyntaxException {
 		AttributeValueType v = new AttributeValueType();
 		v.setDataType(value.getDataType());
-		v.getContent().add(value.getContent());
+		v.getContent().addAll(value.getContent());
 		v.getOtherAttributes().putAll(value.getOtherAttributes());
-		TypeToXacml30 toXacml30 = types.getCapability(value.getDataType(), TypeToXacml30.class);
+		TypeToXacml30 toXacml30 = types.getCapability(v.getDataType(), TypeToXacml30.class);
 		return toXacml30.fromXacml30(types, v);
 	}
 

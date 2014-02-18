@@ -5,7 +5,10 @@ public final class BooleanExp extends
 {
 	private static final long serialVersionUID = -421397689674188254L;
 
-	BooleanExp(Boolean value) {
+	public final static BooleanExp FALSE = new BooleanExp(Boolean.FALSE);
+	public final static BooleanExp TRUE = new BooleanExp(Boolean.TRUE);
+	
+	public BooleanExp(Boolean value) {
 		super(BooleanType.BOOLEAN, value);
 	}
 }

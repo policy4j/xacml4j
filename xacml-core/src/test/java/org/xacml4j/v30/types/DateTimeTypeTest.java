@@ -2,12 +2,8 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
 
 
 public class DateTimeTypeTest

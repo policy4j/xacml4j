@@ -9,6 +9,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
@@ -48,7 +49,15 @@ public enum XPathExpType implements AttributeExpType, TypeToXacml30
 	@Override
 	public AttributeExp fromXacml30(Types types, AttributeValueType v) {
 		AttributeCategory categoryId = AttributeCategories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
-		return new XPathExp((String)v.getContent().get(0), categoryId);
+		if(v.getContent().size() > 0){
+			if(categoryId == null){
+				throw new XacmlSyntaxException(
+						"XPath category can not be null");
+			}
+			new XPathExp((String)v.getContent().get(0), categoryId);
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value"); 
 	}
 	
 	@Override

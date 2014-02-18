@@ -202,12 +202,12 @@ public interface TypeToGSon extends TypeCapability
 		ENTITY(EntityType.ENTITY){
 			@Override
 			public JsonElement toJson(Types types, AttributeExp v) {
-				
+				throw new UnsupportedOperationException();
 			}
 
 			@Override
 			public AttributeExp fromJson(Types types, JsonElement v) {
-				
+				throw new UnsupportedOperationException();
 			}
 		};
 		

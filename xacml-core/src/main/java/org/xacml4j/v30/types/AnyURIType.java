@@ -49,6 +49,7 @@ TypeToString, TypeToXacml30
 	
 	@Override
 	public AttributeValueType toXacml30(Types types, AttributeExp v) {
+		Preconditions.checkArgument(v.getType().equals(this));
 		AttributeValueType xacml = new AttributeValueType();
 		xacml.setDataType(v.getType().getDataTypeId());
 		xacml.getContent().add(toString(v));
@@ -57,7 +58,6 @@ TypeToString, TypeToXacml30
 
 	@Override
 	public AnyURIExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
 		return new AnyURIExp(URI.create((String)v.getContent().get(0)));
 	}
 

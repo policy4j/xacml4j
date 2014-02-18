@@ -9,6 +9,7 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.IPAddress;
 import org.xacml4j.v30.PortRange;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
@@ -79,8 +80,11 @@ public enum IPAddressType implements AttributeExpType, TypeToString, TypeToXacml
 
 	@Override
 	public IPAddressExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
-		return fromString((String)v.getContent().get(0));
+		if(v.getContent().size() > 0){
+			return fromString((String)v.getContent().get(0));
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value");
 	}
 
 	@Override

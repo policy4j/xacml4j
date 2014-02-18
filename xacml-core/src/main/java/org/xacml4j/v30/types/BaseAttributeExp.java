@@ -19,12 +19,12 @@ public abstract class BaseAttributeExp<T>
 	private T value;
 	private AttributeExpType type;
 
-	protected BaseAttributeExp(AttributeExpType type,
-			T value) {
-		Preconditions.checkNotNull(type);
-		Preconditions.checkNotNull(value);
-		this.type = type;
-		this.value = value;
+	protected BaseAttributeExp(AttributeExpType attrType,
+			T attrValue) {
+		Preconditions.checkNotNull(attrType);
+		Preconditions.checkNotNull(attrValue);
+		this.type = attrType;
+		this.value = attrValue;
 	}
 
 	@Override

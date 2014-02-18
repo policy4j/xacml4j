@@ -35,6 +35,7 @@ import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.types.TypeToXacml30;
 import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XPathExpType;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
@@ -249,9 +250,12 @@ implements RequestUnmarshaller
 			v30.setDataType(a.getDataType());
 			v30.getOtherAttributes().putAll(av.getOtherAttributes());
 			v30.getContent().addAll(av.getContent());
-			TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getDataType(), TypeToXacml30.class);
-			Preconditions.checkState(toXacml30 != null);
-			return toXacml30.fromXacml30(xacmlTypes, v30);
+			if(a.getDataType().equals(XPathExpType.XPATHEXPRESSION.getDataTypeId())){
+				v30.getOtherAttributes().put(XPathExpType.XPATH_CATEGORY_ATTR_NAME, AttributeCategories.RESOURCE.getId());
+			}
+			TypeToXacml30 xacml30 = xacmlTypes.getCapability(a.getDataType(), TypeToXacml30.class);
+			Preconditions.checkState(xacml30 != null);
+			return xacml30.fromXacml30(xacmlTypes, v30);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BagOfAttributeExpType;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
 
@@ -12,17 +13,12 @@ public enum BooleanType implements AttributeExpType, TypeToString, TypeToXacml30
 {
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean");
 
-	private final BooleanExp FALSE;
-	private final BooleanExp TRUE;
-
 	private final String typeId;
 	private final BagOfAttributeExpType bagType;
 
 	private BooleanType(String typeId){
 		this.typeId = typeId;
 		this.bagType = new BagOfAttributeExpType(this);
-		this.FALSE = new BooleanExp(Boolean.FALSE);
-		this.TRUE = new BooleanExp(Boolean.TRUE);
 	}
 	
 	public boolean isConvertibleFrom(Object any) {
@@ -37,13 +33,13 @@ public enum BooleanType implements AttributeExpType, TypeToString, TypeToXacml30
 		if(String.class.isInstance(any)){
 			return fromString((String)any);
 		}
-		return ((Boolean)any)?TRUE:FALSE;
+		return ((Boolean)any)?BooleanExp.TRUE:BooleanExp.FALSE;
 	}
 
 	@Override
 	public BooleanExp fromString(String v) {
 		Preconditions.checkNotNull(v);
-		return Boolean.parseBoolean(v)?TRUE:FALSE;
+		return Boolean.parseBoolean(v)?BooleanExp.TRUE:BooleanExp.FALSE;
 	}
 	
 	@Override
@@ -64,8 +60,11 @@ public enum BooleanType implements AttributeExpType, TypeToString, TypeToXacml30
 
 	@Override
 	public AttributeExp fromXacml30(Types types, AttributeValueType v) {
-		Preconditions.checkArgument(v.getDataType().equals(getDataTypeId()));
-		return create((String)v.getContent().get(0));
+		if(v.getContent().size() > 0){
+			return create((String)v.getContent().get(0));
+		}
+		throw new XacmlSyntaxException(
+				"No content found for the attribute value");
 	}
 
 	@Override
