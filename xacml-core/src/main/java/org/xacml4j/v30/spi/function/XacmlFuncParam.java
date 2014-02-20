@@ -11,5 +11,6 @@ public @interface XacmlFuncParam
 {
 	String typeId();
 	boolean isBag() default false;
+	String[] defaultValue() default {};
 	boolean optional() default false;
 }

@@ -58,14 +58,36 @@ public final class FunctionSpecBuilder
 	}
 
 	public FunctionSpecBuilder param(ValueType type){
-		return param(type, false);
+		return param(type, null, false);
 	}
 	
-	public FunctionSpecBuilder param(ValueType type, boolean optional){
+	public FunctionSpecBuilder param(ValueType type, ValueExpression defautlValue, boolean optional){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg,
 				String.format("Can't add parameter after variadic parameter"));
-		this.paramSpec.add(new FunctionParamValueTypeSpec(type, optional));
+		if(defautlValue != null){
+			Preconditions.checkArgument(type.equals(defautlValue.getEvaluatesTo()));
+		}
+		if(defautlValue != null && optional){
+			throw new XacmlSyntaxException(
+					"Function=\"%s\" can not have default " +
+					"value and be optional at the same time", 
+					functionId);
+		}
+		if(paramSpec.size() == 0 && 
+				defautlValue != null){
+			throw new XacmlSyntaxException(
+					"First parameter function=\"%s\" can not have default value", 
+					functionId);
+		}
+		
+		if(paramSpec.size() == 0 && 
+				optional){
+			throw new XacmlSyntaxException(
+					"First parameter function=\"%s\" can not be optional", 
+					functionId);
+		}
+		this.paramSpec.add(new FunctionParamValueTypeSpec(type, defautlValue, optional));
 		return this;
 	}
 
@@ -89,8 +111,8 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder anyAttribute(boolean optional) {
-		this.paramSpec.add(new FunctionParamAnyAttributeSpec(optional));
+	public FunctionSpecBuilder anyAttribute() {
+		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
 		return this;
 	}
 
@@ -208,9 +230,7 @@ public final class FunctionSpecBuilder
 		public  String getId(){
 			return functionId;
 		}
-
-
-
+		
 		@Override
 		public String getLegacyId() {
 			return legacyId;

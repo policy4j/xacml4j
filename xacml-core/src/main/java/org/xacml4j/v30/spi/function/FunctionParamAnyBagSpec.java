@@ -5,20 +5,18 @@ import java.util.ListIterator;
 import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
 
 import com.google.common.base.Objects;
 
-final class FunctionParamAnyBagSpec implements FunctionParamSpec
-{
+final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
+{	
+	FunctionParamAnyBagSpec() {
+		super(false, false, null);
+	}
+	
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return (type instanceof BagOfAttributeExpType);
-	}
-
-	@Override
-	public boolean isVariadic() {
-		return false;
 	}
 
 	@Override
@@ -30,12 +28,16 @@ final class FunctionParamAnyBagSpec implements FunctionParamSpec
 		return isValidParamType(exp.getEvaluatesTo());
 	}
 
+	@Override
 	public String toString(){
 		return Objects.
 				toStringHelper(this)
+				.add("optional", isOptional())
+				.add("defaultValue", getDefaultValue())
+				.add("variadic", isVariadic())
 				.toString();
 	}
-
+	
 	@Override
 	public int hashCode(){
 		return 0;

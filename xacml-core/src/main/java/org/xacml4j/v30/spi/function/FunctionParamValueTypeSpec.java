@@ -5,36 +5,33 @@ import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-final class FunctionParamValueTypeSpec implements FunctionParamSpec
+final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSpec.class);
 
 	private ValueType type;
-	private boolean optional = false;
 
-	public FunctionParamValueTypeSpec(ValueType type, boolean optional){
-		Preconditions.checkNotNull(type);
-		this.type = type;
-		this.optional = optional;
+	public FunctionParamValueTypeSpec(ValueType paramType, ValueExpression defaultValue, boolean optional){
+		super(optional, false, defaultValue);
+		Preconditions.checkNotNull(paramType);
+		if(defaultValue != null){
+			Preconditions.checkArgument(paramType.equals(defaultValue.getEvaluatesTo()));
+		}
+		this.type = paramType;
 	}
 	
 	public FunctionParamValueTypeSpec(ValueType type){
-		this(type, false);
+		this(type, null, false);
 	}
 
 	public ValueType getParamType(){
 		return type;
-	}
-
-	@Override
-	public boolean isVariadic() {
-		return false;
 	}
 
 	@Override
@@ -46,7 +43,7 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 		}
 		Expression exp = it.next();
 		if(exp == null){
-			return optional;
+			return isOptional();
 		}
 		log.debug("Validating expression=\"{}\" " +
 				"against paramSpec=\"{}\"", exp, this);
@@ -60,7 +57,7 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 		}
 		return valid;
 	}
-
+	
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return this.type.equals(type);
@@ -71,6 +68,9 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 		return Objects
 				.toStringHelper(this)
 				.add("type", type)
+				.add("optional", isOptional())
+				.add("defaultValue", getDefaultValue())
+				.add("variadic", isVariadic())
 				.toString();
 	}
 

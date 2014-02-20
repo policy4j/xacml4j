@@ -3,10 +3,13 @@ package org.xacml4j.v30.spi.function;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.InvocationFactory;
+import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
@@ -14,6 +17,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
@@ -43,24 +47,27 @@ class JavaMethodToFunctionSpecConverter
 	public FunctionSpec createFunctionSpec(Method m, Object instance) throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
-		Preconditions.checkArgument(!m.getReturnType().equals(Void.TYPE),
-				"Method=\"%s\" must have other then void return type", m
-						.getName());
-		Preconditions.checkArgument(Expression.class.isAssignableFrom(m
-				.getReturnType()),
-				"Method=\"%s\" must return XACML expression", m.getName());
+		if(m.getReturnType().equals(Void.TYPE)){
+			throw new XacmlSyntaxException("Method=\"%s\" must " +
+					"have other then void return type", m.getName());
+		}		
+		if(!Expression.class.isAssignableFrom(m.getReturnType())){
+			throw new XacmlSyntaxException("Method=\"%s\" must " +
+					"return XACML expression", m.getName());
+		}	
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
-		Preconditions.checkArgument(funcId != null,
-				"Method=\"%s\" must be annotated via XacmlFunc annotation", m.getName());
-
-		Preconditions.checkArgument((instance != null ^ Modifier.isStatic(m.getModifiers())),
-						"Only static method can be annotiated via XacmlFunc annotiation, method=\"%s\" "
-								+ "in the stateless function provider, " +
-										"declaring class=\"%s\" is not static",
-						m.getName(), m.getDeclaringClass());
+		if(funcId == null){
+			throw new XacmlSyntaxException("Method=\"%s\" must be " +
+					"annotated via XacmlFunc annotation", m.getName());
+		}	
+		if(!(instance != null ^ Modifier.isStatic(m.getModifiers()))){
+			throw new XacmlSyntaxException("Only static method can be annotiated " +
+					"via XacmlFunc annotiation, method=\"%s\" "
+					+ "in the stateless function provider, " +
+					"declaring class=\"%s\" is not static", m.getName(), m.getDeclaringClass());
+		}
 		XacmlLegacyFunc legacyFuncId = m.getAnnotation(XacmlLegacyFunc.class);
-		XacmlFuncReturnType returnType = m
-				.getAnnotation(XacmlFuncReturnType.class);
+		XacmlFuncReturnType returnType = m.getAnnotation(XacmlFuncReturnType.class);
 		XacmlFuncReturnTypeResolver returnTypeResolver = m.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
@@ -113,7 +120,9 @@ class JavaMethodToFunctionSpecConverter
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
-				b.param(param.isBag() ? type.bagType() : type, param.optional());
+								
+				b.param(param.isBag() ? type.bagType() : type, createDefaultValue(type, param.isBag(), 
+						param.defaultValue()), param.optional());
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -144,8 +153,8 @@ class JavaMethodToFunctionSpecConverter
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamAnyAttribute) {
-				XacmlFuncParamAnyAttribute param = (XacmlFuncParamAnyAttribute)params[i][0];
-				b.anyAttribute(param.optional());
+				//XacmlFuncParamAnyAttribute param = (XacmlFuncParamAnyAttribute)params[i][0];
+				b.anyAttribute();
 				continue;
 			}
 			if (params[i][0] == null) {
@@ -186,28 +195,24 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m
 				.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		if (!(returnType == null ^ returnTypeResolver == null)) {
-			throw new IllegalArgumentException(
+			throw new XacmlSyntaxException(
 					"Either \"XacmlFuncReturnTypeResolver\" or "
 							+ "\"XacmlFuncReturnType\" annotation must be specified, not both");
 		}
 		if (returnTypeResolver != null) {
 			return;
 		}
-			if (returnType.isBag() &&
+		if (returnType.isBag() &&
 					!BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
-				throw new IllegalArgumentException(
-						String
-								.format(
-										"Method=\"%s\" return type declared XACML "
-												+ "bag of=\"%s\" but method returns type=\"%s\"",
-										m.getName(), returnType.typeId(), m
-												.getReturnType()));
-			}
+			throw new XacmlSyntaxException(
+					"Method=\"%s\" return type declared XACML " +
+					"bag of=\"%s\" but method returns type=\"%s\"",
+					m.getName(), returnType.typeId(), m.getReturnType());
+		}
 		if(!returnType.isBag() && BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
-			throw new IllegalArgumentException(String.format(
-					"Method=\"%s\" return type declared XACML attribute type=\"%s\" "
+			throw new XacmlSyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
-					returnType.typeId(), m.getReturnType()));
+					returnType.typeId(), m.getReturnType());
 		}
 	}
 
@@ -233,5 +238,23 @@ class JavaMethodToFunctionSpecConverter
 							+ "function parameter validator, class=\"%s\"", e
 							.getMessage(), clazz.getName()));
 		}
+	}
+	
+	private ValueExpression createDefaultValue(AttributeExpType type, 
+			boolean isBag, String[] values)
+	{
+		if((values == null || values.length == 0)){
+			return null;
+		}
+		TypeToString fromString = xacmlTypes.getCapability(type, TypeToString.class);
+		if(fromString == null){
+			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotion", 
+					type.getDataTypeId());
+		}
+		List<AttributeExp> defaultValues = new ArrayList<AttributeExp>(values.length);
+		for(String v : values){
+			defaultValues.add(fromString.fromString(v));
+		}
+		return isBag?type.bagOf(defaultValues):defaultValues.iterator().next();
 	}
 }

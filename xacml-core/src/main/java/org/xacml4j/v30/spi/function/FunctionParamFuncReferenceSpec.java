@@ -4,20 +4,14 @@ import java.util.ListIterator;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionReference;
 
 import com.google.common.base.Objects;
 
-final class FunctionParamFuncReferenceSpec implements FunctionParamSpec
-{
+final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
+{	
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return false;
-	}
-
-	@Override
-	public boolean isVariadic() {
 		return false;
 	}
 
@@ -26,10 +20,14 @@ final class FunctionParamFuncReferenceSpec implements FunctionParamSpec
 		Expression exp = it.next();
 		return (exp instanceof FunctionReference);
 	}
-
+	
+	@Override
 	public String toString(){
 		return Objects.
 				toStringHelper(this)
+				.add("optional", isOptional())
+				.add("defaultValue", getDefaultValue())
+				.add("variadic", isVariadic())
 				.toString();
 	}
 

@@ -21,6 +21,10 @@ public interface FunctionParamSpec
 	 */
 	boolean validate(ListIterator<Expression> it);
 
+	Expression getDefaultValue();
+	
+	boolean isOptional();
+	
 	/**
 	 * Tests if instances of a given value type
 	 * can be used as values for a function

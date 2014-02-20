@@ -6,12 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
 
 import com.google.common.base.Objects;
 
 
-final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
+final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSequenceSpec.class);
 
@@ -29,6 +28,7 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 	 */
 	public FunctionParamValueTypeSequenceSpec(Integer min, Integer max,
 			ValueType paramType){
+		super(false, true, null);
 		this.min = min;
 		this.max = max;
 		this.paramType = paramType;
@@ -38,12 +38,7 @@ final class FunctionParamValueTypeSequenceSpec implements FunctionParamSpec
 			ValueType paramType){
 		this(min, null, paramType);
 	}
-
-	@Override
-	public boolean isVariadic() {
-		return true;
-	}
-
+	
 	/**
 	 * Gets parameter XACML type.
 	 *
