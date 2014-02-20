@@ -25,7 +25,7 @@ public abstract class AttributeReference implements Expression
 	 * @param b attribute reference builder
 	 * data type
 	 */
-	protected AttributeReference(Builder b){
+	protected AttributeReference(Builder<?> b){
 		this.mustBePresent = b.mustBePresent;
 	}
 

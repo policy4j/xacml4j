@@ -36,16 +36,8 @@ public class Apply implements Expression
 	 */
 	private Apply(Builder b)
 	{
-		List<Expression> params = b.paramsBuilder.build();
-		if(!b.func.validateParameters(params)){
-			throw new IllegalArgumentException(
-					String.format(
-							"Given arguments=\"%s\" are " +
-							"not valid for function=\"%s\"",
-							b.paramsBuilder, b.func));
-		}
 		this.spec = b.func;
-		this.arguments = params;
+		this.arguments = b.paramsBuilder.build();
 		this.hashCode = Objects.hashCode(spec, arguments);
 	}
 

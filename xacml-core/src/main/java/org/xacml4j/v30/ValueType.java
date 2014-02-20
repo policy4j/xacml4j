@@ -9,5 +9,5 @@ import java.io.Serializable;
  */
 public interface ValueType extends Serializable
 {
-
+	
 }

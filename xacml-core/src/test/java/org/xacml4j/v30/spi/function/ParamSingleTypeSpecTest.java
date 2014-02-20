@@ -39,6 +39,26 @@ public class ParamSingleTypeSpecTest
 		assertTrue(spec.validate(good.listIterator()));
 		assertFalse(spec.validate(bad.listIterator()));
 	}
+	
+	@Test
+	public void testValidateOptional() throws Exception
+	{
+		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1, true);
+		List<Expression> param1 = Collections.<Expression>singletonList(null);
+		List<Expression> param2 = Collections.<Expression>singletonList(t1.create(new Double(0.1)));
+		assertTrue(spec.validate(param1.listIterator()));
+		assertTrue(spec.validate(param2.listIterator()));
+	}
+	
+	@Test
+	public void testValidateRequired() throws Exception
+	{
+		FunctionParamSpec spec = new FunctionParamValueTypeSpec(t1, false);
+		List<Expression> param1 = Collections.<Expression>singletonList(null);
+		List<Expression> param2 = Collections.<Expression>singletonList(t1.create(new Double(0.1)));
+		assertFalse(spec.validate(param1.listIterator()));
+		assertTrue(spec.validate(param2.listIterator()));
+	}
 
 	@Test
 	public void testValidateWithBagType() throws Exception

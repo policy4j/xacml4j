@@ -58,10 +58,14 @@ public final class FunctionSpecBuilder
 	}
 
 	public FunctionSpecBuilder param(ValueType type){
+		return param(type, false);
+	}
+	
+	public FunctionSpecBuilder param(ValueType type, boolean optional){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkState(!hadVarArg,
 				String.format("Can't add parameter after variadic parameter"));
-		this.paramSpec.add(new FunctionParamValueTypeSpec(type));
+		this.paramSpec.add(new FunctionParamValueTypeSpec(type, optional));
 		return this;
 	}
 
@@ -85,8 +89,8 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder anyAttribute() {
-		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
+	public FunctionSpecBuilder anyAttribute(boolean optional) {
+		this.paramSpec.add(new FunctionParamAnyAttributeSpec(optional));
 		return this;
 	}
 
@@ -273,6 +277,9 @@ public final class FunctionSpecBuilder
 				throw e;
 			}
 			catch(Exception e){
+				if(log.isDebugEnabled()){
+					log.debug("Failed to invoke function", e);
+				}
 				throw new FunctionInvocationException(context, this, e,
 						"Failed to invoke function=\"%s\"", getId());
 			}
@@ -339,7 +346,7 @@ public final class FunctionSpecBuilder
 		{
 			List<Expression> eval = new ArrayList<Expression>(arguments.size());
 			for(Expression exp : arguments){
-				eval.add(exp.evaluate(context));
+				eval.add((exp == null)?null:exp.evaluate(context));
 			}
 			return eval;
 		}

@@ -1,7 +1,5 @@
 package org.xacml4j.v30;
 
-
-
 /**
  * Value expression represents literal
  * expression which evaluates to itself.

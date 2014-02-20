@@ -1,19 +1,31 @@
 package org.xacml4j.v30.spi.function;
 
-import java.lang.reflect.Method;
+import static org.easymock.EasyMock.createControl;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+
 import org.xacml4j.util.DefaultInvocationFactory;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.Types;
 
 
 public class JavaMethodToFunctionSpecTest
 {
+	private EvaluationContext context;
 	private JavaMethodToFunctionSpecConverter builder;
-
+	private IMocksControl c;
 	@Before
 	public void init(){
+		this.c = createControl();
+		this.context = c.createMock(EvaluationContext.class);
 		this.builder = new JavaMethodToFunctionSpecConverter(Types.builder().defaultTypes().create(), new DefaultInvocationFactory());
 	}
 
@@ -46,11 +58,19 @@ public class JavaMethodToFunctionSpecTest
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1"));
 	}
-
+	
 	@Test(expected=IllegalArgumentException.class)
 	public void returnTypeDeclarationExistButWrongMethodReturnType2() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2"));
+	}
+	
+	@Test
+	public void optionalParametersTest() throws Exception
+	{
+		FunctionSpec test = builder.createFunctionSpec(getTestMethod("optionalParametersTest"));
+		test.invoke(context, Arrays.<Expression>asList(null, null));
+		assertTrue(test.validateParameters(Arrays.<Expression>asList(null, null)));
 	}
 
 	private static Method getTestMethod(String name)

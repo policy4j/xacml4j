@@ -3,7 +3,6 @@ package org.xacml4j.v30;
 import java.io.Serializable;
 
 
-
 public interface AttributeExp
 	extends ValueExpression, Serializable
 {

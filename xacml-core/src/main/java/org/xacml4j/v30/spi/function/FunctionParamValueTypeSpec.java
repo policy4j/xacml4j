@@ -16,10 +16,16 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSpec.class);
 
 	private ValueType type;
+	private boolean optional = false;
 
-	public FunctionParamValueTypeSpec(ValueType type){
+	public FunctionParamValueTypeSpec(ValueType type, boolean optional){
 		Preconditions.checkNotNull(type);
 		this.type = type;
+		this.optional = optional;
+	}
+	
+	public FunctionParamValueTypeSpec(ValueType type){
+		this(type, false);
 	}
 
 	public ValueType getParamType(){
@@ -39,6 +45,9 @@ final class FunctionParamValueTypeSpec implements FunctionParamSpec
 			return false;
 		}
 		Expression exp = it.next();
+		if(exp == null){
+			return optional;
+		}
 		log.debug("Validating expression=\"{}\" " +
 				"against paramSpec=\"{}\"", exp, this);
 		ValueType expType = exp.getEvaluatesTo();

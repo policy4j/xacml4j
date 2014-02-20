@@ -12,6 +12,12 @@ import com.google.common.base.Objects;
 
 final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 {
+	private boolean optional = false;
+	
+	public FunctionParamAnyAttributeSpec(boolean optional){
+		this.optional = optional;
+	}
+	
 	@Override
 	public boolean isValidParamType(ValueType type) {
 		return (type instanceof AttributeExpType);
@@ -28,6 +34,9 @@ final class FunctionParamAnyAttributeSpec implements FunctionParamSpec
 			return false;
 		}
 		Expression exp = it.next();
+		if(exp == null){
+			return optional;
+		}
 		return isValidParamType(exp.getEvaluatesTo());
 	}
 

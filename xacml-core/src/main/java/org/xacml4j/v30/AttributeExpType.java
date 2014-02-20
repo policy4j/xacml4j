@@ -1,7 +1,6 @@
 package org.xacml4j.v30;
 
 
-
 public interface AttributeExpType extends ValueType
 {
 	/**

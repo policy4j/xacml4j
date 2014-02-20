@@ -113,7 +113,7 @@ class JavaMethodToFunctionSpecConverter
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
-				b.param(param.isBag() ? type.bagType() : type);
+				b.param(param.isBag() ? type.bagType() : type, param.optional());
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -144,7 +144,8 @@ class JavaMethodToFunctionSpecConverter
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamAnyAttribute) {
-				b.anyAttribute();
+				XacmlFuncParamAnyAttribute param = (XacmlFuncParamAnyAttribute)params[i][0];
+				b.anyAttribute(param.optional());
 				continue;
 			}
 			if (params[i][0] == null) {
