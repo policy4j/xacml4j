@@ -23,6 +23,7 @@ import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Objects;
@@ -59,8 +60,6 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 		return delegate.isExtendedIndeterminateEval();
 	}
 	
-	
-
 	@Override
 	public Types getTypes() {
 		return delegate.getTypes();

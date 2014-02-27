@@ -27,7 +27,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 
 import com.google.common.base.Preconditions;
 
@@ -46,10 +45,10 @@ public class HigherOrderFunctions
 		for(AttributeExp valueFromBag : bag.values()){
 			BooleanExp r = ref.invoke(context, value, valueFromBag);
 			if(r.getValue()){
-				return BooleanType.BOOLEAN.create(true);
+				return BooleanExp.TRUE;
 			}
 		}
-		return BooleanType.BOOLEAN.create(false);
+		return BooleanExp.FALSE;
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
@@ -64,10 +63,10 @@ public class HigherOrderFunctions
 		for(AttributeExp valueFromBag : bag.values()){
 			BooleanExp r = ref.invoke(context, value, valueFromBag);
 			if(!r.getValue()){
-				return BooleanType.BOOLEAN.create(false);
+				return BooleanExp.FALSE;
 			}
 		}
-		return BooleanType.BOOLEAN.create(true);
+		return BooleanExp.TRUE;
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
@@ -83,11 +82,11 @@ public class HigherOrderFunctions
 			for(AttributeExp bValue : b.values()){
 				BooleanExp r = ref.invoke(context, aValue, bValue);
 				if(r.getValue()){
-					return BooleanType.BOOLEAN.create(true);
+					return BooleanExp.TRUE;
 				}
 			}
 		}
-		return BooleanType.BOOLEAN.create(false);
+		return BooleanExp.FALSE;
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
@@ -106,7 +105,7 @@ public class HigherOrderFunctions
 				break;
 			}
 		}
-		return BooleanType.BOOLEAN.create(result);
+		return BooleanExp.create(result);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
@@ -122,10 +121,10 @@ public class HigherOrderFunctions
 		{
 			boolean result = allOf(context, ref, va, b).getValue();
 			if(result){
-				return BooleanType.BOOLEAN.create(true);
+				return BooleanExp.TRUE;
 			}
 		}
-		return BooleanType.BOOLEAN.create(false);
+		return BooleanExp.FALSE;
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
@@ -142,11 +141,11 @@ public class HigherOrderFunctions
 			for(AttributeExp bValue : b.values()){
 				BooleanExp r = ref.invoke(context, aValue, bValue);
 				if(!r.getValue()){
-					return BooleanType.BOOLEAN.create(false);
+					return BooleanExp.FALSE;
 				}
 			}
 		}
-		return BooleanType.BOOLEAN.create(true);
+		return BooleanExp.TRUE;
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")

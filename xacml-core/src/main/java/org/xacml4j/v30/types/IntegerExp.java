@@ -9,6 +9,18 @@ public final class IntegerExp
 	public IntegerExp(Long value) {
 		super(IntegerType.INTEGER, value);
 	}
+	
+	public IntegerExp(Integer value) {
+		super(IntegerType.INTEGER, value.longValue());
+	}
+	
+	public IntegerExp(Byte value) {
+		super(IntegerType.INTEGER, value.longValue());
+	}
+	
+	public IntegerExp(Short value) {
+		super(IntegerType.INTEGER, value.longValue());
+	}
 
 	public IntegerExp add(IntegerExp d){
 		return  new IntegerExp(getValue() + d.getValue());

@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
@@ -44,23 +45,29 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	{
 		Attributes resource0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId1").value(STRING.create("value0")).build(),
-						Attribute.builder("testId2").value(STRING.create("value1")).build())
+						Attribute.builder("testId2").value(STRING.create("value1")).build()).build())
 				.build();
 
 		Attributes resource1 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build())
+						Attribute.builder("testId4").value(STRING.create("value1")).build()).build())
 				.build();
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
-						Attribute.builder("testId8").value(STRING.create("value1")).build())
+						Attribute.builder("testId8").value(STRING.create("value1")).build()).build())
 				.build();
 
 		RequestContext context = new RequestContext(false,
@@ -96,17 +103,21 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	{
 		Attributes resource0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attribute(
-						Attribute.builder("testId1").value(STRING.create("value0")).build(),
-						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.entity(
+						Entity.builder()
+						.attribute(
+								Attribute.builder("testId1").value(STRING.create("value0")).build(),
+								Attribute.builder("testId2").value(STRING.create("value1")).build()).build())
 				.build();
 
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attribute(
-						Attribute.builder("testId7").value(STRING.create("value0")).build(),
-						Attribute.builder("testId8").value(STRING.create("value1")).build())
+				.entity(Entity.builder()
+						.attribute(
+								Attribute.builder("testId7").value(STRING.create("value0")).build(),
+								Attribute.builder("testId8").value(STRING.create("value1")).build())
+						.build())
 				.build();
 
 		RequestContext context = new RequestContext(false,

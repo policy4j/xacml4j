@@ -11,7 +11,13 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
-public class Entity extends AttributeContainer
+/**
+ * An entity represents  a collection of {@link Attribute} 
+ * instances
+ * 
+ * @author Giedrius Trumpickas
+ */
+public final class Entity extends AttributeContainer
 {
 	private Document content;
 
@@ -22,6 +28,21 @@ public class Entity extends AttributeContainer
 	
 	public static Builder builder(){
 		return new Builder();
+	}
+	
+	/**
+	 * Gets entity with all include 
+	 * in result attributes
+	 * @return {@link Entity} with all include in result attributes
+	 */
+	public Entity getIncludeInResult(){
+		return Entity
+		.builder()
+		.copyOf(this, new Predicate<Attribute>() {
+			public boolean apply(Attribute a){
+				return a.isIncludeInResult();
+			}
+		}).build();
 	}
 
 	/**
@@ -46,7 +67,7 @@ public class Entity extends AttributeContainer
 	public int hashCode(){
 		return Objects.hashCode(attributes, content);
 	}
-
+	
 	@Override
 	public boolean equals(Object o){
 		if(o == this){
@@ -69,7 +90,7 @@ public class Entity extends AttributeContainer
 		private Node content;
 
 		public Builder content(Node node){
-			this.content = node;
+			this.content = DOMUtil.copyNode(node);
 			return this;
 		}
 

@@ -1,33 +1,35 @@
 package org.xacml4j.v30;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
-public class Attributes extends AttributeContainer
+public class Attributes 
 {
 	private final String id;
 	private final AttributeCategory categoryId;
-	private final Document content;
 	private final AttributesReference ref;
+	private Entity entity;
 
 	private Attributes(Builder b) {
-		super(b);
 		Preconditions.checkNotNull(b.category);
+		Preconditions.checkNotNull(b.entity);
 		this.id = b.id;
 		this.categoryId = b.category;
-		this.content = DOMUtil.copyNode(b.content);
+		this.entity = b.entity;
 		this.ref = (b.id == null)
 				? null
 				: AttributesReference.builder().id(b.id).build();
 	}
 
+	/**
+	 * Constructs {@link Attributes.Builder} for given
+	 * attribute category
+	 * 
+	 * @param category attribute category
+	 * @return {@link Attributes.Builder} instance
+	 */
 	public static Builder builder(AttributeCategory category){
 		return new Builder(category);
 	}
@@ -51,14 +53,8 @@ public class Attributes extends AttributeContainer
 		return ref;
 	}
 
-	/**
-	 * Gets content as {@link Node}
-	 * instance
-	 *
-	 * @return a {@link Node} instance or {@code null}
-	 */
-	public Node getContent(){
-		return content;
+	public Entity getEntity(){
+		return entity;
 	}
 
 	/**
@@ -75,14 +71,13 @@ public class Attributes extends AttributeContainer
 		return Objects.toStringHelper(this)
 		.add("category", categoryId)
 		.add("id", id)
-		.add("attributes", attributes)
-		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
+		.add("entity", entity)
 		.toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(categoryId, id, content, attributes);
+		return Objects.hashCode(categoryId, id, entity);
 	}
 
 	@Override
@@ -98,17 +93,14 @@ public class Attributes extends AttributeContainer
 		}
 		Attributes a = (Attributes)o;
 		return Objects.equal(categoryId, a.categoryId) &&
-		Objects.equal(id, a.id) &&
-		DOMUtil.isEqual(content, a.content) &&
-		Objects.equal(attributes, a.attributes);
+		Objects.equal(id, a.id) && entity.equals(a.entity);
 	}
 
 	public static class Builder
-		extends AttributeContainer.Builder<Builder>
 	{
 		private String id;
 		private AttributeCategory category;
-		private Node content;
+		private Entity entity;
 
 		private Builder(AttributeCategory category){
 			Preconditions.checkNotNull(category);
@@ -118,22 +110,21 @@ public class Attributes extends AttributeContainer
 		private Builder(){
 		}
 
-		public Builder content(Node node){
-			this.content = node;
+		public Builder entity(Entity entity){
+			this.entity = entity;
 			return this;
 		}
 
 		public Builder copyOf(Attributes a){
 			return copyOf(a, Predicates.<Attribute>alwaysTrue());
 		}
-
+		
 		public Builder copyOf(Attributes a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
 			id(a.getId());
-			content(a.getContent());
 			category(a.getCategory());
-			attributes(Collections2.filter(a.getAttributes(), f));
+			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;
 		}
 
@@ -147,12 +138,7 @@ public class Attributes extends AttributeContainer
 			this.category = category;
 			return this;
 		}
-
-		@Override
-		protected Builder getThis() {
-			return this;
-		}
-
+		
 		public Attributes build(){
 			return new Attributes(this);
 		}

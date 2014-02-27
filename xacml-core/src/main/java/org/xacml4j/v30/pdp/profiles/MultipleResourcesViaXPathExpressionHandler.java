@@ -15,6 +15,7 @@ import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;
@@ -91,13 +92,14 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			XPathProvider xpathProvider)
 		throws RequestSyntaxException
 	{
-		Collection<AttributeExp> values = attribute.getAttributeValues(MULTIPLE_CONTENT_SELECTOR,
+		Entity entity = attribute.getEntity();
+		Collection<AttributeExp> values = entity.getAttributeValues(MULTIPLE_CONTENT_SELECTOR,
 				XPathExpType.XPATHEXPRESSION);
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
 		XPathExp selector = (XPathExp)Iterables.getOnlyElement(values, null);
-		Node content = attribute.getContent();
+		Node content = attribute.getEntity().getContent();
 		// if there is no content
 		// specified ignore it and return
 		if(content == null){
@@ -128,7 +130,8 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	private Attributes transform(String xpath, Attributes attributes)
 	{
 		Collection<Attribute> newAttributes = new LinkedList<Attribute>();
-		for(Attribute a : attributes.getAttributes())
+		Entity e =  attributes.getEntity();
+		for(Attribute a : e.getAttributes())
 		{
 			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
 				Attribute selectorAttr =
@@ -145,8 +148,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		return Attributes
 				.builder(attributes.getCategory())
 				.id(attributes.getId())
-				.content(attributes.getContent())
-				.attributes(newAttributes)
+				.entity(Entity.builder().content(e.getContent()).attributes(newAttributes).build())
 				.build();
 	}
 }

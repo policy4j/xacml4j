@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XPathVersion;
 
@@ -30,28 +31,40 @@ public class RequestTest
 	public void init()
 	{
 			this.resource0 = Attributes.builder(AttributeCategories.RESOURCE)
-				.attribute(
+				.entity(
+						Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId10").value(STRING.create("value0")).build(),
-						Attribute.builder("testId11").value(STRING.create("value1")).build())
+						Attribute.builder("testId11").value(STRING.create("value1")).build()).build())
 				.build();
 		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
-				.attribute(
+				.entity(
+						Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId11").value(STRING.create("value0")).build(),
 						Attribute.builder("testId22").value(STRING.create("value1")).build(),
 						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),
-						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(STRING.create("value2")).build())
+						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(STRING.create("value2")).build()).build())
 				.build();
 		this.subject0 =  Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attribute(
+				.entity(
+						Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId31").value(STRING.create("value0")).build(),
-						Attribute.builder("testId32").value(STRING.create("value1")).build())
+						Attribute.builder("testId32").value(STRING.create("value1")).build()).build())
 				.build();
 		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_CODEBASE)
-				.attribute(
+				.entity(
+						Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId11").value(STRING.create("value0")).build(),
 						Attribute.builder("testId22").value(STRING.create("value1")).build(),
 						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),
-						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(STRING.create("value2")).build())
+						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(STRING.create("value2")).build()).build())
 				.build();
 
 	}

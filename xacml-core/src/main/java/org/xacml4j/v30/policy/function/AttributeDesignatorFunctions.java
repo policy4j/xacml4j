@@ -29,11 +29,11 @@ public class AttributeDesignatorFunctions
 	@XacmlFuncReturnTypeResolver(resolverClass=ReturnTypeResolver.class)
 	public static BagOfAttributeExp designator(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParamAnyAttribute AttributeExp a,
+			@XacmlFuncParamAnyAttribute AttributeExp categoryOrEntity,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp attributeId,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp dataType,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", defaultValue="false")BooleanExp mustBePresent,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", defaultValue="")StringExp issuer)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", optional=true)StringExp issuer)
 	{
 		return null;
 	}

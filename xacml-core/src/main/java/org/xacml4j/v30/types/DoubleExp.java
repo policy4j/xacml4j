@@ -8,6 +8,10 @@ public final class DoubleExp extends BaseAttributeExp<Double>
 	public DoubleExp(Double value) {
 		super(DoubleType.DOUBLE, value);
 	}
+	
+	public DoubleExp(Float value) {
+		super(DoubleType.DOUBLE, value.doubleValue());
+	}
 
 	public DoubleExp add(DoubleExp d){
 		return  new DoubleExp(getValue() + d.getValue());

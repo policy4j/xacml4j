@@ -27,6 +27,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -131,11 +132,13 @@ implements ResponseUnmarshaller
 			if(result.getResourceId() != null){
 				b.includeInResult(Attributes
 						.builder(AttributeCategories.RESOURCE)
-						.attribute(
+						.entity(Entity
+								.builder()
+								.attribute(
 								Attribute
 								.builder(RESOURCE_ID)
 								.value(StringType.STRING.create(result.getResourceId()))
-								.build())
+								.build()).build())
 						.build());
 			}
 			return b.build();

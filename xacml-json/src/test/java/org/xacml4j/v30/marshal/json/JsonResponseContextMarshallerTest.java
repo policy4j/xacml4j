@@ -20,6 +20,7 @@ import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -109,8 +110,10 @@ public class JsonResponseContextMarshallerTest {
 		Attributes subjectAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
-				.content(sampleContent1())
-				.attributes(
+				.entity(Entity
+						.builder()
+						.content(sampleContent1())
+						.attributes(
 						ImmutableList.<Attribute> of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
@@ -121,7 +124,8 @@ public class JsonResponseContextMarshallerTest {
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringType.STRING.create("TestDomain")).build())).build();
+										.value(StringType.STRING.create("TestDomain")).build())).build())
+						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Attributes> of(subjectAttributes));
 
 		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")

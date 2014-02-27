@@ -31,6 +31,7 @@ import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
@@ -134,13 +135,13 @@ implements RequestUnmarshaller
 			Collection<Attributes> normalized = new LinkedList<Attributes>();
 			for(AttributeCategory categoryId : attributes.keySet()){
 				Collection<Attributes> byCategory = attributes.get(categoryId);
-				Collection<Attribute> categoryAttr = new LinkedList<Attribute>();
+				Entity.Builder b = Entity.builder();
 				for(Attributes a : byCategory){
-					categoryAttr.addAll(a.getAttributes());
+					b.copyOf(a.getEntity());
 				}
 				normalized.add(Attributes
 						.builder(categoryId)
-						.attributes(categoryAttr)
+						.entity(b.build())
 						.build());
 			}
 			return normalized;
@@ -154,7 +155,10 @@ implements RequestUnmarshaller
 				log.debug("Processing subject category=\"{}\"", category);
 			}
 			return Attributes.builder(category)
-					.attributes(create(subject.getAttribute(), category, false))
+					.entity(Entity
+							.builder()
+							.attributes(create(subject.getAttribute(), category, false))
+							.build())
 					.build();
 		}
 
@@ -168,12 +172,15 @@ implements RequestUnmarshaller
 			return category;
 		}
 
-		private Attributes createEnviroment(EnvironmentType subject)
+		private Attributes createEnviroment(EnvironmentType env)
 			throws XacmlSyntaxException
 		{
 			return Attributes
 					.builder(AttributeCategories.ENVIRONMENT)
-					.attributes(create(subject.getAttribute(), AttributeCategories.ENVIRONMENT, false))
+					.entity(Entity
+							.builder()
+							.attributes(create(env.getAttribute(), AttributeCategories.ENVIRONMENT, false))
+							.build())
 					.build();
 		}
 
@@ -181,7 +188,10 @@ implements RequestUnmarshaller
 		{
 			return Attributes
 					.builder(AttributeCategories.ACTION)
-					.attributes(create(subject.getAttribute(), AttributeCategories.ACTION, false))
+					.entity(Entity
+							.builder()
+							.attributes(create(subject.getAttribute(), AttributeCategories.ACTION, false))
+							.build())
 					.build();
 		}
 
@@ -194,8 +204,11 @@ implements RequestUnmarshaller
 			}
 			return Attributes
 					.builder(AttributeCategories.RESOURCE)
-					.content(content)
-					.attributes(create(resource.getAttribute(), AttributeCategories.RESOURCE, multipleResources))
+					.entity(Entity
+							.builder()
+							.attributes(create(resource.getAttribute(), AttributeCategories.RESOURCE, multipleResources))
+							.content(content)
+							.build())
 					.build();
 		}
 

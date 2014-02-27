@@ -31,6 +31,7 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
+import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Objects;
@@ -122,7 +123,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	public boolean isExtendedIndeterminateEval() {
 		return extendedIndeterminateEval;
 	}
-
+	
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
 		return new DelegatingEvaluationContext(this){

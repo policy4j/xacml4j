@@ -22,6 +22,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.Result;
@@ -51,41 +52,55 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr0")
-				.attribute(
-						Attribute.builder("testId1").value(STRING.create("value0")).build(),
-						Attribute.builder("testId2").value(STRING.create("value1")).build())
+				.entity(
+						Entity.builder()
+						.attribute(
+								Attribute.builder("testId1").value(STRING.create("value0")).build(),
+								Attribute.builder("testId2").value(STRING.create("value1")).build())
+						.build())
 				.build();
 
 		Attributes attr1 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr1")
-				.attribute(
-						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.entity(
+						Entity.builder()
+						.attribute(
+								Attribute.builder("testId3").value(STRING.create("value0")).build(),
+								Attribute.builder("testId4").value(STRING.create("value1")).build())
+						.build())
 				.build();
 
 		Attributes attr2 = Attributes
 				.builder(AttributeCategories.ACTION)
 				.id("actionAttr0")
-				.attribute(
-						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build())
+				.entity(
+						Entity.builder()
+						.attribute(
+								Attribute.builder("testId3").value(STRING.create("value0")).build(),
+								Attribute.builder("testId4").value(STRING.create("value1")).build())
+						.build())
 				.build();
 
 		Attributes attr3 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId5").value(STRING.create("value0")).build(),
 						Attribute.builder("testId6").value(STRING.create("value1")).build())
+						.build())
 				.build();
 
 		Attributes attr4 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr1")
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
-						Attribute.builder("testId8").value(STRING.create("value1")).build())
+						Attribute.builder("testId8").value(STRING.create("value1")).build()).build())
 				.build();
 
 		RequestReference reference0 = RequestReference.builder()
@@ -117,19 +132,19 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestContext context0 = c0.getValue();
 		RequestContext context1 = c0.getValue();
 
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId5"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId6"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId1"));
-		assertNotNull(Iterables.getOnlyElement(context0.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId2"));
+		assertNotNull(context0.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId5"));
+		assertNotNull(context0.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId6"));
+		assertNotNull(context0.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId1"));
+		assertNotNull(context0.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId2"));
 
 		assertEquals(2, context0.getAttributes().size());
 		assertEquals(1, context0.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
 		assertEquals(1, context0.getAttributes(AttributeCategories.RESOURCE).size());
-
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId7"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.SUBJECT_ACCESS)).getAttributes("testId8"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId3"));
-		assertNotNull(Iterables.getOnlyElement(context1.getAttributes(AttributeCategories.RESOURCE)).getAttributes("testId4"));
+		
+		assertNotNull(context1.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId7"));
+		assertNotNull(context1.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId8"));
+		assertNotNull(context1.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId3"));
+		assertNotNull(context1.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId4"));
 		assertEquals(2, context1.getAttributes().size());
 		assertEquals(1, context1.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
 		assertEquals(1, context1.getAttributes(AttributeCategories.RESOURCE).size());
@@ -143,17 +158,21 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		Attributes attr0 = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("resourceAttr0")
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build())
+						Attribute.builder("testId4").value(STRING.create("value1")).build()).build())
 				.build();
 
 		Attributes attr1 = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId5").value(STRING.create("value0")).build(),
-						Attribute.builder("testId6").value(STRING.create("value1")).build())
+						Attribute.builder("testId6").value(STRING.create("value1")).build()).build())
 				.build();
 
 		RequestContext request = new RequestContext(false,

@@ -8,6 +8,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
@@ -38,7 +39,8 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		if(resource == null){
 			return handleNext(request, context);
 		}
-		Collection<AttributeExp> resourceId = resource.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
+		Entity entity = resource.getEntity();
+		Collection<AttributeExp> resourceId = entity.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
 				XPathExpType.XPATHEXPRESSION);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
@@ -57,7 +59,8 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		{
 			if(attrs.getCategory().equals(AttributeCategories.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
-				for(Attribute attr : attrs.getAttributes()){
+				Entity en = attrs.getEntity();
+				for(Attribute attr : en.getAttributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
 						Attribute selector =
@@ -73,8 +76,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 				}
 				attributes.add(Attributes
 						.builder(attrs.getCategory())
-						.content(attrs.getContent())
-						.attributes(resourceAttr)
+						.entity(Entity.builder().content(entity.getContent()).attributes(resourceAttr).build())
 						.build());
 				continue;
 			}

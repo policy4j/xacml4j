@@ -37,6 +37,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
@@ -179,7 +180,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributesType attributes = new AttributesType();
 		attributes.setId(a.getId());
 		attributes.setCategory(a.getCategory().toString());
-		for(Attribute attr : a.getAttributes()){
+		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));
 		}
 		return attributes;
@@ -365,8 +366,10 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		return Attributes
 				.builder(AttributeCategories.parse(attributes.getCategory()))
-				.content(getContent(attributes.getContent()))
-				.attributes(attr)
+				.entity(Entity
+						.builder()
+						.content(getContent(attributes.getContent()))
+						.attributes(attr).build())
 				.build();
 	}
 

@@ -270,6 +270,14 @@ public class RequestContext
 		return Collections.unmodifiableCollection(attributes.get(categoryId));
 	}
 
+	public Collection<Entity> getEntities(AttributeCategory c){	
+		ImmutableList.Builder<Entity> b = ImmutableList.builder();
+		for(Attributes a : getAttributes(c)){
+			b.add(a.getEntity());
+		}
+		return b.build();
+	}
+	
 	/**
 	 * Gets only one attribute of the given category
 	 *
@@ -282,6 +290,11 @@ public class RequestContext
 	 */
 	public Attributes getOnlyAttributes(AttributeCategory category){
 		Collection<Attributes> attributes = getAttributes(category);
+		return Iterables.getOnlyElement(attributes, null);
+	}
+	
+	public Entity getOnlyEntity(AttributeCategory category){
+		Collection<Entity> attributes = getEntities(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
 
@@ -301,7 +314,7 @@ public class RequestContext
 	public Node getOnlyContent(AttributeCategory categoryId)
 	{
 		Attributes attributes = getOnlyAttributes(categoryId);
-		return (attributes == null)?null:attributes.getContent();
+		return (attributes == null)?null:attributes.getEntity().getContent();
 	}
 
 	/**
@@ -325,7 +338,8 @@ public class RequestContext
 			String attributeId, String issuer, AttributeExpType type)
 	{
 		for(Attributes a : getAttributes()){
-			Collection<AttributeExp> values =  a.getAttributeValues(attributeId, issuer, type);
+			Entity e = a.getEntity();
+			Collection<AttributeExp> values =  e.getAttributeValues(attributeId, issuer, type);
 			if(!values.isEmpty()){
 				return true;
 			}
@@ -360,11 +374,12 @@ public class RequestContext
 	public Collection<AttributeExp> getAttributeValues(AttributeCategory categoryId,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
-		Collection<AttributeExp> found = new LinkedList<AttributeExp>();
+		ImmutableList.Builder<AttributeExp> found = ImmutableList.builder();
 		for(Attributes a : attributes.get(categoryId)){
-			found.addAll(a.getAttributeValues(attributeId, issuer, dataType));
+			Entity e = a.getEntity();
+			found.addAll(e.getAttributeValues(attributeId, issuer, dataType));
 		}
-		return found;
+		return found.build();
 	}
 
 	/**
@@ -410,17 +425,18 @@ public class RequestContext
 	 */
 	public Collection<Attributes> getIncludeInResultAttributes()
 	{
-		Collection<Attributes> resultAttr = new LinkedList<Attributes>();
+		ImmutableList.Builder<Attributes> resultAttr = ImmutableList.builder();
 		for(Attributes a : attributes.values()){
-			Collection<Attribute> includeInResult =  a.getIncludeInResultAttributes();
+			Entity e = a.getEntity();
+			Collection<Attribute> includeInResult = e.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
 				resultAttr.add(Attributes
 						.builder(a.getCategory())
-						.attributes(includeInResult)
+						.entity(Entity.builder().attributes(e.getIncludeInResultAttributes()).build())
 						.build());
 			}
 		}
-		return resultAttr;
+		return resultAttr.build();
 	}
 
 	@Override
@@ -459,7 +475,7 @@ public class RequestContext
 	{
 		private boolean returnPolicyIdList;
 		private boolean combinedDecision;
-		private RequestDefaults reqDefaults;
+		private RequestDefaults reqDefaults = new RequestDefaults();
 		private ImmutableListMultimap.Builder<AttributeCategory, Attributes> attrBuilder = ImmutableListMultimap.builder();
 		private ImmutableList.Builder<RequestReference> reqRefs = ImmutableList.builder();
 

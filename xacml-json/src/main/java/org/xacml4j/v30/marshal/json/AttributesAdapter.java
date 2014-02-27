@@ -20,6 +20,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xml.sax.InputSource;
 
@@ -53,7 +54,14 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 			AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null));
 			Node content = stringToNode(GsonUtil.getAsString(o, CONTENT_PROPERTY, null));
 			String id = GsonUtil.getAsString(o, ID_PROPERTY, null);
-			return Attributes.builder(category).id(id).attributes(attr).content(content).build();
+			return Attributes.builder(category)
+					.id(id)
+					.entity(Entity
+							.builder() 
+							.attributes(attr)
+							.content(content)
+							.build())
+					.build();
 		} catch (XacmlSyntaxException e) {
 			throw new JsonParseException(e);
 		}
@@ -85,9 +93,10 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 		if (src.getId() != null) {
 			o.addProperty(ID_PROPERTY, src.getId());
 		}
+		Entity e = src.getEntity();
 		o.addProperty(CATEGORY_PROPERTY, src.getCategory().getId());
-		o.addProperty(CONTENT_PROPERTY, nodeToString(src.getContent()));
-		o.add(ATTRIBUTE_PROPERTY, context.serialize(src.getAttributes()));
+		o.addProperty(CONTENT_PROPERTY, nodeToString(e.getContent()));
+		o.add(ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
 		return o;
 	}
 

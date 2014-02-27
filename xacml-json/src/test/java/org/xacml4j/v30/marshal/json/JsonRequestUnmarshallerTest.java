@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestDefaults;
 import org.xacml4j.v30.RequestReference;
@@ -58,8 +59,11 @@ public class JsonRequestUnmarshallerTest {
 		Attributes subjectAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
-				.content(sampleContent1())
-				.attributes(
+				.entity(
+						Entity
+						.builder()
+						.content(sampleContent1())
+						.attributes(
 						ImmutableList.<Attribute> of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
@@ -70,31 +74,46 @@ public class JsonRequestUnmarshallerTest {
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringType.STRING.create("TestDomain")).build())).build();
+										.value(StringType.STRING.create("TestDomain")).build()))
+						.build())
+				.build();
 		Attributes resourceAttributes = Attributes
 				.builder(AttributeCategories.RESOURCE)
 				.id("ResourceAttributes")
-				.attributes(
+				.entity(Entity
+						.builder()
+						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true).value(StringType.STRING.create("testResourceId")).build())).build();
+								.includeInResult(true).value(StringType.STRING.create("testResourceId")).build())).build())
+						.build();
 		Attributes actionAttributes = Attributes
 				.builder(AttributeCategories.ACTION)
-				.attributes(
+				.entity(Entity
+						.builder()
+						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(StringType.STRING.create("VIEW")).build())).build();
+								.includeInResult(false).value(StringType.STRING.create("VIEW")).build())).build())
+				.build();
 		Attributes environmentAttributes = Attributes
 				.builder(AttributeCategories.ENVIRONMENT)
 				.id("EnvironmentAttributes")
-				.attributes(
+				.entity(Entity
+						.builder()
+						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false).value(StringType.STRING.create("json\\-\"test\"")).build())).build();
+								.includeInResult(false).value(StringType.STRING.create("json\\-\"test\"")).build()))
+						.build())
+				.build();
 		Attributes subjectIntermAttributes = Attributes
 				.builder(AttributeCategories.SUBJECT_INTERMEDIARY)
 				.id("SubjectIntermediaryAttributes")
-				.attributes(
+				.entity(Entity
+						.builder()
+						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
 								.value(StringType.STRING.create("koks oras paryziuj?")).build()))
+						.build())
 				.build();
 
 		RequestReference requestRef1 = RequestReference.builder().reference(subjectAttributes, resourceAttributes)

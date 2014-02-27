@@ -27,6 +27,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
@@ -78,20 +79,25 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.content(content)
-				.attribute(
-						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build(),
-						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+				.entity(
+						Entity.builder()
+						.content(content)
+						.attribute(
+								Attribute.builder("testId3").value(STRING.create("value0")).build(),
+								Attribute.builder("testId4").value(STRING.create("value1")).build(),
+								Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+								.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+						.build())
 				.build();
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attribute(
+				.entity(
+						Entity.builder()
+						.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build())
-
+						.build())
 				.build();
 
 		RequestContext context = new RequestContext(false,
@@ -118,8 +124,8 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
 
-		Attribute selector0 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector1 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector0 = r0.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+		Attribute selector1 = r1.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
@@ -133,18 +139,22 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.content(content)
-				.attribute(
+				.entity(Entity
+						.builder()
+						.content(content)
+						.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build()).build())
 				.build();
 
 
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
+				.entity(Entity
+				.builder()
 				.content(content)
 				.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
@@ -152,7 +162,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
 								 .value(
 										 XPATHEXPRESSION.create("//md:record/md:patient/md:patientDoB/@md:attrn1", AttributeCategories.SUBJECT_ACCESS)
-								).build()).build();
+								).build()).build()).build();
 
 		RequestContext context = new RequestContext(false,
 				Arrays.asList(subject, resource));
@@ -186,27 +196,27 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext r2 = c2.getValue();
 		RequestContext r3 = c3.getValue();
 
-		Attribute selector00 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector01 = Iterables.getOnlyElement(r0.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector00 = r0.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+		Attribute selector01 = r0.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
 
-		Attribute selector10 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector11 = Iterables.getOnlyElement(r1.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector10 = r1.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+		Attribute selector11 = r1.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 
-		Attribute selector20 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector21 = Iterables.getOnlyElement(r2.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector20 = r2.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+		Attribute selector21 = r2.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
 
 
-		Attribute selector30 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategories.RESOURCE).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
-		Attribute selector31 = Iterables.getOnlyElement(r3.getOnlyAttributes(AttributeCategories.SUBJECT_ACCESS).getAttributes(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+		Attribute selector30 = r3.getOnlyEntity(AttributeCategories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+		Attribute selector31 = r3.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]", AttributeCategories.RESOURCE),  Iterables.getOnlyElement(selector30.getValues()));
 		assertEquals(XPATHEXPRESSION.create("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", AttributeCategories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector31.getValues()));
@@ -220,21 +230,24 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.content(content)
-				.attribute(
+				.entity(Entity
+						.builder()
+						.content(content)
+						.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(STRING.create("//md:record/md:patient")).build())
+						.value(STRING.create("//md:record/md:patient")).build()).build())
 				.build();
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.content(content)
-				.attribute(
+				.entity(Entity
+						.builder()
+						.content(content)
+						.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
-						Attribute.builder("testId8").value(STRING.create("value1")).build()
-				).build();
+						Attribute.builder("testId8").value(STRING.create("value1")).build()).build()).build();
 
 
 		RequestContext request = RequestContext.builder()
@@ -261,19 +274,23 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 		Attributes resource = Attributes
 				.builder(AttributeCategories.RESOURCE)
-				.attribute(
+				.entity(Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId3").value(STRING.create("value0")).build(),
 						Attribute.builder("testId4").value(STRING.create("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build())
+						.value(XPATHEXPRESSION.create("//md:record/md:patient", AttributeCategories.RESOURCE)).build()).build())
 				.build();
 
 		Attributes subject = Attributes
 				.builder(AttributeCategories.SUBJECT_ACCESS)
-				.attribute(
+				.entity(Entity
+						.builder()
+						.attribute(
 						Attribute.builder("testId7").value(STRING.create("value0")).build(),
 						Attribute.builder("testId8").value(STRING.create("value1")).build()
-				).build();
+				).build()).build();
 
 
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);

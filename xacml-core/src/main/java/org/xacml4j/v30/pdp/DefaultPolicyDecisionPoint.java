@@ -16,6 +16,7 @@ import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
@@ -186,7 +187,7 @@ final class DefaultPolicyDecisionPoint
 		for(AttributeCategory c : attributes.keySet()){
 			result.add(Attributes
 					.builder(c)
-					.attributes(attributes.get(c))
+					.entity(Entity.builder().attributes(attributes.get(c)).build())
 					.build());
 		}
 		return result;

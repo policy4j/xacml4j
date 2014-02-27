@@ -144,14 +144,14 @@ public class Xacml20ResponseContextMarshaller
 			if(resource == null){
 				return null;
 			}
-			Collection<Attribute> attrs = resource.getAttributes(RESOURCE_ID);
+			Collection<Attribute> attrs = resource.getEntity().getAttributes(RESOURCE_ID);
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
 				AttributeExp v =  Iterables.getOnlyElement(resourceId.getValues());
 				TypeToString toString = types.getCapability(v.getType(), TypeToString.class);
 				return toString.toString();
 			}
-			Collection<AttributeExp> values =  resource.getAttributeValues(
+			Collection<AttributeExp> values =  resource.getEntity().getAttributeValues(
 					CONTENT_SELECTOR, XPathExpType.XPATHEXPRESSION);
 			if(values.isEmpty() ||
 					values.size() > 1){

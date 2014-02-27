@@ -2,15 +2,20 @@ package org.xacml4j.v30;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
+/**
+ * Base class for XACML attribute containers
+ * 
+ * @author Giedrius Trumpickas
+ */
 public class AttributeContainer
 {
 	protected final Multimap<String, Attribute> attributes;
@@ -41,7 +46,7 @@ public class AttributeContainer
 	public Collection<Attribute> getAttributes(String attributeId){
 		return attributes.get(attributeId);
 	}
-
+	
 	/**
 	 * Gets a single {@link Attribute} instance with
 	 * a given attribute identifier
@@ -64,14 +69,12 @@ public class AttributeContainer
 	 * and given issuer
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
-		Collection<Attribute> v = attributes.get(attributeId);
-		return Collections.unmodifiableCollection(
-				Collections2.filter(v, new Predicate<Attribute>() {
+		return Collections2.filter(attributes.get(attributeId), new Predicate<Attribute>() {
 					@Override
 					public boolean apply(Attribute attr) {
 						return issuer == null ||
 						issuer.equals(attr.getIssuer());
-					}}));
+					}});
 	}
 
 	/**
@@ -94,13 +97,11 @@ public class AttributeContainer
 	 * instances
 	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
-		return Collections.unmodifiableCollection(
-				Collections2.filter(attributes.values(), new Predicate<Attribute>() {
+		return Collections2.filter(attributes.values(), new Predicate<Attribute>() {
 				@Override
 				public boolean apply(Attribute attr) {
 					return attr.isIncludeInResult();
-				}
-			}));
+				}});
 	}
 
 	/**
@@ -141,11 +142,11 @@ public class AttributeContainer
 			String attributeId, String issuer, final AttributeExpType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = getAttributes(attributeId, issuer);
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
+		ImmutableList.Builder<AttributeExp> b = ImmutableList.builder();
 		for(Attribute a : found){
-			values.addAll(a.getValuesByType(type));
+			b.addAll(a.getValuesByType(type));
 		}
-		return values;
+		return b.build();
 	}
 
 	public static abstract class Builder<T extends Builder<?>>
