@@ -2,7 +2,6 @@ package org.xacml4j.v30.spi.pdp;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +11,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
@@ -61,7 +61,7 @@ public class RequestContextHandlerChain
 			PolicyDecisionPointContext context)
 	{
 		if(handlers.isEmpty()){
-			return Collections.singleton(context.requestDecision(req));
+			return ImmutableList.of(context.requestDecision(req));
 		}
 		return postProcessResults(req,
 				handlers.get(0).handle(req, context));

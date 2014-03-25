@@ -20,7 +20,6 @@ import org.xacml4j.v30.policy.function.SpecialMatchFunctions;
 import org.xacml4j.v30.policy.function.StringConversionFunctions;
 import org.xacml4j.v30.policy.function.StringFunctions;
 import org.xacml4j.v30.policy.function.XPathFunctions;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 

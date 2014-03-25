@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
-import org.xacml4j.v30.types.XacmlTypes;
 
 public class Xacml30PolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisionRule>
 	implements PolicyMarshaller

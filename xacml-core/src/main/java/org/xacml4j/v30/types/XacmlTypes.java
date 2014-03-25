@@ -110,8 +110,8 @@ public enum XacmlTypes implements AttributeExpType
 			return DateTimeExp.valueOf((DateTime)v);
 		}
 	},
-	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", 
-			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration", "dayTimeDuration"){
+	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", "dayTimeDuration",
+			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"){
 		public DayTimeDurationExp create(Object v){
 			if(v instanceof String){
 				return DayTimeDurationExp.valueOf((String)v);
@@ -238,7 +238,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration", 
-			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration", "yearMonthDuration"){
+			"yearMonthDuration", "http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"){
 			public YearMonthDurationExp create(Object v){
 				if(v instanceof String){
 					return YearMonthDurationExp.valueOf((String)v);
@@ -273,14 +273,17 @@ public enum XacmlTypes implements AttributeExpType
 	}
 	
 	private String typeId;
+	private String shortTypeId;
 	private BagOfAttributeExpType bagType;
 	private Set<String> aliases;
 	
-	private XacmlTypes(String typeId, String ...aliases){
+	private XacmlTypes(String typeId, String shortTypeId, String ...aliases){
 		this.typeId = typeId;
+		this.shortTypeId = shortTypeId;
 		this.bagType = new BagOfAttributeExpType(this);
 		this.aliases = (aliases == null)?ImmutableSet.<String>of():ImmutableSet
 				.<String>builder()
+				.add(shortTypeId)
 				.add(aliases)
 				.build();
 	}
@@ -298,6 +301,11 @@ public enum XacmlTypes implements AttributeExpType
 	@Override
 	public final String getDataTypeId() {
 		return typeId;
+	}
+	
+	@Override
+	public final String getShortDataTypeId() {
+		return shortTypeId;
 	}
 	
 	public Set<String> getDataTypeIdAliases(){

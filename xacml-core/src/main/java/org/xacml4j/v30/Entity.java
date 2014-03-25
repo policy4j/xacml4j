@@ -17,8 +17,8 @@ import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.pdp.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XacmlTypes;
 import org.xacml4j.v30.types.XPathExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;

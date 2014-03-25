@@ -48,18 +48,17 @@ public class HigherOrderFunctionsTest
 	private FunctionSpec allOfAll;
 	
 	private IMocksControl c;
-	
-	private XacmlTypes types;
+
 
 	@Before
 	public void init() throws Exception
 	{
 		this.c  = createControl();
-		this.higherOrderFunctions = new AnnotiationBasedFunctionProvider(types, HigherOrderFunctions.class);
-		this.stringFunctions = new AnnotiationBasedFunctionProvider(types, StringFunctions.class);
-		this.equalityFunctions = new AnnotiationBasedFunctionProvider(types, EqualityPredicates.class);
-		this.numericComparisionFunctions = new AnnotiationBasedFunctionProvider(types, NumericComparisionFunctions.class);
-		this.regExpFunctions = new AnnotiationBasedFunctionProvider(types, RegularExpressionFunctions.class);
+		this.higherOrderFunctions = new AnnotiationBasedFunctionProvider(HigherOrderFunctions.class);
+		this.stringFunctions = new AnnotiationBasedFunctionProvider(StringFunctions.class);
+		this.equalityFunctions = new AnnotiationBasedFunctionProvider(EqualityPredicates.class);
+		this.numericComparisionFunctions = new AnnotiationBasedFunctionProvider(NumericComparisionFunctions.class);
+		this.regExpFunctions = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
 		this.context = c.createMock(EvaluationContext.class);
 		this.intToString = stringFunctions.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-from-integer");
 		this.intEq = equalityFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-equal");

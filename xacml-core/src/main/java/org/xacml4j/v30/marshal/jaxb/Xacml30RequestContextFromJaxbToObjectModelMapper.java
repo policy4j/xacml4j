@@ -50,7 +50,6 @@ import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;

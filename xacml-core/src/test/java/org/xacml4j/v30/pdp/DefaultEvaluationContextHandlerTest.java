@@ -5,10 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.AnyURIType.ANYURI;
-import static org.xacml4j.v30.types.DateType.DATE;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
-import static org.xacml4j.v30.types.XPathExpType.XPATHEXPRESSION;
 
 import java.io.StringReader;
 
@@ -33,7 +29,6 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.EntityExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;

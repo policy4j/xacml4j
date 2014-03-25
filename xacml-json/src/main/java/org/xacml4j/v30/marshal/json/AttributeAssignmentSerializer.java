@@ -25,7 +25,8 @@ public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAs
 		AttributeExp value = src.getAttribute();
 		o.add(VALUE_PROPERTY, context.serialize(value, AttributeExp.class));
 		if (value.getType() != null) {
-			o.addProperty(DATA_TYPE_PROPERTY, value.getType().getDataTypeId());
+			// NOTE: we are serializing with short data type identifier
+			o.addProperty(DATA_TYPE_PROPERTY, value.getType().getShortDataTypeId());
 		}
 
 		if (src.getCategory() != null) {

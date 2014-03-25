@@ -46,7 +46,7 @@ class AttributeSerializer implements JsonSerializer<Attribute> {
 		} else {
 			o.add(VALUE_PROPERTY, context.serialize(firstValue, AttributeExp.class));
 		}
-		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getDataTypeId());
+		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 	}
 
 }

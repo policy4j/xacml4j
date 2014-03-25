@@ -18,7 +18,6 @@ import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.Versionable;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;

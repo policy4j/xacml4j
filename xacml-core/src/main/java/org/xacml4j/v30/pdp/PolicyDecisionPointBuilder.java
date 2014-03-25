@@ -19,7 +19,6 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 

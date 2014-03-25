@@ -7,7 +7,6 @@ import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Ticker;
 

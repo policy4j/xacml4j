@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableMap;
 abstract class ExpressionTypeBuilder
 {
 	private final static ObjectFactory factory = new ObjectFactory();
+	
 	private static ImmutableMap<Class<? extends Expression>, ExpressionTypeBuilder> builders = ImmutableMap.of(
 			Apply.class, new ApplyTypeBuilder(),
 			AttributeDesignator.class, new AttributeDesignatorTypeBuilder(),

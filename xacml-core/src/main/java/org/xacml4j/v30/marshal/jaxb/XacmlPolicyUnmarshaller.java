@@ -8,7 +8,6 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.XacmlTypes;
 
 public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 	implements PolicyUnmarshaller

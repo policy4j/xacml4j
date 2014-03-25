@@ -6,11 +6,21 @@ import java.util.Set;
 public interface AttributeExpType extends ValueType
 {
 	/**
-	 * Gets data type identifier
+	 * Gets fully qualified data type identifier
 	 *
 	 * @return data type identifier
 	 */
 	String getDataTypeId();
+	
+	/**
+	 * Gets "short" version of
+	 * the data type identifier
+	 * 
+	 * @return short version of the data type
+	 * identifier
+	 */
+	String getShortDataTypeId();
+	
 	Set<String> getDataTypeIdAliases();
 	
 	/**
