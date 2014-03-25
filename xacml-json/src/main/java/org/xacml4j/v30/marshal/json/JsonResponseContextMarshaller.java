@@ -18,7 +18,6 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,7 +28,7 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 
 	private final Gson json;
 
-	public JsonResponseContextMarshaller(Types types) {
+	public JsonResponseContextMarshaller() {
 		json = new GsonBuilder().registerTypeAdapter(ResponseContext.class, new ResponseContextAdapter())
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
@@ -39,7 +38,7 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer(types))
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
 				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
 	}

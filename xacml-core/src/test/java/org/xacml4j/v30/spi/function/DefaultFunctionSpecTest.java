@@ -3,7 +3,6 @@ package org.xacml4j.v30.spi.function;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
 
 import java.util.List;
 
@@ -15,11 +14,10 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
-
-
 
 public class DefaultFunctionSpecTest
 {
@@ -34,7 +32,7 @@ public class DefaultFunctionSpecTest
 		this.c = createControl();
 		this.invocation = c.createMock(FunctionInvocation.class);
 		this.resolver = c.createMock(FunctionReturnTypeResolver.class);
-		this.b = FunctionSpecBuilder.builder("testId", Types.builder().defaultTypes().create());
+		this.b = FunctionSpecBuilder.builder("testId");
 		this.context = c.createMock(EvaluationContext.class);
 	}
 
@@ -42,13 +40,13 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecWithListParamArguments() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BOOLEAN.create(false))
+		.add(BooleanExp.valueOf(false))
 		.build();
-		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andReturn(BOOLEAN.create(true));
+		expect(invocation.invoke(spec, context, params)).andReturn(BooleanExp.valueOf(true));
 		c.replay();
-		assertEquals(BOOLEAN.create(true), spec.invoke(context, params));
+		assertEquals(BooleanExp.valueOf(true), spec.invoke(context, params));
 		c.verify();
 	}
 
@@ -56,9 +54,9 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BOOLEAN.create(false))
+		.add(BooleanExp.valueOf(false))
 		.build();
-		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(context, spec, "Fail"));
 		c.replay();
@@ -70,9 +68,9 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BOOLEAN.create(false))
+		.add(BooleanExp.valueOf(false))
 		.build();
-		FunctionSpec spec = b.param(BOOLEAN).build(resolver, invocation);
+		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException("Fail"));
 		c.replay();

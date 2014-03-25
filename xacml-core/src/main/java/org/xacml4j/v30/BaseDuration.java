@@ -57,6 +57,10 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 	public final String toString(){
 		return value.toString();
 	}
+	
+	public final String toXacmlString(){
+		return value.toString();
+	}
 
 	@Override
 	public final int hashCode(){

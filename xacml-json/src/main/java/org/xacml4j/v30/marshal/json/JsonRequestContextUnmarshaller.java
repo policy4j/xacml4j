@@ -11,7 +11,6 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
-import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,12 +19,12 @@ import com.google.gson.JsonElement;
 public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	private final Gson json;
 
-	public JsonRequestContextUnmarshaller(Types types)
+	public JsonRequestContextUnmarshaller()
 	{
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(types))
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(types))
+				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}

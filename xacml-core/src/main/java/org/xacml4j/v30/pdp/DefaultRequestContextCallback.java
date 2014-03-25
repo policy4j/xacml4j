@@ -1,12 +1,7 @@
 package org.xacml4j.v30.pdp;
 
-import java.util.Collection;
-
-import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 
 import com.google.common.base.Preconditions;
@@ -29,23 +24,9 @@ public class DefaultRequestContextCallback
 	}
 
 	@Override
-	public BagOfAttributeExp getAttributeValue(
-			AttributeCategory category,
-			String attributeId,
-			AttributeExpType dataType,
-			String issuer) {
-		Collection<AttributeExp> values = request.getAttributeValues(
-				category,
-				attributeId,
-				dataType,
-				issuer);
-		return dataType.bagOf(values);
+	public Entity getEntity(AttributeCategory category) {
+		return request.getOnlyEntity(category);
 	}
-
-	@Override
-	public Node getContent(AttributeCategory category) {
-		Preconditions.checkNotNull(category);
-		return request.getOnlyContent(category);
-	}
-
+	
+	
 }

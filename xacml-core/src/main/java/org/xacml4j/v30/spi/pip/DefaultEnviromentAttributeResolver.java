@@ -1,16 +1,16 @@
 package org.xacml4j.v30.spi.pip;
 
 
-import static org.xacml4j.v30.types.DateTimeType.DATETIME;
-import static org.xacml4j.v30.types.DateType.DATE;
-import static org.xacml4j.v30.types.TimeType.TIME;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.types.DateExp;
+import org.xacml4j.v30.types.DateTimeExp;
+import org.xacml4j.v30.types.TimeExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 /**
@@ -26,9 +26,10 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 				"XACML Enviroment Attributes Resolver",
 				AttributeCategories.ENVIRONMENT)
 				.noCache()
-				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time",TIME)
-				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date",DATE)
-				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",DATETIME).build());
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time", XacmlTypes.TIME)
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date", XacmlTypes.DATE)
+				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",XacmlTypes.DATETIME)
+				.build());
 	}
 
 	@Override
@@ -37,11 +38,11 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 		Calendar currentDateTime = context.getCurrentDateTime();
 		Map<String, BagOfAttributeExp> v = new HashMap<String, BagOfAttributeExp>();
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time",
-					TIME.create(currentDateTime).toBag());
+					TimeExp.valueOf(currentDateTime).toBag());
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date",
-					DATE.create(currentDateTime).toBag());
+					DateExp.valueOf(currentDateTime).toBag());
 		v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",
-					DATETIME.create(currentDateTime).toBag());
+					DateTimeExp.valueOf(currentDateTime).toBag());
 		return v;
 	}
 }

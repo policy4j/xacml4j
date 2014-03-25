@@ -54,9 +54,8 @@ import org.xacml4j.v30.pdp.PolicySetIDReference;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.pdp.VariableDefinition;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -76,12 +75,6 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		nativeToJaxbEffectMappings = nativeToJaxbB.build();
 	}
 
-	private Types types;
-	
-	public Xacml30PolicyFromObjectModelToJaxbMapper(Types types){
-		Preconditions.checkNotNull(types);
-		this.types = types;
-	}
 	
 	public JAXBElement<?> toJaxb(CompositeDecisionRule d){
 		if(d instanceof PolicySet){
@@ -273,8 +266,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	private AttributeValueType toJaxb(AttributeExp a)
 	{
 		Preconditions.checkNotNull(a);
-		TypeToXacml30 toXacml30 = types.getCapability(a.getType(), TypeToXacml30.class);
-		return toXacml30.toXacml30(types, a);
+		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(a.getType());
+		Preconditions.checkState(toXacml30.isPresent());
+		return toXacml30.get().toXacml30(a);
 	}
 
 	private TargetType toJaxb(Target t)

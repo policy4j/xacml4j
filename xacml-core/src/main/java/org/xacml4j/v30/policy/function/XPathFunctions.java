@@ -12,9 +12,7 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XPathExp;
 
@@ -41,11 +39,11 @@ public class XPathFunctions
 		try{
 			NodeList nodes = context.evaluateToNodeSet(xpath.getPath(), xpath.getCategory());
 			if(nodes != null){
-				return IntegerType.INTEGER.create(nodes.getLength());
+				return IntegerExp.valueOf(nodes.getLength());
 			}
-			return IntegerType.INTEGER.create(0);
+			return IntegerExp.valueOf(0);
 		}catch(EvaluationException e){
-			return IntegerType.INTEGER.create(0);
+			return IntegerExp.valueOf(0);
 		}
 	}
 
@@ -71,18 +69,18 @@ public class XPathFunctions
 			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(), xpath1.getCategory());
 			if(nodes0 == null ||
 					nodes0  == null){
-				return BooleanType.BOOLEAN.create(false);
+				return BooleanExp.valueOf(false);
 			}
 			for(int i = 0; i < nodes0.getLength(); i++){
 				for(int j = 0; j < nodes1.getLength(); j++){
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
-						return BooleanType.BOOLEAN.create(true);
+						return BooleanExp.valueOf(true);
 					}
 				}
 			}
-			return BooleanType.BOOLEAN.create(false);
+			return BooleanExp.valueOf(false);
 		}catch(EvaluationException e){
-			return BooleanType.BOOLEAN.create(false);
+			return BooleanExp.valueOf(false);
 		}
 	}
 
@@ -112,14 +110,14 @@ public class XPathFunctions
 					xpath1.getCategory());
 			if(nodes0 == null ||
 					nodes0  == null){
-				return BooleanType.BOOLEAN.create(false);
+				return BooleanExp.valueOf(false);
 			}
 			for(int i = 0; i < nodes0.getLength(); i++)
 			{
 				for(int j = 0; j < nodes1.getLength(); j++)
 				{
 					if(nodes0.item(i).isSameNode(nodes1.item(j))){
-						return BooleanType.BOOLEAN.create(true);
+						return BooleanExp.valueOf(true);
 					}
 					NamedNodeMap a = nodes0.item(i).getAttributes();
 					NamedNodeMap b = nodes1.item(j).getAttributes();
@@ -127,19 +125,19 @@ public class XPathFunctions
 						for(int ii = 0; ii < a.getLength(); ii++){
 							for(int jj = 0; jj < b.getLength(); jj++){
 								if(a.item(ii).isSameNode(b.item(jj))){
-									return BooleanType.BOOLEAN.create(true);
+									return BooleanExp.valueOf(true);
 								}
 							}
 						}
 					}
 					if(compareChildNodes(nodes0.item(i), nodes1.item(j))){
-						return BooleanType.BOOLEAN.create(true);
+						return BooleanExp.valueOf(true);
 					}
 				}
 			}
-			return BooleanType.BOOLEAN.create(false);
+			return BooleanExp.valueOf(false);
 		}catch(EvaluationException e){
-			return BooleanType.BOOLEAN.create(false);
+			return BooleanExp.valueOf(false);
 		}
 	}
 

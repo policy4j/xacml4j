@@ -15,8 +15,7 @@ public class FunctionInvocationException extends EvaluationException
 	public FunctionInvocationException(EvaluationContext context,
 			FunctionSpec spec,
 			String template, Object... arguments) {
-		super(StatusCode.createProcessingError(),
-				context, template, arguments);
+		super(StatusCode.createProcessingError(), template, arguments);
 		this.spec = spec;
 	}
 
@@ -26,14 +25,13 @@ public class FunctionInvocationException extends EvaluationException
 			Throwable cause, String message,
 			Object... arguments) {
 		super(StatusCode.createProcessingError(),
-				context, cause, message, arguments);
+				cause, message, arguments);
 		this.spec = spec;
 	}
 
 	public FunctionInvocationException(EvaluationContext context,
 			FunctionSpec spec, Throwable cause) {
-		super(StatusCode.createProcessingError(),
-				context, cause);
+		super(StatusCode.createProcessingError(), cause);
 		this.spec = spec;
 	}
 

@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.util.NodeNamespaceContext;
-import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.Preconditions;
 
@@ -30,19 +29,13 @@ public class DefaultXPathProvider implements XPathProvider
 	}
 
 	@Override
-	public Node evaluateToNode(XPathVersion v, String path, Node context)
+	public Node evaluateToNode(String path, Node context)
 			throws XPathEvaluationException
 	{
-		Preconditions.checkArgument(v != null);
 		Preconditions.checkArgument(path != null);
 		Preconditions.checkArgument(context != null);
 		try
 		{
-
-			if(!v.equals(XPathVersion.XPATH1)){
-				throw new XPathEvaluationException(
-						"Unsupported XPath version", path, v, context);
-			}
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToNode XPath=\"{}\"", path);
 			}
@@ -60,22 +53,17 @@ public class DefaultXPathProvider implements XPathProvider
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw new XPathEvaluationException(path, v, context, e);
+			throw new XPathEvaluationException(path, context, e);
 		}
 	}
 
 	@Override
-	public NodeList evaluateToNodeSet(XPathVersion v, String path, Node context)
+	public NodeList evaluateToNodeSet(String path, Node context)
 			throws XPathEvaluationException {
-		Preconditions.checkArgument(v != null);
 		Preconditions.checkArgument(path != null);
 		Preconditions.checkArgument(context != null);
 		try
 		{
-			if(!v.equals(XPathVersion.XPATH1)){
-				throw new XPathEvaluationException(
-						"Unsupported XPath version", path, v, context);
-			}
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToNodeSet XPath=\"{}\"", path);
 			}
@@ -91,22 +79,17 @@ public class DefaultXPathProvider implements XPathProvider
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw new XPathEvaluationException(path, v, context, e);
+			throw new XPathEvaluationException(path, context, e);
 		}
 	}
 
 	@Override
-	public String evaluateToString(XPathVersion v, String path, Node context)
+	public String evaluateToString(String path, Node context)
 			throws XPathEvaluationException {
-		Preconditions.checkArgument(v != null);
 		Preconditions.checkArgument(path != null);
 		Preconditions.checkArgument(context != null);
 		try
 		{
-			if(!v.equals(XPathVersion.XPATH1)){
-				throw new XPathEvaluationException(
-						"Unsupported XPath version", path, v, context);
-			}
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToString XPath=\"{}\"", path);
 			}
@@ -117,22 +100,17 @@ public class DefaultXPathProvider implements XPathProvider
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw new XPathEvaluationException(path, v, context, e);
+			throw new XPathEvaluationException(path, context, e);
 		}
 	}
 
 	@Override
-	public Number evaluateToNumber(XPathVersion v, String path, Node context)
+	public Number evaluateToNumber(String path, Node context)
 			throws XPathEvaluationException {
-		Preconditions.checkArgument(v != null);
 		Preconditions.checkArgument(path != null);
 		Preconditions.checkArgument(context != null);
 		try
 		{
-			if(!v.equals(XPathVersion.XPATH1)){
-				throw new XPathEvaluationException(
-						"Unsupported XPath version", path, v, context);
-			}
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToNumber XPath=\"{}\"", path);
 			}
@@ -143,7 +121,7 @@ public class DefaultXPathProvider implements XPathProvider
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw new XPathEvaluationException(path, v, context, e);
+			throw new XPathEvaluationException(path, context, e);
 		}
 	}
 

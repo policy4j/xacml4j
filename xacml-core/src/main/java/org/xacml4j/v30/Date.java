@@ -20,7 +20,7 @@ public final class Date extends BaseCalendar<Date>
 	 *
 	 * @return {@link Date} instance
 	 */
-	public static Date create(Object v){
+	public static Date valueOf(Object v){
 		return new Date(parseDate(v));
 	}
 

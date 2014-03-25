@@ -9,9 +9,9 @@ import java.util.Calendar;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.types.DateTimeType;
-import org.xacml4j.v30.types.DateType;
-import org.xacml4j.v30.types.TimeType;
+import org.xacml4j.v30.types.DateExp;
+import org.xacml4j.v30.types.DateTimeExp;
+import org.xacml4j.v30.types.TimeExp;
 
 import com.google.common.base.Ticker;
 
@@ -37,9 +37,9 @@ public class DefaultEnviromentAttributesResolverTest
 		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 		c.replay();
 		AttributeSet a = r.resolve(context);
-		assertEquals(DateTimeType.DATETIME.bagOf(DateTimeType.DATETIME.create(now)), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));
-		assertEquals(DateType.DATE.create(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
-		assertEquals(TimeType.TIME.create(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
+		assertEquals(DateTimeExp.valueOf(now), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"));
+		assertEquals(DateExp.valueOf(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"));
+		assertEquals(TimeExp.valueOf(now).toBag(), a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"));
 		c.verify();
 	}
 }

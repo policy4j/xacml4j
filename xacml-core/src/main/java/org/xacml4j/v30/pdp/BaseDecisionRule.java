@@ -147,7 +147,7 @@ abstract class BaseDecisionRule implements DecisionRule
 						"associated advices and obligations", e);
 			}
 			throw new EvaluationException(
-					StatusCode.createProcessingError(), context, e);
+					StatusCode.createProcessingError(), e);
 		}
 	}
 
@@ -196,8 +196,7 @@ abstract class BaseDecisionRule implements DecisionRule
 				log.debug("Failed to evaluate decision rule advices", e);
 			}
 			throw new EvaluationException(
-					StatusCode.createProcessingError(),
-					context, e);
+					StatusCode.createProcessingError(), e);
 		}
 	}
 
@@ -247,8 +246,7 @@ abstract class BaseDecisionRule implements DecisionRule
 						"decision rule obligations", e);
 			}
 			throw new EvaluationException(
-					StatusCode.createProcessingError(),
-					context, e);
+					StatusCode.createProcessingError(), e);
 		}
 	}
 

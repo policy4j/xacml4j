@@ -23,7 +23,7 @@ public class Time extends BaseCalendar<Time>
 	 *
 	 * @return {@link Time} instance
 	 */
-	public static Time create(Object v){
+	public static Time valueOf(Object v){
 		return new Time(parseTime(v));
 	}
 

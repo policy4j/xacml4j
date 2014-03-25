@@ -1,7 +1,6 @@
 package org.xacml4j.v30;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;

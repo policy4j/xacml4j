@@ -13,7 +13,7 @@ import org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 
@@ -33,10 +33,8 @@ final class DefaultPolicyDecisionPointContextFactory
 	private boolean validateFuncParamsAtRuntime = false;
 	private int decisionCacheTTL = 30;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
-	private Types types;
 
 	DefaultPolicyDecisionPointContextFactory(
-			Types types,
 			CompositeDecisionRule policyDomain,
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
@@ -51,8 +49,6 @@ final class DefaultPolicyDecisionPointContextFactory
 		Preconditions.checkArgument(pip != null);
 		Preconditions.checkArgument(auditor != null);
 		Preconditions.checkArgument(cache != null);
-		Preconditions.checkArgument(types != null);
-		this.types = types;
 		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
@@ -146,7 +142,6 @@ final class DefaultPolicyDecisionPointContextFactory
 				EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
 						callback, xpathProvider, pip);
 				return new RootEvaluationContext(
-						types,
 						validateFuncParamsAtRuntime,
 						decisionCacheTTL,
 						defaultXPathVersion,

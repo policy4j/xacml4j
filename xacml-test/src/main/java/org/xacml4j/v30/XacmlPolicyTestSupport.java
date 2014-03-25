@@ -11,14 +11,6 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attributes;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Version;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml30RequestContextUnmarshaller;
@@ -30,7 +22,6 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -42,16 +33,13 @@ public class XacmlPolicyTestSupport {
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
 	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
 	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
-	private Types types;
 	
 	@Before
 	public void setup() throws Exception {
-		
-		this.types = Types.builder().defaultTypes().create();
 		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
-		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller(types);
+		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 
 	}
 
@@ -306,7 +294,6 @@ public class XacmlPolicyTestSupport {
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
-					types,
 					functionProviderBuilder.build(),
 					decisionAlgoProviderBuilder.create());
 			for(InputStream in : policies){

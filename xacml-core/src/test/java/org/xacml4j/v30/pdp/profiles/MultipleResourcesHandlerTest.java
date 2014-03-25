@@ -9,7 +9,6 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.StringType.STRING;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +28,7 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
+import org.xacml4j.v30.types.StringExp;
 
 
 public class MultipleResourcesHandlerTest
@@ -51,23 +51,23 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(STRING.create("value0")).build(),
-								Attribute.builder("testId2").value(STRING.create("value1")).build()).build())
+								Attribute.builder("testId1").value(StringExp.valueOf("value0")).build(),
+								Attribute.builder("testId2").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(STRING.create("value0")).build(),
-						Attribute.builder("testId4").value(STRING.create("value1")).build()).build())
+						Attribute.builder("testId3").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
 		this.subject0 = Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId7").value(STRING.create("value0")).build(),
-								Attribute.builder("testId8").value(STRING.create("value1")).build()).build())
+								Attribute.builder("testId7").value(StringExp.valueOf("value0")).build(),
+								Attribute.builder("testId8").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
 
@@ -75,8 +75,8 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId9").value(STRING.create("value0")).build(),
-						Attribute.builder("testId10").value(STRING.create("value1")).build()).build())
+						Attribute.builder("testId9").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId10").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 	}
 

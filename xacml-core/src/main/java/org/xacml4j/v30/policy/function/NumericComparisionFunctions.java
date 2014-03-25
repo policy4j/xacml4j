@@ -5,7 +5,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.IntegerExp;
 
@@ -19,7 +18,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue() > b.getValue());
+		return BooleanExp.valueOf(a.getValue() > b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
@@ -28,7 +27,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue() < b.getValue());
+		return BooleanExp.valueOf(a.getValue() < b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
@@ -37,7 +36,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
@@ -46,7 +45,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
@@ -55,7 +54,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue() > b.getValue());
+		return BooleanExp.valueOf(a.getValue() > b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
@@ -64,7 +63,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue() < b.getValue());
+		return BooleanExp.valueOf(a.getValue() < b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
@@ -73,7 +72,7 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
@@ -82,6 +81,6 @@ public class NumericComparisionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
 	}
 }

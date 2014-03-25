@@ -20,8 +20,9 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 class AnnotatedResolverFactory
@@ -33,9 +34,6 @@ class AnnotatedResolverFactory
 	static{
 		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
 	}
-
-	private Types xacmlRegistry = Types.builder().defaultTypes().create();
-
 	public Collection<ContentResolver> getContentResolvers(Object instance)
 		throws XacmlSyntaxException
 	{
@@ -91,8 +89,12 @@ class AnnotatedResolverFactory
 					"must be specified by the descriptor on method=\"{}\"", m.getName());
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
-			AttributeExpType type = xacmlRegistry.getType(attr.dataType());
-			b.attribute(attr.id(), type);
+			Optional<AttributeExpType> type = XacmlTypes.getType(attr.dataType());
+			if(!type.isPresent()){
+				throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+						attr.dataType());
+			}
+			b.attribute(attr.id(), type.get());
 
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
@@ -170,11 +172,16 @@ class AnnotatedResolverFactory
 							m.getName(), i, BagOfAttributeExp.class.getName());
 				}
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
+				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
+				if(!type.isPresent()){
+					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+							ref.dataType());
+				}
 				keys.add(AttributeDesignatorKey
 						.builder()
 						.category(ref.category())
 						.attributeId(ref.attributeId())
-						.dataType(xacmlRegistry.getType(ref.dataType()))
+						.dataType(type.get())
 						.issuer(ref.issuer())
 						.build());
 				continue;
@@ -190,11 +197,16 @@ class AnnotatedResolverFactory
 							m.getName(), i, BagOfAttributeExp.class.getName());
 				}
 				XacmlAttributeSelector ref = (XacmlAttributeSelector)p[0];
+				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
+				if(!type.isPresent()){
+					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+							ref.dataType());
+				}
 				keys.add(AttributeSelectorKey
 						.builder()
 						.category(ref.category())
 						.xpath(ref.xpath())
-						.dataType(xacmlRegistry.getType(ref.dataType()))
+						.dataType(type.get())
 						.contextSelectorId(ref.contextAttributeId())
 						.build());
 				continue;

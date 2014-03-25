@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -12,7 +11,8 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -25,10 +25,10 @@ public class AttributeTest
 	public void init()
 	{
 		this.values = new LinkedList<AttributeExp>();
-		values.add(INTEGER.create(1));
-		values.add(INTEGER.create(2));
-		values.add(INTEGER.create(3));
-		values.add(INTEGER.create(2));
+		values.add(IntegerExp.valueOf(1));
+		values.add(IntegerExp.valueOf(1));
+		values.add(IntegerExp.valueOf(3));
+		values.add(IntegerExp.valueOf(2));
 	}
 
 	@Test
@@ -53,22 +53,22 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(StringType.STRING.create("value1"), StringType.STRING.create("value2"))
+				.value(StringExp.valueOf("value1"), StringExp.valueOf("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
 		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(StringType.STRING.create("value1")));
-		assertTrue(attr.getValues().contains(StringType.STRING.create("value2")));
+		assertTrue(attr.getValues().contains(StringExp.valueOf("value1")));
+		assertTrue(attr.getValues().contains(StringExp.valueOf("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		values.add(INTEGER.create(1));
-		values.add(INTEGER.create(1));
+		values.add(IntegerExp.valueOf(1));
+		values.add(IntegerExp.valueOf(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
@@ -90,7 +90,7 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = Attribute.builder("testId")
-				.value(INTEGER.create(1), INTEGER.create(2), INTEGER.create(3), INTEGER.create(2))
+				.value(IntegerExp.valueOf(1), IntegerExp.valueOf(2), IntegerExp.valueOf(3), IntegerExp.valueOf(2))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
@@ -103,10 +103,10 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringType.STRING.create("test1"), StringType.STRING.create("test2"));
+		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringExp.valueOf("test1"), StringExp.valueOf("test2"));
 		Attribute.builder("testId")
 		.values(a)
-		.value(StringType.STRING.create("test2"), StringType.STRING.create("test3"))
+		.value(StringExp.valueOf("test2"), StringExp.valueOf("test3"))
 		.build();
 	}
 

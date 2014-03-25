@@ -6,7 +6,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerExp;
 
 
@@ -20,6 +19,6 @@ public class TestStaticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return BooleanType.BOOLEAN.create(a.equals(b));
+		return BooleanExp.valueOf(a.equals(b));
 	}
 }

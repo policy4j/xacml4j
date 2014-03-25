@@ -72,9 +72,10 @@ import org.xacml4j.v30.pdp.VariableDefinition;
 import org.xacml4j.v30.pdp.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.TypeCapability;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -88,16 +89,13 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	private final static Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
-
-	private Types  types;
+	
+	private final static TypeCapability.Index<TypeToXacml30> INDEX = TypeCapability.Index.<TypeToXacml30>build(TypeToXacml30.Types.values());
 	
 	public Xacml20PolicyFromJaxbToObjectModelMapper(
-			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
-		Preconditions.checkNotNull(types);
-		this.types = types;
 	}
 
 	public CompositeDecisionRule create(Object o)
@@ -641,20 +639,24 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		v.setDataType(value.getDataType());
 		v.getContent().addAll(value.getContent());
 		v.getOtherAttributes().putAll(value.getOtherAttributes());
-		TypeToXacml30 toXacml30 = types.getCapability(v.getDataType(), TypeToXacml30.class);
-		return toXacml30.fromXacml30(types, v);
+		Optional<TypeToXacml30> toXacml30 = INDEX.get(v.getDataType());
+		if(!toXacml30.isPresent()){
+			throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+					value.getDataType());
+		}
+		return toXacml30.get().fromXacml30(v);
 	}
 
 	private AttributeSelector createSelector(AttributeCategories categoryId,
 			AttributeSelectorType selector) throws XacmlSyntaxException
 	{
-		AttributeExpType type = types.getType(selector.getDataType());
-		Preconditions.checkState(type != null);
+		Optional<AttributeExpType> optional = XacmlTypes.getType(selector.getDataType());
+		Preconditions.checkState(optional.isPresent());
 		return AttributeSelector
 				.builder()
 				.category(categoryId)
 				.xpath(transformSelectorXPath(selector))
-				.dataType(type)
+				.dataType(optional.get())
 				.mustBePresent(selector.isMustBePresent())
 				.build();
 	}
@@ -678,13 +680,13 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	private AttributeDesignator createDesignator(AttributeCategory categoryId,
 			AttributeDesignatorType ref) throws XacmlSyntaxException
 	{
-		AttributeExpType type = types.getType(ref.getDataType());
-		Preconditions.checkState(type != null);
+		Optional<AttributeExpType> optional = XacmlTypes.getType(ref.getDataType());
+		Preconditions.checkState(optional.isPresent());
 		return AttributeDesignator
 				.builder()
 				.category(categoryId)
 				.attributeId(ref.getAttributeId())
-				.dataType(type)
+				.dataType(optional.get())
 				.mustBePresent(ref.isMustBePresent())
 				.issuer(ref.getIssuer())
 				.build();

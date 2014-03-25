@@ -24,10 +24,9 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.types.BooleanType;
-import org.xacml4j.v30.types.DoubleType;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Ticker;
 
@@ -52,7 +51,7 @@ public class AnnotatedResolverFactoryTest
 				AttributeDesignatorKey.builder()
 				.category("test")
 				.attributeId("attr1")
-				.dataType(BooleanType.BOOLEAN)
+				.dataType(XacmlTypes.BOOLEAN)
 				.build();
 
 		AttributeDesignatorKey excpectedKey1 =
@@ -60,14 +59,14 @@ public class AnnotatedResolverFactoryTest
 				.category("test")
 				.attributeId("attr2")
 				.issuer("test")
-				.dataType(IntegerType.INTEGER)
+				.dataType(XacmlTypes.INTEGER)
 				.build();
 
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 
-		expect(context.resolve(eq(excpectedKey0))).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false)));
-		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerType.INTEGER.bagOf(IntegerType.INTEGER.create(1)));
+		expect(context.resolve(eq(excpectedKey0))).andReturn(BooleanExp.valueOf(false).toBag());
+		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerExp.valueOf(1).toBag());
 		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 
 		control.replay();
@@ -87,22 +86,22 @@ public class AnnotatedResolverFactoryTest
 		AttributeDescriptor a1 = d.getAttribute("testId1");
 		assertNotNull(a1);
 		assertEquals("testId1", a1.getAttributeId());
-		assertEquals(IntegerType.INTEGER, a1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, a1.getDataType());
 
 		AttributeDescriptor a2 = d.getAttribute("testId2");
 		assertNotNull(a2);
 		assertEquals("testId2", a2.getAttributeId());
-		assertEquals(BooleanType.BOOLEAN, a2.getDataType());
+		assertEquals(XacmlTypes.BOOLEAN, a2.getDataType());
 
 		AttributeDescriptor a3 = d.getAttribute("testId3");
 		assertNotNull(a3);
 		assertEquals("testId3", a3.getAttributeId());
-		assertEquals(StringType.STRING, a3.getDataType());
+		assertEquals(XacmlTypes.STRING, a3.getDataType());
 
 		AttributeDescriptor a4 = d.getAttribute("testId4");
 		assertNotNull(a4);
 		assertEquals("testId4", a4.getAttributeId());
-		assertEquals(DoubleType.DOUBLE, a4.getDataType());
+		assertEquals(XacmlTypes.DOUBLE, a4.getDataType());
 
 		List<AttributeReferenceKey> keys = d.getKeyRefs();
 		assertEquals(2, keys.size());

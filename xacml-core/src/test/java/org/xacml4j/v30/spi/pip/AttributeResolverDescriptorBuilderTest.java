@@ -11,8 +11,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
@@ -24,9 +23,9 @@ public class AttributeResolverDescriptorBuilderTest
 	{
 		AttributeResolverDescriptorBuilder.builder(
 				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
-		.attribute("testId1", IntegerType.INTEGER)
-		.attribute("testId2", StringType.STRING)
-		.requestContextKey(AttributeCategories.SUBJECT_ACCESS, "testId1", IntegerType.INTEGER)
+		.attribute("testId1", XacmlTypes.INTEGER)
+		.attribute("testId2", XacmlTypes.STRING)
+		.requestContextKey(AttributeCategories.SUBJECT_ACCESS, "testId1", XacmlTypes.INTEGER)
 		.build();
 	}
 
@@ -35,8 +34,8 @@ public class AttributeResolverDescriptorBuilderTest
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
 				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
-		.attribute("testId1", IntegerType.INTEGER)
-		.attribute("testId2", StringType.STRING).build();
+		.attribute("testId1", XacmlTypes.INTEGER)
+		.attribute("testId2", XacmlTypes.STRING).build();
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
@@ -46,18 +45,28 @@ public class AttributeResolverDescriptorBuilderTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
-				.dataType(IntegerType.INTEGER);
+				.dataType(XacmlTypes.INTEGER);
 
 		assertTrue(d.canResolve(key.build()));
 		assertTrue(d.canResolve(key.issuer("issuer").build()));
-		assertFalse(d.canResolve(key.dataType(StringType.STRING).build()));
+		assertFalse(d.canResolve(key.dataType(XacmlTypes.STRING).build()));
 
 		Map<AttributeDesignatorKey, AttributeDescriptor> byKey = d.getAttributesByKey();
 		assertEquals(2, byKey.size());
 
-		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId1").dataType(IntegerType.INTEGER).issuer("issuer");
+		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(XacmlTypes.INTEGER)
+				.issuer("issuer");
 
-		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId2").dataType(StringType.STRING).issuer("issuer");
+		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId2")
+				.dataType(XacmlTypes.STRING)
+				.issuer("issuer");
 
 		assertNotNull(byKey.get(key0.build()));
 		assertNotNull(byKey.get(key1.build()));
@@ -74,8 +83,8 @@ public class AttributeResolverDescriptorBuilderTest
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
 				"id", "name", null, AttributeCategories.SUBJECT_ACCESS)
-		.attribute("testId1", IntegerType.INTEGER)
-		.attribute("testId2", StringType.STRING).build();
+		.attribute("testId1", XacmlTypes.INTEGER)
+		.attribute("testId2", XacmlTypes.STRING).build();
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertNull(d.getIssuer());
@@ -85,17 +94,25 @@ public class AttributeResolverDescriptorBuilderTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
-				.dataType(IntegerType.INTEGER);
+				.dataType(XacmlTypes.INTEGER);
 
 		assertTrue(d.canResolve(key.build()));
 		assertFalse(d.canResolve(key.issuer("issuer").build()));
-		assertFalse(d.canResolve(key.dataType(StringType.STRING).build()));
+		assertFalse(d.canResolve(key.dataType(XacmlTypes.STRING).build()));
 
 
 		Iterable<AttributeDesignatorKey> keys = d.getAttributesByKey().keySet();
 
-		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId1").dataType(IntegerType.INTEGER);
-		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey.builder().category(AttributeCategories.SUBJECT_ACCESS).attributeId("testId2").dataType(StringType.STRING);
+		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(XacmlTypes.INTEGER);
+		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey
+				.builder()
+				.category(AttributeCategories.SUBJECT_ACCESS)
+				.attributeId("testId2")
+				.dataType(XacmlTypes.STRING);
 
 		assertEquals(key0.build(), Iterables.get(keys, 0));
 		assertEquals(key1.build(), Iterables.get(keys, 1));

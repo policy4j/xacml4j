@@ -6,7 +6,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.DateType.DATE;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -17,7 +16,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.types.DateType;
+import org.xacml4j.v30.types.DateExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class AttributeSelectorTest
@@ -37,14 +37,14 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")));
+		expect(context.resolve(capture(c))).andReturn(DateExp.valueOf("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")), v);
+		assertEquals(DateExp.valueOf("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -56,15 +56,14 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(
-				DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")));
+		expect(context.resolve(capture(c))).andReturn(DateExp.valueOf("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateType.DATE.bagOf(DateType.DATE.create("1992-03-21")), v);
+		assertEquals(DateExp.valueOf("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -76,11 +75,11 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
+		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
 		replay(context);
 		ref.evaluate(context);
 		verify(context);
@@ -93,14 +92,14 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DATE.emptyBag());
+		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.emptyBag());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -112,7 +111,7 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
 
@@ -122,7 +121,7 @@ public class AttributeSelectorTest
 						StatusCode.createProcessingError(), new NullPointerException()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.emptyBag());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -134,14 +133,14 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.emptyBag());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -153,7 +152,7 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
@@ -170,7 +169,7 @@ public class AttributeSelectorTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();

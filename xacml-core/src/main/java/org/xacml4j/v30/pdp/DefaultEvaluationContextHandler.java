@@ -19,6 +19,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.StatusCode;
@@ -27,8 +28,9 @@ import org.xacml4j.v30.spi.xpath.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 class DefaultEvaluationContextHandler
@@ -76,18 +78,20 @@ class DefaultEvaluationContextHandler
 
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
-		BagOfAttributeExp v  = requestCallback.getAttributeValue(
-				key.getCategory(),
-				key.getAttributeId(),
-				key.getDataType(),
-				key.getIssuer());
-		if(!v.isEmpty()){
-			if(log.isDebugEnabled()){
-				log.debug("Resolved designator=\"{}\" " +
-						"from request to value=\"{}\"", key, v);
+		Entity entity = requestCallback.getEntity(key.getCategory());
+		BagOfAttributeExp v = null;
+		if(entity != null){
+			v = entity.getAttributeValues(key.getAttributeId(), 
+					key.getDataType(), key.getIssuer());
+			if(!v.isEmpty()){
+				if(log.isDebugEnabled()){
+					log.debug("Resolved designator=\"{}\" " +
+							"from request to value=\"{}\"", key, v);
+				}
+				return v;
 			}
-			return v;
 		}
+		
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key),
 				"Cyclic designator=\"%s\" resolution detected", key);
@@ -136,126 +140,6 @@ class DefaultEvaluationContextHandler
 		}
 	}
 
-	@Override
-	public final Node evaluateToNode(
-			EvaluationContext context,
-			String path,
-			AttributeCategory categoryId)
-		throws EvaluationException
-	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" " +
-					"for category=\"{}\"", path, categoryId);
-		}
-		try
-		{
-			Node content = doGetContent(context, categoryId);
-			if(content == null){
-				return null;
-			}
-			return xpathProvider.evaluateToNode(
-					context.getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}
-	}
-
-	@Override
-	public final NodeList evaluateToNodeSet(
-			EvaluationContext context,
-			String path,
-			AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		try
-		{
-			Node content = doGetContent(context, categoryId);
-			if(content == null){
-				return null;
-			}
-			return xpathProvider.evaluateToNodeSet(context.getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}
-	}
-
-	@Override
-	public final Number evaluateToNumber(EvaluationContext context,
-			String path, AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" for category=\"{}\"", path, categoryId);
-		}
-		try
-		{
-			Node content = doGetContent(context, categoryId);
-			if(content == null){
-				return null;
-			}
-			return xpathProvider.evaluateToNumber(context.getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}
-	}
-
-	@Override
-	public final String evaluateToString(EvaluationContext context,
-			String path, AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating xpath=\"{}\" " +
-					"for category=\"{}\"", path, categoryId);
-		}
-		try
-		{
-			Node content = doGetContent(context, categoryId);
-			if(content == null){
-				return null;
-			}
-			return xpathProvider.evaluateToString(
-					context.getXPathVersion(), path, content);
-		}catch(XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new org.xacml4j.v30.pdp.XPathEvaluationException(path, context, e);
-		}
-	}
-
 	/**
 	 * Resolves category content via {@link PolicyInformationPoint}
 	 *
@@ -267,15 +151,7 @@ class DefaultEvaluationContextHandler
 	private final Node doGetContent(EvaluationContext context, AttributeCategory category)
 		throws Exception
 	{
-
-		Node content = requestCallback.getContent(category);
-		if(content != null){
-			if(log.isDebugEnabled()){
-				log.debug("Resolved content=\"{}\" from a request",
-						content);
-			}
-			return content;
-		}
+		Node content = null;
 		if(contentCache.containsKey(category)){
 			content = contentCache.get(category);
 			if(log.isDebugEnabled()){
@@ -307,23 +183,23 @@ class DefaultEvaluationContextHandler
 	{
 		try
 		{
-			Node content = doGetContent(context, ref.getCategory());
+			Entity entity = requestCallback.getEntity(ref.getCategory());
+			Node content = (entity != null)?entity.getContent():null;
 			if(content == null){
-				return ref.getDataType().bagType().createEmpty();
+				content = doGetContent(context, ref.getCategory());
 			}
 			Node contextNode = content;
-			BagOfAttributeExp v = requestCallback.getAttributeValue(
-					ref.getCategory(),
+			Collection<AttributeExp> v = entity.getAttributeValues(
 						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()),
-								XPathExpType.XPATHEXPRESSION, null);
+								XacmlTypes.XPATH);
 			if(v.size() > 1){
-				throw new AttributeReferenceEvaluationException(context, ref,
+				throw new AttributeReferenceEvaluationException(ref,
 						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
 			}
 			if(v.size() == 1){
-				XPathExp xpath = v.value();
+				XPathExp xpath = (XPathExp)v.iterator().next();
 				if(xpath.getCategory() != ref.getCategory()){
-					throw new AttributeReferenceEvaluationException(context, ref,
+					throw new AttributeReferenceEvaluationException(ref,
 							"AttributeSelector category=\"%s\" and " +
 							"ContextAttributeId XPathExpression " +
 							"category=\"%s\" do not match", ref.getCategory(),
@@ -333,11 +209,9 @@ class DefaultEvaluationContextHandler
 					log.debug("Evaluating " +
 							"contextSelector xpath=\"{}\"", xpath.getValue());
 				}
-				contextNode = xpathProvider.evaluateToNode(
-						context.getXPathVersion(), xpath.getPath(), content);
+				contextNode = xpathProvider.evaluateToNode(xpath.getPath(), content);
 			}
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(
-					context.getXPathVersion(), ref.getPath(), contextNode);
+			NodeList nodeSet = xpathProvider.evaluateToNodeSet(ref.getPath(), contextNode);
 			if(nodeSet == null ||
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty",
@@ -413,16 +287,15 @@ class DefaultEvaluationContextHandler
 			}
 			try
 			{
-				TypeToString toString = context.getTypes().getCapability(
-						ref.getDataType(), TypeToString.class);
-				if(toString == null){
+				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(ref.getDataType());
+				if(!toString.isPresent()){
 					throw new AttributeReferenceEvaluationException(
 							StatusCode.createSyntaxError(),
 							context, ref,
 							"Unsupported XACML type=\"%d\"", 
 							ref.getDataType().getDataTypeId());
 				}
-				AttributeExp value = toString.fromString(v);
+				AttributeExp value = toString.get().fromString(v);
 				if(log.isDebugEnabled()){
 					log.debug("Node of type=\"{}\" " +
 							"converted attribute=\"{}\"", n.getNodeType(), value);

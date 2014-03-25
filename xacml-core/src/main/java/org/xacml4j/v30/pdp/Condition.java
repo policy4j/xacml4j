@@ -1,14 +1,12 @@
 package org.xacml4j.v30.pdp;
 
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
-
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -35,11 +33,11 @@ public class Condition implements PolicyElement
 	{
 		Preconditions.checkNotNull(predicate, "Condition predicate can not be null");
 		final ValueType resultType = predicate.getEvaluatesTo();
-		Preconditions.checkArgument(resultType.equals(BOOLEAN),
+		Preconditions.checkArgument(resultType.equals(XacmlTypes.BOOLEAN),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"",
-					BooleanType.BOOLEAN, resultType);
+					XacmlTypes.BOOLEAN, resultType);
 		this.predicate = predicate;
 	}
 

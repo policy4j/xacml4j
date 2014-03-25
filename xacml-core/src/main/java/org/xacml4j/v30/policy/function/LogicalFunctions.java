@@ -11,7 +11,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.IntegerExp;
 
 
@@ -51,7 +50,7 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return BooleanType.BOOLEAN.create(r);
+		return BooleanExp.valueOf(r);
 	}
 
 
@@ -60,7 +59,7 @@ public class LogicalFunctions
 	public static BooleanExp not(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp v)
 	{
-		return BooleanType.BOOLEAN.create(!v.getValue());
+		return BooleanExp.valueOf(!v.getValue());
 	}
 
 	/**
@@ -90,7 +89,7 @@ public class LogicalFunctions
 				break;
 			}
 		}
-		return BooleanType.BOOLEAN.create(r);
+		return BooleanExp.valueOf(r);
 	}
 
 
@@ -133,7 +132,7 @@ public class LogicalFunctions
 					"First parameter=\"%s\" is bigger than=\"%d\"",
 					n, Integer.MAX_VALUE));
 		}
-		BooleanExp TRUE = BooleanType.BOOLEAN.create(true);
+		BooleanExp TRUE = BooleanExp.valueOf(true);
 		if(n.getValue() == 0){
 			return TRUE;
 		}
@@ -148,6 +147,6 @@ public class LogicalFunctions
 				 }
 			 }
 		}
-		return BooleanType.BOOLEAN.create(false);
+		return BooleanExp.valueOf(false);
 	}
 }

@@ -5,8 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
 
 import java.util.Iterator;
 
@@ -21,6 +19,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.IntegerExp;
 
 
 public class ObligationExpressionTest
@@ -58,11 +58,11 @@ public class ObligationExpressionTest
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
 		expect(attrExp0.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(INTEGER.create(1));
+		expect(attrExp0.evaluate(context)).andReturn(IntegerExp.valueOf(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andReturn(BOOLEAN.create(false));
+		expect(attrExp1.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 		c.replay();
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 
@@ -73,12 +73,12 @@ public class ObligationExpressionTest
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
-		assertEquals(INTEGER.create(1), a0.getAttribute());
+		assertEquals(IntegerExp.valueOf(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(AttributeCategories.RESOURCE, a1.getCategory());
-		assertEquals(BOOLEAN.create(false), a1.getAttribute());
+		assertEquals(BooleanExp.valueOf(false), a1.getAttribute());
 		c.verify();
 	}
 
@@ -90,11 +90,11 @@ public class ObligationExpressionTest
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
 		expect(attrExp0.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(INTEGER.create(1));
+		expect(attrExp0.evaluate(context)).andReturn(IntegerExp.valueOf(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(StatusCode.createProcessingError(), context, new NullPointerException()));
+		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(StatusCode.createProcessingError(), new NullPointerException()));
 		c.replay();
 
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();

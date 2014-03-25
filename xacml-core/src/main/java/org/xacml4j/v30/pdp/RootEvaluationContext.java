@@ -32,7 +32,7 @@ import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -61,10 +61,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 	private StatusCode evaluationStatus;
 	private Integer combinedDecisionCacheTTL = null;
 	private final boolean extendedIndeterminateEval = false;
-	private Types types;
 
 	public RootEvaluationContext(
-			Types types,
 			boolean validateFuncParamsAtRuntime,
 			int defaultDecisionCacheTTL,
 			XPathVersion defaultXPathVersion,
@@ -72,8 +70,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 			EvaluationContextHandler contextHandler) {
 		Preconditions.checkNotNull(contextHandler);
 		Preconditions.checkNotNull(referenceResolver);
-		Preconditions.checkNotNull(types);
-		this.types = types;
 		this.denyAdvices = new LinkedHashMap<String, Advice>();
 		this.denyObligations = new LinkedHashMap<String, Obligation>();
 		this.permitAdvices = new LinkedHashMap<String, Advice>();
@@ -91,12 +87,11 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	public RootEvaluationContext(
-			Types types,
 			boolean validateFuncParamsAtRuntime,
 			int defaultDecisionCacheTTL,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler handler){
-		this(types, validateFuncParamsAtRuntime,
+		this(validateFuncParamsAtRuntime,
 				defaultDecisionCacheTTL,
 				XPathVersion.XPATH1,
 				referenceResolver,
@@ -108,11 +103,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 		return defaultXPathVersion;
 	}
 
-	
-	@Override
-	public Types getTypes() {
-		return types;
-	}
 
 	@Override
 	public Ticker getTicker(){
@@ -330,7 +320,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 					"PolicySet reference=\"{}\"", ref);
 		}
 		if(p == null){
-			throw new PolicyResolutionException(this,
+			throw new PolicyResolutionException(this, 
 					"Failed to resolve PolicySet reference");
 		}
 		return p;
@@ -348,7 +338,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 			AttributeCategory categoryId)
 			throws EvaluationException
 	{
-		return contextHandler.evaluateToNodeSet(this, path, categoryId);
+		return 
 	}
 
 	@Override

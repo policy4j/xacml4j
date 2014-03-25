@@ -13,20 +13,18 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class AttributeAssignmentDeserializer extends Support implements JsonDeserializer<AttributeAssignment> {
+public class AttributeAssignmentDeserializer implements JsonDeserializer<AttributeAssignment> {
 
-	public AttributeAssignmentDeserializer(Types typesRegistry) {
-		super(typesRegistry);
-	}
 	
 	@Override
 	public AttributeAssignment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -53,21 +51,22 @@ public class AttributeAssignmentDeserializer extends Support implements JsonDese
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
 		if (dataTypeId == null) {
 			// TODO: properly infer data type
-			dataTypeId = StringType.STRING.getDataTypeId();
+			dataTypeId = XacmlTypes.STRING.getDataTypeId();
 		}
-		AttributeExpType type = types.getType(dataTypeId);
-
+		Optional<AttributeExpType> type = XacmlTypes.getType(dataTypeId);
+		Preconditions.checkState(type.isPresent());
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		// TODO: do a proper type coersion
-		AttributeExp value = deserializeValue(type, jsonValue);
+		AttributeExp value = deserializeValue(type.get(), jsonValue);
 
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return value;
 	}
 
 	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
-		TypeToGSon toGson = types.getCapability(type, TypeToGSon.class);
-		return toGson.fromJson(types, jsonValue);
+		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(type);
+		Preconditions.checkState(toGson.isPresent());
+		return toGson.get().fromJson(jsonValue);
 	}
 
 }

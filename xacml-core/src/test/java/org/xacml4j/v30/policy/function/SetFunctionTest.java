@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.BooleanType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class SetFunctionTest
@@ -21,7 +21,6 @@ public class SetFunctionTest
 	public static void init() throws Exception
 	{
 		p = new AnnotiationBasedFunctionProvider(
-				Types.builder().defaultTypes().create(),
 				SetFunctions.class);
 	}
 
@@ -116,41 +115,43 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
-		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
+		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
 		BagOfAttributeExp c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
-		assertTrue(c.contains(BooleanType.BOOLEAN.create(true)));
-		assertTrue(c.contains(BooleanType.BOOLEAN.create(false)));
+		assertTrue(c.contains(BooleanExp.valueOf(true)));
+		assertTrue(c.contains(BooleanExp.valueOf(false)));
 	}
 
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
-		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true));
-		assertEquals(BooleanType.BOOLEAN.create(true), SetFunctions.booleanSetEquals(a, b));
+		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
+		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(false), BooleanExp.valueOf(true));
+
+		assertEquals(BooleanExp.valueOf(true), SetFunctions.booleanSetEquals(a, b));
 	}
 
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
-		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
-		assertEquals(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true)), SetFunctions.booleanIntersection(a, b));
+		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
+		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
+		
+		assertEquals(BooleanExp.valueOf(true).toBag(), SetFunctions.booleanIntersection(a, b));
 	}
 
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributeExp a = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true));
-		BagOfAttributeExp b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false));
+		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
+		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(false), BooleanExp.valueOf(false));
 		BagOfAttributeExp c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 
-		b = BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false));
+		b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
 		c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(1, c.size());
-		assertTrue(c.contains(BooleanType.BOOLEAN.create(true)));
+		assertTrue(c.contains(BooleanExp.valueOf(true)));
 	}
 }

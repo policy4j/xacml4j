@@ -50,17 +50,15 @@ import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 public class Xacml30RequestContextFromJaxbToObjectModelMapper
 {
 	private ObjectFactory factory;
-
-	private Types xacmlTypes = Types.builder().defaultTypes().create();
 
 	public Xacml30RequestContextFromJaxbToObjectModelMapper(){
 		this.factory = new ObjectFactory();
@@ -409,8 +407,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributeValueType toJaxb(AttributeExp a)
 	{
 		Preconditions.checkNotNull(a);
-		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(a.getType(), TypeToXacml30.class);
-		return toXacml30.toXacml30(xacmlTypes, a);
+		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(a.getType());
+		Preconditions.checkArgument(toXacml30.isPresent());
+		return toXacml30.get().toXacml30(a);
 	}
 	
 	private AttributeExp create(
@@ -418,8 +417,8 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		throws XacmlSyntaxException
 	{
 		
-		TypeToXacml30 toXacml30 = xacmlTypes.getCapability(value.getDataType(), TypeToXacml30.class);
-		Preconditions.checkState(toXacml30 != null);
-		return toXacml30.fromXacml30(xacmlTypes, value);
+		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(value.getDataType());
+		Preconditions.checkArgument(toXacml30.isPresent());
+		return toXacml30.get().fromXacml30(value);
 	}
 }

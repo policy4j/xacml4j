@@ -7,7 +7,6 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -21,7 +20,6 @@ public class PolicyUnmarshallerSupport
 {
 	private FunctionProvider functions;
 	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
-	private Types types = Types.builder().defaultTypes().create();
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,
@@ -94,9 +92,5 @@ public class PolicyUnmarshallerSupport
 					algorithmId);
 		}
 		return algorithm;
-	}
-
-	protected Types getTypes(){
-		return types;
 	}
 }

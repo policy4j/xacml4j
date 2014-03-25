@@ -12,7 +12,7 @@ import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.StatusCodeIds;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.Iterables;
 
@@ -39,21 +39,21 @@ public class Xacml20ResponseContextUnmarshallerTest
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());
 		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
 		assertNotNull(o1);
-		assertEquals(StringType.STRING.create("assignment1"),
+		assertEquals(StringExp.valueOf("assignment1"),
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")).getAttribute());
-		assertEquals(StringType.STRING.create("assignment2"),
+		assertEquals(StringExp.valueOf("assignment2"),
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());
 		Obligation o2 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2");
 		assertNotNull(o2);
-		assertEquals(StringType.STRING.create("assignment1"),
+		assertEquals(StringExp.valueOf("assignment1"),
 				Iterables.getOnlyElement(
 						o2.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")).getAttribute());
-		assertEquals(StringType.STRING.create("assignment2"),
+		assertEquals(StringExp.valueOf("assignment2"),
 				Iterables.getOnlyElement(
 						o2.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());

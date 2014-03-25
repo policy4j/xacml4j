@@ -5,13 +5,13 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.types.BooleanExp;
 
 
 
@@ -35,19 +35,19 @@ public class VariableReferenceTest
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
 		expect(context.getVariableEvaluationResult("testId")).andReturn(null);
-		expect(expression.evaluate(context)).andReturn(BOOLEAN.create(true));
-		context.setVariableEvaluationResult("testId", BOOLEAN.create(true));
+		expect(expression.evaluate(context)).andReturn(BooleanExp.valueOf(true));
+		context.setVariableEvaluationResult("testId", BooleanExp.valueOf(true));
 		replay(context, expression);
-		assertEquals(BOOLEAN.create(true), varRef.evaluate(context));
+		assertEquals(BooleanExp.valueOf(true), varRef.evaluate(context));
 		verify(context, expression);
 	}
 
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(BOOLEAN.create(false));
+		expect(context.getVariableEvaluationResult("testId")).andReturn(BooleanExp.valueOf(false));
 		replay(context, expression);
-		assertEquals(BOOLEAN.create(false), varRef.evaluate(context));
+		assertEquals(BooleanExp.valueOf(false), varRef.evaluate(context));
 		verify(context, expression);
 	}
 }

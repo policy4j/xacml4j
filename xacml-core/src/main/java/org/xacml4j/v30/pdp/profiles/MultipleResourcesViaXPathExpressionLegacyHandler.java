@@ -13,7 +13,7 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-import org.xacml4j.v30.types.XPathExpType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 final class MultipleResourcesViaXPathExpressionLegacyHandler
@@ -41,7 +41,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		}
 		Entity entity = resource.getEntity();
 		Collection<AttributeExp> resourceId = entity.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
-				XPathExpType.XPATHEXPRESSION);
+				XacmlTypes.XPATH);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
 		}
@@ -50,7 +50,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 					Result.createIndeterminateSyntaxError(
 							"Found more than AttributeId=\"%s\" " +
 							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE,
-							XPathExpType.XPATHEXPRESSION)
+							XacmlTypes.XPATH)
 							.includeInResultAttr(request.getIncludeInResultAttributes())
 							.build());
 		}

@@ -2,24 +2,18 @@ package org.xacml4j.v30.types;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.BagOfAttributeExp;
 
 
 public class Base64BinaryTypeTest
 {
-	private Base64BinaryType t;
-	private Types types;
-	@Before
-	public void init(){
-		this.t = Base64BinaryType.BASE64BINARY;
-		this.types = Types.builder().defaultTypes().create();
-	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testIncorrectlyBase64EncodedString(){
-		t.create("AAEDBQ+++");
+		Base64BinaryExp.valueOf("AAEDBQ+++");
 	}
 
 	@Test
@@ -27,21 +21,22 @@ public class Base64BinaryTypeTest
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		Base64BinaryExp value1 = t.create(v0);
-		Base64BinaryExp value2 = t.create(v1);
-		TypeToString c = types.getCapability(t, TypeToString.class);
+		Base64BinaryExp value1 = Base64BinaryExp.valueOf(v0);
+		Base64BinaryExp value2 = Base64BinaryExp.valueOf(v1);
 		
+		BagOfAttributeExp b = Base64BinaryExp.bag().value(v0, v1).build();
 		assertEquals(value1, value2);
-		assertEquals(c.toString(value1), c.toString(value2));
-		assertEquals("AAEDBQ==", c.toString(value1));
+		assertEquals(StringExp.valueOf("AAEDBQ=="), value1.toStringExp());
+		assertTrue(b.contains(Base64BinaryExp.valueOf(v0)));
+		assertTrue(b.contains(Base64BinaryExp.valueOf(v1)));
 	}
 
 	@Test
 	public void testCreateValueFromString()
 	{
 		byte[] data = {0, 1, 3, 5};
-		Base64BinaryExp value1 = t.create("AAEDBQ==");
-		Base64BinaryExp value2 = t.create(data);
+		Base64BinaryExp value1 = Base64BinaryExp.valueOf("AAEDBQ==");
+		Base64BinaryExp value2 = Base64BinaryExp.valueOf(data);
 		assertEquals(value1, value2);
 	}
 }

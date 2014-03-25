@@ -12,13 +12,12 @@ import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.StringExp;
 
 
 public class Xacml30ResponseContextUnmarshallerTest {
@@ -39,7 +38,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(1, o1.getAttributes().size());
 		Collection<AttributeAssignment> oa1 = o1.getAttribute("urn:test:obligation1");
 		assertEquals(1, oa1.size());
-		assertEquals(StringType.STRING.create("oa-value"), oa1.iterator().next().getAttribute());
+		assertEquals(StringExp.valueOf("oa-value"), oa1.iterator().next().getAttribute());
 
 		assertNotNull(r1.getObligation("urn:test:obligation2"));
 
@@ -50,7 +49,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(1, a1.getAttributes().size());
 		Collection<AttributeAssignment> aa1 = a1.getAttribute("urn:test:advice1:attr1");
 		assertEquals(1, aa1.size());
-		assertEquals(StringType.STRING.create("aa-value"), aa1.iterator().next().getAttribute());
+		assertEquals(StringExp.valueOf("aa-value"), aa1.iterator().next().getAttribute());
 
 		assertNotNull(r1.getAssociatedAdvice("urn:test:advice2"));
 
@@ -61,7 +60,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		Collection<Attribute> attr1 = attrs.getAttributes("urn:test:attribute1");
 		assertEquals(1, attr1.size());
 		assertEquals(1, attr1.iterator().next().getValues().size());
-		assertEquals(StringType.STRING.create("value"), attr1.iterator().next().getValues().iterator().next());
+		assertEquals(StringExp.valueOf("value"), attr1.iterator().next().getValues().iterator().next());
 
 		// Test policy references
 		assertEquals(2, r1.getPolicyIdentifiers().size());

@@ -20,7 +20,7 @@ import org.xacml4j.v30.policy.function.SpecialMatchFunctions;
 import org.xacml4j.v30.policy.function.StringConversionFunctions;
 import org.xacml4j.v30.policy.function.StringFunctions;
 import org.xacml4j.v30.policy.function.XPathFunctions;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 
@@ -28,28 +28,24 @@ public final class FunctionProviderBuilder
 {
 	private List<FunctionProvider> providers;
 	private InvocationFactory invocationFactory;
-	private Types types;
 
 	private FunctionProviderBuilder(
-			Types types,
 			InvocationFactory invocationFactory){
 		Preconditions.checkNotNull(invocationFactory);
-		Preconditions.checkNotNull(types);
 		this.providers = new LinkedList<FunctionProvider>();
 		this.invocationFactory = invocationFactory;
-		this.types = types;
 	}
 
-	private FunctionProviderBuilder(Types types){
-		this(types, new DefaultInvocationFactory());
+	private FunctionProviderBuilder(){
+		this(new DefaultInvocationFactory());
 	}
 
 	public static FunctionProviderBuilder builder(){
-		return new FunctionProviderBuilder(Types.builder().defaultTypes().create());
+		return new FunctionProviderBuilder();
 	}
 
-	public static FunctionProviderBuilder builder(Types types, InvocationFactory invocation){
-		return new FunctionProviderBuilder(types, invocation);
+	public static FunctionProviderBuilder builder(InvocationFactory invocation){
+		return new FunctionProviderBuilder(invocation);
 	}
 
 	/**
@@ -66,7 +62,6 @@ public final class FunctionProviderBuilder
 					provider((FunctionProvider)p):
 						provider(
 								new AnnotiationBasedFunctionProvider(
-										types, 
 										p,
 										invocationFactory));
 		}catch(Exception e){
@@ -110,7 +105,7 @@ public final class FunctionProviderBuilder
 		Preconditions.checkNotNull(clazz);
 		try{
 			return provider(
-					new AnnotiationBasedFunctionProvider(types, clazz, invocationFactory));
+					new AnnotiationBasedFunctionProvider(clazz, invocationFactory));
 		}catch(Exception e){
 			throw new IllegalArgumentException(e);
 		}

@@ -10,7 +10,6 @@ import org.xacml4j.util.InvocationFactory;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -19,43 +18,40 @@ public final class AnnotiationBasedFunctionProvider extends BaseFunctionProvider
 	private JavaMethodToFunctionSpecConverter converter;
 	
 	public AnnotiationBasedFunctionProvider(
-			Types types,
 			Class<?> factoryClass,
 			InvocationFactory invocationFactory)
 		throws Exception
 	{
 		Preconditions.checkNotNull(factoryClass);
 		Preconditions.checkNotNull(invocationFactory);
-		Preconditions.checkNotNull(types);
-		this.converter = new JavaMethodToFunctionSpecConverter(types, invocationFactory);
+		this.converter = new JavaMethodToFunctionSpecConverter(invocationFactory);
 		List<FunctionSpec> functions = findFunctions(factoryClass, null);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
 	}
 
-	public AnnotiationBasedFunctionProvider(Types types, Class<?> clazz)
+	public AnnotiationBasedFunctionProvider(Class<?> clazz)
 		throws Exception{
-		this(types, clazz, new CglibInvocationFactory());
+		this(clazz, new CglibInvocationFactory());
 	}
-
+	
 	public AnnotiationBasedFunctionProvider(
-			Types types,
 			Object instance,
 			InvocationFactory invocationFactory)
 		throws Exception
 	{
 		Preconditions.checkNotNull(instance);
 		Preconditions.checkNotNull(invocationFactory);
-		this.converter = new JavaMethodToFunctionSpecConverter(types, invocationFactory);
+		this.converter = new JavaMethodToFunctionSpecConverter(invocationFactory);
 		List<FunctionSpec> functions = findFunctions(instance.getClass(), instance);
 		for(FunctionSpec spec : functions){
 			add(spec);
 		}
 	}
 
-	public AnnotiationBasedFunctionProvider(Types types, Object instance) throws Exception{
-		this(types, instance, new DefaultInvocationFactory());
+	public AnnotiationBasedFunctionProvider(Object instance) throws Exception{
+		this(instance, new DefaultInvocationFactory());
 	}
 
 	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)

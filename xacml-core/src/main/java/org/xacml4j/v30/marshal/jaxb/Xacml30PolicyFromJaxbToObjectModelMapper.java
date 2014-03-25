@@ -72,9 +72,9 @@ import org.xacml4j.v30.pdp.VariableDefinition;
 import org.xacml4j.v30.pdp.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
@@ -88,15 +88,11 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
 	
-	private Types types;
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
-			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
 		super(functions, decisionAlgorithms);
-		Preconditions.checkNotNull(types);
-		this.types = types;
 	}
 
 	/**
@@ -362,9 +358,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			AttributeValueType value)
 		throws XacmlSyntaxException
 	{
-		TypeToXacml30 toXacml30 = types.getCapability(value.getDataType(), TypeToXacml30.class);
-		Preconditions.checkState(toXacml30 != null);
-		return toXacml30.fromXacml30(types, value);
+	 	Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(value.getDataType());
+		Preconditions.checkState(toXacml30.isPresent());
+		return toXacml30.get().fromXacml30(value);
 	}
 
 	private Collection<AdviceExpression> getExpressions(
@@ -501,12 +497,12 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throw new XacmlSyntaxException(
 					"Match=\"%s\" attribute value must be specified");
 		}
-		TypeToXacml30 toXacml30 = types.getCapability(m.getAttributeValue().getDataType(), TypeToXacml30.class);
-		Preconditions.checkState(toXacml30 != null);
+		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(v.getDataType());
+		Preconditions.checkState(toXacml30.isPresent());
 		return Match
 				.builder()
 				.predicate(createFunction(m.getMatchId()))
-				.attribute(toXacml30.fromXacml30(types, m.getAttributeValue()))
+				.attribute(toXacml30.get().fromXacml30(m.getAttributeValue()))
 				.attrRef(createAttributeReference((m.getAttributeDesignator() != null) ? m.getAttributeDesignator():m.getAttributeSelector()))
 				.build();
 	}
@@ -532,27 +528,27 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			if(log.isDebugEnabled()){
 				log.debug(selector.getPath());
 			}
-			AttributeExpType type = types.getType(selector.getDataType());
-			Preconditions.checkState(type != null);
+			Optional<AttributeExpType> type = XacmlTypes.getType(selector.getDataType());
+			Preconditions.checkState(type.isPresent());
 			return AttributeSelector
 					.builder()
 					.category(selector.getCategory())
 					.xpath(selector.getPath())
 					.contextSelectorId(selector.getContextSelectorId())
-					.dataType(type)
+					.dataType(type.get())
 					.mustBePresent(selector.isMustBePresent())
 					.build();
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
-			AttributeExpType type = types.getType(desig.getDataType());
-			Preconditions.checkState(type != null);
+			Optional<AttributeExpType> type = XacmlTypes.getType(desig.getDataType());
+			Preconditions.checkState(type.isPresent());
 			return AttributeDesignator
 					.builder()
 					.category(desig.getCategory())
 					.attributeId(desig.getAttributeId())
 					.issuer(desig.getIssuer())
-					.dataType(type)
+					.dataType(type.get())
 					.mustBePresent(desig.isMustBePresent())
 					.build();
 		}
@@ -625,9 +621,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		if (e instanceof AttributeValueType) {
 			AttributeValueType t = (AttributeValueType) e;
-			TypeToXacml30 toXacml30 = types.getCapability(t.getDataType(), TypeToXacml30.class);
-			Preconditions.checkState(toXacml30 != null);
-			return toXacml30.fromXacml30(types, t);
+			Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(t.getDataType());
+			Preconditions.checkState(toXacml30.isPresent());
+			return toXacml30.get().fromXacml30(t);
 		}
 		if (e instanceof VariableReferenceType) {
 			VariableReferenceType varRef = (VariableReferenceType)e;

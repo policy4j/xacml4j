@@ -5,9 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
-import static org.xacml4j.v30.types.StringType.STRING;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -24,7 +21,9 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 
@@ -50,12 +49,11 @@ public class HigherOrderFunctionsTest
 	
 	private IMocksControl c;
 	
-	private Types types;
+	private XacmlTypes types;
 
 	@Before
 	public void init() throws Exception
 	{
-		this.types = Types.builder().defaultTypes().create();
 		this.c  = createControl();
 		this.higherOrderFunctions = new AnnotiationBasedFunctionProvider(types, HigherOrderFunctions.class);
 		this.stringFunctions = new AnnotiationBasedFunctionProvider(types, StringFunctions.class);
@@ -81,33 +79,35 @@ public class HigherOrderFunctionsTest
 	public void testMapWithValidArguments() throws EvaluationException
 	{
 		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
-		v.add(INTEGER.create(10));
-		v.add(INTEGER.create(20));
-		v.add(INTEGER.create(30));
+		v.add(IntegerExp.valueOf(10));
+		v.add(IntegerExp.valueOf(20));
+		v.add(IntegerExp.valueOf(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 
 		c.replay();
-		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString), INTEGER.bagOf(v));
+		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString), 
+				XacmlTypes.INTEGER.bagOf(v));
 		c.verify();
-		assertTrue(bag.contains(STRING.create("10")));
-		assertTrue(bag.contains(STRING.create("20")));
-		assertTrue(bag.contains(STRING.create("30")));
+		assertTrue(bag.contains(StringExp.valueOf("10")));
+		assertTrue(bag.contains(StringExp.valueOf("20")));
+		assertTrue(bag.contains(StringExp.valueOf("30")));
 	}
 
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
 		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
-		v.add(INTEGER.create(10));
-		v.add(INTEGER.create(20));
-		v.add(INTEGER.create(30));
+		v.add(IntegerExp.valueOf(10));
+		v.add(IntegerExp.valueOf(20));
+		v.add(IntegerExp.valueOf(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
-		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), INTEGER.create(20), INTEGER.bagOf(v));
-		assertEquals(BOOLEAN.create(true), r);
+		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), IntegerExp.valueOf(20), 
+				XacmlTypes.INTEGER.bagOf(v));
+		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
 	}
 
@@ -115,21 +115,21 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAny() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(INTEGER.create(10));
-		a.add(INTEGER.create(20));
+		a.add(IntegerExp.valueOf(10));
+		a.add(IntegerExp.valueOf(20));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(INTEGER.create(1));
-		b.add(INTEGER.create(3));
-		b.add(INTEGER.create(5));
-		b.add(INTEGER.create(19));
+		b.add(IntegerExp.valueOf(1));
+		b.add(IntegerExp.valueOf(3));
+		b.add(IntegerExp.valueOf(5));
+		b.add(IntegerExp.valueOf(19));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
 		BooleanExp r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
-				INTEGER.bagOf(a), INTEGER.bagOf(b));
-		assertEquals(BOOLEAN.create(true), r);
+				XacmlTypes.INTEGER.bagOf(a), XacmlTypes.INTEGER.bagOf(b));
+		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
 	}
 
@@ -137,22 +137,22 @@ public class HigherOrderFunctionsTest
 	public void testAnyOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(INTEGER.create(3));
-		a.add(INTEGER.create(5));
+		a.add(IntegerExp.valueOf(3));
+		a.add(IntegerExp.valueOf(5));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(INTEGER.create(1));
-		b.add(INTEGER.create(2));
-		b.add(INTEGER.create(3));
-		b.add(INTEGER.create(4));
+		b.add(IntegerExp.valueOf(1));
+		b.add(IntegerExp.valueOf(2));
+		b.add(IntegerExp.valueOf(3));
+		b.add(IntegerExp.valueOf(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
 
 
 		c.replay();
 		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
-				INTEGER.bagOf(a), INTEGER.bagOf(b));
-		assertEquals(BOOLEAN.create(true), r);
+				XacmlTypes.INTEGER.bagOf(a), XacmlTypes.INTEGER.bagOf(b));
+		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
 	}
 
@@ -161,20 +161,19 @@ public class HigherOrderFunctionsTest
 	{
 
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(STRING.create("   This  is n*o*t* *IT!  "));
-		a.add(STRING.create("   This is not a match to IT!  "));
+		a.add(StringExp.valueOf("   This  is n*o*t* *IT!  "));
+		a.add(StringExp.valueOf("   This is not a match to IT!  "));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(STRING.create("   This  is IT!  "));
-		b.add(STRING.create("   This  is not IT!  "));
+		b.add(StringExp.valueOf("   This  is IT!  "));
+		b.add(StringExp.valueOf("   This  is not IT!  "));
 
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		expect(context.getTypes()).andReturn(types).times(2);
 		c.replay();
 		BooleanExp r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
-				STRING.bagOf(a), STRING.bagOf(b));
-		assertEquals(BOOLEAN.create(true), r);
+				XacmlTypes.STRING.bagOf(a), XacmlTypes.STRING.bagOf(b));
+		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
 	}
 
@@ -182,21 +181,21 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(INTEGER.create(5));
-		a.add(INTEGER.create(6));
+		a.add(IntegerExp.valueOf(5));
+		a.add(IntegerExp.valueOf(6));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(INTEGER.create(1));
-		b.add(INTEGER.create(2));
-		b.add(INTEGER.create(3));
-		b.add(INTEGER.create(4));
+		b.add(IntegerExp.valueOf(1));
+		b.add(IntegerExp.valueOf(2));
+		b.add(IntegerExp.valueOf(3));
+		b.add(IntegerExp.valueOf(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 		
 		c.replay();
 		BooleanExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
-				INTEGER.bagOf(a), INTEGER.bagOf(b));
-		assertEquals(BOOLEAN.create(true), r);
+				XacmlTypes.INTEGER.bagOf(a), XacmlTypes.INTEGER.bagOf(b));
+		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
 	}
 }

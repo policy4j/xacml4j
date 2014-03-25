@@ -20,8 +20,7 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.StringExp;
 
 
 public class RuleTest
@@ -96,8 +95,7 @@ public class RuleTest
 				.withEffect(Effect.DENY)
 				.build();
 		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).build();
-		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(
-				Types.builder().defaultTypes().create(), false, 0, resolver, handler));
+		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, 0, resolver, handler));
 
 	}
 
@@ -179,11 +177,11 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				StringType.STRING.create("testVal1"));
+				StringExp.valueOf("testVal1"));
 
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
-				StringType.STRING.create("testVal1"));
+				StringExp.valueOf("testVal1"));
 
 		c.replay();
 
@@ -196,7 +194,7 @@ public class RuleTest
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -204,7 +202,7 @@ public class RuleTest
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 
 	}
@@ -218,10 +216,10 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				StringType.STRING.create("testVal1"));
+				StringExp.valueOf("testVal1"));
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
-				new EvaluationException(StatusCode.createProcessingError(), ruleContext, new NullPointerException()));
+				new EvaluationException(StatusCode.createProcessingError(), new NullPointerException()));
 
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
@@ -260,8 +258,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
 
 
 		c.replay();
@@ -273,7 +271,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -281,7 +279,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 	}
 
@@ -338,8 +336,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
+		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
 
 		c.replay();
 
@@ -351,7 +349,7 @@ public class RuleTest
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -359,7 +357,7 @@ public class RuleTest
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 	}
 
@@ -396,8 +394,8 @@ public class RuleTest
 
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringType.STRING.create("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
 
 		c.replay();
 
@@ -408,7 +406,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -416,7 +414,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringType.STRING.create("testVal1"))
+								StringExp.valueOf("testVal1"))
 								.build()));
 		c.verify();
 	}

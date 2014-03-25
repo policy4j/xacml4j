@@ -11,8 +11,8 @@ public class BinaryValueTest
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		BinaryValue value1 = BinaryValue.fromBytes(v0);
-		BinaryValue value2 = BinaryValue.fromBytes(v1);
+		BinaryValue value1 = BinaryValue.valueOf(v0);
+		BinaryValue value2 = BinaryValue.valueOf(v1);
 		assertEquals(value1, value2);
 		assertEquals("AAEDBQ==", value1.toBase64Encoded());
 	}
@@ -21,7 +21,7 @@ public class BinaryValueTest
 	public void testCreateFromZeroLenghtArray()
 	{
 		byte[] v = {};
-		BinaryValue bv = BinaryValue.fromBytes(v);
+		BinaryValue bv = BinaryValue.valueOf(v);
 		assertEquals("", bv.toBase64Encoded());
 		assertEquals("", bv.toHexEncoded());
 	}
@@ -29,7 +29,7 @@ public class BinaryValueTest
 	@Test(expected=NullPointerException.class)
 	public void testCreateFromNull()
 	{
-		BinaryValue.fromBytes(null);
+		BinaryValue.valueOf(null);
 	}
 
 	@Test
@@ -37,8 +37,8 @@ public class BinaryValueTest
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		BinaryValue value1 = BinaryValue.fromBytes(v0);
-		BinaryValue value2 = BinaryValue.fromBytes(v1);
+		BinaryValue value1 = BinaryValue.valueOf(v0);
+		BinaryValue value2 = BinaryValue.valueOf(v1);
 		assertEquals(value1, value2);
 		assertEquals("00010305", value1.toHexEncoded());
 	}

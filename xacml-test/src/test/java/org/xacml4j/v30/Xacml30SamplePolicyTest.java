@@ -3,7 +3,7 @@ package org.xacml4j.v30;
 
 import org.junit.Test;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
-import org.xacml4j.v30.types.BooleanType;
+import org.xacml4j.v30.types.BooleanExp;
 
 
 public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
@@ -13,7 +13,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")
 				.withResolver(ExpectedAttributeResolverBuilder
 								.builder("test", AttributeCategories.SUBJECT_ACCESS)
-									.withAttributeValue("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanType.BOOLEAN.create(true))
+									.withAttributeValue("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanExp.valueOf(true))
 									.build())
 					.withPolicyFromClasspath("v30-policy-test/policyset.xml")
 					.build();

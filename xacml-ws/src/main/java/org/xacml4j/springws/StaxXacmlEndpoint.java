@@ -11,7 +11,6 @@ import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
-import org.xacml4j.v30.types.Types;
 
 
 public class StaxXacmlEndpoint extends AbstractStaxStreamPayloadEndpoint
@@ -23,9 +22,8 @@ public class StaxXacmlEndpoint extends AbstractStaxStreamPayloadEndpoint
 	public StaxXacmlEndpoint(
 			PolicyDecisionPoint pdp) {
 		this.pdp = pdp;
-		Types types = Types.builder().defaultTypes().create();
-		this.requestUnmarshaller = new Xacml20RequestContextUnmarshaller(types);
-		this.responseMarshaller = new Xacml20ResponseContextMarshaller(types);
+		this.requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.responseMarshaller = new Xacml20ResponseContextMarshaller();
 	}
 
 	@Override

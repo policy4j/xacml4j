@@ -17,9 +17,11 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
@@ -27,15 +29,13 @@ class JavaMethodToFunctionSpecConverter
 	private final static Logger log = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
 
 	private final InvocationFactory invocationFactory;
-	private final Types xacmlTypes;
 
+	private final static TypeCapability.Index<TypeToString> TYPE_TO_STRING_INDEX = TypeCapability.Index.<TypeToString>build(TypeToString.Types.values());
+			
 	public JavaMethodToFunctionSpecConverter(
-			Types types,
 			InvocationFactory invocationFactory)
 	{
 		Preconditions.checkNotNull(invocationFactory);
-		Preconditions.checkNotNull(types);
-		this.xacmlTypes = types;
 		this.invocationFactory = invocationFactory;
 	}
 
@@ -72,7 +72,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder(funcId.id(),
-				(legacyFuncId == null) ? null : legacyFuncId.id(), xacmlTypes);
+				(legacyFuncId == null) ? null : legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		boolean evalContextParamFound = false;
@@ -100,7 +100,11 @@ class JavaMethodToFunctionSpecConverter
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				AttributeExpType type = xacmlTypes.getType(param.typeId());
+				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				if(!type.isPresent()){
+					throw new XacmlSyntaxException(
+							"Unknown XACML type id=\"%s\"", param.typeId());
+				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
@@ -121,7 +125,7 @@ class JavaMethodToFunctionSpecConverter
 									type, m.getName(), types[i]));
 				}
 								
-				b.param(param.isBag() ? type.bagType() : type, createDefaultValue(type, param.isBag(), 
+				b.param(param.isBag() ? type.get().bagType() : type.get(), createDefaultValue(type.get(), param.isBag(), 
 						param.defaultValue()), param.optional());
 				continue;
 			}
@@ -139,8 +143,12 @@ class JavaMethodToFunctionSpecConverter
 									+ "varArg parameter must be a last parameter in the method"));
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				AttributeExpType type = xacmlTypes.getType(param.typeId());
-				b.param(param.isBag() ? type.bagType() : type, param.min(),
+				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				if(!type.isPresent()){
+					throw new XacmlSyntaxException(
+							"Unknown XACML type id=\"%s\"", param.typeId());
+				}
+				b.param(param.isBag() ? type.get().bagType() : type.get(), param.min(),
 						param.max());
 				continue;
 			}
@@ -169,8 +177,12 @@ class JavaMethodToFunctionSpecConverter
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			AttributeExpType type = xacmlTypes.getType(returnType.typeId());
-			return b.build(returnType.isBag() ? type.bagType() : type,
+			Optional<AttributeExpType> type = XacmlTypes.getType(returnType.typeId());
+			if(!type.isPresent()){
+				throw new XacmlSyntaxException(
+						"Unknown XACML type id=\"%s\"", returnType.typeId());
+			}
+			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
@@ -246,14 +258,14 @@ class JavaMethodToFunctionSpecConverter
 		if((values == null || values.length == 0)){
 			return null;
 		}
-		TypeToString fromString = xacmlTypes.getCapability(type, TypeToString.class);
-		if(fromString == null){
+		Optional<TypeToString> fromString = TYPE_TO_STRING_INDEX.get(type);
+		if(!fromString.isPresent()){
 			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotion", 
 					type.getDataTypeId());
 		}
 		List<AttributeExp> defaultValues = new ArrayList<AttributeExp>(values.length);
 		for(String v : values){
-			defaultValues.add(fromString.fromString(v));
+			defaultValues.add(fromString.get().fromString(v));
 		}
 		return isBag?type.bagOf(defaultValues):defaultValues.iterator().next();
 	}

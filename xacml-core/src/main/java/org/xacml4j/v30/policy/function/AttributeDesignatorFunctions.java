@@ -8,6 +8,7 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
@@ -17,9 +18,11 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.AnyURIType;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.base.Optional;
 
 @XacmlFunctionProvider(description="Attribute designator functions")
 public class AttributeDesignatorFunctions 
@@ -44,10 +47,15 @@ public class AttributeDesignatorFunctions
 		public ValueType resolve(FunctionSpec spec, List<Expression> arguments) {
 			Expression type = arguments.get(2);
 			AttributeExpType typeId = (AttributeExpType)type.getEvaluatesTo();
-			if(typeId.equals(AnyURIType.ANYURI)){
+			if(typeId.equals(XacmlTypes.ANYURI)){
+				AnyURIExp v = (AnyURIExp)type;
 				// hack to cast to AnyURI without evaluating first
-				AttributeExpType resolvedType = spec.getTypes().getType(((AnyURIExp)type).getValue().toString());
-				return resolvedType;
+				Optional<AttributeExpType> resolvedType = XacmlTypes.getType(v.toString());
+				if(!resolvedType.isPresent()){
+					throw new XacmlSyntaxException("Unknown XACML type id=\"%s\"",
+							v.toString());
+				}
+				return resolvedType.get();
 			}
 			return typeId;
 		}

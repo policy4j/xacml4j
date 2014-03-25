@@ -13,7 +13,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class RootEvaluationContextTest
@@ -32,7 +32,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(XacmlTypes.builder().defaultTypes().create(), false, 0, resolver, handler);
 		c.replay();
 		assertEquals(0, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -49,7 +49,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 10, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(XacmlTypes.builder().defaultTypes().create(), false, 10, resolver, handler);
 		c.replay();
 		assertEquals(10, context.getDecisionCacheTTL());
 		context.setDecisionCacheTTL(20);
@@ -66,7 +66,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
 	{
-		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(XacmlTypes.builder().defaultTypes().create(), false, 0, resolver, handler);
 		c.replay();
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
@@ -83,7 +83,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{
-		RootEvaluationContext context = new RootEvaluationContext(Types.builder().defaultTypes().create(), false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(XacmlTypes.builder().defaultTypes().create(), false, 0, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)

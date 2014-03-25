@@ -12,7 +12,6 @@ import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
-import org.xacml4j.v30.types.Types;
 
 
 @Endpoint
@@ -25,9 +24,8 @@ public class DomXacmlEndpoint {
 	public DomXacmlEndpoint(
 			PolicyDecisionPoint pdp) {
 		this.pdp = pdp;
-		Types types = Types.builder().defaultTypes().create();
-		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller(types);
-		this.xacml20ResponseMarshaller = new Xacml20ResponseContextMarshaller(types);
+		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.xacml20ResponseMarshaller = new Xacml20ResponseContextMarshaller();
 	}
 
 	@PayloadRoot(namespace ="urn:oasis:names:tc:xacml:2.0:context:schema:os", localPart = "Request")

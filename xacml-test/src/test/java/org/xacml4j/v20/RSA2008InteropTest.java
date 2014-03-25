@@ -6,7 +6,6 @@ import java.io.InputStream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xacml4j.v20.Xacml20TestUtility;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
@@ -18,7 +17,6 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.types.Types;
 
 import com.google.common.collect.Iterables;
 
@@ -32,7 +30,6 @@ public class RSA2008InteropTest
 
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
-				Types.builder().defaultTypes().create(),
 				FunctionProviderBuilder.builder()
 				.defaultFunctions()
 				.build(),

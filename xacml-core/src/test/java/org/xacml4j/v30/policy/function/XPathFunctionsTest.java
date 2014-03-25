@@ -21,19 +21,15 @@ import org.w3c.dom.NodeList;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.BooleanType;
-import org.xacml4j.v30.types.IntegerType;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
 import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
 import org.xml.sax.InputSource;
 
 
@@ -66,7 +62,6 @@ public class XPathFunctionsTest
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
 		this.xpathProvider = new DefaultXPathProvider();
 		this.funcF = new AnnotiationBasedFunctionProvider(
-				Types.builder().defaultTypes().create(),
 				XPathFunctions.class);
 	}
 
@@ -84,9 +79,9 @@ public class XPathFunctionsTest
 	@Test
 	public void testXpathEvaluation() throws Exception
 	{
-		NodeList result = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record", content1);
-		NodeList result1 = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "./md:record//md:name", content1);
-		NodeList result2 = xpathProvider.evaluateToNodeSet(XPathVersion.XPATH1, "//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']", content);
+		NodeList result = xpathProvider.evaluateToNodeSet("./md:record", content1);
+		NodeList result1 = xpathProvider.evaluateToNodeSet("./md:record//md:name", content1);
+		NodeList result2 = xpathProvider.evaluateToNodeSet("//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']", content);
 		assertEquals(1, result.getLength());
 		assertEquals(2, result1.getLength());
 		assertEquals(1, result2.getLength());
@@ -96,13 +91,13 @@ public class XPathFunctionsTest
 	public void testXPathCount() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count");
-		XPathExp xpath  = XPathExpType.XPATHEXPRESSION.create("/md:record/md:patient",
+		XPathExp xpath  = XPathExp.valueOf("/md:record/md:patient",
 				AttributeCategories.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record/md:patient", AttributeCategories.SUBJECT_ACCESS))
 		.andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(IntegerType.INTEGER.create(1), f.invoke(context, xpath));
+		assertEquals(IntegerExp.valueOf(1), f.invoke(context, xpath));
 		verify(context);
 	}
 
@@ -110,23 +105,23 @@ public class XPathFunctionsTest
 	public void testXPathCountXacml20() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count");
-		StringExp xpath  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
+		StringExp xpath  = StringExp.valueOf("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("./md:record//md:name", AttributeCategories.RESOURCE))
 		.andAnswer(new XPathAnswer(content1));
 		replay(context);
-		assertEquals(IntegerType.INTEGER.create(2), f.invoke(context, xpath));
+		assertEquals(IntegerExp.valueOf(2), f.invoke(context, xpath));
 		verify(context);
 	}
 
 	@Test
 	public void testXPathCountExpressionReturnsEmptyNodeSet() throws EvaluationException
 	{
-		XPathExp xpath  = XPathExpType.XPATHEXPRESSION.create("/test",
+		XPathExp xpath  = XPathExp.valueOf("/test",
 				AttributeCategories.SUBJECT_ACCESS);
 		expect(context.evaluateToNodeSet("/test", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(IntegerType.INTEGER.create(0), XPathFunctions.xpathCount(context, xpath));
+		assertEquals(IntegerExp.valueOf(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
 	}
 
@@ -134,13 +129,13 @@ public class XPathFunctionsTest
 	public void testXPathNodeMatch() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match");
-		XPathExp xpath0  = XPathExpType.XPATHEXPRESSION.create("/md:record", AttributeCategories.SUBJECT_ACCESS);
-		XPathExp xpath1  = XPathExpType.XPATHEXPRESSION.create("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS);
+		XPathExp xpath0  = XPathExp.valueOf("/md:record", AttributeCategories.SUBJECT_ACCESS);
+		XPathExp xpath1  = XPathExp.valueOf("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet("/md:record", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		expect(context.evaluateToNodeSet("/md:record/md:patient/md:patientDoB", AttributeCategories.SUBJECT_ACCESS)).andAnswer(new XPathAnswer(content));
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanExp.valueOf(true), f.invoke(context, xpath0, xpath1));
 		verify(context);
 	}
 
@@ -148,13 +143,13 @@ public class XPathFunctionsTest
 	public void testXPathNodeMatchXacml20() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match");
-		StringExp xpath0  = StringType.STRING.create(".");
-		StringExp xpath1  = StringType.STRING.create("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
+		StringExp xpath0  = StringExp.valueOf(".");
+		StringExp xpath1  = StringExp.valueOf("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.evaluateToNodeSet(".", AttributeCategories.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		expect(context.evaluateToNodeSet("./md:record", AttributeCategories.RESOURCE)).andAnswer(new XPathAnswer(content1));
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(BooleanExp.valueOf(true), f.invoke(context, xpath0, xpath1));
 		verify(context);
 	}
 
@@ -171,7 +166,6 @@ public class XPathFunctionsTest
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
 			return xpathProvider.evaluateToNodeSet(
-					XPathVersion.XPATH1,
 					(String)args[0],
 					xml);
 		}

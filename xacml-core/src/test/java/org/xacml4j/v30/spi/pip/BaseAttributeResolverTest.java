@@ -9,8 +9,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class BaseAttributeResolverTest
@@ -26,8 +25,8 @@ public class BaseAttributeResolverTest
 		this.context = c.createMock(ResolverContext.class);
 		this.d = AttributeResolverDescriptorBuilder
 		.builder("test", "Test", AttributeCategories.SUBJECT_ACCESS)
-		.attribute("testId1", StringType.STRING)
-		.attribute("testId2", IntegerType.INTEGER)
+		.attribute("testId1", XacmlTypes.STRING)
+		.attribute("testId2", XacmlTypes.INTEGER)
 		.build();
 		this.r =  createMockBuilder( BaseAttributeResolver.class)
 		.addMockedMethod("doResolve")

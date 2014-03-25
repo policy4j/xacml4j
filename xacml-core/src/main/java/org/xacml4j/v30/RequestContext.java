@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import org.w3c.dom.Node;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -267,7 +264,7 @@ public class RequestContext
 	 */
 	public Collection<Attributes> getAttributes(AttributeCategory categoryId){
 		Preconditions.checkNotNull(categoryId);
-		return Collections.unmodifiableCollection(attributes.get(categoryId));
+		return attributes.get(categoryId);
 	}
 
 	public Collection<Entity> getEntities(AttributeCategory c){	
@@ -298,24 +295,6 @@ public class RequestContext
 		return Iterables.getOnlyElement(attributes, null);
 	}
 
-	/**
-	 * Gets content as {@link Node} instance of
-	 * the given category
-	 *
-	 * @param categoryId a category identifier
-	 * @return {@link Node} or {@code null}
-	 * if category does not have content or
-	 * there is no attributes of given category
-	 * in this request
-	 * @exception IllegalArgumentException if request
-	 * has more than one instance of {@link Attributes}
-	 * of the requested category
-	 */
-	public Node getOnlyContent(AttributeCategory categoryId)
-	{
-		Attributes attributes = getOnlyAttributes(categoryId);
-		return (attributes == null)?null:attributes.getEntity().getContent();
-	}
 
 	/**
 	 * Tests if this request has an multiple

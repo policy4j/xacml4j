@@ -17,7 +17,6 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.Types;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,17 +25,17 @@ import com.google.gson.JsonElement;
 public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseContext> {
 	private final Gson json;
 
-	public JsonResponseContextUnmarshaller(Types typesRegistry) {
+	public JsonResponseContextUnmarshaller() {
 		json = new GsonBuilder().registerTypeAdapter(ResponseContext.class, new ResponseContextAdapter())
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
 				.registerTypeAdapter(StatusCode.class, new StatusCodeAdapter())
 				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
-				.registerTypeAdapter(AttributeAssignment.class, new AttributeAssignmentDeserializer(typesRegistry))
+				.registerTypeAdapter(AttributeAssignment.class, new AttributeAssignmentDeserializer())
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
-				.registerTypeAdapter(Attribute.class, new AttributeDeserializer(typesRegistry))
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer(typesRegistry))
+				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
+				.registerTypeAdapter(AttributeExp.class, new AttributeExpDeserializer())
 				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
 				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
 	}

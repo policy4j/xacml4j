@@ -13,14 +13,15 @@ import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DNSNameExp;
 import org.xacml4j.v30.types.IPAddressExp;
 import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.X500NameExp;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 
@@ -101,11 +102,12 @@ public class RegularExpressionFunctions
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", value, regexp);
 		}
-		TypeToString c = context.getTypes().getCapability(value.getType(), TypeToString.class);
-		Preconditions.checkState(c != null);
-		return BooleanType.BOOLEAN.create(Pattern.matches(
+		TypeCapability.Index<TypeToString> idx = TypeToString.Types.getIndex();
+		Optional<TypeToString> toString = idx.get(value.getType());
+		Preconditions.checkState(toString.isPresent());
+		return BooleanExp.valueOf(Pattern.matches(
 				 covertXacmlToJavaSyntax(regexp.getValue()),
-				 c.toString(value)));
+				 toString.get().toString(value)));
 	}
 
 	/*

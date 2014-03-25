@@ -5,8 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.BooleanType.BOOLEAN;
-import static org.xacml4j.v30.types.IntegerType.INTEGER;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -15,6 +13,8 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class ConditionTest
@@ -32,7 +32,7 @@ public class ConditionTest
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithExpWhichReturnsNonBooleanValue() {
-		expect(exp.getEvaluatesTo()).andReturn(INTEGER);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.INTEGER);
 
 		ctl.replay();
 		new Condition(exp);
@@ -41,7 +41,7 @@ public class ConditionTest
 
 	@Test
 	public void testExpressionThrowsEvaluationException() {
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context,
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
 		context.setEvaluationStatus(StatusCode.createProcessingError());
@@ -54,7 +54,7 @@ public class ConditionTest
 
 	@Test
 	public void testExpressionThrowsRuntimeException() {
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
+		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
 		context.setEvaluationStatus(StatusCode.createProcessingError());
 
@@ -66,8 +66,8 @@ public class ConditionTest
 
 	@Test
 	public void testExpressionEvaluatesToFalse() {
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(BOOLEAN.create(false));
+		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
+		expect(exp.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -77,8 +77,8 @@ public class ConditionTest
 
 	@Test
 	public void testExpressionEvaluatesToTrue() {
-		expect(exp.getEvaluatesTo()).andReturn(BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(BOOLEAN.create(true));
+		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
+		expect(exp.evaluate(context)).andReturn(BooleanExp.valueOf(true));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -91,8 +91,8 @@ public class ConditionTest
 		AttributeExp exp1 = ctl.createMock(AttributeExp.class);
 		AttributeExp exp2 = ctl.createMock(AttributeExp.class);
 
-		expect(exp1.getEvaluatesTo()).andReturn(BOOLEAN).times(2);
-		expect(exp2.getEvaluatesTo()).andReturn(BOOLEAN).times(1);
+		expect(exp1.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(2);
+		expect(exp2.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(1);
 
 		ctl.replay();
 

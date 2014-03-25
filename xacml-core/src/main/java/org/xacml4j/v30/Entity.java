@@ -1,11 +1,27 @@
 package org.xacml4j.v30;
 
 
+import java.util.Collection;
+import java.util.LinkedList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 import org.xacml4j.util.DOMUtil;
+import org.xacml4j.v30.pdp.XPathEvaluationException;
+import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -19,6 +35,10 @@ import com.google.common.collect.Collections2;
  */
 public final class Entity extends AttributeContainer
 {
+	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
+	
+	private final static Logger log = LoggerFactory.getLogger(Entity.class);
+	
 	private Document content;
 
 	private Entity(Builder b) {
@@ -44,7 +64,7 @@ public final class Entity extends AttributeContainer
 			}
 		}).build();
 	}
-
+	
 	/**
 	 * Gets content as {@link Node}
 	 * instance
@@ -53,6 +73,141 @@ public final class Entity extends AttributeContainer
 	 */
 	public Node getContent(){
 		return content;
+	}
+	
+	/**
+	 * Tests if this entity has content
+	 * 
+	 * @return <code>true</code>if entity 
+	 * has content
+	 */
+	public boolean hasContent(){
+		return content != null;
+	}
+	
+	public BagOfAttributeExp getAttributeValues(
+			String xpath, 
+			XPathProvider xpathProvider,  
+			AttributeExpType type, 
+			String contextSelectorId) throws XPathEvaluationException
+	{
+		try
+		{
+			Node contextNode = content;
+			Collection<AttributeExp> v = getAttributeValues(
+						(contextSelectorId == null?CONTENT_SELECTOR:contextSelectorId),
+								XacmlTypes.XPATH);
+			if(v.size() > 1){
+				throw new XPathEvaluationException("Found more than one value of=\"%s\"", 
+						contextSelectorId);
+			}
+			if(v.size() == 1){
+				XPathExp xpathAttr = (XPathExp)v.iterator().next();
+				if(log.isDebugEnabled()){
+					log.debug("Evaluating " +
+							"contextSelector xpath=\"{}\"", xpathAttr.getValue());
+				}
+				contextNode = xpathProvider.evaluateToNode(xpathAttr.getPath(), content);
+			}
+			NodeList nodeSet = xpathProvider.evaluateToNodeSet(xpath, contextNode);
+			if(nodeSet == null ||
+					nodeSet.getLength() == 0){
+				return type.bagType().createEmpty();
+			}
+			if(log.isDebugEnabled()){
+				log.debug("Found=\"{}\" nodes via xpath=\"{}\"",
+						new Object[]{nodeSet.getLength(), xpath});
+			}
+			return toBag(xpath, type, nodeSet);
+		}
+		catch(XPathEvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
+			throw new XPathEvaluationException(xpath, e, 
+					e.getMessage());
+		}
+		catch(EvaluationException e){
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
+			throw e;
+		}
+		catch(Exception e){
+			if(log.isDebugEnabled()){
+				log.debug(e.getMessage(), e);
+			}
+			throw new XPathEvaluationException(xpath, e, e.getMessage());
+		}
+	}
+	
+	/**
+	 * Converts a given node list to the {@link BagOfAttributeExp}
+	 *
+	 * @param context an evaluation context
+	 * @param ref an attribute selector
+	 * @param nodeSet a node set
+	 * @return {@link BagOfAttributeExp}
+	 * @throws EvaluationException
+	 */
+	private BagOfAttributeExp toBag(String xpath, 
+			AttributeExpType type, NodeList nodeSet)
+		throws XPathEvaluationException
+	{
+		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
+		for(int i = 0; i< nodeSet.getLength(); i++)
+		{
+			Node n = nodeSet.item(i);
+			String v = null;
+			switch(n.getNodeType()){
+				case Node.TEXT_NODE:
+					v = ((Text)n).getData();
+					break;
+				case Node.PROCESSING_INSTRUCTION_NODE:
+					v = ((ProcessingInstruction)n).getData();
+					break;
+				case Node.ATTRIBUTE_NODE:
+					v = ((Attr)n).getValue();
+					break;
+				case Node.COMMENT_NODE:
+					v = ((Comment)n).getData();
+					break;
+				default:
+					throw new XPathEvaluationException(
+							xpath,
+							StatusCode.createSyntaxError(),
+							"Unsupported DOM node type=\"%d\"",
+							n.getNodeType());
+			}
+			try
+			{
+				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(type);
+				if(!toString.isPresent()){
+					throw new XPathEvaluationException(
+							xpath,
+							StatusCode.createSyntaxError(),
+							"Unsupported XACML type=\"%d\"", 
+							type.getDataTypeId());
+				}
+				AttributeExp value = toString.get().fromString(v);
+				if(log.isDebugEnabled()){
+					log.debug("Node of type=\"{}\" " +
+							"converted attribute=\"{}\"", n.getNodeType(), value);
+				}
+				values.add(value);
+			}catch(Exception e){
+				throw new XPathEvaluationException(xpath,
+						StatusCode.createSyntaxError(), e.getMessage());
+			}
+		}
+	  	return type.bagType().create(values);
+	}
+	
+	
+	
+	public BagOfAttributeExp getAttributeValues(String attributeId, AttributeExpType type, String issuer){
+		Collection<AttributeExp> values = getAttributeValues(attributeId, issuer, type);
+		return type.bagOf(values);
 	}
 	
 	@Override

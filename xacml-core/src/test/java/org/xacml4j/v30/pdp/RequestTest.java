@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.xacml4j.v30.types.StringType.STRING;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +16,7 @@ import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.types.StringExp;
 
 
 
@@ -35,36 +35,36 @@ public class RequestTest
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId10").value(STRING.create("value0")).build(),
-						Attribute.builder("testId11").value(STRING.create("value1")).build()).build())
+						Attribute.builder("testId10").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId11").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(STRING.create("value0")).build(),
-						Attribute.builder("testId22").value(STRING.create("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),
-						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(STRING.create("value2")).build()).build())
+						Attribute.builder("testId11").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId22").value(StringExp.valueOf("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(StringExp.valueOf("value2")).build(),
+						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(StringExp.valueOf("value2")).build()).build())
 				.build();
 		this.subject0 =  Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId31").value(STRING.create("value0")).build(),
-						Attribute.builder("testId32").value(STRING.create("value1")).build()).build())
+						Attribute.builder("testId31").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId32").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_CODEBASE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(STRING.create("value0")).build(),
-						Attribute.builder("testId22").value(STRING.create("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(STRING.create("value2")).build(),
-						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(STRING.create("value2")).build()).build())
+						Attribute.builder("testId11").value(StringExp.valueOf("value0")).build(),
+						Attribute.builder("testId22").value(StringExp.valueOf("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(StringExp.valueOf("value2")).build(),
+						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(StringExp.valueOf("value2")).build()).build())
 				.build();
 
 	}

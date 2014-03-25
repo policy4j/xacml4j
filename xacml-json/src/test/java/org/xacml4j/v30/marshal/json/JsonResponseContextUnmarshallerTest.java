@@ -27,8 +27,7 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.StringExp;
 import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
@@ -39,8 +38,7 @@ public class JsonResponseContextUnmarshallerTest {
 	public void testUnmarshal() throws Exception {
 		Reader input = new InputStreamReader(Thread.currentThread().getContextClassLoader()
 				.getResourceAsStream("xacml30-response.json"));
-		Types types = Types.builder().defaultTypes().create();
-		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller(types);
+		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller();
 		ResponseContext response = unmarshaller.unmarshal(input);
 		assertThat(response, is(createExpectedResponse()));
 	}
@@ -57,13 +55,13 @@ public class JsonResponseContextUnmarshallerTest {
 												.id(SubjectAttributes.SUBJECT_ID.toString())
 												.category(AttributeCategories.ACTION)
 												.issuer("Vytenai")
-												.value(StringType.STRING.create("obuolys"))
+												.value(StringExp.valueOf("obuolys"))
 												.build(),
 										AttributeAssignment.builder()
 												.id(SubjectAttributes.KEY_INFO.toString())
 												.category(AttributeCategories.ACTION)
 												.issuer("ispanija")
-												.value(StringType.STRING.create("apelsinas"))
+												.value(StringExp.valueOf("apelsinas"))
 												.build()))
 						.build());
 		resultBuilder.obligation(Obligation
@@ -74,7 +72,7 @@ public class JsonResponseContextUnmarshallerTest {
 										.builder()
 										.id("custom:attribute1")
 										.category("totaly:made:up:attribute-category1")
-										.value(StringType.STRING.create("same old apelsinas"))
+										.value(StringExp.valueOf("same old apelsinas"))
 						                .build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
@@ -85,7 +83,7 @@ public class JsonResponseContextUnmarshallerTest {
 								AttributeAssignment
 										.builder()
 										.id("test:advice1")
-										.value(StringType.STRING.create("nespjauk i sulini"))
+										.value(StringExp.valueOf("nespjauk i sulini"))
 										.build()))
 					.build(),
 				Advice.builder("advice2").build()));
@@ -102,12 +100,12 @@ public class JsonResponseContextUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringType.STRING.create(
+										.value(StringExp.valueOf(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringType.STRING.create("TestDomain")).build())).build())
+										.value(StringExp.valueOf("TestDomain")).build())).build())
 						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Attributes> of(subjectAttributes));
 

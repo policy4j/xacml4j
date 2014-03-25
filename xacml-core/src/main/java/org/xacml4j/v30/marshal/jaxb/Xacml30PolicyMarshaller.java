@@ -4,16 +4,16 @@ import java.io.IOException;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class Xacml30PolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisionRule>
 	implements PolicyMarshaller
 {
 	private Xacml30PolicyFromObjectModelToJaxbMapper mapper;
 	
-	public Xacml30PolicyMarshaller(Types types) {
+	public Xacml30PolicyMarshaller() {
 		super(JAXBContextUtil.getInstance());
-		this.mapper = new Xacml30PolicyFromObjectModelToJaxbMapper(types);
+		this.mapper = new Xacml30PolicyFromObjectModelToJaxbMapper();
 	}
 
 	@Override

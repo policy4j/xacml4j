@@ -288,6 +288,20 @@ public final class BagOfAttributeExp
 			}
 			return this;
 		}
+		
+		public Builder value(Object ...values){
+			for(Object v : values){
+				this.valuesBuilder.add(bagType.getDataType().create(v));
+			}
+			return this;
+		}
+		
+		public Builder values(Iterable<Object> values){
+			for(Object v : values){
+				this.valuesBuilder.add(bagType.getDataType().create(v));
+			}
+			return this;
+		}
 
 		public Builder attributes(Iterable<AttributeExp> values){
 			for(AttributeExp v : values){

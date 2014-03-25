@@ -19,7 +19,7 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 
@@ -36,7 +36,6 @@ public final class PolicyDecisionPointBuilder
 	private CompositeDecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
 	private int defaultDecisionCacheTTL;
-	private Types types;
 
 	private PolicyDecisionPointBuilder(String id){
 		this();
@@ -49,7 +48,6 @@ public final class PolicyDecisionPointBuilder
 		this.decisionAuditor = new NoAuditPolicyDecisionPointAuditor();
 		this.decisionCache = new NoCachePolicyDecisionCache();
 		this.handlers = new LinkedList<RequestContextHandler>();
-		this.types = Types.builder().defaultTypes().create();
 	}
 
 	public static PolicyDecisionPointBuilder builder(String id){
@@ -111,12 +109,6 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 	
-	public PolicyDecisionPointBuilder types(Types types){
-		Preconditions.checkNotNull(types);
-		this.types = types;
-		return this;
-	}
-
 	public PolicyDecisionPointBuilder xpathProvider(
 			XPathProvider xpath){
 		Preconditions.checkNotNull(xpath);
@@ -135,7 +127,6 @@ public final class PolicyDecisionPointBuilder
 		Preconditions.checkState(id != null);
 		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				types,
 				rootPolicy, 
 				repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
 		factory.setDefaultDecisionCacheTTL(defaultDecisionCacheTTL);

@@ -8,9 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.StringType;
 import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
 
 
 public class Xacml20XPathTo30TransformerTest
@@ -19,9 +17,8 @@ public class Xacml20XPathTo30TransformerTest
 	@Test
 	public void testXacml20StringXPathToXPathExpression()
 	{
-		StringExp xpath = StringType.STRING.create("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
-		XPathExp xpathExp = fromXacml20String(xpath);
-		assertEquals(XPathExpType.XPATHEXPRESSION.create("//md:record/md:patient/md:patient-number/text()", AttributeCategories.RESOURCE), xpathExp);
+		StringExp xpath = StringExp.valueOf("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
+		assertEquals(XPathExp.valueOf("//md:record/md:patient/md:patient-number/text()", AttributeCategories.RESOURCE), fromXacml20String(xpath));
 	}
 
 	// FIXME: Implement transformation

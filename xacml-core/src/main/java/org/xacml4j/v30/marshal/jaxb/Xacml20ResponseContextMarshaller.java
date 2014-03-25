@@ -32,10 +32,9 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
-import org.xacml4j.v30.types.XPathExpType;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -53,9 +52,9 @@ public class Xacml20ResponseContextMarshaller
 	private final Mapper mapper;
 	private final ObjectFactory factory;
 
-	public Xacml20ResponseContextMarshaller(Types types){
+	public Xacml20ResponseContextMarshaller(){
 		super(JAXBContextUtil.getInstance());
-		this.mapper = new Mapper(types);
+		this.mapper = new Mapper();
 		this.factory = new ObjectFactory();
 	}
 
@@ -86,12 +85,7 @@ public class Xacml20ResponseContextMarshaller
 			Effect.DENY, EffectType.DENY,
 			Effect.PERMIT, EffectType.PERMIT);
 		
-		private Types types;
 		
-		public Mapper(Types types){
-			Preconditions.checkNotNull(types);
-			this.types = types;
-		}
 		public ResponseType create(ResponseContext response)
 		{
 			if(log.isDebugEnabled()){
@@ -148,18 +142,20 @@ public class Xacml20ResponseContextMarshaller
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
 				AttributeExp v =  Iterables.getOnlyElement(resourceId.getValues());
-				TypeToString toString = types.getCapability(v.getType(), TypeToString.class);
-				return toString.toString();
+				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(v.getType());
+				Preconditions.checkState(toString.isPresent());
+				return toString.get().toString(v);
 			}
 			Collection<AttributeExp> values =  resource.getEntity().getAttributeValues(
-					CONTENT_SELECTOR, XPathExpType.XPATHEXPRESSION);
+					CONTENT_SELECTOR, XacmlTypes.XPATH);
 			if(values.isEmpty() ||
 					values.size() > 1){
 				return null;
 			}
 			AttributeExp v =  Iterables.getOnlyElement(values);
-			TypeToString toString = types.getCapability(v.getType(), TypeToString.class);
-			return toString.toString();
+			Optional<TypeToString> toString = TypeToString.Types.getIndex().get(v.getType());
+			Preconditions.checkState(toString.isPresent());
+			return toString.get().toString(v);
 		}
 
 		private ObligationsType getObligations(Result result)
@@ -205,8 +201,9 @@ public class Xacml20ResponseContextMarshaller
 
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
-			TypeToXacml30 toXacml30 = types.getCapability(a.getAttribute().getType(), TypeToXacml30.class);
-			AttributeValueType v30 = toXacml30.toXacml30(types, a.getAttribute());
+			Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(a.getAttribute().getType());
+			Preconditions.checkState(toXacml30.isPresent());
+			AttributeValueType v30 = toXacml30.get().toXacml30(a.getAttribute());
 			AttributeAssignmentType attr = new AttributeAssignmentType();
 			attr.setDataType(v30.getDataType());
 			attr.setAttributeId(a.getAttributeId());

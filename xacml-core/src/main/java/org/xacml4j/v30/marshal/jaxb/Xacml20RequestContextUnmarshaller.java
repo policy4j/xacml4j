@@ -36,10 +36,9 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
-import org.xacml4j.v30.types.XPathExpType;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -83,13 +82,9 @@ implements RequestUnmarshaller
 	}
 
 	private Mapper mapper20;
-
-	private Types xacmlTypes;
-
-	public Xacml20RequestContextUnmarshaller(Types types){
+	
+	public Xacml20RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
-		Preconditions.checkNotNull(types);
-		this.xacmlTypes = types;
 		this.mapper20 = new Mapper();
 	}
 
@@ -263,22 +258,23 @@ implements RequestUnmarshaller
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType v30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 			v30.getOtherAttributes().putAll(av.getOtherAttributes());
-			AttributeExpType type = xacmlTypes.getType(a.getDataType());
-			TypeToXacml30 xacml30 = xacmlTypes.getCapability(type, TypeToXacml30.class);			
-			Preconditions.checkState(xacml30 != null);
-			v30.setDataType(type.getDataTypeId());
-			if(type.equals(XPathExpType.XPATHEXPRESSION)){
+			Optional<AttributeExpType> type = XacmlTypes.getType(a.getDataType());
+			Preconditions.checkState(type.isPresent());
+			Optional<TypeToXacml30> xacml30 = TypeToXacml30.Types.getIndex().get(type.get());			
+			Preconditions.checkState(xacml30.isPresent());
+			v30.setDataType(type.get().getDataTypeId());
+			if(type.get().equals(XacmlTypes.XPATH)){
 				if(av.getContent().size() > 0){
 					v30.getContent().add(
 							Xacml20XPathTo30Transformer.transform20PathTo30((String)av.getContent().get(0)));
-					v30.getOtherAttributes().put(XPathExpType.XPATH_CATEGORY_ATTR_NAME, 
+					v30.getOtherAttributes().put(TypeToXacml30.Types.XPATH_CATEGORY_ATTR_NAME, 
 							AttributeCategories.RESOURCE.getId());
-					return xacml30.fromXacml30(xacmlTypes, v30);
+					return xacml30.get().fromXacml30(v30);
 				}
 				throw new XacmlSyntaxException("Not content found for xpath expression");
 			}
 			v30.getContent().addAll(av.getContent());
-			return xacml30.fromXacml30(xacmlTypes, v30);
+			return xacml30.get().fromXacml30(v30);
 		}
 	}
 }

@@ -4,30 +4,32 @@ public class PolicyResolutionException extends EvaluationException
 {
 	private static final long serialVersionUID = 5535690322056670601L;
 
+	private EvaluationContext context;
+	
 	public PolicyResolutionException(EvaluationContext context,
 			String template, Object... arguments) {
-		super(StatusCode.createProcessingError(),
-				context, template, arguments);
+		super(StatusCode.createProcessingError(), template, arguments);
+		this.context = context;
 	}
 
 	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause, String message,
 			Object... arguments) {
-		super(StatusCode.createProcessingError(),
-				context, cause, message, arguments);
+		super(StatusCode.createProcessingError(), cause, message, arguments);
+		this.context = context;
 	}
 
 	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause) {
-		super(StatusCode.createProcessingError(),
-				context, cause);
+		super(StatusCode.createProcessingError(), cause);
+		this.context = context;
 	}
 
 	public CompositeDecisionRuleIDReference getPolicyIDReference(){
-		return getEvaluationContext().getCurrentPolicyIDReference();
+		return context.getCurrentPolicyIDReference();
 	}
 
 	public CompositeDecisionRuleIDReference getPolicySetIDReference(){
-		return getEvaluationContext().getCurrentPolicySetIDReference();
+		return context.getCurrentPolicySetIDReference();
 	}
 }

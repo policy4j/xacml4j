@@ -13,9 +13,9 @@ import java.util.Collection;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
@@ -25,11 +25,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-class AttributeDeserializer extends Support implements JsonDeserializer<Attribute> 
+class AttributeDeserializer implements JsonDeserializer<Attribute> 
 {
-	public AttributeDeserializer(Types typesRegistry) {
-		super(typesRegistry);
-	}
 
 	@Override
 	public Attribute deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -50,30 +47,31 @@ class AttributeDeserializer extends Support implements JsonDeserializer<Attribut
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
 		if (dataTypeId == null) {
 			// TODO: properly infer data type
-			dataTypeId = StringType.STRING.getDataTypeId();
+			dataTypeId = XacmlTypes.STRING.getDataTypeId();
 		}
-		AttributeExpType type = types.getType(dataTypeId);
+		Optional<AttributeExpType> type = XacmlTypes.getType(dataTypeId);
+		Preconditions.checkState(type.isPresent());
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		Collection<AttributeExp> values = null;
 		if (jsonValue.isJsonArray()) {
 			JsonArray jsonArray = jsonValue.getAsJsonArray();
 			ImmutableList.Builder<AttributeExp> valuesBuilder = ImmutableList.builder();
 			for (int i = 0; i < jsonArray.size(); i++) {
-				valuesBuilder.add(deserializeValue(type, jsonArray.get(i)));
+				valuesBuilder.add(deserializeValue(type.get(), jsonArray.get(i)));
 			}
 			values = valuesBuilder.build();
 		} else {
 			// TODO: do a proper type coersion
-			values = ImmutableList.of(deserializeValue(type, jsonValue));
+			values = ImmutableList.of(deserializeValue(type.get(), jsonValue));
 		}
 		checkArgument(values != null && !values.isEmpty(), "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return values;
 	}
 
 	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
-		TypeToGSon toGson = types.getCapability(type, TypeToGSon.class);
-		Preconditions.checkState(toGson != null);
-		return toGson.fromJson(types, jsonValue);
+		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(type);
+		Preconditions.checkState(toGson.isPresent());
+		return toGson.get().fromJson(jsonValue);
 	}
 
 }

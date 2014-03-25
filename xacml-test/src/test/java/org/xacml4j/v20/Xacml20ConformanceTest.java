@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
-import org.xacml4j.v20.Xacml20TestUtility;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
@@ -27,7 +26,6 @@ import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.types.Types;
 
 
 public class Xacml20ConformanceTest
@@ -41,17 +39,15 @@ public class Xacml20ConformanceTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		Types types = Types.builder().defaultTypes().create();
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				types,
 				FunctionProviderBuilder.builder()
 				.defaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
 				.create());
-		responseMarshaller = new Xacml20ResponseContextMarshaller(types);
+		responseMarshaller = new Xacml20ResponseContextMarshaller();
 
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);

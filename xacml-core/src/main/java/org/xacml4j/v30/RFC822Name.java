@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.types.RFC822NameType;
 
 import com.google.common.base.Preconditions;
 
@@ -139,7 +138,7 @@ public final class RFC822Name implements Serializable
 		try {
 			VALID_PATTERN = Pattern.compile(PATTERN_STRING);
 		} catch(PatternSyntaxException e) {
-			LoggerFactory.getLogger(RFC822NameType.class).error("Can not parse Email address pattern", e);
+			LoggerFactory.getLogger(RFC822Name.class).error("Can not parse Email address pattern", e);
 			e.printStackTrace();
 			throw e;
 		}

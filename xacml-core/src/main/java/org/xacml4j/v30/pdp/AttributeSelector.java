@@ -97,9 +97,9 @@ public class AttributeSelector extends
 						selectorKey.getPath(), selectorKey.getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(
-					context, selectorKey,
-				"Selector XPath expression=\"%s\" evaluated " +
-				"to empty node set and mustBePresents=\"true\"", selectorKey.getPath());
+					selectorKey,
+					"Selector XPath expression=\"%s\" evaluated " +
+					"to empty node set and mustBePresents=\"true\"", selectorKey.getPath());
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}

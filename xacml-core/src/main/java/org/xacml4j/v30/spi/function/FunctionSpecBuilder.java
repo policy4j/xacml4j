@@ -17,7 +17,7 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -29,26 +29,25 @@ public final class FunctionSpecBuilder
 	private final List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean lazyArgumentEvaluation;
-	private Types types;
 	
-	private FunctionSpecBuilder(String functionId, Types types){
-		this(functionId, null, types);
+	private FunctionSpecBuilder(String functionId){
+		this(functionId, null);
 	}
 
-	private FunctionSpecBuilder(String functionId, String legacyId, Types types){
+	private FunctionSpecBuilder(String functionId, String legacyId){
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
-		this.types = types;
 	}
 
-	public static FunctionSpecBuilder  builder(String functionId, String legacyId, Types types){
-		return new FunctionSpecBuilder(functionId, legacyId, types);
+	
+	public static FunctionSpecBuilder  builder(String functionId){
+		return builder(functionId, null);
 	}
-
-	public static FunctionSpecBuilder  builder(String functionId, Types types){
-		return builder(functionId, null, types);
+	
+	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
+		return new FunctionSpecBuilder(functionId, legacyId);
 	}
 
 	public FunctionSpecBuilder funcRefParam()
@@ -119,7 +118,7 @@ public final class FunctionSpecBuilder
 	public FunctionSpec build(FunctionReturnTypeResolver returnType,
 			FunctionInvocation invocation) {
 		return new FunctionSpecImpl(functionId,
-				legacyId, types, paramSpec, returnType, invocation, lazyArgumentEvaluation);
+				legacyId,paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
 
 	public FunctionSpec build(FunctionReturnTypeResolver returnType,
@@ -127,7 +126,6 @@ public final class FunctionSpecBuilder
 			FunctionInvocation invocation) {
 		return new FunctionSpecImpl(functionId,
 				legacyId, 
-				types, 
 				paramSpec, 
 				returnType,
 				invocation,
@@ -166,7 +164,7 @@ public final class FunctionSpecBuilder
 		private FunctionInvocation invocation;
 		private FunctionReturnTypeResolver resolver;
 		private FunctionParametersValidator validator;
-		private Types types;
+		private XacmlTypes types;
 
 		/**
 		 * Constructs function spec with given function
@@ -184,7 +182,6 @@ public final class FunctionSpecBuilder
 		public FunctionSpecImpl(
 				String functionId,
 				String legacyId,
-				Types types,
 				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
@@ -194,7 +191,6 @@ public final class FunctionSpecBuilder
 			Preconditions.checkNotNull(params);
 			Preconditions.checkNotNull(invocation);
 			Preconditions.checkNotNull(resolver);
-			Preconditions.checkNotNull(types);
 			this.functionId = functionId;
 			this.parameters.addAll(params);
 			this.resolver = resolver;
@@ -202,28 +198,25 @@ public final class FunctionSpecBuilder
 			this.invocation = invocation;
 			this.evaluateParameters = evaluateParameters;
 			this.legacyId = legacyId;
-			this.types = types;
 		}
 
 		public FunctionSpecImpl(
 				String functionId,
 				String legacyId,
-				Types types,
 				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				boolean evaluateParameters){
-			this(functionId, legacyId, types, params, resolver, invocation, null, evaluateParameters);
+			this(functionId, legacyId, params, resolver, invocation, null, evaluateParameters);
 		}
 
 		public FunctionSpecImpl(
 				String functionId,
-				Types types,
 				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				boolean lazyParamEval){
-			this(functionId, null, types, params, resolver, invocation, null, lazyParamEval);
+			this(functionId, null, params, resolver, invocation, null, lazyParamEval);
 		}
 
 		@Override
@@ -236,7 +229,7 @@ public final class FunctionSpecBuilder
 			return legacyId;
 		}
 		
-		public Types getTypes(){
+		public XacmlTypes getTypes(){
 			return types;
 		}
 

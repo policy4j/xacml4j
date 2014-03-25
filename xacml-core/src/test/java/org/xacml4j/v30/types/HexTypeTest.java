@@ -1,41 +1,32 @@
 package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.HexBinaryType.HEXBINARY;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.BagOfAttributeExp;
 
 
 public class HexTypeTest
 {
-	private HexBinaryType t;
-
-	@Before
-	public void init(){
-		this.t = HexBinaryType.HEXBINARY;
-	}
-
-
-
+	
 	@Test
 	public void testCreateValueFromBinaryArray()
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		HexBinaryExp value1 = t.create(v0);
-		HexBinaryExp value2 = t.create(v1);
+		HexBinaryExp value1 = HexBinaryExp.valueOf(v0);
+		HexBinaryExp value2 = HexBinaryExp.valueOf(v1);
 		assertEquals(value1, value2);
-		assertEquals(HEXBINARY.toString(value1), HEXBINARY.toString(value2));
-		assertEquals("00010305", HEXBINARY.toString(value1));
 	}
 
 	@Test
 	public void testCreateValueFromString()
 	{
 		byte[] data = {0, 1, 3, 5};
-		HexBinaryExp value1 = t.create("00010305");
-		HexBinaryExp value2 = t.create(data);
+		HexBinaryExp value1 = HexBinaryExp.valueOf("00010305");
+		HexBinaryExp value2 = HexBinaryExp.valueOf(data);
 		assertEquals(value1, value2);
+		BagOfAttributeExp bag = HexBinaryExp.bag().value(data, "00010305").build();
+		assertEquals(XacmlTypes.HEXBINARY, bag.getDataType());
 	}
 }

@@ -1,7 +1,10 @@
 package org.xacml4j.v30.types;
 
+import java.util.Calendar;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Time;
 
 
@@ -10,12 +13,40 @@ public final class TimeExp extends BaseAttributeExp<Time>
 {
 	private static final long serialVersionUID = -8244143626423796791L;
 
-	public TimeExp(XMLGregorianCalendar value) {
-		super(TimeType.TIME, new Time(value));
+	TimeExp(XMLGregorianCalendar value) {
+		super(XacmlTypes.TIME, new Time(value));
 	}
 
-	TimeExp(TimeType type, Time time) {
-		super(type, time);
+	TimeExp(Time time) {
+		super(XacmlTypes.TIME, time);
+	}
+	
+	public static TimeExp valueOf(String v){
+		return new TimeExp(Time.valueOf(v));
+	}
+	
+	public static TimeExp valueOf(XMLGregorianCalendar v){
+		return new TimeExp(Time.valueOf(v));
+	}
+	
+	public static TimeExp valueOf(Calendar v){
+		return new TimeExp(Time.valueOf(v));
+	}
+	
+	public static TimeExp valueOf(Time v){
+		return new TimeExp(v);
+	}
+	
+	public StringExp toStringExp(){
+		return StringExp.valueOf(getValue().toXacmlString());
+	}
+	
+	public static BagOfAttributeExp emptyBag(){
+		return XacmlTypes.TIME.emptyBag();
+	}
+	
+	public static BagOfAttributeExp.Builder bag(){
+		return XacmlTypes.TIME.bag();
 	}
 
 	@Override

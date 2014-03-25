@@ -92,8 +92,7 @@ public class AttributeDesignator extends AttributeReference
 				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
 						designatorKey.getAttributeId(), designatorKey.getCategory());
 			}
-			throw new AttributeReferenceEvaluationException(context,
-					designatorKey,
+			throw new AttributeReferenceEvaluationException(designatorKey,
 					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
 					designatorKey.getCategory(),
 					designatorKey.getAttributeId(),

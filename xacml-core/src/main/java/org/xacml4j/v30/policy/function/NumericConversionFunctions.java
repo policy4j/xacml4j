@@ -5,9 +5,7 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 
 
 /**
@@ -23,7 +21,7 @@ public class NumericConversionFunctions
 	public static IntegerExp doubleToInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return IntegerType.INTEGER.create(v.getValue().intValue());
+		return  IntegerExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
@@ -31,6 +29,6 @@ public class NumericConversionFunctions
 	public static DoubleExp integerToDouble(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
 	{
-		return DoubleType.DOUBLE.create(v.getValue().doubleValue());
+		return DoubleExp.valueOf(v.getValue());
 	}
 }

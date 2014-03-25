@@ -3,24 +3,9 @@ package org.xacml4j.v30.marshal.json;
 
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.types.AnyURIType;
-import org.xacml4j.v30.types.Base64BinaryType;
-import org.xacml4j.v30.types.BooleanType;
-import org.xacml4j.v30.types.DNSNameType;
-import org.xacml4j.v30.types.DateTimeType;
-import org.xacml4j.v30.types.DateType;
-import org.xacml4j.v30.types.DayTimeDurationType;
-import org.xacml4j.v30.types.EntityType;
-import org.xacml4j.v30.types.HexBinaryType;
-import org.xacml4j.v30.types.IPAddressType;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.RFC822NameType;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.TimeType;
 import org.xacml4j.v30.types.TypeCapability;
-import org.xacml4j.v30.types.Types;
-import org.xacml4j.v30.types.X500NameType;
-import org.xacml4j.v30.types.YearMonthDurationType;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -28,188 +13,190 @@ import com.google.gson.JsonPrimitive;
 public interface TypeToGSon extends TypeCapability
 {
 	AttributeExpType getType();
-	JsonElement toJson(Types types, AttributeExp v);
-	AttributeExp fromJson(Types types, JsonElement v);
+	JsonElement toJson(AttributeExp v);
+	AttributeExp fromJson(JsonElement v);
 	
 	
 	public enum JsonTypes implements TypeToGSon
 	{
-		ANYURI(AnyURIType.ANYURI){
+		ANYURI(XacmlTypes.ANYURI){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(AnyURIType.ANYURI.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.ANYURI.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return AnyURIType.ANYURI.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.ANYURI.fromString(v.getAsString());
 			}
 		},
-		BASE64BINARY(Base64BinaryType.BASE64BINARY){
+		BASE64BINARY(XacmlTypes.BASE64BINARY){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(Base64BinaryType.BASE64BINARY.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.BASE64BINARY.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return Base64BinaryType.BASE64BINARY.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.BASE64BINARY.fromString(v.getAsString());
 			}
 		},
-		BOOLEAN(BooleanType.BOOLEAN){
+		BOOLEAN(XacmlTypes.BOOLEAN){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(BooleanType.BOOLEAN.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.BOOLEAN.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return BooleanType.BOOLEAN.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.BOOLEAN.fromString(v.getAsString());
 			}
 		},
-		DATE(DateType.DATE){
+		DATE(XacmlTypes.DATE){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(DateType.DATE.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.DATE.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return DateType.DATE.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.DATE.fromString(v.getAsString());
 			}
 		},
-		DATETIME(DateTimeType.DATETIME){
+		DATETIME(XacmlTypes.DATETIME){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(DateTimeType.DATETIME.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.DATETIME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return DateTimeType.DATETIME.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.DATETIME.fromString(v.getAsString());
 			}
 		},
-		DAYTIMEDUARATION(DayTimeDurationType.DAYTIMEDURATION){
+		DAYTIMEDUARATION(XacmlTypes.DAYTIMEDURATION){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(DayTimeDurationType.DAYTIMEDURATION.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.DAYTIMEDURATION.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return DayTimeDurationType.DAYTIMEDURATION.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.DAYTIMEDURATION.fromString(v.getAsString());
 			}
 		},
-		DNSNAME(DNSNameType.DNSNAME){
+		DNSNAME(XacmlTypes.DNSNAME){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(DNSNameType.DNSNAME.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.DNSNAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return DNSNameType.DNSNAME.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.DNSNAME.fromString(v.getAsString());
 			}
 		},
-		HEXBINARY(HexBinaryType.HEXBINARY){
+		HEXBINARY(XacmlTypes.HEXBINARY){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(HexBinaryType.HEXBINARY.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.HEXBINARY.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return HexBinaryType.HEXBINARY.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.HEXBINARY.fromString(v.getAsString());
 			}
 		},
-		INTEGER(IntegerType.INTEGER){
+		INTEGER(XacmlTypes.INTEGER){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(IntegerType.INTEGER.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.INTEGER.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return IntegerType.INTEGER.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.INTEGER.fromString(v.getAsString());
 			}
 		},
-		IPADDRESS(IPAddressType.IPADDRESS){
+		IPADDRESS(XacmlTypes.IPADDRESS){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(IPAddressType.IPADDRESS.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.IPADDRESS.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return IPAddressType.IPADDRESS.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.IPADDRESS.fromString(v.getAsString());
 			}
 		},
-		RFC822NAME(RFC822NameType.RFC822NAME){
+		RFC822NAME(XacmlTypes.RFC822NAME){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(RFC822NameType.RFC822NAME.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.RFC822NAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return RFC822NameType.RFC822NAME.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.RFC822NAME.fromString(v.getAsString());
 			}
 		},
-		STRING(StringType.STRING){
+		STRING(XacmlTypes.STRING){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(StringType.STRING.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.STRING.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return StringType.STRING.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.STRING.fromString(v.getAsString());
 			}
 		},
-		TIME(TimeType.TIME){
+		TIME(XacmlTypes.TIME){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(TimeType.TIME.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.TIME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return TimeType.TIME.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.TIME.fromString(v.getAsString());
 			}
 		},
-		X500NAME(X500NameType.X500NAME){
+		X500NAME(XacmlTypes.X500NAME){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(X500NameType.X500NAME.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.X500NAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return X500NameType.X500NAME.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.X500NAME.fromString(v.getAsString());
 			}
 		},
-		YEARMONTHDURATION(YearMonthDurationType.YEARMONTHDURATION){
+		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
-				return new JsonPrimitive(YearMonthDurationType.YEARMONTHDURATION.toString(v));
+			public JsonElement toJson(AttributeExp v) {
+				return new JsonPrimitive(TypeToString.Types.YEARMONTHDURATION.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
-				return YearMonthDurationType.YEARMONTHDURATION.fromString(v.getAsString());
+			public AttributeExp fromJson(JsonElement v) {
+				return TypeToString.Types.YEARMONTHDURATION.fromString(v.getAsString());
 			}
 		},
-		ENTITY(EntityType.ENTITY){
+		ENTITY(XacmlTypes.ENTITY){
 			@Override
-			public JsonElement toJson(Types types, AttributeExp v) {
+			public JsonElement toJson(AttributeExp v) {
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public AttributeExp fromJson(Types types, JsonElement v) {
+			public AttributeExp fromJson(JsonElement v) {
 				throw new UnsupportedOperationException();
 			}
 		};
+	
+		private final static Index<TypeToGSon> INDEX = Index.<TypeToGSon>build(values());
 		
 		private AttributeExpType type;
 		
@@ -219,6 +206,10 @@ public interface TypeToGSon extends TypeCapability
 		
 		public AttributeExpType getType(){
 			return type;
+		}
+		
+		public final static Index<TypeToGSon> getIndex(){
+			return INDEX;
 		}
 	}
 }

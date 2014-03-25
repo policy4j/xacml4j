@@ -37,10 +37,9 @@ import org.xacml4j.v30.StatusCodeIds;
 import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.TypeToXacml30;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.StringExp;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 public class Xacml20ResponseContextUnmarshaller
@@ -49,16 +48,9 @@ implements ResponseUnmarshaller
 {
 	private Mapper mapper;
 	
-	public Xacml20ResponseContextUnmarshaller(Types dataTypes){
-		super(JAXBContextUtil.getInstance());
-		Preconditions.checkNotNull(dataTypes);
-		this.mapper = new Mapper(dataTypes);
-	}
-
 	public Xacml20ResponseContextUnmarshaller(){
-		this(Types.builder()
-				.defaultTypes()
-				.create());
+		super(JAXBContextUtil.getInstance());
+		this.mapper = new Mapper();
 	}
 
 	@Override
@@ -80,8 +72,6 @@ implements ResponseUnmarshaller
 		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
 		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
 
-		private Types dataTypes;
-
 		static
 		{
 			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
@@ -101,11 +91,6 @@ implements ResponseUnmarshaller
 			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
 			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
 
-		}
-
-		public Mapper(Types dataTypes){
-			Preconditions.checkNotNull(dataTypes);
-			this.dataTypes = dataTypes;
 		}
 
 		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
@@ -137,7 +122,7 @@ implements ResponseUnmarshaller
 								.attribute(
 								Attribute
 								.builder(RESOURCE_ID)
-								.value(StringType.STRING.create(result.getResourceId()))
+								.value(StringExp.valueOf(result.getResourceId()))
 								.build()).build())
 						.build());
 			}
@@ -200,8 +185,9 @@ implements ResponseUnmarshaller
 			va.setDataType(dataType);
 			va.getOtherAttributes().putAll(attr);
 			va.getContent().addAll(content);
-			TypeToXacml30 toXacml30 = dataTypes.getCapability(dataType, TypeToXacml30.class);
-			return toXacml30.fromXacml30(dataTypes, va);
+			Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(dataType);
+			Preconditions.checkState(toXacml30.isPresent());
+			return toXacml30.get().fromXacml30(va);
 		}
 	}
 }

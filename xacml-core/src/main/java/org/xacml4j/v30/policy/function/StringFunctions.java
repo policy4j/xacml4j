@@ -7,32 +7,19 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.AnyURIType;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.DNSNameType;
 import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.DateTimeType;
-import org.xacml4j.v30.types.DateType;
 import org.xacml4j.v30.types.DayTimeDurationExp;
-import org.xacml4j.v30.types.DayTimeDurationType;
 import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.IPAddressExp;
-import org.xacml4j.v30.types.IPAddressType;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.RFC822NameType;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.TimeExp;
-import org.xacml4j.v30.types.TimeType;
 import org.xacml4j.v30.types.X500NameExp;
-import org.xacml4j.v30.types.X500NameType;
 import org.xacml4j.v30.types.YearMonthDurationExp;
-import org.xacml4j.v30.types.YearMonthDurationType;
 
 
 @XacmlFunctionProvider(description="XACML string functions")
@@ -44,8 +31,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		StringBuilder buf = new StringBuilder();
-		return new StringExp(buf.append(a).append(b).toString());
+		return a.concat(b);
 	}
 
 	@Deprecated
@@ -55,8 +41,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		StringBuilder buf = new StringBuilder();
-		return new StringExp(buf.append(AnyURIType.ANYURI.toString(a)).append(b).toString());
+		return a.toStringExp().concat(b);
 	}
 
 
@@ -76,7 +61,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		return BooleanExp.create(AnyURIType.ANYURI.toString(a).startsWith(b.getValue()));
+		return BooleanExp.valueOf(a.toStringExp().startsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
@@ -85,7 +70,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		return BooleanExp.create(a.getValue().endsWith(b.getValue()));
+		return BooleanExp.valueOf(a.endsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
@@ -94,7 +79,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		return BooleanExp.create(AnyURIType.ANYURI.toString(a).endsWith(b.getValue()));
+		return BooleanExp.valueOf(a.toStringExp().endsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
@@ -103,7 +88,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		return BooleanExp.create(a.getValue().contains(b.getValue()));
+		return BooleanExp.valueOf(a.contains(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
@@ -112,7 +97,7 @@ public class StringFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
 	{
-		return BooleanExp.create(AnyURIType.ANYURI.toString(a).contains(b.getValue()));
+		return BooleanExp.create(a.toStringExp().contains(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
@@ -121,7 +106,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp v)
 	{
-		return new StringExp(BooleanType.BOOLEAN.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
@@ -130,7 +115,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return BooleanType.BOOLEAN.fromString(v.getValue());
+		return BooleanExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")
@@ -139,7 +124,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
 	{
-		return new StringExp(IntegerType.INTEGER.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:integer-from-string")
@@ -148,7 +133,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return IntegerType.INTEGER.fromString(v.getValue());
+		return IntegerExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
@@ -157,7 +142,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return new StringExp(DoubleType.DOUBLE.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:double-from-string")
@@ -166,7 +151,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return DoubleType.DOUBLE.fromString(v.getValue());
+		return DoubleExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
@@ -175,7 +160,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeExp v)
 	{
-		return new StringExp(TimeType.TIME.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-from-string")
@@ -184,7 +169,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return TimeType.TIME.fromString(v.getValue());
+		return TimeExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
@@ -193,7 +178,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateExp v)
 	{
-		return new StringExp(DateType.DATE.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-from-string")
@@ -202,7 +187,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return DateType.DATE.fromString(v.getValue());
+		return DateExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dateTime")
@@ -211,7 +196,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeExp v)
 	{
-		return new StringExp(DateTimeType.DATETIME.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-from-string")
@@ -220,7 +205,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return DateTimeType.DATETIME.fromString(v.getValue());
+		return DateTimeExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
@@ -229,7 +214,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp v)
 	{
-		return new StringExp(AnyURIType.ANYURI.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-from-string")
@@ -238,7 +223,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return AnyURIType.ANYURI.fromString(v.getValue());
+		return AnyURIExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")
@@ -247,7 +232,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationExp v)
 	{
-		return new StringExp(DayTimeDurationType.DAYTIMEDURATION.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-from-string")
@@ -256,7 +241,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return DayTimeDurationType.DAYTIMEDURATION.fromString(v.getValue());
+		return DayTimeDurationExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")
@@ -265,7 +250,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationExp v)
 	{
-		return new StringExp(YearMonthDurationType.YEARMONTHDURATION.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-from-string")
@@ -274,7 +259,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return YearMonthDurationType.YEARMONTHDURATION.fromString(v.getValue());
+		return YearMonthDurationExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")
@@ -283,7 +268,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp v)
 	{
-		return new StringExp(X500NameType.X500NAME.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:x500Name-from-string")
@@ -292,7 +277,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return X500NameType.X500NAME.fromString(v.getValue());
+		return X500NameExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")
@@ -301,7 +286,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp v)
 	{
-		return new StringExp(RFC822NameType.RFC822NAME.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:rfc822Name-from-string")
@@ -310,7 +295,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return RFC822NameType.RFC822NAME.fromString(v.getValue());
+		return RFC822NameExp.valueOf(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-ipAddress")
@@ -319,7 +304,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp v)
 	{
-		return new StringExp(IPAddressType.IPADDRESS.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:ipAddress-from-string")
@@ -328,7 +313,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return IPAddressType.IPADDRESS.fromString(v.getValue());
+		return IPAddressExp.valueOf(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")
@@ -337,7 +322,7 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp v)
 	{
-		return new StringExp(DNSNameType.DNSNAME.toString(v));
+		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dnsName-from-string")
@@ -346,6 +331,6 @@ public class StringFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
 	{
-		return DNSNameType.DNSNAME.create(v.getValue());
+		return DNSNameExp.valueOf(v);
 	}
 }

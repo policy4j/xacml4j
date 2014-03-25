@@ -30,22 +30,22 @@ public class BinaryValue implements Serializable
 		System.arraycopy(b, srcPos, value, 0, length);
 	}
 
-	public static BinaryValue fromBytes(byte[] data){
+	public static BinaryValue valueOf(byte[] data){
 		Preconditions.checkNotNull(data);
 		return new BinaryValue(data);
 	}
 
-	public static BinaryValue fromBytes(byte[] data, int srcPos, int length){
+	public static BinaryValue valueOf(byte[] data, int srcPos, int length){
 		return new BinaryValue(data, srcPos, length);
 	}
 
-	public static BinaryValue fromHexEncoded(String v){
+	public static BinaryValue valueOfHexEnc(String v){
 		Preconditions.checkNotNull(v);
 		byte[] bin = hexToBin(v);
 		return new BinaryValue(bin);
 	}
 
-	public static BinaryValue fromBase64Encoded(String v){
+	public static BinaryValue valueOfBase64Enc(String v){
 		Preconditions.checkNotNull(v);
 		try{
 			byte[] bin = Base64.decode(v);

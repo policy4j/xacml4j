@@ -18,14 +18,13 @@ import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.spi.xpath.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -52,12 +51,12 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR,
-				XPathExpType.XPATHEXPRESSION)){
+				XacmlTypes.XPATH)){
 			if(log.isDebugEnabled()){
 				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
 						"passing request to next handler",
 						MULTIPLE_CONTENT_SELECTOR,
-						XPathExpType.XPATHEXPRESSION);
+						XacmlTypes.XPATH);
 			}
 			return handleNext(request, context);
 		}
@@ -94,7 +93,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	{
 		Entity entity = attribute.getEntity();
 		Collection<AttributeExp> values = entity.getAttributeValues(MULTIPLE_CONTENT_SELECTOR,
-				XPathExpType.XPATHEXPRESSION);
+				XacmlTypes.XPATH);
 		if(values.isEmpty()){
 			return ImmutableSet.of(attribute);
 		}
@@ -109,8 +108,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		try
 		{
-			XPathVersion version = request.getRequestDefaults().getXPathVersion();
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(version, selector.getPath(), content);
+			NodeList nodeSet = xpathProvider.evaluateToNodeSet(selector.getPath(), content);
 			Set<Attributes> attributes = new LinkedHashSet<Attributes>();
 			for(int i = 0; i < nodeSet.getLength(); i++){
 				String xpath = DOMUtil.getXPath(nodeSet.item(i));
@@ -138,7 +136,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 						Attribute.builder(CONTENT_SELECTOR)
 						.issuer(a.getIssuer())
 						.includeInResult(a.isIncludeInResult())
-						.value(XPathExpType.XPATHEXPRESSION.create(xpath, attributes.getCategory()))
+						.value(XPathExp.valueOf(xpath, attributes.getCategory()))
 						.build();
 				newAttributes.add(selectorAttr);
 				continue;

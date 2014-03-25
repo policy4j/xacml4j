@@ -56,7 +56,8 @@ public abstract class BaseCalendar <T extends BaseCalendar<?>>
 		XMLGregorianCalendar c = null;
 		if(GregorianCalendar.class.isInstance(v)){
 			c = df.newXMLGregorianCalendar((GregorianCalendar)v);
-			c = df.newXMLGregorianCalendarDate(c.getYear(),
+			c = df.newXMLGregorianCalendarDate(
+					c.getYear(),
 					c.getMonth(),
 					c.getDay(),
 					c.getTimezone());

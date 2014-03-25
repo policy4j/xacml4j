@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XPathExpType;
 
 
 public class Xacml20XPathTo30Transformer
@@ -19,8 +18,8 @@ public class Xacml20XPathTo30Transformer
 
 	public static XPathExp fromXacml20String(StringExp path)
 	{
-		XPathExp xpathExp = XPathExpType.XPATHEXPRESSION.create(
-				transform20PathTo30(path.getValue()), AttributeCategories.RESOURCE);
+		XPathExp xpathExp = XPathExp.valueOf(transform20PathTo30(path.getValue()), 
+				AttributeCategories.RESOURCE);
 		return xpathExp;
 	}
 

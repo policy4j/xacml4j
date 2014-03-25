@@ -22,7 +22,6 @@ import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicyVisitorSupport;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.Types;
 
 import com.google.common.base.Preconditions;
 
@@ -46,7 +45,6 @@ public abstract class AbstractPolicyRepository
 
 	protected AbstractPolicyRepository(
 			String id,
-			Types types,
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 		throws Exception
@@ -58,7 +56,7 @@ public abstract class AbstractPolicyRepository
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
-		this.unmarshaller = new XacmlPolicyUnmarshaller(types, functions, decisionAlgorithms);
+		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
 	}
 
 	@Override

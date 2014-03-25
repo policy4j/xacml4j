@@ -9,8 +9,7 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
@@ -23,13 +22,13 @@ public class AttributeSetTest
 	public void init(){
 		this.noIssuer = AttributeResolverDescriptorBuilder.builder(
 				"id", "name", null, AttributeCategories.SUBJECT_ACCESS)
-				.attribute("testId1", IntegerType.INTEGER)
-				.attribute("testId2", StringType.STRING)
+				.attribute("testId1", XacmlTypes.INTEGER)
+				.attribute("testId2", XacmlTypes.STRING)
 				.build();
 		this.withIssuer = AttributeResolverDescriptorBuilder.builder(
 				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
-				.attribute("testId1", IntegerType.INTEGER)
-				.attribute("testId2", StringType.STRING)
+				.attribute("testId1", XacmlTypes.INTEGER)
+				.attribute("testId2", XacmlTypes.STRING)
 				.build();
 		assertEquals("issuer", withIssuer.getIssuer());
 	}
@@ -42,7 +41,7 @@ public class AttributeSetTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
-				.dataType(IntegerType.INTEGER)
+				.dataType(XacmlTypes.INTEGER)
 				.issuer("issuer");
 
 		AttributeDesignatorKey.Builder key1 =
@@ -51,7 +50,7 @@ public class AttributeSetTest
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId2")
 				.issuer("issuer")
-				.dataType(StringType.STRING);
+				.dataType(XacmlTypes.STRING);
 
 		AttributeSet v = AttributeSet
 				.builder(withIssuer)
@@ -61,12 +60,12 @@ public class AttributeSetTest
 		BagOfAttributeExp v1 = v.get(key.build());
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
-		assertEquals(IntegerType.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
 
 		BagOfAttributeExp v2 = v.get(key.build());
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
-		assertEquals(IntegerType.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
 
 		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
 		assertEquals(key.build(), Iterables.get(keys, 0));
@@ -81,7 +80,7 @@ public class AttributeSetTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_ACCESS)
 				.attributeId("testId1")
-				.dataType(IntegerType.INTEGER);
+				.dataType(XacmlTypes.INTEGER);
 
 		AttributeSet v = AttributeSet
 				.builder(noIssuer)
@@ -91,7 +90,7 @@ public class AttributeSetTest
 		BagOfAttributeExp v1 = v.get(key.build());
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
-		assertEquals(IntegerType.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
 	}
 
 	@Test

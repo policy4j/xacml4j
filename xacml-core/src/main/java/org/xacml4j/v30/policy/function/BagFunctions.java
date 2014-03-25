@@ -8,37 +8,22 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.AnyURIType;
 import org.xacml4j.v30.types.Base64BinaryExp;
-import org.xacml4j.v30.types.Base64BinaryType;
 import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.BooleanType;
 import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.DNSNameType;
 import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.DateTimeType;
-import org.xacml4j.v30.types.DateType;
 import org.xacml4j.v30.types.DayTimeDurationExp;
-import org.xacml4j.v30.types.DayTimeDurationType;
 import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.HexBinaryExp;
-import org.xacml4j.v30.types.HexBinaryType;
 import org.xacml4j.v30.types.IPAddressExp;
-import org.xacml4j.v30.types.IPAddressType;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.RFC822NameType;
 import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.StringType;
 import org.xacml4j.v30.types.TimeExp;
-import org.xacml4j.v30.types.TimeType;
 import org.xacml4j.v30.types.X500NameExp;
-import org.xacml4j.v30.types.X500NameType;
+import org.xacml4j.v30.types.XacmlTypes;
 import org.xacml4j.v30.types.YearMonthDurationExp;
-import org.xacml4j.v30.types.YearMonthDurationType;
 
 import com.google.common.base.Preconditions;
 
@@ -96,18 +81,18 @@ public class BagFunctions
 	}
 
 	static IntegerExp typeBagSizeImpl(BagOfAttributeExp bag) {
-		return IntegerType.INTEGER.create(bag.size());
+		return IntegerExp.valueOf(bag.size());
 	}
 
 	static BooleanExp containsImpl(AttributeExp v,
 			BagOfAttributeExp bag){
 
-		return BooleanType.BOOLEAN.create(bag.contains(v));
+		return BooleanExp.valueOf(bag.contains(v));
 	}
 
 	static BooleanExp isEmpty(BagOfAttributeExp bag){
 
-		return BooleanType.BOOLEAN.create(bag.isEmpty());
+		return BooleanExp.valueOf(bag.isEmpty());
 	}
 
 	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:string-bag-is-empty")
@@ -150,7 +135,7 @@ public class BagFunctions
 	public static BagOfAttributeExp stringBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#string")
 			StringExp ...values){
-		return StringType.STRING.bagOf(values);
+		return XacmlTypes.STRING.bagOf(values);
 	}
 
 	// boolean
@@ -185,7 +170,7 @@ public class BagFunctions
 	public static BagOfAttributeExp booleanBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#boolean")
 			BooleanExp ...values){
-		return BooleanType.BOOLEAN.bagOf(values);
+		return XacmlTypes.BOOLEAN.bagOf(values);
 	}
 
 	// integer
@@ -220,7 +205,7 @@ public class BagFunctions
 	public static BagOfAttributeExp integerBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#integer")
 			IntegerExp ...values){
-		return IntegerType.INTEGER.bagOf(values);
+		return XacmlTypes.INTEGER.bagOf(values);
 	}
 
 	// time
@@ -255,7 +240,7 @@ public class BagFunctions
 	public static BagOfAttributeExp timeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#time")
 			TimeExp ...values){
-		return TimeType.TIME.bagOf(values);
+		return XacmlTypes.TIME.bagOf(values);
 	}
 
 	// double
@@ -290,7 +275,7 @@ public class BagFunctions
 	public static BagOfAttributeExp doubleBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#double")
 			DoubleExp ...values){
-		return DoubleType.DOUBLE.bagOf(values);
+		return XacmlTypes.DOUBLE.bagOf(values);
 	}
 
 	// date
@@ -325,7 +310,7 @@ public class BagFunctions
 	public static BagOfAttributeExp dateBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#date")
 			DateExp ...values){
-		return DateType.DATE.bagOf(values);
+		return XacmlTypes.DATE.bagOf(values);
 	}
 
 	// dateTime
@@ -360,7 +345,7 @@ public class BagFunctions
 	public static BagOfAttributeExp dateTimeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 			DateTimeExp ...values){
-		return DateTimeType.DATETIME.bagOf(values);
+		return XacmlTypes.DATETIME.bagOf(values);
 	}
 
 	// anyURI
@@ -395,7 +380,7 @@ public class BagFunctions
 	public static BagOfAttributeExp anyURIBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#anyURI")
 			AnyURIExp ...values){
-		return AnyURIType.ANYURI.bagOf(values);
+		return XacmlTypes.ANYURI.bagOf(values);
 	}
 
 	// hexBinary
@@ -430,7 +415,7 @@ public class BagFunctions
 	public static BagOfAttributeExp hexBinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#hexBinary")
 			HexBinaryExp ...values){
-		return HexBinaryType.HEXBINARY.bagOf(values);
+		return XacmlTypes.HEXBINARY.bagOf(values);
 	}
 
 	// base64Binary
@@ -465,7 +450,7 @@ public class BagFunctions
 	public static BagOfAttributeExp base64BinaryBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#base64Binary")
 			Base64BinaryExp ...values){
-		return Base64BinaryType.BASE64BINARY.bagOf(values);
+		return XacmlTypes.BASE64BINARY.bagOf(values);
 	}
 
 	// dayTimeDuration
@@ -500,7 +485,7 @@ public class BagFunctions
 	public static BagOfAttributeExp dayTimeDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
 			DayTimeDurationExp ...values){
-		return DayTimeDurationType.DAYTIMEDURATION.bagOf(values);
+		return XacmlTypes.DAYTIMEDURATION.bagOf(values);
 	}
 
 	// yearMonthDuration
@@ -538,7 +523,7 @@ public class BagFunctions
 	public static BagOfAttributeExp yearMonthDurationBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
 			YearMonthDurationExp ...values){
-		return YearMonthDurationType.YEARMONTHDURATION.bagOf(values);
+		return XacmlTypes.YEARMONTHDURATION.bagOf(values);
 	}
 
 	// x500Name
@@ -576,7 +561,7 @@ public class BagFunctions
 	public static BagOfAttributeExp x500NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
 			X500NameExp ...values){
-		return X500NameType.X500NAME.bagOf(values);
+		return XacmlTypes.X500NAME.bagOf(values);
 	}
 
 	// rfc822Name
@@ -614,7 +599,7 @@ public class BagFunctions
 	public static BagOfAttributeExp rfc822NameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
 			RFC822NameExp ...values){
-		return RFC822NameType.RFC822NAME.bagOf(values);
+		return XacmlTypes.RFC822NAME.bagOf(values);
 	}
 
 	// ipAddress
@@ -652,7 +637,7 @@ public class BagFunctions
 	public static BagOfAttributeExp ipAddressBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
 			IPAddressExp ...values){
-		return IPAddressType.IPADDRESS.bagOf(values);
+		return XacmlTypes.IPADDRESS.bagOf(values);
 	}
 
 	// dnsName
@@ -690,6 +675,6 @@ public class BagFunctions
 	public static BagOfAttributeExp dnsNameBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
 			DNSNameExp ...values){
-		return DNSNameType.DNSNAME.bagOf(values);
+		return XacmlTypes.DNSNAME.bagOf(values);
 	}
 }

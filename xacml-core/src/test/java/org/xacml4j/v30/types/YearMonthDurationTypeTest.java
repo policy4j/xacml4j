@@ -1,7 +1,6 @@
 package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.v30.types.YearMonthDurationType.YEARMONTHDURATION;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -23,9 +22,9 @@ public class YearMonthDurationTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		YearMonthDurationExp v1 = YEARMONTHDURATION.fromString("-P1Y2M");
-		YearMonthDurationExp v2 = YEARMONTHDURATION.fromString("-P1Y2M");
-		assertEquals("-P1Y2M", YEARMONTHDURATION.toString(v1));
+		YearMonthDurationExp v1 = YearMonthDurationExp.valueOf("-P1Y2M");
+		YearMonthDurationExp v2 = YearMonthDurationExp.valueOf("-P1Y2M");
+		assertEquals("-P1Y2M", v1.toStringExp().getValue());
 		assertEquals(v1, v2);
 	}
 
@@ -33,8 +32,8 @@ public class YearMonthDurationTypeTest
 	public void createFromJavaDuration()
 	{
 		Duration d = df.newDuration("-P1Y2M");
-		YearMonthDurationExp v1 = YearMonthDurationType.YEARMONTHDURATION.create(d);
-		YearMonthDurationExp v2 = YearMonthDurationType.YEARMONTHDURATION.fromString("-P1Y2M");
+		YearMonthDurationExp v1 = YearMonthDurationExp.valueOf(d);
+		YearMonthDurationExp v2 = YearMonthDurationExp.valueOf("-P1Y2M");
 		assertEquals(v1, v2);
 	}
 
@@ -42,8 +41,8 @@ public class YearMonthDurationTypeTest
 	public void createFromXacmlDuration()
 	{
 		YearMonthDuration d = new YearMonthDuration(df.newDuration("-P1Y2M"));
-		YearMonthDurationExp v1 = YearMonthDurationType.YEARMONTHDURATION.create(d);
-		YearMonthDurationExp v2 = YearMonthDurationType.YEARMONTHDURATION.fromString("-P1Y2M");
+		YearMonthDurationExp v1 = YearMonthDurationExp.valueOf(d);
+		YearMonthDurationExp v2 = YearMonthDurationExp.valueOf("-P1Y2M");
 		assertEquals(v1, v2);
 	}
 }

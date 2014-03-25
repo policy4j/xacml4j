@@ -47,7 +47,7 @@ public abstract class BaseAttributeExp<T>
 	public final T getValue(){
 		return value;
 	}
-
+	
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).

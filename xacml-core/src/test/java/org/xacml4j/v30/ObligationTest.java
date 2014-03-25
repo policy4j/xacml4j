@@ -6,7 +6,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.xacml4j.v30.types.IntegerType;
+import org.xacml4j.v30.types.IntegerExp;
 
 /**
  * @author Valdas Sevelis
@@ -22,19 +22,19 @@ public class ObligationTest {
 				.builder()
 				.category(AttributeCategories.ACTION)
 				.id("actionId1")
-				.value(IntegerType.INTEGER.create(1))
+				.value(IntegerExp.valueOf(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
 				.category(AttributeCategories.ACTION)
 				.id("actionId1")
-				.value(IntegerType.INTEGER.create(2))
+				.value(IntegerExp.valueOf(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
 				.category(AttributeCategories.ACTION)
 				.id("actionId1")
-				.value(IntegerType.INTEGER.create(3))
+				.value(IntegerExp.valueOf(3))
 				.build();
 
 		o1 = Obligation.builder("id1").attribute(attr1).attribute(attr2).build();

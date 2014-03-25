@@ -15,11 +15,10 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	private AttributeReferenceKey ref;
 
 	public AttributeReferenceEvaluationException(
-			EvaluationContext context,
 			AttributeReferenceKey ref,
 			String message, Object ...params){
 		super(StatusCode.createMissingAttributeError(),
-				context, message, params);
+				message, params);
 		this.ref = ref;
 	}
 
@@ -28,7 +27,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 			EvaluationContext context,
 			AttributeReferenceKey ref,
 			String message, Object ...params){
-		super(statusCode, context, message, params);
+		super(statusCode, message, params);
 		Preconditions.checkNotNull(ref);
 		this.ref = ref;
 	}
@@ -38,8 +37,8 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 			AttributeReferenceKey ref,
 			StatusCode code,
 			Throwable cause){
-		super(code,
-				context, cause);
+		super(code, 
+				cause);
 		this.ref = ref;
 	}
 

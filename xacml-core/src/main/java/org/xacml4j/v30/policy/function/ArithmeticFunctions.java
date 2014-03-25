@@ -6,9 +6,7 @@ import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.DoubleType;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
 
 import com.google.common.base.Preconditions;
 
@@ -45,7 +43,7 @@ public class ArithmeticFunctions
 		for(IntegerExp v : values){
 			sum += v.getValue();
 		}
-		return IntegerType.INTEGER.create(sum);
+		return IntegerExp.valueOf(sum);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
@@ -58,7 +56,7 @@ public class ArithmeticFunctions
 		for(IntegerExp v : values){
 			value *= v.getValue();
 		}
-		return IntegerType.INTEGER.create(value);
+		return IntegerExp.valueOf(value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
@@ -71,7 +69,7 @@ public class ArithmeticFunctions
 		for(DoubleExp v : values){
 			sum += v.getValue();
 		}
-		return DoubleType.DOUBLE.create(sum);
+		return DoubleExp.valueOf(sum);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
@@ -84,7 +82,7 @@ public class ArithmeticFunctions
 		for(DoubleExp v : values){
 			value *= v.getValue();
 		}
-		return DoubleType.DOUBLE.create(value);
+		return DoubleExp.valueOf(value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
@@ -92,7 +90,7 @@ public class ArithmeticFunctions
 	public static IntegerExp abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
 	{
-		return IntegerType.INTEGER.create(Math.abs(v.getValue()));
+		return IntegerExp.valueOf(Math.abs(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
@@ -100,7 +98,7 @@ public class ArithmeticFunctions
 	public static DoubleExp abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleType.DOUBLE.create(Math.abs(v.getValue()));
+		return DoubleExp.valueOf(Math.abs(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
@@ -108,7 +106,7 @@ public class ArithmeticFunctions
 	public static DoubleExp floor(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleType.DOUBLE.create(Math.floor(v.getValue()));
+		return DoubleExp.valueOf(Math.floor(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
@@ -116,7 +114,7 @@ public class ArithmeticFunctions
 	public static DoubleExp round(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleType.DOUBLE.create(Math.round(v.getValue()));
+		return DoubleExp.valueOf(Math.round(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")
@@ -125,7 +123,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return DoubleType.DOUBLE.create(a.getValue() - b.getValue());
+		return a.substract(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
@@ -135,7 +133,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return DoubleType.DOUBLE.create(a.getValue()/b.getValue());
+		return a.divide(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
@@ -145,7 +143,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
 		Preconditions.checkArgument(b.getValue() != 0);
-		return DoubleType.DOUBLE.create(a.getValue()/b.getValue());
+		return a.divide(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
@@ -154,8 +152,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		Preconditions.checkArgument(b.getValue() != 0);
-		return IntegerType.INTEGER.create(a.getValue() % b.getValue());
+		return a.mod(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
@@ -164,6 +161,6 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return IntegerType.INTEGER.create(a.getValue() - b.getValue());
+		return a.substract(b);
 	}
 }

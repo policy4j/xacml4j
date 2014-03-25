@@ -21,8 +21,8 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
@@ -87,7 +87,7 @@ public class PolicyTest
 
 		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
 		this.handler = c.createMock(EvaluationContextHandler.class);
-		this.context = new RootEvaluationContext(Types.builder().defaultTypes().create(), true, 0, referenceResolver, handler);
+		this.context = new RootEvaluationContext(true, 0, referenceResolver, handler);
 	}
 
 	@Test
@@ -230,8 +230,8 @@ public class PolicyTest
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 
-		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
-		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
+		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
+		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
@@ -255,8 +255,8 @@ public class PolicyTest
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
-		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
-		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringType.STRING.create("testValue1"));
+		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
+		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));

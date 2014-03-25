@@ -25,8 +25,7 @@ import org.xacml4j.v30.ResourceAttributes;
 import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.types.StringType;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.StringExp;
 import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
@@ -36,14 +35,11 @@ public class JsonRequestUnmarshallerTest {
 
 	private Unmarshaller<RequestContext> unmarshaller;
 	private Marshaller<RequestContext> marshaller;
-
-	private Types types;
-
+	
 	@Before
 	public void init() {
-		types = Types.builder().defaultTypes().create();
-		unmarshaller = new JsonRequestContextUnmarshaller(types);
-		marshaller = new JsonRequestContextMarshaller(types);
+		unmarshaller = new JsonRequestContextUnmarshaller();
+		marshaller = new JsonRequestContextMarshaller();
 	}
 
 	@Test
@@ -69,12 +65,12 @@ public class JsonRequestUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringType.STRING.create(
+										.value(StringExp.valueOf(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringType.STRING.create("TestDomain")).build()))
+										.value(StringExp.valueOf("TestDomain")).build()))
 						.build())
 				.build();
 		Attributes resourceAttributes = Attributes
@@ -84,7 +80,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true).value(StringType.STRING.create("testResourceId")).build())).build())
+								.includeInResult(true).value(StringExp.valueOf("testResourceId")).build())).build())
 						.build();
 		Attributes actionAttributes = Attributes
 				.builder(AttributeCategories.ACTION)
@@ -92,7 +88,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(StringType.STRING.create("VIEW")).build())).build())
+								.includeInResult(false).value(StringExp.valueOf("VIEW")).build())).build())
 				.build();
 		Attributes environmentAttributes = Attributes
 				.builder(AttributeCategories.ENVIRONMENT)
@@ -101,7 +97,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false).value(StringType.STRING.create("json\\-\"test\"")).build()))
+								.includeInResult(false).value(StringExp.valueOf("json\\-\"test\"")).build()))
 						.build())
 				.build();
 		Attributes subjectIntermAttributes = Attributes
@@ -112,7 +108,7 @@ public class JsonRequestUnmarshallerTest {
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
-								.value(StringType.STRING.create("koks oras paryziuj?")).build()))
+								.value(StringExp.valueOf("koks oras paryziuj?")).build()))
 						.build())
 				.build();
 

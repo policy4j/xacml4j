@@ -8,7 +8,7 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.types.Types;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 
@@ -17,7 +17,6 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	private String id;
 	private Resource[] resources;
 	private FunctionProvider extensionFuctions;
-	private Types types;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 
 	public InMemoryPolicyRepositoryFactoryBean(String id){
@@ -39,10 +38,6 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		this.extensionDecisionCombiningAlgorithms = algorithms;
 	}
 	
-	public void setTypes(Types types){
-		this.types = types;
-	}
-
 	public void setPolicies(Resource[] policies){
 		this.resources = policies;
 	}
@@ -61,12 +56,9 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		if(extensionDecisionCombiningAlgorithms != null){
 			decisionAlgorithmProviderBuilder.withAlgorithmProvider(extensionDecisionCombiningAlgorithms);
 		}
-		if(types == null){
-			this.types = Types.builder().defaultTypes().create();
-		}
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				id, types, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.create());
+				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.create());
 		for(Resource r : resources){
 			repository.importPolicy(r.getInputStream());
 		}

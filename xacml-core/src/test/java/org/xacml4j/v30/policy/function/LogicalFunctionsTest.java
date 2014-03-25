@@ -17,10 +17,8 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.BooleanType;
+import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.IntegerType;
-import org.xacml4j.v30.types.Types;
 
 
 public class LogicalFunctionsTest
@@ -40,8 +38,7 @@ public class LogicalFunctionsTest
 	{
 		this.control = createControl();
 		
-		this.f = new AnnotiationBasedFunctionProvider(
-				Types.builder().defaultTypes().create(), LogicalFunctions.class);
+		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
@@ -53,26 +50,26 @@ public class LogicalFunctionsTest
 	public void testAndFunction() throws EvaluationException
 	{
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.and(context, BooleanExp.valueOf(false), BooleanExp.valueOf(false)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.and(context, BooleanExp.valueOf(true), BooleanExp.valueOf(false)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(true),
-				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
+		assertEquals(BooleanExp.valueOf(true),
+				LogicalFunctions.and(context, BooleanExp.valueOf(true), BooleanExp.valueOf(true)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.and(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.and(context, BooleanExp.valueOf(false), BooleanExp.valueOf(true)));
 		control.verify();
 	}
 
@@ -83,29 +80,29 @@ public class LogicalFunctionsTest
 		Expression p2 = control.createMock(Expression.class);
 		Expression p3 = control.createMock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(false),
+		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
-		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(true));
+		expect(p2.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(false),
+		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
-		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
-		expect(p3.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(true));
+		expect(p2.evaluate(context)).andReturn(BooleanExp.valueOf(true));
+		expect(p3.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(false),
+		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
@@ -115,23 +112,24 @@ public class LogicalFunctionsTest
 	public void testOrFunction() throws EvaluationException
 	{
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.or(context, BooleanExp.valueOf(false), 
+						BooleanExp.valueOf(false)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(true),
-				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(true),
+				LogicalFunctions.or(context, BooleanExp.valueOf(true), BooleanExp.valueOf(false)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(true),
-				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
+		assertEquals(BooleanExp.valueOf(true),
+				LogicalFunctions.or(context, BooleanExp.valueOf(true), BooleanExp.valueOf(true)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(BooleanType.BOOLEAN.create(true),
-				LogicalFunctions.or(context, BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+		assertEquals(BooleanExp.valueOf(true),
+				LogicalFunctions.or(context,BooleanExp.valueOf(false), BooleanExp.valueOf(true)));
 		verify(context);
 	}
 
@@ -142,28 +140,28 @@ public class LogicalFunctionsTest
 		Expression p2 = control.createMock(Expression.class);
 		Expression p3 = control.createMock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(true));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(true),
+		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.or(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
-		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(true));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(false));
+		expect(p2.evaluate(context)).andReturn(BooleanExp.valueOf(true));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(true),
+		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.or(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
-		expect(p2.evaluate(context)).andReturn(BooleanType.BOOLEAN.create(false));
+		expect(p1.evaluate(context)).andReturn(BooleanExp.valueOf(false));
+		expect(p2.evaluate(context)).andReturn(BooleanExp.valueOf(false));
 		control.replay();
 
-		assertEquals(BooleanType.BOOLEAN.create(false),
+		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.or(context, p1, p2));
 		control.verify();
 
@@ -172,51 +170,53 @@ public class LogicalFunctionsTest
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerExp n = IntegerType.INTEGER.create(0);
+		IntegerExp n = IntegerExp.valueOf(0);
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(true),
+		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.INTEGER.create(1);
-		assertEquals(BooleanType.BOOLEAN.create(true),
-				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(true)));
+		n = IntegerExp.valueOf(1);
+		assertEquals(BooleanExp.valueOf(true),
+				LogicalFunctions.nof(context, n, BooleanExp.valueOf(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.nof(context, n, BooleanExp.valueOf(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.INTEGER.create(2);
-		assertEquals(BooleanType.BOOLEAN.create(true),
+		n = IntegerExp.valueOf(2);
+		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n,
-						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(true)));
+						BooleanExp.valueOf(true), BooleanExp.valueOf(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(false),
+		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.nof(context, n,
-						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false)));
+						BooleanExp.valueOf(true), BooleanExp.valueOf(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerType.INTEGER.create(2);
-		assertEquals(BooleanType.BOOLEAN.create(true),
+		n = IntegerExp.valueOf(2);
+		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n,
-						BooleanType.BOOLEAN.create(true), BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+						BooleanExp.valueOf(true), 
+						BooleanExp.valueOf(false), 
+						BooleanExp.valueOf(true)));
 		verify(context);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerExp n = IntegerType.INTEGER.create(4);
+		IntegerExp n = IntegerExp.valueOf(4);
 		replay(context);
-		assertEquals(BooleanType.BOOLEAN.create(false),
-				LogicalFunctions.nof(context, n, BooleanType.BOOLEAN.create(false)));
+		assertEquals(BooleanExp.valueOf(false),
+				LogicalFunctions.nof(context, n, BooleanExp.valueOf(false)));
 		verify(context);
 	}
 }

@@ -18,7 +18,7 @@ import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
-import org.xacml4j.v30.types.StringType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 @ContextConfiguration(locations={"classpath:/spring-test.xml"})
@@ -66,7 +66,7 @@ public class SpringTest extends AbstractJUnit4SpringContextTests
 		resolverRegistry.getMatchingAttributeResolvers(policyContext, AttributeDesignatorKey.builder()
 				.category(AttributeCategories.parse("subject"))
 				.attributeId("testId1")
-				.dataType(StringType.STRING).build());
+				.dataType(XacmlTypes.STRING).build());
 		c.verify();
 	}
 }

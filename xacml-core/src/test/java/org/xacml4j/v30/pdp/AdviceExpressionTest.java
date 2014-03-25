@@ -18,8 +18,8 @@ import org.xacml4j.v30.AttributeCategories;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.types.BooleanType;
-import org.xacml4j.v30.types.IntegerType;
+import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.IntegerExp;
 
 
 public class AdviceExpressionTest
@@ -58,12 +58,12 @@ public class AdviceExpressionTest
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
 		expect(attrExp0.getCategory()).andReturn(AttributeCategories.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(IntegerType.INTEGER.create(1));
+		expect(attrExp0.evaluate(context)).andReturn(IntegerExp.valueOf(1));
 
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(AttributeCategories.RESOURCE).times(1);
 		expect(attrExp1.getIssuer()).andReturn("issuer1").times(1);
-		expect(attrExp1.evaluate(context)).andReturn(BooleanType.BOOLEAN.bagOf(BooleanType.BOOLEAN.create(false), BooleanType.BOOLEAN.create(true)));
+		expect(attrExp1.evaluate(context)).andReturn(BooleanExp.bag().value(false, true).build());
 
 		c.replay();
 
@@ -75,12 +75,12 @@ public class AdviceExpressionTest
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(Effect.DENY, advice.getFulfillOn());
 		assertEquals(AttributeCategories.SUBJECT_ACCESS, a0.getCategory());
-		assertEquals(IntegerType.INTEGER.create(1), a0.getAttribute());
+		assertEquals(IntegerExp.valueOf(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(AttributeCategories.RESOURCE, a1.getCategory());
-		assertEquals(BooleanType.BOOLEAN.create(false), a1.getAttribute());
+		assertEquals(BooleanExp.valueOf(false), a1.getAttribute());
 
 		c.verify();
 	}

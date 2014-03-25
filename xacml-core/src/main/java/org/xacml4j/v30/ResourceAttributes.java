@@ -1,6 +1,5 @@
 package org.xacml4j.v30;
 
-import org.xacml4j.v30.types.AnyURIType;
 
 /**
  * A well known XACML resource category attributes attributes
