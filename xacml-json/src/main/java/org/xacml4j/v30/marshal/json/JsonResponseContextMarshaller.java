@@ -9,6 +9,7 @@ import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -37,7 +38,7 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
+				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
 				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
 	}

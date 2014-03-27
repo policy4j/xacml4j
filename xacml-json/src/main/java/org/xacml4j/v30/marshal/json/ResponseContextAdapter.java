@@ -32,6 +32,7 @@ public class ResponseContextAdapter implements JsonDeserializer<ResponseContext>
 	@Override
 	public JsonElement serialize(ResponseContext src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
+		System.out.println("Response marsahall");
 		o.add(RESULT_PROPERTY, context.serialize(src.getResults()));
 		return o;
 	}

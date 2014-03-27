@@ -88,7 +88,8 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 	}
 
 	@Override
-	public JsonElement serialize(Attributes src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(Attributes src, Type typeOfSrc, 
+			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		if (src.getId() != null) {
 			o.addProperty(ID_PROPERTY, src.getId());

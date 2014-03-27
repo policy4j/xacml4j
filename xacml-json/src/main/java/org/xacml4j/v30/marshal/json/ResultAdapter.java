@@ -125,7 +125,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		if (associatedAdvice != null && !associatedAdvice.isEmpty()) {
 			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice, ADVICE_TYPE));
 		}
-
+		System.out.println("Result marshall");
 		Collection<Attributes> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
 			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));

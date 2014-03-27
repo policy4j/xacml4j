@@ -8,7 +8,6 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 

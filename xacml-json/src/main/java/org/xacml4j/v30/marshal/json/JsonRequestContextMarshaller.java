@@ -6,7 +6,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Attributes;
 import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.RequestContext;
@@ -26,7 +25,6 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 		this.json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attributes.class, new AttributesAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
 	}

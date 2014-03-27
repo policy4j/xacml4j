@@ -4,10 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.spi.pip.AttributeResolver;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import org.xacml4j.v30.spi.pip.BaseAttributeResolver;

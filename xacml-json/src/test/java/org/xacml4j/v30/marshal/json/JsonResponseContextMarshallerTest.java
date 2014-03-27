@@ -11,8 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
@@ -37,7 +35,6 @@ import org.xml.sax.InputSource;
 import com.google.common.collect.ImmutableList;
 
 public class JsonResponseContextMarshallerTest {
-	private static final Logger log = LoggerFactory.getLogger(JsonResponseContextMarshallerTest.class);
 
 	private Unmarshaller<ResponseContext> unmarshaller;
 	private Marshaller<ResponseContext> marshaller;
@@ -52,7 +49,6 @@ public class JsonResponseContextMarshallerTest {
 	public void testMarshal() throws Exception {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
-		log.debug("JSON response: {}", o);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
 		assertThat(reqOut, is(equalTo(reqIn)));
 	}

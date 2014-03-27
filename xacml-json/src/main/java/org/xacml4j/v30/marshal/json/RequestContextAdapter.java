@@ -48,6 +48,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 
 	@Override
 	public JsonElement serialize(RequestContext src, Type typeOfSrc, JsonSerializationContext context) {
+		System.out.println("Request ========");
 		JsonObject o = new JsonObject();
 		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
 		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());

@@ -20,8 +20,8 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class AttributeSerializer implements JsonSerializer<Attribute> {
-
+class AttributeSerializer implements JsonSerializer<Attribute> 
+{
 	@Override
 	public JsonElement serialize(Attribute src, Type typeOfSrc, 
 			JsonSerializationContext context) {

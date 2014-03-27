@@ -6,9 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-
 public class AttributeResolverTestSupport {
 
 	protected <T extends AttributeExpType> void checkHasAttribute(
