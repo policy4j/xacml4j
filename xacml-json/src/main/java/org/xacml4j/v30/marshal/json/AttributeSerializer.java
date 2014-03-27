@@ -23,7 +23,8 @@ import com.google.gson.reflect.TypeToken;
 class AttributeSerializer implements JsonSerializer<Attribute> {
 
 	@Override
-	public JsonElement serialize(Attribute src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(Attribute src, Type typeOfSrc, 
+			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
 		Collection<AttributeExp> values = src.getValues();

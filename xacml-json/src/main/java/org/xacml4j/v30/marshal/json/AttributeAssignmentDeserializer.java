@@ -57,16 +57,16 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		Preconditions.checkState(type.isPresent());
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		// TODO: do a proper type coersion
-		AttributeExp value = deserializeValue(type.get(), jsonValue);
+		AttributeExp value = deserializeValue(type.get(), jsonValue, context);
 
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return value;
 	}
 
-	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
+	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue, JsonDeserializationContext ctx) {
 		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(type);
 		Preconditions.checkState(toGson.isPresent());
-		return toGson.get().fromJson(jsonValue);
+		return toGson.get().fromJson(jsonValue, ctx);
 	}
 
 }

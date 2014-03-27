@@ -17,7 +17,7 @@ class AttributeExpSerializer implements JsonSerializer<AttributeExp>
 	public JsonElement serialize(AttributeExp src, Type typeOfSrc, JsonSerializationContext context) {
 		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(src.getType());
 		Preconditions.checkState(toGson.isPresent());
-		return toGson.get().toJson(src);
+		return toGson.get().toJson(src, context);
 	}
 
 }

@@ -57,21 +57,21 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 			JsonArray jsonArray = jsonValue.getAsJsonArray();
 			ImmutableList.Builder<AttributeExp> valuesBuilder = ImmutableList.builder();
 			for (int i = 0; i < jsonArray.size(); i++) {
-				valuesBuilder.add(deserializeValue(type.get(), jsonArray.get(i)));
+				valuesBuilder.add(deserializeValue(type.get(), jsonArray.get(i), context));
 			}
 			values = valuesBuilder.build();
 		} else {
 			// TODO: do a proper type coersion
-			values = ImmutableList.of(deserializeValue(type.get(), jsonValue));
+			values = ImmutableList.of(deserializeValue(type.get(), jsonValue, context));
 		}
 		checkArgument(values != null && !values.isEmpty(), "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return values;
 	}
 
-	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue) {
+	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue, JsonDeserializationContext ctx) {
 		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(type);
 		Preconditions.checkState(toGson.isPresent());
-		return toGson.get().fromJson(jsonValue);
+		return toGson.get().fromJson(jsonValue, ctx);
 	}
 
 }
