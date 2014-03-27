@@ -1,10 +1,11 @@
 package org.xacml4j.v30.marshal.json;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.xacml4j.v30.marshal.json.AttributeProperties.ATTRIBUTE_ID_PROPERTY;
-import static org.xacml4j.v30.marshal.json.AttributeProperties.DATA_TYPE_PROPERTY;
-import static org.xacml4j.v30.marshal.json.AttributeProperties.ISSUER_PROPERTY;
-import static org.xacml4j.v30.marshal.json.AttributeProperties.VALUE_PROPERTY;
+
+import static org.xacml4j.v30.marshal.json.JsonProperties.ATTRIBUTE_ID_PROPERTY;
+import static org.xacml4j.v30.marshal.json.JsonProperties.DATA_TYPE_PROPERTY;
+import static org.xacml4j.v30.marshal.json.JsonProperties.ISSUER_PROPERTY;
+import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 
 import java.lang.reflect.Type;
 
