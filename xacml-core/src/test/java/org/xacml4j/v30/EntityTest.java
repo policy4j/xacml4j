@@ -1,5 +1,9 @@
 package org.xacml4j.v30;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -7,10 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 import org.xacml4j.v30.pdp.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.types.DoubleExp;

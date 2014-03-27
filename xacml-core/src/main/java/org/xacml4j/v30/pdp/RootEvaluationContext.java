@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -31,8 +30,7 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -327,31 +325,27 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public final Node evaluateToNode(String path, AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		return contextHandler.evaluateToNode(this, path, categoryId);
+	public final Node evaluateToNode(XPathExp xpath)
+			throws EvaluationException{
+		return contextHandler.evaluateToNode(this, xpath);
 	}
 
 	@Override
-	public final NodeList evaluateToNodeSet(String path,
-			AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		return 
+	public final NodeList evaluateToNodeSet(XPathExp path)
+			throws EvaluationException{
+		return contextHandler.evaluateToNodeSet(this, path); 
 	}
 
 	@Override
-	public final Number evaluateToNumber(String path, AttributeCategory categoryId)
+	public final Number evaluateToNumber(XPathExp path)
 			throws EvaluationException {
-		return contextHandler.evaluateToNumber(this, path, categoryId);
+		return contextHandler.evaluateToNumber(this, path);
 	}
 
 	@Override
-	public final String evaluateToString(String path, AttributeCategory categoryId)
-			throws EvaluationException
-	{
-		return contextHandler.evaluateToString(this, path, categoryId);
+	public final String evaluateToString(XPathExp xpath)
+			throws EvaluationException{
+		return contextHandler.evaluateToString(this, xpath);
 	}
 
 	@Override

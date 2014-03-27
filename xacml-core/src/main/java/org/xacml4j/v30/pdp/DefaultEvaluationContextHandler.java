@@ -24,7 +24,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.xpath.XPathEvaluationException;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
@@ -310,4 +309,69 @@ class DefaultEvaluationContextHandler
 		}
 	  	return ref.getDataType().bagType().create(values);
 	}
+
+	@Override
+	public Node evaluateToNode(EvaluationContext context, XPathExp xpath) 
+			throws XPathEvaluationException 
+	{
+		try{
+			
+			return xpathProvider.evaluateToNode(xpath.getPath(), 
+					new ContentSupplier().getContent(context, xpath));
+		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+			throw new XPathEvaluationException(xpath.getPath(), e);
+		}
+	}
+
+	@Override
+	public NodeList evaluateToNodeSet(EvaluationContext context, XPathExp xpath)
+			throws EvaluationException {
+		try{
+			return xpathProvider.evaluateToNodeSet(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
+		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+			throw new XPathEvaluationException(xpath.getPath(), e);
+		}
+	}
+
+	@Override
+	public Number evaluateToNumber(EvaluationContext context, XPathExp xpath) throws EvaluationException {
+		try{
+			return xpathProvider.evaluateToNumber(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
+		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+			throw new XPathEvaluationException(xpath.getPath(), e);
+		}
+	}
+
+	@Override
+	public String evaluateToString(EvaluationContext context, XPathExp xpath) 
+			throws XPathEvaluationException {
+		try{
+			return xpathProvider.evaluateToString(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
+		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+			throw new XPathEvaluationException(xpath.getPath(), e);
+		}
+	}
+	
+	private class ContentSupplier
+	{
+		public Node getContent(EvaluationContext context, XPathExp xpath) throws XPathEvaluationException
+		{
+			Entity entity = requestCallback.getEntity(xpath.getCategory());
+			Node content = (entity != null)?entity.getContent():null;
+			try{
+				if(content == null){
+					content = doGetContent(context, xpath.getCategory());
+				}
+			}catch(Exception e){
+				throw new XPathEvaluationException(xpath.getPath(), e);
+			}
+			if(content == null){
+				throw new XPathEvaluationException(xpath.getPath(),
+							"Not content found for categpry=\"%s\"", xpath.getCategory());
+			}
+			return content;
+		}
+	}
+
+	
 }

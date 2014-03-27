@@ -22,7 +22,6 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 

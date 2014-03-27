@@ -7,6 +7,7 @@ import java.util.TimeZone;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.base.Ticker;
 
@@ -277,9 +278,7 @@ public interface EvaluationContext
 	 * occurs while evaluating given xpath
 	 * expression
 	 */
-	NodeList evaluateToNodeSet(
-			String xpath,
-			AttributeCategory categoryId)
+	NodeList evaluateToNodeSet(XPathExp xpath)
 		throws EvaluationException;
 
 	/**
@@ -294,9 +293,7 @@ public interface EvaluationContext
 	 * occurs while evaluating given xpath
 	 * expression
 	 */
-	String evaluateToString(
-			String path,
-			AttributeCategory categoryId)
+	String evaluateToString(XPathExp xpath)
 		throws EvaluationException;
 
 	/**
@@ -311,9 +308,7 @@ public interface EvaluationContext
 	 * occurs while evaluating given xpath
 	 * expression
 	 */
-	Node evaluateToNode(
-			String path,
-			AttributeCategory categoryId)
+	Node evaluateToNode(XPathExp xpath)
 		throws EvaluationException;
 
 	/**
@@ -328,9 +323,7 @@ public interface EvaluationContext
 	 * occurs while evaluating given xpath
 	 * expression
 	 */
-	Number evaluateToNumber(
-			String path,
-			AttributeCategory categoryId)
+	Number evaluateToNumber(XPathExp xpath)
 		throws EvaluationException;
 
 	/**

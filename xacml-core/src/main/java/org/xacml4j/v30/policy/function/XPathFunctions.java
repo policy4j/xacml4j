@@ -37,7 +37,7 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath)
 	{
 		try{
-			NodeList nodes = context.evaluateToNodeSet(xpath.getPath(), xpath.getCategory());
+			NodeList nodes = context.evaluateToNodeSet(xpath);
 			if(nodes != null){
 				return IntegerExp.valueOf(nodes.getLength());
 			}
@@ -65,8 +65,8 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1)
 	{
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(), xpath0.getCategory());
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(), xpath1.getCategory());
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0);
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1);
 			if(nodes0 == null ||
 					nodes0  == null){
 				return BooleanExp.valueOf(false);
@@ -104,10 +104,8 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") XPathExp xpath1)
 	{
 		try{
-			NodeList nodes0 = context.evaluateToNodeSet(xpath0.getPath(),
-					xpath0.getCategory());
-			NodeList nodes1 = context.evaluateToNodeSet(xpath1.getPath(),
-					xpath1.getCategory());
+			NodeList nodes0 = context.evaluateToNodeSet(xpath0);
+			NodeList nodes1 = context.evaluateToNodeSet(xpath1);
 			if(nodes0 == null ||
 					nodes0  == null){
 				return BooleanExp.valueOf(false);

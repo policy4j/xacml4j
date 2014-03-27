@@ -24,7 +24,6 @@ import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class XacmlPolicyUnmarshallerTest

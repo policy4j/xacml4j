@@ -1,9 +1,7 @@
 package org.xacml4j.v30.pdp;
 
-import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
@@ -12,6 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.easymock.IAnswer;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
@@ -29,8 +28,8 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
@@ -47,8 +46,10 @@ public class DefaultEvaluationContextHandlerTest
 
 	private EvaluationContext context;
 	private RequestContext request;
+	private IMocksControl c;
 
 	private Entity entity;
+	private Node content;
 
 	private PolicyInformationPoint pip;
 	private XPathProvider xpathProvider;
@@ -58,17 +59,18 @@ public class DefaultEvaluationContextHandlerTest
 	@Before
 	public void init() throws Exception
 	{
+		this.c = createControl();
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
-		this.context = createStrictMock(EvaluationContext.class);
-		this.request = createStrictMock(RequestContext.class);
-		this.requestContextCallback = createStrictMock(RequestContextCallback.class);
-		this.pip = createStrictMock(PolicyInformationPoint.class);
+		this.context = c.createMock(EvaluationContext.class);
+		this.request = c.createMock(RequestContext.class);
+		this.requestContextCallback = c.createMock(RequestContextCallback.class);
+		this.pip = c.createMock(PolicyInformationPoint.class);
+		this.content = builder.parse(new InputSource(new StringReader(testXml)));
 		this.entity = Entity
 				.builder()
-				.content(builder.parse
-						(new InputSource(new StringReader(testXml)))).build();
+				.content(content).build();
 		this.xpathProvider = new DefaultXPathProvider();
 		this.handler = new DefaultEvaluationContextHandler(requestContextCallback, xpathProvider, pip);
 	}
@@ -86,16 +88,13 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
-
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
-		replay(context, request, requestContextCallback, pip);
+		
+		c.replay();
 
 		Expression v = handler.resolve(context, ref);
 
 		assertEquals(v, IntegerExp.valueOf(555555).toBag());
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 	@Test
@@ -110,14 +109,12 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
-
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		replay(context, request, requestContextCallback, pip);
+		
+		c.replay();
 
 		Expression v = handler.resolve(context, ref);
 		assertEquals(XacmlTypes.INTEGER.bagOf(IntegerExp.valueOf(555555)), v);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -131,7 +128,7 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 
 		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andStubAnswer(new IAnswer<Node>()
 		{
@@ -142,13 +139,13 @@ public class DefaultEvaluationContextHandlerTest
 			}
 		});
 
-		replay(context, request, requestContextCallback, pip);
+		c.replay();
 
 		Expression v = handler.resolve(context, ref);
 		// test cache
 		v = handler.resolve(context, ref);
 		assertEquals(IntegerExp.bag().value(555555).build(), v);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 
@@ -162,17 +159,13 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
-
-		expect(requestContextCallback.getAttributeValue(ref.getCategory(),
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XacmlTypes.XPATH, null)).
-				andReturn(XPathExp.emptyBag());
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 
-		replay(context, request, requestContextCallback, pip);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -182,21 +175,17 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
 
-		expect(requestContextCallback.getAttributeValue(ref.getCategory(),
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
-				andReturn(XPATHEXPRESSION.emptyBag());
-		
+
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		expect(context.getTypes()).andReturn(XacmlTypes.builder().defaultTypes().create());
 		
-		replay(context, request, requestContextCallback, pip);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -207,21 +196,16 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
-				.dataType(DATE)
+				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
-
-		expect(requestContextCallback.getAttributeValue(ref.getCategory(),
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
-				andReturn(XPATHEXPRESSION.emptyBag());
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-		expect(context.getTypes()).andReturn(XacmlTypes.builder().defaultTypes().create());
 		
-		replay(context, request, requestContextCallback, pip);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
 
 	@Test
@@ -231,21 +215,15 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/test")
-				.dataType(INTEGER)
+				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(content);
-
-		expect(requestContextCallback.getAttributeValue(ref.getCategory(),
-				"urn:oasis:names:tc:xacml:3.0:content-selector", XPATHEXPRESSION, null)).
-				andReturn(XPATHEXPRESSION.emptyBag());
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
-		replay(context, request, requestContextCallback, pip);
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		
+		c.replay();
 		Expression v = handler.resolve(context, ref);
-		assertEquals(v, INTEGER.emptyBag());
-		verify(context, request, requestContextCallback, pip);
+		assertEquals(v, IntegerExp.emptyBag());
+		c.verify();
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -257,39 +235,18 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
-				.dataType(INTEGER)
+				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getContent(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
 
 		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new RuntimeException());
 
-		replay(context, request, requestContextCallback, pip);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, requestContextCallback, pip);
+		c.verify();
 	}
-
-
-	@Test
-	public void testDesignatorResolveAttributeIsInRequest() throws Exception
-	{
-		AttributeDesignatorKey ref = AttributeDesignatorKey
-				.builder()
-				.category(AttributeCategories.RESOURCE)
-				.attributeId("testId")
-				.dataType(ANYURI)
-				.build();
-
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).
-				andReturn(ANYURI.bagOf(ANYURI.fromAny("testValue")));
-
-		replay(context, request, pip, requestContextCallback);
-		ValueExpression v = handler.resolve(context, ref);
-		assertEquals(ANYURI.bagOf(ANYURI.fromAny("testValue")), v);
-		verify(context, request, pip, requestContextCallback);
-	}
-
+	
 	@Test
 	public void testDesignatorResolveAttributeIsNotInRequest()
 		throws Exception
@@ -298,20 +255,16 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.RESOURCE)
 				.attributeId("testId")
-				.dataType(ANYURI)
+				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
+		expect(pip.resolve(context, ref)).andReturn(AnyURIExp.valueOf("testValue").toBag());
 
-
-		expect(pip.resolve(context, ref)).andReturn(ANYURI.bagOf(ANYURI.fromAny("testValue")));
-
-
-		replay(context, request, pip, requestContextCallback);
+		c.replay();
 		ValueExpression v = handler.resolve(context, ref);
-		assertEquals(ANYURI.bagOf(ANYURI.fromAny("testValue")), v);
-		verify(context, request, pip, requestContextCallback);
+		assertEquals(AnyURIExp.valueOf("testValue").toBag(), v);
+		c.verify();
 	}
 
 
@@ -323,18 +276,16 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.RESOURCE)
 				.attributeId("testId")
-				.dataType(ANYURI)
+				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
-
+		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
 
 		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
 
-		replay(context, request, pip, requestContextCallback);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, pip, requestContextCallback);
+		c.verify();
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -345,26 +296,24 @@ public class DefaultEvaluationContextHandlerTest
 				.builder()
 				.category(AttributeCategories.RESOURCE)
 				.attributeId("testId")
-				.dataType(ANYURI)
+				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
 
 
 		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeExp>() {
 			@Override
 			public BagOfAttributeExp answer() throws Throwable{
 				handler.resolve(context, ref);
-				return ANYURI.emptyBag();
+				return AnyURIExp.emptyBag();
 			}
 		});
 
-		expect(requestContextCallback.getAttributeValue(
-				AttributeCategories.RESOURCE, "testId", ANYURI, null)).andReturn(ANYURI.emptyBag());
+		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
 
-		replay(context, request, pip, requestContextCallback);
+		c.replay();
 		handler.resolve(context, ref);
-		verify(context, request, pip, requestContextCallback);
+		c.verify();
 	}
 }

@@ -8,7 +8,6 @@ import java.util.TimeZone;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeCategory;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -23,6 +22,7 @@ import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.types.XPathExp;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -180,36 +180,36 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Node evaluateToNode(String path, AttributeCategory categoryId)
+	public Node evaluateToNode(XPathExp xpath)
 			throws EvaluationException {
-		return delegate.evaluateToNode(path, categoryId);
+		return delegate.evaluateToNode(xpath);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public NodeList evaluateToNodeSet(String path, AttributeCategory categoryId)
+	public NodeList evaluateToNodeSet(XPathExp xpath)
 			throws EvaluationException {
-		return delegate.evaluateToNodeSet(path, categoryId);
+		return delegate.evaluateToNodeSet(xpath);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public Number evaluateToNumber(String path, AttributeCategory categoryId)
+	public Number evaluateToNumber(XPathExp xpath)
 			throws EvaluationException {
-		return delegate.evaluateToNumber(path, categoryId);
+		return delegate.evaluateToNumber(xpath);
 	}
 
 	/**
 	 * Delegates call to {@link EvaluationContext} instance
 	 */
 	@Override
-	public String evaluateToString(String path, AttributeCategory categoryId)
+	public String evaluateToString(XPathExp xpath)
 			throws EvaluationException {
-		return delegate.evaluateToString(path, categoryId);
+		return delegate.evaluateToString(xpath);
 	}
 
 	@Override

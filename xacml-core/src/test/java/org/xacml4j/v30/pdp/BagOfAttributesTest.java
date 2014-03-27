@@ -7,6 +7,8 @@ import static junit.framework.Assert.assertTrue;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,8 +23,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import static org.xacml4j.v30.types.XacmlTypes.*;
 
 import com.google.common.collect.ImmutableList;
 
