@@ -1,17 +1,10 @@
 package org.xacml4j.v30.marshal.json;
 
 
-import java.io.StringWriter;
+import java.util.Collection;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Node;
+import org.xacml4j.util.DOMUtil;
+import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.Entity;
@@ -20,11 +13,13 @@ import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
+import com.google.gson.reflect.TypeToken;
 
 public interface TypeToGSon extends TypeCapability
 {
@@ -33,7 +28,7 @@ public interface TypeToGSon extends TypeCapability
 	AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx);
 	
 	
-	public enum JsonTypes implements TypeToGSon
+	public enum Types implements TypeToGSon
 	{
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
@@ -206,26 +201,37 @@ public interface TypeToGSon extends TypeCapability
 				Entity entity = ((EntityExp)v).getValue();
 				JsonObject o = new JsonObject();
 				if(entity.hasContent()){
-					o.addProperty(JsonProperties.CONTENT_PROPERTY, nodeToString(entity.getContent()));
+					o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(entity.getContent()));
 				}
 				o.add(JsonProperties.ATTRIBUTE_PROPERTY, ctx.serialize(entity.getAttributes()));
 				return o;
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
-				throw new UnsupportedOperationException();
+			public AttributeExp fromJson(JsonElement v, 
+					JsonDeserializationContext ctx) {
+				Entity.Builder b = Entity.builder();
+				JsonObject o  = v.getAsJsonObject();
+				if(o.has(JsonProperties.CONTENT_PROPERTY)){
+					String content = o.get(JsonProperties.CONTENT_PROPERTY).getAsString();
+					b.content(DOMUtil.stringToNode(content));
+				}
+				if(o.has(JsonProperties.ATTRIBUTE_PROPERTY)){
+					JsonArray array = o.get(JsonProperties.ATTRIBUTE_PROPERTY).getAsJsonArray();
+					Collection<Attribute> attr = ctx.deserialize(array,
+							new TypeToken<Collection<Attribute>>() {
+							}.getType());
+					b.attributes(attr);
+				}
+				return EntityExp.valueOf(b.build());
 			}
 		};
-	
-		private final static TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		private final static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		
 		private final static Index<TypeToGSon> INDEX = Index.<TypeToGSon>build(values());
 		
 		private AttributeExpType type;
 		
-		private JsonTypes(AttributeExpType type){
+		private Types(AttributeExpType type){
 			this.type = type;
 		}
 		
@@ -237,27 +243,5 @@ public interface TypeToGSon extends TypeCapability
 			return INDEX;
 		}
 		
-		
-		private static String nodeToString(Node node) {
-			if (node == null) {
-				return null;
-			}
-			final Transformer transformer;
-			try {
-				transformer = transformerFactory.newTransformer();
-			} catch (TransformerConfigurationException e) {
-				throw new IllegalStateException(String.format("Failed to build %s", Transformer.class.getName()), e);
-			}
-
-			DOMSource source = new DOMSource(node);
-			StreamResult result = new StreamResult(new StringWriter());
-			try {
-				transformer.transform(source, result);
-				return result.getWriter().toString();
-			} catch (TransformerException e) {
-				// TODO: should the content serialization be fatal?
-				throw new IllegalArgumentException("Failed to serialize Node to String.", e);
-			}
-	}
 	}
 }

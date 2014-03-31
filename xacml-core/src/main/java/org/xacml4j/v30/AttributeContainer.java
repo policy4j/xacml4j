@@ -165,6 +165,9 @@ public class AttributeContainer
 		}
 
 		public T attributes(Iterable<Attribute> attrs) {
+			if(attrs == null){
+				return getThis();
+			}
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);
 			}

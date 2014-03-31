@@ -69,7 +69,7 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 	}
 
 	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue, JsonDeserializationContext ctx) {
-		Optional<TypeToGSon> toGson = TypeToGSon.JsonTypes.getIndex().get(type);
+		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(type);
 		Preconditions.checkState(toGson.isPresent());
 		return toGson.get().fromJson(jsonValue, ctx);
 	}

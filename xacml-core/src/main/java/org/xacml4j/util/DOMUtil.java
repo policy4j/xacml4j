@@ -1,15 +1,21 @@
 package org.xacml4j.util;
 
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Stack;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -22,6 +28,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -30,11 +37,13 @@ import com.google.common.base.Strings;
 public class DOMUtil
 {
 
-	private static TransformerFactory tf;
+	private static TransformerFactory transformerFactory;
+	private static DocumentBuilderFactory documentBuilderFactory;
 
 	static{
 		try{
-			tf = TransformerFactory.newInstance();
+			transformerFactory = TransformerFactory.newInstance();
+			documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		}catch(Exception e){
 			e.printStackTrace(System.err);
 		}
@@ -186,6 +195,49 @@ public class DOMUtil
 	{
 		serializeToXml(node, out, true, false);
 	}
+	
+	public static Node stringToNode(String str) 
+	{
+		if (str == null) {
+			return null;
+		}
+		final DocumentBuilder documentBuilder;
+		try {
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new IllegalStateException(String.format("Failed to build %s",
+					DocumentBuilder.class.getName()), e);
+		}
+		InputSource source = new InputSource(new StringReader(str));
+		try {
+			return documentBuilder.parse(source);
+		} catch (Exception e) {
+			throw new IllegalArgumentException(String.format(
+					"Failed to parse DOM from string: \"%s\"", str), e);
+		}
+	}
+	
+	public static String nodeToString(Node node) 
+	{
+		if (node == null) {
+			return null;
+		}
+		final Transformer transformer;
+		try {
+			transformer = transformerFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			throw new IllegalStateException(String.format("Failed to build %s", 
+					Transformer.class.getName()), e);
+		}
+		DOMSource source = new DOMSource(node);
+		StreamResult result = new StreamResult(new StringWriter());
+		try {
+			transformer.transform(source, result);
+			return result.getWriter().toString();
+		} catch (TransformerException e) {
+			throw new IllegalArgumentException("Failed to serialize Node to String.", e);
+		}
+	}
 
 	public static void serializeToXml(
 			Node node,
@@ -196,8 +248,8 @@ public class DOMUtil
 	{
 		Preconditions.checkNotNull(node);
 		Preconditions.checkNotNull(out);
-		Preconditions.checkState(tf != null);
-		Transformer t = tf.newTransformer();
+		Preconditions.checkState(transformerFactory != null);
+		Transformer t = transformerFactory.newTransformer();
 		t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,  ommitXmlDecl?"yes":"no");
 		t.setOutputProperty(OutputKeys.METHOD, "xml");
 		t.setOutputProperty(OutputKeys.INDENT, prettyPrint?"yes":"no");

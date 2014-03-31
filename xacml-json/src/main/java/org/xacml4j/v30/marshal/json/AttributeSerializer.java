@@ -27,12 +27,11 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
-		Collection<AttributeExp> values = src.getValues();
-		serializeValue(context, o, values);
-
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
+		Collection<AttributeExp> values = src.getValues();
+		serializeValue(context, o, values);
 		// OMIT property if value is "false"
 		if(src.isIncludeInResult()){
 			o.addProperty(INCLUDE_IN_RESULT_PROPERTY, src.isIncludeInResult());

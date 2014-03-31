@@ -13,7 +13,7 @@ public class ExpressionBuilderTest
 	public void testExpressionBuilder()
 	{
 		AttributeExp v = StringExp.valueOf("aa");
-		ExpressionTypeBuilder b = ExpressionTypeBuilder. getBuilder(v);
+		ExpressionTypeBuilder b = ExpressionTypeBuilder.Expressions.getBuilder(v);
 		assertNotNull(b);
 	}
 }
