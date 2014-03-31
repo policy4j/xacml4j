@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.DateTimeExp;
@@ -24,7 +24,7 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 		super(AttributeResolverDescriptorBuilder.builder(
 				"urn:oasis:names:tc:xacml:1.0:environment:resolver",
 				"XACML Enviroment Attributes Resolver",
-				AttributeCategories.ENVIRONMENT)
+				Categories.ENVIRONMENT)
 				.noCache()
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time", XacmlTypes.TIME)
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-date", XacmlTypes.DATE)

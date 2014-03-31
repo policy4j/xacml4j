@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Obligation;
@@ -42,7 +42,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	}.getType();
 	private static final Type ADVICE_TYPE = new TypeToken<Collection<Advice>>() {
 	}.getType();
-	private static final Type ATTRIBUTES_TYPE = new TypeToken<Collection<Attributes>>() {
+	private static final Type ATTRIBUTES_TYPE = new TypeToken<Collection<Category>>() {
 	}.getType();
 	private static final Type POLICY_ID_REFERENCES_TYPE = new TypeToken<Collection<PolicyIDReference>>() {
 	}.getType();
@@ -80,7 +80,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 			builder.advice(advice);
 		}
 
-		Collection<Attributes> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
+		Collection<Category> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
 		if (attributes != null) {
 			builder.includeInResultAttr(attributes);
 			// TODO: or should we call builder.resolvedAttr?
@@ -126,7 +126,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice, ADVICE_TYPE));
 		}
 		System.out.println("Result marshall");
-		Collection<Attributes> attributes = src.getIncludeInResultAttributes();
+		Collection<Category> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
 			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));
 		}

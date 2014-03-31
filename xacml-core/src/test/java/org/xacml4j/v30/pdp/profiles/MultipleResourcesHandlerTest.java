@@ -18,8 +18,8 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
@@ -36,10 +36,10 @@ public class MultipleResourcesHandlerTest
 	private PolicyDecisionPointContext context;
 	private RequestContextHandler profile;
 
-	private Attributes resource0;
-	private Attributes resource1;
-	private Attributes subject0;
-	private Attributes subject1;
+	private Category resource0;
+	private Category resource1;
+	private Category subject0;
+	private Category subject1;
 
 
 	@Before
@@ -47,14 +47,14 @@ public class MultipleResourcesHandlerTest
 		this.context = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
 
-		this.resource0 = Attributes.builder(AttributeCategories.RESOURCE)
+		this.resource0 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
 								Attribute.builder("testId1").value(StringExp.valueOf("value0")).build(),
 								Attribute.builder("testId2").value(StringExp.valueOf("value1")).build()).build())
 				.build();
-		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
+		this.resource1 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -62,7 +62,7 @@ public class MultipleResourcesHandlerTest
 						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
-		this.subject0 = Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
+		this.subject0 = Category.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -71,7 +71,7 @@ public class MultipleResourcesHandlerTest
 				.build();
 
 
-		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
+		this.subject1 = Category.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -240,8 +240,8 @@ public class MultipleResourcesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject0));
-		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0));
 		verify(context);
 	}
 
@@ -249,7 +249,7 @@ public class MultipleResourcesHandlerTest
 	public void testWithEmptyRequest()
 	{
 		RequestContext request = new RequestContext(false, true,
-				Collections.<Attributes>emptyList());
+				Collections.<Category>emptyList());
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

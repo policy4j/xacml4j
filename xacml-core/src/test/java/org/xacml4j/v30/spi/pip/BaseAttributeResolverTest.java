@@ -8,7 +8,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -24,7 +24,7 @@ public class BaseAttributeResolverTest
 		this.c = createControl();
 		this.context = c.createMock(ResolverContext.class);
 		this.d = AttributeResolverDescriptorBuilder
-		.builder("test", "Test", AttributeCategories.SUBJECT_ACCESS)
+		.builder("test", "Test", Categories.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.STRING)
 		.attribute("testId2", XacmlTypes.INTEGER)
 		.build();

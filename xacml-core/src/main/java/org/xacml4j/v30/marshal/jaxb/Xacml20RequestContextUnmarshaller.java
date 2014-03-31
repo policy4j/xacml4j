@@ -24,11 +24,11 @@ import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Entity;
@@ -100,7 +100,7 @@ implements RequestUnmarshaller
 	{
 		public RequestContext create(RequestType req) throws XacmlSyntaxException
 		{
-			Collection<Attributes> attributes = new LinkedList<Attributes>();
+			Collection<Category> attributes = new LinkedList<Category>();
 			if(!req.getResource().isEmpty()){
 				Collection<ResourceType> resources = req.getResource();
 				for(ResourceType r : resources){
@@ -108,10 +108,10 @@ implements RequestUnmarshaller
 				}
 			}
 			if(!req.getSubject().isEmpty()){
-				Multimap<AttributeCategory, Attributes> map = LinkedHashMultimap.create();
+				Multimap<CategoryId, Category> map = LinkedHashMultimap.create();
 				for(SubjectType subject : req.getSubject()){
-					Attributes attr =  createSubject(subject);
-					map.put(attr.getCategory(), attr);
+					Category attr =  createSubject(subject);
+					map.put(attr.getCategoryId(), attr);
 				}
 				attributes.addAll(normalize(map));
 			}
@@ -125,16 +125,16 @@ implements RequestUnmarshaller
 			return new RequestContext(false, attributes);
 		}
 
-		private Collection<Attributes> normalize(Multimap<AttributeCategory, Attributes> attributes)
+		private Collection<Category> normalize(Multimap<CategoryId, Category> attributes)
 		{
-			Collection<Attributes> normalized = new LinkedList<Attributes>();
-			for(AttributeCategory categoryId : attributes.keySet()){
-				Collection<Attributes> byCategory = attributes.get(categoryId);
+			Collection<Category> normalized = new LinkedList<Category>();
+			for(CategoryId categoryId : attributes.keySet()){
+				Collection<Category> byCategory = attributes.get(categoryId);
 				Entity.Builder b = Entity.builder();
-				for(Attributes a : byCategory){
+				for(Category a : byCategory){
 					b.copyOf(a.getEntity());
 				}
-				normalized.add(Attributes
+				normalized.add(Category
 						.builder(categoryId)
 						.entity(b.build())
 						.build());
@@ -142,14 +142,14 @@ implements RequestUnmarshaller
 			return normalized;
 		}
 
-		private Attributes createSubject(SubjectType subject)
+		private Category createSubject(SubjectType subject)
 			throws XacmlSyntaxException
 		{
-			AttributeCategory category = getCategoryId(subject.getSubjectCategory());
+			CategoryId category = getCategoryId(subject.getSubjectCategory());
 			if(log.isDebugEnabled()){
 				log.debug("Processing subject category=\"{}\"", category);
 			}
-			return Attributes.builder(category)
+			return Category.builder(category)
 					.entity(Entity
 							.builder()
 							.attributes(create(subject.getAttribute(), category, false))
@@ -157,51 +157,51 @@ implements RequestUnmarshaller
 					.build();
 		}
 
-		private AttributeCategory getCategoryId(String id)
+		private CategoryId getCategoryId(String id)
 			throws XacmlSyntaxException
 		{
-			AttributeCategory category = AttributeCategories.parse(id);
+			CategoryId category = Categories.parse(id);
 			if(category == null){
 				throw new RequestSyntaxException("Unknown attribute category=\"%s\"", id);
 			}
 			return category;
 		}
 
-		private Attributes createEnviroment(EnvironmentType env)
+		private Category createEnviroment(EnvironmentType env)
 			throws XacmlSyntaxException
 		{
-			return Attributes
-					.builder(AttributeCategories.ENVIRONMENT)
+			return Category
+					.builder(Categories.ENVIRONMENT)
 					.entity(Entity
 							.builder()
-							.attributes(create(env.getAttribute(), AttributeCategories.ENVIRONMENT, false))
+							.attributes(create(env.getAttribute(), Categories.ENVIRONMENT, false))
 							.build())
 					.build();
 		}
 
-		private Attributes createAction(ActionType subject) throws XacmlSyntaxException
+		private Category createAction(ActionType subject) throws XacmlSyntaxException
 		{
-			return Attributes
-					.builder(AttributeCategories.ACTION)
+			return Category
+					.builder(Categories.ACTION)
 					.entity(Entity
 							.builder()
-							.attributes(create(subject.getAttribute(), AttributeCategories.ACTION, false))
+							.attributes(create(subject.getAttribute(), Categories.ACTION, false))
 							.build())
 					.build();
 		}
 
-		private Attributes createResource(ResourceType resource,
+		private Category createResource(ResourceType resource,
 				boolean multipleResources) throws XacmlSyntaxException
 		{
 			Node content = getResourceContent(resource);
 			if(content != null){
 				content = DOMUtil.copyNode(content);
 			}
-			return Attributes
-					.builder(AttributeCategories.RESOURCE)
+			return Category
+					.builder(Categories.RESOURCE)
 					.entity(Entity
 							.builder()
-							.attributes(create(resource.getAttribute(), AttributeCategories.RESOURCE, multipleResources))
+							.attributes(create(resource.getAttribute(), Categories.RESOURCE, multipleResources))
 							.content(content)
 							.build())
 					.build();
@@ -225,7 +225,7 @@ implements RequestUnmarshaller
 
 		private Collection<Attribute> create(
 				Collection<AttributeType> contextAttributes,
-				AttributeCategory category, boolean includeInResult)
+				CategoryId category, boolean includeInResult)
 			throws XacmlSyntaxException
 		{
 			Collection<Attribute> attributes = new LinkedList<Attribute>();
@@ -235,7 +235,7 @@ implements RequestUnmarshaller
 			return attributes;
 		}
 
-		private Attribute createAttribute(AttributeType a, AttributeCategory category,
+		private Attribute createAttribute(AttributeType a, CategoryId category,
 					boolean incudeInResultResourceId)
 			throws XacmlSyntaxException
 		{
@@ -268,7 +268,7 @@ implements RequestUnmarshaller
 					v30.getContent().add(
 							Xacml20XPathTo30Transformer.transform20PathTo30((String)av.getContent().get(0)));
 					v30.getOtherAttributes().put(TypeToXacml30.Types.XPATH_CATEGORY_ATTR_NAME, 
-							AttributeCategories.RESOURCE.getId());
+							Categories.RESOURCE.getId());
 					return xacml30.get().fromXacml30(v30);
 				}
 				throw new XacmlSyntaxException("Not content found for xpath expression");

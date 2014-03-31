@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
  */
 public abstract class AttributeReferenceKey
 {
-	protected final AttributeCategory category;
+	protected final CategoryId category;
 	protected final AttributeExpType dataType;
 
 	protected AttributeReferenceKey(
@@ -20,7 +20,7 @@ public abstract class AttributeReferenceKey
 		this.dataType = b.dataType;
 	}
 
-	public final AttributeCategory getCategory(){
+	public final CategoryId getCategory(){
 		return category;
 	}
 
@@ -33,10 +33,10 @@ public abstract class AttributeReferenceKey
 
 	public static abstract class Builder<T>
 	{
-		private AttributeCategory category;
+		private CategoryId category;
 		private AttributeExpType dataType;
 
-		public T category(AttributeCategory category){
+		public T category(CategoryId category){
 			Preconditions.checkNotNull(category);
 			this.category = category;
 			return getThis();
@@ -44,7 +44,7 @@ public abstract class AttributeReferenceKey
 
 		public T category(String category) throws XacmlSyntaxException
 		{
-			return category(AttributeCategories.parse(category));
+			return category(Categories.parse(category));
 		}
 
 		public T dataType(AttributeExpType type){

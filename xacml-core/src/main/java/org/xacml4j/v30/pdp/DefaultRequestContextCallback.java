@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 
@@ -24,7 +24,7 @@ public class DefaultRequestContextCallback
 	}
 
 	@Override
-	public Entity getEntity(AttributeCategory category) {
+	public Entity getEntity(CategoryId category) {
 		return request.getOnlyEntity(category);
 	}
 	

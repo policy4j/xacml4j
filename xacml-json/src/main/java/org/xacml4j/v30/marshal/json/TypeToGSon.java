@@ -20,7 +20,6 @@ import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

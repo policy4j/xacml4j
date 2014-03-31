@@ -3,7 +3,7 @@ package org.xacml4j.v30.spi.pip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
@@ -151,7 +151,7 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public Node resolve(final EvaluationContext context,
-			AttributeCategory category)
+			CategoryId category)
 			throws Exception
 	{
 		TimerContext timerContext = contResTimer.time();

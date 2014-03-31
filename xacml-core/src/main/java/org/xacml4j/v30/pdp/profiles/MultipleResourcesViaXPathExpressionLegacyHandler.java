@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
@@ -35,7 +35,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 					Result.createIndeterminateSyntaxError("Found repeating categories in the request")
 							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
 		}
-		Attributes resource = request.getOnlyAttributes(AttributeCategories.RESOURCE);
+		Category resource = request.getOnlyAttributes(Categories.RESOURCE);
 		if(resource == null){
 			return handleNext(request, context);
 		}
@@ -54,10 +54,10 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.includeInResultAttr(request.getIncludeInResultAttributes())
 							.build());
 		}
-		Collection<Attributes> attributes = new LinkedList<Attributes>();
-		for(Attributes attrs : request.getAttributes())
+		Collection<Category> attributes = new LinkedList<Category>();
+		for(Category attrs : request.getAttributes())
 		{
-			if(attrs.getCategory().equals(AttributeCategories.RESOURCE)){
+			if(attrs.getCategoryId().equals(Categories.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				Entity en = attrs.getEntity();
 				for(Attribute attr : en.getAttributes()){
@@ -74,8 +74,8 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 					}
 					resourceAttr.add(attr);
 				}
-				attributes.add(Attributes
-						.builder(attrs.getCategory())
+				attributes.add(Category
+						.builder(attrs.getCategoryId())
 						.entity(Entity.builder().content(entity.getContent()).attributes(resourceAttr).build())
 						.build());
 				continue;

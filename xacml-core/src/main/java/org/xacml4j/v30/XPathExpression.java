@@ -6,17 +6,17 @@ import com.google.common.base.Preconditions;
 public final class XPathExpression
 {
 	private String path;
-	private AttributeCategory categoryId;
+	private CategoryId categoryId;
 
 	public XPathExpression(String path,
-			AttributeCategory category){
+			CategoryId category){
 		Preconditions.checkNotNull(path);
 		Preconditions.checkNotNull(category);
 		this.path = path;
 		this.categoryId = category;
 	}
 
-	public AttributeCategory getCategory(){
+	public CategoryId getCategory(){
 		return categoryId;
 	}
 

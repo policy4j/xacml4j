@@ -22,9 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Entity;
@@ -115,8 +115,8 @@ implements ResponseUnmarshaller
 					.builder(d, create(result.getStatus()))
 					.obligation(getObligations(result));
 			if(result.getResourceId() != null){
-				b.includeInResult(Attributes
-						.builder(AttributeCategories.RESOURCE)
+				b.includeInResult(Category
+						.builder(Categories.RESOURCE)
 						.entity(Entity
 								.builder()
 								.attribute(

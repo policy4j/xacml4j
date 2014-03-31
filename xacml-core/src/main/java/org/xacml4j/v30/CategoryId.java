@@ -1,6 +1,6 @@
 package org.xacml4j.v30;
 
-public interface AttributeCategory
+public interface CategoryId
 {
 	/**
 	 * Gets XACML category identifier
@@ -21,7 +21,7 @@ public interface AttributeCategory
 	 * Converts this category to
 	 * XACML delegated category.
 	 *
-	 * @return {@link AttributeCategory}
+	 * @return {@link CategoryId}
 	 */
-	AttributeCategory toDelegatedCategory();
+	CategoryId toDelegatedCategory();
 }

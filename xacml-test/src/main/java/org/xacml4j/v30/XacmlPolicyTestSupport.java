@@ -164,12 +164,12 @@ public class XacmlPolicyTestSupport {
 		});
 	}
 
-	private static void assertAttributes(Collection<Attributes> a1,
-			Collection<Attributes> a2) {
-		assertArrayEquals(a1, a2, new Matcher<Attributes>() {
+	private static void assertAttributes(Collection<Category> a1,
+			Collection<Category> a2) {
+		assertArrayEquals(a1, a2, new Matcher<Category>() {
 			@Override
-			public boolean matches(Attributes o1, Attributes o2) {
-				return o1.getId().equals(o2.getId()) && o1.getCategory().equals(o2.getCategory());
+			public boolean matches(Category o1, Category o2) {
+				return o1.getId().equals(o2.getId()) && o1.getCategoryId().equals(o2.getCategoryId());
 			}
 		});
 	}

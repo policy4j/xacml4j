@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -21,7 +21,7 @@ public final class AttributeResolverDescriptorBuilder
 {
 	private String id;
 	private String name;
-	private AttributeCategory category;
+	private CategoryId category;
 	private Map<String, AttributeDescriptor> attributesById;
 	private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 	private String issuer;
@@ -32,7 +32,7 @@ public final class AttributeResolverDescriptorBuilder
 			String id,
 			String name,
 			String issuer,
-			AttributeCategory category){
+			CategoryId category){
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(category);
@@ -47,16 +47,16 @@ public final class AttributeResolverDescriptorBuilder
 	}
 
 	public static AttributeResolverDescriptorBuilder builder(String id,
-			String name, AttributeCategory category){
+			String name, CategoryId category){
 		return builder(id, name, null, category);
 	}
 
 	public static AttributeResolverDescriptorBuilder builder(String id,
-			String name, String issuer, AttributeCategory category){
+			String name, String issuer, CategoryId category){
 		return new AttributeResolverDescriptorBuilder(id, name, issuer, category);
 	}
 
-	public AttributeResolverDescriptorBuilder designatorKeyRef(AttributeCategory category,
+	public AttributeResolverDescriptorBuilder designatorKeyRef(CategoryId category,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(AttributeDesignatorKey
@@ -68,14 +68,14 @@ public final class AttributeResolverDescriptorBuilder
 		return this;
 	}
 
-	public AttributeResolverDescriptorBuilder requestContextKey(AttributeCategory category,
+	public AttributeResolverDescriptorBuilder requestContextKey(CategoryId category,
 			String attributeId, AttributeExpType dataType)
 	{
 		return designatorKeyRef(category, attributeId, dataType, null);
 	}
 
 	public AttributeResolverDescriptorBuilder requestContextKey(
-			AttributeCategory category,
+			CategoryId category,
 			String xpath, AttributeExpType dataType,
 			String contextAttributeId)
 	{

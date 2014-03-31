@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -36,13 +36,13 @@ class DefaultResolverRegistry implements ResolverRegistry
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<AttributeCategory, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
+	private Map<CategoryId, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
 	private ConcurrentMap<String, AttributeResolver> attributeResolversById;
 
 	private Multimap<String, AttributeResolver> scopedAttributeResolvers;
 
 
-	private Map<AttributeCategory, ContentResolver> contentResolvers;
+	private Map<CategoryId, ContentResolver> contentResolvers;
 
 	private ReadWriteLock attributeResolverRWLock;
 	private ReadWriteLock scopedAttributeResolverRWLock;
@@ -62,9 +62,9 @@ class DefaultResolverRegistry implements ResolverRegistry
 
 	public DefaultResolverRegistry()
 	{
-		this.attributeResolvers = new LinkedHashMap<AttributeCategory, Map<String, Multimap<String, AttributeResolver>>>();
+		this.attributeResolvers = new LinkedHashMap<CategoryId, Map<String, Multimap<String, AttributeResolver>>>();
 		this.scopedAttributeResolvers = LinkedHashMultimap.create();
-		this.contentResolvers = new ConcurrentHashMap<AttributeCategory, ContentResolver>();
+		this.contentResolvers = new ConcurrentHashMap<CategoryId, ContentResolver>();
 		this.policyScopedContentResolvers = LinkedHashMultimap.create();
 		this.attributeResolversById = new ConcurrentHashMap<String, AttributeResolver>();
 		this.contentResolversById = new ConcurrentHashMap<String, ContentResolver>();
@@ -306,7 +306,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 */
 	@Override
 	public ContentResolver getMatchingContentResolver(EvaluationContext context,
-			AttributeCategory category)
+			CategoryId category)
 	{
 		// stop recursive call if
 		// context is null

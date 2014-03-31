@@ -65,7 +65,7 @@ public class AttributesReference
 			return this;
 		}
 
-		public Builder from(Attributes a){
+		public Builder from(Category a){
 			return id(a.getId());
 		}
 

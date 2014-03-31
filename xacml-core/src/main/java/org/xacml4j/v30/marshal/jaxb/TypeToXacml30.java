@@ -10,8 +10,8 @@ import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.Entity;
@@ -390,7 +390,7 @@ public interface TypeToXacml30 extends TypeCapability
 			
 			@Override
 			public AttributeExp fromXacml30(AttributeValueType v) {
-				AttributeCategory categoryId = AttributeCategories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
+				CategoryId categoryId = Categories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
 				if(v.getContent().size() > 0){
 					if(categoryId == null){
 						throw new XacmlSyntaxException(

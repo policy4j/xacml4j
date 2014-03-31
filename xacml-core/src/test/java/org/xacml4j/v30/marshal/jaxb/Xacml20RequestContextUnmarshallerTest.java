@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
@@ -42,7 +42,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIIF005Request.xml"));
 		assertNotNull(request);
-		Entity subject = request.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS);
+		Entity subject = request.getOnlyEntity(Categories.SUBJECT_ACCESS);
 		assertNotNull(subject);
 
 		Attribute subjectId = Iterables.getOnlyElement(subject.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
@@ -52,7 +52,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 		assertEquals(StringExp.valueOf("riddle me this"), Iterables.getOnlyElement(subjectSomeAttribute.getValues()));
 
-		Entity resource = request.getOnlyEntity(AttributeCategories.RESOURCE);
+		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
 		assertEquals("record", ((Document)resource.getContent()).getDocumentElement().getLocalName());
@@ -63,7 +63,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
-		Entity action = request.getOnlyEntity(AttributeCategories.ACTION);
+		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -76,7 +76,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIA013Request.xml"));
 		assertNotNull(request);
-		assertEquals(2, request.getAttributeValues(AttributeCategories.SUBJECT_ACCESS,
+		assertEquals(2, request.getAttributeValues(Categories.SUBJECT_ACCESS,
 				"urn:oasis:names:tc:xacml:2.0:conformance-test:age", XacmlTypes.INTEGER, null).size());
 	}
 
@@ -86,28 +86,28 @@ public class Xacml20RequestContextUnmarshallerTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIB028Request.xml"));
 		assertNotNull(request);
-		Entity subjectAccess = request.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS);
+		Entity subjectAccess = request.getOnlyEntity(Categories.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity subjectRecepient = request.getOnlyEntity(AttributeCategories.SUBJECT_RECIPIENT);
+		Entity subjectRecepient = request.getOnlyEntity(Categories.SUBJECT_RECIPIENT);
 		assertNotNull(subjectRecepient);
 
 		subjectId = Iterables.getOnlyElement(subjectRecepient.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(StringExp.valueOf("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity subjectCodebase = request.getOnlyEntity(AttributeCategories.SUBJECT_CODEBASE);
+		Entity subjectCodebase = request.getOnlyEntity(Categories.SUBJECT_CODEBASE);
 		assertNotNull(subjectCodebase);
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(AnyURIExp.valueOf("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity resource = request.getOnlyEntity(AttributeCategories.RESOURCE);
+		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
@@ -116,7 +116,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
-		Entity action = request.getOnlyEntity(AttributeCategories.ACTION);
+		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -129,30 +129,30 @@ public class Xacml20RequestContextUnmarshallerTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("MultiResource-Request.xml"));
 		assertNotNull(request);
-		Entity subjectAccess = request.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS);
+		Entity subjectAccess = request.getOnlyEntity(Categories.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity subjectRecepient = request.getOnlyEntity(AttributeCategories.SUBJECT_RECIPIENT);
+		Entity subjectRecepient = request.getOnlyEntity(Categories.SUBJECT_RECIPIENT);
 		assertNotNull(subjectRecepient);
 
 		subjectId = Iterables.getOnlyElement(subjectRecepient.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(StringExp.valueOf("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity subjectCodebase = request.getOnlyEntity(AttributeCategories.SUBJECT_CODEBASE);
+		Entity subjectCodebase = request.getOnlyEntity(Categories.SUBJECT_CODEBASE);
 		assertNotNull(subjectCodebase);
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(AnyURIExp.valueOf("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Collection<Attributes> resource = request.getAttributes(AttributeCategories.RESOURCE);
+		Collection<Category> resource = request.getAttributes(Categories.RESOURCE);
 		assertNotNull(resource);
-		Iterator<Attributes> it = resource.iterator();
+		Iterator<Category> it = resource.iterator();
 
 		Entity resource0 = it.next().getEntity();
 		Attribute resourceId0 = Iterables.getOnlyElement(resource0.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
@@ -168,7 +168,7 @@ public class Xacml20RequestContextUnmarshallerTest
 
 
 
-		Entity action = request.getOnlyEntity(AttributeCategories.ACTION);
+		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -181,14 +181,14 @@ public class Xacml20RequestContextUnmarshallerTest
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIB030Request.xml"));
 		assertNotNull(request);
-		Entity subjectAccess = request.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS);
+		Entity subjectAccess = request.getOnlyEntity(Categories.SUBJECT_ACCESS);
 		assertNotNull(subjectAccess);
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
 		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
-		Entity resource = request.getOnlyEntity(AttributeCategories.RESOURCE);
+		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
@@ -200,7 +200,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertEquals(StringExp.valueOf("BartSimpson"), Iterables.getOnlyElement(simpleFileName.getValues()));
 
 
-		Entity action = request.getOnlyEntity(AttributeCategories.ACTION);
+		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
@@ -214,13 +214,13 @@ public class Xacml20RequestContextUnmarshallerTest
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("001A-Request.xml"));
 		assertNotNull(request);
 
-		Entity resource = request.getOnlyEntity(AttributeCategories.RESOURCE);
+		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
 		XPathExp xpath = (XPathExp)Iterables.getOnlyElement(resourceId.getValues());
-		assertEquals(AttributeCategories.RESOURCE, xpath.getCategory());
+		assertEquals(Categories.RESOURCE, xpath.getCategory());
 		assertEquals("//md:record/md:patient", xpath.getValue().getPath());
 	}
 

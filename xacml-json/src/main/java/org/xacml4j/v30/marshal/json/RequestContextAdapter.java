@@ -3,7 +3,7 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 
@@ -31,8 +31,8 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		JsonObject o = json.getAsJsonObject();
 		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
 		boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
-		Collection<Attributes> attributes = context.deserialize(o.getAsJsonArray(ATTRIBUTES_PROPERTY),
-				new TypeToken<Collection<Attributes>>() {
+		Collection<Category> attributes = context.deserialize(o.getAsJsonArray(ATTRIBUTES_PROPERTY),
+				new TypeToken<Collection<Category>>() {
 				}.getType());
 
 		Collection<RequestReference> reqRefs = ImmutableList.of();
@@ -48,7 +48,6 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 
 	@Override
 	public JsonElement serialize(RequestContext src, Type typeOfSrc, JsonSerializationContext context) {
-		System.out.println("Request ========");
 		JsonObject o = new JsonObject();
 		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
 		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());

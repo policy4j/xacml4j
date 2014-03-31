@@ -17,8 +17,8 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
@@ -43,8 +43,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	@Test
 	public void testRequestWithTwoAttributesOfTheCategory()
 	{
-		Attributes resource0 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category resource0 = Category
+				.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -52,8 +52,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 						Attribute.builder("testId2").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
-		Attributes resource1 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category resource1 = Category
+				.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -61,8 +61,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
-		Attributes subject = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category subject = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -86,14 +86,14 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
-		assertTrue(r0.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAttributes(AttributeCategories.RESOURCE).size());
+		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributes(Categories.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
-		assertTrue(r1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0) || r0.getAttributes(Categories.RESOURCE).contains(resource1));
+		assertTrue(r1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAttributes(AttributeCategories.RESOURCE).size());
-		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0) || r0.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getAttributes(Categories.RESOURCE).size());
+		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0) || r0.getAttributes(Categories.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 
@@ -101,8 +101,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	@Test
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
-		Attributes resource0 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category resource0 = Category
+				.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
@@ -111,8 +111,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 				.build();
 
 
-		Attributes subject = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category subject = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.entity(Entity.builder()
 						.attribute(
 								Attribute.builder("testId7").value(StringExp.valueOf("value0")).build(),
@@ -133,8 +133,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 
@@ -142,7 +142,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	public void testWithEmptyRequest()
 	{
 		RequestContext context = new RequestContext(false,
-				Collections.<Attributes>emptyList());
+				Collections.<Category>emptyList());
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

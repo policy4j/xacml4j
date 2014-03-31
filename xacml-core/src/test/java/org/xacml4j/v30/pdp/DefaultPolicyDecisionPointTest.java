@@ -13,7 +13,7 @@ import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
@@ -68,7 +68,7 @@ public class DefaultPolicyDecisionPointTest
 	public void testRequestEvaluationPolicyDomainEvaluatesToPermitAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
 
-		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
+		RequestContext req = new RequestContext(false, Collections.<Category>emptyList());
 
 		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
 		repository.addPolicyRepositoryListener(capture(c));
@@ -99,7 +99,7 @@ public class DefaultPolicyDecisionPointTest
 	public void testRequestEvaluationPolicyDomainEvaluatesToDenyAndRequestReturnEvaluatedPolicyIdsFalse()
 	{
 
-		RequestContext req = new RequestContext(false, Collections.<Attributes>emptyList());
+		RequestContext req = new RequestContext(false, Collections.<Category>emptyList());
 
 		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
 		repository.addPolicyRepositoryListener(capture(c));

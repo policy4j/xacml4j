@@ -2,7 +2,7 @@ package org.xacml4j.v30.spi.pip;
 
 import java.util.List;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeReferenceKey;
 
 import com.google.common.base.Preconditions;
@@ -14,13 +14,13 @@ public abstract class BaseResolverDescriptor
 	private String id;
 	private String name;
 
-	private AttributeCategory category;
+	private CategoryId category;
 	private List<AttributeReferenceKey> keyRefs;
 	private int cacheTTL;
 
 	protected BaseResolverDescriptor(String id,
 			String name,
-			AttributeCategory category,
+			CategoryId category,
 			List<AttributeReferenceKey> keys){
 		this(id, name, category, keys, 0);
 	}
@@ -28,7 +28,7 @@ public abstract class BaseResolverDescriptor
 	protected BaseResolverDescriptor(
 			String id,
 			String name,
-			AttributeCategory category,
+			CategoryId category,
 			List<AttributeReferenceKey> keys,
 			int preferredCacheTTL) {
 		Preconditions.checkNotNull(id);
@@ -63,7 +63,7 @@ public abstract class BaseResolverDescriptor
 	}
 
 	@Override
-	public final AttributeCategory getCategory() {
+	public final CategoryId getCategory() {
 		return category;
 	}
 

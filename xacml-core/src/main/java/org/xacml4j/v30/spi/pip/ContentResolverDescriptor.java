@@ -1,6 +1,6 @@
 package org.xacml4j.v30.spi.pip;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 
 public interface ContentResolverDescriptor extends ResolverDescriptor
 {
@@ -10,5 +10,5 @@ public interface ContentResolverDescriptor extends ResolverDescriptor
 	 * @param category an attribute category
 	 * @return {@code true} if content can be resolved
 	 */
-	boolean canResolve(AttributeCategory category);
+	boolean canResolve(CategoryId category);
 }

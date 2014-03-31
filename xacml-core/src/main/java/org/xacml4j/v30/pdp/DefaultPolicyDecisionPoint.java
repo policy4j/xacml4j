@@ -10,9 +10,9 @@ import javax.management.StandardMBean;
 
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
@@ -130,8 +130,8 @@ final class DefaultPolicyDecisionPoint
 	private Result createResult(
 			EvaluationContext context,
 			Decision decision,
-			Collection<Attributes> includeInResult,
-			Collection<Attributes> resolvedAttributes,
+			Collection<Category> includeInResult,
+			Collection<Category> resolvedAttributes,
 			boolean returnPolicyIdList)
 	{
 		if(decision == Decision.NOT_APPLICABLE){
@@ -171,9 +171,9 @@ final class DefaultPolicyDecisionPoint
 	 * @param context an evaluation context
 	 * @return a collection of {@link Attribute} instances
 	 */
-	private Collection<Attributes> getResolvedAttributes(EvaluationContext context){
+	private Collection<Category> getResolvedAttributes(EvaluationContext context){
 		Map<AttributeDesignatorKey, BagOfAttributeExp> desig = context.getResolvedDesignators();
-		Multimap<AttributeCategory, Attribute> attributes = HashMultimap.create();
+		Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
 		for(AttributeDesignatorKey k : desig.keySet()){
 			BagOfAttributeExp v = desig.get(k);
 			Collection<Attribute> values = attributes.get(k.getCategory());
@@ -183,9 +183,9 @@ final class DefaultPolicyDecisionPoint
 					.values(v.values())
 					.build());
 		}
-		Collection<Attributes> result = new LinkedList<Attributes>();
-		for(AttributeCategory c : attributes.keySet()){
-			result.add(Attributes
+		Collection<Category> result = new LinkedList<Category>();
+		for(CategoryId c : attributes.keySet()){
+			result.add(Category
 					.builder(c)
 					.entity(Entity.builder().attributes(attributes.get(c)).build())
 					.build());

@@ -17,9 +17,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xml.sax.InputSource;
@@ -33,7 +33,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<Attributes> 
+class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category> 
 {
 	static final String CATEGORY_PROPERTY = "Category";
 	static final String ID_PROPERTY = "Id";
@@ -44,17 +44,17 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 	private final static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
 	@Override
-	public Attributes deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		try {
 			JsonObject o = json.getAsJsonObject();
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
-			AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null));
+			CategoryId category = Categories.parse(GsonUtil.getAsString(o, CATEGORY_PROPERTY, null));
 			Node content = stringToNode(GsonUtil.getAsString(o, CONTENT_PROPERTY, null));
 			String id = GsonUtil.getAsString(o, ID_PROPERTY, null);
-			return Attributes.builder(category)
+			return Category.builder(category)
 					.id(id)
 					.entity(Entity
 							.builder() 
@@ -88,14 +88,14 @@ class AttributesAdapter implements JsonDeserializer<Attributes>, JsonSerializer<
 	}
 
 	@Override
-	public JsonElement serialize(Attributes src, Type typeOfSrc, 
+	public JsonElement serialize(Category src, Type typeOfSrc, 
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		if (src.getId() != null) {
 			o.addProperty(ID_PROPERTY, src.getId());
 		}
 		Entity e = src.getEntity();
-		o.addProperty(CATEGORY_PROPERTY, src.getCategory().getId());
+		o.addProperty(CATEGORY_PROPERTY, src.getCategoryId().getId());
 		o.addProperty(CONTENT_PROPERTY, nodeToString(e.getContent()));
 		o.add(ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
 		return o;

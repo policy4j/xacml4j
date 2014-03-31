@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
@@ -55,7 +55,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// test attributes
 		assertEquals(1, r1.getIncludeInResultAttributes().size());
-		Entity attrs = r1.getAttribute(AttributeCategories.SUBJECT_ACCESS).getEntity();
+		Entity attrs = r1.getAttribute(Categories.SUBJECT_ACCESS).getEntity();
 		assertEquals(1, attrs.getAttributes().size());
 		Collection<Attribute> attr1 = attrs.getAttributes("urn:test:attribute1");
 		assertEquals(1, attr1.size());

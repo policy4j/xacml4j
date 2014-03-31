@@ -10,8 +10,8 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 import java.lang.reflect.Type;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -36,7 +36,7 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
 
 		AttributeExp value = deserializeValue(context, o);
-		AttributeCategory category = AttributeCategories.parse(GsonUtil.getAsString(o, "Category", null));
+		CategoryId category = Categories.parse(GsonUtil.getAsString(o, "Category", null));
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 
 		return AttributeAssignment

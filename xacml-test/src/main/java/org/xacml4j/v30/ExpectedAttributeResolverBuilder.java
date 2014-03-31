@@ -20,16 +20,16 @@ public class ExpectedAttributeResolverBuilder
 		this.values = new HashMap<String, BagOfAttributeExp>();
 	}
 
-	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category, String issuer){
+	public static ExpectedAttributeResolverBuilder builder(String id, CategoryId category, String issuer){
 		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder.builder(id, "ExpectedAttributeResolver " + id, issuer, category));
 	}
 
-	public static ExpectedAttributeResolverBuilder builder(String id, AttributeCategory category){
+	public static ExpectedAttributeResolverBuilder builder(String id, CategoryId category){
 		return builder(id, category, null);
 	}
 
 	public ExpectedAttributeResolverBuilder withDesignatorKeyRef(
-			AttributeCategory category, String attributeId, AttributeExpType type)
+			CategoryId category, String attributeId, AttributeExpType type)
 	{
 		b.requestContextKey(category, attributeId, type);
 		return this;

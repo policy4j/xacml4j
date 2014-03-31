@@ -11,7 +11,7 @@ import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
@@ -60,48 +60,48 @@ public class DefaultPolicyInformationPointTest
 
 		this.attr0 = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttributeId1")
 				.dataType(XacmlTypes.STRING);
 
 		this.attr1 = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttributeId2")
 				.dataType(XacmlTypes.INTEGER);
 
 		this.key = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("username")
 				.dataType(XacmlTypes.STRING);
 
 		this.descriptor1 = AttributeResolverDescriptorBuilder
 				.builder("testId1", "Test Resolver",
-						AttributeCategories.SUBJECT_ACCESS)
+						Categories.SUBJECT_ACCESS)
 				.cache(30)
 				.attribute("testAttributeId1", XacmlTypes.STRING)
 				.attribute("testAttributeId2", XacmlTypes.INTEGER)
-				.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+				.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
 				.build();
 
 		this.descriptor1WithIssuer = AttributeResolverDescriptorBuilder
 				.builder("testId2", "Test Resolver", "Issuer",
-						AttributeCategories.SUBJECT_ACCESS)
+						Categories.SUBJECT_ACCESS)
 				.cache(40)
 				.attribute("testAttributeId1", XacmlTypes.STRING)
 				.attribute("testAttributeId2", XacmlTypes.INTEGER)
-				.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+				.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
 				.build();
 
 
 		this.descriptor1WithNoCache = AttributeResolverDescriptorBuilder
 		.builder("testId3", "Test Resolver", "Issuer",
-				AttributeCategories.SUBJECT_ACCESS)
+				Categories.SUBJECT_ACCESS)
 		.noCache()
 		.attribute("testAttributeId1", XacmlTypes.STRING)
 		.attribute("testAttributeId2", XacmlTypes.INTEGER)
-		.designatorKeyRef(AttributeCategories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+		.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
 		.build();
 	}
 

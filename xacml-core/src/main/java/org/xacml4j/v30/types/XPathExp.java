@@ -1,6 +1,6 @@
 package org.xacml4j.v30.types;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.XPathExpression;
 
@@ -17,7 +17,7 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 		return new XPathExp(xp);
 	}
 	
-	public static XPathExp valueOf(String xpath, AttributeCategory category){
+	public static XPathExp valueOf(String xpath, CategoryId category){
 		return new XPathExp(new XPathExpression(xpath, category));
 	}
 
@@ -25,7 +25,7 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 		return getValue().getPath();
 	}
 
-	public AttributeCategory getCategory(){
+	public CategoryId getCategory(){
 		return getValue().getCategory();
 	}
 	

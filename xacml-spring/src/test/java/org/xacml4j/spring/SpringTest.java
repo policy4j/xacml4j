@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
@@ -64,7 +64,7 @@ public class SpringTest extends AbstractJUnit4SpringContextTests
 		expect(parentContext.getParentContext()).andReturn(null);
 		c.replay();
 		resolverRegistry.getMatchingAttributeResolvers(policyContext, AttributeDesignatorKey.builder()
-				.category(AttributeCategories.parse("subject"))
+				.category(Categories.parse("subject"))
 				.attributeId("testId1")
 				.dataType(XacmlTypes.STRING).build());
 		c.verify();

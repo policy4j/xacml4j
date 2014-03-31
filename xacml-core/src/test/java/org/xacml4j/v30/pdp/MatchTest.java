@@ -7,7 +7,7 @@ import static org.easymock.EasyMock.expect;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -72,7 +72,7 @@ public class MatchTest
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(
 				AttributeDesignatorKey.builder()
-				.category(AttributeCategories.RESOURCE)
+				.category(Categories.RESOURCE)
 				.dataType(XacmlTypes.INTEGER)
 				.attributeId("testId")
 				.build(), "Failed"));

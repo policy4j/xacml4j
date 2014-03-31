@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeSelectorKey;
@@ -44,11 +44,11 @@ class DefaultEvaluationContextHandler
 
 	private RequestContextCallback requestCallback;
 
-	private Map<AttributeCategory, Node> contentCache;
+	private Map<CategoryId, Node> contentCache;
 
 	private Stack<AttributeDesignatorKey> designatorResolutionStack;
 	private Stack<AttributeSelectorKey> selectorResolutionStack;
-	private Stack<AttributeCategory> contentResolutionStack;
+	private Stack<CategoryId> contentResolutionStack;
 
 	DefaultEvaluationContextHandler(
 			RequestContextCallback requestCallback,
@@ -62,10 +62,10 @@ class DefaultEvaluationContextHandler
 		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 		this.requestCallback = requestCallback;
-		this.contentCache = new HashMap<AttributeCategory, Node>();
+		this.contentCache = new HashMap<CategoryId, Node>();
 		this.selectorResolutionStack = new Stack<AttributeSelectorKey>();
 		this.designatorResolutionStack = new Stack<AttributeDesignatorKey>();
-		this.contentResolutionStack = new Stack<AttributeCategory>();
+		this.contentResolutionStack = new Stack<CategoryId>();
 	}
 
 	@Override
@@ -147,7 +147,7 @@ class DefaultEvaluationContextHandler
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */
-	private final Node doGetContent(EvaluationContext context, AttributeCategory category)
+	private final Node doGetContent(EvaluationContext context, CategoryId category)
 		throws Exception
 	{
 		Node content = null;

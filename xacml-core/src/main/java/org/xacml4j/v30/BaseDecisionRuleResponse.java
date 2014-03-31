@@ -112,7 +112,7 @@ public abstract class BaseDecisionRuleResponse
 
 		public final T attribute(
 				String id,
-				AttributeCategory category,
+				CategoryId category,
 				String issuer,
 				AttributeExp ... values)
 		{

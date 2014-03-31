@@ -56,7 +56,7 @@ public class RequestReference
 				.returnPolicyIdList(context.isCombinedDecision())
 				.reqDefaults(context.getRequestDefaults());
 		for(AttributesReference ref : references){
-			Attributes a = context.getReferencedAttributes(ref);
+			Category a = context.getReferencedAttributes(ref);
 			if(a == null){
 				throw new RequestSyntaxException(
 						"Failed to resolve attribute reference",
@@ -93,8 +93,8 @@ public class RequestReference
 			return this;
 		}
 
-		public Builder reference(Attributes ... attrs){
-			for(Attributes a : attrs){
+		public Builder reference(Category ... attrs){
+			for(Category a : attrs){
 				this.refs.add(AttributesReference.builder().from(a).build());
 			}
 			return this;

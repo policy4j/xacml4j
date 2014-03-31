@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 public class AttributeAssignment
 {
 	private final AttributeExp attribute;
-	private final AttributeCategory category;
+	private final CategoryId category;
 	private final String attributeId;
 	private final String issuer;
 
@@ -56,7 +56,7 @@ public class AttributeAssignment
 	 *
 	 * @return attribute category
 	 */
-	public AttributeCategory getCategory(){
+	public CategoryId getCategory(){
 		return category;
 	}
 
@@ -109,7 +109,7 @@ public class AttributeAssignment
 	public static class Builder
 	{
 		private String attributeId;
-		private AttributeCategory category;
+		private CategoryId category;
 		private String issuer;
 		private AttributeExp value;
 
@@ -134,13 +134,13 @@ public class AttributeAssignment
 			return this;
 		}
 
-		public Builder category(AttributeCategory category){
+		public Builder category(CategoryId category){
 			this.category = category;
 			return this;
 		}
 
 		public Builder category(String category){
-			this.category = AttributeCategories.parse(category);
+			this.category = Categories.parse(category);
 			return this;
 		}
 

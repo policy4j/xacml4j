@@ -2,7 +2,7 @@ package org.xacml4j.v30.spi.pip;
 
 import java.util.List;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeReferenceKey;
 
 import com.google.common.base.Preconditions;
@@ -27,7 +27,7 @@ class ResolverDescriptorDelegate implements ResolverDescriptor
 	}
 
 	@Override
-	public AttributeCategory getCategory() {
+	public CategoryId getCategory() {
 		return d.getCategory();
 	}
 

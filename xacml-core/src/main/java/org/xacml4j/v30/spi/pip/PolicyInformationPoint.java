@@ -2,7 +2,7 @@ package org.xacml4j.v30.spi.pip;
 
 
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
@@ -47,7 +47,7 @@ public interface PolicyInformationPoint
 	 */
 	Node resolve(
 			EvaluationContext context,
-			AttributeCategory category)
+			CategoryId category)
 		throws Exception;
 
 	/**

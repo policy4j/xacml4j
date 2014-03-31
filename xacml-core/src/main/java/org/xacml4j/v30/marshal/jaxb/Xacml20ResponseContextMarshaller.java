@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Obligation;
@@ -134,7 +134,7 @@ public class Xacml20ResponseContextMarshaller
 			if(log.isDebugEnabled()){
 				log.debug("Mapping result=\"{}\" to resourceId", result);
 			}
-			Attributes resource = result.getAttribute(AttributeCategories.RESOURCE);
+			Category resource = result.getAttribute(Categories.RESOURCE);
 			if(resource == null){
 				return null;
 			}

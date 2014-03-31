@@ -14,7 +14,7 @@ import org.w3c.dom.NodeList;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
@@ -63,13 +63,13 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		try
 		{
 			XPathProvider xpathProvider = context.getXPathProvider();
-			List<Set<Attributes>> all = new LinkedList<Set<Attributes>>();
-			for(Attributes attribute : request.getAttributes()){
+			List<Set<Category>> all = new LinkedList<Set<Category>>();
+			for(Category attribute : request.getAttributes()){
 				all.add(getAttributes(request, attribute, xpathProvider));
 			}
-			Set<List<Attributes>> cartesian = Sets.cartesianProduct(all);
+			Set<List<Category>> cartesian = Sets.cartesianProduct(all);
 			List<Result> results = new LinkedList<Result>();
-			for(List<Attributes> requestAttr : cartesian)
+			for(List<Category> requestAttr : cartesian)
 			{
 				RequestContext req = new RequestContext(request.isReturnPolicyIdList(),
 						requestAttr, request.getRequestDefaults());
@@ -87,7 +87,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 	}
 
-	private Set<Attributes> getAttributes(RequestContext request, Attributes attribute,
+	private Set<Category> getAttributes(RequestContext request, Category attribute,
 			XPathProvider xpathProvider)
 		throws RequestSyntaxException
 	{
@@ -104,12 +104,12 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		if(content == null){
 			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
-					attribute.getCategory(), selector.getValue());
+					attribute.getCategoryId(), selector.getValue());
 		}
 		try
 		{
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(selector.getPath(), content);
-			Set<Attributes> attributes = new LinkedHashSet<Attributes>();
+			Set<Category> attributes = new LinkedHashSet<Category>();
 			for(int i = 0; i < nodeSet.getLength(); i++){
 				String xpath = DOMUtil.getXPath(nodeSet.item(i));
 				attributes.add(transform(xpath, attribute));
@@ -125,7 +125,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 	}
 
-	private Attributes transform(String xpath, Attributes attributes)
+	private Category transform(String xpath, Category attributes)
 	{
 		Collection<Attribute> newAttributes = new LinkedList<Attribute>();
 		Entity e =  attributes.getEntity();
@@ -136,15 +136,15 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 						Attribute.builder(CONTENT_SELECTOR)
 						.issuer(a.getIssuer())
 						.includeInResult(a.isIncludeInResult())
-						.value(XPathExp.valueOf(xpath, attributes.getCategory()))
+						.value(XPathExp.valueOf(xpath, attributes.getCategoryId()))
 						.build();
 				newAttributes.add(selectorAttr);
 				continue;
 			}
 			newAttributes.add(a);
 		}
-		return Attributes
-				.builder(attributes.getCategory())
+		return Category
+				.builder(attributes.getCategoryId())
 				.id(attributes.getId())
 				.entity(Entity.builder().content(e.getContent()).attributes(newAttributes).build())
 				.build();

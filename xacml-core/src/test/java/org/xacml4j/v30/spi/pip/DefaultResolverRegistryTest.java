@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.Policy;
@@ -39,7 +39,7 @@ public class DefaultResolverRegistryTest
 		this.r2 = control.createMock(AttributeResolver.class);
 
 		this.d1 = AttributeResolverDescriptorBuilder.
-		builder("testId1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+		builder("testId1", "Test1", Categories.SUBJECT_ACCESS)
 		.attribute("testAttr1", XacmlTypes.INTEGER).build();
 
 
@@ -49,14 +49,14 @@ public class DefaultResolverRegistryTest
 	public void testAddDifferentResolversWithTheSameAttributesNoIssuer()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 		expect(r1.getDescriptor()).andReturn(d);
 
 		expect(r2.getDescriptor()).andReturn(
 				AttributeResolverDescriptorBuilder
-				.builder("test2", "Test2", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test2", "Test2", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build());
 
@@ -72,14 +72,14 @@ public class DefaultResolverRegistryTest
 	public void testAddResolversWithTheSameIdsAndAttributesNoIssuer()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 		expect(r1.getDescriptor()).andReturn(d);
 
 		expect(r2.getDescriptor()).andReturn(
 				AttributeResolverDescriptorBuilder
-				.builder("test1", "Test2", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test2", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build());
 
@@ -95,11 +95,11 @@ public class DefaultResolverRegistryTest
 	public void testAddResolverWithTheSameAttributesWithDifferentIssuers()
 	{
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", "Issuer1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", "Issuer1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
-				.builder("test2", "Test2", "Issuer2", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test2", "Test2", "Issuer2", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
@@ -130,7 +130,7 @@ public class DefaultResolverRegistryTest
 		r.addAttributeResolver(r2);
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -157,11 +157,11 @@ public class DefaultResolverRegistryTest
 	public void testAddResolverWithTheSameAttributesFirstWithNullIssuerSecondWithIssuer()
 	{
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
-				.builder("test2", "Test2", "Issuer", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test2", "Test2", "Issuer", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
@@ -189,7 +189,7 @@ public class DefaultResolverRegistryTest
 		control.replay();
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -217,12 +217,12 @@ public class DefaultResolverRegistryTest
 	public void testAddResolverSameGloballyAndScoped()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -259,12 +259,12 @@ public class DefaultResolverRegistryTest
 	public void testAddResolverMatchingResolverGloballyAndScoped()
 	{
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
 		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
-				.builder("test2", "Test2", "Issuer", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test2", "Test2", "Issuer", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
@@ -296,7 +296,7 @@ public class DefaultResolverRegistryTest
 		control.replay();
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -325,7 +325,7 @@ public class DefaultResolverRegistryTest
 	public void testAddResolverForPolicyIdCurrentPolicyHasMatchingResolver()
 	{
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -348,14 +348,14 @@ public class DefaultResolverRegistryTest
 	public void testResolverResolutionWith2LevelPolicyHierarchy()
 	{
 		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
-				.builder("test1", "Test1", AttributeCategories.SUBJECT_ACCESS)
+				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build();
 
 		AttributeResolver resolver = control.createMock(AttributeResolver.class);
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 

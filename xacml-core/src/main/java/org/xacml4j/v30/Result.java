@@ -16,9 +16,9 @@ public class Result
 	private Decision decision;
 	private Map<String, Obligation> obligations;
 	private Map<String, Advice> associatedAdvice;
-	private Map<AttributeCategory, Attributes> includeInResultAttributes;
+	private Map<CategoryId, Category> includeInResultAttributes;
 	private Collection<CompositeDecisionRuleIDReference> policyReferences;
-	private Map<AttributeCategory, Attributes> resolvedAttributes;
+	private Map<CategoryId, Category> resolvedAttributes;
 	private int hashCode;
 
 	private Result(Builder b){
@@ -127,11 +127,11 @@ public class Result
 	/**
 	 * Gets a list of attributes that were part of the request.
 	 * The choice of which attributes are included here is made
-	 * with the request attributes {@link org.xacml4j.v30.Attributes#getIncludeInResultAttributes()}}
+	 * with the request attributes {@link org.xacml4j.v30.Category#getIncludeInResultAttributes()}}
 	 *
-	 * @return a collection of {@link Attributes} instances
+	 * @return a collection of {@link Category} instances
 	 */
-	public Collection<Attributes> getIncludeInResultAttributes(){
+	public Collection<Category> getIncludeInResultAttributes(){
 		return includeInResultAttributes.values();
 	}
 
@@ -141,11 +141,11 @@ public class Result
 	 *
 	 * @return a collection of resolved attributes
 	 */
-	public Collection<Attributes> getResolvedAttributes(){
+	public Collection<Category> getResolvedAttributes(){
 		return resolvedAttributes.values();
 	}
 
-	public Attributes getAttribute(AttributeCategory categoryId){
+	public Category getAttribute(CategoryId categoryId){
 		return includeInResultAttributes.get(categoryId);
 	}
 
@@ -249,14 +249,14 @@ public class Result
 		private Decision decision;
 		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
 		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
-		private ImmutableMap.Builder<AttributeCategory, Attributes> includeInResultAttributes = ImmutableMap.builder();
+		private ImmutableMap.Builder<CategoryId, Category> includeInResultAttributes = ImmutableMap.builder();
 		private ImmutableCollection.Builder<CompositeDecisionRuleIDReference> policyReferences = ImmutableList.builder();
-		private ImmutableMap.Builder<AttributeCategory, Attributes> resolvedAttributes = ImmutableMap.builder();
+		private ImmutableMap.Builder<CategoryId, Category> resolvedAttributes = ImmutableMap.builder();
 
 
-		public Builder includeInResult(Attributes a){
+		public Builder includeInResult(Category a){
 			Preconditions.checkNotNull(a);
-			Preconditions.checkState(includeInResultAttributes.put(a.getCategory(), a) != null);
+			Preconditions.checkState(includeInResultAttributes.put(a.getCategoryId(), a) != null);
 			return this;
 		}
 
@@ -271,16 +271,16 @@ public class Result
 			return this;
 		}
 
-		public Builder includeInResultAttr(Iterable<Attributes> attributes){
-			for(Attributes a : attributes){
-				includeInResultAttributes.put(a.getCategory(), a);
+		public Builder includeInResultAttr(Iterable<Category> attributes){
+			for(Category a : attributes){
+				includeInResultAttributes.put(a.getCategoryId(), a);
 			}
 			return this;
 		}
 
-		public Builder resolvedAttr(Iterable<Attributes> attributes){
-			for(Attributes a : attributes){
-				resolvedAttributes.put(a.getCategory(), a);
+		public Builder resolvedAttr(Iterable<Category> attributes){
+			for(Category a : attributes){
+				resolvedAttributes.put(a.getCategoryId(), a);
 			}
 			return this;
 		}

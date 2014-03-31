@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.types.IntegerExp;
 
@@ -19,12 +19,12 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attr1Builder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 		AttributeAssignment.Builder attr2Builder = AttributeAssignment.builder()
 				.id("testId2")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 		Advice a = Advice.builder("testId", Effect.DENY)
@@ -42,7 +42,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 
@@ -69,7 +69,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 
@@ -96,7 +96,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 
@@ -128,7 +128,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 
@@ -147,7 +147,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 
@@ -163,7 +163,7 @@ public class AdviceTest
 	{
 		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
 				.id("testId1")
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
 				.value(IntegerExp.valueOf(0));
 

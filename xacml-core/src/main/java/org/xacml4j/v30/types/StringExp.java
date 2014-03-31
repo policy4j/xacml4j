@@ -26,14 +26,24 @@ public final class StringExp extends BaseAttributeExp<String>
 		return new StringExp(v);
 	}
 	
+	/**
+	 * Delegates to {@link XacmlTypes#STRING#emptyBag()}
+	 * 
+	 * @return {@link BagOfAttributeExp} empty bag
+	 */
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.STRING.emptyBag();
 	}
 	
+	/**
+	 * Delegates to {@link XacmlTypes#STRING#bag()}
+	 * 
+	 * @return {@link BagOfAttributeExp} empty bag
+	 */
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.STRING.bag();
 	}
-
+	
 	public boolean equalsIgnoreCase(StringExp v){
 		return getValue().equalsIgnoreCase(v.getValue());
 	}

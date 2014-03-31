@@ -11,8 +11,8 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XPathVersion;
@@ -22,15 +22,15 @@ import org.xacml4j.v30.types.StringExp;
 
 public class RequestTest
 {
-	private Attributes resource0;
-	private Attributes resource1;
-	private Attributes subject0;
-	private Attributes subject1;
+	private Category resource0;
+	private Category resource1;
+	private Category subject0;
+	private Category subject1;
 
 	@Before
 	public void init()
 	{
-			this.resource0 = Attributes.builder(AttributeCategories.RESOURCE)
+			this.resource0 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity
 						.builder()
@@ -38,7 +38,7 @@ public class RequestTest
 						Attribute.builder("testId10").value(StringExp.valueOf("value0")).build(),
 						Attribute.builder("testId11").value(StringExp.valueOf("value1")).build()).build())
 				.build();
-		this.resource1 = Attributes.builder(AttributeCategories.RESOURCE)
+		this.resource1 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity
 						.builder()
@@ -48,7 +48,7 @@ public class RequestTest
 						Attribute.builder("testId23").includeInResult(true).value(StringExp.valueOf("value2")).build(),
 						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(StringExp.valueOf("value2")).build()).build())
 				.build();
-		this.subject0 =  Attributes.builder(AttributeCategories.SUBJECT_ACCESS)
+		this.subject0 =  Category.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity
 						.builder()
@@ -56,7 +56,7 @@ public class RequestTest
 						Attribute.builder("testId31").value(StringExp.valueOf("value0")).build(),
 						Attribute.builder("testId32").value(StringExp.valueOf("value1")).build()).build())
 				.build();
-		this.subject1 = Attributes.builder(AttributeCategories.SUBJECT_CODEBASE)
+		this.subject1 = Category.builder(Categories.SUBJECT_CODEBASE)
 				.entity(
 						Entity
 						.builder()
@@ -89,17 +89,17 @@ public class RequestTest
 				Arrays.asList(subject0, resource0, resource1));
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
-		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
 
 		RequestContext request2 = new RequestContext(true,
 				Arrays.asList(subject0, resource0, resource1));
 
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(AttributeCategories.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(AttributeCategories.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
 	}
 
 	@Test
@@ -108,11 +108,11 @@ public class RequestTest
 
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(subject0, resource0, resource1));
-		Collection<Attributes> attr = request.getAttributes(AttributeCategories.RESOURCE);
+		Collection<Category> attr = request.getAttributes(Categories.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
 		assertTrue(attr.contains(resource1));
-		attr = request.getAttributes(AttributeCategories.ENVIRONMENT);
+		attr = request.getAttributes(Categories.ENVIRONMENT);
 		assertEquals(0, attr.size());
 	}
 
@@ -122,7 +122,7 @@ public class RequestTest
 
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(subject0, resource0));
-		Collection<Attributes> attr = request.getAttributes(AttributeCategories.ACTION);
+		Collection<Category> attr = request.getAttributes(Categories.ACTION);
 		assertNotNull(attr);
 	}
 
@@ -131,7 +131,7 @@ public class RequestTest
 	{
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(subject0, resource0, resource1));
-		request.getOnlyAttributes(AttributeCategories.RESOURCE);
+		request.getOnlyAttributes(Categories.RESOURCE);
 	}
 
 	@Test
@@ -139,7 +139,7 @@ public class RequestTest
 	{
 		RequestContext request = new RequestContext(false,
 				Arrays.asList(subject0, resource0));
-		Attributes attr = request.getOnlyAttributes(AttributeCategories.RESOURCE);
+		Category attr = request.getOnlyAttributes(Categories.RESOURCE);
 		assertEquals(resource0, attr);
 	}
 

@@ -33,7 +33,10 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		o.addProperty(INCLUDE_IN_RESULT_PROPERTY, src.isIncludeInResult());
+		// OMIT property if value is "false"
+		if(src.isIncludeInResult()){
+			o.addProperty(INCLUDE_IN_RESULT_PROPERTY, src.isIncludeInResult());
+		}
 		return o;
 	}
 
@@ -41,13 +44,13 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
 		Iterator<AttributeExp> valueIterator = values.iterator();
 		AttributeExp firstValue = valueIterator.next();
+		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 		if (valueIterator.hasNext()) {
 			o.add(VALUE_PROPERTY, context.serialize(values, new TypeToken<Collection<AttributeExp>>() {
 			}.getType()));
 		} else {
 			o.add(VALUE_PROPERTY, context.serialize(firstValue, AttributeExp.class));
 		}
-		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 	}
 
 }

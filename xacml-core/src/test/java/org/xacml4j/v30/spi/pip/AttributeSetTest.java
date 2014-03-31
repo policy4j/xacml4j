@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -21,12 +21,12 @@ public class AttributeSetTest
 	@Before
 	public void init(){
 		this.noIssuer = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", null, AttributeCategories.SUBJECT_ACCESS)
+				"id", "name", null, Categories.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
 				.build();
 		this.withIssuer = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", AttributeCategories.SUBJECT_ACCESS)
+				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
 				.build();
@@ -39,7 +39,7 @@ public class AttributeSetTest
 		AttributeDesignatorKey.Builder key =
 				AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER)
 				.issuer("issuer");
@@ -47,7 +47,7 @@ public class AttributeSetTest
 		AttributeDesignatorKey.Builder key1 =
 				AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testId2")
 				.issuer("issuer")
 				.dataType(XacmlTypes.STRING);
@@ -78,7 +78,7 @@ public class AttributeSetTest
 		AttributeDesignatorKey.Builder key =
 				AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER);
 

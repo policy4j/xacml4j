@@ -14,7 +14,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -82,12 +82,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 		
 		c.replay();
 
@@ -103,12 +103,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 		
 		c.replay();
 
@@ -123,14 +123,14 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		final AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(null);
 
-		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andStubAnswer(new IAnswer<Node>()
+		expect(pip.resolve(context, Categories.SUBJECT_RECIPIENT)).andStubAnswer(new IAnswer<Node>()
 		{
 			@Override
 			public Node answer() throws Throwable {
@@ -154,12 +154,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 
@@ -173,12 +173,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
@@ -194,12 +194,12 @@ public class DefaultEvaluationContextHandlerTest
 
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 
 		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
 		
@@ -213,12 +213,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/test")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 		
 		c.replay();
 		Expression v = handler.resolve(context, ref);
@@ -233,14 +233,14 @@ public class DefaultEvaluationContextHandlerTest
 
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.SUBJECT_RECIPIENT)).andReturn(null);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(null);
 
-		expect(pip.resolve(context, AttributeCategories.SUBJECT_RECIPIENT)).andThrow(new RuntimeException());
+		expect(pip.resolve(context, Categories.SUBJECT_RECIPIENT)).andThrow(new RuntimeException());
 
 		c.replay();
 		handler.resolve(context, ref);
@@ -253,12 +253,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeDesignatorKey ref = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.RESOURCE)
+				.category(Categories.RESOURCE)
 				.attributeId("testId")
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.RESOURCE)).andReturn(entity);
 		expect(pip.resolve(context, ref)).andReturn(AnyURIExp.valueOf("testValue").toBag());
 
 		c.replay();
@@ -274,12 +274,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		AttributeDesignatorKey ref = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.RESOURCE)
+				.category(Categories.RESOURCE)
 				.attributeId("testId")
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.RESOURCE)).andReturn(entity);
 
 		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
 
@@ -294,12 +294,12 @@ public class DefaultEvaluationContextHandlerTest
 	{
 		final AttributeDesignatorKey ref = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.RESOURCE)
+				.category(Categories.RESOURCE)
 				.attributeId("testId")
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.RESOURCE)).andReturn(entity);
 
 
 		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<BagOfAttributeExp>() {
@@ -310,7 +310,7 @@ public class DefaultEvaluationContextHandlerTest
 			}
 		});
 
-		expect(requestContextCallback.getEntity(AttributeCategories.RESOURCE)).andReturn(entity);
+		expect(requestContextCallback.getEntity(Categories.RESOURCE)).andReturn(entity);
 
 		c.replay();
 		handler.resolve(context, ref);

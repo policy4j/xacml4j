@@ -15,8 +15,8 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
@@ -53,13 +53,13 @@ public class JsonResponseContextUnmarshallerTest {
 								ImmutableList.<AttributeAssignment> of(
 										AttributeAssignment.builder()
 												.id(SubjectAttributes.SUBJECT_ID.toString())
-												.category(AttributeCategories.ACTION)
+												.category(Categories.ACTION)
 												.issuer("Vytenai")
 												.value(StringExp.valueOf("obuolys"))
 												.build(),
 										AttributeAssignment.builder()
 												.id(SubjectAttributes.KEY_INFO.toString())
-												.category(AttributeCategories.ACTION)
+												.category(Categories.ACTION)
 												.issuer("ispanija")
 												.value(StringExp.valueOf("apelsinas"))
 												.build()))
@@ -88,8 +88,8 @@ public class JsonResponseContextUnmarshallerTest {
 					.build(),
 				Advice.builder("advice2").build()));
 
-		Attributes subjectAttributes = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category subjectAttributes = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
 				.entity(Entity
 						.builder()
@@ -107,7 +107,7 @@ public class JsonResponseContextUnmarshallerTest {
 										.includeInResult(false).issuer("testIssuer")
 										.value(StringExp.valueOf("TestDomain")).build())).build())
 						.build();
-		resultBuilder.includeInResultAttr(ImmutableList.<Attributes> of(subjectAttributes));
+		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
 
 		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")
 				.versionAsString("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));

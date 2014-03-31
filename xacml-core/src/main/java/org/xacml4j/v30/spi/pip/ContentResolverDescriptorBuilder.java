@@ -3,7 +3,7 @@ package org.xacml4j.v30.spi.pip;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -16,11 +16,11 @@ public final class ContentResolverDescriptorBuilder
 {
 	private String id;
 	private String name;
-	private AttributeCategory category;
+	private CategoryId category;
 	private List<AttributeReferenceKey> keys;
 	private int cacheTTL;
 
-	private ContentResolverDescriptorBuilder(String id, String name, AttributeCategory category)
+	private ContentResolverDescriptorBuilder(String id, String name, CategoryId category)
 	{
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(name);
@@ -31,11 +31,11 @@ public final class ContentResolverDescriptorBuilder
 		this.keys = new LinkedList<AttributeReferenceKey>();
 	}
 
-	public static ContentResolverDescriptorBuilder bulder(String id, String name, AttributeCategory category){
+	public static ContentResolverDescriptorBuilder bulder(String id, String name, CategoryId category){
 		return new ContentResolverDescriptorBuilder(id, name, category);
 	}
 
-	public ContentResolverDescriptorBuilder designatorRef(AttributeCategory category,
+	public ContentResolverDescriptorBuilder designatorRef(CategoryId category,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		this.keys.add(AttributeDesignatorKey
@@ -49,7 +49,7 @@ public final class ContentResolverDescriptorBuilder
 	}
 
 	public ContentResolverDescriptorBuilder selectorRef(
-			AttributeCategory category,
+			CategoryId category,
 			String xpath, AttributeExpType dataType,
 			String contextAttributeId)
 	{
@@ -91,7 +91,7 @@ public final class ContentResolverDescriptorBuilder
 		}
 
 		@Override
-		public boolean canResolve(AttributeCategory category) {
+		public boolean canResolve(CategoryId category) {
 			return getCategory().equals(category);
 		}
 	}

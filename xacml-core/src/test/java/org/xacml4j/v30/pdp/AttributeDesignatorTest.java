@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -36,7 +36,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -60,7 +60,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.mustBePresent(true)
@@ -86,7 +86,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -109,7 +109,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -130,7 +130,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -151,7 +151,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -169,7 +169,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -191,7 +191,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)
@@ -209,7 +209,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.attributeId("testId")
 				.issuer("testIssuer")
 				.dataType(XacmlTypes.INTEGER)

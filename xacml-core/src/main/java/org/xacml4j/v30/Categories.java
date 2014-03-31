@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.google.common.base.Strings;
 
-public enum AttributeCategories implements AttributeCategory
+public enum Categories implements CategoryId
 {
 
 	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
@@ -26,24 +26,24 @@ public enum AttributeCategories implements AttributeCategory
 
 	private String categoryURI;
 
-	private AttributeCategory delegated;
+	private CategoryId delegated;
 
 	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
 
-	private static final Map<String, AttributeCategory> BY_ID = new HashMap<String, AttributeCategory>();
+	private static final Map<String, CategoryId> BY_ID = new HashMap<String, CategoryId>();
 
 	static
 	{
-		for(AttributeCategory category : EnumSet.allOf(AttributeCategories.class)){
+		for(CategoryId category : EnumSet.allOf(Categories.class)){
 			BY_ID.put(category.getId(), category);
-			AttributeCategory delegate = category.toDelegatedCategory();
+			CategoryId delegate = category.toDelegatedCategory();
 			if(delegate != null){
 				BY_ID.put(delegate.getId(), delegate);
 			}
 		}
 	}
 
-	private AttributeCategories(
+	private Categories(
 			String categoryURI){
 		this.categoryURI = categoryURI;
 		if(!isDelegate(categoryURI)){
@@ -63,7 +63,7 @@ public enum AttributeCategories implements AttributeCategory
 
 
 	@Override
-	public AttributeCategory toDelegatedCategory() {
+	public CategoryId toDelegatedCategory() {
 		return delegated;
 	}
 
@@ -73,21 +73,21 @@ public enum AttributeCategories implements AttributeCategory
 	}
 
 	/**
-	 * Parses given value to the {@link AttributeCategories}
+	 * Parses given value to the {@link Categories}
 	 *
 	 * @param v a value
-	 * @return {@link AttributeCategories}
+	 * @return {@link Categories}
 	 * @throws XacmlSyntaxException if given
 	 * value can not be converted to the
-	 * {@link AttributeCategories} value
+	 * {@link Categories} value
 	 */
-	public static AttributeCategory parse(String v)
+	public static CategoryId parse(String v)
 		throws XacmlSyntaxException
 	{
 		if(Strings.isNullOrEmpty(v)){
 			return null;
 		}
-		AttributeCategory c = BY_ID.get(v);
+		CategoryId c = BY_ID.get(v);
 		if(c == null){
 			c = new CustomCategory(v);
 		}
@@ -123,16 +123,16 @@ public enum AttributeCategories implements AttributeCategory
 	}
 
 	private static class CustomCategory
-		implements AttributeCategory
+		implements CategoryId
 	{
 		private String categoryURI;
-		private AttributeCategory delegated;
+		private CategoryId delegated;
 
 		private CustomCategory(
 				String categoryURI)
 		{
 			this.categoryURI = categoryURI;
-			if(!AttributeCategories.isDelegate(categoryURI)){
+			if(!Categories.isDelegate(categoryURI)){
 				this.delegated = new CustomCategory(toDelegateURI(categoryURI));
 			}
 		}
@@ -148,7 +148,7 @@ public enum AttributeCategories implements AttributeCategory
 		}
 
 		@Override
-		public AttributeCategory toDelegatedCategory() {
+		public CategoryId toDelegatedCategory() {
 			return delegated;
 		}
 
@@ -162,10 +162,10 @@ public enum AttributeCategories implements AttributeCategory
 			if(this == obj){
 				return true;
 			}
-			if(!(obj instanceof AttributeCategory)){
+			if(!(obj instanceof CategoryId)){
 				return false;
 			}
-			AttributeCategory c = (AttributeCategory)obj;
+			CategoryId c = (CategoryId)obj;
 			return c.getId().equals(categoryURI);
 		}
 

@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.util.TypeToken;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -80,7 +80,7 @@ class AnnotatedResolverFactory
 		AttributeResolverDescriptorBuilder b = AttributeResolverDescriptorBuilder.builder(
 				d.id(), d.name(),
 				d.issuer(),
-				AttributeCategories.parse(d.category()));
+				Categories.parse(d.category()));
 		b.cache(d.cacheTTL());
 		XacmlAttributeDescriptor[] attributes = d.attributes();
 		if(attributes == null ||
@@ -124,7 +124,7 @@ class AnnotatedResolverFactory
 		XacmlContentResolverDescriptor d = m.getAnnotation(XacmlContentResolverDescriptor.class);
 		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.bulder(
 				d.id(), d.name(),
-				AttributeCategories.parse(d.category()));
+				Categories.parse(d.category()));
 		b.cache(d.cacheTTL());
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());

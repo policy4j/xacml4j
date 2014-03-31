@@ -18,8 +18,8 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
@@ -47,8 +47,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	@Test
 	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
-		Attributes attr0 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category attr0 = Category
+				.builder(Categories.RESOURCE)
 				.id("resourceAttr0")
 				.entity(
 						Entity.builder()
@@ -58,8 +58,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 						.build())
 				.build();
 
-		Attributes attr1 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category attr1 = Category
+				.builder(Categories.RESOURCE)
 				.id("resourceAttr1")
 				.entity(
 						Entity.builder()
@@ -69,8 +69,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 						.build())
 				.build();
 
-		Attributes attr2 = Attributes
-				.builder(AttributeCategories.ACTION)
+		Category attr2 = Category
+				.builder(Categories.ACTION)
 				.id("actionAttr0")
 				.entity(
 						Entity.builder()
@@ -80,8 +80,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 						.build())
 				.build();
 
-		Attributes attr3 = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category attr3 = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
 				.entity(
 						Entity.builder()
@@ -91,8 +91,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 						.build())
 				.build();
 
-		Attributes attr4 = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category attr4 = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.id("subjectAttr1")
 				.entity(
 						Entity.builder()
@@ -130,22 +130,22 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestContext context0 = c0.getValue();
 		RequestContext context1 = c0.getValue();
 
-		assertNotNull(context0.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId5"));
-		assertNotNull(context0.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId6"));
-		assertNotNull(context0.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId1"));
-		assertNotNull(context0.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId2"));
+		assertNotNull(context0.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId5"));
+		assertNotNull(context0.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId6"));
+		assertNotNull(context0.getOnlyEntity(Categories.RESOURCE).getAttributes("testId1"));
+		assertNotNull(context0.getOnlyEntity(Categories.RESOURCE).getAttributes("testId2"));
 
 		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributes(AttributeCategories.RESOURCE).size());
+		assertEquals(1, context0.getAttributes(Categories.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributes(Categories.RESOURCE).size());
 		
-		assertNotNull(context1.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId7"));
-		assertNotNull(context1.getOnlyEntity(AttributeCategories.SUBJECT_ACCESS).getAttributes("testId8"));
-		assertNotNull(context1.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId3"));
-		assertNotNull(context1.getOnlyEntity(AttributeCategories.RESOURCE).getAttributes("testId4"));
+		assertNotNull(context1.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId7"));
+		assertNotNull(context1.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId8"));
+		assertNotNull(context1.getOnlyEntity(Categories.RESOURCE).getAttributes("testId3"));
+		assertNotNull(context1.getOnlyEntity(Categories.RESOURCE).getAttributes("testId4"));
 		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAttributes(AttributeCategories.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributes(AttributeCategories.RESOURCE).size());
+		assertEquals(1, context1.getAttributes(Categories.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributes(Categories.RESOURCE).size());
 		verify(pdp);
 	}
 
@@ -153,8 +153,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	public void testWithNoReferences()
 	{
 
-		Attributes attr0 = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category attr0 = Category
+				.builder(Categories.RESOURCE)
 				.id("resourceAttr0")
 				.entity(
 						Entity.builder()
@@ -163,8 +163,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
 				.build();
 
-		Attributes attr1 = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category attr1 = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.id("subjectAttr0")
 				.entity(
 						Entity.builder()
@@ -188,7 +188,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	public void testWithEmptyRequest()
 	{
 		RequestContext context = new RequestContext(false,
-				Collections.<Attributes>emptyList());
+				Collections.<Category>emptyList());
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

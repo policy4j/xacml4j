@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestDefaults;
@@ -52,8 +52,8 @@ public class JsonRequestUnmarshallerTest {
 	}
 
 	private RequestContext createTestRequest() throws Exception {
-		Attributes subjectAttributes = Attributes
-				.builder(AttributeCategories.SUBJECT_ACCESS)
+		Category subjectAttributes = Category
+				.builder(Categories.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
 				.entity(
 						Entity
@@ -73,8 +73,8 @@ public class JsonRequestUnmarshallerTest {
 										.value(StringExp.valueOf("TestDomain")).build()))
 						.build())
 				.build();
-		Attributes resourceAttributes = Attributes
-				.builder(AttributeCategories.RESOURCE)
+		Category resourceAttributes = Category
+				.builder(Categories.RESOURCE)
 				.id("ResourceAttributes")
 				.entity(Entity
 						.builder()
@@ -82,16 +82,16 @@ public class JsonRequestUnmarshallerTest {
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
 								.includeInResult(true).value(StringExp.valueOf("testResourceId")).build())).build())
 						.build();
-		Attributes actionAttributes = Attributes
-				.builder(AttributeCategories.ACTION)
+		Category actionAttributes = Category
+				.builder(Categories.ACTION)
 				.entity(Entity
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
 								.includeInResult(false).value(StringExp.valueOf("VIEW")).build())).build())
 				.build();
-		Attributes environmentAttributes = Attributes
-				.builder(AttributeCategories.ENVIRONMENT)
+		Category environmentAttributes = Category
+				.builder(Categories.ENVIRONMENT)
 				.id("EnvironmentAttributes")
 				.entity(Entity
 						.builder()
@@ -100,8 +100,8 @@ public class JsonRequestUnmarshallerTest {
 								.includeInResult(false).value(StringExp.valueOf("json\\-\"test\"")).build()))
 						.build())
 				.build();
-		Attributes subjectIntermAttributes = Attributes
-				.builder(AttributeCategories.SUBJECT_INTERMEDIARY)
+		Category subjectIntermAttributes = Category
+				.builder(Categories.SUBJECT_INTERMEDIARY)
 				.id("SubjectIntermediaryAttributes")
 				.entity(Entity
 						.builder()

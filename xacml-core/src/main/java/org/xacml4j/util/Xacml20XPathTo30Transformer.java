@@ -2,7 +2,7 @@ package org.xacml4j.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XPathExp;
 
@@ -19,7 +19,7 @@ public class Xacml20XPathTo30Transformer
 	public static XPathExp fromXacml20String(StringExp path)
 	{
 		XPathExp xpathExp = XPathExp.valueOf(transform20PathTo30(path.getValue()), 
-				AttributeCategories.RESOURCE);
+				Categories.RESOURCE);
 		return xpathExp;
 	}
 

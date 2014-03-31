@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 
 public interface RequestContextCallback
@@ -11,5 +11,5 @@ public interface RequestContextCallback
 	 * @param category a request entity category
 	 * @return {@link Entity}
 	 */
-	Entity getEntity(AttributeCategory category);
+	Entity getEntity(CategoryId category);
 }

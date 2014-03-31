@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.xacml4j.v30.AttributeCategory;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
@@ -30,18 +30,18 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		if(!request.containsRepeatingCategories()){
 			return handleNext(request, context);
 		}
-		List<Set<Attributes>> byCategory = new LinkedList<Set<Attributes>>();
-		for(AttributeCategory categoryId : request.getCategories()){
-			Collection<Attributes> attributes = request.getAttributes(categoryId);
+		List<Set<Category>> byCategory = new LinkedList<Set<Category>>();
+		for(CategoryId categoryId : request.getCategories()){
+			Collection<Category> attributes = request.getAttributes(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()){
 				continue;
 			}
-			byCategory.add(new LinkedHashSet<Attributes>(attributes));
+			byCategory.add(new LinkedHashSet<Category>(attributes));
 		}
 		Collection<Result> results = new LinkedList<Result>();
-		Set<List<Attributes>> cartesian = Sets.cartesianProduct(byCategory);
-		for(List<Attributes> requestAttr : cartesian){
+		Set<List<Category>> cartesian = Sets.cartesianProduct(byCategory);
+		for(List<Category> requestAttr : cartesian){
 			results.addAll(handleNext(RequestContext.builder().copyOf(request, requestAttr).build(), context));
 		}
 		return results;

@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -12,7 +12,7 @@ import com.google.common.base.Strings;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {
-	private final AttributeCategory category;
+	private final CategoryId category;
 	private final String attributeId;
 	private final String issuer;
 	private final Expression expression;
@@ -50,7 +50,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 *
 	 * @return category identifier or {@code null}
 	 */
-	public AttributeCategory getCategory(){
+	public CategoryId getCategory(){
 		return category;
 	}
 
@@ -122,7 +122,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 		private String id;
 		private String issuer;
 		private Expression expression;
-		private AttributeCategory category;
+		private CategoryId category;
 
 		public Builder id(String id){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
@@ -135,7 +135,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 			return this;
 		}
 
-		public Builder category(AttributeCategory category){
+		public Builder category(CategoryId category){
 			this.category = category;
 			return this;
 		}

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
@@ -69,7 +69,7 @@ public class RootEvaluationContextTest
 		c.replay();
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testId")
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")
@@ -85,7 +85,7 @@ public class RootEvaluationContextTest
 		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
-				.category(AttributeCategories.SUBJECT_ACCESS)
+				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testId")
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")

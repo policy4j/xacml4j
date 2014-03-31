@@ -6,7 +6,7 @@ import static org.xacml4j.util.Xacml20XPathTo30Transformer.transform20PathTo30;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XPathExp;
 
@@ -18,7 +18,7 @@ public class Xacml20XPathTo30TransformerTest
 	public void testXacml20StringXPathToXPathExpression()
 	{
 		StringExp xpath = StringExp.valueOf("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
-		assertEquals(XPathExp.valueOf("//md:record/md:patient/md:patient-number/text()", AttributeCategories.RESOURCE), fromXacml20String(xpath));
+		assertEquals(XPathExp.valueOf("//md:record/md:patient/md:patient-number/text()", Categories.RESOURCE), fromXacml20String(xpath));
 	}
 
 	// FIXME: Implement transformation

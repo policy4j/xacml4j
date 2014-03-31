@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -56,7 +56,7 @@ public abstract class AttributeReference implements Expression
 	 *
 	 * @return attribute category
 	 */
-	public AttributeCategory getCategory(){
+	public CategoryId getCategory(){
 		return getReferenceKey().getCategory();
 	}
 
@@ -80,7 +80,7 @@ public abstract class AttributeReference implements Expression
 	{
 		private boolean mustBePresent = false;
 
-		public T category(AttributeCategory category){
+		public T category(CategoryId category){
 			getBuilder().category(category);
 			return getThis();
 		}

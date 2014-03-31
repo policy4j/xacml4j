@@ -20,19 +20,19 @@ public class ObligationTest {
 	public ObligationTest() {
 		AttributeAssignment attr1 = AttributeAssignment
 				.builder()
-				.category(AttributeCategories.ACTION)
+				.category(Categories.ACTION)
 				.id("actionId1")
 				.value(IntegerExp.valueOf(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
-				.category(AttributeCategories.ACTION)
+				.category(Categories.ACTION)
 				.id("actionId1")
 				.value(IntegerExp.valueOf(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
-				.category(AttributeCategories.ACTION)
+				.category(Categories.ACTION)
 				.id("actionId1")
 				.value(IntegerExp.valueOf(3))
 				.build();

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -35,7 +35,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
@@ -54,7 +54,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
@@ -73,7 +73,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
@@ -90,7 +90,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
@@ -109,7 +109,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
@@ -131,7 +131,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
@@ -150,7 +150,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
@@ -167,7 +167,7 @@ public class AttributeSelectorTest
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(AttributeCategories.SUBJECT_RECIPIENT)
+				.category(Categories.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)

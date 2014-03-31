@@ -1,6 +1,6 @@
 package org.xacml4j.v30.spi.pip;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.EvaluationContext;
 
@@ -21,14 +21,14 @@ public interface ResolverRegistry
 
 	/**
 	 * Gets an {@link ContentResolver} for a given
-	 * evaluation context and given {@link AttributeCategory}
+	 * evaluation context and given {@link CategoryId}
 	 *
 	 * @param context evaluation context
 	 * @param category attribute category
 	 * @return content resolver
 	 */
 	ContentResolver getMatchingContentResolver(
-			EvaluationContext context, AttributeCategory category);
+			EvaluationContext context, CategoryId category);
 
 	/**
 	 * Adds top level attribute resolver

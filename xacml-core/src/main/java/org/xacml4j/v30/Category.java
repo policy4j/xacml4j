@@ -5,14 +5,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-public class Attributes 
+public class Category 
 {
 	private final String id;
-	private final AttributeCategory categoryId;
+	private final CategoryId categoryId;
 	private final AttributesReference ref;
 	private Entity entity;
 
-	private Attributes(Builder b) {
+	private Category(Builder b) {
 		Preconditions.checkNotNull(b.category);
 		Preconditions.checkNotNull(b.entity);
 		this.id = b.id;
@@ -24,13 +24,13 @@ public class Attributes
 	}
 
 	/**
-	 * Constructs {@link Attributes.Builder} for given
+	 * Constructs {@link Category.Builder} for given
 	 * attribute category
 	 * 
 	 * @param category attribute category
-	 * @return {@link Attributes.Builder} instance
+	 * @return {@link Category.Builder} instance
 	 */
-	public static Builder builder(AttributeCategory category){
+	public static Builder builder(CategoryId category){
 		return new Builder(category);
 	}
 
@@ -62,7 +62,7 @@ public class Attributes
 	 *
 	 * @return attribute category
 	 */
-	public AttributeCategory getCategory(){
+	public CategoryId getCategoryId(){
 		return categoryId;
 	}
 
@@ -88,10 +88,10 @@ public class Attributes
 		if(o == null){
 			return false;
 		}
-		if(!(o instanceof Attributes)){
+		if(!(o instanceof Category)){
 			return false;
 		}
-		Attributes a = (Attributes)o;
+		Category a = (Category)o;
 		return Objects.equal(categoryId, a.categoryId) &&
 		Objects.equal(id, a.id) && entity.equals(a.entity);
 	}
@@ -99,10 +99,10 @@ public class Attributes
 	public static class Builder
 	{
 		private String id;
-		private AttributeCategory category;
+		private CategoryId category;
 		private Entity entity;
 
-		private Builder(AttributeCategory category){
+		private Builder(CategoryId category){
 			Preconditions.checkNotNull(category);
 			this.category = category;
 		}
@@ -115,15 +115,15 @@ public class Attributes
 			return this;
 		}
 
-		public Builder copyOf(Attributes a){
+		public Builder copyOf(Category a){
 			return copyOf(a, Predicates.<Attribute>alwaysTrue());
 		}
 		
-		public Builder copyOf(Attributes a,
+		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
 			id(a.getId());
-			category(a.getCategory());
+			category(a.getCategoryId());
 			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;
 		}
@@ -133,14 +133,14 @@ public class Attributes
 			return this;
 		}
 
-		public Builder category(AttributeCategory category){
+		public Builder category(CategoryId category){
 			Preconditions.checkNotNull(category);
 			this.category = category;
 			return this;
 		}
 		
-		public Attributes build(){
-			return new Attributes(this);
+		public Category build(){
+			return new Category(this);
 		}
 	}
 }

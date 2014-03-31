@@ -1,6 +1,6 @@
 package org.xacml4j.v30.spi.pip;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 
 import com.google.common.base.Preconditions;
 
@@ -15,7 +15,7 @@ class ContentResolverDescriptorDelegate extends ResolverDescriptorDelegate
 	}
 
 	@Override
-	public boolean canResolve(AttributeCategory category) {
+	public boolean canResolve(CategoryId category) {
 		return d.canResolve(category);
 	}
 }

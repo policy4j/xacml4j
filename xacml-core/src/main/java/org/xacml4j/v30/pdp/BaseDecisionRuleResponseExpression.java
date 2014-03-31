@@ -3,7 +3,7 @@ package org.xacml4j.v30.pdp;
 import java.util.Collection;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Decision;
@@ -145,11 +145,11 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			return attribute(AttributeAssignmentExpression.builder(id).expression(exp));
 		}
 
-		public T attribute(String id, AttributeCategory category, Expression exp){
+		public T attribute(String id, CategoryId category, Expression exp){
 			return attribute(AttributeAssignmentExpression.builder(id).category(category).expression(exp));
 		}
 
-		public T attribute(String id, AttributeCategory category, String issuer, Expression exp){
+		public T attribute(String id, CategoryId category, String issuer, Expression exp){
 			return attribute(AttributeAssignmentExpression.builder(id).category(category).issuer(issuer).expression(exp));
 		}
 

@@ -32,9 +32,9 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
@@ -65,7 +65,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 
 	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
-		Collection<Attributes> attributes = create(req.getAttributes());
+		Collection<Category> attributes = create(req.getAttributes());
 		Collection<RequestReference> multiRequests = new LinkedList<RequestReference>();
 		if(req.getMultiRequests() != null){
 			for(RequestReferenceType m : req.getMultiRequests().getRequestReference()){
@@ -135,7 +135,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private ResultType create(Result r)
 	{
 		ResultType result = new ResultType();
-		for(Attributes a : r.getIncludeInResultAttributes()){
+		for(Category a : r.getIncludeInResultAttributes()){
 			result.getAttributes().add(create(a));
 		}
 		AssociatedAdviceType advice = new AssociatedAdviceType();
@@ -172,11 +172,11 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return idRef;
 	}
 
-	private AttributesType create(Attributes a)
+	private AttributesType create(Category a)
 	{
 		AttributesType attributes = new AttributesType();
 		attributes.setId(a.getId());
-		attributes.setCategory(a.getCategory().toString());
+		attributes.setCategory(a.getCategoryId().toString());
 		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));
 		}
@@ -347,22 +347,22 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				.build();
 	}
 
-	private Collection<Attributes> create(List<AttributesType> input) throws XacmlSyntaxException {
-		Collection<Attributes> attributes = new LinkedList<Attributes>();
+	private Collection<Category> create(List<AttributesType> input) throws XacmlSyntaxException {
+		Collection<Category> attributes = new LinkedList<Category>();
 		for(AttributesType a : input){
 			attributes.add(create(a));
 		}
 		return attributes;
 	}
 
-	private Attributes create(AttributesType attributes) throws XacmlSyntaxException
+	private Category create(AttributesType attributes) throws XacmlSyntaxException
 	{
 		Collection<Attribute> attr = new LinkedList<Attribute>();
 		for(AttributeType a : attributes.getAttribute()){
 			attr.add(create(a));
 		}
-		return Attributes
-				.builder(AttributeCategories.parse(attributes.getCategory()))
+		return Category
+				.builder(Categories.parse(attributes.getCategory()))
 				.entity(Entity
 						.builder()
 						.content(getContent(attributes.getContent()))

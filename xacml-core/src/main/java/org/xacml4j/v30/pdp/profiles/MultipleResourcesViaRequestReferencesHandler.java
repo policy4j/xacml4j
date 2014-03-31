@@ -3,7 +3,7 @@ package org.xacml4j.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.AttributesReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
@@ -47,9 +47,9 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 	private RequestContext resolveAttributes(RequestContext req,
 			RequestReference reqRef) throws RequestSyntaxException
 	{
-		Collection<Attributes> resolved = new LinkedList<Attributes>();
+		Collection<Category> resolved = new LinkedList<Category>();
 		for(AttributesReference ref : reqRef.getReferencedAttributes()){
-			Attributes attributes = req.getReferencedAttributes(ref);
+			Category attributes = req.getReferencedAttributes(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
 						"Failed to resolve attribute reference",

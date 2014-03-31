@@ -2,7 +2,7 @@ package org.xacml4j.v30.spi.pip;
 
 import java.util.List;
 
-import org.xacml4j.v30.AttributeCategory;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeReferenceKey;
 
 
@@ -26,9 +26,9 @@ public interface ResolverDescriptor
 	/**
 	 * Gets resolver category
 	 *
-	 * @return {@link AttributeCategory}
+	 * @return {@link CategoryId}
 	 */
-	AttributeCategory getCategory();
+	CategoryId getCategory();
 
 	/**
 	 * Gets key references for a resolver

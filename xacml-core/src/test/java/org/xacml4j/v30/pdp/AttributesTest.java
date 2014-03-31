@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeCategories;
-import org.xacml4j.v30.Attributes;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
@@ -71,30 +71,30 @@ public class AttributesTest
 	@Test
 	public void testBuilderFrom()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
-		Attributes test1 = Attributes.builder().copyOf(test).build();
+		Category test1 = Category.builder().copyOf(test).build();
 		assertEquals(test, test1);
 	}
 
 	@Test
 	public void testCreate2()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
 		assertTrue(e.getAttributes().containsAll(attributes));
 		assertNull(test.getId());
 		assertTrue(content1.isEqualNode(e.getContent()));
-		assertEquals(AttributeCategories.RESOURCE, test.getCategory());
+		assertEquals(Categories.RESOURCE, test.getCategoryId());
 	}
 
 	@Test
 	public void testGetAttributesById()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
@@ -106,7 +106,7 @@ public class AttributesTest
 	@Test
 	public void testGetAttributesByIdAndIssuerAndType()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
@@ -117,7 +117,7 @@ public class AttributesTest
 	@Test
 	public void testGetIncludeInResultAttributes()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
@@ -131,7 +131,7 @@ public class AttributesTest
 		attributes.add(Attribute.builder("testId10").value(StringExp.valueOf("value0")).build());
 		attributes.add(Attribute.builder("testId10").value(StringExp.valueOf("value0")).build());
 		assertEquals(2, attributes.size());
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
@@ -141,7 +141,7 @@ public class AttributesTest
 	@Test
 	public void testGetAttributeValuesByIdAndIssuerAndType()
 	{
-		Attributes test = Attributes.builder(AttributeCategories.RESOURCE)
+		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();

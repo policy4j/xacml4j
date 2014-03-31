@@ -2,6 +2,8 @@ package org.xacml4j.v30;
 
 import java.util.Collection;
 
+import org.xacml4j.v30.types.EntityExp;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -156,6 +158,36 @@ public class Attribute
 			Preconditions.checkNotNull(values);
 			for(AttributeExp v : values){
 				valueBuilder.add(v);
+			}
+			return this;
+		}
+		
+		/**
+		 * Wraps given entities to via {@Link EntityExp#valueOf(Entity)}
+		 * and adds them to this entity builder
+		 * 
+		 * @param values an array of entities
+		 * @return
+		 */
+		public Builder entity(Entity ...values){
+			Preconditions.checkNotNull(values);
+			for(Entity v : values){
+				valueBuilder.add(EntityExp.valueOf(v));
+			}
+			return this;
+		}
+		
+		/**
+		 * Wraps given entities to via {@Link EntityExp#valueOf(Entity)}
+		 * and adds them to this entity builder
+		 * 
+		 * @param it an iterator over collection of {@link Entity}
+		 * @return
+		 */
+		public Builder entities(Iterable<Entity> it){
+			Preconditions.checkNotNull(it);
+			for(Entity v : it){
+				valueBuilder.add(EntityExp.valueOf(v));
 			}
 			return this;
 		}

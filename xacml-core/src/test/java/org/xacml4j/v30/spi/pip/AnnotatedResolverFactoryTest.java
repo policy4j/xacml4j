@@ -18,7 +18,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -79,7 +79,7 @@ public class AnnotatedResolverFactoryTest
 		r.resolve(pipContext);
 
 		assertEquals("Test", d.getName());
-		assertEquals(AttributeCategories.parse("subject"), d.getCategory());
+		assertEquals(Categories.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(30, d.getPreferreredCacheTTL());
 
@@ -127,7 +127,7 @@ public class AnnotatedResolverFactoryTest
 		r.resolve(pipContext);
 
 		assertEquals("Test", d.getName());
-		assertEquals(AttributeCategories.parse("subject"), d.getCategory());
+		assertEquals(Categories.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(30, d.getPreferreredCacheTTL());
 		verify(context);
@@ -164,7 +164,7 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolveContent1");
 		ContentResolver r = p.parseContentResolver(this, m);
-		assertTrue(r.getDescriptor().canResolve(AttributeCategories.parse("subject")));
+		assertTrue(r.getDescriptor().canResolve(Categories.parse("subject")));
 	}
 
 

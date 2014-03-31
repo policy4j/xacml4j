@@ -19,8 +19,8 @@ public class RequestContext
 {
 	private boolean returnPolicyIdList;
 	private boolean combinedDecision;
-	private Multimap<AttributeCategory, Attributes> attributes;
-	private Map<String, Attributes> attributesByXmlId;
+	private Multimap<CategoryId, Category> attributes;
+	private Map<String, Category> attributesByXmlId;
 	private Collection<RequestReference> requestReferences;
 	private RequestDefaults requestDefaults;
 
@@ -40,7 +40,7 @@ public class RequestContext
 	public RequestContext(
 			boolean returnPolicyIdList,
 			boolean combinedDecision,
-			Collection<Attributes> attributes,
+			Collection<Category> attributes,
 			Collection<RequestReference> requestReferences,
 			RequestDefaults requestDefaults)
 	{
@@ -48,13 +48,13 @@ public class RequestContext
 		this.attributes = LinkedListMultimap.create();
 		this.requestReferences = (requestReferences == null)?
 				Collections.<RequestReference>emptyList():new ArrayList<RequestReference>(requestReferences);
-		this.attributesByXmlId = new HashMap<String, Attributes>();
+		this.attributesByXmlId = new HashMap<String, Category>();
 		this.requestDefaults = requestDefaults;
 		this.combinedDecision = combinedDecision;
 		if(attributes != null){
-			for(Attributes attr : attributes){
+			for(Category attr : attributes){
 				// index attributes by category
-				this.attributes.put(attr.getCategory(), attr);
+				this.attributes.put(attr.getCategoryId(), attr);
 				// index attributes
 				// by id for fast lookup
 				if(attr.getId() != null){
@@ -75,11 +75,11 @@ public class RequestContext
 		this.returnPolicyIdList = b.returnPolicyIdList;
 		this.attributes = LinkedListMultimap.create();
 		this.requestReferences = b.reqRefs.build();
-		this.attributesByXmlId = new HashMap<String, Attributes>();
+		this.attributesByXmlId = new HashMap<String, Category>();
 		this.requestDefaults = b.reqDefaults;
 		this.combinedDecision = b.combinedDecision;
 		this.attributes = b.attrBuilder.build();
-		for(Attributes attr : attributes.values()){
+		for(Category attr : attributes.values()){
 				if(attr.getId() != null){
 					this.attributesByXmlId.put(attr.getId(), attr);
 				}
@@ -95,12 +95,12 @@ public class RequestContext
 	/**
 	 * Constructs a request with a given attributes
 	 *
-	 * @param attributes a collection of {@link Attributes}
+	 * @param attributes a collection of {@link Category}
 	 * instances
 	 */
 	public RequestContext(boolean returnPolicyIdList,
 			boolean combinedDecision,
-			Collection<Attributes> attributes,
+			Collection<Category> attributes,
 			Collection<RequestReference> requestReferences)
 	{
 		this(returnPolicyIdList, combinedDecision, attributes,
@@ -109,7 +109,7 @@ public class RequestContext
 
 	public RequestContext(boolean returnPolicyIdList,
 			boolean combinedDecision,
-			Collection<Attributes> attributes)
+			Collection<Category> attributes)
 	{
 		this(returnPolicyIdList, combinedDecision, attributes,
 				Collections.<RequestReference>emptyList());
@@ -118,11 +118,11 @@ public class RequestContext
 	/**
 	 * Constructs a request with a given attributes
 	 *
-	 * @param attributes a collection of {@link Attributes}
+	 * @param attributes a collection of {@link Category}
 	 * instances
 	 */
 	public RequestContext(boolean returnPolicyIdList,
-			Collection<Attributes> attributes)
+			Collection<Category> attributes)
 	{
 		this(returnPolicyIdList, false, attributes,
 				Collections.<RequestReference>emptyList());
@@ -131,11 +131,11 @@ public class RequestContext
 	/**
 	 * Constructs a request with a given attributes
 	 *
-	 * @param attributes a collection of {@link Attributes}
+	 * @param attributes a collection of {@link Category}
 	 * instances
 	 */
 	public RequestContext(boolean returnPolicyIdList,
-			Collection<Attributes> attributes,
+			Collection<Category> attributes,
 			RequestDefaults requestDefaults)
 	{
 		this(returnPolicyIdList, false, attributes,
@@ -192,8 +192,8 @@ public class RequestContext
 	 * @return a non-negative number indicating attributes of given
 	 * category occurrence in this request
 	 */
-	public int getCategoryOccuriences(AttributeCategory category){
-		Collection<Attributes> attr = attributes.get(category);
+	public int getCategoryOccuriences(CategoryId category){
+		Collection<Category> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
 
@@ -209,12 +209,12 @@ public class RequestContext
 	}
 
 	/**
-	 * Gets all {@link Attributes} instances contained
+	 * Gets all {@link Category} instances contained
 	 * in this request
-	 * @return a collection of {@link Attributes}
+	 * @return a collection of {@link Category}
 	 * instances
 	 */
-	public Collection<Attributes> getAttributes(){
+	public Collection<Category> getAttributes(){
 		return Collections.unmodifiableCollection(attributes.values());
 	}
 
@@ -237,39 +237,39 @@ public class RequestContext
 	 * @return a set of all attribute categories in
 	 * this request
 	 */
-	public Set<AttributeCategory> getCategories(){
+	public Set<CategoryId> getCategories(){
 		return Collections.unmodifiableSet(attributes.keySet());
 	}
 
 	/**
-	 * Resolves attribute reference to {@link Attributes}
+	 * Resolves attribute reference to {@link Category}
 	 *
 	 * @param reference an attributes reference
-	 * @return {@link Attributes} or {@code null} if
+	 * @return {@link Category} or {@code null} if
 	 * reference can not be resolved
 	 */
-	public Attributes getReferencedAttributes(AttributesReference reference){
+	public Category getReferencedAttributes(AttributesReference reference){
 		Preconditions.checkNotNull(reference);
 		return attributesByXmlId.get(reference.getReferenceId());
 	}
 
 	/**
-	 * Gets all {@link Attributes} instances
+	 * Gets all {@link Category} instances
 	 * from request of a given category
 	 *
 	 * @param categoryId an attribute category
-	 * @return a collection of {@link Attributes}, if
+	 * @return a collection of {@link Category}, if
 	 * a request does not have attributes of a specified
 	 * category an empty collection is returned
 	 */
-	public Collection<Attributes> getAttributes(AttributeCategory categoryId){
+	public Collection<Category> getAttributes(CategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
 		return attributes.get(categoryId);
 	}
 
-	public Collection<Entity> getEntities(AttributeCategory c){	
+	public Collection<Entity> getEntities(CategoryId c){	
 		ImmutableList.Builder<Entity> b = ImmutableList.builder();
-		for(Attributes a : getAttributes(c)){
+		for(Category a : getAttributes(c)){
 			b.add(a.getEntity());
 		}
 		return b.build();
@@ -279,18 +279,18 @@ public class RequestContext
 	 * Gets only one attribute of the given category
 	 *
 	 * @param category a category identifier
-	 * @return {@link Attributes} or {@code null}
+	 * @return {@link Category} or {@code null}
 	 * if request does not have attributes of given category
 	 * @exception IllegalArgumentException if a request
-	 * has more than one instance of {@link Attributes}
+	 * has more than one instance of {@link Category}
 	 * of the requested category
 	 */
-	public Attributes getOnlyAttributes(AttributeCategory category){
-		Collection<Attributes> attributes = getAttributes(category);
+	public Category getOnlyAttributes(CategoryId category){
+		Collection<Category> attributes = getAttributes(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
 	
-	public Entity getOnlyEntity(AttributeCategory category){
+	public Entity getOnlyEntity(CategoryId category){
 		Collection<Entity> attributes = getEntities(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
@@ -298,14 +298,14 @@ public class RequestContext
 
 	/**
 	 * Tests if this request has an multiple
-	 * {@link Attributes} instances with the
-	 * same {@link Attributes#getCategory()} value
+	 * {@link Category} instances with the
+	 * same {@link Category#getCategoryId()} value
 	 *
 	 * @return {@code true} if this request
 	 * has multiple attributes of same category
 	 */
 	public boolean containsRepeatingCategories(){
-		for(AttributeCategory category : getCategories()){
+		for(CategoryId category : getCategories()){
 			if(getCategoryOccuriences(category) > 1){
 				return true;
 			}
@@ -316,7 +316,7 @@ public class RequestContext
 	public boolean containsAttributeValues(
 			String attributeId, String issuer, AttributeExpType type)
 	{
-		for(Attributes a : getAttributes()){
+		for(Category a : getAttributes()){
 			Entity e = a.getEntity();
 			Collection<AttributeExp> values =  e.getAttributeValues(attributeId, issuer, type);
 			if(!values.isEmpty()){
@@ -350,11 +350,11 @@ public class RequestContext
 	 * @param issuer an attribute issuer
 	 * @return a collection of {@link AttributeExp} instances
 	 */
-	public Collection<AttributeExp> getAttributeValues(AttributeCategory categoryId,
+	public Collection<AttributeExp> getAttributeValues(CategoryId categoryId,
 			String attributeId, AttributeExpType dataType, String issuer)
 	{
 		ImmutableList.Builder<AttributeExp> found = ImmutableList.builder();
-		for(Attributes a : attributes.get(categoryId)){
+		for(Category a : attributes.get(categoryId)){
 			Entity e = a.getEntity();
 			found.addAll(e.getAttributeValues(attributeId, issuer, dataType));
 		}
@@ -371,7 +371,7 @@ public class RequestContext
 	 * @return a collection of {@link AttributeExp} instances
 	 */
 	public Collection<AttributeExp> getAttributeValues(
-			AttributeCategory categoryId,
+			CategoryId categoryId,
 			String attributeId,
 			AttributeExpType dataType)
 	{
@@ -386,7 +386,7 @@ public class RequestContext
 	 * @param dataType an attribute data type
 	 * @return {@link AttributeExp} or {@code null}
 	 */
-	public AttributeExp getAttributeValue(AttributeCategory categoryId,
+	public AttributeExp getAttributeValue(CategoryId categoryId,
 			String attributeId,
 			AttributeExpType dataType){
 		return Iterables.getOnlyElement(
@@ -394,23 +394,23 @@ public class RequestContext
 	}
 
 	/**
-	 * Gets all {@link Attributes} instances
+	 * Gets all {@link Category} instances
 	 * containing an attributes with {@link Attribute#isIncludeInResult()}
 	 * returning {@code true}
 	 *
-	 * @return a collection of {@link Attributes} instances
+	 * @return a collection of {@link Category} instances
 	 * containing only {@link Attribute} with
 	 * {@link Attribute#isIncludeInResult()} returning {@code true}
 	 */
-	public Collection<Attributes> getIncludeInResultAttributes()
+	public Collection<Category> getIncludeInResultAttributes()
 	{
-		ImmutableList.Builder<Attributes> resultAttr = ImmutableList.builder();
-		for(Attributes a : attributes.values()){
+		ImmutableList.Builder<Category> resultAttr = ImmutableList.builder();
+		for(Category a : attributes.values()){
 			Entity e = a.getEntity();
 			Collection<Attribute> includeInResult = e.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
-				resultAttr.add(Attributes
-						.builder(a.getCategory())
+				resultAttr.add(Category
+						.builder(a.getCategoryId())
 						.entity(Entity.builder().attributes(e.getIncludeInResultAttributes()).build())
 						.build());
 			}
@@ -455,7 +455,7 @@ public class RequestContext
 		private boolean returnPolicyIdList;
 		private boolean combinedDecision;
 		private RequestDefaults reqDefaults = new RequestDefaults();
-		private ImmutableListMultimap.Builder<AttributeCategory, Attributes> attrBuilder = ImmutableListMultimap.builder();
+		private ImmutableListMultimap.Builder<CategoryId, Category> attrBuilder = ImmutableListMultimap.builder();
 		private ImmutableList.Builder<RequestReference> reqRefs = ImmutableList.builder();
 
 		public Builder returnPolicyIdList(){
@@ -512,7 +512,7 @@ public class RequestContext
 		 * @param req a request context
 		 * @return {@link Builder}
 		 */
-		public Builder copyOf(RequestContext req, Iterable<Attributes> attributes)
+		public Builder copyOf(RequestContext req, Iterable<Category> attributes)
 		{
 			combineDecision(req.isCombinedDecision());
 			returnPolicyIdList(req.isReturnPolicyIdList());
@@ -526,20 +526,20 @@ public class RequestContext
 			return this;
 		}
 
-		public Builder attributes(Attributes ... attrs)
+		public Builder attributes(Category ... attrs)
 		{
 			Preconditions.checkNotNull(attrs);
-			for(Attributes a : attrs){
-				this.attrBuilder.put(a.getCategory(), a);
+			for(Category a : attrs){
+				this.attrBuilder.put(a.getCategoryId(), a);
 			}
 			return this;
 		}
 
-		public Builder attributes(Iterable<Attributes> attrs)
+		public Builder attributes(Iterable<Category> attrs)
 		{
 			Preconditions.checkNotNull(attrs);
-			for(Attributes a : attrs){
-				this.attrBuilder.put(a.getCategory(), a);
+			for(Category a : attrs){
+				this.attrBuilder.put(a.getCategoryId(), a);
 			}
 			return this;
 		}

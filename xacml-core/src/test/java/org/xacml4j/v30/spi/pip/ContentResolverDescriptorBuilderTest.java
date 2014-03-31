@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeCategories;
+import org.xacml4j.v30.Categories;
 
 
 public class ContentResolverDescriptorBuilderTest
@@ -13,12 +13,12 @@ public class ContentResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptor()
 	{
-		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.bulder("id", "name", AttributeCategories.SUBJECT_ACCESS)
+		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.bulder("id", "name", Categories.SUBJECT_ACCESS)
 		.build();
-		assertEquals(AttributeCategories.SUBJECT_ACCESS, d.getCategory());
-		assertTrue(d.canResolve(AttributeCategories.SUBJECT_ACCESS));
-		assertFalse(d.canResolve(AttributeCategories.ENVIRONMENT));
-		assertFalse(d.canResolve(AttributeCategories.SUBJECT_CODEBASE));
+		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
+		assertTrue(d.canResolve(Categories.SUBJECT_ACCESS));
+		assertFalse(d.canResolve(Categories.ENVIRONMENT));
+		assertFalse(d.canResolve(Categories.SUBJECT_CODEBASE));
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 	}
