@@ -7,6 +7,6 @@ public interface Marshaller <T>
 	Object marshal(T source)
 		throws IOException;
 
-	void marshal(T object, Object source)
+	void marshal(T source, Object target)
 		throws IOException;
 }

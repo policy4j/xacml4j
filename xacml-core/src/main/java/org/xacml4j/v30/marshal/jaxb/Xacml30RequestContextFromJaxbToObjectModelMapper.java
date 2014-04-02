@@ -65,15 +65,16 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 
 	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
-		Collection<Category> attributes = create(req.getAttributes());
-		Collection<RequestReference> multiRequests = new LinkedList<RequestReference>();
+		RequestContext.Builder b = RequestContext.builder();
+		b.attributes(create(req.getAttributes()));
 		if(req.getMultiRequests() != null){
 			for(RequestReferenceType m : req.getMultiRequests().getRequestReference()){
-				multiRequests.add(create(m));
+				b.reference(create(m));
 			}
 		}
-		return new RequestContext(req.isReturnPolicyIdList(),
-				req.isCombinedDecision(), attributes, multiRequests, null);
+		return b.returnPolicyIdList(req.isReturnPolicyIdList())
+				.combineDecision(req.isCombinedDecision())
+				.build();
 	}
 
 	public ResponseType create(ResponseContext res) throws XacmlSyntaxException
@@ -184,7 +185,19 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private AttributeType create(Attribute a){
-		return null;
+		AttributeType attr = new AttributeType();
+		attr.setAttributeId(a.getAttributeId());
+		attr.setIssuer(a.getIssuer());
+		attr.setIncludeInResult(a.isIncludeInResult());
+		for(AttributeExp v : a.getValues()){
+			Optional<TypeToXacml30> m = TypeToXacml30.Types.getIndex().get(v.getType());
+			if(!m.isPresent()){
+				throw new XacmlSyntaxException("Unsupported XACML data type=\"%s\"",  
+						v.getType());
+			}
+			attr.getAttributeValue().add(m.get().toXacml30(v));
+		}
+		return attr;
 	}
 
 	private DecisionType create(Decision d){
@@ -328,7 +341,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributeAssignmentType attr = new AttributeAssignmentType();
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
-		attr.setCategory(a.getCategory().toString());
+		if(a.getCategory() != null){
+			attr.setCategory(a.getCategory().toString());
+		}
 		AttributeValueType av = toJaxb(a.getAttribute());
 		attr.setDataType(av.getDataType());
 		attr.getContent().addAll(av.getContent());
@@ -393,6 +408,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 
 	private Attribute create(AttributeType a) throws XacmlSyntaxException
 	{
+		Preconditions.checkNotNull(a);
 		Attribute.Builder b =  Attribute
 				.builder(a.getAttributeId())
 				.issuer(a.getIssuer())

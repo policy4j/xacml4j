@@ -66,9 +66,4 @@ public class JsonEntityMarshallingTest
 		Category b = json.fromJson(o, Category.class);
 		assertEquals(a,  b);
 	}
-	
-	@Test
-	public void testBase64(){
-		Base
-	}
 }

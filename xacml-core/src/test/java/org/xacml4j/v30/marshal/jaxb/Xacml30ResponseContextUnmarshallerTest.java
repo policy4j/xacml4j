@@ -7,7 +7,10 @@ import static org.junit.Assert.assertNull;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBElement;
+
 import org.junit.Test;
+import org.oasis.xacml.v30.jaxb.ResponseType;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
@@ -25,8 +28,15 @@ public class Xacml30ResponseContextUnmarshallerTest {
 	@Test
 	public void testResponseUnmarshal() throws Exception {
 		Xacml30ResponseContextUnmarshaller u = new Xacml30ResponseContextUnmarshaller();
+		Xacml30ResponseContextMarshaller m = new Xacml30ResponseContextMarshaller();
 
 		ResponseContext resp = u.unmarshal(getClass().getClassLoader().getResourceAsStream("v30Response.xml"));
+		
+		JAXBElement<ResponseType> target = (JAXBElement<ResponseType>)m.marshal(resp);
+		
+		ResponseContext resp1 = u.unmarshal(target);
+		assertEquals(resp,  resp1);
+		
 		assertNotNull(resp);
 		assertEquals(1, resp.getResults().size());
 		Result r1 = resp.getResults().iterator().next();
