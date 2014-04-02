@@ -63,8 +63,12 @@ public class JsonEntityMarshallingTest
 			    .build())
 	    .build();
 		JsonElement o = json.toJsonTree(a);
-		System.out.println(o.toString());
 		Category b = json.fromJson(o, Category.class);
 		assertEquals(a,  b);
+	}
+	
+	@Test
+	public void testBase64(){
+		Base
 	}
 }

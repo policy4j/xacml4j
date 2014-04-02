@@ -39,16 +39,15 @@ public interface TypeToXacml30 extends TypeCapability
 				Preconditions.checkArgument(v.getType().equals(this));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
-				xacml.getContent().add(TypeToString.Types
-						.ANYURI.toString(v));
+				xacml.getContent().add(TypeToString.Types.ANYURI.toString(v));
 				return xacml;
 			}
 
 			@Override
 			public AttributeExp fromXacml30(AttributeValueType v) {
 				if(v.getContent().size() > 0){
-					return TypeToString.Types
-							.ANYURI.fromString((String)v.getContent().get(0));
+					String s = (String)(v.getContent().get(0));
+					return TypeToString.Types.ANYURI.fromString(s);
 				}
 				throw new XacmlSyntaxException(
 						"No content found for the attribute value");
@@ -60,8 +59,7 @@ public interface TypeToXacml30 extends TypeCapability
 				Preconditions.checkArgument(v.getType().equals(this));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
-				xacml.getContent().add(TypeToString.Types
-						.BOOLEAN.toString(v));
+				xacml.getContent().add(TypeToString.Types.BOOLEAN.toString(v));
 				return xacml;
 			}
 
@@ -207,7 +205,7 @@ public interface TypeToXacml30 extends TypeCapability
 					xacml30.getContent().add(XACML30_FACTORY.createContent(content));
 				}
 				for(Attribute a : entity.getAttributes()){
-					xacml30.getContent().add(XACML30_FACTORY.createAttribute(toXacml30(a)));
+					xacml30.getContent().add(XACML30_FACTORY.createAttribute(Types.toXacml30(a)));
 				}
 				return xacml30;
 			}
@@ -230,7 +228,7 @@ public interface TypeToXacml30 extends TypeCapability
 						JAXBElement<?> attr = (JAXBElement<?>)v.getContent().get(i);
 						Preconditions.checkState(attr.getValue() instanceof AttributeType);
 						AttributeType xacml30Attr = (AttributeType)attr.getValue();
-						b.attribute(fromXacml30(xacml30Attr));
+						b.attribute(Types.fromXacml30(xacml30Attr));
 					}
 				}
 				return EntityExp.valueOf(b.build());

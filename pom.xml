@@ -160,11 +160,6 @@
 				<artifactId>cglib-nodep</artifactId>
 				<version>2.2</version>
 			</dependency>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java</artifactId>
-				<version>${google.protobuf.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -262,10 +257,6 @@
 	</reporting>
 
 	<repositories>
-		<repository>
-         	<id>googlecode.jaxb-visitor.repo</id>
-         	<url>https://jaxb-visitor.googlecode.com/svn/maven-repository/</url>
-      	</repository>
 	</repositories>
 
 	<scm>
