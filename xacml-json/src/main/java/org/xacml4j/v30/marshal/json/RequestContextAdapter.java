@@ -8,6 +8,7 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -22,7 +23,6 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 	private static final String REQUEST_REFERENCE_PROPERTY = "RequestReference";
 	private static final String RETURN_POLICY_ID_LIST_PROPERTY = "ReturnPolicyIdList";
 	private static final String COMBINED_DECISION_PROPERTY = "CombinedDecision";
-	private static final String ATTRIBUTES_PROPERTY = "Attributes";
 	private static final String MULTI_REQUESTS_PROPERTY = "MultiRequests";
 
 	@Override
@@ -31,7 +31,11 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		JsonObject o = json.getAsJsonObject();
 		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
 		boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
-		Collection<Category> attributes = context.deserialize(o.getAsJsonArray(ATTRIBUTES_PROPERTY),
+		JsonArray array = o.getAsJsonArray(JsonProperties.CATEGORY_PROPERTY);
+		if(array == null){
+			array = o.getAsJsonArray(JsonProperties.OLD_CATEGORY_PROPERTY);
+		}
+		Collection<Category> attributes = context.deserialize(array,
 				new TypeToken<Collection<Category>>() {
 				}.getType());
 
@@ -52,7 +56,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
 		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());
 		// TODO: add support for predefined Attributes objects: Subject, Action, Resource, Environment
-		o.add(ATTRIBUTES_PROPERTY, context.serialize(src.getAttributes()));
+		o.add(JsonProperties.CATEGORY_PROPERTY, context.serialize(src.getAttributes()));
 		// SPEC: There must be at least one RequestReference object inside the MultiRequests object
 		Collection<RequestReference> requestReferences = src.getRequestReferences();
 		if (requestReferences != null && !requestReferences.isEmpty()) {

@@ -13,7 +13,6 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

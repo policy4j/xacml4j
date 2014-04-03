@@ -52,7 +52,16 @@ public class JsonEntityMarshallingTest
 				.attribute(Attribute
 						.builder("testId3")
 						.value(StringExp.valueOf("aaa"))
-						.build()).build();
+						.value(StringExp.valueOf("bbbb"))
+						.value(StringExp.valueOf("cccc"))
+						.build())
+				.attribute(Attribute
+						.builder("testId4")
+						.value(StringExp.valueOf("zzzz"))
+						.value(StringExp.valueOf("aaaa"))
+						.value(StringExp.valueOf("cccc"))
+						.build())
+				.build();
 		Category a = Category.builder()
 		.category(Categories.SUBJECT_ACCESS)
 		.entity(Entity.builder()
@@ -63,6 +72,7 @@ public class JsonEntityMarshallingTest
 			    .build())
 	    .build();
 		JsonElement o = json.toJsonTree(a);
+		System.out.println(o.toString());
 		Category b = json.fromJson(o, Category.class);
 		assertEquals(a,  b);
 	}
