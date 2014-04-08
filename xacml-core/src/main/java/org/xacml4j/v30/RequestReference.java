@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 public class RequestReference
 {
-	private Collection<AttributesReference> references;
+	private Collection<CategoryReference> references;
 
 	private RequestReference(Builder b){
 		this.references = b.refs.build();
@@ -20,7 +20,7 @@ public class RequestReference
 	 *
 	 * @return collection of referenced attributes
 	 */
-	public Collection<AttributesReference> getReferencedAttributes(){
+	public Collection<CategoryReference> getReferencedCategories(){
 		return references;
 	}
 
@@ -55,8 +55,8 @@ public class RequestReference
 				.combineDecision(context.isCombinedDecision())
 				.returnPolicyIdList(context.isCombinedDecision())
 				.reqDefaults(context.getRequestDefaults());
-		for(AttributesReference ref : references){
-			Category a = context.getReferencedAttributes(ref);
+		for(CategoryReference ref : references){
+			Category a = context.getReferencedCategory(ref);
 			if(a == null){
 				throw new RequestSyntaxException(
 						"Failed to resolve attribute reference",
@@ -84,31 +84,31 @@ public class RequestReference
 
 	public static class Builder
 	{
-		private ImmutableList.Builder<AttributesReference> refs = ImmutableList.builder();
+		private ImmutableList.Builder<CategoryReference> refs = ImmutableList.builder();
 
 		public Builder reference(String ... attributeIds){
 			for(String attributeId : attributeIds){
-				refs.add(AttributesReference.builder().id(attributeId).build());
+				refs.add(CategoryReference.builder().id(attributeId).build());
 			}
 			return this;
 		}
 
 		public Builder reference(Category ... attrs){
 			for(Category a : attrs){
-				this.refs.add(AttributesReference.builder().from(a).build());
+				this.refs.add(CategoryReference.builder().from(a).build());
 			}
 			return this;
 		}
 
-		public Builder reference(AttributesReference ... refs){
-			for(AttributesReference r : refs){
+		public Builder reference(CategoryReference ... refs){
+			for(CategoryReference r : refs){
 				this.refs.add(r);
 			}
 			return this;
 		}
 
-		public Builder reference(Iterable<AttributesReference> refs){
-			for(AttributesReference r : refs){
+		public Builder reference(Iterable<CategoryReference> refs){
+			for(CategoryReference r : refs){
 				this.refs.add(r);
 			}
 			return this;

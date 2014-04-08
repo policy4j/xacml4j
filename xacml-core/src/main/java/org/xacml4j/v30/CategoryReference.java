@@ -4,11 +4,11 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-public class AttributesReference
+public class CategoryReference
 {
 	private String referenceId;
 
-	private AttributesReference(Builder b){
+	private CategoryReference(Builder b){
 		Preconditions.checkNotNull(b.id);
 		this.referenceId = b.id;
 	}
@@ -47,10 +47,10 @@ public class AttributesReference
 		if(o == null){
 			return false;
 		}
-		if(!(o instanceof AttributesReference)){
+		if(!(o instanceof CategoryReference)){
 			return false;
 		}
-		AttributesReference r = (AttributesReference)o;
+		CategoryReference r = (CategoryReference)o;
 		return referenceId.equals(r.referenceId);
 	}
 
@@ -69,10 +69,10 @@ public class AttributesReference
 			return id(a.getId());
 		}
 
-		public AttributesReference build(){
+		public CategoryReference build(){
 			Preconditions.checkState(!Strings.isNullOrEmpty(id),
 					"Attribute id can't be null or empty");
-			return new AttributesReference(this);
+			return new CategoryReference(this);
 		}
 	}
 

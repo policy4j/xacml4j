@@ -6,7 +6,7 @@ import java.io.Reader;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.XacmlSyntaxException;
@@ -25,7 +25,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
+				.registerTypeAdapter(CategoryReference.class, new AttributesRefererenceAdapater()).create();
 	}
 
 	@Override

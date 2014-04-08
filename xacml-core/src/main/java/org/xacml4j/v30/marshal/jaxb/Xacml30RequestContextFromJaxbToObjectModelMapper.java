@@ -17,10 +17,12 @@ import org.oasis.xacml.v30.jaxb.AttributesType;
 import org.oasis.xacml.v30.jaxb.ContentType;
 import org.oasis.xacml.v30.jaxb.DecisionType;
 import org.oasis.xacml.v30.jaxb.IdReferenceType;
+import org.oasis.xacml.v30.jaxb.MultiRequestsType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.ObligationType;
 import org.oasis.xacml.v30.jaxb.ObligationsType;
 import org.oasis.xacml.v30.jaxb.PolicyIdentifierListType;
+import org.oasis.xacml.v30.jaxb.RequestDefaultsType;
 import org.oasis.xacml.v30.jaxb.RequestReferenceType;
 import org.oasis.xacml.v30.jaxb.RequestType;
 import org.oasis.xacml.v30.jaxb.ResponseType;
@@ -35,11 +37,13 @@ import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.RequestDefaults;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -75,6 +79,46 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return b.returnPolicyIdList(req.isReturnPolicyIdList())
 				.combineDecision(req.isCombinedDecision())
 				.build();
+	}
+	
+	public RequestType create(RequestContext req) throws XacmlSyntaxException
+	{
+		RequestType jaxbReq = new RequestType();
+		jaxbReq.setCombinedDecision(req.isCombinedDecision());
+		jaxbReq.setRequestDefaults(create(req.getRequestDefaults()));
+		jaxbReq.setReturnPolicyIdList(req.isReturnPolicyIdList());
+		for(Category c : req.getAttributes()){
+			jaxbReq.getAttributes().add(create(c));
+		}
+		MultiRequestsType multiReq = new MultiRequestsType();
+		for(RequestReference ref : req.getRequestReferences()){
+			multiReq.getRequestReference().add(create(ref));
+		}
+		jaxbReq.setMultiRequests(multiReq);
+		return jaxbReq;
+	}
+	
+	private RequestDefaultsType create(RequestDefaults defaults){
+		RequestDefaultsType def = new RequestDefaultsType();
+		if(defaults == null){
+			return null;
+		}
+		def.setXPathVersion(defaults.getXPathVersion().toString());
+		return def;
+	}
+	
+	private RequestReferenceType create(RequestReference reqRef){
+		RequestReferenceType jaxbReqRef = new RequestReferenceType();
+		for(CategoryReference ref : reqRef.getReferencedCategories()){
+			jaxbReqRef.getAttributesReference().add(create(ref));
+		}
+		return jaxbReqRef;
+	}
+	
+	private AttributesReferenceType create(CategoryReference ref){
+		AttributesReferenceType jaxbRef = new AttributesReferenceType();
+		jaxbRef.setReferenceId(ref.getReferenceId());
+		return jaxbRef;
 	}
 
 	public ResponseType create(ResponseContext res) throws XacmlSyntaxException

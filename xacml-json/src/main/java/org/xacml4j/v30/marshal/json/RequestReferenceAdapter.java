@@ -3,7 +3,7 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.RequestReference;
 
 import com.google.gson.JsonDeserializationContext;
@@ -22,8 +22,8 @@ final class RequestReferenceAdapter implements JsonDeserializer<RequestReference
 	public RequestReference deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		Collection<AttributesReference> refs = context.deserialize(o.getAsJsonArray(REFERENCE_ID_PROPERTY),
-				new TypeToken<Collection<AttributesReference>>() {
+		Collection<CategoryReference> refs = context.deserialize(o.getAsJsonArray(REFERENCE_ID_PROPERTY),
+				new TypeToken<Collection<CategoryReference>>() {
 				}.getType());
 		return RequestReference.builder().reference(refs).build();
 	}
@@ -31,7 +31,7 @@ final class RequestReferenceAdapter implements JsonDeserializer<RequestReference
 	@Override
 	public JsonElement serialize(RequestReference src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.add(REFERENCE_ID_PROPERTY, context.serialize(src.getReferencedAttributes()));
+		o.add(REFERENCE_ID_PROPERTY, context.serialize(src.getReferencedCategories()));
 		return o;
 	}
 

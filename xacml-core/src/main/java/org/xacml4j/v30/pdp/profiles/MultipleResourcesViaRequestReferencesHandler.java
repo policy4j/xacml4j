@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.Result;
@@ -48,8 +48,8 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			RequestReference reqRef) throws RequestSyntaxException
 	{
 		Collection<Category> resolved = new LinkedList<Category>();
-		for(AttributesReference ref : reqRef.getReferencedAttributes()){
-			Category attributes = req.getReferencedAttributes(ref);
+		for(CategoryReference ref : reqRef.getReferencedCategories()){
+			Category attributes = req.getReferencedCategory(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
 						"Failed to resolve attribute reference",

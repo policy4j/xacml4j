@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
@@ -106,9 +106,9 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.build();
 
 
-		Collection<AttributesReference> ref1 = new LinkedList<AttributesReference>();
-		ref1.add(AttributesReference.builder().id("resourceAttr1").build());
-		ref1.add(AttributesReference.builder().id("subjectAttr1").build());
+		Collection<CategoryReference> ref1 = new LinkedList<CategoryReference>();
+		ref1.add(CategoryReference.builder().id("resourceAttr1").build());
+		ref1.add(CategoryReference.builder().id("subjectAttr1").build());
 
 		RequestReference reference1 = RequestReference.builder()
 				.reference("resourceAttr1", "subjectAttr1")

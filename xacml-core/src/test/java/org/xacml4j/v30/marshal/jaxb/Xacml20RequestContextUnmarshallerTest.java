@@ -41,7 +41,10 @@ public class Xacml20RequestContextUnmarshallerTest
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		RequestContext request = unmarshaller.unmarshal(cl.getResourceAsStream("IIIF005Request.xml"));
+		
+		
 		assertNotNull(request);
+		
 		Entity subject = request.getOnlyEntity(Categories.SUBJECT_ACCESS);
 		assertNotNull(subject);
 

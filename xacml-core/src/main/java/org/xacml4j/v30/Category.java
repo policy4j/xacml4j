@@ -9,7 +9,7 @@ public class Category
 {
 	private final String id;
 	private final CategoryId categoryId;
-	private final AttributesReference ref;
+	private final CategoryReference ref;
 	private Entity entity;
 
 	private Category(Builder b) {
@@ -20,7 +20,7 @@ public class Category
 		this.entity = b.entity;
 		this.ref = (b.id == null)
 				? null
-				: AttributesReference.builder().id(b.id).build();
+				: CategoryReference.builder().id(b.id).build();
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Category
 		return id;
 	}
 
-	public AttributesReference getReference(){
+	public CategoryReference getReference(){
 		return ref;
 	}
 

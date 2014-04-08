@@ -248,7 +248,7 @@ public class RequestContext
 	 * @return {@link Category} or {@code null} if
 	 * reference can not be resolved
 	 */
-	public Category getReferencedAttributes(AttributesReference reference){
+	public Category getReferencedCategory(CategoryReference reference){
 		Preconditions.checkNotNull(reference);
 		return attributesByXmlId.get(reference.getReferenceId());
 	}

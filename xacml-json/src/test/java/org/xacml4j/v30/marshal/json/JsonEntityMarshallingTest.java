@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;

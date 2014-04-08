@@ -7,7 +7,7 @@ import java.io.Writer;
 
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.AttributesReference;
+import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.marshal.Marshaller;
@@ -26,7 +26,7 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(AttributesReference.class, new AttributesRefererenceAdapater()).create();
+				.registerTypeAdapter(CategoryReference.class, new AttributesRefererenceAdapater()).create();
 	}
 
 	@Override
