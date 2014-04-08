@@ -40,7 +40,6 @@ public class JsonEntityMarshallingTest
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
-				.registerTypeAdapter(AttributeExp.class, new AttributeExpSerializer())
 				.create();
 	}
 	

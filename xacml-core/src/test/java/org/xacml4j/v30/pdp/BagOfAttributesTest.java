@@ -1,9 +1,9 @@
 package org.xacml4j.v30.pdp;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -61,8 +61,8 @@ public class BagOfAttributesTest
 	public void testCreateBagFromValues()
 	{
 		BagOfAttributeExp b = STRING.bagOf(
-				StringExp.valueOf("1"), 
-				StringExp.valueOf("aaa"), 
+				StringExp.valueOf("1"),
+				StringExp.valueOf("aaa"),
 				StringExp.valueOf("BB"));
 		assertTrue(b.contains(StringExp.valueOf("1")));
 		assertTrue(b.contains(StringExp.valueOf("aaa")));
@@ -173,13 +173,13 @@ public class BagOfAttributesTest
 				IntegerExp.valueOf(2),
 				IntegerExp.valueOf(3),
 				IntegerExp.valueOf(6));
-	
+
 		BagOfAttributeExp bag1 = INTEGER.bagOf(
 				IntegerExp.valueOf(9),
 				IntegerExp.valueOf(2),
 				IntegerExp.valueOf(6),
 				IntegerExp.valueOf(4));
-		
+
 		BagOfAttributeExp bag3 = bag0.intersection(bag1);
 		assertTrue(bag3.contains(IntegerExp.valueOf(2)));
 		assertTrue(bag3.contains(IntegerExp.valueOf(6)));
@@ -194,12 +194,12 @@ public class BagOfAttributesTest
 				IntegerExp.valueOf(2),
 				IntegerExp.valueOf(3));
 		BagOfAttributeExp bag1 = INTEGER.bag().attribute(
-				IntegerExp.valueOf(2),  
-				IntegerExp.valueOf(1), 
+				IntegerExp.valueOf(2),
+				IntegerExp.valueOf(1),
 				IntegerExp.valueOf(3)).build();
 		Iterable<AttributeExp> values = ImmutableList.<AttributeExp>of(
-				IntegerExp.valueOf(2),  
-				IntegerExp.valueOf(1), 
+				IntegerExp.valueOf(2),
+				IntegerExp.valueOf(1),
 				IntegerExp.valueOf(3));
 		BagOfAttributeExp bag3 = INTEGER.bag().attributes(values).build();
 		BagOfAttributeExp bag4 = INTEGER.bag().attributes(values).build();

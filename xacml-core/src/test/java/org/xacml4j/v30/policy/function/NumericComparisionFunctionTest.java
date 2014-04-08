@@ -1,6 +1,6 @@
 package org.xacml4j.v30.policy.function;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.xacml4j.v30.types.BooleanExp;

@@ -30,7 +30,7 @@ public interface TypeToXacml30 extends TypeCapability
 {
 	AttributeValueType toXacml30(AttributeExp v);
 	AttributeExp fromXacml30(AttributeValueType v);
-	
+
 	public enum Types implements TypeToXacml30
 	{
 		ANYURI(XacmlTypes.ANYURI){
@@ -213,7 +213,7 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeExp fromXacml30(AttributeValueType v) {
 				Entity.Builder b = Entity.builder();
-				if(v.getContent().size() > 0 && 
+				if(v.getContent().size() > 0 &&
 						v.getContent().get(0) instanceof JAXBElement){
 					JAXBElement<?> e = (JAXBElement<?>)v.getContent().get(0);
 					int start = 0;
@@ -385,7 +385,7 @@ public interface TypeToXacml30 extends TypeCapability
 				xacml30.getOtherAttributes().put(XPATH_CATEGORY_ATTR_NAME, xpath.getCategory().getId());
 				return xacml30;
 			}
-			
+
 			@Override
 			public AttributeExp fromXacml30(AttributeValueType v) {
 				CategoryId categoryId = Categories.parse(v.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME));
@@ -395,11 +395,11 @@ public interface TypeToXacml30 extends TypeCapability
 								"XPath category can not be null");
 					}
 					return XPathExp.valueOf(
-							new XPathExpression((String)(v.getContent().get(0)), 
+							new XPathExpression((String)(v.getContent().get(0)),
 									categoryId));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value"); 
+						"No content found for the attribute value");
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
@@ -422,27 +422,27 @@ public interface TypeToXacml30 extends TypeCapability
 						"No content found for the attribute value");
 			}
 		};
-		
-		
+
+
 		private final static ObjectFactory XACML30_FACTORY = new ObjectFactory();
 		private final static TypeCapability.Index<TypeToXacml30> INDEX = TypeCapability.Index.<TypeToXacml30>build(values());
 		public final static QName XPATH_CATEGORY_ATTR_NAME = new QName("XPathCategory");
-		
+
 		private AttributeExpType type;
-		
+
 		private Types(AttributeExpType t){
 			this.type = t;
 		}
-		
+
 		public AttributeExpType getType(){
 			return type;
 		}
-		
+
 		public static TypeCapability.Index<TypeToXacml30> getIndex(){
 			return INDEX;
 		}
-		
-		private static AttributeType toXacml30(Attribute a){	
+
+		private static AttributeType toXacml30(Attribute a){
 			AttributeType xacml30 = new AttributeType();
 			xacml30.setAttributeId(a.getAttributeId());
 			xacml30.setIssuer(a.getIssuer());
@@ -454,7 +454,7 @@ public interface TypeToXacml30 extends TypeCapability
 			}
 			return xacml30;
 		}
-		
+
 		private static Attribute fromXacml30(AttributeType attr) {
 			Attribute.Builder b = Attribute.builder(attr.getAttributeId());
 			b.issuer(attr.getIssuer());

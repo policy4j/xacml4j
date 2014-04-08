@@ -14,15 +14,14 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -45,7 +44,6 @@ public class DefaultEvaluationContextHandlerTest
 	"</md:record>";
 
 	private EvaluationContext context;
-	private RequestContext request;
 	private IMocksControl c;
 
 	private Entity entity;
@@ -64,7 +62,6 @@ public class DefaultEvaluationContextHandlerTest
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.context = c.createMock(EvaluationContext.class);
-		this.request = c.createMock(RequestContext.class);
 		this.requestContextCallback = c.createMock(RequestContextCallback.class);
 		this.pip = c.createMock(PolicyInformationPoint.class);
 		this.content = builder.parse(new InputSource(new StringReader(testXml)));

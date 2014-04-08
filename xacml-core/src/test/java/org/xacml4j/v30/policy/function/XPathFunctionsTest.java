@@ -166,7 +166,7 @@ public class XPathFunctionsTest
 		public NodeList answer() throws Throwable {
 			Object[] args = EasyMock.getCurrentArguments();
 			return xpathProvider.evaluateToNodeSet(
-					(String)args[0],
+					((XPathExp)args[0]).getPath(),
 					xml);
 		}
 	}

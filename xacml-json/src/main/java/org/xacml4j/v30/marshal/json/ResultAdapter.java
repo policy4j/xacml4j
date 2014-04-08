@@ -33,7 +33,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	private static final String STATUS_PROPERTY = "Status";
 	private static final String OBLIGATIONS_PROPERTY = "Obligations";
 	private static final String ASSOCIATED_ADVICE_PROPERTY = "AssociatedAdvice";
-	private static final String ATTRIBUTES_PROPERTY = "Attributes";
+	private static final String ATTRIBUTES_PROPERTY = "Category";
 	private static final String POLICY_IDENTIFIER_PROPERTY = "PolicyIdentifier";
 	private static final String POLICY_ID_REFERENCE_PROPERTY = "PolicyIdReference";
 	private static final String POLICY_SET_ID_REFERENCE_PROPERTY = "PolicySetIdReference";

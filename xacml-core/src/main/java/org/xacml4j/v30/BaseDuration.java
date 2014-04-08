@@ -84,7 +84,7 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 
 	@Override
 	public final int compareTo(T o) {
-		return value.compare(o.value);
+		return value.compare(o.getDuration());
 	}
 
 	public final T add(T d){
@@ -100,4 +100,5 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 	}
 
 	protected abstract T makeDuration(Duration d);
+	
 }

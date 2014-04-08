@@ -1,6 +1,6 @@
 package org.xacml4j.v30.pdp;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 

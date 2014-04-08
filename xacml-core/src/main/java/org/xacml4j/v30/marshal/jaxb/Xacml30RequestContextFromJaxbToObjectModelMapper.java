@@ -158,6 +158,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 						factory.createPolicySetIdReference(create(id)));
 			}
 		}
+		result.setPolicyIdentifierList(ids);
 		result.setStatus(create(r.getStatus()));
 		result.setDecision(create(r.getDecision()));
 		return result;

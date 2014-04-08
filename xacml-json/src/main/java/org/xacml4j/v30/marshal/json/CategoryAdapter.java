@@ -12,6 +12,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.XacmlSyntaxException;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -24,6 +25,9 @@ import com.google.gson.reflect.TypeToken;
 
 class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category> 
 {	
+	/**
+	 * Short well know category aliases
+	 */
 	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES = 
 			ImmutableBiMap.<String, CategoryId>builder()
 			.put("action", Categories.ACTION)
@@ -41,14 +45,16 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			throws JsonParseException {
 		try {
 			JsonObject o = json.getAsJsonObject();
+			String categoryId = GsonUtil.getAsString(o, JsonProperties.CATEGORY_ID_PROPERTY, null);
+			Preconditions.checkState(categoryId != null);
+			CategoryId category = SHORT_NAMES.get(categoryId);
+			category =  (category == null)?Categories.parse(categoryId):category;
+			String id = GsonUtil.getAsString(o, JsonProperties.ID_PROPERTY, null);
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(JsonProperties.ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
-			String categoryId = GsonUtil.getAsString(o, JsonProperties.CATEGORY_PROPERTY, null);
-			CategoryId category = SHORT_NAMES.get(categoryId);
-			category =  (category == null)?Categories.parse(categoryId):category;
+			
 			Node content = DOMUtil.stringToNode(GsonUtil.getAsString(o, JsonProperties.CONTENT_PROPERTY, null));
-			String id = GsonUtil.getAsString(o, JsonProperties.ID_PROPERTY, null);
 			return Category.builder(category)
 					.id(id)
 					.entity(Entity
@@ -71,7 +77,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 		}
 		Entity e = src.getEntity();
 		String categoryId = SHORT_NAMES.inverse().get(src.getCategoryId());
-		o.addProperty(JsonProperties.CATEGORY_PROPERTY, (categoryId == null)?src.getCategoryId().getId():categoryId);
+		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, (categoryId == null)?src.getCategoryId().getId():categoryId);
 		o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
 		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
 		return o;

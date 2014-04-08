@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -28,7 +29,7 @@ public class FunctionSpecBuilderTest
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		this.specSameTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
 		b = FunctionSpecBuilder.builder("testFunc2");
-		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
+		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.STRING).build(XacmlTypes.INTEGER, impl);
 	}
 
 	@Test
@@ -53,9 +54,9 @@ public class FunctionSpecBuilderTest
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(12L)).build()));
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
 		b = ImmutableList.builder();
-		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(IntegerExp.valueOf("aaa")).build()));
+		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build()));
 		b = ImmutableList.builder();
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
 		c.verify();
 	}
 

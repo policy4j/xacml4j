@@ -15,28 +15,22 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAssignment> {
+public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAssignment> 
+{
 
 	@Override
-	public JsonElement serialize(AttributeAssignment src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(AttributeAssignment src, Type typeOfSrc, JsonSerializationContext context) 
+	{
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
-
 		AttributeExp value = src.getAttribute();
 		o.add(VALUE_PROPERTY, context.serialize(value, AttributeExp.class));
-		if (value.getType() != null) {
-			// NOTE: we are serializing with short data type identifier
-			o.addProperty(DATA_TYPE_PROPERTY, value.getType().getShortDataTypeId());
-		}
-
+		o.addProperty(DATA_TYPE_PROPERTY, value.getType().getShortDataTypeId());
+		o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		if (src.getCategory() != null) {
-			o.addProperty("Category", src.getCategory().toString());
+			o.addProperty("Category", 
+					src.getCategory().toString());
 		}
-		if (src.getIssuer() != null) {
-			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
-		}
-
 		return o;
 	}
-
 }
