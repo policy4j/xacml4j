@@ -58,7 +58,9 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 		} else {
 			values = ImmutableList.of(deserializeValue(type, jsonValue, context));
 		}
-		checkArgument(values != null && !values.isEmpty(), "Property '%s' is mandatory.", VALUE_PROPERTY);
+		System.out.println(values);
+		checkArgument(values != null && !values.isEmpty(), "Property '%s' is mandatory.", 
+				VALUE_PROPERTY);
 		return values;
 	}
 

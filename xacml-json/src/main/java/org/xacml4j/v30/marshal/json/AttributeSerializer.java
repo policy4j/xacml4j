@@ -16,14 +16,12 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 
 class AttributeSerializer implements JsonSerializer<Attribute> 
 {
@@ -47,27 +45,19 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 	private void serializeValue(JsonSerializationContext context, JsonObject o, 
 			Collection<AttributeExp> values) {
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
-		Iterator<AttributeExp> valueIterator = values.iterator();
-		AttributeExp firstValue = valueIterator.next();
+		AttributeExp firstValue = Iterables.getFirst(values, null);
 		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(firstValue.getType());
 		checkState(toGson.isPresent());
-		JsonElement v = null;
-		if(valueIterator.hasNext()){
-			JsonArray array = new JsonArray();
-			while(valueIterator.hasNext()){
-				AttributeExp a = valueIterator.next();
-				checkArgument(firstValue.getType().equals(a.getType()));
-				array.add(toGson.get().toJson(a, context));
-			}
-			v = array;
-			o.add(VALUE_PROPERTY, v);
+		if(values.size() == 1){
+			o.add(VALUE_PROPERTY, toGson.get().toJson(firstValue, context));
 			return;
 		}
-		o.add(VALUE_PROPERTY, toGson.get().toJson(firstValue, context));
+		JsonArray array = new JsonArray();
+		for(AttributeExp a : values){
+			checkArgument(firstValue.getType().equals(a.getType()));
+			array.add(toGson.get().toJson(a, context));
+		}
+		o.add(VALUE_PROPERTY, array);
 	}
-	
-	
-	
-
 }

@@ -53,7 +53,6 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(JsonProperties.ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
-			
 			Node content = DOMUtil.stringToNode(GsonUtil.getAsString(o, JsonProperties.CONTENT_PROPERTY, null));
 			return Category.builder(category)
 					.id(id)

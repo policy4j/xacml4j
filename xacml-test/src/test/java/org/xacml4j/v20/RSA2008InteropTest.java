@@ -52,7 +52,7 @@ public class RSA2008InteropTest
 			.pip(
 					PolicyInformationPointBuilder
 					.builder("testPip")
-					.withDefaultResolvers()
+					.defaultResolvers()
 					.build())
 			.rootPolicy(repository.importPolicy(getPolicy("XacmlPolicySet-01-top-level.xml")))
 			.build();

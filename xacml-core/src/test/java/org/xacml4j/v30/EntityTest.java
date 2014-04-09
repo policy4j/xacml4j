@@ -90,6 +90,22 @@ public class EntityTest
 		entity.getAttributeValues("/md:record/md:patient", 
 				new DefaultXPathProvider(), XacmlTypes.INTEGER, null);
 	}
+	
+	@Test
+	public void testEntityEquals(){
+		Entity e0 = Entity
+				.builder()
+				.attribute(Attribute.builder("testId1").value(StringExp.valueOf("aa"), StringExp.valueOf("bb")).build())
+				.attribute(Attribute.builder("testId2").value(StringExp.valueOf("cc"), StringExp.valueOf("dd")).build())
+				.build();
+		
+		Entity e1 = Entity
+				.builder()
+				.attribute(Attribute.builder("testId2").value(StringExp.valueOf("dd"), StringExp.valueOf("cc")).build())
+				.attribute(Attribute.builder("testId1").value(StringExp.valueOf("bb"), StringExp.valueOf("aa")).build())
+				.build();
+		assertEquals(e0, e1);
+	}
 }
 
 

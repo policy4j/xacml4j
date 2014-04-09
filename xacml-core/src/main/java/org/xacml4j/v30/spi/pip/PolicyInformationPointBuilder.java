@@ -37,8 +37,8 @@ public final class PolicyInformationPointBuilder
 	 *
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
-	public PolicyInformationPointBuilder withDefaultResolvers(){
-		return withResolver(new DefaultEnviromentAttributeResolver());
+	public PolicyInformationPointBuilder defaultResolvers(){
+		return resolver(new DefaultEnviromentAttributeResolver());
 	}
 
 	/**
@@ -47,36 +47,36 @@ public final class PolicyInformationPointBuilder
 	 * @param resolver a resolver
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
-	public PolicyInformationPointBuilder withResolver(AttributeResolver resolver){
+	public PolicyInformationPointBuilder resolver(AttributeResolver resolver){
 		registryBuilder.withAttributeResolver(resolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder withResolver(ContentResolver resolver){
+	public PolicyInformationPointBuilder resolver(ContentResolver resolver){
 		Preconditions.checkNotNull(resolver);
 		registryBuilder.withContentResolver(resolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder withResolver(Object annotatedResolver){
+	public PolicyInformationPointBuilder resolverFromInstance(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
 		registryBuilder.withResolver(annotatedResolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder withPolicyScopedResolver(
+	public PolicyInformationPointBuilder policyScopedResolverFromInstance(
 			String policyId, Object annotatedResolver){
 		registryBuilder.withPolicyScopedResolver(policyId, annotatedResolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder withPolicyScopedResolver(
+	public PolicyInformationPointBuilder policyScopedResolver(
 			String policyId, AttributeResolver resolver){
 		registryBuilder.withPolicyScopedAttributeResolver(policyId, resolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder withPolicyScopedResolver(
+	public PolicyInformationPointBuilder policyScopedResolver(
 			String policyId, ContentResolver resolver){
 		Preconditions.checkNotNull(policyId);
 		Preconditions.checkNotNull(resolver);

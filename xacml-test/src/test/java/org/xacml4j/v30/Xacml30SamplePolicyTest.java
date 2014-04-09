@@ -11,11 +11,11 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 	@Test
 	public void testCPNICompliance() throws Exception {
 		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")
-				.withResolver(ExpectedAttributeResolverBuilder
+				.resolver(ExpectedAttributeResolverBuilder
 								.builder("test", Categories.SUBJECT_ACCESS)
-									.withAttributeValue("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanExp.valueOf(true))
+									.value("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanExp.valueOf(true))
 									.build())
-					.withPolicyFromClasspath("v30-policy-test/policyset.xml")
+					.policyFromClasspath("v30-policy-test/policyset.xml")
 					.build();
 
 		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
@@ -24,7 +24,7 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 	@Test
 	public void testCPNIComplianceAttrsInRequest() throws Exception {
 		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")
-				.withPolicyFromClasspath("v30-policy-test/policyset.xml")
+				.policyFromClasspath("v30-policy-test/policyset.xml")
 				.build();
 		verifyXacml30Response(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
 	}

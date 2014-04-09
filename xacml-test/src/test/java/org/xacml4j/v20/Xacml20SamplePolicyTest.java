@@ -15,7 +15,7 @@ public class Xacml20SamplePolicyTest extends XacmlPolicyTestSupport
 
 		this.pdp = builder(
 				"urn:oasis:names:tc:xacml:2.0:conformance-test:IIC058:policy", "1.0")
-				.withPolicy(getPolicy("v20-policy-test/test-policy.xml")).build();
+				.policy(getPolicy("v20-policy-test/test-policy.xml")).build();
 	}
 
 	@Test

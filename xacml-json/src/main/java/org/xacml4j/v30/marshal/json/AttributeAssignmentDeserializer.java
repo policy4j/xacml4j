@@ -1,7 +1,6 @@
 package org.xacml4j.v30.marshal.json;
 
 import static com.google.common.base.Preconditions.checkArgument;
-
 import static org.xacml4j.v30.marshal.json.JsonProperties.ATTRIBUTE_ID_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.DATA_TYPE_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.ISSUER_PROPERTY;
@@ -10,10 +9,10 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 import java.lang.reflect.Type;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;

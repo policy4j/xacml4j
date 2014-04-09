@@ -8,7 +8,6 @@ import java.io.Writer;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;

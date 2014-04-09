@@ -43,13 +43,13 @@ public class XacmlPolicyTestSupport {
 
 	}
 
-	protected XacmlTestPdpBuilder builder(String rootPolicyId, String rootPolicyVersion)
+	protected Builder builder(String rootPolicyId, String rootPolicyVersion)
 	{
-		XacmlTestPdpBuilder pdpBuilder = new XacmlTestPdpBuilder("testPDP", "testPIP", "testRepositoryId");
-		pdpBuilder.withRootPolicy(rootPolicyId, rootPolicyVersion);
-		pdpBuilder.withDefaultResolvers();
-		pdpBuilder.withDefaultFunctions();
-		pdpBuilder.withDefaultDecisionAlgorithms();
+		Builder pdpBuilder = new Builder("testPDP", "testPIP", "testRepositoryId");
+		pdpBuilder.rootPolicy(rootPolicyId, rootPolicyVersion);
+		pdpBuilder.defaultResolvers();
+		pdpBuilder.defaultFunctions();
+		pdpBuilder.defaultDecisionAlgorithms();
 		return pdpBuilder;
 	}
 
@@ -203,7 +203,7 @@ public class XacmlPolicyTestSupport {
 	}
 
 
-	public class XacmlTestPdpBuilder
+	public class Builder
 	{
 		private String rootPolicyId;
 		private String rootPolicyVersion;
@@ -214,7 +214,7 @@ public class XacmlPolicyTestSupport {
 		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
 		private Collection<InputStream> policies;
 
-		public XacmlTestPdpBuilder(String pdpId, String pipId, String repositoryId){
+		public Builder(String pdpId, String pipId, String repositoryId){
 			Preconditions.checkNotNull(pdpId);
 			Preconditions.checkNotNull(pipId);
 			Preconditions.checkNotNull(repositoryId);
@@ -226,67 +226,67 @@ public class XacmlPolicyTestSupport {
 			this.pdpId = pdpId;
 		}
 
-		public XacmlTestPdpBuilder withRootPolicy(String policyId, String version){
+		public Builder rootPolicy(String policyId, String version){
 			this.rootPolicyId = policyId;
 			this.rootPolicyVersion = version;
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withDefaultDecisionAlgorithms(){
+		public Builder defaultDecisionAlgorithms(){
 			decisionAlgoProviderBuilder.withDefaultAlgorithms();
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withDefaultResolvers(){
-			pipBuilder.withDefaultResolvers();
+		public Builder defaultResolvers(){
+			pipBuilder.defaultResolvers();
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withDefaultFunctions(){
+		public Builder defaultFunctions(){
 			functionProviderBuilder.defaultFunctions();
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withFunctionProvider(Object provider){
+		public Builder functionProvider(Object provider){
 			functionProviderBuilder.fromInstance(provider);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withFunctionProvider(Class<?> clazz){
+		public Builder functionProvider(Class<?> clazz){
 			functionProviderBuilder.fromClass(clazz);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withDecisionAlgorithmProvider(Object provider){
+		public Builder decisionAlgorithmProvider(Object provider){
 			decisionAlgoProviderBuilder.withAlgorithmProvider(provider);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withPolicy(InputStream stream){
+		public Builder policy(InputStream stream){
 			this.policies.add(stream);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withPolicies(InputStream ... policies){
+		public Builder policies(InputStream ... policies){
 			for(InputStream s : policies){
 				this.policies.add(s);
 			}
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withPolicyFromClasspath(String path ){
+		public Builder policyFromClasspath(String path ){
 			InputStream in = getPolicy(path);
 			this.policies.add(in);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withResolver(Object resolver){
-			pipBuilder.withResolver(resolver);
+		public Builder resolver(Object resolver){
+			pipBuilder.resolverFromInstance(resolver);
 			return this;
 		}
 
-		public XacmlTestPdpBuilder withResolver(String policyId, Object resolver){
-			pipBuilder.withResolver(resolver);
+		public Builder resolver(String policyId, Object resolver){
+			pipBuilder.resolverFromInstance(resolver);
 			return this;
 		}
 
