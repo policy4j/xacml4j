@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
@@ -29,7 +30,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 
 	private final Version version;
-	private final PolicyIssuer issuer;
+	private final Entity policyIssuer;
 	private final Integer maxDelegationDepth;
 	private final Multimap<String, CombinerParameter> combinerParameters;
 
@@ -37,7 +38,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		super(b);
 		this.version = b.version;
 		this.maxDelegationDepth = b.maxDelegationDepth;
-		this.issuer = b.issuer;
+		this.policyIssuer = b.issuer;
 		this.combinerParameters = b.combParamBuilder.build();
 	}
 
@@ -51,8 +52,8 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	 *
 	 * @return this rule issuer attributes
 	 */
-	public PolicyIssuer getIssuer(){
-		return issuer;
+	public Entity getIssuer(){
+		return policyIssuer;
 	}
 
 	/**
@@ -84,7 +85,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	public boolean isTrusted(){
-		return (issuer == null);
+		return (policyIssuer == null);
 	}
 
 	@Override
@@ -164,7 +165,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
 		return super.toStringBuilder(b)
 			.add("version", version)
-			.add("issuer", issuer)
+			.add("issuer", policyIssuer)
 			.add("maxDelegationDepth", maxDelegationDepth)
 			.add("combinerParameters", combinerParameters);
 	}
@@ -172,7 +173,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	protected boolean equalsTo(BaseCompositeDecisionRule r) {
 		return super.equalsTo(r)
 			&& Objects.equal(version, r.version)
-			&& Objects.equal(issuer, r.issuer)
+			&& Objects.equal(policyIssuer, r.policyIssuer)
 			&& Objects.equal(maxDelegationDepth, r.maxDelegationDepth)
 			&& Objects.equal(combinerParameters, r.combinerParameters);
 	}
@@ -180,7 +181,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	@Override
 	public int hashCode() {
 		return super.hashCode() * 31 +
-				Objects.hashCode(version, issuer, maxDelegationDepth, combinerParameters);
+				Objects.hashCode(version, policyIssuer, maxDelegationDepth, combinerParameters);
 	}
 
 	public abstract static class Builder<T extends Builder<?>>
@@ -188,7 +189,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	{
 		protected Version version;
 		protected Integer maxDelegationDepth;
-		protected PolicyIssuer issuer;
+		protected Entity issuer;
 		protected ImmutableMultimap.Builder<String, CombinerParameter> combParamBuilder = ImmutableMultimap.builder();
 
 		protected Builder(String ruleId) {
@@ -222,7 +223,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			return version(Version.parse(version));
 		}
 
-		public T issuer(PolicyIssuer issuer){
+		public T issuer(Entity issuer){
 			this.issuer = issuer;
 			return getThis();
 		}

@@ -47,6 +47,8 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 	private Collection<AttributeExp> deserializeValue(JsonDeserializationContext context, JsonObject o) {
 		AttributeExpType type = getDataType(o);
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
+		checkArgument(jsonValue == null, "Property '%s' is mandatory.", 
+				VALUE_PROPERTY);
 		Collection<AttributeExp> values = null;
 		if (jsonValue.isJsonArray()) {
 			JsonArray jsonArray = jsonValue.getAsJsonArray();
@@ -58,7 +60,6 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 		} else {
 			values = ImmutableList.of(deserializeValue(type, jsonValue, context));
 		}
-		System.out.println(values);
 		checkArgument(values != null && !values.isEmpty(), "Property '%s' is mandatory.", 
 				VALUE_PROPERTY);
 		return values;

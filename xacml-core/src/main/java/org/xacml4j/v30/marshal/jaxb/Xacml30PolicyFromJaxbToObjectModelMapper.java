@@ -44,6 +44,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
@@ -62,7 +63,6 @@ import org.xacml4j.v30.pdp.ObligationExpression;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicyDefaults;
 import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicyIssuer;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicySetDefaults;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
@@ -316,13 +316,13 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.build();
 	}
 
-	private PolicyIssuer createPolicyIssuer(PolicyIssuerType issuer)
+	private Entity createPolicyIssuer(PolicyIssuerType issuer)
 		throws XacmlSyntaxException
 	{
 		if(issuer == null){
 			return null;
 		}
-		PolicyIssuer.Builder b = PolicyIssuer.builder();
+		Entity.Builder b = Entity.builder();
 		b.content(createDOMNode(issuer.getContent()));
 		for(AttributeType a : issuer.getAttribute()){
 			b.attribute(create(a));

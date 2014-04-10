@@ -138,12 +138,4 @@ public class PolicyVisitorSupport implements PolicyVisitor
 	@Override
 	public void visitLeave(CombinerParameter p) {
 	}
-
-	@Override
-	public void visitEnter(PolicyIssuer p) {
-	}
-
-	@Override
-	public void visitLeave(PolicyIssuer p) {
-	}
 }

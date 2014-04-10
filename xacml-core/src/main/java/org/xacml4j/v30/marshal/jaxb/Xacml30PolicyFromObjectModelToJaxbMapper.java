@@ -35,6 +35,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.pdp.AdviceExpression;
 import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 import org.xacml4j.v30.pdp.AttributeDesignator;
@@ -47,7 +48,6 @@ import org.xacml4j.v30.pdp.ObligationExpression;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicyDefaults;
 import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicyIssuer;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicySetDefaults;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
@@ -235,7 +235,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		return jaxbVar;
 	}
 
-	private PolicyIssuerType toJaxb(PolicyIssuer issuer)
+	private PolicyIssuerType toJaxb(Entity issuer)
 	{
 		if(issuer == null){
 			return null;
