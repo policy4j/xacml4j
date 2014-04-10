@@ -83,11 +83,8 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		Collection<Category> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
 		if (attributes != null) {
 			builder.includeInResultAttr(attributes);
-			// TODO: or should we call builder.resolvedAttr?
 		}
-
 		deserializePolicyIdentifiers(o, context, builder);
-
 		return builder.build();
 	}
 
@@ -120,19 +117,15 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		if (obligations != null && !obligations.isEmpty()) {
 			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations, OBLIGATIONS_TYPE));
 		}
-
 		Collection<Advice> associatedAdvice = src.getAssociatedAdvice();
 		if (associatedAdvice != null && !associatedAdvice.isEmpty()) {
 			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice, ADVICE_TYPE));
 		}
-		System.out.println("Result marshall");
 		Collection<Category> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
 			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));
 		}
-
 		serializePolicyIdentifiers(src, context, o);
-
 		return o;
 	}
 

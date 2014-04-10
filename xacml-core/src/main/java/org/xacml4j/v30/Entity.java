@@ -235,7 +235,7 @@ public final class Entity extends AttributeContainer
 			return false;
 		}
 		Entity a = (Entity)o;
-		return attributes.equals(a.attributes) &&
+		return Objects.equal(attributes, a.attributes) &&
 				DOMUtil.isEqual(content, a.content);
 	}
 

@@ -7,7 +7,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
@@ -151,7 +150,7 @@ public class AttributeContainer
 
 	public static abstract class Builder<T extends Builder<?>>
 	{
-		private ImmutableSetMultimap.Builder<String, Attribute> attrsBuilder = ImmutableSetMultimap.builder();
+		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
 		public T attribute(Attribute... attrs) {
 			for(Attribute attr : attrs){
@@ -161,7 +160,7 @@ public class AttributeContainer
 		}
 
 		public T noAttributes() {
-			this.attrsBuilder = ImmutableSetMultimap.builder();
+			this.attrsBuilder = ImmutableListMultimap.builder();
 			return getThis();
 		}
 

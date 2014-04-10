@@ -1,9 +1,11 @@
 package org.xacml4j.v30;
 
+import java.net.URI;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 public enum Categories implements CategoryId
@@ -93,7 +95,12 @@ public enum Categories implements CategoryId
 		}
 		return c;
 	}
-
+	
+	public static CategoryId parse(URI categoryUri) throws XacmlSyntaxException{
+		Preconditions.checkArgument(categoryUri != null);
+		return parse(categoryUri.toString());
+	}
+	
 	/**
 	 * Tests if a given category URI represents
 	 * a delegated category

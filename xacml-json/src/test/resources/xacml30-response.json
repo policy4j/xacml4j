@@ -52,10 +52,10 @@
      "Id": "advice2"
     }
    ],
-   "Attributes": [
+   "Category": [
     {
      "Id": "SubjectAttributes",
-     "Category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+     "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
      "Content": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>",
      "Attribute": [
       {

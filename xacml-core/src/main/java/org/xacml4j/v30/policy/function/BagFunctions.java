@@ -15,6 +15,7 @@ import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.DateTimeExp;
 import org.xacml4j.v30.types.DayTimeDurationExp;
 import org.xacml4j.v30.types.DoubleExp;
+import org.xacml4j.v30.types.EntityExp;
 import org.xacml4j.v30.types.HexBinaryExp;
 import org.xacml4j.v30.types.IPAddressExp;
 import org.xacml4j.v30.types.IntegerExp;
@@ -103,7 +104,7 @@ public class BagFunctions
 	{
 		return isEmpty(bag);
 	}
-
+	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp stringOneAndOnly(
@@ -676,5 +677,40 @@ public class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
 			DNSNameExp ...values){
 		return XacmlTypes.DNSNAME.bagOf(values);
+	}
+	// entity
+	
+	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:entity-bag-is-empty")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	public static BooleanExp entityBagIsEmpty(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+			BagOfAttributeExp bag)
+	{
+		return isEmpty(bag);
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-one-and-only")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
+	public static StringExp entityOneAndOnly(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+			BagOfAttributeExp bag)
+	{
+		return oneAndOnlyImpl(bag);
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag-size")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
+	public static IntegerExp entityBagSize(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)BagOfAttributeExp bag)
+	{
+		return typeBagSizeImpl(bag);
+	}
+	
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag")
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+	public static BagOfAttributeExp entityBag(
+			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:3.0:data type:entity")
+			EntityExp ...values){
+		return EntityExp.bag().attribute(values).build();
 	}
 }

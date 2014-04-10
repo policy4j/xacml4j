@@ -10,6 +10,8 @@ import java.lang.reflect.Type;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.AttributeExp;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -24,7 +26,9 @@ public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAs
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
 		AttributeExp value = src.getAttribute();
-		o.add(VALUE_PROPERTY, context.serialize(value, AttributeExp.class));
+		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(value.getType());
+		Preconditions.checkState(toGson.isPresent());
+		o.add(VALUE_PROPERTY, toGson.get().toJson(value, context));
 		o.addProperty(DATA_TYPE_PROPERTY, value.getType().getShortDataTypeId());
 		o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		if (src.getCategory() != null) {

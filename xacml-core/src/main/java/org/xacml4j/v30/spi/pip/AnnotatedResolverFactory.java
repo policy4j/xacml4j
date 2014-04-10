@@ -34,6 +34,14 @@ class AnnotatedResolverFactory
 	static{
 		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
 	}
+	
+	/**
+	 * Gets all {@link ContentResolver} from given instance
+	 * 
+	 * @param instance an instance containing annotated resolvers
+	 * @return a collection of found {@link ContentResolver}
+	 * @throws XacmlSyntaxException
+	 */
 	public Collection<ContentResolver> getContentResolvers(Object instance)
 		throws XacmlSyntaxException
 	{
@@ -249,6 +257,12 @@ class AnnotatedResolverFactory
 		}
 	}
 
+	/**
+	 * An implementation {@link AttributeResolver} for
+	 * annotated resolver classes
+	 * 
+	 * @author Giedrius Trumpickas
+	 */
 	private final class AnnotatedAttributeResolver
 		extends BaseAttributeResolver
 	{

@@ -10,7 +10,6 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
