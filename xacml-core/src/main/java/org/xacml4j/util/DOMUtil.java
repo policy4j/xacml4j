@@ -1,5 +1,6 @@
 package org.xacml4j.util;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -196,24 +197,35 @@ public class DOMUtil
 		serializeToXml(node, out, true, false);
 	}
 	
-	public static Node stringToNode(String str) 
-	{
-		if (str == null) {
+	public static Node stringToNode(String src) {
+		if(src == null){
 			return null;
 		}
-		final DocumentBuilder documentBuilder;
+		return parseXml(new InputSource(new StringReader(src)));
+	}
+	
+	public static Node parseXml(InputStream src) {
+		if(src == null){
+			return null;
+		}
+		return parseXml(new InputSource(src));
+	}
+	
+	public static Node parseXml(InputSource src) 
+	{
+		Preconditions.checkNotNull(src);
+		DocumentBuilder documentBuilder = null;
 		try {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw new IllegalStateException(String.format("Failed to build %s",
 					DocumentBuilder.class.getName()), e);
 		}
-		InputSource source = new InputSource(new StringReader(str));
 		try {
-			return documentBuilder.parse(source);
+			return documentBuilder.parse(src);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(String.format(
-					"Failed to parse DOM from string: \"%s\"", str), e);
+					"Failed to parse DOM from string: \"%s\"", src), e);
 		}
 	}
 	

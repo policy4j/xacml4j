@@ -28,8 +28,6 @@ public interface FunctionSpec
 	 * @return legacy identifier
 	 */
 	String getLegacyId();
-
-	XacmlTypes getTypes();
 	
 	/**
 	 * Gets parameter specification

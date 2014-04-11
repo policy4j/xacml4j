@@ -17,7 +17,6 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -164,7 +163,6 @@ public final class FunctionSpecBuilder
 		private FunctionInvocation invocation;
 		private FunctionReturnTypeResolver resolver;
 		private FunctionParametersValidator validator;
-		private XacmlTypes types;
 
 		/**
 		 * Constructs function spec with given function
@@ -229,10 +227,6 @@ public final class FunctionSpecBuilder
 			return legacyId;
 		}
 		
-		public XacmlTypes getTypes(){
-			return types;
-		}
-
 		@Override
 		public final FunctionParamSpec getParamSpecAt(int index){
 			return parameters.get(index);
