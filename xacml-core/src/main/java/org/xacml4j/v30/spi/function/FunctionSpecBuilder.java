@@ -20,6 +20,7 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public final class FunctionSpecBuilder
 {
@@ -336,6 +337,19 @@ public final class FunctionSpecBuilder
 				}
 			}
 			return validateAdditional(arguments);
+		}
+		
+		private List<Expression> normalizeParameters(List<Expression> params){
+			ImmutableList.Builder<Expression> b = ImmutableList.builder();
+			ListIterator<Expression> paramIt = params.listIterator();
+			ListIterator<FunctionParamSpec> specIt = parameters.listIterator();
+			while(paramIt.hasNext()){
+				FunctionParamSpec spec = specIt.next();
+				if(spec.validate(paramIt)){
+					continue;
+				}
+			}
+			return b.build();
 		}
 
 		/**

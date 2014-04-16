@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+
 public class Category 
 {
 	private final String id;
@@ -12,6 +13,11 @@ public class Category
 	private final CategoryReference ref;
 	private Entity entity;
 
+	/**
+	 * Creates {@link Category} from given {@link Category.Builder}
+	 * 
+	 * @param b a category builder
+	 */
 	private Category(Builder b) {
 		Preconditions.checkNotNull(b.category);
 		Preconditions.checkNotNull(b.entity);

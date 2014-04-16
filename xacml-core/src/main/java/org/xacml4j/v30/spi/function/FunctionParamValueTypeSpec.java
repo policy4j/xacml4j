@@ -45,8 +45,6 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		if(exp == null){
 			return isOptional();
 		}
-		log.debug("Validating expression=\"{}\" " +
-				"against paramSpec=\"{}\"", exp, this);
 		ValueType expType = exp.getEvaluatesTo();
 		boolean valid = type.equals(expType);
 		if(log.isDebugEnabled()){

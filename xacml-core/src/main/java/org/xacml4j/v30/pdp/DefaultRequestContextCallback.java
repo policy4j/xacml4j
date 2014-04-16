@@ -27,6 +27,4 @@ public class DefaultRequestContextCallback
 	public Entity getEntity(CategoryId category) {
 		return request.getOnlyEntity(category);
 	}
-	
-	
 }

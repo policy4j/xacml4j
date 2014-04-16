@@ -42,7 +42,10 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Category>> cartesian = Sets.cartesianProduct(byCategory);
 		for(List<Category> requestAttr : cartesian){
-			results.addAll(handleNext(RequestContext.builder().copyOf(request, requestAttr).build(), context));
+			results.addAll(handleNext(RequestContext
+					.builder()
+					.copyOf(request, requestAttr)
+					.build(), context));
 		}
 		return results;
 	}

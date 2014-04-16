@@ -87,7 +87,8 @@ public enum Categories implements CategoryId
 		throws XacmlSyntaxException
 	{
 		if(Strings.isNullOrEmpty(v)){
-			return null;
+			throw new XacmlSyntaxException("Given value can't be " +
+					"converted to XACML CategoryId");
 		}
 		CategoryId c = BY_ID.get(v);
 		if(c == null){

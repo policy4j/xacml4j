@@ -29,7 +29,7 @@ public class FunctionSpecBuilderTest
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		this.specSameTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
 		b = FunctionSpecBuilder.builder("testFunc2");
-		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.STRING).build(XacmlTypes.INTEGER, impl);
+		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.STRING, null, true).build(XacmlTypes.INTEGER, impl);
 	}
 
 	@Test
@@ -55,6 +55,7 @@ public class FunctionSpecBuilderTest
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
 		b = ImmutableList.builder();
 		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build()));
+		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(IntegerExp.valueOf(11)).build()));
 		b = ImmutableList.builder();
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
 		c.verify();
