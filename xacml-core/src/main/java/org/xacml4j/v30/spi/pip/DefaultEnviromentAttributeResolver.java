@@ -22,7 +22,7 @@ class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
 {
 	public DefaultEnviromentAttributeResolver() {
 		super(AttributeResolverDescriptorBuilder.builder(
-				"urn:oasis:names:tc:xacml:1.0:environment:resolver",
+				"XacmlEnvironmentResolver",
 				"XACML Enviroment Attributes Resolver",
 				Categories.ENVIRONMENT)
 				.noCache()

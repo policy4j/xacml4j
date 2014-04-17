@@ -3,17 +3,14 @@ package org.xacml4j.v30.spi.pip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Timer;
-import com.yammer.metrics.core.TimerContext;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
@@ -28,10 +25,7 @@ public class DefaultPolicyInformationPoint
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
-
-	private Timer attrResTimer;
-	private Timer contResTimer;
-
+	
 	public DefaultPolicyInformationPoint(String id,
 			ResolverRegistry resolvers,
 			PolicyInformationPointCacheProvider cache)
@@ -42,8 +36,6 @@ public class DefaultPolicyInformationPoint
 		this.id = id;
 		this.cache = cache;
 		this.registry = resolvers;
-		this.attrResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "attribute-resolve", id);
-		this.contResTimer = Metrics.newTimer(DefaultPolicyInformationPoint.class, "content-resolve", id);
 	}
 
 	@Override
@@ -56,7 +48,6 @@ public class DefaultPolicyInformationPoint
 			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception
 	{
-		TimerContext timerContext = attrResTimer.time();
 		try{
 			if(log.isDebugEnabled()){
 				log.debug("Trying to resolve " +
@@ -135,7 +126,6 @@ public class DefaultPolicyInformationPoint
 			}
 			return ref.getDataType().emptyBag();
 		}finally{
-			timerContext.stop();
 		}
 	}
 
@@ -154,7 +144,6 @@ public class DefaultPolicyInformationPoint
 			CategoryId category)
 			throws Exception
 	{
-		TimerContext timerContext = contResTimer.time();
 		try{
 			ContentResolver r = registry.getMatchingContentResolver(context, category);
 			if(r == null){
@@ -191,7 +180,6 @@ public class DefaultPolicyInformationPoint
 			context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
 			return v.getContent();
 		}finally{
-			timerContext.stop();
 		}
 
 	}

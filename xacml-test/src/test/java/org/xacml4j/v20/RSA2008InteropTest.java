@@ -2,7 +2,10 @@ package org.xacml4j.v20;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.pdp.MetricsSupport;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
@@ -18,16 +22,23 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
+import com.codahale.metrics.CsvReporter;
 import com.google.common.collect.Iterables;
 
 public class RSA2008InteropTest
 {
 	private static PolicyDecisionPoint pdp;
 
+	
 	@BeforeClass
 	public static void init() throws Exception
 	{
-
+		CsvReporter reporter = CsvReporter.forRegistry(MetricsSupport.getOrCreate())
+	                .formatFor(Locale.US)
+	                .convertRatesTo(TimeUnit.MILLISECONDS)
+	                .convertDurationsTo(TimeUnit.MILLISECONDS)
+	                .build(new File("."));
+		reporter.start(1, TimeUnit.MILLISECONDS);
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()

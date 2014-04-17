@@ -7,11 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfAttributeExp;
 
-import com.google.common.base.Preconditions;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
-import com.yammer.metrics.core.Timer;
-import com.yammer.metrics.core.TimerContext;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
+
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
+import static org.xacml4j.v30.pdp.MetricsSupport.getOrCreate;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * A base implementation of {@link AttributeResolver}
@@ -24,13 +26,14 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	private AttributeResolverDescriptorDelegate descriptor;
 
-	private Counter failuresCount;
-	private Timer attrResolveTimer;
+	private Timer timer;
+	private Histogram histogram;
 	private AtomicInteger preferedCacheTTL;
+	private MetricRegistry registry;
 
 	protected BaseAttributeResolver(
 			AttributeResolverDescriptor descriptor){
-		Preconditions.checkNotNull(descriptor);
+		checkNotNull(descriptor);
 		this.descriptor = new AttributeResolverDescriptorDelegate(descriptor){
 			@Override
 			public int getPreferreredCacheTTL() {
@@ -38,8 +41,11 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 						super.getPreferreredCacheTTL():preferedCacheTTL.get();
 			}
 		};
-		this.attrResolveTimer = Metrics.newTimer(BaseAttributeResolver.class, "attributes-resolve", descriptor.getId());
-		this.failuresCount = Metrics.newCounter(BaseAttributeResolver.class, "failures-count", descriptor.getId());
+		this.registry = getOrCreate();
+		this.timer = registry.timer(name("pip.AttributeResolver", 
+				descriptor.getId(), "timer"));
+		this.histogram = registry.histogram(name("pip.AttributeResolver", 
+				descriptor.getId(), "histogram"));
 	}
 
 	@Override
@@ -51,14 +57,13 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	public final AttributeSet resolve(
 			ResolverContext context) throws Exception
 	{
-		Preconditions.checkArgument(
-				context.getDescriptor().getId().equals(descriptor.getId()));
+		checkArgument(context.getDescriptor().getId().equals(descriptor.getId()));
 		if(log.isDebugEnabled()){
 			log.debug("Retrieving attributes via resolver " +
 					"id=\"{}\" name=\"{}\"",
 					descriptor.getId(), descriptor.getName());
 		}
-		TimerContext timerCtx = attrResolveTimer.time();
+		Timer.Context timerCtx = timer.time();
 		try
 		{
 			return AttributeSet
@@ -70,10 +75,9 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			failuresCount.inc();
 			throw e;
 		}finally{
-			timerCtx.stop();
+			histogram.update(timerCtx.stop());
 		}
 	}
 
@@ -91,11 +95,6 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	@Override
 	public final int getPreferredCacheTTL() {
 		return descriptor.getPreferreredCacheTTL();
-	}
-
-	public void reset(){
-		attrResolveTimer.clear();
-		failuresCount.clear();
 	}
 
 	@Override

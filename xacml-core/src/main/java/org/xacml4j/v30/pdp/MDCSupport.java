@@ -1,6 +1,9 @@
 package org.xacml4j.v30.pdp;
 
+import java.util.Random;
+
 import org.slf4j.MDC;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -15,7 +18,24 @@ public class MDCSupport
 	private final static String RULE_ID_KEY = "ruleId";
 	private final static String ATTR_RESOLVER_ID_KEY = "attributeResolverId";
 	private final static String CONT_RESOLVER_ID_KEY = "contentResolverId";
+	private final static String XACML_MAIN_REQ_ID = "requestId";
 
+	private final static Random RND = new Random();
+	
+	public static void setXacmlRequestId(String correclationId, 
+			RequestContext req){
+		String identifier = new StringBuilder()
+		.append(correclationId)
+		.append("-")
+		.append(Long.toHexString(RND.nextLong()))
+		.toString();
+		MDC.put(XACML_MAIN_REQ_ID, identifier);
+	}
+	
+	public static void cleanXacmlRequestId(){
+		MDC.remove(XACML_MAIN_REQ_ID);
+	}
+	
 	public static void setPdpContext(PolicyDecisionPoint pdp){
 		MDC.put(PDP_ID_KEY, pdp.getId());
 	}

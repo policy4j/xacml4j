@@ -66,7 +66,8 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDe
 	}
 
 	@Override
-	protected PolicyDecisionPoint createInstance() throws Exception
+	protected PolicyDecisionPoint createInstance() 
+			throws Exception
 	{
 		if(pdp == null){
 			pdp = pdpBuilder.build();
@@ -78,6 +79,4 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDe
 	public void destroy() throws Exception {
 		pdp.close();
 	}
-
-
 }

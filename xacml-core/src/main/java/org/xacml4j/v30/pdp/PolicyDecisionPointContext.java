@@ -9,9 +9,16 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 
-
 public interface PolicyDecisionPointContext
 {
+	/**
+	 * Gets correlation identifier used
+	 * to track request in log messages
+	 * 
+	 * @return correlation identifier
+	 */
+	String getCorrelationId();
+	
 	/**
 	 * Creates {@link EvaluationContext} to evaluate
 	 * given {@link RequestContext} access decision request
@@ -20,7 +27,13 @@ public interface PolicyDecisionPointContext
 	 * @return {@link EvaluationContext}
 	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
-
+	
+	/**
+	 * Gets root policy for authorization domain
+	 * 
+	 * @return {@link CompositeDecisionRule} a root
+	 * policy
+	 */
 	CompositeDecisionRule getDomainPolicy();
 
 	XPathProvider getXPathProvider();

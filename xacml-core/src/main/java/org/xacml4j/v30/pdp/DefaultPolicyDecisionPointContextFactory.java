@@ -1,5 +1,7 @@
 package org.xacml4j.v30.pdp;
 
+import java.util.Random;
+
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.RequestContext;
@@ -19,6 +21,8 @@ import com.google.common.base.Preconditions;
 final class DefaultPolicyDecisionPointContextFactory
 	implements PolicyDecisionPointContextFactory
 {
+	private final static Random RND = new Random();
+	
 	private PolicyInformationPoint pip;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
@@ -32,7 +36,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	private boolean validateFuncParamsAtRuntime = false;
 	private int decisionCacheTTL = 30;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
-
+	
 	DefaultPolicyDecisionPointContextFactory(
 			CompositeDecisionRule policyDomain,
 			PolicyRepository repository,
@@ -84,6 +88,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	@Override
 	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp)
 	{
+		final String correlationId = Long.toHexString(RND.nextLong());
 		return new PolicyDecisionPointContext() {
 
 			@Override
@@ -130,6 +135,11 @@ final class DefaultPolicyDecisionPointContextFactory
 			@Override
 			public RequestContextHandlerChain getRequestHandlers() {
 				return requestHandlers;
+			}
+			
+			@Override
+			public String getCorrelationId() {
+				return correlationId;
 			}
 
 			@Override

@@ -1,5 +1,7 @@
 package org.xacml4j.v30.pdp;
 
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -10,10 +12,10 @@ import javax.management.StandardMBean;
 
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Category;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
@@ -27,12 +29,13 @@ import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Timer;
-import com.yammer.metrics.core.TimerContext;
 
 /**
  * A default implementation of {@link PolicyDecisionPoint}
@@ -49,8 +52,14 @@ final class DefaultPolicyDecisionPoint
 	private AtomicBoolean auditEnabled;
 	private AtomicBoolean cacheEnabled;
 
+	private MetricRegistry registry;
+	
 	private Timer decisionTimer;
-
+	private Histogram decisionHistogram;
+	private Counter permitDecisions;
+	private Counter denyDecisions;
+	private Counter indeterminateDecisions;
+	
 	DefaultPolicyDecisionPoint(
 			String id,
 			PolicyDecisionPointContextFactory factory)
@@ -63,7 +72,12 @@ final class DefaultPolicyDecisionPoint
 		this.factory = factory;
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
-		this.decisionTimer = Metrics.newTimer(DefaultPolicyDecisionPoint.class, "decision-stats", getId());
+		this.registry = MetricsSupport.getOrCreate();
+		this.decisionTimer = registry.timer(name("pdp", id, "timer"));
+		this.decisionHistogram = registry.histogram(name("pdp", id, "histogram"));
+		this.permitDecisions = registry.counter(name("pdp", id, "count-permit"));
+		this.denyDecisions = registry.counter(name("pdp", id, "count-deny"));
+		this.indeterminateDecisions = registry.counter(name("pdp", id, "count-indeterminate"));
 	}
 
 	@Override
@@ -93,38 +107,58 @@ final class DefaultPolicyDecisionPoint
 			PolicyDecisionPointContext context,
 			RequestContext request)
 	{
-		PolicyDecisionCache decisionCache = context.getDecisionCache();
-		PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
-		Result r =  null;
-		TimerContext timerContext = decisionTimer.time();
-		if(isDecisionCacheEnabled()){
-			r = decisionCache.getDecision(request);
-		}
-		if(r != null){
+		MDCSupport.setXacmlRequestId(context.getCorrelationId(), request);
+		try
+		{
+			PolicyDecisionCache decisionCache = context.getDecisionCache();
+			PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
+			Timer.Context timerContext = decisionTimer.time();
+			Result r =  null;
+			if(isDecisionCacheEnabled()){
+				r = decisionCache.getDecision(request);
+			}
+			if(r != null){
+				if(isDecisionAuditEnabled()){
+					decisionAuditor.audit(this, r, request);
+				}
+				incrementDecionCounters(r.getDecision());
+				decisionHistogram.update(timerContext.stop());
+				return r;
+			}
+			EvaluationContext evalContext = context.createEvaluationContext(request);
+			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
+			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
+			incrementDecionCounters(decision);
+			r = createResult(evalContext,
+					decision,
+					request.getIncludeInResultAttributes(),
+					getResolvedAttributes(evalContext),
+					request.isReturnPolicyIdList());
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
-			timerContext.stop();
+			if(isDecisionCacheEnabled()){
+				decisionCache.putDecision(
+						request, r,
+						evalContext.getDecisionCacheTTL());
+			}
+			decisionHistogram.update(timerContext.stop());
 			return r;
+		}finally{
+			MDCSupport.cleanXacmlRequestId();
 		}
-		EvaluationContext evalContext = context.createEvaluationContext(request);
-		CompositeDecisionRule rootPolicy = context.getDomainPolicy();
-		Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
-		r = createResult(evalContext,
-				decision,
-				request.getIncludeInResultAttributes(),
-				getResolvedAttributes(evalContext),
-				request.isReturnPolicyIdList());
-		if(isDecisionAuditEnabled()){
-			decisionAuditor.audit(this, r, request);
+	}
+	
+	private void incrementDecionCounters(Decision d){
+		if(d == Decision.PERMIT){
+			permitDecisions.inc();
+			return;
 		}
-		if(isDecisionCacheEnabled()){
-			decisionCache.putDecision(
-					request, r,
-					evalContext.getDecisionCacheTTL());
+		if(d == Decision.DENY){
+			denyDecisions.inc();
+			return;
 		}
-		timerContext.stop();
-		return r;
+		indeterminateDecisions.inc();
 	}
 
 	private Result createResult(
@@ -215,6 +249,5 @@ final class DefaultPolicyDecisionPoint
 
 	@Override
 	public void close(){
-		Metrics.shutdown();
 	}
 }
