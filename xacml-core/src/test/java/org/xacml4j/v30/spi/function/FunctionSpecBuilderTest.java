@@ -55,7 +55,7 @@ public class FunctionSpecBuilderTest
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
 		b = ImmutableList.builder();
 		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build()));
-		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(IntegerExp.valueOf(11)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(IntegerExp.valueOf(11)).build()));
 		b = ImmutableList.builder();
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
 		c.verify();
