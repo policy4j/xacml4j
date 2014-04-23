@@ -15,8 +15,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 

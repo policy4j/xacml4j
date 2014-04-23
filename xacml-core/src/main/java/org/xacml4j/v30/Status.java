@@ -2,6 +2,7 @@ package org.xacml4j.v30;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 public final class Status
 {
@@ -18,49 +19,41 @@ public final class Status
 	 * @param detail a detailed
 	 * description
 	 */
-	public Status(StatusCode code,
-			String message, StatusDetail detail){
-		Preconditions.checkNotNull(code);
-		this.code = code;
-		this.message = message;
-		this.detail = detail;
+	public Status(Builder b){
+		Preconditions.checkNotNull(b);
+		this.code = b.code;
+		this.message = b.message;
+		this.detail = b.detail;
 	}
-
-	public Status(StatusCode code, String message){
-		this(code, message, null);
+	
+	public static Builder processingError(){
+		return new Builder().statusCode(StatusCode.createProcessingError());
 	}
-
-	public Status(StatusCode code){
-		this(code, null, null);
+	
+	public static Builder builder(StatusCode code){
+		return new Builder().statusCode(code);
 	}
-
-	public static Status createSuccess(){
-		return new Status(StatusCode.createOk(), null , null);
+	
+	public static Builder syntaxError(){
+		return new Builder().statusCode(StatusCode.createSyntaxError());
 	}
-
-	public static Status createSyntaxError(String format, Object ...params){
-		return new Status(StatusCode.createSyntaxError(),
-				(format == null)?null:String.format(format, params), null);
+	
+	public static Builder ok(){
+		return new Builder().statusCode(StatusCode.createOk());
 	}
-
-	public static Status createSyntaxError(){
-		return createSyntaxError(null, (Object[])null);
+	
+	public static Builder missingAttribute(AttributeDesignatorKey key){
+		return new Builder()
+		.statusCode(StatusCode.createMissingAttributeError())
+		.message(key.getAttributeId());
 	}
-
-	public static Status createProcessingError(String format, Object ...params){
-		return new Status(StatusCode.createProcessingError(),
-				(format == null)?null:String.format(format, params), null);
+	
+	public static Builder missingAttribute(AttributeSelectorKey key){
+		return new Builder()
+			.statusCode(StatusCode.createMissingAttributeError())
+			.message(key.getPath());
 	}
-
-	public static Status createProcessingError(){
-		return createProcessingError(null);
-	}
-
-	public static Status createMissingAttribute(String format, Object ...params){
-		return new Status(StatusCode.createMissingAttributeError(),
-				(format == null)?null:String.format(format, params), null);
-	}
-
+	
 	public StatusCode getStatusCode(){
 		return code;
 	}
@@ -122,5 +115,38 @@ public final class Status
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(code, message, detail);
+	}
+	
+	public static class Builder
+	{
+		private StatusCode code;
+		private String message;
+		private StatusDetail detail;
+		
+		
+		public Builder ok(){
+			this.code = StatusCode.createProcessingError();
+			return this;
+		}
+		
+		public Builder statusCode(StatusCode code){
+			Preconditions.checkNotNull(code);
+			this.code = code;
+			return this;
+		}
+		
+		public Builder message(String format, Object ...args){
+			this.message = (Strings.isNullOrEmpty(format))?format:String.format(format, args);
+			return this;
+		}
+		
+		public Builder detail(StatusDetail detail){
+			this.detail = detail;
+			return this;
+		}
+		
+		public Status build(){
+			return new Status(this);
+		}
 	}
 }

@@ -81,7 +81,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			return results;
 		}catch(RequestSyntaxException e){
 			return Collections.singleton(
-					Result.createIndeterminate(e.getStatus())
+					Result.indeterminate(e.getStatus())
 					.includeInResultAttr(request.getIncludeInResultAttributes())
 					.build());
 		}

@@ -1,9 +1,10 @@
 package org.xacml4j.v30.pdp;
 
+import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.Preconditions;
 
@@ -14,32 +15,28 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 
 	private AttributeReferenceKey ref;
 
-	public AttributeReferenceEvaluationException(
-			AttributeReferenceKey ref,
-			String message, Object ...params){
-		super(StatusCode.createMissingAttributeError(),
-				message, params);
+	
+	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref, 
+			String format, Object ... args){
+		super(Status.missingAttribute(ref).build(), String.format(format, args));
+		Preconditions.checkNotNull(ref);
 		this.ref = ref;
 	}
-
-	public AttributeReferenceEvaluationException(
-			StatusCode statusCode,
-			EvaluationContext context,
-			AttributeReferenceKey ref,
-			String message, Object ...params){
-		super(statusCode, message, params);
+	
+	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref){
+		this(ref, ref.getAttributeId());
+	}
+	
+	public AttributeReferenceEvaluationException(AttributeSelectorKey ref, 
+			String format, Object ... args){
+		super(Status.missingAttribute(ref).build(), String.format(format, args));
 		Preconditions.checkNotNull(ref);
 		this.ref = ref;
 	}
 
 	public AttributeReferenceEvaluationException(
-			EvaluationContext context,
-			AttributeReferenceKey ref,
-			StatusCode code,
-			Throwable cause){
-		super(code, 
-				cause);
-		this.ref = ref;
+			AttributeSelectorKey ref){
+		this(ref, ref.getPath());
 	}
 
 	public AttributeReferenceKey getReference(){

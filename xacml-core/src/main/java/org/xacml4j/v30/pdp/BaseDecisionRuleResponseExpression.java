@@ -3,9 +3,9 @@ package org.xacml4j.v30.pdp;
 import java.util.Collection;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;

@@ -19,7 +19,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.types.XPathExp;
@@ -98,12 +98,12 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public StatusCode getEvaluationStatus() {
+	public Status getEvaluationStatus() {
 		return delegate.getEvaluationStatus();
 	}
 
 	@Override
-	public void setEvaluationStatus(StatusCode code) {
+	public void setEvaluationStatus(Status code) {
 		delegate.setEvaluationStatus(code);
 	}
 

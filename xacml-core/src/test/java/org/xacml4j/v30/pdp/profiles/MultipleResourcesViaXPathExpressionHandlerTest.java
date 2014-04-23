@@ -29,7 +29,6 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
@@ -110,17 +109,17 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 
 		Collection<Result> results = profile.handle(context, pdp);
 		Iterator<Result> it = results.iterator();
-		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
-		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
+		assertEquals(Status.processingError().build(), it.next().getStatus());
+		assertEquals(Status.processingError().build(), it.next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
 
@@ -176,20 +175,20 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 		expect(pdp.requestDecision(capture(c2))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 		expect(pdp.requestDecision(capture(c3))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 
 		Collection<Result> results = profile.handle(context, pdp);
 		Iterator<Result> it = results.iterator();
-		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
-		assertEquals(new Status(StatusCode.createProcessingError()), it.next().getStatus());
+		assertEquals(Status.processingError().build(), it.next().getStatus());
+		assertEquals(Status.processingError().build(), it.next().getStatus());
 
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
@@ -258,7 +257,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 
@@ -318,11 +317,11 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
-		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		assertSame(context, c0.getValue());
 		verify(pdp);

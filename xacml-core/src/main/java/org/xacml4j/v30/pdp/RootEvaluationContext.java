@@ -26,7 +26,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
@@ -56,7 +56,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	private final Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
 	private final Ticker ticker = Ticker.systemTicker();
 	private boolean validateFuncParamsAtRuntime = false;
-	private StatusCode evaluationStatus;
+	private Status evaluationStatus;
 	private Integer combinedDecisionCacheTTL = null;
 	private final boolean extendedIndeterminateEval = false;
 
@@ -128,12 +128,12 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public StatusCode getEvaluationStatus() {
+	public Status getEvaluationStatus() {
 		return evaluationStatus;
 	}
 
 	@Override
-	public void setEvaluationStatus(StatusCode status){
+	public void setEvaluationStatus(Status status){
 		this.evaluationStatus = status;
 	}
 

@@ -2,8 +2,8 @@ package org.xacml4j.v30.spi.pip;
 
 import java.util.List;
 
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.CategoryId;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

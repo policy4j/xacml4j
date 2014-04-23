@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -574,7 +573,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		return AttributeAssignmentExpression
 				.builder(exp.getAttributeId())
 				.expression(parseExpression(exp.getExpression(), m))
-				.category(Categories.parse(exp.getCategory()))
+				.category(exp.getCategory())
 				.issuer(exp.getIssuer())
 				.build();
 	}

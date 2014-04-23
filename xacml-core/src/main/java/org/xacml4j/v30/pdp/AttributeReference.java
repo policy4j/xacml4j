@@ -1,9 +1,9 @@
 package org.xacml4j.v30.pdp;
 
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;

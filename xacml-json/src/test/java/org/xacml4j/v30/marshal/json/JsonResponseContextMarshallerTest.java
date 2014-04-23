@@ -23,7 +23,6 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
@@ -55,7 +54,7 @@ public class JsonResponseContextMarshallerTest {
 
 	private ResponseContext createTestResponse() throws Exception {
 		Result.Builder resultBuilder = Result
-				.builder(Decision.PERMIT, new Status(StatusCode.createOk(), "alles kaput"));
+				.builder(Decision.PERMIT, Status.ok().message("alles kaput").build());
 		resultBuilder
 				.obligation(Obligation
 						.builder("obligation1")

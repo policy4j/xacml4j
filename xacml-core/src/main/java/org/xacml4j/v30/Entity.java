@@ -175,7 +175,7 @@ public final class Entity extends AttributeContainer
 				default:
 					throw new XPathEvaluationException(
 							xpath,
-							StatusCode.createSyntaxError(),
+							Status.syntaxError().build(),
 							"Unsupported DOM node type=\"%d\"",
 							n.getNodeType());
 			}
@@ -185,7 +185,7 @@ public final class Entity extends AttributeContainer
 				if(!toString.isPresent()){
 					throw new XPathEvaluationException(
 							xpath,
-							StatusCode.createSyntaxError(),
+							Status.syntaxError().build(),
 							"Unsupported XACML type=\"%d\"", 
 							type.getDataTypeId());
 				}
@@ -197,7 +197,7 @@ public final class Entity extends AttributeContainer
 				values.add(value);
 			}catch(Exception e){
 				throw new XPathEvaluationException(xpath,
-						StatusCode.createSyntaxError(), e.getMessage());
+						Status.syntaxError().build(), e.getMessage());
 			}
 		}
 	  	return type.bagType().create(values);

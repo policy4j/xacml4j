@@ -7,7 +7,7 @@ import java.util.List;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
 
@@ -28,6 +28,8 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
 
+	private final static Status PROCESSING_ERROR = Status.processingError().build();
+	
 	public OnPermitApplySecondPolicyCombiningAlgorithm() {
 		super(ID);
 	}
@@ -36,7 +38,7 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 	public Decision combine(EvaluationContext context,
 			List<CompositeDecisionRule> policies) {
 		if(policies.size() != 2){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_DP;
 		}
 		Decision d0 =  evaluateIfMatch(context, policies.get(0));
@@ -48,23 +50,23 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 			return d1;
 		}
 		if(d1 == Decision.PERMIT){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_P;
 		}
 		if(d1 == Decision.DENY){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_D;
 		}
 		if(d1 == Decision.INDETERMINATE_P){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_P;
 		}
 		if(d1 == Decision.INDETERMINATE_D){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_D;
 		}
 		if(d1 == Decision.INDETERMINATE_DP){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_DP;
 		}
 		return Decision.NOT_APPLICABLE;

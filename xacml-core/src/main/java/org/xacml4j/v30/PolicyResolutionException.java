@@ -8,20 +8,20 @@ public class PolicyResolutionException extends EvaluationException
 	
 	public PolicyResolutionException(EvaluationContext context,
 			String template, Object... arguments) {
-		super(StatusCode.createProcessingError(), template, arguments);
+		super(Status.processingError().build(), template, arguments);
 		this.context = context;
 	}
 
 	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause, String message,
 			Object... arguments) {
-		super(StatusCode.createProcessingError(), cause, message, arguments);
+		super(Status.processingError().build(), cause, message, arguments);
 		this.context = context;
 	}
 
 	public PolicyResolutionException(EvaluationContext context,
 			Throwable cause) {
-		super(StatusCode.createProcessingError(), cause);
+		super(Status.processingError().build(), cause);
 		this.context = context;
 	}
 

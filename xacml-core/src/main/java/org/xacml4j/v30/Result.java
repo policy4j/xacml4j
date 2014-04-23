@@ -54,38 +54,15 @@ public class Result
 	 * @param d decision
 	 * @return decision builder
 	 */
-	public static Result.Builder createOk(Decision d){
+	public static Result.Builder ok(Decision d){
 		Preconditions.checkArgument(!d.isIndeterminate());
-		return new Result.Builder().decision(d).status(Status.createSuccess());
+		return new Result.Builder().decision(d).status(Status.ok().build());
 	}
 
-	public static Result.Builder createIndeterminate(Status status){
+	public static Result.Builder indeterminate(Status status){
 		Preconditions.checkArgument(status.isFailure());
 		return new Result.Builder().decision(Decision.INDETERMINATE).status(status);
 	}
-
-	public static Result.Builder createIndeterminate(Decision d, StatusCode status){
-		return new Result.Builder().decision(d).status(new Status(status));
-	}
-
-	public static Result.Builder createIndeterminateSyntaxError(
-			String format, Object ...params){
-		return createIndeterminate(Status.createSyntaxError(format, params));
-	}
-
-	public static Result.Builder createIndeterminateSyntaxError(){
-		return createIndeterminate(Status.createSyntaxError());
-	}
-
-	public static Result.Builder createIndeterminateProcessingError(
-			String format, Object ...params){
-		return createIndeterminate(Status.createProcessingError(format, params));
-	}
-
-	public static Result.Builder createIndeterminateProcessingError(){
-		return createIndeterminate(Status.createProcessingError());
-	}
-
 
 	/**
 	 * Gets a status of this result. Status indicates

@@ -9,8 +9,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import org.junit.Test;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;

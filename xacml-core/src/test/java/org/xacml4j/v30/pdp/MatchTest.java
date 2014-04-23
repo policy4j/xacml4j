@@ -1,19 +1,19 @@
 package org.xacml4j.v30.pdp;
 
-import static org.junit.Assert.assertEquals;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.BooleanExp;
@@ -69,14 +69,15 @@ public class MatchTest
 	@Test
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
-		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
-		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(
-				AttributeDesignatorKey.builder()
+		AttributeDesignatorKey key  = AttributeDesignatorKey.builder()
 				.category(Categories.RESOURCE)
 				.dataType(XacmlTypes.INTEGER)
 				.attributeId("testId")
-				.build(), "Failed"));
-		context.setEvaluationStatus(StatusCode.createMissingAttributeError());
+				.build();
+		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
+		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(key, "Failed"));
+		
+		context.setEvaluationStatus(Status.missingAttribute(key).build());
 		c.replay();
 		Match m = Match
 				.builder()

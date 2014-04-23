@@ -1,7 +1,7 @@
 package org.xacml4j.v30.types;
 
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.XPathExpression;
 
 public final class XPathExp extends BaseAttributeExp<XPathExpression>

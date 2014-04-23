@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
@@ -109,7 +109,7 @@ implements ResponseUnmarshaller
 			Decision d = v20ToV30DecisionMapping.get(result.getDecision());
 			Status status = create(result.getStatus());
 			if(d == Decision.INDETERMINATE){
-				return Result.createIndeterminate(status).build();
+				return Result.indeterminate(status).build();
 			}
 			Result.Builder b = Result
 					.builder(d, create(result.getStatus()))
@@ -166,7 +166,11 @@ implements ResponseUnmarshaller
 					!status.getStatusDetail().getAny().isEmpty()){
 				detail =  new StatusDetail(status.getStatusDetail().getAny());
 			}
-			return new Status(create(status.getStatusCode()), status.getStatusMessage(), detail);
+			return Status
+					.builder(create(status.getStatusCode()))
+					.message(status.getStatusMessage())
+					.detail(detail)
+					.build();
 		}
 
 		private StatusCode create(StatusCodeType code) throws XacmlSyntaxException

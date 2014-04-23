@@ -1,7 +1,7 @@
 package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.Preconditions;
 
@@ -13,7 +13,7 @@ public class XPathEvaluationException extends EvaluationException
 	private String xpathExpression;
 
 	public XPathEvaluationException(String xpath,
-			StatusCode status,
+			Status status,
 			Throwable cause, 
 			String message, Object... arguments) {
 		super(status, cause, message, arguments);
@@ -23,12 +23,12 @@ public class XPathEvaluationException extends EvaluationException
 	
 	public XPathEvaluationException(String xpath,
 			String template, Object... arguments) {
-		this(xpath, StatusCode.createProcessingError(), 
+		this(xpath, Status.processingError().build(), 
 				null, template, arguments);
 		
 	}
 	
-	public XPathEvaluationException(String xpath, StatusCode status,
+	public XPathEvaluationException(String xpath, Status status,
 			String template, Object... arguments) {
 		this(xpath, status, null, template, arguments);
 		
@@ -36,14 +36,14 @@ public class XPathEvaluationException extends EvaluationException
 
 	public XPathEvaluationException(String xpath,
 			Throwable cause, String message, Object... arguments) {
-		this(xpath, StatusCode.createProcessingError(),cause, message, arguments);
+		this(xpath, Status.processingError().build(),cause, message, arguments);
 	}
 	
 	
 
 	public XPathEvaluationException(String xpath,
 			Throwable cause) {
-		this(xpath, StatusCode.createProcessingError(), cause, null);
+		this(xpath, Status.processingError().build(), cause, null);
 	}
 
 	public String getXPathExpression(){

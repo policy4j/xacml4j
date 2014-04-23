@@ -8,7 +8,6 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableList;
@@ -39,7 +38,7 @@ public class ResultTest
 	@Test
 	public void testMergeObligationValues()
 	{
-		Result.Builder b = Result.builder(Decision.DENY, Status.createSuccess());
+		Result.Builder b = Result.ok(Decision.DENY);
 		b.obligation(denyObligationWithId1);
 		b.obligation(ImmutableList.of(denyObligationWithId2, denyObligationWithSameId1));
 		Result r = b.build();

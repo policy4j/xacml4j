@@ -36,7 +36,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			}catch(RequestSyntaxException e){
 				results.add(
 						Result
-						.createIndeterminate(e.getStatus())
+						.indeterminate(e.getStatus())
 						.includeInResultAttr(request.getIncludeInResultAttributes())
 						.build());
 			}

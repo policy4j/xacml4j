@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;

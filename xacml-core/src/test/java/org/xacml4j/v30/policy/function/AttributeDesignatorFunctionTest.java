@@ -1,7 +1,9 @@
 package org.xacml4j.v30.policy.function;
 
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+
 import org.easymock.IMocksControl;
-import static org.easymock.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;

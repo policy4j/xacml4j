@@ -22,6 +22,7 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -157,9 +158,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
-
+		context.setEvaluationStatus(Status.missingAttribute(ref).build());
 		c.replay();
 		handler.resolve(context, ref);
 		c.verify();
@@ -176,9 +175,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
+		context.setEvaluationStatus(Status.missingAttribute(ref).build());
 		
 		c.replay();
 		handler.resolve(context, ref);
@@ -196,9 +193,8 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-
-		expect(context.getXPathVersion()).andReturn(XPathVersion.XPATH1);
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);	
+		context.setEvaluationStatus(Status.missingAttribute(ref).build());
 		
 		c.replay();
 		handler.resolve(context, ref);

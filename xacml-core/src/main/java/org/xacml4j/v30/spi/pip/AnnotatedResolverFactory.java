@@ -13,12 +13,12 @@ import org.w3c.dom.Node;
 import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.util.TypeToken;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 

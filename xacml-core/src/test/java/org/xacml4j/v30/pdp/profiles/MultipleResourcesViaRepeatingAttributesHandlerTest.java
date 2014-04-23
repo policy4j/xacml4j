@@ -23,7 +23,6 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.types.StringExp;
@@ -77,13 +76,13 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 		expect(pdp.requestDecision(capture(c1))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
-		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
 		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
@@ -126,11 +125,11 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
-		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
 		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
@@ -147,11 +146,11 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
-				Result.createIndeterminateProcessingError().build());
+				Result.indeterminate(Status.processingError().build()).build());
 
 		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
-		assertEquals(new Status(StatusCode.createProcessingError()), results.iterator().next().getStatus());
+		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		assertSame(context, c0.getValue());
 		verify(pdp);

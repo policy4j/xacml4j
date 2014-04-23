@@ -98,7 +98,7 @@ public class Match implements PolicyElement, Matchable
 				log.debug("Match evaluation " +
 						"failed with an exception", e);
 			}
-			context.setEvaluationStatus(e.getStatusCode());
+			context.setEvaluationStatus(e.getStatus());
 			return MatchResult.INDETERMINATE;
 		}
 	}

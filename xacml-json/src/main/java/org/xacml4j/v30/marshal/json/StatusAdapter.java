@@ -23,11 +23,14 @@ public class StatusAdapter implements JsonSerializer<Status>, JsonDeserializer<S
 	public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
+		StatusDetail detail = null;
 		String statusMessage = GsonUtil.getAsString(o, STATUS_MESSAGE_PROPERTY, null);
-		// TODO: deserialize status detail
-		StatusDetail statusDetail = null;
-		StatusCode statusCode = context.deserialize(o.get(STATUS_CODE_PROPERTY), StatusCode.class);
-		return new Status(statusCode, statusMessage, statusDetail);
+		StatusCode code = context.deserialize(o.get(STATUS_CODE_PROPERTY), StatusCode.class);
+		return Status
+				.builder(code)
+				.message(statusMessage)
+				.detail(detail)
+				.build();
 	}
 
 	@Override

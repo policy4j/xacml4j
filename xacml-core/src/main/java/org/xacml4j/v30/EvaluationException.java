@@ -8,33 +8,33 @@ import com.google.common.base.Preconditions;
 @SuppressWarnings("serial")
 public class EvaluationException extends XacmlException
 {
-	private StatusCode statusCode;
+	private Status status;
 
-	public EvaluationException(StatusCode code,
+	public EvaluationException(Status code,
 			String template, Object... arguments) {
 		super(template, arguments);
 		Preconditions.checkNotNull(code);
-		this.statusCode = code;
+		this.status = code;
 	}
 
-	public EvaluationException(StatusCode code,
+	public EvaluationException(Status code,
 			Throwable cause, String message,
 			Object... arguments) {
 		super(cause, message, arguments);
 		Preconditions.checkNotNull(code);
-		this.statusCode = code;
+		this.status = code;
 	}
 
-	public EvaluationException(StatusCode code,
+	public EvaluationException(Status code,
 			Throwable cause) {
 		super(cause);
 		Preconditions.checkNotNull(code);
 
-		this.statusCode = code;
+		this.status = code;
 	}
 
 
-	public final StatusCode getStatusCode(){
-		return statusCode;
+	public final Status getStatus(){
+		return status;
 	}
 }

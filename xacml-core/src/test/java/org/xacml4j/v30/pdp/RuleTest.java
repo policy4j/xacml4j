@@ -18,7 +18,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringExp;
 
@@ -219,7 +219,7 @@ public class RuleTest
 				StringExp.valueOf("testVal1"));
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
-				new EvaluationException(StatusCode.createProcessingError(), new NullPointerException()));
+				new EvaluationException(Status.processingError().build(), new NullPointerException()));
 
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));

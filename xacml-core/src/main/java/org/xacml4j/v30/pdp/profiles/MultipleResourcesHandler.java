@@ -8,6 +8,7 @@ import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 
 import com.google.common.collect.ImmutableList;
@@ -39,18 +40,24 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 			Collection<Advice> advice = r.getAssociatedAdvice();
 			if(!advice.isEmpty()){
 				return ImmutableList.of(
-						Result.createIndeterminateProcessingError().build());
+						Result.indeterminate(
+								Status.processingError().build())
+						.build());
 			}
 			Collection<Obligation> obligation = r.getObligations();
 			if(!obligation.isEmpty()){
 				return ImmutableList.of(
-						Result.createIndeterminateProcessingError().build());
+						Result.indeterminate(
+								Status.processingError().build())
+						.build());
 			}
 			if(prev != null){
 				if(r.isIndeterminate()){
 					if(!prev.isIndeterminate()){
 						return ImmutableList.of(
-								Result.createIndeterminateProcessingError().build());
+								Result.indeterminate(
+										Status.processingError().build())
+								.build());
 					}
 				}
 				if(!r.getDecision().equals(prev.getDecision())){
@@ -59,15 +66,19 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 								"can not be combined with the current result=\"{}\"", prev, r);
 					}
 					return ImmutableList.of(
-							Result.createIndeterminateProcessingError().build());
+							Result.indeterminate(
+									Status.processingError().build())
+							.build());
 				}
 			}
 			prev = r;
 		}
 		if(prev == null){
 			return ImmutableList.of(
-					Result.createIndeterminateProcessingError().build());
+					Result.indeterminate(
+							Status.processingError().build())
+					.build());
 		}
-		return ImmutableList.of(Result.createOk(prev.getDecision()).build());
+		return ImmutableList.of(Result.ok(prev.getDecision()).build());
 	}
 }

@@ -13,8 +13,8 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -49,7 +49,7 @@ public class AttributeDesignatorTest
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
 			assertSame(c.getValue(), e.getReference());
-			assertTrue(e.getStatusCode().isFailure());
+			assertTrue(e.getStatus().isFailure());
 			throw e;
 		}
 		verify(context);
@@ -74,7 +74,7 @@ public class AttributeDesignatorTest
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
 			assertSame(c.getValue(), e.getReference());
-			assertTrue(e.getStatusCode().isFailure());
+			assertTrue(e.getStatus().isFailure());
 			throw e;
 		}
 		verify(context);

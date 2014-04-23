@@ -25,10 +25,11 @@ public interface EvaluationContext
 	boolean isExtendedIndeterminateEval();
 
 	/**
-	 * Creates an evaluation context to evaluate policy tree
-	 * for extended indeterminate
+	 * Creates an evaluation context to evaluate 
+	 * policy tree for extended indeterminate
 	 *
-	 * @return {@link EvaluationContext} to evaluate extended indeterminate
+	 * @return {@link EvaluationContext} to evaluate 
+	 * extended indeterminate
 	 */
 	EvaluationContext createExtIndeterminateEvalContext();
 
@@ -97,11 +98,11 @@ public interface EvaluationContext
 	 * included in the response as {@link StatusCode}
 	 * instance
 	 *
-	 * @return {@link StatusCode} or
+	 * @return {@link Status} or
 	 * {@code null} if status
 	 * information is unavailable
 	 */
-	StatusCode getEvaluationStatus();
+	Status getEvaluationStatus();
 
 	/**
 	 * Sets extended evaluation failure
@@ -111,7 +112,7 @@ public interface EvaluationContext
 	 * @param code a status code indicating
 	 * evaluation failure status
 	 */
-	void setEvaluationStatus(StatusCode code);
+	void setEvaluationStatus(Status code);
 
 	/**
 	 * Gets parent evaluation context

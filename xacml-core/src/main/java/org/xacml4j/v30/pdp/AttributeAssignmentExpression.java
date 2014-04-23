@@ -1,5 +1,6 @@
 package org.xacml4j.v30.pdp;
 
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -137,6 +138,11 @@ public class AttributeAssignmentExpression implements PolicyElement
 
 		public Builder category(CategoryId category){
 			this.category = category;
+			return this;
+		}
+		
+		public Builder category(String category){
+			this.category = !Strings.isNullOrEmpty(category)?Categories.parse(category):null;
 			return this;
 		}
 

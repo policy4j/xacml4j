@@ -8,7 +8,6 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.StatusCode;
 
 import com.google.common.base.Objects;
 
@@ -83,9 +82,7 @@ public class AttributeSelector extends
 			return getDataType().bagType().createEmpty();
 		}catch(Exception e){
 			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(
-						context, selectorKey,
-						StatusCode.createMissingAttributeError(), e);
+				throw new AttributeReferenceEvaluationException(selectorKey);
 			}
 			return getDataType().bagType().createEmpty();
 		}
@@ -94,12 +91,10 @@ public class AttributeSelector extends
 				&& isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve xpath=\"{}\", category=\"{}\"",
-						selectorKey.getPath(), selectorKey.getCategory());
+						selectorKey.getPath(), 
+						selectorKey.getCategory());
 			}
-			throw new AttributeReferenceEvaluationException(
-					selectorKey,
-					"Selector XPath expression=\"%s\" evaluated " +
-					"to empty node set and mustBePresents=\"true\"", selectorKey.getPath());
+			throw new AttributeReferenceEvaluationException(selectorKey);
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}

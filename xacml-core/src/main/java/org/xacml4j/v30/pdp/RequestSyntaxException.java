@@ -1,7 +1,6 @@
 package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 public class RequestSyntaxException extends XacmlSyntaxException
@@ -22,6 +21,6 @@ public class RequestSyntaxException extends XacmlSyntaxException
 	}
 
 	public Status getStatus(){
-		return new Status(StatusCode.createSyntaxError(), getMessage(), null);
+		return Status.syntaxError().build();
 	}
 }

@@ -1,5 +1,10 @@
 package org.xacml4j.v30.spi.pip;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.xacml4j.v30.pdp.MetricsSupport.getOrCreate;
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
+
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,10 +15,6 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
-
-import static org.xacml4j.v30.pdp.MetricsSupport.name;
-import static org.xacml4j.v30.pdp.MetricsSupport.getOrCreate;
-import static com.google.common.base.Preconditions.*;
 
 /**
  * A base implementation of {@link AttributeResolver}

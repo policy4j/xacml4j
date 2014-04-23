@@ -2,7 +2,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 
 
 
@@ -15,7 +15,7 @@ public class FunctionInvocationException extends EvaluationException
 	public FunctionInvocationException(EvaluationContext context,
 			FunctionSpec spec,
 			String template, Object... arguments) {
-		super(StatusCode.createProcessingError(), template, arguments);
+		super(Status.processingError().build(), template, arguments);
 		this.spec = spec;
 	}
 
@@ -24,14 +24,14 @@ public class FunctionInvocationException extends EvaluationException
 			FunctionSpec spec,
 			Throwable cause, String message,
 			Object... arguments) {
-		super(StatusCode.createProcessingError(),
+		super(Status.processingError().build(),
 				cause, message, arguments);
 		this.spec = spec;
 	}
 
 	public FunctionInvocationException(EvaluationContext context,
 			FunctionSpec spec, Throwable cause) {
-		super(StatusCode.createProcessingError(), cause);
+		super(Status.processingError().build(), cause);
 		this.spec = spec;
 	}
 

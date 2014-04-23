@@ -4,6 +4,7 @@ import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 
 public class AttributeAssignment
@@ -140,7 +141,7 @@ public class AttributeAssignment
 		}
 
 		public Builder category(String category){
-			this.category = Categories.parse(category);
+			this.category = !Strings.isNullOrEmpty(category)?Categories.parse(category):null;
 			return this;
 		}
 

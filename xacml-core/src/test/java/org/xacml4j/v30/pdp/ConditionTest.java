@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -44,7 +44,7 @@ public class ConditionTest
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context,
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
-		context.setEvaluationStatus(StatusCode.createProcessingError());
+		context.setEvaluationStatus(Status.processingError().build());
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -56,7 +56,7 @@ public class ConditionTest
 	public void testExpressionThrowsRuntimeException() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
-		context.setEvaluationStatus(StatusCode.createProcessingError());
+		context.setEvaluationStatus(Status.processingError().build());
 
 		ctl.replay();
 		Condition c = new Condition(exp);

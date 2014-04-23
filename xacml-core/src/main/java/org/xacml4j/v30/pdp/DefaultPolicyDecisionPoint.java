@@ -24,7 +24,7 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
@@ -170,23 +170,23 @@ final class DefaultPolicyDecisionPoint
 	{
 		if(decision == Decision.NOT_APPLICABLE){
 			return Result
-					.createOk(decision)
+					.ok(decision)
 					.includeInResultAttr(includeInResult)
 					.resolvedAttr(resolvedAttributes)
 					.build();
 		}
 		if(decision.isIndeterminate()){
-			StatusCode status = (context.getEvaluationStatus() == null)?
-					StatusCode.createProcessingError():context.getEvaluationStatus();
+			Status status = (context.getEvaluationStatus() == null)?
+					Status.processingError().build():context.getEvaluationStatus();
 			return Result
-					.createIndeterminate(decision, status)
+					.builder(decision, status)
 					.includeInResultAttr(includeInResult)
 					.resolvedAttr(resolvedAttributes)
 					.build();
 		}
 		Iterable<Advice> advice = context.getMatchingAdvices(decision);
 		Iterable<Obligation> obligation = context.getMatchingObligations(decision);
-		Result.Builder b = Result.createOk(decision)
+		Result.Builder b = Result.ok(decision)
 				.advice(advice)
 				.obligation(obligation)
 				.includeInResultAttr(includeInResult)

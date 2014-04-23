@@ -1,12 +1,12 @@
 package org.xacml4j.v30.pdp;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 

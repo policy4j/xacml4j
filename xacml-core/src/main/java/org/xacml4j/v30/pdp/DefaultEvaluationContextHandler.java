@@ -14,15 +14,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
@@ -107,9 +106,7 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(
-					context, key,
-					StatusCode.createMissingAttributeError(), e);
+			throw new AttributeReferenceEvaluationException(key);
 		}finally{
 			designatorResolutionStack.pop();
 		}
@@ -227,22 +224,21 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(context, ref,
-					StatusCode.createProcessingError(), e);
+			context.setEvaluationStatus(e.getStatus());
+			throw new AttributeReferenceEvaluationException(ref);
 		}
 		catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}
 		catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(
-					context, ref,
-					StatusCode.createProcessingError(), e);
+			throw new AttributeReferenceEvaluationException(ref);
 		}
 	}
 
@@ -279,18 +275,14 @@ class DefaultEvaluationContextHandler
 					v = ((Comment)n).getData();
 					break;
 				default:
-					throw new AttributeReferenceEvaluationException(
-							StatusCode.createSyntaxError(),
-							context, ref,
+					throw new AttributeReferenceEvaluationException(ref,
 							"Unsupported DOM node type=\"%d\"", n.getNodeType());
 			}
 			try
 			{
 				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(ref.getDataType());
 				if(!toString.isPresent()){
-					throw new AttributeReferenceEvaluationException(
-							StatusCode.createSyntaxError(),
-							context, ref,
+					throw new AttributeReferenceEvaluationException(ref,
 							"Unsupported XACML type=\"%d\"", 
 							ref.getDataType().getDataTypeId());
 				}
@@ -301,10 +293,7 @@ class DefaultEvaluationContextHandler
 				}
 				values.add(value);
 			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(
-						context,
-						ref,
-						StatusCode.createSyntaxError(), e);
+				throw new AttributeReferenceEvaluationException(ref);
 			}
 		}
 	  	return ref.getDataType().bagType().create(values);

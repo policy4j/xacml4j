@@ -8,7 +8,6 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.StatusCode;
 
 import com.google.common.base.Objects;
 
@@ -66,23 +65,22 @@ public class AttributeDesignator extends AttributeReference
 			v = designatorKey.resolve(context);
 		}catch(AttributeReferenceEvaluationException e){
 			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"",
+				log.debug("Reference=\"{}\" evaluation " +
+						"failed with error=\"{}\"",
 						toString(), e.getMessage());
 			}
 			if(isMustBePresent()){
-				log.debug("Re-throwing error");
 				throw e;
 			}
 			return getDataType().bagType().createEmpty();
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"",
+				log.debug("Reference=\"{}\" evaluation " +
+						"failed with error=\"{}\"",
 						toString(), e.getMessage());
 			}
 			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(context,
-						designatorKey,
-						StatusCode.createMissingAttributeError(), e);
+				throw new AttributeReferenceEvaluationException(designatorKey);
 			}
 			return getDataType().bagType().createEmpty();
 		}
@@ -92,11 +90,7 @@ public class AttributeDesignator extends AttributeReference
 				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
 						designatorKey.getAttributeId(), designatorKey.getCategory());
 			}
-			throw new AttributeReferenceEvaluationException(designatorKey,
-					"Failed to resolve categoryId=\"%s\", attributeId=\"%s\", issuer=\"%s\"",
-					designatorKey.getCategory(),
-					designatorKey.getAttributeId(),
-					designatorKey.getIssuer());
+			throw new AttributeReferenceEvaluationException(designatorKey);
 		}
 		return ((v == null)?getDataType().bagType().createEmpty():v);
 	}

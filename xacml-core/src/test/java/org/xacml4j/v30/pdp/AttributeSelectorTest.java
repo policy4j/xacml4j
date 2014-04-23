@@ -10,12 +10,11 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -117,8 +116,7 @@ public class AttributeSelectorTest
 
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(context, ref.getReferenceKey(),
-						StatusCode.createProcessingError(), new NullPointerException()));
+				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
 		replay(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, XacmlTypes.DATE.emptyBag());
@@ -174,8 +172,7 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(context,
-						ref.getReferenceKey(), StatusCode.createProcessingError(), new NullPointerException()));
+				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
 		replay(context);
 		ref.evaluate(context);
 		verify(context);

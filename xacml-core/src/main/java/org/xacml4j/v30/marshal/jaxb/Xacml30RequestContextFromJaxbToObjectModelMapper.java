@@ -34,8 +34,8 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -326,7 +326,11 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Status create(StatusType status) {
-		return new Status(create(status.getStatusCode()), status.getStatusMessage(), create(status.getStatusDetail()));
+		return Status
+				.builder(create(status.getStatusCode()))
+				.message(status.getStatusMessage())
+				.detail(create(status.getStatusDetail()))
+				.build();
 	}
 
 	private StatusCode create(StatusCodeType statusCode) {

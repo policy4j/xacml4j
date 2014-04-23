@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -32,7 +33,10 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 	{
 		if(request.containsRepeatingCategories()){
 			return Collections.singleton(
-					Result.createIndeterminateSyntaxError("Found repeating categories in the request")
+					Result.indeterminate(
+							Status.syntaxError()
+							.message("Found repeating categories in the request")
+							.build())
 							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
 		}
 		Category resource = request.getOnlyAttributes(Categories.RESOURCE);
@@ -47,10 +51,12 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		}
 		if(resourceId.size() > 1){
 			return Collections.singleton(
-					Result.createIndeterminateSyntaxError(
-							"Found more than AttributeId=\"%s\" " +
-							"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE,
-							XacmlTypes.XPATH)
+					Result.indeterminate(
+							Status
+							.syntaxError()
+							.message("Found more than AttributeId=\"%s\" " +
+									"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
+									XacmlTypes.XPATH).build())
 							.includeInResultAttr(request.getIncludeInResultAttributes())
 							.build());
 		}

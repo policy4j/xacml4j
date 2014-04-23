@@ -13,7 +13,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -139,6 +139,7 @@ abstract class BaseDecisionRule implements DecisionRule
 				log.debug("Failed to evaluate " +
 						"associated advices and obligations", e);
 			}
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}
 		catch(Exception e){
@@ -146,8 +147,7 @@ abstract class BaseDecisionRule implements DecisionRule
 				log.debug("Failed to evaluate " +
 						"associated advices and obligations", e);
 			}
-			throw new EvaluationException(
-					StatusCode.createProcessingError(), e);
+			throw new EvaluationException(Status.processingError().build(), e);
 		}
 	}
 
@@ -190,13 +190,13 @@ abstract class BaseDecisionRule implements DecisionRule
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
 			}
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
 			}
-			throw new EvaluationException(
-					StatusCode.createProcessingError(), e);
+			throw new EvaluationException(Status.processingError().build(), e);
 		}
 	}
 
@@ -239,6 +239,7 @@ abstract class BaseDecisionRule implements DecisionRule
 				log.debug("Failed to evaluate " +
 						"decision rule obligations", e);
 			}
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
@@ -246,7 +247,7 @@ abstract class BaseDecisionRule implements DecisionRule
 						"decision rule obligations", e);
 			}
 			throw new EvaluationException(
-					StatusCode.createProcessingError(), e);
+					Status.processingError().build(), e);
 		}
 	}
 

@@ -3,7 +3,7 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -65,10 +65,10 @@ public class Condition implements PolicyElement
 			BooleanExp result = (BooleanExp)predicate.evaluate(context);
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(e.getStatusCode());
+			context.setEvaluationStatus(e.getStatus());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
-			context.setEvaluationStatus(StatusCode.createProcessingError());
+			context.setEvaluationStatus(Status.processingError().build());
 			return ConditionResult.INDETERMINATE;
 		}
 	}

@@ -18,7 +18,7 @@ import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
 
@@ -94,7 +94,7 @@ public class ObligationExpressionTest
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
 		expect(attrExp1.getCategory()).andReturn(Categories.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(StatusCode.createProcessingError(), new NullPointerException()));
+		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
 		c.replay();
 
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();

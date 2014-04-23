@@ -1,7 +1,7 @@
 package org.xacml4j.v30.spi.pip;
 
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 
 public interface ResolverRegistry
