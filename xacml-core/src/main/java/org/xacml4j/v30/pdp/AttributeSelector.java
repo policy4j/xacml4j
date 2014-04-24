@@ -75,8 +75,9 @@ public class AttributeSelector extends
 		BagOfAttributeExp v = null;
 		try{
 			v =  selectorKey.resolve(context);
-		}catch(AttributeReferenceEvaluationException e){
+		}catch(EvaluationException e){
 			if(isMustBePresent()){
+				context.setEvaluationStatus(e.getStatus());
 				throw e;
 			}
 			return getDataType().bagType().createEmpty();

@@ -287,7 +287,7 @@ public final class FunctionSpecBuilder
 				if(log.isDebugEnabled()){
 					log.debug("Failed to invoke function", e);
 				}
-				throw new FunctionInvocationException(context, this, e,
+				throw new FunctionInvocationException(this, e,
 						"Failed to invoke function=\"%s\"", getId());
 			}
 		}

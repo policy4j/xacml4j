@@ -58,7 +58,7 @@ public class DefaultFunctionSpecTest
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(context, spec, "Fail"));
+		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(spec, "Fail"));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();

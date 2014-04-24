@@ -87,7 +87,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 			return invocation.invoke(params);
 		}
 		catch(Exception e){
-			throw new FunctionInvocationException(context, spec, e);
+			throw new FunctionInvocationException(spec, e);
 		}
 	}
 

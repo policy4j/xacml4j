@@ -42,7 +42,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionThrowsEvaluationException() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(context,
+		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
 		context.setEvaluationStatus(Status.processingError().build());
 

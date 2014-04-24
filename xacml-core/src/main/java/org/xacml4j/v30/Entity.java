@@ -89,7 +89,8 @@ public final class Entity extends AttributeContainer
 			String xpath, 
 			XPathProvider xpathProvider,  
 			AttributeExpType type, 
-			String contextSelectorId) throws XPathEvaluationException
+			String contextSelectorId) 
+					throws XPathEvaluationException
 	{
 		try
 		{
@@ -98,7 +99,9 @@ public final class Entity extends AttributeContainer
 						(contextSelectorId == null?CONTENT_SELECTOR:contextSelectorId),
 								XacmlTypes.XPATH);
 			if(v.size() > 1){
-				throw new XPathEvaluationException("Found more than one value of=\"%s\"", 
+				throw new XPathEvaluationException(xpath,
+						Status.syntaxError().build(), 
+						"Found more than one value of=\"%s\"", 
 						contextSelectorId);
 			}
 			if(v.size() == 1){
@@ -119,13 +122,6 @@ public final class Entity extends AttributeContainer
 						new Object[]{nodeSet.getLength(), xpath});
 			}
 			return toBag(xpath, type, nodeSet);
-		}
-		catch(XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new XPathEvaluationException(xpath, e, 
-					e.getMessage());
 		}
 		catch(EvaluationException e){
 			if(log.isDebugEnabled()){
@@ -195,9 +191,12 @@ public final class Entity extends AttributeContainer
 							"converted attribute=\"{}\"", n.getNodeType(), value);
 				}
 				values.add(value);
+			}catch(EvaluationException e){
+				throw e;
 			}catch(Exception e){
 				throw new XPathEvaluationException(xpath,
-						Status.syntaxError().build(), e.getMessage());
+						Status.processingError().build(), 
+						e, e.getMessage());
 			}
 		}
 	  	return type.bagType().create(values);

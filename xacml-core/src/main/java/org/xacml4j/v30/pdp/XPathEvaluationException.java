@@ -12,30 +12,39 @@ public class XPathEvaluationException extends EvaluationException
 
 	private String xpathExpression;
 
-	public XPathEvaluationException(String xpath,
+	public XPathEvaluationException(
+			String xpath,
 			Status status,
 			Throwable cause, 
-			String message, Object... arguments) {
+			String message, 
+			Object... arguments) {
 		super(status, cause, message, arguments);
 		Preconditions.checkNotNull(xpath);
 		this.xpathExpression = xpath;
 	}
 	
-	public XPathEvaluationException(String xpath,
-			String template, Object... arguments) {
+	public XPathEvaluationException(
+			String xpath,
+			String template, 
+			Object... arguments) {
 		this(xpath, Status.processingError().build(), 
 				null, template, arguments);
 		
 	}
 	
-	public XPathEvaluationException(String xpath, Status status,
-			String template, Object... arguments) {
+	public XPathEvaluationException(
+			String xpath, 
+			Status status,
+			String template, 
+			Object... arguments) {
 		this(xpath, status, null, template, arguments);
 		
 	}
 
-	public XPathEvaluationException(String xpath,
-			Throwable cause, String message, Object... arguments) {
+	public XPathEvaluationException(
+			String xpath,
+			Throwable cause, 
+			String message, Object... arguments) {
 		this(xpath, Status.processingError().build(),cause, message, arguments);
 	}
 	

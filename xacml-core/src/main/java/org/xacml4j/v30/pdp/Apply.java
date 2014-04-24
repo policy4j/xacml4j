@@ -91,7 +91,7 @@ public class Apply implements Expression
 		}catch(EvaluationException e){
 			throw e;
 		}catch(Exception e){
-			throw new FunctionInvocationException(context, spec, e);
+			throw new FunctionInvocationException(spec, e);
 		}
 	}
 

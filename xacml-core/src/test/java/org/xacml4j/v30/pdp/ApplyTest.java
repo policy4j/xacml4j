@@ -48,7 +48,7 @@ public class ApplyTest
 		.add(IntegerExp.valueOf(10L))
 		.build();
 		expect(function.invoke(context, params)).
-		andThrow(new FunctionInvocationException(context, function, new IllegalArgumentException()));
+		andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
 		replay(function);
 		Apply apply = Apply.builder(function).param(IntegerExp.valueOf(10L)).build();
 		apply.evaluate(context);

@@ -14,13 +14,10 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	private static final long serialVersionUID = 4604041385261391333L;
 
 	private AttributeReferenceKey ref;
-
 	
 	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref, 
 			String format, Object ... args){
-		super(Status.missingAttribute(ref).build(), String.format(format, args));
-		Preconditions.checkNotNull(ref);
-		this.ref = ref;
+		this(Status.missingAttribute(ref).build(), ref, String.format(format, args));
 	}
 	
 	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref){
@@ -29,9 +26,15 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	
 	public AttributeReferenceEvaluationException(AttributeSelectorKey ref, 
 			String format, Object ... args){
-		super(Status.missingAttribute(ref).build(), String.format(format, args));
-		Preconditions.checkNotNull(ref);
-		this.ref = ref;
+		this(Status.missingAttribute(ref).build(), ref, String.format(format, args));
+	}
+	
+	public AttributeReferenceEvaluationException(Status status, 
+			AttributeReferenceKey key, 
+			String format, Object ... args){
+		super(status, String.format(format, args));
+		Preconditions.checkNotNull(key);
+		this.ref = key;
 	}
 
 	public AttributeReferenceEvaluationException(
