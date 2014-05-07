@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response
+		xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+	<Result>
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+		</Status>
+		<Obligations xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+			<Obligation ObligationId="urn:va:xacml:2.0:interop:rsa8:obligation:ma:privacy:constraint:radiology" FulfillOn="Permit"></Obligation>
+		</Obligations>
+	</Result>
+</Response>

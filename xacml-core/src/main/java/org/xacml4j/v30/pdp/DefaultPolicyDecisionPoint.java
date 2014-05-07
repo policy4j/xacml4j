@@ -46,20 +46,20 @@ final class DefaultPolicyDecisionPoint
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {
 
-	private String id;
-	private PolicyDecisionPointContextFactory factory;
+	private final String id;
+	private final PolicyDecisionPointContextFactory factory;
 
-	private AtomicBoolean auditEnabled;
-	private AtomicBoolean cacheEnabled;
+	private final AtomicBoolean auditEnabled;
+	private final AtomicBoolean cacheEnabled;
 
-	private MetricRegistry registry;
-	
-	private Timer decisionTimer;
-	private Histogram decisionHistogram;
-	private Counter permitDecisions;
-	private Counter denyDecisions;
-	private Counter indeterminateDecisions;
-	
+	private final MetricRegistry registry;
+
+	private final Timer decisionTimer;
+	private final Histogram decisionHistogram;
+	private final Counter permitDecisions;
+	private final Counter denyDecisions;
+	private final Counter indeterminateDecisions;
+
 	DefaultPolicyDecisionPoint(
 			String id,
 			PolicyDecisionPointContextFactory factory)
@@ -148,7 +148,7 @@ final class DefaultPolicyDecisionPoint
 			MDCSupport.cleanXacmlRequestId();
 		}
 	}
-	
+
 	private void incrementDecionCounters(Decision d){
 		if(d == Decision.PERMIT){
 			permitDecisions.inc();

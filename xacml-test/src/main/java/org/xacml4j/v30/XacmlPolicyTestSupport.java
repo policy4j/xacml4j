@@ -26,14 +26,13 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public class XacmlPolicyTestSupport {
-	protected final Logger log = LoggerFactory
-			.getLogger(XacmlPolicyTestSupport.class);
+	protected final Logger log = LoggerFactory.getLogger(XacmlPolicyTestSupport.class);
 
 	private Xacml30RequestContextUnmarshaller requestUnmarshaller;
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
 	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
 	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
-	
+
 	@Before
 	public void setup() throws Exception {
 		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
@@ -59,8 +58,8 @@ public class XacmlPolicyTestSupport {
 		RequestContext req = getXacml30Request(xacmlRequestResource);
 		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
 		ResponseContext resp = pdp.decide(req);
-		log.debug("Expected xacml 30 respone=\"{}\"", expectedResponse);
-		log.debug("Received xacml 30 respone=\"{}\"", resp);
+		log.debug("Expected XACML 3.0 response=\"{}\"", expectedResponse);
+		log.debug("Received XACML 3.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
 	}
 
@@ -73,9 +72,8 @@ public class XacmlPolicyTestSupport {
 		ResponseContext expectedResponse = getXacml20Response(expectedXacmlResponseResource);
 		assertNotNull(expectedXacmlResponseResource, expectedResponse);
 		ResponseContext resp = pdp.decide(req);
-		if(log.isDebugEnabled()){
-			log.debug(resp.toString());
-		}
+		log.debug("Expected XACML 2.0 response=\"{}\"", expectedResponse);
+		log.debug("Received XACML 2.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
 	}
 
