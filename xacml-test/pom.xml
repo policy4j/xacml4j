@@ -8,6 +8,9 @@
 	<artifactId>xacml-test</artifactId>
 	<packaging>jar</packaging>
 	<name>Artagon XACML 3.0 conformance tests</name>
+	<properties>
+		<license.excludes>**/oasis-xacml20-compat-test/*,**/rsa2008-interop/XacmlPolicySet*</license.excludes>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
