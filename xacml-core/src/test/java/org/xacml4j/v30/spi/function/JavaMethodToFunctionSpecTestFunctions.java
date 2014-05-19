@@ -36,8 +36,8 @@ public class JavaMethodToFunctionSpecTestFunctions
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp optionalParametersTest(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, defaultValue={"false", "true"})StringExp b,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", defaultValue="false")StringExp c){
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"})StringExp b,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false")StringExp c){
 		return null;
 	}
 

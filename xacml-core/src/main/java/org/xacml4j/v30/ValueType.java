@@ -9,5 +9,7 @@ import java.io.Serializable;
  */
 public interface ValueType extends Serializable
 {
+	boolean isBag();
 	
+	ValueType getDataType();
 }

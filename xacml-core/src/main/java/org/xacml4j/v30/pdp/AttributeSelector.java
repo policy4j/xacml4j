@@ -77,7 +77,6 @@ public class AttributeSelector extends
 			v =  selectorKey.resolve(context);
 		}catch(EvaluationException e){
 			if(isMustBePresent()){
-				context.setEvaluationStatus(e.getStatus());
 				throw e;
 			}
 			return getDataType().bagType().createEmpty();

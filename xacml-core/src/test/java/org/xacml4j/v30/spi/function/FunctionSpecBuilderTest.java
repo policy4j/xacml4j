@@ -9,6 +9,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
@@ -22,6 +23,7 @@ public class FunctionSpecBuilderTest
 	private FunctionSpec specDiffTypeArgs;
 	private FunctionInvocation impl;
 	private IMocksControl c;
+	
 	@Before
 	public void init(){
 		this.c = createControl();
@@ -29,9 +31,63 @@ public class FunctionSpecBuilderTest
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		this.specSameTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
 		b = FunctionSpecBuilder.builder("testFunc2");
-		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.STRING, null, true).build(XacmlTypes.INTEGER, impl);
+		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).optional(XacmlTypes.STRING).build(XacmlTypes.INTEGER, impl);
 	}
-
+	
+	@Test
+	public void testAddOptionalParameters(){
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.varArg(XacmlTypes.STRING, 0, 100);
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddMultipleVarArg(){
+		
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.varArg(XacmlTypes.STRING, 0, 100);
+		b.varArg(XacmlTypes.STRING, 0, 5);
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddVarArgAfterOptional(){
+		
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.optional(XacmlTypes.STRING);
+		b.varArg(XacmlTypes.STRING, 0, 5);
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddVarArgAfterDefaultValue(){
+		
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.optional(XacmlTypes.STRING, StringExp.valueOf("aaa"));
+		b.varArg(XacmlTypes.STRING, 0, 5);
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddOptionalAfterVarArg1(){
+		
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.varArg(XacmlTypes.STRING, 0, 5);
+		b.optional(XacmlTypes.STRING);
+		
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddOptionalAfterVarArg2(){
+		
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.varArg(XacmlTypes.STRING, 0, 5);
+		b.optional(XacmlTypes.STRING, StringExp.valueOf("aaa"));
+		
+	}
+	
+	@Test(expected=XacmlSyntaxException.class)
+	public void testAddParamWithDefaultValueAndOptionalFalse(){
+		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
+		b.param(XacmlTypes.STRING, StringExp.valueOf("aaa"), false);
+		
+	}
 	@Test
 	public void testValidateSingleTypeParametersWithSameTypeArgs()
 	{
@@ -61,12 +117,12 @@ public class FunctionSpecBuilderTest
 		c.verify();
 	}
 
-	@Test(expected=IllegalStateException.class)
+	@Test(expected=XacmlSyntaxException.class)
 	public void testParameterAfterVaragParam()
 	{
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
 		c.replay();
-		b.param(XacmlTypes.INTEGER, 1, 10).param(XacmlTypes.INTEGER);
+		b.varArg(XacmlTypes.INTEGER, 1, 10).param(XacmlTypes.INTEGER);
 		c.verify();
 	}
 
@@ -75,7 +131,7 @@ public class FunctionSpecBuilderTest
 	{
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
 		c.replay();
-		b.param(XacmlTypes.INTEGER, 3, 3).param(XacmlTypes.INTEGER);
+		b.varArg(XacmlTypes.INTEGER, 3, 3).param(XacmlTypes.INTEGER);
 		c.verify();
 	}
 }

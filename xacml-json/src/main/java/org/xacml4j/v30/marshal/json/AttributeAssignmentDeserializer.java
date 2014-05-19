@@ -17,6 +17,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -35,7 +36,8 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
 
 		AttributeExp value = deserializeValue(context, o);
-		CategoryId category = Categories.parse(GsonUtil.getAsString(o, "Category", null));
+		String categoryId = GsonUtil.getAsString(o, "Category", null);
+		CategoryId category = Strings.isNullOrEmpty(categoryId)?null:Categories.parse(categoryId);
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 
 		return AttributeAssignment

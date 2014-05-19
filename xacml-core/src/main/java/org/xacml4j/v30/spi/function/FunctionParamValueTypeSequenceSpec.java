@@ -20,15 +20,19 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	private ValueType paramType;
 
 	/**
-	 * Constructs spec with a given minimum
-	 * and maximum number of parameters
+	 * Constructs parameter specification 
+	 * with a given minimum and maximum 
+	 * number of parameters
+	 * 
 	 * @param min a minimum number
 	 * @param max a maximum number
 	 * @param paramType an argument type
 	 */
-	public FunctionParamValueTypeSequenceSpec(Integer min, Integer max,
+	public FunctionParamValueTypeSequenceSpec(
+			Integer min, 
+			Integer max,
 			ValueType paramType){
-		super(false, true, null);
+		super((min != null && min == 0), true, null);
 		this.min = min;
 		this.max = max;
 		this.paramType = paramType;

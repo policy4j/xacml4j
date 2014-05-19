@@ -17,6 +17,7 @@ import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
 import org.xacml4j.v30.spi.function.XacmlFuncParamAnyAttribute;
 import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
+import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
 import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
@@ -39,8 +40,8 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 			@XacmlFuncParamAnyAttribute AttributeExp categoryOrEntity,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp attributeId,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp dataType,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", defaultValue="false")BooleanExp mustBePresent,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", optional=true)StringExp issuer)
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"})BooleanExp mustBePresent,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp issuer)
 	{
 		AttributeExpType type = getType(dataType);
 		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){
@@ -51,7 +52,7 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 		AnyURIExp anyURI = (AnyURIExp)categoryOrEntity; 
 		return context.resolve(AttributeDesignatorKey
 				.builder()
-				.category(Categories.parse(anyURI.getValue()))
+				.category(anyURI.getValue())
 				.dataType(type)
 				.issuer(issuer != null?issuer.toString():null)
 				.attributeId(attributeId.getValue().toString())
@@ -65,8 +66,8 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 			@XacmlFuncParamAnyAttribute AttributeExp categoryOrEntity,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp attributeId,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp dataType,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", defaultValue="false")BooleanExp mustBePresent,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", optional=true)StringExp issuer)
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"})BooleanExp mustBePresent,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp issuer)
 	{
 		AttributeExpType type = getType(dataType);
 		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){

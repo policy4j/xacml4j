@@ -17,7 +17,10 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 
 	private ValueType type;
 
-	public FunctionParamValueTypeSpec(ValueType paramType, ValueExpression defaultValue, boolean optional){
+	public FunctionParamValueTypeSpec(
+			ValueType paramType, 
+			ValueExpression defaultValue, 
+			boolean optional){
 		super(optional, false, defaultValue);
 		Preconditions.checkNotNull(paramType);
 		if(defaultValue != null){

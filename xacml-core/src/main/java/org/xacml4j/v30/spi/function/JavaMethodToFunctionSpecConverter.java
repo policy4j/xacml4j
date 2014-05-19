@@ -124,9 +124,39 @@ class JavaMethodToFunctionSpecConverter
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
-								
-				b.param(param.isBag() ? type.get().bagType() : type.get(), createDefaultValue(type.get(), param.isBag(), 
-						param.defaultValue()), param.optional());
+							
+				b.param(param.isBag() ? type.get().bagType() : type.get(), null, false);
+				continue;
+			}
+			if (params[i][0] instanceof XacmlFuncParamOptional) {
+				XacmlFuncParamOptional param = (XacmlFuncParamOptional) params[i][0];
+				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				if(!type.isPresent()){
+					throw new XacmlSyntaxException(
+							"Unknown XACML type id=\"%s\"", param.typeId());
+				}
+				if (param.isBag()
+						&& !Expression.class.isAssignableFrom(types[i])) {
+					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
+							i, types[i].getName());
+					throw new IllegalArgumentException(String.format(
+							"Parameter type annotates bag of=\"%s\" "
+									+ "but method=\"%s\" is of class=\"%s\"",
+							type, m.getName(), types[i]));
+				}
+				if (!param.isBag()
+						&& !Expression.class.isAssignableFrom(types[i])) {
+					log.debug("Expecting attribute value at index=\"{}\", "
+							+ "actual type type=\"{}\"", i, types[i].getName());
+					throw new IllegalArgumentException(
+							String.format(
+									"Parameter type annotates attribute value of "
+											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
+									type, m.getName(), types[i]));
+				}
+							
+				b.param(param.isBag() ? type.get().bagType() : type.get(), 
+						createDefaultValue(type.get(), param.isBag(), param.value()), true);
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -148,7 +178,7 @@ class JavaMethodToFunctionSpecConverter
 					throw new XacmlSyntaxException(
 							"Unknown XACML type id=\"%s\"", param.typeId());
 				}
-				b.param(param.isBag() ? type.get().bagType() : type.get(), param.min(),
+				b.varArg(param.isBag() ? type.get().bagType() : type.get(), param.min(),
 						param.max());
 				continue;
 			}

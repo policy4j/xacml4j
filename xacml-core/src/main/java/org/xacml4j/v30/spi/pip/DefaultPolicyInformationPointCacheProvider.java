@@ -58,12 +58,17 @@ public final class DefaultPolicyInformationPointCacheProvider
 	public AttributeSet getAttributes(ResolverContext context) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
 		if(d.isCachable()){
-			AttributeSet v = attributeCache.getIfPresent(ResolverCacheKey
-					.builder()
-					.id(d)
-					.keys(context.getKeys())
-					.build());
-			return isExpired(v, context)?null:v;
+			ResolverCacheKey key = 
+					ResolverCacheKey
+						.builder()
+						.id(d)
+						.keys(context.getKeys())
+						.build();
+			AttributeSet v = attributeCache.getIfPresent(key);
+			if(v!= null && isExpired(v, context)){
+				attributeCache.invalidate(key);
+			}
+			return v;
 		}
 		return null;
 	}
@@ -73,16 +78,18 @@ public final class DefaultPolicyInformationPointCacheProvider
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
 		Preconditions.checkArgument(d.getId().equals(v.getDescriptor().getId()));
 		if(d.isCachable()){
-			attributeCache.put(ResolverCacheKey
-					.builder()
-					.id(d)
-					.keys(context.getKeys())
-					.build(), v);
+			ResolverCacheKey key = 
+					ResolverCacheKey
+						.builder()
+						.id(d)
+						.keys(context.getKeys())
+						.build();
+			attributeCache.put(key, v);
 		}
 	}
 
 	private boolean isExpired(AttributeSet v, ResolverContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) /
+		return ((context.getTicker().read() - v.getCreatedTime()) /
 				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 

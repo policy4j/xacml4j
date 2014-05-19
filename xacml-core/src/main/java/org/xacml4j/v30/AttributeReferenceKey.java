@@ -1,5 +1,7 @@
 package org.xacml4j.v30;
 
+import java.net.URI;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -42,8 +44,13 @@ public abstract class AttributeReferenceKey
 			return getThis();
 		}
 
-		public T category(String category) throws XacmlSyntaxException
-		{
+		public T category(URI category) 
+				throws XacmlSyntaxException{
+			return category(Categories.parse(category));
+		}
+		
+		public T category(String category) 
+				throws XacmlSyntaxException{
 			return category(Categories.parse(category));
 		}
 

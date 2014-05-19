@@ -341,4 +341,13 @@ public enum XacmlTypes implements AttributeExpType
 	public String toString(){
 		return typeId;
 	}
+	
+	@Override
+	public boolean isBag() {
+		return false;
+	}
+	
+	public AttributeExpType getDataType(){
+		return this;
+	}
 }

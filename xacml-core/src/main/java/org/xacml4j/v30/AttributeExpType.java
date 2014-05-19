@@ -2,7 +2,6 @@ package org.xacml4j.v30;
 
 import java.util.Set;
 
-
 public interface AttributeExpType extends ValueType
 {
 	/**

@@ -22,6 +22,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
@@ -220,12 +221,12 @@ class DefaultEvaluationContextHandler
 			}
 			return toBag(context, ref, nodeSet);
 		}
-		catch(XPathEvaluationException e){
+		catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			context.setEvaluationStatus(e.getStatus());
-			throw new AttributeReferenceEvaluationException(ref);
+			context.setEvaluationStatus(Status.processingError().build());
+			throw new AttributeReferenceEvaluationException(Status.processingError().build(), ref, e.getMessage());
 		}
 		catch(EvaluationException e){
 			if(log.isDebugEnabled()){

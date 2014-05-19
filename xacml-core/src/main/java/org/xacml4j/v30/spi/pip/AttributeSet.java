@@ -46,7 +46,7 @@ public final class AttributeSet
 	 *
 	 * @return a time stamp in nanoseconds
 	 */
-	public long getTimestamp(){
+	public long getCreatedTime(){
 		return timestamp;
 	}
 

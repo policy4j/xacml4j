@@ -13,13 +13,13 @@ abstract class BaseFunctionParamSpec implements FunctionParamSpec
 	protected BaseFunctionParamSpec(){
 	}
 	
-	protected BaseFunctionParamSpec(boolean optional, 
+	protected BaseFunctionParamSpec(
+			boolean optional, 
 			boolean variadic,
 			Expression defaultValue){
-		if(defaultValue != null 
-				&& optional){
-			throw new XacmlSyntaxException("Function parameter can not " +
-					"be optional and have defaultValue at the same time");
+		if(!optional && defaultValue != null){
+			throw new XacmlSyntaxException("Function parameter can't be required " +
+					"and have default value at the same time");
 		}
 		this.optional = optional;
 		this.variadic = variadic;

@@ -29,7 +29,8 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 		this(Status.missingAttribute(ref).build(), ref, String.format(format, args));
 	}
 	
-	public AttributeReferenceEvaluationException(Status status, 
+	public AttributeReferenceEvaluationException(
+			Status status, 
 			AttributeReferenceKey key, 
 			String format, Object ... args){
 		super(status, String.format(format, args));

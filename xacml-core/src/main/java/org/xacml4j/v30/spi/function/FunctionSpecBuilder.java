@@ -27,6 +27,7 @@ public final class FunctionSpecBuilder
 	private final String legacyId;
 	private final List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
+	private boolean hadOptional = false;
 	private boolean lazyArgumentEvaluation;
 	
 	private FunctionSpecBuilder(String functionId){
@@ -59,17 +60,32 @@ public final class FunctionSpecBuilder
 		return param(type, null, false);
 	}
 	
+	public FunctionSpecBuilder optional(ValueType type){
+		return param(type, null, true);
+	}
+	
+	public FunctionSpecBuilder optional(ValueType type, ValueExpression defaultValue){
+		return param(type, defaultValue, true);
+	}
+	
 	public FunctionSpecBuilder param(ValueType type, ValueExpression defautlValue, boolean optional){
 		Preconditions.checkNotNull(type);
-		Preconditions.checkState(!hadVarArg,
-				String.format("Can't add parameter after variadic parameter"));
+		if(defautlValue != null && !optional){
+			throw new XacmlSyntaxException(
+					"Parameter can't have default value and be mandatory");
+		}
+		if(hadVarArg){
+			throw new XacmlSyntaxException(
+					"Can't add parameter after variadic parameter");
+		}
 		if(defautlValue != null){
 			Preconditions.checkArgument(type.equals(defautlValue.getEvaluatesTo()));
 		}
-		if(defautlValue != null && optional){
+		hadOptional = defautlValue != null || optional;
+		if(defautlValue != null && !optional){
 			throw new XacmlSyntaxException(
 					"Function=\"%s\" can not have default " +
-					"value and be optional at the same time", 
+					"value and be required at the same time", 
 					functionId);
 		}
 		if(paramSpec.size() == 0 && 
@@ -78,7 +94,6 @@ public final class FunctionSpecBuilder
 					"First parameter function=\"%s\" can not have default value", 
 					functionId);
 		}
-		
 		if(paramSpec.size() == 0 && 
 				optional){
 			throw new XacmlSyntaxException(
@@ -94,11 +109,19 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder param(ValueType type, int min, int max){
+	public FunctionSpecBuilder varArg(ValueType type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
 		Preconditions.checkArgument(max - min > 1, "Max and min should be different at least by 1");
+		if(hadOptional){
+			throw new XacmlSyntaxException("Can't add vararg " +
+					"parameter after optional parameter");
+		}
+		if(hadVarArg){
+			throw new XacmlSyntaxException("Can't add vararg " +
+					"parameter after vararg parameter");
+		}
 		hadVarArg = true;
 		this.paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max, type));
 		return this;
@@ -323,7 +346,7 @@ public final class FunctionSpecBuilder
 		public boolean validateParameters(List<Expression> arguments)
 		{
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
-			ListIterator<Expression> expIt = arguments.listIterator();
+			ListIterator<Expression> expIt = normalize(arguments).listIterator();
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
@@ -336,6 +359,16 @@ public final class FunctionSpecBuilder
 				}
 			}
 			return validateAdditional(arguments);
+		}
+		
+		/**
+		 * Normalizes function parameter list
+		 * 
+		 * @param params a list of function parameters
+		 * @return a normalized list of function parameters
+		 */
+		private List<Expression> normalize(List<Expression> params){
+			return params;
 		}
 		
 		/**

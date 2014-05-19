@@ -37,6 +37,11 @@ public final class BagOfAttributeExpType implements ValueType
 		return type;
 	}
 
+	@Override
+	public boolean isBag() {
+		return true;
+	}
+
 	public BagOfAttributeExp.Builder builder(){
 		return new BagOfAttributeExp.Builder(type);
 	}

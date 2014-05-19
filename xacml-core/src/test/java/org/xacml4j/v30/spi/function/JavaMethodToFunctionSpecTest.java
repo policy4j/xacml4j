@@ -1,11 +1,9 @@
 package org.xacml4j.v30.spi.function;
 
-import static org.easymock.EasyMock.createControl;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
 
-import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.util.DefaultInvocationFactory;
@@ -17,10 +15,9 @@ import org.xacml4j.v30.types.StringExp;
 public class JavaMethodToFunctionSpecTest
 {
 	private JavaMethodToFunctionSpecConverter builder;
-	private IMocksControl c;
+	
 	@Before
 	public void init(){
-		this.c = createControl();
 		this.builder = new JavaMethodToFunctionSpecConverter(new DefaultInvocationFactory());
 	}
 
