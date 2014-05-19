@@ -8,6 +8,7 @@
 	<artifactId>xacml-core</artifactId>
 	<packaging>jar</packaging>
 	<name>Artagon XACML 3.0 Core Engine Implementation</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -24,7 +25,7 @@
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-		</dependency> 
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

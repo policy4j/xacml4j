@@ -1,5 +1,27 @@
 package org.xacml4j.v30;
 
+/*
+ * #%L
+ * Artagon XACML 3.0 conformance tests
+ * %%
+ * Copyright (C) 2009 - 2014 Artagon
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -26,14 +48,13 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 
 public class XacmlPolicyTestSupport {
-	protected final Logger log = LoggerFactory
-			.getLogger(XacmlPolicyTestSupport.class);
+	protected final Logger log = LoggerFactory.getLogger(XacmlPolicyTestSupport.class);
 
 	private Xacml30RequestContextUnmarshaller requestUnmarshaller;
 	private Xacml30ResponseContextUnmarshaller responseUnmarshaller;
 	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
 	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
-	
+
 	@Before
 	public void setup() throws Exception {
 		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
@@ -59,8 +80,8 @@ public class XacmlPolicyTestSupport {
 		RequestContext req = getXacml30Request(xacmlRequestResource);
 		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
 		ResponseContext resp = pdp.decide(req);
-		log.debug("Expected xacml 30 respone=\"{}\"", expectedResponse);
-		log.debug("Received xacml 30 respone=\"{}\"", resp);
+		log.debug("Expected XACML 3.0 response=\"{}\"", expectedResponse);
+		log.debug("Received XACML 3.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
 	}
 
@@ -73,9 +94,8 @@ public class XacmlPolicyTestSupport {
 		ResponseContext expectedResponse = getXacml20Response(expectedXacmlResponseResource);
 		assertNotNull(expectedXacmlResponseResource, expectedResponse);
 		ResponseContext resp = pdp.decide(req);
-		if(log.isDebugEnabled()){
-			log.debug(resp.toString());
-		}
+		log.debug("Expected XACML 2.0 response=\"{}\"", expectedResponse);
+		log.debug("Received XACML 2.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
 	}
 
