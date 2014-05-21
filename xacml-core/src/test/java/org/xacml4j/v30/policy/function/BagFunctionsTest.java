@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
@@ -44,7 +44,7 @@ public class BagFunctionsTest
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{
-		FunctionProvider f = new AnnotiationBasedFunctionProvider(
+		FunctionProvider f = new AnnotationBasedFunctionProvider(
 				BagFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-bag-size"));

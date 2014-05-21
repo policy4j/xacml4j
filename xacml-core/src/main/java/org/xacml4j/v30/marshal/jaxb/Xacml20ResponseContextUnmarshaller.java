@@ -63,13 +63,14 @@ import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 public class Xacml20ResponseContextUnmarshaller
 	extends BaseJAXBUnmarshaller<ResponseContext>
 implements ResponseUnmarshaller
 {
 	private Mapper mapper;
-	
+
 	public Xacml20ResponseContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Mapper();
@@ -88,32 +89,25 @@ implements ResponseUnmarshaller
 
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
-		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = new HashMap<Decision, DecisionType>();
-		private final static Map<DecisionType, Decision> v20ToV30DecisionMapping = new HashMap<DecisionType, Decision>();
+		private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.of(
+				Decision.DENY, DecisionType.DENY,
+				Decision.PERMIT, DecisionType.PERMIT,
+				Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE,
+				Decision.INDETERMINATE, DecisionType.INDETERMINATE);
 
-		private final static Map<EffectType, Effect> v20ToV30EffectnMapping = new HashMap<EffectType, Effect>();
-		private final static Map<Effect, EffectType> v30ToV20EffectnMapping = new HashMap<Effect, EffectType>();
+		private final static Map<DecisionType, Decision> V20_TO_V30_DECISION_MAPPING = ImmutableMap.of(
+				DecisionType.DENY, Decision.DENY,
+				DecisionType.PERMIT, Decision.PERMIT,
+				DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE,
+				DecisionType.INDETERMINATE, Decision.INDETERMINATE);
 
-		static
-		{
-			v30ToV20DecisionMapping.put(Decision.DENY, DecisionType.DENY);
-			v30ToV20DecisionMapping.put(Decision.PERMIT, DecisionType.PERMIT);
-			v30ToV20DecisionMapping.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE);
-			v30ToV20DecisionMapping.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE);
+		private final static Map<EffectType, Effect> V20_TO_V30_EFFECT_MAPPING = ImmutableMap.of(
+				EffectType.DENY, Effect.DENY,
+				EffectType.PERMIT, Effect.PERMIT);
 
-			v20ToV30DecisionMapping.put(DecisionType.DENY, Decision.DENY);
-			v20ToV30DecisionMapping.put(DecisionType.PERMIT, Decision.PERMIT);
-			v20ToV30DecisionMapping.put(DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE);
-			v20ToV30DecisionMapping.put(DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-
-
-			v20ToV30EffectnMapping.put(EffectType.DENY, Effect.DENY);
-			v20ToV30EffectnMapping.put(EffectType.PERMIT, Effect.PERMIT);
-
-			v30ToV20EffectnMapping.put(Effect.DENY, EffectType.DENY);
-			v30ToV20EffectnMapping.put(Effect.PERMIT, EffectType.PERMIT);
-
-		}
+		private final static Map<Effect, EffectType> V30_TO_V20_EFFECT_MAPPING = ImmutableMap.of(
+				Effect.DENY, EffectType.DENY,
+				Effect.PERMIT, EffectType.PERMIT);
 
 		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
 		{
@@ -128,7 +122,7 @@ implements ResponseUnmarshaller
 		private Result create(ResultType result) throws XacmlSyntaxException
 		{
 			Preconditions.checkArgument(result.getDecision() != null);
-			Decision d = v20ToV30DecisionMapping.get(result.getDecision());
+			Decision d = V20_TO_V30_DECISION_MAPPING.get(result.getDecision());
 			Status status = create(result.getStatus());
 			if(d == Decision.INDETERMINATE){
 				return Result.indeterminate(status).build();
@@ -176,7 +170,7 @@ implements ResponseUnmarshaller
 						.value(createValue(a.getDataType(), a.getOtherAttributes(), a.getContent())).build());
 			}
 			return Obligation
-					.builder(o.getObligationId(), v20ToV30EffectnMapping.get(o.getFulfillOn()))
+					.builder(o.getObligationId(), V20_TO_V30_EFFECT_MAPPING.get(o.getFulfillOn()))
 					.attributes(attrs)
 					.build();
 		}
@@ -204,7 +198,7 @@ implements ResponseUnmarshaller
 					.minorStatus(create(code.getStatusCode()))
 					.build();
 		}
-		
+
 		private AttributeExp createValue(String dataType, Map<QName, String> attr, List<Object> content)
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType va = new org.oasis.xacml.v30.jaxb.AttributeValueType();

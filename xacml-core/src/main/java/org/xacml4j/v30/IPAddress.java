@@ -36,17 +36,15 @@ public class IPAddress implements Serializable
 {
 	private static final long serialVersionUID = 8391410414891430400L;
 
-	private InetAddress address;
-	private InetAddress mask;
-	private PortRange range;
+	private final InetAddress address;
+	private final InetAddress mask;
+	private final PortRange range;
 
 	/**
 	 * Constructs IP address with a given address, mask and
 	 * IP port range
 	 *
-	 * @param address an TCP/IP address
-	 * @param mask an address mask
-	 * @param range an address port range
+	 * @param b IPAddress builder
 	 */
 	private IPAddress(Builder b)
 	{
@@ -64,7 +62,7 @@ public class IPAddress implements Serializable
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	public static IPAddress valueOf(String v)
 	{
 		v = v.trim();
@@ -76,21 +74,21 @@ public class IPAddress implements Serializable
 		int len = value.length();
 		int endIndex = value.indexOf(']');
 		Preconditions.checkArgument(endIndex > 0);
-		String addrr = value.substring(1, endIndex);
-		Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr),
-         		  "Expected IPV6 address, but found=\"%s\"", addrr);
-		
+		String addr = value.substring(1, endIndex);
+		Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addr),
+         		  "Expected IPV6 address, but found=\"%s\"", addr);
+
 		Builder builder = IPAddress.builder();
-		builder.address(addrr);
+		builder.address(addr);
 		if (endIndex != (len - 1)) {
           // if there's a mask, it's also an IPv6 address
           if (value.charAt(endIndex + 1) == '/') {
               int startIndex = endIndex + 3;
               endIndex = value.indexOf(']', startIndex);
-              addrr = value.substring(startIndex, endIndex);
-              Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addrr),
-            		  "Expected IPV6 mask, but found=\"%s\"", addrr);
-              builder.mask(addrr);
+              addr = value.substring(startIndex, endIndex);
+              Preconditions.checkArgument(IPAddressUtils.isIPv6LiteralAddress(addr),
+            		  "Expected IPV6 mask, but found=\"%s\"", addr);
+              builder.mask(addr);
           }
           if ((endIndex != (len - 1)) && (value.charAt(endIndex + 1) == ':'))
               builder.portRange(PortRange.valueOf(value.substring(endIndex + 2, len)));
@@ -181,9 +179,6 @@ public class IPAddress implements Serializable
 
 	@Override
 	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
 		if(o == this){
 			return true;
 		}
@@ -220,43 +215,43 @@ public class IPAddress implements Serializable
         }
         return b.toString();
 	}
-	
+
 	public static class Builder
 	{
 		private InetAddress addr;
 		private InetAddress mask;
 		private PortRange range = PortRange.getAnyPort();
-		
+
 		Builder address(InetAddress address){
 			this.addr = address;
 			return this;
 		}
-		
+
 		public Builder address(String address){
 			this.addr = IPAddressUtils.parseAddress(address);
 			return this;
 		}
-		
+
 		public Builder mask(InetAddress mask){
 			this.mask = mask;
 			return this;
 		}
-		
+
 		public Builder mask(String mask){
 			this.mask = IPAddressUtils.parseAddress(mask);
 			return this;
 		}
-		
+
 		public Builder portRange(PortRange range){
 			this.range = range;
 			return this;
 		}
-		
+
 		public Builder portRange(String range){
 			this.range = PortRange.valueOf(range);
 			return this;
 		}
-		
+
 		public IPAddress build(){
 			return new IPAddress(this);
 		}

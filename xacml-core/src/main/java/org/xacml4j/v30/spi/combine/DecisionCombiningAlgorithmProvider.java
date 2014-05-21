@@ -77,7 +77,7 @@ public interface DecisionCombiningAlgorithmProvider
 	 * @return {@code true} if algorithm
 	 * is supported and {@code false} otherwise
 	 */
-	boolean isRuleAgorithmProvided(String algorithmId);
+	boolean isRuleAlgorithmProvided(String algorithmId);
 
 	/**
 	 * Tests if a given XACML policy combining
@@ -87,5 +87,5 @@ public interface DecisionCombiningAlgorithmProvider
 	 * @return {@code true} if algorithm
 	 * is supported and {@code false} otherwise
 	 */
-	boolean isPolicyAgorithmProvided(String algorithmId);
+	boolean isPolicyAlgorithmProvided(String algorithmId);
 }

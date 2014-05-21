@@ -22,13 +22,12 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.Rule;
-
-public final class DenyUnlessPermitRuleCombingingAlgorithm extends DenyUnlessPermit<Rule>
+public final class LegacyOrderedDenyOverridesRuleCombineAlgorithm
+	extends LegacyDenyOverridesRuleCombineAlgorithm
 {
-	private final static String ID = "urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit";
+	private final static String ID = "urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides";
 
-	public DenyUnlessPermitRuleCombingingAlgorithm(){
+	public LegacyOrderedDenyOverridesRuleCombineAlgorithm() {
 		super(ID);
 	}
 }

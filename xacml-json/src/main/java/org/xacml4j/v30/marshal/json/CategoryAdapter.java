@@ -45,15 +45,15 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category> 
-{	
+class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category>
+{
 	/**
 	 * Short well know category aliases
 	 */
-	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES = 
+	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
 			ImmutableBiMap.<String, CategoryId>builder()
 			.put("action", Categories.ACTION)
-			.put("enviroment", Categories.ENVIRONMENT)
+			.put("environment", Categories.ENVIRONMENT)
 			.put("resource", Categories.RESOURCE)
 			.put("subject", Categories.SUBJECT_ACCESS)
 			.put("codebase", Categories.SUBJECT_CODEBASE)
@@ -61,7 +61,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			.put("recipient-subject", Categories.SUBJECT_RECIPIENT)
 			.put("requesting-machine", Categories.SUBJECT_REQUESTING_MACHINE)
 			.build();
-	
+
 	@Override
 	public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
@@ -79,7 +79,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			return Category.builder(category)
 					.id(id)
 					.entity(Entity
-							.builder() 
+							.builder()
 							.attributes(attr)
 							.content(content)
 							.build())
@@ -88,9 +88,9 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			throw new JsonParseException(e);
 		}
 	}
-	
+
 	@Override
-	public JsonElement serialize(Category src, Type typeOfSrc, 
+	public JsonElement serialize(Category src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		if (src.getId() != null) {

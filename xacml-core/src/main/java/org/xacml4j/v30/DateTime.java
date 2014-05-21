@@ -78,7 +78,7 @@ public final class DateTime extends
 		return calendar.getSecond();
 	}
 
-	public int getMilisecond(){
+	public int getMillisecond(){
 		return calendar.getMillisecond();
 	}
 

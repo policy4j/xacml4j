@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface XacmlRuleDecisionCombingingAlgorithm
+public @interface XacmlRuleDecisionCombiningAlgorithm
 {
 	String value();
 	boolean legacy() default false;

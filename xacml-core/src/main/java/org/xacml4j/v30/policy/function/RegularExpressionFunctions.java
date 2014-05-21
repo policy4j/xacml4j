@@ -52,6 +52,9 @@ public class RegularExpressionFunctions
 {
 	private final static Logger log = LoggerFactory.getLogger(RegularExpressionFunctions.class);
 
+	/** Private constructor for utility class */
+	private RegularExpressionFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static

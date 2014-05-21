@@ -35,9 +35,9 @@ import com.google.common.base.Preconditions;
 
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
-	private String id;
+	private final String id;
 	private Resource[] resources;
-	private FunctionProvider extensionFuctions;
+	private FunctionProvider extensionFunctions;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 
 	public InMemoryPolicyRepositoryFactoryBean(String id){
@@ -51,14 +51,14 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	}
 
 	public void setExtensionFunctions(FunctionProvider functions){
-		this.extensionFuctions = functions;
+		this.extensionFunctions = functions;
 	}
 
 	public void setExtensionCombiningAlgorithms(
 			DecisionCombiningAlgorithmProvider algorithms){
 		this.extensionDecisionCombiningAlgorithms = algorithms;
 	}
-	
+
 	public void setPolicies(Resource[] policies){
 		this.resources = policies;
 	}
@@ -68,8 +68,8 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 	{
 		FunctionProviderBuilder functionProviderBuilder = FunctionProviderBuilder.builder()
 			.defaultFunctions();
-		if(extensionFuctions != null){
-			functionProviderBuilder.provider(extensionFuctions);
+		if(extensionFunctions != null){
+			functionProviderBuilder.provider(extensionFunctions);
 		}
 		DecisionCombiningAlgorithmProviderBuilder decisionAlgorithmProviderBuilder =
 			DecisionCombiningAlgorithmProviderBuilder.builder()

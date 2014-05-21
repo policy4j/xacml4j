@@ -22,7 +22,7 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
 public class PermitUnlessDeny <DecisionType extends DecisionRule>
@@ -41,8 +41,8 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 		super(id);
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny")
-	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny")
+	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny")
+	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny")
 	@Override
 	public Decision combine(EvaluationContext context,
 			List<DecisionType> decisions)

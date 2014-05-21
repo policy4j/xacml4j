@@ -84,6 +84,8 @@ import com.google.common.base.Preconditions;
 @XacmlFunctionProvider(description="XACML 3.0 bag functions")
 public class BagFunctions
 {
+	/** Private constructor for utility class */
+	private BagFunctions() {}
 
 	/**
 	 * This function takes a bag of {@link AttributeExp} values as an
@@ -126,7 +128,7 @@ public class BagFunctions
 	{
 		return isEmpty(bag);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp stringOneAndOnly(
@@ -701,7 +703,7 @@ public class BagFunctions
 		return XacmlTypes.DNSNAME.bagOf(values);
 	}
 	// entity
-	
+
 	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:entity-bag-is-empty")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp entityBagIsEmpty(
@@ -710,7 +712,7 @@ public class BagFunctions
 	{
 		return isEmpty(bag);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp entityOneAndOnly(
@@ -719,7 +721,7 @@ public class BagFunctions
 	{
 		return oneAndOnlyImpl(bag);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp entityBagSize(
@@ -727,7 +729,7 @@ public class BagFunctions
 	{
 		return typeBagSizeImpl(bag);
 	}
-	
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
 	public static BagOfAttributeExp entityBag(

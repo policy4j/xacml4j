@@ -50,9 +50,9 @@ public class StatusCodeAdapter implements JsonSerializer<StatusCode>, JsonDeseri
 		checkNotNull(value);
 		StatusCode.Builder builder = StatusCode.builder(StatusCodeIds.parse(value));
 
-		StatusCode embededStatusCode = context.deserialize(o.getAsJsonObject(STATUS_CODE_PROPERTY), StatusCode.class);
-		if (embededStatusCode != null) {
-			builder.minorStatus(embededStatusCode);
+		StatusCode embeddedStatusCode = context.deserialize(o.getAsJsonObject(STATUS_CODE_PROPERTY), StatusCode.class);
+		if (embeddedStatusCode != null) {
+			builder.minorStatus(embeddedStatusCode);
 		}
 
 		return builder.build();

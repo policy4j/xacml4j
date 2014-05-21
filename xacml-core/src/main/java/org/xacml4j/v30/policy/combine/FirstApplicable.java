@@ -22,7 +22,7 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
 public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
@@ -45,9 +45,9 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 		return doCombine(context, decisions);
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
-	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
-	public final static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
+	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
+	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
+	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
 	{
 		for(D d : decisions){
 			Decision decision = evaluateIfMatch(context, d);

@@ -35,7 +35,7 @@ public class ContentResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptor()
 	{
-		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.bulder("id", "name", Categories.SUBJECT_ACCESS)
+		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.builder("id", "name", Categories.SUBJECT_ACCESS)
 		.build();
 		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
 		assertTrue(d.canResolve(Categories.SUBJECT_ACCESS));

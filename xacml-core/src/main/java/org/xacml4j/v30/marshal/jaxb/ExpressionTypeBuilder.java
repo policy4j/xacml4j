@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableMap;
 
 interface ExpressionTypeBuilder
 {
-	
+
  	JAXBElement<?> from(Expression e);
 
  	public enum Expressions implements ExpressionTypeBuilder
@@ -127,9 +127,9 @@ interface ExpressionTypeBuilder
  				exp.setContextSelectorId(k.getContextSelectorId());
  				return factory.createAttributeSelector(exp);
  			}
- 			
+
  		};
- 		
+
  		private static ImmutableMap<Class<? extends Expression>, ExpressionTypeBuilder> EXPRESSIONS;
  		static
  		{
@@ -139,18 +139,18 @@ interface ExpressionTypeBuilder
  			}
  			EXPRESSIONS = b.build();
  		}
- 		
+
  		private final static ObjectFactory factory = new ObjectFactory();
  		private Class<? extends Expression> expClass;
- 		
+
  		private Expressions(Class<? extends Expression> expClass){
  			this.expClass = expClass;
  		}
- 		
+
  		public Class<? extends Expression> getExpressionClass(){
  			return expClass;
  		}
- 		
+
  		public static ExpressionTypeBuilder getBuilder(Expression exp)
  	 	{
  	 		Preconditions.checkNotNull(exp);
@@ -159,9 +159,9 @@ interface ExpressionTypeBuilder
  	 		}
  	 		ExpressionTypeBuilder b = EXPRESSIONS.get(exp.getClass());
  	 		Preconditions.checkArgument(b != null,
- 	 				"Failed to find builder for expressio=\"%s\"", exp.getClass().getName());
+ 	 				"Failed to find builder for expression=\"%s\"", exp.getClass().getName());
  	 		return (b != null)?b:null;
  	 	}
  	}
- 
+
 }

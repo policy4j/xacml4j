@@ -38,17 +38,17 @@ import org.xacml4j.v30.pdp.Rule;
  *
  * @author Giedrius Trumpickas
  */
-public class DecisionCombingingAlgorithmProviderImpl implements DecisionCombiningAlgorithmProvider
+public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
 	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 
-	protected DecisionCombingingAlgorithmProviderImpl(){
+	protected DecisionCombiningAlgorithmProviderImpl(){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
 		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
 	}
 
-	public DecisionCombingingAlgorithmProviderImpl(
+	public DecisionCombiningAlgorithmProviderImpl(
 			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
 			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
 		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
@@ -74,12 +74,12 @@ public class DecisionCombingingAlgorithmProviderImpl implements DecisionCombinin
 
 
 	@Override
-	public final boolean isRuleAgorithmProvided(String algorithmId){
+	public final boolean isRuleAlgorithmProvided(String algorithmId){
 		return ruleAlgo.containsKey(algorithmId);
 	}
 
 	@Override
-	public final boolean isPolicyAgorithmProvided(String algorithmId){
+	public final boolean isPolicyAlgorithmProvided(String algorithmId){
 		return policyAlgo.containsKey(algorithmId);
 	}
 

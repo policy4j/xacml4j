@@ -34,12 +34,12 @@ public final class DoubleExp extends BaseAttributeExp<Double>
 	private DoubleExp(Double value) {
 		super(XacmlTypes.DOUBLE, value);
 	}
-	
+
 	public static DoubleExp valueOf(Number value){
 		Preconditions.checkNotNull(value);
 		return new DoubleExp(value.doubleValue());
 	}
-	
+
 	public static DoubleExp valueOf(String v){
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(v));
 		 if (v.endsWith("INF")) {
@@ -48,16 +48,16 @@ public final class DoubleExp extends BaseAttributeExp<Double>
 	     }
 		 return new DoubleExp(Double.parseDouble(v));
 	}
-	
+
 	public StringExp toStringExp(){
 		return StringExp.valueOf(getValue().toString());
 	}
-	
+
 	public DoubleExp add(DoubleExp d){
 		return  new DoubleExp(getValue() + d.getValue());
 	}
 
-	public DoubleExp substract(DoubleExp d){
+	public DoubleExp subtract(DoubleExp d){
 		return  new DoubleExp(getValue() - d.getValue());
 	}
 
@@ -68,11 +68,11 @@ public final class DoubleExp extends BaseAttributeExp<Double>
 	public DoubleExp divide(DoubleExp d){
 		return  new DoubleExp(getValue() / d.getValue());
 	}
-	
+
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.DOUBLE.emptyBag();
 	}
-	
+
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.DOUBLE.bag();
 	}

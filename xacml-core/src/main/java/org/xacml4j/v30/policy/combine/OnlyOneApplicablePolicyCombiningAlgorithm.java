@@ -29,19 +29,19 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
 
-public final class OnlyOneApplicablePolicyCombingingAlgorithm extends
+public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 	BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
 {
 	public final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
 
-	public OnlyOneApplicablePolicyCombingingAlgorithm() {
+	public OnlyOneApplicablePolicyCombiningAlgorithm() {
 		super(ID);
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
+	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
 	@Override
 	public Decision combine(EvaluationContext context, List<CompositeDecisionRule> decisions)
 	{

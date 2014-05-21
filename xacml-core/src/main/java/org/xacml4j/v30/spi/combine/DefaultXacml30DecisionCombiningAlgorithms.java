@@ -25,29 +25,29 @@ package org.xacml4j.v30.spi.combine;
 import org.xacml4j.v30.policy.combine.DenyOverridesPolicyCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.DenyOverridesPolicyOrderedCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.DenyOverridesRuleCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyOverridesRuleOrderedCombingingAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyUnlessPermitPolicyCombingingAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyUnlessPermitRuleCombingingAlgorithm;
+import org.xacml4j.v30.policy.combine.DenyOverridesRuleOrderedCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.DenyUnlessPermitPolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.DenyUnlessPermitRuleCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.FirstApplicablePolicyCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.FirstApplicableRuleCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.LeagacyOrderedPermitOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.LegacyOrderedDenyOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.LegacyOrderedPermitOverridesPolicyCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.LegacyDenyOverridesPolicyCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.LegacyDenyOverridesRuleCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.LegacyOrderedDenyOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyOrderedDenyOverridesRuleCombineAlgorihm;
 import org.xacml4j.v30.policy.combine.LegacyOrderedPermitOverridesRuleCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.LegacyPermitOverridesPolicyCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.LegacyPermitOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.OnlyOneApplicablePolicyCombingingAlgorithm;
+import org.xacml4j.v30.policy.combine.OnlyOneApplicablePolicyCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.PermitOverridesPolicyCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.PermitOverridesPolicyOrderedCombineAlgorithm;
 import org.xacml4j.v30.policy.combine.PermitOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitOverridesRuleOrderedCombingingAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitUnlessDenyPolicyCombingingAlgorithm;
+import org.xacml4j.v30.policy.combine.PermitOverridesRuleOrderedCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.PermitUnlessDenyPolicyCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
 
 class DefaultXacml30DecisionCombiningAlgorithms
-	extends DecisionCombingingAlgorithmProviderImpl
+	extends DecisionCombiningAlgorithmProviderImpl
 {
 	public DefaultXacml30DecisionCombiningAlgorithms()
 	{
@@ -55,13 +55,13 @@ class DefaultXacml30DecisionCombiningAlgorithms
 		addRuleCombineAlgorithm(new FirstApplicableRuleCombiningAlgorithm());
 
 		addRuleCombineAlgorithm(new PermitOverridesRuleCombineAlgorithm());
-		addRuleCombineAlgorithm(new PermitOverridesRuleOrderedCombingingAlgorithm());
+		addRuleCombineAlgorithm(new PermitOverridesRuleOrderedCombiningAlgorithm());
 
 		addRuleCombineAlgorithm(new DenyOverridesRuleCombiningAlgorithm());
-		addRuleCombineAlgorithm(new DenyOverridesRuleOrderedCombingingAlgorithm());
+		addRuleCombineAlgorithm(new DenyOverridesRuleOrderedCombiningAlgorithm());
 
 		addRuleCombineAlgorithm(new PermitUnlessDenyRuleCombiningAlgorithm());
-		addRuleCombineAlgorithm(new DenyUnlessPermitRuleCombingingAlgorithm());
+		addRuleCombineAlgorithm(new DenyUnlessPermitRuleCombiningAlgorithm());
 
 		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new DenyOverridesPolicyOrderedCombiningAlgorithm());
@@ -70,15 +70,15 @@ class DefaultXacml30DecisionCombiningAlgorithms
 		addCompositeRuleCombineAlgorithm(new PermitOverridesPolicyOrderedCombineAlgorithm());
 
 		addCompositeRuleCombineAlgorithm(new FirstApplicablePolicyCombiningAlgorithm());
-		addCompositeRuleCombineAlgorithm(new OnlyOneApplicablePolicyCombingingAlgorithm());
-		addCompositeRuleCombineAlgorithm(new PermitUnlessDenyPolicyCombingingAlgorithm());
-		addCompositeRuleCombineAlgorithm(new DenyUnlessPermitPolicyCombingingAlgorithm());
+		addCompositeRuleCombineAlgorithm(new OnlyOneApplicablePolicyCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new PermitUnlessDenyPolicyCombiningAlgorithm());
+		addCompositeRuleCombineAlgorithm(new DenyUnlessPermitPolicyCombiningAlgorithm());
 
 		// Legacy algorithms
 
 		// rule combining algorithms
 		addRuleCombineAlgorithm(new LegacyDenyOverridesRuleCombineAlgorithm());
-		addRuleCombineAlgorithm(new LegacyOrderedDenyOverridesRuleCombineAlgorihm());
+		addRuleCombineAlgorithm(new LegacyOrderedDenyOverridesRuleCombineAlgorithm());
 		addRuleCombineAlgorithm(new LegacyPermitOverridesRuleCombineAlgorithm());
 		addRuleCombineAlgorithm(new LegacyOrderedPermitOverridesRuleCombineAlgorithm());
 
@@ -86,6 +86,6 @@ class DefaultXacml30DecisionCombiningAlgorithms
 		addCompositeRuleCombineAlgorithm(new LegacyDenyOverridesPolicyCombineAlgorithm());
 		addCompositeRuleCombineAlgorithm(new LegacyOrderedDenyOverridesPolicyCombineAlgorithm());
 		addCompositeRuleCombineAlgorithm(new LegacyPermitOverridesPolicyCombineAlgorithm());
-		addCompositeRuleCombineAlgorithm(new LeagacyOrderedPermitOverridesPolicyCombineAlgorithm());
+		addCompositeRuleCombineAlgorithm(new LegacyOrderedPermitOverridesPolicyCombineAlgorithm());
 	}
 }

@@ -136,7 +136,7 @@ public class DefaultPolicyReferenceResolver
 		return p;
 	}
 
-	protected final void clearRefCahce(){
+	protected final void clearRefCache(){
 		policyIDRefCache.invalidateAll();
 		policySetIDRefCache.invalidateAll();
 	}

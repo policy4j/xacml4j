@@ -1,4 +1,4 @@
-package org.xacml4j.v30;
+package org.xacml4j.v30.policy.combine;
 
 /*
  * #%L
@@ -22,15 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
 
-/**
- * A callback used by {@link PDP} to retrieve environment 
- * related attributes
- * 
- * @author Giedrius Trumpickas
- */
-public interface EnviromentAttributeCallback 
+public final class LegacyOrderedPermitOverridesPolicyCombineAlgorithm
+	extends LegacyPermitOverridesPolicyCombineAlgorithm
 {
-	Collection<Attribute> getEnviromentAttributes();
+	private final static String ID = "urn:oasis:names:tc:xacml:1.1:policy-combining-algorithm:ordered-permit-overrides";
+
+	public LegacyOrderedPermitOverridesPolicyCombineAlgorithm(){
+		super(ID);
+	}
 }

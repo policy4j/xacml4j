@@ -57,13 +57,13 @@ public abstract class AbstractPolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
 
-	private String id;
-	private ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
+	private final String id;
+	private final ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
 
-	private PolicyUnmarshaller unmarshaller;
+	private final PolicyUnmarshaller unmarshaller;
 
-	private FunctionProvider functions;
-	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
+	private final FunctionProvider functions;
+	private final DecisionCombiningAlgorithmProvider decisionAlgorithms;
 
 	protected AbstractPolicyRepository(
 			String id,
@@ -98,7 +98,7 @@ public abstract class AbstractPolicyRepository
 		if(found.isEmpty()){
 			return null;
 		}
-		return Collections.<Policy>max(found, new Comparator<Policy>() {
+		return Collections.max(found, new Comparator<Policy>() {
 			@Override
 			public int compare(Policy a, Policy b) {
 				return a.getVersion().compareTo(b.getVersion());
@@ -119,7 +119,7 @@ public abstract class AbstractPolicyRepository
 		if(found.isEmpty()){
 			return null;
 		}
-		return Collections.<PolicySet>max(found, new Comparator<PolicySet>() {
+		return Collections.max(found, new Comparator<PolicySet>() {
 			@Override
 			public int compare(PolicySet a, PolicySet b) {
 				return a.getVersion().compareTo(b.getVersion());
@@ -294,24 +294,6 @@ public abstract class AbstractPolicyRepository
 		return r;
 	}
 
-//	/**
-//	 * A {@link PolicyVisitor} implementation
-//	 * to validate function reference in a given
-//	 * policy or policy set
-//	 */
-//	private class FunctionValidatingVisitor
-//	{
-//		public void visitEnter(FunctionReference function) {
-//			Preconditions.checkArgument(functions.isFunctionProvided(
-//					function.getFunctionId()));
-//		}
-//		public void visitEnter(Apply apply) {
-//			Preconditions.checkArgument(functions.isFunctionProvided(
-//					apply.getFunctionId()));
-//		}
-//
-//	}
-
 	/**
 	 * A {@link org.xacml4j.v30.pdp.PolicyVisitor} implementation
 	 * to validate {@link DecisionCombiningAlgorithm} instances
@@ -324,7 +306,7 @@ public abstract class AbstractPolicyRepository
 		public void visitEnter(Policy policy) {
 			String id = policy.getRuleCombiningAlgorithm().getId();
 			Preconditions.checkArgument(
-					decisionAlgorithms.isRuleAgorithmProvided(id),
+					decisionAlgorithms.isRuleAlgorithmProvided(id),
 							"Rule combining algorithm=\"%s\" is not defined in this repository", id);
 		}
 
@@ -332,7 +314,7 @@ public abstract class AbstractPolicyRepository
 		public void visitEnter(PolicySet policySet) {
 			String id = policySet.getPolicyDecisionCombiningAlgorithm().getId();
 			Preconditions.checkArgument(
-					decisionAlgorithms.isPolicyAgorithmProvided(id),
+					decisionAlgorithms.isPolicyAlgorithmProvided(id),
 					"Policy combining algorithm=\"%s\" is not defined in this repository", id);
 		}
 	}

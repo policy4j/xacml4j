@@ -72,6 +72,9 @@ public class DOMUtil
 		}
 	}
 
+	/** Private constructor for utility class */
+	private DOMUtil() { }
+
 	/**
 	 * Creates XPath expression for a given DOM node
 	 * @param n a DOM node
@@ -142,7 +145,7 @@ public class DOMUtil
 	 */
 	public static Document copyNode(Node source)
 	{
-		if(source == null){
+		if (source == null) {
 			return null;
 		}
 		Document sourceDoc = (source.getNodeType() == Node.DOCUMENT_NODE)?(Document)source:source.getOwnerDocument();
@@ -218,22 +221,22 @@ public class DOMUtil
 	{
 		serializeToXml(node, out, true, false);
 	}
-	
+
 	public static Node stringToNode(String src) {
 		if(src == null){
 			return null;
 		}
 		return parseXml(new InputSource(new StringReader(src)));
 	}
-	
+
 	public static Node parseXml(InputStream src) {
 		if(src == null){
 			return null;
 		}
 		return parseXml(new InputSource(src));
 	}
-	
-	public static Node parseXml(InputSource src) 
+
+	public static Node parseXml(InputSource src)
 	{
 		Preconditions.checkNotNull(src);
 		DocumentBuilder documentBuilder = null;
@@ -250,8 +253,8 @@ public class DOMUtil
 					"Failed to parse DOM from string: \"%s\"", src), e);
 		}
 	}
-	
-	public static String nodeToString(Node node) 
+
+	public static String nodeToString(Node node)
 	{
 		if (node == null) {
 			return null;
@@ -260,7 +263,7 @@ public class DOMUtil
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to build %s", 
+			throw new IllegalStateException(String.format("Failed to build %s",
 					Transformer.class.getName()), e);
 		}
 		DOMSource source = new DOMSource(node);
@@ -276,7 +279,7 @@ public class DOMUtil
 	public static void serializeToXml(
 			Node node,
 			OutputStream out,
-			boolean ommitXmlDecl,
+			boolean omitXmlDecl,
 			boolean prettyPrint)
 		throws TransformerException
 	{
@@ -284,7 +287,7 @@ public class DOMUtil
 		Preconditions.checkNotNull(out);
 		Preconditions.checkState(transformerFactory != null);
 		Transformer t = transformerFactory.newTransformer();
-		t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,  ommitXmlDecl?"yes":"no");
+		t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,  omitXmlDecl ?"yes":"no");
 		t.setOutputProperty(OutputKeys.METHOD, "xml");
 		t.setOutputProperty(OutputKeys.INDENT, prettyPrint?"yes":"no");
 		DOMSource source = new DOMSource(node);

@@ -37,15 +37,15 @@ public enum Categories implements CategoryId
 	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
 	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource"),
 	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation"),
-	STATUSDETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail"),
+	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail"),
 	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"),
 	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase"),
 	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject"),
 	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject"),
 	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine"),
 	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority"),
-	DELGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
-	DELGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
+	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
+	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
 
 
 	private String categoryURI;
@@ -118,12 +118,12 @@ public enum Categories implements CategoryId
 		}
 		return c;
 	}
-	
+
 	public static CategoryId parse(URI categoryUri) throws XacmlSyntaxException{
 		Preconditions.checkArgument(categoryUri != null);
 		return parse(categoryUri.toString());
 	}
-	
+
 	/**
 	 * Tests if a given category URI represents
 	 * a delegated category
@@ -147,9 +147,7 @@ public enum Categories implements CategoryId
 		if(categoryURI.startsWith(DELEGATED_CATEGORY_PREFIX)){
 			return categoryURI;
 		}
-		return new StringBuilder(DELEGATED_CATEGORY_PREFIX.length() + categoryURI.length())
-				.append(DELEGATED_CATEGORY_PREFIX)
-				.append(categoryURI).toString();
+		return DELEGATED_CATEGORY_PREFIX + categoryURI;
 	}
 
 	private static class CustomCategory

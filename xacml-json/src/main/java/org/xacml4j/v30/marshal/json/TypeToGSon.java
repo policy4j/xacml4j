@@ -48,8 +48,8 @@ public interface TypeToGSon extends TypeCapability
 	AttributeExpType getType();
 	JsonElement toJson(AttributeExp v, JsonSerializationContext ctx);
 	AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx);
-	
-	
+
+
 	public enum Types implements TypeToGSon
 	{
 		ANYURI(XacmlTypes.ANYURI){
@@ -230,7 +230,7 @@ public interface TypeToGSon extends TypeCapability
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, 
+			public AttributeExp fromJson(JsonElement v,
 					JsonDeserializationContext ctx) {
 				Entity.Builder b = Entity.builder();
 				JsonObject o  = v.getAsJsonObject();
@@ -248,22 +248,22 @@ public interface TypeToGSon extends TypeCapability
 				return EntityExp.valueOf(b.build());
 			}
 		};
-		
+
 		private final static Index<TypeToGSon> INDEX = Index.<TypeToGSon>build(values());
-		
+
 		private AttributeExpType type;
-		
+
 		private Types(AttributeExpType type){
 			this.type = type;
 		}
-		
+
 		public AttributeExpType getType(){
 			return type;
 		}
-		
-		public final static Index<TypeToGSon> getIndex(){
+
+		public static Index<TypeToGSon> getIndex(){
 			return INDEX;
 		}
-		
+
 	}
 }

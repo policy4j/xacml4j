@@ -31,14 +31,17 @@ import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.IntegerExp;
 
 
-@XacmlFunctionProvider(description="XACML numeric comparision functions")
-public class NumericComparisionFunctions
+@XacmlFunctionProvider(description="XACML numeric comparison functions")
+public class NumericComparisonFunctions
 {
+	/** Private constructor for utility class */
+	private NumericComparisonFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greatherThanInteger(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
+	public static BooleanExp greaterThanInteger(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp b)
 	{
 		return BooleanExp.valueOf(a.getValue() > b.getValue());
 	}
@@ -54,9 +57,9 @@ public class NumericComparisionFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greatherThanOrEqualInteger(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
+	public static BooleanExp greaterThanOrEqualInteger(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp b)
 	{
 		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}
@@ -72,9 +75,9 @@ public class NumericComparisionFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greatherThanDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
+	public static BooleanExp greaterThanDouble(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp b)
 	{
 		return BooleanExp.valueOf(a.getValue() > b.getValue());
 	}
@@ -90,9 +93,9 @@ public class NumericComparisionFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greatherThanOrEqualDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
+	public static BooleanExp greaterThanOrEqualDouble(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp b)
 	{
 		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
 	}

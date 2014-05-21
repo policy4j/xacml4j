@@ -47,8 +47,11 @@ import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 
 public class Xacml20TestUtility
 {
-	private static JAXBContext context = JAXBContextUtil.getInstance();
-	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+	private static final JAXBContext context = JAXBContextUtil.getInstance();
+	private static final Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+
+	/** Private constructor for utility class */
+	private Xacml20TestUtility() {}
 
 	public static void assertResponse(ResponseType a, ResponseType b)
 	{

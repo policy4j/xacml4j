@@ -47,7 +47,7 @@ public class DefaultPolicyInformationPoint
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
-	
+
 	public DefaultPolicyInformationPoint(String id,
 			ResolverRegistry resolvers,
 			PolicyInformationPointCacheProvider cache)
@@ -89,7 +89,7 @@ public class DefaultPolicyInformationPoint
 				Preconditions.checkState(d.canResolve(ref));
 				ResolverContext rContext = createContext(context, d);
 				AttributeSet attributes = null;
-				if(d.isCachable()){
+				if(d.isCacheable()){
 					if(log.isDebugEnabled()){
 						log.debug("Trying to find resolver id=\"{}\" " +
 								"values in cache", d.getId());
@@ -133,17 +133,17 @@ public class DefaultPolicyInformationPoint
 				for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
 					BagOfAttributeExp v = attributes.get(k);
 					if(log.isDebugEnabled()){
-						log.debug("Caching desginator=\"{}\" " +
-								"value=\"{}\" to context", k, v);
+						log.debug("Caching designator=\"{}\" value=\"{}\" to context",
+								k, v);
 					}
 					context.setResolvedDesignatorValue(k, v);
 				}
 				// check if resolver
 				// descriptor allows long term caching
-				if(d.isCachable()){
+				if(d.isCacheable()){
 					cache.putAttributes(rContext, attributes);
 				}
-				context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
+				context.setDecisionCacheTTL(d.getPreferredCacheTTL());
 				return attributes.get(ref.getAttributeId());
 			}
 			return ref.getDataType().emptyBag();
@@ -153,12 +153,12 @@ public class DefaultPolicyInformationPoint
 
 	private boolean isExpired(AttributeSet v, EvaluationContext context){
 		return ((context.getTicker().read() - v.getCreatedTime()) /
-				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
 	private boolean isExpired(Content v, EvaluationContext context){
 		return ((context.getTicker().read() - v.getTimestamp()) /
-				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class DefaultPolicyInformationPoint
 			ContentResolverDescriptor d = r.getDescriptor();
 			ResolverContext pipContext = createContext(context, d);
 			Content v = null;
-			if(d.isCachable()){
+			if(d.isCacheable()){
 				v = cache.getContent(pipContext);
 				if(v != null &&
 						!isExpired(v, context)){
@@ -196,10 +196,10 @@ public class DefaultPolicyInformationPoint
 				}
 				return null;
 			}
-			if(d.isCachable()){
+			if(d.isCacheable()){
 				cache.putContent(pipContext, v);
 			}
-			context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
+			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
 			return v.getContent();
 		}finally{
 		}

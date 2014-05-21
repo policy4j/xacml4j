@@ -45,10 +45,10 @@ import com.google.common.collect.ImmutableList;
  */
 public class Apply implements Expression
 {
-	private FunctionSpec spec;
-	private List<Expression> arguments;
+	private final FunctionSpec spec;
+	private final List<Expression> arguments;
 
-	private int hashCode;
+	private final int hashCode;
 
 	/**
 	 * Constructs XACML apply expression with given function and list
@@ -134,9 +134,6 @@ public class Apply implements Expression
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof Apply)){
 			return false;
 		}
@@ -147,7 +144,7 @@ public class Apply implements Expression
 
 	@Override
 	public void accept(ExpressionVisitor expv){
-		ApplyVistor v = (ApplyVistor)expv;
+		ApplyVisitor v = (ApplyVisitor)expv;
 		v.visitEnter(this);
 		for(Expression arg : arguments){
 			arg.accept(v);
@@ -155,7 +152,7 @@ public class Apply implements Expression
 		v.visitLeave(this);
 	}
 
-	public interface ApplyVistor
+	public interface ApplyVisitor
 		extends ExpressionVisitor
 	{
 		void visitEnter(Apply v);

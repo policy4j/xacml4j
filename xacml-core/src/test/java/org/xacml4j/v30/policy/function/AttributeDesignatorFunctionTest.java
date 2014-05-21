@@ -34,17 +34,17 @@ import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-public class AttributeDesignatorFunctionTest 
+public class AttributeDesignatorFunctionTest
 {
-	
-	
+
+
 	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 			"xmlns:md=\"urn:example:med:schemas:record\">" +
 			"<md:patient>" +
@@ -58,23 +58,23 @@ public class AttributeDesignatorFunctionTest
 	private FunctionProvider provider;
 	private IMocksControl c;
 	private Node content;
-	
+
 	@Before
 	public void init() throws Exception{
 		this.c = createControl();
 		this.context = c.createMock(EvaluationContext.class);
 		this.content = DOMUtil.stringToNode(testXml);
-		this.provider = new AnnotiationBasedFunctionProvider(AttributeDesignatorFunctions.class);
+		this.provider = new AnnotationBasedFunctionProvider(AttributeDesignatorFunctions.class);
 	}
-	
+
 	@Test
 	@Ignore
 	public void testDesignatorFunction(){
 		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
-	 
+
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		c.replay();
-		func.invoke(context, 
+		func.invoke(context,
 				AnyURIExp.valueOf(Categories.SUBJECT_ACCESS.getId()),
 				AnyURIExp.valueOf("testId"),
 				AnyURIExp.valueOf(XacmlTypes.STRING.getDataTypeId()),

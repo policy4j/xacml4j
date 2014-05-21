@@ -28,16 +28,16 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 
-public class Category 
+public class Category
 {
 	private final String id;
 	private final CategoryId categoryId;
 	private final CategoryReference ref;
-	private Entity entity;
+	private final Entity entity;
 
 	/**
 	 * Creates {@link Category} from given {@link Category.Builder}
-	 * 
+	 *
 	 * @param b a category builder
 	 */
 	private Category(Builder b) {
@@ -54,7 +54,7 @@ public class Category
 	/**
 	 * Constructs {@link Category.Builder} for given
 	 * attribute category
-	 * 
+	 *
 	 * @param category attribute category
 	 * @return {@link Category.Builder} instance
 	 */
@@ -113,9 +113,6 @@ public class Category
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof Category)){
 			return false;
 		}
@@ -146,7 +143,7 @@ public class Category
 		public Builder copyOf(Category a){
 			return copyOf(a, Predicates.<Attribute>alwaysTrue());
 		}
-		
+
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
@@ -166,7 +163,7 @@ public class Category
 			this.category = category;
 			return this;
 		}
-		
+
 		public Category build(){
 			return new Category(this);
 		}

@@ -33,8 +33,8 @@ import org.xacml4j.v30.policy.function.DateTimeArithmeticFunctions;
 import org.xacml4j.v30.policy.function.EqualityPredicates;
 import org.xacml4j.v30.policy.function.HigherOrderFunctions;
 import org.xacml4j.v30.policy.function.LogicalFunctions;
-import org.xacml4j.v30.policy.function.NonNumericComparisionFunctions;
-import org.xacml4j.v30.policy.function.NumericComparisionFunctions;
+import org.xacml4j.v30.policy.function.NonNumericComparisonFunctions;
+import org.xacml4j.v30.policy.function.NumericComparisonFunctions;
 import org.xacml4j.v30.policy.function.NumericConversionFunctions;
 import org.xacml4j.v30.policy.function.RegularExpressionFunctions;
 import org.xacml4j.v30.policy.function.SetFunctions;
@@ -70,7 +70,7 @@ public final class FunctionProviderBuilder
 	}
 
 	/**
-	 * Adds function provider from a given anno instance
+	 * Adds function provider from a given annotated instance
 	 *
 	 * @param p an annotated function provider
 	 * @return {@link FunctionProviderBuilder} reference it itself
@@ -82,7 +82,7 @@ public final class FunctionProviderBuilder
 			return (p instanceof FunctionProvider)?
 					provider((FunctionProvider)p):
 						provider(
-								new AnnotiationBasedFunctionProvider(
+								new AnnotationBasedFunctionProvider(
 										p,
 										invocationFactory));
 		}catch(Exception e){
@@ -102,9 +102,9 @@ public final class FunctionProviderBuilder
 		fromClass(DateTimeArithmeticFunctions.class);
 		fromClass(EqualityPredicates.class);
 		fromClass(LogicalFunctions.class);
-		fromClass(NonNumericComparisionFunctions.class);
+		fromClass(NonNumericComparisonFunctions.class);
 		fromClass(NumericConversionFunctions.class);
-		fromClass(NumericComparisionFunctions.class);
+		fromClass(NumericComparisonFunctions.class);
 		fromClass(RegularExpressionFunctions.class);
 		fromClass(SetFunctions.class);
 		fromClass(SpecialMatchFunctions.class);
@@ -126,7 +126,7 @@ public final class FunctionProviderBuilder
 		Preconditions.checkNotNull(clazz);
 		try{
 			return provider(
-					new AnnotiationBasedFunctionProvider(clazz, invocationFactory));
+					new AnnotationBasedFunctionProvider(clazz, invocationFactory));
 		}catch(Exception e){
 			throw new IllegalArgumentException(e);
 		}

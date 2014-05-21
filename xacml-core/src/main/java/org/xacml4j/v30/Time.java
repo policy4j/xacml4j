@@ -61,7 +61,7 @@ public class Time extends BaseCalendar<Time>
 		return calendar.getSecond();
 	}
 
-	public int getMilisecond(){
+	public int getMillisecond(){
 		return calendar.getMillisecond();
 	}
 

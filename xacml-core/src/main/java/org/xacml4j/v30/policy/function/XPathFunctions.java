@@ -52,6 +52,9 @@ import org.xacml4j.v30.types.XPathExp;
 @XacmlFunctionProvider(description="XACML XPath functions")
 public class XPathFunctions
 {
+	/** Private constructor for utility class */
+	private XPathFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerExp xpathCount(

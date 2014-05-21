@@ -42,13 +42,13 @@ import org.xacml4j.v30.MatchResult;
 
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 {
-	private OnlyOneApplicablePolicyCombingingAlgorithm c;
+	private OnlyOneApplicablePolicyCombiningAlgorithm c;
 	private List<CompositeDecisionRule> d;
 	private EvaluationContext context;
 
 	@Before
 	public void init(){
-		this.c = new OnlyOneApplicablePolicyCombingingAlgorithm();
+		this.c = new OnlyOneApplicablePolicyCombiningAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
 		this.context = createStrictMock(EvaluationContext.class);
 	}

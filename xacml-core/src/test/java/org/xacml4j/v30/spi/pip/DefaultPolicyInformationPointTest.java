@@ -160,7 +160,7 @@ public class DefaultPolicyInformationPointTest
 
 		cache.putAttributes(capture(resolverContext2), eq(result));
 
-		context.setDecisionCacheTTL(descriptor1.getPreferreredCacheTTL());
+		context.setDecisionCacheTTL(descriptor1.getPreferredCacheTTL());
 
 		control.replay();
 
@@ -223,7 +223,7 @@ public class DefaultPolicyInformationPointTest
 				eq(XacmlTypes.INTEGER.emptyBag()));
 
 		cache.putAttributes(capture(cacheCtx3), eq(result2));
-		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferreredCacheTTL());
+		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
 
 		control.replay();
 
@@ -283,7 +283,7 @@ public class DefaultPolicyInformationPointTest
 		Capture<ResolverContext> ctx3 = new Capture<ResolverContext>();
 		cache.putAttributes(capture(ctx3), eq(result2));
 
-		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferreredCacheTTL());
+		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
 
 		control.replay();
 
@@ -326,7 +326,7 @@ public class DefaultPolicyInformationPointTest
 						attr1.issuer(descriptor1WithNoCache.getIssuer()).build(),
 						XacmlTypes.INTEGER.emptyBag());
 
-		context.setDecisionCacheTTL(descriptor1WithNoCache.getPreferreredCacheTTL());
+		context.setDecisionCacheTTL(descriptor1WithNoCache.getPreferredCacheTTL());
 		control.replay();
 
 		BagOfAttributeExp v = pip.resolve(context, a0);

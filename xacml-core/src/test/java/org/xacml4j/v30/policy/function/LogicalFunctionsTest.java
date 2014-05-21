@@ -37,7 +37,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
@@ -59,8 +59,8 @@ public class LogicalFunctionsTest
 	public void init() throws Exception
 	{
 		this.control = createControl();
-		
-		this.f = new AnnotiationBasedFunctionProvider(LogicalFunctions.class);
+
+		this.f = new AnnotationBasedFunctionProvider(LogicalFunctions.class);
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and");
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or");
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not");
@@ -135,7 +135,7 @@ public class LogicalFunctionsTest
 	{
 		control.replay();
 		assertEquals(BooleanExp.valueOf(false),
-				LogicalFunctions.or(context, BooleanExp.valueOf(false), 
+				LogicalFunctions.or(context, BooleanExp.valueOf(false),
 						BooleanExp.valueOf(false)));
 		control.verify();
 		control.reset();
@@ -226,8 +226,8 @@ public class LogicalFunctionsTest
 		n = IntegerExp.valueOf(2);
 		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n,
-						BooleanExp.valueOf(true), 
-						BooleanExp.valueOf(false), 
+						BooleanExp.valueOf(true),
+						BooleanExp.valueOf(false),
 						BooleanExp.valueOf(true)));
 		verify(context);
 	}

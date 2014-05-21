@@ -183,13 +183,13 @@ public class Attribute
 			}
 			return this;
 		}
-		
+
 		/**
-		 * Wraps given entities to via {@Link EntityExp#valueOf(Entity)}
+		 * Wraps given entities to via {@link EntityExp#valueOf(Entity)}
 		 * and adds them to this entity builder
-		 * 
+		 *
 		 * @param values an array of entities
-		 * @return
+		 * @return reference to this builder
 		 */
 		public Builder entity(Entity ...values){
 			Preconditions.checkNotNull(values);
@@ -198,13 +198,13 @@ public class Attribute
 			}
 			return this;
 		}
-		
+
 		/**
-		 * Wraps given entities to via {@Link EntityExp#valueOf(Entity)}
+		 * Wraps given entities to via {@link EntityExp#valueOf(Entity)}
 		 * and adds them to this entity builder
-		 * 
+		 *
 		 * @param it an iterator over collection of {@link Entity}
-		 * @return
+		 * @return reference to this builder
 		 */
 		public Builder entities(Iterable<Entity> it){
 			Preconditions.checkNotNull(it);

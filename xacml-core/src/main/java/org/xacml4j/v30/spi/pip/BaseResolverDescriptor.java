@@ -75,12 +75,12 @@ public abstract class BaseResolverDescriptor
 
 
 	@Override
-	public boolean isCachable() {
+	public boolean isCacheable() {
 		return cacheTTL > 0;
 	}
 
 	@Override
-	public int getPreferreredCacheTTL() {
+	public int getPreferredCacheTTL() {
 		return cacheTTL;
 	}
 

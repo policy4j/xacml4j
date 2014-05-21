@@ -51,12 +51,11 @@ public class RequestContextHandlerChainDefinitionParser	extends
 	private static void parseHandlers(List<Element> childElements, BeanDefinitionBuilder chain)
 	{
 		ManagedList<BeanDefinition> handlers = new ManagedList<BeanDefinition>(childElements.size());
-	    for (int i = 0; i < childElements.size(); ++i) {
-	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder handler = BeanDefinitionBuilder.rootBeanDefinition(RequestContexctHandlerFactoryBean.class);
-	         handler.addPropertyReference("ref", childElement.getAttribute("ref"));
-	         handlers.add(handler.getBeanDefinition());
-	    }
+		for (Element childElement : childElements) {
+			BeanDefinitionBuilder handler = BeanDefinitionBuilder.rootBeanDefinition(RequestContextHandlerFactoryBean.class);
+			handler.addPropertyReference("ref", childElement.getAttribute("ref"));
+			handlers.add(handler.getBeanDefinition());
+		}
 	    chain.addPropertyValue("handlers", handlers);
 	}
 }

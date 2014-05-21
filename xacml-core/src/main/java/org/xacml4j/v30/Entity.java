@@ -50,30 +50,30 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 /**
- * An entity represents  a collection of {@link Attribute} 
+ * An entity represents  a collection of {@link Attribute}
  * instances
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public final class Entity extends AttributeContainer
 {
 	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-	
+
 	private final static Logger log = LoggerFactory.getLogger(Entity.class);
-	
-	private Document content;
+
+	private final Document content;
 
 	private Entity(Builder b) {
 		super(b);
 		this.content = DOMUtil.copyNode(b.content);
 	}
-	
+
 	public static Builder builder(){
 		return new Builder();
 	}
-	
+
 	/**
-	 * Gets entity with all include 
+	 * Gets entity with all include
 	 * in result attributes
 	 * @return {@link Entity} with all include in result attributes
 	 */
@@ -86,7 +86,7 @@ public final class Entity extends AttributeContainer
 			}
 		}).build();
 	}
-	
+
 	/**
 	 * Gets content as {@link Node}
 	 * instance
@@ -96,22 +96,21 @@ public final class Entity extends AttributeContainer
 	public Node getContent(){
 		return content;
 	}
-	
+
 	/**
 	 * Tests if this entity has content
-	 * 
-	 * @return <code>true</code>if entity 
-	 * has content
+	 *
+	 * @return {@code true} if entity has content; returns {@code false} otherwise
 	 */
 	public boolean hasContent(){
 		return content != null;
 	}
-	
+
 	public BagOfAttributeExp getAttributeValues(
-			String xpath, 
-			XPathProvider xpathProvider,  
-			AttributeExpType type, 
-			String contextSelectorId) 
+			String xpath,
+			XPathProvider xpathProvider,
+			AttributeExpType type,
+			String contextSelectorId)
 					throws XPathEvaluationException
 	{
 		try
@@ -122,8 +121,8 @@ public final class Entity extends AttributeContainer
 								XacmlTypes.XPATH);
 			if(v.size() > 1){
 				throw new XPathEvaluationException(xpath,
-						Status.syntaxError().build(), 
-						"Found more than one value of=\"%s\"", 
+						Status.syntaxError().build(),
+						"Found more than one value of=\"%s\"",
 						contextSelectorId);
 			}
 			if(v.size() == 1){
@@ -158,17 +157,17 @@ public final class Entity extends AttributeContainer
 			throw new XPathEvaluationException(xpath, e, e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Converts a given node list to the {@link BagOfAttributeExp}
 	 *
-	 * @param context an evaluation context
-	 * @param ref an attribute selector
+	 * @param xpath XPath for nodes
+	 * @param type attribute type
 	 * @param nodeSet a node set
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException
 	 */
-	private BagOfAttributeExp toBag(String xpath, 
+	private BagOfAttributeExp toBag(String xpath,
 			AttributeExpType type, NodeList nodeSet)
 		throws XPathEvaluationException
 	{
@@ -204,7 +203,7 @@ public final class Entity extends AttributeContainer
 					throw new XPathEvaluationException(
 							xpath,
 							Status.syntaxError().build(),
-							"Unsupported XACML type=\"%d\"", 
+							"Unsupported XACML type=\"%d\"",
 							type.getDataTypeId());
 				}
 				AttributeExp value = toString.get().fromString(v);
@@ -217,20 +216,20 @@ public final class Entity extends AttributeContainer
 				throw e;
 			}catch(Exception e){
 				throw new XPathEvaluationException(xpath,
-						Status.processingError().build(), 
+						Status.processingError().build(),
 						e, e.getMessage());
 			}
 		}
 	  	return type.bagType().create(values);
 	}
-	
-	
-	
+
+
+
 	public BagOfAttributeExp getAttributeValues(String attributeId, AttributeExpType type, String issuer){
 		Collection<AttributeExp> values = getAttributeValues(attributeId, issuer, type);
 		return type.bagOf(values);
 	}
-	
+
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
@@ -243,19 +242,16 @@ public final class Entity extends AttributeContainer
 	public int hashCode(){
 		return Objects.hashCode(attributes, content);
 	}
-	
+
 	@Override
-	public boolean equals(Object o){
-		if(o == this){
+	public boolean equals(Object o) {
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
+		if (!(o instanceof Entity)) {
 			return false;
 		}
-		if(!(o instanceof Entity)){
-			return false;
-		}
-		Entity a = (Entity)o;
+		Entity a = (Entity) o;
 		return Objects.equal(attributes, a.attributes) &&
 				DOMUtil.isEqual(content, a.content);
 	}
@@ -265,7 +261,7 @@ public final class Entity extends AttributeContainer
 	{
 		private Node content;
 
-		public Builder content(Node node){
+		public Builder content(Node node) {
 			this.content = DOMUtil.copyNode(node);
 			return this;
 		}

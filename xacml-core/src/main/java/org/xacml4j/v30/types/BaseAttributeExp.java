@@ -38,8 +38,8 @@ public abstract class BaseAttributeExp<T>
 {
 	private static final long serialVersionUID = 4131180767511036271L;
 
-	private T value;
-	private AttributeExpType type;
+	private final T value;
+	private final AttributeExpType type;
 
 	protected BaseAttributeExp(AttributeExpType attrType,
 			T attrValue) {
@@ -64,12 +64,12 @@ public abstract class BaseAttributeExp<T>
 			EvaluationContext context) throws EvaluationException {
 		return this;
 	}
-	
+
 	@Override
 	public final T getValue(){
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).

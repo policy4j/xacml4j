@@ -32,6 +32,9 @@ import org.xacml4j.v30.types.StringExp;
 @XacmlFunctionProvider(description="XACML string conversion functions")
 public class StringConversionFunctions
 {
+	/** Private constructor for utility class */
+	private StringConversionFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-space")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp normalizeSpace(

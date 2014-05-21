@@ -1,4 +1,4 @@
-package org.xacml4j.v30.spi.combine;
+package org.xacml4j.v30.policy.combine;
 
 /*
  * #%L
@@ -22,15 +22,13 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.xacml4j.v30.CompositeDecisionRule;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface XacmlPolicyDecisionCombingingAlgorithm
+public final class DenyUnlessPermitPolicyCombiningAlgorithm extends DenyUnlessPermit<CompositeDecisionRule>
 {
-	String value();
-	boolean legacy() default false;
+	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit";
+
+	public DenyUnlessPermitPolicyCombiningAlgorithm(){
+		super(ID);
+	}
 }

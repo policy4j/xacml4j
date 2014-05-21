@@ -60,7 +60,7 @@ public final class PolicyInformationPointBuilder
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
 	public PolicyInformationPointBuilder defaultResolvers(){
-		return resolver(new DefaultEnviromentAttributeResolver());
+		return resolver(new DefaultEnvironmentAttributeResolver());
 	}
 
 	/**

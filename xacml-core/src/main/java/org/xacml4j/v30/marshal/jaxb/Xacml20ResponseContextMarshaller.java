@@ -85,7 +85,7 @@ public class Xacml20ResponseContextMarshaller
 		ResponseType response = mapper.create(source);
 		return factory.createResponse(response);
 	}
-	
+
 	static class Mapper
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
@@ -93,7 +93,7 @@ public class Xacml20ResponseContextMarshaller
 		private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
-		private final static Map<Decision, DecisionType> v30ToV20DecisionMapping = ImmutableMap.<Decision, DecisionType>builder()
+		private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.<Decision, DecisionType>builder()
 				.put(Decision.DENY, DecisionType.DENY)
 				.put(Decision.PERMIT, DecisionType.PERMIT)
 				.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE)
@@ -103,11 +103,11 @@ public class Xacml20ResponseContextMarshaller
 				.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE)
 				.build();
 
-		private final static Map<Effect, EffectType> v30ToV20EffectMapping = ImmutableMap.of(
+		private final static Map<Effect, EffectType> V30_TO_V20_EFFECT_MAPPING = ImmutableMap.of(
 			Effect.DENY, EffectType.DENY,
 			Effect.PERMIT, EffectType.PERMIT);
-		
-		
+
+
 		public ResponseType create(ResponseContext response)
 		{
 			if(log.isDebugEnabled()){
@@ -131,7 +131,7 @@ public class Xacml20ResponseContextMarshaller
 			r.setStatus(createStatus(result.getStatus()));
 			r.setResourceId(getResourceId(result));
 			r.setObligations(getObligations(result));
-			r.setDecision(v30ToV20DecisionMapping.get(result.getDecision()));
+			r.setDecision(V30_TO_V20_DECISION_MAPPING.get(result.getDecision()));
 			return r;
 		}
 
@@ -203,7 +203,7 @@ public class Xacml20ResponseContextMarshaller
 		{
 			ObligationType obligation = new ObligationType();
 			obligation.setObligationId(advice.getId());
-			obligation.setFulfillOn(v30ToV20EffectMapping.get(advice.getFulfillOn()));
+			obligation.setFulfillOn(V30_TO_V20_EFFECT_MAPPING.get(advice.getFulfillOn()));
 			for(AttributeAssignment a : advice.getAttributes()){
 				obligation.getAttributeAssignment().add(create(a));
 			}
@@ -214,7 +214,7 @@ public class Xacml20ResponseContextMarshaller
 		{
 			ObligationType obligation = new ObligationType();
 			obligation.setObligationId(o.getId());
-			obligation.setFulfillOn(v30ToV20EffectMapping.get(o.getFulfillOn()));
+			obligation.setFulfillOn(V30_TO_V20_EFFECT_MAPPING.get(o.getFulfillOn()));
 			for(AttributeAssignment a : o.getAttributes()){
 				obligation.getAttributeAssignment().add(create(a));
 			}

@@ -89,16 +89,16 @@ public class InMemoryPolicyRepositoryTest
 	{
 
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v1);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v3);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v4);
 
 		c.replay();
@@ -142,7 +142,7 @@ public class InMemoryPolicyRepositoryTest
 	public void testAddRemove() throws Exception
 	{
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
 		l.policyRemoved(p1v2);
 		c.replay();
@@ -165,10 +165,10 @@ public class InMemoryPolicyRepositoryTest
 	public void testAddPolicyWithTheSameIdAndSameVersion()
 	{
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		c.replay();
 		assertTrue(r.add(p1v2));
 		assertFalse(r.add(p1v2DiffInstance));
@@ -183,16 +183,16 @@ public class InMemoryPolicyRepositoryTest
 	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v2);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v1);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v3);
 		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAgorithmProvided("testId")).andReturn(true);
+		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
 		l.policyAdded(p1v4);
 
 		c.replay();

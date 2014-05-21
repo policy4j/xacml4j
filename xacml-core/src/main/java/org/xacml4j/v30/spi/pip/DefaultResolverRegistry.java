@@ -58,29 +58,28 @@ class DefaultResolverRegistry implements ResolverRegistry
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private Map<CategoryId, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
-	private ConcurrentMap<String, AttributeResolver> attributeResolversById;
+	private final Map<CategoryId, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
+	private final ConcurrentMap<String, AttributeResolver> attributeResolversById;
 
-	private Multimap<String, AttributeResolver> scopedAttributeResolvers;
+	private final Multimap<String, AttributeResolver> scopedAttributeResolvers;
 
+	private final Map<CategoryId, ContentResolver> contentResolvers;
 
-	private Map<CategoryId, ContentResolver> contentResolvers;
-
-	private ReadWriteLock attributeResolverRWLock;
-	private ReadWriteLock scopedAttributeResolverRWLock;
+	private final ReadWriteLock attributeResolverRWLock;
+	private final ReadWriteLock scopedAttributeResolverRWLock;
 
 	private long maxWriteLockWait = 100;
 	private long maxReadLockWait = 50;
 
-	private TimeUnit timeToWaitUnits = TimeUnit.MILLISECONDS;
+	private final TimeUnit timeToWaitUnits = TimeUnit.MILLISECONDS;
 
 	/**
 	 * Resolvers index by policy identifier
 	 */
 
-	private Multimap<String, ContentResolver> policyScopedContentResolvers;
+	private final Multimap<String, ContentResolver> policyScopedContentResolvers;
 
-	private ConcurrentMap<String, ContentResolver> contentResolversById;
+	private final ConcurrentMap<String, ContentResolver> contentResolversById;
 
 	public DefaultResolverRegistry()
 	{
@@ -105,7 +104,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		{
 			if(!lock.tryLock(maxWriteLockWait, timeToWaitUnits)){
 				if(log.isWarnEnabled()){
-					log.warn("Failed to accuire write lock in=\"{}\" {}",
+					log.warn("Failed to acquire write lock in=\"{}\" {}",
 							maxWriteLockWait, timeToWaitUnits.toString());
 				}
 				return;
@@ -130,8 +129,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 			attributeResolversById.put(d.getId(), resolver);
 		}catch(InterruptedException e){
 			if(log.isWarnEnabled()){
-				log.warn("Interrupted while " +
-						"waiting to accuire a write lock", e);
+				log.warn("Interrupted while waiting to acquire a write lock", e);
 			}
 		}
 		finally{
@@ -147,8 +145,8 @@ class DefaultResolverRegistry implements ResolverRegistry
 		Preconditions.checkState(!contentResolversById.containsKey(r.getDescriptor().getId()));
 		ContentResolverDescriptor d = r.getDescriptor();
 		if(log.isDebugEnabled()){
-			log.debug("Adding root content " +
-					"resolver=\"{}\" for category=\"{}\"", d.getId(), d.getCategory());
+			log.debug("Adding root content resolver=\"{}\" for category=\"{}\"",
+					d.getId(), d.getCategory());
 		}
 		contentResolvers.put(d.getCategory(), r);
 	}
@@ -164,8 +162,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		Preconditions.checkArgument(r != null);
 		Preconditions.checkState(!contentResolversById.containsKey(d.getId()));
 		if(log.isDebugEnabled()){
-			log.debug("Adding policyId=\"{}\" content " +
-					"resolver=\"{}\" for category=\"{}\"",
+			log.debug("Adding policyId=\"{}\" content resolver=\"{}\" for category=\"{}\"",
 					new Object[]{policyId, d.getId(), d.getCategory()});
 		}
 		this.policyScopedContentResolvers.put(policyId, r);
@@ -181,7 +178,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		if(log.isDebugEnabled()){
-			log.debug("Adding policyId=\"{}\" scoped atttribute " +
+			log.debug("Adding policyId=\"{}\" scoped attribute " +
 					"resolver=\"{}\" for category=\"{}\"",
 					new Object[]{policyId, d.getId(), d.getCategory()});
 		}
@@ -245,7 +242,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 				{
 					if(!lock.tryLock(maxReadLockWait, timeToWaitUnits)){
 						if(log.isWarnEnabled()){
-							log.warn("Failed to accuire read lock in=\"{}\" {}",
+							log.warn("Failed to acquire read lock in=\"{}\" {}",
 									maxReadLockWait, timeToWaitUnits.toString());
 						}
 						return;
@@ -275,7 +272,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 				catch(InterruptedException e){
 					if(log.isWarnEnabled()){
 						log.warn("Interrupted while " +
-								"waiting to accuire a read lock", e);
+								"waiting to acquire a read lock", e);
 					}
 				}
 				finally{

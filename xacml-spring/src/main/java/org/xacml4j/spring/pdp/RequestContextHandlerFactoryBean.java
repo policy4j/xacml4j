@@ -1,8 +1,8 @@
-package org.xacml4j.v30.policy.combine;
+package org.xacml4j.spring.pdp;
 
 /*
  * #%L
- * Artagon XACML 3.0 Core Engine Implementation
+ * Artagon XACML Spring 3.x support module
  * %%
  * Copyright (C) 2009 - 2014 Artagon
  * %%
@@ -22,13 +22,28 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
-public final class DenyUnlessPermitPolicyCombingingAlgorithm extends DenyUnlessPermit<CompositeDecisionRule>
+import com.google.common.base.Preconditions;
+
+public class RequestContextHandlerFactoryBean extends AbstractFactoryBean<RequestContextHandler>
 {
-	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit";
+	private RequestContextHandler ref;
 
-	public DenyUnlessPermitPolicyCombingingAlgorithm(){
-		super(ID);
+	public void setRef(RequestContextHandler handler){
+		Preconditions.checkNotNull(handler);
+		this.ref = handler;
 	}
+	@Override
+	protected RequestContextHandler createInstance() throws Exception {
+		Preconditions.checkState(ref != null);
+		return ref;
+	}
+
+	@Override
+	public Class<?> getObjectType() {
+		return RequestContextHandler.class;
+	}
+
 }

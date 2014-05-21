@@ -47,27 +47,26 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
-	private AttributeResolverDescriptorDelegate descriptor;
+	private final AttributeResolverDescriptorDelegate descriptor;
 
-	private Timer timer;
-	private Histogram histogram;
-	private AtomicInteger preferedCacheTTL;
-	private MetricRegistry registry;
+	private final Timer timer;
+	private final Histogram histogram;
+	private AtomicInteger preferredCacheTTL;
 
 	protected BaseAttributeResolver(
 			AttributeResolverDescriptor descriptor){
 		checkNotNull(descriptor);
 		this.descriptor = new AttributeResolverDescriptorDelegate(descriptor){
 			@Override
-			public int getPreferreredCacheTTL() {
-				return (preferedCacheTTL == null)?
-						super.getPreferreredCacheTTL():preferedCacheTTL.get();
+			public int getPreferredCacheTTL() {
+				return (preferredCacheTTL == null)?
+						super.getPreferredCacheTTL(): preferredCacheTTL.get();
 			}
 		};
-		this.registry = getOrCreate();
-		this.timer = registry.timer(name("pip.AttributeResolver", 
+		final MetricRegistry registry = getOrCreate();
+		this.timer = registry.timer(name("pip.AttributeResolver",
 				descriptor.getId(), "timer"));
-		this.histogram = registry.histogram(name("pip.AttributeResolver", 
+		this.histogram = registry.histogram(name("pip.AttributeResolver",
 				descriptor.getId(), "histogram"));
 	}
 
@@ -82,8 +81,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	{
 		checkArgument(context.getDescriptor().getId().equals(descriptor.getId()));
 		if(log.isDebugEnabled()){
-			log.debug("Retrieving attributes via resolver " +
-					"id=\"{}\" name=\"{}\"",
+			log.debug("Retrieving attributes via resolver id=\"{}\" name=\"{}\"",
 					descriptor.getId(), descriptor.getName());
 		}
 		Timer.Context timerCtx = timer.time();
@@ -117,14 +115,14 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 
 	@Override
 	public final int getPreferredCacheTTL() {
-		return descriptor.getPreferreredCacheTTL();
+		return descriptor.getPreferredCacheTTL();
 	}
 
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
-		if(descriptor.isCachable()
+		if(descriptor.isCacheable()
 				&& ttl > 0){
-			this.preferedCacheTTL.set(ttl);
+			this.preferredCacheTTL.set(ttl);
 		}
 	}
 }

@@ -47,7 +47,7 @@ public class DefaultEnvironmentAttributesResolverTest
 	@Before
 	public void init(){
 		this.c = createControl();
-		this.r = new DefaultEnviromentAttributeResolver();
+		this.r = new DefaultEnvironmentAttributeResolver();
 		this.context = c.createMock(ResolverContext.class);
 	}
 

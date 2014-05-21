@@ -1,8 +1,9 @@
-package org.xacml4j.spring.pdp;
+
+package org.xacml4j.v30.policy.combine;
 
 /*
  * #%L
- * Artagon XACML Spring 3.x support module
+ * Artagon XACML 3.0 Core Engine Implementation
  * %%
  * Copyright (C) 2009 - 2014 Artagon
  * %%
@@ -22,28 +23,13 @@ package org.xacml4j.spring.pdp;
  * #L%
  */
 
-import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.xacml4j.v30.spi.pdp.RequestContextHandler;
+import org.xacml4j.v30.pdp.Rule;
 
-import com.google.common.base.Preconditions;
-
-public class RequestContexctHandlerFactoryBean extends AbstractFactoryBean<RequestContextHandler>
+public final class PermitOverridesRuleOrderedCombiningAlgorithm extends PermitOverrides<Rule>
 {
-	private RequestContextHandler ref;
+	public final static String ID = "urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:ordered-permit-overrides";
 
-	public void setRef(RequestContextHandler handler){
-		Preconditions.checkNotNull(handler);
-		this.ref = handler;
+	public PermitOverridesRuleOrderedCombiningAlgorithm() {
+		super(ID);
 	}
-	@Override
-	protected RequestContextHandler createInstance() throws Exception {
-		Preconditions.checkState(ref != null);
-		return ref;
-	}
-
-	@Override
-	public Class<?> getObjectType() {
-		return RequestContextHandler.class;
-	}
-
 }

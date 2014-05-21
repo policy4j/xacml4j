@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.RFC822NameExp;
@@ -42,7 +42,7 @@ public class SpecialMatchFunctionsTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = new AnnotiationBasedFunctionProvider(
+		this.p = new AnnotationBasedFunctionProvider(
 				SpecialMatchFunctions.class);
 	}
 

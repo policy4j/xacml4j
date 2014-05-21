@@ -52,11 +52,11 @@ public class NonNumericComparisionFunctionTest
 		StringExp a = StringExp.valueOf("ab");
 		StringExp b = StringExp.valueOf("aa");
 		assertEquals(BooleanExp.valueOf(true),
-				NonNumericComparisionFunctions.greatherThan(a, b));
+				NonNumericComparisonFunctions.greaterThan(a, b));
 		a = StringExp.valueOf("aaa");
 		b = StringExp.valueOf("aa");
 		assertEquals(BooleanExp.valueOf(true),
-				NonNumericComparisionFunctions.greatherThan(a, b));
+				NonNumericComparisonFunctions.greaterThan(a, b));
 	}
 
 	@Test
@@ -64,11 +64,11 @@ public class NonNumericComparisionFunctionTest
 	{
 		TimeExp t1 = TimeExp.valueOf("08:23:47-05:00");
 		TimeExp t2 = TimeExp.valueOf("08:23:48-05:00");
-		assertEquals(BooleanExp.valueOf(true), NonNumericComparisionFunctions.lessThan(t1, t2));
+		assertEquals(BooleanExp.valueOf(true), NonNumericComparisonFunctions.lessThan(t1, t2));
 		t2 = TimeExp.valueOf("08:23:47-05:00");
-		assertEquals(BooleanExp.valueOf(false), NonNumericComparisionFunctions.lessThan(t1, t2));
+		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
 		t2 = TimeExp.valueOf("08:23:46-05:00");
-		assertEquals(BooleanExp.valueOf(false), NonNumericComparisionFunctions.lessThan(t1, t2));
+		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class NonNumericComparisionFunctionTest
 		TimeExp b = TimeExp.valueOf("08:30:10");
 		TimeExp c = TimeExp.valueOf("09:30:11");
 		assertEquals(BooleanExp.valueOf(true),
-				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
+				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
 
@@ -90,7 +90,7 @@ public class NonNumericComparisionFunctionTest
 		TimeExp b = TimeExp.valueOf("08:30:10Z");
 		TimeExp c = TimeExp.valueOf("09:30:11Z");
 		assertEquals(BooleanExp.valueOf(true),
-				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
+				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class NonNumericComparisionFunctionTest
 		TimeExp b = TimeExp.valueOf("08:30:10");
 		TimeExp c = TimeExp.valueOf("09:30:09");
 		assertEquals(BooleanExp.valueOf(false),
-				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
+				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
 
@@ -113,7 +113,7 @@ public class NonNumericComparisionFunctionTest
 		TimeExp b = TimeExp.valueOf("08:30:10");
 		TimeExp c = TimeExp.valueOf("09:30:10");
 		assertEquals(BooleanExp.valueOf(true),
-				NonNumericComparisionFunctions.timeInRange(context, a, b, c));
+				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
 }

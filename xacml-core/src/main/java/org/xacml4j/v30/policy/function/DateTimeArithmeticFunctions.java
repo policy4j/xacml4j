@@ -36,6 +36,9 @@ import org.xacml4j.v30.types.YearMonthDurationExp;
 @XacmlFunctionProvider(description="XACML date time arithmetic functions")
 public class DateTimeArithmeticFunctions
 {
+	/** Private constructor for utility class */
+	private DateTimeArithmeticFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-dayTimeDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-add-dayTimeDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")

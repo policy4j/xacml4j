@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -42,7 +42,7 @@ public class SetFunctionTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		p = new AnnotiationBasedFunctionProvider(
+		p = new AnnotationBasedFunctionProvider(
 				SetFunctions.class);
 	}
 
@@ -159,7 +159,7 @@ public class SetFunctionTest
 	{
 		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
 		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
-		
+
 		assertEquals(BooleanExp.valueOf(true).toBag(), SetFunctions.booleanIntersection(a, b));
 	}
 

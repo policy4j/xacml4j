@@ -41,7 +41,7 @@ import com.google.common.base.Preconditions;
 public class PolicyUnmarshallerSupport
 {
 	private FunctionProvider functions;
-	private DecisionCombiningAlgorithmProvider combingingAlgorithms;
+	private DecisionCombiningAlgorithmProvider combiningAlgorithms;
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,
@@ -50,9 +50,9 @@ public class PolicyUnmarshallerSupport
 		Preconditions.checkNotNull(functions,
 				"Function provider can't be null");
 		Preconditions.checkNotNull(decisionCombiningAlgorithms,
-				"Decision combingin algorithm provider can't be null");
+				"Decision combining algorithm provider can't be null");
 		this.functions = functions;
-		this.combingingAlgorithms = decisionCombiningAlgorithms;
+		this.combiningAlgorithms = decisionCombiningAlgorithms;
 	}
 
 	/**
@@ -83,9 +83,9 @@ public class PolicyUnmarshallerSupport
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<Rule> createRuleCombingingAlgorithm(
+	protected final DecisionCombiningAlgorithm<Rule> createRuleCombiningAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
-		DecisionCombiningAlgorithm<Rule> algorithm = combingingAlgorithms
+		DecisionCombiningAlgorithm<Rule> algorithm = combiningAlgorithms
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(
@@ -104,9 +104,9 @@ public class PolicyUnmarshallerSupport
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombingingAlgorithm(
+	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombiningAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
-		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combingingAlgorithms
+		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combiningAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(

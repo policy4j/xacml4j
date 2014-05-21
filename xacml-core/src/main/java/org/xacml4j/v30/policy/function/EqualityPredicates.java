@@ -53,6 +53,8 @@ import org.xacml4j.v30.types.YearMonthDurationExp;
 @XacmlFunctionProvider(description="XACML equality predicates")
 public class EqualityPredicates
 {
+	/** Private constructor for utility class */
+	private EqualityPredicates() {}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")

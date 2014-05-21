@@ -40,7 +40,7 @@ final class DefaultResolverContext implements
 {
 	private EvaluationContext context;
 	private List<BagOfAttributeExp> keys;
-	private ResolverDescriptor desciptor;
+	private ResolverDescriptor descriptor;
 
 	public DefaultResolverContext(
 			EvaluationContext context,
@@ -48,7 +48,7 @@ final class DefaultResolverContext implements
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(descriptor);
 		this.context = context;
-		this.desciptor = descriptor;
+		this.descriptor = descriptor;
 		this.keys = evaluateKeys(context, descriptor.getKeyRefs());
 	}
 
@@ -64,7 +64,7 @@ final class DefaultResolverContext implements
 
 	@Override
 	public ResolverDescriptor getDescriptor(){
-		return desciptor;
+		return descriptor;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ final class DefaultResolverContext implements
 	public String toString(){
 		return Objects.toStringHelper(this)
 				.add("context", context)
-				.add("descriptor", desciptor)
+				.add("descriptor", descriptor)
 				.add("keys", keys)
 				.toString();
 	}

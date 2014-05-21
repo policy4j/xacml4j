@@ -43,6 +43,9 @@ public class JAXBContextUtil
 		}
 	}
 
+	/** Private constructor for utility class */
+	private JAXBContextUtil() {}
+
 	public static JAXBContext getInstance()
 	{
 		Preconditions.checkState(INSTANCE != null, "Failed to initialize JAXB context");

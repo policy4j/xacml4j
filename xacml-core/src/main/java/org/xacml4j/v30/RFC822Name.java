@@ -176,11 +176,7 @@ public final class RFC822Name implements Serializable
 		Preconditions.checkNotNull(domainPart);
 		this.domainPart = domainPart.toLowerCase();
 		this.localPart = localPart;
-		this.fqName = new StringBuilder()
-		.append(this.localPart)
-		.append('@')
-		.append(this.domainPart)
-		.toString();
+		this.fqName = this.localPart + '@' + this.domainPart;
 	}
 
 	public boolean matches(String pattern){

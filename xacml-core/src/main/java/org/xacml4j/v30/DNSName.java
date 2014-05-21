@@ -100,7 +100,7 @@ public final class DNSName implements Serializable
 		return name.isTopPrivateDomain();
 	}
 
-	public String getPublicSufix(){
+	public String getPublicSuffix(){
 		return name.publicSuffix().name();
 	}
 

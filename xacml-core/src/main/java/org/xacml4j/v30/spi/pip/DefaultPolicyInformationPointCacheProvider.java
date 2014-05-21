@@ -52,7 +52,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 	@Override
 	public Content getContent(ResolverContext context) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
-		if(d.isCachable()){
+		if(d.isCacheable()){
 			Content v = contentCache.getIfPresent(ResolverCacheKey
 					.builder()
 					.id(d)
@@ -67,7 +67,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 	public void putContent(ResolverContext context, Content content) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
 		Preconditions.checkArgument(context.getDescriptor() == content.getDescriptor());
-		if(d.isCachable()){
+		if(d.isCacheable()){
 			contentCache.put(ResolverCacheKey
 					.builder()
 					.id(d)
@@ -79,8 +79,8 @@ public final class DefaultPolicyInformationPointCacheProvider
 	@Override
 	public AttributeSet getAttributes(ResolverContext context) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
-		if(d.isCachable()){
-			ResolverCacheKey key = 
+		if(d.isCacheable()){
+			ResolverCacheKey key =
 					ResolverCacheKey
 						.builder()
 						.id(d)
@@ -99,8 +99,8 @@ public final class DefaultPolicyInformationPointCacheProvider
 	public final void putAttributes(ResolverContext context, AttributeSet v) {
 		AttributeResolverDescriptor d = (AttributeResolverDescriptor)context.getDescriptor();
 		Preconditions.checkArgument(d.getId().equals(v.getDescriptor().getId()));
-		if(d.isCachable()){
-			ResolverCacheKey key = 
+		if(d.isCacheable()){
+			ResolverCacheKey key =
 					ResolverCacheKey
 						.builder()
 						.id(d)
@@ -112,11 +112,11 @@ public final class DefaultPolicyInformationPointCacheProvider
 
 	private boolean isExpired(AttributeSet v, ResolverContext context){
 		return ((context.getTicker().read() - v.getCreatedTime()) /
-				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
 	private boolean isExpired(Content v, ResolverContext context){
 		return ((context.getTicker().read() - v.getTimestamp()) /
-				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 }

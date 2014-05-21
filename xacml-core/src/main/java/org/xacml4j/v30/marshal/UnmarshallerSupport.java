@@ -22,6 +22,6 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-public class UnmarshallerSupport {
+public interface UnmarshallerSupport {
 
 }

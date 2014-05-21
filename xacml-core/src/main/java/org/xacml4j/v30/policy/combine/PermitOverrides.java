@@ -23,7 +23,7 @@ package org.xacml4j.v30.policy.combine;
  */
 
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -31,8 +31,8 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
 public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
@@ -41,8 +41,8 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 		super(id);
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides")
-	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides")
+	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-overrides")
+	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides")
 	@Override
 	public Decision combine(EvaluationContext context, List<D> decisions)
 	{

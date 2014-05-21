@@ -22,7 +22,7 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
 
 	private final static Status PROCESSING_ERROR = Status.processingError().build();
-	
+
 	public OnPermitApplySecondPolicyCombiningAlgorithm() {
 		super(ID);
 	}

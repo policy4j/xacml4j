@@ -38,6 +38,9 @@ import org.xacml4j.v30.types.IntegerExp;
 @XacmlFunctionProvider(description="XACML numeric conversion functions")
 public class NumericConversionFunctions
 {
+	/** Private constructor for utility class */
+	private NumericConversionFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static IntegerExp doubleToInteger(

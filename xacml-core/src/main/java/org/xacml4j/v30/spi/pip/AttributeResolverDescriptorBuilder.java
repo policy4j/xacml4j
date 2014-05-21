@@ -178,7 +178,7 @@ public final class AttributeResolverDescriptorBuilder
 			for(AttributeReferenceKey k : keys){
 				if(k instanceof AttributeDesignatorKey){
 					Preconditions.checkArgument(!canResolve((AttributeDesignatorKey)k),
-							"Resolver referers to itself via context reference key=\"{}\"", k);
+							"Resolver refers to itself via context reference key=\"{}\"", k);
 				}
 			}
 		}
@@ -222,9 +222,9 @@ public final class AttributeResolverDescriptorBuilder
 		public boolean canResolve(AttributeDesignatorKey ref)
 		{
 			if(getCategory().equals(ref.getCategory()) &&
-					((ref.getIssuer() != null)?ref.getIssuer().equals(getIssuer()):true)){
+					((ref.getIssuer() == null) || ref.getIssuer().equals(getIssuer()))){
 				AttributeDescriptor d = getAttribute(ref.getAttributeId());
-				return (d != null)?d.getDataType().equals(ref.getDataType()):false;
+				return (d != null) && d.getDataType().equals(ref.getDataType());
 			}
 			return false;
 		}

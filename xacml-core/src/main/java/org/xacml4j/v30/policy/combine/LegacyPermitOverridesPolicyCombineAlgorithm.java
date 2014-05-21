@@ -22,7 +22,7 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.xacml4j.v30.spi.combine.DecisionCombingingAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
 
 public class LegacyPermitOverridesPolicyCombineAlgorithm
@@ -52,8 +52,8 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 		return doCombine(context, rules);
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
-	public final static  Decision doCombine(EvaluationContext context,
+	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
+	public static Decision doCombine(EvaluationContext context,
 			List<CompositeDecisionRule> rules)
 	{
 		boolean atLeastOneError = false;

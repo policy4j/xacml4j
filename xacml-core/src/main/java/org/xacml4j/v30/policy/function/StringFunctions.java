@@ -47,6 +47,9 @@ import org.xacml4j.v30.types.YearMonthDurationExp;
 @XacmlFunctionProvider(description="XACML string functions")
 public class StringFunctions
 {
+	/** Private constructor for utility class */
+	private StringFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:string-concatenate")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp concatenate(
@@ -59,9 +62,9 @@ public class StringFunctions
 	@Deprecated
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:uri-string-concatenate")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp uriStringconcatenate(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static StringExp uriStringConcatenate(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#anyURI") AnyURIExp a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringExp b)
 	{
 		return a.toStringExp().concat(b);
 	}

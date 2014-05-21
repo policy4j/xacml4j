@@ -32,9 +32,9 @@ import org.xacml4j.v30.EvaluationContext;
  *
  * @author Giedrius Trumpickas
  */
-public final class DecisionCombingingAlgorithms
+public final class DecisionCombiningAlgorithms
 {
-	private DecisionCombingingAlgorithms(){
+	private DecisionCombiningAlgorithms(){
 	}
 
 	/**

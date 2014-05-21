@@ -55,6 +55,9 @@ import com.google.common.base.Preconditions;
 @XacmlFunctionProvider(description="XACML higher order functions")
 public class HigherOrderFunctions
 {
+	/** Private constructor for utility class */
+	private HigherOrderFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanExp anyOf(
@@ -215,7 +218,7 @@ public class HigherOrderFunctions
 			Expression ref = arguments.get(0);
 			Preconditions.checkArgument(ref instanceof FunctionReference,
 					"First function argument must be function reference");
-			AttributeExpType type = (AttributeExpType)((FunctionReference)ref).getEvaluatesTo();
+			AttributeExpType type = (AttributeExpType)ref.getEvaluatesTo();
 			return type.bagType();
 		}
 

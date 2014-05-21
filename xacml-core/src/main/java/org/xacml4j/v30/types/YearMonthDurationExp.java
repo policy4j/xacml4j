@@ -47,23 +47,23 @@ public final class YearMonthDurationExp
 			YearMonthDuration value) {
 		super(XacmlTypes.YEARMONTHDURATION, value);
 	}
-	
+
 	public static YearMonthDurationExp valueOf(String v){
 		return new YearMonthDurationExp(YearMonthDuration.create(v));
 	}
-	
+
 	public static YearMonthDurationExp valueOf(Duration v){
 		return new YearMonthDurationExp(YearMonthDuration.create(v));
 	}
-	
+
 	public static YearMonthDurationExp valueOf(YearMonthDuration v){
 		return new YearMonthDurationExp(v);
 	}
-	
+
 	public static YearMonthDurationExp valueOf(StringExp v){
 		return valueOf(v.getValue());
 	}
-	
+
 	public StringExp toStringExp(){
 		return StringExp.valueOf(getValue().toXacmlString());
 	}
@@ -77,14 +77,14 @@ public final class YearMonthDurationExp
 		return new YearMonthDurationExp(getValue().add(d.getValue()));
 	}
 
-	public YearMonthDurationExp substract(YearMonthDurationExp d){
-		return new YearMonthDurationExp(getValue().substract(d.getValue()));
+	public YearMonthDurationExp subtract(YearMonthDurationExp d){
+		return new YearMonthDurationExp(getValue().subtract(d.getValue()));
 	}
-	
+
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.YEARMONTHDURATION.emptyBag();
 	}
-	
+
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.YEARMONTHDURATION.bag();
 	}

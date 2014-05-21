@@ -72,15 +72,15 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	{
 		final List<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms = new LinkedList<DecisionCombiningAlgorithm<Rule>>();
 		for(Method m : Reflections.getAnnotatedMethods(clazz,
-				XacmlRuleDecisionCombingingAlgorithm.class)){
+				XacmlRuleDecisionCombiningAlgorithm.class)){
 			ruleAlgorithms.add(createRuleDecisionCombineAlgorithm(m));
 		}
 		final List<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms = new LinkedList<DecisionCombiningAlgorithm<CompositeDecisionRule>>();
 		for(Method m : Reflections.getAnnotatedMethods(clazz,
-				XacmlPolicyDecisionCombingingAlgorithm.class)){
+				XacmlPolicyDecisionCombiningAlgorithm.class)){
 			policyAlgorithms.add(createPolicyDecisionCombineAlgorithm(m));
 		}
-		return new DecisionCombingingAlgorithmProviderImpl(ruleAlgorithms, policyAlgorithms);
+		return new DecisionCombiningAlgorithmProviderImpl(ruleAlgorithms, policyAlgorithms);
 	}
 
 
@@ -88,10 +88,10 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	{
 		validateDecisionCombineMethod(m);
 
-		XacmlRuleDecisionCombingingAlgorithm algo = m.getAnnotation(XacmlRuleDecisionCombingingAlgorithm.class);
+		XacmlRuleDecisionCombiningAlgorithm algo = m.getAnnotation(XacmlRuleDecisionCombiningAlgorithm.class);
 		Preconditions.checkState(algo != null,
-				"Invalid decision combining algorithm method=\"%s\", annotiation=\"%s\" must be present",
-				m.getName(), XacmlRuleDecisionCombingingAlgorithm.class.getName());
+				"Invalid decision combining algorithm method=\"%s\", annotation=\"%s\" must be present",
+				m.getName(), XacmlRuleDecisionCombiningAlgorithm.class.getName());
 		if(log.isDebugEnabled()){
 			log.debug("Creating rule decision combining" +
 					" algorithm=\"{}\" from method=\"{}\"", algo.value(), m.getName());
@@ -102,10 +102,10 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyDecisionCombineAlgorithm(Method m)
 	{
 		validateDecisionCombineMethod(m);
-		XacmlPolicyDecisionCombingingAlgorithm algo = m.getAnnotation(XacmlPolicyDecisionCombingingAlgorithm.class);
+		XacmlPolicyDecisionCombiningAlgorithm algo = m.getAnnotation(XacmlPolicyDecisionCombiningAlgorithm.class);
 		Preconditions.checkState(algo != null,
-				"Invalid decision combining algorithm method=\"%s\", annotiation=\"%s\" must be present",
-				m.getName(), XacmlPolicyDecisionCombingingAlgorithm.class.getName());
+				"Invalid decision combining algorithm method=\"%s\", annotation=\"%s\" must be present",
+				m.getName(), XacmlPolicyDecisionCombiningAlgorithm.class.getName());
 		if(log.isDebugEnabled()){
 			log.debug("Creating policy decision combining" +
 					" algorithm=\"{}\" from method=\"{}\"", algo.value(), m.getName());

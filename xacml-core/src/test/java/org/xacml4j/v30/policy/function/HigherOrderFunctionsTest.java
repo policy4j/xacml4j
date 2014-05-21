@@ -40,7 +40,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.FunctionReference;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
@@ -54,7 +54,7 @@ public class HigherOrderFunctionsTest
 	private FunctionProvider higherOrderFunctions;
 	private FunctionProvider stringFunctions;
 	private FunctionProvider equalityFunctions;
-	private FunctionProvider numericComparisionFunctions;
+	private FunctionProvider numericComparisonFunctions;
 	private FunctionProvider regExpFunctions;
 	private EvaluationContext context;
 
@@ -68,7 +68,7 @@ public class HigherOrderFunctionsTest
 	private FunctionSpec allOfAny;
 	private FunctionSpec anyOfAll;
 	private FunctionSpec allOfAll;
-	
+
 	private IMocksControl c;
 
 
@@ -76,15 +76,15 @@ public class HigherOrderFunctionsTest
 	public void init() throws Exception
 	{
 		this.c  = createControl();
-		this.higherOrderFunctions = new AnnotiationBasedFunctionProvider(HigherOrderFunctions.class);
-		this.stringFunctions = new AnnotiationBasedFunctionProvider(StringFunctions.class);
-		this.equalityFunctions = new AnnotiationBasedFunctionProvider(EqualityPredicates.class);
-		this.numericComparisionFunctions = new AnnotiationBasedFunctionProvider(NumericComparisionFunctions.class);
-		this.regExpFunctions = new AnnotiationBasedFunctionProvider(RegularExpressionFunctions.class);
+		this.higherOrderFunctions = new AnnotationBasedFunctionProvider(HigherOrderFunctions.class);
+		this.stringFunctions = new AnnotationBasedFunctionProvider(StringFunctions.class);
+		this.equalityFunctions = new AnnotationBasedFunctionProvider(EqualityPredicates.class);
+		this.numericComparisonFunctions = new AnnotationBasedFunctionProvider(NumericComparisonFunctions.class);
+		this.regExpFunctions = new AnnotationBasedFunctionProvider(RegularExpressionFunctions.class);
 		this.context = c.createMock(EvaluationContext.class);
 		this.intToString = stringFunctions.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-from-integer");
 		this.intEq = equalityFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-equal");
-		this.intGreaterThan = numericComparisionFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-greater-than");
+		this.intGreaterThan = numericComparisonFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-greater-than");
 		this.stringRegExpMatch = regExpFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match");
 		this.map = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:map");
 		this.anyOf = higherOrderFunctions.getFunction("urn:oasis:names:tc:xacml:1.0:function:any-of");
@@ -107,7 +107,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 
 		c.replay();
-		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString), 
+		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString),
 				XacmlTypes.INTEGER.bagOf(v));
 		c.verify();
 		assertTrue(bag.contains(StringExp.valueOf("10")));
@@ -126,7 +126,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
-		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), IntegerExp.valueOf(20), 
+		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), IntegerExp.valueOf(20),
 				XacmlTypes.INTEGER.bagOf(v));
 		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
@@ -212,7 +212,7 @@ public class HigherOrderFunctionsTest
 		b.add(IntegerExp.valueOf(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
-		
+
 		c.replay();
 		BooleanExp r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
 				XacmlTypes.INTEGER.bagOf(a), XacmlTypes.INTEGER.bagOf(b));

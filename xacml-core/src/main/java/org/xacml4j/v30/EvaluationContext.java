@@ -47,10 +47,10 @@ public interface EvaluationContext
 	boolean isExtendedIndeterminateEval();
 
 	/**
-	 * Creates an evaluation context to evaluate 
+	 * Creates an evaluation context to evaluate
 	 * policy tree for extended indeterminate
 	 *
-	 * @return {@link EvaluationContext} to evaluate 
+	 * @return {@link EvaluationContext} to evaluate
 	 * extended indeterminate
 	 */
 	EvaluationContext createExtIndeterminateEvalContext();
@@ -290,31 +290,23 @@ public interface EvaluationContext
 	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();
 
 	/**
-	 * Evaluates a given XPath expression
-	 * to a {@link NodeList}
+	 * Evaluates a given XPath expression to a {@link NodeList}
 	 *
 	 * @param xpath an XPath expression
-	 * @param categoryId an attribute category
-	 * @return {@link NodeList} representing an evaluation
-	 * result
-	 * @throws EvaluationException if an error
-	 * occurs while evaluating given xpath
-	 * expression
+	 * @return {@link NodeList} representing an evaluation result
+	 * @throws EvaluationException if an error occurs while evaluating
+	 * given xpath expression
 	 */
 	NodeList evaluateToNodeSet(XPathExp xpath)
 		throws EvaluationException;
 
 	/**
-	 * Evaluates a given XPath expression
-	 * to a {@link String}
+	 * Evaluates a given XPath expression to a {@link String}
 	 *
-	 * @param path an XPath expression
-	 * @param categoryId an attribute category
-	 * @return {@link String} representing an evaluation
-	 * result
-	 * @throws EvaluationException if an error
-	 * occurs while evaluating given xpath
-	 * expression
+	 * @param xpath an XPath expression
+	 * @return {@link String} representing an evaluation result
+	 * @throws EvaluationException if an error occurs while evaluating
+	 * given xpath expression
 	 */
 	String evaluateToString(XPathExp xpath)
 		throws EvaluationException;
@@ -323,28 +315,21 @@ public interface EvaluationContext
 	 * Evaluates a given XPath expression
 	 * to a {@link Node}
 	 *
-	 * @param path an XPath expression
-	 * @param categoryId an attribute category
-	 * @return {@link Node} representing an evaluation
-	 * result
-	 * @throws EvaluationException if an error
-	 * occurs while evaluating given xpath
-	 * expression
+	 * @param xpath an XPath expression
+	 * @return {@link Node} representing an evaluation result
+	 * @throws EvaluationException if an error occurs while evaluating
+	 * given xpath expression
 	 */
 	Node evaluateToNode(XPathExp xpath)
 		throws EvaluationException;
 
 	/**
-	 * Evaluates a given XPath expression
-	 * to a {@link Number}
+	 * Evaluates a given XPath expression to a {@link Number}
 	 *
-	 * @param path an XPath expression
-	 * @param categoryId an attribute category
-	 * @return {@link Number} representing an evaluation
-	 * result
-	 * @throws EvaluationException if an error
-	 * occurs while evaluating given xpath
-	 * expression
+	 * @param xpath an XPath expression
+	 * @return {@link Number} representing an evaluation result
+	 * @throws EvaluationException if an error occurs while evaluating
+	 * given xpath expression
 	 */
 	Number evaluateToNumber(XPathExp xpath)
 		throws EvaluationException;
@@ -360,5 +345,5 @@ public interface EvaluationContext
 	 */
 	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 		throws PolicyResolutionException;
-	
+
 }

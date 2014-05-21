@@ -147,11 +147,10 @@ public class BinaryValue implements Serializable
         char [] chars = new char [byteLength * 2];
         int charIndex = 0;
 
-        for (int byteIndex = 0; byteIndex < byteLength; byteIndex++) {
-            byte b = bytes[byteIndex];
-            chars[charIndex++] = binToHexNibble((b >> 4) & 0xf);
-            chars[charIndex++] = binToHexNibble(b & 0xf);
-        }
+	    for (byte b : bytes) {
+		    chars[charIndex++] = binToHexNibble((b >> 4) & 0xf);
+		    chars[charIndex++] = binToHexNibble(b & 0xf);
+	    }
 
         return new String(chars);
     }

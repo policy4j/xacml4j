@@ -31,7 +31,7 @@ import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
-import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombingingAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
 public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule>
@@ -53,12 +53,12 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		return doCombine(context, rules);
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")
+	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")
 	public static Decision doCombineOrdered(EvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
+	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
 	public static Decision doCombine(EvaluationContext context, List<Rule> rules)
 	{
 		boolean potentialDeny	= false;

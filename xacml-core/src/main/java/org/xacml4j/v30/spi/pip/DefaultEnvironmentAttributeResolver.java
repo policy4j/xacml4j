@@ -36,16 +36,16 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 
 /**
- * A default XACML enviroment attributes resolver
+ * A default XACML environment attributes resolver
  *
  * @author Giedrius Trumpickas
  */
-class DefaultEnviromentAttributeResolver extends BaseAttributeResolver
+class DefaultEnvironmentAttributeResolver extends BaseAttributeResolver
 {
-	public DefaultEnviromentAttributeResolver() {
+	public DefaultEnvironmentAttributeResolver() {
 		super(AttributeResolverDescriptorBuilder.builder(
 				"XacmlEnvironmentResolver",
-				"XACML Enviroment Attributes Resolver",
+				"XACML Environment Attributes Resolver",
 				Categories.ENVIRONMENT)
 				.noCache()
 				.attribute("urn:oasis:names:tc:xacml:1.0:environment:current-time", XacmlTypes.TIME)

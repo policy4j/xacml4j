@@ -26,5 +26,5 @@ public enum ConditionResult
 {
 	TRUE,
 	FALSE,
-	INDETERMINATE;
+	INDETERMINATE
 }

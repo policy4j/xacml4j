@@ -59,12 +59,12 @@ class ResolverDescriptorDelegate implements ResolverDescriptor
 	}
 
 	@Override
-	public boolean isCachable() {
-		return d.isCachable();
+	public boolean isCacheable() {
+		return d.isCacheable();
 	}
 
 	@Override
-	public int getPreferreredCacheTTL() {
-		return d.getPreferreredCacheTTL();
+	public int getPreferredCacheTTL() {
+		return d.getPreferredCacheTTL();
 	}
 }

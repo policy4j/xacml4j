@@ -48,7 +48,7 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesRefererenceAdapater()).create();
+				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
 	}
 
 	@Override

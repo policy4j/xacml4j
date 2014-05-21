@@ -34,14 +34,14 @@ import com.google.common.collect.ImmutableMap;
 
 public class Result
 {
-	private Status status;
-	private Decision decision;
-	private Map<String, Obligation> obligations;
-	private Map<String, Advice> associatedAdvice;
-	private Map<CategoryId, Category> includeInResultAttributes;
-	private Collection<CompositeDecisionRuleIDReference> policyReferences;
-	private Map<CategoryId, Category> resolvedAttributes;
-	private int hashCode;
+	private final Status status;
+	private final Decision decision;
+	private final Map<String, Obligation> obligations;
+	private final Map<String, Advice> associatedAdvice;
+	private final Map<CategoryId, Category> includeInResultAttributes;
+	private final Collection<CompositeDecisionRuleIDReference> policyReferences;
+	private final Map<CategoryId, Category> resolvedAttributes;
+	private final int hashCode;
 
 	private Result(Builder b){
 		Preconditions.checkArgument(b.decision !=null, "Decision must be specified");
@@ -125,8 +125,6 @@ public class Result
 
 	/**
 	 * Gets a list of attributes that were part of the request.
-	 * The choice of which attributes are included here is made
-	 * with the request attributes {@link org.xacml4j.v30.Category#getIncludeInResultAttributes()}}
 	 *
 	 * @return a collection of {@link Category} instances
 	 */
@@ -135,8 +133,7 @@ public class Result
 	}
 
 	/**
-	 * Gets all resolved by PIP attributes from external
-	 * sources during request context evaluation
+	 * Gets all resolved by PIP attributes from external sources during request context evaluation
 	 *
 	 * @return a collection of resolved attributes
 	 */
@@ -221,13 +218,10 @@ public class Result
 
 	@Override
 	public boolean equals(Object o){
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof Result)){
+		if (!(o instanceof Result)) {
 			return false;
 		}
 		Result r = (Result)o;

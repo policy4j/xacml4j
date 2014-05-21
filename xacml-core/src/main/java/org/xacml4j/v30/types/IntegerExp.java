@@ -35,11 +35,11 @@ public final class IntegerExp
 	private IntegerExp(Long value) {
 		super(XacmlTypes.INTEGER, value);
 	}
-	
+
 	public static IntegerExp valueOf(Number value){
 		return new IntegerExp(value.longValue());
 	}
-	
+
 	public static IntegerExp valueOf(String v){
 		Preconditions.checkNotNull(v);
 		if ((v.length() >= 1) &&
@@ -48,24 +48,24 @@ public final class IntegerExp
 		}
 		return new IntegerExp(Long.parseLong(v));
 	}
-	
+
 	public StringExp toStringExp(){
 		return StringExp.valueOf(getValue().toString());
 	}
-	
+
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.INTEGER.emptyBag();
 	}
-	
+
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.INTEGER.bag();
 	}
-	
+
 	public IntegerExp add(IntegerExp d){
 		return  new IntegerExp(getValue() + d.getValue());
 	}
 
-	public IntegerExp substract(IntegerExp d){
+	public IntegerExp subtract(IntegerExp d){
 		return  new IntegerExp(getValue() - d.getValue());
 	}
 
@@ -77,7 +77,7 @@ public final class IntegerExp
 		Preconditions.checkArgument(d.getValue() != null);
 		return DoubleExp.valueOf(getValue() / d.getValue());
 	}
-	
+
 	public IntegerExp mod(IntegerExp d){
 		Preconditions.checkArgument(d.getValue() != null);
 		return IntegerExp.valueOf(getValue() % d.getValue());

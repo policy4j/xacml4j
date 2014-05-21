@@ -48,7 +48,7 @@ import com.google.gson.JsonParseException;
 
 public class AttributeAssignmentDeserializer implements JsonDeserializer<AttributeAssignment> {
 
-	
+
 	@Override
 	public AttributeAssignment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
@@ -80,7 +80,7 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		Optional<AttributeExpType> type = XacmlTypes.getType(dataTypeId);
 		Preconditions.checkState(type.isPresent());
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
-		// TODO: do a proper type coersion
+		// TODO: do a proper type coercion
 		AttributeExp value = deserializeValue(type.get(), jsonValue, context);
 
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);

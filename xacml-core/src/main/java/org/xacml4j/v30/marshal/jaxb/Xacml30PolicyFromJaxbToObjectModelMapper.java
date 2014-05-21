@@ -105,10 +105,10 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
 
 
-	private final static Map<EffectType, Effect> jaxbToNativeEffectMappings = ImmutableMap.of(
+	private final static Map<EffectType, Effect> JAXB_TO_NATIVE_EFFECT_MAPPINGS = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
-	
+
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
@@ -117,7 +117,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	}
 
 	/**
-	 * Creates {@link Policy} instance from a giveb JAXB
+	 * Creates {@link Policy} instance from a given JAXB
 	 * {@link PolicyType} object
 	 *
 	 * @param p a JAXB policy representation
@@ -137,7 +137,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					.condition(condition)
 					.target(create(p.getTarget()))
 					.issuer(createPolicyIssuer(p.getPolicyIssuer()))
-					.combiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
+					.combiningAlgorithm(createRuleCombiningAlgorithm(p.getRuleCombiningAlgId()))
 					.rules(createRules(p, m))
 					.vars(variableDefinitions.values())
 					.obligation(getExpressions(p.getObligationExpressions(), m))
@@ -216,7 +216,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.issuer(createPolicyIssuer(p.getPolicyIssuer()))
 				.target(create(p.getTarget()))
 				.defaults(createPolicySetDefaults(p.getPolicySetDefaults()))
-				.withCombiningAlgorithm(createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()))
+				.withCombiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
 				.compositeDecisionRules(createPolicies(p))
 				.obligation(getExpressions(p.getObligationExpressions(), m))
 				.advice(getExpressions(p.getAdviceExpressions(), m))
@@ -437,7 +437,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			attrExp.add(create(e, m));
 		}
 		return AdviceExpression
-				.builder(exp.getAdviceId(), jaxbToNativeEffectMappings.get(exp.getAppliesTo()))
+				.builder(exp.getAdviceId(), JAXB_TO_NATIVE_EFFECT_MAPPINGS.get(exp.getAppliesTo()))
 				.attribute(attrExp).build();
 	}
 
@@ -460,7 +460,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			attrExp.add(create(e, m));
 		}
 		return ObligationExpression.builder(exp.getObligationId(),
-				jaxbToNativeEffectMappings.get(exp.getFulfillOn()))
+				JAXB_TO_NATIVE_EFFECT_MAPPINGS.get(exp.getFulfillOn()))
 				.attribute(attrExp).build();
 	}
 

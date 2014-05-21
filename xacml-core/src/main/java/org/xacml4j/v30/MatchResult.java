@@ -26,5 +26,5 @@ public enum MatchResult
 {
 	MATCH,
 	NOMATCH,
-	INDETERMINATE;
+	INDETERMINATE
 }

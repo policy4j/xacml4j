@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionParser
+public class FunctionProvidersDefinitionParser extends AbstractBeanDefinitionParser
 {
 
 	@Override
@@ -63,14 +63,12 @@ public class FunctionProvidersDefintionParser extends AbstractBeanDefinitionPars
 	    return component;
 	}
 
-	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory)
-	{
-	      ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
-	      for (int i = 0; i < childElements.size(); ++i) {
-	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder child = parseComponent(childElement);
-	         children.add(child.getBeanDefinition());
-	      }
-	      factory.addPropertyValue("providers", children);
+	private static void parseChildComponents(List<Element> childElements, BeanDefinitionBuilder factory) {
+		ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
+		for (Element childElement : childElements) {
+			BeanDefinitionBuilder child = parseComponent(childElement);
+			children.add(child.getBeanDefinition());
+		}
+		factory.addPropertyValue("providers", children);
 	}
 }

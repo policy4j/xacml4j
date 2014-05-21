@@ -79,7 +79,7 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 	public final String toString(){
 		return value.toString();
 	}
-	
+
 	public final String toXacmlString(){
 		return value.toString();
 	}
@@ -113,7 +113,7 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 		return makeDuration(getDuration().add(d.getDuration()));
 	}
 
-	public final T substract(T d){
+	public final T subtract(T d){
 		return makeDuration(getDuration().subtract(d.getDuration()));
 	}
 
@@ -122,5 +122,5 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 	}
 
 	protected abstract T makeDuration(Duration d);
-	
+
 }

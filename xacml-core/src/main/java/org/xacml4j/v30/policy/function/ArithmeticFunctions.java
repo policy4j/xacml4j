@@ -48,6 +48,9 @@ import com.google.common.base.Preconditions;
 @XacmlFunctionProvider(description="XACML arithmetic functions")
 public class ArithmeticFunctions
 {
+	/** Private constructor for utility class */
+	private ArithmeticFunctions() {}
+
 	/**
 	 * Adds two or more integer data-type values
 	 *
@@ -145,7 +148,7 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
 	{
-		return a.substract(b);
+		return a.subtract(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
@@ -183,6 +186,6 @@ public class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
 	{
-		return a.substract(b);
+		return a.subtract(b);
 	}
 }

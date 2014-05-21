@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -288,9 +289,7 @@ public class XacmlPolicyTestSupport {
 		}
 
 		public Builder policies(InputStream ... policies){
-			for(InputStream s : policies){
-				this.policies.add(s);
-			}
+			Collections.addAll(this.policies, policies);
 			return this;
 		}
 

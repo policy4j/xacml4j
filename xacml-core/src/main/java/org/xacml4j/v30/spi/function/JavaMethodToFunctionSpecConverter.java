@@ -53,7 +53,7 @@ class JavaMethodToFunctionSpecConverter
 	private final InvocationFactory invocationFactory;
 
 	private final static TypeCapability.Index<TypeToString> TYPE_TO_STRING_INDEX = TypeCapability.Index.<TypeToString>build(TypeToString.Types.values());
-			
+
 	public JavaMethodToFunctionSpecConverter(
 			InvocationFactory invocationFactory)
 	{
@@ -72,19 +72,19 @@ class JavaMethodToFunctionSpecConverter
 		if(m.getReturnType().equals(Void.TYPE)){
 			throw new XacmlSyntaxException("Method=\"%s\" must " +
 					"have other then void return type", m.getName());
-		}		
+		}
 		if(!Expression.class.isAssignableFrom(m.getReturnType())){
 			throw new XacmlSyntaxException("Method=\"%s\" must " +
 					"return XACML expression", m.getName());
-		}	
+		}
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		if(funcId == null){
 			throw new XacmlSyntaxException("Method=\"%s\" must be " +
 					"annotated via XacmlFunc annotation", m.getName());
-		}	
+		}
 		if(!(instance != null ^ Modifier.isStatic(m.getModifiers()))){
-			throw new XacmlSyntaxException("Only static method can be annotiated " +
-					"via XacmlFunc annotiation, method=\"%s\" "
+			throw new XacmlSyntaxException("Only static method can be annotated " +
+					"via XacmlFunc annotation, method=\"%s\" "
 					+ "in the stateless function provider, " +
 					"declaring class=\"%s\" is not static", m.getName(), m.getDeclaringClass());
 		}
@@ -146,7 +146,7 @@ class JavaMethodToFunctionSpecConverter
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
-							
+
 				b.param(param.isBag() ? type.get().bagType() : type.get(), null, false);
 				continue;
 			}
@@ -176,8 +176,8 @@ class JavaMethodToFunctionSpecConverter
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
-							
-				b.param(param.isBag() ? type.get().bagType() : type.get(), 
+
+				b.param(param.isBag() ? type.get().bagType() : type.get(),
 						createDefaultValue(type.get(), param.isBag(), param.value()), true);
 				continue;
 			}
@@ -303,8 +303,8 @@ class JavaMethodToFunctionSpecConverter
 							.getMessage(), clazz.getName()));
 		}
 	}
-	
-	private ValueExpression createDefaultValue(AttributeExpType type, 
+
+	private ValueExpression createDefaultValue(AttributeExpType type,
 			boolean isBag, String[] values)
 	{
 		if((values == null || values.length == 0)){
@@ -312,7 +312,7 @@ class JavaMethodToFunctionSpecConverter
 		}
 		Optional<TypeToString> fromString = TYPE_TO_STRING_INDEX.get(type);
 		if(!fromString.isPresent()){
-			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotion", 
+			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotation",
 					type.getDataTypeId());
 		}
 		List<AttributeExp> defaultValues = new ArrayList<AttributeExp>(values.length);

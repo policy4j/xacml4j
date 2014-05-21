@@ -214,7 +214,7 @@ public class RequestContext
 	 * @return a non-negative number indicating attributes of given
 	 * category occurrence in this request
 	 */
-	public int getCategoryOccuriences(CategoryId category){
+	public int getCategoryOccurences(CategoryId category){
 		Collection<Category> attr = attributes.get(category);
 		return (attr == null)?0:attr.size();
 	}
@@ -289,14 +289,14 @@ public class RequestContext
 		return attributes.get(categoryId);
 	}
 
-	public Collection<Entity> getEntities(CategoryId c){	
+	public Collection<Entity> getEntities(CategoryId c){
 		ImmutableList.Builder<Entity> b = ImmutableList.builder();
 		for(Category a : getAttributes(c)){
 			b.add(a.getEntity());
 		}
 		return b.build();
 	}
-	
+
 	/**
 	 * Gets only one attribute of the given category
 	 *
@@ -311,7 +311,7 @@ public class RequestContext
 		Collection<Category> attributes = getAttributes(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
-	
+
 	public Entity getOnlyEntity(CategoryId category){
 		Collection<Entity> attributes = getEntities(category);
 		return Iterables.getOnlyElement(attributes, null);
@@ -328,7 +328,7 @@ public class RequestContext
 	 */
 	public boolean containsRepeatingCategories(){
 		for(CategoryId category : getCategories()){
-			if(getCategoryOccuriences(category) > 1){
+			if(getCategoryOccurences(category) > 1){
 				return true;
 			}
 		}

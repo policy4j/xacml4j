@@ -56,10 +56,10 @@ class AnnotatedResolverFactory
 	static{
 		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
 	}
-	
+
 	/**
 	 * Gets all {@link ContentResolver} from given instance
-	 * 
+	 *
 	 * @param instance an instance containing annotated resolvers
 	 * @return a collection of found {@link ContentResolver}
 	 * @throws XacmlSyntaxException
@@ -121,7 +121,7 @@ class AnnotatedResolverFactory
 		for(XacmlAttributeDescriptor attr : attributes){
 			Optional<AttributeExpType> type = XacmlTypes.getType(attr.dataType());
 			if(!type.isPresent()){
-				throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+				throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
 						attr.dataType());
 			}
 			b.attribute(attr.id(), type.get());
@@ -131,7 +131,7 @@ class AnnotatedResolverFactory
 		b.keys(info.getSecond());
 		TypeToken<?> returnType = TypeToken.get(m.getGenericReturnType());
 		if(log.isDebugEnabled()){
-			log.debug("Attribute resolver id=\"{}\" retrun type=\"{}\"",
+			log.debug("Attribute resolver id=\"{}\" return type=\"{}\"",
 					d.id(), returnType.toString());
 		}
 		if(!ATTR_RESOLVER_RETURN_TYPE.equals(returnType)){
@@ -152,7 +152,7 @@ class AnnotatedResolverFactory
 		Preconditions.checkNotNull(m);
 		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
 		XacmlContentResolverDescriptor d = m.getAnnotation(XacmlContentResolverDescriptor.class);
-		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.bulder(
+		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.builder(
 				d.id(), d.name(),
 				Categories.parse(d.category()));
 		b.cache(d.cacheTTL());
@@ -186,7 +186,7 @@ class AnnotatedResolverFactory
 			if(p.length == 0 && i == 0) {
 				if(!types[i].equals(ResolverContext.class)){
 					throw new XacmlSyntaxException(
-							"Resolver parameter without annotiation at index=\"%d\" must be of type=\"%s\"",
+							"Resolver parameter without annotation at index=\"%d\" must be of type=\"%s\"",
 							i, ResolverContext.class);
 				}
 				needPipContext = true;
@@ -204,7 +204,7 @@ class AnnotatedResolverFactory
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
 				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
 				if(!type.isPresent()){
-					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
 							ref.dataType());
 				}
 				keys.add(AttributeDesignatorKey
@@ -229,7 +229,7 @@ class AnnotatedResolverFactory
 				XacmlAttributeSelector ref = (XacmlAttributeSelector)p[0];
 				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
 				if(!type.isPresent()){
-					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
 							ref.dataType());
 				}
 				keys.add(AttributeSelectorKey
@@ -282,7 +282,7 @@ class AnnotatedResolverFactory
 	/**
 	 * An implementation {@link AttributeResolver} for
 	 * annotated resolver classes
-	 * 
+	 *
 	 * @author Giedrius Trumpickas
 	 */
 	private final class AnnotatedAttributeResolver

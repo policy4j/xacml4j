@@ -64,7 +64,7 @@ public final class ResolverRegistryBuilder
 	 * @return {@link ResolverRegistryBuilder}
 	 */
 	public ResolverRegistryBuilder withDefaultResolvers(){
-		return withAttributeResolver(new DefaultEnviromentAttributeResolver());
+		return withAttributeResolver(new DefaultEnvironmentAttributeResolver());
 	}
 
 	/**

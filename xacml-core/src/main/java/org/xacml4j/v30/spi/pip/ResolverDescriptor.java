@@ -64,12 +64,12 @@ public interface ResolverDescriptor
 	 *
 	 * @return {@code true} if attributes can be cached
 	 */
-	boolean isCachable();
+	boolean isCacheable();
 
 	/**
 	 * Gets preferred cache TTL for an attributes resolved via this resolver
 	 *
 	 * @return a TTL in seconds or {@code 0}
 	 */
-	int getPreferreredCacheTTL();
+	int getPreferredCacheTTL();
 }

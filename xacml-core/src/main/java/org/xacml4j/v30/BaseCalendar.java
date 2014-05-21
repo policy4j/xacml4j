@@ -59,7 +59,7 @@ public abstract class BaseCalendar <T extends BaseCalendar<?>>
 	 * @param v a representation of {@link XMLGregorianCalendar}
 	 * @return {@link XMLGregorianCalendar}
 	 */
-	private final static XMLGregorianCalendar parseXmlCalendar(Object v){
+	private static XMLGregorianCalendar parseXmlCalendar(Object v){
 		XMLGregorianCalendar c = null;
 		if(String.class.isInstance(v)){
 			c = df.newXMLGregorianCalendar((String)v);
@@ -101,7 +101,7 @@ public abstract class BaseCalendar <T extends BaseCalendar<?>>
 		return c;
 	}
 
-	protected final static XMLGregorianCalendar parseTime(Object v){
+	protected static XMLGregorianCalendar parseTime(Object v){
 		Preconditions.checkNotNull(v);
 		XMLGregorianCalendar c = null;
 		if(GregorianCalendar.class.isInstance(v)){

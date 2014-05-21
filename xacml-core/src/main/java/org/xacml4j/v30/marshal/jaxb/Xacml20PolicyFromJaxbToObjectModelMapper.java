@@ -111,9 +111,9 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	private final static Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
-	
+
 	private final static TypeCapability.Index<TypeToXacml30> INDEX = TypeCapability.Index.<TypeToXacml30>build(TypeToXacml30.Types.values());
-	
+
 	public Xacml20PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
 			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
@@ -144,7 +144,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.version(p.getVersion())
 					.defaults(createPolicyDefaults(p.getPolicyDefaults()))
 					.target(create(p.getTarget()))
-					.combiningAlgorithm(createRuleCombingingAlgorithm(p.getRuleCombiningAlgId()))
+					.combiningAlgorithm(createRuleCombiningAlgorithm(p.getRuleCombiningAlgId()))
 					.rules(getRules(p, m))
 					.vars(variableDefinitions.values())
 					.obligation(getObligations(p.getObligations()))
@@ -166,7 +166,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.description(p.getDescription())
 					.target(create(p.getTarget()))
 					.defaults(createPolicySetDefaults(p.getPolicySetDefaults()))
-					.withCombiningAlgorithm(createPolicyCombingingAlgorithm(p.getPolicyCombiningAlgId()))
+					.withCombiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
 					.obligation(getObligations(p.getObligations()))
 					.compositeDecisionRules(getPolicies(p))
 					.build();
@@ -663,7 +663,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		v.getOtherAttributes().putAll(value.getOtherAttributes());
 		Optional<TypeToXacml30> toXacml30 = INDEX.get(v.getDataType());
 		if(!toXacml30.isPresent()){
-			throw new XacmlSyntaxException("Unknown XACML type=\"%s\"", 
+			throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
 					value.getDataType());
 		}
 		return toXacml30.get().fromXacml30(v);

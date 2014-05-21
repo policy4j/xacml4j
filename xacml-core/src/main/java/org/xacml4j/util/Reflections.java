@@ -29,6 +29,9 @@ import java.util.List;
 
 public class Reflections
 {
+	/** Private constructor for utility class */
+	private Reflections() {}
+
 	/**
 	 * Finds all methods annotated with a given annotation
 	 *

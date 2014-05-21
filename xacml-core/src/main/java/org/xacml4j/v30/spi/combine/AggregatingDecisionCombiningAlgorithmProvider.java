@@ -128,12 +128,12 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 	}
 
 	@Override
-	public final boolean isPolicyAgorithmProvided(String algorithmId) {
+	public final boolean isPolicyAlgorithmProvided(String algorithmId) {
 		return policyAlgorithms.containsKey(algorithmId);
 	}
 
 	@Override
-	public final boolean isRuleAgorithmProvided(String algorithmId) {
+	public final boolean isRuleAlgorithmProvided(String algorithmId) {
 		return ruleAlgorithms.containsKey(algorithmId);
 	}
 

@@ -197,7 +197,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			final VersionMatch latest)
 	{
 		if(c == null){
-			return Collections.<T>emptyList();
+			return Collections.emptyList();
 		}
 		return Collections2.filter(c, new Predicate<T>() {
 			@Override

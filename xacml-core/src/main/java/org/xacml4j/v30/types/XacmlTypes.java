@@ -54,7 +54,7 @@ import com.google.common.collect.ImmutableSet;
 
 /**
  * Enumeration of XACML 3.0 data types
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public enum XacmlTypes implements AttributeExpType
@@ -68,7 +68,7 @@ public enum XacmlTypes implements AttributeExpType
 				return AnyURIExp.valueOf((URI)v);
 			}
 			if(v instanceof StringExp){
-				return AnyURIExp.valueOf(((StringExp)v).toString());
+				return AnyURIExp.valueOf(v.toString());
 			}
 			return AnyURIExp.valueOf((URI)v);
 		}
@@ -82,7 +82,7 @@ public enum XacmlTypes implements AttributeExpType
 				return Base64BinaryExp.valueOf((byte[])v);
 			}
 			if(v instanceof StringExp){
-				return Base64BinaryExp.valueOf(((StringExp)v).toString());
+				return Base64BinaryExp.valueOf(v.toString());
 			}
 			return Base64BinaryExp.valueOf((BinaryValue)v);
 		}
@@ -110,7 +110,7 @@ public enum XacmlTypes implements AttributeExpType
 				return DateExp.valueOf((Calendar)v);
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DateExp.valueOf(((XMLGregorianCalendar)v).toString());
+				return DateExp.valueOf(v.toString());
 			}
 			return DateExp.valueOf((Date)v);
 		}
@@ -127,7 +127,7 @@ public enum XacmlTypes implements AttributeExpType
 				return DateTimeExp.valueOf((Calendar)v);
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DateTimeExp.valueOf(((XMLGregorianCalendar)v).toString());
+				return DateTimeExp.valueOf(v.toString());
 			}
 			return DateTimeExp.valueOf((DateTime)v);
 		}
@@ -142,7 +142,7 @@ public enum XacmlTypes implements AttributeExpType
 				return DayTimeDurationExp.valueOf(((StringExp)v).getValue());
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DayTimeDurationExp.valueOf(((XMLGregorianCalendar)v).toString());
+				return DayTimeDurationExp.valueOf(v.toString());
 			}
 			return DayTimeDurationExp.valueOf((DayTimeDuration)v);
 		}
@@ -252,14 +252,14 @@ public enum XacmlTypes implements AttributeExpType
 			return X500NameExp.valueOf((X500Principal)v);
 		}
 	},
-	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression", 
+	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression",
 		  "xpathExpression", "urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
 		  "urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression"){
 		public XPathExp create(Object v){
 			return XPathExp.valueOf((XPathExpression)v);
 		}
 	},
-	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration", 
+	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration",
 			"yearMonthDuration", "http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"){
 			public YearMonthDurationExp create(Object v){
 				if(v instanceof String){
@@ -279,10 +279,10 @@ public enum XacmlTypes implements AttributeExpType
 				return EntityExp.valueOf((Entity)v);
 			}
 	};
-	
-	
+
+
 	private final static Map<String, AttributeExpType> TYPES_BY_ID;
-	
+
 	static{
 		ImmutableMap.Builder<String, AttributeExpType> b = ImmutableMap.builder();
 		for(AttributeExpType t : XacmlTypes.values()){
@@ -293,12 +293,12 @@ public enum XacmlTypes implements AttributeExpType
 		}
 		TYPES_BY_ID = b.build();
 	}
-	
+
 	private String typeId;
 	private String shortTypeId;
 	private BagOfAttributeExpType bagType;
 	private Set<String> aliases;
-	
+
 	private XacmlTypes(String typeId, String shortTypeId, String ...aliases){
 		this.typeId = typeId;
 		this.shortTypeId = shortTypeId;
@@ -309,27 +309,27 @@ public enum XacmlTypes implements AttributeExpType
 				.add(aliases)
 				.build();
 	}
-	
+
 	/**
 	 * Gets type via type identifier or alias
-	 * 
+	 *
 	 * @param typeId a type identifier
 	 * @return {@link Optional} with resolved type
 	 */
 	public static Optional<AttributeExpType> getType(String typeId){
 		return Optional.fromNullable(TYPES_BY_ID.get(typeId));
 	}
-	
+
 	@Override
 	public final String getDataTypeId() {
 		return typeId;
 	}
-	
+
 	@Override
 	public final String getShortDataTypeId() {
 		return shortTypeId;
 	}
-	
+
 	public Set<String> getDataTypeIdAliases(){
 		return aliases;
 	}
@@ -343,17 +343,17 @@ public enum XacmlTypes implements AttributeExpType
 	public final BagOfAttributeExpType bagType() {
 		return bagType;
 	}
-	
+
 	@Override
 	public final BagOfAttributeExp bagOf(AttributeExp... attrs) {
 		return bagType.create(attrs);
 	}
-	
+
 	@Override
 	public final BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
 		return bagType.create(values);
 	}
-	
+
 	@Override
 	public final BagOfAttributeExp emptyBag() {
 		return bagType.createEmpty();
@@ -363,12 +363,12 @@ public enum XacmlTypes implements AttributeExpType
 	public String toString(){
 		return typeId;
 	}
-	
+
 	@Override
 	public boolean isBag() {
 		return false;
 	}
-	
+
 	public AttributeExpType getDataType(){
 		return this;
 	}

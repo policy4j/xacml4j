@@ -37,6 +37,9 @@ import org.xacml4j.v30.types.X500NameExp;
 @XacmlFunctionProvider(description="XACML special match functions")
 public class SpecialMatchFunctions
 {
+	/** Private constructor for utility class */
+	private SpecialMatchFunctions() {}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static

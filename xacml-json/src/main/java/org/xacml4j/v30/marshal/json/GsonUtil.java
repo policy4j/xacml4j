@@ -30,6 +30,9 @@ import com.google.gson.reflect.TypeToken;
 
 class GsonUtil
 {
+	/** Private constructor for utility class */
+	private GsonUtil() {}
+
 	public static boolean getAsBoolean(JsonObject o, String memberName, boolean defaultValue)
 	{
 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);

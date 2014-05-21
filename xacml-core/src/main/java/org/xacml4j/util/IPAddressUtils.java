@@ -55,13 +55,16 @@ public class IPAddressUtils {
     private final static int INADDR16SZ = 16;
     private final static int INT16SZ = 2;
 
-    /*
-     * Converts IPv4 address in its textual presentation form
-     * into its numeric binary form.
-     *
-     * @param src a String representing an IPv4 address in standard format
-     * @return a byte array representing the IPv4 numeric address
-     */
+	/** Private constructor for utility class */
+	private IPAddressUtils() {}
+
+	/*
+	 * Converts IPv4 address in its textual presentation form
+	 * into its numeric binary form.
+	 *
+	 * @param src a String representing an IPv4 address in standard format
+	 * @return a byte array representing the IPv4 numeric address
+	 */
     public static byte[] textToNumericFormatV4(String src)
     {
         if (src.length() == 0) {

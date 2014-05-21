@@ -37,21 +37,20 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	 * Constructs IP address with a given address, mask and
 	 * IP port range
 	 *
-	 * @param type IP address type
-	 * @param address a IP address
+	 * @param address an IP address
 	 */
 	IPAddressExp(IPAddress address){
 		super(XacmlTypes.IPADDRESS, address);
 	}
-	
+
 	public static IPAddressExp valueOf(String v){
 		return new IPAddressExp(IPAddress.valueOf(v));
 	}
-	
+
 	public static IPAddressExp valueOf(IPAddress v){
 		return new IPAddressExp(v);
 	}
-		
+
 	/**
 	 * Gets IP address
 	 *
@@ -60,7 +59,7 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	public InetAddress getAddress(){
 		return getValue().getAddress();
 	}
-	
+
 	/**
 	 * Gets IP address mask
 	 *
@@ -80,15 +79,15 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	public PortRange getRange(){
 		return getValue().getRange();
 	}
-	
+
 	public StringExp toStringExp(){
 		return StringExp.valueOf(getValue().toXacmlString());
 	}
-	
+
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.IPADDRESS.emptyBag();
 	}
-	
+
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.IPADDRESS.bag();
 	}

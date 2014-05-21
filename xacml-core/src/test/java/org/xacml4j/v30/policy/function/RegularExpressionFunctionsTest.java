@@ -31,7 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
@@ -43,17 +43,17 @@ public class RegularExpressionFunctionsTest
 {
 	private IMocksControl c;
 	private EvaluationContext context;
-	
+
 	@Before
 	public void init(){
 		c = createControl();
 		this.context = c.createMock(EvaluationContext.class);
 	}
-	
+
 	@Test
 	public void testFunctionIfImplemented() throws Exception
-	{	
-		FunctionProvider f = new AnnotiationBasedFunctionProvider(
+	{
+		FunctionProvider f = new AnnotationBasedFunctionProvider(
 				RegularExpressionFunctions.class);
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"));
@@ -118,7 +118,7 @@ public class RegularExpressionFunctionsTest
 		c.replay();
 		assertEquals(BooleanExp.valueOf(true), RegularExpressionFunctions.anyURIRegexpMatch(context, regexp, input));
 		c.verify();
-		
+
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class RegularExpressionFunctionsTest
 		c.replay();
 		assertEquals(BooleanExp.valueOf(true), RegularExpressionFunctions.rfc822NameRegexpMatch(context, regexp, input));
 		c.verify();
-		
+
 	}
 
 

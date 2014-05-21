@@ -41,16 +41,16 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	private ContentResolverDescriptor descriptor;
 
-	private AtomicInteger preferedCacheTTL;
+	private AtomicInteger preferredCacheTTL;
 
 
 	protected BaseContentResolver(ContentResolverDescriptor descriptor){
 		Preconditions.checkArgument(descriptor != null);
 		this.descriptor = new ContentResolverDescriptorDelegate(descriptor){
 			@Override
-			public int getPreferreredCacheTTL() {
-				return (preferedCacheTTL == null)?
-						super.getPreferreredCacheTTL():preferedCacheTTL.get();
+			public int getPreferredCacheTTL() {
+				return (preferredCacheTTL == null)?
+						super.getPreferredCacheTTL(): preferredCacheTTL.get();
 			}
 		};
 	}
@@ -97,14 +97,14 @@ public abstract class BaseContentResolver implements ContentResolver
 
 	@Override
 	public final int getPreferredCacheTTL() {
-		return descriptor.getPreferreredCacheTTL();
+		return descriptor.getPreferredCacheTTL();
 	}
 
 	@Override
 	public final void setPreferredCacheTTL(int ttl) {
-		if(descriptor.isCachable()
+		if(descriptor.isCacheable()
 				&& ttl > 0){
-			this.preferedCacheTTL.set(ttl);
+			this.preferredCacheTTL.set(ttl);
 		}
 	}
 }

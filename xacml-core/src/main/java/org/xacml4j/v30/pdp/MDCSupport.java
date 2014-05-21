@@ -43,21 +43,24 @@ public class MDCSupport
 	private final static String XACML_MAIN_REQ_ID = "requestId";
 
 	private final static Random RND = new Random();
-	
-	public static void setXacmlRequestId(String correclationId, 
+
+	/** Private constructor for utility class */
+	private MDCSupport() {}
+
+	public static void setXacmlRequestId(String correlationId,
 			RequestContext req){
 		String identifier = new StringBuilder()
-		.append(correclationId)
+		.append(correlationId)
 		.append("-")
 		.append(Long.toHexString(RND.nextLong()))
 		.toString();
 		MDC.put(XACML_MAIN_REQ_ID, identifier);
 	}
-	
+
 	public static void cleanXacmlRequestId(){
 		MDC.remove(XACML_MAIN_REQ_ID);
 	}
-	
+
 	public static void setPdpContext(PolicyDecisionPoint pdp){
 		MDC.put(PDP_ID_KEY, pdp.getId());
 	}

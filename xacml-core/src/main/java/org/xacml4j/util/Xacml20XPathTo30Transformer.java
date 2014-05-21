@@ -37,17 +37,20 @@ public class Xacml20XPathTo30Transformer
 	private final static String RESOURCE_ELEMENT_NAME = "Resource";
 	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
 
+	/** Private constructor for utility class */
+	private Xacml20XPathTo30Transformer() {}
+
 
 	public static XPathExp fromXacml20String(StringExp path)
 	{
-		XPathExp xpathExp = XPathExp.valueOf(transform20PathTo30(path.getValue()), 
+		XPathExp xpathExp = XPathExp.valueOf(transform20PathTo30(path.getValue()),
 				Categories.RESOURCE);
 		return xpathExp;
 	}
 
 	public static String transform20PathTo30(String xpath)
 	{
-		StringBuffer buf = new StringBuffer(xpath);
+		StringBuilder buf = new StringBuilder(xpath);
 		int firstIndex = xpath.indexOf(REQUEST_ELEMENT_NAME);
 		if(firstIndex == -1){
 			firstIndex = xpath.indexOf(RESOURCE_ELEMENT_NAME);

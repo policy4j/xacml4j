@@ -68,11 +68,10 @@ public class ResolverRegistryDefinitionParser extends AbstractBeanDefinitionPars
 	private static void parseResolvers(List<Element> childElements, BeanDefinitionBuilder factory)
 	{
 		ManagedList<BeanDefinition> children = new ManagedList<BeanDefinition>(childElements.size());
-	    for (int i = 0; i < childElements.size(); ++i) {
-	         Element childElement = (Element) childElements.get(i);
-	         BeanDefinitionBuilder child = parseResolvers(childElement);
-	         children.add(child.getBeanDefinition());
-	    }
+		for (Element childElement : childElements) {
+			BeanDefinitionBuilder child = parseResolvers(childElement);
+			children.add(child.getBeanDefinition());
+		}
 	    factory.addPropertyValue("resolvers", children);
 	}
 }

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30.spi.combine;
 
 /*
  * #%L
@@ -22,7 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-public interface ReferenecableDecisionRule
-{
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface XacmlPolicyDecisionCombiningAlgorithm
+{
+	String value();
+	boolean legacy() default false;
 }

@@ -77,7 +77,7 @@ public class DayTimeDurationTest
 	{
 		DayTimeDuration v1 = DayTimeDuration.parse("P3DT10H30M");
 		DayTimeDuration v2 = DayTimeDuration.parse("PT10H10S");
-		DayTimeDuration v3 = v1.substract(v2);
+		DayTimeDuration v3 = v1.subtract(v2);
 		assertEquals(3, v3.getDays());
 		assertEquals(0, v3.getHours());
 		assertEquals(29, v3.getMinutes());

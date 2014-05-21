@@ -27,7 +27,7 @@ import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 
 import com.google.common.base.Preconditions;
 
-public class DecisionCombingingAlgorithmProviderBean
+public class DecisionCombiningAlgorithmProviderBean
 	extends AbstractFactoryBean<DecisionCombiningAlgorithmProvider>
 {
 	private Class<?> providerClass;

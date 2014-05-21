@@ -28,18 +28,15 @@ import com.google.common.base.Strings;
 
 public final class Status
 {
-	private StatusCode code;
-	private String message;
-	private StatusDetail detail;
+	private final StatusCode code;
+	private final String message;
+	private final StatusDetail detail;
 
 	/**
 	 * Creates status with a given status
 	 * code, message and detailed message
 	 *
-	 * @param code a status code
-	 * @param message a message
-	 * @param detail a detailed
-	 * description
+	 * @param b Status builder
 	 */
 	public Status(Builder b){
 		Preconditions.checkNotNull(b);
@@ -47,35 +44,35 @@ public final class Status
 		this.message = b.message;
 		this.detail = b.detail;
 	}
-	
+
 	public static Builder processingError(){
 		return new Builder().statusCode(StatusCode.createProcessingError());
 	}
-	
+
 	public static Builder builder(StatusCode code){
 		return new Builder().statusCode(code);
 	}
-	
+
 	public static Builder syntaxError(){
 		return new Builder().statusCode(StatusCode.createSyntaxError());
 	}
-	
+
 	public static Builder ok(){
 		return new Builder().statusCode(StatusCode.createOk());
 	}
-	
+
 	public static Builder missingAttribute(AttributeDesignatorKey key){
 		return new Builder()
 		.statusCode(StatusCode.createMissingAttributeError())
 		.message(key.getAttributeId());
 	}
-	
+
 	public static Builder missingAttribute(AttributeSelectorKey key){
 		return new Builder()
 			.statusCode(StatusCode.createMissingAttributeError())
 			.message(key.getPath());
 	}
-	
+
 	public StatusCode getStatusCode(){
 		return code;
 	}
@@ -122,9 +119,6 @@ public final class Status
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof Status)){
 			return false;
 		}
@@ -138,35 +132,35 @@ public final class Status
 	public int hashCode(){
 		return Objects.hashCode(code, message, detail);
 	}
-	
+
 	public static class Builder
 	{
 		private StatusCode code;
 		private String message;
 		private StatusDetail detail;
-		
-		
+
+
 		public Builder ok(){
 			this.code = StatusCode.createProcessingError();
 			return this;
 		}
-		
+
 		public Builder statusCode(StatusCode code){
 			Preconditions.checkNotNull(code);
 			this.code = code;
 			return this;
 		}
-		
+
 		public Builder message(String format, Object ...args){
 			this.message = (Strings.isNullOrEmpty(format))?format:String.format(format, args);
 			return this;
 		}
-		
+
 		public Builder detail(StatusDetail detail){
 			this.detail = detail;
 			return this;
 		}
-		
+
 		public Status build(){
 			return new Status(this);
 		}

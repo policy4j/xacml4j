@@ -51,7 +51,7 @@ public final class FunctionSpecBuilder
 	private boolean hadVarArg = false;
 	private boolean hadOptional = false;
 	private boolean lazyArgumentEvaluation;
-	
+
 	private FunctionSpecBuilder(String functionId){
 		this(functionId, null);
 	}
@@ -63,11 +63,11 @@ public final class FunctionSpecBuilder
 		this.paramSpec = new LinkedList<FunctionParamSpec>();
 	}
 
-	
+
 	public static FunctionSpecBuilder  builder(String functionId){
 		return builder(functionId, null);
 	}
-	
+
 	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
 		return new FunctionSpecBuilder(functionId, legacyId);
 	}
@@ -81,18 +81,18 @@ public final class FunctionSpecBuilder
 	public FunctionSpecBuilder param(ValueType type){
 		return param(type, null, false);
 	}
-	
+
 	public FunctionSpecBuilder optional(ValueType type){
 		return param(type, null, true);
 	}
-	
+
 	public FunctionSpecBuilder optional(ValueType type, ValueExpression defaultValue){
 		return param(type, defaultValue, true);
 	}
-	
-	public FunctionSpecBuilder param(ValueType type, ValueExpression defautlValue, boolean optional){
+
+	public FunctionSpecBuilder param(ValueType type, ValueExpression defaultValue, boolean optional){
 		Preconditions.checkNotNull(type);
-		if(defautlValue != null && !optional){
+		if(defaultValue != null && !optional){
 			throw new XacmlSyntaxException(
 					"Parameter can't have default value and be mandatory");
 		}
@@ -100,29 +100,29 @@ public final class FunctionSpecBuilder
 			throw new XacmlSyntaxException(
 					"Can't add parameter after variadic parameter");
 		}
-		if(defautlValue != null){
-			Preconditions.checkArgument(type.equals(defautlValue.getEvaluatesTo()));
+		if(defaultValue != null){
+			Preconditions.checkArgument(type.equals(defaultValue.getEvaluatesTo()));
 		}
-		hadOptional = defautlValue != null || optional;
-		if(defautlValue != null && !optional){
+		hadOptional = defaultValue != null || optional;
+		if(defaultValue != null && !optional){
 			throw new XacmlSyntaxException(
 					"Function=\"%s\" can not have default " +
-					"value and be required at the same time", 
+					"value and be required at the same time",
 					functionId);
 		}
-		if(paramSpec.size() == 0 && 
-				defautlValue != null){
+		if(paramSpec.size() == 0 &&
+				defaultValue != null){
 			throw new XacmlSyntaxException(
-					"First parameter function=\"%s\" can not have default value", 
+					"First parameter function=\"%s\" can not have default value",
 					functionId);
 		}
-		if(paramSpec.size() == 0 && 
+		if(paramSpec.size() == 0 &&
 				optional){
 			throw new XacmlSyntaxException(
-					"First parameter function=\"%s\" can not be optional", 
+					"First parameter function=\"%s\" can not be optional",
 					functionId);
 		}
-		this.paramSpec.add(new FunctionParamValueTypeSpec(type, defautlValue, optional));
+		this.paramSpec.add(new FunctionParamValueTypeSpec(type, defaultValue, optional));
 		return this;
 	}
 
@@ -169,8 +169,8 @@ public final class FunctionSpecBuilder
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return new FunctionSpecImpl(functionId,
-				legacyId, 
-				paramSpec, 
+				legacyId,
+				paramSpec,
 				returnType,
 				invocation,
 				validator,
@@ -266,12 +266,12 @@ public final class FunctionSpecBuilder
 		public  String getId(){
 			return functionId;
 		}
-		
+
 		@Override
 		public String getLegacyId() {
 			return legacyId;
 		}
-		
+
 		@Override
 		public final FunctionParamSpec getParamSpecAt(int index){
 			return parameters.get(index);
@@ -300,7 +300,7 @@ public final class FunctionSpecBuilder
 		@Override
 		public <T extends ValueExpression> T invoke(EvaluationContext context,
 				Expression ...arguments) throws EvaluationException {
-			return this.<T>invoke(context, Arrays.asList(arguments));
+			return this.invoke(context, Arrays.asList(arguments));
 		}
 
 		@SuppressWarnings("unchecked")
@@ -382,17 +382,17 @@ public final class FunctionSpecBuilder
 			}
 			return validateAdditional(arguments);
 		}
-		
+
 		/**
 		 * Normalizes function parameter list
-		 * 
+		 *
 		 * @param params a list of function parameters
 		 * @return a normalized list of function parameters
 		 */
 		private List<Expression> normalize(List<Expression> params){
 			return params;
 		}
-		
+
 		/**
 		 * Evaluates given array of function parameters
 		 *

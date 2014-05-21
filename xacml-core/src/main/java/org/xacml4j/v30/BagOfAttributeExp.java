@@ -273,7 +273,7 @@ public final class BagOfAttributeExp
 				v.isEmpty()){
 			return null;
 		}
-		return v.<T>value();
+		return v.value();
 	}
 
 	@Override
@@ -310,14 +310,14 @@ public final class BagOfAttributeExp
 			}
 			return this;
 		}
-		
+
 		public Builder value(Object ...values){
 			for(Object v : values){
 				this.valuesBuilder.add(bagType.getDataType().create(v));
 			}
 			return this;
 		}
-		
+
 		public Builder values(Iterable<Object> values){
 			for(Object v : values){
 				this.valuesBuilder.add(bagType.getDataType().create(v));

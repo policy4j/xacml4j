@@ -44,7 +44,7 @@ import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotiationBasedFunctionProvider;
+import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
@@ -83,7 +83,7 @@ public class XPathFunctionsTest
 		this.content1 = builder.parse(new InputSource(
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
 		this.xpathProvider = new DefaultXPathProvider();
-		this.funcF = new AnnotiationBasedFunctionProvider(
+		this.funcF = new AnnotationBasedFunctionProvider(
 				XPathFunctions.class);
 	}
 

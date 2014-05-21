@@ -46,7 +46,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesRefererenceAdapater()).create();
+				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
 	}
 
 	@Override

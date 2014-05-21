@@ -42,9 +42,12 @@ import org.xacml4j.v30.types.IntegerExp;
  *
  * @author Giedrius Trumpickas
  */
-@XacmlFunctionProvider(description="XACML logical fucntions")
+@XacmlFunctionProvider(description="XACML logical functions")
 public class LogicalFunctions
 {
+
+	/** Private constructor for utility class */
+	private LogicalFunctions() {}
 
 	/**
 	 * This function SHALL return "True" if it has no arguments and SHALL return "False"
@@ -67,7 +70,7 @@ public class LogicalFunctions
 	{
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
-			r = r & ((BooleanExp)e.evaluate(context)).getValue();
+			r &= ((BooleanExp) e.evaluate(context)).getValue();
 			if(!r){
 				break;
 			}
@@ -160,14 +163,14 @@ public class LogicalFunctions
 		}
 		int count = 0;
 		int num = n.getValue().intValue();
-		for(int i = 0; i < values.length; i++ ){
-			ValueExpression v = (ValueExpression)values[i].evaluate(context);
-			 if(v.equals(TRUE)){
-				 count++;
-				 if(num == count){
-					 return TRUE;
-				 }
-			 }
+		for (Expression value : values) {
+			ValueExpression v = (ValueExpression) value.evaluate(context);
+			if (v.equals(TRUE)) {
+				count++;
+				if (num == count) {
+					return TRUE;
+				}
+			}
 		}
 		return BooleanExp.valueOf(false);
 	}

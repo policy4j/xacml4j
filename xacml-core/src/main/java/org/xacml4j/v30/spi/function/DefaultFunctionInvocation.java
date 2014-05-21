@@ -97,8 +97,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 				if(numOfParms <= arguments.size()){
 					int size = arguments.size() - (numOfParms - 1);
 					if(log.isDebugEnabled()){
-						log.debug("Number of " +
-								"variadic parameters=\"{}\"", size);
+						log.debug("Number of variadic parameters=\"{}\"", size);
 					}
 					varArgArray = (Object[])Array.newInstance(
 							arguments.get(numOfParms - 1).getClass(), size);

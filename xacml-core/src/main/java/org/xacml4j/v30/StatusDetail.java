@@ -29,7 +29,7 @@ import com.google.common.collect.Iterables;
 
 public class StatusDetail
 {
-	private List<Object> content;
+	private final List<Object> content;
 
 	public StatusDetail(Iterable<Object> detail){
 		this.content = new LinkedList<Object>();

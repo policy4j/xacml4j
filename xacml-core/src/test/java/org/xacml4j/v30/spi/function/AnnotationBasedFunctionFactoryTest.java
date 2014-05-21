@@ -47,8 +47,8 @@ public class AnnotationBasedFunctionFactoryTest
 	@Before
 	public void init() throws Exception
 	{
-		this.f1 = new AnnotiationBasedFunctionProvider(TestFunctions.class);
-		this.f2 = new AnnotiationBasedFunctionProvider(new TestInstanceFunctions());
+		this.f1 = new AnnotationBasedFunctionProvider(TestFunctions.class);
+		this.f2 = new AnnotationBasedFunctionProvider(new TestInstanceFunctions());
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 

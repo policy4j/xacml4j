@@ -44,20 +44,11 @@ public interface AttributeExp
 	Object getValue();
 
 	/**
-	 * Creates bag with this attribute
-	 * in in the bag
+	 * Creates bag with this attribute in the bag
 	 *
 	 * @return {@link BagOfAttributeExp}
 	 */
 	BagOfAttributeExp toBag();
-	
-	/**
-	 * Converts this XACML attribute value
-	 * to {@link String}
-	 *
-	 * @return this attribute value as {@link String}
-	 */
-	//String toXacmlString();
 
 	public interface AttributeExpVisitor extends ExpressionVisitor
 	{

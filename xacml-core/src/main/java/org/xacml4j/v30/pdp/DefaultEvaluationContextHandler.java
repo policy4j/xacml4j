@@ -102,7 +102,7 @@ class DefaultEvaluationContextHandler
 		Entity entity = requestCallback.getEntity(key.getCategory());
 		BagOfAttributeExp v = null;
 		if(entity != null){
-			v = entity.getAttributeValues(key.getAttributeId(), 
+			v = entity.getAttributeValues(key.getAttributeId(),
 					key.getDataType(), key.getIssuer());
 			if(!v.isEmpty()){
 				if(log.isDebugEnabled()){
@@ -112,7 +112,7 @@ class DefaultEvaluationContextHandler
 				return v;
 			}
 		}
-		
+
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key),
 				"Cyclic designator=\"%s\" resolution detected", key);
@@ -167,7 +167,7 @@ class DefaultEvaluationContextHandler
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */
-	private final Node doGetContent(EvaluationContext context, CategoryId category)
+	private Node doGetContent(EvaluationContext context, CategoryId category)
 		throws Exception
 	{
 		Node content = null;
@@ -196,7 +196,7 @@ class DefaultEvaluationContextHandler
 		}
 	}
 
-	private final BagOfAttributeExp doResolve(
+	private BagOfAttributeExp doResolve(
 			EvaluationContext context,
 			AttributeSelectorKey ref) throws EvaluationException
 	{
@@ -306,7 +306,7 @@ class DefaultEvaluationContextHandler
 				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(ref.getDataType());
 				if(!toString.isPresent()){
 					throw new AttributeReferenceEvaluationException(ref,
-							"Unsupported XACML type=\"%d\"", 
+							"Unsupported XACML type=\"%d\"",
 							ref.getDataType().getDataTypeId());
 				}
 				AttributeExp value = toString.get().fromString(v);
@@ -323,12 +323,12 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public Node evaluateToNode(EvaluationContext context, XPathExp xpath) 
-			throws XPathEvaluationException 
+	public Node evaluateToNode(EvaluationContext context, XPathExp xpath)
+			throws XPathEvaluationException
 	{
 		try{
-			
-			return xpathProvider.evaluateToNode(xpath.getPath(), 
+
+			return xpathProvider.evaluateToNode(xpath.getPath(),
 					new ContentSupplier().getContent(context, xpath));
 		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
 			throw new XPathEvaluationException(xpath.getPath(), e);
@@ -355,7 +355,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public String evaluateToString(EvaluationContext context, XPathExp xpath) 
+	public String evaluateToString(EvaluationContext context, XPathExp xpath)
 			throws XPathEvaluationException {
 		try{
 			return xpathProvider.evaluateToString(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
@@ -363,7 +363,7 @@ class DefaultEvaluationContextHandler
 			throw new XPathEvaluationException(xpath.getPath(), e);
 		}
 	}
-	
+
 	private class ContentSupplier
 	{
 		public Node getContent(EvaluationContext context, XPathExp xpath) throws XPathEvaluationException
@@ -379,11 +379,11 @@ class DefaultEvaluationContextHandler
 			}
 			if(content == null){
 				throw new XPathEvaluationException(xpath.getPath(),
-							"Not content found for categpry=\"%s\"", xpath.getCategory());
+							"Not content found for category=\"%s\"", xpath.getCategory());
 			}
 			return content;
 		}
 	}
 
-	
+
 }

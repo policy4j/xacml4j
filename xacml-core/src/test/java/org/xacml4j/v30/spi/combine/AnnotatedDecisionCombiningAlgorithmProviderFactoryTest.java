@@ -48,31 +48,31 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 		this.p = new AnnotatedDecisionCombiningAlgorithmProviderFactory();
 	}
 
-	@XacmlPolicyDecisionCombingingAlgorithm("test1Algo")
+	@XacmlPolicyDecisionCombiningAlgorithm("test1Algo")
 	public  Decision testNonStaticMethod(EvaluationContext context, List<? super DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("test2Algo")
+	@XacmlRuleDecisionCombiningAlgorithm("test2Algo")
 	public static Decision testValidMethod(EvaluationContext context, List<DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("test2Algo")
+	@XacmlRuleDecisionCombiningAlgorithm("test2Algo")
 	public static Decision test2params1(List<DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("test2algo")
+	@XacmlRuleDecisionCombiningAlgorithm("test2algo")
 	public static Decision test2params2(EvaluationContext context)
 	{
 		return Decision.DENY;
 	}
 
-	@XacmlRuleDecisionCombingingAlgorithm("test4Algo")
+	@XacmlRuleDecisionCombiningAlgorithm("test4Algo")
 	public static Decision test4(EvaluationContext context, Collection<DecisionRule> rules)
 	{
 		return Decision.DENY;

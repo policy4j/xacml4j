@@ -74,8 +74,6 @@ final class DefaultPolicyDecisionPoint
 	private final AtomicBoolean auditEnabled;
 	private final AtomicBoolean cacheEnabled;
 
-	private final MetricRegistry registry;
-
 	private final Timer decisionTimer;
 	private final Histogram decisionHistogram;
 	private final Counter permitDecisions;
@@ -94,7 +92,7 @@ final class DefaultPolicyDecisionPoint
 		this.factory = factory;
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
-		this.registry = MetricsSupport.getOrCreate();
+		final MetricRegistry registry = MetricsSupport.getOrCreate();
 		this.decisionTimer = registry.timer(name("pdp", id, "timer"));
 		this.decisionHistogram = registry.histogram(name("pdp", id, "histogram"));
 		this.permitDecisions = registry.counter(name("pdp", id, "count-permit"));
@@ -143,14 +141,14 @@ final class DefaultPolicyDecisionPoint
 				if(isDecisionAuditEnabled()){
 					decisionAuditor.audit(this, r, request);
 				}
-				incrementDecionCounters(r.getDecision());
+				incrementDecisionCounters(r.getDecision());
 				decisionHistogram.update(timerContext.stop());
 				return r;
 			}
 			EvaluationContext evalContext = context.createEvaluationContext(request);
 			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
-			incrementDecionCounters(decision);
+			incrementDecisionCounters(decision);
 			r = createResult(evalContext,
 					decision,
 					request.getIncludeInResultAttributes(),
@@ -171,7 +169,7 @@ final class DefaultPolicyDecisionPoint
 		}
 	}
 
-	private void incrementDecionCounters(Decision d){
+	private void incrementDecisionCounters(Decision d){
 		if(d == Decision.PERMIT){
 			permitDecisions.inc();
 			return;

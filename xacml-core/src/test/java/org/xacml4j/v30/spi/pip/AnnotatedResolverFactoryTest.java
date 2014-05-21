@@ -103,7 +103,7 @@ public class AnnotatedResolverFactoryTest
 		assertEquals("Test", d.getName());
 		assertEquals(Categories.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
-		assertEquals(30, d.getPreferreredCacheTTL());
+		assertEquals(30, d.getPreferredCacheTTL());
 
 		AttributeDescriptor a1 = d.getAttribute("testId1");
 		assertNotNull(a1);
@@ -151,7 +151,7 @@ public class AnnotatedResolverFactoryTest
 		assertEquals("Test", d.getName());
 		assertEquals(Categories.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
-		assertEquals(30, d.getPreferreredCacheTTL());
+		assertEquals(30, d.getPreferredCacheTTL());
 		verify(context);
 
 	}
