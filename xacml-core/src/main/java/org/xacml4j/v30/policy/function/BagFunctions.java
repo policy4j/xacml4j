@@ -102,7 +102,7 @@ public class BagFunctions
 			BagOfAttributeExp bag){
 		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
 		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");
-		return bag.<T>value();
+		return bag.value();
 	}
 
 	static IntegerExp typeBagSizeImpl(BagOfAttributeExp bag) {

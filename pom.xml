@@ -211,6 +211,7 @@
 					<formats>
 						<format>html</format>
 					</formats>
+					<check>true</check>
 				</configuration>
 				<executions>
 					<execution>

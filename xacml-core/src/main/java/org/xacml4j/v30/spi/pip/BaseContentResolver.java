@@ -66,21 +66,15 @@ public abstract class BaseContentResolver implements ContentResolver
 	{
 		Preconditions.checkArgument(context.getDescriptor() == descriptor);
 		if(log.isDebugEnabled()){
-			log.debug("Retrieving content via resolver " +
-					"id=\"{}\" name=\"{}\"",
+			log.debug("Retrieving content via resolver id=\"{}\" name=\"{}\"",
 					descriptor.getId(),
 					descriptor.getName());
 		}
-		try{
-
-			return Content.builder()
-					.resolver(this)
-					.content(doResolve(context))
-					.ticker(context.getTicker())
-					.build();
-		}catch(Exception e){
-			throw e;
-		}
+		return Content.builder()
+				.resolver(this)
+				.content(doResolve(context))
+				.ticker(context.getTicker())
+				.build();
 	}
 
 	/**

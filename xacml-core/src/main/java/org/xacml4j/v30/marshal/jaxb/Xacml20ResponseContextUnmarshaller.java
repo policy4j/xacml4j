@@ -24,7 +24,6 @@ package org.xacml4j.v30.marshal.jaxb;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -89,12 +88,6 @@ implements ResponseUnmarshaller
 
 		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
-		private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.of(
-				Decision.DENY, DecisionType.DENY,
-				Decision.PERMIT, DecisionType.PERMIT,
-				Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE,
-				Decision.INDETERMINATE, DecisionType.INDETERMINATE);
-
 		private final static Map<DecisionType, Decision> V20_TO_V30_DECISION_MAPPING = ImmutableMap.of(
 				DecisionType.DENY, Decision.DENY,
 				DecisionType.PERMIT, Decision.PERMIT,
@@ -104,10 +97,6 @@ implements ResponseUnmarshaller
 		private final static Map<EffectType, Effect> V20_TO_V30_EFFECT_MAPPING = ImmutableMap.of(
 				EffectType.DENY, Effect.DENY,
 				EffectType.PERMIT, Effect.PERMIT);
-
-		private final static Map<Effect, EffectType> V30_TO_V20_EFFECT_MAPPING = ImmutableMap.of(
-				Effect.DENY, EffectType.DENY,
-				Effect.PERMIT, EffectType.PERMIT);
 
 		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
 		{
@@ -148,7 +137,7 @@ implements ResponseUnmarshaller
 		private Collection<Obligation> getObligations(ResultType r) throws XacmlSyntaxException
 		{
 			if(r.getObligations() == null){
-				return Collections.<Obligation>emptyList();
+				return Collections.emptyList();
 			}
 			Collection<Obligation> obligations = new LinkedList<Obligation>();
 			for(ObligationType o  : r.getObligations().getObligation()){

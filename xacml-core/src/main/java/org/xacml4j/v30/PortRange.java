@@ -36,8 +36,8 @@ public final class PortRange implements Serializable
 
 	private final static Logger log = LoggerFactory.getLogger(PortRange.class);
 
-	private Integer lowerBound;
-	private Integer upperBound;
+	private final Integer lowerBound;
+	private final Integer upperBound;
 
 	/**
 	 * Default constructor used to represent an unbound range. This is typically
@@ -207,7 +207,7 @@ public final class PortRange implements Serializable
 	 * @return true if the range is a single port number, false otherwise
 	 */
 	public boolean isSinglePort() {
-		return ((lowerBound == upperBound) && (isLowerBounded() && isUpperBounded()));
+		return isLowerBounded() && isUpperBounded() && lowerBound.equals(upperBound);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public final class PortRange implements Serializable
 	 * @return true if the range is unbound, false otherwise
 	 */
 	public boolean isUnbound() {
-		return ((lowerBound == null) && (upperBound == null));
+		return (lowerBound == null) && (upperBound == null);
 	}
 
 	/**

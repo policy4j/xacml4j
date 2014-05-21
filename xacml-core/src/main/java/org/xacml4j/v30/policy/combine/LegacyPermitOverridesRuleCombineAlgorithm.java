@@ -73,7 +73,6 @@ public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombi
 				if(r.getEffect() == Effect.PERMIT){
 					potentialPermit = true;
 				}
-				continue;
 			}
 		}
 		if(potentialPermit){

@@ -63,10 +63,10 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 	@Override
 	public ResponseContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
 		if (source instanceof Reader) {
-			return json.<ResponseContext> fromJson((Reader) source, ResponseContext.class);
+			return json.fromJson((Reader) source, ResponseContext.class);
 		}
 		if (source instanceof JsonElement) {
-			return json.<ResponseContext> fromJson((JsonElement) source, ResponseContext.class);
+			return json.fromJson((JsonElement) source, ResponseContext.class);
 		}
 		return null;
 	}

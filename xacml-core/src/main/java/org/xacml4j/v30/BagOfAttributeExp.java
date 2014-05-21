@@ -303,8 +303,8 @@ public final class BagOfAttributeExp
 			for(AttributeExp v : values){
 				if(!v.getType().equals(bagType.getDataType())){
 					throw new IllegalArgumentException(String.format(
-							"Given attribute value=\"{}\" " +
-							"can't be used as a value of bag=\"{}\"", v, bagType));
+							"Given attribute value=\"%s\" " +
+							"can't be used as a value of bag=\"%s\"", v, bagType));
 				}
 				this.valuesBuilder.add(v);
 			}
@@ -329,8 +329,8 @@ public final class BagOfAttributeExp
 			for(AttributeExp v : values){
 				if(!v.getType().equals(bagType.getDataType())){
 					throw new IllegalArgumentException(String.format(
-							"Given attribute value=\"{}\" " +
-							"can't be used as a value of bag=\"{}\"", v, bagType));
+							"Given attribute value=\"%s\" " +
+							"can't be used as a value of bag=\"%s\"", v, bagType));
 				}
 				this.valuesBuilder.add(v);
 			}

@@ -149,8 +149,6 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.vars(variableDefinitions.values())
 					.obligation(getObligations(p.getObligations()))
 					.build();
-		}catch(XacmlSyntaxException e){
-			throw e;
 		}catch(IllegalArgumentException e){
 			throw new XacmlSyntaxException(e);
 		}

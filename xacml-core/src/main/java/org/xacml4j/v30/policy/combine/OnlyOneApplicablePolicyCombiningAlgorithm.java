@@ -48,11 +48,10 @@ public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;
 		EvaluationContext foundEvalContext = null;
-		EvaluationContext policyContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
-			policyContext = d.createContext(context);
-			MatchResult r = d.isMatch(policyContext);
+			final EvaluationContext policyContext = d.createContext(context);
+			final MatchResult r = d.isMatch(policyContext);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;
 			}
@@ -64,7 +63,6 @@ public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 				found = d;
 				foundEvalContext = policyContext;
 			}
-			continue;
 		}
 		return atLeastOne?found.evaluate(foundEvalContext):Decision.NOT_APPLICABLE;
 	}

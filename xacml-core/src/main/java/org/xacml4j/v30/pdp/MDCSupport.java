@@ -49,11 +49,7 @@ public class MDCSupport
 
 	public static void setXacmlRequestId(String correlationId,
 			RequestContext req){
-		String identifier = new StringBuilder()
-		.append(correlationId)
-		.append("-")
-		.append(Long.toHexString(RND.nextLong()))
-		.toString();
+		String identifier = correlationId + "-" + Long.toHexString(RND.nextLong());
 		MDC.put(XACML_MAIN_REQ_ID, identifier);
 	}
 

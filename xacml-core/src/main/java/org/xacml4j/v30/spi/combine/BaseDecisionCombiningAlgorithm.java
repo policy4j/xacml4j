@@ -31,7 +31,7 @@ import com.google.common.base.Preconditions;
 public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
 	implements DecisionCombiningAlgorithm <D>
 {
-	private String algorithmId;
+	private final String algorithmId;
 
 	/**
 	 * Creates decision combining algorithm with a
@@ -60,19 +60,20 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
 
 	@Override
 	public final boolean equals(Object o){
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
+
+		if(!(o instanceof BaseDecisionCombiningAlgorithm<?>)){
 			return false;
 		}
-		@SuppressWarnings("unchecked")
-		BaseDecisionCombiningAlgorithm<D> a = (BaseDecisionCombiningAlgorithm<D>)o;
+
+		BaseDecisionCombiningAlgorithm<?> a = (BaseDecisionCombiningAlgorithm<?>)o;
 		return algorithmId.equals(a.algorithmId);
 	}
 
 	@Override
-	public final String toString(){
+	public final String toString() {
 		return Objects
 				.toStringHelper(this)
 				.add("algorithmId", algorithmId)

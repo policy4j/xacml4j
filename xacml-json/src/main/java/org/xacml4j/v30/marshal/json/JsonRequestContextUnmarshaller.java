@@ -52,7 +52,7 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	@Override
 	public RequestContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
 		if (source instanceof Reader) {
-			return json.<RequestContext> fromJson((Reader) source, RequestContext.class);
+			return json.fromJson((Reader) source, RequestContext.class);
 		}
 		if (source instanceof JsonElement) {
 			return json.fromJson((JsonElement) source, RequestContext.class);
