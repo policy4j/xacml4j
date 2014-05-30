@@ -155,7 +155,8 @@ public final class Version implements Comparable<Version>
 	 */
     public static Version parse(String version)
     {
-        return Strings.isNullOrEmpty(version)?new Version("1.0"):new Version(version);
+        return Strings.isNullOrEmpty(version)?
+        		new Version("1.0"):new Version(version);
     }
 
     /**

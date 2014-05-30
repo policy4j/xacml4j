@@ -71,5 +71,9 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 		}
 		return (o instanceof FunctionParamAnyAttributeSpec);
 	}
+	
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 
 }

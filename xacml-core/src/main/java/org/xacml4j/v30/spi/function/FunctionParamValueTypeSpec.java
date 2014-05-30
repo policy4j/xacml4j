@@ -117,4 +117,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		return type.equals(s.type);
 	}
 
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 }

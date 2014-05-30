@@ -310,6 +310,7 @@ public final class FunctionSpecBuilder
 
 			try
 			{
+				List<Expression> normalizedArgs = normalize(arguments);
 				if(context.isValidateFuncParamsAtRuntime()){
 					if(log.isDebugEnabled()){
 						log.debug("Validating " +
@@ -318,7 +319,7 @@ public final class FunctionSpecBuilder
 					validateParameters(arguments);
 				}
 				T result = (T)invocation.invoke(this, context,
-						isRequiresLazyParamEval()?arguments:evaluate(context, arguments));
+						isRequiresLazyParamEval()?normalizedArgs:evaluate(context, normalizedArgs));
 				if(log.isDebugEnabled()){
 					log.debug("Function=\"{}\" " +
 							"invocation result=\"{}\"", getId(), result);

@@ -149,4 +149,8 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 				Objects.equal(max, s.max) &&
 				paramType.equals(s.paramType);
 	}
+	
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 }

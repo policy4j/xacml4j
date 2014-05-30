@@ -65,4 +65,8 @@ final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 		}
 		return (o instanceof FunctionParamFuncReferenceSpec);
 	}
+	
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 }
