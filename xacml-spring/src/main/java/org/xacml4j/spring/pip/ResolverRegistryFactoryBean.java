@@ -2,9 +2,9 @@ package org.xacml4j.spring.pip;
 
 /*
  * #%L
- * Artagon XACML Spring 3.x support module
+ * Xacml4J Spring 3.x Support Module
  * %%
- * Copyright (C) 2009 - 2014 Artagon
+ * Copyright (C) 2009 - 2014 Xacml4J.org
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
