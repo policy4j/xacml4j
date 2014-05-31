@@ -10,12 +10,12 @@ package org.xacml4j.v20;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -219,7 +219,7 @@ public class Xacml20ConformanceTest
 		ResponseContext response = pdp.decide(request);
 		long end = System.currentTimeMillis();
 		System.out.printf("Executing test=\"%s\", " +
-				"execution took=\"%d\" miliseconds\n", name, (end - start));
+				"execution took=\"%d\" milliseconds\n", name, (end - start));
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		Xacml20TestUtility.assertResponse(getResponse(testPrefix, testCaseNum), actual);
 	}

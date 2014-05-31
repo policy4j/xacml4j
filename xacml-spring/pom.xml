@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>xacml-spring-support</artifactId>
 	<packaging>jar</packaging>
-	<name>Artagon XACML Spring 3.x support module</name>
+	<name>Xacml4J Spring 3.x Support Module</name>
 
 	<properties>
 		<spring.version>3.0.4.RELEASE</spring.version>

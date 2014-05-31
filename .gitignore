@@ -80,3 +80,10 @@
 /xacml-json/target
 /xacml-json/.settings
 /xacml-json/xacml-json.iml
+
+# /xacml-conformance-tests/
+/xacml-conformance-tests/.classpath
+/xacml-conformance-tests/.project
+/xacml-conformance-tests/target
+/xacml-conformance-tests/.settings
+/xacml-conformance-tests/xacml-conformance-tests.iml
