@@ -10,12 +10,12 @@ package org.xacml4j.v30.spi.function;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -42,6 +42,8 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 
 public final class FunctionSpecBuilder
 {
@@ -51,7 +53,7 @@ public final class FunctionSpecBuilder
 	private boolean hadVarArg = false;
 	private boolean hadOptional = false;
 	private boolean lazyArgumentEvaluation;
-	
+
 	private FunctionSpecBuilder(String functionId){
 		this(functionId, null);
 	}
@@ -60,36 +62,36 @@ public final class FunctionSpecBuilder
 		Preconditions.checkNotNull(functionId);
 		this.functionId = functionId;
 		this.legacyId = legacyId;
-		this.paramSpec = new LinkedList<FunctionParamSpec>();
+		paramSpec = new LinkedList<FunctionParamSpec>();
 	}
 
-	
+
 	public static FunctionSpecBuilder  builder(String functionId){
 		return builder(functionId, null);
 	}
-	
+
 	public static FunctionSpecBuilder  builder(String functionId, String legacyId){
 		return new FunctionSpecBuilder(functionId, legacyId);
 	}
 
 	public FunctionSpecBuilder funcRefParam()
 	{
-		this.paramSpec.add(new FunctionParamFuncReferenceSpec());
+		paramSpec.add(new FunctionParamFuncReferenceSpec());
 		return this;
 	}
 
 	public FunctionSpecBuilder param(ValueType type){
 		return param(type, null, false);
 	}
-	
+
 	public FunctionSpecBuilder optional(ValueType type){
 		return param(type, null, true);
 	}
-	
+
 	public FunctionSpecBuilder optional(ValueType type, ValueExpression defaultValue){
 		return param(type, defaultValue, true);
 	}
-	
+
 	public FunctionSpecBuilder param(ValueType type, ValueExpression defautlValue, boolean optional){
 		Preconditions.checkNotNull(type);
 		if(defautlValue != null && !optional){
@@ -107,27 +109,27 @@ public final class FunctionSpecBuilder
 		if(defautlValue != null && !optional){
 			throw new XacmlSyntaxException(
 					"Function=\"%s\" can not have default " +
-					"value and be required at the same time", 
+					"value and be required at the same time",
 					functionId);
 		}
-		if(paramSpec.size() == 0 && 
+		if(paramSpec.size() == 0 &&
 				defautlValue != null){
 			throw new XacmlSyntaxException(
-					"First parameter function=\"%s\" can not have default value", 
+					"First parameter function=\"%s\" can not have default value",
 					functionId);
 		}
-		if(paramSpec.size() == 0 && 
+		if(paramSpec.size() == 0 &&
 				optional){
 			throw new XacmlSyntaxException(
-					"First parameter function=\"%s\" can not be optional", 
+					"First parameter function=\"%s\" can not be optional",
 					functionId);
 		}
-		this.paramSpec.add(new FunctionParamValueTypeSpec(type, defautlValue, optional));
+		paramSpec.add(new FunctionParamValueTypeSpec(type, defautlValue, optional));
 		return this;
 	}
 
 	public FunctionSpecBuilder lazyArgEval(){
-		this.lazyArgumentEvaluation = true;
+		lazyArgumentEvaluation = true;
 		return this;
 	}
 
@@ -145,17 +147,17 @@ public final class FunctionSpecBuilder
 					"parameter after vararg parameter");
 		}
 		hadVarArg = true;
-		this.paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max, type));
+		paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max, type));
 		return this;
 	}
 
 	public FunctionSpecBuilder anyBag() {
-		this.paramSpec.add(new FunctionParamAnyBagSpec());
+		paramSpec.add(new FunctionParamAnyBagSpec());
 		return this;
 	}
 
 	public FunctionSpecBuilder anyAttribute() {
-		this.paramSpec.add(new FunctionParamAnyAttributeSpec());
+		paramSpec.add(new FunctionParamAnyAttributeSpec());
 		return this;
 	}
 
@@ -169,8 +171,8 @@ public final class FunctionSpecBuilder
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return new FunctionSpecImpl(functionId,
-				legacyId, 
-				paramSpec, 
+				legacyId,
+				paramSpec,
 				returnType,
 				invocation,
 				validator,
@@ -200,14 +202,14 @@ public final class FunctionSpecBuilder
 	{
 		private final static Logger log = LoggerFactory.getLogger(FunctionSpecImpl.class);
 
-		private String functionId;
-		private String legacyId;
-		private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
+		private final String functionId;
+		private final String legacyId;
+		private final List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
 		private boolean evaluateParameters = false;
 
-		private FunctionInvocation invocation;
-		private FunctionReturnTypeResolver resolver;
-		private FunctionParametersValidator validator;
+		private final FunctionInvocation invocation;
+		private final FunctionReturnTypeResolver resolver;
+		private final FunctionParametersValidator validator;
 
 		/**
 		 * Constructs function spec with given function
@@ -235,7 +237,7 @@ public final class FunctionSpecBuilder
 			Preconditions.checkNotNull(invocation);
 			Preconditions.checkNotNull(resolver);
 			this.functionId = functionId;
-			this.parameters.addAll(params);
+			parameters.addAll(params);
 			this.resolver = resolver;
 			this.validator = validator;
 			this.invocation = invocation;
@@ -266,12 +268,12 @@ public final class FunctionSpecBuilder
 		public  String getId(){
 			return functionId;
 		}
-		
+
 		@Override
 		public String getLegacyId() {
 			return legacyId;
 		}
-		
+
 		@Override
 		public final FunctionParamSpec getParamSpecAt(int index){
 			return parameters.get(index);
@@ -383,17 +385,93 @@ public final class FunctionSpecBuilder
 			}
 			return validateAdditional(arguments);
 		}
-		
+
 		/**
 		 * Normalizes function parameter list
-		 * 
-		 * @param params a list of function parameters
+		 *
+		 * @param actualParameters a list of function parameters
 		 * @return a normalized list of function parameters
 		 */
-		private List<Expression> normalize(List<Expression> params){
-			return params;
+		private List<Expression> normalize(List<Expression> actualParameters) {
+			ImmutableList.Builder<Expression> normalizedParamBuilder = ImmutableList.builder();
+			ListIterator<Expression> actualParameterIterator = actualParameters.listIterator();
+			ListIterator<FunctionParamSpec> formalParameterIterator = parameters.listIterator();
+
+			// the assumption is made that parameter types follow in mandatory, optional, variadic order
+			// and parameter type groups do not interleave
+			normalizeManadatoryParameters(actualParameterIterator, formalParameterIterator,
+					normalizedParamBuilder);
+			normalizeOptionalParameters(actualParameterIterator, formalParameterIterator,
+					normalizedParamBuilder);
+			normalizeVariadicParameters(actualParameterIterator, formalParameterIterator,
+					normalizedParamBuilder);
+
+			return normalizedParamBuilder.build();
 		}
-		
+
+		private void normalizeManadatoryParameters(ListIterator<Expression> actualParameterIterator,
+				ListIterator<FunctionParamSpec> formalParameterIterator,
+				Builder<Expression> normalizedParamBuilder) {
+			while (formalParameterIterator.hasNext()) {
+				FunctionParamSpec functionParamSpec = formalParameterIterator.next();
+				if (functionParamSpec.isOptional() || functionParamSpec.isVariadic()) {
+					formalParameterIterator.previous();
+					return;
+				}
+
+				if (actualParameterIterator.hasNext()) {
+					normalizedParamBuilder.add(actualParameterIterator.next());
+				}
+			}
+		}
+
+		private void normalizeOptionalParameters(ListIterator<Expression> actualParameterIterator,
+				ListIterator<FunctionParamSpec> formalParameterIterator,
+				Builder<Expression> normalizedParamBuilder) {
+			while (formalParameterIterator.hasNext()) {
+				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
+				if (!formalParameterSpec.isOptional()) {
+					formalParameterIterator.previous();
+					return;
+				}
+
+				Expression optionalParamValue = null;
+				if (actualParameterIterator.hasNext()) {
+					optionalParamValue = actualParameterIterator.next();
+				}
+
+				if (optionalParamValue == null) {
+					optionalParamValue = formalParameterSpec.getDefaultValue();
+				}
+
+				normalizedParamBuilder.add(optionalParamValue);
+			}
+		}
+
+		private void normalizeVariadicParameters(ListIterator<Expression> actualParameterIterator,
+				ListIterator<FunctionParamSpec> formalParameterIterator,
+				Builder<Expression> normalizedParamBuilder) {
+			while (formalParameterIterator.hasNext()) {
+				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
+				if (!formalParameterSpec.isVariadic()) {
+					formalParameterIterator.previous();
+					return;
+				}
+
+				Expression variadicParamValue = null;
+				if (actualParameterIterator.hasNext()) {
+					variadicParamValue = actualParameterIterator.next();
+				}
+
+				if (variadicParamValue == null) {
+					// TODO: assign empty collection of the specific type
+					variadicParamValue = null;
+				}
+
+				normalizedParamBuilder.add(variadicParamValue);
+			}
+		}
+
 		/**
 		 * Evaluates given array of function parameters
 		 *
