@@ -318,7 +318,7 @@ public final class FunctionSpecBuilder
 						log.debug("Validating " +
 								"function=\"{}\" parameters", functionId);
 					}
-					validateParameters(arguments);
+					doValidateNormalizedParameters(normalizedArgs);
 				}
 				T result = (T)invocation.invoke(this, context,
 						isRequiresLazyParamEval()?normalizedArgs:evaluate(context, normalizedArgs));
@@ -370,8 +370,13 @@ public final class FunctionSpecBuilder
 		@Override
 		public boolean validateParameters(List<Expression> arguments)
 		{
+			List<Expression> normalizedParameters = normalize(arguments);
+			return doValidateNormalizedParameters(normalizedParameters);
+		}
+
+		private boolean doValidateNormalizedParameters(List<Expression> normalizedParameters) {
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
-			ListIterator<Expression> expIt = normalize(arguments).listIterator();
+			ListIterator<Expression> expIt = normalizedParameters.listIterator();
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
@@ -383,7 +388,7 @@ public final class FunctionSpecBuilder
 					return false;
 				}
 			}
-			return validateAdditional(arguments);
+			return validateAdditional(normalizedParameters);
 		}
 
 		/**
@@ -393,46 +398,48 @@ public final class FunctionSpecBuilder
 		 * @return a normalized list of function parameters
 		 */
 		private List<Expression> normalize(List<Expression> actualParameters) {
-			ImmutableList.Builder<Expression> normalizedParamBuilder = ImmutableList.builder();
 			ListIterator<Expression> actualParameterIterator = actualParameters.listIterator();
 			ListIterator<FunctionParamSpec> formalParameterIterator = parameters.listIterator();
 
 			// the assumption is made that parameter types follow in mandatory, optional, variadic order
 			// and parameter type groups do not interleave
-			normalizeManadatoryParameters(actualParameterIterator, formalParameterIterator,
-					normalizedParamBuilder);
-			normalizeOptionalParameters(actualParameterIterator, formalParameterIterator,
-					normalizedParamBuilder);
-			normalizeVariadicParameters(actualParameterIterator, formalParameterIterator,
-					normalizedParamBuilder);
+			ImmutableList.Builder<Expression> normalizedParamBuilder = ImmutableList.builder();
+			normalizedParamBuilder = normalizeManadatoryParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParamBuilder);
+			normalizedParamBuilder = normalizeOptionalParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParamBuilder);
+			normalizedParamBuilder = normalizeVariadicParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParamBuilder);
 
 			return normalizedParamBuilder.build();
 		}
 
-		private void normalizeManadatoryParameters(ListIterator<Expression> actualParameterIterator,
+		private ImmutableList.Builder<Expression> normalizeManadatoryParameters(ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
 				Builder<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec functionParamSpec = formalParameterIterator.next();
 				if (functionParamSpec.isOptional() || functionParamSpec.isVariadic()) {
 					formalParameterIterator.previous();
-					return;
+					return normalizedParamBuilder;
 				}
 
 				if (actualParameterIterator.hasNext()) {
 					normalizedParamBuilder.add(actualParameterIterator.next());
 				}
 			}
+
+			return normalizedParamBuilder;
 		}
 
-		private void normalizeOptionalParameters(ListIterator<Expression> actualParameterIterator,
+		private ImmutableList.Builder<Expression> normalizeOptionalParameters(ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
 				Builder<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
 				if (!formalParameterSpec.isOptional()) {
 					formalParameterIterator.previous();
-					return;
+					return normalizedParamBuilder;
 				}
 
 				Expression optionalParamValue = null;
@@ -446,16 +453,18 @@ public final class FunctionSpecBuilder
 
 				normalizedParamBuilder.add(optionalParamValue);
 			}
+
+			return normalizedParamBuilder;
 		}
 
-		private void normalizeVariadicParameters(ListIterator<Expression> actualParameterIterator,
+		private ImmutableList.Builder<Expression> normalizeVariadicParameters(ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
 				Builder<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
 				if (!formalParameterSpec.isVariadic()) {
 					formalParameterIterator.previous();
-					return;
+					return normalizedParamBuilder;
 				}
 
 				Expression variadicParamValue = null;
@@ -470,6 +479,8 @@ public final class FunctionSpecBuilder
 
 				normalizedParamBuilder.add(variadicParamValue);
 			}
+
+			return normalizedParamBuilder;
 		}
 
 		/**
