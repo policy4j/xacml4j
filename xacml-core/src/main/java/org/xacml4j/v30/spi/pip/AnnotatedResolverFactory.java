@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
-import org.xacml4j.util.TypeToken;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -46,6 +45,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.reflect.TypeToken;
 
 class AnnotatedResolverFactory
 {
@@ -129,7 +129,7 @@ class AnnotatedResolverFactory
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
 		b.keys(info.getSecond());
-		TypeToken<?> returnType = TypeToken.get(m.getGenericReturnType());
+		TypeToken<?> returnType = TypeToken.of(m.getGenericReturnType());
 		if(log.isDebugEnabled()){
 			log.debug("Attribute resolver id=\"{}\" return type=\"{}\"",
 					d.id(), returnType.toString());
