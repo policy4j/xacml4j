@@ -99,6 +99,13 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 		boolean valid = true;
 		while(it.hasNext()){
 			Expression exp = it.next();
+			if(exp == null && 
+					min == 0){
+				return true;
+			}
+			if(exp == null && min >= 1){
+				return false;
+			}
 			ValueType expType = exp.getEvaluatesTo();
 			if(!expType.equals(paramType)){
 				log.debug("Expected type=\"{}\" but was type=\"{}\"",

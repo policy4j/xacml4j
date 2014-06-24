@@ -81,7 +81,7 @@ public class DefaultPolicyInformationPoint
 					log.debug("No matching resolver " +
 							"found for designator=\"{}\"", ref);
 				}
-				return ref.getDataType().emptyBag();
+				return null;
 			}
 			for(AttributeResolver r : resolvers)
 			{
@@ -129,18 +129,10 @@ public class DefaultPolicyInformationPoint
 					}
 					continue;
 				}
-				// cache values to the context
-				for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
-					BagOfAttributeExp v = attributes.get(k);
-					if(log.isDebugEnabled()){
-						log.debug("Caching desginator=\"{}\" " +
-								"value=\"{}\" to context", k, v);
-					}
-					context.setResolvedDesignatorValue(k, v);
-				}
 				// check if resolver
 				// descriptor allows long term caching
-				if(d.isCachable()){
+				if(d.isCachable() && 
+						!attributes.isEmpty()){
 					cache.putAttributes(rContext, attributes);
 				}
 				context.setDecisionCacheTTL(d.getPreferreredCacheTTL());
@@ -157,8 +149,12 @@ public class DefaultPolicyInformationPoint
 	}
 
 	private boolean isExpired(Content v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) /
-				1000000000L) >= v.getDescriptor().getPreferreredCacheTTL();
+		long duration = context.getTicker().read() - v.getTimestamp() / 1000000000L;
+		
+		if(log.isDebugEnabled()){
+			log.debug("Attribute set=\"{}\" age=\"{}\" in cache", v, duration);
+		}
+		return duration >= v.getDescriptor().getPreferreredCacheTTL();
 	}
 
 	@Override
@@ -211,7 +207,8 @@ public class DefaultPolicyInformationPoint
 		return registry;
 	}
 
-	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d)
+	private ResolverContext createContext(EvaluationContext context, 
+			ResolverDescriptor d)
 		throws EvaluationException
 	{
 		return new DefaultResolverContext(context, d);

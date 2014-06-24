@@ -24,7 +24,10 @@ package org.xacml4j.v30.policy.function;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.v30.spi.function.FunctionParamSpecVisitor;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.IntegerExp;
 

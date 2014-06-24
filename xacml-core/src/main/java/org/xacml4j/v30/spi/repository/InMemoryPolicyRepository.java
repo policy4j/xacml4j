@@ -24,7 +24,6 @@ package org.xacml4j.v30.spi.repository;
 
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentNavigableMap;

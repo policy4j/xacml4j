@@ -10,12 +10,12 @@ package org.xacml4j.v30.spi.function;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -137,11 +137,7 @@ public final class FunctionSpecBuilder
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
-		Preconditions.checkArgument(max - min > 1, "Max and min should be different at least by 1");
-		if(hadOptional){
-			throw new XacmlSyntaxException("Can't add vararg " +
-					"parameter after optional parameter");
-		}
+		Preconditions.checkArgument(max - min >= 1, "Max and min should be different at least by 1");
 		if(hadVarArg){
 			throw new XacmlSyntaxException("Can't add vararg " +
 					"parameter after vararg parameter");
@@ -318,7 +314,11 @@ public final class FunctionSpecBuilder
 						log.debug("Validating " +
 								"function=\"{}\" parameters", functionId);
 					}
-					doValidateNormalizedParameters(normalizedArgs);
+					if(!doValidateNormalizedParameters(normalizedArgs)){
+						throw new FunctionInvocationException(this, 
+								"Failed to validate function=\"%s\" parameters=\"%s\"", 
+								functionId, arguments);
+					}
 				}
 				T result = (T)invocation.invoke(this, context,
 						isRequiresLazyParamEval()?normalizedArgs:evaluate(context, normalizedArgs));
@@ -403,20 +403,21 @@ public final class FunctionSpecBuilder
 
 			// the assumption is made that parameter types follow in mandatory, optional, variadic order
 			// and parameter type groups do not interleave
-			ImmutableList.Builder<Expression> normalizedParamBuilder = ImmutableList.builder();
-			normalizedParamBuilder = normalizeManadatoryParameters(actualParameterIterator,
-					formalParameterIterator, normalizedParamBuilder);
-			normalizedParamBuilder = normalizeOptionalParameters(actualParameterIterator,
-					formalParameterIterator, normalizedParamBuilder);
-			normalizedParamBuilder = normalizeVariadicParameters(actualParameterIterator,
-					formalParameterIterator, normalizedParamBuilder);
+			List<Expression> normalizedParams = new LinkedList<Expression>();
+			normalizedParams = normalizeManadatoryParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParams);
+			normalizedParams = normalizeOptionalParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParams);
+			normalizedParams = normalizeVariadicParameters(actualParameterIterator,
+					formalParameterIterator, normalizedParams);
 
-			return normalizedParamBuilder.build();
+			return normalizedParams;
 		}
 
-		private ImmutableList.Builder<Expression> normalizeManadatoryParameters(ListIterator<Expression> actualParameterIterator,
+		private List<Expression> normalizeManadatoryParameters(
+				ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
-				Builder<Expression> normalizedParamBuilder) {
+				List<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec functionParamSpec = formalParameterIterator.next();
 				if (functionParamSpec.isOptional() || functionParamSpec.isVariadic()) {
@@ -432,9 +433,10 @@ public final class FunctionSpecBuilder
 			return normalizedParamBuilder;
 		}
 
-		private ImmutableList.Builder<Expression> normalizeOptionalParameters(ListIterator<Expression> actualParameterIterator,
+		private List<Expression> normalizeOptionalParameters(
+				ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
-				Builder<Expression> normalizedParamBuilder) {
+				List<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
 				if (!formalParameterSpec.isOptional()) {
@@ -457,9 +459,10 @@ public final class FunctionSpecBuilder
 			return normalizedParamBuilder;
 		}
 
-		private ImmutableList.Builder<Expression> normalizeVariadicParameters(ListIterator<Expression> actualParameterIterator,
+		private List<Expression> normalizeVariadicParameters(
+				ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
-				Builder<Expression> normalizedParamBuilder) {
+				List<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
 				if (!formalParameterSpec.isVariadic()) {

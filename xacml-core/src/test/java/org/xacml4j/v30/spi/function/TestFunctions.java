@@ -111,6 +111,9 @@ public class TestFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanExp ...values)
 		throws EvaluationException
 	{
+		if(values != null){
+			System.out.println(values.length);
+		}
 		return BooleanExp.valueOf(false);
 	}
 

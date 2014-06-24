@@ -152,10 +152,6 @@ public class DefaultPolicyInformationPointTest
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
 
-		context.setResolvedDesignatorValue(eq(a0), eq(StringExp.valueOf("v1").toBag()));
-		context.setResolvedDesignatorValue(eq(a1), eq(XacmlTypes.INTEGER.emptyBag()));
-
-
 		Capture<ResolverContext> resolverContext2 = new Capture<ResolverContext>();
 
 		cache.putAttributes(capture(resolverContext2), eq(result));
@@ -181,10 +177,6 @@ public class DefaultPolicyInformationPointTest
 		// attribute resolver found
 		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(
 				ImmutableList.of(resolver1, resolver2));
-
-
-
-
 
 		AttributeSet result1 = AttributeSet
 				.builder(descriptor1)
@@ -216,11 +208,6 @@ public class DefaultPolicyInformationPointTest
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
 
 		Capture<ResolverContext> cacheCtx3 = new Capture<ResolverContext>();
-
-		context.setResolvedDesignatorValue(eq(attr0.issuer(descriptor1WithIssuer.getIssuer()).build()),
-						eq(StringExp.valueOf("v1").toBag()));
-		context.setResolvedDesignatorValue(eq(attr1.issuer(descriptor1WithIssuer.getIssuer()).build()),
-				eq(XacmlTypes.INTEGER.emptyBag()));
 
 		cache.putAttributes(capture(cacheCtx3), eq(result2));
 		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferreredCacheTTL());
@@ -271,15 +258,6 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
 
-		context.setResolvedDesignatorValue(
-				attr0.issuer(descriptor1WithIssuer.getIssuer()).build(),
-				StringExp.valueOf("v1").toBag());
-
-		context.setResolvedDesignatorValue(
-				attr1.issuer(descriptor1WithIssuer.getIssuer()).build(),
-				XacmlTypes.INTEGER.emptyBag());
-
-
 		Capture<ResolverContext> ctx3 = new Capture<ResolverContext>();
 		cache.putAttributes(capture(ctx3), eq(result2));
 
@@ -317,14 +295,6 @@ public class DefaultPolicyInformationPointTest
 				.build();
 
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
-
-		context.setResolvedDesignatorValue(
-						attr0.issuer(descriptor1WithNoCache.getIssuer()).build(),
-						StringExp.valueOf("v1").toBag());
-
-		context.setResolvedDesignatorValue(
-						attr1.issuer(descriptor1WithNoCache.getIssuer()).build(),
-						XacmlTypes.INTEGER.emptyBag());
 
 		context.setDecisionCacheTTL(descriptor1WithNoCache.getPreferreredCacheTTL());
 		control.replay();
