@@ -42,7 +42,6 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 public final class FunctionSpecBuilder
@@ -445,7 +444,7 @@ public final class FunctionSpecBuilder
 					formalParameterIterator, normalizedParams);
 			
 			// Add rest of the format parameters to normalized list
-			//Iterators.addAll(normalizedParams, actualParameterIterator);
+			Iterators.addAll(normalizedParams, actualParameterIterator);
 			
 			return normalizedParams;
 		}
