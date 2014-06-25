@@ -108,14 +108,16 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			}
 			ValueType expType = exp.getEvaluatesTo();
 			if(!expType.equals(paramType)){
-				log.debug("Expected type=\"{}\" but was type=\"{}\"",
-						paramType, expType);
+				if(log.isDebugEnabled()){
+					log.debug("Expecting parameter of type=\"{}\" " +
+							"at index=\"{}\" found=\"{}\" valid=\"{}\"",
+							new Object[]{paramType, it.previousIndex(), expType, false});
+				}
 				valid = false;
 				break;
 			}
 			c++;
 		}
-		log.debug("Found \"{}\" parameters", c);
 		if(min != null){
 			valid &= c >= min;
 		}

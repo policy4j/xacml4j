@@ -42,8 +42,8 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 public final class FunctionSpecBuilder
 {
@@ -317,8 +317,12 @@ public final class FunctionSpecBuilder
 					if(!doValidateNormalizedParameters(normalizedArgs)){
 						throw new FunctionInvocationException(this, 
 								"Failed to validate function=\"%s\" parameters=\"%s\"", 
-								functionId, arguments);
+								functionId, normalizedArgs);
 					}
+				}
+				if(log.isDebugEnabled()){
+					log.debug("Invoking function=\"{}\" with params=\"{}\"", 
+							functionId, normalizedArgs);
 				}
 				T result = (T)invocation.invoke(this, context,
 						isRequiresLazyParamEval()?normalizedArgs:evaluate(context, normalizedArgs));
@@ -344,7 +348,12 @@ public final class FunctionSpecBuilder
 		public void validateParametersAndThrow(List<Expression> arguments) throws XacmlSyntaxException
 		{
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
-			ListIterator<Expression> expIt = arguments.listIterator();
+			List<Expression> normalizedParameters = normalize(arguments);
+			ListIterator<Expression> expIt = normalizedParameters.listIterator();
+			if(log.isDebugEnabled()){
+				log.debug("Function=\"{}\" normalized parameters=\"{}\"", 
+						functionId, normalizedParameters);
+			}
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
@@ -354,12 +363,18 @@ public final class FunctionSpecBuilder
 							"can't be used as function=\"%s\" parameter",
 							expIt.nextIndex() - 1, functionId);
 				}
-				if(!it.hasNext() &&
-						expIt.hasNext()){
+				if((!it.hasNext() &&
+						expIt.hasNext())){
 					throw new XacmlSyntaxException(
 							"Expression at index=\"%d\", " +
-							"can't be used as function=\"%s\" parameter",
-							expIt.nextIndex() - 1, functionId);
+							"can't be used as function=\"%s\" parameter, too many arguments",
+							expIt.nextIndex() - 1, functionId); 
+				}
+				
+				if((it.hasNext() &&
+						!expIt.hasNext())){
+					throw new XacmlSyntaxException(
+							"More arguments expected for function=\"%s\"", functionId); 
 				}
 			}
 			if(!validateAdditional(arguments)){
@@ -377,14 +392,31 @@ public final class FunctionSpecBuilder
 		private boolean doValidateNormalizedParameters(List<Expression> normalizedParameters) {
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
+			if(log.isDebugEnabled()){
+				log.debug("Function=\"{}\" normalized parameters=\"{}\"", 
+						functionId, normalizedParameters);
+			}
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
 				if(!p.validate(expIt)){
 					return false;
 				}
-				if(!it.hasNext() &&
+				if((it.hasNext() &&
+						!expIt.hasNext())){
+					if(log.isDebugEnabled()){
+						log.debug("Additional arguments are " +
+								"expected for function=\"{}\"",  functionId);
+					}
+					return false;
+				}
+				if(!it.hasNext() && 
 						expIt.hasNext()){
+					if(log.isDebugEnabled()){
+						log.debug("To many arguments=\"{}\", " +
+								"found for function=\"{}\"",  
+								normalizedParameters,  functionId);
+					}
 					return false;
 				}
 			}
@@ -401,7 +433,8 @@ public final class FunctionSpecBuilder
 			ListIterator<Expression> actualParameterIterator = actualParameters.listIterator();
 			ListIterator<FunctionParamSpec> formalParameterIterator = parameters.listIterator();
 
-			// the assumption is made that parameter types follow in mandatory, optional, variadic order
+			// the assumption is made that parameter types 
+			// follow in mandatory, optional, variadic order
 			// and parameter type groups do not interleave
 			List<Expression> normalizedParams = new LinkedList<Expression>();
 			normalizedParams = normalizeManadatoryParameters(actualParameterIterator,
@@ -410,7 +443,10 @@ public final class FunctionSpecBuilder
 					formalParameterIterator, normalizedParams);
 			normalizedParams = normalizeVariadicParameters(actualParameterIterator,
 					formalParameterIterator, normalizedParams);
-
+			
+			// Add rest of the format parameters to normalized list
+			//Iterators.addAll(normalizedParams, actualParameterIterator);
+			
 			return normalizedParams;
 		}
 
@@ -424,7 +460,6 @@ public final class FunctionSpecBuilder
 					formalParameterIterator.previous();
 					return normalizedParamBuilder;
 				}
-
 				if (actualParameterIterator.hasNext()) {
 					normalizedParamBuilder.add(actualParameterIterator.next());
 				}
@@ -469,20 +504,16 @@ public final class FunctionSpecBuilder
 					formalParameterIterator.previous();
 					return normalizedParamBuilder;
 				}
-
 				Expression variadicParamValue = null;
 				if (actualParameterIterator.hasNext()) {
 					variadicParamValue = actualParameterIterator.next();
 				}
-
 				if (variadicParamValue == null) {
-					// TODO: assign empty collection of the specific type
 					variadicParamValue = null;
 				}
 
 				normalizedParamBuilder.add(variadicParamValue);
 			}
-
 			return normalizedParamBuilder;
 		}
 

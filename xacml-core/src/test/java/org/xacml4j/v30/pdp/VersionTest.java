@@ -46,7 +46,7 @@ public class VersionTest
 		assertTrue(v1.equals(v2));
 		assertTrue(v1.equals(v3));
 		assertFalse(v1.equals(null));
-		assertFalse(v1.equals("1.0"));
+		assertFalse(v1.equals("1.0.0"));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class VersionTest
 	public void testDefaultVersion() throws XacmlSyntaxException
 	{
 		Version v = Version.parse(null);
-		assertEquals("1.0", v.getValue());
+		assertEquals("1.0.0", v.getValue());
 	}
 
 	@Test(expected=IllegalArgumentException.class)
