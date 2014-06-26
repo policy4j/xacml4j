@@ -117,12 +117,12 @@ public final class FunctionSpecBuilder
 					"First parameter function=\"%s\" can not have default value",
 					functionId);
 		}
-		if(paramSpec.size() == 0 &&
-				optional){
-			throw new XacmlSyntaxException(
-					"First parameter function=\"%s\" can not be optional",
-					functionId);
-		}
+//		if(paramSpec.size() == 0 &&
+//				optional){
+//			throw new XacmlSyntaxException(
+//					"First parameter function=\"%s\" can not be optional",
+//					functionId);
+//		}
 		paramSpec.add(new FunctionParamValueTypeSpec(type, defautlValue, optional));
 		return this;
 	}

@@ -38,6 +38,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -162,6 +163,65 @@ public class DefaultFunctionSpecTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
 				Arrays.<Expression>asList(BooleanExp.FALSE, BooleanExp.TRUE, null))).andReturn(BooleanExp.valueOf(false));
+		c.replay();
+		spec.invoke(context, params);
+		c.verify();
+	}
+	
+	@Test
+	public void test2OptionalParameters() throws EvaluationException
+	{
+		List<Expression> params = ImmutableList
+				.<Expression>builder()
+				.build();
+		FunctionSpec spec = b
+				.optional(XacmlTypes.INTEGER)
+				.optional(XacmlTypes.BOOLEAN, BooleanExp.TRUE)
+				.build(XacmlTypes.BOOLEAN, invocation);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		expect(invocation.invoke(spec, context, 
+				Arrays.<Expression>asList(null, BooleanExp.TRUE)))
+				.andReturn(BooleanExp.valueOf(false));
+		c.replay();
+		spec.invoke(context, params);
+		c.verify();
+	}
+	
+	@Test
+	public void test2OptionalParameters1() throws EvaluationException
+	{
+		List<Expression> params = ImmutableList
+				.<Expression>builder()
+				.add(IntegerExp.valueOf(10))
+				.add(BooleanExp.FALSE)
+				.build();
+		FunctionSpec spec = b
+				.optional(XacmlTypes.INTEGER)
+				.optional(XacmlTypes.BOOLEAN, BooleanExp.TRUE)
+				.build(XacmlTypes.BOOLEAN, invocation);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		expect(invocation.invoke(spec, context, 
+				Arrays.<Expression>asList(IntegerExp.valueOf(10), BooleanExp.FALSE)))
+				.andReturn(BooleanExp.valueOf(false));
+		c.replay();
+		spec.invoke(context, params);
+		c.verify();
+	}
+	
+	@Test
+	public void test2OptionalParametersTheSameType() throws EvaluationException
+	{
+		List<Expression> params = ImmutableList
+				.<Expression>builder()
+				.build();
+		FunctionSpec spec = b
+				.optional(XacmlTypes.INTEGER)
+				.optional(XacmlTypes.INTEGER, IntegerExp.valueOf(10))
+				.build(XacmlTypes.BOOLEAN, invocation);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		expect(invocation.invoke(spec, context, 
+				Arrays.<Expression>asList(null, IntegerExp.valueOf(10))))
+				.andReturn(BooleanExp.valueOf(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
