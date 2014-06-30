@@ -40,8 +40,7 @@ import com.google.common.collect.Iterables;
  * @author Giedrius Trumpickas
  */
 public class DefaultPolicyInformationPoint
-	implements PolicyInformationPoint
-{
+		implements PolicyInformationPoint {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 
 	private String id;
@@ -49,9 +48,8 @@ public class DefaultPolicyInformationPoint
 	private ResolverRegistry registry;
 
 	public DefaultPolicyInformationPoint(String id,
-			ResolverRegistry resolvers,
-			PolicyInformationPointCacheProvider cache)
-	{
+	                                     ResolverRegistry resolvers,
+	                                     PolicyInformationPointCacheProvider cache) {
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(resolvers);
 		Preconditions.checkNotNull(cache);
@@ -61,142 +59,141 @@ public class DefaultPolicyInformationPoint
 	}
 
 	@Override
-	public String getId(){
+	public String getId() {
 		return id;
 	}
 
 	@Override
 	public BagOfAttributeExp resolve(
 			final EvaluationContext context,
-			AttributeDesignatorKey ref) throws Exception
-	{
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
-					"designator=\"{}\"", ref);
-		}
-		Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
-		if(Iterables.isEmpty(resolvers)){
-			if(log.isDebugEnabled()){
-				log.debug("No matching resolver " +
-						"found for designator=\"{}\"", ref);
+			AttributeDesignatorKey ref) throws Exception {
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("Trying to resolve " +
+						"designator=\"{}\"", ref);
 			}
-			return ref.getDataType().emptyBag();
-		}
-		for(AttributeResolver r : resolvers)
-		{
-			AttributeResolverDescriptor d = r.getDescriptor();
-			Preconditions.checkState(d.canResolve(ref));
-			ResolverContext rContext = createContext(context, d);
-			AttributeSet attributes = null;
-			if(d.isCacheable()){
-				if(log.isDebugEnabled()){
-					log.debug("Trying to find resolver id=\"{}\" " +
-							"values in cache", d.getId());
+			Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
+			if (Iterables.isEmpty(resolvers)) {
+				if (log.isDebugEnabled()) {
+					log.debug("No matching resolver " +
+							"found for designator=\"{}\"", ref);
 				}
-				attributes = cache.getAttributes(rContext);
-				if(attributes != null &&
-						!isExpired(attributes, context)){
-					if(log.isDebugEnabled()){
-						log.debug("Found cached resolver id=\"{}\"" +
-								" values=\"{}\"", d.getId(), attributes);
+				return null;
+			}
+			for (AttributeResolver r : resolvers) {
+				AttributeResolverDescriptor d = r.getDescriptor();
+				Preconditions.checkState(d.canResolve(ref));
+				ResolverContext rContext = createContext(context, d);
+				AttributeSet attributes = null;
+				if (d.isCacheable()) {
+					if (log.isDebugEnabled()) {
+						log.debug("Trying to find resolver id=\"{}\" " +
+								"values in cache", d.getId());
 					}
-					return attributes.get(ref.getAttributeId());
+					attributes = cache.getAttributes(rContext);
+					if (attributes != null &&
+							!isExpired(attributes, context)) {
+						if (log.isDebugEnabled()) {
+							log.debug("Found cached resolver id=\"{}\"" +
+									" values=\"{}\"", d.getId(), attributes);
+						}
+						return attributes.get(ref.getAttributeId());
+					}
 				}
-			}
-			try{
-				if(log.isDebugEnabled()){
-					log.debug("Trying to resolve values with " +
-							"resolver id=\"{}\"", d.getId());
-				}
-				attributes = r.resolve(rContext);
-				if(attributes.isEmpty()){
-					if(log.isDebugEnabled()){
+				try {
+					if (log.isDebugEnabled()) {
+						log.debug("Trying to resolve values with " +
+								"resolver id=\"{}\"", d.getId());
+					}
+					attributes = r.resolve(rContext);
+					if (attributes.isEmpty()) {
+						if (log.isDebugEnabled()) {
+							log.debug("Resolver id=\"{}\" failed " +
+									"to resolve attributes", d.getId());
+						}
+						continue;
+					}
+					if (log.isDebugEnabled()) {
+						log.debug("Resolved attributes=\"{}\"",
+								attributes);
+					}
+				} catch (Exception e) {
+					if (log.isDebugEnabled()) {
 						log.debug("Resolver id=\"{}\" failed " +
 								"to resolve attributes", d.getId());
+						log.debug("Resolver threw an exception", e);
 					}
 					continue;
 				}
-				if(log.isDebugEnabled()){
-					log.debug("Resolved attributes=\"{}\"",
-							attributes);
+				// check if resolver
+				// descriptor allows long term caching
+				if (d.isCacheable() &&
+						!attributes.isEmpty()) {
+					cache.putAttributes(rContext, attributes);
 				}
-			}catch(Exception e){
-				if(log.isDebugEnabled()){
-					log.debug("Resolver id=\"{}\" failed " +
-								"to resolve attributes", d.getId());
-					log.debug("Resolver threw an exception", e);
-				}
-				continue;
+				context.setDecisionCacheTTL(d.getPreferredCacheTTL());
+				return attributes.get(ref.getAttributeId());
 			}
-			// cache values to the context
-			for(AttributeDesignatorKey k : attributes.getAttributeKeys()){
-				BagOfAttributeExp v = attributes.get(k);
-				if(log.isDebugEnabled()){
-					log.debug("Caching designator=\"{}\" value=\"{}\" to context",
-							k, v);
-				}
-				context.setResolvedDesignatorValue(k, v);
-			}
-			// check if resolver
-			// descriptor allows long term caching
-			if(d.isCacheable()){
-				cache.putAttributes(rContext, attributes);
-			}
-			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-			return attributes.get(ref.getAttributeId());
+			return ref.getDataType().emptyBag();
+		} finally {
 		}
-		return ref.getDataType().emptyBag();
 	}
 
-	private boolean isExpired(AttributeSet v, EvaluationContext context){
+	private boolean isExpired(AttributeSet v, EvaluationContext context) {
 		return ((context.getTicker().read() - v.getCreatedTime()) /
 				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
-	private boolean isExpired(Content v, EvaluationContext context){
-		return ((context.getTicker().read() - v.getTimestamp()) /
-				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
+	private boolean isExpired(Content v, EvaluationContext context) {
+		long duration = context.getTicker().read() - v.getTimestamp() / 1000000000L;
+
+		if (log.isDebugEnabled()) {
+			log.debug("Attribute set=\"{}\" age=\"{}\" in cache", v, duration);
+		}
+		return duration >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
 	@Override
 	public Node resolve(final EvaluationContext context,
-			CategoryId category)
-			throws Exception
-	{
-		ContentResolver r = registry.getMatchingContentResolver(context, category);
-		if(r == null){
-			return null;
-		}
-		ContentResolverDescriptor d = r.getDescriptor();
-		ResolverContext pipContext = createContext(context, d);
-		Content v = null;
-		if(d.isCacheable()){
-			v = cache.getContent(pipContext);
-			if(v != null &&
-					!isExpired(v, context)){
-				if(log.isDebugEnabled()){
-					log.debug("Found cached " +
-							"content=\"{}\"", v);
+	                    CategoryId category)
+			throws Exception {
+		try {
+			ContentResolver r = registry.getMatchingContentResolver(context, category);
+			if (r == null) {
+				return null;
+			}
+			ContentResolverDescriptor d = r.getDescriptor();
+			ResolverContext pipContext = createContext(context, d);
+			Content v = null;
+			if (d.isCacheable()) {
+				v = cache.getContent(pipContext);
+				if (v != null &&
+						!isExpired(v, context)) {
+					if (log.isDebugEnabled()) {
+						log.debug("Found cached " +
+								"content=\"{}\"", v);
+					}
+					return v.getContent();
 				}
-				return v.getContent();
 			}
-		}
-		try{
-			v = r.resolve(pipContext);
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Received error=\"{}\" " +
-						"while resolving content for category=\"{}\"",
-						e.getMessage(), category);
-				log.debug("Error stack trace", e);
+			try {
+				v = r.resolve(pipContext);
+			} catch (Exception e) {
+				if (log.isDebugEnabled()) {
+					log.debug("Received error=\"{}\" " +
+									"while resolving content for category=\"{}\"",
+							e.getMessage(), category);
+					log.debug("Error stack trace", e);
+				}
+				return null;
 			}
-			return null;
+			if (d.isCacheable()) {
+				cache.putContent(pipContext, v);
+			}
+			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
+			return v.getContent();
+		} finally {
 		}
-		if(d.isCacheable()){
-			cache.putContent(pipContext, v);
-		}
-		context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-		return v.getContent();
 
 	}
 
@@ -206,8 +203,7 @@ public class DefaultPolicyInformationPoint
 	}
 
 	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d)
-		throws EvaluationException
-	{
+			throws EvaluationException {
 		return new DefaultResolverContext(context, d);
 	}
 }

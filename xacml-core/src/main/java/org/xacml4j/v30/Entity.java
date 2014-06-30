@@ -50,8 +50,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 /**
- * An entity represents  a collection of {@link Attribute}
- * instances
+ * An entity represents a collection of related attributes
  *
  * @author Giedrius Trumpickas
  */

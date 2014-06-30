@@ -73,10 +73,9 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		ValueType expType = exp.getEvaluatesTo();
 		boolean valid = type.equals(expType);
 		if(log.isDebugEnabled()){
-			log.debug("Validating parameter at index=\"{}\" " +
-					"is valid=\"{}\"", it.previousIndex(), valid);
-			log.debug("Expecting parameter of type=\"{}\" found=\"{}\"",
-					type, expType);
+			log.debug("Expecting parameter of type=\"{}\" " +
+					"at index=\"{}\" found=\"{}\" valid=\"{}\"",
+					new Object[]{type, it.previousIndex(), expType, valid});
 		}
 		return valid;
 	}
@@ -117,4 +116,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		return type.equals(s.type);
 	}
 
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 }

@@ -102,7 +102,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testVarArgFunctionInvocation() throws Exception
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(5);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true).times(6);
 		replay(context);
 		FunctionSpec spec5 = f1.getFunction("test5VarArg");
 		FunctionSpec spec6 = f1.getFunction("test6VarArg");
@@ -110,6 +110,7 @@ public class AnnotationBasedFunctionFactoryTest
 		spec5.invoke(context, IntegerExp.valueOf(10));
 		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false));
 		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
+		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
 
 		spec6.invoke(context, IntegerExp.valueOf(10), IntegerExp.valueOf(10));
 		spec6.invoke(context, IntegerExp.valueOf(10), IntegerExp.valueOf(10), BooleanExp.valueOf(false));

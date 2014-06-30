@@ -99,16 +99,25 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 		boolean valid = true;
 		while(it.hasNext()){
 			Expression exp = it.next();
+			if(exp == null && 
+					min == 0){
+				return true;
+			}
+			if(exp == null && min >= 1){
+				return false;
+			}
 			ValueType expType = exp.getEvaluatesTo();
 			if(!expType.equals(paramType)){
-				log.debug("Expected type=\"{}\" but was type=\"{}\"",
-						paramType, expType);
+				if(log.isDebugEnabled()){
+					log.debug("Expecting parameter of type=\"{}\" " +
+							"at index=\"{}\" found=\"{}\" valid=\"{}\"",
+							new Object[]{paramType, it.previousIndex(), expType, false});
+				}
 				valid = false;
 				break;
 			}
 			c++;
 		}
-		log.debug("Found \"{}\" parameters", c);
 		if(min != null){
 			valid &= c >= min;
 		}
@@ -148,5 +157,9 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 		return Objects.equal(min, s.min) &&
 				Objects.equal(max, s.max) &&
 				paramType.equals(s.paramType);
+	}
+	
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
 	}
 }

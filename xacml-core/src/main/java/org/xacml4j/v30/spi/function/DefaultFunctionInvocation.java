@@ -37,6 +37,7 @@ import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 
 final class DefaultFunctionInvocation implements FunctionInvocation
 {
@@ -99,16 +100,21 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 					if(log.isDebugEnabled()){
 						log.debug("Number of variadic parameters=\"{}\"", size);
 					}
-					varArgArray = (Object[])Array.newInstance(
-							arguments.get(numOfParms - 1).getClass(), size);
-					copyInto(arguments, numOfParms - 1, varArgArray, 0, size);
+					Expression exp =  arguments.get(numOfParms - 1);
+					varArgArray = null;
+					if(exp != null){
+						varArgArray = (exp == null)?null:(Object[])Array.newInstance(
+								exp.getClass(), size);
+						copyInto(arguments, numOfParms - 1, varArgArray, 0, size);
+					}
 				}
 				params[params.length - 1] = varArgArray;
 			}
 			return invocation.invoke(params);
 		}
 		catch(Exception e){
-			throw new FunctionInvocationException(spec, e);
+			throw new FunctionInvocationException(spec, 
+					Throwables.getRootCause(e));
 		}
 	}
 

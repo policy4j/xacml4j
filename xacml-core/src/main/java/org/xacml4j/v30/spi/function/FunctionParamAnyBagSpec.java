@@ -72,4 +72,8 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 		}
 		return (o instanceof FunctionParamAnyBagSpec);
 	}
+	
+	public void accept(FunctionParamSpecVisitor v){
+		v.visit(this);
+	}
 }

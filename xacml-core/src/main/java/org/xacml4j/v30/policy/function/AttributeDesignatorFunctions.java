@@ -50,8 +50,9 @@ import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
-@XacmlFunctionProvider(description="Attribute designator functions")
+@XacmlFunctionProvider(description="Attribute designator functions for XACML Entity type")
 public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 {
 	
@@ -65,6 +66,8 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"})BooleanExp mustBePresent,
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp issuer)
 	{
+		Preconditions.checkArgument(categoryOrEntity.getType().equals(XacmlTypes.ENTITY) || 
+				categoryOrEntity.getType().equals(XacmlTypes.ANYURI));
 		AttributeExpType type = getType(dataType);
 		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){
 			Entity entity = ((EntityExp)categoryOrEntity).getValue();

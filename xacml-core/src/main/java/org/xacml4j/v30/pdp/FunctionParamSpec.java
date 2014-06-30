@@ -26,6 +26,7 @@ import java.util.ListIterator;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.spi.function.FunctionParamSpecVisitor;
 
 
 public interface FunctionParamSpec
@@ -65,4 +66,6 @@ public interface FunctionParamSpec
 	 * variadic
 	 */
 	boolean isVariadic();
+	
+	void accept(FunctionParamSpecVisitor v);
 }

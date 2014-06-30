@@ -24,7 +24,6 @@ package org.xacml4j.v30.spi.repository;
 
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentNavigableMap;
@@ -44,6 +43,7 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 
 /**
  * An implementation of {@link AbstractPolicyRepository} which keeps
@@ -197,7 +197,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			final VersionMatch latest)
 	{
 		if(c == null){
-			return Collections.emptyList();
+			return ImmutableList.of();
 		}
 		return Collections2.filter(c, new Predicate<T>() {
 			@Override

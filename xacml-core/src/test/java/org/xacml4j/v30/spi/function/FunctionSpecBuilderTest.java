@@ -27,6 +27,8 @@ import static org.easymock.EasyMock.createControl;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,12 +72,13 @@ public class FunctionSpecBuilderTest
 		b.varArg(XacmlTypes.STRING, 0, 5);
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
 	public void testAddVarArgAfterOptional(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.optional(XacmlTypes.STRING);
 		b.varArg(XacmlTypes.STRING, 0, 5);
+		FunctionSpec f = b.build(XacmlTypes.BOOLEAN, impl);
+		assertTrue(f.isVariadic());
 	}
 	
 	@Test(expected=XacmlSyntaxException.class)
@@ -128,12 +131,16 @@ public class FunctionSpecBuilderTest
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specDiffTypeArgs.validateParameters(b.build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10L)).build()));
+		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10L)).build()));
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(12L)).build()));
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
 		b = ImmutableList.builder();
-		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10)).add(IntegerExp.valueOf(11)).build()));
+		List<Expression> exp1 = b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build();
+		assertTrue(specDiffTypeArgs.validateParameters(exp1));
+		List<Expression> exp2 = b
+				.add(IntegerExp.valueOf(10))
+				.add(IntegerExp.valueOf(11)).build();
+		assertFalse(specDiffTypeArgs.validateParameters(exp2));
 		b = ImmutableList.builder();
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
 		c.verify();

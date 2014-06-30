@@ -24,14 +24,18 @@ package org.xacml4j.v30.policy.function;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
@@ -39,13 +43,15 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.xpath.XPathProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.types.EntityExp;
+import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class AttributeDesignatorFunctionTest
 {
 
 
-	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+	private final static String TEST_XML = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 			"xmlns:md=\"urn:example:med:schemas:record\">" +
 			"<md:patient>" +
 			"<md:patientDoB>1992-03-21</md:patientDoB>" +
@@ -58,28 +64,57 @@ public class AttributeDesignatorFunctionTest
 	private FunctionProvider provider;
 	private IMocksControl c;
 	private Node content;
+	private EntityExp entity;
 
 	@Before
 	public void init() throws Exception{
 		this.c = createControl();
 		this.context = c.createMock(EvaluationContext.class);
-		this.content = DOMUtil.stringToNode(testXml);
+		this.content = DOMUtil.stringToNode(TEST_XML);
 		this.provider = new AnnotationBasedFunctionProvider(AttributeDesignatorFunctions.class);
+		this.entity = EntityExp.valueOf(
+				Entity.builder()
+				.content(content)
+				.attribute(Attribute
+						.builder("testId")
+						.value(StringExp.valueOf("aaaa"))
+						.build())
+				.build());
 	}
 
 	@Test
-	@Ignore
-	public void testDesignatorFunction(){
+	public void testDesignatorFunctionWithCategoryId(){
 		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
-
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		expect(context.resolve(AttributeDesignatorKey
+				.builder()
+				.category(Categories.SUBJECT_ACCESS)
+				.dataType(XacmlTypes.STRING)
+				.attributeId("testId")
+				.build())).andReturn(StringExp.valueOf("aaaa").toBag());
 		c.replay();
-		func.invoke(context,
+		BagOfAttributeExp v = func.invoke(context,
 				AnyURIExp.valueOf(Categories.SUBJECT_ACCESS.getId()),
 				AnyURIExp.valueOf("testId"),
 				AnyURIExp.valueOf(XacmlTypes.STRING.getDataTypeId()),
 				BooleanExp.valueOf(false),
 				null);
+		assertEquals(StringExp.valueOf("aaaa").toBag(), v);
+		c.verify();
+	}
+
+	@Test
+	public void testDesignatorFunctionWithEntity(){
+		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		c.replay();
+		BagOfAttributeExp v = func.invoke(context,
+				entity,
+				AnyURIExp.valueOf("testId"),
+				AnyURIExp.valueOf(XacmlTypes.STRING.getDataTypeId()),
+				BooleanExp.valueOf(false),
+				null);
+		assertEquals(StringExp.valueOf("aaaa").toBag(), v);
 		c.verify();
 	}
 }

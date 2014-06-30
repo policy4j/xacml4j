@@ -153,9 +153,9 @@ public final class Version implements Comparable<Version>
 	 * @param version a version
 	 * @return {@link Version} instance
 	 */
-    public static Version parse(String version)
-    {
-        return Strings.isNullOrEmpty(version)?new Version("1.0"):new Version(version);
+    public static Version parse(String version){
+        return Strings.isNullOrEmpty(version)?
+        		new Version("1.0.0"):new Version(version);
     }
 
     /**

@@ -389,7 +389,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 			log.debug("Resolved " +
 					"designator=\"{}\" to value=\"{}\"", ref, v);
 		}
-		this.designCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
+		this.designCache.put(ref, v);
 		return v;
 	}
 
@@ -412,7 +412,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 			log.debug("Resolved " +
 					"selector=\"{}\" to value=\"{}\"", ref, v);
 		}
-		this.selectCache.put(ref, (v == null)?ref.getDataType().emptyBag():v);
+		this.selectCache.put(ref, v);
 		return v;
 	}
 
