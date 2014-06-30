@@ -32,7 +32,7 @@
 		<easymock.version>3.1</easymock.version>
 		<guava.version>13.0.1</guava.version>
 		<xml.resolver.version>1.2</xml.resolver.version>
-		<yammer.metrics.version>3.0.1</yammer.metrics.version>
+		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
 	</properties>
@@ -129,12 +129,6 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>2.4</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
