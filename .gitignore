@@ -1,0 +1,43 @@
+# /
+/.classpath
+/.project
+/.settings
+/target
+/.idea/
+/xacml.iml
+
+# /xacml-core/
+/xacml-core/.classpath
+/xacml-core/.project
+/xacml-core/.settings
+/xacml-core/target
+/xacml-core/xacml-core.iml
+
+# /xacml-spring/
+/xacml-spring/target
+/xacml-spring/.classpath
+/xacml-spring/.project
+/xacml-spring/.settings
+/xacml-spring/.springBeans
+/xacml-spring/xacml-spring.iml
+
+# /xacml-test/
+/xacml-test/.project
+/xacml-test/.classpath
+/xacml-test/.settings
+/xacml-test/target
+/xacml-test/xacml-test.iml
+
+# /xacml-json/
+/xacml-json/.classpath
+/xacml-json/.project
+/xacml-json/target
+/xacml-json/.settings
+/xacml-json/xacml-json.iml
+
+# /xacml-conformance-tests/
+/xacml-conformance-tests/.classpath
+/xacml-conformance-tests/.project
+/xacml-conformance-tests/target
+/xacml-conformance-tests/.settings
+/xacml-conformance-tests/xacml-conformance-tests.iml
