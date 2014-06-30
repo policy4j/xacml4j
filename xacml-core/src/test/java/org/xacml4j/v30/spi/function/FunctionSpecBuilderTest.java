@@ -72,12 +72,13 @@ public class FunctionSpecBuilderTest
 		b.varArg(XacmlTypes.STRING, 0, 5);
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
 	public void testAddVarArgAfterOptional(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.optional(XacmlTypes.STRING);
 		b.varArg(XacmlTypes.STRING, 0, 5);
+		FunctionSpec f = b.build(XacmlTypes.BOOLEAN, impl);
+		assertTrue(f.isVariadic());
 	}
 	
 	@Test(expected=XacmlSyntaxException.class)

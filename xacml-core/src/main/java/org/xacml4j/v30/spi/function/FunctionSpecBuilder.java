@@ -161,6 +161,8 @@ public final class FunctionSpecBuilder
 		return new FunctionSpecImpl(functionId,
 				legacyId,paramSpec, returnType, invocation, lazyArgumentEvaluation);
 	}
+	
+	
 
 	public FunctionSpec build(FunctionReturnTypeResolver returnType,
 			FunctionParametersValidator validator,
@@ -180,7 +182,7 @@ public final class FunctionSpecBuilder
 				new StaticFunctionReturnTypeResolver(returnType),
 				invocation);
 	}
-
+	
 	public FunctionSpec build(ValueType returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
