@@ -27,17 +27,17 @@
 	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d%d{Z} [%X{requestId}][%t] %-5p [%c{2.}] %m%n" />
+			<param name="ConversionPattern" value="%d%d{Z} [%X{requestId}][%t] %-5p [%c{1}] %m%n" />
 		</layout>
 	</appender>
 
 	<category name="org.xacml4j.v30">
-		<priority value="WARN" />
+		<priority value="DEBUG" />
 	</category>
 
 
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="Console" />
 	</root>
 
