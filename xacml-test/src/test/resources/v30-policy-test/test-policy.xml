@@ -26,7 +26,7 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
 		PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIC058:policy"
-		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit"
 		Version="1.0">
 	<Description>
 		Policy for Conformance Test IIC058.
@@ -75,30 +75,6 @@
 		</ObligationExpression>
 		<ObligationExpression
 				ObligationId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2"
-				FulfillOn="Permit">
-			<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeValue>
-			</AttributeAssignmentExpression>
-			<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment2</AttributeValue>
-			</AttributeAssignmentExpression>
-		</ObligationExpression>
-		<ObligationExpression
-				ObligationId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-3"
-				FulfillOn="Deny">
-			<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeValue>
-			</AttributeAssignmentExpression>
-			<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment2</AttributeValue>
-			</AttributeAssignmentExpression>
-		</ObligationExpression>
-		<ObligationExpression
-				ObligationId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-4"
 				FulfillOn="Deny">
 			<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1">
@@ -110,4 +86,30 @@
 			</AttributeAssignmentExpression>
 		</ObligationExpression>
 	</ObligationExpressions>
+	<AdviceExpressions>
+		<AdviceExpression
+				AdviceId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:advice-1"
+				AppliesTo="Permit">
+			<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment2</AttributeValue>
+			</AttributeAssignmentExpression>
+		</AdviceExpression>
+		<AdviceExpression
+				AdviceId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:advice-2"
+				AppliesTo="Deny">
+			<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">assignment2</AttributeValue>
+			</AttributeAssignmentExpression>
+		</AdviceExpression>
+	</AdviceExpressions>
 </Policy>

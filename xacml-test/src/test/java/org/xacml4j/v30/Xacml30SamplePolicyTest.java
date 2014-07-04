@@ -41,7 +41,12 @@ public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 	}
 
 	@Test
-	public void testResponse1() throws Exception {
-		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
+	public void testPermitResponse() throws Exception {
+		verifyXacml30Response(pdp, "v30-policy-test/test-permit-req.xml", "v30-policy-test/test-permit-resp.xml");
+	}
+
+	@Test
+	public void testDenyResponse() throws Exception {
+		verifyXacml30Response(pdp, "v30-policy-test/test-deny-req.xml", "v30-policy-test/test-deny-resp.xml");
 	}
 }
