@@ -40,7 +40,7 @@
 		</layout>
 	</appender>
 
-	<category name="org.xacml4j.v30">
+	<category name="org.xacml4j.v30" additivity="false">
 		<priority value="DEBUG" />
 		<appender-ref ref="Console" />
 	</category>
