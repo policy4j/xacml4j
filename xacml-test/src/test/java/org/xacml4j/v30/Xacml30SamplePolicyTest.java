@@ -10,12 +10,12 @@ package org.xacml4j.v30;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -23,31 +23,25 @@ package org.xacml4j.v30;
  */
 
 
+import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
-import org.xacml4j.v30.types.BooleanExp;
 
 
 public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 {
-	@Test
-	public void testCPNICompliance() throws Exception {
-		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")
-				.resolver(ExpectedAttributeResolverBuilder
-								.builder("test", Categories.SUBJECT_ACCESS)
-									.value("urn:comcast:names:1.0:subscriber:residential:cpni-secret-compliant", BooleanExp.valueOf(true))
-									.build())
-					.policyFromClasspath("v30-policy-test/policyset.xml")
-					.build();
+	private PolicyDecisionPoint pdp;
 
-		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
+	@Before
+	public void init() throws Exception{
+
+		this.pdp = builder(
+				"urn:oasis:names:tc:xacml:2.0:conformance-test:IIC058:policy", "1.0")
+				.policy(getPolicy("v30-policy-test/test-policy.xml")).build();
 	}
 
 	@Test
-	public void testCPNIComplianceAttrsInRequest() throws Exception {
-		PolicyDecisionPoint pdp = builder("urn:cima:policy:compliance:cpni", "1.0")
-				.policyFromClasspath("v30-policy-test/policyset.xml")
-				.build();
-		verifyXacml30Response(pdp, "v30-policy-test/test-req2.xml", "v30-policy-test/test-resp2.xml");
+	public void testResponse1() throws Exception {
+		verifyXacml30Response(pdp, "v30-policy-test/test-req.xml", "v30-policy-test/test-resp.xml");
 	}
 }

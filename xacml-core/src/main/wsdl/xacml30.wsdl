@@ -47,10 +47,10 @@
 
    <wsdl:service name="Xacml30SoapHttpService">
       <wsdl:port name="Xacml30SoapPrivateEndpoint" binding="tns:Xacml30SoapHttpBinding">
-         <soap:address location="https://login.comcast.net/xacml/30/private/soap"/>
+         <soap:address location="https://test.xacml4j.org/xacml/30/private/soap"/>
       </wsdl:port>
       <wsdl:port name="Xacml30SoapPublicEndpoint" binding="tns:Xacml30SoapHttpBinding">
-         <soap:address location="https://login.comcast.net/xacml/30/public/soap"/>
+         <soap:address location="https://test.xacml4j.org/xacml/30/public/soap"/>
       </wsdl:port>
    </wsdl:service>
 
