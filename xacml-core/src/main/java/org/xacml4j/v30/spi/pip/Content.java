@@ -73,13 +73,13 @@ public final class Content
 		private ContentResolverDescriptor d;
 		private Node content;
 
-		public Builder content(Node node){
-			Preconditions.checkNotNull(content);
+		public Builder content(Node node) {
+			Preconditions.checkNotNull(node);
 			this.content = node;
 			return this;
 		}
 
-		public Builder ticker(Ticker ticker){
+		public Builder ticker(Ticker ticker) {
 			this.ticker = ticker;
 			return this;
 		}
