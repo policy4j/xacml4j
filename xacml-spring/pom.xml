@@ -11,7 +11,7 @@
 	<name>Xacml4J Spring 3.x Support Module</name>
 
 	<properties>
-		<spring.version>3.0.4.RELEASE</spring.version>
+		<spring.version>3.0.7.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -19,11 +19,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>xacml-core</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -40,6 +35,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
