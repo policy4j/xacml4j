@@ -31,13 +31,8 @@
 		</layout>
 	</appender>
 
-	<category name="org.xacml4j.v30">
-		<priority value="DEBUG" />
-	</category>
-
-
 	<root>
-		<priority value="DEBUG" />
+		<priority value="INFO" />
 		<appender-ref ref="Console" />
 	</root>
 

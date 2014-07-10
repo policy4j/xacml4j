@@ -24,11 +24,15 @@ package org.xacml4j.v20;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.pdp.MetricsSupport;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
@@ -40,6 +44,7 @@ import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
+import com.google.common.io.Closeables;
 
 public class RSA2008InteropTest extends XacmlPolicyTestSupport
 {
@@ -64,15 +69,21 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				.withDefaultAlgorithms()
 				.create());
 
-		repository.importPolicy(_getPolicy("XacmlPolicySet-01-top-level.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02a-CDA.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02b-N.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02d-prog-note.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02e-MA.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-02f-emergency.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"));
-		repository.importPolicy(_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		List<InputStream> policyStreams = Arrays.asList(
+			_getPolicy("XacmlPolicySet-01-top-level.xml"),
+			_getPolicy("XacmlPolicySet-02a-CDA.xml"),
+			_getPolicy("XacmlPolicySet-02b-N.xml"),
+			_getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"),
+			_getPolicy("XacmlPolicySet-02d-prog-note.xml"),
+			_getPolicy("XacmlPolicySet-02e-MA.xml"),
+			_getPolicy("XacmlPolicySet-02f-emergency.xml"),
+			_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
+			_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+
+		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
+		for (InputStream policyStream : policyStreams) {
+			policies.add(repository.importPolicy(policyStream));
+		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.policyRepository(repository)
@@ -81,9 +92,12 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 					.builder("testPip")
 					.defaultResolvers()
 					.build())
-			.rootPolicy(repository.importPolicy(_getPolicy("XacmlPolicySet-01-top-level.xml")))
+			.rootPolicy(policies.get(0))
 			.build();
 
+		for (InputStream policyStream : policyStreams) {
+			Closeables.closeQuietly(policyStream);
+		}
 	}
 
 	@Test
