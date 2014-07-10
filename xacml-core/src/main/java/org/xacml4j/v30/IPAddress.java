@@ -216,20 +216,18 @@ public class IPAddress implements Serializable
         return b.toString();
 	}
 
-	public static class Builder
-	{
+	public static class Builder {
 		private InetAddress addr;
 		private InetAddress mask;
 		private PortRange range = PortRange.getAnyPort();
 
-		Builder address(InetAddress address){
+		public Builder address(InetAddress address){
 			this.addr = address;
 			return this;
 		}
 
 		public Builder address(String address){
-			this.addr = IPAddressUtils.parseAddress(address);
-			return this;
+			return address(IPAddressUtils.parseAddress(address));
 		}
 
 		public Builder mask(InetAddress mask){
@@ -238,8 +236,7 @@ public class IPAddress implements Serializable
 		}
 
 		public Builder mask(String mask){
-			this.mask = IPAddressUtils.parseAddress(mask);
-			return this;
+			return mask(IPAddressUtils.parseAddress(mask));
 		}
 
 		public Builder portRange(PortRange range){

@@ -264,7 +264,7 @@ public final class BagOfAttributeExp
 	 * value from a given bag
 	 *
 	 * @param <T> attribute expression type
-	 * @param v a bag og values
+	 * @param v a bag of values
 	 * @return a single value or {@code null}
 	 * if a given bag is {@code null} or empty
 	 */
