@@ -47,6 +47,7 @@ import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.Closeables;
 
 public class XacmlPolicyTestSupport {
 	protected final Logger log = LoggerFactory.getLogger(XacmlPolicyTestSupport.class);
@@ -123,19 +124,43 @@ public class XacmlPolicyTestSupport {
 	}
 
 	protected ResponseContext getXacml30Response(String resourcePath) throws Exception {
-		return responseUnmarshaller.unmarshal(getResource(resourcePath));
+		InputStream in = null;
+		try {
+			in = getResource(resourcePath);
+			return responseUnmarshaller.unmarshal(getResource(resourcePath));
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
 	protected ResponseContext getXacml20Response(String resourcePath) throws Exception {
-		return xacml20ResponseUnmarshaller.unmarshal(getResource(resourcePath));
+		InputStream in = null;
+		try {
+			in = getResource(resourcePath);
+			return xacml20ResponseUnmarshaller.unmarshal(in);
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
 	protected RequestContext getXacml20Request(String path) throws Exception {
-		return xacml20RequestUnmarshaller.unmarshal(getResource(path));
+		InputStream in = null;
+		try {
+			in = getResource(path);
+			return xacml20RequestUnmarshaller.unmarshal(in);
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
 	protected RequestContext getXacml30Request(String path) throws Exception {
-		return requestUnmarshaller.unmarshal(getResource(path));
+		InputStream in = null;
+		try {
+			in = getResource(path);
+			return requestUnmarshaller.unmarshal(in);
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
 	public static void assertResponse(ResponseContext resp1,
@@ -263,7 +288,7 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
-		public Builder defaultFunctions(){
+		public Builder defaultFunctions() {
 			functionProviderBuilder.defaultFunctions();
 			return this;
 		}
@@ -293,7 +318,7 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
-		public Builder policyFromClasspath(String path ){
+		public Builder policyFromClasspath(String path){
 			InputStream in = getPolicy(path);
 			this.policies.add(in);
 			return this;
@@ -315,8 +340,9 @@ public class XacmlPolicyTestSupport {
 					repositoryId,
 					functionProviderBuilder.build(),
 					decisionAlgoProviderBuilder.create());
-			for(InputStream in : policies){
+			for (InputStream in : policies) {
 				repository.importPolicy(in);
+				Closeables.close(in, false);
 			}
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)

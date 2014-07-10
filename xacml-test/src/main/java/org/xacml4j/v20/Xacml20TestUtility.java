@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,6 +44,8 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
+
+import com.google.common.io.Closeables;
 
 
 public class Xacml20TestUtility
@@ -77,8 +80,7 @@ public class Xacml20TestUtility
 
 	public static void assertObligations(ObligationsType a, ObligationsType b)
 	{
-		if(a == null &&
-				b == null){
+		if(a == null && b == null){
 			return;
 		}
 		List<ObligationType> oa = a.getObligation();
@@ -143,19 +145,28 @@ public class Xacml20TestUtility
 	@SuppressWarnings("unchecked")
 	public static ResponseType getResponse(String resourcePath) throws Exception
 	{
-		InputStream in = getClasspathResource(resourcePath);
-		assertNotNull(in);
-		return ((JAXBElement<ResponseType>)context.createUnmarshaller().unmarshal(in)).getValue();
+		InputStream in = null;
+		try {
+			in = getClasspathResource(resourcePath);
+			assertNotNull(in);
+			return ((JAXBElement<ResponseType>) context.createUnmarshaller().unmarshal(in)).getValue();
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
 	public static RequestContext getRequest(String resourcePath) throws Exception {
-		return requestUnmarshaller.unmarshal(getClasspathResource(resourcePath));
+		InputStream in = null;
+		try {
+			in = getClasspathResource(resourcePath);
+			return requestUnmarshaller.unmarshal(in);
+		} finally {
+			Closeables.closeQuietly(in);
+		}
 	}
 
-	public static InputStream getClasspathResource(String resourcePath) throws Exception
-	{
+	public static InputStream getClasspathResource(String resourcePath) throws Exception {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		return cl.getResourceAsStream(resourcePath);
 	}
-
 }
