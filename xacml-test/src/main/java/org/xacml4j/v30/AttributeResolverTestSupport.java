@@ -32,17 +32,17 @@ public class AttributeResolverTestSupport {
 
 	protected <T extends AttributeExpType> void checkHasAttribute(
 			Map<String, BagOfAttributeExp> v, String attributeName,
-			AttributeExp ...values) {
+			T type, Object ...values) {
 		BagOfAttributeExp bag = v.get(attributeName);
-		checkHasValues(bag, values);
+		checkHasValues(bag, type, values);
 	}
 
 	protected <T extends AttributeExpType> void checkHasValues(BagOfAttributeExp bag,
-			AttributeExp ...values) {
+			T type, Object ...values) {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
-		for(AttributeExp value: values) {
-			assertTrue(bag.contains(value));
+		for(Object value: values) {
+			assertTrue(bag.contains(type.create(value)));
 		}
 	}
 }

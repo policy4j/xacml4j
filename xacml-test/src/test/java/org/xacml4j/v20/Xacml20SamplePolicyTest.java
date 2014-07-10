@@ -44,5 +44,4 @@ public class Xacml20SamplePolicyTest extends XacmlPolicyTestSupport
 	public void testResponse1() throws Exception {
 		verifyXacml20Response(pdp, "v20-policy-test/test-req.xml", "v20-policy-test/test-res.xml");
 	}
-
 }

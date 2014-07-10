@@ -51,7 +51,7 @@ public class StringConversionFunctions
 		return v.toLowerCase();
 	}
 
-	@XacmlFuncSpec(id="urn:artagon:names:tc:xacml:1.0:function:string-normalize-to-upper-case")
+	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:string-normalize-to-upper-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringExp normalizeToUpperCase(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)

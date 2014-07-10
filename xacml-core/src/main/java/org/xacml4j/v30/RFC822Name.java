@@ -161,7 +161,6 @@ public final class RFC822Name implements Serializable
 			VALID_PATTERN = Pattern.compile(PATTERN_STRING);
 		} catch(PatternSyntaxException e) {
 			LoggerFactory.getLogger(RFC822Name.class).error("Can not parse Email address pattern", e);
-			e.printStackTrace();
 			throw e;
 		}
 	}

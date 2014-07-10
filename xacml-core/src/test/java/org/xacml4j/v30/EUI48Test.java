@@ -1131,7 +1131,8 @@ public class EUI48Test {
 	public void testFromInterface() throws Exception {
 		boolean loopbacksOnly = true;
 		for(Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-			loopbacksOnly &= en.nextElement().isLoopback();
+			NetworkInterface ni = en.nextElement();
+			loopbacksOnly &= ni.isLoopback() || ni.getHardwareAddress() == null;
 		}
 
 		if (!loopbacksOnly) {

@@ -9,12 +9,12 @@
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of the
   License, or (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Lesser Public License for more details.
-  
+
   You should have received a copy of the GNU General Lesser Public
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -29,7 +29,7 @@
 	xmlns:xacml-spring="http://xacml4j.org/schema/xacml/spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-						http://xacml4j.org/schema/xacml/spring http://xacml4j.org/schema/xacml/spring/xacmlj-spring.xsd">
+						http://xacml4j.org/schema/xacml/spring http://xacml4j.org/schema/xacml/spring/xacml4j-spring.xsd">
 
  	<beans:bean id="testInstance" class="org.xacml4j.spring.TestInstanceFunctions"/>
 

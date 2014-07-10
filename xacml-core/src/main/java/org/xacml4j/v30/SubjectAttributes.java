@@ -73,7 +73,7 @@ public enum SubjectAttributes
 	 * This identifier indicates an identifier for subject's
 	 * current session.
 	 */
-	SESSION_IDENTIFIER("urn:artagon:names:tc:xacml:1.0:subject:session-id"),
+	SESSION_IDENTIFIER("urn:xacml4j:names:tc:xacml:1.0:subject:session-id"),
 
 	/**
 	 * The following identifiers indicate the location where authentication

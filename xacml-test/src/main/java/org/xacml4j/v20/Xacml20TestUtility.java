@@ -53,8 +53,7 @@ public class Xacml20TestUtility
 	/** Private constructor for utility class */
 	private Xacml20TestUtility() {}
 
-	public static void assertResponse(ResponseType a, ResponseType b)
-	{
+	public static void assertResponse(ResponseType a, ResponseType b) {
 		assertEquals(a.getResult().size(), b.getResult().size());
 		List<ResultType> ar = a.getResult();
 		List<ResultType> br = b.getResult();

@@ -34,7 +34,7 @@ public class BasePolicyInformationPointCacheProvider implements PolicyInformatio
 	@Override
 	public final Content getContent(ResolverContext context) {
 		ContentResolverDescriptor d = (ContentResolverDescriptor)context.getDescriptor();
-		return d.isCacheable()?doGetContent(d, context.getKeys()):null;
+		return d.isCacheable() ? doGetContent(d, context.getKeys()) : null;
 	}
 
 	@Override
