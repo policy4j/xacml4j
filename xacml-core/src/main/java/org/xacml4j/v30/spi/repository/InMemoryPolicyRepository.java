@@ -26,6 +26,7 @@ package org.xacml4j.v30.spi.repository;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -58,8 +59,9 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 
 	private final static int INITIAL_POLICYSET_MAP_SIZE = 128;
 	private final static int INITIAL_POLICY_MAP_SIZE = 128;
-	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
-	private ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
+
+	private final ConcurrentMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
+	private final ConcurrentMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
 
 	public InMemoryPolicyRepository(
 			String id,
@@ -115,7 +117,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	}
 
 	@Override
-	protected  boolean addPolicy(Policy policy)
+	protected boolean addPolicy(Policy policy)
 	{
 		Preconditions.checkArgument(policy != null);
 		String id = policy.getId();

@@ -42,7 +42,7 @@ import com.google.common.base.Preconditions;
 public abstract class BaseJAXBUnmarshaller <T>
 	implements Unmarshaller<T>
 {
-	private JAXBContext context;
+	private final JAXBContext context;
 
 	protected BaseJAXBUnmarshaller(JAXBContext context){
 		Preconditions.checkArgument(context != null);

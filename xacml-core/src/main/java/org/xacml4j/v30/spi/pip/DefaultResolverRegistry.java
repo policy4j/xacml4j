@@ -99,13 +99,13 @@ class DefaultResolverRegistry implements ResolverRegistry
 		AttributeResolverDescriptor d = resolver.getDescriptor();
 		Preconditions.checkArgument(!attributeResolversById.containsKey(d.getId()),
 				"Attribute resolver with id=\"{}\" is already registered with this registry", d.getId());
-		Lock lock =  attributeResolverRWLock.writeLock();
+		Lock lock = attributeResolverRWLock.writeLock();
 		try
 		{
 			if(!lock.tryLock(maxWriteLockWait, timeToWaitUnits)){
 				if(log.isWarnEnabled()){
 					log.warn("Failed to acquire write lock in=\"{}\" {}",
-							maxWriteLockWait, timeToWaitUnits.toString());
+							maxWriteLockWait, timeToWaitUnits);
 				}
 				return;
 			}
