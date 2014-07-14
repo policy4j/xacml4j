@@ -105,14 +105,12 @@ class JavaMethodToFunctionSpecConverter
 						m.getName()));
 			}
 			if (params[i][0] instanceof XacmlFuncParamEvaluationContext) {
-				if (!types[i].isInstance(EvaluationContext.class)) {
-					// FIXME: why is the exception not thrown?
-					new IllegalArgumentException("XACML evaluation context "
+				if (!types[i].isAssignableFrom(EvaluationContext.class)) {
+					throw new IllegalArgumentException("XACML evaluation context "
 											+ "annotation annotates wrong parameter type");
 				}
 				if (i > 0) {
-					// FIXME: why is the exception not thrown?
-					new IllegalArgumentException(String.format(
+					throw new IllegalArgumentException(String.format(
 							"XACML evaluation context parameter must "
 									+ "be a first parameter "
 									+ "in the method=\"%s\" signature", m.getName()));
