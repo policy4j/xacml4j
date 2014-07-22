@@ -27,8 +27,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public abstract class AbstractPolicyRepository
 	private final static Logger log = LoggerFactory.getLogger(AbstractPolicyRepository.class);
 
 	private final String id;
-	private final ConcurrentMap<PolicyRepositoryListener, PolicyRepositoryListener> listeners;
+	private final List<PolicyRepositoryListener> listeners;
 
 	private final PolicyUnmarshaller unmarshaller;
 
@@ -77,7 +77,7 @@ public abstract class AbstractPolicyRepository
 		this.id = id;
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
-		this.listeners = new ConcurrentHashMap<PolicyRepositoryListener, PolicyRepositoryListener>();
+		this.listeners = new CopyOnWriteArrayList<PolicyRepositoryListener>();
 		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
 	}
 
@@ -163,7 +163,7 @@ public abstract class AbstractPolicyRepository
 
 	@Override
 	public final void addPolicyRepositoryListener(PolicyRepositoryListener l){
-		this.listeners.put(l, l);
+		this.listeners.add(l);
 	}
 
 	@Override
@@ -172,25 +172,25 @@ public abstract class AbstractPolicyRepository
 	}
 
 	private void notifyPolicyAdded(Policy p){
-		for(PolicyRepositoryListener l : listeners.keySet()){
+		for(PolicyRepositoryListener l : listeners){
 			l.policyAdded(p);
 		}
 	}
 
 	private void notifyPolicySetAdded(PolicySet p){
-		for(PolicyRepositoryListener l : listeners.keySet()){
+		for(PolicyRepositoryListener l : listeners){
 			l.policySetAdded(p);
 		}
 	}
 
 	private void notifyPolicyRemoved(Policy p){
-		for(PolicyRepositoryListener l : listeners.keySet()){
+		for(PolicyRepositoryListener l : listeners){
 			l.policyRemoved(p);
 		}
 	}
 
 	private void notifyPolicySetRemoved(PolicySet p){
-		for(PolicyRepositoryListener l : listeners.keySet()){
+		for(PolicyRepositoryListener l : listeners){
 			l.policySetAdded(p);
 		}
 	}
