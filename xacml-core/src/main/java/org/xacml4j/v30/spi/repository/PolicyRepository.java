@@ -33,6 +33,7 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 
+import com.google.common.base.Supplier;
 
 
 /**
@@ -174,7 +175,8 @@ public interface PolicyRepository
 
 	/**
 	 * Imports a given XACML policy from a given
-	 * {@link InputStream}
+	 * {@link InputStream} supplier. Policy repository will close
+	 * input stream after importing the policy.
 	 *
 	 * @param source a policy source
 	 * @return {@link CompositeDecisionRule} an imported
@@ -183,7 +185,7 @@ public interface PolicyRepository
 	 * occurs while parsing XACML policy or policy set
 	 * @exception IOException if an IO error occurs
 	 */
-	CompositeDecisionRule importPolicy(InputStream source)
+	CompositeDecisionRule importPolicy(Supplier<InputStream> source)
 		throws XacmlSyntaxException, IOException;
 
 	/**

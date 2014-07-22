@@ -10,12 +10,12 @@ package org.xacml4j.v20;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -51,7 +51,7 @@ import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Strings;
-import com.google.common.io.Closeables;
+import com.google.common.base.Supplier;
 
 
 public class Xacml20ConformanceTest
@@ -227,9 +227,8 @@ public class Xacml20ConformanceTest
 		Xacml20TestUtility.assertResponse(getResponse(testPrefix, testCaseNum), actual);
 	}
 
-	private static InputStream getPolicy(
-			String prefix, int number, String suffix) throws Exception
-	{
+	private static Supplier<InputStream> getPolicy(
+			String prefix, int number, String suffix) {
 		String path = "oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, suffix);
 		return Xacml20TestUtility.getClasspathResource(path);
 	}
@@ -245,14 +244,13 @@ public class Xacml20ConformanceTest
 	private static void addPolicy(PolicyRepository r, String prefix, String suffix, int index)
 	{
 		try{
-			final InputStream policyStream = getPolicy(prefix, index, suffix);
+			final Supplier<InputStream> policyStream = getPolicy(prefix, index, suffix);
 			CompositeDecisionRule rule = r.importPolicy(policyStream);
 			if (rule == null) {
 				LOG.info("Could not load policy with prefix: {}, index: {}, suffix {}",
 						new Object[]{prefix, index, suffix});
 			}
-			Closeables.closeQuietly(policyStream);
-		}catch(Exception e){
+		} catch (Exception e) {
 			LOG.info("Could not load policy with prefix: {}, index: {}, suffix {}",
 					new Object[]{prefix, index, suffix, e});
 		}

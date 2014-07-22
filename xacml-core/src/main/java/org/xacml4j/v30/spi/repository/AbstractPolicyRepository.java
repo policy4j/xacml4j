@@ -46,6 +46,8 @@ import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import com.google.common.io.Closeables;
 
 /**
  * A base class for {@link PolicyRepository} implementations.
@@ -287,11 +289,17 @@ public abstract class AbstractPolicyRepository
 	protected abstract boolean removePolicySet(PolicySet p);
 
 	@Override
-	public final CompositeDecisionRule importPolicy(InputStream source)
+	public final CompositeDecisionRule importPolicy(Supplier<InputStream> source)
 			throws XacmlSyntaxException, IOException {
-		CompositeDecisionRule r =  unmarshaller.unmarshal(source);
-		add(r);
-		return r;
+		InputStream is = null;
+		try {
+			is = source.get();
+			CompositeDecisionRule r = unmarshaller.unmarshal(is);
+			add(r);
+			return r;
+		} finally {
+			Closeables.closeQuietly(is);
+		}
 	}
 
 	/**

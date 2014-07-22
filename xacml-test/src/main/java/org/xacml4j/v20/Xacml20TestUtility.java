@@ -26,7 +26,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.Closeable;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,6 +44,7 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 
+import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
 
 
@@ -147,7 +147,7 @@ public class Xacml20TestUtility
 	{
 		InputStream in = null;
 		try {
-			in = getClasspathResource(resourcePath);
+			in = getClasspathResource(resourcePath).get();
 			assertNotNull(in);
 			return ((JAXBElement<ResponseType>) context.createUnmarshaller().unmarshal(in)).getValue();
 		} finally {
@@ -158,15 +158,20 @@ public class Xacml20TestUtility
 	public static RequestContext getRequest(String resourcePath) throws Exception {
 		InputStream in = null;
 		try {
-			in = getClasspathResource(resourcePath);
+			in = getClasspathResource(resourcePath).get();
 			return requestUnmarshaller.unmarshal(in);
 		} finally {
 			Closeables.closeQuietly(in);
 		}
 	}
 
-	public static InputStream getClasspathResource(String resourcePath) throws Exception {
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		return cl.getResourceAsStream(resourcePath);
+	public static Supplier<InputStream> getClasspathResource(final String resourcePath) {
+		return new Supplier<InputStream>() {
+			@Override
+			public InputStream get() {
+				ClassLoader cl = Thread.currentThread().getContextClassLoader();
+				return cl.getResourceAsStream(resourcePath);
+			}
+		};
 	}
 }

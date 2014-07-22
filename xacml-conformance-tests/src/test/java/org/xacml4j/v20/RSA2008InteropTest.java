@@ -44,7 +44,7 @@ import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
-import com.google.common.io.Closeables;
+import com.google.common.base.Supplier;
 
 public class RSA2008InteropTest extends XacmlPolicyTestSupport
 {
@@ -69,19 +69,19 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				.withDefaultAlgorithms()
 				.create());
 
-		List<InputStream> policyStreams = Arrays.asList(
-			_getPolicy("XacmlPolicySet-01-top-level.xml"),
-			_getPolicy("XacmlPolicySet-02a-CDA.xml"),
-			_getPolicy("XacmlPolicySet-02b-N.xml"),
-			_getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"),
-			_getPolicy("XacmlPolicySet-02d-prog-note.xml"),
-			_getPolicy("XacmlPolicySet-02e-MA.xml"),
-			_getPolicy("XacmlPolicySet-02f-emergency.xml"),
-			_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
-			_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
+		List<Supplier<InputStream>> policyStreams = Arrays.asList(
+				_getPolicy("XacmlPolicySet-01-top-level.xml"),
+				_getPolicy("XacmlPolicySet-02a-CDA.xml"),
+				_getPolicy("XacmlPolicySet-02b-N.xml"),
+				_getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"),
+				_getPolicy("XacmlPolicySet-02d-prog-note.xml"),
+				_getPolicy("XacmlPolicySet-02e-MA.xml"),
+				_getPolicy("XacmlPolicySet-02f-emergency.xml"),
+				_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
+				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
-		for (InputStream policyStream : policyStreams) {
+		for (Supplier<InputStream> policyStream : policyStreams) {
 			policies.add(repository.importPolicy(policyStream));
 		}
 
@@ -94,10 +94,6 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 					.build())
 			.rootPolicy(policies.get(0))
 			.build();
-
-		for (InputStream policyStream : policyStreams) {
-			Closeables.closeQuietly(policyStream);
-		}
 	}
 
 	@Test
@@ -193,8 +189,7 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				String.format("rsa2008-interop/XacmlResponse-%02d-%02d.xml", caseId, requestId));
 	}
 
-	private static InputStream _getPolicy(String name) throws Exception
-	{
+	private static Supplier<InputStream> _getPolicy(final String name) {
 		return Xacml20TestUtility.getClasspathResource("rsa2008-interop/" + name);
 	}
 }

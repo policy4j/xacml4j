@@ -22,6 +22,9 @@ package org.xacml4j.spring.repository;
  * #L%
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
@@ -32,6 +35,8 @@ import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
@@ -80,8 +85,19 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
 				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.create());
-		for(Resource r : resources){
-			repository.importPolicy(r.getInputStream());
+		for(final Resource r : resources){
+			repository.importPolicy(new Supplier<InputStream>() {
+				@Override
+				public InputStream get() {
+					try {
+						return r.getInputStream();
+					} catch (IOException e) {
+						throw new IllegalArgumentException(
+								String.format("Could not import policy from resource \"%s\"", r),
+								e);
+					}
+				}
+			});
 		}
 		return repository;
 	}
