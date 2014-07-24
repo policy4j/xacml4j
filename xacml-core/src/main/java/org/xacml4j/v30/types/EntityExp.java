@@ -37,11 +37,11 @@ public class EntityExp extends BaseAttributeExp<Entity>
 		super(XacmlTypes.ENTITY, entity);
 	}
 	
-	public static EntityExp valueOf(Entity entity){
+	public static EntityExp of(Entity entity){
 		return new EntityExp(Entity.builder().copyOf(entity).build());
 	}
 	
-	public static EntityExp valueOf(Attribute ...attrs){
+	public static EntityExp of(Attribute ...attrs){
 		return new EntityExp(Entity.builder().attribute(attrs).build());
 	}
 	
@@ -52,7 +52,7 @@ public class EntityExp extends BaseAttributeExp<Entity>
 				.build());
 	}
 	
-	public static EntityExp valueOf(Node content, Attribute ...attrs){
+	public static EntityExp of(Node content, Attribute ...attrs){
 		return new EntityExp(Entity
 				.builder()
 				.content(content)

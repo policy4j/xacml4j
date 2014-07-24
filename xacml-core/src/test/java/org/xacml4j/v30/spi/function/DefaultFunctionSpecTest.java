@@ -192,7 +192,7 @@ public class DefaultFunctionSpecTest
 	{
 		List<Expression> params = ImmutableList
 				.<Expression>builder()
-				.add(IntegerExp.valueOf(10))
+				.add(IntegerExp.of(10))
 				.add(BooleanExp.FALSE)
 				.build();
 		FunctionSpec spec = b
@@ -201,7 +201,7 @@ public class DefaultFunctionSpecTest
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(IntegerExp.valueOf(10), BooleanExp.FALSE)))
+				Arrays.<Expression>asList(IntegerExp.of(10), BooleanExp.FALSE)))
 				.andReturn(BooleanExp.valueOf(false));
 		c.replay();
 		spec.invoke(context, params);
@@ -216,11 +216,11 @@ public class DefaultFunctionSpecTest
 				.build();
 		FunctionSpec spec = b
 				.optional(XacmlTypes.INTEGER)
-				.optional(XacmlTypes.INTEGER, IntegerExp.valueOf(10))
+				.optional(XacmlTypes.INTEGER, IntegerExp.of(10))
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(null, IntegerExp.valueOf(10))))
+				Arrays.<Expression>asList(null, IntegerExp.of(10))))
 				.andReturn(BooleanExp.valueOf(false));
 		c.replay();
 		spec.invoke(context, params);

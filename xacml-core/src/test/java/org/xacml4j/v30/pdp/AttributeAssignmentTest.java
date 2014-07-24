@@ -38,15 +38,15 @@ public class AttributeAssignmentTest
 		AttributeAssignment a0 =  AttributeAssignment.builder()
 				.id("testId")
 				.category(Categories.ACTION)
-				.value(IntegerExp.valueOf(10))
+				.value(IntegerExp.of(10))
 				.build();
 		assertEquals("testId", a0.getAttributeId());
 		assertEquals(Categories.ACTION, a0.getCategory());
-		assertEquals(IntegerExp.valueOf(10), a0.getAttribute());
+		assertEquals(IntegerExp.of(10), a0.getAttribute());
 		AttributeAssignment a1 =  AttributeAssignment.builder()
 				.id("testId")
 				.category(Categories.ACTION)
-				.value(IntegerExp.valueOf(10))
+				.value(IntegerExp.of(10))
 				.build();
 		assertEquals(a0, a1);
 	}

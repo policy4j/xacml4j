@@ -36,56 +36,56 @@ public class NumericComparisonFunctionTest
 	@Test
 	public void testGreaterThanDouble()
 	{
-		DoubleExp a = DoubleExp.valueOf(35.0);
-		DoubleExp b = DoubleExp.valueOf(35.0);
+		DoubleExp a = DoubleExp.of(35.0);
+		DoubleExp b = DoubleExp.of(35.0);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanDouble(a, b));
-		a = DoubleExp.valueOf(35.1);
-		b = DoubleExp.valueOf(35.0);
+		a = DoubleExp.of(35.1);
+		b = DoubleExp.of(35.0);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanDouble(a, b));
-		a = DoubleExp.valueOf(35.1);
-		b = DoubleExp.valueOf(35.2);
+		a = DoubleExp.of(35.1);
+		b = DoubleExp.of(35.2);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanDouble(a, b));
 	}
 
 	@Test
 	public void testGreaterThanOrEqualDouble()
 	{
-		DoubleExp a = DoubleExp.valueOf(35.0);
-		DoubleExp b = DoubleExp.valueOf(35.0);
+		DoubleExp a = DoubleExp.of(35.0);
+		DoubleExp b = DoubleExp.of(35.0);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
-		a = DoubleExp.valueOf(35.1);
-		b = DoubleExp.valueOf(35.0);
+		a = DoubleExp.of(35.1);
+		b = DoubleExp.of(35.0);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
-		a = DoubleExp.valueOf(35.1);
-		b = DoubleExp.valueOf(35.2);
+		a = DoubleExp.of(35.1);
+		b = DoubleExp.of(35.2);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
 	}
 
 	@Test
 	public void testGreaterThanInteger()
 	{
-		IntegerExp a = IntegerExp.valueOf(35);
-		IntegerExp b = IntegerExp.valueOf(35);
+		IntegerExp a = IntegerExp.of(35);
+		IntegerExp b = IntegerExp.of(35);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanInteger(a, b));
-		a = IntegerExp.valueOf(36);
-		b = IntegerExp.valueOf(35);
+		a = IntegerExp.of(36);
+		b = IntegerExp.of(35);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanInteger(a, b));
-		a = IntegerExp.valueOf(35);
-		b = IntegerExp.valueOf(36);
+		a = IntegerExp.of(35);
+		b = IntegerExp.of(36);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanInteger(a, b));
 	}
 
 	@Test
 	public void testGreaterThanOrEqualsInteger()
 	{
-		IntegerExp a = IntegerExp.valueOf(35);
-		IntegerExp b = IntegerExp.valueOf(35);
+		IntegerExp a = IntegerExp.of(35);
+		IntegerExp b = IntegerExp.of(35);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
-		a = IntegerExp.valueOf(36);
-		b = IntegerExp.valueOf(35);
+		a = IntegerExp.of(36);
+		b = IntegerExp.of(35);
 		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
-		a = IntegerExp.valueOf(35);
-		b = IntegerExp.valueOf(36);
+		a = IntegerExp.of(35);
+		b = IntegerExp.of(36);
 		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
 	}
 }

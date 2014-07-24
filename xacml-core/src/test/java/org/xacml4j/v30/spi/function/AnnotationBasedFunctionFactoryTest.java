@@ -59,10 +59,10 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec1 = f1.getFunction("test1");
 		assertEquals(BooleanExp.valueOf(Boolean.FALSE),
-				spec1.invoke(context, IntegerExp.valueOf(1), IntegerExp.valueOf(2)));
+				spec1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)));
 
 		FunctionSpec spec2 = f1.getFunction("test2");
-		assertEquals(IntegerExp.valueOf(2),
+		assertEquals(IntegerExp.of(2),
 				spec2.invoke(context, IntegerExp.bag().value(1, 2).build()));
 		verify(context);
 
@@ -76,10 +76,10 @@ public class AnnotationBasedFunctionFactoryTest
 		FunctionSpec spec1 = f2.getFunction("test1");
 		assertNotNull(spec1);
 		assertEquals(BooleanExp.valueOf(Boolean.FALSE),
-				spec1.invoke(context, IntegerExp.valueOf(1), IntegerExp.valueOf(2)));
+				spec1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)));
 
 		FunctionSpec spec2 = f2.getFunction("test2");
-		assertEquals(IntegerExp.valueOf(2),
+		assertEquals(IntegerExp.of(2),
 				spec2.invoke(context, IntegerExp.bag().value(1, 2).build()));
 		verify(context);
 
@@ -92,9 +92,9 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec3 = f1.getFunction("test3");
 		FunctionSpec spec4 = f1.getFunction("test4");
-		spec3.invoke(context, IntegerExp.valueOf(10), IntegerExp.valueOf(10));
-		spec3.invoke(context, IntegerExp.valueOf(10));
-		spec4.invoke(context, IntegerExp.valueOf(10));
+		spec3.invoke(context, IntegerExp.of(10), IntegerExp.of(10));
+		spec3.invoke(context, IntegerExp.of(10));
+		spec4.invoke(context, IntegerExp.of(10));
 		verify(context);
 
 	}
@@ -107,13 +107,13 @@ public class AnnotationBasedFunctionFactoryTest
 		FunctionSpec spec5 = f1.getFunction("test5VarArg");
 		FunctionSpec spec6 = f1.getFunction("test6VarArg");
 
-		spec5.invoke(context, IntegerExp.valueOf(10));
-		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false));
-		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
-		spec5.invoke(context, IntegerExp.valueOf(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
+		spec5.invoke(context, IntegerExp.of(10));
+		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false));
+		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
+		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
 
-		spec6.invoke(context, IntegerExp.valueOf(10), IntegerExp.valueOf(10));
-		spec6.invoke(context, IntegerExp.valueOf(10), IntegerExp.valueOf(10), BooleanExp.valueOf(false));
+		spec6.invoke(context, IntegerExp.of(10), IntegerExp.of(10));
+		spec6.invoke(context, IntegerExp.of(10), IntegerExp.of(10), BooleanExp.valueOf(false));
 		verify(context);
 
 	}

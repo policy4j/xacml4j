@@ -43,7 +43,7 @@ public final class StringExp extends BaseAttributeExp<String>
 	 * @exception IllegalArgumentException if given
 	 * string value is null or empty
 	 */
-	public static StringExp valueOf(String v){
+	public static StringExp of(String v){
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(v));
 		return new StringExp(v);
 	}
@@ -71,11 +71,11 @@ public final class StringExp extends BaseAttributeExp<String>
 	}
 
 	public StringExp concat(StringExp v){
-		return StringExp.valueOf(getValue() + v);
+		return StringExp.of(getValue() + v);
 	}
 
 	public StringExp trim(){
-		return StringExp.valueOf(getValue().trim());
+		return StringExp.of(getValue().trim());
 	}
 
 	public boolean startsWith(StringExp v){
@@ -91,11 +91,11 @@ public final class StringExp extends BaseAttributeExp<String>
 	}
 
 	public StringExp toLowerCase(){
-		return StringExp.valueOf(getValue().toLowerCase());
+		return StringExp.of(getValue().toLowerCase());
 	}
 
 	public StringExp toUpperCase(){
-		return StringExp.valueOf(getValue().toUpperCase());
+		return StringExp.of(getValue().toUpperCase());
 	}
 }
 

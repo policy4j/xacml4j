@@ -33,20 +33,20 @@ public final class Base64BinaryExp extends BaseAttributeExp<BinaryValue>
 		super(XacmlTypes.BASE64BINARY, value);
 	}
 	
-	public static Base64BinaryExp valueOf(byte[] v){
+	public static Base64BinaryExp of(byte[] v){
 		return new Base64BinaryExp(BinaryValue.valueOf(v));
 	}
 	
-	public static Base64BinaryExp valueOf(String v){
+	public static Base64BinaryExp of(String v){
 		return new Base64BinaryExp(BinaryValue.valueOfBase64Enc(v));
 	}
 	
-	public static Base64BinaryExp valueOf(BinaryValue v){
+	public static Base64BinaryExp of(BinaryValue v){
 		return new Base64BinaryExp(v);
 	}
 	
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toBase64Encoded());
+		return StringExp.of(getValue().toBase64Encoded());
 	}
 	
 	public static BagOfAttributeExp emptyBag(){

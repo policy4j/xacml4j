@@ -117,13 +117,13 @@ public class AttributeDesignatorTest
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(
 				XacmlTypes.INTEGER.bagOf(
-						IntegerExp.valueOf(1), IntegerExp.valueOf(2)));
+						IntegerExp.of(1), IntegerExp.of(2)));
 
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagOf(
-				IntegerExp.valueOf(1), IntegerExp.valueOf(2)), v);
+				IntegerExp.of(1), IntegerExp.of(2)), v);
 	}
 
 	@Test

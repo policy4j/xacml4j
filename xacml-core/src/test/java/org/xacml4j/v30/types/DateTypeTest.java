@@ -33,7 +33,7 @@ public class DateTypeTest
 
 	@Test
 	public void testFromXacmlString(){
-		DateExp value = DateExp.valueOf("2002-09-24Z");
+		DateExp value = DateExp.of("2002-09-24Z");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(9, value.getValue().getMonth());
 		assertEquals(24, value.getValue().getDay());
@@ -44,15 +44,15 @@ public class DateTypeTest
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testFromXacmlStringJustDate(){
-		DateExp.valueOf("2002-05-30T09:30:10-06:00");
+		DateExp.of("2002-05-30T09:30:10-06:00");
 	}
 
 	@Test
 	public void testCreateFromCalendar()
 	{
 		Calendar now = Calendar.getInstance();
-		DateExp d1 = DateExp.valueOf(now);
-		DateExp d2 = DateExp.valueOf(now);
+		DateExp d1 = DateExp.of(now);
+		DateExp d2 = DateExp.of(now);
 		System.out.println(d1.toStringExp());
 		System.out.println(now);
 		assertEquals(d1, d2);

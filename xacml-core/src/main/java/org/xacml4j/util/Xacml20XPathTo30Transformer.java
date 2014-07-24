@@ -43,7 +43,7 @@ public class Xacml20XPathTo30Transformer
 
 	public static XPathExp fromXacml20String(StringExp path)
 	{
-		XPathExp xpathExp = XPathExp.valueOf(transform20PathTo30(path.getValue()),
+		XPathExp xpathExp = XPathExp.of(transform20PathTo30(path.getValue()),
 				Categories.RESOURCE);
 		return xpathExp;
 	}

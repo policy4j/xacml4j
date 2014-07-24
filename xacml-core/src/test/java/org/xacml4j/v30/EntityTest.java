@@ -73,37 +73,37 @@ public class EntityTest
 				.attribute(
 					Attribute.
 						builder("testId1")
-						.value(StringExp.valueOf("a"), StringExp.valueOf("bb"))
+						.value(StringExp.of("a"), StringExp.of("bb"))
 						.build(),
 					Attribute
 						.builder("testId2")
-						.value(StringExp.valueOf("aa"), StringExp.valueOf("bbb"))
+						.value(StringExp.of("aa"), StringExp.of("bbb"))
 						.build(),
 					Attribute
 						.builder("testId3")
-						.value(IntegerExp.valueOf(10), DoubleExp.valueOf(0.1))
+						.value(IntegerExp.of(10), DoubleExp.of(0.1))
 						.build())
 				.build();
 		Entity e1 = Entity.builder().copyOf(e0).build();
 		assertEquals(e0,  e1);
-		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.valueOf("a")));
-		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.valueOf("bb")));
+		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("a")));
+		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("bb")));
 		Entity e2 = Entity.builder().copyOf(e0, new Predicate<Attribute>(){
 			public boolean apply(Attribute a){
 				return a.getAttributeId().equals("testId2");
 			}
 			
 		} ).build();
-		assertFalse(e2.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.valueOf("bb")));
-		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.valueOf("aa")));
-		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.valueOf("bbb")));
+		assertFalse(e2.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("bb")));
+		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.of("aa")));
+		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.of("bbb")));
 	}
 	
 	@Test
 	public void testEntityXPathCorrectType(){
 		BagOfAttributeExp values = entity.getAttributeValues("/md:record/md:patient/md:patient-number/text()", 
 				new DefaultXPathProvider(), XacmlTypes.INTEGER, null);
-		assertTrue(values.contains(IntegerExp.valueOf(555555)));
+		assertTrue(values.contains(IntegerExp.of(555555)));
 	}
 	
 	@Test(expected=XPathEvaluationException.class)
@@ -117,14 +117,14 @@ public class EntityTest
 	public void testEntityEquals(){
 		Entity e0 = Entity
 				.builder()
-				.attribute(Attribute.builder("testId1").value(StringExp.valueOf("aa"), StringExp.valueOf("bb")).build())
-				.attribute(Attribute.builder("testId2").value(StringExp.valueOf("cc"), StringExp.valueOf("dd")).build())
+				.attribute(Attribute.builder("testId1").value(StringExp.of("aa"), StringExp.of("bb")).build())
+				.attribute(Attribute.builder("testId2").value(StringExp.of("cc"), StringExp.of("dd")).build())
 				.build();
 		
 		Entity e1 = Entity
 				.builder()
-				.attribute(Attribute.builder("testId2").value(StringExp.valueOf("dd"), StringExp.valueOf("cc")).build())
-				.attribute(Attribute.builder("testId1").value(StringExp.valueOf("bb"), StringExp.valueOf("aa")).build())
+				.attribute(Attribute.builder("testId2").value(StringExp.of("dd"), StringExp.of("cc")).build())
+				.attribute(Attribute.builder("testId1").value(StringExp.of("bb"), StringExp.of("aa")).build())
 				.build();
 		assertEquals(e0, e1);
 	}

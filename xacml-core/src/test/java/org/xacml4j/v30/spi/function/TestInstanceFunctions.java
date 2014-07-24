@@ -47,7 +47,7 @@ public class TestInstanceFunctions
 	public IntegerExp test2(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag)
 	{
-		return IntegerExp.valueOf(bag.size());
+		return IntegerExp.of(bag.size());
 	}
 }
 

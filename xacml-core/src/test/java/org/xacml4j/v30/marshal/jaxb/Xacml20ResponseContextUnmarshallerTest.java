@@ -61,21 +61,21 @@ public class Xacml20ResponseContextUnmarshallerTest
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());
 		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
 		assertNotNull(o1);
-		assertEquals(StringExp.valueOf("assignment1"),
+		assertEquals(StringExp.of("assignment1"),
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")).getAttribute());
-		assertEquals(StringExp.valueOf("assignment2"),
+		assertEquals(StringExp.of("assignment2"),
 				Iterables.getOnlyElement(
 						o1.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());
 		Obligation o2 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-2");
 		assertNotNull(o2);
-		assertEquals(StringExp.valueOf("assignment1"),
+		assertEquals(StringExp.of("assignment1"),
 				Iterables.getOnlyElement(
 						o2.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment1")).getAttribute());
-		assertEquals(StringExp.valueOf("assignment2"),
+		assertEquals(StringExp.of("assignment2"),
 				Iterables.getOnlyElement(
 						o2.getAttribute(
 								"urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:assignment2")).getAttribute());

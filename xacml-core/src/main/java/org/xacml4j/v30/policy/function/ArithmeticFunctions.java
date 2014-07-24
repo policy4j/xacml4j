@@ -68,7 +68,7 @@ public class ArithmeticFunctions
 		for(IntegerExp v : values){
 			sum += v.getValue();
 		}
-		return IntegerExp.valueOf(sum);
+		return IntegerExp.of(sum);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
@@ -81,7 +81,7 @@ public class ArithmeticFunctions
 		for(IntegerExp v : values){
 			value *= v.getValue();
 		}
-		return IntegerExp.valueOf(value);
+		return IntegerExp.of(value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
@@ -94,7 +94,7 @@ public class ArithmeticFunctions
 		for(DoubleExp v : values){
 			sum += v.getValue();
 		}
-		return DoubleExp.valueOf(sum);
+		return DoubleExp.of(sum);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
@@ -107,7 +107,7 @@ public class ArithmeticFunctions
 		for(DoubleExp v : values){
 			value *= v.getValue();
 		}
-		return DoubleExp.valueOf(value);
+		return DoubleExp.of(value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
@@ -115,7 +115,7 @@ public class ArithmeticFunctions
 	public static IntegerExp abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
 	{
-		return IntegerExp.valueOf(Math.abs(v.getValue()));
+		return IntegerExp.of(Math.abs(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
@@ -123,7 +123,7 @@ public class ArithmeticFunctions
 	public static DoubleExp abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleExp.valueOf(Math.abs(v.getValue()));
+		return DoubleExp.of(Math.abs(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
@@ -131,7 +131,7 @@ public class ArithmeticFunctions
 	public static DoubleExp floor(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleExp.valueOf(Math.floor(v.getValue()));
+		return DoubleExp.of(Math.floor(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
@@ -139,7 +139,7 @@ public class ArithmeticFunctions
 	public static DoubleExp round(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return DoubleExp.valueOf(Math.round(v.getValue()));
+		return DoubleExp.of(Math.round(v.getValue()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")

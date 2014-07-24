@@ -130,7 +130,7 @@ public class HigherOrderFunctions
 				break;
 			}
 		}
-		return BooleanExp.create(result);
+		return BooleanExp.of(result);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")

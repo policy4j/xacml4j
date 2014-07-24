@@ -88,7 +88,7 @@ public class AnnotatedResolverFactoryTest
 		assertNotNull(m);
 
 		expect(context.resolve(eq(excpectedKey0))).andReturn(BooleanExp.valueOf(false).toBag());
-		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerExp.valueOf(1).toBag());
+		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerExp.of(1).toBag());
 		expect(context.getTicker()).andReturn(Ticker.systemTicker());
 
 		control.replay();

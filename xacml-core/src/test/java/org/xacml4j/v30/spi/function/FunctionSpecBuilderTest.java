@@ -85,7 +85,7 @@ public class FunctionSpecBuilderTest
 	public void testAddVarArgAfterDefaultValue(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.optional(XacmlTypes.STRING, StringExp.valueOf("aaa"));
+		b.optional(XacmlTypes.STRING, StringExp.of("aaa"));
 		b.varArg(XacmlTypes.STRING, 0, 5);
 	}
 	
@@ -103,14 +103,14 @@ public class FunctionSpecBuilderTest
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.varArg(XacmlTypes.STRING, 0, 5);
-		b.optional(XacmlTypes.STRING, StringExp.valueOf("aaa"));
+		b.optional(XacmlTypes.STRING, StringExp.of("aaa"));
 		
 	}
 	
 	@Test(expected=XacmlSyntaxException.class)
 	public void testAddParamWithDefaultValueAndOptionalFalse(){
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.param(XacmlTypes.STRING, StringExp.valueOf("aaa"), false);
+		b.param(XacmlTypes.STRING, StringExp.of("aaa"), false);
 		
 	}
 	@Test
@@ -119,9 +119,9 @@ public class FunctionSpecBuilderTest
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specSameTypeArgs.validateParameters(b.build()));
-		assertFalse(specSameTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10L)).build()));
-		assertTrue(specSameTypeArgs.validateParameters(b.add(IntegerExp.valueOf(12L)).build()));
-		assertFalse(specSameTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
+		assertFalse(specSameTypeArgs.validateParameters(b.add(IntegerExp.of(10L)).build()));
+		assertTrue(specSameTypeArgs.validateParameters(b.add(IntegerExp.of(12L)).build()));
+		assertFalse(specSameTypeArgs.validateParameters(b.add(IntegerExp.of(13L)).build()));
 		c.verify();
 	}
 
@@ -131,18 +131,18 @@ public class FunctionSpecBuilderTest
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specDiffTypeArgs.validateParameters(b.build()));
-		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(10L)).build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(12L)).build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.valueOf(13L)).build()));
+		assertTrue(specDiffTypeArgs.validateParameters(b.add(IntegerExp.of(10L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.of(12L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(IntegerExp.of(13L)).build()));
 		b = ImmutableList.builder();
-		List<Expression> exp1 = b.add(IntegerExp.valueOf(10)).add(StringExp.valueOf("aaa")).build();
+		List<Expression> exp1 = b.add(IntegerExp.of(10)).add(StringExp.of("aaa")).build();
 		assertTrue(specDiffTypeArgs.validateParameters(exp1));
 		List<Expression> exp2 = b
-				.add(IntegerExp.valueOf(10))
-				.add(IntegerExp.valueOf(11)).build();
+				.add(IntegerExp.of(10))
+				.add(IntegerExp.of(11)).build();
 		assertFalse(specDiffTypeArgs.validateParameters(exp2));
 		b = ImmutableList.builder();
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.valueOf("a")).add(IntegerExp.valueOf(10L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(StringExp.of("a")).add(IntegerExp.of(10L)).build()));
 		c.verify();
 	}
 

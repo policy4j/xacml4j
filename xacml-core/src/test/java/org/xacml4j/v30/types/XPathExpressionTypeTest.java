@@ -34,7 +34,7 @@ public class XPathExpressionTypeTest
 	@Test
 	public void testCreateXPathAttribute() throws Exception
 	{
-		XPathExp v = XPathExp.valueOf("/test", Categories.SUBJECT_RECIPIENT);
+		XPathExp v = XPathExp.of("/test", Categories.SUBJECT_RECIPIENT);
 		assertEquals("/test", v.getPath());
 		assertEquals(Categories.SUBJECT_RECIPIENT, v.getCategory());
 	}

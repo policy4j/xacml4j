@@ -53,12 +53,12 @@ public class ApplyTest
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(IntegerExp.valueOf(10L))
+		.add(IntegerExp.of(10L))
 		.build();
 		expect(function.invoke(context, params))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = Apply.builder(function).param(IntegerExp.valueOf(10L)).build();
+		Apply apply = Apply.builder(function).param(IntegerExp.of(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -67,12 +67,12 @@ public class ApplyTest
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(IntegerExp.valueOf(10L))
+		.add(IntegerExp.of(10L))
 		.build();
 		expect(function.invoke(context, params)).
 		andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
 		replay(function);
-		Apply apply = Apply.builder(function).param(IntegerExp.valueOf(10L)).build();
+		Apply apply = Apply.builder(function).param(IntegerExp.of(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}

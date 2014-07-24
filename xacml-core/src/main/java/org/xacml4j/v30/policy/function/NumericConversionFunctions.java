@@ -46,7 +46,7 @@ public class NumericConversionFunctions
 	public static IntegerExp doubleToInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
 	{
-		return  IntegerExp.valueOf(v.getValue());
+		return  IntegerExp.of(v.getValue());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
@@ -54,6 +54,6 @@ public class NumericConversionFunctions
 	public static DoubleExp integerToDouble(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
 	{
-		return DoubleExp.valueOf(v.getValue());
+		return DoubleExp.of(v.getValue());
 	}
 }

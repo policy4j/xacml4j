@@ -68,9 +68,9 @@ public class DateTimeArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddDayTimeDuration()
 	{
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2002-03-27T10:23:47-05:00");
-		DayTimeDurationExp duration = DayTimeDurationExp.valueOf("P5DT2H0M0S");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2002-03-27T10:23:47-05:00");
+		DayTimeDurationExp duration = DayTimeDurationExp.of("P5DT2H0M0S");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 
 	}
@@ -78,9 +78,9 @@ public class DateTimeArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddYearMonthDuration()
 	{
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2001-01-22T08:23:47-05:00");
-		YearMonthDurationExp duration = YearMonthDurationExp.valueOf("-P1Y2M");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2001-01-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationExp.of("-P1Y2M");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 
 	}

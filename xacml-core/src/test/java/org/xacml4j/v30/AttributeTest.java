@@ -47,10 +47,10 @@ public class AttributeTest
 	public void init()
 	{
 		this.values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.valueOf(1));
-		values.add(IntegerExp.valueOf(1));
-		values.add(IntegerExp.valueOf(3));
-		values.add(IntegerExp.valueOf(2));
+		values.add(IntegerExp.of(1));
+		values.add(IntegerExp.of(1));
+		values.add(IntegerExp.of(3));
+		values.add(IntegerExp.of(2));
 	}
 
 	@Test
@@ -75,22 +75,22 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(StringExp.valueOf("value1"), StringExp.valueOf("value2"))
+				.value(StringExp.of("value1"), StringExp.of("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
 		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(StringExp.valueOf("value1")));
-		assertTrue(attr.getValues().contains(StringExp.valueOf("value2")));
+		assertTrue(attr.getValues().contains(StringExp.of("value1")));
+		assertTrue(attr.getValues().contains(StringExp.of("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
 		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.valueOf(1));
-		values.add(IntegerExp.valueOf(1));
+		values.add(IntegerExp.of(1));
+		values.add(IntegerExp.of(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
@@ -112,7 +112,7 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = Attribute.builder("testId")
-				.value(IntegerExp.valueOf(1), IntegerExp.valueOf(2), IntegerExp.valueOf(3), IntegerExp.valueOf(2))
+				.value(IntegerExp.of(1), IntegerExp.of(2), IntegerExp.of(3), IntegerExp.of(2))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
@@ -125,10 +125,10 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringExp.valueOf("test1"), StringExp.valueOf("test2"));
+		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringExp.of("test1"), StringExp.of("test2"));
 		Attribute.builder("testId")
 		.values(a)
-		.value(StringExp.valueOf("test2"), StringExp.valueOf("test3"))
+		.value(StringExp.of("test2"), StringExp.of("test3"))
 		.build();
 	}
 

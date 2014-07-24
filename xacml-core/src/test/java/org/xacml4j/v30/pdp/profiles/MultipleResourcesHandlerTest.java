@@ -72,23 +72,23 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.valueOf("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.valueOf("value1")).build()).build())
+								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
+								Attribute.builder("testId2").value(StringExp.of("value1")).build()).build())
 				.build();
 		this.resource1 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId3").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId4").value(StringExp.of("value1")).build()).build())
 				.build();
 
 		this.subject0 = Category.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId7").value(StringExp.valueOf("value0")).build(),
-								Attribute.builder("testId8").value(StringExp.valueOf("value1")).build()).build())
+								Attribute.builder("testId7").value(StringExp.of("value0")).build(),
+								Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
 				.build();
 
 
@@ -96,8 +96,8 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId9").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId10").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId9").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId10").value(StringExp.of("value1")).build()).build())
 				.build();
 	}
 

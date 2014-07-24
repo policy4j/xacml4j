@@ -56,30 +56,30 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testRFC822NameMatch()
 	{
-		StringExp p = StringExp.valueOf(".sun.com");
-		RFC822NameExp n = RFC822NameExp.valueOf("test@east.sun.com");
+		StringExp p = StringExp.of(".sun.com");
+		RFC822NameExp n = RFC822NameExp.of("test@east.sun.com");
 		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 
-		p = StringExp.valueOf("sun.com");
-		n = RFC822NameExp.valueOf("test@sun.com");
+		p = StringExp.of("sun.com");
+		n = RFC822NameExp.of("test@sun.com");
 		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 
 	@Test
 	public void testX500NameMatch()
 	{
-		X500NameExp a = X500NameExp.valueOf("ou=org,o=com");
-		X500NameExp b = X500NameExp.valueOf("cn=test, ou=org,o=com");
+		X500NameExp a = X500NameExp.of("ou=org,o=com");
+		X500NameExp b = X500NameExp.of("cn=test, ou=org,o=com");
 
 		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.x500NameMatch(a, b));
 
-		a = X500NameExp.valueOf("ou=org,o=com");
-		b = X500NameExp.valueOf("cn=test, ou=ORG,o=Com");
+		a = X500NameExp.of("ou=org,o=com");
+		b = X500NameExp.of("cn=test, ou=ORG,o=Com");
 
 		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.x500NameMatch(a, b));
 
-		a = X500NameExp.valueOf("ou=org1,o=com");
-		b = X500NameExp.valueOf("cn=test, ou=ORG,o=com");
+		a = X500NameExp.of("ou=org1,o=com");
+		b = X500NameExp.of("cn=test, ou=ORG,o=com");
 
 		assertEquals(BooleanExp.valueOf(false), SpecialMatchFunctions.x500NameMatch(a, b));
 

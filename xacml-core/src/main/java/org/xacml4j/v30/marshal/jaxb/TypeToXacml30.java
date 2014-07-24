@@ -253,7 +253,7 @@ public interface TypeToXacml30 extends TypeCapability
 						b.attribute(Types.fromXacml30(xacml30Attr));
 					}
 				}
-				return EntityExp.valueOf(b.build());
+				return EntityExp.of(b.build());
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
@@ -415,7 +415,7 @@ public interface TypeToXacml30 extends TypeCapability
 						throw new XacmlSyntaxException(
 								"XPath category can not be null");
 					}
-					return XPathExp.valueOf(
+					return XPathExp.of(
 							new XPathExpression((String)(v.getContent().get(0)),
 									categoryId));
 				}

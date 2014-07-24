@@ -245,7 +245,7 @@ public interface TypeToGSon extends TypeCapability
 							}.getType());
 					b.attributes(attr);
 				}
-				return EntityExp.valueOf(b.build());
+				return EntityExp.of(b.build());
 			}
 		};
 

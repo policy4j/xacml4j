@@ -41,8 +41,8 @@ public class AnyURITypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeExp v0 = AnyURIExp.valueOf("http://www.test.org");
-		AttributeExp v1 = AnyURIExp.valueOf("http://www.test.org");
+		AttributeExp v0 = AnyURIExp.of("http://www.test.org");
+		AttributeExp v1 = AnyURIExp.of("http://www.test.org");
 		assertEquals(v0, v1);
 		assertEquals(XacmlTypes.ANYURI, v0.getType());
 		assertEquals(XacmlTypes.ANYURI, v1.getType());
@@ -51,8 +51,8 @@ public class AnyURITypeTest
 	
 	@Test
 	public void testBagOf(){
-		AttributeExp v0 = AnyURIExp.valueOf("http://www.test.org");
-		AttributeExp v1 = AnyURIExp.valueOf("http://www.test1.org");
+		AttributeExp v0 = AnyURIExp.of("http://www.test.org");
+		AttributeExp v1 = AnyURIExp.of("http://www.test1.org");
 		BagOfAttributeExp b0 = AnyURIExp.bag().attribute(v0, v1).build();
 		BagOfAttributeExp b1 = AnyURIExp.bag().attributes(ImmutableList.of(v0, v1)).build();
 		BagOfAttributeExp b2 = AnyURIExp.bag().value("http://www.test.org", "http://www.test1.org").build();

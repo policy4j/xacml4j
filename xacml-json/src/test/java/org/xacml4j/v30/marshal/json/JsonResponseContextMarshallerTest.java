@@ -87,14 +87,14 @@ public class JsonResponseContextMarshallerTest {
 										        .id(SubjectAttributes.SUBJECT_ID.toString())
 												.category(Categories.ACTION)
 												.issuer("Vytenai")
-												.value(StringExp.valueOf("obuolys"))
+												.value(StringExp.of("obuolys"))
 												.build(),
 										AttributeAssignment
 												.builder()
 												.id(SubjectAttributes.KEY_INFO.toString())
 												.category(Categories.ACTION)
 												.issuer("ispanija")
-												.value(StringExp.valueOf("apelsinas"))
+												.value(StringExp.of("apelsinas"))
 												.build()))
 						.build());
 		resultBuilder.obligation(Obligation
@@ -105,7 +105,7 @@ public class JsonResponseContextMarshallerTest {
 										.builder()
 										.id("custom:attribute1")
 										.category(Categories.parse("totaly:made:up:attribute-category1"))
-										.value(StringExp.valueOf("same old apelsinas"))
+										.value(StringExp.of("same old apelsinas"))
 						                .build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
@@ -115,7 +115,7 @@ public class JsonResponseContextMarshallerTest {
 										AttributeAssignment
 												.builder()
 												.id("test:advice1")
-												.value(StringExp.valueOf("nespjauk i sulini"))
+												.value(StringExp.of("nespjauk i sulini"))
 												.build()))
 						.build(),
 				Advice.builder("advice2").build()));
@@ -132,12 +132,12 @@ public class JsonResponseContextMarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringExp.valueOf(
+										.value(StringExp.of(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringExp.valueOf("TestDomain")).build())).build())
+										.value(StringExp.of("TestDomain")).build())).build())
 						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
 

@@ -57,7 +57,7 @@ public final class TestFunctions
 	public static IntegerExp test2(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag)
 	{
-		return IntegerExp.valueOf(bag.size());
+		return IntegerExp.of(bag.size());
 	}
 
 	@XacmlFuncSpec(id="test3", evaluateArguments=false)
@@ -72,7 +72,7 @@ public final class TestFunctions
 			v += ((IntegerExp)e.evaluate(context)).getValue();
 
 		}
-		return IntegerExp.valueOf(v);
+		return IntegerExp.of(v);
 	}
 
 	@XacmlFuncSpec(id="test4", evaluateArguments=false)
@@ -87,7 +87,7 @@ public final class TestFunctions
 			v += ((IntegerExp)e.evaluate(context)).getValue();
 
 		}
-		return IntegerExp.valueOf(v);
+		return IntegerExp.of(v);
 	}
 
 	@XacmlFuncSpec(id="test5")

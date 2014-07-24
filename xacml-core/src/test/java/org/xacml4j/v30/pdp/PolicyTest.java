@@ -251,8 +251,8 @@ public class PolicyTest
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 
-		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
-		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
+		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
+		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
@@ -276,8 +276,8 @@ public class PolicyTest
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
-		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
-		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.valueOf("testValue1"));
+		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
+		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));

@@ -100,9 +100,9 @@ public class HigherOrderFunctionsTest
 	public void testMapWithValidArguments() throws EvaluationException
 	{
 		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
-		v.add(IntegerExp.valueOf(10));
-		v.add(IntegerExp.valueOf(20));
-		v.add(IntegerExp.valueOf(30));
+		v.add(IntegerExp.of(10));
+		v.add(IntegerExp.of(20));
+		v.add(IntegerExp.of(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 
@@ -110,23 +110,23 @@ public class HigherOrderFunctionsTest
 		BagOfAttributeExp bag =  map.invoke(context, new FunctionReference(intToString),
 				XacmlTypes.INTEGER.bagOf(v));
 		c.verify();
-		assertTrue(bag.contains(StringExp.valueOf("10")));
-		assertTrue(bag.contains(StringExp.valueOf("20")));
-		assertTrue(bag.contains(StringExp.valueOf("30")));
+		assertTrue(bag.contains(StringExp.of("10")));
+		assertTrue(bag.contains(StringExp.of("20")));
+		assertTrue(bag.contains(StringExp.of("30")));
 	}
 
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
 		Collection<AttributeExp> v = new LinkedList<AttributeExp>();
-		v.add(IntegerExp.valueOf(10));
-		v.add(IntegerExp.valueOf(20));
-		v.add(IntegerExp.valueOf(30));
+		v.add(IntegerExp.of(10));
+		v.add(IntegerExp.of(20));
+		v.add(IntegerExp.of(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
-		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), IntegerExp.valueOf(20),
+		BooleanExp r = anyOf.invoke(context, new FunctionReference(intEq), IntegerExp.of(20),
 				XacmlTypes.INTEGER.bagOf(v));
 		assertEquals(BooleanExp.valueOf(true), r);
 		c.verify();
@@ -136,14 +136,14 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAny() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(IntegerExp.valueOf(10));
-		a.add(IntegerExp.valueOf(20));
+		a.add(IntegerExp.of(10));
+		a.add(IntegerExp.of(20));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(IntegerExp.valueOf(1));
-		b.add(IntegerExp.valueOf(3));
-		b.add(IntegerExp.valueOf(5));
-		b.add(IntegerExp.valueOf(19));
+		b.add(IntegerExp.of(1));
+		b.add(IntegerExp.of(3));
+		b.add(IntegerExp.of(5));
+		b.add(IntegerExp.of(19));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
@@ -158,14 +158,14 @@ public class HigherOrderFunctionsTest
 	public void testAnyOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(IntegerExp.valueOf(3));
-		a.add(IntegerExp.valueOf(5));
+		a.add(IntegerExp.of(3));
+		a.add(IntegerExp.of(5));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(IntegerExp.valueOf(1));
-		b.add(IntegerExp.valueOf(2));
-		b.add(IntegerExp.valueOf(3));
-		b.add(IntegerExp.valueOf(4));
+		b.add(IntegerExp.of(1));
+		b.add(IntegerExp.of(2));
+		b.add(IntegerExp.of(3));
+		b.add(IntegerExp.of(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
 
@@ -182,12 +182,12 @@ public class HigherOrderFunctionsTest
 	{
 
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(StringExp.valueOf("   This  is n*o*t* *IT!  "));
-		a.add(StringExp.valueOf("   This is not a match to IT!  "));
+		a.add(StringExp.of("   This  is n*o*t* *IT!  "));
+		a.add(StringExp.of("   This is not a match to IT!  "));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(StringExp.valueOf("   This  is IT!  "));
-		b.add(StringExp.valueOf("   This  is not IT!  "));
+		b.add(StringExp.of("   This  is IT!  "));
+		b.add(StringExp.of("   This  is not IT!  "));
 
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
@@ -202,14 +202,14 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAll() throws EvaluationException
 	{
 		Collection<AttributeExp> a = new LinkedList<AttributeExp>();
-		a.add(IntegerExp.valueOf(5));
-		a.add(IntegerExp.valueOf(6));
+		a.add(IntegerExp.of(5));
+		a.add(IntegerExp.of(6));
 
 		Collection<AttributeExp> b = new LinkedList<AttributeExp>();
-		b.add(IntegerExp.valueOf(1));
-		b.add(IntegerExp.valueOf(2));
-		b.add(IntegerExp.valueOf(3));
-		b.add(IntegerExp.valueOf(4));
+		b.add(IntegerExp.of(1));
+		b.add(IntegerExp.of(2));
+		b.add(IntegerExp.of(3));
+		b.add(IntegerExp.of(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 

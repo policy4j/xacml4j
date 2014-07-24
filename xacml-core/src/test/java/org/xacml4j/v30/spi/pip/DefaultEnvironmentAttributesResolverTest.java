@@ -62,8 +62,8 @@ public class DefaultEnvironmentAttributesResolverTest
 		AttributeSet a = r.resolve(context);
 		c.verify();
 
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"), is(DateTimeExp.valueOf(now).toBag()));
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"), is(DateExp.valueOf(now).toBag()));
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"), is(TimeExp.valueOf(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"), is(DateTimeExp.of(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"), is(DateExp.of(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"), is(TimeExp.of(now).toBag()));
 	}
 }

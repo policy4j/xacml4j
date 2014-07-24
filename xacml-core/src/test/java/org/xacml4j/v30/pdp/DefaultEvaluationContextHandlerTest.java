@@ -112,7 +112,7 @@ public class DefaultEvaluationContextHandlerTest
 
 		Expression v = handler.resolve(context, ref);
 
-		assertEquals(v, IntegerExp.valueOf(555555).toBag());
+		assertEquals(v, IntegerExp.of(555555).toBag());
 		c.verify();
 	}
 
@@ -132,7 +132,7 @@ public class DefaultEvaluationContextHandlerTest
 		c.replay();
 
 		Expression v = handler.resolve(context, ref);
-		assertEquals(XacmlTypes.INTEGER.bagOf(IntegerExp.valueOf(555555)), v);
+		assertEquals(XacmlTypes.INTEGER.bagOf(IntegerExp.of(555555)), v);
 		c.verify();
 	}
 
@@ -273,11 +273,11 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.RESOURCE)).andReturn(entity);
-		expect(pip.resolve(context, ref)).andReturn(AnyURIExp.valueOf("testValue").toBag());
+		expect(pip.resolve(context, ref)).andReturn(AnyURIExp.of("testValue").toBag());
 
 		c.replay();
 		ValueExpression v = handler.resolve(context, ref);
-		assertEquals(AnyURIExp.valueOf("testValue").toBag(), v);
+		assertEquals(AnyURIExp.of("testValue").toBag(), v);
 		c.verify();
 	}
 

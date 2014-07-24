@@ -69,9 +69,9 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testXacmlRegExpWithSpaceBugTrimming() {
-		StringExp regexp1 = StringExp.valueOf("   This  is n*o*t* *IT!  ");
-		StringExp regexp2 = StringExp.valueOf("  *This .*is not IT! *");
-		StringExp input1 = StringExp.valueOf("   This  is not IT!  ");
+		StringExp regexp1 = StringExp.of("   This  is n*o*t* *IT!  ");
+		StringExp regexp2 = StringExp.of("  *This .*is not IT! *");
+		StringExp input1 = StringExp.of("   This  is not IT!  ");
 		c.replay();
 		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(BooleanExp.valueOf(true)));
 		c.verify();
@@ -83,9 +83,9 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testRegExpMatchFromIIC168ConformanceTest() {
-		StringExp regexp1 = StringExp.valueOf("   This  is n*o*t* *IT!  ");
-		StringExp input1 = StringExp.valueOf("   This  is IT!  ");
-		StringExp input2 = StringExp.valueOf("   This  is not IT!  ");
+		StringExp regexp1 = StringExp.of("   This  is n*o*t* *IT!  ");
+		StringExp input1 = StringExp.of("   This  is IT!  ");
+		StringExp input2 = StringExp.of("   This  is not IT!  ");
 		c.replay();
 		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(BooleanExp.valueOf(true)));
 		c.verify();
@@ -97,8 +97,8 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException {
-		StringExp regexp = StringExp.valueOf("S*,Value");
-		StringExp input = StringExp.valueOf("Some,Value");
+		StringExp regexp = StringExp.of("S*,Value");
+		StringExp input = StringExp.of("Some,Value");
 		c.replay();
 		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
 		c.verify();
@@ -106,8 +106,8 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException {
-		StringExp regexp = StringExp.valueOf("http://www.test.org/public/*");
-		AnyURIExp input = AnyURIExp.valueOf("http://www.test.org/public/test/a");
+		StringExp regexp = StringExp.of("http://www.test.org/public/*");
+		AnyURIExp input = AnyURIExp.of("http://www.test.org/public/test/a");
 		c.replay();
 		assertThat(RegularExpressionFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
 		c.verify();
@@ -116,8 +116,8 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testRFC822NameRegExpMatch() throws EvaluationException{
-		StringExp regexp = StringExp.valueOf(".*@example.com");
-		RFC822NameExp input = RFC822NameExp.valueOf("test@example.com");
+		StringExp regexp = StringExp.of(".*@example.com");
+		RFC822NameExp input = RFC822NameExp.of("test@example.com");
 		c.replay();
 		assertThat(RegularExpressionFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
 		c.verify();

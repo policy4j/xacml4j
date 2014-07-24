@@ -49,12 +49,12 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringExp a = StringExp.valueOf("ab");
-		StringExp b = StringExp.valueOf("aa");
+		StringExp a = StringExp.of("ab");
+		StringExp b = StringExp.of("aa");
 		assertEquals(BooleanExp.valueOf(true),
 				NonNumericComparisonFunctions.greaterThan(a, b));
-		a = StringExp.valueOf("aaa");
-		b = StringExp.valueOf("aa");
+		a = StringExp.of("aaa");
+		b = StringExp.of("aa");
 		assertEquals(BooleanExp.valueOf(true),
 				NonNumericComparisonFunctions.greaterThan(a, b));
 	}
@@ -62,12 +62,12 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeLessThan()
 	{
-		TimeExp t1 = TimeExp.valueOf("08:23:47-05:00");
-		TimeExp t2 = TimeExp.valueOf("08:23:48-05:00");
+		TimeExp t1 = TimeExp.of("08:23:47-05:00");
+		TimeExp t2 = TimeExp.of("08:23:48-05:00");
 		assertEquals(BooleanExp.valueOf(true), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = TimeExp.valueOf("08:23:47-05:00");
+		t2 = TimeExp.of("08:23:47-05:00");
 		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = TimeExp.valueOf("08:23:46-05:00");
+		t2 = TimeExp.of("08:23:46-05:00");
 		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
 	}
 
@@ -75,9 +75,9 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsInRange()
 	{
 		replay(context);
-		TimeExp a = TimeExp.valueOf("09:30:10");
-		TimeExp b = TimeExp.valueOf("08:30:10");
-		TimeExp c = TimeExp.valueOf("09:30:11");
+		TimeExp a = TimeExp.of("09:30:10");
+		TimeExp b = TimeExp.of("08:30:10");
+		TimeExp c = TimeExp.of("09:30:11");
 		assertEquals(BooleanExp.valueOf(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
@@ -86,9 +86,9 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeInRangeWithTimeZonesAndTimeIsInRange()
 	{
-		TimeExp a = TimeExp.valueOf("09:30:10Z");
-		TimeExp b = TimeExp.valueOf("08:30:10Z");
-		TimeExp c = TimeExp.valueOf("09:30:11Z");
+		TimeExp a = TimeExp.of("09:30:10Z");
+		TimeExp b = TimeExp.of("08:30:10Z");
+		TimeExp c = TimeExp.of("09:30:11Z");
 		assertEquals(BooleanExp.valueOf(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 	}
@@ -97,9 +97,9 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsNotInRange()
 	{
 		replay(context);
-		TimeExp a = TimeExp.valueOf("09:30:10");
-		TimeExp b = TimeExp.valueOf("08:30:10");
-		TimeExp c = TimeExp.valueOf("09:30:09");
+		TimeExp a = TimeExp.of("09:30:10");
+		TimeExp b = TimeExp.of("08:30:10");
+		TimeExp c = TimeExp.of("09:30:09");
 		assertEquals(BooleanExp.valueOf(false),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
@@ -109,9 +109,9 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound()
 	{
 		replay(context);
-		TimeExp a = TimeExp.valueOf("09:30:10");
-		TimeExp b = TimeExp.valueOf("08:30:10");
-		TimeExp c = TimeExp.valueOf("09:30:10");
+		TimeExp a = TimeExp.of("09:30:10");
+		TimeExp b = TimeExp.of("08:30:10");
+		TimeExp c = TimeExp.of("09:30:10");
 		assertEquals(BooleanExp.valueOf(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);

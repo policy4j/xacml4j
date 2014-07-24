@@ -44,7 +44,7 @@ public class DayTimeDurationTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		DayTimeDurationExp v1 = DayTimeDurationExp.valueOf("P3DT10H30M");
+		DayTimeDurationExp v1 = DayTimeDurationExp.of("P3DT10H30M");
 		assertEquals(3, v1.getValue().getDays());
 		assertEquals(10, v1.getValue().getHours());
 		assertEquals(30, v1.getValue().getMinutes());
@@ -62,7 +62,7 @@ public class DayTimeDurationTypeTest
 	public void testToXacmlString()
 	{
 		Duration d = f.newDurationDayTime(true, 1, 2, 30, 10);
-		DayTimeDurationExp v = DayTimeDurationExp.valueOf(d);
+		DayTimeDurationExp v = DayTimeDurationExp.of(d);
 		TypeToString toString = TypeToString.Types.getIndex().get(XacmlTypes.DAYTIMEDURATION).get();
 		assertEquals("P1DT2H30M10S", toString.toString(v));
 	}
@@ -74,10 +74,10 @@ public class DayTimeDurationTypeTest
 		Duration b = f.newDurationDayTime(true, 1, 2, 30, 11);
 		Duration c = f.newDurationDayTime(true, 1, 2, 30, 9);
 
-		DayTimeDurationExp ad = DayTimeDurationExp.valueOf(a);
-		DayTimeDurationExp bd = DayTimeDurationExp.valueOf(b);
-		DayTimeDurationExp cd = DayTimeDurationExp.valueOf(c);
-		DayTimeDurationExp dd = DayTimeDurationExp.valueOf(a);
+		DayTimeDurationExp ad = DayTimeDurationExp.of(a);
+		DayTimeDurationExp bd = DayTimeDurationExp.of(b);
+		DayTimeDurationExp cd = DayTimeDurationExp.of(c);
+		DayTimeDurationExp dd = DayTimeDurationExp.of(a);
 		assertTrue(ad.compareTo(bd) < 0);
 		assertTrue(bd.compareTo(cd) > 0);
 		assertTrue(ad.compareTo(dd) == 0);
@@ -86,8 +86,8 @@ public class DayTimeDurationTypeTest
 	@Test
 	public void testEquals()
 	{
-		DayTimeDurationExp v1 = DayTimeDurationExp.valueOf("P1DT2H30M10S");
-		DayTimeDurationExp v2 = DayTimeDurationExp.valueOf("P1DT2H30M10S");
+		DayTimeDurationExp v1 = DayTimeDurationExp.of("P1DT2H30M10S");
+		DayTimeDurationExp v2 = DayTimeDurationExp.of("P1DT2H30M10S");
 		assertEquals(v1, v2);
 	}
 }

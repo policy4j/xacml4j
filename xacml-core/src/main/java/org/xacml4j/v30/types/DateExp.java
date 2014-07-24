@@ -43,28 +43,28 @@ public final class DateExp extends BaseAttributeExp<Date>
 		super(XacmlTypes.DATE, new Date(value));
 	}
 	
-	public static DateExp valueOf(String v){
+	public static DateExp of(String v){
 		return new DateExp(Date.valueOf(v));
 	}
 	
-	public static DateExp valueOf(StringExp v){
-		return valueOf(v.getValue());
+	public static DateExp of(StringExp v){
+		return of(v.getValue());
 	}
 	
-	public static DateExp valueOf(XMLGregorianCalendar v){
+	public static DateExp of(XMLGregorianCalendar v){
 		return new DateExp(Date.valueOf(v));
 	}
 	
-	public static DateExp valueOf(Calendar v){
+	public static DateExp of(Calendar v){
 		return new DateExp(Date.valueOf(v));
 	}
 	
-	public static DateExp valueOf(Date v){
+	public static DateExp of(Date v){
 		return new DateExp(v);
 	}
 	
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toXacmlString());
+		return StringExp.of(getValue().toXacmlString());
 	}
 	
 	@Override

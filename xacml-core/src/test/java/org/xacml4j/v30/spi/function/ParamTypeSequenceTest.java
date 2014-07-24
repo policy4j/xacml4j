@@ -56,21 +56,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(DoubleExp.valueOf(0.1));
+		p.add(DoubleExp.of(0.1));
 		assertFalse(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("1"));
+		p.add(StringExp.of("1"));
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
-		p.add(StringExp.valueOf("4"));
-		p.add(StringExp.valueOf("5"));
-		p.add(StringExp.valueOf("6"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
+		p.add(StringExp.of("4"));
+		p.add(StringExp.of("5"));
+		p.add(StringExp.of("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -80,21 +80,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(DoubleExp.valueOf(0.1));
+		p.add(DoubleExp.of(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("1"));
+		p.add(StringExp.of("1"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
-		p.add(StringExp.valueOf("4"));
-		p.add(StringExp.valueOf("5"));
-		p.add(StringExp.valueOf("6"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
+		p.add(StringExp.of("4"));
+		p.add(StringExp.of("5"));
+		p.add(StringExp.of("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -103,27 +103,27 @@ public class ParamTypeSequenceTest
 	{
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrOneOrMore.validate(p.listIterator()));
-		p.add(StringExp.valueOf("1"));
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
+		p.add(StringExp.of("1"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("1"));
-		p.add(StringExp.valueOf("2"));
-		p.add(DoubleExp.valueOf(0.1));
+		p.add(StringExp.of("1"));
+		p.add(StringExp.of("2"));
+		p.add(DoubleExp.of(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("1"));
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
-		p.add(StringExp.valueOf("4"));
+		p.add(StringExp.of("1"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
+		p.add(StringExp.of("4"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.valueOf("1"));
-		p.add(StringExp.valueOf("2"));
-		p.add(StringExp.valueOf("3"));
-		p.add(StringExp.valueOf("4"));
-		p.add(StringExp.valueOf("5"));
+		p.add(StringExp.of("1"));
+		p.add(StringExp.of("2"));
+		p.add(StringExp.of("3"));
+		p.add(StringExp.of("4"));
+		p.add(StringExp.of("5"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 }

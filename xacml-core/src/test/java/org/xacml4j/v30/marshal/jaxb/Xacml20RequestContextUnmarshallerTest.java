@@ -74,8 +74,8 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute subjectSomeAttribute = Iterables.getOnlyElement(subject.getAttributes("urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"));
 		assertNotNull(subjectId);
 		assertNotNull(subjectSomeAttribute);
-		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
-		assertEquals(StringExp.valueOf("riddle me this"), Iterables.getOnlyElement(subjectSomeAttribute.getValues()));
+		assertEquals(StringExp.of("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("riddle me this"), Iterables.getOnlyElement(subjectSomeAttribute.getValues()));
 
 		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
@@ -85,14 +85,14 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(AnyURIExp.of("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
 		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
-		assertEquals(StringExp.valueOf("read"), Iterables.getOnlyElement(actionId.getValues()));
+		assertEquals(StringExp.of("read"), Iterables.getOnlyElement(actionId.getValues()));
 	}
 
 	@Test
@@ -116,21 +116,21 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity subjectRecepient = request.getOnlyEntity(Categories.SUBJECT_RECIPIENT);
 		assertNotNull(subjectRecepient);
 
 		subjectId = Iterables.getOnlyElement(subjectRecepient.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(StringExp.valueOf("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity subjectCodebase = request.getOnlyEntity(Categories.SUBJECT_CODEBASE);
 		assertNotNull(subjectCodebase);
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(AnyURIExp.valueOf("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(AnyURIExp.of("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
@@ -138,14 +138,14 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 
 		assertNotNull(resourceId);
-		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(AnyURIExp.of("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 
 		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
-		assertEquals(StringExp.valueOf("read"), Iterables.getOnlyElement(actionId.getValues()));
+		assertEquals(StringExp.of("read"), Iterables.getOnlyElement(actionId.getValues()));
 	}
 
 	@Test
@@ -159,21 +159,21 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity subjectRecepient = request.getOnlyEntity(Categories.SUBJECT_RECIPIENT);
 		assertNotNull(subjectRecepient);
 
 		subjectId = Iterables.getOnlyElement(subjectRecepient.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(StringExp.valueOf("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("Bart Simpson"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity subjectCodebase = request.getOnlyEntity(Categories.SUBJECT_CODEBASE);
 		assertNotNull(subjectCodebase);
 
 		subjectId = Iterables.getOnlyElement(subjectCodebase.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(AnyURIExp.valueOf("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(AnyURIExp.of("http://www.medico.com/applications/PatientRecordAccess"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Collection<Category> resource = request.getAttributes(Categories.RESOURCE);
 		assertNotNull(resource);
@@ -183,13 +183,13 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute resourceId0 = Iterables.getOnlyElement(resource0.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId0);
 		assertTrue(resourceId0.isIncludeInResult());
-		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId0.getValues()));
+		assertEquals(AnyURIExp.of("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId0.getValues()));
 
 		Entity resource1 = it.next().getEntity();
 		Attribute resourceId1 = Iterables.getOnlyElement(resource1.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId1);
 		assertTrue(resourceId1.isIncludeInResult());
-		assertEquals(AnyURIExp.valueOf("http://medico.com/record/patient/AnotherResource"), Iterables.getOnlyElement(resourceId1.getValues()));
+		assertEquals(AnyURIExp.of("http://medico.com/record/patient/AnotherResource"), Iterables.getOnlyElement(resourceId1.getValues()));
 
 
 
@@ -197,7 +197,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
-		assertEquals(StringExp.valueOf("read"), Iterables.getOnlyElement(actionId.getValues()));
+		assertEquals(StringExp.of("read"), Iterables.getOnlyElement(actionId.getValues()));
 	}
 
 	@Test
@@ -211,25 +211,25 @@ public class Xacml20RequestContextUnmarshallerTest
 
 		Attribute subjectId = Iterables.getOnlyElement(subjectAccess.getAttributes("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertNotNull(subjectId);
-		assertEquals(StringExp.valueOf("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
+		assertEquals(StringExp.of("Julius Hibbert"), Iterables.getOnlyElement(subjectId.getValues()));
 
 		Entity resource = request.getOnlyEntity(Categories.RESOURCE);
 		assertNotNull(resource);
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
-		assertEquals(AnyURIExp.valueOf("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
+		assertEquals(AnyURIExp.of("A:BartSimpson"), Iterables.getOnlyElement(resourceId.getValues()));
 
 		Attribute simpleFileName = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:simple-file-name"));
 		assertNotNull(simpleFileName);
-		assertEquals(StringExp.valueOf("BartSimpson"), Iterables.getOnlyElement(simpleFileName.getValues()));
+		assertEquals(StringExp.of("BartSimpson"), Iterables.getOnlyElement(simpleFileName.getValues()));
 
 
 		Entity action = request.getOnlyEntity(Categories.ACTION);
 		assertNotNull(action);
 		Attribute actionId = Iterables.getOnlyElement(action.getAttributes("urn:oasis:names:tc:xacml:1.0:action:action-id"));
 		assertNotNull(actionId);
-		assertEquals(StringExp.valueOf("read"), Iterables.getOnlyElement(actionId.getValues()));
+		assertEquals(StringExp.of("read"), Iterables.getOnlyElement(actionId.getValues()));
 	}
 
 	@Test

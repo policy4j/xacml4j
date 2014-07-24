@@ -136,7 +136,7 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1)
-				.attribute("testAttributeId1", StringExp.valueOf("v1").toBag())
+				.attribute("testAttributeId1", StringExp.of("v1").toBag())
 				.build();
 
 		// attribute resolver found
@@ -144,7 +144,7 @@ public class DefaultPolicyInformationPointTest
 		.andReturn(ImmutableList.of(resolver1, resolver2));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 
-		expect(context.resolve(eq(k))).andReturn(StringExp.valueOf("testUser").toBag());
+		expect(context.resolve(eq(k))).andReturn(StringExp.of("testUser").toBag());
 
 		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
@@ -161,7 +161,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.bagOf(StringExp.valueOf("v1")), v);
+		assertEquals(XacmlTypes.STRING.bagOf(StringExp.of("v1")), v);
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
 		control.verify();
@@ -184,12 +184,12 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringExp.valueOf("v1").toBag())
+				.attribute("testAttributeId1", StringExp.of("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 		expect(context.resolve(key.build()))
-		.andReturn(StringExp.valueOf("testUser").toBag());
+		.andReturn(StringExp.of("testUser").toBag());
 
 		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
 		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
@@ -202,7 +202,7 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.getDescriptor()).andReturn(descriptor1WithIssuer);
 		expect(context.resolve(key.build()))
-		.andReturn(StringExp.valueOf("testUser").toBag());
+		.andReturn(StringExp.of("testUser").toBag());
 
 		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
@@ -215,7 +215,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.valueOf("v1").toBag(), v);
+		assertEquals(StringExp.of("v1").toBag(), v);
 
 		control.verify();
 	}
@@ -239,12 +239,12 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringExp.valueOf("v1").toBag())
+				.attribute("testAttributeId1", StringExp.of("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 		expect(context.resolve(k))
-			.andReturn(StringExp.valueOf("testUser").toBag());
+			.andReturn(StringExp.of("testUser").toBag());
 		expect(cache.getAttributes(capture(cacheCtx1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx1))).andThrow(new NullPointerException());
 
@@ -252,7 +252,7 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.getDescriptor()).andReturn(descriptor1WithIssuer);
 		expect(context.resolve(k))
-			.andReturn(StringExp.valueOf("testUser").toBag());
+			.andReturn(StringExp.of("testUser").toBag());
 		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
 
 
@@ -266,7 +266,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.valueOf("v1").toBag(), v);
+		assertEquals(StringExp.of("v1").toBag(), v);
 		assertSame(ctx2.getValue(), ctx3.getValue());
 
 		control.verify();
@@ -285,13 +285,13 @@ public class DefaultPolicyInformationPointTest
 
 		// key resolved
 		expect(context.resolve(k))
-				.andReturn(StringExp.valueOf("testUser").toBag());
+				.andReturn(StringExp.of("testUser").toBag());
 
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1WithNoCache)
-				.attribute("testAttributeId1", StringExp.valueOf("v1").toBag())
+				.attribute("testAttributeId1", StringExp.of("v1").toBag())
 				.build();
 
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
@@ -300,7 +300,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.valueOf("v1").toBag(), v);
+		assertEquals(StringExp.of("v1").toBag(), v);
 
 		control.verify();
 	}

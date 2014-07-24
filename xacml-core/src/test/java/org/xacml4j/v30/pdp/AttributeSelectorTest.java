@@ -62,10 +62,10 @@ public class AttributeSelectorTest
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateExp.valueOf("1992-03-21").toBag());
+		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateExp.valueOf("1992-03-21").toBag(), v);
+		assertEquals(DateExp.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -81,10 +81,10 @@ public class AttributeSelectorTest
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateExp.valueOf("1992-03-21").toBag());
+		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateExp.valueOf("1992-03-21").toBag(), v);
+		assertEquals(DateExp.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}

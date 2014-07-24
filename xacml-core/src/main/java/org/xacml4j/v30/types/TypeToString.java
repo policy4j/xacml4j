@@ -37,7 +37,7 @@ public interface TypeToString extends TypeCapability
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
 			public AnyURIExp fromString(String v) {
-				return AnyURIExp.valueOf(v);
+				return AnyURIExp.of(v);
 			}
 			
 			@Override
@@ -49,7 +49,7 @@ public interface TypeToString extends TypeCapability
 		BOOLEAN(XacmlTypes.BOOLEAN){
 			@Override
 			public BooleanExp fromString(String v) {
-				return BooleanExp.valueOf(v);
+				return BooleanExp.of(v);
 			}
 			
 			@Override
@@ -63,7 +63,7 @@ public interface TypeToString extends TypeCapability
 			@Override
 			public Base64BinaryExp fromString(String v) {
 				Preconditions.checkNotNull(v);
-				return Base64BinaryExp.valueOf(v);
+				return Base64BinaryExp.of(v);
 			}
 			
 			@Override
@@ -76,7 +76,7 @@ public interface TypeToString extends TypeCapability
 		DATE(XacmlTypes.DATE){
 			@Override
 			public DateExp fromString(String v) {
-				return DateExp.valueOf(v);
+				return DateExp.of(v);
 			}
 			
 			@Override
@@ -88,7 +88,7 @@ public interface TypeToString extends TypeCapability
 		DATETIME(XacmlTypes.DATETIME){
 			@Override
 			public DateTimeExp fromString(String v) {
-				return DateTimeExp.valueOf(v);
+				return DateTimeExp.of(v);
 			}
 			
 			@Override
@@ -100,7 +100,7 @@ public interface TypeToString extends TypeCapability
 		DAYTIMEDURATION(XacmlTypes.DAYTIMEDURATION){
 			@Override
 			public DayTimeDurationExp fromString(String v) {
-				return DayTimeDurationExp.valueOf(v);
+				return DayTimeDurationExp.of(v);
 			}
 			
 			@Override
@@ -112,7 +112,7 @@ public interface TypeToString extends TypeCapability
 		DNSNAME(XacmlTypes.DNSNAME){
 			@Override
 			public DNSNameExp fromString(String v) {
-				return DNSNameExp.valueOf(v);
+				return DNSNameExp.of(v);
 			}
 			
 			@Override
@@ -124,7 +124,7 @@ public interface TypeToString extends TypeCapability
 		DOUBLE(XacmlTypes.DOUBLE){
 			@Override
 			public DoubleExp fromString(String v) {
-				return DoubleExp.valueOf(v);
+				return DoubleExp.of(v);
 			}
 			
 			@Override
@@ -136,7 +136,7 @@ public interface TypeToString extends TypeCapability
 		HEXBINARY(XacmlTypes.HEXBINARY){
 			@Override
 			public HexBinaryExp fromString(String v) {
-				return HexBinaryExp.valueOf(v);
+				return HexBinaryExp.of(v);
 			}
 			
 			@Override
@@ -148,7 +148,7 @@ public interface TypeToString extends TypeCapability
 		INTEGER(XacmlTypes.INTEGER){
 			@Override
 			public IntegerExp fromString(String v) {
-				return IntegerExp.valueOf(v);
+				return IntegerExp.of(v);
 			}
 			
 			@Override
@@ -160,7 +160,7 @@ public interface TypeToString extends TypeCapability
 		IPADDRESS(XacmlTypes.IPADDRESS){
 			@Override
 			public IPAddressExp fromString(String v) {
-				return IPAddressExp.valueOf(v);
+				return IPAddressExp.of(v);
 			}
 			
 			@Override
@@ -172,7 +172,7 @@ public interface TypeToString extends TypeCapability
 		RFC822NAME(XacmlTypes.RFC822NAME){
 			@Override
 			public RFC822NameExp fromString(String v) {
-				return RFC822NameExp.valueOf(v);
+				return RFC822NameExp.of(v);
 			}
 			
 			@Override
@@ -184,7 +184,7 @@ public interface TypeToString extends TypeCapability
 		STRING(XacmlTypes.STRING){
 			@Override
 			public StringExp fromString(String v) {
-				return StringExp.valueOf(v);
+				return StringExp.of(v);
 			}
 			
 			@Override
@@ -196,7 +196,7 @@ public interface TypeToString extends TypeCapability
 		TIME(XacmlTypes.TIME){
 			@Override
 			public TimeExp fromString(String v) {
-				return TimeExp.valueOf(v);
+				return TimeExp.of(v);
 			}
 			
 			@Override
@@ -208,7 +208,7 @@ public interface TypeToString extends TypeCapability
 		X500NAME(XacmlTypes.X500NAME){
 			@Override
 			public X500NameExp fromString(String v) {
-				return X500NameExp.valueOf(v);
+				return X500NameExp.of(v);
 			}
 			
 			@Override
@@ -220,7 +220,7 @@ public interface TypeToString extends TypeCapability
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
 			@Override
 			public YearMonthDurationExp fromString(String v) {
-				return YearMonthDurationExp.valueOf(v);
+				return YearMonthDurationExp.of(v);
 			}
 			
 			@Override

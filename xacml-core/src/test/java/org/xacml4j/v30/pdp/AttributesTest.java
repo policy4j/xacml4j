@@ -74,12 +74,12 @@ public class AttributesTest
 	public void init() throws Exception
 	{
 		this.attributes = new LinkedList<Attribute>();
-		attributes.add(Attribute.builder("testId10").value(StringExp.valueOf("value0")).build());
-		attributes.add(Attribute.builder("testId10").value(IntegerExp.valueOf(1), IntegerExp.valueOf(2)).build());
-		attributes.add(Attribute.builder("testId11").value(StringExp.valueOf("value1")).build());
+		attributes.add(Attribute.builder("testId10").value(StringExp.of("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(IntegerExp.of(1), IntegerExp.of(2)).build());
+		attributes.add(Attribute.builder("testId11").value(StringExp.of("value1")).build());
 		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true)
-				.value(StringExp.valueOf("value1"), StringExp.valueOf("value2")).build());
-		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true).value(IntegerExp.valueOf(10)).build());
+				.value(StringExp.of("value1"), StringExp.of("value2")).build());
+		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true).value(IntegerExp.of(10)).build());
 
 
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
@@ -150,8 +150,8 @@ public class AttributesTest
 	public void testCreateWithTheSameAttributes()
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
-		attributes.add(Attribute.builder("testId10").value(StringExp.valueOf("value0")).build());
-		attributes.add(Attribute.builder("testId10").value(StringExp.valueOf("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(StringExp.of("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(StringExp.of("value0")).build());
 		assertEquals(2, attributes.size());
 		Category test = Category.builder(Categories.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())

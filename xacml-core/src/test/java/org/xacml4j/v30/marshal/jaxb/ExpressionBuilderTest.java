@@ -34,7 +34,7 @@ public class ExpressionBuilderTest
 	@Test
 	public void testExpressionBuilder()
 	{
-		AttributeExp v = StringExp.valueOf("aa");
+		AttributeExp v = StringExp.of("aa");
 		ExpressionTypeBuilder b = ExpressionTypeBuilder.Expressions.getBuilder(v);
 		assertNotNull(b);
 	}

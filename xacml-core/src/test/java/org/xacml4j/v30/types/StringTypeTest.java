@@ -35,10 +35,10 @@ public class StringTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeExp v0 = StringExp.valueOf("v0");
-		AttributeExp v1 = StringExp.valueOf("v1");
+		AttributeExp v0 = StringExp.of("v0");
+		AttributeExp v1 = StringExp.of("v1");
 		assertFalse(v0.equals(v1));
-		AttributeExp v2 = StringExp.valueOf("v0");
+		AttributeExp v2 = StringExp.of("v0");
 		assertFalse(v1.equals(v2));
 		assertTrue(v0.equals(v2));
 	}

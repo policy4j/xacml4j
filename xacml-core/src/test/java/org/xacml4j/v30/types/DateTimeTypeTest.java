@@ -51,7 +51,7 @@ public class DateTimeTypeTest
 
 	@Test
 	public void testFromXacmlStringNoTimeZone(){
-		DateTimeExp value = DateTimeExp.valueOf("2002-05-30T09:30:10");
+		DateTimeExp value = DateTimeExp.of("2002-05-30T09:30:10");
 		assertEquals(2002, value.getValue().getYear());
 		assertEquals(5, value.getValue().getMonth());
 		assertEquals(30, value.getValue().getDay());
@@ -71,30 +71,30 @@ public class DateTimeTypeTest
 	@Test
 	public void addDayTimeDurationTest()
 	{
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2002-03-27T10:23:47-05:00");
-		DayTimeDurationExp duration = DayTimeDurationExp.valueOf("P5DT2H0M0S");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2002-03-27T10:23:47-05:00");
+		DayTimeDurationExp duration = DayTimeDurationExp.of("P5DT2H0M0S");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 
 	@Test
 	public void compareTest()
 	{
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2002-03-22T10:23:47-05:00");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2002-03-22T10:23:47-05:00");
 		assertEquals(-1, dateTime1.compareTo(dateTime2));
-		dateTime2 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
+		dateTime2 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
 		assertEquals(0, dateTime1.compareTo(dateTime2));
-		dateTime2 = DateTimeExp.valueOf("2002-03-22T08:22:47-05:00");
+		dateTime2 = DateTimeExp.of("2002-03-22T08:22:47-05:00");
 		assertEquals(1, dateTime1.compareTo(dateTime2));
 	}
 
 	@Test
 	public void addYearMonthDuration()
 	{
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-03-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2001-01-22T08:23:47-05:00");
-		YearMonthDurationExp duration = YearMonthDurationExp.valueOf("-P1Y2M");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-03-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2001-01-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationExp.of("-P1Y2M");
 		assertEquals(dateTime2, dateTime1.add(duration));
 	}
 
@@ -102,9 +102,9 @@ public class DateTimeTypeTest
 	public void substractYearMonthDuration()
 	{
 
-		DateTimeExp dateTime1 = DateTimeExp.valueOf("2002-07-22T08:23:47-05:00");
-		DateTimeExp dateTime2 = DateTimeExp.valueOf("2006-08-22T08:23:47-05:00");
-		YearMonthDurationExp duration = YearMonthDurationExp.valueOf("-P4Y1M");
+		DateTimeExp dateTime1 = DateTimeExp.of("2002-07-22T08:23:47-05:00");
+		DateTimeExp dateTime2 = DateTimeExp.of("2006-08-22T08:23:47-05:00");
+		YearMonthDurationExp duration = YearMonthDurationExp.of("-P4Y1M");
 		assertEquals(dateTime2, dateTime1.subtract(duration));
 	}
 

@@ -111,11 +111,11 @@ public class BagFunctionsTest
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
-		StringExp v0 = StringExp.valueOf("a");
-		StringExp v1 = StringExp.valueOf("b");
+		StringExp v0 = StringExp.of("a");
+		StringExp v1 = StringExp.of("b");
 		BagOfAttributeExp bag = XacmlTypes.STRING.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
-		assertEquals(IntegerExp.valueOf(1), BagFunctions.stringBagSize(bag));
+		assertEquals(IntegerExp.of(1), BagFunctions.stringBagSize(bag));
 		assertEquals(BooleanExp.valueOf(true), BagFunctions.stringIsIn(v0, bag));
 		assertEquals(BooleanExp.valueOf(false), BagFunctions.stringIsIn(v1, bag));
 		assertEquals(XacmlTypes.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
@@ -128,7 +128,7 @@ public class BagFunctionsTest
 		BooleanExp v1 = BooleanExp.valueOf(false);
 		BagOfAttributeExp bag = XacmlTypes.BOOLEAN.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
-		assertEquals(IntegerExp.valueOf(1), BagFunctions.booleanBagSize(bag));
+		assertEquals(IntegerExp.of(1), BagFunctions.booleanBagSize(bag));
 		assertEquals(BooleanExp.valueOf(true), BagFunctions.booleanIsIn(v0, bag));
 		assertEquals(BooleanExp.valueOf(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(XacmlTypes.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
@@ -137,43 +137,43 @@ public class BagFunctionsTest
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
-		IntegerExp v0 = IntegerExp.valueOf(1);
-		IntegerExp v1 = IntegerExp.valueOf(2);
+		IntegerExp v0 = IntegerExp.of(1);
+		IntegerExp v1 = IntegerExp.of(2);
 		BagOfAttributeExp bag = v0.toBag();
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
-		assertEquals(IntegerExp.valueOf(1), BagFunctions.integerBagSize(bag));
-		assertEquals(BooleanExp.create(true), BagFunctions.integerIsIn(v0, bag));
-		assertEquals(BooleanExp.create(false), BagFunctions.integerIsIn(v1, bag));
+		assertEquals(IntegerExp.of(1), BagFunctions.integerBagSize(bag));
+		assertEquals(BooleanExp.of(true), BagFunctions.integerIsIn(v0, bag));
+		assertEquals(BooleanExp.of(false), BagFunctions.integerIsIn(v1, bag));
 		assertEquals(XacmlTypes.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
-		DoubleExp v0 = DoubleExp.valueOf(1);
-		DoubleExp v1 = DoubleExp.valueOf(2);
+		DoubleExp v0 = DoubleExp.of(1);
+		DoubleExp v1 = DoubleExp.of(2);
 		BagOfAttributeExp bag = v0.toBag();
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
-		assertEquals(IntegerExp.valueOf(1), BagFunctions.doubleBagSize(bag));
-		assertEquals(BooleanExp.create(true), BagFunctions.doubleIsIn(v0, bag));
-		assertEquals(BooleanExp.create(false), BagFunctions.doubleIsIn(v1, bag));
+		assertEquals(IntegerExp.of(1), BagFunctions.doubleBagSize(bag));
+		assertEquals(BooleanExp.of(true), BagFunctions.doubleIsIn(v0, bag));
+		assertEquals(BooleanExp.of(false), BagFunctions.doubleIsIn(v1, bag));
 		assertEquals(XacmlTypes.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
 
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIExp v0 = AnyURIExp.valueOf("http://www.test0.org");
-		AnyURIExp v1 = AnyURIExp.valueOf("http://www.test1.org");
-		AnyURIExp v2 = AnyURIExp.valueOf("http://www.test2.org");
+		AnyURIExp v0 = AnyURIExp.of("http://www.test0.org");
+		AnyURIExp v1 = AnyURIExp.of("http://www.test1.org");
+		AnyURIExp v2 = AnyURIExp.of("http://www.test2.org");
 		BagOfAttributeExp bag = v0.toBag();
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
-		assertEquals(IntegerExp.valueOf(1), BagFunctions.anyURIBagSize(bag));
-		assertEquals(BooleanExp.create(true), BagFunctions.anyURIIsIn(v0, bag));
-		assertEquals(BooleanExp.create(false), BagFunctions.anyURIIsIn(v1, bag));
+		assertEquals(IntegerExp.of(1), BagFunctions.anyURIBagSize(bag));
+		assertEquals(BooleanExp.of(true), BagFunctions.anyURIIsIn(v0, bag));
+		assertEquals(BooleanExp.of(false), BagFunctions.anyURIIsIn(v1, bag));
 		assertEquals(XacmlTypes.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
 
-		assertEquals(BooleanExp.create(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
-		assertEquals(BooleanExp.create(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BooleanExp.of(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BooleanExp.of(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
 	}
 }

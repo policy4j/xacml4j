@@ -72,12 +72,12 @@ public class AttributeDesignatorFunctionTest
 		this.context = c.createMock(EvaluationContext.class);
 		this.content = DOMUtil.stringToNode(TEST_XML);
 		this.provider = new AnnotationBasedFunctionProvider(AttributeDesignatorFunctions.class);
-		this.entity = EntityExp.valueOf(
+		this.entity = EntityExp.of(
 				Entity.builder()
 				.content(content)
 				.attribute(Attribute
 						.builder("testId")
-						.value(StringExp.valueOf("aaaa"))
+						.value(StringExp.of("aaaa"))
 						.build())
 				.build());
 	}
@@ -91,15 +91,15 @@ public class AttributeDesignatorFunctionTest
 				.category(Categories.SUBJECT_ACCESS)
 				.dataType(XacmlTypes.STRING)
 				.attributeId("testId")
-				.build())).andReturn(StringExp.valueOf("aaaa").toBag());
+				.build())).andReturn(StringExp.of("aaaa").toBag());
 		c.replay();
 		BagOfAttributeExp v = func.invoke(context,
-				AnyURIExp.valueOf(Categories.SUBJECT_ACCESS.getId()),
-				AnyURIExp.valueOf("testId"),
-				AnyURIExp.valueOf(XacmlTypes.STRING.getDataTypeId()),
+				AnyURIExp.of(Categories.SUBJECT_ACCESS.getId()),
+				AnyURIExp.of("testId"),
+				AnyURIExp.of(XacmlTypes.STRING.getDataTypeId()),
 				BooleanExp.valueOf(false),
 				null);
-		assertEquals(StringExp.valueOf("aaaa").toBag(), v);
+		assertEquals(StringExp.of("aaaa").toBag(), v);
 		c.verify();
 	}
 
@@ -110,11 +110,11 @@ public class AttributeDesignatorFunctionTest
 		c.replay();
 		BagOfAttributeExp v = func.invoke(context,
 				entity,
-				AnyURIExp.valueOf("testId"),
-				AnyURIExp.valueOf(XacmlTypes.STRING.getDataTypeId()),
+				AnyURIExp.of("testId"),
+				AnyURIExp.of(XacmlTypes.STRING.getDataTypeId()),
 				BooleanExp.valueOf(false),
 				null);
-		assertEquals(StringExp.valueOf("aaaa").toBag(), v);
+		assertEquals(StringExp.of("aaaa").toBag(), v);
 		c.verify();
 	}
 }

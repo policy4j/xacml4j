@@ -74,8 +74,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.valueOf("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.valueOf("value1")).build())
+								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
+								Attribute.builder("testId2").value(StringExp.of("value1")).build())
 						.build())
 				.build();
 
@@ -85,8 +85,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(StringExp.valueOf("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.valueOf("value1")).build())
+								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
+								Attribute.builder("testId4").value(StringExp.of("value1")).build())
 						.build())
 				.build();
 
@@ -96,8 +96,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(StringExp.valueOf("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.valueOf("value1")).build())
+								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
+								Attribute.builder("testId4").value(StringExp.of("value1")).build())
 						.build())
 				.build();
 
@@ -107,8 +107,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId6").value(StringExp.valueOf("value1")).build())
+						Attribute.builder("testId5").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId6").value(StringExp.of("value1")).build())
 						.build())
 				.build();
 
@@ -118,8 +118,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId7").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId8").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId7").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
 				.build();
 
 		RequestReference reference0 = RequestReference.builder()
@@ -180,8 +180,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId4").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId3").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId4").value(StringExp.of("value1")).build()).build())
 				.build();
 
 		Category attr1 = Category
@@ -190,8 +190,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId6").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId5").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId6").value(StringExp.of("value1")).build()).build())
 				.build();
 
 		RequestContext request = new RequestContext(false,

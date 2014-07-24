@@ -43,24 +43,24 @@ public final class TimeExp extends BaseAttributeExp<Time>
 		super(XacmlTypes.TIME, time);
 	}
 	
-	public static TimeExp valueOf(String v){
+	public static TimeExp of(String v){
 		return new TimeExp(Time.valueOf(v));
 	}
 	
-	public static TimeExp valueOf(XMLGregorianCalendar v){
+	public static TimeExp of(XMLGregorianCalendar v){
 		return new TimeExp(Time.valueOf(v));
 	}
 	
-	public static TimeExp valueOf(Calendar v){
+	public static TimeExp of(Calendar v){
 		return new TimeExp(Time.valueOf(v));
 	}
 	
-	public static TimeExp valueOf(Time v){
+	public static TimeExp of(Time v){
 		return new TimeExp(v);
 	}
 	
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toXacmlString());
+		return StringExp.of(getValue().toXacmlString());
 	}
 	
 	public static BagOfAttributeExp emptyBag(){

@@ -85,7 +85,7 @@ public class JavaMethodToFunctionSpecTest
 		FunctionSpec spec = builder.createFunctionSpec(getTestMethod("optionalParametersTest"));
 		assertEquals(StringExp.bag().value("false", "true").build(), spec.getParamSpecAt(1).getDefaultValue());
 		assertEquals(
-				StringExp.valueOf("false"), spec.getParamSpecAt(2).getDefaultValue());
+				StringExp.of("false"), spec.getParamSpecAt(2).getDefaultValue());
 		
 	}
 

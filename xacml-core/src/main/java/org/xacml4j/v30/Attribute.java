@@ -185,7 +185,7 @@ public class Attribute
 		}
 
 		/**
-		 * Wraps given entities to via {@link EntityExp#valueOf(Entity)}
+		 * Wraps given entities to via {@link EntityExp#of(Entity)}
 		 * and adds them to this entity builder
 		 *
 		 * @param values an array of entities
@@ -194,13 +194,13 @@ public class Attribute
 		public Builder entity(Entity ...values){
 			Preconditions.checkNotNull(values);
 			for(Entity v : values){
-				valueBuilder.add(EntityExp.valueOf(v));
+				valueBuilder.add(EntityExp.of(v));
 			}
 			return this;
 		}
 
 		/**
-		 * Wraps given entities to via {@link EntityExp#valueOf(Entity)}
+		 * Wraps given entities to via {@link EntityExp#of(Entity)}
 		 * and adds them to this entity builder
 		 *
 		 * @param it an iterator over collection of {@link Entity}
@@ -209,7 +209,7 @@ public class Attribute
 		public Builder entities(Iterable<Entity> it){
 			Preconditions.checkNotNull(it);
 			for(Entity v : it){
-				valueBuilder.add(EntityExp.valueOf(v));
+				valueBuilder.add(EntityExp.of(v));
 			}
 			return this;
 		}

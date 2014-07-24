@@ -35,7 +35,7 @@ public class Base64BinaryTypeTest
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testIncorrectlyBase64EncodedString(){
-		Base64BinaryExp.valueOf("AAEDBQ+++");
+		Base64BinaryExp.of("AAEDBQ+++");
 	}
 
 	@Test
@@ -43,22 +43,22 @@ public class Base64BinaryTypeTest
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		Base64BinaryExp value1 = Base64BinaryExp.valueOf(v0);
-		Base64BinaryExp value2 = Base64BinaryExp.valueOf(v1);
+		Base64BinaryExp value1 = Base64BinaryExp.of(v0);
+		Base64BinaryExp value2 = Base64BinaryExp.of(v1);
 		
 		BagOfAttributeExp b = Base64BinaryExp.bag().value(v0, v1).build();
 		assertEquals(value1, value2);
-		assertEquals(StringExp.valueOf("AAEDBQ=="), value1.toStringExp());
-		assertTrue(b.contains(Base64BinaryExp.valueOf(v0)));
-		assertTrue(b.contains(Base64BinaryExp.valueOf(v1)));
+		assertEquals(StringExp.of("AAEDBQ=="), value1.toStringExp());
+		assertTrue(b.contains(Base64BinaryExp.of(v0)));
+		assertTrue(b.contains(Base64BinaryExp.of(v1)));
 	}
 
 	@Test
 	public void testCreateValueFromString()
 	{
 		byte[] data = {0, 1, 3, 5};
-		Base64BinaryExp value1 = Base64BinaryExp.valueOf("AAEDBQ==");
-		Base64BinaryExp value2 = Base64BinaryExp.valueOf(data);
+		Base64BinaryExp value1 = Base64BinaryExp.of("AAEDBQ==");
+		Base64BinaryExp value2 = Base64BinaryExp.of(data);
 		assertEquals(value1, value2);
 	}
 }

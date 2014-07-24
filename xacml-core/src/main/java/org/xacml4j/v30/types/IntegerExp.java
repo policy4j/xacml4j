@@ -36,11 +36,11 @@ public final class IntegerExp
 		super(XacmlTypes.INTEGER, value);
 	}
 
-	public static IntegerExp valueOf(Number value){
+	public static IntegerExp of(Number value){
 		return new IntegerExp(value.longValue());
 	}
 
-	public static IntegerExp valueOf(String v){
+	public static IntegerExp of(String v){
 		Preconditions.checkNotNull(v);
 		if ((v.length() >= 1) &&
         		(v.charAt(0) == '+')){
@@ -50,7 +50,7 @@ public final class IntegerExp
 	}
 
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toString());
+		return StringExp.of(getValue().toString());
 	}
 
 	public static BagOfAttributeExp emptyBag(){
@@ -75,12 +75,12 @@ public final class IntegerExp
 
 	public DoubleExp divide(IntegerExp d){
 		Preconditions.checkArgument(d.getValue() != null);
-		return DoubleExp.valueOf(getValue() / d.getValue());
+		return DoubleExp.of(getValue() / d.getValue());
 	}
 
 	public IntegerExp mod(IntegerExp d){
 		Preconditions.checkArgument(d.getValue() != null);
-		return IntegerExp.valueOf(getValue() % d.getValue());
+		return IntegerExp.of(getValue() % d.getValue());
 	}
 }
 

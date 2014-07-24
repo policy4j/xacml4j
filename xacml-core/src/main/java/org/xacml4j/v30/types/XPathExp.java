@@ -35,11 +35,11 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 				xp);
 	}
 	
-	public static XPathExp valueOf(XPathExpression xp){
+	public static XPathExp of(XPathExpression xp){
 		return new XPathExp(xp);
 	}
 	
-	public static XPathExp valueOf(String xpath, CategoryId category){
+	public static XPathExp of(String xpath, CategoryId category){
 		return new XPathExp(new XPathExpression(xpath, category));
 	}
 

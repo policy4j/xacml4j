@@ -62,14 +62,14 @@ public class BagOfAttributesTest
 	{
 		BagOfAttributeExpType bagType = XacmlTypes.STRING.bagType();
 		Collection<AttributeExp> content = new LinkedList<AttributeExp>();
-		content.add(StringExp.valueOf("1"));
-		content.add(StringExp.valueOf("2"));
-		content.add(StringExp.valueOf("3"));
+		content.add(StringExp.of("1"));
+		content.add(StringExp.of("2"));
+		content.add(StringExp.of("3"));
 		BagOfAttributeExp bag = bagType.create(content);
-		assertTrue(bag.contains(StringExp.valueOf("1")));
-		assertTrue(bag.contains(StringExp.valueOf("2")));
-		assertTrue(bag.contains(StringExp.valueOf("3")));
-		assertFalse(bag.contains(StringExp.valueOf("4")));
+		assertTrue(bag.contains(StringExp.of("1")));
+		assertTrue(bag.contains(StringExp.of("2")));
+		assertTrue(bag.contains(StringExp.of("3")));
+		assertFalse(bag.contains(StringExp.of("4")));
 	}
 
 	@Test
@@ -83,30 +83,30 @@ public class BagOfAttributesTest
 	public void testCreateBagFromValues()
 	{
 		BagOfAttributeExp b = STRING.bagOf(
-				StringExp.valueOf("1"),
-				StringExp.valueOf("aaa"),
-				StringExp.valueOf("BB"));
-		assertTrue(b.contains(StringExp.valueOf("1")));
-		assertTrue(b.contains(StringExp.valueOf("aaa")));
-		assertTrue(b.contains(StringExp.valueOf("BB")));
-		assertFalse(b.contains(StringExp.valueOf("aaaa")));
+				StringExp.of("1"),
+				StringExp.of("aaa"),
+				StringExp.of("BB"));
+		assertTrue(b.contains(StringExp.of("1")));
+		assertTrue(b.contains(StringExp.of("aaa")));
+		assertTrue(b.contains(StringExp.of("BB")));
+		assertFalse(b.contains(StringExp.of("aaaa")));
 	}
 
 	@Test
 	public void testContainsAll() throws Exception
 	{
 		Collection<AttributeExp> content = new LinkedList<AttributeExp>();
-		content.add(IntegerExp.valueOf(1));
-		content.add(IntegerExp.valueOf(2));
-		content.add(IntegerExp.valueOf(1));
+		content.add(IntegerExp.of(1));
+		content.add(IntegerExp.of(2));
+		content.add(IntegerExp.of(1));
 		BagOfAttributeExp bag = INTEGER.bagOf(content);
 		Collection<AttributeExp> test = new LinkedList<AttributeExp>();
-		test.add(IntegerExp.valueOf(1));
-		test.add(IntegerExp.valueOf(2));
+		test.add(IntegerExp.of(1));
+		test.add(IntegerExp.of(2));
 		assertTrue(bag.containsAll(INTEGER.bagOf(test)));
 		test = new LinkedList<AttributeExp>();
-		test.add(IntegerExp.valueOf(1));
-		test.add(IntegerExp.valueOf(3));
+		test.add(IntegerExp.of(1));
+		test.add(IntegerExp.of(3));
 		assertFalse(bag.containsAll(INTEGER.bagOf(test)));
 	}
 
@@ -114,23 +114,23 @@ public class BagOfAttributesTest
 	public void testEqualsWithElementsInTheSameOrder()
 	{
 		Collection<AttributeExp> content1 = new LinkedList<AttributeExp>();
-		content1.add(IntegerExp.valueOf(1));
-		content1.add(IntegerExp.valueOf(2));
-		content1.add(IntegerExp.valueOf(3));
+		content1.add(IntegerExp.of(1));
+		content1.add(IntegerExp.of(2));
+		content1.add(IntegerExp.of(3));
 		BagOfAttributeExp bag1 = INTEGER.bagOf(content1);
 
 		Collection<AttributeExp> content2 = new LinkedList<AttributeExp>();
-		content2.add(IntegerExp.valueOf(1));
-		content2.add(IntegerExp.valueOf(2));
-		content2.add(IntegerExp.valueOf(3));
+		content2.add(IntegerExp.of(1));
+		content2.add(IntegerExp.of(2));
+		content2.add(IntegerExp.of(3));
 		BagOfAttributeExp bag2 = INTEGER.bagOf(content2);
 
 		assertEquals(bag1, bag2);
 
 		Collection<AttributeExp> content3 = new LinkedList<AttributeExp>();
-		content3.add(IntegerExp.valueOf(1));
-		content3.add(IntegerExp.valueOf(3));
-		content3.add(IntegerExp.valueOf(2));
+		content3.add(IntegerExp.of(1));
+		content3.add(IntegerExp.of(3));
+		content3.add(IntegerExp.of(2));
 		BagOfAttributeExp bag3= INTEGER.bagOf(content3);
 
 		assertTrue(bag1.equals(bag3));
@@ -143,8 +143,8 @@ public class BagOfAttributesTest
 	public void testCreateWithDifferentAttributeTypes()
 	{
 		Collection<AttributeExp> attr = new LinkedList<AttributeExp>();
-		attr.add(IntegerExp.valueOf(1));
-		attr.add(StringExp.valueOf("aaa"));
+		attr.add(IntegerExp.of(1));
+		attr.add(StringExp.of("aaa"));
 		INTEGER.bagOf(attr);
 	}
 
@@ -152,9 +152,9 @@ public class BagOfAttributesTest
 	public void testEvaluateBag() throws EvaluationException
 	{
 		Collection<AttributeExp> content2 = new LinkedList<AttributeExp>();
-		content2.add(IntegerExp.valueOf(3));
-		content2.add(IntegerExp.valueOf(4));
-		content2.add(IntegerExp.valueOf(5));
+		content2.add(IntegerExp.of(3));
+		content2.add(IntegerExp.of(4));
+		content2.add(IntegerExp.of(5));
 		BagOfAttributeExp bag2 = INTEGER.bagOf(content2);
 		replay(context);
 		assertSame(bag2, bag2.evaluate(context));
@@ -165,24 +165,24 @@ public class BagOfAttributesTest
 	public void testUnion()
 	{
 		BagOfAttributeExp bag0 = INTEGER.bagOf(
-				IntegerExp.valueOf(1),
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(3),
-				IntegerExp.valueOf(6));
+				IntegerExp.of(1),
+				IntegerExp.of(2),
+				IntegerExp.of(3),
+				IntegerExp.of(6));
 
 		BagOfAttributeExp bag1 = INTEGER.bagOf(
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(7),
-				IntegerExp.valueOf(6));
+				IntegerExp.of(2),
+				IntegerExp.of(2),
+				IntegerExp.of(7),
+				IntegerExp.of(6));
 
 		BagOfAttributeExp bag3 = bag0.union(bag1);
 
-		assertTrue(bag3.contains(IntegerExp.valueOf(2)));
-		assertTrue(bag3.contains(IntegerExp.valueOf(7)));
-		assertTrue(bag3.contains(IntegerExp.valueOf(6)));
-		assertTrue(bag3.contains(IntegerExp.valueOf(1)));
-		assertTrue(bag3.contains(IntegerExp.valueOf(3)));
+		assertTrue(bag3.contains(IntegerExp.of(2)));
+		assertTrue(bag3.contains(IntegerExp.of(7)));
+		assertTrue(bag3.contains(IntegerExp.of(6)));
+		assertTrue(bag3.contains(IntegerExp.of(1)));
+		assertTrue(bag3.contains(IntegerExp.of(3)));
 		assertEquals(5, bag3.size());
 
 	}
@@ -191,20 +191,20 @@ public class BagOfAttributesTest
 	public void testIntersection()
 	{
 		BagOfAttributeExp bag0 = INTEGER.bagOf(
-				IntegerExp.valueOf(1),
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(3),
-				IntegerExp.valueOf(6));
+				IntegerExp.of(1),
+				IntegerExp.of(2),
+				IntegerExp.of(3),
+				IntegerExp.of(6));
 
 		BagOfAttributeExp bag1 = INTEGER.bagOf(
-				IntegerExp.valueOf(9),
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(6),
-				IntegerExp.valueOf(4));
+				IntegerExp.of(9),
+				IntegerExp.of(2),
+				IntegerExp.of(6),
+				IntegerExp.of(4));
 
 		BagOfAttributeExp bag3 = bag0.intersection(bag1);
-		assertTrue(bag3.contains(IntegerExp.valueOf(2)));
-		assertTrue(bag3.contains(IntegerExp.valueOf(6)));
+		assertTrue(bag3.contains(IntegerExp.of(2)));
+		assertTrue(bag3.contains(IntegerExp.of(6)));
 		assertEquals(2, bag3.size());
 	}
 
@@ -212,17 +212,17 @@ public class BagOfAttributesTest
 	public void testBuilder()
 	{
 		BagOfAttributeExp bag0 = INTEGER.bagOf(
-				IntegerExp.valueOf(1),
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(3));
+				IntegerExp.of(1),
+				IntegerExp.of(2),
+				IntegerExp.of(3));
 		BagOfAttributeExp bag1 = INTEGER.bag().attribute(
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(1),
-				IntegerExp.valueOf(3)).build();
+				IntegerExp.of(2),
+				IntegerExp.of(1),
+				IntegerExp.of(3)).build();
 		Iterable<AttributeExp> values = ImmutableList.<AttributeExp>of(
-				IntegerExp.valueOf(2),
-				IntegerExp.valueOf(1),
-				IntegerExp.valueOf(3));
+				IntegerExp.of(2),
+				IntegerExp.of(1),
+				IntegerExp.of(3));
 		BagOfAttributeExp bag3 = INTEGER.bag().attributes(values).build();
 		BagOfAttributeExp bag4 = INTEGER.bag().attributes(values).build();
 		assertEquals(bag0, bag1);

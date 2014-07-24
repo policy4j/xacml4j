@@ -57,36 +57,36 @@ public class RequestTest
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId10").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId11").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId10").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId11").value(StringExp.of("value1")).build()).build())
 				.build();
 		this.resource1 = Category.builder(Categories.RESOURCE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId22").value(StringExp.valueOf("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(StringExp.valueOf("value2")).build(),
-						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(StringExp.valueOf("value2")).build()).build())
+						Attribute.builder("testId11").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId22").value(StringExp.of("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(StringExp.of("value2")).build(),
+						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(StringExp.of("value2")).build()).build())
 				.build();
 		this.subject0 =  Category.builder(Categories.SUBJECT_ACCESS)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId31").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId32").value(StringExp.valueOf("value1")).build()).build())
+						Attribute.builder("testId31").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId32").value(StringExp.of("value1")).build()).build())
 				.build();
 		this.subject1 = Category.builder(Categories.SUBJECT_CODEBASE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(StringExp.valueOf("value0")).build(),
-						Attribute.builder("testId22").value(StringExp.valueOf("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(StringExp.valueOf("value2")).build(),
-						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(StringExp.valueOf("value2")).build()).build())
+						Attribute.builder("testId11").value(StringExp.of("value0")).build(),
+						Attribute.builder("testId22").value(StringExp.of("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(StringExp.of("value2")).build(),
+						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(StringExp.of("value2")).build()).build())
 				.build();
 
 	}

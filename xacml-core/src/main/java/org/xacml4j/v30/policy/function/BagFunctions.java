@@ -106,7 +106,7 @@ public class BagFunctions
 	}
 
 	static IntegerExp typeBagSizeImpl(BagOfAttributeExp bag) {
-		return IntegerExp.valueOf(bag.size());
+		return IntegerExp.of(bag.size());
 	}
 
 	static BooleanExp containsImpl(AttributeExp v,

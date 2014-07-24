@@ -36,21 +36,21 @@ public final class RFC822NameExp extends BaseAttributeExp<RFC822Name>
 		super(XacmlTypes.RFC822NAME, value);
 	}
 	
-	public static RFC822NameExp valueOf(String v){
+	public static RFC822NameExp of(String v){
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(v));
         return new RFC822NameExp(RFC822Name.parse(v));
 	}
 	
-	public static RFC822NameExp valueOf(StringExp v){
-		return valueOf(v.getValue());
+	public static RFC822NameExp of(StringExp v){
+		return of(v.getValue());
 	}
 	
-	public static RFC822NameExp valueOf(RFC822Name n){
+	public static RFC822NameExp of(RFC822Name n){
 		return new RFC822NameExp(n);
 	}
 	
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toXacmlString());
+		return StringExp.of(getValue().toXacmlString());
 	}
 	
 	public static BagOfAttributeExp emptyBag(){

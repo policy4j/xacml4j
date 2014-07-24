@@ -52,16 +52,16 @@ public final class AnyURIExp extends BaseAttributeExp<URI>
 	 * @param v a string value
 	 * @return {@link AnyURIExp} instance
 	 */
-	public static AnyURIExp valueOf(String v){
+	public static AnyURIExp of(String v){
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(v));
 		return new AnyURIExp(URI.create(v).normalize());
 	}
 	
 	public static AnyURIExp valueOf(StringExp v){
-		return valueOf(v.getValue());
+		return of(v.getValue());
 	}
 	
-	public static AnyURIExp valueOf(URL v){
+	public static AnyURIExp of(URL v){
 		try {
 			return new AnyURIExp(v.toURI());
 		} catch (URISyntaxException e) {
@@ -69,13 +69,13 @@ public final class AnyURIExp extends BaseAttributeExp<URI>
 		}
 	}
 	
-	public static AnyURIExp valueOf(URI v){
+	public static AnyURIExp of(URI v){
 		Preconditions.checkNotNull(v);
 		return new AnyURIExp(v);
 	}
 	
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toString());
+		return StringExp.of(getValue().toString());
 	}
 	
 	public static BagOfAttributeExp emptyBag(){

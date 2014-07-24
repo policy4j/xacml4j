@@ -33,24 +33,24 @@ public class ArtimeticFunctionsTest
 	@Test
 	public void testAddIntegerFunction()
 	{
-		assertEquals(IntegerExp.valueOf(3),
-				ArithmeticFunctions.addInteger(IntegerExp.valueOf(1),
-						IntegerExp.valueOf(2)));
+		assertEquals(IntegerExp.of(3),
+				ArithmeticFunctions.addInteger(IntegerExp.of(1),
+						IntegerExp.of(2)));
 	}
 
 	@Test
 	public void testAddDoubleFunction()
 	{
-		assertEquals(DoubleExp.valueOf(3.3 + 4.5),
-				ArithmeticFunctions.addDouble(DoubleExp.valueOf(3.3),
-						DoubleExp.valueOf(4.5)));
+		assertEquals(DoubleExp.of(3.3 + 4.5),
+				ArithmeticFunctions.addDouble(DoubleExp.of(3.3),
+						DoubleExp.of(4.5)));
 	}
 
 	@Test
 	public void testDivideIntegerFunction()
 	{
-		assertEquals(DoubleExp.valueOf(2),
-				ArithmeticFunctions.divideInteger(IntegerExp.valueOf(4),
-				IntegerExp.valueOf(2)));
+		assertEquals(DoubleExp.of(2),
+				ArithmeticFunctions.divideInteger(IntegerExp.of(4),
+				IntegerExp.of(2)));
 	}
 }

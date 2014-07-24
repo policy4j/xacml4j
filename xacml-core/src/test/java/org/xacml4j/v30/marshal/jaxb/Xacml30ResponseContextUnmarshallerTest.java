@@ -70,7 +70,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(1, o1.getAttributes().size());
 		Collection<AttributeAssignment> oa1 = o1.getAttribute("urn:test:obligation1");
 		assertEquals(1, oa1.size());
-		assertEquals(StringExp.valueOf("oa-value"), oa1.iterator().next().getAttribute());
+		assertEquals(StringExp.of("oa-value"), oa1.iterator().next().getAttribute());
 
 		assertNotNull(r1.getObligation("urn:test:obligation2"));
 
@@ -81,7 +81,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(1, a1.getAttributes().size());
 		Collection<AttributeAssignment> aa1 = a1.getAttribute("urn:test:advice1:attr1");
 		assertEquals(1, aa1.size());
-		assertEquals(StringExp.valueOf("aa-value"), aa1.iterator().next().getAttribute());
+		assertEquals(StringExp.of("aa-value"), aa1.iterator().next().getAttribute());
 
 		assertNotNull(r1.getAssociatedAdvice("urn:test:advice2"));
 
@@ -92,7 +92,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		Collection<Attribute> attr1 = attrs.getAttributes("urn:test:attribute1");
 		assertEquals(1, attr1.size());
 		assertEquals(1, attr1.iterator().next().getValues().size());
-		assertEquals(StringExp.valueOf("value"), attr1.iterator().next().getValues().iterator().next());
+		assertEquals(StringExp.of("value"), attr1.iterator().next().getValues().iterator().next());
 
 		// Test policy references
 		assertEquals(2, r1.getPolicyIdentifiers().size());

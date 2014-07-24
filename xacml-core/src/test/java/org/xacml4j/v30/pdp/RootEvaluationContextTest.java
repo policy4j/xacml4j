@@ -96,8 +96,8 @@ public class RootEvaluationContextTest
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")
 				.build();
-		context.setResolvedDesignatorValue(k, StringExp.valueOf("aaa").toBag());
-		assertEquals(StringExp.valueOf("aaa").toBag(), context.resolve(k));
+		context.setResolvedDesignatorValue(k, StringExp.of("aaa").toBag());
+		assertEquals(StringExp.of("aaa").toBag(), context.resolve(k));
 		c.verify();
 	}
 

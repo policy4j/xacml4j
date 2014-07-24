@@ -199,11 +199,11 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				StringExp.valueOf("testVal1"));
+				StringExp.of("testVal1"));
 
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
-				StringExp.valueOf("testVal1"));
+				StringExp.of("testVal1"));
 
 		c.replay();
 
@@ -216,7 +216,7 @@ public class RuleTest
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -224,7 +224,7 @@ public class RuleTest
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 
 	}
@@ -238,7 +238,7 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				StringExp.valueOf("testVal1"));
+				StringExp.of("testVal1"));
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
 				new EvaluationException(Status.processingError().build(), new NullPointerException()));
@@ -280,8 +280,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
 
 
 		c.replay();
@@ -293,7 +293,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -301,7 +301,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 	}
 
@@ -358,8 +358,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
+		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
 
 		c.replay();
 
@@ -371,7 +371,7 @@ public class RuleTest
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -379,7 +379,7 @@ public class RuleTest
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 	}
 
@@ -416,8 +416,8 @@ public class RuleTest
 
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.valueOf("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(StringExp.of("testVal1"));
 
 		c.replay();
 
@@ -428,7 +428,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -436,7 +436,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								StringExp.valueOf("testVal1"))
+								StringExp.of("testVal1"))
 								.build()));
 		c.verify();
 	}

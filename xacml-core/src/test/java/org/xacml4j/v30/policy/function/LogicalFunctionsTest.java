@@ -192,14 +192,14 @@ public class LogicalFunctionsTest
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerExp n = IntegerExp.valueOf(0);
+		IntegerExp n = IntegerExp.of(0);
 		replay(context);
 		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerExp.valueOf(1);
+		n = IntegerExp.of(1);
 		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n, BooleanExp.valueOf(true)));
 		verify(context);
@@ -210,7 +210,7 @@ public class LogicalFunctionsTest
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerExp.valueOf(2);
+		n = IntegerExp.of(2);
 		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n,
 						BooleanExp.valueOf(true), BooleanExp.valueOf(true)));
@@ -223,7 +223,7 @@ public class LogicalFunctionsTest
 		verify(context);
 		reset(context);
 		replay(context);
-		n = IntegerExp.valueOf(2);
+		n = IntegerExp.of(2);
 		assertEquals(BooleanExp.valueOf(true),
 				LogicalFunctions.nof(context, n,
 						BooleanExp.valueOf(true),
@@ -235,7 +235,7 @@ public class LogicalFunctionsTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerExp n = IntegerExp.valueOf(4);
+		IntegerExp n = IntegerExp.of(4);
 		replay(context);
 		assertEquals(BooleanExp.valueOf(false),
 				LogicalFunctions.nof(context, n, BooleanExp.valueOf(false)));

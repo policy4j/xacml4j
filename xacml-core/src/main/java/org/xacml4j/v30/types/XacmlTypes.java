@@ -62,38 +62,38 @@ public enum XacmlTypes implements AttributeExpType
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI", "anyURI"){
 		public AnyURIExp create(Object v){
 			if(v instanceof String){
-				return AnyURIExp.valueOf((String)v);
+				return AnyURIExp.of((String)v);
 			}
 			if(v instanceof URL){
-				return AnyURIExp.valueOf((URI)v);
+				return AnyURIExp.of((URI)v);
 			}
 			if(v instanceof StringExp){
-				return AnyURIExp.valueOf(v.toString());
+				return AnyURIExp.of(v.toString());
 			}
-			return AnyURIExp.valueOf((URI)v);
+			return AnyURIExp.of((URI)v);
 		}
 	},
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary", "base64Binary"){
 		public Base64BinaryExp create(Object v){
 			if(v instanceof String){
-				return Base64BinaryExp.valueOf((String)v);
+				return Base64BinaryExp.of((String)v);
 			}
 			if(v instanceof byte[]){
-				return Base64BinaryExp.valueOf((byte[])v);
+				return Base64BinaryExp.of((byte[])v);
 			}
 			if(v instanceof StringExp){
-				return Base64BinaryExp.valueOf(v.toString());
+				return Base64BinaryExp.of(v.toString());
 			}
-			return Base64BinaryExp.valueOf((BinaryValue)v);
+			return Base64BinaryExp.of((BinaryValue)v);
 		}
 	},
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean", "boolean"){
 		public BooleanExp create(Object v){
 			if(v instanceof String){
-				return BooleanExp.valueOf((String)v);
+				return BooleanExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return BooleanExp.valueOf(((StringExp)v).getValue());
+				return BooleanExp.of(((StringExp)v).getValue());
 			}
 			return BooleanExp.valueOf((Boolean)v);
 		}
@@ -101,182 +101,182 @@ public enum XacmlTypes implements AttributeExpType
 	DATE("http://www.w3.org/2001/XMLSchema#date", "date"){
 		public DateExp create(Object v){
 			if(v instanceof String){
-				return DateExp.valueOf((String)v);
+				return DateExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return DateExp.valueOf(((StringExp)v).getValue());
+				return DateExp.of(((StringExp)v).getValue());
 			}
 			if(v instanceof Calendar){
-				return DateExp.valueOf((Calendar)v);
+				return DateExp.of((Calendar)v);
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DateExp.valueOf(v.toString());
+				return DateExp.of(v.toString());
 			}
-			return DateExp.valueOf((Date)v);
+			return DateExp.of((Date)v);
 		}
 	},
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime", "dateTime"){
 		public DateTimeExp create(Object v){
 			if(v instanceof String){
-				return DateTimeExp.valueOf((String)v);
+				return DateTimeExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return DateTimeExp.valueOf(((StringExp)v).getValue());
+				return DateTimeExp.of(((StringExp)v).getValue());
 			}
 			if(v instanceof Calendar){
-				return DateTimeExp.valueOf((Calendar)v);
+				return DateTimeExp.of((Calendar)v);
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DateTimeExp.valueOf(v.toString());
+				return DateTimeExp.of(v.toString());
 			}
-			return DateTimeExp.valueOf((DateTime)v);
+			return DateTimeExp.of((DateTime)v);
 		}
 	},
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", "dayTimeDuration",
 			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"){
 		public DayTimeDurationExp create(Object v){
 			if(v instanceof String){
-				return DayTimeDurationExp.valueOf((String)v);
+				return DayTimeDurationExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return DayTimeDurationExp.valueOf(((StringExp)v).getValue());
+				return DayTimeDurationExp.of(((StringExp)v).getValue());
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return DayTimeDurationExp.valueOf(v.toString());
+				return DayTimeDurationExp.of(v.toString());
 			}
-			return DayTimeDurationExp.valueOf((DayTimeDuration)v);
+			return DayTimeDurationExp.of((DayTimeDuration)v);
 		}
 	},
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName",  "dnsName"){
 		public DNSNameExp create(Object v){
 			if(v instanceof String){
-				return DNSNameExp.valueOf((String)v);
+				return DNSNameExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return DNSNameExp.valueOf(((StringExp)v).getValue());
+				return DNSNameExp.of(((StringExp)v).getValue());
 			}
-			return DNSNameExp.valueOf((DNSName)v);
+			return DNSNameExp.of((DNSName)v);
 		}
 	},
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double", "double"){
 		public DoubleExp create(Object v){
 			if(v instanceof String){
-				return DoubleExp.valueOf((String)v);
+				return DoubleExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return DoubleExp.valueOf(((StringExp)v).getValue());
+				return DoubleExp.of(((StringExp)v).getValue());
 			}
-			return DoubleExp.valueOf((Number)v);
+			return DoubleExp.of((Number)v);
 		}
 	},
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer", "integer"){
 			public IntegerExp create(Object v){
 				if(v instanceof String){
-					return IntegerExp.valueOf((String)v);
+					return IntegerExp.of((String)v);
 				}
 				if(v instanceof StringExp){
-					return IntegerExp.valueOf(((StringExp)v).getValue());
+					return IntegerExp.of(((StringExp)v).getValue());
 				}
-				return IntegerExp.valueOf((Number)v);
+				return IntegerExp.of((Number)v);
 			}
 	},
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary", "hexBinary"){
 		public HexBinaryExp create(Object v){
 			if(v instanceof String){
-				return HexBinaryExp.valueOf((String)v);
+				return HexBinaryExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return HexBinaryExp.valueOf(((StringExp)v).getValue());
+				return HexBinaryExp.of(((StringExp)v).getValue());
 			}
 			if(v instanceof byte[]){
-				return HexBinaryExp.valueOf((byte[])v);
+				return HexBinaryExp.of((byte[])v);
 			}
-			return HexBinaryExp.valueOf((BinaryValue)v);
+			return HexBinaryExp.of((BinaryValue)v);
 		}
 	},
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", "ipAddress"){
 		public IPAddressExp create(Object v){
 			if(v instanceof String){
-				return IPAddressExp.valueOf((String)v);
+				return IPAddressExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return IPAddressExp.valueOf(((StringExp)v).getValue());
+				return IPAddressExp.of(((StringExp)v).getValue());
 			}
-			return IPAddressExp.valueOf((IPAddress)v);
+			return IPAddressExp.of((IPAddress)v);
 		}
 	},
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string"){
 		public StringExp create(Object v){
 			if(v instanceof StringExp){
-				return StringExp.valueOf(((StringExp)v).getValue());
+				return StringExp.of(((StringExp)v).getValue());
 			}
-			return StringExp.valueOf((String)v);
+			return StringExp.of((String)v);
 		}
 	},
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", "rfc822Name"){
 		public RFC822NameExp create(Object v){
 			if(v instanceof String){
-				return RFC822NameExp.valueOf((String)v);
+				return RFC822NameExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return RFC822NameExp.valueOf(((StringExp)v).getValue());
+				return RFC822NameExp.of(((StringExp)v).getValue());
 			}
-			return RFC822NameExp.valueOf((RFC822Name)v);
+			return RFC822NameExp.of((RFC822Name)v);
 		}
 	},
 	TIME("http://www.w3.org/2001/XMLSchema#time", "time"){
 		public TimeExp create(Object v){
 			if(v instanceof String){
-				return TimeExp.valueOf((String)v);
+				return TimeExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return TimeExp.valueOf(((StringExp)v).getValue());
+				return TimeExp.of(((StringExp)v).getValue());
 			}
 			if(v instanceof XMLGregorianCalendar){
-				return TimeExp.valueOf((XMLGregorianCalendar)v);
+				return TimeExp.of((XMLGregorianCalendar)v);
 			}
 			if(v instanceof Calendar){
-				return TimeExp.valueOf((Calendar)v);
+				return TimeExp.of((Calendar)v);
 			}
-			return TimeExp.valueOf((Time)v);
+			return TimeExp.of((Time)v);
 		}
 	},
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name", "x500Name"){
 		public X500NameExp create(Object v){
 			if(v instanceof String){
-				return X500NameExp.valueOf((String)v);
+				return X500NameExp.of((String)v);
 			}
 			if(v instanceof StringExp){
-				return X500NameExp.valueOf(((StringExp)v).getValue());
+				return X500NameExp.of(((StringExp)v).getValue());
 			}
-			return X500NameExp.valueOf((X500Principal)v);
+			return X500NameExp.of((X500Principal)v);
 		}
 	},
 	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression",
 		  "xpathExpression", "urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
 		  "urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression"){
 		public XPathExp create(Object v){
-			return XPathExp.valueOf((XPathExpression)v);
+			return XPathExp.of((XPathExpression)v);
 		}
 	},
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration",
 			"yearMonthDuration", "http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"){
 			public YearMonthDurationExp create(Object v){
 				if(v instanceof String){
-					return YearMonthDurationExp.valueOf((String)v);
+					return YearMonthDurationExp.of((String)v);
 				}
 				if(v instanceof StringExp){
-					return YearMonthDurationExp.valueOf(((StringExp)v).getValue());
+					return YearMonthDurationExp.of(((StringExp)v).getValue());
 				}
 				if(v instanceof Duration){
-					return YearMonthDurationExp.valueOf((Duration)v);
+					return YearMonthDurationExp.of((Duration)v);
 				}
-				return YearMonthDurationExp.valueOf((YearMonthDuration)v);
+				return YearMonthDurationExp.of((YearMonthDuration)v);
 			}
 	},
 	ENTITY("urn:oasis:names:tc:xacml:3.0:data type:entity", "entity"){
 			public EntityExp create(Object v){
-				return EntityExp.valueOf((Entity)v);
+				return EntityExp.of((Entity)v);
 			}
 	};
 

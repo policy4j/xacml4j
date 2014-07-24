@@ -43,11 +43,11 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 		super(XacmlTypes.IPADDRESS, address);
 	}
 
-	public static IPAddressExp valueOf(String v){
+	public static IPAddressExp of(String v){
 		return new IPAddressExp(IPAddress.valueOf(v));
 	}
 
-	public static IPAddressExp valueOf(IPAddress v){
+	public static IPAddressExp of(IPAddress v){
 		return new IPAddressExp(v);
 	}
 
@@ -81,7 +81,7 @@ public final class IPAddressExp extends BaseAttributeExp<IPAddress>
 	}
 
 	public StringExp toStringExp(){
-		return StringExp.valueOf(getValue().toXacmlString());
+		return StringExp.of(getValue().toXacmlString());
 	}
 
 	public static BagOfAttributeExp emptyBag(){

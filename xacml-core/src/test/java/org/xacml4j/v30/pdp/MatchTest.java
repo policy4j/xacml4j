@@ -69,19 +69,19 @@ public class MatchTest
 	public void testMatchEvaluation() throws EvaluationException
 	{
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
-		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagOf(IntegerExp.valueOf(2), IntegerExp.valueOf(1)));
+		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagOf(IntegerExp.of(2), IntegerExp.of(1)));
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(IntegerExp.valueOf(1), IntegerExp.valueOf(2)).build()))
+				ImmutableList.<Expression>builder().add(IntegerExp.of(1), IntegerExp.of(2)).build()))
 				.andReturn(BooleanExp.valueOf(false));
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(IntegerExp.valueOf(1), IntegerExp.valueOf(1)).build()))
+				ImmutableList.<Expression>builder().add(IntegerExp.of(1), IntegerExp.of(1)).build()))
 				.andReturn(BooleanExp.valueOf(true));
 		c.replay();
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(IntegerExp.valueOf(1))
+				.attribute(IntegerExp.of(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.MATCH, m.match(context));
@@ -104,7 +104,7 @@ public class MatchTest
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(IntegerExp.valueOf(1))
+				.attribute(IntegerExp.of(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));

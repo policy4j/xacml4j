@@ -43,12 +43,12 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 		AttributeAssignment.Builder attr2Builder = AttributeAssignment.builder()
 				.id("testId2")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 		Advice a = Advice.builder("testId", Effect.DENY)
 				.attribute(attr1Builder.build())
 				.attribute(attr2Builder.build())
@@ -66,7 +66,7 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
@@ -93,7 +93,7 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
@@ -120,7 +120,7 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a1 = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.id("testId1").build())
@@ -132,7 +132,7 @@ public class AdviceTest
 				.build();
 		Advice a3 = Advice.builder("testId", Effect.PERMIT)
 				.attribute(attrBuilder.id("testId1").build())
-				.attribute(attrBuilder.id("testId2").value(IntegerExp.valueOf(1)).build())
+				.attribute(attrBuilder.id("testId2").value(IntegerExp.of(1)).build())
 				.build();
 		Advice a4 = Advice.builder("id", Effect.PERMIT)
 				.attribute(attrBuilder.id("testId1").build())
@@ -152,16 +152,16 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())
-				.attribute(attrBuilder.value(IntegerExp.valueOf(1)).build())
+				.attribute(attrBuilder.value(IntegerExp.of(1)).build())
 				.build();
 
 		assertEquals("testId", a.getId());
-		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerExp.valueOf(0)).build()));
-		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerExp.valueOf(1)).build()));
+		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerExp.of(0)).build()));
+		assertTrue(a.getAttribute("testId1").contains(attrBuilder.value(IntegerExp.of(1)).build()));
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a = Advice.builder("testId", Effect.PERMIT)
 				.attribute(attrBuilder.build())
@@ -187,7 +187,7 @@ public class AdviceTest
 				.id("testId1")
 				.category(Categories.SUBJECT_ACCESS)
 				.issuer("testIssuer")
-				.value(IntegerExp.valueOf(0));
+				.value(IntegerExp.of(0));
 
 		Advice a = Advice.builder("testId", Effect.DENY)
 				.attribute(attrBuilder.build())

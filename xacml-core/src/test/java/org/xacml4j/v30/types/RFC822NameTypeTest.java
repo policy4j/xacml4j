@@ -36,10 +36,10 @@ public class RFC822NameTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeExp n0 = RFC822NameExp.valueOf("test0@test.org");
-		AttributeExp n1 = RFC822NameExp.valueOf("test1@test.org");
-		AttributeExp n2 = RFC822NameExp.valueOf("test0@TEST.org");
-		AttributeExp n3 = RFC822NameExp.valueOf("TEST0@test.org");
+		AttributeExp n0 = RFC822NameExp.of("test0@test.org");
+		AttributeExp n1 = RFC822NameExp.of("test1@test.org");
+		AttributeExp n2 = RFC822NameExp.of("test0@TEST.org");
+		AttributeExp n3 = RFC822NameExp.of("TEST0@test.org");
 		assertFalse(n0.equals(n1));
 		assertTrue(n0.equals(n2));
 		assertFalse(n0.equals(n3));
