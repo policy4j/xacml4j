@@ -52,7 +52,7 @@ public class Xacml20ConformanceAttributeResolver
 		Map<String, BagOfAttributeExp> attributes = new HashMap<String, BagOfAttributeExp>();
 		if(name.getValue().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
-					StringExp.valueOf("Physician").toBag());
+					StringExp.of("Physician").toBag());
 		}
 		return attributes;
 	}
