@@ -10,12 +10,12 @@ package org.xacml4j.v30.spi.function;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -188,9 +188,9 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (m.isVarArgs() && i < params.length - 1) {
 					throw new IllegalArgumentException(
-							String.format("Found varArg parameter "
+							"Found varArg parameter "
 									+ "declaration in incorrect place, "
-									+ "varArg parameter must be a last parameter in the method"));
+									+ "varArg parameter must be a last parameter in the method");
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());

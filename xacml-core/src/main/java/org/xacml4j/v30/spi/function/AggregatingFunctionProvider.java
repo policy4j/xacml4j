@@ -81,9 +81,10 @@ public class AggregatingFunctionProvider
 		for(String functionId : provider.getProvidedFunctions())
 		{
 			if(functions.containsKey(functionId)){
-				throw new IllegalArgumentException(String.format("Function provider " +
-						"already contains a function with functionId=\"%s\"",
-						functionId));
+				throw new IllegalArgumentException(
+						String.format(
+								"Function provider already contains a function with functionId=\"%s\"",
+								functionId));
 			}
 			FunctionSpec spec = provider.getFunction(functionId);
 			if(log.isDebugEnabled()){

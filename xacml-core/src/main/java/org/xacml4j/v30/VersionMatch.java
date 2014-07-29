@@ -10,12 +10,12 @@ package org.xacml4j.v30;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -55,9 +55,8 @@ public class VersionMatch
     	if(!versionMatchPattern.matches(PATTERN)){
     		throw new XacmlSyntaxException(
     				String.format(
-    						"Given version match=\"%s\" should " +
-    						"match regular expression=\"%s\"",
-        		versionMatchPattern, PATTERN));
+    						"Given version match=\"%s\" should match regular expression=\"%s\"",
+        		            versionMatchPattern, PATTERN));
     	}
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
@@ -85,9 +84,9 @@ public class VersionMatch
      */
     private String convertVersionMatchToJavaRE(String pattern)
     {
-        String plus = "\\.\\+", plusRep = "(.\\\\d+)*";
-        String dot = "\\.", dotRep = "\\\\.";
-        String ast = "\\*", astRep = "\\\\d";
+        final String plus = "\\.\\+", plusRep = "(.\\\\d+)*";
+        final String dot = "\\.", dotRep = "\\\\.";
+        final String ast = "\\*", astRep = "\\\\d";
         // replace all "*" with "\d"
         String phase1 = pattern.replaceAll(ast, astRep);
         // replace all ".+" with "(.\d+)*"
@@ -121,9 +120,6 @@ public class VersionMatch
     public boolean equals(Object o){
     	if(o == this){
     		return true;
-    	}
-    	if(o == null){
-    		return false;
     	}
     	if(!(o instanceof VersionMatch)){
     		return false;

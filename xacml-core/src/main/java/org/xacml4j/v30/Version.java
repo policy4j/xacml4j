@@ -127,9 +127,9 @@ public final class Version implements Comparable<Version>
     {
     	if(!version.matches(VERSION_PATTERN)){
     		throw new IllegalArgumentException(
-    				String.format("Invalid version=\"%s\", " +
-    				"does not match regular expression=\"%s\"",
-    				version, VERSION_PATTERN));
+    				String.format(
+						    "Invalid version=\"%s\", does not match regular expression=\"%s\"",
+    				        version, VERSION_PATTERN));
     	}
     	 String[] vc = version.split("\\.");
     	 int[] v = new int[vc.length];
@@ -137,9 +137,9 @@ public final class Version implements Comparable<Version>
     		 v[i] = Integer.parseInt(vc[i]);
     		 if(v[i] < 0){
     			 throw new IllegalArgumentException(
-    					 String.format("Invalid version=\"%s\", " +
-    					 		"component=\"%s\", number is negative", version,
-    					 Integer.toString(v[i])));
+    					 String.format(
+							     "Invalid version=\"%s\", component=\"%d\", number is negative",
+							     version, v[i]));
     		 }
     	 }
     	 return v;

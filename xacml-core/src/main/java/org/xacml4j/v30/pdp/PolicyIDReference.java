@@ -81,9 +81,7 @@ public final class PolicyIDReference extends
 			CompositeDecisionRule resolvedPolicy = context.resolve(this);
 			if(resolvedPolicy == null){
 				if(log.isDebugEnabled()){
-					log.debug(String.format(
-							"Failed to resolve policy reference=\"%s\"",
-							this));
+					log.debug("Failed to resolve policy reference=\"{}\"", this);
 				}
 				return refContext;
 			}
@@ -94,9 +92,7 @@ public final class PolicyIDReference extends
 			return resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			if(log.isDebugEnabled()){
-				log.debug(String.format(
-						"Failed to resolve policy reference=\"%s\"",
-						this), e);
+				log.debug("Failed to resolve policy reference=\"{}\"", this, e);
 			}
 			return refContext;
 		}
@@ -157,8 +153,7 @@ public final class PolicyIDReference extends
 		if(otherRef != null){
 			if(ref.equals(otherRef)){
 				if(log.isDebugEnabled()){
-					log.debug("Policy reference=\"{}\" " +
-							"cycle detected", ref);
+					log.debug("Policy reference=\"{}\" cycle detected", ref);
 				}
 				return true;
 			}
