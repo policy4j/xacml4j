@@ -24,9 +24,9 @@ package org.xacml4j.v30.spi.pdp;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
@@ -51,11 +51,11 @@ public class RequestContextHandlerChain
 	public RequestContextHandlerChain(
 			Iterable<RequestContextHandler> handlers)
 	{
-		this.handlers = new LinkedList<RequestContextHandler>();
+		this.handlers = new CopyOnWriteArrayList<RequestContextHandler>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
-		for(RequestContextHandler h : handlers){
-			if(prev == null){
+		for (RequestContextHandler h : handlers) {
+			if (prev == null) {
 				prev = h;
 				continue;
 			}
