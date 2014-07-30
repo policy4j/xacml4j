@@ -43,7 +43,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -173,12 +172,7 @@ public class SimpleNamespaceContext implements NamespaceContext {
             return Collections.singletonList(XMLConstants.XMLNS_ATTRIBUTE);
         }
         else {
-            Collection<String> list = namespaceUriToPrefixes.get(namespaceUri);
-            if (list == null) {
-                list = new LinkedList<String>();
-                namespaceUriToPrefixes.putAll(namespaceUri, list);
-            }
-            return list;
+            return namespaceUriToPrefixes.get(namespaceUri);
         }
     }
 

@@ -144,7 +144,7 @@ public final class DNSName implements Serializable
 	public String toXacmlString() {
 		StringBuilder b = new StringBuilder(name.name());
 		if(!portRange.isUnbound()){
-			b.append(":").append(portRange.toString());
+			b.append(':').append(portRange.toString());
 		}
 		return b.toString();
 	}

@@ -97,8 +97,8 @@ public class IPAddress implements Serializable
 
     private static IPAddress getV4Instance(String value)
     {
-        int maskPos = value.indexOf("/");
-        int rangePos = value.indexOf(":");
+        int maskPos = value.indexOf('/');
+        int rangePos = value.indexOf(':');
         Builder builder = IPAddress.builder();
         if (maskPos == rangePos) {
             // the sting is just an address

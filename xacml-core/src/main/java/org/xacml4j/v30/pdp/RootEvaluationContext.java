@@ -133,7 +133,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	public boolean isExtendedIndeterminateEval() {
 		return extendedIndeterminateEval;
 	}
-	
+
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
 		return new DelegatingEvaluationContext(this){
@@ -340,7 +340,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 					"PolicySet reference=\"{}\"", ref);
 		}
 		if(p == null){
-			throw new PolicyResolutionException(this, 
+			throw new PolicyResolutionException(this,
 					"Failed to resolve PolicySet reference");
 		}
 		return p;
@@ -355,7 +355,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	@Override
 	public final NodeList evaluateToNodeSet(XPathExp path)
 			throws EvaluationException{
-		return contextHandler.evaluateToNodeSet(this, path); 
+		return contextHandler.evaluateToNodeSet(this, path);
 	}
 
 	@Override

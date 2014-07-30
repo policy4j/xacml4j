@@ -28,12 +28,20 @@ import com.google.common.base.Strings;
 
 public class VersionMatch
 {
-	private static final String PATTERN = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
+	private static final String PATTERN_STRING = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
+	private static final Pattern VERSION_PATTERN = Pattern.compile(PATTERN_STRING);
 
-	private String pattern;
-    private Pattern compiledPattern;
+	private static final Pattern AST_PATTERN = Pattern.compile("\\*");
+	private static final String AST_REPLACEMENT = "\\\\d";
+	private static final Pattern PLUS_PATTERN = Pattern.compile("\\.\\+");
+	private static final String PLUS_REPLACEMENT = "(.\\\\d+)*";
+	private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+	private static final String DOT_REPLACEMENT = "\\\\.";
 
-    /**
+	private final String pattern;
+    private final Pattern compiledPattern;
+
+	/**
      * Constructs version match constraint
      * from a given string representation.
      * A version match is '.'-separated,
@@ -52,11 +60,10 @@ public class VersionMatch
     	if(Strings.isNullOrEmpty(versionMatchPattern)){
     		throw new XacmlSyntaxException("Version can't be null or empty");
     	}
-    	if(!versionMatchPattern.matches(PATTERN)){
+    	if(!VERSION_PATTERN.matcher(versionMatchPattern).matches()){
     		throw new XacmlSyntaxException(
-    				String.format(
-    						"Given version match=\"%s\" should match regular expression=\"%s\"",
-        		            versionMatchPattern, PATTERN));
+				    "Given version match=\"%s\" should match regular expression=\"%s\"",
+        		    versionMatchPattern, PATTERN_STRING);
     	}
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
@@ -82,17 +89,13 @@ public class VersionMatch
      * @param pattern an XACML regular expression
      * @return equivalent java regular expression
      */
-    private String convertVersionMatchToJavaRE(String pattern)
-    {
-        final String plus = "\\.\\+", plusRep = "(.\\\\d+)*";
-        final String dot = "\\.", dotRep = "\\\\.";
-        final String ast = "\\*", astRep = "\\\\d";
-        // replace all "*" with "\d"
-        String phase1 = pattern.replaceAll(ast, astRep);
-        // replace all ".+" with "(.\d+)*"
-        String phase2 = phase1.replaceAll(plus, plusRep);
-        // replace all "." with "\\.", include the "." in "(.\d+)*"
-        return phase2.replaceAll(dot, dotRep);
+    private static String convertVersionMatchToJavaRE(String pattern) {
+	    // replace all "*" with "\d"
+		final String phase1 = AST_PATTERN.matcher(pattern).replaceAll(AST_REPLACEMENT);
+	    // replace all ".+" with "(.\d+)*"
+		String phase2 = PLUS_PATTERN.matcher(phase1).replaceAll(PLUS_REPLACEMENT);
+	    // replace all "." with "\\.", include the "." in "(.\d+)*"
+	    return DOT_PATTERN.matcher(phase2).replaceAll(DOT_REPLACEMENT);
     }
 
     /**
@@ -129,7 +132,7 @@ public class VersionMatch
     }
 
     @Override
-    public String toString(){
+    public String toString() {
     	return pattern;
     }
 

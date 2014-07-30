@@ -63,7 +63,7 @@ public class Xacml20XPathTo30Transformer
 		// found namespace prefix
 		if(firstIndex > 0 &&
 				buf.charAt(firstIndex - 1) == ':'){
-			int index = xpath.indexOf("/");
+			int index = xpath.indexOf('/');
 			if(index == -1){
 				firstIndex = 0;
 			}

@@ -172,7 +172,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		if(versions != null){
 			return versions.remove(v) != null;
 		}
-		return (versions == null)?false:(versions.remove(v) != null);
+		return (versions != null) && (versions.remove(v) != null);
 	}
 
 	@Override
@@ -189,7 +189,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		if(versions != null){
 			return versions.remove(v) != null;
 		}
-		return (versions == null)?false:(versions.remove(v) != null);
+		return (versions != null) && (versions.remove(v) != null);
 	}
 
 	private <T extends Versionable> Collection<T> find(

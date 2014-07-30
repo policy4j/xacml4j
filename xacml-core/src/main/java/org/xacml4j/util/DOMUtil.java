@@ -108,16 +108,16 @@ public class DOMUtil
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				if (previous != null &&
 						previous.getNodeType() != Node.DOCUMENT_NODE) {
-					buffer.append("/");
+					buffer.append('/');
 				}
 				buffer.append(node.getNodeName());
 				if(previous != null &&
 						previous.getNodeType()
 						!= Node.DOCUMENT_NODE){
 					buffer
-					.append("[")
+					.append('[')
 					.append(getNodeIndex(node))
-					.append("]");
+					.append(']');
 				}
 			}
 			if(node.getNodeType() == Node.TEXT_NODE){
@@ -304,9 +304,9 @@ public class DOMUtil
 	 * @param b a DOM node
 	 */
 	public static boolean isEqual(Node a, Node b){
-		return (a == null)?
-				(b == null):((b != null)?
-						a.isEqualNode(b):false);
+		return (a == null)
+				? b == null
+				: b != null && a.isEqualNode(b);
 	}
 
 
@@ -324,9 +324,9 @@ public class DOMUtil
 		if(!Strings.isNullOrEmpty(
 				n.getNamespaceURI())){
 			fqname
-			.append("{")
+			.append('{')
 			.append(n.getNamespaceURI())
-			.append("}");
+			.append('}');
 		}
 		fqname.append(n.getLocalName());
 		return fqname.toString();

@@ -74,13 +74,13 @@ public abstract class BaseAttributeExp<T>
 	public String toString() {
 		return Objects.toStringHelper(this).
 		add("Value", value).
-		add("Type", getType()).toString();
+		add("Type", type).toString();
 	}
 
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(
-				getType(), value);
+				type, value);
 	}
 
 	@Override

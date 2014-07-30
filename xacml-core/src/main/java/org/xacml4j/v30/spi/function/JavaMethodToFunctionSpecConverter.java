@@ -70,12 +70,12 @@ class JavaMethodToFunctionSpecConverter
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		if(m.getReturnType().equals(Void.TYPE)){
-			throw new XacmlSyntaxException("Method=\"%s\" must " +
-					"have other then void return type", m.getName());
+			throw new XacmlSyntaxException(
+					"Method=\"%s\" must have other then void return type", m.getName());
 		}
 		if(!Expression.class.isAssignableFrom(m.getReturnType())){
-			throw new XacmlSyntaxException("Method=\"%s\" must " +
-					"return XACML expression", m.getName());
+			throw new XacmlSyntaxException(
+					"Method=\"%s\" must return XACML expression", m.getName());
 		}
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		if(funcId == null){

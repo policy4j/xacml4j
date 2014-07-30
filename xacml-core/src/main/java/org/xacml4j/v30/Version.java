@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.regex.Pattern;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -34,7 +36,9 @@ import com.google.common.base.Strings;
  */
 public final class Version implements Comparable<Version>
 {
-	private static final String VERSION_PATTERN = "(\\d+\\.)*\\d+";
+	private static final String VERSION_PATTERN_STRING = "(\\d+\\.)*\\d+";
+	private static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_PATTERN_STRING);
+	private static final Pattern VERSION_PART_SPLITTER = Pattern.compile("\\.");
 
 	private final String value;
     private final int[] version;
@@ -125,13 +129,13 @@ public final class Version implements Comparable<Version>
 	private static int[] parseVersion(
 			String version)
     {
-    	if(!version.matches(VERSION_PATTERN)){
+    	if(!VERSION_PATTERN.matcher(version).matches()){
     		throw new IllegalArgumentException(
     				String.format(
 						    "Invalid version=\"%s\", does not match regular expression=\"%s\"",
-    				        version, VERSION_PATTERN));
+    				        version, VERSION_PATTERN_STRING));
     	}
-    	 String[] vc = version.split("\\.");
+    	 String[] vc = VERSION_PART_SPLITTER.split(version);
     	 int[] v = new int[vc.length];
     	 for(int i = 0; i < vc.length; i++){
     		 v[i] = Integer.parseInt(vc[i]);

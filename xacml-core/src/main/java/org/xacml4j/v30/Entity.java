@@ -207,8 +207,8 @@ public final class Entity extends AttributeContainer
 				}
 				AttributeExp value = toString.get().fromString(v);
 				if(log.isDebugEnabled()){
-					log.debug("Node of type=\"{}\" " +
-							"converted attribute=\"{}\"", n.getNodeType(), value);
+					log.debug("Node of type=\"{}\" converted attribute=\"{}\"",
+							n.getNodeType(), value);
 				}
 				values.add(value);
 			}catch(EvaluationException e){
