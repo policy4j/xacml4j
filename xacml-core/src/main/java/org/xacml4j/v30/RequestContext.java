@@ -10,22 +10,20 @@ package org.xacml4j.v30;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,70 +32,25 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 public class RequestContext
 {
-	private boolean returnPolicyIdList;
-	private boolean combinedDecision;
-	private Multimap<CategoryId, Category> attributes;
-	private Map<String, Category> attributesByXmlId;
-	private Collection<RequestReference> requestReferences;
-	private RequestDefaults requestDefaults;
+	private final boolean returnPolicyIdList;
+	private final boolean combinedDecision;
+	private final Multimap<CategoryId, Category> attributes;
+	private final Map<String, Category> attributesByXmlId;
+	private final Collection<RequestReference> requestReferences;
+	private final RequestDefaults requestDefaults;
 
-	private transient int cachedHashCode;
-
-	/**
-	 * Constructs request with a given arguments
-	 *
-	 * @param returnPolicyIdList a flag indicating
-	 * that response should contains applicable
-	 * evaluated policy or policy set identifiers
-	 * list
-	 * @param attributes a collection of request attributes
-	 * @param requestReferences a request references
-	 * @param requestDefaults a request defaults
-	 */
-	public RequestContext(
-			boolean returnPolicyIdList,
-			boolean combinedDecision,
-			Collection<Category> attributes,
-			Collection<RequestReference> requestReferences,
-			RequestDefaults requestDefaults)
-	{
-		this.returnPolicyIdList = returnPolicyIdList;
-		this.attributes = LinkedListMultimap.create();
-		this.requestReferences = (requestReferences == null)?
-				Collections.<RequestReference>emptyList():new ArrayList<RequestReference>(requestReferences);
-		this.attributesByXmlId = new HashMap<String, Category>();
-		this.requestDefaults = requestDefaults;
-		this.combinedDecision = combinedDecision;
-		if(attributes != null){
-			for(Category attr : attributes){
-				// index attributes by category
-				this.attributes.put(attr.getCategoryId(), attr);
-				// index attributes
-				// by id for fast lookup
-				if(attr.getId() != null){
-					this.attributesByXmlId.put(attr.getId(), attr);
-				}
-			}
-		}
-		this.cachedHashCode = Objects.hashCode(
-				this.returnPolicyIdList,
-				this.combinedDecision,
-				this.attributes,
-				this.requestReferences,
-				this.requestDefaults);
-	}
+	private final transient int cachedHashCode;
 
 	private RequestContext(Builder b)
 	{
 		this.returnPolicyIdList = b.returnPolicyIdList;
-		this.attributes = LinkedListMultimap.create();
 		this.requestReferences = b.reqRefs.build();
-		this.attributesByXmlId = new HashMap<String, Category>();
+		this.attributesByXmlId = Maps.newHashMap();
 		this.requestDefaults = b.reqDefaults;
 		this.combinedDecision = b.combinedDecision;
 		this.attributes = b.attrBuilder.build();
@@ -112,56 +65,6 @@ public class RequestContext
 				this.attributes,
 				this.requestReferences,
 				this.requestDefaults);
-	}
-
-	/**
-	 * Constructs a request with a given attributes
-	 *
-	 * @param attributes a collection of {@link Category}
-	 * instances
-	 */
-	public RequestContext(boolean returnPolicyIdList,
-			boolean combinedDecision,
-			Collection<Category> attributes,
-			Collection<RequestReference> requestReferences)
-	{
-		this(returnPolicyIdList, combinedDecision, attributes,
-				requestReferences, new RequestDefaults());
-	}
-
-	public RequestContext(boolean returnPolicyIdList,
-			boolean combinedDecision,
-			Collection<Category> attributes)
-	{
-		this(returnPolicyIdList, combinedDecision, attributes,
-				Collections.<RequestReference>emptyList());
-	}
-
-	/**
-	 * Constructs a request with a given attributes
-	 *
-	 * @param attributes a collection of {@link Category}
-	 * instances
-	 */
-	public RequestContext(boolean returnPolicyIdList,
-			Collection<Category> attributes)
-	{
-		this(returnPolicyIdList, false, attributes,
-				Collections.<RequestReference>emptyList());
-	}
-
-	/**
-	 * Constructs a request with a given attributes
-	 *
-	 * @param attributes a collection of {@link Category}
-	 * instances
-	 */
-	public RequestContext(boolean returnPolicyIdList,
-			Collection<Category> attributes,
-			RequestDefaults requestDefaults)
-	{
-		this(returnPolicyIdList, false, attributes,
-				Collections.<RequestReference>emptyList(), requestDefaults);
 	}
 
 	public static Builder builder(){

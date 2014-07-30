@@ -31,6 +31,7 @@ public final class Status
 	private final StatusCode code;
 	private final String message;
 	private final StatusDetail detail;
+	private final int hashCode;
 
 	/**
 	 * Creates status with a given status
@@ -43,6 +44,7 @@ public final class Status
 		this.code = b.code;
 		this.message = b.message;
 		this.detail = b.detail;
+		this.hashCode = Objects.hashCode(code, message, detail);
 	}
 
 	public static Builder processingError(){
@@ -130,7 +132,7 @@ public final class Status
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(code, message, detail);
+		return hashCode;
 	}
 
 	public static class Builder

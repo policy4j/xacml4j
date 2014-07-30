@@ -50,8 +50,9 @@ public final class BagOfAttributeExp
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
-	private BagOfAttributeExpType type;
-	private Multiset<AttributeExp> values;
+	private final BagOfAttributeExpType type;
+	private final Multiset<AttributeExp> values;
+	private final int hashCode;
 
 	/**
 	 * Constructs bag of attributes.
@@ -66,13 +67,13 @@ public final class BagOfAttributeExp
 		}
 		this.type = type;
 		this.values = ImmutableMultiset.copyOf(attributes);
-
+		this.hashCode = Objects.hashCode(type, values);
 	}
 
 	private BagOfAttributeExp(Builder b){
 		this.type = b.bagType;
 		this.values = b.valuesBuilder.build();
-
+		this.hashCode = Objects.hashCode(type, values);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -248,9 +249,7 @@ public final class BagOfAttributeExp
 
 	@Override
 	public int hashCode(){
-		 return Objects.hashCode(
-				type,
-				values);
+		 return hashCode;
 	}
 
 	/**

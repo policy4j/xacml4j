@@ -40,6 +40,7 @@ public abstract class BaseAttributeExp<T>
 
 	private final T value;
 	private final AttributeExpType type;
+	private final int hashCode;
 
 	protected BaseAttributeExp(AttributeExpType attrType,
 			T attrValue) {
@@ -47,6 +48,7 @@ public abstract class BaseAttributeExp<T>
 		Preconditions.checkNotNull(attrValue);
 		this.type = attrType;
 		this.value = attrValue;
+		this.hashCode = Objects.hashCode(type, value);
 	}
 
 	@Override
@@ -79,8 +81,7 @@ public abstract class BaseAttributeExp<T>
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(
-				type, value);
+		return hashCode;
 	}
 
 	@Override
@@ -89,10 +90,7 @@ public abstract class BaseAttributeExp<T>
 	}
 
 	@Override
-	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
+	public boolean equals(Object o) {
 		if(o == this){
 			return true;
 		}

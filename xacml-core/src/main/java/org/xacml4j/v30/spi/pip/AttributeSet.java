@@ -35,14 +35,16 @@ import com.google.common.collect.ImmutableMap;
 
 public final class AttributeSet
 {
-	private long timestamp;
-	private ImmutableMap<String, BagOfAttributeExp> values;
-	private AttributeResolverDescriptor d;
+	private final long timestamp;
+	private final ImmutableMap<String, BagOfAttributeExp> values;
+	private final AttributeResolverDescriptor d;
+	private final int hashCode;
 
 	private AttributeSet(Builder b){
 		this.d = b.d;
 		this.values = b.mapBuilder.build();
 		this.timestamp = b.ticker.read();
+		this.hashCode = Objects.hashCode(d, values);
 	}
 
 	public static Builder builder(AttributeResolverDescriptor d){
@@ -149,7 +151,7 @@ public final class AttributeSet
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(d, values);
+		return hashCode;
 	}
 
 	public static class Builder

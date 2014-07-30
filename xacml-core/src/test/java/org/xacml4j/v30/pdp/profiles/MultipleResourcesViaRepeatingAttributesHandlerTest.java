@@ -31,9 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -91,8 +89,11 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 						Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
 				.build();
 
-		RequestContext context = new RequestContext(false,
-				Arrays.asList(subject, resource0, resource1));
+		RequestContext context = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject, resource0, resource1)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
@@ -141,8 +142,11 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 						.build())
 				.build();
 
-		RequestContext context = new RequestContext(false,
-				Arrays.asList(subject, resource0));
+		RequestContext context = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject, resource0)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
@@ -162,8 +166,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	@Test
 	public void testWithEmptyRequest()
 	{
-		RequestContext context = new RequestContext(false,
-				Collections.<Category>emptyList());
+		RequestContext context = RequestContext.builder().build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

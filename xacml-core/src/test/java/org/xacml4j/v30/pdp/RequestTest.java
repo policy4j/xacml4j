@@ -27,7 +27,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -94,11 +93,17 @@ public class RequestTest
 	@Test
 	public void testHasRepeatingCategories()
 	{
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0)
+				.build();
 		assertFalse(request.containsRepeatingCategories());
-		request = new RequestContext(false,
-				Arrays.asList(subject0, resource0, resource1));
+		request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0, resource1)
+				.build();
 		assertTrue(request.containsRepeatingCategories());
 	}
 
@@ -107,16 +112,22 @@ public class RequestTest
 	public void testCreateRequest()
 	{
 
-		RequestContext request1 = new RequestContext(false,
-				Arrays.asList(subject0, resource0, resource1));
+		RequestContext request1 = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0, resource1)
+				.build();
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
 		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
 		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource1));
 		assertTrue(request1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
 
-		RequestContext request2 = new RequestContext(true,
-				Arrays.asList(subject0, resource0, resource1));
+		RequestContext request2 = RequestContext
+				.builder()
+				.returnPolicyIdList(true)
+				.attributes(subject0, resource0, resource1)
+				.build();
 
 		assertTrue(request2.isReturnPolicyIdList());
 		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
@@ -128,8 +139,11 @@ public class RequestTest
 	public void testGetAttributesByCategory()
 	{
 
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0, resource1)
+				.build();
 		Collection<Category> attr = request.getAttributes(Categories.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
@@ -142,8 +156,11 @@ public class RequestTest
 	public void testGetAttributeByCategory()
 	{
 
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0)
+				.build();
 		Collection<Category> attr = request.getAttributes(Categories.ACTION);
 		assertNotNull(attr);
 	}
@@ -151,24 +168,33 @@ public class RequestTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetOnlyAttributesMultipleInstancesOfTheSameCategory()
 	{
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0, resource1)
+				.build();
 		request.getOnlyAttributes(Categories.RESOURCE);
 	}
 
 	@Test
 	public void testGetOnlyAttributeSingleInstanceOfTheSameCategory()
 	{
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0)
+				.build();
 		Category attr = request.getOnlyAttributes(Categories.RESOURCE);
 		assertEquals(resource0, attr);
 	}
 
 	@Test
 	public void testGetRequestDefaults(){
-		RequestContext request = new RequestContext(false,
-				Arrays.asList(subject0, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0, resource1)
+				.build();
 		assertNotNull(request.getRequestDefaults());
 		assertEquals(XPathVersion.XPATH1, request.getRequestDefaults().getXPathVersion());
 	}
@@ -177,18 +203,27 @@ public class RequestTest
 	public void testGetIncludeInResult()
 	{
 
-		RequestContext request0 = new RequestContext(false,
-				Arrays.asList(subject0, resource0));
+		RequestContext request0 = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, resource0)
+				.build();
 
 		assertEquals(0, request0.getIncludeInResultAttributes().size());
 
-		RequestContext request1 = new RequestContext(false,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request1 = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 
 		assertEquals(2, request1.getIncludeInResultAttributes().size());
 
-		RequestContext request2 = new RequestContext(false,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request2 = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 		assertEquals(2, request2.getIncludeInResultAttributes().size());
 	}
 }

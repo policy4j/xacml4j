@@ -77,7 +77,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							Status
 							.syntaxError()
 							.message("Found more than AttributeId=\"%s\" " +
-									"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE, 
+									"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE,
 									XacmlTypes.XPATH).build())
 							.includeInResultAttr(request.getIncludeInResultAttributes())
 							.build());
@@ -110,8 +110,9 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			}
 			attributes.add(attrs);
 		}
-		return handleNext(new RequestContext(
-				request.isReturnPolicyIdList(), attributes), context);
+		return handleNext(
+				RequestContext.builder().copyOf(request, attributes).build(),
+				context);
 	}
 
 }
