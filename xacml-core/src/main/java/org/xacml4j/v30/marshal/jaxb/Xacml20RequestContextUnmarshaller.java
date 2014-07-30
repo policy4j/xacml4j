@@ -69,8 +69,6 @@ public final class Xacml20RequestContextUnmarshaller extends
 	BaseJAXBUnmarshaller<RequestContext>
 implements RequestUnmarshaller
 {
-	private final static Logger log = LoggerFactory.getLogger(Mapper.class);
-
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
 	private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.<Decision, DecisionType>builder()
@@ -97,7 +95,7 @@ implements RequestUnmarshaller
 			Effect.DENY, EffectType.DENY,
 			Effect.PERMIT, EffectType.PERMIT);
 
-	private Mapper mapper20;
+	private final Mapper mapper20;
 
 	public Xacml20RequestContextUnmarshaller(){
 		super(JAXBContextUtil.getInstance());
@@ -112,8 +110,10 @@ implements RequestUnmarshaller
 		return mapper20.create((org.oasis.xacml.v20.jaxb.context.RequestType)jaxbInstance.getValue());
 	}
 
-	public class Mapper
+	public static class Mapper
 	{
+		private static final Logger log = LoggerFactory.getLogger(Mapper.class);
+
 		public RequestContext create(RequestType req) throws XacmlSyntaxException
 		{
 			Collection<Category> attributes = new LinkedList<Category>();

@@ -106,10 +106,8 @@ public class DefaultFunctionInocationTest
 		.build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv1.invoke(new Object[]{context,
-				IntegerExp.of(1),
-				IntegerExp.of(2)})).andReturn(
-						IntegerExp.of(1));
+		expect(inv1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)))
+				.andReturn(IntegerExp.of(1));
 		c.replay();
 		ValueExpression v = f1.invoke(spec, context, p);
 		assertEquals(IntegerExp.of(1), v);

@@ -152,7 +152,7 @@ public final class Status
 		}
 
 		public Builder message(String format, Object ...args){
-			this.message = (Strings.isNullOrEmpty(format))?format:String.format(format, args);
+			this.message = Strings.isNullOrEmpty(format) ? format : String.format(format, args);
 			return this;
 		}
 

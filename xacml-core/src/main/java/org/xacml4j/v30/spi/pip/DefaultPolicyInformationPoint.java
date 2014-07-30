@@ -67,76 +67,68 @@ public class DefaultPolicyInformationPoint
 	public BagOfAttributeExp resolve(
 			final EvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception {
-		try {
+		if (log.isDebugEnabled()) {
+			log.debug("Trying to resolve designator=\"{}\"", ref);
+		}
+		Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
+		if (Iterables.isEmpty(resolvers)) {
 			if (log.isDebugEnabled()) {
-				log.debug("Trying to resolve " +
-						"designator=\"{}\"", ref);
+				log.debug("No matching resolver found for designator=\"{}\"", ref);
 			}
-			Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
-			if (Iterables.isEmpty(resolvers)) {
+			return null;
+		}
+		for (AttributeResolver r : resolvers) {
+			AttributeResolverDescriptor d = r.getDescriptor();
+			Preconditions.checkState(d.canResolve(ref));
+			ResolverContext rContext = createContext(context, d);
+			AttributeSet attributes = null;
+			if (d.isCacheable()) {
 				if (log.isDebugEnabled()) {
-					log.debug("No matching resolver " +
-							"found for designator=\"{}\"", ref);
+					log.debug("Trying to find resolver id=\"{}\" values in cache", d.getId());
 				}
-				return null;
+				attributes = cache.getAttributes(rContext);
+				if (attributes != null &&
+						!isExpired(attributes, context)) {
+					if (log.isDebugEnabled()) {
+						log.debug("Found cached resolver id=\"{}\" values=\"{}\"",
+								d.getId(), attributes);
+					}
+					return attributes.get(ref.getAttributeId());
+				}
 			}
-			for (AttributeResolver r : resolvers) {
-				AttributeResolverDescriptor d = r.getDescriptor();
-				Preconditions.checkState(d.canResolve(ref));
-				ResolverContext rContext = createContext(context, d);
-				AttributeSet attributes = null;
-				if (d.isCacheable()) {
-					if (log.isDebugEnabled()) {
-						log.debug("Trying to find resolver id=\"{}\" " +
-								"values in cache", d.getId());
-					}
-					attributes = cache.getAttributes(rContext);
-					if (attributes != null &&
-							!isExpired(attributes, context)) {
-						if (log.isDebugEnabled()) {
-							log.debug("Found cached resolver id=\"{}\"" +
-									" values=\"{}\"", d.getId(), attributes);
-						}
-						return attributes.get(ref.getAttributeId());
-					}
+			try {
+				if (log.isDebugEnabled()) {
+					log.debug("Trying to resolve values with resolver id=\"{}\"",
+							d.getId());
 				}
-				try {
+				attributes = r.resolve(rContext);
+				if (attributes.isEmpty()) {
 					if (log.isDebugEnabled()) {
-						log.debug("Trying to resolve values with " +
-								"resolver id=\"{}\"", d.getId());
-					}
-					attributes = r.resolve(rContext);
-					if (attributes.isEmpty()) {
-						if (log.isDebugEnabled()) {
-							log.debug("Resolver id=\"{}\" failed " +
-									"to resolve attributes", d.getId());
-						}
-						continue;
-					}
-					if (log.isDebugEnabled()) {
-						log.debug("Resolved attributes=\"{}\"",
-								attributes);
-					}
-				} catch (Exception e) {
-					if (log.isDebugEnabled()) {
-						log.debug("Resolver id=\"{}\" failed " +
-								"to resolve attributes", d.getId());
-						log.debug("Resolver threw an exception", e);
+						log.debug("Resolver id=\"{}\" failed to resolve attributes",
+								d.getId());
 					}
 					continue;
 				}
-				// check if resolver
-				// descriptor allows long term caching
-				if (d.isCacheable() &&
-						!attributes.isEmpty()) {
-					cache.putAttributes(rContext, attributes);
+				if (log.isDebugEnabled()) {
+					log.debug("Resolved attributes=\"{}\"",
+							attributes);
 				}
-				context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-				return attributes.get(ref.getAttributeId());
+			} catch (Exception e) {
+				if (log.isDebugEnabled()) {
+					log.debug("Resolver id=\"{}\" failed to resolve attributes", d.getId(), e);
+				}
+				continue;
 			}
-			return ref.getDataType().emptyBag();
-		} finally {
+			// check if resolver
+			// descriptor allows long term caching
+			if (d.isCacheable() &&
+					!attributes.isEmpty()) {
+				cache.putAttributes(rContext, attributes);
+			}
+			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
+			return attributes.get(ref.getAttributeId());
 		}
+		return ref.getDataType().emptyBag();
 	}
 
 	private boolean isExpired(AttributeSet v, EvaluationContext context) {
@@ -157,44 +149,37 @@ public class DefaultPolicyInformationPoint
 	public Node resolve(final EvaluationContext context,
 	                    CategoryId category)
 			throws Exception {
-		try {
-			ContentResolver r = registry.getMatchingContentResolver(context, category);
-			if (r == null) {
-				return null;
-			}
-			ContentResolverDescriptor d = r.getDescriptor();
-			ResolverContext pipContext = createContext(context, d);
-			Content v = null;
-			if (d.isCacheable()) {
-				v = cache.getContent(pipContext);
-				if (v != null &&
-						!isExpired(v, context)) {
-					if (log.isDebugEnabled()) {
-						log.debug("Found cached " +
-								"content=\"{}\"", v);
-					}
-					return v.getContent();
-				}
-			}
-			try {
-				v = r.resolve(pipContext);
-			} catch (Exception e) {
-				if (log.isDebugEnabled()) {
-					log.debug("Received error=\"{}\" " +
-									"while resolving content for category=\"{}\"",
-							e.getMessage(), category);
-					log.debug("Error stack trace", e);
-				}
-				return null;
-			}
-			if (d.isCacheable()) {
-				cache.putContent(pipContext, v);
-			}
-			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-			return v.getContent();
-		} finally {
+		ContentResolver r = registry.getMatchingContentResolver(context, category);
+		if (r == null) {
+			return null;
 		}
-
+		ContentResolverDescriptor d = r.getDescriptor();
+		ResolverContext pipContext = createContext(context, d);
+		Content v = null;
+		if (d.isCacheable()) {
+			v = cache.getContent(pipContext);
+			if (v != null &&
+					!isExpired(v, context)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Found cached content=\"{}\"", v);
+				}
+				return v.getContent();
+			}
+		}
+		try {
+			v = r.resolve(pipContext);
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug("Received error while resolving content for category=\"{}\"",
+						category, e);
+			}
+			return null;
+		}
+		if (d.isCacheable()) {
+			cache.putContent(pipContext, v);
+		}
+		context.setDecisionCacheTTL(d.getPreferredCacheTTL());
+		return v.getContent();
 	}
 
 	@Override

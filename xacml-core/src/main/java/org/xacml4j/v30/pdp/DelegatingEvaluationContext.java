@@ -74,7 +74,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public EvaluationContext createExtIndeterminateEvalContext() {
 		return delegate.createExtIndeterminateEvalContext();
 	}
-	
+
 	@Override
 	public boolean isExtendedIndeterminateEval() {
 		return delegate.isExtendedIndeterminateEval();
@@ -308,6 +308,6 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	public boolean equals(Object o) {
 		return o == this ||
 				(o instanceof DelegatingEvaluationContext) &&
-						delegate.equals(((DelegatingEvaluationContext) o).getDelegate());
+						delegate.equals(((DelegatingEvaluationContext) o).delegate);
 	}
 }

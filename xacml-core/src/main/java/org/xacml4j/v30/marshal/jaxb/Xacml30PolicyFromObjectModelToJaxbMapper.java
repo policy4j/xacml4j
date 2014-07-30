@@ -106,7 +106,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 			return toJaxb((Policy)d);
 		}
 		if(d instanceof Rule){
-			return toJaxb((Policy)d);
+			return toJaxb((Rule)d);
 		}
 		if(d instanceof PolicyIDReference){
 			return toJaxb((PolicyIDReference)d);

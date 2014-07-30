@@ -101,7 +101,7 @@ public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombining
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(
 					String.format(
-							"Policy decision combining  algorithm with identifier=\"%s\" already exists",
+							"Policy decision combining algorithm with identifier=\"%s\" already exists",
 							algorithm));
 		}
 	}

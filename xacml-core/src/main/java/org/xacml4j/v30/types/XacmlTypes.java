@@ -65,7 +65,7 @@ public enum XacmlTypes implements AttributeExpType
 				return AnyURIExp.of((String)v);
 			}
 			if(v instanceof URL){
-				return AnyURIExp.of((URI)v);
+				return AnyURIExp.of((URL)v);
 			}
 			if(v instanceof StringExp){
 				return AnyURIExp.of(v.toString());
