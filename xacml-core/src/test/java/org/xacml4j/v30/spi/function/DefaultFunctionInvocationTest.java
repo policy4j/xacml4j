@@ -1,4 +1,3 @@
-
 package org.xacml4j.v30.spi.function;
 
 /*
@@ -11,12 +10,12 @@ package org.xacml4j.v30.spi.function;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -44,7 +43,7 @@ import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableList;
 
-public class DefaultFunctionInocationTest
+public class DefaultFunctionInvocationTest
 {
 	private Invocation<ValueExpression> inv0;
 	private Invocation<ValueExpression> inv1;
@@ -67,7 +66,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeNoEvaluationContextFuncionIsNotVariadic() throws Exception
+	public void testInvokeNoEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -98,7 +97,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeWithEvaluationContextFuncionIsNotVariadic() throws Exception
+	public void testInvokeWithEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -116,7 +115,7 @@ public class DefaultFunctionInocationTest
 
 	@Test
 	@Ignore
-	public void testInvokeWithEvaluationContextFuncionIsVariadic() throws Exception
+	public void testInvokeWithEvaluationContextFunctionIsVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -144,7 +143,7 @@ public class DefaultFunctionInocationTest
 
 	@Test
 	@Ignore
-	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
+	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -169,7 +168,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndZeroVariadicParams() throws Exception
+	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
