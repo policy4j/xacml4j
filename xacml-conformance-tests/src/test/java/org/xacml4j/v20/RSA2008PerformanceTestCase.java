@@ -10,12 +10,12 @@ package org.xacml4j.v20;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -25,9 +25,6 @@ package org.xacml4j.v20;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,11 +36,13 @@ import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 
 public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 {
@@ -62,7 +61,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				.withDefaultAlgorithms()
 				.create());
 
-		List<Supplier<InputStream>> policyStreams = Arrays.asList(
+		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),
 				_getPolicy("XacmlPolicySet-02a-CDA.xml"),
 				_getPolicy("XacmlPolicySet-02b-N.xml"),
@@ -73,7 +72,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
 				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
-		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
+		ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
 		for (Supplier<InputStream> policyStream : policyStreams) {
 			policies.add(repository.importPolicy(policyStream));
 		}
@@ -84,12 +83,12 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 					PolicyInformationPointBuilder
 					.builder("testPip")
 					.defaultResolvers()
+					.withCacheProvider(new DefaultPolicyInformationPointCacheProvider(0, 0))
 					.build())
-			.rootPolicy(policies.get(0))
+			.rootPolicy(policies.build().get(0))
 			.build();
 
 		requests = new RequestContext[5][4];
-
 	}
 
 	private void addTestCase(int caseId, int requestId) throws Exception {
