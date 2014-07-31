@@ -23,25 +23,25 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 public class RequestContext
 {
 	private final boolean returnPolicyIdList;
 	private final boolean combinedDecision;
-	private final Multimap<CategoryId, Category> attributes;
-	private final Map<String, Category> attributesByXmlId;
-	private final Collection<RequestReference> requestReferences;
+	private final ImmutableMultimap<CategoryId, Category> attributes;
+	private final ImmutableMap<String, Category> attributesByXmlId;
+	private final ImmutableList<RequestReference> requestReferences;
 	private final RequestDefaults requestDefaults;
 
 	private final transient int cachedHashCode;
@@ -50,15 +50,16 @@ public class RequestContext
 	{
 		this.returnPolicyIdList = b.returnPolicyIdList;
 		this.requestReferences = b.reqRefs.build();
-		this.attributesByXmlId = Maps.newHashMap();
 		this.requestDefaults = b.reqDefaults;
 		this.combinedDecision = b.combinedDecision;
 		this.attributes = b.attrBuilder.build();
+		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
 		for(Category attr : attributes.values()){
-				if(attr.getId() != null){
-					this.attributesByXmlId.put(attr.getId(), attr);
-				}
+			if(attr.getId() != null){
+				attributesByXmlIdBuilder.put(attr.getId(), attr);
+			}
 		}
+		this.attributesByXmlId = attributesByXmlIdBuilder.build();
 		this.cachedHashCode = Objects.hashCode(
 				this.returnPolicyIdList,
 				this.combinedDecision,
@@ -117,9 +118,8 @@ public class RequestContext
 	 * @return a non-negative number indicating attributes of given
 	 * category occurrence in this request
 	 */
-	public int getCategoryOccurences(CategoryId category){
-		Collection<Category> attr = attributes.get(category);
-		return (attr == null)?0:attr.size();
+	public int getCategoryOccurrences(CategoryId category){
+		return attributes.get(category).size();
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class RequestContext
 	 * instances
 	 */
 	public Collection<RequestReference> getRequestReferences(){
-		return Collections.unmodifiableCollection(requestReferences);
+		return requestReferences;
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class RequestContext
 	 * instances
 	 */
 	public Collection<Category> getAttributes(){
-		return Collections.unmodifiableCollection(attributes.values());
+		return attributes.values();
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class RequestContext
 	 * this request
 	 */
 	public Set<CategoryId> getCategories(){
-		return Collections.unmodifiableSet(attributes.keySet());
+		return attributes.keySet();
 	}
 
 	/**
@@ -192,12 +192,15 @@ public class RequestContext
 		return attributes.get(categoryId);
 	}
 
-	public Collection<Entity> getEntities(CategoryId c){
-		ImmutableList.Builder<Entity> b = ImmutableList.builder();
-		for(Category a : getAttributes(c)){
-			b.add(a.getEntity());
-		}
-		return b.build();
+	public Collection<Entity> getEntities(CategoryId c) {
+		return Collections2.transform(
+				getAttributes(c),
+				new Function<Category, Entity>() {
+					@Override
+					public Entity apply(Category input) {
+						return input.getEntity();
+					}
+				});
 	}
 
 	/**
@@ -229,9 +232,9 @@ public class RequestContext
 	 * @return {@code true} if this request
 	 * has multiple attributes of same category
 	 */
-	public boolean containsRepeatingCategories(){
-		for(CategoryId category : getCategories()){
-			if(getCategoryOccurences(category) > 1){
+	public boolean containsRepeatingCategories() {
+		for (CategoryId category : getCategories()) {
+			if (getCategoryOccurrences(category) > 1) {
 				return true;
 			}
 		}
@@ -241,10 +244,10 @@ public class RequestContext
 	public boolean containsAttributeValues(
 			String attributeId, String issuer, AttributeExpType type)
 	{
-		for(Category a : getAttributes()){
+		for (Category a : getAttributes()) {
 			Entity e = a.getEntity();
-			Collection<AttributeExp> values =  e.getAttributeValues(attributeId, issuer, type);
-			if(!values.isEmpty()){
+			Collection<AttributeExp> values = e.getAttributeValues(attributeId, issuer, type);
+			if (!values.isEmpty()) {
 				return true;
 			}
 		}
@@ -359,20 +362,19 @@ public class RequestContext
 	}
 
 	@Override
-	public boolean equals(Object o){
-		if(this == o){
+	public boolean equals(Object o) {
+		if (this == o) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof RequestContext)){
+		if (!(o instanceof RequestContext)) {
 			return false;
 		}
 		RequestContext r = (RequestContext)o;
-		return !(returnPolicyIdList ^ r.returnPolicyIdList) &&
-			!(combinedDecision ^ r.combinedDecision) && attributes.equals(attributes) &&
-			requestReferences.equals(r.requestReferences) && Objects.equal(requestDefaults, r.requestDefaults);
+		return returnPolicyIdList == r.returnPolicyIdList &&
+				combinedDecision == r.combinedDecision &&
+				attributes.equals(attributes) &&
+				requestReferences.equals(r.requestReferences) &&
+				Objects.equal(requestDefaults, r.requestDefaults);
 	}
 
 	public static class Builder

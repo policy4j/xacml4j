@@ -29,17 +29,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Multimap;
 
 /**
  * Base class for XACML attribute containers
- * 
+ *
  * @author Giedrius Trumpickas
  */
 public class AttributeContainer
 {
-	protected final Multimap<String, Attribute> attributes;
+	protected final ImmutableMultimap<String, Attribute> attributes;
 
 	protected AttributeContainer(Builder<?> b){
 		this.attributes = b.attrsBuilder.build();
@@ -67,7 +67,7 @@ public class AttributeContainer
 	public Collection<Attribute> getAttributes(String attributeId){
 		return attributes.get(attributeId);
 	}
-	
+
 	/**
 	 * Gets a single {@link Attribute} instance with
 	 * a given attribute identifier
@@ -90,11 +90,12 @@ public class AttributeContainer
 	 * and given issuer
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
-		return Collections2.filter(attributes.get(attributeId), new Predicate<Attribute>() {
+		return Collections2.filter(
+				attributes.get(attributeId),
+				new Predicate<Attribute>() {
 					@Override
 					public boolean apply(Attribute attr) {
-						return issuer == null ||
-						issuer.equals(attr.getIssuer());
+						return issuer == null || issuer.equals(attr.getIssuer());
 					}});
 	}
 
