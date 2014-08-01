@@ -313,14 +313,14 @@ public final class BagOfAttributeExp
 
 		public Builder value(Object ...values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().create(v));
+				this.valuesBuilder.add(bagType.getDataType().of(v));
 			}
 			return this;
 		}
 
 		public Builder values(Iterable<Object> values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().create(v));
+				this.valuesBuilder.add(bagType.getDataType().of(v));
 			}
 			return this;
 		}

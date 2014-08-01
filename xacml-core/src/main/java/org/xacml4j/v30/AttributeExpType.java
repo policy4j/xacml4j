@@ -52,7 +52,7 @@ public interface AttributeExpType extends ValueType
 	 * @param v a value
 	 * @return {@link AttributeExp} value
 	 */
-	AttributeExp create(Object v);
+	AttributeExp of(Object v);
 	
 	/**
 	 * Creates type representing collection of

@@ -60,7 +60,7 @@ import com.google.common.collect.ImmutableSet;
 public enum XacmlTypes implements AttributeExpType
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI", "anyURI"){
-		public AnyURIExp create(Object v){
+		public AnyURIExp of(Object v){
 			if(v instanceof String){
 				return AnyURIExp.of((String)v);
 			}
@@ -74,7 +74,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary", "base64Binary"){
-		public Base64BinaryExp create(Object v){
+		public Base64BinaryExp of(Object v){
 			if(v instanceof String){
 				return Base64BinaryExp.of((String)v);
 			}
@@ -88,7 +88,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean", "boolean"){
-		public BooleanExp create(Object v){
+		public BooleanExp of(Object v){
 			if(v instanceof String){
 				return BooleanExp.of((String)v);
 			}
@@ -99,7 +99,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	DATE("http://www.w3.org/2001/XMLSchema#date", "date"){
-		public DateExp create(Object v){
+		public DateExp of(Object v){
 			if(v instanceof String){
 				return DateExp.of((String)v);
 			}
@@ -116,7 +116,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime", "dateTime"){
-		public DateTimeExp create(Object v){
+		public DateTimeExp of(Object v){
 			if(v instanceof String){
 				return DateTimeExp.of((String)v);
 			}
@@ -134,7 +134,7 @@ public enum XacmlTypes implements AttributeExpType
 	},
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", "dayTimeDuration",
 			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"){
-		public DayTimeDurationExp create(Object v){
+		public DayTimeDurationExp of(Object v){
 			if(v instanceof String){
 				return DayTimeDurationExp.of((String)v);
 			}
@@ -148,7 +148,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName",  "dnsName"){
-		public DNSNameExp create(Object v){
+		public DNSNameExp of(Object v){
 			if(v instanceof String){
 				return DNSNameExp.of((String)v);
 			}
@@ -159,7 +159,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double", "double"){
-		public DoubleExp create(Object v){
+		public DoubleExp of(Object v){
 			if(v instanceof String){
 				return DoubleExp.of((String)v);
 			}
@@ -170,7 +170,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer", "integer"){
-			public IntegerExp create(Object v){
+			public IntegerExp of(Object v){
 				if(v instanceof String){
 					return IntegerExp.of((String)v);
 				}
@@ -181,7 +181,7 @@ public enum XacmlTypes implements AttributeExpType
 			}
 	},
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary", "hexBinary"){
-		public HexBinaryExp create(Object v){
+		public HexBinaryExp of(Object v){
 			if(v instanceof String){
 				return HexBinaryExp.of((String)v);
 			}
@@ -195,7 +195,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", "ipAddress"){
-		public IPAddressExp create(Object v){
+		public IPAddressExp of(Object v){
 			if(v instanceof String){
 				return IPAddressExp.of((String)v);
 			}
@@ -206,7 +206,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string"){
-		public StringExp create(Object v){
+		public StringExp of(Object v){
 			if(v instanceof StringExp){
 				return StringExp.of(((StringExp)v).getValue());
 			}
@@ -214,7 +214,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", "rfc822Name"){
-		public RFC822NameExp create(Object v){
+		public RFC822NameExp of(Object v){
 			if(v instanceof String){
 				return RFC822NameExp.of((String)v);
 			}
@@ -225,7 +225,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	TIME("http://www.w3.org/2001/XMLSchema#time", "time"){
-		public TimeExp create(Object v){
+		public TimeExp of(Object v){
 			if(v instanceof String){
 				return TimeExp.of((String)v);
 			}
@@ -242,7 +242,7 @@ public enum XacmlTypes implements AttributeExpType
 		}
 	},
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name", "x500Name"){
-		public X500NameExp create(Object v){
+		public X500NameExp of(Object v){
 			if(v instanceof String){
 				return X500NameExp.of((String)v);
 			}
@@ -255,13 +255,13 @@ public enum XacmlTypes implements AttributeExpType
 	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression",
 		  "xpathExpression", "urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
 		  "urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression"){
-		public XPathExp create(Object v){
+		public XPathExp of(Object v){
 			return XPathExp.of((XPathExpression)v);
 		}
 	},
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration",
 			"yearMonthDuration", "http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"){
-			public YearMonthDurationExp create(Object v){
+			public YearMonthDurationExp of(Object v){
 				if(v instanceof String){
 					return YearMonthDurationExp.of((String)v);
 				}
@@ -275,7 +275,7 @@ public enum XacmlTypes implements AttributeExpType
 			}
 	},
 	ENTITY("urn:oasis:names:tc:xacml:3.0:data type:entity", "entity"){
-			public EntityExp create(Object v){
+			public EntityExp of(Object v){
 				return EntityExp.of((Entity)v);
 			}
 	};

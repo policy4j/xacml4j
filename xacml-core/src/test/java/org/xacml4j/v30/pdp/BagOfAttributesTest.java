@@ -79,6 +79,17 @@ public class BagOfAttributesTest
 		assertEquals(STRING.emptyBag(), STRING.emptyBag());
 	}
 
+	
+	@Test
+	public void testValue(){
+		BagOfAttributeExp b = STRING.bagOf(
+				StringExp.of("1"),
+				StringExp.of("aaa"),
+				StringExp.of("BB"));
+		StringExp v = b.value();
+		assertEquals(StringExp.of("1"), v);
+	}
+	
 	@Test
 	public void testCreateBagFromValues()
 	{
