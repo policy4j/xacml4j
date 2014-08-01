@@ -148,7 +148,9 @@ public final class RFC822Name implements Serializable
 	//if we're allowing quoted identifiers or not:
 	private static final String PATTERN_STRING;
 
-	public static final Pattern VALID_PATTERN;
+	private static final Pattern VALID_PATTERN;
+
+	private static final Pattern NAME_SPLITTER = Pattern.compile("@");
 
 	static {
 		if (ALLOW_QUOTED_IDENTIFIERS) {
@@ -165,12 +167,11 @@ public final class RFC822Name implements Serializable
 		}
 	}
 
-	private String localPart;
-	private String domainPart;
-	private String fqName;
+	private final String localPart;
+	private final String domainPart;
+	private final String fqName;
 
-	public RFC822Name(String localPart,
-			String domainPart){
+	public RFC822Name(String localPart, String domainPart) {
 		Preconditions.checkNotNull(localPart);
 		Preconditions.checkNotNull(domainPart);
 		this.domainPart = domainPart.toLowerCase();
@@ -210,9 +211,10 @@ public final class RFC822Name implements Serializable
 	public static RFC822Name parse(Object name){
 		Preconditions.checkNotNull(name);
 		String trimmedName = ((String)name).trim();
-		Preconditions.checkArgument(VALID_PATTERN.matcher(trimmedName).matches(),
+		Preconditions.checkArgument(
+				VALID_PATTERN.matcher(trimmedName).matches(),
 				"Given value=\"%s\" is invalid RFC822 name", trimmedName);
-		String [] parts = trimmedName.split("@");
+		String [] parts = NAME_SPLITTER.split(trimmedName);
 		return new RFC822Name(parts[0], parts[1]);
 	}
 
@@ -223,9 +225,6 @@ public final class RFC822Name implements Serializable
 
 	@Override
 	public boolean equals(Object o){
-		if (o == null) {
-			return false;
-		}
 		if(o == this){
 			return true;
 		}
@@ -233,7 +232,7 @@ public final class RFC822Name implements Serializable
 			return false;
 		}
 		RFC822Name n = (RFC822Name)o;
-		return n.getLocalPart().equals(getLocalPart()) &&
-		n.getDomainPart().equalsIgnoreCase(getDomainPart());
+		return n.localPart.equals(localPart) &&
+				n.domainPart.equals(domainPart);
 	}
 }

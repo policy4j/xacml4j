@@ -43,9 +43,8 @@ public class Xacml20XPathTo30Transformer
 
 	public static XPathExp fromXacml20String(StringExp path)
 	{
-		XPathExp xpathExp = XPathExp.of(transform20PathTo30(path.getValue()),
+		return XPathExp.of(transform20PathTo30(path.getValue()),
 				Categories.RESOURCE);
-		return xpathExp;
 	}
 
 	public static String transform20PathTo30(String xpath)
@@ -64,7 +63,7 @@ public class Xacml20XPathTo30Transformer
 		// found namespace prefix
 		if(firstIndex > 0 &&
 				buf.charAt(firstIndex - 1) == ':'){
-			int index = xpath.indexOf("/");
+			int index = xpath.indexOf('/');
 			if(index == -1){
 				firstIndex = 0;
 			}
@@ -79,15 +78,16 @@ public class Xacml20XPathTo30Transformer
 		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
 		if(lastIndex == -1){
 			throw new IllegalArgumentException(
-					String.format("Invalid XACML 2.0 xpath=\"%s\" " +
-					"expression, \"ResourceContent\" is missing in the path", xpath));
+					String.format(
+							"Invalid XACML 2.0 xpath=\"%s\" expression, \"ResourceContent\" is missing in the path",
+							xpath));
 		}
 		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
 		buf.delete(firstIndex, lastIndex + 1);
 		String transformedXpath =  buf.toString();
 		if(log.isDebugEnabled()){
-			log.debug("Original xpath=\"{}\", " +
-					"transformed xpath=\"{}\"", xpath, transformedXpath);
+			log.debug("Original xpath=\"{}\", transformed xpath=\"{}\"", xpath,
+					transformedXpath);
 		}
 		return transformedXpath;
 	}

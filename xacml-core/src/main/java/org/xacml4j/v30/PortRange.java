@@ -192,8 +192,8 @@ public final class PortRange implements Serializable
 	 */
 	public boolean contains(int port){
 		Preconditions.checkArgument(port > 0);
-		return (isLowerBounded()?lowerBound <= port:true) &&
-		(isUpperBounded()?port <= upperBound:true);
+		return (!isLowerBounded() || lowerBound <= port) &&
+		(!isUpperBounded() || port <= upperBound);
 	}
 
 	public boolean contains(PortRange range){

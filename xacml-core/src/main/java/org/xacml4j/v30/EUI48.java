@@ -305,7 +305,7 @@ public class EUI48 implements Serializable, Cloneable,
 					}
 				}
 			}
-		} catch (java.net.SocketException e) {
+		} catch (java.net.SocketException ignored) {
 		}
 		return null;
 	}

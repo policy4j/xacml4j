@@ -187,8 +187,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating advices " +
-					"for decision rule id=\"{}\"", getId());
+			log.debug("Evaluating advices for decision rule id=\"{}\"", getId());
 		}
 		Collection<Advice> advices = new LinkedList<Advice>();
 		try{
@@ -235,8 +234,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating obligations " +
-					"for decision rule id=\"{}\"", getId());
+			log.debug("Evaluating obligations for decision rule id=\"{}\"", getId());
 		}
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		try{
@@ -258,15 +256,13 @@ abstract class BaseDecisionRule implements DecisionRule
 			return obligations;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"decision rule obligations", e);
+				log.debug("Failed to evaluate decision rule obligations", e);
 			}
 			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"decision rule obligations", e);
+				log.debug("Failed to evaluate decision rule obligations", e);
 			}
 			throw new EvaluationException(
 					Status.processingError().build(), e);
@@ -280,7 +276,6 @@ abstract class BaseDecisionRule implements DecisionRule
 				.add("condition", condition)
 				.add("adviceExp", adviceExpressions)
 				.add("obligationExp", obligationExpressions);
-
 	}
 
 	protected boolean equalsTo(BaseDecisionRule r) {

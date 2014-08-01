@@ -24,6 +24,7 @@ package org.xacml4j.util;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 /*
  * Copyright 2004-2005 Sun Microsystems, Inc.  All Rights Reserved.
@@ -55,6 +56,8 @@ public class IPAddressUtils {
     private final static int INADDR16SZ = 16;
     private final static int INT16SZ = 2;
 
+	private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+
 	/** Private constructor for utility class */
 	private IPAddressUtils() {}
 
@@ -72,7 +75,7 @@ public class IPAddressUtils {
         }
 
         byte[] res = new byte[INADDR4SZ];
-        String[] s = src.split("\\.", -1);
+        String[] s = DOT_PATTERN.split(src, -1);
         long val;
         try {
             switch(s.length) {
@@ -177,7 +180,7 @@ public class IPAddressUtils {
         byte[] dst = new byte[INADDR16SZ];
 
         int srcb_length = srcb.length;
-        int pc = src.indexOf ("%");
+        int pc = src.indexOf ('%');
         if (pc == srcb_length -1) {
             return null;
         }
@@ -318,16 +321,13 @@ public class IPAddressUtils {
         if (addr.length < INADDR16SZ) {
             return false;
         }
-        if ((addr[0] == 0x00) && (addr[1] == 0x00) &&
-            (addr[2] == 0x00) && (addr[3] == 0x00) &&
-            (addr[4] == 0x00) && (addr[5] == 0x00) &&
-            (addr[6] == 0x00) && (addr[7] == 0x00) &&
-            (addr[8] == 0x00) && (addr[9] == 0x00) &&
-            (addr[10] == (byte)0xff) &&
-            (addr[11] == (byte)0xff))  {
-            return true;
-        }
-        return false;
+	    return (addr[0] == 0x00) && (addr[1] == 0x00) &&
+			    (addr[2] == 0x00) && (addr[3] == 0x00) &&
+			    (addr[4] == 0x00) && (addr[5] == 0x00) &&
+			    (addr[6] == 0x00) && (addr[7] == 0x00) &&
+			    (addr[8] == 0x00) && (addr[9] == 0x00) &&
+			    (addr[10] == (byte) 0xff) &&
+			    (addr[11] == (byte) 0xff);
     }
 
     public static InetAddress parseAddress(String address){
@@ -349,7 +349,7 @@ public class IPAddressUtils {
 
     public static String toStringWithNoHostname(InetAddress address){
     	String addr = address.toString();
-    	int i = addr.indexOf("/");
+    	int i = addr.indexOf('/');
     	if(i == -1){
     		throw new IllegalArgumentException("InetAddress does not contain / character");
     	}

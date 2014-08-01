@@ -109,7 +109,7 @@ public class LogicalFunctions
 		Boolean r = Boolean.FALSE;
 		for(Expression e : values){
 			Boolean v = ((BooleanExp)e.evaluate(context)).getValue();
-			r = r | v;
+			r |= v;
 			if(r){
 				break;
 			}

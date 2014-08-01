@@ -277,7 +277,7 @@ public final class FunctionSpecBuilder
 
 		@Override
 		public boolean isVariadic(){
-			return parameters.isEmpty()?false:parameters.get(parameters.size() - 1).isVariadic();
+			return !parameters.isEmpty() && parameters.get(parameters.size() - 1).isVariadic();
 		}
 
 		@Override
@@ -540,7 +540,7 @@ public final class FunctionSpecBuilder
 		 * according specification
 		 */
 		private boolean validateAdditional(List<Expression> arguments){
-			return (validator == null)?true:validator.validate(this, arguments);
+			return (validator == null) || validator.validate(this, arguments);
 		}
 
 		@Override

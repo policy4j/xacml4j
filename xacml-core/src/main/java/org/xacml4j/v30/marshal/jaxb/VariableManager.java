@@ -59,8 +59,9 @@ class VariableManager <VExpression>
 	public void pushVariableDefinition(String variableId)
 	{
 		if(resolutionStack.contains(variableId)){
-			throw new IllegalArgumentException(String.format("Cyclic " +
-					"variable reference=\"%s\" detected", variableId));
+			throw new IllegalArgumentException(
+					String.format(
+							"Cyclic variable reference=\"%s\" detected", variableId));
 		}
 		this.resolutionStack.push(variableId);
 	}

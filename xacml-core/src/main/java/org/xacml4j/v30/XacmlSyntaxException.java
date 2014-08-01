@@ -46,7 +46,8 @@ public class XacmlSyntaxException extends XacmlException
 			Location location,
 			String message,
 			Object... arguments) {
-		super(String.format("XACML syntax error at line=\"%s\" column=\"%s\", error: %s",
+		super(String.format(
+				"XACML syntax error at line=\"%s\" column=\"%s\", error: %s",
 				location.getLineNumber(),
 				location.getColumnNumber(),
 				String.format(message, arguments)));

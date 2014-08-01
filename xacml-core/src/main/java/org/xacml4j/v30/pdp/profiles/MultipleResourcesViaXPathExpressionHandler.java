@@ -93,8 +93,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			List<Result> results = new LinkedList<Result>();
 			for(List<Category> requestAttr : cartesian)
 			{
-				RequestContext req = new RequestContext(request.isReturnPolicyIdList(),
-						requestAttr, request.getRequestDefaults());
+				RequestContext req = RequestContext.builder().copyOf(request, requestAttr).build();
 				if(log.isDebugEnabled()){
 					log.debug("Created request=\"{}\"", req);
 				}

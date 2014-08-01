@@ -287,9 +287,8 @@ class DefaultResolverRegistry implements ResolverRegistry
 				return;
 			}
 			Lock lock  = scopedAttributeResolverRWLock.readLock();
-			try
-			{
-				lock.lock();
+			lock.lock();
+			try {
 				Collection<AttributeResolver> byPolicyId = scopedAttributeResolvers.get(policyId);
 				if(log.isDebugEnabled()){
 					log.debug("Found \"{}\" resolver " +
@@ -300,8 +299,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 					AttributeResolverDescriptor d = r.getDescriptor();
 					if(d.canResolve(ref)){
 						if(log.isDebugEnabled()){
-							log.debug("Found PolicyId=\"{}\" " +
-									"scoped resolver for reference=\"{}\"",
+							log.debug("Found PolicyId=\"{}\" scoped resolver for reference=\"{}\"",
 									policyId, ref);
 						}
 						found.add(r);

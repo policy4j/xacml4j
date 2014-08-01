@@ -69,7 +69,7 @@ class AnnotatedResolverFactory
 	{
 		Preconditions.checkNotNull(instance);
 		Collection<ContentResolver> resolvers = new LinkedList<ContentResolver>();
-		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(),
+		List<Method> methods = Reflections.getAnnotatedMethods(instance.getClass(),
 				XacmlContentResolverDescriptor.class);
 		for(Method m : methods){
 			ContentResolver r = parseContentResolver(instance, m);
@@ -136,13 +136,12 @@ class AnnotatedResolverFactory
 		}
 		if(!ATTR_RESOLVER_RETURN_TYPE.equals(returnType)){
 			throw new XacmlSyntaxException(
-					"Attribute resolver method=\"%s\" " +
-					"must return=\"%s\"", m.getName(),
-					ATTR_RESOLVER_RETURN_TYPE.toString());
+					"Attribute resolver method=\"%s\"  must return=\"%s\"",
+					m.getName(), ATTR_RESOLVER_RETURN_TYPE.toString());
 		}
 		AttributeResolverDescriptor descriptor = b.build();
 		return new AnnotatedAttributeResolver(descriptor,
-				new Invocation<Map<String,BagOfAttributeExp>>(instance, m, info.getFirst()));
+				new Invocation(instance, m, info.getFirst()));
 	}
 
 	ContentResolver parseContentResolver(Object instance, Method m)
@@ -166,7 +165,7 @@ class AnnotatedResolverFactory
 		}
 		ContentResolverDescriptor descriptor = b.build();
 		return new AnnotatedContentResolver(descriptor,
-				new Invocation<Node>(instance, m, info.getFirst()));
+				new Invocation(instance, m, info.getFirst()));
 	}
 
 	private Pair<Boolean, List<AttributeReferenceKey>> parseResolverMethodParams(Method m)
@@ -197,8 +196,7 @@ class AnnotatedResolverFactory
 			{
 				if(!(types[i].equals(BagOfAttributeExp.class))){
 					throw new XacmlSyntaxException(
-							"Resolver method=\"%s\" " +
-							"parameter at index=\"%d\" must be of type=\"%s\"",
+							"Resolver method=\"%s\" parameter at index=\"%d\" must be of type=\"%s\"",
 							m.getName(), i, BagOfAttributeExp.class.getName());
 				}
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
@@ -250,11 +248,11 @@ class AnnotatedResolverFactory
 	}
 
 
-	public final class Invocation <T>
+	public static final class Invocation <T>
 	{
-		private Method m;
-		private Object instance;
-		private boolean requiresContext;
+		private final Method m;
+		private final Object instance;
+		private final boolean requiresContext;
 
 		public Invocation(
 				Object instance,
@@ -269,7 +267,7 @@ class AnnotatedResolverFactory
 		public T invoke(ResolverContext context) throws Exception
 		{
 			List<BagOfAttributeExp> keys = context.getKeys();
-			if(requiresContext){
+			if (requiresContext) {
 				Object[] params = new Object[keys.size() + 1];
 				params[0] = context;
 				System.arraycopy(keys.toArray(), 0, params, 1, keys.size());
@@ -285,7 +283,7 @@ class AnnotatedResolverFactory
 	 *
 	 * @author Giedrius Trumpickas
 	 */
-	private final class AnnotatedAttributeResolver
+	private static final class AnnotatedAttributeResolver
 		extends BaseAttributeResolver
 	{
 		private Invocation<Map<String, BagOfAttributeExp>> invocation;
@@ -304,7 +302,7 @@ class AnnotatedResolverFactory
 		}
 	}
 
-	private final class AnnotatedContentResolver
+	private static final class AnnotatedContentResolver
 		extends BaseContentResolver
 	{
 		private Invocation<Node> invocation;

@@ -132,13 +132,10 @@ public class Attribute
 
 	@Override
 	public final boolean equals(Object o){
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof Attribute)){
+		if (!(o instanceof Attribute)) {
 			return false;
 		}
 		Attribute a = (Attribute)o;

@@ -42,12 +42,14 @@ public final class ResolverCacheKey implements Serializable
 {
 	private static final long serialVersionUID = -6895205924708410228L;
 
-	private String resolverId;
-	private List<BagOfAttributeExp> keys;
+	private final String resolverId;
+	private final List<BagOfAttributeExp> keys;
+	private final int hashCode;
 
-	public ResolverCacheKey(Builder b){
+	public ResolverCacheKey(Builder b) {
 		this.resolverId = b.id;
 		this.keys = b.keysBuilder.build();
+		this.hashCode = Objects.hashCode(resolverId, keys);
 	}
 
 	public static Builder builder(){
@@ -56,19 +58,16 @@ public final class ResolverCacheKey implements Serializable
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(resolverId, keys);
+		return hashCode;
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof ResolverCacheKey)){
+		if (!(o instanceof ResolverCacheKey)) {
 			return false;
 		}
 		ResolverCacheKey k = (ResolverCacheKey)o;

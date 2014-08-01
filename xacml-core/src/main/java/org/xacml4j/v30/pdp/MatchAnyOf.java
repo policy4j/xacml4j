@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableList;
 public class MatchAnyOf
 	implements PolicyElement, Matchable
 {
-	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
+	private final static Logger log = LoggerFactory.getLogger(MatchAnyOf.class);
 
 	private final Collection<MatchAllOf> anyOfs;
 
@@ -132,7 +132,6 @@ public class MatchAnyOf
 			this.allMatchAllOfs.addAll(allOfs);
 			return this;
 		}
-
 
 		public MatchAnyOf build(){
 			return new MatchAnyOf(this);

@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 
 public class ResponseContext
 {
-	private Collection<Result> results;
+	private ImmutableList<Result> results;
 
 	private ResponseContext(Builder builder){
 		this.results = builder.b.build();
@@ -59,13 +59,10 @@ public class ResponseContext
 
 	@Override
 	public boolean equals(Object o){
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof ResponseContext)){
+		if (!(o instanceof ResponseContext)) {
 			return false;
 		}
 		ResponseContext r = (ResponseContext)o;

@@ -52,8 +52,7 @@ public class IPAddress implements Serializable
 		Preconditions.checkArgument(
 				((b.addr instanceof Inet6Address) && (b.mask == null || b.mask instanceof Inet6Address)) ||
 				((b.addr instanceof Inet4Address) && (b.mask == null || b.mask instanceof Inet4Address)),
-				String.format("Address=\"%s\" and mask=\"%s\" " +
-						"should be either IPV4 or IPV6", b.addr, b.mask));
+				"Address=\"%s\" and mask=\"%s\" should be either IPV4 or IPV6", b.addr, b.mask);
 		this.address = b.addr;
 		this.mask = b.mask;
 		this.range = b.range;
@@ -98,8 +97,8 @@ public class IPAddress implements Serializable
 
     private static IPAddress getV4Instance(String value)
     {
-        int maskPos = value.indexOf("/");
-        int rangePos = value.indexOf(":");
+        int maskPos = value.indexOf('/');
+        int rangePos = value.indexOf(':');
         Builder builder = IPAddress.builder();
         if (maskPos == rangePos) {
             // the sting is just an address

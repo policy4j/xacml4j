@@ -55,8 +55,7 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		List<Set<Category>> byCategory = new LinkedList<Set<Category>>();
 		for(CategoryId categoryId : request.getCategories()){
 			Collection<Category> attributes = request.getAttributes(categoryId);
-			if(attributes == null ||
-					attributes.isEmpty()){
+			if(attributes == null || attributes.isEmpty()) {
 				continue;
 			}
 			byCategory.add(new LinkedHashSet<Category>(attributes));

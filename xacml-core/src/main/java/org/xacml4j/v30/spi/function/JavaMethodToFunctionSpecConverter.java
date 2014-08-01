@@ -70,12 +70,12 @@ class JavaMethodToFunctionSpecConverter
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		if(m.getReturnType().equals(Void.TYPE)){
-			throw new XacmlSyntaxException("Method=\"%s\" must " +
-					"have other then void return type", m.getName());
+			throw new XacmlSyntaxException(
+					"Method=\"%s\" must have other then void return type", m.getName());
 		}
 		if(!Expression.class.isAssignableFrom(m.getReturnType())){
-			throw new XacmlSyntaxException("Method=\"%s\" must " +
-					"return XACML expression", m.getName());
+			throw new XacmlSyntaxException(
+					"Method=\"%s\" must return XACML expression", m.getName());
 		}
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		if(funcId == null){
@@ -188,9 +188,9 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (m.isVarArgs() && i < params.length - 1) {
 					throw new IllegalArgumentException(
-							String.format("Found varArg parameter "
+							"Found varArg parameter "
 									+ "declaration in incorrect place, "
-									+ "varArg parameter must be a last parameter in the method"));
+									+ "varArg parameter must be a last parameter in the method");
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
@@ -283,10 +283,11 @@ class JavaMethodToFunctionSpecConverter
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new IllegalArgumentException(String.format(
-					"Failed with error=\"%s\" to build instance of "
-							+ "function return type resolver, class=\"%s\"", e
-							.getMessage(), clazz.getName()));
+			throw new IllegalArgumentException(
+					String.format(
+						"Failed to build instance of function return type resolver, class=\"%s\"",
+						clazz.getName()),
+					e);
 		}
 	}
 
@@ -295,10 +296,11 @@ class JavaMethodToFunctionSpecConverter
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new IllegalArgumentException(String.format(
-					"Failed with error=\"%s\" to build instance of "
-							+ "function parameter validator, class=\"%s\"", e
-							.getMessage(), clazz.getName()));
+			throw new IllegalArgumentException(
+					String.format(
+							"Failed to build instance of function parameter validator, class=\"%s\"",
+							clazz.getName()),
+					e);
 		}
 	}
 

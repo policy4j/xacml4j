@@ -32,7 +32,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
 import java.io.StringReader;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -121,8 +120,11 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 						.build())
 				.build();
 
-		RequestContext context = new RequestContext(false,
-				Arrays.asList(subject, resource));
+		RequestContext context = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject, resource)
+				.build();
 
 		assertFalse(context.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -185,8 +187,11 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 										 XPathExp.of("//md:record/md:patient/md:patientDoB/@md:attrn1", Categories.SUBJECT_ACCESS)
 								).build()).build()).build();
 
-		RequestContext context = new RequestContext(false,
-				Arrays.asList(subject, resource));
+		RequestContext context = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.attributes(subject, resource)
+				.build();
 
 		assertFalse(context.containsRepeatingCategories());
 		Capture<RequestContext> c0 = new Capture<RequestContext>();

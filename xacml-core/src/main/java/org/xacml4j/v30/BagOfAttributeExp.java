@@ -50,8 +50,9 @@ public final class BagOfAttributeExp
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
-	private BagOfAttributeExpType type;
-	private Multiset<AttributeExp> values;
+	private final BagOfAttributeExpType type;
+	private final Multiset<AttributeExp> values;
+	private final int hashCode;
 
 	/**
 	 * Constructs bag of attributes.
@@ -61,24 +62,18 @@ public final class BagOfAttributeExp
 	 */
 	BagOfAttributeExp(BagOfAttributeExpType type,
 			Iterable<AttributeExp> attributes){
-		this.type = type;
-		ImmutableMultiset.Builder<AttributeExp> b = ImmutableMultiset.builder();
-		for(AttributeExp attr: attributes){
-			Preconditions.checkArgument(
-					attr.getType().equals(type.getDataType()),
-					String.format("Only attributes of type=\"%s\" " +
-							"are allowed in this bag, given type=\"%s\"",
-					type.getDataType(), attr.getType()));
-			b.add(attr);
+		for (AttributeExp attr : attributes) {
+			assertExpressionType(attr, type);
 		}
-		this.values = b.build();
-
+		this.type = type;
+		this.values = ImmutableMultiset.copyOf(attributes);
+		this.hashCode = Objects.hashCode(type, values);
 	}
 
 	private BagOfAttributeExp(Builder b){
 		this.type = b.bagType;
 		this.values = b.valuesBuilder.build();
-
+		this.hashCode = Objects.hashCode(type, values);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -254,9 +249,7 @@ public final class BagOfAttributeExp
 
 	@Override
 	public int hashCode(){
-		 return Objects.hashCode(
-				type,
-				values);
+		 return hashCode;
 	}
 
 	/**
@@ -289,6 +282,14 @@ public final class BagOfAttributeExp
 		void visitLeave(BagOfAttributeExp v);
 	}
 
+	private static void assertExpressionType(AttributeExp value, BagOfAttributeExpType bagType) {
+		if (!value.getType().equals(bagType.getDataType())) {
+			throw new IllegalArgumentException(String.format(
+					"Given attribute value=\"%s\" " +
+							"can't be used as a value of bag=\"%s\"", value, bagType));
+		}
+	}
+
 	public static class Builder
 	{
 
@@ -301,11 +302,7 @@ public final class BagOfAttributeExp
 
 		public Builder attribute(AttributeExp ...values){
 			for(AttributeExp v : values){
-				if(!v.getType().equals(bagType.getDataType())){
-					throw new IllegalArgumentException(String.format(
-							"Given attribute value=\"%s\" " +
-							"can't be used as a value of bag=\"%s\"", v, bagType));
-				}
+				assertExpressionType(v, bagType);
 				this.valuesBuilder.add(v);
 			}
 			return this;
@@ -326,14 +323,10 @@ public final class BagOfAttributeExp
 		}
 
 		public Builder attributes(Iterable<AttributeExp> values){
-			for(AttributeExp v : values){
-				if(!v.getType().equals(bagType.getDataType())){
-					throw new IllegalArgumentException(String.format(
-							"Given attribute value=\"%s\" " +
-							"can't be used as a value of bag=\"%s\"", v, bagType));
-				}
-				this.valuesBuilder.add(v);
+			for (AttributeExp v : values) {
+				assertExpressionType(v, bagType);
 			}
+			this.valuesBuilder.addAll(values);
 			return this;
 		}
 

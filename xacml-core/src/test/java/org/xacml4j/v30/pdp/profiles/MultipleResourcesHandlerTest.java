@@ -32,9 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -105,8 +103,12 @@ public class MultipleResourcesHandlerTest
 	public void testAllResultsAreDeny()
 	{
 
-		RequestContext request = new RequestContext(false, true,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
@@ -139,10 +141,12 @@ public class MultipleResourcesHandlerTest
 	@Test
 	public void testAllResultsArePermit()
 	{
-
-
-		RequestContext request = new RequestContext(false, true,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
@@ -176,8 +180,12 @@ public class MultipleResourcesHandlerTest
 	{
 
 
-		RequestContext request = new RequestContext(false, true,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
@@ -215,8 +223,12 @@ public class MultipleResourcesHandlerTest
 	{
 
 
-		RequestContext request = new RequestContext(false, true,
-				Arrays.asList(subject0, subject1, resource0, resource1));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.attributes(subject0, subject1, resource0, resource1)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 		Capture<RequestContext> c1 = new Capture<RequestContext>();
@@ -248,8 +260,12 @@ public class MultipleResourcesHandlerTest
 	@Test
 	public void testRequestWithSingleResultCombine()
 	{
-		RequestContext request = new RequestContext(false, true,
-				Arrays.asList(subject0, resource0));
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.attributes(subject0, resource0)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 
@@ -269,8 +285,11 @@ public class MultipleResourcesHandlerTest
 	@Test
 	public void testWithEmptyRequest()
 	{
-		RequestContext request = new RequestContext(false, true,
-				Collections.<Category>emptyList());
+		RequestContext request = RequestContext
+				.builder()
+				.returnPolicyIdList(false)
+				.combineDecision(true)
+				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
 

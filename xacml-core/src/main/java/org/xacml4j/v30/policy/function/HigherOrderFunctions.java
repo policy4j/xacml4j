@@ -237,10 +237,7 @@ public class HigherOrderFunctions
 				return false;
 			}
 			FunctionReference ref = (FunctionReference)exp;
-			if(ref.getNumberOfParams() != 1){
-				return false;
-			}
-			return true;
+			return ref.getNumberOfParams() == 1;
 		}
 	}
 }

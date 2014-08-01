@@ -1,4 +1,3 @@
-
 package org.xacml4j.v30.spi.function;
 
 /*
@@ -44,7 +43,7 @@ import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableList;
 
-public class DefaultFunctionInocationTest
+public class DefaultFunctionInvocationTest
 {
 	private Invocation<ValueExpression> inv0;
 	private Invocation<ValueExpression> inv1;
@@ -67,7 +66,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeNoEvaluationContextFuncionIsNotVariadic() throws Exception
+	public void testInvokeNoEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -98,7 +97,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeWithEvaluationContextFuncionIsNotVariadic() throws Exception
+	public void testInvokeWithEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -106,10 +105,8 @@ public class DefaultFunctionInocationTest
 		.build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv1.invoke(new Object[]{context,
-				IntegerExp.of(1),
-				IntegerExp.of(2)})).andReturn(
-						IntegerExp.of(1));
+		expect(inv1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)))
+				.andReturn(IntegerExp.of(1));
 		c.replay();
 		ValueExpression v = f1.invoke(spec, context, p);
 		assertEquals(IntegerExp.of(1), v);
@@ -118,7 +115,7 @@ public class DefaultFunctionInocationTest
 
 	@Test
 	@Ignore
-	public void testInvokeWithEvaluationContextFuncionIsVariadic() throws Exception
+	public void testInvokeWithEvaluationContextFunctionIsVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -146,7 +143,7 @@ public class DefaultFunctionInocationTest
 
 	@Test
 	@Ignore
-	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
+	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))
@@ -171,7 +168,7 @@ public class DefaultFunctionInocationTest
 	}
 
 	@Test
-	public void testInvokeWithNoEvaluationContextFuncionIsVariadicAndZeroVariadicParams() throws Exception
+	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(IntegerExp.of(1))

@@ -25,7 +25,7 @@ package org.xacml4j.util;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InvocatonBenchmark
+public class InvocationBenchmark
 {
 	private TestObject instance;
 
