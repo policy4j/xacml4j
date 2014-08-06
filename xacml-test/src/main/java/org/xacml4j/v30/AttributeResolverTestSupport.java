@@ -42,7 +42,7 @@ public class AttributeResolverTestSupport {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
 		for(Object value: values) {
-			assertTrue(bag.contains(type.create(value)));
+			assertTrue(bag.contains(type.of(value)));
 		}
 	}
 }
