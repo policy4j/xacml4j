@@ -36,7 +36,7 @@ import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -52,7 +52,7 @@ public class DefaultPolicyInformationPointTest
 	private AttributeResolver resolver2;
 
 	private PolicyInformationPointCacheProvider cache;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 
 	private AttributeResolverDescriptor descriptor1;
 	private AttributeResolverDescriptor descriptor1WithIssuer;
@@ -61,7 +61,6 @@ public class DefaultPolicyInformationPointTest
 	private IMocksControl control;
 
 	private AttributeDesignatorKey.Builder attr0;
-	private AttributeDesignatorKey.Builder attr1;
 	private AttributeDesignatorKey.Builder key;
 
 	@Before
@@ -73,7 +72,7 @@ public class DefaultPolicyInformationPointTest
 		this.resolver1 = control.createMock(AttributeResolver.class);
 		this.resolver2 = control.createMock(AttributeResolver.class);
 
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = control.createMock(DecisionRuleEvaluationContext.class);
 
 		this.pip = PolicyInformationPointBuilder
 		.builder("testPip")
@@ -85,12 +84,6 @@ public class DefaultPolicyInformationPointTest
 				.category(Categories.SUBJECT_ACCESS)
 				.attributeId("testAttributeId1")
 				.dataType(XacmlTypes.STRING);
-
-		this.attr1 = AttributeDesignatorKey
-				.builder()
-				.category(Categories.SUBJECT_ACCESS)
-				.attributeId("testAttributeId2")
-				.dataType(XacmlTypes.INTEGER);
 
 		this.key = AttributeDesignatorKey
 				.builder()
@@ -131,7 +124,6 @@ public class DefaultPolicyInformationPointTest
 	public void testMatchingResolverFoundAndResultIsCachable() throws Exception
 	{
 		AttributeDesignatorKey a0 = attr0.build();
-		AttributeDesignatorKey a1 = attr1.build();
 		AttributeDesignatorKey k = key.build();
 
 		AttributeSet result = AttributeSet

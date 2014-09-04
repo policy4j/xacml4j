@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
@@ -46,12 +46,12 @@ public class LegacyDenyOverridesPolicyCombineAlgorithm extends BaseDecisionCombi
 	}
 
 	@Override
-	public Decision combine(EvaluationContext context,
+	public Decision combine(DecisionRuleEvaluationContext context,
 			List<CompositeDecisionRule> rules) {
 		return doCombine(context, rules);
 	}
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides")
-	public static <D extends CompositeDecisionRule> Decision doCombine(EvaluationContext context,
+	public static <D extends CompositeDecisionRule> Decision doCombine(DecisionRuleEvaluationContext context,
 			List<D> rules) {
 		boolean atLeastOnePermit = false;
 		for(CompositeDecisionRule r : rules){

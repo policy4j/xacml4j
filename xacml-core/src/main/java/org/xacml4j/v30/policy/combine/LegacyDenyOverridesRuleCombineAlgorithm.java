@@ -10,12 +10,12 @@ package org.xacml4j.v30.policy.combine;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
@@ -49,17 +49,17 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 	}
 
 	@Override
-	public Decision combine(EvaluationContext context, List<Rule> rules){
+	public Decision combine(DecisionRuleEvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")
-	public static Decision doCombineOrdered(EvaluationContext context, List<Rule> rules){
+	public static Decision doCombineOrdered(DecisionRuleEvaluationContext context, List<Rule> rules){
 		return doCombine(context, rules);
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides")
-	public static Decision doCombine(EvaluationContext context, List<Rule> rules)
+	public static Decision doCombine(DecisionRuleEvaluationContext context, List<Rule> rules)
 	{
 		boolean potentialDeny	= false;
 		boolean atLeastOnePermit = false;

@@ -24,7 +24,7 @@ package org.xacml4j.v30.spi.pip;
 
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 public interface ResolverRegistry
 {
@@ -38,7 +38,7 @@ public interface ResolverRegistry
 	 * or <ii>null</ii> if not matching resolver is found
 	 */
 	Iterable<AttributeResolver> getMatchingAttributeResolvers(
-			EvaluationContext context, AttributeDesignatorKey key);
+			DecisionRuleEvaluationContext context, AttributeDesignatorKey key);
 
 
 	/**
@@ -50,7 +50,7 @@ public interface ResolverRegistry
 	 * @return content resolver
 	 */
 	ContentResolver getMatchingContentResolver(
-			EvaluationContext context, CategoryId category);
+			DecisionRuleEvaluationContext context, CategoryId category);
 
 	/**
 	 * Adds top level attribute resolver

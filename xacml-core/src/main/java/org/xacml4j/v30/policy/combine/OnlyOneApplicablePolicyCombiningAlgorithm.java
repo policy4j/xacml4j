@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
@@ -43,14 +43,14 @@ public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable")
 	@Override
-	public Decision combine(EvaluationContext context, List<CompositeDecisionRule> decisions)
+	public Decision combine(DecisionRuleEvaluationContext context, List<CompositeDecisionRule> decisions)
 	{
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;
-		EvaluationContext foundEvalContext = null;
+		DecisionRuleEvaluationContext foundEvalContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
-			final EvaluationContext policyContext = d.createContext(context);
+			final DecisionRuleEvaluationContext policyContext = d.createContext(context);
 			final MatchResult r = d.isMatch(policyContext);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;

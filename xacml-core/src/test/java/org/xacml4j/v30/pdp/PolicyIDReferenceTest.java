@@ -39,7 +39,6 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
@@ -49,7 +48,7 @@ import org.xacml4j.v30.VersionMatch;
 
 public class PolicyIDReferenceTest
 {
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 	private Policy refPolicy;
 	private IMocksControl c;
 
@@ -57,7 +56,7 @@ public class PolicyIDReferenceTest
 	public void init(){
 		this.c = createStrictControl();
 		this.refPolicy = c.createMock(Policy.class);
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = c.createMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test
@@ -71,7 +70,7 @@ public class PolicyIDReferenceTest
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		c.replay();
 
-		EvaluationContext policyRefContext = ref.createContext(context);
+		DecisionRuleEvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		c.verify();
 
@@ -106,7 +105,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
 		c.replay();
-		EvaluationContext policyRefContext = ref.createContext(context);
+		DecisionRuleEvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		c.verify();
 
@@ -139,7 +138,7 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 		c.replay();
-		EvaluationContext policyRefContext = ref.createContext(context);
+		DecisionRuleEvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		c.verify();
 
@@ -161,7 +160,7 @@ public class PolicyIDReferenceTest
 		expect(context.resolve(ref)).andReturn(null);
 
 		c.replay();
-		EvaluationContext policyRefContext = ref.createContext(context);
+		DecisionRuleEvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		c.verify();
 
@@ -184,7 +183,7 @@ public class PolicyIDReferenceTest
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
 
 		c.replay();
-		EvaluationContext policyRefContext = ref.createContext(context);
+		DecisionRuleEvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicyIDReference());
 		c.verify();
 
@@ -214,8 +213,8 @@ public class PolicyIDReferenceTest
 
 		expect(context.resolve(ref)).andReturn(refPolicy);
 
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
-		EvaluationContext policyContext = c.createMock(EvaluationContext.class);
+		Capture<DecisionRuleEvaluationContext> refContext = new Capture<DecisionRuleEvaluationContext>();
+		DecisionRuleEvaluationContext policyContext = c.createMock(DecisionRuleEvaluationContext.class);
 		expect(refPolicy.createContext(capture(refContext))).andReturn(policyContext);
 
 		c.replay();
@@ -235,18 +234,18 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
-		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+		Capture<DecisionRuleEvaluationContext> refContext = new Capture<DecisionRuleEvaluationContext>();
+		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<DecisionRuleEvaluationContext>() {
 			@Override
-			public EvaluationContext answer() throws Throwable {
-				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
+			public DecisionRuleEvaluationContext answer() throws Throwable {
+				DecisionRuleEvaluationContext ctx = (DecisionRuleEvaluationContext)EasyMock.getCurrentArguments()[0];
 				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");
-		expect(refPolicy.evaluate(isA(EvaluationContext.class))).andReturn(Decision.PERMIT);
+		expect(refPolicy.evaluate(isA(DecisionRuleEvaluationContext.class))).andReturn(Decision.PERMIT);
 		c.replay();
-		EvaluationContext ctx = ref.createContext(context);
+		DecisionRuleEvaluationContext ctx = ref.createContext(context);
 		assertEquals(Decision.PERMIT, ref.evaluate(ctx));
 		c.verify();
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
@@ -262,18 +261,18 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
-		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
+		Capture<DecisionRuleEvaluationContext> refContext = new Capture<DecisionRuleEvaluationContext>();
+		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<DecisionRuleEvaluationContext>() {
 			@Override
-			public EvaluationContext answer() throws Throwable {
-				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
+			public DecisionRuleEvaluationContext answer() throws Throwable {
+				DecisionRuleEvaluationContext ctx = (DecisionRuleEvaluationContext)EasyMock.getCurrentArguments()[0];
 				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");
-		expect(refPolicy.isMatch(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
+		expect(refPolicy.isMatch(isA(DecisionRuleEvaluationContext.class))).andReturn(MatchResult.MATCH);
 		c.replay();
-		EvaluationContext ctx = ref.createContext(context);
+		DecisionRuleEvaluationContext ctx = ref.createContext(context);
 		assertEquals(MatchResult.MATCH, ref.isMatch(ctx));
 		c.verify();
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
@@ -289,7 +288,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testReferersTo() throws Exception
+	public void testRefersTo() throws Exception
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 		expect(refPolicy.getId()).andReturn("testId");

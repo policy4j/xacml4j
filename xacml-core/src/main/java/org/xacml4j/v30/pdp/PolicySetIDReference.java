@@ -25,7 +25,6 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 
@@ -61,19 +60,19 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 */
 	@Override
 	public boolean isReferenceTo(CompositeDecisionRule policy) {
-		PolicySet p = (PolicySet)policy;
+		PolicySet p = (PolicySet) policy;
 		return p != null &&
-		matches(p.getId(), p.getVersion());
+				matches(p.getId(), p.getVersion());
 	}
 
 	/**
-	 * Creates an {@link EvaluationContext} to evaluate this reference.
+	 * Creates an {@link DecisionRuleEvaluationContext} to evaluate this reference.
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
 	{
 		Preconditions.checkNotNull(context);
-		if(context.getCurrentPolicySetIDReference() ==  this){
+		if(context.getCurrentPolicySetIDReference() == this){
 			return context;
 		}
 		PolicySetIDReferenceEvaluationContext refContext = new PolicySetIDReferenceEvaluationContext(context);
@@ -89,7 +88,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public Decision evaluate(EvaluationContext context) {
+	public Decision evaluate(DecisionRuleEvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
@@ -101,7 +100,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public MatchResult isMatch(EvaluationContext context) {
+	public MatchResult isMatch(DecisionRuleEvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
@@ -141,7 +140,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 * @return {@code true} if a given reference
 	 */
 	private static boolean isReferenceCyclic(PolicySetIDReference ref,
-			EvaluationContext context)
+	                                         DecisionRuleEvaluationContext context)
 	{
 		if(context.getCurrentPolicySetIDReference() != null){
 			if(ref.equals(context.getCurrentPolicySetIDReference())){
@@ -155,7 +154,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
 	{
 		PolicySetIDReferenceEvaluationContext(
-				EvaluationContext context) {
+				DecisionRuleEvaluationContext context) {
 			super(context);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicySetIDReference.this, context));
 		}
@@ -166,7 +165,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		}
 
 		@Override
-		public EvaluationContext getParentContext() {
+		public DecisionRuleEvaluationContext getParentContext() {
 			return getDelegate();
 		}
 	}

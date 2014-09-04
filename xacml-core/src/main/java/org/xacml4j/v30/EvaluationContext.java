@@ -144,64 +144,6 @@ public interface EvaluationContext
 	EvaluationContext getParentContext();
 
 	/**
-	 * Returns a list of all policies which were found
-	 * to be fully applicable during evaluation.
-	 *
-	 * @return a collection of {@link CompositeDecisionRuleIDReference}
-	 */
-	Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies();
-
-	/**
-	 * Adds evaluated policy or policy set
-	 * evaluation result to the context
-	 *
-	 * @param policy an evaluated policy or policy set
-	 * @param result a policy or policy set evaluation result
-	 */
-	void addEvaluationResult(CompositeDecisionRule policy, Decision result);
-
-	/**
-	 * Gets currently evaluated policy.
-	 * If invocation returns
-	 * {@code null}, {@link EvaluationContext#getCurrentPolicySet()}
-	 * will return NOT {@code null} reference
-	 * to the currently evaluated policy set
-	 *
-	 *
-	 * @return {@link CompositeDecisionRule} or {@code null}
-	 */
-	CompositeDecisionRule getCurrentPolicy();
-
-	/**
-	 * Gets currently evaluated policy set
-	 *
-	 * @return {@link CompositeDecisionRule} or {@code null}
-	 */
-	CompositeDecisionRule getCurrentPolicySet();
-
-	/**
-	 * Gets current rule
-	 *
-	 * @return {@link DecisionRule} or {@code null}
-	 */
-	DecisionRule getCurrentRule();
-
-	/**
-	 * Gets current {@link CompositeDecisionRuleIDReference}
-	 *
-	 * @return current {@link CompositeDecisionRuleIDReference} or
-	 * {@code null}
-	 */
-	CompositeDecisionRuleIDReference getCurrentPolicyIDReference();
-
-	/**
-	 * Gets currently evaluated {@link CompositeDecisionRuleIDReference}
-	 *
-	 * @return {@link CompositeDecisionRuleIDReference} or {@code null}
-	 */
-	CompositeDecisionRuleIDReference getCurrentPolicySetIDReference();
-
-	/**
 	 * Gets XPath version
 	 *
 	 * @return {@link XPathVersion}
@@ -333,17 +275,5 @@ public interface EvaluationContext
 	 */
 	Number evaluateToNumber(XPathExp xpath)
 		throws EvaluationException;
-
-	/**
-	 * Resolves given {@link CompositeDecisionRuleIDReference}
-	 * reference
-	 *
-	 * @param ref a policy reference
-	 * @return resolved {@link CompositeDecisionRule} instance
-	 * @throws PolicyResolutionException if
-	 * policy reference can not be resolved
-	 */
-	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
-		throws PolicyResolutionException;
 
 }

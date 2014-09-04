@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
@@ -58,13 +58,13 @@ public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombinin
 	}
 
 	@Override
-	public final Decision combine(EvaluationContext context, List<D> decisions){
+	public final Decision combine(DecisionRuleEvaluationContext context, List<D> decisions){
 		return doCombine(context, decisions);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides")
-	public static <D extends DecisionRule>  Decision doCombine(EvaluationContext context, List<D> decisions)
+	public static <D extends DecisionRule>  Decision doCombine(DecisionRuleEvaluationContext context, List<D> decisions)
 	{
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;

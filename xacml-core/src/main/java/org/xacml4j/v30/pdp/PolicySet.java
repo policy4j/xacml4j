@@ -31,7 +31,6 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.XPathVersion;
 
@@ -95,7 +94,7 @@ public class PolicySet extends
 	 */
 	public Collection<CombinerParameter> getPolicyCombinerParams(String policyId){
 		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
-		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
+		return (p == null) ? ImmutableList.<CombinerParameter>of() : p.values();
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class PolicySet extends
 	 */
 	public Collection<CombinerParameter> getPolicyCombinerParam(String policyId, String name){
 		Multimap<String, CombinerParameter> p = policyCombinerParameters.get(policyId);
-		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
+		return (p == null) ? ImmutableList.<CombinerParameter>of() : p.get(name);
 	}
 
 	/**
@@ -118,7 +117,7 @@ public class PolicySet extends
 	 */
 	public Collection<CombinerParameter> getPolicySetCombinerParams(String policySetId){
 		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policySetId);
-		return  (p == null)?ImmutableList.<CombinerParameter>of():p.values();
+		return (p == null) ? ImmutableList.<CombinerParameter>of() : p.values();
 	}
 
 	/**
@@ -130,7 +129,7 @@ public class PolicySet extends
 	 */
 	public Collection<CombinerParameter> getPolicySetCombinerParam(String policySetId, String name){
 		Multimap<String, CombinerParameter> p = policySetCombinerParameters.get(policySetId);
-		return  (p == null)?ImmutableList.<CombinerParameter>of():p.get(name);
+		return (p == null) ? ImmutableList.<CombinerParameter>of() : p.get(name);
 	}
 
 	/**
@@ -152,16 +151,16 @@ public class PolicySet extends
 	}
 
 	/**
-	 * Creates {@link EvaluationContext} to evaluate this policy
-	 * set to be used in {@link PolicySet#isMatch(EvaluationContext)}
-	 * or {@link PolicySet#evaluate(EvaluationContext)}
+	 * Creates {@link DecisionRuleEvaluationContext} to evaluate this policy
+	 * set to be used in {@link PolicySet#isMatch(DecisionRuleEvaluationContext)}
+	 * or {@link PolicySet#evaluate(DecisionRuleEvaluationContext)}
 	 *
 	 * @param context a parent evaluation context
 	 * @return {@code EvaluationContext} instance to evaluate
 	 * this policy set
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context) {
+	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context) {
 		Preconditions.checkNotNull(context);
 		if(context.getCurrentPolicySet() == this){
 			return context;
@@ -170,11 +169,11 @@ public class PolicySet extends
 	}
 
 	@Override
-	protected final boolean isEvaluationContextValid(EvaluationContext context){
+	protected final boolean isEvaluationContextValid(DecisionRuleEvaluationContext context){
 		return this.equals(context.getCurrentPolicySet());
 	}
 
-	protected Decision combineDecisions(EvaluationContext context){
+	protected Decision combineDecisions(DecisionRuleEvaluationContext context){
 		return combiningAlgorithm.combine(context, decisionRules);
 	}
 
@@ -238,7 +237,7 @@ public class PolicySet extends
 
 	class PolicySetDelegatingEvaluationContext
 			extends DelegatingEvaluationContext {
-		
+
 
 		/**
 		 * Constructs delegating evaluation context
@@ -249,7 +248,7 @@ public class PolicySet extends
 		 * @param parentContext a parent context
 		 */
 		PolicySetDelegatingEvaluationContext(
-				EvaluationContext parentContext){
+				DecisionRuleEvaluationContext parentContext){
 			super(parentContext);
 			Preconditions.checkArgument(
 					parentContext.getCurrentPolicySet() != PolicySet.this);
@@ -273,7 +272,7 @@ public class PolicySet extends
 		}
 
 		@Override
-		public EvaluationContext getParentContext() {
+		public DecisionRuleEvaluationContext getParentContext() {
 			return getDelegate();
 		}
 

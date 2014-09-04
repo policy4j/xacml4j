@@ -34,9 +34,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 public class PermitUnlessDenyTest {
@@ -45,7 +45,7 @@ public class PermitUnlessDenyTest {
 
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
@@ -53,7 +53,7 @@ public class PermitUnlessDenyTest {
 		this.algorithm = new PermitUnlessDeny<DecisionRule>("aaaa");
 
 		mockCtl = createStrictControl();
-		this.context = mockCtl.createMock(EvaluationContext.class);
+		this.context = mockCtl.createMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test

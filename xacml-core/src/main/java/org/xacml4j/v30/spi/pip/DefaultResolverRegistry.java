@@ -40,14 +40,14 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 /**
- * TODO: Implement support for resolver with the same attributes but different issuer
+ * Default {@link org.xacml4j.v30.spi.pip.ResolverRegistry} implementation.
  *
  * @author Giedrius Trumpickas
  */
@@ -216,7 +216,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 
 	@Override
 	public Iterable<AttributeResolver> getMatchingAttributeResolvers(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeDesignatorKey ref){
 		List<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
 		findMatchingAttributeResolvers(context, ref, resolvers);
@@ -230,7 +230,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @param ref an attribute reference
 	 */
 	private void findMatchingAttributeResolvers(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeDesignatorKey ref, List<AttributeResolver> found)
 	{
 			// stop recursive call if
@@ -322,7 +322,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 *
 	 */
 	@Override
-	public ContentResolver getMatchingContentResolver(EvaluationContext context,
+	public ContentResolver getMatchingContentResolver(DecisionRuleEvaluationContext context,
 			CategoryId category)
 	{
 		// stop recursive call if
@@ -355,7 +355,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * @param context an evaluation context
 	 * @return current policy or policy set identifier
 	 */
-	private String getCurrentIdentifier(EvaluationContext context)
+	private String getCurrentIdentifier(DecisionRuleEvaluationContext context)
 	{
 		CompositeDecisionRule currentPolicy = context.getCurrentPolicy();
 		if(currentPolicy == null){

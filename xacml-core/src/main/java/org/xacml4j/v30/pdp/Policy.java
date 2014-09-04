@@ -154,24 +154,22 @@ public class Policy extends BaseCompositeDecisionRule
 	 * Implementation creates policy-bound evaluation context
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
 	{
-		Preconditions.checkNotNull(context);
 		CompositeDecisionRule p = context.getCurrentPolicy();
-		Preconditions.checkArgument(p == this
-				|| p == null);
+		Preconditions.checkArgument(p == this || p == null);
 		if(p == this){
 			return context;
 		}
 		return new PolicyDelegatingEvaluationContext(context);
 	}
 
-	protected Decision combineDecisions(EvaluationContext context){
+	protected Decision combineDecisions(DecisionRuleEvaluationContext context){
 		return combiningAlgorithm.combine(context, rules);
 	}
 
 	@Override
-	protected boolean isEvaluationContextValid(EvaluationContext context){
+	protected boolean isEvaluationContextValid(DecisionRuleEvaluationContext context) {
 		return this.equals(context.getCurrentPolicy());
 	}
 
@@ -247,7 +245,7 @@ public class Policy extends BaseCompositeDecisionRule
 		 *
 		 * @param context a parent evaluation context
 		 */
-		PolicyDelegatingEvaluationContext(EvaluationContext context){
+		PolicyDelegatingEvaluationContext(DecisionRuleEvaluationContext context) {
 			super(context);
 			this.varDefEvalResults = Maps.newHashMap();
 		}
@@ -258,7 +256,7 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 
 		@Override
-		public EvaluationContext getParentContext() {
+		public DecisionRuleEvaluationContext getParentContext() {
 			return getDelegate();
 		}
 

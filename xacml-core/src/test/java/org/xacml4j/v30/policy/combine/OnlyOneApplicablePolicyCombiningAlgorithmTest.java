@@ -35,22 +35,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 {
 	private OnlyOneApplicablePolicyCombiningAlgorithm c;
 	private List<CompositeDecisionRule> d;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
 		this.c = new OnlyOneApplicablePolicyCombiningAlgorithm();
 		this.d = new LinkedList<CompositeDecisionRule>();
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = createStrictMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test
@@ -58,8 +58,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);
@@ -76,8 +76,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);
@@ -92,8 +92,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);
@@ -110,8 +110,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);
@@ -129,8 +129,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);
@@ -148,8 +148,8 @@ public class OnlyOneApplicablePolicyCombiningAlgorithmTest
 	{
 		CompositeDecisionRule d1 = createStrictMock(CompositeDecisionRule.class);
 		CompositeDecisionRule d2 = createStrictMock(CompositeDecisionRule.class);
-		EvaluationContext c1 = createStrictMock(EvaluationContext.class);
-		EvaluationContext c2 = createStrictMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext c1 = createStrictMock(DecisionRuleEvaluationContext.class);
+		DecisionRuleEvaluationContext c2 = createStrictMock(DecisionRuleEvaluationContext.class);
 		d.add(d1);
 		d.add(d2);
 		expect(d1.createContext(context)).andReturn(c1);

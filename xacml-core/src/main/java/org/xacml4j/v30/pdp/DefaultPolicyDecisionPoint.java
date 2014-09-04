@@ -145,7 +145,7 @@ final class DefaultPolicyDecisionPoint
 				decisionHistogram.update(timerContext.stop());
 				return r;
 			}
-			EvaluationContext evalContext = context.createEvaluationContext(request);
+			RootEvaluationContext evalContext = context.createEvaluationContext(request);
 			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
 			incrementDecisionCounters(decision);
@@ -182,7 +182,7 @@ final class DefaultPolicyDecisionPoint
 	}
 
 	private Result createResult(
-			EvaluationContext context,
+			RootEvaluationContext context,
 			Decision decision,
 			Collection<Category> includeInResult,
 			Collection<Category> resolvedAttributes,
@@ -228,8 +228,9 @@ final class DefaultPolicyDecisionPoint
 	private Collection<Category> getResolvedAttributes(EvaluationContext context){
 		Map<AttributeDesignatorKey, BagOfAttributeExp> desig = context.getResolvedDesignators();
 		Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
-		for(AttributeDesignatorKey k : desig.keySet()){
-			BagOfAttributeExp v = desig.get(k);
+		for(Map.Entry<AttributeDesignatorKey, BagOfAttributeExp> entry : desig.entrySet()){
+			final AttributeDesignatorKey k = entry.getKey();
+			final BagOfAttributeExp v = entry.getValue();
 			Collection<Attribute> values = attributes.get(k.getCategory());
 			values.add(Attribute
 					.builder(k.getAttributeId())

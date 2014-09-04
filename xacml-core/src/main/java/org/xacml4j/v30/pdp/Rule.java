@@ -26,7 +26,6 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 
@@ -61,7 +60,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	 * a context with a parent policy
 	 */
 	@Override
-	public EvaluationContext createContext(EvaluationContext context) {
+	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context) {
 		if(isEvaluationContextValid(context)){
 			return context;
 		}
@@ -69,7 +68,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 
 	@Override
-	protected boolean isEvaluationContextValid(EvaluationContext context){
+	protected boolean isEvaluationContextValid(DecisionRuleEvaluationContext context) {
 		return this == context.getCurrentRule() &&
 			   context.getCurrentPolicy() != null;
 	}
@@ -102,7 +101,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 
 	@Override
-	public final Decision evaluate(EvaluationContext context)
+	public final Decision evaluate(DecisionRuleEvaluationContext context)
 	{
 		if(!isEvaluationContextValid(context)){
 			return getExtendedIndeterminate();
@@ -160,7 +159,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 
 	public class RuleEvaluationContext extends DelegatingEvaluationContext
 	{
-		public RuleEvaluationContext(EvaluationContext context){
+		public RuleEvaluationContext(DecisionRuleEvaluationContext context) {
 			super(context);
 		}
 

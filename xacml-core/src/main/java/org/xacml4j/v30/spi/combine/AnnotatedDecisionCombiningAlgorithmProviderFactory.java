@@ -38,8 +38,8 @@ import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
 
 import com.google.common.base.Preconditions;
@@ -93,8 +93,8 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 				"Invalid decision combining algorithm method=\"%s\", annotation=\"%s\" must be present",
 				m.getName(), XacmlRuleDecisionCombiningAlgorithm.class.getName());
 		if(log.isDebugEnabled()){
-			log.debug("Creating rule decision combining" +
-					" algorithm=\"{}\" from method=\"{}\"", algo.value(), m.getName());
+			log.debug("Creating rule decision combining algorithm=\"{}\" from method=\"{}\"",
+					algo.value(), m.getName());
 		}
 		return createDecisionCombiningAlgorithm(algo.value(), invocationFactory.<Decision>create(null, m));
 	}
@@ -107,13 +107,13 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 				"Invalid decision combining algorithm method=\"%s\", annotation=\"%s\" must be present",
 				m.getName(), XacmlPolicyDecisionCombiningAlgorithm.class.getName());
 		if(log.isDebugEnabled()){
-			log.debug("Creating policy decision combining" +
-					" algorithm=\"{}\" from method=\"{}\"", algo.value(), m.getName());
+			log.debug("Creating policy decision combining algorithm=\"{}\" from method=\"{}\"",
+					algo.value(), m.getName());
 		}
 		return createDecisionCombiningAlgorithm(algo.value(), invocationFactory.<Decision>create(null, m));
 	}
 
-	private  <D extends DecisionRule> DecisionCombiningAlgorithm<D> createDecisionCombiningAlgorithm(
+	private <D extends DecisionRule> DecisionCombiningAlgorithm<D> createDecisionCombiningAlgorithm(
 			final String algorithmId, final Invocation<Decision> invocation)
 	{
 		Preconditions.checkNotNull(algorithmId);
@@ -121,13 +121,12 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 		return new BaseDecisionCombiningAlgorithm<D>(algorithmId)
 		{
 			@Override
-			public Decision combine(EvaluationContext context, List<D> decisions) {
+			public Decision combine(DecisionRuleEvaluationContext context, List<D> decisions) {
 				try{
 					return invocation.invoke(context, decisions);
 				}catch(Exception e){
 					if(log.isDebugEnabled()){
-						log.debug("Failed to invoke " +
-								"decision combine algorithm=\"{}\"", algorithmId);
+						log.debug("Failed to invoke decision combine algorithm=\"{}\"", algorithmId, e);
 					}
 					return Decision.INDETERMINATE;
 				}
@@ -140,18 +139,18 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	{
 		Preconditions.checkArgument(
 				Modifier.isStatic(m.getModifiers()),
-				"Combine metho=\"%s\" must be static", m.getName());
+				"Decision combining method=\"%s\" must be static", m.getName());
 		Preconditions.checkArgument(m.getReturnType().equals(Decision.class),
-				"Decision combine method=\"%s\" return type must be=\"%s\"",
+				"Decision combining method=\"%s\" return type must be=\"%s\"",
 				m.getName(), Decision.class);
 		Class<?>[] params = m.getParameterTypes();
 		Preconditions.checkArgument(params != null && params.length == 2,
-				"Decision combine method=\"%s\" must have 2 parameters", m.getName());
-		Preconditions.checkArgument(params[0].equals(EvaluationContext.class),
-				"Decision combine method=\"%s\" first parameter must be of type=\"%s\"",
-				m.getName(), EvaluationContext.class);
+				"Decision combining method=\"%s\" must have 2 parameters", m.getName());
+		Preconditions.checkArgument(params[0].equals(DecisionRuleEvaluationContext.class),
+				"Decision combining method=\"%s\" first parameter must be of type=\"%s\"",
+				m.getName(), DecisionRuleEvaluationContext.class);
 		Preconditions.checkArgument(params[1].equals(List.class),
-				"Decision combine method=\"%s\" first parameter must be of type=\"%s\"",
+				"Decision combining method=\"%s\" first parameter must be of type=\"%s\"",
 				m.getName(), List.class);
 		Type[] genericTypes = m.getGenericParameterTypes();
 		Preconditions.checkArgument((genericTypes[1] instanceof ParameterizedType));

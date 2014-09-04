@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -45,7 +45,7 @@ public class DefaultResolverRegistryTest
 {
 	private ResolverRegistry r;
 	private IMocksControl control;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 
 	private AttributeResolver r1;
 	private AttributeResolver r2;
@@ -56,7 +56,7 @@ public class DefaultResolverRegistryTest
 	public void init(){
 		this.r = new DefaultResolverRegistry();
 		this.control = createStrictControl();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = control.createMock(DecisionRuleEvaluationContext.class);
 		this.r1 = control.createMock(AttributeResolver.class);
 		this.r2 = control.createMock(AttributeResolver.class);
 
@@ -389,7 +389,7 @@ public class DefaultResolverRegistryTest
 		expect(context.getCurrentPolicy()).andReturn(p1);
 		expect(p1.getId()).andReturn("testIdP1");
 
-		EvaluationContext context1 = control.createMock(EvaluationContext.class);
+		DecisionRuleEvaluationContext context1 = control.createMock(DecisionRuleEvaluationContext.class);
 
 		expect(context.getParentContext()).andReturn(context1);
 

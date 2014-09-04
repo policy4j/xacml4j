@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Version;
@@ -56,7 +55,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	private final Integer maxDelegationDepth;
 	private final Multimap<String, CombinerParameter> combinerParameters;
 
-	protected BaseCompositeDecisionRule(Builder<?> b){
+	protected BaseCompositeDecisionRule(Builder<?> b) {
 		super(b);
 		this.version = b.version;
 		this.maxDelegationDepth = b.maxDelegationDepth;
@@ -111,10 +110,9 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	@Override
-	public Decision evaluate(EvaluationContext context) {
+	public Decision evaluate(DecisionRuleEvaluationContext context) {
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating composite " +
-					"decision rule with id=\"{}\"", id);
+			log.debug("Evaluating composite decision rule with id=\"{}\"", id);
 		}
 		MatchResult r = isMatch(context);
 		if(r == MatchResult.NOMATCH){
@@ -161,7 +159,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		return getExtendedIndeterminate(context.createExtIndeterminateEvalContext());
 	}
 
-	protected Decision getExtendedIndeterminate(EvaluationContext context)
+	protected Decision getExtendedIndeterminate(DecisionRuleEvaluationContext context)
 	{
 		Decision evaluationResult = null;
 		try{
@@ -181,7 +179,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		}
 	}
 
-	protected abstract Decision combineDecisions(EvaluationContext context);
+	protected abstract Decision combineDecisions(DecisionRuleEvaluationContext context);
 
 	@Override
 	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){

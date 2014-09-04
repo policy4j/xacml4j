@@ -34,16 +34,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 public class DenyOverridesTest
 {
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 	private IMocksControl c;
 
 	@Before
@@ -51,7 +51,7 @@ public class DenyOverridesTest
 		this.c = createControl();
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new DenyOverrides<DecisionRule>("aaaa");
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = c.createMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test

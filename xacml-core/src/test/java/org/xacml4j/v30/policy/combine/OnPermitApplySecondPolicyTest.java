@@ -34,16 +34,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 public class OnPermitApplySecondPolicyTest
 {
 	private List<CompositeDecisionRule> decisions;
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 	private IMocksControl c;
 
 	@Before
@@ -51,7 +51,7 @@ public class OnPermitApplySecondPolicyTest
 		this.c = createControl();
 		this.decisions = new LinkedList<CompositeDecisionRule>();
 		this.algorithm = new OnPermitApplySecondPolicyCombiningAlgorithm();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = c.createMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test

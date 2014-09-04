@@ -41,7 +41,6 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Status;
@@ -57,7 +56,7 @@ import org.xml.sax.InputSource;
 
 public class DefaultEvaluationContextHandlerTest
 {
-	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+	private static final String TEST_XML = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 	"xmlns:md=\"urn:example:med:schemas:record\">" +
 	"<md:patient>" +
 	"<md:patientDoB>1992-03-21</md:patientDoB>" +
@@ -65,14 +64,13 @@ public class DefaultEvaluationContextHandlerTest
 	"</md:patient>" +
 	"</md:record>";
 
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 	private IMocksControl c;
 
 	private Entity entity;
 	private Node content;
 
 	private PolicyInformationPoint pip;
-	private XPathProvider xpathProvider;
 	private RequestContextCallback requestContextCallback;
 	private EvaluationContextHandler handler;
 
@@ -83,14 +81,14 @@ public class DefaultEvaluationContextHandlerTest
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = c.createMock(DecisionRuleEvaluationContext.class);
 		this.requestContextCallback = c.createMock(RequestContextCallback.class);
 		this.pip = c.createMock(PolicyInformationPoint.class);
-		this.content = builder.parse(new InputSource(new StringReader(testXml)));
+		this.content = builder.parse(new InputSource(new StringReader(TEST_XML)));
 		this.entity = Entity
 				.builder()
 				.content(content).build();
-		this.xpathProvider = new DefaultXPathProvider();
+		XPathProvider xpathProvider = new DefaultXPathProvider();
 		this.handler = new DefaultEvaluationContextHandler(requestContextCallback, xpathProvider, pip);
 	}
 
@@ -107,7 +105,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-		
+
 		c.replay();
 
 		Expression v = handler.resolve(context, ref);
@@ -128,7 +126,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-		
+
 		c.replay();
 
 		Expression v = handler.resolve(context, ref);
@@ -160,11 +158,13 @@ public class DefaultEvaluationContextHandlerTest
 
 		c.replay();
 
-		Expression v = handler.resolve(context, ref);
+		Expression v1 = handler.resolve(context, ref);
 		// test cache
-		v = handler.resolve(context, ref);
-		assertEquals(IntegerExp.bag().value(555555).build(), v);
+		Expression v2 = handler.resolve(context, ref);
 		c.verify();
+
+		assertEquals(IntegerExp.bag().value(555555).build(), v1);
+		assertEquals(v1, v2);
 	}
 
 
@@ -197,7 +197,7 @@ public class DefaultEvaluationContextHandlerTest
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 		context.setEvaluationStatus(Status.missingAttribute(ref).build());
-		
+
 		c.replay();
 		handler.resolve(context, ref);
 		c.verify();
@@ -214,9 +214,9 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.DATE)
 				.build();
 
-		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);	
+		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
 		context.setEvaluationStatus(Status.missingAttribute(ref).build());
-		
+
 		c.replay();
 		handler.resolve(context, ref);
 		c.verify();
@@ -233,7 +233,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(entity);
-		
+
 		c.replay();
 		Expression v = handler.resolve(context, ref);
 		assertEquals(v, IntegerExp.emptyBag());
@@ -260,7 +260,7 @@ public class DefaultEvaluationContextHandlerTest
 		handler.resolve(context, ref);
 		c.verify();
 	}
-	
+
 	@Test
 	public void testDesignatorResolveAttributeIsNotInRequest()
 		throws Exception

@@ -22,26 +22,28 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
+
 public class PolicyResolutionException extends EvaluationException
 {
 	private static final long serialVersionUID = 5535690322056670601L;
 
-	private EvaluationContext context;
-	
-	public PolicyResolutionException(EvaluationContext context,
+	private DecisionRuleEvaluationContext context;
+
+	public PolicyResolutionException(DecisionRuleEvaluationContext context,
 			String template, Object... arguments) {
 		super(Status.processingError().build(), template, arguments);
 		this.context = context;
 	}
 
-	public PolicyResolutionException(EvaluationContext context,
+	public PolicyResolutionException(DecisionRuleEvaluationContext context,
 			Throwable cause, String message,
 			Object... arguments) {
 		super(Status.processingError().build(), cause, message, arguments);
 		this.context = context;
 	}
 
-	public PolicyResolutionException(EvaluationContext context,
+	public PolicyResolutionException(DecisionRuleEvaluationContext context,
 			Throwable cause) {
 		super(Status.processingError().build(), cause);
 		this.context = context;

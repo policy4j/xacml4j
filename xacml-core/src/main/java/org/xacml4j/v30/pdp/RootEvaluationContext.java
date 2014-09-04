@@ -44,7 +44,6 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyResolutionException;
@@ -59,7 +58,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
 
 
-public final class RootEvaluationContext implements EvaluationContext {
+public final class RootEvaluationContext implements DecisionRuleEvaluationContext {
 
 	protected final Logger log = LoggerFactory.getLogger(RootEvaluationContext.class);
 
@@ -135,10 +134,10 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public EvaluationContext createExtIndeterminateEvalContext() {
+	public DecisionRuleEvaluationContext createExtIndeterminateEvalContext() {
 		return new DelegatingEvaluationContext(this){
 			@Override
-			public EvaluationContext createExtIndeterminateEvalContext() {
+			public DecisionRuleEvaluationContext createExtIndeterminateEvalContext() {
 				return this;
 			}
 
@@ -253,7 +252,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 	 * Implementation always return {@code null}
 	 */
 	@Override
-	public EvaluationContext getParentContext() {
+	public DecisionRuleEvaluationContext getParentContext() {
 		return null;
 	}
 
@@ -425,7 +424,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 		this.designCache.put(key, (v == null) ? key.getDataType().emptyBag() : v);
 	}
 
-	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}

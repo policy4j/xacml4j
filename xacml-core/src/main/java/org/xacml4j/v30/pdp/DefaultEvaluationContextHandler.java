@@ -42,7 +42,6 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -92,7 +91,7 @@ class DefaultEvaluationContextHandler
 
 	@Override
 	public BagOfAttributeExp resolve(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeDesignatorKey key)
 		throws EvaluationException
 	{
@@ -100,9 +99,8 @@ class DefaultEvaluationContextHandler
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
 		Entity entity = requestCallback.getEntity(key.getCategory());
-		BagOfAttributeExp v = null;
 		if(entity != null){
-			v = entity.getAttributeValues(key.getAttributeId(),
+			final BagOfAttributeExp v = entity.getAttributeValues(key.getAttributeId(),
 					key.getDataType(), key.getIssuer());
 			if(!v.isEmpty()){
 				if(log.isDebugEnabled()){
@@ -119,7 +117,7 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			designatorResolutionStack.push(key);
-			v = pip.resolve(context, key);
+			final BagOfAttributeExp v = pip.resolve(context, key);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved designator=\"{}\" " +
 						"from PIP to value=\"{}\"", key, v);
@@ -138,7 +136,7 @@ class DefaultEvaluationContextHandler
 
 	@Override
 	public BagOfAttributeExp resolve(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeSelectorKey ref)
 			throws EvaluationException
 	{
@@ -167,12 +165,11 @@ class DefaultEvaluationContextHandler
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */
-	private Node doGetContent(EvaluationContext context, CategoryId category)
+	private Node doGetContent(DecisionRuleEvaluationContext context, CategoryId category)
 		throws Exception
 	{
-		Node content = null;
 		if(contentCache.containsKey(category)){
-			content = contentCache.get(category);
+			final Node content = contentCache.get(category);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved content=\"{}\" " +
 						"from cache", content);
@@ -184,7 +181,7 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			contentResolutionStack.push(category);
-			content = pip.resolve(context, category);
+			final Node content = pip.resolve(context, category);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved content=\"{}\" " +
 						"from PIP", content);
@@ -197,7 +194,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	private BagOfAttributeExp doResolve(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeSelectorKey ref) throws EvaluationException
 	{
 		try
@@ -217,7 +214,7 @@ class DefaultEvaluationContextHandler
 			}
 			if(v.size() == 1){
 				XPathExp xpath = (XPathExp)v.iterator().next();
-				if(xpath.getCategory() != ref.getCategory()){
+				if(!xpath.getCategory().equals(ref.getCategory())){
 					throw new AttributeReferenceEvaluationException(ref,
 							"AttributeSelector category=\"%s\" and " +
 							"ContextAttributeId XPathExpression " +
@@ -225,8 +222,8 @@ class DefaultEvaluationContextHandler
 							xpath.getCategory());
 				}
 				if(log.isDebugEnabled()){
-					log.debug("Evaluating " +
-							"contextSelector xpath=\"{}\"", xpath.getValue());
+					log.debug("Evaluating contextSelector xpath=\"{}\"",
+							xpath.getValue());
 				}
 				contextNode = xpathProvider.evaluateToNode(xpath.getPath(), content);
 			}
@@ -275,7 +272,7 @@ class DefaultEvaluationContextHandler
 	 * @throws EvaluationException
 	 */
 	private BagOfAttributeExp toBag(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeSelectorKey ref, NodeList nodeSet)
 		throws EvaluationException
 	{
@@ -323,7 +320,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public Node evaluateToNode(EvaluationContext context, XPathExp xpath)
+	public Node evaluateToNode(DecisionRuleEvaluationContext context, XPathExp xpath)
 			throws XPathEvaluationException
 	{
 		try{
@@ -336,7 +333,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public NodeList evaluateToNodeSet(EvaluationContext context, XPathExp xpath)
+	public NodeList evaluateToNodeSet(DecisionRuleEvaluationContext context, XPathExp xpath)
 			throws EvaluationException {
 		try{
 			return xpathProvider.evaluateToNodeSet(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
@@ -346,7 +343,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public Number evaluateToNumber(EvaluationContext context, XPathExp xpath) throws EvaluationException {
+	public Number evaluateToNumber(DecisionRuleEvaluationContext context, XPathExp xpath) throws EvaluationException {
 		try{
 			return xpathProvider.evaluateToNumber(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
 		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
@@ -355,7 +352,7 @@ class DefaultEvaluationContextHandler
 	}
 
 	@Override
-	public String evaluateToString(EvaluationContext context, XPathExp xpath)
+	public String evaluateToString(DecisionRuleEvaluationContext context, XPathExp xpath)
 			throws XPathEvaluationException {
 		try{
 			return xpathProvider.evaluateToString(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
@@ -366,7 +363,7 @@ class DefaultEvaluationContextHandler
 
 	private class ContentSupplier
 	{
-		public Node getContent(EvaluationContext context, XPathExp xpath) throws XPathEvaluationException
+		public Node getContent(DecisionRuleEvaluationContext context, XPathExp xpath) throws XPathEvaluationException
 		{
 			Entity entity = requestCallback.getEntity(xpath.getCategory());
 			Node content = (entity != null)?entity.getContent():null;

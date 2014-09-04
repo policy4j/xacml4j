@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 
 
 public interface DecisionCombiningAlgorithm <D extends DecisionRule>
@@ -46,5 +45,5 @@ public interface DecisionCombiningAlgorithm <D extends DecisionRule>
 	 * @param decisions a multiple decisions
 	 * @return {@link Decision} context
 	 */
-	Decision combine(EvaluationContext context, List<D> decisions);
+	Decision combine(DecisionRuleEvaluationContext context, List<D> decisions);
 }

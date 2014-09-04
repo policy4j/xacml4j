@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -65,7 +65,7 @@ public class DefaultPolicyInformationPoint
 
 	@Override
 	public BagOfAttributeExp resolve(
-			final EvaluationContext context,
+			final DecisionRuleEvaluationContext context,
 			AttributeDesignatorKey ref) throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("Trying to resolve designator=\"{}\"", ref);
@@ -131,12 +131,12 @@ public class DefaultPolicyInformationPoint
 		return ref.getDataType().emptyBag();
 	}
 
-	private boolean isExpired(AttributeSet v, EvaluationContext context) {
+	private boolean isExpired(AttributeSet v, DecisionRuleEvaluationContext context) {
 		return ((context.getTicker().read() - v.getCreatedTime()) /
 				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 
-	private boolean isExpired(Content v, EvaluationContext context) {
+	private boolean isExpired(Content v, DecisionRuleEvaluationContext context) {
 		long duration = context.getTicker().read() - v.getTimestamp() / 1000000000L;
 
 		if (log.isDebugEnabled()) {
@@ -146,7 +146,7 @@ public class DefaultPolicyInformationPoint
 	}
 
 	@Override
-	public Node resolve(final EvaluationContext context,
+	public Node resolve(final DecisionRuleEvaluationContext context,
 	                    CategoryId category)
 			throws Exception {
 		ContentResolver r = registry.getMatchingContentResolver(context, category);
@@ -187,7 +187,7 @@ public class DefaultPolicyInformationPoint
 		return registry;
 	}
 
-	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d)
+	private ResolverContext createContext(DecisionRuleEvaluationContext context, ResolverDescriptor d)
 			throws EvaluationException {
 		return new DefaultResolverContext(context, d);
 	}

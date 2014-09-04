@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.PolicyElement;
 
 /**
@@ -47,30 +48,30 @@ public interface DecisionRule extends PolicyElement
 	 * @return {@link EvaluationContext} an evaluation
 	 * context to be used to match or evaluate this decision
 	 */
-	EvaluationContext createContext(EvaluationContext context);
+	DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context);
 
 	/**
 	 * Tests if this decision rule is applicable to a given
 	 * evaluation context. An evaluation context
 	 * must be created by invoking
-	 * {@link DecisionRule#createContext(EvaluationContext)} first
+	 * {@link DecisionRule#createContext(DecisionRuleEvaluationContext)} first
 	 *
 	 * @param context an evaluation context
 	 * @return {@link MatchResult} indicating applicability
 	 * of this decision rule to the given evaluation context
 	 */
-	MatchResult isMatch(EvaluationContext context);
+	MatchResult isMatch(DecisionRuleEvaluationContext context);
 
 	/**
 	 * Evaluates this decision in the given evaluation context.
 	 * An evaluation context must be created by invoking
-	 * {@link DecisionRule#createContext(EvaluationContext)} first.
+	 * {@link DecisionRule#createContext(DecisionRuleEvaluationContext)} first.
 	 * Evaluation should be performed if prior call
-	 * to {@link DecisionRule#isMatch(EvaluationContext)} returns
+	 * to {@link DecisionRule#isMatch(DecisionRuleEvaluationContext)} returns
 	 * {@link MatchResult#MATCH}
 	 *
 	 * @param context an evaluation context
 	 * @return {@link Decision}
 	 */
-	Decision evaluate(EvaluationContext context);
+	Decision evaluate(DecisionRuleEvaluationContext context);
 }

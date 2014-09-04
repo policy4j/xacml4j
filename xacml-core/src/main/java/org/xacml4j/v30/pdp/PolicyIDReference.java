@@ -70,10 +70,9 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public EvaluationContext createContext(EvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
 	{
-		Preconditions.checkNotNull(context);
-		if(context.getCurrentPolicyIDReference() ==  this){
+		if(context.getCurrentPolicyIDReference() == this){
 			return context;
 		}
 		PolicyIDReferenceEvaluationContext refContext = new PolicyIDReferenceEvaluationContext(context);
@@ -99,8 +98,7 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public Decision evaluate(EvaluationContext context) {
-		Preconditions.checkNotNull(context);
+	public Decision evaluate(DecisionRuleEvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
@@ -111,8 +109,7 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public MatchResult isMatch(EvaluationContext context) {
-		Preconditions.checkNotNull(context);
+	public MatchResult isMatch(DecisionRuleEvaluationContext context) {
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return MatchResult.INDETERMINATE;
@@ -147,7 +144,7 @@ public final class PolicyIDReference extends
 	 * @return {@code true} if given reference is cyclic; returns {@code false} otherwise
 	 */
 	private static boolean isReferenceCyclic(PolicyIDReference ref,
-			EvaluationContext context)
+			DecisionRuleEvaluationContext context)
 	{
 		CompositeDecisionRuleIDReference otherRef = context.getCurrentPolicyIDReference();
 		if(otherRef != null){
@@ -176,17 +173,17 @@ public final class PolicyIDReference extends
 		 *
 		 * @param context a parent evaluation context
 		 * @exception IllegalArgumentException if enclosing context
-		 * {@link EvaluationContext#getCurrentPolicySet()} returns
+		 * {@link org.xacml4j.v30.pdp.DecisionRuleEvaluationContext#getCurrentPolicySet()} returns
 		 * {@code null} or given policy ID reference is {@code null}
 		 */
-		PolicyIDReferenceEvaluationContext(EvaluationContext context){
+		PolicyIDReferenceEvaluationContext(DecisionRuleEvaluationContext context){
 			super(context);
 			Preconditions.checkArgument(context.getCurrentPolicy() == null);
 			Preconditions.checkArgument(!isReferenceCyclic(PolicyIDReference.this, context));
 		}
 
 		@Override
-		public EvaluationContext getParentContext() {
+		public DecisionRuleEvaluationContext getParentContext() {
 			return getDelegate();
 		}
 

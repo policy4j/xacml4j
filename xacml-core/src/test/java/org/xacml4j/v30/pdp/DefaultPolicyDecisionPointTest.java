@@ -35,7 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -95,9 +94,9 @@ public class DefaultPolicyDecisionPointTest
 		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
+		Capture<DecisionRuleEvaluationContext> rootContext = new Capture<DecisionRuleEvaluationContext>();
+		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(DecisionRuleEvaluationContext.class));
+		Capture<DecisionRuleEvaluationContext> policyContext = new Capture<DecisionRuleEvaluationContext>();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
 		Capture<Result> result0 = new Capture<Result>();
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
@@ -128,9 +127,9 @@ public class DefaultPolicyDecisionPointTest
 		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
+		Capture<DecisionRuleEvaluationContext> rootContext = new Capture<DecisionRuleEvaluationContext>();
+		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(DecisionRuleEvaluationContext.class));
+		Capture<DecisionRuleEvaluationContext> policyContext = new Capture<DecisionRuleEvaluationContext>();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
 
 		Capture<Result> result0 = new Capture<Result>();

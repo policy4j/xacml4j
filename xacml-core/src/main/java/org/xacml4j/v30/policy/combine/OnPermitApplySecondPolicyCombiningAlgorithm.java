@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
 
@@ -57,7 +57,7 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 	}
 
 	@Override
-	public Decision combine(EvaluationContext context,
+	public Decision combine(DecisionRuleEvaluationContext context,
 			List<CompositeDecisionRule> policies) {
 		if(policies.size() != 2){
 			context.setEvaluationStatus(PROCESSING_ERROR);

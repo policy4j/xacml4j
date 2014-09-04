@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
@@ -44,7 +44,7 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny")
 	@Override
-	public Decision combine(EvaluationContext context,
+	public Decision combine(DecisionRuleEvaluationContext context,
 			List<DecisionType> decisions)
 	{
 		for(DecisionType d : decisions){

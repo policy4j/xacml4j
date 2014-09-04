@@ -56,22 +56,22 @@ import com.google.common.base.Ticker;
  *
  * @author Giedrius Trumpickas
  */
-abstract class DelegatingEvaluationContext implements EvaluationContext
+abstract class DelegatingEvaluationContext implements DecisionRuleEvaluationContext
 {
-	private final EvaluationContext delegate;
+	private final DecisionRuleEvaluationContext delegate;
 
 	protected DelegatingEvaluationContext(
-			EvaluationContext context){
+			DecisionRuleEvaluationContext context){
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
 	}
 
-	protected EvaluationContext getDelegate(){
+	protected DecisionRuleEvaluationContext getDelegate(){
 		return delegate;
 	}
 
 	@Override
-	public EvaluationContext createExtIndeterminateEvalContext() {
+	public DecisionRuleEvaluationContext createExtIndeterminateEvalContext() {
 		return delegate.createExtIndeterminateEvalContext();
 	}
 
@@ -249,11 +249,6 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
-		return delegate.getEvaluatedPolicies();
-	}
-
-	@Override
 	public void setResolvedDesignatorValue(AttributeDesignatorKey ref,
 			BagOfAttributeExp v) {
 		delegate.setResolvedDesignatorValue(ref, v);
@@ -285,7 +280,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public EvaluationContext getParentContext() {
+	public DecisionRuleEvaluationContext getParentContext() {
 		return delegate;
 	}
 

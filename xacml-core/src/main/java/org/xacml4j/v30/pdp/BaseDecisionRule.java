@@ -125,13 +125,13 @@ abstract class BaseDecisionRule implements DecisionRule
 	 * @return {@link MatchResult} a match result
 	 */
 	@Override
-	public MatchResult isMatch(EvaluationContext context){
-		if(!isEvaluationContextValid(context)){
+	public MatchResult isMatch(DecisionRuleEvaluationContext context){
+		if (!isEvaluationContextValid(context)) {
 			return MatchResult.INDETERMINATE;
 		}
-		try{
-			return (target == null)?MatchResult.MATCH:target.match(context);
-		}catch(Exception e){
+		try {
+			return (target == null) ? MatchResult.MATCH : target.match(context);
+		} catch (Exception e) {
 			return MatchResult.INDETERMINATE;
 		}
 	}
@@ -292,7 +292,8 @@ abstract class BaseDecisionRule implements DecisionRule
 		return Objects.hashCode(id, target, condition,
 				adviceExpressions, obligationExpressions, description);
 	}
-	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
+
+	protected abstract boolean isEvaluationContextValid(DecisionRuleEvaluationContext context);
 
 	protected abstract static class Builder<T extends Builder<?>>
 	{

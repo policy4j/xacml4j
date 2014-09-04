@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 /**
@@ -54,7 +54,7 @@ public interface PolicyInformationPoint
 	 * @throws Exception if an error occurs
 	 */
 	BagOfAttributeExp resolve(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			AttributeDesignatorKey ref)
 		throws Exception;
 
@@ -68,7 +68,7 @@ public interface PolicyInformationPoint
 	 * @throws Exception if an error occurs
 	 */
 	Node resolve(
-			EvaluationContext context,
+			DecisionRuleEvaluationContext context,
 			CategoryId category)
 		throws Exception;
 

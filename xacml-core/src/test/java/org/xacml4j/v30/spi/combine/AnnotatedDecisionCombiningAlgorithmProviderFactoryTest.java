@@ -33,8 +33,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.policy.combine.DenyOverrides;
 
@@ -49,13 +49,13 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("test1Algo")
-	public  Decision testNonStaticMethod(EvaluationContext context, List<? super DecisionRule> rules)
+	public  Decision testNonStaticMethod(DecisionRuleEvaluationContext context, List<? super DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("test2Algo")
-	public static Decision testValidMethod(EvaluationContext context, List<DecisionRule> rules)
+	public static Decision testValidMethod(DecisionRuleEvaluationContext context, List<DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}
@@ -67,13 +67,13 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("test2algo")
-	public static Decision test2params2(EvaluationContext context)
+	public static Decision test2params2(DecisionRuleEvaluationContext context)
 	{
 		return Decision.DENY;
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("test4Algo")
-	public static Decision test4(EvaluationContext context, Collection<DecisionRule> rules)
+	public static Decision test4(DecisionRuleEvaluationContext context, Collection<DecisionRule> rules)
 	{
 		return Decision.DENY;
 	}

@@ -25,7 +25,6 @@ package org.xacml4j.v30.pdp;
 import java.util.Random;
 
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;
@@ -44,7 +43,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	implements PolicyDecisionPointContextFactory
 {
 	private final static Random RND = new Random();
-	
+
 	private PolicyInformationPoint pip;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
@@ -58,7 +57,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	private boolean validateFuncParamsAtRuntime = false;
 	private int decisionCacheTTL = 30;
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
-	
+
 	DefaultPolicyDecisionPointContextFactory(
 			CompositeDecisionRule policyDomain,
 			PolicyRepository repository,
@@ -92,7 +91,7 @@ final class DefaultPolicyDecisionPointContextFactory
 		this.decisionCacheTTL = (ttl > 0)?ttl:0;
 	}
 
-	public void setValidaFunctionParametersAtRuntime(
+	public void setValidateFunctionParametersAtRuntime(
 			boolean validate){
 		this.validateFuncParamsAtRuntime = validate;
 	}
@@ -158,14 +157,14 @@ final class DefaultPolicyDecisionPointContextFactory
 			public RequestContextHandlerChain getRequestHandlers() {
 				return requestHandlers;
 			}
-			
+
 			@Override
 			public String getCorrelationId() {
 				return correlationId;
 			}
 
 			@Override
-			public EvaluationContext createEvaluationContext(RequestContext request)
+			public RootEvaluationContext createEvaluationContext(RequestContext request)
 			{
 				Preconditions.checkArgument(!request.containsRepeatingCategories());
 				Preconditions.checkArgument(!request.containsRequestReferences());

@@ -35,22 +35,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 
 public class DenyUnlessPermitTest
 {
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
-	private EvaluationContext context;
+	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new DenyUnlessPermit<DecisionRule>("aaaa");
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = createStrictMock(DecisionRuleEvaluationContext.class);
 	}
 
 	@Test

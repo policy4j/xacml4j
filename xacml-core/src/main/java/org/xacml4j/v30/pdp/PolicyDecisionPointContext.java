@@ -36,11 +36,11 @@ public interface PolicyDecisionPointContext
 	/**
 	 * Gets correlation identifier used
 	 * to track request in log messages
-	 * 
+	 *
 	 * @return correlation identifier
 	 */
 	String getCorrelationId();
-	
+
 	/**
 	 * Creates {@link EvaluationContext} to evaluate
 	 * given {@link RequestContext} access decision request
@@ -48,11 +48,11 @@ public interface PolicyDecisionPointContext
 	 * @param req an access decision request
 	 * @return {@link EvaluationContext}
 	 */
-	EvaluationContext createEvaluationContext(RequestContext req);
-	
+	RootEvaluationContext createEvaluationContext(RequestContext req);
+
 	/**
 	 * Gets root policy for authorization domain
-	 * 
+	 *
 	 * @return {@link CompositeDecisionRule} a root
 	 * policy
 	 */
