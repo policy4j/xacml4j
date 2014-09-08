@@ -154,8 +154,9 @@ public class Policy extends BaseCompositeDecisionRule
 	 * Implementation creates policy-bound evaluation context
 	 */
 	@Override
-	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx)
 	{
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		CompositeDecisionRule p = context.getCurrentPolicy();
 		Preconditions.checkArgument(p == this || p == null);
 		if(p == this){

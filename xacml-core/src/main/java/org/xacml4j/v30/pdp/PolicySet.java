@@ -27,12 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -152,16 +147,17 @@ public class PolicySet extends
 
 	/**
 	 * Creates {@link DecisionRuleEvaluationContext} to evaluate this policy
-	 * set to be used in {@link PolicySet#isMatch(DecisionRuleEvaluationContext)}
-	 * or {@link PolicySet#evaluate(DecisionRuleEvaluationContext)}
+	 * set to be used in {@link PolicySet#isMatch(org.xacml4j.v30.EvaluationContext)}
+	 * or {@link PolicySet#evaluate(org.xacml4j.v30.EvaluationContext)}
 	 *
 	 * @param context a parent evaluation context
-	 * @return {@code EvaluationContext} instance to evaluate
+	 * @return {@code DecisionRuleEvaluationContext} instance to evaluate
 	 * this policy set
 	 */
 	@Override
-	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context) {
-		Preconditions.checkNotNull(context);
+	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx) {
+		Preconditions.checkNotNull(ctx);
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(context.getCurrentPolicySet() == this){
 			return context;
 		}

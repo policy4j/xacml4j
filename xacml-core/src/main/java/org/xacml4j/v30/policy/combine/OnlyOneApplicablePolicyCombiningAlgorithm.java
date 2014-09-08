@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
@@ -50,7 +51,7 @@ public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 		DecisionRuleEvaluationContext foundEvalContext = null;
 		for(CompositeDecisionRule d : decisions)
 		{
-			final DecisionRuleEvaluationContext policyContext = d.createContext(context);
+			final DecisionRuleEvaluationContext policyContext = (DecisionRuleEvaluationContext)d.createContext(context);
 			final MatchResult r = d.isMatch(policyContext);
 			if(r == MatchResult.INDETERMINATE){
 				return Decision.INDETERMINATE;

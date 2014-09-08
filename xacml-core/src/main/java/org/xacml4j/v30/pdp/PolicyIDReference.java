@@ -70,8 +70,9 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx)
 	{
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(context.getCurrentPolicyIDReference() == this){
 			return context;
 		}
@@ -88,7 +89,7 @@ public final class PolicyIDReference extends
 				log.debug("Found matching policy " +
 						"to the policy reference\"{}\"", this);
 			}
-			return resolvedPolicy.createContext(refContext);
+			return (DecisionRuleEvaluationContext)resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve policy reference=\"{}\"", this, e);
@@ -98,7 +99,8 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public Decision evaluate(DecisionRuleEvaluationContext context) {
+	public Decision evaluate(EvaluationContext ctx) {
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return Decision.INDETERMINATE;
@@ -109,7 +111,8 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public MatchResult isMatch(DecisionRuleEvaluationContext context) {
+	public MatchResult isMatch(EvaluationContext ctx) {
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		Preconditions.checkArgument(context.getCurrentPolicyIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicy())){
 			return MatchResult.INDETERMINATE;

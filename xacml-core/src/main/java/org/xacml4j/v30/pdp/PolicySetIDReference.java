@@ -22,11 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.PolicyResolutionException;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Preconditions;
 
@@ -69,9 +65,10 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	 * Creates an {@link DecisionRuleEvaluationContext} to evaluate this reference.
 	 */
 	@Override
-	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context)
+	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx)
 	{
-		Preconditions.checkNotNull(context);
+		Preconditions.checkNotNull(ctx);
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(context.getCurrentPolicySetIDReference() == this){
 			return context;
 		}
@@ -81,15 +78,16 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 			if(policySet == null){
 				return refContext;
 			}
-			return policySet.createContext(refContext);
+			return (DecisionRuleEvaluationContext)policySet.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			return refContext;
 		}
 	}
 
 	@Override
-	public Decision evaluate(DecisionRuleEvaluationContext context) {
-		Preconditions.checkNotNull(context);
+	public Decision evaluate(EvaluationContext ctx) {
+		Preconditions.checkNotNull(ctx);
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return Decision.INDETERMINATE;
@@ -100,8 +98,9 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public MatchResult isMatch(DecisionRuleEvaluationContext context) {
-		Preconditions.checkNotNull(context);
+	public MatchResult isMatch(EvaluationContext ctx) {
+		Preconditions.checkNotNull(ctx);
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		Preconditions.checkArgument(context.getCurrentPolicySetIDReference() == this);
 		if(!isReferenceTo(context.getCurrentPolicySet())){
 			return MatchResult.INDETERMINATE;

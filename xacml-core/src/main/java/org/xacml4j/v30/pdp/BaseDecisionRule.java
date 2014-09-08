@@ -125,7 +125,8 @@ abstract class BaseDecisionRule implements DecisionRule
 	 * @return {@link MatchResult} a match result
 	 */
 	@Override
-	public MatchResult isMatch(DecisionRuleEvaluationContext context){
+	public MatchResult isMatch(EvaluationContext ctx){
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if (!isEvaluationContextValid(context)) {
 			return MatchResult.INDETERMINATE;
 		}

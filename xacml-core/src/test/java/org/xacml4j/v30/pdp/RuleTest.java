@@ -31,15 +31,7 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringExp;
 
@@ -53,7 +45,7 @@ public class RuleTest
 	private Condition condition;
 	private Target target;
 
-	private DecisionRuleEvaluationContext context;
+	private EvaluationContext context;
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
 
@@ -124,7 +116,7 @@ public class RuleTest
 	public void testDenyRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
 		DecisionRule ruleDenyNoTarget = builder.withoutTarget().withEffect(Effect.DENY).build();
-		DecisionRuleEvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
+		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
 		c.replay();
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isMatch(ruleContext));
 		c.verify();
@@ -134,7 +126,7 @@ public class RuleTest
 	public void testPermitRuleIsApplicableWithNoTarget() throws EvaluationException
 	{
 		DecisionRule rulePermitNoTarget = builder.withoutTarget().withEffect(Effect.PERMIT).build();
-		DecisionRuleEvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
+        EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
 		c.replay();
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isMatch(ruleContext));
 		c.verify();
@@ -143,7 +135,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleApplicabilityWithTargetMatch() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+        EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		c.replay();
 		assertEquals(MatchResult.MATCH, ruleDeny.isMatch(ruleContext));
@@ -153,7 +145,7 @@ public class RuleTest
 	@Test
 	public void testPermitRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+        EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
 		assertEquals(MatchResult.INDETERMINATE, rulePermit.isMatch(ruleContext));
@@ -163,7 +155,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
 		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isMatch(ruleContext));
@@ -173,7 +165,7 @@ public class RuleTest
 	@Test
 	public void testPermitRuleIsApplicableWithTargetMatch() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		c.replay();
 		assertEquals(MatchResult.MATCH, rulePermit.isMatch(ruleContext));
@@ -183,7 +175,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleIsApplicableWithTargetNoMatch() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isMatch(ruleContext));
@@ -193,7 +185,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleConditionTrue() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
@@ -231,7 +223,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleObligationOrAdviceEvaluationFails() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
@@ -250,7 +242,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleConditionFalse() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
 
@@ -263,7 +255,7 @@ public class RuleTest
 	@Test
 	public void testDenyRuleConditionIndeterminate() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		c.replay();
@@ -275,7 +267,7 @@ public class RuleTest
 	@Test
 	public void testPermitRuleConditionTrue() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
@@ -307,7 +299,7 @@ public class RuleTest
 	@Test
 	public void testPermitRuleConditionFalse() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
 		c.replay();
@@ -318,7 +310,7 @@ public class RuleTest
 	@Test
 	public void testPermitRuleConditionIndeterminate() throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		c.replay();
@@ -330,7 +322,7 @@ public class RuleTest
 	public void testDenyRuleEvaluateIfApplicableWithTargetIndeterminate()
 		throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
@@ -341,7 +333,7 @@ public class RuleTest
 	public void testDenyRuleEvaluateIfApplicableWithTargetNoMatch()
 		throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
@@ -352,7 +344,7 @@ public class RuleTest
 	public void testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue() throws EvaluationException
 	{
 
-		DecisionRuleEvaluationContext ruleContext = ruleDeny.createContext(context);
+		EvaluationContext ruleContext = ruleDeny.createContext(context);
 
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
@@ -387,7 +379,7 @@ public class RuleTest
 	public void testPermitRuleEvaluateIfApplicableWithTargetIndeterminate()
 		throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
@@ -398,7 +390,7 @@ public class RuleTest
 	public void testPermitRuleEvaluateIfApplicableWithTargetNoMatch()
 		throws EvaluationException
 	{
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
 		c.replay();
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
@@ -409,7 +401,7 @@ public class RuleTest
 	public void testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue() throws EvaluationException
 	{
 
-		DecisionRuleEvaluationContext ruleContext = rulePermit.createContext(context);
+		EvaluationContext ruleContext = rulePermit.createContext(context);
 
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 

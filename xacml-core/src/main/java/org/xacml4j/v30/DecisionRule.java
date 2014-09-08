@@ -48,7 +48,7 @@ public interface DecisionRule extends PolicyElement
 	 * @return {@link EvaluationContext} an evaluation
 	 * context to be used to match or evaluate this decision
 	 */
-	DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context);
+	EvaluationContext createContext(EvaluationContext context);
 
 	/**
 	 * Tests if this decision rule is applicable to a given
@@ -60,18 +60,18 @@ public interface DecisionRule extends PolicyElement
 	 * @return {@link MatchResult} indicating applicability
 	 * of this decision rule to the given evaluation context
 	 */
-	MatchResult isMatch(DecisionRuleEvaluationContext context);
+	MatchResult isMatch(EvaluationContext context);
 
 	/**
 	 * Evaluates this decision in the given evaluation context.
 	 * An evaluation context must be created by invoking
-	 * {@link DecisionRule#createContext(DecisionRuleEvaluationContext)} first.
+	 * {@link DecisionRule#createContext(org.xacml4j.v30.EvaluationContext)} first.
 	 * Evaluation should be performed if prior call
-	 * to {@link DecisionRule#isMatch(DecisionRuleEvaluationContext)} returns
+	 * to {@link DecisionRule#isMatch(org.xacml4j.v30.EvaluationContext)} returns
 	 * {@link MatchResult#MATCH}
 	 *
 	 * @param context an evaluation context
 	 * @return {@link Decision}
 	 */
-	Decision evaluate(DecisionRuleEvaluationContext context);
+	Decision evaluate(EvaluationContext context);
 }

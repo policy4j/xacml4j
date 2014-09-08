@@ -25,6 +25,7 @@ package org.xacml4j.v30.spi.combine;
 
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 /**
@@ -47,7 +48,7 @@ public final class DecisionCombiningAlgorithms
 	 * @return evaluation result as {@link Decision} instance
 	 */
 	public static <D extends DecisionRule> Decision evaluateIfMatch(DecisionRuleEvaluationContext context, D decision) {
-		DecisionRuleEvaluationContext decisionContext = decision.createContext(context);
+		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluate(decisionContext);
 	}
 
@@ -61,7 +62,7 @@ public final class DecisionCombiningAlgorithms
 	 * @return evaluation result as {@link Decision} instance
 	 */
 	public static <D extends DecisionRule> Decision evaluate(DecisionRuleEvaluationContext context, D decision) {
-		DecisionRuleEvaluationContext decisionContext = decision.createContext(context);
+		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluate(decisionContext);
 	}
 }

@@ -23,11 +23,7 @@ package org.xacml4j.v30.pdp;
  */
 
 
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -60,7 +56,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	 * a context with a parent policy
 	 */
 	@Override
-	public DecisionRuleEvaluationContext createContext(DecisionRuleEvaluationContext context) {
+	public EvaluationContext createContext(EvaluationContext ctx) {
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(isEvaluationContextValid(context)){
 			return context;
 		}
@@ -101,8 +98,9 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 
 	@Override
-	public final Decision evaluate(DecisionRuleEvaluationContext context)
+	public final Decision evaluate(EvaluationContext ctx)
 	{
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(!isEvaluationContextValid(context)){
 			return getExtendedIndeterminate();
 		}

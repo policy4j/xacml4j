@@ -26,12 +26,7 @@ import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Version;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -110,7 +105,8 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	@Override
-	public Decision evaluate(DecisionRuleEvaluationContext context) {
+	public Decision evaluate(EvaluationContext ctx) {
+        DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(log.isDebugEnabled()){
 			log.debug("Evaluating composite decision rule with id=\"{}\"", id);
 		}
