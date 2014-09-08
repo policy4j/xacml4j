@@ -24,7 +24,7 @@ package org.xacml4j.v30.spi.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.PolicyResolutionException;
+import org.xacml4j.v30.pdp.PolicyResolutionException;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySet;

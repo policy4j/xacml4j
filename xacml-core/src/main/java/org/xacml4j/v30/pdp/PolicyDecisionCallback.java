@@ -28,7 +28,7 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
 
 /**
- * An interface to the {@link PolicyDecisionPoint} used
+ * An interface to the {@link org.xacml4j.v30.PolicyDecisionPoint} used
  * by {@link RequestContextHandler} to request decision
  * for particular request
  *

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -22,10 +22,25 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-public interface PolicyDecisionPointMBean
+
+public interface PolicyDecisionPoint extends PolicyDecisionPointMBean
 {
-	boolean isDecisionAuditEnabled();
-	void setDecisionAuditEnabled(boolean enabled);
-	boolean isDecisionCacheEnabled();
-	void setDecisionCacheEnabled(boolean enabled);
+	/**
+	 * Gets policy decision point
+	 * unique identifier
+	 *
+	 * @return unique identifier
+	 */
+	String getId();
+
+	/**
+	 * Evaluates a given XACML {@link RequestContext}
+	 * and returns {@link Result}
+	 *
+	 * @param request a XACML request
+	 * @return {@link Result}
+	 */
+	ResponseContext decide(RequestContext request);
+
+	void close();
 }

@@ -41,7 +41,6 @@ import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 

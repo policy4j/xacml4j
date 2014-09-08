@@ -30,6 +30,7 @@ import javax.management.NotCompliantMBeanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
 import org.xacml4j.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;

@@ -32,21 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
@@ -60,7 +46,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 /**
- * A default implementation of {@link PolicyDecisionPoint}
+ * A default implementation of {@link org.xacml4j.v30.PolicyDecisionPoint}
  *
  * @author Giedrius Trumpickas
  */

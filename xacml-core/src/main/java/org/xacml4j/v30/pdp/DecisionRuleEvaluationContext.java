@@ -27,7 +27,6 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.PolicyResolutionException;
 
 /**
  * Specialization of {@link org.xacml4j.v30.EvaluationContext}, that is
@@ -97,7 +96,7 @@ public interface DecisionRuleEvaluationContext extends EvaluationContext {
 	 *
 	 * @param ref a policy reference
 	 * @return resolved {@link org.xacml4j.v30.CompositeDecisionRule} instance
-	 * @throws org.xacml4j.v30.PolicyResolutionException if
+	 * @throws PolicyResolutionException if
 	 * policy reference can not be resolved
 	 */
 	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)

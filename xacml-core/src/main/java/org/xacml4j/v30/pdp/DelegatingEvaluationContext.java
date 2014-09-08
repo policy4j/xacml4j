@@ -40,7 +40,6 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.XPathVersion;

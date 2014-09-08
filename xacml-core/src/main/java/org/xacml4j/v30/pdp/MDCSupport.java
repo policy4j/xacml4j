@@ -25,6 +25,7 @@ package org.xacml4j.v30.pdp;
 import java.util.Random;
 
 import org.slf4j.MDC;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
