@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -39,7 +38,6 @@ import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml30RequestContextUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml30ResponseContextUnmarshaller;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;

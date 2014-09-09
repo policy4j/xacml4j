@@ -27,7 +27,7 @@ import java.util.List;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
@@ -88,7 +88,7 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDe
 	}
 
 	@Override
-	protected PolicyDecisionPoint createInstance() 
+	protected PolicyDecisionPoint createInstance()
 			throws Exception
 	{
 		if(pdp == null){

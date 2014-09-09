@@ -24,9 +24,9 @@ package org.xacml4j.spring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 
 
