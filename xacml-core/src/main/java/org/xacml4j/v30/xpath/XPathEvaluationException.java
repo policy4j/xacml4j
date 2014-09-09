@@ -1,4 +1,4 @@
-package org.xacml4j.v30.spi.xpath;
+package org.xacml4j.v30.xpath;
 
 /*
  * #%L
