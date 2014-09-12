@@ -34,7 +34,7 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 
 
 public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDecisionPoint>

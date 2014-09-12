@@ -29,7 +29,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 
 public interface PolicyDecisionPointContext
 {

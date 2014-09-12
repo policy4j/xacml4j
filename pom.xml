@@ -23,7 +23,8 @@
 		<module>xacml-json</module>
 		<module>xacml-test</module>
 		<module>xacml-conformance-tests</module>
-	</modules>
+        <module>xacml-pdp</module>
+    </modules>
 
 	<properties>
 		<junit.version>4.11</junit.version>

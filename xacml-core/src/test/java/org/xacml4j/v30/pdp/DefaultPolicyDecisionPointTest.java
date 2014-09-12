@@ -39,7 +39,9 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class DefaultPolicyDecisionPointTest
@@ -98,7 +100,7 @@ public class DefaultPolicyDecisionPointTest
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(10));
+		decisionCache.putDecision(eq(req), capture(result1), eq(TimeUnit.SECONDS), eq(10));
 
 		control.replay();
 
@@ -133,7 +135,7 @@ public class DefaultPolicyDecisionPointTest
 
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(10));
+		decisionCache.putDecision(eq(req), capture(result1), eq(TimeUnit.SECONDS), eq(10));
 
 		control.replay();
 		this.pdp = pdpBuilder.build();

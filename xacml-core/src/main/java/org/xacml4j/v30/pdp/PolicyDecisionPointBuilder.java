@@ -40,8 +40,8 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.DefaultXPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 
 import com.google.common.base.Preconditions;
 

@@ -22,6 +22,7 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.management.NotCompliantMBeanException;
@@ -55,7 +56,7 @@ public abstract class BasePolicyDecisionCache
 	}
 
 	@Override
-	public final void putDecision(RequestContext req, Result result, int ttl) {
+	public final void putDecision(RequestContext req, Result result, TimeUnit tunit, int ttl) {
 
 	}
 

@@ -28,7 +28,7 @@ Request:{
 	    "Attributes": [
 	      {
 	      	"id":"attr1",
-	        "category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+	        "category": "AccessSubject",
 	        "attributes": [
 	          {
 	            "inclInRes" : "false",
@@ -40,7 +40,7 @@ Request:{
 	      },
 	      {
 	      	"id":"attr2",
-	        "category": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+	        "category": "Resource",
 	        "attributes": [
 	          {
 	            "inclInRes" : "false",

@@ -40,7 +40,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.EntityExp;

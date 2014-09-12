@@ -25,6 +25,8 @@ package org.xacml4j.v30.spi.pdp;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 
+import java.util.concurrent.TimeUnit;
+
 public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 {
 	/**
@@ -44,5 +46,5 @@ public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 	 * @param result a decision result for a given request
 	 * @param ttl a time in seconds
 	 */
-	void putDecision(RequestContext req, Result result, int ttl);
+	void putDecision(RequestContext req, Result result, TimeUnit timeUnit, int ttl);
 }

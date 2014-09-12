@@ -27,6 +27,7 @@ import static org.xacml4j.v30.pdp.MetricsSupport.name;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.management.NotCompliantMBeanException;
@@ -54,6 +55,13 @@ final class DefaultPolicyDecisionPoint
 	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
 {
 
+    private final static String PDP_NAME = "pdp";
+    private final static String HISTOGRAM_PROPERTY = "histogram";
+    private final static String COUNT_PERMIT_PROPERTY = "count-permit";
+    private final static String COUNT_INDETERMINATE_PROPERTY = "count-indeterminate";
+    private final static String COUNT_DENY_PROPERTY = "count-deny";
+    private final static String TIMER_PROPERTY = "timer";
+
 	private final String id;
 	private final PolicyDecisionPointContextFactory factory;
 
@@ -79,11 +87,11 @@ final class DefaultPolicyDecisionPoint
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
 		final MetricRegistry registry = MetricsSupport.getOrCreate();
-		this.decisionTimer = registry.timer(name("pdp", id, "timer"));
-		this.decisionHistogram = registry.histogram(name("pdp", id, "histogram"));
-		this.permitDecisions = registry.counter(name("pdp", id, "count-permit"));
-		this.denyDecisions = registry.counter(name("pdp", id, "count-deny"));
-		this.indeterminateDecisions = registry.counter(name("pdp", id, "count-indeterminate"));
+		this.decisionTimer = registry.timer(name(PDP_NAME, id, TIMER_PROPERTY));
+		this.decisionHistogram = registry.histogram(name(PDP_NAME, id, HISTOGRAM_PROPERTY));
+		this.permitDecisions = registry.counter(name(PDP_NAME, id, COUNT_PERMIT_PROPERTY));
+		this.denyDecisions = registry.counter(name(PDP_NAME, id, COUNT_DENY_PROPERTY));
+		this.indeterminateDecisions = registry.counter(name(PDP_NAME, id, COUNT_INDETERMINATE_PROPERTY));
 	}
 
 	@Override
@@ -146,6 +154,7 @@ final class DefaultPolicyDecisionPoint
 			if(isDecisionCacheEnabled()){
 				decisionCache.putDecision(
 						request, r,
+                        TimeUnit.SECONDS,
 						evalContext.getDecisionCacheTTL());
 			}
 			decisionHistogram.update(timerContext.stop());

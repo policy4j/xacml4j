@@ -33,8 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.pdp.XPathEvaluationException;
-import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
+import org.xacml4j.v30.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;

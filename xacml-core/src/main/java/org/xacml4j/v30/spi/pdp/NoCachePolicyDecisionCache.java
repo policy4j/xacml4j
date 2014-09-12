@@ -22,6 +22,7 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.xacml4j.v30.RequestContext;
@@ -54,6 +55,6 @@ public class NoCachePolicyDecisionCache implements PolicyDecisionCache
 	}
 
 	@Override
-	public void putDecision(RequestContext req, Result res, int ttl) {
+	public void putDecision(RequestContext req, Result res, TimeUnit tunit, int ttl) {
 	}
 }

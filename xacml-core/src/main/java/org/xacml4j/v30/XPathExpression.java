@@ -25,18 +25,29 @@ package org.xacml4j.v30;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.events.Namespace;
+
 public final class XPathExpression
 {
 	private String path;
 	private CategoryId categoryId;
+    private NamespaceContext nsContext;
 
 	public XPathExpression(String path,
 			CategoryId category){
-		Preconditions.checkNotNull(path);
-		Preconditions.checkNotNull(category);
-		this.path = path;
-		this.categoryId = category;
+		this(path, category, null);
 	}
+
+    public XPathExpression(String path,
+                           CategoryId category,
+                           NamespaceContext context){
+        Preconditions.checkNotNull(path);
+        Preconditions.checkNotNull(category);
+        this.path = path;
+        this.categoryId = category;
+        this.nsContext = context;
+    }
 
 	public CategoryId getCategory(){
 		return categoryId;
@@ -45,6 +56,10 @@ public final class XPathExpression
 	public String getPath(){
 		return path;
 	}
+
+    public NamespaceContext getNamespaceContext(){
+        return nsContext;
+    }
 
 	@Override
 	public boolean equals(Object o){

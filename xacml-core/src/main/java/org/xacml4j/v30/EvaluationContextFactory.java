@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 
 public interface EvaluationContextFactory
 {

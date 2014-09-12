@@ -36,16 +36,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.XPathEvaluationException;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -240,7 +234,7 @@ class DefaultEvaluationContextHandler
 			}
 			return toBag(context, ref, nodeSet);
 		}
-		catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+		catch(org.xacml4j.v30.xpath.XPathEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
@@ -327,7 +321,7 @@ class DefaultEvaluationContextHandler
 
 			return xpathProvider.evaluateToNode(xpath.getPath(),
 					new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+		}catch(org.xacml4j.v30.xpath.XPathEvaluationException e){
 			throw new XPathEvaluationException(xpath.getPath(), e);
 		}
 	}
@@ -337,7 +331,7 @@ class DefaultEvaluationContextHandler
 			throws EvaluationException {
 		try{
 			return xpathProvider.evaluateToNodeSet(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+		}catch(org.xacml4j.v30.xpath.XPathEvaluationException e){
 			throw new XPathEvaluationException(xpath.getPath(), e);
 		}
 	}
@@ -346,7 +340,7 @@ class DefaultEvaluationContextHandler
 	public Number evaluateToNumber(DecisionRuleEvaluationContext context, XPathExp xpath) throws EvaluationException {
 		try{
 			return xpathProvider.evaluateToNumber(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+		}catch(org.xacml4j.v30.xpath.XPathEvaluationException e){
 			throw new XPathEvaluationException(xpath.getPath(), e);
 		}
 	}
@@ -356,7 +350,7 @@ class DefaultEvaluationContextHandler
 			throws XPathEvaluationException {
 		try{
 			return xpathProvider.evaluateToString(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
+		}catch(org.xacml4j.v30.xpath.XPathEvaluationException e){
 			throw new XPathEvaluationException(xpath.getPath(), e);
 		}
 	}

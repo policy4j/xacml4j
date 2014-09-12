@@ -52,14 +52,14 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 	 */
 	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
 			ImmutableBiMap.<String, CategoryId>builder()
-			.put("action", Categories.ACTION)
-			.put("environment", Categories.ENVIRONMENT)
-			.put("resource", Categories.RESOURCE)
-			.put("subject", Categories.SUBJECT_ACCESS)
-			.put("codebase", Categories.SUBJECT_CODEBASE)
-			.put("intermediary-subject", Categories.SUBJECT_INTERMEDIARY)
-			.put("recipient-subject", Categories.SUBJECT_RECIPIENT)
-			.put("requesting-machine", Categories.SUBJECT_REQUESTING_MACHINE)
+			.put("Action", Categories.ACTION)
+			.put("Environment", Categories.ENVIRONMENT)
+			.put("Resource", Categories.RESOURCE)
+			.put("AccessSubject", Categories.SUBJECT_ACCESS)
+			.put("Codebase", Categories.SUBJECT_CODEBASE)
+			.put("IntermediarySubject", Categories.SUBJECT_INTERMEDIARY)
+			.put("RecipientSubject", Categories.SUBJECT_RECIPIENT)
+			.put("RequestingMachine", Categories.SUBJECT_REQUESTING_MACHINE)
 			.build();
 
 	@Override
