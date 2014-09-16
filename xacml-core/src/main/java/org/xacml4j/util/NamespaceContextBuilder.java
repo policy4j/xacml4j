@@ -83,9 +83,11 @@ public class NamespaceContextBuilder
     }
 
     public NamespaceContext build(){
+
         final ImmutableMultimap<String, String> namespaceUriToPrefix = namespaceUriToPrefixBuilder.build();
         final ImmutableMap<String, String> prefixToNamespaceUri = prefixToNamespaceUriBuilder.build();
         final NamespaceContext parentContext = parentContextRef;
+
         return new NamespaceContext() {
             @Override
             public String getNamespaceURI(String prefix) {
@@ -96,14 +98,15 @@ public class NamespaceContextBuilder
                 else if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
                     return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
                 }
-                else if (prefixToNamespaceUri.containsKey(prefix)) {
-                    String nsUri = prefixToNamespaceUri.get(prefix);
-                    if(nsUri == null &&
-                            parentContext != null){
-                        return parentContext.getNamespaceURI(prefix);
+                String nsUri = XMLConstants.NULL_NS_URI;
+                if(prefixToNamespaceUri.containsKey(prefix)) {
+                    nsUri = prefixToNamespaceUri.get(prefix);
+                }else{
+                    if(parentContext != null){
+                        nsUri = parentContext.getNamespaceURI(prefix);
                     }
                 }
-                return XMLConstants.NULL_NS_URI;
+                return nsUri;
             }
 
             @Override
@@ -111,13 +114,17 @@ public class NamespaceContextBuilder
                  String prefix = Iterables.getFirst(
                         namespaceUriToPrefix.get(namespaceUri),
                         null);
-                if(log.isDebugEnabled()){
+                if(log.isDebugEnabled() && prefix != null){
                     log.debug("Prefix=\"{}\" for namespace=\"{}\"",
                             prefix, namespaceUri);
                 }
                 if(prefix == null &&
                         parentContext != null){
                     prefix = parentContext.getPrefix(namespaceUri);
+                    if(log.isDebugEnabled()){
+                        log.debug("Getting prefix for " +
+                                "namesapce=\"{}\"", namespaceUri);
+                    }
                 }
                 return prefix;
             }

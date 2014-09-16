@@ -108,4 +108,18 @@ public class NamespaceContextBuilderTest {
         assertFalse(prefixes.hasNext());
 
     }
+
+    @Test
+    public void testBuilderDelegate1(){
+        NamespaceContext ctx = NamespaceContextBuilder
+                .builder()
+                .delegate(doc)
+                .build();
+        Iterator<String> prefixes = ctx.getPrefixes("urn:example:med:schemas:record");
+        assertEquals("md", Iterators.get(prefixes, 0));
+        assertFalse(prefixes.hasNext());
+        assertEquals("urn:example:med:schemas:record", ctx.getNamespaceURI("md"));
+        assertEquals(XMLConstants.NULL_NS_URI, ctx.getNamespaceURI("maaaaa"));
+
+    }
 }
