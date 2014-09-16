@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -23,26 +23,31 @@ package org.xacml4j.v30.pdp;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.xacml4j.v30.StatusCodeId;
-import org.xacml4j.v30.StatusCodeIds;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.types.IntegerExp;
 
 
-public class StatusCodeIdTest
+public class AttributeAssignmentTest
 {
 	@Test
-	public void testParseStatusCodeId()
+	public void testCreateAndEquals()
 	{
-		StatusCodeId c = StatusCodeIds.parse(StatusCodeIds.OK.getId());
-		assertSame(StatusCodeIds.OK, c);
-		c = StatusCodeIds.parse("AAAA");
-		assertEquals("AAAA", c.getId());
-		assertEquals("AAAA", c.toString());
-
-		StatusCodeId c1 = StatusCodeIds.parse("AAAA");
-		StatusCodeId c2 = StatusCodeIds.parse("AAAA");
-		assertEquals(c1, c2);
+		AttributeAssignment a0 =  AttributeAssignment.builder()
+				.id("testId")
+				.category(Categories.ACTION)
+				.value(IntegerExp.of(10))
+				.build();
+		assertEquals("testId", a0.getAttributeId());
+		assertEquals(Categories.ACTION, a0.getCategory());
+		assertEquals(IntegerExp.of(10), a0.getAttribute());
+		AttributeAssignment a1 =  AttributeAssignment.builder()
+				.id("testId")
+				.category(Categories.ACTION)
+				.value(IntegerExp.of(10))
+				.build();
+		assertEquals(a0, a1);
 	}
 }

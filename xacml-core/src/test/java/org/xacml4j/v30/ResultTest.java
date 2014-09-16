@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L

@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xacml4j.util.NamespaceContextBuilder;
 import org.xacml4j.util.NodeNamespaceContext;
 import org.xml.sax.InputSource;
 
@@ -78,4 +79,19 @@ public class XPathTest
 		System.out.println(r);
 		assertNotNull(r);
 	}
+
+    @Test
+    public void testXPath1() throws Exception
+    {
+        XPath p0 = xpf.newXPath();
+        p0.setNamespaceContext(NamespaceContextBuilder.builder().delegate(new NodeNamespaceContext(doc)).build());
+        Node ctx = (Node)p0.evaluate("md:record/md:patient/md:patientDoB", doc,
+                XPathConstants.NODE);
+        assertNotNull(ctx);
+        XPath p1 = xpf.newXPath();
+        p1.setNamespaceContext(new NodeNamespaceContext(ctx));
+        Object r = p1.evaluate("count(ancestor-or-self::md:record)", ctx);
+        System.out.println(r);
+        assertNotNull(r);
+    }
 }

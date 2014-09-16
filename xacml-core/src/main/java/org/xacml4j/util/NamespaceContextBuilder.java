@@ -25,10 +25,13 @@ package org.xacml4j.util;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -36,6 +39,8 @@ import java.util.Iterator;
  */
 public class NamespaceContextBuilder
 {
+    private final static Logger log = LoggerFactory.getLogger(NamespaceContextBuilder.class);
+
     private ImmutableMap.Builder<String, String> prefixToNamespaceUriBuilder = ImmutableMap.builder();
     private ImmutableMultimap.Builder<String, String> namespaceUriToPrefixBuilder = ImmutableListMultimap.builder();
     private NamespaceContext parentContextRef;
@@ -46,6 +51,11 @@ public class NamespaceContextBuilder
 
     public NamespaceContextBuilder delegate(NamespaceContext context){
         this.parentContextRef = context;
+        return this;
+    }
+
+    public NamespaceContextBuilder delegate(Node context){
+        this.parentContextRef = new NodeNamespaceContext(context);
         return this;
     }
 
@@ -101,6 +111,10 @@ public class NamespaceContextBuilder
                  String prefix = Iterables.getFirst(
                         namespaceUriToPrefix.get(namespaceUri),
                         null);
+                if(log.isDebugEnabled()){
+                    log.debug("Prefix=\"{}\" for namespace=\"{}\"",
+                            prefix, namespaceUri);
+                }
                 if(prefix == null &&
                         parentContext != null){
                     prefix = parentContext.getPrefix(namespaceUri);
@@ -109,20 +123,22 @@ public class NamespaceContextBuilder
             }
 
             @Override
-            public Iterator getPrefixes(String namespaceUri) {
-                Iterable<String> otherPrefixes = (parentContext != null)?
-                        (Iterable<String>)parentContext.getPrefixes(namespaceUri):ImmutableList.<String>of();
-                Iterable<String> prefixes = namespaceUriToPrefix.get(namespaceUri);
-                return FluentIterable
-                        .from(Iterables.concat(prefixes, otherPrefixes))
-                        .filter(new Predicate<String>() {
-                            @Override
-                            public boolean apply(String input) {
-                                return !XMLConstants.DEFAULT_NS_PREFIX
-                                        .equals(input);
-                            }
-                        })
-                        .iterator();
+            public Iterator<String> getPrefixes(String namespaceUri) {
+                Collection<String> parentPrefixes = (parentContext == null)?
+                        ImmutableList.<String>of():ImmutableList.copyOf(
+                        parentContext.getPrefixes(namespaceUri));
+                Predicate<String> filter = new Predicate<String>() {
+                    @Override
+                    public boolean apply(String input) {
+                        return !XMLConstants.DEFAULT_NS_PREFIX
+                                    .equals(input);
+                    }
+                };
+                return Iterables.concat(
+                        Collections2.<String>filter(
+                                namespaceUriToPrefix.get(namespaceUri), filter),
+                        Collections2.filter(parentPrefixes, filter)).iterator();
+
             }
         };
     }

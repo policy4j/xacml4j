@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -33,7 +33,7 @@ import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CategoryId;
 
 
-public class AttributeCategoriesTest
+public class CategoryIdTest
 {
 	@Test
 	public void testCategoryParse() throws Exception

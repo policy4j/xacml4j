@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -46,7 +46,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
 
-public class AttributesTest
+public class CategoryTest
 {
 	private Collection<Attribute> attributes;
 

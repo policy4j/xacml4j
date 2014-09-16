@@ -22,12 +22,21 @@ package org.xacml4j.util;
  * #L%
  */
 
+import com.google.common.collect.Iterators;
+import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathFactory;
+import java.io.StringReader;
 import java.util.Iterator;
 
 /**
@@ -36,8 +45,30 @@ import java.util.Iterator;
  */
 public class NamespaceContextBuilderTest {
 
+    private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+            "xmlns:md=\"urn:example:med:schemas:record\">" +
+            "<md:patient>" +
+            "<md:patientDoB>1992-03-21</md:patientDoB>" +
+            "<md:patient-number>555555</md:patient-number>" +
+            "</md:patient>" +
+            "</md:record>";
+
+    private Document doc;
+    private XPathFactory xpf;
+
+    @Before
+    public void init() throws Exception
+    {
+        this.xpf = XPathFactory.newInstance();
+
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setNamespaceAware(true);
+        DocumentBuilder builder = f.newDocumentBuilder();
+        this.doc = builder.parse(new InputSource(new StringReader(testXml)));
+    }
+
     @Test
-    public void testTheSameNamespaceDifferentPrefixs(){
+    public void testTheSameNamespaceDifferentPrefix(){
        NamespaceContext ctx = NamespaceContextBuilder
                 .builder()
                 .bind("aaa", "ns:uri0")
@@ -62,5 +93,19 @@ public class NamespaceContextBuilderTest {
                 .defaultNamespace("ns:uri0")
                 .build();
         assertEquals(XMLConstants.DEFAULT_NS_PREFIX, ctx.getPrefix("ns:uri0"));
+    }
+
+    @Test
+    public void testBuilderDelegate(){
+        NamespaceContext ctx = NamespaceContextBuilder
+                .builder()
+                .bind("test", "urn:example:med:schemas:record")
+                .delegate(doc)
+                .build();
+        Iterator<String> prefixes = ctx.getPrefixes("urn:example:med:schemas:record");
+        assertEquals("test", Iterators.get(prefixes, 0));
+        assertEquals("md", Iterators.get(prefixes, 0));
+        assertFalse(prefixes.hasNext());
+
     }
 }

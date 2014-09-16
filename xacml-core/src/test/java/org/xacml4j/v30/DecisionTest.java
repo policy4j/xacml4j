@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -22,32 +22,26 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.Decision;
 
 
-public class AttributeAssignmentTest
+public class DecisionTest
 {
 	@Test
-	public void testCreateAndEquals()
+	public void testIndeterminate()
 	{
-		AttributeAssignment a0 =  AttributeAssignment.builder()
-				.id("testId")
-				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
-				.build();
-		assertEquals("testId", a0.getAttributeId());
-		assertEquals(Categories.ACTION, a0.getCategory());
-		assertEquals(IntegerExp.of(10), a0.getAttribute());
-		AttributeAssignment a1 =  AttributeAssignment.builder()
-				.id("testId")
-				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
-				.build();
-		assertEquals(a0, a1);
+		assertTrue(Decision.INDETERMINATE_D.isIndeterminate());
+		assertTrue(Decision.INDETERMINATE_P.isIndeterminate());
+		assertTrue(Decision.INDETERMINATE_DP.isIndeterminate());
+		assertTrue(Decision.INDETERMINATE.isIndeterminate());
+		assertFalse(Decision.DENY.isIndeterminate());
+		assertFalse(Decision.PERMIT.isIndeterminate());
+		assertFalse(Decision.NOT_APPLICABLE.isIndeterminate());
+
 	}
+
 }

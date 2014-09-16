@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -41,7 +41,7 @@ import org.xacml4j.v30.types.StringExp;
 
 
 
-public class RequestTest
+public class RequestContextTest
 {
 	private Category resource0;
 	private Category resource1;

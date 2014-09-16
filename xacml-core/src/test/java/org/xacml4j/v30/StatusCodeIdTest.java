@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -22,26 +22,27 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.StatusCodeIds;
 
 
-public class DecisionTest
+public class StatusCodeIdTest
 {
 	@Test
-	public void testIndeterminate()
+	public void testParseStatusCodeId()
 	{
-		assertTrue(Decision.INDETERMINATE_D.isIndeterminate());
-		assertTrue(Decision.INDETERMINATE_P.isIndeterminate());
-		assertTrue(Decision.INDETERMINATE_DP.isIndeterminate());
-		assertTrue(Decision.INDETERMINATE.isIndeterminate());
-		assertFalse(Decision.DENY.isIndeterminate());
-		assertFalse(Decision.PERMIT.isIndeterminate());
-		assertFalse(Decision.NOT_APPLICABLE.isIndeterminate());
+		StatusCodeId c = StatusCodeIds.parse(StatusCodeIds.OK.getId());
+		assertSame(StatusCodeIds.OK, c);
+		c = StatusCodeIds.parse("AAAA");
+		assertEquals("AAAA", c.getId());
+		assertEquals("AAAA", c.toString());
 
+		StatusCodeId c1 = StatusCodeIds.parse("AAAA");
+		StatusCodeId c2 = StatusCodeIds.parse("AAAA");
+		assertEquals(c1, c2);
 	}
-
 }
