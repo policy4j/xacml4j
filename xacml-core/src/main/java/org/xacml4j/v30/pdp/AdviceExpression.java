@@ -24,16 +24,11 @@ package org.xacml4j.v30.pdp;
 
 import java.util.Collection;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.XacmlSyntaxException;
-
+import org.xacml4j.v30.*;
 
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression
+        implements PolicyElement
 {
 	/**
 	 * Constructs advice expression with a given identifier
@@ -67,13 +62,23 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		for(AttributeAssignmentExpression exp : getAttributeAssignmentExpressions()){
 			exp.accept(v);
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(AdviceExpression exp);
+        void visitLeave(AdviceExpression exp);
+    }
+
 
 	@Override
 	public boolean equals(Object o){
@@ -89,8 +94,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 			&& attributeExpressions.equals(ox.attributeExpressions);
 	}
 
-	public static class Builder extends BaseDecisionRuleResponseExpression.Builder<Builder>
-	{
+	public static class Builder extends BaseDecisionRuleResponseExpression.Builder<Builder>{
 
 		@Override
 		protected Builder getThis() {

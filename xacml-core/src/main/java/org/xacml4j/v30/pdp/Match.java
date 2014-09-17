@@ -24,11 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -157,10 +153,19 @@ public class Match implements PolicyElement, Matchable
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor  v = (Visitor)pv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(Match m);
+        void visitLeave(Match m);
+    }
 
 	public static class Builder
 	{

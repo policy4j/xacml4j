@@ -24,11 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Preconditions;
 
@@ -122,10 +118,19 @@ public final class PolicyIDReference extends
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(PolicyIDReference r);
+        void visitLeave(PolicyIDReference r);
+    }
 
 	@Override
 	public boolean equals(Object o) {

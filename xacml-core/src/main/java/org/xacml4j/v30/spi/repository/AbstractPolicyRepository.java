@@ -303,7 +303,7 @@ public abstract class AbstractPolicyRepository
 	}
 
 	/**
-	 * A {@link org.xacml4j.v30.pdp.PolicyVisitor} implementation
+	 * A {@link org.xacml4j.v30.PolicyVisitor} implementation
 	 * to validate {@link DecisionCombiningAlgorithm} instances
 	 * in a given policy or policy set
 	 */

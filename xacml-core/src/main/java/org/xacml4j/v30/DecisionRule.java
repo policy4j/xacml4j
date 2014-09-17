@@ -22,8 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
-import org.xacml4j.v30.pdp.PolicyElement;
 
 /**
  * A XACML decision rule, core interface
@@ -54,7 +52,7 @@ public interface DecisionRule extends PolicyElement
 	 * Tests if this decision rule is applicable to a given
 	 * evaluation context. An evaluation context
 	 * must be created by invoking
-	 * {@link DecisionRule#createContext(DecisionRuleEvaluationContext)} first
+	 * {@link DecisionRule#createContext(org.xacml4j.v30.EvaluationContext)} first
 	 *
 	 * @param context an evaluation context
 	 * @return {@link MatchResult} indicating applicability

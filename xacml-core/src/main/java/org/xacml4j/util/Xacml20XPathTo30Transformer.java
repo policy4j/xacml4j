@@ -40,13 +40,6 @@ public class Xacml20XPathTo30Transformer
 	/** Private constructor for utility class */
 	private Xacml20XPathTo30Transformer() {}
 
-
-	public static XPathExp fromXacml20String(StringExp path)
-	{
-		return XPathExp.of(transform20PathTo30(path.getValue()),
-				Categories.RESOURCE);
-	}
-
 	public static String transform20PathTo30(String xpath)
 	{
 		StringBuilder buf = new StringBuilder(xpath);

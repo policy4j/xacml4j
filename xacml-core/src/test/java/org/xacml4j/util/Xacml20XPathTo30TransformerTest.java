@@ -23,7 +23,6 @@ package org.xacml4j.util;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.xacml4j.util.Xacml20XPathTo30Transformer.fromXacml20String;
 import static org.xacml4j.util.Xacml20XPathTo30Transformer.transform20PathTo30;
 
 import org.junit.Ignore;
@@ -35,13 +34,6 @@ import org.xacml4j.v30.types.XPathExp;
 
 public class Xacml20XPathTo30TransformerTest
 {
-
-	@Test
-	public void testXacml20StringXPathToXPathExpression()
-	{
-		StringExp xpath = StringExp.of("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
-		assertEquals(XPathExp.of("//md:record/md:patient/md:patient-number/text()", Categories.RESOURCE), fromXacml20String(xpath));
-	}
 
 	// FIXME: Implement transformation
 	@Test

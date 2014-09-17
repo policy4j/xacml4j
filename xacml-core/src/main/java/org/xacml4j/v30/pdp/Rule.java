@@ -28,7 +28,7 @@ import org.xacml4j.v30.*;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class Rule extends BaseDecisionRule implements PolicyElement
+public class Rule extends BaseDecisionRule
 {
 	private final Effect effect;
 
@@ -143,8 +143,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 
 	@Override
-	public void accept(PolicyVisitor v)
-	{
+	public void accept(PolicyVisitor pv){
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		if(getTarget() != null){
 			getTarget().accept(v);
@@ -154,6 +154,11 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(Rule r);
+        void visitLeave(Rule r);
+    }
 
 	public class RuleEvaluationContext extends DelegatingEvaluationContext
 	{

@@ -26,6 +26,8 @@ import org.xacml4j.v30.AttributeExp;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.PolicyVisitor;
 
 /**
  * Conveys a single parameter for a policy- or rule-combining algorithm.
@@ -45,8 +47,7 @@ public class CombinerParameter
 	 * @param value a parameter value
 	 */
 	public CombinerParameter(String name,
-			AttributeExp value)
-	{
+			AttributeExp value){
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);
 		this.name = name;
@@ -88,8 +89,17 @@ public class CombinerParameter
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor cv) {
+        if(!(cv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)cv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor {
+        void visitEnter(CombinerParameter p);
+        void visitLeave(CombinerParameter p);
+    }
 }

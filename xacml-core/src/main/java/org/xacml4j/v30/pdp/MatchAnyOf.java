@@ -32,6 +32,8 @@ import org.xacml4j.v30.MatchResult;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.PolicyVisitor;
 
 public class MatchAnyOf
 	implements PolicyElement, Matchable
@@ -79,13 +81,22 @@ public class MatchAnyOf
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		for(Matchable m : anyOfs){
 			m.accept(v);
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(MatchAnyOf m);
+        void visitLeave(MatchAnyOf m);
+    }
 
 	@Override
 	public String toString(){

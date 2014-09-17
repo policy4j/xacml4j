@@ -39,7 +39,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 public class PolicySet extends
-	BaseCompositeDecisionRule implements PolicyElement
+	BaseCompositeDecisionRule
 {
 	private final PolicySetDefaults policySetDefaults;
 	private final DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
@@ -182,8 +182,9 @@ public class PolicySet extends
 	}
 
 	@Override
-	public void accept(PolicyVisitor v)
+	public void accept(PolicyVisitor pv)
 	{
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		if(getTarget() != null){
 			getTarget().accept(v);
@@ -202,6 +203,11 @@ public class PolicySet extends
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(PolicySet ps);
+        void visitLeave(PolicySet ps);
+    }
 
 	protected boolean equalsTo(PolicySet o) {
 		return super.equalsTo(o)

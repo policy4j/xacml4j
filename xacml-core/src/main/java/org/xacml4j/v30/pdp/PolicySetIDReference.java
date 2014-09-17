@@ -111,10 +111,19 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(PolicySetIDReference r);
+        void visitLeave(PolicySetIDReference r);
+    }
 
 	@Override
 	public CompositeDecisionRuleIDReference getReference() {
@@ -126,7 +135,6 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		if (o == this) {
 			return true;
 		}
-
 		return (o instanceof PolicySetIDReference)
 				&& ((PolicySetIDReference)o).equalsTo(this);
 	}

@@ -26,6 +26,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.util.Xacml20XPathTo30Transformer;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
@@ -75,8 +76,7 @@ public class XPathFunctions
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath)
 	{
-		return xpathCount(context,
-				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
+		return xpathCount(context, fromXacml20String(xpath));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
@@ -114,8 +114,8 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1)
 	{
 		return xpathNodeEqual(context,
-				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
-				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
+				fromXacml20String(xpath0),
+				fromXacml20String(xpath1));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
@@ -169,8 +169,8 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringExp xpath1)
 	{
 		return xpathNodeMatch(context,
-				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
-				Xacml20XPathTo30Transformer.fromXacml20String(xpath1));
+				fromXacml20String(xpath0),
+				fromXacml20String(xpath1));
 	}
 
 	/**
@@ -196,4 +196,10 @@ public class XPathFunctions
 		}
 		return false;
 	}
+
+    public static XPathExp fromXacml20String(StringExp path)
+    {
+        return XPathExp.of(Xacml20XPathTo30Transformer.transform20PathTo30(path.getValue()),
+                Categories.RESOURCE);
+    }
 }

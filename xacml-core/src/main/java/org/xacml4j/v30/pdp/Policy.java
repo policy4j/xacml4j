@@ -27,13 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -46,8 +40,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-public class Policy extends BaseCompositeDecisionRule
-		implements PolicyElement {
+public class Policy extends BaseCompositeDecisionRule{
 	private final PolicyDefaults policyDefaults;
 	private final Map<String, VariableDefinition> variableDefinitions;
 	private final List<Rule> rules;
@@ -213,7 +206,8 @@ public class Policy extends BaseCompositeDecisionRule
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		if(getTarget() != null){
 			getTarget().accept(v);
@@ -232,6 +226,11 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(Policy p);
+        void visitLeave(Policy p);
+    }
 
 	/**
 	 * An {@link EvaluationContext} implementation for evaluating

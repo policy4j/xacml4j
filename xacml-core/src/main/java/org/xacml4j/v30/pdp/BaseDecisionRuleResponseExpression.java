@@ -24,16 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import java.util.Collection;
 
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -47,7 +38,7 @@ import com.google.common.collect.Multimap;
  *
  * @author Giedrius Trumpickas
  */
-abstract class BaseDecisionRuleResponseExpression implements PolicyElement
+abstract class BaseDecisionRuleResponseExpression
 {
 	protected final String id;
 	protected final Effect effect;

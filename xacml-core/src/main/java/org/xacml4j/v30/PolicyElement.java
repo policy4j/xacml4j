@@ -1,4 +1,4 @@
-package org.xacml4j.v30.pdp;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -22,7 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-public interface ReferenceableDecisionRule
-{
 
+public interface PolicyElement
+{
+	void accept(PolicyVisitor v);
 }

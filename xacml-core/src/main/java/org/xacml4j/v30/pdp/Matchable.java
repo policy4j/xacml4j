@@ -24,9 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
-
-
-
+import org.xacml4j.v30.PolicyElement;
 
 public interface Matchable extends PolicyElement
 {

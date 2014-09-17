@@ -26,9 +26,7 @@ import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -111,13 +109,22 @@ public class MatchAllOf implements PolicyElement, Matchable
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		for(Matchable m : matches){
 			m.accept(v);
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(MatchAllOf m);
+        void visitLeave(MatchAllOf m);
+    }
 
 	public static class Builder
 	{

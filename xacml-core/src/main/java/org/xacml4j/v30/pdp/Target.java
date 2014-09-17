@@ -31,6 +31,8 @@ import org.xacml4j.v30.MatchResult;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.PolicyVisitor;
 
 
 public class Target implements PolicyElement
@@ -91,7 +93,11 @@ public class Target implements PolicyElement
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		for(Matchable m : matches){
 			m.accept(v);
@@ -99,6 +105,10 @@ public class Target implements PolicyElement
 		v.visitLeave(this);
 	}
 
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(Target t);
+        void visitLeave(Target t);
+    }
 	@Override
 	public int hashCode(){
 		return matches.hashCode();

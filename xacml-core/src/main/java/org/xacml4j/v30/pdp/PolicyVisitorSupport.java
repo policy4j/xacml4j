@@ -22,142 +22,185 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-public class PolicyVisitorSupport implements PolicyVisitor
+import org.xacml4j.v30.PolicyVisitor;
+
+import java.lang.annotation.*;
+
+public class PolicyVisitorSupport implements
+        AdviceExpression.Visitor,
+        ObligationExpression.Visitor,
+        Target.Visitor,
+        Condition.Visitor,
+        Match.Visitor,
+        MatchAllOf.Visitor,
+        MatchAnyOf.Visitor,
+        Policy.Visitor,
+        PolicySet.Visitor,
+        Rule.Visitor,
+        PolicyIDReference.Visitor,
+        PolicySetIDReference.Visitor,
+        PolicyDefaults.Visitor,
+        PolicySetDefaults.Visitor,
+        CombinerParameter.Visitor,
+        VariableDefinition.Visitor
 {
+    @Override
+    public void visitEnter(AdviceExpression exp) {
 
-	@Override
-	public void visitEnter(VariableDefinition var) {
-	}
+    }
 
-	@Override
-	public void visitLeave(VariableDefinition var) {
-	}
+    @Override
+    public void visitLeave(AdviceExpression exp) {
 
-	@Override
-	public void visitEnter(Condition condition) {
-	}
+    }
 
-	@Override
-	public void visitLeave(Condition condition) {
-	}
+    @Override
+    public void visitEnter(ObligationExpression exp) {
 
-	@Override
-	public void visitEnter(Target target) {
-	}
+    }
 
-	@Override
-	public void visitLeave(Target target) {
-	}
+    @Override
+    public void visitLeave(ObligationExpression exp) {
 
-	@Override
-	public void visitEnter(Match match) {
-	}
+    }
 
-	@Override
-	public void visitLeave(Match match) {
-	}
+    @Override
+    public void visitEnter(Target t) {
 
-	@Override
-	public void visitEnter(MatchAllOf match) {
-	}
+    }
 
-	@Override
-	public void visitLeave(MatchAllOf match) {
-	}
+    @Override
+    public void visitLeave(Target t) {
 
-	@Override
-	public void visitEnter(MatchAnyOf match) {
-	}
+    }
 
-	@Override
-	public void visitLeave(MatchAnyOf match) {
-	}
+    @Override
+    public void visitEnter(Condition c) {
 
-	@Override
-	public void visitEnter(Rule rule) {
-	}
+    }
 
-	@Override
-	public void visitLeave(Rule rule) {
-	}
+    @Override
+    public void visitLeave(Condition c) {
 
-	@Override
-	public void visitEnter(PolicyIDReference ref) {
-	}
+    }
 
-	@Override
-	public void visitLeave(PolicyIDReference ref) {
-	}
+    @Override
+    public void visitEnter(Match m) {
 
-	@Override
-	public void visitEnter(Policy policy) {
-	}
+    }
 
-	@Override
-	public void visitLeave(Policy policy) {
-	}
+    @Override
+    public void visitLeave(Match m) {
 
-	@Override
-	public void visitEnter(PolicySet policySet) {
-	}
+    }
 
-	@Override
-	public void visitLeave(PolicySet policySet) {
-	}
+    @Override
+    public void visitEnter(MatchAllOf m) {
 
-	@Override
-	public void visitEnter(PolicySetIDReference ref) {
-	}
+    }
 
-	@Override
-	public void visitLeave(PolicySetIDReference ref) {
-	}
+    @Override
+    public void visitLeave(MatchAllOf m) {
 
-	@Override
-	public void visitEnter(ObligationExpression obligation) {
-	}
+    }
 
-	@Override
-	public void visitLeave(ObligationExpression obligation) {
-	}
+    @Override
+    public void visitEnter(MatchAnyOf m) {
 
-	@Override
-	public void visitEnter(AdviceExpression advice) {
-	}
+    }
 
-	@Override
-	public void visitLeave(AdviceExpression advice) {
-	}
+    @Override
+    public void visitLeave(MatchAnyOf m) {
 
-	@Override
-	public void visitEnter(AttributeAssignmentExpression attribute) {
-	}
+    }
 
-	@Override
-	public void visitLeave(AttributeAssignmentExpression attribute) {
-	}
+    @Override
+    public void visitEnter(Policy p) {
 
-	@Override
-	public void visitEnter(PolicyDefaults policyDefaults) {
-	}
+    }
 
-	@Override
-	public void visitLeave(PolicyDefaults policyDefaults) {
-	}
+    @Override
+    public void visitLeave(Policy p) {
 
-	@Override
-	public void visitEnter(PolicySetDefaults policySetDefaults) {
-	}
+    }
 
-	@Override
-	public void visitLeave(PolicySetDefaults policySetDefaults) {
-	}
+    @Override
+    public void visitEnter(PolicySet ps) {
 
-	@Override
-	public void visitEnter(CombinerParameter p) {
-	}
+    }
 
-	@Override
-	public void visitLeave(CombinerParameter p) {
-	}
+    @Override
+    public void visitLeave(PolicySet ps) {
+
+    }
+
+    @Override
+    public void visitEnter(Rule r) {
+
+    }
+
+    @Override
+    public void visitLeave(Rule r) {
+
+    }
+
+    @Override
+    public void visitEnter(PolicyIDReference r) {
+
+    }
+
+    @Override
+    public void visitLeave(PolicyIDReference r) {
+
+    }
+
+    @Override
+    public void visitEnter(PolicySetIDReference r) {
+
+    }
+
+    @Override
+    public void visitLeave(PolicySetIDReference r) {
+
+    }
+
+    @Override
+    public void visitEnter(PolicyDefaults d) {
+
+    }
+
+    @Override
+    public void visitLeave(PolicyDefaults d) {
+
+    }
+
+    @Override
+    public void visitEnter(PolicySetDefaults ps) {
+
+    }
+
+    @Override
+    public void visitLeave(PolicySetDefaults ps) {
+
+    }
+
+    @Override
+    public void visitEnter(CombinerParameter p) {
+
+    }
+
+    @Override
+    public void visitLeave(CombinerParameter p) {
+
+    }
+
+    @Override
+    public void visitEnter(VariableDefinition v) {
+
+    }
+
+    @Override
+    public void visitLeave(VariableDefinition v) {
+
+    }
 }

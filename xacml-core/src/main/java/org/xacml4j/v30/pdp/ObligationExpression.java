@@ -22,14 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.*;
 
 
 public class ObligationExpression extends
-	BaseDecisionRuleResponseExpression
+	BaseDecisionRuleResponseExpression implements PolicyElement
 {
 	public ObligationExpression(Builder b)
 	{
@@ -48,13 +45,22 @@ public class ObligationExpression extends
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		for(AttributeAssignmentExpression exp : getAttributeAssignmentExpressions()){
 			exp.accept(v);
 		}
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(ObligationExpression exp);
+        void visitLeave(ObligationExpression exp);
+    }
 
 	@Override
 	public boolean equals(Object o){

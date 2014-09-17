@@ -22,7 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.PolicyVisitor;
+
 public class PolicySetDefaults extends BaseCompositeDecisionRuleDefaults
+        implements PolicyElement
 {
 	private PolicySetDefaults(Builder b) {
 		super(b);
@@ -33,11 +37,19 @@ public class PolicySetDefaults extends BaseCompositeDecisionRuleDefaults
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
 
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(PolicySetDefaults ps);
+        void visitLeave(PolicySetDefaults ps);
+    }
 	@Override
 	public boolean equals(Object o){
 		if(o == this){

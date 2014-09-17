@@ -1,4 +1,5 @@
-package org.xacml4j.v30.pdp;
+
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -22,8 +23,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+/**
+ * A marker interface for policy
+ * tree related visitors
+ */
+public interface PolicyVisitor{
 
-public interface PolicyElement
-{
-	void accept(PolicyVisitor v);
 }

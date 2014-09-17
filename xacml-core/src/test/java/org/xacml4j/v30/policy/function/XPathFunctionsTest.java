@@ -175,6 +175,13 @@ public class XPathFunctionsTest
 		verify(context);
 	}
 
+    @Test
+    public void testXacml20StringXPathToXPathExpression()
+    {
+        StringExp xpath = StringExp.of("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
+        assertEquals(XPathExp.of("//md:record/md:patient/md:patient-number/text()", Categories.RESOURCE), XPathFunctions.fromXacml20String(xpath));
+    }
+
 
 	public class XPathAnswer implements IAnswer<NodeList>
 	{

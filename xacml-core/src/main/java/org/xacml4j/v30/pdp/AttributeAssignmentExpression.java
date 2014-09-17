@@ -22,12 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -46,10 +41,8 @@ public class AttributeAssignmentExpression implements PolicyElement
 	 * @param b attribute assignment builder
 	 */
 	private AttributeAssignmentExpression(Builder b){
-		Preconditions.checkNotNull(b.id);
-		Preconditions.checkNotNull(b.expression);
-		this.attributeId = b.id;
-		this.expression = b.expression;
+		this.attributeId = Preconditions.checkNotNull(b.id);
+		this.expression =  Preconditions.checkNotNull(b.expression);
 		this.category = b.category;
 		this.issuer = b.issuer;
 	}
@@ -135,10 +128,19 @@ public class AttributeAssignmentExpression implements PolicyElement
 	}
 
 	@Override
-	public void accept(PolicyVisitor v) {
+	public void accept(PolicyVisitor pv) {
+        if(!(pv instanceof Visitor)){
+            return;
+        }
+        Visitor v = (Visitor)pv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
+
+    public interface Visitor extends PolicyVisitor{
+        void visitEnter(AttributeAssignmentExpression exp);
+        void visitLeave(AttributeAssignmentExpression exp);
+    }
 
 	public static class Builder
 	{
