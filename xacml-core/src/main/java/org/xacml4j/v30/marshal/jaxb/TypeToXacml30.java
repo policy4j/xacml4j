@@ -58,7 +58,7 @@ public interface TypeToXacml30 extends TypeCapability
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
-				Preconditions.checkArgument(v.getType().equals(this));
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.ANYURI).toString(v));
@@ -78,7 +78,7 @@ public interface TypeToXacml30 extends TypeCapability
 		BOOLEAN(XacmlTypes.BOOLEAN){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
-				Preconditions.checkArgument(v.getType().equals(this));
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.BOOLEAN).toString(v));
@@ -98,6 +98,7 @@ public interface TypeToXacml30 extends TypeCapability
 		BASE64BINARY(XacmlTypes.BASE64BINARY){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -118,6 +119,7 @@ public interface TypeToXacml30 extends TypeCapability
 		DATE(XacmlTypes.DATE){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -138,6 +140,7 @@ public interface TypeToXacml30 extends TypeCapability
 		DATETIME(XacmlTypes.DATETIME){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -158,6 +161,7 @@ public interface TypeToXacml30 extends TypeCapability
 		DAYTIMEDURATION(XacmlTypes.DAYTIMEDURATION){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -178,6 +182,7 @@ public interface TypeToXacml30 extends TypeCapability
 		DNSNAME(XacmlTypes.DNSNAME){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -197,6 +202,7 @@ public interface TypeToXacml30 extends TypeCapability
 		DOUBLE(XacmlTypes.DOUBLE){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -217,7 +223,7 @@ public interface TypeToXacml30 extends TypeCapability
 		ENTITY(XacmlTypes.ENTITY){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
-				Preconditions.checkArgument(v.getType().equals(this));
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml30 = new AttributeValueType();
 				xacml30.setDataType(v.getType().getDataTypeId());
 				Entity entity = ((EntityExp)v).getValue();
@@ -259,6 +265,7 @@ public interface TypeToXacml30 extends TypeCapability
 		HEXBINARY(XacmlTypes.HEXBINARY){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -279,6 +286,7 @@ public interface TypeToXacml30 extends TypeCapability
 		INTEGER(XacmlTypes.INTEGER){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -299,6 +307,7 @@ public interface TypeToXacml30 extends TypeCapability
 		IPADDRESS(XacmlTypes.IPADDRESS){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -319,6 +328,7 @@ public interface TypeToXacml30 extends TypeCapability
 		RFC822NAME(XacmlTypes.RFC822NAME){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -339,6 +349,7 @@ public interface TypeToXacml30 extends TypeCapability
 		STRING(XacmlTypes.STRING){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.STRING).toString(v));
@@ -358,6 +369,7 @@ public interface TypeToXacml30 extends TypeCapability
 		TIME(XacmlTypes.TIME){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -378,6 +390,7 @@ public interface TypeToXacml30 extends TypeCapability
 		X500NAME(XacmlTypes.X500NAME){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
@@ -398,7 +411,7 @@ public interface TypeToXacml30 extends TypeCapability
 		XPATH(XacmlTypes.XPATH){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
-				Preconditions.checkArgument(v.getType().equals(this));
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml30 = new AttributeValueType();
 				XPathExp xpath = (XPathExp)v;
 				xacml30.setDataType(XacmlTypes.XPATH.getDataTypeId());
@@ -426,6 +439,7 @@ public interface TypeToXacml30 extends TypeCapability
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
 			@Override
 			public AttributeValueType toXacml30(AttributeExp v) {
+				Preconditions.checkArgument(v.getType().equals(this.getType()));
 				AttributeValueType xacml = new AttributeValueType();
 				xacml.setDataType(v.getType().getDataTypeId());
 				xacml.getContent().add(
