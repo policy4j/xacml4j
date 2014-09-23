@@ -10,12 +10,12 @@ package org.xacml4j.v30.spi.pip;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -31,7 +31,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationContext;
@@ -51,6 +53,9 @@ public class DefaultResolverRegistryTest
 	private AttributeResolver r2;
 
 	private AttributeResolverDescriptor d1;
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	@Before
 	public void init(){
@@ -90,9 +95,12 @@ public class DefaultResolverRegistryTest
 		control.verify();
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testAddResolversWithTheSameIdsAndAttributesNoIssuer()
 	{
+		expectedException.expect(IllegalArgumentException.class);
+		expectedException.expectMessage("Attribute resolver with id=\"test1\" is already registered with this registry");
+
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
 				.builder("test1", "Test1", Categories.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
